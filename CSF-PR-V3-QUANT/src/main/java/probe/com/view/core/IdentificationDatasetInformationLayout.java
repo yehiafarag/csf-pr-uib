@@ -7,51 +7,54 @@ package probe.com.view.core;
 
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.PopupView;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TabSheet.Tab;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.io.Serializable;
 import probe.com.handlers.MainHandler;
-import probe.com.view.body.IdentificationDatasetLayout;
+import probe.com.view.body.identificationdatasetsoverview.IdentificationDatasetLayout;
 
 /**
  *
  * @author Yehia Farag
  */
-public class DatasetInformationLayout extends VerticalLayout implements Serializable,Button.ClickListener {
+public class IdentificationDatasetInformationLayout extends VerticalLayout implements Serializable, Button.ClickListener {
 
 //    private final IconGenerator excelExporterIconGenerator = new IconGenerator();
-    private final  VerticalLayout miniLayout = new VerticalLayout();
+    private final VerticalLayout miniLayout = new VerticalLayout();
     private final int datasetId;
     private final TabSheet mainTabSheet;
     private final MainHandler handler;
-    private Tab homeTab =null;
+    private Tab homeTab = null;
     private IdentificationDatasetLayout datasetLayout;
-            
-    
 
-    public DatasetInformationLayout(MainHandler handler, int datasetId,TabSheet mainTabSheet) {
+    public IdentificationDatasetInformationLayout(final MainHandler handler, final int datasetId, TabSheet mainTabSheet) {
         this.datasetId = datasetId;
-        this.mainTabSheet=mainTabSheet;
-        this.handler=handler;
+        this.mainTabSheet = mainTabSheet;
+        this.handler = handler;
         this.setSpacing(true);
         this.setMargin(true);
         this.setSizeFull();
-        miniLayout.setSpacing(false);
+        miniLayout.setSpacing(true);
         miniLayout.setMargin(false);
+        miniLayout.setWidth("100%");
         HorizontalLayout miniLabelsGroupILayout = new HorizontalLayout();
         miniLabelsGroupILayout.setSpacing(true);
         miniLabelsGroupILayout.setMargin(new MarginInfo(false, false, false, false));
         miniLayout.addComponent(miniLabelsGroupILayout);
+        miniLayout.setComponentAlignment(miniLabelsGroupILayout, Alignment.MIDDLE_CENTER);
+
         miniLabelsGroupILayout.addComponent(this.generateMiniLabel("Instrument Type:", handler.getDataset(datasetId).getInstrumentType()));
         miniLabelsGroupILayout.addComponent(this.generateMiniLabel("Species:", handler.getDataset(datasetId).getSpecies()));
         HorizontalLayout miniProtNumberLayout = this.generateMiniLabel("Proteins Number:", "" + handler.getDataset(datasetId).getNumberValidProt());
         miniProtNumberLayout.setDescription("Number of validated proteins");
-        miniLabelsGroupILayout.addComponent(miniProtNumberLayout);        
+        miniLabelsGroupILayout.addComponent(miniProtNumberLayout);
         miniLabelsGroupILayout.addComponent(this.generateMiniLabel("Sample Processing:", handler.getDataset(datasetId).getSampleProcessing()));
 
         HorizontalLayout miniLabelsGroupIILayout = new HorizontalLayout();
@@ -59,6 +62,7 @@ public class DatasetInformationLayout extends VerticalLayout implements Serializ
 
         miniLabelsGroupIILayout.setMargin(new MarginInfo(false, false, false, false));
         miniLayout.addComponent(miniLabelsGroupIILayout);
+        miniLayout.setComponentAlignment(miniLabelsGroupIILayout, Alignment.MIDDLE_CENTER);
 
         miniLabelsGroupIILayout.addComponent(this.generateMiniLabel("Sample Type:", handler.getDataset(datasetId).getSampleType()));
 
@@ -68,8 +72,6 @@ public class DatasetInformationLayout extends VerticalLayout implements Serializ
         miniLabelsGroupIILayout.addComponent(miniPepNumberLayout);
         miniLabelsGroupIILayout.addComponent(this.generateMiniLabel("Fraction Numbers:", "" + handler.getDataset(datasetId).getFractionsNumber()));
 
-        
-
         HorizontalLayout topLabelsGroupILayout = new HorizontalLayout();
         topLabelsGroupILayout.setSpacing(true);
         topLabelsGroupILayout.setMargin(new MarginInfo(false, true, false, false));
@@ -78,7 +80,7 @@ public class DatasetInformationLayout extends VerticalLayout implements Serializ
 
         topLabelsGroupILayout.addComponent(this.generateLabel("Dataset  Name: ", handler.getDataset(datasetId).getName()));
         topLabelsGroupILayout.addComponent(this.generateLabel("Uploaded By:", handler.getDataset(datasetId).getUploadedByName()));
-        topLabelsGroupILayout.addComponent(this.generateLabel("E-mail:", handler.getDataset(datasetId).getEmail()));
+        topLabelsGroupILayout.addComponent(this.generateLabel("E-mail:", handler.getDataset(datasetId).getEmail().toLowerCase()));
         topLabelsGroupILayout.addComponent(new VerticalLayout());
         topLabelsGroupILayout.setExpandRatio(topLabelsGroupILayout.getComponent(0), 3);
         topLabelsGroupILayout.setExpandRatio(topLabelsGroupILayout.getComponent(1), 2);
@@ -89,26 +91,24 @@ public class DatasetInformationLayout extends VerticalLayout implements Serializ
 
         this.addComponent(generateLabel("Description:", handler.getDataset(datasetId).getDescription()));
 
-        HorizontalLayout bottomLabelsGroupILayout = new HorizontalLayout();
+        final HorizontalLayout bottomLabelsGroupILayout = new HorizontalLayout();
         bottomLabelsGroupILayout.setSpacing(true);
         bottomLabelsGroupILayout.setMargin(new MarginInfo(false, true, false, false));
         this.addComponent(bottomLabelsGroupILayout);
-        
-      
+
         bottomLabelsGroupILayout.addComponent(this.generateLabel("Instrument Type:", handler.getDataset(datasetId).getInstrumentType()));
         bottomLabelsGroupILayout.addComponent(this.generateLabel("Species:", handler.getDataset(datasetId).getSpecies()));
         HorizontalLayout protNumberLayout = this.generateLabel("Proteins Number:", "" + handler.getDataset(datasetId).getNumberValidProt());
         protNumberLayout.setDescription("Number of validated proteins");
         bottomLabelsGroupILayout.addComponent(protNumberLayout);
-        
-        
+
         Button exportProtBtn = new Button("Export Proteins");
 //        exportProtBtn.setIcon(new ThemeResource("img/excel.jpg"));
         exportProtBtn.setStyleName(Reindeer.BUTTON_SMALL);
         exportProtBtn.setWidth("100px");
         bottomLabelsGroupILayout.addComponent(exportProtBtn);
 
-        HorizontalLayout bottomLabelsGroupIILayout = new HorizontalLayout();
+        final HorizontalLayout bottomLabelsGroupIILayout = new HorizontalLayout();
         bottomLabelsGroupIILayout.setSpacing(true);
 
         bottomLabelsGroupIILayout.setMargin(new MarginInfo(false, true, false, false));
@@ -147,15 +147,14 @@ public class DatasetInformationLayout extends VerticalLayout implements Serializ
         }
         bottomLabelsGroupIIILayout.addComponent(this.generateLabel("Fraction Numbers:", "" + handler.getDataset(datasetId).getFractionsNumber()));
 
-        if(mainTabSheet != null){
-        Button loadDatasetBtn = new Button("Load Dataset");
-        loadDatasetBtn.setStyleName(Reindeer.BUTTON_SMALL);
-        loadDatasetBtn.setWidth("100px");
-        loadDatasetBtn.addClickListener(DatasetInformationLayout.this);
-        bottomLabelsGroupIIILayout.addComponent(loadDatasetBtn);
-        }
-        else{
-             bottomLabelsGroupIIILayout.addComponent(new VerticalLayout());        
+        if (mainTabSheet != null) {
+            Button loadDatasetBtn = new Button("Load Dataset");
+            loadDatasetBtn.setStyleName(Reindeer.BUTTON_SMALL);
+            loadDatasetBtn.setWidth("100px");
+            loadDatasetBtn.addClickListener(IdentificationDatasetInformationLayout.this);
+            bottomLabelsGroupIIILayout.addComponent(loadDatasetBtn);
+        } else {
+            bottomLabelsGroupIIILayout.addComponent(new VerticalLayout());
         }
 
         topLabelsGroupILayout.setWidth("100%");
@@ -184,11 +183,39 @@ public class DatasetInformationLayout extends VerticalLayout implements Serializ
         miniLabelsGroupILayout.setExpandRatio(miniLabelsGroupILayout.getComponent(1), 1);
         miniLabelsGroupILayout.setExpandRatio(miniLabelsGroupILayout.getComponent(2), 1);
         miniLabelsGroupILayout.setExpandRatio(miniLabelsGroupILayout.getComponent(3), 3);
-        
+
         miniLabelsGroupIILayout.setExpandRatio(miniLabelsGroupIILayout.getComponent(0), 1);
         miniLabelsGroupIILayout.setExpandRatio(miniLabelsGroupIILayout.getComponent(1), 1);
         miniLabelsGroupIILayout.setExpandRatio(miniLabelsGroupIILayout.getComponent(2), 1);
         miniLabelsGroupIILayout.setExpandRatio(miniLabelsGroupIILayout.getComponent(3), 3);
+        CustomExportBtnLayout exportAllDatasetProteinsLayout = (new CustomExportBtnLayout(handler, "prots", datasetId, handler.getDataset(datasetId).getName(), null, null, null, handler.getDataset(datasetId).getFractionsNumber(), null, null, null, null));
+        final PopupView exportAllDatasetProteinPeptidesPopup = new PopupView(null, exportAllDatasetProteinsLayout);
+        this.addComponent(exportAllDatasetProteinPeptidesPopup);
+        this.setComponentAlignment(exportAllDatasetProteinPeptidesPopup, Alignment.TOP_RIGHT);
+
+        exportProtBtn.addClickListener(new Button.ClickListener() {
+
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+
+                exportAllDatasetProteinPeptidesPopup.setPopupVisible(true);
+
+            }
+        });
+        
+        
+          CustomExportBtnLayout exportAllDatasetPeptidesLayout = new CustomExportBtnLayout(handler, "allPep", datasetId, handler.getDataset(datasetId).getName(), null, null, null, 0, null, null, null, null);
+           final PopupView exportAllDatasetPeptidesPopup = new PopupView(null, exportAllDatasetPeptidesLayout);
+        this.addComponent(exportAllDatasetPeptidesPopup);
+        this.setComponentAlignment(exportAllDatasetPeptidesPopup, Alignment.TOP_RIGHT);
+        
+        exportPeptidestBtn.addClickListener(new Button.ClickListener() {
+
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+               exportAllDatasetPeptidesPopup.setPopupVisible(true);
+            }
+        });
 
     }
 
@@ -225,15 +252,16 @@ public class DatasetInformationLayout extends VerticalLayout implements Serializ
         return datasetNameLayout;
 
     }
-     private HorizontalLayout generateMiniLabel(String title, String value) {
+
+    private HorizontalLayout generateMiniLabel(String title, String value) {
         Label titleLabel = new Label(title);
         titleLabel.setContentMode(ContentMode.HTML);
         titleLabel.setStyleName("miniDatasetInfoHeaders");
-        
-          Label valueLabel = new Label(value);
+
+        Label valueLabel = new Label(value);
         valueLabel.setContentMode(ContentMode.HTML);
         valueLabel.setStyleName("miniDatasetInfoValues");
-        
+
         HorizontalLayout datasetlabelLayout = new HorizontalLayout();
         datasetlabelLayout.addComponent(titleLabel);
         datasetlabelLayout.addComponent(valueLabel);
@@ -248,8 +276,9 @@ public class DatasetInformationLayout extends VerticalLayout implements Serializ
 
     @Override
     public void buttonClick(Button.ClickEvent event) {
-        if(datasetLayout == null)
+        if (datasetLayout == null) {
             datasetLayout = new IdentificationDatasetLayout(handler, datasetId);
+        }
         if (homeTab == null || mainTabSheet.getTabPosition(homeTab) < 0) {
             homeTab = mainTabSheet.addTab(datasetLayout, handler.getDataset(datasetId).getName(), null);
             homeTab.setClosable(true);
@@ -258,5 +287,4 @@ public class DatasetInformationLayout extends VerticalLayout implements Serializ
 
     }
 
-    
 }

@@ -30,7 +30,7 @@ import probe.com.view.core.HideOnClickLayout;
 /**
  * @author Yehia Farag
  */
-public class QuantDatasetSearchingLayout extends VerticalLayout implements Serializable, Button.ClickListener {
+public class ProteinsSearchingLayout extends VerticalLayout implements Serializable, Button.ClickListener {
 
     private final SearchingUnitLayout searchingUnitLayout;
     private final MainHandler handler;
@@ -39,11 +39,11 @@ public class QuantDatasetSearchingLayout extends VerticalLayout implements Seria
     private final LayoutEvents.LayoutClickListener idLayoutListener, quantLayoutListener;
     private List<QuantProtein> searchQuantificationProtList;
 
-    public QuantDatasetSearchingLayout(final MainHandler handler, final TabSheet mainTabSheet) {
+    public ProteinsSearchingLayout(final MainHandler handler, final TabSheet mainTabSheet) {
         this.handler = handler;
         this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.setSpacing(true);
-        searchingUnitLayout = new SearchingUnitLayout(QuantDatasetSearchingLayout.this);
+        searchingUnitLayout = new SearchingUnitLayout(ProteinsSearchingLayout.this);
         idLayoutListener = new LayoutEvents.LayoutClickListener() {
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {

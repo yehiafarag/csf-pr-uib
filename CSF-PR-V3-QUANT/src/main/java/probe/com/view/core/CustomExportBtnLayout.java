@@ -264,7 +264,7 @@ public class CustomExportBtnLayout extends VerticalLayout implements Serializabl
                 exportXls(protTable, "Proteins", datasetName, updatedExpName, accession, typeGroup.getValue().toString());
             }
         } else if (type.equalsIgnoreCase("protPep")) {
-            Map<Integer, PeptideBean> vPeptidesList = null;
+            Map<Integer, PeptideBean> vPeptidesList ;
             if (typeGroup.getValue().toString().equalsIgnoreCase("Validated")) {
                 vPeptidesList = getVpeptideList(peptidesList);
             } else {

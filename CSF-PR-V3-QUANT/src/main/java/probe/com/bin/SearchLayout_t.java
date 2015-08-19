@@ -1,6 +1,6 @@
 /*
  */
-package probe.com.view.body;
+package probe.com.bin;
 
 import probe.com.view.components.PeptidesTableLayout;
 import probe.com.view.components.GelFractionsLayout;

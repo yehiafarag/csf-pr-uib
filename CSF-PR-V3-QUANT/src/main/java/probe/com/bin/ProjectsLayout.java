@@ -1,5 +1,5 @@
 
-package probe.com.view.body;
+package probe.com.bin;
 
 import probe.com.view.components.ProteinsTableLayout;
 import probe.com.view.components.PeptidesTableLayout;

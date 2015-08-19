@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package probe.com.view.body;
+package probe.com.view.body.identificationdatasetsoverview;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
@@ -29,7 +29,7 @@ import probe.com.view.components.PeptidesTableLayout;
 import probe.com.view.components.ProteinsTableLayout;
 import probe.com.view.core.CustomExportBtnLayout;
 import probe.com.view.core.CustomExternalLink;
-import probe.com.view.core.DatasetInformationLayout;
+import probe.com.view.core.IdentificationDatasetInformationLayout;
 import probe.com.view.core.HideOnClickLayout;
 
 /**
@@ -44,7 +44,7 @@ public class IdentificationDatasetLayout extends VerticalLayout implements Seria
     private ProteinsTableLayout protTableLayout;
     private PeptidesTableLayout peptideTableLayout;
 
-    private  Map<String, IdentificationProteinBean> proteinsList;
+    private Map<String, IdentificationProteinBean> proteinsList;
     private TreeMap<Integer, Object> selectionIndexes;
     private int nextIndex;
 
@@ -68,12 +68,10 @@ public class IdentificationDatasetLayout extends VerticalLayout implements Seria
      */
     private void buildMainLayout() {
 
-
         //init dataset Details
-
-         DatasetInformationLayout datasetInfoLayout =new DatasetInformationLayout(handler, datasetId,null);
-        HideOnClickLayout dsLayout = new HideOnClickLayout(handler.getDataset(datasetId).getName(), datasetInfoLayout,null);
-        dsLayout.setMargin(new MarginInfo(false,false,false,false));
+        IdentificationDatasetInformationLayout datasetInfoLayout = new IdentificationDatasetInformationLayout(handler, datasetId, null);
+        HideOnClickLayout dsLayout = new HideOnClickLayout(handler.getDataset(datasetId).getName(), datasetInfoLayout, null);
+        dsLayout.setMargin(new MarginInfo(false, false, false, false));
 //        datasetInfoLayout.setVisible(true);
         this.addComponent(dsLayout);
         //get proteins List
@@ -177,19 +175,22 @@ public class IdentificationDatasetLayout extends VerticalLayout implements Seria
         final String otherAccession = (String) item.getItemProperty("Other Protein(s)").getValue();
 
         CustomExportBtnLayout exportAllProteinPeptidesLayout = new CustomExportBtnLayout(handler, "allProtPep", datasetId, handler.getDataset(datasetId).getName(), accession, otherAccession, null, 0, null, null, null, desc);
-        CustomExportBtnLayout exportAllDatasetProteinsLayout = (new CustomExportBtnLayout(handler, "prots", datasetId, handler.getDataset(datasetId).getName(), accession, otherAccession, proteinsList, handler.getDataset(datasetId).getFractionsNumber(), null, null, null, desc));
-
+        
         PopupView exportAllProteinPeptidePopup = new PopupView("Export Peptides from All Datasets for ( " + accession + " )", exportAllProteinPeptidesLayout);
         exportAllProteinPeptidePopup.setDescription("Export CSF-PR Peptides for ( " + accession + " ) from All Datasets");
+       
+        
+        CustomExportBtnLayout exportAllDatasetProteinsLayout = (new CustomExportBtnLayout(handler, "prots", datasetId, handler.getDataset(datasetId).getName(), accession, otherAccession, proteinsList, handler.getDataset(datasetId).getFractionsNumber(), null, null, null, desc));
         PopupView exportAllDatasetProteinPeptidesPopup = new PopupView("Export All Proteins from Selected Dataset", exportAllDatasetProteinsLayout);
+        
+        
+        
         exportAllDatasetProteinPeptidesPopup.setDescription("Export All Proteins from ( " + handler.getDataset(datasetId).getName() + " ) Dataset");
         protTableLayout.setExpBtnProtAllPepTable(exportAllProteinPeptidePopup, exportAllDatasetProteinPeptidesPopup);
 
         if (proteinskey >= 0) {
             Map<Integer, PeptideBean> peptideProteintList = handler.getPeptidesProtList(datasetId, accession, otherAccession);
-                            
-            
-            
+
             if (!peptideProteintList.isEmpty()) {
                 int validPep = handler.getValidatedPepNumber(peptideProteintList);
                 if (peptideTableLayout != null) {

@@ -19,21 +19,65 @@ import java.io.Serializable;
  *
  * @author Yehia Farag
  */
-public class HideOnClickLayout  extends VerticalLayout implements Serializable, LayoutEvents.LayoutClickListener{
-    
+public class HideOnClickLayout extends VerticalLayout implements Serializable, LayoutEvents.LayoutClickListener {
+
     private final Label titleLabel;
     private final HorizontalLayout titleLayout;
     private final ShowLabel show;
     private final Layout fullBodyLayout;
     private final VerticalLayout miniBodyLayout;
 
-    public HideOnClickLayout(String title, Layout fullBodyLayout,VerticalLayout miniBodyLayout) {
+    public HideOnClickLayout(String title, Layout fullBodyLayout, VerticalLayout miniBodyLayout) {
         this.setMargin(new MarginInfo(false, false, false, false));
         this.setWidth("100%");
         this.fullBodyLayout = fullBodyLayout;
         this.fullBodyLayout.setVisible(false);
-        this.miniBodyLayout =miniBodyLayout;
-     
+        this.miniBodyLayout = miniBodyLayout;
+
+        titleLayout = new HorizontalLayout();
+        titleLayout.setHeight("20px");
+        titleLayout.setWidthUndefined();
+        titleLayout.setSpacing(true);
+        HorizontalLayout titleHeaderLayout = new HorizontalLayout();
+        titleHeaderLayout.setWidthUndefined();
+        titleHeaderLayout.setSpacing(true);
+
+        show = new ShowLabel();
+        show.setHeight("20px");
+        titleHeaderLayout.addComponent(show);
+        titleHeaderLayout.setComponentAlignment(show, Alignment.BOTTOM_LEFT);
+
+        titleLabel = new Label(title);
+        titleLabel.setContentMode(ContentMode.HTML);
+
+        titleLabel.setStyleName("filterShowLabel");
+        titleLabel.setHeight("20px");
+
+        titleHeaderLayout.addComponent(titleLabel);
+        titleHeaderLayout.setComponentAlignment(titleLabel, Alignment.TOP_LEFT);
+        titleHeaderLayout.addLayoutClickListener(HideOnClickLayout.this);
+
+        VerticalLayout titleHeaderContainer = new VerticalLayout(titleHeaderLayout);
+        titleHeaderContainer.setWidth("500px");
+
+        titleLayout.addComponent(titleHeaderContainer);
+        this.addComponent(titleLayout);
+        this.addComponent(this.fullBodyLayout);
+        this.setComponentAlignment(this.fullBodyLayout, Alignment.MIDDLE_CENTER);
+        if (miniBodyLayout != null) {
+            titleLayout.addComponent(this.miniBodyLayout);
+            titleLayout.setComponentAlignment(this.miniBodyLayout, Alignment.MIDDLE_CENTER);
+            miniBodyLayout.addLayoutClickListener(HideOnClickLayout.this);
+        }
+    }
+
+    public HideOnClickLayout(String title, Layout fullBodyLayout, VerticalLayout miniBodyLayout, Alignment align) {
+        this.setMargin(new MarginInfo(false, false, false, false));
+        this.setWidth("100%");
+        this.fullBodyLayout = fullBodyLayout;
+        this.fullBodyLayout.setVisible(false);
+        this.miniBodyLayout = miniBodyLayout;
+
         titleLayout = new HorizontalLayout();
         titleLayout.setHeight("20px");
         titleLayout.setSpacing(true);
@@ -52,45 +96,12 @@ public class HideOnClickLayout  extends VerticalLayout implements Serializable, 
         titleLayout.addLayoutClickListener(HideOnClickLayout.this);
         this.addComponent(titleLayout);
         this.addComponent(this.fullBodyLayout);
-        this.setComponentAlignment(this.fullBodyLayout,Alignment.MIDDLE_CENTER);
+        this.setComponentAlignment(this.fullBodyLayout, align);
         if (miniBodyLayout != null) {
             titleLayout.addComponent(this.miniBodyLayout);
             miniBodyLayout.addLayoutClickListener(HideOnClickLayout.this);
         }
     }
-    
-     public HideOnClickLayout(String title, Layout fullBodyLayout,VerticalLayout miniBodyLayout,Alignment align) {
-        this.setMargin(new MarginInfo(false, false, false, false));
-        this.setWidth("100%");
-        this.fullBodyLayout = fullBodyLayout;
-        this.fullBodyLayout.setVisible(false);
-        this.miniBodyLayout =miniBodyLayout;
-     
-        titleLayout = new HorizontalLayout();
-        titleLayout.setHeight("20px");
-        titleLayout.setSpacing(true);
-        show = new ShowLabel();
-        show.setHeight("20px");
-        titleLayout.addComponent(show);
-        titleLayout.setComponentAlignment(show, Alignment.BOTTOM_LEFT);
-
-        titleLabel = new Label(title);
-        titleLabel.setContentMode(ContentMode.HTML);
-
-        titleLabel.setStyleName("filterShowLabel");
-        titleLabel.setHeight("20px");
-        titleLayout.addComponent(titleLabel);
-        titleLayout.setComponentAlignment(titleLabel, Alignment.TOP_RIGHT);
-        titleLayout.addLayoutClickListener(HideOnClickLayout.this);
-        this.addComponent(titleLayout);
-        this.addComponent(this.fullBodyLayout);
-        this.setComponentAlignment(this.fullBodyLayout,align);
-        if (miniBodyLayout != null) {
-            titleLayout.addComponent(this.miniBodyLayout);
-            miniBodyLayout.addLayoutClickListener(HideOnClickLayout.this);
-        }
-    }
-    
 
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
@@ -106,11 +117,17 @@ public class HideOnClickLayout  extends VerticalLayout implements Serializable, 
     private void showLayout() {
         show.updateIcon(true);
         fullBodyLayout.setVisible(true);
+        if (miniBodyLayout != null) {
+            this.miniBodyLayout.setVisible(false);
+        }
     }
 
     public final void hideLayout() {
         show.updateIcon(false);
-        fullBodyLayout.setVisible(false);        
+        fullBodyLayout.setVisible(false);
+        if (miniBodyLayout != null) {
+            this.miniBodyLayout.setVisible(true);
+        }
     }
 
     public boolean isVisability() {
@@ -124,9 +141,10 @@ public class HideOnClickLayout  extends VerticalLayout implements Serializable, 
             this.hideLayout();
         }
     }
-    public void updateTitleLabel(String label){
-    
-    titleLabel.setValue(label);
+
+    public void updateTitleLabel(String label) {
+
+        titleLabel.setValue(label);
     }
 
 }
