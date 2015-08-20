@@ -2268,7 +2268,6 @@ public class DataBase implements Serializable {
         } catch (Exception exp) {
             exp.printStackTrace();
         }
-        System.out.println("pepsize is  " + peptidesList.size());
         return peptidesList;
     }
 

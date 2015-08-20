@@ -22,7 +22,7 @@ import java.sql.SQLException;
 import probe.com.handlers.AuthenticatorHandler;
 import probe.com.handlers.MainHandler;
 import probe.com.model.beans.User;
-import probe.com.view.components.AdminControlPanel;
+import probe.com.view.body.adminlayout.AdminControlPanel;
 import probe.com.view.core.IconGenerator;
 
 /**
@@ -30,29 +30,29 @@ import probe.com.view.core.IconGenerator;
  * @author Yehia Farag
  */
 public class AdminLayout extends VerticalLayout implements Serializable, Button.ClickListener {
-    
+
     private VerticalLayout loginLayout = new VerticalLayout();
     private VerticalLayout controlPanelLayout = new VerticalLayout();
-    private final  VerticalLayout errorLayout = new VerticalLayout();
+    private final VerticalLayout errorLayout = new VerticalLayout();
     private final MainHandler handler;
-    private User user =new User();
+    private User user = new User();
     private final AuthenticatorHandler authenticatorHandler;
     private final Button signOutButton;
     private VerticalLayout helpLayout;
     private final IconGenerator help = new IconGenerator();//help notes
     private HorizontalLayout helpNote;
-    private  TextField usernameField;
-    private PasswordField passwordField ;
+    private TextField usernameField;
+    private PasswordField passwordField;
     private AdminControlPanel controlPanel;
 
     /**
- * initialize admin layout
- *@param handler main dataset handler
- * 
- *
- */
-    public AdminLayout(MainHandler handler)
-    {
+     * initialize administrator layout
+     *
+     * @param handler main dataset handler
+     *
+     *
+     */
+    public AdminLayout(MainHandler handler) {
         this.handler = handler;
         this.authenticatorHandler = handler.getAuthenticatorHandler();
         this.setWidth("100%");
@@ -60,7 +60,7 @@ public class AdminLayout extends VerticalLayout implements Serializable, Button.
         this.addComponent(controlPanelLayout);
         initLoginLayout();
         controlPanelLayout.setVisible(false);
-         
+
         signOutButton = new Button("Sign Out");
         signOutButton.setStyleName(BaseTheme.BUTTON_LINK);
         signOutButton.setWidth("10%");
@@ -72,55 +72,55 @@ public class AdminLayout extends VerticalLayout implements Serializable, Button.
              *
              */
             private static final long serialVersionUID = 1L;
+
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 user = null;
                 controlPanelLayout.setVisible(false);
                 loginLayout.setVisible(true);
-                
 
             }
         });
 
-       
     }
+
     /**
- * initialize the welcome admin layout
- * the layout contains username and password fields and login button 
- *@param handler main dataset handler
- * 
- *
- */
-    private void initLoginLayout()
-    {        
+     * initialize the welcome administrator layout the layout contains username
+     * and password fields and login button
+     *
+     * @param handler main dataset handler
+     *
+     *
+     */
+    private void initLoginLayout() {
         loginLayout.removeAllComponents();
         Panel loginPanel = new Panel("Sign In");
         loginPanel.setStyleName(Reindeer.PANEL_LIGHT);
         loginPanel.setHeight("250px");
-        VerticalLayout loginPanelLayout = new VerticalLayout();        
-    
-        VerticalLayout spacer1= new VerticalLayout();
-        VerticalLayout spacer2= new VerticalLayout();
-        VerticalLayout spacer3= new VerticalLayout();
+        VerticalLayout loginPanelLayout = new VerticalLayout();
+
+        VerticalLayout spacer1 = new VerticalLayout();
+        VerticalLayout spacer2 = new VerticalLayout();
+        VerticalLayout spacer3 = new VerticalLayout();
         spacer1.setHeight("10px");
         spacer2.setHeight("10px");
         spacer3.setHeight("20px");
         loginPanelLayout.addComponent(spacer1);
-        
+
         usernameField = new TextField("Email:");
         usernameField.setStyleName(Reindeer.TEXTFIELD_SMALL);
-        usernameField.setRequired(true);       
+        usernameField.setRequired(true);
         usernameField.setRequiredError("Please Enter a Valid Username! ");
         loginPanelLayout.addComponent(usernameField);
-        
+
         loginPanelLayout.addComponent(spacer2);
-         
+
         passwordField = new PasswordField("Password:");
         passwordField.setStyleName(Reindeer.TEXTFIELD_SMALL);
         passwordField.setRequired(true);
-        passwordField.setRequiredError("Please Enter a Valid Password! ");      
-        loginPanelLayout.addComponent(passwordField);       
-        
+        passwordField.setRequiredError("Please Enter a Valid Password! ");
+        loginPanelLayout.addComponent(passwordField);
+
         loginPanelLayout.addComponent(spacer3);
 
         final Button signInButton = new Button("Sign In");
@@ -131,38 +131,36 @@ public class AdminLayout extends VerticalLayout implements Serializable, Button.
 
             @Override
             public void textChange(FieldEvents.TextChangeEvent event) {
-                // TODO Auto-generated method stub
                 signInButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
             }
         });
-        
-        
+
         Label l = new Label("<h5>Login To Be Able To Add/Edit Experiments </h5><h5 style='color:blue'>For Sign Up Please Contact Us at admin@csf.no </h5>");
-        l.setContentMode(ContentMode.HTML);     
+        l.setContentMode(ContentMode.HTML);
         helpLayout = new VerticalLayout();
         helpLayout.setWidth("100%");
         helpNote = help.getHelpNote(l);
 
         loginPanelLayout.addComponent(helpLayout);
         helpLayout.addComponent(helpNote);
-        helpLayout.setComponentAlignment(helpNote, Alignment.MIDDLE_RIGHT);        
+        helpLayout.setComponentAlignment(helpNote, Alignment.MIDDLE_RIGHT);
         loginPanelLayout.addComponent(errorLayout);
-        loginPanelLayout.setComponentAlignment(errorLayout,Alignment.TOP_LEFT );
+        loginPanelLayout.setComponentAlignment(errorLayout, Alignment.TOP_LEFT);
         errorLayout.setHeight("50px");
         errorLayout.setStyleName(Reindeer.LAYOUT_WHITE);
 
         loginPanel.setContent(loginPanelLayout);
         loginLayout.addComponent(loginPanel);
-        signInButton.addClickListener(this);   
-    
+        signInButton.addClickListener(this);
+
     }
-    
+
     /**
- * 
- *@param event on user click on login button
- * 
- *
- */
+     *
+     * @param event on user click on login button
+     *
+     *
+     */
     @Override
     public void buttonClick(Button.ClickEvent event) {//on click login button
         errorLayout.removeAllComponents();
@@ -198,23 +196,20 @@ public class AdminLayout extends VerticalLayout implements Serializable, Button.
 
         }
     }
-    
+
     /**
- * 
- *initialize admin panel on successful login
- * 
- *
- */
-    private void initControlPanelLayout()
-    {
-        
-        if(controlPanel !=null)
+     *
+     * initialize administrator panel on successful login
+     */
+    private void initControlPanelLayout() {
+
+        if (controlPanel != null) {
             controlPanelLayout.removeComponent(controlPanel);
+        }
         controlPanel = new AdminControlPanel(user, handler);
         controlPanelLayout.addComponent(controlPanel);
-        controlPanelLayout.setVisible(true); 
-    
+        controlPanelLayout.setVisible(true);
+
     }
 
-    
 }

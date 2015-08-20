@@ -12,7 +12,6 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.themes.Reindeer;
-import probe.com.view.components.SearchingFiltersControl_t;
 
 /**
  *

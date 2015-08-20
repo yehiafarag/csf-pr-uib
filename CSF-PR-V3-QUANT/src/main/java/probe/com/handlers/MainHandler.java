@@ -22,7 +22,7 @@ import probe.com.model.beans.IdentificationProteinBean;
 import probe.com.model.beans.QuantProtein;
 import probe.com.model.beans.StandardProteinBean;
 import probe.com.model.beans.QuantDatasetListObject;
-import probe.com.view.components.PeptideTable;
+import probe.com.view.body.identificationlayoutcomponents.PeptideTable;
 
 /**
  * @admin Yehia Farag

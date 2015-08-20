@@ -16,10 +16,9 @@ import probe.com.handlers.MainHandler;
 import probe.com.model.beans.IdentificationProteinBean;
 import probe.com.model.beans.PeptideBean;
 import probe.com.model.beans.StandardProteinBean;
-import probe.com.view.components.GelFractionsLayout;
-import probe.com.view.components.IdentificationSearchResultsTableLayout;
-import probe.com.view.components.PeptidesTableLayout;
-import probe.com.view.core.CustomExportBtnLayout;
+import probe.com.view.body.identificationlayoutcomponents.GelFractionsLayout;
+import probe.com.view.body.identificationlayoutcomponents.PeptidesTableLayout;
+import probe.com.view.core.exporter.ExporterBtnsGenerator;
 import probe.com.view.core.CustomExternalLink;
 
 /**
@@ -35,7 +34,7 @@ public class IdDataSearchingTabLayout extends VerticalLayout implements Serializ
         this.setMargin(true);
         this.setSpacing(true);
         idSearchingResultsTableLayout = new VerticalLayout();
-       idSearchingResultsTableLayout.setHeight("100%");
+        idSearchingResultsTableLayout.setHeight("100%");
         idFractionLayout = new VerticalLayout();
         idPeptidesLayout = new VerticalLayout();
         this.addComponent(idSearchingResultsTableLayout);
@@ -44,6 +43,7 @@ public class IdDataSearchingTabLayout extends VerticalLayout implements Serializ
 
         final IdentificationSearchResultsTableLayout searcheResultsTableLayout = new IdentificationSearchResultsTableLayout(handler, handler.getDatasetDetailsList(), searchIdentificationProtList, false);
         idSearchingResultsTableLayout.addComponent(searcheResultsTableLayout);
+        final ExporterBtnsGenerator dataExporter = new ExporterBtnsGenerator(handler);
         Property.ValueChangeListener listener = new Property.ValueChangeListener() {
             /*
              *the main listener for search table
@@ -82,37 +82,34 @@ public class IdDataSearchingTabLayout extends VerticalLayout implements Serializ
                 String otherAccession = item.getItemProperty("Other Protein(s)").toString();
                 String desc = item.getItemProperty("Description").toString();
 
-                int maindsId = handler.setMainDatasetId(datasetName);
+                int datasetId = handler.setMainDatasetId(datasetName);
 
-                int fractionNumber = handler.getDataset(maindsId).getFractionsNumber();
-                if (maindsId != 0 && handler.getDataset(maindsId).getDatasetType() == 1) {
-                    CustomExportBtnLayout exportAllProteinPeptidesLayout = new CustomExportBtnLayout(handler, "allProtPep", maindsId, datasetName, accession, otherAccession, null, 0, null, null, null, desc);
-                    PopupView exportAllProteinPeptidesPopup = new PopupView("Export Peptides from All Datasets for (" + accession + " )", exportAllProteinPeptidesLayout);
-                    exportAllProteinPeptidesPopup.setDescription("Export CSF-PR Peptides for ( " + accession + " ) for All Available Datasets");
-                    searcheResultsTableLayout.setExpBtnProtAllPepTable(exportAllProteinPeptidesPopup);// new PopupView("Export Proteins", (new CustomExportBtnLayout(handler, "prots",datasetId, datasetName, accession, otherAccession, datasetList, proteinsList, dataset.getFractionsNumber(), null,null))));
+                int fractionNumber = handler.getDataset(datasetId).getFractionsNumber();
+                if (datasetId != 0 && handler.getDataset(datasetId).getDatasetType() == 1) {
+
+                    VerticalLayout allPeptidesProteinsExportLayout = dataExporter.exportAllAvailablePeptidesForProtein(accession, otherAccession, desc, true, "Export Peptides from All Datasets for ( " + accession + " )");
+                    allPeptidesProteinsExportLayout.setDescription("Export CSF-PR Peptides for ( " + accession + " ) from All Datasets");
+                    searcheResultsTableLayout.setExpBtnProtAllPepTable(allPeptidesProteinsExportLayout);
                     if (key >= 0) {
-
-                        Map<Integer, PeptideBean> pepProtList = handler.getPeptidesProtList(maindsId, accession, otherAccession);
-
+                        Map<Integer, PeptideBean> pepProtList = handler.getPeptidesProtList(datasetId, accession, otherAccession);
                         if (!pepProtList.isEmpty()) {
                             int validPep = handler.getValidatedPepNumber(pepProtList);
                             if (idPeptideTableLayout != null) {
                                 idPeptidesLayout.removeComponent(idPeptideTableLayout);
                             }
-                            idPeptideTableLayout = new PeptidesTableLayout(validPep, pepProtList.size(), desc, pepProtList, accession, handler.getDataset(maindsId).getName());
+                            idPeptideTableLayout = new PeptidesTableLayout(validPep, pepProtList.size(), desc, pepProtList, accession, handler.getDataset(datasetId).getName());
                             idPeptidesLayout.setMargin(false);
                             idPeptidesLayout.addComponent(idPeptideTableLayout);
 
-                            CustomExportBtnLayout exportAllProteinsPeptidesLayout = new CustomExportBtnLayout(handler, "protPep", maindsId, handler.getDataset(maindsId).getName(), accession, otherAccession, null, 0, pepProtList, null, null, desc);
-                            PopupView exportAllProteinsPeptidesPopup = new PopupView("Export Peptides from Selected Dataset for (" + accession + " )", exportAllProteinsPeptidesLayout);
+                            VerticalLayout proteinPeptidesExportLayout = dataExporter.exportPeptidesForProtein(datasetId, accession, otherAccession, desc, pepProtList, true, "Export Peptides from Selected Dataset for ( " + accession + " )");
+                            proteinPeptidesExportLayout.setDescription("Export Peptides from ( " + handler.getDataset(datasetId).getName() + " ) Dataset for ( " + accession + " )");
 
-                            exportAllProteinsPeptidesPopup.setDescription("Export Peptides from ( " + handler.getDataset(maindsId).getName() + " ) Dataset for ( " + accession + " )");
-                            idPeptideTableLayout.setExpBtnPepTable(exportAllProteinsPeptidesPopup);
+                            idPeptideTableLayout.setExpBtnPepTable(proteinPeptidesExportLayout);
 
                         }
-                        List<StandardProteinBean> standerdProtList = handler.retrieveStandardProtPlotList(maindsId);//                          
+                        List<StandardProteinBean> standerdProtList = handler.retrieveStandardProtPlotList(datasetId);//                          
 
-                        if (fractionNumber == 0 || maindsId == 0 || standerdProtList == null || standerdProtList.isEmpty()) {
+                        if (fractionNumber == 0 || datasetId == 0 || standerdProtList == null || standerdProtList.isEmpty()) {
                             idFractionLayout.removeAllComponents();
                             if (searcheResultsTableLayout.getSearchTable() != null) {
                                 searcheResultsTableLayout.getSearchTable().setHeight("267.5px");
@@ -122,7 +119,7 @@ public class IdDataSearchingTabLayout extends VerticalLayout implements Serializ
                                 idPeptideTableLayout.setPeptideTableHeight("267.5px");
                             }
                         } else {
-                            Map<Integer, IdentificationProteinBean> fractionsList = handler.getProtGelFractionsList(maindsId, accession, otherAccession);
+                            Map<Integer, IdentificationProteinBean> fractionsList = handler.getProtGelFractionsList(datasetId, accession, otherAccession);
 
                             if (fractionsList != null && !fractionsList.isEmpty()) {
 
@@ -138,7 +135,7 @@ public class IdDataSearchingTabLayout extends VerticalLayout implements Serializ
                                     mw = Double.valueOf(str);
                                 }
 
-                                idFractionLayout.addComponent(new GelFractionsLayout(accession, mw, fractionsList, standerdProtList, handler.getDataset(maindsId).getName()));
+                                idFractionLayout.addComponent(new GelFractionsLayout(handler,accession, mw, fractionsList, standerdProtList, handler.getDataset(datasetId).getName()));
 
                             }
                         }

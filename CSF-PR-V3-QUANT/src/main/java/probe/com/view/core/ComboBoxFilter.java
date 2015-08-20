@@ -11,7 +11,6 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.HorizontalLayout;
 import java.util.HashMap;
 import java.util.Map;
-import probe.com.view.components.SearchingFiltersControl_t;
 
 /**
  *

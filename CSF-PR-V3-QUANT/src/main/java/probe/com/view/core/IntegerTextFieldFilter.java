@@ -12,7 +12,6 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.Reindeer;
 import java.io.Serializable;
-import probe.com.view.components.SearchingFiltersControl_t;
 
 /**
  *

@@ -14,7 +14,6 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.util.HashMap;
 import java.util.Map;
-import probe.com.view.components.SearchingFiltersControl_t;
 
 /**
  *

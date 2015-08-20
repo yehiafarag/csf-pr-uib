@@ -2,8 +2,8 @@
  */
 package probe.com.bin;
 
-import probe.com.view.components.PeptidesTableLayout;
-import probe.com.view.components.GelFractionsLayout;
+import probe.com.view.body.identificationlayoutcomponents.PeptidesTableLayout;
+import probe.com.view.body.identificationlayoutcomponents.GelFractionsLayout;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.shared.ui.MarginInfo;
@@ -22,11 +22,9 @@ import probe.com.model.beans.PeptideBean;
 import probe.com.model.beans.IdentificationProteinBean;
 import probe.com.model.beans.QuantProtein;
 import probe.com.model.beans.StandardProteinBean;
-import probe.com.view.components.SearchFiltersLayout;
-import probe.com.view.components.IdentificationSearchResultsTableLayout;
-import probe.com.view.components.QuantSearchResultLayout;
+import probe.com.view.body.searching.id.IdentificationSearchResultsTableLayout;
 import probe.com.view.core.CustomErrorLabel;
-import probe.com.view.core.CustomExportBtnLayout;
+import probe.com.view.core.exporter.ExporterBtnsGenerator;
 import probe.com.view.core.CustomExternalLink;
 
 /**
@@ -227,10 +225,10 @@ public class SearchLayout_t extends VerticalLayout implements Serializable, Butt
                         
                         fractionNumber = handler.getDataset(handler.getMainDatasetId()).getFractionsNumber();
                         if (handler.getMainDatasetId() != 0 && handler.getDataset(handler.getMainDatasetId()).getDatasetType() == 1) {
-                          CustomExportBtnLayout exportAllProteinPeptidesLayout = new CustomExportBtnLayout(handler, "allProtPep", handler.getMainDatasetId(), datasetName, accession, otherAccession, null, 0, null, null, null, desc);
-                            PopupView exportAllProteinPeptidesPopup = new PopupView("Export Peptides from All Datasets for (" + accession + " )", exportAllProteinPeptidesLayout);
-                            exportAllProteinPeptidesPopup.setDescription("Export CSF-PR Peptides for ( " + accession + " ) for All Available Datasets");
-                            searcheResultsTableLayout.setExpBtnProtAllPepTable(exportAllProteinPeptidesPopup);// new PopupView("Export Proteins", (new CustomExportBtnLayout(handler, "prots",datasetId, datasetName, accession, otherAccession, datasetList, proteinsList, dataset.getFractionsNumber(), null,null))));
+//                          ExporterGeneratorLayout exportAllProteinPeptidesLayout = new ExporterGeneratorLayout(handler, "allProtPep", handler.getMainDatasetId(), datasetName, accession, otherAccession, null, 0, null, null, null, desc);
+//                            PopupView exportAllProteinPeptidesPopup = new PopupView("Export Peptides from All Datasets for (" + accession + " )", exportAllProteinPeptidesLayout);
+//                            exportAllProteinPeptidesPopup.setDescription("Export CSF-PR Peptides for ( " + accession + " ) for All Available Datasets");
+//                            searcheResultsTableLayout.setExpBtnProtAllPepTable(exportAllProteinPeptidesPopup);// new PopupView("Export Proteins", (new CustomExportBtnLayout(handler, "prots",datasetId, datasetName, accession, otherAccession, datasetList, proteinsList, dataset.getFractionsNumber(), null,null))));
                             if (key >= 0) {
                                 
                                 Map<Integer, PeptideBean> pepProtList = handler.getPeptidesProtList(handler.getMainDatasetId(), accession, otherAccession);
@@ -244,11 +242,11 @@ public class SearchLayout_t extends VerticalLayout implements Serializable, Butt
                                     peptidesLayout.setMargin(false);
                                     peptidesLayout.addComponent(peptideTableLayout);
                                     
-                                    CustomExportBtnLayout exportAllProteinsPeptidesLayout = new CustomExportBtnLayout(handler, "protPep", handler.getMainDatasetId(), handler.getDataset(handler.getMainDatasetId()).getName(), accession, otherAccession, null, 0, pepProtList, null, null, desc);
-                                    PopupView exportAllProteinsPeptidesPopup = new PopupView("Export Peptides from Selected Dataset for (" + accession + " )", exportAllProteinsPeptidesLayout);
-                                    
-                                    exportAllProteinsPeptidesPopup.setDescription("Export Peptides from ( " + handler.getDataset(handler.getMainDatasetId()).getName() + " ) Dataset for ( " + accession + " )");
-                                    peptideTableLayout.setExpBtnPepTable(exportAllProteinsPeptidesPopup);
+//                                    ExporterGeneratorLayout exportAllProteinsPeptidesLayout = new ExporterGeneratorLayout(handler, "protPep", handler.getMainDatasetId(), handler.getDataset(handler.getMainDatasetId()).getName(), accession, otherAccession, null, 0, pepProtList, null, null, desc);
+//                                    PopupView exportAllProteinsPeptidesPopup = new PopupView("Export Peptides from Selected Dataset for (" + accession + " )", exportAllProteinsPeptidesLayout);
+//                                    
+//                                    exportAllProteinsPeptidesPopup.setDescription("Export Peptides from ( " + handler.getDataset(handler.getMainDatasetId()).getName() + " ) Dataset for ( " + accession + " )");
+//                                    peptideTableLayout.setExpBtnPepTable(exportAllProteinsPeptidesPopup);
                                     
                                 }
                               List<StandardProteinBean> standerdProtList = handler.retrieveStandardProtPlotList(handler.getMainDatasetId());//                          
@@ -280,7 +278,7 @@ public class SearchLayout_t extends VerticalLayout implements Serializable, Butt
                                             mw = Double.valueOf(str);
                                         }
 
-                                        fractionLayout.addComponent(new GelFractionsLayout(accession, mw, fractionsList, standerdProtList, handler.getDataset(handler.getMainDatasetId()).getName()));
+//                                        fractionLayout.addComponent(new GelFractionsLayout(accession, mw, fractionsList, standerdProtList, handler.getDataset(handler.getMainDatasetId()).getName()));
 
                                     }
                                 }

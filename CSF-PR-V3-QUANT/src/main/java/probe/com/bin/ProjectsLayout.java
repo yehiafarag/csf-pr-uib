@@ -1,9 +1,9 @@
 
 package probe.com.bin;
 
-import probe.com.view.components.ProteinsTableLayout;
-import probe.com.view.components.PeptidesTableLayout;
-import probe.com.view.components.GelFractionsLayout;
+import probe.com.view.body.identificationdatasetsoverview.identificationdataset.ProteinsTableLayout;
+import probe.com.view.body.identificationlayoutcomponents.PeptidesTableLayout;
+import probe.com.view.body.identificationlayoutcomponents.GelFractionsLayout;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.event.FieldEvents;
@@ -31,8 +31,7 @@ import probe.com.handlers.MainHandler;
 import probe.com.model.beans.PeptideBean;
 import probe.com.model.beans.IdentificationProteinBean;
 import probe.com.model.beans.StandardProteinBean;
-import probe.com.view.components.DatasetDetailsComponent;
-import probe.com.view.core.CustomExportBtnLayout;
+import probe.com.view.core.exporter.ExporterBtnsGenerator;
 import probe.com.view.core.CustomExternalLink;
 import probe.com.view.core.IconGenerator;
 
@@ -301,14 +300,14 @@ public final class ProjectsLayout extends VerticalLayout implements Serializable
                         accession = item.getItemProperty("Accession").getValue().toString();
                         otherAccession =(String)item.getItemProperty("Other Protein(s)").getValue();
 
-                        CustomExportBtnLayout exportAllProteinPeptidesLayout = new CustomExportBtnLayout(handler, "allProtPep", handler.getMainDatasetId(), handler.getDataset(handler.getMainDatasetId()).getName(), accession, otherAccession, null, 0, null, null, null, desc);
-                        CustomExportBtnLayout exportAllDatasetProteinsLayout = (new CustomExportBtnLayout(handler, "prots", handler.getMainDatasetId(), handler.getDataset(handler.getMainDatasetId()).getName(), accession, otherAccession, proteinsList,handler.getDataset(handler.getMainDatasetId()).getFractionsNumber(), null, null, null, desc));
+//                        ExporterGeneratorLayout exportAllProteinPeptidesLayout = new ExporterGeneratorLayout(handler, "allProtPep", handler.getMainDatasetId(), handler.getDataset(handler.getMainDatasetId()).getName(), accession, otherAccession, null, 0, null, null, null, desc);
+//                        ExporterGeneratorLayout exportAllDatasetProteinsLayout = (new ExporterGeneratorLayout(handler, "prots", handler.getMainDatasetId(), handler.getDataset(handler.getMainDatasetId()).getName(), accession, otherAccession, proteinsList,handler.getDataset(handler.getMainDatasetId()).getFractionsNumber(), null, null, null, desc));
 
-                        PopupView exportAllProteinPeptidePopup = new PopupView("Export Peptides from All Datasets for ( " + accession + " )", exportAllProteinPeptidesLayout);
-                        exportAllProteinPeptidePopup.setDescription("Export CSF-PR Peptides for ( " + accession + " ) from All Datasets");
-                        PopupView exportAllDatasetProteinPeptidesPopup = new PopupView("Export All Proteins from Selected Dataset", exportAllDatasetProteinsLayout);
-                        exportAllDatasetProteinPeptidesPopup.setDescription("Export All Proteins from ( " + handler.getDataset(handler.getMainDatasetId()).getName() + " ) Dataset");
-                        protTableLayout.setExpBtnProtAllPepTable(exportAllProteinPeptidePopup, exportAllDatasetProteinPeptidesPopup);
+//                        PopupView exportAllProteinPeptidePopup = new PopupView("Export Peptides from All Datasets for ( " + accession + " )", exportAllProteinPeptidesLayout);
+//                        exportAllProteinPeptidePopup.setDescription("Export CSF-PR Peptides for ( " + accession + " ) from All Datasets");
+//                        PopupView exportAllDatasetProteinPeptidesPopup = new PopupView("Export All Proteins from Selected Dataset", exportAllDatasetProteinsLayout);
+//                        exportAllDatasetProteinPeptidesPopup.setDescription("Export All Proteins from ( " + handler.getDataset(handler.getMainDatasetId()).getName() + " ) Dataset");
+//                        protTableLayout.setExpBtnProtAllPepTable(exportAllProteinPeptidePopup, exportAllDatasetProteinPeptidesPopup);
                         if (proteinskey >= 0) {
                            
                             
@@ -334,10 +333,10 @@ public final class ProjectsLayout extends VerticalLayout implements Serializable
                                 peptideTableLayout.setHeight("" + protTableLayout.getHeight());
                                 peptideLayout.setHeight("" + protTableLayout.getHeight());
                                 peptideLayout.addComponent(peptideTableLayout);
-                                CustomExportBtnLayout ce3 = new CustomExportBtnLayout(handler, "protPep", handler.getMainDatasetId(), handler.getDataset(handler.getMainDatasetId()).getName(), accession, otherAccession, null, 0, peptideProteintList, null, null, desc);
-                                PopupView ExportDatasetProtenPeptidesLayout = new PopupView("Export Peptides from Selected Dataset for ( " + accession + " )", ce3);
-                                ExportDatasetProtenPeptidesLayout.setDescription("Export Peptides from ( " + handler.getDataset(handler.getMainDatasetId()).getName() + " ) Dataset for ( " + accession + " )");
-                                peptideTableLayout.setExpBtnPepTable(ExportDatasetProtenPeptidesLayout);
+//                                ExporterGeneratorLayout ce3 = new ExporterGeneratorLayout(handler, "protPep", handler.getMainDatasetId(), handler.getDataset(handler.getMainDatasetId()).getName(), accession, otherAccession, null, 0, peptideProteintList, null, null, desc);
+//                                PopupView ExportDatasetProtenPeptidesLayout = new PopupView("Export Peptides from Selected Dataset for ( " + accession + " )", ce3);
+//                                ExportDatasetProtenPeptidesLayout.setDescription("Export Peptides from ( " + handler.getDataset(handler.getMainDatasetId()).getName() + " ) Dataset for ( " + accession + " )");
+//                                peptideTableLayout.setExpBtnPepTable(ExportDatasetProtenPeptidesLayout);
 
                             }  
                             List<StandardProteinBean>  standerdProtList = handler.retrieveStandardProtPlotList(handler.getMainDatasetId());
@@ -378,9 +377,9 @@ public final class ProjectsLayout extends VerticalLayout implements Serializable
 //                                    if (fractionsList==null || fractionsList.isEmpty()){//(proteinFractionAvgList == null || proteinFractionAvgList.isEmpty()) {
 //                                        fractionLayout.removeAllComponents();
 //                                    } else {
-                                        GelFractionsLayout gelFractionLayout = new GelFractionsLayout(accession, mw,fractionsList, standerdProtList, handler.getDataset(handler.getMainDatasetId()).getName());
-                                        gelFractionLayout.setMargin(new MarginInfo(false, false, false, true));
-                                        fractionLayout.addComponent(gelFractionLayout);
+////                                        GelFractionsLayout gelFractionLayout = new GelFractionsLayout(accession, mw,fractionsList, standerdProtList, handler.getDataset(handler.getMainDatasetId()).getName());
+//                                        gelFractionLayout.setMargin(new MarginInfo(false, false, false, true));
+//                                        fractionLayout.addComponent(gelFractionLayout);
 //                                    }
 //                                }
                             }

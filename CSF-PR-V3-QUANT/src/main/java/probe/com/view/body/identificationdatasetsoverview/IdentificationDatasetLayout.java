@@ -12,7 +12,6 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.PopupView;
 import com.vaadin.ui.VerticalLayout;
 import java.io.Serializable;
 import java.util.List;
@@ -24,12 +23,11 @@ import probe.com.handlers.MainHandler;
 import probe.com.model.beans.IdentificationProteinBean;
 import probe.com.model.beans.PeptideBean;
 import probe.com.model.beans.StandardProteinBean;
-import probe.com.view.components.GelFractionsLayout;
-import probe.com.view.components.PeptidesTableLayout;
-import probe.com.view.components.ProteinsTableLayout;
-import probe.com.view.core.CustomExportBtnLayout;
+import probe.com.view.body.identificationlayoutcomponents.GelFractionsLayout;
+import probe.com.view.body.identificationlayoutcomponents.PeptidesTableLayout;
+import probe.com.view.body.identificationdatasetsoverview.identificationdataset.ProteinsTableLayout;
+import probe.com.view.core.exporter.ExporterBtnsGenerator;
 import probe.com.view.core.CustomExternalLink;
-import probe.com.view.core.IdentificationDatasetInformationLayout;
 import probe.com.view.core.HideOnClickLayout;
 
 /**
@@ -72,7 +70,6 @@ public class IdentificationDatasetLayout extends VerticalLayout implements Seria
         IdentificationDatasetInformationLayout datasetInfoLayout = new IdentificationDatasetInformationLayout(handler, datasetId, null);
         HideOnClickLayout dsLayout = new HideOnClickLayout(handler.getDataset(datasetId).getName(), datasetInfoLayout, null);
         dsLayout.setMargin(new MarginInfo(false, false, false, false));
-//        datasetInfoLayout.setVisible(true);
         this.addComponent(dsLayout);
         //get proteins List
         proteinsList = handler.retriveProteinsList(datasetId);
@@ -174,19 +171,15 @@ public class IdentificationDatasetLayout extends VerticalLayout implements Seria
         final String accession = item.getItemProperty("Accession").getValue().toString();
         final String otherAccession = (String) item.getItemProperty("Other Protein(s)").getValue();
 
-        CustomExportBtnLayout exportAllProteinPeptidesLayout = new CustomExportBtnLayout(handler, "allProtPep", datasetId, handler.getDataset(datasetId).getName(), accession, otherAccession, null, 0, null, null, null, desc);
-        
-        PopupView exportAllProteinPeptidePopup = new PopupView("Export Peptides from All Datasets for ( " + accession + " )", exportAllProteinPeptidesLayout);
-        exportAllProteinPeptidePopup.setDescription("Export CSF-PR Peptides for ( " + accession + " ) from All Datasets");
-       
-        
-        CustomExportBtnLayout exportAllDatasetProteinsLayout = (new CustomExportBtnLayout(handler, "prots", datasetId, handler.getDataset(datasetId).getName(), accession, otherAccession, proteinsList, handler.getDataset(datasetId).getFractionsNumber(), null, null, null, desc));
-        PopupView exportAllDatasetProteinPeptidesPopup = new PopupView("Export All Proteins from Selected Dataset", exportAllDatasetProteinsLayout);
-        
-        
-        
-        exportAllDatasetProteinPeptidesPopup.setDescription("Export All Proteins from ( " + handler.getDataset(datasetId).getName() + " ) Dataset");
-        protTableLayout.setExpBtnProtAllPepTable(exportAllProteinPeptidePopup, exportAllDatasetProteinPeptidesPopup);
+        ExporterBtnsGenerator dataExporter = new ExporterBtnsGenerator(handler);
+
+        VerticalLayout allPeptidesProteinsExportLayout = dataExporter.exportAllAvailablePeptidesForProtein(accession, otherAccession, desc, true, "Export Peptides from All Datasets for ( " + accession + " )");
+        allPeptidesProteinsExportLayout.setDescription("Export CSF-PR Peptides for ( " + accession + " ) from All Datasets");
+
+        VerticalLayout datasetProteinsExportLayout = dataExporter.exportDatasetProteins(datasetId, true, "Export All Proteins from Selected Dataset");
+        datasetProteinsExportLayout.setDescription("Export All Proteins from ( " + handler.getDataset(datasetId).getName() + " ) Dataset");
+
+        protTableLayout.setExpBtnProtAllPepTable(allPeptidesProteinsExportLayout, datasetProteinsExportLayout);
 
         if (proteinskey >= 0) {
             Map<Integer, PeptideBean> peptideProteintList = handler.getPeptidesProtList(datasetId, accession, otherAccession);
@@ -201,10 +194,10 @@ public class IdentificationDatasetLayout extends VerticalLayout implements Seria
                 peptideTableLayout.setHeight("" + protTableLayout.getHeight());
                 peptidesLayout.setHeight("" + protTableLayout.getHeight());
                 peptidesLayout.addComponent(peptideTableLayout);
-                CustomExportBtnLayout exportPeptidesBtnLayout = new CustomExportBtnLayout(handler, "protPep", datasetId, handler.getDataset(datasetId).getName(), accession, otherAccession, null, 0, peptideProteintList, null, null, desc);
-                PopupView ExportDatasetProtenPeptidesLayout = new PopupView("Export Peptides from Selected Dataset for ( " + accession + " )", exportPeptidesBtnLayout);
-                ExportDatasetProtenPeptidesLayout.setDescription("Export Peptides from ( " + handler.getDataset(datasetId).getName() + " ) Dataset for ( " + accession + " )");
-                peptideTableLayout.setExpBtnPepTable(ExportDatasetProtenPeptidesLayout);
+
+                VerticalLayout proteinPeptidesExportLayout = dataExporter.exportPeptidesForProtein(datasetId, accession, otherAccession, desc, peptideProteintList, true, "Export Peptides from Selected Dataset for ( " + accession + " )");
+                proteinPeptidesExportLayout.setDescription("Export Peptides from ( " + handler.getDataset(datasetId).getName() + " ) Dataset for ( " + accession + " )");
+                peptideTableLayout.setExpBtnPepTable(proteinPeptidesExportLayout);
 
             }
             List<StandardProteinBean> standerdProtList = handler.retrieveStandardProtPlotList(datasetId);
@@ -237,7 +230,7 @@ public class IdentificationDatasetLayout extends VerticalLayout implements Seria
                         }
                         mw = Double.valueOf(str);
                     }
-                    GelFractionsLayout gelFractionLayout = new GelFractionsLayout(accession, mw, fractionsList, standerdProtList, handler.getDataset(datasetId).getName());
+                    GelFractionsLayout gelFractionLayout = new GelFractionsLayout(handler, accession, mw, fractionsList, standerdProtList, handler.getDataset(datasetId).getName());
                     gelFractionLayout.setMargin(new MarginInfo(false, false, false, true));
                     fractionsLayout.addComponent(gelFractionLayout);
 

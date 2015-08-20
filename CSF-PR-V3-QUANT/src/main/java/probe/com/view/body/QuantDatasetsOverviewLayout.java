@@ -8,7 +8,7 @@ import probe.com.handlers.MainHandler;
 import probe.com.selectionmanager.FilterUtility;
 import probe.com.view.body.quantdatasetsoverview.DiseaseGroupsFiltersContainer;
 import probe.com.view.body.quantdatasetsoverview.QuantProteinsComparisonsContainer;
-import probe.com.view.components.ExploreDatasetsTableLayout;
+import probe.com.view.body.quantdatasetsoverview.QuantDatasetsTableLayout;
 import probe.com.view.core.HideOnClickLayout;
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.interactivepiechartfilters.StudiesPieChartFiltersContainerLayout;
 import probe.com.view.body.quantdatasetsoverview.QuantProteinsTabsheetContainerLayout;
@@ -64,28 +64,10 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
         this.addComponent(proteinsLevelLayout);
         proteinsLevelLayout.setVisability(true);
 
-//         DatasetExploringHM datasestExploringHM = new DatasetExploringHM(exploringFiltersManager);
-//        this.addComponent(datasestExploringHM);
-//        PublicationExplorerTreeLayout publicationTreeLayout = new PublicationExplorerTreeLayout(handler.getQuantDatasetListObject().getQuantDatasetList(),exploringFiltersManager);
-//        comparisonLayout.addComponent(publicationTreeLayout);
-//        //init level 1 heatmapFiltere    
-//        pieChartFiltersLayout = filterUtility.initPopupFiltersLayout(exploringFiltersManager);
-//
-//        MiniFilterLayout minLayout = new MiniFilterLayout(exploringFiltersManager);
-//        HideOnClickLayout mainExploringFiltersLayout = new HideOnClickLayout("Datasets Exploring", pieChartFiltersLayout, minLayout);
-//        this.addComponent(mainExploringFiltersLayout);
-//        mainExploringFiltersLayout.setVisability(true);
-//        //level 2 table layout
-//
-////level 3 study overall chart
-//        studiesExplorerTreeLayout = new DatasetsExplorerTreeLayout(exploringFiltersManager);
-//        //init level 2 heatmapFiltere
-//        this.addComponent(studiesExplorerTreeLayout);
-//
-        ExploreDatasetsTableLayout studiesTable = new ExploreDatasetsTableLayout(exploringFiltersManager, filterUtility.getActiveHeaders());
+        QuantDatasetsTableLayout quantStudiesTable = new QuantDatasetsTableLayout(exploringFiltersManager, filterUtility.getActiveHeaders());
         if (searchingMode) {
         } else {
-            this.addComponent(studiesTable);
+            this.addComponent(quantStudiesTable);
         }
 
     }

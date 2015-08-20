@@ -352,12 +352,6 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
         }
     }
 
-//    private void initProteinsQuantDataLayout() {
-//        QuantDatasetsOverviewLayout datasetOverviewTabLayout = new QuantDatasetsOverviewLayout(handler, false);
-//        quantProteinsDataLayout.removeAllComponents();
-//        quantProteinsDataLayoutContainer.setVisible(true);
-//        quantProteinsDataLayout.addComponent(datasetOverviewTabLayout);
-//    }
     /**
      * no searching results found
      *

@@ -39,7 +39,7 @@ public class FileExporter {
      * @param path for the file csf-pr file system
      */
     public void expotPeptidesToCSV(Map<Integer, PeptideBean> allPeptides, String datasetName, String dataType, String path) {
-        File csvText = new File(path,"CSF-PR - " + datasetName + " - All - " + dataType+ " - Peptides.csv");// "CSF-PR - " + datasetName + " - All - " + dataType + "- Peptides" + ".csv");
+        File csvText = new File(path, "CSF-PR - " + datasetName + " - All - " + dataType + " - Peptides.csv");// "CSF-PR - " + datasetName + " - All - " + dataType + "- Peptides" + ".csv");
         PrintWriter out1 = null;
         try {
             if (csvText.exists()) {
@@ -102,35 +102,35 @@ public class FileExporter {
                 out1.append(',');
                 out1.append(("" + pb.isDeamidationAndGlycopattern()).toUpperCase());
                 out1.append(',');
-                if(pb.getGlycopatternPositions() !=null)
+                if (pb.getGlycopatternPositions() != null) {
                     out1.append("" + pb.getGlycopatternPositions());
-                else
+                } else {
                     out1.append("");
+                }
                 out1.append(',');
                 int x = (int) pb.getConfidence();
                 out1.append("" + x);
                 out1.append(',');
                 if (pb.getValidated() == 1.0) {
-                    out1.append("TRUE");
+                    out1.append("true");
                 } else {
-                    out1.append("FALSE");
+                    out1.append("false");
                 }
                 out1.append('\n');
 
-            }       
-            
-            
+            }
+
             out1.flush();
             out1.close();
         } catch (Exception exp) {
             System.err.println(exp.getLocalizedMessage());
-            if(out1!=null){
-            out1.flush();
-            out1.close();
+            if (out1 != null) {
+                out1.flush();
+                out1.close();
             }
         }
     }
-    
+
     /**
      * this function to be use for xls peptides exporting with large datasets
      *
@@ -140,8 +140,8 @@ public class FileExporter {
      * @param path for the file csf-pr file system
      */
     public void expotPeptidesToXLS(Map<Integer, PeptideBean> allPeptides, String datasetName, String dataType, String path) {
-        File xlsText = new File(path,"CSF-PR - " + datasetName + " - All - " + dataType+ " - Peptides.xls");// "CSF-PR - " + datasetName + " - All - " + dataType + "- Peptides" + ".csv");
-        
+        File xlsText = new File(path, "CSF-PR - " + datasetName + " - All - " + dataType + " - Peptides.xls");// "CSF-PR - " + datasetName + " - All - " + dataType + "- Peptides" + ".csv");
+
         try {
             if (xlsText.exists()) {
                 return;
@@ -165,35 +165,35 @@ public class FileExporter {
                 cell.setCellValue(str);
                 index++;
 
-            }                        
+            }
             //data
 
-             index = 0;
+            index = 0;
             for (PeptideBean pb : allPeptides.values()) {
-                HSSFRow peptideRow = worksheet.createRow(index+2);
+                HSSFRow peptideRow = worksheet.createRow(index + 2);
                 HSSFCell cell0 = peptideRow.createCell(0);
                 cell0.setCellValue(index);
-                  HSSFCell cell1 = peptideRow.createCell(1);
+                HSSFCell cell1 = peptideRow.createCell(1);
                 cell1.setCellValue(pb.getProteinInference());
-                 HSSFCell cell2 = peptideRow.createCell(2);
+                HSSFCell cell2 = peptideRow.createCell(2);
                 cell2.setCellValue(pb.getPeptideProteins().replaceAll(",", ";"));
                 HSSFCell cell3 = peptideRow.createCell(3);
                 cell3.setCellValue(pb.getPeptideProteinsDescriptions().replaceAll(",", ";"));
                 HSSFCell cell4 = peptideRow.createCell(4);
                 cell4.setCellValue(pb.getSequence());
-                 HSSFCell cell5 = peptideRow.createCell(5);
+                HSSFCell cell5 = peptideRow.createCell(5);
                 cell5.setCellValue(pb.getAaBefore());
                 HSSFCell cell6 = peptideRow.createCell(6);
                 cell6.setCellValue(pb.getAaAfter());
-                 HSSFCell cell7 = peptideRow.createCell(7);
+                HSSFCell cell7 = peptideRow.createCell(7);
                 cell7.setCellValue(pb.getPeptideStart());
-                 HSSFCell cell8 = peptideRow.createCell(8);
+                HSSFCell cell8 = peptideRow.createCell(8);
                 cell8.setCellValue(pb.getPeptideEnd());
-                 HSSFCell cell9 = peptideRow.createCell(9);
+                HSSFCell cell9 = peptideRow.createCell(9);
                 cell9.setCellValue(pb.getNumberOfValidatedSpectra());
-                 HSSFCell cell10 = peptideRow.createCell(10);
+                HSSFCell cell10 = peptideRow.createCell(10);
                 cell10.setCellValue(pb.getOtherProteins().replaceAll(",", ";"));
-                 HSSFCell cell11 = peptideRow.createCell(11);
+                HSSFCell cell11 = peptideRow.createCell(11);
                 cell11.setCellValue(pb.getOtherProteinDescriptions().replaceAll(",", ";"));
                 HSSFCell cell12 = peptideRow.createCell(12);
                 cell12.setCellValue(pb.getVariableModification().replaceAll(",", ";"));
@@ -201,31 +201,32 @@ public class FileExporter {
                 cell13.setCellValue(pb.getLocationConfidence().replaceAll(",", ";"));
                 HSSFCell cell14 = peptideRow.createCell(14);
                 cell14.setCellValue(pb.getPrecursorCharges().replaceAll(",", ";"));
-               HSSFCell cell15 = peptideRow.createCell(15);
+                HSSFCell cell15 = peptideRow.createCell(15);
                 cell15.setCellValue(pb.isEnzymatic());
-               HSSFCell cell16 = peptideRow.createCell(16);
+                HSSFCell cell16 = peptideRow.createCell(16);
                 cell16.setCellValue(pb.getSequenceTagged());
-                 HSSFCell cell17 = peptideRow.createCell(17);
+                HSSFCell cell17 = peptideRow.createCell(17);
                 cell17.setCellValue(pb.isDeamidationAndGlycopattern());
-                 HSSFCell cell18 = peptideRow.createCell(18);
-                if(pb.getGlycopatternPositions() !=null)
-                 cell18.setCellValue(pb.getGlycopatternPositions());
-                else
-                  cell18.setCellValue("");  
+                HSSFCell cell18 = peptideRow.createCell(18);
+                if (pb.getGlycopatternPositions() != null) {
+                    cell18.setCellValue(pb.getGlycopatternPositions());
+                } else {
+                    cell18.setCellValue("");
+                }
                 int x = (int) pb.getConfidence();
                 HSSFCell cell19 = peptideRow.createCell(19);
                 cell19.setCellValue(x);
-                
-               HSSFCell cell20 = peptideRow.createCell(20);
-               
+
+                HSSFCell cell20 = peptideRow.createCell(20);
+
                 if (pb.getValidated() == 1.0) {
-                     cell20.setCellValue("TRUE");
+                    cell20.setCellValue("TRUE");
                 } else {
                     cell20.setCellValue("FALSE");
                 }
                 index++;
 
-            }       
+            }
 
             workbook.write(fileOut);
             fileOut.flush();
@@ -235,20 +236,19 @@ public class FileExporter {
         }
 
     }
-    
-    
-    public void exportQuantComparisonTable(GroupsComparison[]  comparisonMap){
+
+    public void exportQuantComparisonTable(GroupsComparison[] comparisonMap) {
         Map<String, String> accessionMap = new HashMap<String, String>();
-          int compIndex = 0;
-          int t = 0;
-          String[] columnHeaders = new String[comparisonMap.length+1];
-          
-          columnHeaders[t++] = "Accession";
-          
+        int compIndex = 0;
+        int t = 0;
+        String[] columnHeaders = new String[comparisonMap.length + 1];
+
+        columnHeaders[t++] = "Accession";
+
         Map<String, ComparisonProtein[]> protSetMap = new HashMap<String, ComparisonProtein[]>();
- for (GroupsComparison comp : comparisonMap) {
-             columnHeaders[t++] = comp.getComparisonHeader();
-          Map<String, ComparisonProtein> protList = comp.getComparProtsMap();
+        for (GroupsComparison comp : comparisonMap) {
+            columnHeaders[t++] = comp.getComparisonHeader();
+            Map<String, ComparisonProtein> protList = comp.getComparProtsMap();
             for (String key2 : protList.keySet()) {
                 ComparisonProtein prot = protList.get(key2);
                 accessionMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), prot.getUniProtAccess());
@@ -261,20 +261,19 @@ public class FileExporter {
             }
             compIndex++;
         }
- 
-        String[][] values = new String[protSetMap.size()+1][columnHeaders.length];
+
+        String[][] values = new String[protSetMap.size() + 1][columnHeaders.length];
         int b = 0;
-        for(String str:columnHeaders){
-            values[0][b]=str;
+        for (String str : columnHeaders) {
+            values[0][b] = str;
             b++;
         }
-        
-        
+
         int index = 1;
         for (String protAccName : protSetMap.keySet()) {
             int i = 0;
             String protAcc = protAccName.replace("--", "").trim().split(",")[0];
-            Object[] tableRow = new Object[1 + comparisonMap.length];            
+            Object[] tableRow = new Object[1 + comparisonMap.length];
             tableRow[i++] = protAcc.toUpperCase();
             for (GroupsComparison cg : comparisonMap) {
                 ComparisonProtein cp = protSetMap.get(protAccName)[i - 1];
@@ -289,8 +288,9 @@ public class FileExporter {
             }
 
             for (int f = 0; f < tableRow.length; f++) {
-                if(tableRow[f]== null)
-                    tableRow[f]="0.0";
+                if (tableRow[f] == null) {
+                    tableRow[f] = "0.0";
+                }
                 values[index][f] = tableRow[f].toString();
 
             }
@@ -326,17 +326,13 @@ public class FileExporter {
             out1.close();
             outFile.flush();
             outFile.close();
-            
-           
+
         } catch (Exception e) {
 //            System.err.println(e.getMessage());
         } finally {
             System.gc();
         }
-        
 
-
-    
     }
 
 }

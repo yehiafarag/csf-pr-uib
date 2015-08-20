@@ -578,6 +578,9 @@ public class CoreLogic implements Serializable {
      * @return datasetId
      */
     public int setMainDataset(String datasetString) {
+        if(datasetNamesList.isEmpty())
+            getDatasetNamesList();
+        
         for (int tempDatasetIndex : datasetNamesList.keySet()) {
             if (datasetString.trim().equalsIgnoreCase(datasetNamesList.get(tempDatasetIndex).trim())) {
 

@@ -171,7 +171,6 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
         int persWidth = (int) (100.0 - (16.0 * 100.0 / (double) width));
         chartsLayoutContainer.setWidth(persWidth + "%");
         chartsLayoutContainer.setStyleName(Reindeer.LAYOUT_WHITE);
-//        chartsLayoutContainer.setMargin(new MarginInfo(false, false, false, true));
 
         topLayout.addComponent(searchingFieldLayout);
         topLayout.addComponent(chartsLayoutContainer);
@@ -205,7 +204,6 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
         searchFieldContainerLayout.setSpacing(true);
         searchField = new TextField();
         searchField.setDescription("Search Proteins By Name or Accession");
-//        searchField.setWidthUndefined();
         searchField.setImmediate(true);
         searchField.setWidth("100%");
         searchField.setHeight("24px");
@@ -459,9 +457,9 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
             } else {
                 if (selectionManager.getProtSelectionMap() != null) {
                     selectedAccessions = selectionManager.getProtSelectionMap().keySet();
-                }
-                else
+                } else {
                     selectedAccessions = new HashSet<String>();
+                }
                 startLayout.setVisible(false);
                 topLayout.setVisible(true);
                 groupsComparisonProteinsTable.setVisible(true);
