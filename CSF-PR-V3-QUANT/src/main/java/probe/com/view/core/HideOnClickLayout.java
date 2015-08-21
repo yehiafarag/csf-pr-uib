@@ -27,6 +27,12 @@ public class HideOnClickLayout extends VerticalLayout implements Serializable, L
     private final Layout fullBodyLayout;
     private final VerticalLayout miniBodyLayout;
 
+    /**
+     *
+     * @param title
+     * @param fullBodyLayout
+     * @param miniBodyLayout
+     */
     public HideOnClickLayout(String title, Layout fullBodyLayout, VerticalLayout miniBodyLayout) {
         this.setMargin(new MarginInfo(false, false, false, false));
         this.setWidth("100%");
@@ -71,6 +77,13 @@ public class HideOnClickLayout extends VerticalLayout implements Serializable, L
         }
     }
 
+    /**
+     *
+     * @param title
+     * @param fullBodyLayout
+     * @param miniBodyLayout
+     * @param align
+     */
     public HideOnClickLayout(String title, Layout fullBodyLayout, VerticalLayout miniBodyLayout, Alignment align) {
         this.setMargin(new MarginInfo(false, false, false, false));
         this.setWidth("100%");
@@ -122,6 +135,9 @@ public class HideOnClickLayout extends VerticalLayout implements Serializable, L
         }
     }
 
+    /**
+     *
+     */
     public final void hideLayout() {
         show.updateIcon(false);
         fullBodyLayout.setVisible(false);
@@ -130,10 +146,18 @@ public class HideOnClickLayout extends VerticalLayout implements Serializable, L
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isVisability() {
         return fullBodyLayout.isVisible();
     }
 
+    /**
+     *
+     * @param test
+     */
     public void setVisability(boolean test) {
         if (test) {
             this.showLayout();
@@ -142,6 +166,10 @@ public class HideOnClickLayout extends VerticalLayout implements Serializable, L
         }
     }
 
+    /**
+     *
+     * @param label
+     */
     public void updateTitleLabel(String label) {
 
         titleLabel.setValue(label);

@@ -28,7 +28,13 @@ public class ListSelectFilter extends VerticalLayout implements Button.ClickList
     private final ListSelect list;
     private final Button clearBtn;
 
-
+    /**
+     *
+     * @param control
+     * @param filterId
+     * @param defaultLabel
+     * @param datasetNamesList
+     */
     @SuppressWarnings("LeakingThisInConstructor")
     public ListSelectFilter(SearchingFiltersControl_t control,int filterId, String defaultLabel, String[] datasetNamesList) {
         this.setSizeUndefined();
@@ -118,6 +124,10 @@ public class ListSelectFilter extends VerticalLayout implements Button.ClickList
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public ListSelect getList() {
         return list;
     }

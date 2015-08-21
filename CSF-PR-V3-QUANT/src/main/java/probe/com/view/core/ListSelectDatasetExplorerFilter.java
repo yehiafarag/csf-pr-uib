@@ -30,10 +30,19 @@ public class ListSelectDatasetExplorerFilter extends VerticalLayout implements B
     private final ListSelect list;
     private final Button clearBtn;
 
+    /**
+     *
+     */
     public void reset() {
         clearBtn.click();
     }
 
+    /**
+     *
+     * @param filterId
+     * @param defaultLabel
+     * @param pgArr
+     */
     public ListSelectDatasetExplorerFilter(int filterId, String defaultLabel, String[] pgArr) {
         this.setSizeUndefined();
         this.filterId = filterId;
@@ -72,6 +81,11 @@ public class ListSelectDatasetExplorerFilter extends VerticalLayout implements B
 //        exploringFiltersManager.registerFilter(ListSelectDatasetExplorerFilter.this);
     }
 private Property.ValueChangeListener listener;
+
+    /**
+     *
+     * @param listener
+     */
     public void addValueChangeListener(Property.ValueChangeListener listener) {
         this.listener=listener;
         list.addValueChangeListener(listener);
@@ -121,10 +135,18 @@ private Property.ValueChangeListener listener;
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public ListSelect getList() {
         return list;
     }
 
+    /**
+     *
+     * @param arr
+     */
     public void updateList(Set<String> arr) {
         if (arr == null || arr.isEmpty()) {
             this.setEnabled(false);

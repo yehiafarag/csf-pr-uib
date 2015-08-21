@@ -45,7 +45,7 @@ import org.dussan.vaadin.dcharts.options.SeriesDefaults;
 import org.dussan.vaadin.dcharts.renderers.tick.AxisTickRenderer;
 import org.dussan.vaadin.dcharts.renderers.tick.CanvasAxisTickRenderer;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.ComparisonProtein;
-import probe.com.model.beans.GroupsComparison;
+import probe.com.model.beans.quant.QuantGroupsComparison;
 
 /**
  *
@@ -65,7 +65,7 @@ public class ComparisonChart extends GridLayout {
     private ChartDataClickHandler chartDataClickHandler;
     private final ChartDataMouseEnterHandler localChartDataClickHandler;
     private final VerticalLayout closeCompariosonBtn, spacer1,spacer2;
-    private final GroupsComparison comparison;
+    private final QuantGroupsComparison comparison;
     private final  Label title;
     private String[] defaultSerColours = new String[]{"#50B747", "#8ECCA3", "#CDE1FF", "#CC707F", "#cc0000"};
     private  String []serColor = new String[]{"#E5E5E5","#E5E5E5","#E5E5E5","#E5E5E5","#E5E5E5"};
@@ -83,11 +83,11 @@ public class ComparisonChart extends GridLayout {
         return closeCompariosonBtn;
     }
 
-    public GroupsComparison getComparison() {
+    public QuantGroupsComparison getComparison() {
         return comparison;
     }
 
-    public ComparisonChart(GroupsComparison comparison) {
+    public ComparisonChart(QuantGroupsComparison comparison) {
         this.setStyleName("lightborder");
         this.setWidth("99%");
         this.setHeight("100%");

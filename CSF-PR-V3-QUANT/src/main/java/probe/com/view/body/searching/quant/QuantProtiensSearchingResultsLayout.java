@@ -12,10 +12,10 @@ import com.vaadin.ui.VerticalLayout;
 import java.util.List;
 import java.util.Map;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
-import probe.com.handlers.MainHandler;
-import probe.com.model.beans.QuantDatasetListObject;
-import probe.com.model.beans.QuantDatasetObject;
-import probe.com.model.beans.QuantProtein;
+import probe.com.handlers.CSFPRHandler;
+import probe.com.model.beans.quant.QuantDatasetInitialInformationObject;
+import probe.com.model.beans.quant.QuantDatasetObject;
+import probe.com.model.beans.quant.QuantProtein;
 import probe.com.view.body.quantdatasetsoverview.DiseaseGroupsFiltersContainer;
 import probe.com.view.body.quantdatasetsoverview.QuantProteinsComparisonsContainer;
 import probe.com.view.core.HideOnClickLayout;
@@ -37,16 +37,21 @@ public class QuantProtiensSearchingResultsLayout extends VerticalLayout {
     private final QuantProteinsTabsheetContainerLayout proteinsLayout;
     private final QuantProteinsComparisonsContainer quantProteinsComparisonsContainer;
 
-    public QuantProtiensSearchingResultsLayout(MainHandler handler, List<QuantProtein> searchQuantificationProtList) {
+    /**
+     *
+     * @param handler
+     * @param searchQuantificationProtList
+     */
+    public QuantProtiensSearchingResultsLayout(CSFPRHandler handler, List<QuantProtein> searchQuantificationProtList) {
 
 //        filterUtility = new FilterUtility(handler);
         //get quant dataset arr
-        QuantDatasetListObject quantDatasetListObject = handler.getQuantDatasetListObject(searchQuantificationProtList);
+        QuantDatasetInitialInformationObject quantDatasetListObject = handler.getQuantDatasetInitialInformationObject(searchQuantificationProtList);
         Map<Integer, QuantDatasetObject> quantDatasetArr = quantDatasetListObject.getQuantDatasetsList();
 
 //        boolean[] activeHeaders = quantDatasetListObject.getActiveHeaders();
         //which fillters are exist
-        boolean[] activeFilters = handler.getActiveFilters(searchQuantificationProtList);
+        boolean[] activeFilters = handler.getActivePieChartQuantFilters(searchQuantificationProtList);
         //get active filters
         exploringFiltersManager = new DatasetExploringCentralSelectionManager(quantDatasetArr, activeFilters);//,filterUtility.getFullFilterList()
         this.setMargin(true);

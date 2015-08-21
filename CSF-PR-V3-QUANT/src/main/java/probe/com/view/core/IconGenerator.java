@@ -33,6 +33,11 @@ public class IconGenerator implements Serializable {
     private static final long serialVersionUID = 1L;
     private Resource res;
 
+    /**
+     *
+     * @param label
+     * @return
+     */
     public HorizontalLayout getHelpNote(Label label) {
         PopupView popup = null;
         res = new ThemeResource("../runo/icons/" + 16 + "/help.png");
@@ -64,6 +69,11 @@ public class IconGenerator implements Serializable {
 
     }
 
+    /**
+     *
+     * @param label
+     * @return
+     */
     public HorizontalLayout getInfoNote(final Label label) {
         PopupView popup = null;
         HorizontalLayout helpLayout = new HorizontalLayout();

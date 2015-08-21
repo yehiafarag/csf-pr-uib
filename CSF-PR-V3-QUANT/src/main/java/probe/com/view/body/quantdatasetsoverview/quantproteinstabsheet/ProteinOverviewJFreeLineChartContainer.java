@@ -42,7 +42,7 @@ import org.jfree.ui.TextAnchor;
 import org.jfree.util.ShapeUtilities;
 import org.vaadin.marcus.MouseEvents;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.ComparisonProtein;
-import probe.com.model.beans.GroupsComparison;
+import probe.com.model.beans.quant.QuantGroupsComparison;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 import probe.com.view.core.jfreeutil.SquaredDot;
 
@@ -60,6 +60,10 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
     private final ChartRenderingInfo orderedLineChartRenderingInfo = new ChartRenderingInfo();
     private String thumbChart = "";
 
+    /**
+     *
+     * @return
+     */
     public String getThumbChart() {
         return thumbChart;
     }
@@ -71,12 +75,25 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
     private final String teststyle;
     private final Page.Styles styles = Page.getCurrent().getStyles();
 
+    /**
+     *
+     * @return
+     */
     public OptionGroup getOrederingOptionGroup() {
         return orederingOptionGroup;
     }
     private final LayoutEvents.LayoutClickListener chartListener;
 
-    public ProteinOverviewJFreeLineChartContainer(DatasetExploringCentralSelectionManager selectionManager,  final ComparisonProtein[] comparisonProteins, final Set<GroupsComparison> selectedComparisonList, int widthValue, String protId,boolean searchingMode) {
+    /**
+     *
+     * @param selectionManager
+     * @param comparisonProteins
+     * @param selectedComparisonList
+     * @param widthValue
+     * @param protId
+     * @param searchingMode
+     */
+    public ProteinOverviewJFreeLineChartContainer(DatasetExploringCentralSelectionManager selectionManager,  final ComparisonProtein[] comparisonProteins, final Set<QuantGroupsComparison> selectedComparisonList, int widthValue, String protId,boolean searchingMode) {
 
         this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.setSpacing(true);
@@ -117,7 +134,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
                 Component c = event.getClickedComponent();
                 if (c instanceof SquaredDot) {
-                    GroupsComparison gc = (GroupsComparison) ((SquaredDot) c).getParam("GroupsComparison");
+                    QuantGroupsComparison gc = (QuantGroupsComparison) ((SquaredDot) c).getParam("GroupsComparison");
                     studiesScatterChartsLayout.highlightComparison(gc, true);
                 } else {
                     studiesScatterChartsLayout.highlightComparison(null, false);
@@ -149,7 +166,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                     if (orderedLineChartImg == null) {
                         //order the comparisons and proteins
                         TreeMap<String, ComparisonProtein> orderedCompProteins = new TreeMap<String, ComparisonProtein>();
-                        LinkedHashSet<GroupsComparison> orederedComparisonSet = new LinkedHashSet<GroupsComparison>();
+                        LinkedHashSet<QuantGroupsComparison> orederedComparisonSet = new LinkedHashSet<QuantGroupsComparison>();
                         for (ComparisonProtein cp : comparisonProteins) {
                             if (cp == null) {
                                 continue;
@@ -167,7 +184,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                             orederedComparisonSet.add(cp.getComparison());
                             i++;
                         }
-                        for (GroupsComparison gv : selectedComparisonList) {
+                        for (QuantGroupsComparison gv : selectedComparisonList) {
                             if (!orederedComparisonSet.contains(gv)) {
                                 orederedComparisonSet.add(gv);
                             }
@@ -195,7 +212,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
     private ComparisonProtein[] inUseComparisonProteins;
 
-    private String generateLineChart(ComparisonProtein[] comparisonProteins, Set<GroupsComparison> selectedComparisonList, double w, double h, ChartRenderingInfo chartRenderingInfo) {
+    private String generateLineChart(ComparisonProtein[] comparisonProteins, Set<QuantGroupsComparison> selectedComparisonList, double w, double h, ChartRenderingInfo chartRenderingInfo) {
         int upcounter = 0;
         int notcounter = 0;
         int downcounter = 0;
@@ -304,7 +321,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
         String[] xAxisLabels = new String[selectedComparisonList.size()];
         int x = 0;
-        for (GroupsComparison comp : selectedComparisonList) {
+        for (QuantGroupsComparison comp : selectedComparisonList) {
             xAxisLabels[x] = comp.getComparisonHeader();
             x++;
 
@@ -458,12 +475,12 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                 SquaredDot square = new SquaredDot();
                 square.setWidth(20 + "px");
                 square.setHeight(20 + "px");
-                GroupsComparison gc = inUseComparisonProteins[((XYItemEntity) entity).getItem()].getComparison();
+                QuantGroupsComparison gc = inUseComparisonProteins[((XYItemEntity) entity).getItem()].getComparison();
                 square.setDescription(gc.getComparisonHeader());
                 square.setParam("GroupsComparison", gc);
                 lineChartContainer.addComponent(square, "left: " + (xSer - 7) + "px; top: " + (ySer - 10) + "px;");
                 MouseEvents.MouseOverListener mouseOverListener = new MouseEvents.MouseOverListener() {
-                    private final GroupsComparison gc = inUseComparisonProteins[((XYItemEntity) entity).getItem()].getComparison();
+                    private final QuantGroupsComparison gc = inUseComparisonProteins[((XYItemEntity) entity).getItem()].getComparison();
 
                     @Override
                     public void mouseOver() {
@@ -517,6 +534,9 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
     }
 
+    /**
+     *
+     */
     public void redrawCharts() {
         if (orederingOptionGroup.getValue().toString().equalsIgnoreCase("Default order")) {
             styles.add("." + teststyle + " {  background-image: url(" + defaultLineChartImgUrl + " );background-position:center; background-repeat: no-repeat; }");

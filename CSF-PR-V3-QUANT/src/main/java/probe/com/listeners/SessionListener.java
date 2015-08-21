@@ -16,21 +16,29 @@ import javax.servlet.http.HttpSessionListener;
  *
  * @author Yehia Farag
  */
-public class SessionListener implements HttpSessionListener, Serializable{
+public class SessionListener implements HttpSessionListener, Serializable {
 
     private Timer timer;
-    private HttpSession session ;
-    
+    private HttpSession session;
+
+    /**
+     *
+     * @param hse
+     */
     @Override
     public void sessionCreated(HttpSessionEvent hse) {
         session = hse.getSession();
-        if ( session != null ) {
+        if (session != null) {
             timer = new Timer();
-            timer.schedule(new RemindTask(),(5*60*60*1000));           
+            timer.schedule(new RemindTask(), (5*60*1000*60)); //* 60 * 60 * 1000
         }
-   
+
     }
 
+    /**
+     *
+     * @param hse
+     */
     @Override
     public void sessionDestroyed(HttpSessionEvent hse) {
         System.gc();
@@ -42,13 +50,9 @@ public class SessionListener implements HttpSessionListener, Serializable{
         public void run() {
             System.out.println("Time's up!");
 
-//            VaadinSession.getCurrent().close();
-            session.invalidate();
-            timer.cancel(); //Not necessary because we call System.exit
-            //Stops the AWT thread (and everything else)
+            VaadinSession.getCurrent().getSession().invalidate();
+            timer.cancel();
         }
     };
 
-
-    
 }

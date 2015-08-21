@@ -36,11 +36,18 @@ public class SearchingFiltersControl implements Serializable {
 
     private final VerticalLayout minimumfilterLayout = new VerticalLayout();
 
+    /**
+     *
+     * @return
+     */
     public Query getQuery() {
         return query;
     }
 //    private final VerticalLayout filtersHeaders,filtersValues;
 
+    /**
+     *
+     */
     public SearchingFiltersControl() {
         mainFilterLayout = new HorizontalLayout();
         mainFilterLayout.setHeight("100%");
@@ -70,6 +77,10 @@ public class SearchingFiltersControl implements Serializable {
 
     }
 
+    /**
+     *
+     * @param filterBtn
+     */
     public void addFilter(ClosableFilterLabel filterBtn) {
 
         if (!filtersBtnsMap.containsKey(filterBtn.getCaption())) {
@@ -100,6 +111,10 @@ public class SearchingFiltersControl implements Serializable {
 
     }
 
+    /**
+     *
+     * @param filterBtnCaption
+     */
     public void removeFilter(String filterBtnCaption) {
         if (filtersBtnsMap.containsKey(filterBtnCaption)) {
             ClosableFilterLabel btn = filtersBtnsMap.get(filterBtnCaption);
@@ -115,6 +130,10 @@ public class SearchingFiltersControl implements Serializable {
 
     }
 
+    /**
+     *
+     * @param event
+     */
     public void clearAllFilters(LayoutEvents.LayoutClickEvent event) {
         Map<String, ClosableFilterLabel> ufiltersBtnsMap = new HashMap<String, ClosableFilterLabel>();
         ufiltersBtnsMap.putAll(filtersBtnsMap);
@@ -124,6 +143,10 @@ public class SearchingFiltersControl implements Serializable {
         ufiltersBtnsMap.clear();
     }
 
+    /**
+     *
+     * @return
+     */
     public Set getLabels() {
         return filtersBtnsMap.keySet();
     }
@@ -166,21 +189,38 @@ public class SearchingFiltersControl implements Serializable {
 //        }
 //
 //    }
-    public HorizontalLayout getFullFilterLayout() {
+
+    /**
+     *
+     * @return
+     */
+        public HorizontalLayout getFullFilterLayout() {
 //       return arrangeFullFiltersLayout();
         return mainFilterLayout;
     }
 
+    /**
+     *
+     * @return
+     */
     public VerticalLayout getMinimumFilterLayout() {
         updateMinFilterL1bel();
         return minimumfilterLayout;
 
     }
 
+    /**
+     *
+     * @param searchKeyWords
+     */
     public void setSearchKeyWords(String searchKeyWords) {
         this.searchKeyWords = searchKeyWords;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isValidQuery() {
         if (searchKeyWords == null) {
             return false;
@@ -203,6 +243,10 @@ public class SearchingFiltersControl implements Serializable {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public String getSearchKeyWords() {
         return searchKeyWords;
     }
@@ -223,6 +267,9 @@ public class SearchingFiltersControl implements Serializable {
 
     }
 
+    /**
+     *
+     */
     public void resetQuntificationFilters() {
         Map<String, ClosableFilterLabel> ufiltersBtnsMap = new HashMap<String, ClosableFilterLabel>();
         ufiltersBtnsMap.putAll(filtersBtnsMap);
@@ -235,6 +282,9 @@ public class SearchingFiltersControl implements Serializable {
 
     }
 
+    /**
+     *
+     */
     public void resetIdentificationFilters() {
         Map<String, ClosableFilterLabel> ufiltersBtnsMap = new HashMap<String, ClosableFilterLabel>();
         ufiltersBtnsMap.putAll(filtersBtnsMap);

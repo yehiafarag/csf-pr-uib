@@ -5,8 +5,6 @@
  */
 package probe.com.bin;
 
-import bin.probe.com.view.bin.quantdatasetsoverview.popupinteractivefilter.LocalSelectionManager;
-import bin.probe.com.view.bin.quantdatasetsoverview.popupinteractivefilter.InteractiveFilter;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
@@ -14,7 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import probe.com.model.beans.QuantDatasetObject;
+import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 
 /**

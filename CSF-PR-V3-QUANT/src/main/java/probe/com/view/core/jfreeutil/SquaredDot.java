@@ -11,22 +11,35 @@ import java.util.Map;
 
 /**
  *
- * @author yfa041
+ * @author Yehia Farag
  */
 public class SquaredDot extends Label {
 
     private final Map<String, Object> param = new HashMap<String, Object>();
 
+    /**
+     *
+     */
     public SquaredDot() {
         this.setValue(" ");
         this.setStyleName("transparentcomp");
 
     }
 
+    /**
+     *
+     * @param key
+     * @param value
+     */
     public void setParam(String key, Object value) {
         param.put(key, value);
     }
 
+    /**
+     *
+     * @param key
+     * @return
+     */
     public Object getParam(String key) {
 
         return param.get(key);

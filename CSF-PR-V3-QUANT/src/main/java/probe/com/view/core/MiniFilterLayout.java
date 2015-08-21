@@ -19,7 +19,12 @@ public class MiniFilterLayout extends VerticalLayout implements CSFFilter{
     private final DatasetExploringCentralSelectionManager Filter_Manager;
     private final String filter_Id = "miniFilter";
     private final GridLayout filtersLayout;
-   public MiniFilterLayout(DatasetExploringCentralSelectionManager Filter_Manager){
+
+    /**
+     *
+     * @param Filter_Manager
+     */
+    public MiniFilterLayout(DatasetExploringCentralSelectionManager Filter_Manager){
    this.Filter_Manager = Filter_Manager;
    Filter_Manager.registerFilter(MiniFilterLayout.this);
    this.setWidth("100%");
@@ -36,11 +41,19 @@ public class MiniFilterLayout extends VerticalLayout implements CSFFilter{
    
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String getFilterId() {
         return filter_Id;
     }
 
+    /**
+     *
+     * @param type
+     */
     @Override
     public void selectionChanged(String type) {
 //        if(type.equalsIgnoreCase("Disease_Groups_Level")){
@@ -65,6 +78,10 @@ public class MiniFilterLayout extends VerticalLayout implements CSFFilter{
 //        }
     }
 
+    /**
+     *
+     * @param value
+     */
     @Override
     public void removeFilterValue(String value) {
     }

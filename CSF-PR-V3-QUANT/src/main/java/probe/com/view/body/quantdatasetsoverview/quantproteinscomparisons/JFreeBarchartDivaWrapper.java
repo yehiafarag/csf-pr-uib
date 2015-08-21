@@ -38,12 +38,12 @@ import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
-import probe.com.model.beans.GroupsComparison;
+import probe.com.model.beans.quant.QuantGroupsComparison;
 import probe.com.view.core.jfreeutil.SquaredDot;
 
 /**
  *
- * @author yfa041
+ * @author Yehia Farag
  */
 public class JFreeBarchartDivaWrapper extends AbsoluteLayout  {
     private final String defaultImgURL;
@@ -64,7 +64,13 @@ public class JFreeBarchartDivaWrapper extends AbsoluteLayout  {
     private final Set<String> upAccessions, midUpAccessions, notRegAccessions, midDownAccessions, downAccessions, notDefinedAccession;
     private final boolean searchingMode;
 
-    public JFreeBarchartDivaWrapper(int imgWidth, GroupsComparison comparison,boolean searchingMode) {
+    /**
+     *
+     * @param imgWidth
+     * @param comparison
+     * @param searchingMode
+     */
+    public JFreeBarchartDivaWrapper(int imgWidth, QuantGroupsComparison comparison,boolean searchingMode) {
 
         this.searchingMode=searchingMode;
         this.setWidth(imgWidth + "px");
@@ -84,7 +90,7 @@ public class JFreeBarchartDivaWrapper extends AbsoluteLayout  {
 
     }
 
-    private String initBarChart(int width, int height, GroupsComparison comparison) {
+    private String initBarChart(int width, int height, QuantGroupsComparison comparison) {
         Map<String, ComparisonProtein> protList = comparison.getComparProtsMap();
         double[] values = new double[5];
 //        }
@@ -266,6 +272,9 @@ public class JFreeBarchartDivaWrapper extends AbsoluteLayout  {
         return "";
     }
 
+    /**
+     *
+     */
     public final void redrawChart() {
         styles.add("." + teststyle + " {  background-image: url(" + inUseImgURL + " );background-position:center; background-repeat: no-repeat; }");
         this.setStyleName(teststyle);
@@ -288,6 +297,10 @@ public class JFreeBarchartDivaWrapper extends AbsoluteLayout  {
         return result;
     }
 
+    /**
+     *
+     * @param accessions
+     */
     public void updateExternalTableSelection(Set<String> accessions) {
         int downCounter = 0, midDownCounter = 0, notRegCounter = 0, midUpCounter = 0, upCounter = 0;
         for (String accession : accessions) {
@@ -341,6 +354,11 @@ public class JFreeBarchartDivaWrapper extends AbsoluteLayout  {
 
     }
 
+    /**
+     *
+     * @param accessions
+     * @param reset
+     */
     public void updateChartsWithSelectedChartColumn(Set<String> accessions, boolean reset) {
         if (reset) {
             colorsInUse = defaultColors;
@@ -407,6 +425,9 @@ public class JFreeBarchartDivaWrapper extends AbsoluteLayout  {
 
     }
 
+    /**
+     *
+     */
     public void reset() {
         colorsInUse = defaultColors;
         for (int x = 0; x < itemTotalLabels.length; x++) {
@@ -418,6 +439,10 @@ public class JFreeBarchartDivaWrapper extends AbsoluteLayout  {
 
     }
 
+    /**
+     *
+     * @param barIndex
+     */
     public void heighLightBar(int barIndex) {
         colorsInUse = new Color[grayColors.length];
         System.arraycopy(grayColors, 0, colorsInUse, 0, colorsInUse.length);
@@ -427,10 +452,18 @@ public class JFreeBarchartDivaWrapper extends AbsoluteLayout  {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public Map<Integer, Set<String>> getCompProtMap() {
         return compProtMap;
     }
 
+    /**
+     *
+     * @param width
+     */
     public void resize(int width) {
         imgWidth = width;
         this.setWidth(imgWidth + "px");

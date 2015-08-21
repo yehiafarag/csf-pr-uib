@@ -19,7 +19,11 @@ public class QueryConstractorHandler {
     private final List<String> typeList = new ArrayList<String>();
     private final List<String> valueList = new ArrayList<String>();
     
-    
+    /**
+     *
+     * @param type
+     * @param value
+     */
     public void addQueryParam(String type, String value){
     typeList.add(type);
     valueList.add(value);
@@ -27,6 +31,11 @@ public class QueryConstractorHandler {
     
     }
     
+    /**
+     *
+     * @param selectStat
+     * @return
+     */
     public PreparedStatement  initStatment(PreparedStatement selectStat ){
        try{
         

@@ -9,7 +9,7 @@ import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Runo;
 import java.io.Serializable;
-import probe.com.handlers.MainHandler;
+import probe.com.handlers.CSFPRHandler;
 import probe.com.view.body.ProteinsSearchingLayout;
 
 /**
@@ -24,7 +24,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
     private VerticalLayout searchTabLayout, adminLayout, identificationDatasetsLayout, datasetsOverviewLayout;
     private WelcomeLayout welcomeLayout;
     private QuantDatasetsOverviewLayout datasetOverviewTabLayout;
-    private final MainHandler handler;
+    private final CSFPRHandler handler;
 
     /**
      * initialize body layout
@@ -33,7 +33,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
      *
      *
      */
-    public Body(MainHandler handler) {
+    public Body(CSFPRHandler handler) {
         this.setWidth("100%");
         this.handler = handler;
 

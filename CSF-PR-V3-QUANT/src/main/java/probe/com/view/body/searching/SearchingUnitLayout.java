@@ -29,6 +29,10 @@ public class SearchingUnitLayout extends HorizontalLayout implements Serializabl
     private Label errorLabelI;
     private CustomErrorLabel errorLabelII;
 
+    /**
+     *
+     * @param searchingBtnClickListener
+     */
     public SearchingUnitLayout(Button.ClickListener searchingBtnClickListener) {
         this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.setSpacing(true);
@@ -61,6 +65,10 @@ public class SearchingUnitLayout extends HorizontalLayout implements Serializabl
 
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isValidQuery() {
         errorLabelI.setVisible(false);
         errorLabelII.setVisible(false);
@@ -74,18 +82,34 @@ public class SearchingUnitLayout extends HorizontalLayout implements Serializabl
         return filtersController.isValidQuery();
     }
 
+    /**
+     *
+     * @return
+     */
     public String getSearchingKeywords() {
         return filtersController.getSearchKeyWords();
     }
 
+    /**
+     *
+     * @return
+     */
     public String getSearchingByValue() {
         return searchingAreaFilter.getSearchingByValue();
     }
 
+    /**
+     *
+     * @param value
+     */
     public void setSearchingFieldValue(String value) {
         searchingAreaFilter.setSearchingFieldValue(value);
     }
 
+    /**
+     *
+     * @param value
+     */
     public void updateErrorLabelIIValue(String value) {
         if (!value.equalsIgnoreCase("")) {
             errorLabelII.updateErrot(value);

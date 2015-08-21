@@ -12,7 +12,7 @@ import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.io.Serializable;
-import probe.com.handlers.MainHandler;
+import probe.com.handlers.CSFPRHandler;
 import probe.com.model.beans.User;
 import probe.com.view.core.QuantDataUploader;
 
@@ -24,7 +24,7 @@ public class AdminControlPanel extends VerticalLayout implements Serializable {
 
     private final VerticalLayout bodyLayout = new VerticalLayout();
     private final User user;
-    private final MainHandler handler;
+    private final CSFPRHandler handler;
     private final VerticalLayout layout1 = new VerticalLayout();
     private final TabSheet t;
     private TabSheet.Tab t1;
@@ -35,7 +35,7 @@ public class AdminControlPanel extends VerticalLayout implements Serializable {
      * @param user authenticated user
      * @param handler main application handler
      */
-    public AdminControlPanel(User user, MainHandler handler) {
+    public AdminControlPanel(User user, CSFPRHandler handler) {
         this.handler = handler;
         this.user = user;
 

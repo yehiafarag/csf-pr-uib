@@ -12,7 +12,7 @@ import com.vaadin.ui.VerticalLayout;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import probe.com.model.beans.PeptideBean;
+import probe.com.model.beans.identification.IdentificationPeptideBean;
 import probe.com.view.core.ShowLabel;
 import probe.com.view.core.TableResizeSet;
 
@@ -20,24 +20,37 @@ import probe.com.view.core.TableResizeSet;
  *
  * @author Yehia Farag
  */
-public class PeptidesTableLayout extends VerticalLayout implements Serializable {
+public class IdentificationPeptidesTableLayout extends VerticalLayout implements Serializable {
 
     private String peptideTableHeight = "160px";
     private TableResizeSet trs;
-    private PeptideTable peptideTable;
+    private IdentificationPeptideTable peptideTable;
     private VerticalLayout mainLayout;
     private ShowLabel show;
     private boolean stat;
     private VerticalLayout pepTableLayout = new VerticalLayout();
     private final VerticalLayout exportPepLayout = new VerticalLayout();
     private VerticalLayout expBtnPepPepTable;
-    private PeptideTable validPeptideTable, currentTable;
+    private IdentificationPeptideTable validPeptideTable, currentTable;
 
-    public PeptideTable getPepTable() {
+    /**
+     *
+     * @return
+     */
+    public IdentificationPeptideTable getPepTable() {
         return currentTable;
     }
 
-    public PeptidesTableLayout(final int validPep, final int totalPep, final String desc, final Map<Integer, PeptideBean> pepProtList, final String accession, final String expName) {
+    /**
+     *
+     * @param validPep
+     * @param totalPep
+     * @param desc
+     * @param pepProtList
+     * @param accession
+     * @param expName
+     */
+    public IdentificationPeptidesTableLayout(final int validPep, final int totalPep, final String desc, final Map<Integer, IdentificationPeptideBean> pepProtList, final String accession, final String expName) {
         MarginInfo m = new MarginInfo(false, false, true, false);
         this.setMargin(m);
         this.setSpacing(false);
@@ -65,9 +78,9 @@ public class PeptidesTableLayout extends VerticalLayout implements Serializable 
         mainLayout.addComponent(pepTableLayout);
         mainLayout.setComponentAlignment(pepTableLayout, Alignment.MIDDLE_CENTER);
 
-        Map<Integer, PeptideBean> vPepProtList = getValidatedList(pepProtList);
+        Map<Integer, IdentificationPeptideBean> vPepProtList = getValidatedList(pepProtList);
 
-        validPeptideTable = new PeptideTable(vPepProtList, null, false, desc);
+        validPeptideTable = new IdentificationPeptideTable(vPepProtList, null, false, desc);
         pepTableLayout.addComponent(validPeptideTable);
         if (trs != null) {
             peptideTableHeight = trs.getCurrentSize();
@@ -156,7 +169,7 @@ public class PeptidesTableLayout extends VerticalLayout implements Serializable 
                     headerLayout.setComponentAlignment(pepLabel, Alignment.TOP_RIGHT);
 
                     pepTableLayout.removeAllComponents();
-                    peptideTable = new PeptideTable(pepProtList, null, false, desc);
+                    peptideTable = new IdentificationPeptideTable(pepProtList, null, false, desc);
                     pepTableLayout.addComponent(peptideTable);
                     trs1.setTable(peptideTable);
                     peptideTable.setHeight(validPeptideTable.getHeight() + "");
@@ -169,10 +182,10 @@ public class PeptidesTableLayout extends VerticalLayout implements Serializable 
 
     }
 
-    private Map<Integer, PeptideBean> getValidatedList(Map<Integer, PeptideBean> pepProtList) {
-        Map<Integer, PeptideBean> vPepList = new HashMap<Integer, PeptideBean>();
+    private Map<Integer, IdentificationPeptideBean> getValidatedList(Map<Integer, IdentificationPeptideBean> pepProtList) {
+        Map<Integer, IdentificationPeptideBean> vPepList = new HashMap<Integer, IdentificationPeptideBean>();
         for (int key : pepProtList.keySet()) {
-            PeptideBean pb = pepProtList.get(key);
+            IdentificationPeptideBean pb = pepProtList.get(key);
             if (pb.getValidated() == 1) {
                 vPepList.put(key, pb);
             }
@@ -182,22 +195,42 @@ public class PeptidesTableLayout extends VerticalLayout implements Serializable 
 
     }
 
+    /**
+     *
+     * @return
+     */
     public String getPeptideTableHeight() {
         return peptideTableHeight;
     }
 
+    /**
+     *
+     * @param PepSize
+     */
     public void setPeptideTableHeight(String PepSize) {
         this.peptideTableHeight = PepSize;
     }
 
+    /**
+     *
+     * @return
+     */
     public TableResizeSet getTrs() {
         return trs;
     }
 
+    /**
+     *
+     * @param trs
+     */
     public void setTrs(TableResizeSet trs) {
         this.trs = trs;
     }
 
+    /**
+     *
+     * @param expBtnPepPepTable
+     */
     public void setExpBtnPepTable(VerticalLayout expBtnPepPepTable) {
         this.expBtnPepPepTable = expBtnPepPepTable;
         updateExportLayouts();

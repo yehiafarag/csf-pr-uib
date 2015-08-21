@@ -27,14 +27,29 @@ public class OptionGroupFilter extends HorizontalLayout implements Property.Valu
     private final OptionGroup optionGroup;
     private final FilterConfirmLabel filterConfirmLabel;
 
+    /**
+     *
+     * @return
+     */
     public String getFieldValue() {
         return fieldValue;
     }
 
+    /**
+     *
+     * @param value
+     */
     public void setFieldValue(String value) {
         this.fieldValue = value;
     }
 
+    /**
+     *
+     * @param control
+     * @param filterTitle
+     * @param filterIds
+     * @param closable
+     */
     public OptionGroupFilter(SearchingFiltersControl control,String filterTitle,int filterIds, boolean closable) {
         this.searchingFiltersControl = control;
         this.filterTitle = filterTitle;
@@ -104,11 +119,18 @@ public class OptionGroupFilter extends HorizontalLayout implements Property.Valu
         }
     }
 
-
+    /**
+     *
+     * @return
+     */
     public ClosableFilterLabel getFilterBtn() {
         return filterBtn;
     }
 
+    /**
+     *
+     * @return
+     */
     public OptionGroup getOptionGroup() {
         return optionGroup;
     }

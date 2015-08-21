@@ -34,7 +34,7 @@ import org.jfree.data.general.PieDataset;
 
 /**
  *
- * @author yfa041
+ * @author Yehia Farag
  */
 public class JfreeDivaPieChartFilter extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
@@ -57,6 +57,14 @@ public class JfreeDivaPieChartFilter extends VerticalLayout implements LayoutEve
     private Map<String, List<Integer>> inuseDsIndexesMap;
     private final HashSet<Integer> selectedDsIds = new HashSet<Integer>();
 
+    /**
+     *
+     * @param filterId
+     * @param filterIndex
+     * @param Local_Filter_Manager
+     * @param dsIndexesMap
+     * @param filterWidth
+     */
     public JfreeDivaPieChartFilter(String filterId, int filterIndex, PieChartsSelectionManager Local_Filter_Manager, Map<String, List<Integer>> dsIndexesMap, int filterWidth) {
         this.filter_Id = filterId;
         this.Local_Filter_Manager = Local_Filter_Manager;
@@ -155,6 +163,10 @@ public class JfreeDivaPieChartFilter extends VerticalLayout implements LayoutEve
 
     }
 
+    /**
+     *
+     * @return
+     */
     public String getFilter_Id() {
         return filter_Id;
     }
@@ -232,6 +244,9 @@ public class JfreeDivaPieChartFilter extends VerticalLayout implements LayoutEve
         return "";
     }
 
+    /**
+     *
+     */
     public final void redrawChart() {
         styles.add("." + teststyle + " {  background-image: url(" + inUseImgURL + " );background-position:center; background-repeat: no-repeat; cursor: pointer; }");
         this.setStyleName(teststyle);
@@ -272,6 +287,12 @@ public class JfreeDivaPieChartFilter extends VerticalLayout implements LayoutEve
 
     }
 
+    /**
+     *
+     * @param width
+     * @param height
+     * @return
+     */
     public String updatePieChart(int width, int height) {        
         DefaultPieDataset dataset = new DefaultPieDataset();
         for (int x = 0; x < labels.length; x++) {
@@ -284,6 +305,10 @@ public class JfreeDivaPieChartFilter extends VerticalLayout implements LayoutEve
 
     }
 
+    /**
+     *
+     * @param dsIndexes
+     */
     public void selectionChanged(Set<Integer> dsIndexes) {
         updateLabelsAndValues(dsIndexes, false);
         inUseImgURL = updatePieChart(width, height);
@@ -291,10 +316,19 @@ public class JfreeDivaPieChartFilter extends VerticalLayout implements LayoutEve
 
     }
 
+    /**
+     *
+     * @return
+     */
     public HashSet<Integer> getSelectedDsIds() {
         return selectedDsIds;
     }
 
+    /**
+     *
+     * @param dsIndexes
+     * @param reset
+     */
     public void resetFilterWithUpdatedFilters(Set<Integer> dsIndexes, boolean reset) {
         updateLabelsAndValues(dsIndexes, reset);
         inUseImgURL = initPieChart(width, height);
@@ -302,6 +336,9 @@ public class JfreeDivaPieChartFilter extends VerticalLayout implements LayoutEve
 
     }
 
+    /**
+     *
+     */
     public void resetFilterToClearState() {
         inuseDsIndexesMap = dsIndexesMap;
         updateLabelsAndValues(null, false);
@@ -310,6 +347,9 @@ public class JfreeDivaPieChartFilter extends VerticalLayout implements LayoutEve
 
     }
 
+    /**
+     *
+     */
     public void unselectFilter() {
         selectedDsIds.clear();
         for (String sliceKey : inuseDsIndexesMap.keySet()) {

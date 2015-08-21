@@ -25,10 +25,22 @@ public class IntegerTextFieldFilter  extends HorizontalLayout implements Seriali
     private final Button okBtn;
     private final FilterConfirmLabel filterConfirmLabel ;
     
+    /**
+     *
+     * @param title
+     */
     public void setAddBtnCaption(String title){
     okBtn.setCaption(title);
     
     }
+
+    /**
+     *
+     * @param controller
+     * @param filterId
+     * @param filterTitle
+     * @param label
+     */
     public IntegerTextFieldFilter(SearchingFiltersControl_t controller ,int filterId,final String filterTitle,String label){
     this.control = controller;
         this.filterId=filterId;

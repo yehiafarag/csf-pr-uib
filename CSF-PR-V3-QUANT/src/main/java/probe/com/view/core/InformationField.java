@@ -15,6 +15,10 @@ public class InformationField extends VerticalLayout {
     
     private final Link valueLabel;
     
+    /**
+     *
+     * @param title
+     */
     public InformationField(String title) {
         
         this.setHeight("60px");
@@ -37,6 +41,11 @@ public class InformationField extends VerticalLayout {
     
     }
 
+    /**
+     *
+     * @param value
+     * @param urlAddress
+     */
     public void setValue(String value,String urlAddress) {
         if (value == null || value.trim().equalsIgnoreCase("")  || value.equalsIgnoreCase("-1")) {
 //            this.setVisible(false);

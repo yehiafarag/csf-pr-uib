@@ -7,7 +7,7 @@ package probe.com.view.core;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import probe.com.model.beans.IdentificationDataset;
+import probe.com.model.beans.identification.IdentificationDatasetBean;
 
 /**
  *
@@ -15,11 +15,14 @@ import probe.com.model.beans.IdentificationDataset;
  */
 public class GeneralUtil {
 
-   
-    
-
-    public int getExpId(String expName, Map<Integer, IdentificationDataset> expList) {
-        for (IdentificationDataset exp : expList.values()) {
+    /**
+     *
+     * @param expName
+     * @param expList
+     * @return
+     */
+    public int getExpId(String expName, Map<Integer, IdentificationDatasetBean> expList) {
+        for (IdentificationDatasetBean exp : expList.values()) {
             if (exp.getName().equalsIgnoreCase(expName)) {
                 return exp.getDatasetId();
             }
@@ -27,9 +30,15 @@ public class GeneralUtil {
         return 0;
     }
 
-    public List<String> getStrExpList(Map<Integer, IdentificationDataset> expList, String userEmail) {
+    /**
+     *
+     * @param expList
+     * @param userEmail
+     * @return
+     */
+    public List<String> getStrExpList(Map<Integer, IdentificationDatasetBean> expList, String userEmail) {
         List<String> strExpList = new ArrayList<String>();
-        for (IdentificationDataset exp : expList.values()) {
+        for (IdentificationDatasetBean exp : expList.values()) {
             if (userEmail.equalsIgnoreCase("csf-pr@googlegroups.com") || exp.getEmail().equalsIgnoreCase(userEmail)) {
                 String str = exp.getDatasetId() + "	" + exp.getName() + "	( " + exp.getUploadedByName() + " )";
                 strExpList.add(str);

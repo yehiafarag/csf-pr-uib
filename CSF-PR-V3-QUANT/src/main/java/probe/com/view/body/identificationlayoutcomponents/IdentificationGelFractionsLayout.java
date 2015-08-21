@@ -17,9 +17,9 @@ import com.vaadin.ui.themes.Reindeer;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-import probe.com.handlers.MainHandler;
-import probe.com.model.beans.IdentificationProteinBean;
-import probe.com.model.beans.StandardProteinBean;
+import probe.com.handlers.CSFPRHandler;
+import probe.com.model.beans.identification.IdentificationProteinBean;
+import probe.com.model.beans.identification.StandardIdentificationFractionPlotProteinBean;
 import probe.com.view.core.exporter.ExporterBtnsGenerator;
 import probe.com.view.core.ShowLabel;
 
@@ -27,14 +27,23 @@ import probe.com.view.core.ShowLabel;
  *
  * @author Yehia Farag
  */
-public class GelFractionsLayout extends VerticalLayout implements Serializable {
+public class IdentificationGelFractionsLayout extends VerticalLayout implements Serializable {
 
     private VerticalLayout mainLayout;
     private ShowLabel show;
     private boolean stat;
     private final VerticalLayout exportFracLayout = new VerticalLayout();
 
-    public GelFractionsLayout(final MainHandler handler, final String accession, final double mw, Map<Integer, IdentificationProteinBean> proteinFractionAvgList, List<StandardProteinBean> standardProtPlotList, final String datasetName) {
+    /**
+     *
+     * @param handler
+     * @param accession
+     * @param mw
+     * @param proteinFractionAvgList
+     * @param standardProtPlotList
+     * @param datasetName
+     */
+    public IdentificationGelFractionsLayout(final CSFPRHandler handler, final String accession, final double mw, Map<Integer, IdentificationProteinBean> proteinFractionAvgList, List<StandardIdentificationFractionPlotProteinBean> standardProtPlotList, final String datasetName) {
         this.setSpacing(false);
         this.setWidth("100%");
         this.setMargin(new MarginInfo(false, false, false, false));
@@ -65,7 +74,7 @@ public class GelFractionsLayout extends VerticalLayout implements Serializable {
         mainLayout = new VerticalLayout();
         this.addComponent(mainLayout);
 
-        FractionPlotLayout plotsLayout = new FractionPlotLayout(proteinFractionAvgList, mw, standardProtPlotList);
+        IdentificationFractionPlotLayout plotsLayout = new IdentificationFractionPlotLayout(proteinFractionAvgList, mw, standardProtPlotList);
         mainLayout.addComponent(plotsLayout);
         mainLayout.setComponentAlignment(plotsLayout, Alignment.MIDDLE_CENTER);
 

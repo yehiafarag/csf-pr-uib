@@ -25,7 +25,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import probe.com.model.beans.QuantDatasetObject;
+import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.selectionmanager.CSFFilter;
 import probe.com.selectionmanager.CSFFilterSelection;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
@@ -34,7 +34,7 @@ import probe.com.view.core.DiseaseGroup;
 
 /**
  *
- * @author yfa041
+ * @author Yehia Farag
  */
 public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter, Button.ClickListener {
 
@@ -51,14 +51,26 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
     private boolean selfselected = false;
     private Property.ValueChangeListener disGrIListener, disGrIIListener;
 
+    /**
+     *
+     * @return
+     */
     public Set<String> getDiseaseGroupsSet() {
         return diseaseGroupsSet;
     }
 
+    /**
+     *
+     * @return
+     */
     public Button getDiseaseGroupsFilterBtn() {
         return diseaseGroupsFilterBtn;
     }
 
+    /**
+     *
+     * @param type
+     */
     @Override
     public void selectionChanged(String type) {
         if (selfselected) {
@@ -117,16 +129,28 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
         }
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String getFilterId() {
         return DiseaseGroupsListFilter.class.getName();
     }
 
+    /**
+     *
+     * @param value
+     */
     @Override
     public void removeFilterValue(String value) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     *
+     * @param centralSelectionManager
+     */
     public DiseaseGroupsListFilter(DatasetExploringCentralSelectionManager centralSelectionManager) {
         this.centralSelectionManager = centralSelectionManager;
         this.setWidth("450px");
@@ -393,10 +417,18 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
 
     }
 
+    /**
+     *
+     * @return
+     */
     public Set<String> getSelectedRows() {
         return selectedRows;
     }
 
+    /**
+     *
+     * @return
+     */
     public Set<String> getSelectedColumns() {
         return selectedColumns;
     }
@@ -474,10 +506,19 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
 //        }
 //
 //    }
-    public DiseaseGroup[] getPatientsGroupArr() {
+
+    /**
+     *
+     * @return
+     */
+        public DiseaseGroup[] getPatientsGroupArr() {
         return patientsGroupArr;
     }
 
+    /**
+     *
+     * @return
+     */
     public int[] getStudiesIndexes() {
         return studiesIndexes;
     }

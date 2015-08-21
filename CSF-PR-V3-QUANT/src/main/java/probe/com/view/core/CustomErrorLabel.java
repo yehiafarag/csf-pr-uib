@@ -14,6 +14,11 @@ import java.io.Serializable;
  * @author Yehia Farag
  */
 public class CustomErrorLabel extends VerticalLayout implements Serializable{
+
+    /**
+     *
+     * @param protName
+     */
     public void updateErrot(String protName)
     {
         this.removeAllComponents();

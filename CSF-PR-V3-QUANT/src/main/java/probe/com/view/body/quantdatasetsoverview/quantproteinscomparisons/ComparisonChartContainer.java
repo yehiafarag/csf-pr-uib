@@ -5,7 +5,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
 import java.util.Map;
 import java.util.Set;
-import probe.com.model.beans.GroupsComparison;
+import probe.com.model.beans.quant.QuantGroupsComparison;
 
 /**
  * this class is the container for the comparison bar chart the class developed
@@ -18,27 +18,42 @@ public class ComparisonChartContainer extends HorizontalLayout{
 
     private final  JFreeBarchartDivaWrapper chart ;
     private final VerticalLayout closeCompariosonBtn;
-    private final GroupsComparison comparison; 
+    private final QuantGroupsComparison comparison; 
     
-    
-   
-    
+    /**
+     *
+     * @return
+     */
     public Map<Integer, Set<String>> getCompProtMap() {
         return chart.getCompProtMap();
     }
 
+    /**
+     *
+     * @param closeListener
+     */
     public void addCloseListiner(LayoutEvents.LayoutClickListener closeListener) {
 
         closeCompariosonBtn.addLayoutClickListener(closeListener);
 
     }
 
+    /**
+     *
+     * @param chartListener
+     */
     public void addChartListener(LayoutEvents.LayoutClickListener chartListener) {
         this.chart.addLayoutClickListener(chartListener);
 
     }
 
-    public ComparisonChartContainer(GroupsComparison comparison, int width,boolean searchingMode) {
+    /**
+     *
+     * @param comparison
+     * @param width
+     * @param searchingMode
+     */
+    public ComparisonChartContainer(QuantGroupsComparison comparison, int width,boolean searchingMode) {
         this.setStyleName("lightborder");
         this.setWidthUndefined();
         this.setHeight("250px");
@@ -54,27 +69,53 @@ public class ComparisonChartContainer extends HorizontalLayout{
         this.addComponent(closeCompariosonBtn);
     }
 
-
+    /**
+     *
+     * @param accessions
+     */
     public void updateExternalSelection(Set<String> accessions) {
         chart.updateExternalTableSelection(accessions);
     }
-   public void updateChartsWithSelectedChartColumn(Set<String> accessions,boolean reset){
+
+    /**
+     *
+     * @param accessions
+     * @param reset
+     */
+    public void updateChartsWithSelectedChartColumn(Set<String> accessions,boolean reset){
         chart.updateChartsWithSelectedChartColumn(accessions,reset);
     }
 
+    /**
+     *
+     * @param width
+     */
     public void resizeChart(int width) {
         width = width-26;
         chart.resize(width);
     }
+
+    /**
+     *
+     */
     public void reset(){
         chart.reset();
     
     }
+
+    /**
+     *
+     * @return
+     */
     public String getComparisonHeader() {
         return comparison.getComparisonHeader();
 
     }
 
+    /**
+     *
+     * @param hl
+     */
     public void setHeghlighted(boolean hl) {
         if (hl) {
             this.setStyleName("lightselectedborder");
@@ -83,6 +124,11 @@ public class ComparisonChartContainer extends HorizontalLayout{
         }
 
     }
+
+    /**
+     *
+     * @param barIndex
+     */
     public void heighLightBar(int barIndex) {
         chart.heighLightBar(barIndex);
 

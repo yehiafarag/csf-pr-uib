@@ -7,18 +7,22 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.util.HashSet;
 import java.util.Set;
-import probe.com.model.beans.GroupsComparison;
-import probe.com.model.beans.QuantDSIndexes;
+import probe.com.model.beans.quant.QuantGroupsComparison;
+import probe.com.model.beans.quant.QuantDSIndexes;
 import probe.com.selectionmanager.CSFFilter;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 import probe.com.view.core.DiseaseGroup;
 
 /**
  *
- * @author yfa041
+ * @author Yehia Farag
  */
 public class HeatMapFilter extends VerticalLayout implements CSFFilter {
 
+    /**
+     *
+     * @param type
+     */
     @Override
     public void selectionChanged(String type) {
         if (selfselected) {
@@ -33,11 +37,19 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String getFilterId() {
         return this.getClass().getName();
     }
 
+    /**
+     *
+     * @param value
+     */
     @Override
     public void removeFilterValue(String value) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -49,6 +61,14 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
     private boolean selfselected = false;
     private final DatasetExploringCentralSelectionManager centralFiltersSelectionManager;
 
+    /**
+     *
+     * @param centralFiltersSelectionManager
+     * @param heatmapW
+     * @param rowheaders
+     * @param colheaders
+     * @param patientsGroupArr
+     */
     public HeatMapFilter(final DatasetExploringCentralSelectionManager centralFiltersSelectionManager, int heatmapW, Set<String> rowheaders, Set<String> colheaders, DiseaseGroup[] patientsGroupArr) {
 
         this.setWidth(heatmapW + "px");
@@ -58,7 +78,7 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
 
         heatMap = new HeatMapComponent() {
             @Override
-            public void updateSelectionManager(Set<GroupsComparison> selectedDsList) {
+            public void updateSelectionManager(Set<QuantGroupsComparison> selectedDsList) {
                 centralFiltersSelectionManager.setComparisonSelection(selectedDsList);
             }
         };
@@ -70,6 +90,12 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
         centralFiltersSelectionManager.registerFilter(HeatMapFilter.this);
     }
 
+    /**
+     *
+     * @param rowheaders
+     * @param colheaders
+     * @param patientsGroupArr
+     */
     public void updateHeatmap(Set<String> rowheaders, Set<String> colheaders, DiseaseGroup[] patientsGroupArr) {
 
         this.calcHeatMapMatrix(rowheaders, colheaders, patientsGroupArr);
@@ -116,31 +142,60 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
         return indexes;
     }
 
+    /**
+     *
+     * @param selectedRows
+     * @param selectedColumns
+     */
     public void updateHeatmap(Set<String> selectedRows, Set<String> selectedColumns) {
         heatMap.updateHeatMap(selectedRows, selectedColumns, values, maxDatasetNumber);
     }
 
+    /**
+     *
+     * @param singleSelection
+     */
     public void setSingleSelection(boolean singleSelection) {
         heatMap.setSingleSelection(singleSelection);
     }
 
+    /**
+     *
+     * @param listener
+     */
     public void addHideHeatmapBtnListener(LayoutEvents.LayoutClickListener listener) {
         heatMap.getHideCompBtn().addLayoutClickListener(listener);
     }
 
-    public void updateCellSelection(Set<GroupsComparison> selectedComparisonList) {
+    /**
+     *
+     * @param selectedComparisonList
+     */
+    public void updateCellSelection(Set<QuantGroupsComparison> selectedComparisonList) {
         heatMap.updateDsCellSelection(selectedComparisonList);
     }
     
+    /**
+     *
+     */
     public void selectAll(){
         heatMap.selectAll();
     
     }
+
+    /**
+     *
+     */
     public void unselectAll(){
         heatMap.unselectAll();
     
     }
-     public boolean isActiveSelectAll() {
+
+    /**
+     *
+     * @return
+     */
+    public boolean isActiveSelectAll() {
         return heatMap.isActiveSelectAll();
     }
    

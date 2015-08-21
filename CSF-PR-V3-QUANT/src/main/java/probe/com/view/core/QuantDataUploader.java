@@ -28,8 +28,8 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-import probe.com.handlers.MainHandler;
-import probe.com.model.beans.IdentificationDataset;
+import probe.com.handlers.CSFPRHandler;
+import probe.com.model.beans.identification.IdentificationDatasetBean;
 import probe.com.model.beans.User;
 
 /**
@@ -38,10 +38,10 @@ import probe.com.model.beans.User;
  */
 public class QuantDataUploader extends VerticalLayout implements Upload.Receiver, Upload.SucceededListener, Serializable {
 
-    private final MainHandler handler;
+    private final CSFPRHandler handler;
     private final User user;
     private final ProgressBar pi = new ProgressBar();
-    private Map<Integer, IdentificationDataset> expList;
+    private Map<Integer, IdentificationDatasetBean> expList;
     private final GeneralUtil util = new GeneralUtil();
     private Upload upload;
     private File file;
@@ -52,7 +52,7 @@ public class QuantDataUploader extends VerticalLayout implements Upload.Receiver
      * @param handler main application handler
      * @param user authenticated user
      */
-    public QuantDataUploader(MainHandler handler, User user) {
+    public QuantDataUploader(CSFPRHandler handler, User user) {
         this.handler = handler;
         this.user = user;
         this.pi.setValue(0f);

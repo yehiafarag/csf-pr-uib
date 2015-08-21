@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.ComparisonProtein;
-import probe.com.model.beans.GroupsComparison;
-import probe.com.model.beans.QuantDatasetObject;
+import probe.com.model.beans.quant.QuantGroupsComparison;
+import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.view.core.DiseaseGroup;
 
 /**
@@ -19,21 +19,49 @@ import probe.com.view.core.DiseaseGroup;
  */
 public class DatasetExploringCentralSelectionManager {
 
+    /**
+     *
+     * @return
+     */
     public Set<String> getSelectedHeatMapRows() {
         return selectedHeatMapRows;
     }
 
+    /**
+     *
+     * @return
+     */
     public Set<String> getSelectedHeatMapColumns() {
         return selectedHeatMapColumns;
     }
 
+    /**
+     *
+     * @return
+     */
     public DiseaseGroup[] getDiseaseGroupsArr() {
         return diseaseGroupsArr;
     }
 
+    /**
+     *
+     */
     public enum Selection_Type {
 
-        Disease_Groups_Level, Reset_Disease_Groups_Level, HeatMap_Update_level
+        /**
+         *
+         */
+        Disease_Groups_Level,
+
+        /**
+         *
+         */
+        Reset_Disease_Groups_Level,
+
+        /**
+         *
+         */
+        HeatMap_Update_level
 
     }
     private final Map<Integer,QuantDatasetObject> fullDatasetArr;
@@ -43,20 +71,37 @@ public class DatasetExploringCentralSelectionManager {
 
     private final boolean[] activeFilters;
 
+    /**
+     *
+     * @return
+     */
     public Map<Integer,QuantDatasetObject> getFilteredDatasetArr() {
         return filteredDatasetArr;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getSelectedDataset() {
         return selectedDataset;
     }
 
+    /**
+     *
+     * @param selectedDataset
+     */
     public void setSelectedDataset(int selectedDataset) {
         this.selectedDataset = selectedDataset;
     }
 
     private int selectedDataset = -1;
 
+    /**
+     *
+     * @param datasetsList
+     * @param activeFilters
+     */
     public DatasetExploringCentralSelectionManager(Map<Integer,QuantDatasetObject> datasetsList, boolean[] activeFilters) {
         this.fullDatasetArr = datasetsList;
         this.activeFilters = activeFilters;
@@ -84,22 +129,38 @@ public class DatasetExploringCentralSelectionManager {
 
     private QuantDatasetObject[] selectedDSIndexes;
 
+    /**
+     *
+     * @return
+     */
     public QuantDatasetObject[] getSelectedDSIndexes() {
         return selectedDSIndexes;
     }
 
-    private Set<GroupsComparison> selectedComparisonList;
+    private Set<QuantGroupsComparison> selectedComparisonList;
 
-    public void updateSelectedComparisonList(Set<GroupsComparison> selectedComparisonList) {
+    /**
+     *
+     * @param selectedComparisonList
+     */
+    public void updateSelectedComparisonList(Set<QuantGroupsComparison> selectedComparisonList) {
         this.selectedComparisonList = selectedComparisonList;
 
     }
 
+    /**
+     *
+     * @return
+     */
     public CSFFilterSelection getFilterSelection() {
         return filterSelection;
     }
     private CSFFilterSelection filterSelection;
 
+    /**
+     *
+     * @param selection
+     */
     public void setStudyLevelFilterSelection(CSFFilterSelection selection) {
         try {
             filterSelection = selection;
@@ -120,6 +181,12 @@ public class DatasetExploringCentralSelectionManager {
     private Set<String> selectedHeatMapColumns;
     private DiseaseGroup[] diseaseGroupsArr;
 
+    /**
+     *
+     * @param selectedRows
+     * @param selectedColumns
+     * @param diseaseGroupsArr
+     */
     public void setHeatMapLevelSelection(Set<String> selectedRows, Set<String> selectedColumns, DiseaseGroup[] diseaseGroupsArr) {
         this.diseaseGroupsArr = diseaseGroupsArr;
         this.selectedHeatMapRows = selectedRows;
@@ -128,7 +195,11 @@ public class DatasetExploringCentralSelectionManager {
 
     }
 
-    public void setComparisonSelection(Set<GroupsComparison> selectedComparisonList) {
+    /**
+     *
+     * @param selectedComparisonList
+     */
+    public void setComparisonSelection(Set<QuantGroupsComparison> selectedComparisonList) {
         try {
 
             VaadinSession.getCurrent().getLockInstance().lock();
@@ -142,6 +213,10 @@ public class DatasetExploringCentralSelectionManager {
     }
     private Map<String, ComparisonProtein[]> protSelectionMap;
 
+    /**
+     *
+     * @param protSelectionMap
+     */
     public void setProteinsSelection(Map<String, ComparisonProtein[]> protSelectionMap) {
         try {
 
@@ -155,16 +230,28 @@ public class DatasetExploringCentralSelectionManager {
 
     }
 
+    /**
+     *
+     */
     public void resetFilters() {
         filteredDatasetArr.clear();
         this.SelectionChanged("Reset_Disease_Groups_Level");
 
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean[] getActiveFilters() {
         return activeFilters;
     }
 
+    /**
+     *
+     * @param filterId
+     * @param filterValue
+     */
     public void removeFilterValue(String filterId, String filterValue) {
         for (CSFFilter filter : registeredFilterSet) {
             if (filter.getFilterId().equalsIgnoreCase(filterId)) {
@@ -182,14 +269,26 @@ public class DatasetExploringCentralSelectionManager {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public Map<String, ComparisonProtein[]> getProtSelectionMap() {
         return protSelectionMap;
     }
 
+    /**
+     *
+     * @param iFilter
+     */
     public void registerFilter(final CSFFilter iFilter) {
         registeredFilterSet.add(iFilter);
     }
 
+    /**
+     *
+     * @return
+     */
     public Map<Integer,QuantDatasetObject> getFilteredDatasetsList() {
         if (filteredDatasetArr == null || filteredDatasetArr.isEmpty()) {
             return fullDatasetArr;
@@ -197,11 +296,19 @@ public class DatasetExploringCentralSelectionManager {
         return filteredDatasetArr;
     }
 
+    /**
+     *
+     * @return
+     */
     public Map<Integer,QuantDatasetObject> getFullDatasetArr() {
         return fullDatasetArr;
     }
 
-    public Set<GroupsComparison> getSelectedComparisonList() {
+    /**
+     *
+     * @return
+     */
+    public Set<QuantGroupsComparison> getSelectedComparisonList() {
         return selectedComparisonList;
     }
 

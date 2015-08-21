@@ -17,7 +17,7 @@ import com.vaadin.ui.TabSheet.Tab;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.io.Serializable;
-import probe.com.handlers.MainHandler;
+import probe.com.handlers.CSFPRHandler;
 
 /**
  *
@@ -28,11 +28,17 @@ public class IdentificationDatasetInformationLayout extends VerticalLayout imple
     private final VerticalLayout miniLayout = new VerticalLayout();
     private final int datasetId;
     private final TabSheet mainTabSheet;
-    private final MainHandler handler;
+    private final CSFPRHandler handler;
     private Tab identificationLayoutTab = null;
     private IdentificationDatasetLayout datasetLayout;
 
-    public IdentificationDatasetInformationLayout(final MainHandler handler, final int datasetId, TabSheet mainTabSheet) {
+    /**
+     *
+     * @param handler
+     * @param datasetId
+     * @param mainTabSheet
+     */
+    public IdentificationDatasetInformationLayout(final CSFPRHandler handler, final int datasetId, TabSheet mainTabSheet) {
         this.datasetId = datasetId;
         this.mainTabSheet = mainTabSheet;
         this.handler = handler;
@@ -244,6 +250,10 @@ public class IdentificationDatasetInformationLayout extends VerticalLayout imple
 
     }
 
+    /**
+     *
+     * @return
+     */
     public VerticalLayout getMiniLayout() {
         return miniLayout;
     }

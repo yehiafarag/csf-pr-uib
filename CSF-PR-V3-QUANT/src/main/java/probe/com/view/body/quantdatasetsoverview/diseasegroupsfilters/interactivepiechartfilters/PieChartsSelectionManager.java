@@ -11,19 +11,23 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import probe.com.model.beans.QuantDatasetObject;
+import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.selectionmanager.CSFFilter;
 import probe.com.selectionmanager.CSFFilterSelection;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 
 /**
  *
- * @author yfa041
+ * @author Yehia Farag
  */
 public class PieChartsSelectionManager implements Serializable, CSFFilter {
 
     private boolean externalSelectionChanged;
 
+    /**
+     *
+     * @param type
+     */
     @Override
     public void selectionChanged(String type) {
 
@@ -59,6 +63,10 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
     private final Map<String, String> titleMap = new HashMap<String, String>();
     private final DatasetExploringCentralSelectionManager centralSelectionManager;
 
+    /**
+     *
+     * @param centralSelectionManager
+     */
     public PieChartsSelectionManager(DatasetExploringCentralSelectionManager centralSelectionManager) {
         centralSelectionManager.registerFilter(PieChartsSelectionManager.this);
         this.centralSelectionManager = centralSelectionManager;
@@ -74,20 +82,37 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
         titleMap.put("shotgunTargeted", "Shotgun/Targeted");
     }
 
+    /**
+     *
+     * @param filter
+     */
     public void registerFilter(JfreeDivaPieChartFilter filter) {
         this.registeredFilters.add(filter);
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String getFilterId() {
         return Filter_ID;
     }
 
+    /**
+     *
+     * @param value
+     */
     @Override
     public void removeFilterValue(String value) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     *
+     * @param filterId
+     * @return
+     */
     public String getFilterTitle(String filterId) {
         if (titleMap.containsKey(filterId)) {
             return titleMap.get(filterId);
@@ -99,6 +124,10 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
 
     private final Set<Integer> selectedDsIds = new HashSet<Integer>();
 
+    /**
+     *
+     * @param filterId
+     */
     public void jfreeUpdateChartsFilters(String filterId) {
         this.updateDsIndexSelection();
         this.updatePieChartCharts(filterId);
@@ -114,6 +143,9 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
         }
     }
 
+    /**
+     *
+     */
     public void resetPieChartCharts() {
 
         if (externalSelectionChanged) {
@@ -126,6 +158,9 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
 
     }
 
+    /**
+     *
+     */
     public void resetToInitState() {
         selectedDsIds.clear();
         for (JfreeDivaPieChartFilter ifilter : registeredFilters) {
@@ -134,6 +169,9 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
 
     }
 
+    /**
+     *
+     */
     public void unselectAll() {
         for (JfreeDivaPieChartFilter ifilter : registeredFilters) {
             ifilter.unselectFilter();
@@ -155,6 +193,10 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
 
     private boolean selfselection;
 
+    /**
+     *
+     * @param selfselection
+     */
     public void updateCentralSelectionManager(boolean selfselection) {
         this.selfselection = selfselection;
         int[] dsIds = new int[selectedDsIds.size()];
@@ -165,6 +207,9 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
 
     }
 
+    /**
+     *
+     */
     public void updateDsIndexSelection() {
         selectedDsIds.clear();
         Set<JfreeDivaPieChartFilter> activeFilterSet = new HashSet<JfreeDivaPieChartFilter>();
@@ -190,6 +235,9 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
 
     }
 
+    /**
+     *
+     */
     public void resetCentralSelectionManager() {
         selfselection = true;
         centralSelectionManager.resetFilters();

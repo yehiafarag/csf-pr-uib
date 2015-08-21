@@ -2,8 +2,8 @@
  */
 package probe.com.bin;
 
-import probe.com.view.body.identificationlayoutcomponents.PeptidesTableLayout;
-import probe.com.view.body.identificationlayoutcomponents.GelFractionsLayout;
+import probe.com.view.body.identificationlayoutcomponents.IdentificationPeptidesTableLayout;
+import probe.com.view.body.identificationlayoutcomponents.IdentificationGelFractionsLayout;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.shared.ui.MarginInfo;
@@ -17,11 +17,11 @@ import com.vaadin.ui.themes.Reindeer;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-import probe.com.handlers.MainHandler;
-import probe.com.model.beans.PeptideBean;
-import probe.com.model.beans.IdentificationProteinBean;
-import probe.com.model.beans.QuantProtein;
-import probe.com.model.beans.StandardProteinBean;
+import probe.com.handlers.CSFPRHandler;
+import probe.com.model.beans.identification.IdentificationPeptideBean;
+import probe.com.model.beans.identification.IdentificationProteinBean;
+import probe.com.model.beans.quant.QuantProtein;
+import probe.com.model.beans.identification.StandardIdentificationFractionPlotProteinBean;
 import probe.com.view.body.searching.id.IdentificationSearchResultsTableLayout;
 import probe.com.view.core.CustomErrorLabel;
 import probe.com.view.core.exporter.ExporterBtnsGenerator;
@@ -40,7 +40,7 @@ public class SearchLayout_t extends VerticalLayout implements Serializable, Butt
     private final VerticalLayout identificationSearchLayout = new VerticalLayout();    
     private final VerticalLayout quantificationSearchLayout = new VerticalLayout();
   
-    private final MainHandler handler;
+    private final CSFPRHandler handler;
     
     private Label  errorLabelI;
     private CustomErrorLabel errorLabelII;
@@ -54,7 +54,7 @@ public class SearchLayout_t extends VerticalLayout implements Serializable, Butt
     private int key = -1;
     private String accession;
     private String otherAccession, desc;
-    private PeptidesTableLayout peptideTableLayout;
+    private IdentificationPeptidesTableLayout peptideTableLayout;
     private Map<Integer, IdentificationProteinBean> fractionsList = null;
     
 
@@ -64,7 +64,7 @@ public class SearchLayout_t extends VerticalLayout implements Serializable, Butt
      *
      * @param handler dataset handler
      */
-    public SearchLayout_t(MainHandler handler) {
+    public SearchLayout_t(CSFPRHandler handler) {
         this.handler = handler;
         
         this.setStyleName(Reindeer.LAYOUT_WHITE);
@@ -160,7 +160,7 @@ public class SearchLayout_t extends VerticalLayout implements Serializable, Butt
 
                 } else {// start quant searching
                     searchQuantificationProtList = handler.searchQuantificationProtein(searchingUnit.getFiltersController().getQuery());
-                      notFound = handler.filterSearchingKeywords(searchQuantificationProtList, searchingUnit.getFiltersController().getQuery().getSearchKeyWords(), searchingUnit.getFiltersController().getQuery().getSearchBy());
+//                      notFound = handler.filterSearchingKeywords(searchQuantificationProtList, searchingUnit.getFiltersController().getQuery().getSearchKeyWords(), searchingUnit.getFiltersController().getQuery().getSearchBy());
                  
                 }
 
@@ -221,7 +221,7 @@ public class SearchLayout_t extends VerticalLayout implements Serializable, Butt
                         otherAccession = item.getItemProperty("Other Protein(s)").toString();
                         desc = item.getItemProperty("Description").toString();
                         
-                        handler.setMainDatasetId(datasetName);
+                        handler.setMainIdentificationDatasetId(datasetName);
                         
                         fractionNumber = handler.getDataset(handler.getMainDatasetId()).getFractionsNumber();
                         if (handler.getMainDatasetId() != 0 && handler.getDataset(handler.getMainDatasetId()).getDatasetType() == 1) {
@@ -231,14 +231,14 @@ public class SearchLayout_t extends VerticalLayout implements Serializable, Butt
 //                            searcheResultsTableLayout.setExpBtnProtAllPepTable(exportAllProteinPeptidesPopup);// new PopupView("Export Proteins", (new CustomExportBtnLayout(handler, "prots",datasetId, datasetName, accession, otherAccession, datasetList, proteinsList, dataset.getFractionsNumber(), null,null))));
                             if (key >= 0) {
                                 
-                                Map<Integer, PeptideBean> pepProtList = handler.getPeptidesProtList(handler.getMainDatasetId(), accession, otherAccession);
+                                Map<Integer, IdentificationPeptideBean> pepProtList = handler.getIdentificationProteinPeptidesList(handler.getMainDatasetId(), accession, otherAccession);
                     
                                 if (!pepProtList.isEmpty()) {
-                                    int validPep = handler.getValidatedPepNumber(pepProtList);
+                                    int validPep = handler.countValidatedPeptidesNumber(pepProtList);
                                     if (peptideTableLayout != null) {
                                         peptidesLayout.removeComponent(peptideTableLayout);
                                     }
-                                    peptideTableLayout = new PeptidesTableLayout(validPep, pepProtList.size(), desc, pepProtList, accession, handler.getDataset(handler.getMainDatasetId()).getName());
+                                    peptideTableLayout = new IdentificationPeptidesTableLayout(validPep, pepProtList.size(), desc, pepProtList, accession, handler.getDataset(handler.getMainDatasetId()).getName());
                                     peptidesLayout.setMargin(false);
                                     peptidesLayout.addComponent(peptideTableLayout);
                                     
@@ -249,7 +249,7 @@ public class SearchLayout_t extends VerticalLayout implements Serializable, Butt
 //                                    peptideTableLayout.setExpBtnPepTable(exportAllProteinsPeptidesPopup);
                                     
                                 }
-                              List<StandardProteinBean> standerdProtList = handler.retrieveStandardProtPlotList(handler.getMainDatasetId());//                          
+                              List<StandardIdentificationFractionPlotProteinBean> standerdProtList = handler.getStandardIdentificationFractionProteinsList(handler.getMainDatasetId());//                          
 
                                 if (fractionNumber == 0 || handler.getMainDatasetId() == 0 || standerdProtList == null || standerdProtList.isEmpty()) {
                                     fractionLayout.removeAllComponents();
@@ -261,7 +261,7 @@ public class SearchLayout_t extends VerticalLayout implements Serializable, Butt
                                         peptideTableLayout.setPeptideTableHeight("267.5px");
                                     }
                                 } else {
-                                    fractionsList = handler.getProtGelFractionsList(handler.getMainDatasetId(), accession, otherAccession);
+                                    fractionsList = handler.getIdentificationProteinsGelFractionsList(handler.getMainDatasetId(), accession, otherAccession);
                                     
                                     if (fractionsList != null && !fractionsList.isEmpty()) {
 

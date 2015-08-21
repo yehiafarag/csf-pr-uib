@@ -15,7 +15,7 @@ import java.util.Map;
 import probe.com.selectionmanager.CSFFilter;
 import probe.com.selectionmanager.CSFFilterSelection;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
-import probe.com.model.beans.QuantDatasetObject;
+import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.view.core.CSFTable;
 import probe.com.view.core.CustomExternalLink;
 
@@ -35,6 +35,11 @@ public class QuantDatasetsTableLayout extends VerticalLayout implements CSFFilte
     private final int totalStudiesNumber;
     private int[] dsIndexes;
 
+    /**
+     *
+     * @param exploringFiltersManager
+     * @param activeHeaders
+     */
     public QuantDatasetsTableLayout(DatasetExploringCentralSelectionManager exploringFiltersManager, boolean[] activeHeaders) {
         this.exploringFiltersManager = exploringFiltersManager;
         exploringFiltersManager.registerFilter(QuantDatasetsTableLayout.this);
@@ -212,6 +217,10 @@ public class QuantDatasetsTableLayout extends VerticalLayout implements CSFFilte
         
     }
 
+    /**
+     *
+     * @param type
+     */
     @Override
     public void selectionChanged(String type) {
         if(type.equalsIgnoreCase("Disease_Groups_Level")){
@@ -238,11 +247,19 @@ public class QuantDatasetsTableLayout extends VerticalLayout implements CSFFilte
         }
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String getFilterId() {
         return filter_id;
     }
 
+    /**
+     *
+     * @param value
+     */
     @Override
     public void removeFilterValue(String value) {
     }

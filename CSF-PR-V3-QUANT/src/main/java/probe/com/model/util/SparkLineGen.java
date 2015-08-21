@@ -16,12 +16,23 @@ public class SparkLineGen {
     private double min;
     private double max;
     
+    /**
+     *
+     * @param min
+     * @param max
+     */
     public SparkLineGen(double min,double max){
     this.max=max;
     this.min=min;
     
     
     }
+
+    /**
+     *
+     * @param value
+     * @return
+     */
     public VerticalLayout getSparkLine(double value){
     VerticalLayout sparkLine = new VerticalLayout();
     double width = value*100/max;

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import probe.com.model.beans.QuantDatasetObject;
+import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.PopupInteractiveDSFiltersLayout;
 
@@ -28,6 +28,10 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
     private final PieChartsSelectionManager internalSelectionManager;
     private PopupInteractiveDSFiltersLayout pieChartFiltersBtn;
 
+    /**
+     *
+     * @param exploringFiltersManager
+     */
     public StudiesPieChartFiltersContainerLayout(DatasetExploringCentralSelectionManager exploringFiltersManager) {
 
         int layoutHeight = Page.getCurrent().getBrowserWindowHeight() - 200;
@@ -383,15 +387,26 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
         pieChartFiltersBtn = new PopupInteractiveDSFiltersLayout(this);
     }
 
+    /**
+     *
+     * @return
+     */
     public PopupInteractiveDSFiltersLayout getPieChartFiltersBtn() {
         return pieChartFiltersBtn;
     }
 
+    /**
+     *
+     */
     public void updatePieChartCharts() {
         internalSelectionManager.resetPieChartCharts();
 
     }
 
+    /**
+     *
+     * @param selfSelection
+     */
     public void updateSelectionManager(boolean selfSelection) {
         internalSelectionManager.updateCentralSelectionManager(selfSelection);
 

@@ -19,13 +19,13 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import probe.com.model.beans.QuantPeptide;
+import probe.com.model.beans.quant.QuantPeptide;
 import probe.com.view.core.InformationField;
 import probe.com.view.core.jfreeutil.StackedBarPeptideComponent;
 
 /**
  *
- * @author yfa041
+ * @author Yehia Farag
  */
 public class PeptideSequanceLocationOverview extends VerticalLayout {
 
@@ -37,6 +37,12 @@ public class PeptideSequanceLocationOverview extends VerticalLayout {
     private int totalPeptidesNumber = 0;
     private OptionGroup showSigneficantPeptidesOnly;
 
+    /**
+     *
+     * @param sequance
+     * @param quantPepSet
+     * @param width
+     */
     public PeptideSequanceLocationOverview(String sequance, Set<QuantPeptide> quantPepSet, int width) {
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
         otherSymbols.setGroupingSeparator('.');
@@ -145,6 +151,10 @@ public class PeptideSequanceLocationOverview extends VerticalLayout {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isNoPeptide() {
         return noPeptide;
     }
@@ -476,10 +486,18 @@ public class PeptideSequanceLocationOverview extends VerticalLayout {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public int getSignificantPeptidesNumber() {
         return significantPeptidesNumber;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getTotalPeptidesNumber() {
         return totalPeptidesNumber;
     }

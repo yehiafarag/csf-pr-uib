@@ -25,8 +25,15 @@ public class ComboBoxFilter extends HorizontalLayout implements Property.ValueCh
     private final FilterConfirmLabel filterConfirmLabel ;
    private final String filterTitle;
     
-   
-      public ComboBoxFilter(SearchingFiltersControl_t control,int filterId,String filterTitle,String defaultLabel,String[] datasetNamesList){
+    /**
+     *
+     * @param control
+     * @param filterId
+     * @param filterTitle
+     * @param defaultLabel
+     * @param datasetNamesList
+     */
+    public ComboBoxFilter(SearchingFiltersControl_t control,int filterId,String filterTitle,String defaultLabel,String[] datasetNamesList){
        this.control = control;
        this.filterId=filterId;
        this.filterTitle =filterTitle;
@@ -78,6 +85,10 @@ public class ComboBoxFilter extends HorizontalLayout implements Property.ValueCh
 
     }
 
+    /**
+     *
+     * @return
+     */
     public ComboBox getComboBox() {
         return comboBox;
     }

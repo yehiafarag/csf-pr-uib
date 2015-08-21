@@ -30,6 +30,13 @@ public class DoubleBetweenValuesFilter extends HorizontalLayout implements Seria
     private final Button okBtn;
     private  DoubleTextField minValueField ,maxValueField;
     private final FilterConfirmLabel filterConfirmLabel ;
+
+    /**
+     *
+     * @param control
+     * @param filterId
+     * @param defaultLabel
+     */
     public DoubleBetweenValuesFilter(SearchingFiltersControl_t control,int filterId,String defaultLabel){
        this.control = control;
        this.filterId=filterId;

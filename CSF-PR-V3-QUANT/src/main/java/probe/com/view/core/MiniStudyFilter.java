@@ -22,6 +22,10 @@ public class MiniStudyFilter extends HorizontalLayout implements Serializable, L
 
     private String value;
 
+    /**
+     *
+     * @return
+     */
     public String getFilterValue() {
         return value;
     }
@@ -30,6 +34,13 @@ public class MiniStudyFilter extends HorizontalLayout implements Serializable, L
     private final String space = "&nbsp; &nbsp; ";
     private final DatasetExploringCentralSelectionManager Filter_Manager;
 
+    /**
+     *
+     * @param filterId
+     * @param value
+     * @param Filter_Manager
+     * @param filterLabel
+     */
     public MiniStudyFilter(String filterId, String value, DatasetExploringCentralSelectionManager Filter_Manager, String filterLabel) {
         filterValueLabel = new Label();
         this.Filter_Manager = Filter_Manager;
@@ -58,6 +69,10 @@ public class MiniStudyFilter extends HorizontalLayout implements Serializable, L
 
     }
 
+    /**
+     *
+     * @param value
+     */
     public void setValue(String value) {
         this.value = value;
 
@@ -68,6 +83,10 @@ public class MiniStudyFilter extends HorizontalLayout implements Serializable, L
         Filter_Manager.removeFilterValue(filterId, value);
     }
 
+    /**
+     *
+     * @return
+     */
     public float getExpandRatio() {
         return filterValueLabel.getValue().length();
     }

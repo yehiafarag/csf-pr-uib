@@ -20,7 +20,7 @@ import com.vaadin.ui.themes.Reindeer;
 import java.io.Serializable;
 import java.sql.SQLException;
 import probe.com.handlers.AuthenticatorHandler;
-import probe.com.handlers.MainHandler;
+import probe.com.handlers.CSFPRHandler;
 import probe.com.model.beans.User;
 import probe.com.view.body.adminlayout.AdminControlPanel;
 import probe.com.view.core.IconGenerator;
@@ -34,7 +34,7 @@ public class AdminLayout extends VerticalLayout implements Serializable, Button.
     private VerticalLayout loginLayout = new VerticalLayout();
     private VerticalLayout controlPanelLayout = new VerticalLayout();
     private final VerticalLayout errorLayout = new VerticalLayout();
-    private final MainHandler handler;
+    private final CSFPRHandler handler;
     private User user = new User();
     private final AuthenticatorHandler authenticatorHandler;
     private final Button signOutButton;
@@ -52,7 +52,7 @@ public class AdminLayout extends VerticalLayout implements Serializable, Button.
      *
      *
      */
-    public AdminLayout(MainHandler handler) {
+    public AdminLayout(CSFPRHandler handler) {
         this.handler = handler;
         this.authenticatorHandler = handler.getAuthenticatorHandler();
         this.setWidth("100%");

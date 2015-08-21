@@ -8,8 +8,8 @@ package probe.com.view.body.searching.quant;
 import com.vaadin.ui.VerticalLayout;
 import java.io.Serializable;
 import java.util.List;
-import probe.com.handlers.MainHandler;
-import probe.com.model.beans.QuantProtein;
+import probe.com.handlers.CSFPRHandler;
+import probe.com.model.beans.quant.QuantProtein;
 
 /**
  *
@@ -17,7 +17,12 @@ import probe.com.model.beans.QuantProtein;
  */
 public class QuantDataSearchingTabLayout extends VerticalLayout implements Serializable {
 
-    public QuantDataSearchingTabLayout(List<QuantProtein> searchQuantificationProtList, MainHandler handler) {      
+    /**
+     *
+     * @param searchQuantificationProtList
+     * @param handler
+     */
+    public QuantDataSearchingTabLayout(List<QuantProtein> searchQuantificationProtList, CSFPRHandler handler) {      
         QuantProtiensSearchingResultsLayout datasetOverviewTabLayout = new QuantProtiensSearchingResultsLayout(handler, searchQuantificationProtList);
         this.addComponent(datasetOverviewTabLayout);
 

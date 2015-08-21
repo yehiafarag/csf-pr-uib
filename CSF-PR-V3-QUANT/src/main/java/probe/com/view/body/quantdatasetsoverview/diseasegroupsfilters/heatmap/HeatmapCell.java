@@ -11,7 +11,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import org.vaadin.marcus.MouseEvents;
-import probe.com.model.beans.GroupsComparison;
+import probe.com.model.beans.quant.QuantGroupsComparison;
 
 /**
  * This class represents heat map cell
@@ -26,6 +26,10 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
     private final int rowLabelIndex;
     private final int colLabelIndex;
 
+    /**
+     *
+     * @return
+     */
     public double getValue() {
         return value;
     }
@@ -39,12 +43,27 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
     private final Label valueLabel;
     private boolean selected =false;
 
-    public GroupsComparison getComparison() {
+    /**
+     *
+     * @return
+     */
+    public QuantGroupsComparison getComparison() {
         return comparison;
     }
     
-    private final GroupsComparison comparison;
+    private final QuantGroupsComparison comparison;
 
+    /**
+     *
+     * @param value
+     * @param color
+     * @param dsIndexes
+     * @param rowLabelIndex
+     * @param colLabelIndex
+     * @param tooltipLayout
+     * @param parentcom
+     * @param groupCompTitle
+     */
     public HeatmapCell(double value, final String color, int[] dsIndexes, final int rowLabelIndex, final int colLabelIndex, VerticalLayout tooltipLayout, HeatMapComponent parentcom, String groupCompTitle) {
         this.tooltipLayout = tooltipLayout;
         this.colLabelIndex = colLabelIndex;
@@ -58,7 +77,7 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
         this.setHeight("50px");
         strValue = "";
         pointer = "default";
-        this.comparison = new GroupsComparison();
+        this.comparison = new QuantGroupsComparison();
         comparison.setComparisonHeader(groupCompTitle);
         comparison.setDatasetIndexes(dsIndexes);
         mouseOverListener = new MouseEvents.MouseOverListener() {
@@ -117,6 +136,9 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
         }
     }
 
+    /**
+     *
+     */
     public void unselect() {
 //        selected = false;
 //        parent.resetHeadersStyle(colLabelIndex, rowLabelIndex);
@@ -124,6 +146,10 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
         valueLabel.setPrimaryStyleName(defaultStyle);
 
     }
+
+    /**
+     *
+     */
     public void select() {
 //        selected = false;
 //        parent.resetHeadersStyle(colLabelIndex, rowLabelIndex);

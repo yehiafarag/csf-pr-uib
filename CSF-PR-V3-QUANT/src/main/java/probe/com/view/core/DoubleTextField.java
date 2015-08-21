@@ -24,6 +24,10 @@ public class DoubleTextField extends TextField implements Serializable,Property.
         return valid; //To change body of generated methods, choose Tools | Templates.
     }
   private boolean valid = false;
+
+    /**
+     *
+     */
     public DoubleTextField(){
         
         this.setStyleName(Reindeer.TEXTFIELD_SMALL);
@@ -64,6 +68,10 @@ public class DoubleTextField extends TextField implements Serializable,Property.
     }    
     }
 
+    /**
+     *
+     * @return
+     */
     public double getDoubleValue() {
         return value;
     }

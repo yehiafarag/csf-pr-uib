@@ -25,9 +25,9 @@ import org.dussan.vaadin.dcharts.options.Axes;
 import org.dussan.vaadin.dcharts.options.Options;
 import org.dussan.vaadin.dcharts.options.SeriesDefaults;
 import org.dussan.vaadin.dcharts.renderers.series.BarRenderer;
-import probe.com.handlers.MainHandler;
-import probe.com.model.beans.QuantDatasetObject;
-import probe.com.model.beans.QuantDatasetListObject;
+import probe.com.handlers.CSFPRHandler;
+import probe.com.model.beans.quant.QuantDatasetObject;
+import probe.com.model.beans.quant.QuantDatasetInitialInformationObject;
 import probe.com.view.core.CustomExternalLink;
 import probe.com.view.core.HideOnClickLayout;
 
@@ -53,11 +53,11 @@ public class StudiesExploringLayout2 extends VerticalLayout implements Property.
     private final boolean[] activeHeaders;
     private final boolean[] activeFilters;
 
-    public StudiesExploringLayout2(MainHandler handler) {
-        QuantDatasetListObject studies = handler.getQuantDatasetListObject();
+    public StudiesExploringLayout2(CSFPRHandler handler) {
+        QuantDatasetInitialInformationObject studies = handler.getQuantDatasetInitialInformationObject();
         this.studiesList = studies.getQuantDatasetsList();
         activeHeaders = studies.getActiveHeaders();
-        activeFilters = handler.getActiveFilters();
+        activeFilters = handler.getActivePieChartQuantFilters();
 //        filteredStudiesList.addAll(Arrays.asList(studiesList));
         this.setMargin(true);
         this.setSpacing(true);

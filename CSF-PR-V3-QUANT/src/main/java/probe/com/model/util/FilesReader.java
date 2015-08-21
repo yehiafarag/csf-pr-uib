@@ -13,13 +13,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import probe.com.model.beans.IdentificationDataset;
-import probe.com.model.beans.FractionBean;
-import probe.com.model.beans.PeptideBean;
-import probe.com.model.beans.IdentificationProteinBean;
-import probe.com.model.beans.QuantProtein;
-import probe.com.model.beans.StandardProteinBean;
+import probe.com.model.beans.identification.IdentificationDatasetBean;
+import probe.com.model.beans.identification.IdentificationFractionBean;
+import probe.com.model.beans.identification.IdentificationPeptideBean;
+import probe.com.model.beans.identification.IdentificationProteinBean;
+import probe.com.model.beans.quant.QuantProtein;
+import probe.com.model.beans.identification.StandardIdentificationFractionPlotProteinBean;
 
+/**
+ *
+ * @author Yehia Farag
+ */
 public class FilesReader implements Serializable {
 
     /**
@@ -28,15 +32,24 @@ public class FilesReader implements Serializable {
     private static final long serialVersionUID = 1L;
     private FileValidator fv = new FileValidator();
 
+    /**
+     *
+     * @param file
+     * @param MIMEType
+     * @param exp
+     * @return
+     * @throws IOException
+     * @throws SQLException
+     */
     @SuppressWarnings("resource")
-    public IdentificationDataset readTextFile(File file, String MIMEType, IdentificationDataset exp) throws IOException, SQLException//method to extract data from proteins files to store them in database
+    public IdentificationDatasetBean readTextFile(File file, String MIMEType, IdentificationDatasetBean exp) throws IOException, SQLException//method to extract data from proteins files to store them in database
     {
         //if excel file
         //else text file
         int fileType = 0;
         String[] strArr = null;
         String[] lineArr = null;
-        Map<Integer, FractionBean> fractionRanges = null;
+        Map<Integer, IdentificationFractionBean> fractionRanges = null;
         BufferedReader bufRdr = null;
         String line = null;
         int row = 0;
@@ -69,9 +82,9 @@ public class FilesReader implements Serializable {
 
         }
 
-        Map<Integer, FractionBean> fractionsList = new HashMap<Integer, FractionBean>();
-        Map<Integer, PeptideBean> peptideList = null;
-        Map<String, PeptideBean> gPeptideList = new HashMap<String, PeptideBean>();      
+        Map<Integer, IdentificationFractionBean> fractionsList = new HashMap<Integer, IdentificationFractionBean>();
+        Map<Integer, IdentificationPeptideBean> peptideList = null;
+        Map<String, IdentificationPeptideBean> gPeptideList = new HashMap<String, IdentificationPeptideBean>();      
             
         fileType = fv.validateFile(strArr, MIMEType);//check if the file type and  file format 
         exp.setExpFile(fileType);
@@ -81,11 +94,11 @@ public class FilesReader implements Serializable {
             return null;
         }else if(fileType == -7)//glyco file
         {
-             PeptideBean pb = null;
+             IdentificationPeptideBean pb = null;
             try {
                 while ((line = bufRdr.readLine()) != null && row < 1000) {
                     
-                    pb = new PeptideBean();
+                    pb = new IdentificationPeptideBean();
                     strArr = line.split("\t");
                       if (strArr.length > 24 && strArr[24] != null && !strArr[24].equals("")) {
                             pb.setDeamidationAndGlycopattern(Boolean.valueOf(strArr[24]));
@@ -116,16 +129,16 @@ public class FilesReader implements Serializable {
         
         else if (fileType == -2)//peptide file
         {
-            peptideList = new HashMap<Integer, PeptideBean>();
+            peptideList = new HashMap<Integer, IdentificationPeptideBean>();
             exp.setExpFile(fileType);
         } else if (fileType == -100)//Standard plot file
         {
             try{
-            List<StandardProteinBean> standerdPlotProt = new ArrayList<StandardProteinBean>();
+            List<StandardIdentificationFractionPlotProteinBean> standerdPlotProt = new ArrayList<StandardIdentificationFractionPlotProteinBean>();
             for (int x = 2; x < lineArr.length; x++) {
                 String str = lineArr[x].trim();
                 if (str != null && (!str.equals(""))) {
-                    StandardProteinBean spb = new StandardProteinBean();
+                    StandardIdentificationFractionPlotProteinBean spb = new StandardIdentificationFractionPlotProteinBean();
                     spb.setMW_kDa(Double.valueOf(str.trim().split("\t")[0]));
                     spb.setName(str.split("\t")[1]);
                     double d = (Double.valueOf(str.split("\t")[2]));
@@ -144,10 +157,10 @@ public class FilesReader implements Serializable {
         } 
         else if (fileType == -5)//fraction range file
         {
-            fractionRanges = new TreeMap<Integer, FractionBean>();
+            fractionRanges = new TreeMap<Integer, IdentificationFractionBean>();
             for (int x = 1; x < lineArr.length; x++) {
                 String str = lineArr[x];
-                FractionBean fb = new FractionBean();
+                IdentificationFractionBean fb = new IdentificationFractionBean();
 //                fb.setMinRange(Double.valueOf(str.split("\t")[1]));
 //                fb.setMaxRange(Double.valueOf(str.split("\t")[2]));
 
@@ -166,7 +179,7 @@ public class FilesReader implements Serializable {
                 exp.setFractionsNumber(fileType);//file type in case of protein fraction file return the number of fractions
                 //create a number of fractions for the experiment
                 for (int x = 0; x < fileType; x++) {
-                    FractionBean fb = new FractionBean();
+                    IdentificationFractionBean fb = new IdentificationFractionBean();
                     Map<String, IdentificationProteinBean> temProteinList = new HashMap<String, IdentificationProteinBean>();
                     fb.setProteinList(temProteinList);
                     fb.setFractionIndex(x + 1);
@@ -194,7 +207,7 @@ public class FilesReader implements Serializable {
             if (fileType == -2) {
 
 
-                PeptideBean pb = new PeptideBean();
+                IdentificationPeptideBean pb = new IdentificationPeptideBean();
                 pb.setProtein(strArr[0]);
                 pb.setOtherProteins(strArr[1]);
 
@@ -316,7 +329,7 @@ public class FilesReader implements Serializable {
                         tempProt.setNumberOfSpectraPerFraction((int) d);
                     }
                     tempProt.setAveragePrecursorIntensityPerFraction(Double.valueOf(strArr[(9 + x + fileType + fileType)]));
-                    FractionBean temFb = fractionsList.get(x);
+                    IdentificationFractionBean temFb = fractionsList.get(x);
                     Map<String, IdentificationProteinBean> temProteinList = temFb.getProteinList();
                     temProteinList.put(tempProt.getAccession(), tempProt);
                     temFb.setProteinList(temProteinList);
@@ -351,18 +364,18 @@ public class FilesReader implements Serializable {
         return exp;
     }
 
-    private Map<Integer, PeptideBean> addSharedPeptides(Map<Integer, PeptideBean> peptideList) {
+    private Map<Integer, IdentificationPeptideBean> addSharedPeptides(Map<Integer, IdentificationPeptideBean> peptideList) {
         int index = peptideList.size() + 1;
-        Map<Integer, PeptideBean> updatedPeptideList = new HashMap<Integer, PeptideBean>();
+        Map<Integer, IdentificationPeptideBean> updatedPeptideList = new HashMap<Integer, IdentificationPeptideBean>();
         updatedPeptideList.putAll(peptideList);
-        for (PeptideBean pb : peptideList.values()) {
+        for (IdentificationPeptideBean pb : peptideList.values()) {
             if (pb.getProtein().trim().equalsIgnoreCase("shared peptide")) {
 
                 String str = pb.getPeptideProteins();
 
                 String[] strArr = str.split(",");
                 for (String newProt : strArr) {
-                    PeptideBean tPb = new PeptideBean();
+                    IdentificationPeptideBean tPb = new IdentificationPeptideBean();
                     tPb.setAaAfter(pb.getAaAfter());
                     tPb.setAaBefore(pb.getAaBefore());
                     tPb.setConfidence(pb.getConfidence());
@@ -393,10 +406,10 @@ public class FilesReader implements Serializable {
         return updatedPeptideList;
     }
 
-    private Map<Integer, FractionBean> getFractionRange(Map<Integer, FractionBean> fractionsList) {
-        Map<Integer, FractionBean> tempFractionsList = new HashMap<Integer, FractionBean>();
+    private Map<Integer, IdentificationFractionBean> getFractionRange(Map<Integer, IdentificationFractionBean> fractionsList) {
+        Map<Integer, IdentificationFractionBean> tempFractionsList = new HashMap<Integer, IdentificationFractionBean>();
         for (int key : fractionsList.keySet()) {
-            FractionBean fraction = fractionsList.get(key);
+            IdentificationFractionBean fraction = fractionsList.get(key);
 //            fraction.setMaxRange(0.0);
 //            fraction.setMaxRange(0.0);
             tempFractionsList.put(key, fraction);
@@ -406,9 +419,9 @@ public class FilesReader implements Serializable {
         return tempFractionsList;
     }
 
-    private int getNumValidatedPep(Map<Integer, PeptideBean> peptideList) {
+    private int getNumValidatedPep(Map<Integer, IdentificationPeptideBean> peptideList) {
         int vp = 0;
-        for (PeptideBean pb : peptideList.values()) {
+        for (IdentificationPeptideBean pb : peptideList.values()) {
             if (pb.getValidated() == 1.0) {
                 ++vp;
             }
@@ -418,8 +431,12 @@ public class FilesReader implements Serializable {
 
     }
     
-    
-     public List<QuantProtein> readCSVQuantFile(File dataFile) {
+    /**
+     *
+     * @param dataFile
+     * @return
+     */
+    public List<QuantProtein> readCSVQuantFile(File dataFile) {
 //        File dataFile = new File(path);
         List<QuantProtein> QuantProtList = new ArrayList<QuantProtein>();
 

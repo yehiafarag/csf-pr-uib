@@ -16,6 +16,9 @@ import java.io.Serializable;
  */
 public class FilterConfirmLabel extends Label implements Serializable{
     
+    /**
+     *
+     */
     public FilterConfirmLabel(){
     
      this.setIcon(new ThemeResource("img/true_s.jpg"));

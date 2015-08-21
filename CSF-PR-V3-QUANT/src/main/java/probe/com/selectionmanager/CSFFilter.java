@@ -10,8 +10,23 @@ package probe.com.selectionmanager;
  * @author Yehia Farag
  */
 public interface CSFFilter {
+
+    /**
+     *
+     * @param type
+     */
     public void selectionChanged(String type);    
-     public String getFilterId();
-     public void removeFilterValue(String value);
+
+    /**
+     *
+     * @return
+     */
+    public String getFilterId();
+
+    /**
+     *
+     * @param value
+     */
+    public void removeFilterValue(String value);
     
 }

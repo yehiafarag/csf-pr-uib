@@ -15,7 +15,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
-import probe.com.model.beans.QuantDatasetObject;
+import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.view.core.HideOnClickLayout;
 import probe.com.view.core.InformationField;
 
@@ -30,6 +30,10 @@ public class ProteinInformationPopupComponent extends VerticalLayout {
     private final VerticalLayout peptidesInformationContainer;
     private final Window popupWindow;
 
+    /**
+     *
+     * @param width
+     */
     public ProteinInformationPopupComponent(int width) {
 
         int height = Page.getCurrent().getBrowserWindowHeight() - 100;
@@ -164,6 +168,13 @@ public class ProteinInformationPopupComponent extends VerticalLayout {
 
     }
 
+    /**
+     *
+     * @param dataset
+     * @param stackedBarChart
+     * @param peptideNumber
+     * @param protAcc
+     */
     public void updateForm(QuantDatasetObject dataset, PeptideSequanceLocationOverview stackedBarChart, String peptideNumber, String protAcc) {
 
         popupWindow.setCaption("<a href='http://www.ncbi.nlm.nih.gov/pubmed/" + dataset.getPumedID() + "'target=\"_blank\">" + dataset.getAuthor() + " (" + dataset.getYear() + ")</a> - <a href='http://www.uniprot.org/uniprot/" + protAcc + "'target=\"_blank\"> (" + protAcc + ")</a>");

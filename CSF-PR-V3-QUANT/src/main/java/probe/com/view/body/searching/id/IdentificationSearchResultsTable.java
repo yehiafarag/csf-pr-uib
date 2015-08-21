@@ -13,8 +13,8 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import java.util.Map;
-import probe.com.model.beans.DatasetDetailsBean;
-import probe.com.model.beans.IdentificationProteinBean;
+import probe.com.model.beans.identification.IdentificationDatasetDetailsBean;
+import probe.com.model.beans.identification.IdentificationProteinBean;
 import probe.com.view.core.CustomExternalLink;
 import probe.com.view.core.CustomPI;
 
@@ -27,7 +27,12 @@ public class IdentificationSearchResultsTable extends Table implements Serializa
     private final DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
     private DecimalFormat df = null;
 
-    public IdentificationSearchResultsTable(Map<Integer, DatasetDetailsBean> datasetDetailsList, Map<Integer, IdentificationProteinBean> fullExpProtList) {
+    /**
+     *
+     * @param datasetDetailsList
+     * @param fullExpProtList
+     */
+    public IdentificationSearchResultsTable(Map<Integer, IdentificationDatasetDetailsBean> datasetDetailsList, Map<Integer, IdentificationProteinBean> fullExpProtList) {
 
         this.setSelectable(true);
         this.setColumnReorderingAllowed(true);
@@ -70,7 +75,7 @@ public class IdentificationSearchResultsTable extends Table implements Serializa
 
         for (int key : fullExpProtList.keySet()) {
             IdentificationProteinBean pb = fullExpProtList.get(key);
-            DatasetDetailsBean datasetDetails = datasetDetailsList.get(pb.getDatasetId());
+            IdentificationDatasetDetailsBean datasetDetails = datasetDetailsList.get(pb.getDatasetId());
             if (pb.getProteinInferenceClass().trim().equalsIgnoreCase("SINGLE PROTEIN")) {
                 res2 = new ThemeResource("img/green.jpg");
             } else if (pb.getProteinInferenceClass().trim().equalsIgnoreCase("UNRELATED PROTEINS")) {

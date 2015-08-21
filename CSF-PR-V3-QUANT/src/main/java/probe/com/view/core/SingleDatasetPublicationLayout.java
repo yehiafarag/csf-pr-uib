@@ -9,7 +9,7 @@ import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
-import probe.com.model.beans.QuantDatasetObject;
+import probe.com.model.beans.quant.QuantDatasetObject;
 
 /**
  *
@@ -19,6 +19,12 @@ public class SingleDatasetPublicationLayout extends VerticalLayout {
 
     private Component[] publicationInfoLayoutComponents = new Component[27];
 
+    /**
+     *
+     * @param dataset
+     * @param studyIndex
+     * @param uniqueAttr
+     */
     public SingleDatasetPublicationLayout(QuantDatasetObject dataset, int studyIndex, boolean[] uniqueAttr) {
         init();
         this.setMargin(new MarginInfo(false, false, false, false));

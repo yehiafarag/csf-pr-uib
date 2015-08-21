@@ -6,6 +6,10 @@ import java.io.Serializable;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
+/**
+ *
+ * @author Yehia Farag
+ */
 public class CustomExternalLink extends VerticalLayout implements Serializable, Comparable<Object> {
 
     private String link;
@@ -45,10 +49,18 @@ public class CustomExternalLink extends VerticalLayout implements Serializable, 
 
     }
 
+    /**
+     *
+     * @return
+     */
     public String getLink() {
         return this.link;
     }
 
+    /**
+     *
+     * @param color
+     */
     public synchronized void rePaintLable(final String color) {
         if(color.equalsIgnoreCase("black"))
             label.setStyleName("externalLinkTableLabel");

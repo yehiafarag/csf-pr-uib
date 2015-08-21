@@ -14,12 +14,22 @@ public class HeatmapColorGenerator {
     private final double max;
     private final double min;
 
+    /**
+     *
+     * @param max
+     * @param min
+     */
     public HeatmapColorGenerator(double max, double min) {
 
         this.max = max;
         this.min = min;
     }
 
+    /**
+     *
+     * @param value
+     * @return
+     */
     public String getColor(double value) {
         if(value == 0)
             return "RGB("+255+","+255+","+255+")";

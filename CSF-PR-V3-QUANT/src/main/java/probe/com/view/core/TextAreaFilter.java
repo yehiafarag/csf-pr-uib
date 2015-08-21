@@ -26,10 +26,21 @@ public class TextAreaFilter extends TextArea implements Property.ValueChangeList
     private final int filterId;    ;
     private final String filterTitle;
 
+    /**
+     *
+     * @return
+     */
     public ClosableFilterLabel getFilterBtn() {
         return filterBtn;
     }
 
+    /**
+     *
+     * @param controller
+     * @param filterId
+     * @param filterTitle
+     * @param defaultText
+     */
     public TextAreaFilter(SearchingFiltersControl controller, int filterId, String filterTitle, String defaultText) {
         this.searchingFiltersControl = controller;
         this.filterId = filterId;

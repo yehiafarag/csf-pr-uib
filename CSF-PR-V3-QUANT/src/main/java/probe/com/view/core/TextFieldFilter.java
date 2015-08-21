@@ -27,6 +27,12 @@ public class TextFieldFilter extends HorizontalLayout implements Button.ClickLis
     private final Label filterConfirmLabel;
 //    private final String filterTitle;
 
+    /**
+     *
+     * @param controller
+     * @param filterId
+     * @param filterTitle
+     */
     public TextFieldFilter(SearchingFiltersControl_t controller ,int filterId,String filterTitle) {
         this.control = controller;
         this.filterId=filterId;

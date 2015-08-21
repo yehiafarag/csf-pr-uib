@@ -13,7 +13,7 @@ import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
-import probe.com.model.beans.QuantDatasetObject;
+import probe.com.model.beans.quant.QuantDatasetObject;
 
 /**
  *
@@ -23,6 +23,13 @@ public class SingleStudyFilterLayout extends VerticalLayout {
 
     private final Component[] publicationInfoLayoutComponents = new Component[27];
 
+    /**
+     *
+     * @param dataset
+     * @param datasetIndex
+     * @param uniqueAttr
+     * @param view
+     */
     public SingleStudyFilterLayout(QuantDatasetObject dataset, int datasetIndex, boolean[] uniqueAttr, boolean view) {
 
         init();

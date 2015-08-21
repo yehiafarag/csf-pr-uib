@@ -10,6 +10,10 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+/**
+ *
+ * @author Yehia Farag
+ */
 public class RangeReader implements Serializable {
 
     /**
@@ -17,6 +21,11 @@ public class RangeReader implements Serializable {
      */
     private static final long serialVersionUID = 1L;
 
+    /**
+     *
+     * @param fileIS
+     * @return
+     */
     public String[] readRangeFile(FileInputStream fileIS) {
         Vector<Vector<XSSFCell>> dataHolder;
         dataHolder = ReadFile(fileIS);

@@ -12,14 +12,14 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.ComparisonProtein;
-import probe.com.model.beans.QuantDatasetObject;
-import probe.com.model.beans.QuantPeptide;
+import probe.com.model.beans.quant.QuantDatasetObject;
+import probe.com.model.beans.quant.QuantPeptide;
 import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.peptidescontainer.PeptideSequanceLocationOverview;
 import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.peptidescontainer.ProteinInformationPopupComponent;
 
 /**
  *
- * @author yfa041
+ * @author Yehia Farag
  */
 public class PeptidesStackedBarChartsControler {
 
@@ -27,6 +27,11 @@ public class PeptidesStackedBarChartsControler {
 
     private final ProteinInformationPopupComponent peptidesOverviewPopupPanel;
 
+    /**
+     *
+     * @param width
+     * @param cp
+     */
     public PeptidesStackedBarChartsControler(int width, ComparisonProtein cp) {
 
         int panelWidth = Page.getCurrent().getBrowserWindowWidth() - width-100;
@@ -54,6 +59,12 @@ public class PeptidesStackedBarChartsControler {
 
     }
 
+    /**
+     *
+     * @param dsIndex
+     * @param dataset
+     * @param protAcc
+     */
     public void updateSelectedProteinInformation(int dsIndex, QuantDatasetObject dataset,String protAcc) {
         for (String key : stackedBarChartCompDSIndexMap.keySet()) {
             if (key.contains("-" + dsIndex + "-")) {

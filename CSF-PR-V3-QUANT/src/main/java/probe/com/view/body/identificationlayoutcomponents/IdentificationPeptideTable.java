@@ -10,7 +10,7 @@ import com.vaadin.data.Item;
 import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Table;
-import probe.com.model.beans.PeptideBean;
+import probe.com.model.beans.identification.IdentificationPeptideBean;
 import probe.com.view.core.CustomEmbedded;
 import probe.com.view.core.CustomLabel;
 import probe.com.view.core.CustomPI;
@@ -18,12 +18,19 @@ import probe.com.view.core.CustomPI;
 /**
  * @author Yehia Farag initialize and create peptides table
  */
-public class PeptideTable extends Table implements Serializable {
+public class IdentificationPeptideTable extends Table implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private DecimalFormat df = null;
 
-    public PeptideTable(Map<Integer, PeptideBean> peptideList, Set<String> pepSet, boolean isExporter, String mainProtDesc) {
+    /**
+     *
+     * @param peptideList
+     * @param pepSet
+     * @param isExporter
+     * @param mainProtDesc
+     */
+    public IdentificationPeptideTable(Map<Integer, IdentificationPeptideBean> peptideList, Set<String> pepSet, boolean isExporter, String mainProtDesc) {
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
         otherSymbols.setGroupingSeparator('.');
         df = new DecimalFormat("#.##", otherSymbols);
@@ -88,7 +95,7 @@ public class PeptideTable extends Table implements Serializable {
 
         CustomEmbedded validated;
         int index = 1;
-        for (PeptideBean pb : peptideList.values()) {
+        for (IdentificationPeptideBean pb : peptideList.values()) {
             if (pb.isEnzymatic()) {
                 res = new ThemeResource("img/true.jpg");//new ExternalResource("http://sphotos-e.ak.fbcdn.net/hphotos-ak-ash3/550027_118467228336878_534577050_n.jpg");
             } else {

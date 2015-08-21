@@ -5,7 +5,10 @@ import java.io.Serializable;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
-
+/**
+ *
+ * @author Yehia Farag
+ */
 public class CustomInternalLink extends VerticalLayout implements Serializable,Comparable<CustomInternalLink> {
 
 	/**
@@ -14,7 +17,13 @@ public class CustomInternalLink extends VerticalLayout implements Serializable,C
 	private static final long serialVersionUID = 1L;
 	private String expName;
 	private Integer key;
-	public CustomInternalLink(String expName,int key)
+
+    /**
+     *
+     * @param expName
+     * @param key
+     */
+    public CustomInternalLink(String expName,int key)
 	{
 		Label l = new Label(expName);
 		this.addComponent(l);
@@ -26,11 +35,21 @@ public class CustomInternalLink extends VerticalLayout implements Serializable,C
 	{
 		return expName;
 	}
-	public Integer getKey()
+
+    /**
+     *
+     * @return
+     */
+    public Integer getKey()
 	{
 		return key;
 	}
-	public String getExpName()
+
+    /**
+     *
+     * @return
+     */
+    public String getExpName()
 	{
 		return this.expName;
 	}

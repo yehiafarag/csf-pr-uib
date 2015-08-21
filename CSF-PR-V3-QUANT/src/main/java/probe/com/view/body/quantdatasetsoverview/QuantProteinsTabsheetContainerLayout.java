@@ -23,7 +23,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.ComparisonProtein;
-import probe.com.model.beans.GroupsComparison;
+import probe.com.model.beans.quant.QuantGroupsComparison;
 import probe.com.selectionmanager.CSFFilter;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 import probe.com.view.core.CustomExternalLink;
@@ -41,6 +41,10 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
     private final Map<Component, String> protSelectionTabMap = new HashMap<Component, String>();
     private boolean initScroll = true;
 
+    /**
+     *
+     * @param type
+     */
     @Override
     public void selectionChanged(String type) {
         if (type.equalsIgnoreCase("quantProtSelection") && !selfSelection) {
@@ -53,7 +57,7 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
                 proteinsTabsheet.setVisible(false);
                 return;
             }
-            Set<GroupsComparison> selectedComparisonList = selectionManager.getSelectedComparisonList();
+            Set<QuantGroupsComparison> selectedComparisonList = selectionManager.getSelectedComparisonList();
             proteinsTabsheet.setVisible(true);
             Page.getCurrent().getStyles().add(".v-tabsheet-tabs .v-icon{"
                     + "    width:" + selectedComparisonList.size() * 15 + "px !important;"
@@ -88,11 +92,19 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
 
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String getFilterId() {
         return "quantProteinsLayout";
     }
 
+    /**
+     *
+     * @param value
+     */
     @Override
     public void removeFilterValue(String value) {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -101,6 +113,11 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
     private final DatasetExploringCentralSelectionManager selectionManager;
     private final TabSheet proteinsTabsheet;
 
+    /**
+     *
+     * @param selectionManager
+     * @param searchingMode
+     */
     public QuantProteinsTabsheetContainerLayout(final DatasetExploringCentralSelectionManager selectionManager, boolean searchingMode) {
         this.searchingMode = searchingMode;
         this.selectionManager = selectionManager;
@@ -130,7 +147,7 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
 
     private Label compOrederTitle;
 
-    private HorizontalLayout generateProtTab(String protName, String protAcc, ComparisonProtein[] comparisonProteins, Set<GroupsComparison> selectedComparisonList) {
+    private HorizontalLayout generateProtTab(String protName, String protAcc, ComparisonProtein[] comparisonProteins, Set<QuantGroupsComparison> selectedComparisonList) {
         HorizontalLayout bodyLayout = new HorizontalLayout();
         Page page = Page.getCurrent();
         int pageWidth = page.getBrowserWindowWidth();
@@ -181,6 +198,9 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
 
     }
 
+    /**
+     *
+     */
     public void redrawCharts() {
         if (proteinsTabsheet.getSelectedTab() == null) {
             return;

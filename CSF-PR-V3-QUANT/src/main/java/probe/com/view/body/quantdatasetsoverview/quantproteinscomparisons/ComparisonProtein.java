@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import probe.com.model.beans.GroupsComparison;
-import probe.com.model.beans.QuantPeptide;
+import probe.com.model.beans.quant.QuantGroupsComparison;
+import probe.com.model.beans.quant.QuantPeptide;
 
 /**
  *
@@ -34,10 +34,18 @@ public class ComparisonProtein extends HorizontalLayout implements Serializable,
 
     private int trindCategory;
 
+    /**
+     *
+     * @return
+     */
     public String getSequance() {
         return sequance;
     }
 
+    /**
+     *
+     * @param sequance
+     */
     public void setSequance(String sequance) {
         this.sequance = sequance;
     }
@@ -46,20 +54,36 @@ public class ComparisonProtein extends HorizontalLayout implements Serializable,
     private final Map<String, List<Integer>> patientsNumToTrindMap = new HashMap<String, List<Integer>>();
     private final Map<String, List<Integer>> patientsNumToDSIDMap = new HashMap<String, List<Integer>>();
 
+    /**
+     *
+     * @return
+     */
     public Map<String, List<Integer>> getPatientsNumToTrindMap() {
         return patientsNumToTrindMap;
     }
 
-    public GroupsComparison getComparison() {
+    /**
+     *
+     * @return
+     */
+    public QuantGroupsComparison getComparison() {
         return comparison;
     }
 
-    private final GroupsComparison comparison;
+    private final QuantGroupsComparison comparison;
 
+    /**
+     *
+     * @return
+     */
     public String getProtName() {
         return protName;
     }
 
+    /**
+     *
+     * @param protName
+     */
     public void setProtName(String protName) {
         this.protName = protName;
     }
@@ -76,7 +100,13 @@ public class ComparisonProtein extends HorizontalLayout implements Serializable,
     private Double trendValue = 0.0;
     private double cellValue;
 
-    public ComparisonProtein(int total, GroupsComparison comparison, int uniqueId) {        
+    /**
+     *
+     * @param total
+     * @param comparison
+     * @param uniqueId
+     */
+    public ComparisonProtein(int total, QuantGroupsComparison comparison, int uniqueId) {        
         this.comparison = comparison;
         this.uniqueId = uniqueId;
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
@@ -144,31 +174,61 @@ public class ComparisonProtein extends HorizontalLayout implements Serializable,
 
     }
 
+    /**
+     *
+     * @return
+     */
     public double getCellValue() {
         return cellValue;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getKey() {
         return key;
     }
 
+    /**
+     *
+     * @param key
+     */
     public void setKey(String key) {
         this.key = key;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getUniProtAccess() {
         return uniProtAccess;
     }
 
+    /**
+     *
+     * @param uniProtAccess
+     */
     public void setUniProtAccess(String uniProtAccess) {
         this.uniProtAccess = uniProtAccess;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getUp() {
         return up;
     }
     int counter =0;
 
+    /**
+     *
+     * @param up
+     * @param patientsNumber
+     * @param dsID
+     */
     public void addUp(int up, int patientsNumber, int dsID) {
         
         trendValue += (double) up;
@@ -183,10 +243,20 @@ public class ComparisonProtein extends HorizontalLayout implements Serializable,
 
     }
 
+    /**
+     *
+     * @return
+     */
     public int getDown() {
         return down;
     }
 
+    /**
+     *
+     * @param down
+     * @param patientsNumber
+     * @param dsID
+     */
     public void addDown(int down, int patientsNumber, int dsID) {
         trendValue -= (double) down;
         this.down += down;
@@ -199,10 +269,20 @@ public class ComparisonProtein extends HorizontalLayout implements Serializable,
         this.patientsNumToDSIDMap.put("down", downDsList);
     }
 
+    /**
+     *
+     * @return
+     */
     public int getNotReg() {
         return notReg;
     }
 
+    /**
+     *
+     * @param notReg
+     * @param patientsNumber
+     * @param dsID
+     */
     public void addNotReg(int notReg, int patientsNumber, int dsID) {
         penalty += 0.5;
         this.notReg += notReg;
@@ -215,11 +295,21 @@ public class ComparisonProtein extends HorizontalLayout implements Serializable,
         this.patientsNumToDSIDMap.put("notReg", notRegDsList);
     }
 
+    /**
+     *
+     * @return
+     */
     public int getNotProvided() {
 //        trendValue-=0.5;
         return notProvided;
     }
 
+    /**
+     *
+     * @param notProvided
+     * @param patNumber
+     * @param dsID
+     */
     public void addNotProvided(int notProvided, int patNumber, int dsID) {
 //        trendValue-=0.5;
         penalty += 0.5;
@@ -263,6 +353,9 @@ public class ComparisonProtein extends HorizontalLayout implements Serializable,
 
     }
 
+    /**
+     *
+     */
     public void updateLabelLayout() {
         int counter = 0;
 //        this.setExpandRatio(downLabel, ((float) 1.5 / total));
@@ -345,6 +438,12 @@ public class ComparisonProtein extends HorizontalLayout implements Serializable,
         }
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @return
+     */
     public int getDSID(int x, int y) {
         if (x == 0) {
             return patientsNumToDSIDMap.get("up").get(y);
@@ -358,22 +457,42 @@ public class ComparisonProtein extends HorizontalLayout implements Serializable,
 
     }
 
+    /**
+     *
+     * @return
+     */
     public Set<QuantPeptide> getQuantPeptidesList() {
         return quantPeptidesList;
     }
 
+    /**
+     *
+     * @param quantPeptidesList
+     */
     public void setQuantPeptidesList(Set<QuantPeptide> quantPeptidesList) {
         this.quantPeptidesList = quantPeptidesList;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getUniqueId() {
         return uniqueId;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getTrindCategory() {
         return trindCategory;
     }
 
+    /**
+     *
+     * @param width
+     */
     public void updateWidth(int width) {
         this.setWidth(width + "px");
         float freeArea=width;

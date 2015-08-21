@@ -42,7 +42,7 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.util.ShapeUtilities;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.ComparisonProtein;
-import probe.com.model.beans.QuantDatasetObject;
+import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.selectionmanager.CSFFilterSelection;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 import probe.com.view.core.jfreeutil.SquaredDot;
@@ -58,6 +58,10 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
     private final AbsoluteLayout ProteinScatterPlotContainer;
     private final int imgWidth;
 
+    /**
+     *
+     * @return
+     */
     public VerticalLayout getCloseBtn() {
         return closeBtn;
     }
@@ -71,6 +75,13 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
     private final PeptidesStackedBarChartsControler peptidesOverviewLayoutManager;
     private final boolean searchingMode;
 
+    /**
+     *
+     * @param cp
+     * @param width
+     * @param exploringFiltersManagerinst
+     * @param searchingMode
+     */
     public ProteinComparisonScatterPlotLayout(final ComparisonProtein cp, int width, DatasetExploringCentralSelectionManager exploringFiltersManagerinst, final boolean searchingMode) {
         this.searchingMode = searchingMode;
         this.exploringFiltersManager = exploringFiltersManagerinst;
@@ -143,6 +154,10 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
         peptidesOverviewLayoutManager = new PeptidesStackedBarChartsControler(width, cp);
     }
 
+    /**
+     *
+     * @return
+     */
     public Label getComparisonTitle() {
         return comparisonTitle;
     }
@@ -338,6 +353,11 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
     }
     private boolean isclicked;
 
+    /**
+     *
+     * @param heighlight
+     * @param clicked
+     */
     public void highlight(boolean heighlight, boolean clicked) {
 
         if (heighlight) {
@@ -357,11 +377,18 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
 
     }
 
+    /**
+     *
+     */
     public void redrawChart() {
         styles.add("." + teststyle + " {  background-image: url(" + defaultScatterPlottImgUrl + " );background-position:center; background-repeat: no-repeat; }");
 
     }
 
+    /**
+     *
+     * @return
+     */
     public String getUrl() {
 
         return heighlightedScatterPlottImgUrl;

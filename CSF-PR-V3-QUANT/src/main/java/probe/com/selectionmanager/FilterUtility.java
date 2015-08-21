@@ -8,9 +8,9 @@ package probe.com.selectionmanager;
 import com.vaadin.ui.VerticalLayout;
 import java.io.Serializable;
 import java.util.Map;
-import probe.com.handlers.MainHandler;
-import probe.com.model.beans.QuantDatasetObject;
-import probe.com.model.beans.QuantDatasetListObject;
+import probe.com.handlers.CSFPRHandler;
+import probe.com.model.beans.quant.QuantDatasetObject;
+import probe.com.model.beans.quant.QuantDatasetInitialInformationObject;
 
 /**
  *
@@ -25,23 +25,39 @@ public class FilterUtility implements Serializable {
     private final VerticalLayout minLayout = new VerticalLayout();
     private final Map<Integer,QuantDatasetObject> quantDatasetArr;
 
-    public FilterUtility(MainHandler handler) {
-        QuantDatasetListObject quantDatasetListObject = handler.getQuantDatasetListObject();
+    /**
+     *
+     * @param handler
+     */
+    public FilterUtility(CSFPRHandler handler) {
+        QuantDatasetInitialInformationObject quantDatasetListObject = handler.getQuantDatasetInitialInformationObject();
         this.quantDatasetArr = quantDatasetListObject.getQuantDatasetsList();
         activeHeaders = quantDatasetListObject.getActiveHeaders();
         //which fillters are exist
-        activeFilters = handler.getActiveFilters();
+        activeFilters = handler.getActivePieChartQuantFilters();
 
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean[] getActiveHeaders() {
         return activeHeaders;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean[] getActiveFilters() {
         return activeFilters;
     }
 
+    /**
+     *
+     * @return
+     */
     public Map<Integer,QuantDatasetObject> getQuantDatasetArr() {
         return quantDatasetArr;
     }
@@ -202,25 +218,25 @@ public class FilterUtility implements Serializable {
 //                        }
 //                        break;
 //                    case 14:
-////                        for (QuantDatasetObject pb : QuantDatasetListObject) {
+////                        for (QuantDatasetObject pb : QuantDatasetInitialInformationObject) {
 ////                            int value = pb.getQuantifiedProteinsNumber();
 ////                            valueSet.add(value);
 ////                        }
 //                        break;
 //                    case 15:
-////                        for (QuantDatasetObject pb : QuantDatasetListObject) {
+////                        for (QuantDatasetObject pb : QuantDatasetInitialInformationObject) {
 ////                            int value = pb.getPatientsGroup1Number();
 ////                            valueSet.add(value);
 ////                        }
 //                        break;
 //                    case 16:
-////                        for (QuantDatasetObject pb : QuantDatasetListObject) {
+////                        for (QuantDatasetObject pb : QuantDatasetInitialInformationObject) {
 ////                            int value = pb.getPatientsGroup2Number();
 ////                            valueSet.add(value);
 ////                        }
 //                        break;
 //                    case 17:
-////                        for (QuantDatasetObject pb : QuantDatasetListObject) {
+////                        for (QuantDatasetObject pb : QuantDatasetInitialInformationObject) {
 ////                            String value = pb.getNormalizationStrategy();
 ////                            valueSet.add(value);
 ////                        }
@@ -248,10 +264,19 @@ public class FilterUtility implements Serializable {
 //        return tfiltersLayout;
 //
 //    }
-    public VerticalLayout getFiltersLayout() {
+
+    /**
+     *
+     * @return
+     */
+        public VerticalLayout getFiltersLayout() {
         return filtersLayout;
     }
 
+    /**
+     *
+     * @return
+     */
     public VerticalLayout getMinLayout() {
         return minLayout;
     }

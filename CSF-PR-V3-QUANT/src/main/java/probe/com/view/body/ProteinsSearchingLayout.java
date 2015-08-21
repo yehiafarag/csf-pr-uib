@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import probe.com.dal.Query;
-import probe.com.handlers.MainHandler;
-import probe.com.model.beans.IdentificationProteinBean;
-import probe.com.model.beans.QuantProtein;
+import probe.com.handlers.CSFPRHandler;
+import probe.com.model.beans.identification.IdentificationProteinBean;
+import probe.com.model.beans.quant.QuantProtein;
 import probe.com.view.body.searching.SearchingUnitLayout;
 import probe.com.view.body.searching.id.IdDataSearchingTabLayout;
 import probe.com.view.body.searching.quant.QuantDataSearchingTabLayout;
@@ -33,13 +33,18 @@ import probe.com.view.core.HideOnClickLayout;
 public class ProteinsSearchingLayout extends VerticalLayout implements Serializable, Button.ClickListener {
 
     private final SearchingUnitLayout searchingUnitLayout;
-    private final MainHandler handler;
+    private final CSFPRHandler handler;
     private final VerticalLayout idProteinsDataLayout, quantProteinsDataLayout;
     private final HideOnClickLayout idProteinsDataLayoutContainer, quantProteinsDataLayoutContainer;
     private final LayoutEvents.LayoutClickListener idLayoutListener, quantLayoutListener;
     private List<QuantProtein> searchQuantificationProtList;
 
-    public ProteinsSearchingLayout(final MainHandler handler, final TabSheet mainTabSheet) {
+    /**
+     *
+     * @param handler
+     * @param mainTabSheet
+     */
+    public ProteinsSearchingLayout(final CSFPRHandler handler, final TabSheet mainTabSheet) {
         this.handler = handler;
         this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.setSpacing(true);

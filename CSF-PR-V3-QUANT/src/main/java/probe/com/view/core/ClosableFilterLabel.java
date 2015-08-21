@@ -22,6 +22,10 @@ public class ClosableFilterLabel extends HorizontalLayout implements Serializabl
 
     private String value;
 
+    /**
+     *
+     * @return
+     */
     public String getFilterValue() {
         return value;
     }
@@ -33,6 +37,13 @@ public class ClosableFilterLabel extends HorizontalLayout implements Serializabl
 //    private boolean closable;
     private String space = "&nbsp; &nbsp; ";
 
+    /**
+     *
+     * @param filterTitle
+     * @param value
+     * @param filterId
+     * @param closable
+     */
     public ClosableFilterLabel(String filterTitle, String value, int filterId, boolean closable) {
         filterValueLabel = new Label();
         if (closable) {
@@ -88,14 +99,26 @@ public class ClosableFilterLabel extends HorizontalLayout implements Serializabl
         return filterTitle + "," + value;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getFilterId() {
         return filterId;
     }
 
+    /**
+     *
+     * @return
+     */
     public Button getCloseBtn() {
         return closeBtn;
     }
 
+    /**
+     *
+     * @param value
+     */
     public void setValue(String value) {
         this.value = value;
         closeBtn.setCaption(value);
@@ -107,6 +130,10 @@ public class ClosableFilterLabel extends HorizontalLayout implements Serializabl
 
     }
 
+    /**
+     *
+     * @return
+     */
     public String getFilterTitle() {
         return filterTitle;
     }

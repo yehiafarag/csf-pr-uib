@@ -25,10 +25,17 @@ public class PopupInteractiveDSFiltersLayout extends VerticalLayout implements L
     private final Window popupWindow;
     private final StudiesPieChartFiltersContainerLayout interactivePieChartFiltersContainerLayout;
 
+    /**
+     *
+     */
     public void closePupupWindow() {
         this.popupWindow.close();
     }
 
+    /**
+     *
+     * @param interactivePieChartFiltersContainerLayout
+     */
     public PopupInteractiveDSFiltersLayout(final StudiesPieChartFiltersContainerLayout interactivePieChartFiltersContainerLayout) {
         VerticalLayout datasetExplorerFiltersIcon = new VerticalLayout();
         datasetExplorerFiltersIcon.setWidth("23px");

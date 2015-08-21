@@ -25,12 +25,10 @@ import java.util.Set;
 import java.util.TreeMap;
 import probe.com.selectionmanager.CSFFilter;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
-import probe.com.model.beans.PublicationRoot;
-import probe.com.model.beans.QuantDatasetObject;
+import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.view.core.HideOnClickLayout;
 import probe.com.view.core.InformationField;
 import probe.com.view.core.ListGridCell;
-import probe.com.view.core.PublicationRow;
 
 /**
  * Publication view level is used for visualizing publication data on exploring dataset layout

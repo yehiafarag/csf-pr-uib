@@ -21,17 +21,17 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import probe.com.handlers.MainHandler;
-import probe.com.model.beans.DatasetDetailsBean;
-import probe.com.model.beans.IdentificationProteinBean;
-import probe.com.model.beans.PeptideBean;
+import probe.com.handlers.CSFPRHandler;
+import probe.com.model.beans.identification.IdentificationDatasetDetailsBean;
+import probe.com.model.beans.identification.IdentificationProteinBean;
+import probe.com.model.beans.identification.IdentificationPeptideBean;
 import probe.com.view.body.searching.id.IdentificationSearchResultsTable;
-import probe.com.view.body.identificationlayoutcomponents.PeptideTable;
+import probe.com.view.body.identificationlayoutcomponents.IdentificationPeptideTable;
 import probe.com.view.body.identificationdatasetsoverview.identificationdataset.IdentificationProteinsTableComponent;
 
 /**
  *
- * @author yfa041
+ * @author Yehia Farag
  */
 public class CopyOfCustomExportBtnLayout extends VerticalLayout implements Serializable, Button.ClickListener {
 
@@ -39,8 +39,8 @@ public class CopyOfCustomExportBtnLayout extends VerticalLayout implements Seria
     private final VerticalLayout bottomLayout = new VerticalLayout();
     private OptionGroup typeGroup, exportGroup;
     private final String type;
-    private final MainHandler handler;
-    private Map<Integer, PeptideBean> peptidesList;
+    private final CSFPRHandler handler;
+    private Map<Integer, IdentificationPeptideBean> peptidesList;
     private final int datasetId;
     private final String datasetName;
     private final String accession;
@@ -56,7 +56,7 @@ public class CopyOfCustomExportBtnLayout extends VerticalLayout implements Seria
     private final String mainProtDesc;
     private Button exportBtn;
 
-    public CopyOfCustomExportBtnLayout(MainHandler handler, String type, int datasetId, String datasetName, String accession, String otherAccession, Map<String, IdentificationProteinBean> proteinsList, int fractionNumber, Map<Integer, PeptideBean> peptidesList, Table fractionTable, Map<Integer, IdentificationProteinBean> fullExpProtList, String mainProtDesc) {
+    public CopyOfCustomExportBtnLayout(CSFPRHandler handler, String type, int datasetId, String datasetName, String accession, String otherAccession, Map<String, IdentificationProteinBean> proteinsList, int fractionNumber, Map<Integer, IdentificationPeptideBean> peptidesList, Table fractionTable, Map<Integer, IdentificationProteinBean> fullExpProtList, String mainProtDesc) {
 
         this.type = type;
         this.handler = handler;
@@ -174,7 +174,7 @@ public class CopyOfCustomExportBtnLayout extends VerticalLayout implements Seria
                 return;
             }
 
-            PeptideTable pepTable = new PeptideTable(peptidesList, null, true, null);
+            IdentificationPeptideTable pepTable = new IdentificationPeptideTable(peptidesList, null, true, null);
             pepTable.setVisible(false);
             this.addComponent(pepTable);
             if (exportGroup.getValue().toString().equalsIgnoreCase("csv")) {
@@ -195,11 +195,11 @@ public class CopyOfCustomExportBtnLayout extends VerticalLayout implements Seria
             }
         } else if (type.equalsIgnoreCase("allProtPep")) {
 
-            Map<String, PeptideTable> pepList = null;
+            Map<String, IdentificationPeptideTable> pepList = null;
             if (typeGroup.getValue().toString().equalsIgnoreCase("Validated")) {
-                pepList = handler.getProteinPeptidesAllDatasets(accession, otherAccession, true);
+//                pepList = handler.getProteinPeptidesAllDatasets(accession, otherAccession, true);
             } else if (typeGroup.getValue().toString().equalsIgnoreCase("All")) {
-                pepList = handler.getProteinPeptidesAllDatasets(accession, otherAccession, false);
+//                pepList = handler.getProteinPeptidesAllDatasets(accession, otherAccession, false);
             }
             if (exportGroup.getValue().toString().equalsIgnoreCase("csv")) {
                 exportAllPepCsv(pepList, accession);
@@ -213,7 +213,7 @@ public class CopyOfCustomExportBtnLayout extends VerticalLayout implements Seria
             } else if (typeGroup.getValue().toString().equalsIgnoreCase("All")) {
                 tempFullExpProtList = fullExpProtList;
             }
-            Map<Integer, DatasetDetailsBean> datasetDetailsList = handler.getDatasetDetailsList();
+            Map<Integer, IdentificationDatasetDetailsBean> datasetDetailsList = handler.getDatasetDetailsList();
             IdentificationSearchResultsTable searcheResultsTable = new IdentificationSearchResultsTable(datasetDetailsList, tempFullExpProtList);
             searcheResultsTable.setVisible(false);
             this.addComponent(searcheResultsTable);
@@ -264,14 +264,14 @@ public class CopyOfCustomExportBtnLayout extends VerticalLayout implements Seria
                 exportXls(protTable, "Proteins", datasetName, updatedExpName, accession, typeGroup.getValue().toString());
             }
         } else if (type.equalsIgnoreCase("protPep")) {
-            Map<Integer, PeptideBean> vPeptidesList;
+            Map<Integer, IdentificationPeptideBean> vPeptidesList;
             if (typeGroup.getValue().toString().equalsIgnoreCase("Validated")) {
                 vPeptidesList = getVpeptideList(peptidesList);
             } else {
-                vPeptidesList = new HashMap<Integer, PeptideBean>();
+                vPeptidesList = new HashMap<Integer, IdentificationPeptideBean>();
                 vPeptidesList.putAll(peptidesList);
             }
-            PeptideTable pepTable = new PeptideTable(vPeptidesList, null, false, mainProtDesc);
+            IdentificationPeptideTable pepTable = new IdentificationPeptideTable(vPeptidesList, null, false, mainProtDesc);
             pepTable.setVisible(false);
             this.addComponent(pepTable);
             if (exportGroup.getValue().toString().equalsIgnoreCase("csv")) {
@@ -348,10 +348,10 @@ public class CopyOfCustomExportBtnLayout extends VerticalLayout implements Seria
         excelExport.export();
     }
 
-    private void exportAllPepCsv(Map<String, PeptideTable> pl, String accession) {
+    private void exportAllPepCsv(Map<String, IdentificationPeptideTable> pl, String accession) {
         int index = 0;
         for (String key : pl.keySet()) {
-            PeptideTable pt = pl.get(key);
+            IdentificationPeptideTable pt = pl.get(key);
             addComponent(pt);
             if (index == 0) {
                 csvExport = new CsvExport(pt, ("CSF-PR " + " " + accession + " Peptides"));
@@ -376,10 +376,10 @@ public class CopyOfCustomExportBtnLayout extends VerticalLayout implements Seria
         csvExport.export();
     }
 
-    private void exportAllPepXls(Map<String, PeptideTable> pl, String accession) {
+    private void exportAllPepXls(Map<String, IdentificationPeptideTable> pl, String accession) {
         int index = 0;
         for (String key : pl.keySet()) {
-            PeptideTable pt = pl.get(key);
+            IdentificationPeptideTable pt = pl.get(key);
             addComponent(pt);
             if (index == 0) {
                 excelExport = new ExcelExport(pt, "CSF-PR  " + "  " + accession + "  Peptides");
@@ -405,10 +405,10 @@ public class CopyOfCustomExportBtnLayout extends VerticalLayout implements Seria
 
     }
 
-    private Map<Integer, PeptideBean> getVpeptideList(Map<Integer, PeptideBean> peptideList) {
-        Map<Integer, PeptideBean> vPeptideList = new HashMap<Integer, PeptideBean>();
+    private Map<Integer, IdentificationPeptideBean> getVpeptideList(Map<Integer, IdentificationPeptideBean> peptideList) {
+        Map<Integer, IdentificationPeptideBean> vPeptideList = new HashMap<Integer, IdentificationPeptideBean>();
         for (int key : peptideList.keySet()) {
-            PeptideBean pb = peptideList.get(key);
+            IdentificationPeptideBean pb = peptideList.get(key);
             if (pb.getValidated() == 1) {
                 vPeptideList.put(key, pb);
             }

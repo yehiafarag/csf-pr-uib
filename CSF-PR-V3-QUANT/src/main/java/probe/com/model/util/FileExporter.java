@@ -19,8 +19,8 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.ComparisonProtein;
-import probe.com.model.beans.GroupsComparison;
-import probe.com.model.beans.PeptideBean;
+import probe.com.model.beans.quant.QuantGroupsComparison;
+import probe.com.model.beans.identification.IdentificationPeptideBean;
 import probe.com.view.core.CustomExternalLink;
 import probe.com.bin.ComparisonChart;
 
@@ -38,7 +38,7 @@ public class FileExporter {
      * @param dataType validated/all
      * @param path for the file csf-pr file system
      */
-    public void expotPeptidesToCSV(Map<Integer, PeptideBean> allPeptides, String datasetName, String dataType, String path) {
+    public void expotPeptidesToCSV(Map<Integer, IdentificationPeptideBean> allPeptides, String datasetName, String dataType, String path) {
         File csvText = new File(path, "CSF-PR - " + datasetName + " - All - " + dataType + " - Peptides.csv");// "CSF-PR - " + datasetName + " - All - " + dataType + "- Peptides" + ".csv");
         PrintWriter out1 = null;
         try {
@@ -65,7 +65,7 @@ public class FileExporter {
             out1.append('\n');
 
             index = 0;
-            for (PeptideBean pb : allPeptides.values()) {
+            for (IdentificationPeptideBean pb : allPeptides.values()) {
                 out1.append("" + index++);
                 out1.append(',');
                 out1.append(pb.getProteinInference());
@@ -139,7 +139,7 @@ public class FileExporter {
      * @param dataType validated/all
      * @param path for the file csf-pr file system
      */
-    public void expotPeptidesToXLS(Map<Integer, PeptideBean> allPeptides, String datasetName, String dataType, String path) {
+    public void expotPeptidesToXLS(Map<Integer, IdentificationPeptideBean> allPeptides, String datasetName, String dataType, String path) {
         File xlsText = new File(path, "CSF-PR - " + datasetName + " - All - " + dataType + " - Peptides.xls");// "CSF-PR - " + datasetName + " - All - " + dataType + "- Peptides" + ".csv");
 
         try {
@@ -169,7 +169,7 @@ public class FileExporter {
             //data
 
             index = 0;
-            for (PeptideBean pb : allPeptides.values()) {
+            for (IdentificationPeptideBean pb : allPeptides.values()) {
                 HSSFRow peptideRow = worksheet.createRow(index + 2);
                 HSSFCell cell0 = peptideRow.createCell(0);
                 cell0.setCellValue(index);
@@ -237,7 +237,11 @@ public class FileExporter {
 
     }
 
-    public void exportQuantComparisonTable(GroupsComparison[] comparisonMap) {
+    /**
+     *
+     * @param comparisonMap
+     */
+    public void exportQuantComparisonTable(QuantGroupsComparison[] comparisonMap) {
         Map<String, String> accessionMap = new HashMap<String, String>();
         int compIndex = 0;
         int t = 0;
@@ -246,7 +250,7 @@ public class FileExporter {
         columnHeaders[t++] = "Accession";
 
         Map<String, ComparisonProtein[]> protSetMap = new HashMap<String, ComparisonProtein[]>();
-        for (GroupsComparison comp : comparisonMap) {
+        for (QuantGroupsComparison comp : comparisonMap) {
             columnHeaders[t++] = comp.getComparisonHeader();
             Map<String, ComparisonProtein> protList = comp.getComparProtsMap();
             for (String key2 : protList.keySet()) {
@@ -275,7 +279,7 @@ public class FileExporter {
             String protAcc = protAccName.replace("--", "").trim().split(",")[0];
             Object[] tableRow = new Object[1 + comparisonMap.length];
             tableRow[i++] = protAcc.toUpperCase();
-            for (GroupsComparison cg : comparisonMap) {
+            for (QuantGroupsComparison cg : comparisonMap) {
                 ComparisonProtein cp = protSetMap.get(protAccName)[i - 1];
                 if (cp == null) {
                     tableRow[i] = null;

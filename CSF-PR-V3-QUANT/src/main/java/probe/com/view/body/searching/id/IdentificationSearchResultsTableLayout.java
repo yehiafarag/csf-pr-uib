@@ -15,9 +15,9 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.io.Serializable;
 import java.util.Map;
-import probe.com.handlers.MainHandler;
-import probe.com.model.beans.DatasetDetailsBean;
-import probe.com.model.beans.IdentificationProteinBean;
+import probe.com.handlers.CSFPRHandler;
+import probe.com.model.beans.identification.IdentificationDatasetDetailsBean;
+import probe.com.model.beans.identification.IdentificationProteinBean;
 import probe.com.view.core.exporter.ExporterBtnsGenerator;
 import probe.com.view.core.TableResizeSet;
 
@@ -36,9 +36,16 @@ public class IdentificationSearchResultsTableLayout extends VerticalLayout imple
     private Property.ValueChangeListener listener;
     private final Label searchResultstLabel = new Label();
     private final Map<Integer, IdentificationProteinBean> fullExpProtList;
-    private final Map<Integer, DatasetDetailsBean> datasetDetailsList;
+    private final Map<Integer, IdentificationDatasetDetailsBean> datasetDetailsList;
 
-    public IdentificationSearchResultsTableLayout(MainHandler handler, final Map<Integer, DatasetDetailsBean> datasetDetailsList, final Map<Integer, IdentificationProteinBean> fullExpProtList, boolean validatedOnly) {
+    /**
+     *
+     * @param handler
+     * @param datasetDetailsList
+     * @param fullExpProtList
+     * @param validatedOnly
+     */
+    public IdentificationSearchResultsTableLayout(CSFPRHandler handler, final Map<Integer, IdentificationDatasetDetailsBean> datasetDetailsList, final Map<Integer, IdentificationProteinBean> fullExpProtList, boolean validatedOnly) {
 
         this.setWidth("100%");
         this.setSpacing(true);
@@ -158,18 +165,34 @@ public class IdentificationSearchResultsTableLayout extends VerticalLayout imple
         currentTable = validatedProteinsTable;
     }
 
+    /**
+     *
+     * @return
+     */
     public Property.ValueChangeListener getListener() {
         return listener;
     }
 
+    /**
+     *
+     * @param listener
+     */
     public void setListener(Property.ValueChangeListener listener) {
         this.listener = listener;
     }
 
+    /**
+     *
+     * @return
+     */
     public VerticalLayout getExpBtnProtAllPepTable() {
         return expBtnProtAllPepTable;
     }
 
+    /**
+     *
+     * @param expBtnProtAllPepTable
+     */
     public void setExpBtnProtAllPepTable(VerticalLayout expBtnProtAllPepTable) {
         this.expBtnProtAllPepTable = expBtnProtAllPepTable;
         updateExportLayouts();
@@ -182,6 +205,10 @@ public class IdentificationSearchResultsTableLayout extends VerticalLayout imple
         exportAllPepLayout.setComponentAlignment(expBtnProtAllPepTable, Alignment.MIDDLE_LEFT);
     }
 
+    /**
+     *
+     * @return
+     */
     public IdentificationSearchResultsTable getSearchTable() {
         return currentTable;
     }

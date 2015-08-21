@@ -26,8 +26,8 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-import probe.com.handlers.MainHandler;
-import probe.com.model.beans.IdentificationDataset;
+import probe.com.handlers.CSFPRHandler;
+import probe.com.model.beans.identification.IdentificationDatasetBean;
 import probe.com.model.beans.User;
 
 /**
@@ -36,7 +36,7 @@ import probe.com.model.beans.User;
  */
 public class ExperimentUploadPanel extends VerticalLayout implements Upload.Receiver, Upload.SucceededListener, Serializable {
 
-    private final MainHandler handler;
+    private final CSFPRHandler handler;
     private final User user;
     private final ProgressIndicator pi = new ProgressIndicator();
     private final VerticalLayout newExpLayout = new VerticalLayout();
@@ -45,7 +45,7 @@ public class ExperimentUploadPanel extends VerticalLayout implements Upload.Rece
     private TextField expNameField, speciesField, sampleTypeField, sampleProcessingField, instrumentTypeField, fragModeField, UploadedByNameField, emailField, publicationLinkField;
     private TextArea descriptionField;
     private final HorizontalLayout bodyLayout = new HorizontalLayout();
-    private Map<Integer, IdentificationDataset> expList;
+    private Map<Integer, IdentificationDatasetBean> expList;
     private final GeneralUtil util = new GeneralUtil();
     private Select select;
     private final VerticalLayout expDetails = new VerticalLayout();
@@ -65,7 +65,7 @@ public class ExperimentUploadPanel extends VerticalLayout implements Upload.Rece
      * @param handler main application handler
      * @param user authenticated user
      */
-    public ExperimentUploadPanel(MainHandler handler, User user) {
+    public ExperimentUploadPanel(CSFPRHandler handler, User user) {
         this.handler = handler;
         this.user = user;
         this.pi.setValue(0f);
@@ -198,7 +198,7 @@ public class ExperimentUploadPanel extends VerticalLayout implements Upload.Rece
         oldExpLable.setWidth("100%");
         oldExpLayout.addComponent(oldExpLable);
         oldExpLayout.setComponentAlignment(oldExpLable, Alignment.TOP_CENTER);
-        expList = handler.getDatasetList();
+        expList = handler.getIdentificationDatasetList();
         List<String> strExpList = util.getStrExpList(expList, user.getEmail());
         select = new Select("Experiment ID", strExpList);
         select.setImmediate(true);
@@ -210,7 +210,7 @@ public class ExperimentUploadPanel extends VerticalLayout implements Upload.Rece
                     String str = select.getValue().toString();
                     String[] strArr = str.split("\t");
                     int id = (Integer.valueOf(strArr[0]));
-                    IdentificationDataset expDet = expList.get(id);
+                    IdentificationDatasetBean expDet = expList.get(id);
                     if (expDetails != null) {
                         expDetails.removeAllComponents();
                         if (expDet.getProteinsNumber() == 0) {
@@ -367,13 +367,13 @@ public class ExperimentUploadPanel extends VerticalLayout implements Upload.Rece
     public void uploadSucceeded(Upload.SucceededEvent event) {
         boolean validData = false;
         try {
-            IdentificationDataset newExp = this.validatDatasetForm();
+            IdentificationDatasetBean newExp = this.validatDatasetForm();
             if (newExp != null) {
                 validData = true;
             }
             if (validData) {
                 // send the file to the reader to extract the information 
-                boolean test = handler.handelDatasetFile(file, event.getMIMEType(), newExp);//Getting data from the uploaded file..here we assume that the experiment id is 1
+                boolean test = handler.handelIdentificationDatasetFile(file, event.getMIMEType(), newExp);//Getting data from the uploaded file..here we assume that the experiment id is 1
                 if (!test) {
                     Notification.show("Failed !  Please Check Your Uploaded File !", Notification.Type.TRAY_NOTIFICATION);  //file didn't store in db  
                 } else {
@@ -390,8 +390,8 @@ public class ExperimentUploadPanel extends VerticalLayout implements Upload.Rece
     /**
      * validate the dataset form before start uploading and processing the files
      */
-    private IdentificationDataset validatDatasetForm() {
-        IdentificationDataset newExp;
+    private IdentificationDatasetBean validatDatasetForm() {
+        IdentificationDatasetBean newExp;
         if (select.getValue() == null)//new experiment
         {
 
@@ -415,7 +415,7 @@ public class ExperimentUploadPanel extends VerticalLayout implements Upload.Rece
             } else {
                 boolean checkName = false;
 
-                for (IdentificationDataset exp : expList.values()) {
+                for (IdentificationDatasetBean exp : expList.values()) {
                     if (exp.getName().equalsIgnoreCase(expName)) {
                         checkName = true;
                         break;
@@ -428,7 +428,7 @@ public class ExperimentUploadPanel extends VerticalLayout implements Upload.Rece
                     return null;
                 } else {
 
-                    newExp = new IdentificationDataset();
+                    newExp = new IdentificationDatasetBean();
                     newExp.setName(expName);
                     newExp.setSpecies(expSpecies);
                     newExp.setSampleType(expSampleType);
@@ -449,7 +449,7 @@ public class ExperimentUploadPanel extends VerticalLayout implements Upload.Rece
             String str = select.getValue().toString();
             String[] strArr = str.split("\t");
             int id = (Integer.valueOf(strArr[0]));
-            IdentificationDataset exp = expList.get(id);
+            IdentificationDatasetBean exp = expList.get(id);
             return exp;
 
         }

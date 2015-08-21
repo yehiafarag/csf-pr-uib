@@ -38,12 +38,12 @@ import org.jfree.ui.RectangleEdge;
 import org.jfree.ui.TextAnchor;
 import org.jfree.util.ShapeUtilities;
 import org.vaadin.marcus.MouseEvents;
-import probe.com.model.beans.QuantPeptide;
+import probe.com.model.beans.quant.QuantPeptide;
 import probe.com.view.core.jfreeutil.SquaredDot;
 
 /**
  *
- * @author yfa041
+ * @author Yehia Farag
  */
 public class PeptideStackedBarChartLayout extends VerticalLayout {
 

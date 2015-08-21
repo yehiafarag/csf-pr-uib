@@ -7,7 +7,10 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
-
+/**
+ *
+ * @author Yehia Farag
+ */
 public class CustomLabel extends VerticalLayout implements Serializable, Comparable<Object> {/**
 	 * 
 	 */
@@ -15,7 +18,13 @@ public class CustomLabel extends VerticalLayout implements Serializable, Compara
 
 
 	private String str ;
-	public CustomLabel(String str ,String color)
+
+    /**
+     *
+     * @param str
+     * @param color
+     */
+    public CustomLabel(String str ,String color)
 	{
 		Label l = new Label("<label style='font-family:verdana; color:"+color+";'>"+str+"</label>");		
 		l.setContentMode(ContentMode.HTML);

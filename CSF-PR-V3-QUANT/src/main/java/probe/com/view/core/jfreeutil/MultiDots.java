@@ -9,13 +9,18 @@ import com.vaadin.ui.VerticalLayout;
 
 /**
  *
- * @author yfa041
+ * @author Yehia Farag
  */
 public class MultiDots extends VerticalLayout{
     
     private int x;
     private int y;
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     public MultiDots(int x, int y) {
         this.x = x;
         this.y = y;

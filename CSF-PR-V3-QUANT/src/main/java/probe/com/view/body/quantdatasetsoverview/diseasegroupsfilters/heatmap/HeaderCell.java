@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import probe.com.model.beans.GroupsComparison;
+import probe.com.model.beans.quant.QuantGroupsComparison;
 
 /**
  * this class give the control on the header label style and events
@@ -27,21 +27,41 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
     private String selectStyle ="";
     private final Label valueLabel ;
 
+    /**
+     *
+     * @return
+     */
     public List<HeatmapCell> getIncludedCells() {
         return includedCells;
     }
 
-    public Set<GroupsComparison> getIncludedComparisons() {
+    /**
+     *
+     * @return
+     */
+    public Set<QuantGroupsComparison> getIncludedComparisons() {
         return includedComparisons;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getValueLabel() {
         return valueLabel.getValue();
     }
     private boolean selected = false;
-    private final Set<GroupsComparison>includedComparisons = new LinkedHashSet<GroupsComparison>();
+    private final Set<QuantGroupsComparison>includedComparisons = new LinkedHashSet<QuantGroupsComparison>();
      private final List<HeatmapCell>includedCells = new ArrayList<HeatmapCell>();
     private final HeatMapComponent parentcom;
+
+    /**
+     *
+     * @param rowHeader
+     * @param value
+     * @param index
+     * @param parentcom
+     */
     public HeaderCell(boolean rowHeader, String value, int index,HeatMapComponent parentcom) {
         this.parentcom=parentcom;
         valueLabel = new Label("<center><b>" + value + "</b></center>");
@@ -66,23 +86,35 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
 
     }
     
-    
-    
-    
+    /**
+     *
+     */
     public void heighlightCellStyle(){
         
     this.setStyleName(cellStyleName+selectStyle+"_heighlightcell");
     
     }
+
+    /**
+     *
+     */
     public void resetCellStyle(){
     this.setStyleName(cellStyleName+selectStyle);
     
     }
+
+    /**
+     *
+     */
     public void selectCellStyle(){
       selectStyle ="_selected";
     this.setStyleName(cellStyleName+selectStyle);
     
     }
+
+    /**
+     *
+     */
     public void unSelectCellStyle(){
         selectStyle="";
     this.setStyleName(cellStyleName);
@@ -104,7 +136,12 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
         }
     }
     
-    public void addComparison(GroupsComparison groupComp,HeatmapCell cell){
+    /**
+     *
+     * @param groupComp
+     * @param cell
+     */
+    public void addComparison(QuantGroupsComparison groupComp,HeatmapCell cell){
     this.includedComparisons.add(groupComp);
     this.includedCells.add(cell);
     }

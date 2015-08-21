@@ -14,11 +14,17 @@ import com.vaadin.ui.themes.Reindeer;
 
 /**
  *
- * @author yfa041
+ * @author Yehia Farag
  */
 public class PeptidesOverviewPanel extends VerticalLayout{
     private final Label authorLabel;
     private final AbsoluteLayout peptidesChartLayout;
+
+    /**
+     *
+     * @param width
+     * @param height
+     */
     public PeptidesOverviewPanel(int width,int height){
         this.setWidth(width+"px");
         this.setHeight(height+"px");
@@ -43,9 +49,17 @@ public class PeptidesOverviewPanel extends VerticalLayout{
         
     }
 
+    /**
+     *
+     * @return
+     */
     public AbsoluteLayout getPeptidesChartLayout() {
         return peptidesChartLayout;
     }
+
+    /**
+     *
+     */
     public void updatePanel(){}
     
 

@@ -19,7 +19,7 @@ import java.util.Map;
  * @author Yehia Farag
  */
 import org.vaadin.dialogs.ConfirmDialog;
-import probe.com.view.body.identificationlayoutcomponents.PeptideTable;
+import probe.com.view.body.identificationlayoutcomponents.IdentificationPeptideTable;
 
 public class ExportButtonLayoutGenerator extends VerticalLayout implements Serializable {
 
@@ -29,7 +29,7 @@ public class ExportButtonLayoutGenerator extends VerticalLayout implements Seria
 
     ;
  
-    public ExportButtonLayoutGenerator(final Table t, UI ui, final String type, final String name, final Map<String, PeptideTable> pl, final String accession) {
+    public ExportButtonLayoutGenerator(final Table t, UI ui, final String type, final String name, final Map<String, IdentificationPeptideTable> pl, final String accession) {
 
         final OptionGroup group1 = new OptionGroup();
         group1.addItem("CVS");
@@ -130,10 +130,10 @@ public class ExportButtonLayoutGenerator extends VerticalLayout implements Seria
 
     }
 
-    private void exportAllPepCsv(Map<String, PeptideTable> pl, String accession) {
+    private void exportAllPepCsv(Map<String, IdentificationPeptideTable> pl, String accession) {
         int index = 0;
         for (String key : pl.keySet()) {
-            PeptideTable pt = pl.get(key);
+            IdentificationPeptideTable pt = pl.get(key);
             addComponent(pt);
             if (index == 0) {
                 csvExport = new CsvExport(pt, "Peptides");
@@ -157,11 +157,11 @@ public class ExportButtonLayoutGenerator extends VerticalLayout implements Seria
 
     }
 
-    private void exportAllPepXls(Map<String, PeptideTable> pl, String accession) {
+    private void exportAllPepXls(Map<String, IdentificationPeptideTable> pl, String accession) {
 
         int index = 0;
         for (String key : pl.keySet()) {
-            PeptideTable pt = pl.get(key);
+            IdentificationPeptideTable pt = pl.get(key);
             addComponent(pt);
             if (index == 0) {
                 excelExport = new ExcelExport(pt, "Peptides");

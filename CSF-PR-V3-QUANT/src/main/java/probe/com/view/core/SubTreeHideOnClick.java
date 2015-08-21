@@ -27,6 +27,13 @@ public class SubTreeHideOnClick extends VerticalLayout implements Serializable, 
     private final Layout fullBodyLayout;
     private final VerticalLayout miniBodyLayout;
 
+    /**
+     *
+     * @param title
+     * @param fullBodyLayout
+     * @param miniBodyLayout
+     * @param view
+     */
     public SubTreeHideOnClick(String title, Layout fullBodyLayout, VerticalLayout miniBodyLayout,boolean view) {
 //       title= title.toLowerCase();
         this.setMargin(new MarginInfo(false, false, false, false));
@@ -85,6 +92,9 @@ public class SubTreeHideOnClick extends VerticalLayout implements Serializable, 
         }
     }
 
+    /**
+     *
+     */
     public final void hideLayout() {
         show.updateIcon(false);
         filterstLabel.setStyleName("treeNodeLabel");
@@ -96,10 +106,18 @@ public class SubTreeHideOnClick extends VerticalLayout implements Serializable, 
 
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isVisability() {
         return fullBodyLayout.isVisible();
     }
 
+    /**
+     *
+     * @param test
+     */
     public void setVisability(boolean test) {
         if (test) {
             this.showLayout();

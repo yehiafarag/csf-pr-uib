@@ -18,8 +18,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import probe.com.model.beans.GroupsComparison;
-import probe.com.model.beans.QuantDSIndexes;
+import probe.com.model.beans.quant.QuantGroupsComparison;
+import probe.com.model.beans.quant.QuantDSIndexes;
 
 /**
  *
@@ -35,18 +35,25 @@ public class HeatMapComponent extends VerticalLayout {
     private HeaderCell[] columnCells;
     private HeaderCell[] rowCells;
     private final Map<String, HeatmapCell> comparisonsCellsMap = new HashMap<String, HeatmapCell>();
-    private final Set<GroupsComparison> selectedDsList = new HashSet<GroupsComparison>();
-    private final Set<GroupsComparison> availableComparisonsList = new HashSet<GroupsComparison>();
+    private final Set<QuantGroupsComparison> selectedDsList = new HashSet<QuantGroupsComparison>();
+    private final Set<QuantGroupsComparison> availableComparisonsList = new HashSet<QuantGroupsComparison>();
 
     private boolean singleSelection = true;
     private boolean selfSelection = false;
 
+    /**
+     *
+     * @return
+     */
     public VerticalLayout getHideCompBtn() {
         return hideCompBtn;
     }
 
     private final VerticalLayout hideCompBtn;
 
+    /**
+     *
+     */
     public HeatMapComponent() {
         this.setMargin(false);
         this.setSpacing(true);
@@ -88,10 +95,21 @@ public class HeatMapComponent extends VerticalLayout {
 
     }
 
+    /**
+     *
+     * @param singleSelection
+     */
     public void setSingleSelection(boolean singleSelection) {
         this.singleSelection = singleSelection;
     }
 
+    /**
+     *
+     * @param rowsLbels
+     * @param columnsLbels
+     * @param values
+     * @param maxDatasetValue
+     */
     public void updateHeatMap(Set<String> rowsLbels, Set<String> columnsLbels, QuantDSIndexes[][] values, int maxDatasetValue) {
         if (rowsLbels.isEmpty() || columnsLbels.isEmpty()) {
             return;
@@ -102,7 +120,12 @@ public class HeatMapComponent extends VerticalLayout {
 
     private final List<HeatmapCell> selectedCells = new ArrayList<HeatmapCell>();
 
-    protected void addSelectedDs(GroupsComparison comparison, HeatmapCell cell) {
+    /**
+     *
+     * @param comparison
+     * @param cell
+     */
+    protected void addSelectedDs(QuantGroupsComparison comparison, HeatmapCell cell) {
         for (HeaderCell header : columnCells) {
             header.unSelectCellStyle();
         }
@@ -131,6 +154,10 @@ public class HeatMapComponent extends VerticalLayout {
         updateSelectionManagerIndexes();
     }
 
+    /**
+     *
+     * @param selectedheader
+     */
     protected void addRowSelectedDs(String selectedheader) {
         if (singleSelection) {
             for (HeatmapCell tcell : selectedCells) {
@@ -192,7 +219,11 @@ public class HeatMapComponent extends VerticalLayout {
         updateSelectionManagerIndexes();
     }
 
-    public void updateDsCellSelection(Set<GroupsComparison> selectedDsList) {
+    /**
+     *
+     * @param selectedDsList
+     */
+    public void updateDsCellSelection(Set<QuantGroupsComparison> selectedDsList) {
         if (selectedDsList.isEmpty()) {
             hideCompBtn.setEnabled(false);
         } else {
@@ -211,7 +242,7 @@ public class HeatMapComponent extends VerticalLayout {
         }
         List<HeatmapCell> localSelectedCells = new ArrayList<HeatmapCell>();
         localSelectedCells.addAll(this.selectedCells);
-        for (GroupsComparison gr : this.selectedDsList) {
+        for (QuantGroupsComparison gr : this.selectedDsList) {
             String kI = gr.getComparisonHeader();
             String[] k1Arr = kI.split(" vs ");
             String kII = k1Arr[1] + " vs " + k1Arr[0];
@@ -241,7 +272,12 @@ public class HeatMapComponent extends VerticalLayout {
 
     }
 
-    protected void removeSelectedDs(GroupsComparison comparison, HeatmapCell cell) {
+    /**
+     *
+     * @param comparison
+     * @param cell
+     */
+    protected void removeSelectedDs(QuantGroupsComparison comparison, HeatmapCell cell) {
         for (HeaderCell header : columnCells) {
             header.unSelectCellStyle();
         }
@@ -261,6 +297,10 @@ public class HeatMapComponent extends VerticalLayout {
 
     }
 
+    /**
+     *
+     * @param selectedHeadercell
+     */
     protected void removeRowSelectedDs(String selectedHeadercell) {
 
         for (HeaderCell header : columnCells) {
@@ -293,8 +333,8 @@ public class HeatMapComponent extends VerticalLayout {
     private void updateSelectionManagerIndexes() {
         //filter datasets
         selfSelection = true;
-        Map<String, GroupsComparison> filteredComp = new HashMap<String, GroupsComparison>();
-        for (GroupsComparison comp : selectedDsList) {
+        Map<String, QuantGroupsComparison> filteredComp = new HashMap<String, QuantGroupsComparison>();
+        for (QuantGroupsComparison comp : selectedDsList) {
             String kI = comp.getComparisonHeader();
             String[] k1Arr = kI.split(" vs ");
             String kII = k1Arr[1] + " vs " + k1Arr[0];
@@ -304,14 +344,18 @@ public class HeatMapComponent extends VerticalLayout {
             filteredComp.put(kI, comp);
 
         }
-        Set<GroupsComparison> filteredSelectedDsList = new HashSet<GroupsComparison>();
+        Set<QuantGroupsComparison> filteredSelectedDsList = new HashSet<QuantGroupsComparison>();
         filteredSelectedDsList.addAll(filteredComp.values());
 
         updateSelectionManager(filteredSelectedDsList);
 
     }
 
-    public Set<GroupsComparison> getAvailableComparisonsList() {
+    /**
+     *
+     * @return
+     */
+    public Set<QuantGroupsComparison> getAvailableComparisonsList() {
         return availableComparisonsList;
     }
 
@@ -391,7 +435,7 @@ public class HeatMapComponent extends VerticalLayout {
 
         }
         Set<String> keymap = new HashSet<String>();
-        for (GroupsComparison gr : this.availableComparisonsList) {
+        for (QuantGroupsComparison gr : this.availableComparisonsList) {
             String kI = gr.getComparisonHeader();
             String[] k1Arr = kI.split(" vs ");
             String kII = k1Arr[1] + " vs " + k1Arr[0];
@@ -403,38 +447,69 @@ public class HeatMapComponent extends VerticalLayout {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isActiveSelectAll() {
         return activeSelectAll;
     }
     private boolean activeSelectAll;
 
+    /**
+     *
+     * @param col
+     * @param row
+     */
     public void highlightHeaders(int col, int row) {
         columnCells[col].heighlightCellStyle();
         rowCells[row].heighlightCellStyle();
     }
 
+    /**
+     *
+     * @param col
+     * @param row
+     */
     public void resetHeadersStyle(int col, int row) {
         columnCells[col].resetCellStyle();
         rowCells[row].resetCellStyle();
 
     }
 
+    /**
+     *
+     * @param col
+     * @param row
+     */
     public void selectHeadersStyle(int col, int row) {
         columnCells[col].resetCellStyle();
         rowCells[row].resetCellStyle();
 
     }
 
+    /**
+     *
+     * @param col
+     * @param row
+     */
     public void unSelectHeadersStyle(int col, int row) {
         columnCells[col].resetCellStyle();
         rowCells[row].resetCellStyle();
 
     }
 
-    public void updateSelectionManager(Set<GroupsComparison> selectedDsList) {
+    /**
+     *
+     * @param selectedDsList
+     */
+    public void updateSelectionManager(Set<QuantGroupsComparison> selectedDsList) {
         ///to be overided
     }
 
+    /**
+     *
+     */
     public void selectAll() {
         if (!isActiveSelectAll()) {
             return;
@@ -452,14 +527,17 @@ public class HeatMapComponent extends VerticalLayout {
         updateSelectionManagerIndexes();
     }
     
+    /**
+     *
+     */
     public void unselectAll() {
         selectedCells.clear();
         for (HeatmapCell cell : comparisonsCellsMap.values()) {
             cell.unselect();
         }
-        updateDsCellSelection(new HashSet<GroupsComparison>());
+        updateDsCellSelection(new HashSet<QuantGroupsComparison>());
         selectedDsList.clear();
-        selectedDsList.addAll(new HashSet<GroupsComparison>());
+        selectedDsList.addAll(new HashSet<QuantGroupsComparison>());
         updateSelectionManagerIndexes();
 
     }

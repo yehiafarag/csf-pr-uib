@@ -2,6 +2,10 @@ package probe.com.model.util;
 
 import java.io.Serializable;
 
+/**
+ *
+ * @author Yehia Farag
+ */
 public class FileValidator implements Serializable {
 
     /**
@@ -9,6 +13,12 @@ public class FileValidator implements Serializable {
      */
     private static final long serialVersionUID = -14218494555136445L;
 
+    /**
+     *
+     * @param strArr
+     * @param MIMEType
+     * @return
+     */
     public int validateFile(String[] strArr, String MIMEType)//check if the file type and  file format
     {
 

@@ -13,6 +13,10 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.themes.BaseTheme;
 
+/**
+ *
+ * @author Yehia Farag
+ */
 public class TableResizeSet extends HorizontalLayout implements Serializable {
 
     /**
@@ -25,6 +29,11 @@ public class TableResizeSet extends HorizontalLayout implements Serializable {
     private final String LARGE_SIZE = "360px";
     private String currentSize;
 
+    /**
+     *
+     * @param table
+     * @param currentSize
+     */
     public TableResizeSet(Table table, String currentSize) {
         this.currentSize = currentSize;
         this.table = table;
@@ -71,10 +80,18 @@ public class TableResizeSet extends HorizontalLayout implements Serializable {
         return b;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getCurrentSize() {
         return this.currentSize;
     }
 
+    /**
+     *
+     * @param table
+     */
     public void setTable(Table table) {
         this.table = table;
         this.table.setHeight(currentSize);

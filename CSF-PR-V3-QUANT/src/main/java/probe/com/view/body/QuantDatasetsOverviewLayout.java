@@ -4,7 +4,7 @@ import com.vaadin.event.LayoutEvents;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.VerticalLayout;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
-import probe.com.handlers.MainHandler;
+import probe.com.handlers.CSFPRHandler;
 import probe.com.selectionmanager.FilterUtility;
 import probe.com.view.body.quantdatasetsoverview.DiseaseGroupsFiltersContainer;
 import probe.com.view.body.quantdatasetsoverview.QuantProteinsComparisonsContainer;
@@ -28,7 +28,12 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
     private final QuantProteinsTabsheetContainerLayout proteinsLayout;
     private final QuantProteinsComparisonsContainer compTableLayout;
 
-    public QuantDatasetsOverviewLayout(MainHandler handler, boolean searchingMode) {
+    /**
+     *
+     * @param handler
+     * @param searchingMode
+     */
+    public QuantDatasetsOverviewLayout(CSFPRHandler handler, boolean searchingMode) {
 
         if (searchingMode) {
 

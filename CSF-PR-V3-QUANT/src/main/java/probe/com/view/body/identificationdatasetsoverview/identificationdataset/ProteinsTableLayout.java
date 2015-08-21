@@ -19,7 +19,7 @@ import com.vaadin.ui.themes.Reindeer;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import probe.com.model.beans.IdentificationProteinBean;
+import probe.com.model.beans.identification.IdentificationProteinBean;
 import probe.com.view.core.TableResizeSet;
 
 /**
@@ -306,6 +306,10 @@ public class ProteinsTableLayout extends VerticalLayout implements Serializable 
         return validProteinsList;
     }
 
+    /**
+     *
+     * @param lastSelectedIndex
+     */
     public void setLastSelectedIndex(int lastSelectedIndex) {
         this.lastSelectedIndex = lastSelectedIndex;
     }

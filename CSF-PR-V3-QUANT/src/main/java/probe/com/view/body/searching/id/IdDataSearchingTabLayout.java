@@ -12,12 +12,12 @@ import com.vaadin.ui.VerticalLayout;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-import probe.com.handlers.MainHandler;
-import probe.com.model.beans.IdentificationProteinBean;
-import probe.com.model.beans.PeptideBean;
-import probe.com.model.beans.StandardProteinBean;
-import probe.com.view.body.identificationlayoutcomponents.GelFractionsLayout;
-import probe.com.view.body.identificationlayoutcomponents.PeptidesTableLayout;
+import probe.com.handlers.CSFPRHandler;
+import probe.com.model.beans.identification.IdentificationProteinBean;
+import probe.com.model.beans.identification.IdentificationPeptideBean;
+import probe.com.model.beans.identification.StandardIdentificationFractionPlotProteinBean;
+import probe.com.view.body.identificationlayoutcomponents.IdentificationGelFractionsLayout;
+import probe.com.view.body.identificationlayoutcomponents.IdentificationPeptidesTableLayout;
 import probe.com.view.core.exporter.ExporterBtnsGenerator;
 import probe.com.view.core.CustomExternalLink;
 
@@ -28,9 +28,14 @@ import probe.com.view.core.CustomExternalLink;
 public class IdDataSearchingTabLayout extends VerticalLayout implements Serializable {
 
     private final VerticalLayout idSearchingResultsTableLayout, idPeptidesLayout, idFractionLayout;
-    private PeptidesTableLayout idPeptideTableLayout;
+    private IdentificationPeptidesTableLayout idPeptideTableLayout;
 
-    public IdDataSearchingTabLayout(Map<Integer, IdentificationProteinBean> searchIdentificationProtList, final MainHandler handler) {
+    /**
+     *
+     * @param searchIdentificationProtList
+     * @param handler
+     */
+    public IdDataSearchingTabLayout(Map<Integer, IdentificationProteinBean> searchIdentificationProtList, final CSFPRHandler handler) {
         this.setMargin(true);
         this.setSpacing(true);
         idSearchingResultsTableLayout = new VerticalLayout();
@@ -82,7 +87,7 @@ public class IdDataSearchingTabLayout extends VerticalLayout implements Serializ
                 String otherAccession = item.getItemProperty("Other Protein(s)").toString();
                 String desc = item.getItemProperty("Description").toString();
 
-                int datasetId = handler.setMainDatasetId(datasetName);
+                int datasetId = handler.setMainIdentificationDatasetId(datasetName);
 
                 int fractionNumber = handler.getDataset(datasetId).getFractionsNumber();
                 if (datasetId != 0 && handler.getDataset(datasetId).getDatasetType() == 1) {
@@ -91,13 +96,13 @@ public class IdDataSearchingTabLayout extends VerticalLayout implements Serializ
                     allPeptidesProteinsExportLayout.setDescription("Export CSF-PR Peptides for ( " + accession + " ) from All Datasets");
                     searcheResultsTableLayout.setExpBtnProtAllPepTable(allPeptidesProteinsExportLayout);
                     if (key >= 0) {
-                        Map<Integer, PeptideBean> pepProtList = handler.getPeptidesProtList(datasetId, accession, otherAccession);
+                        Map<Integer, IdentificationPeptideBean> pepProtList = handler.getIdentificationProteinPeptidesList(datasetId, accession, otherAccession);
                         if (!pepProtList.isEmpty()) {
-                            int validPep = handler.getValidatedPepNumber(pepProtList);
+                            int validPep = handler.countValidatedPeptidesNumber(pepProtList);
                             if (idPeptideTableLayout != null) {
                                 idPeptidesLayout.removeComponent(idPeptideTableLayout);
                             }
-                            idPeptideTableLayout = new PeptidesTableLayout(validPep, pepProtList.size(), desc, pepProtList, accession, handler.getDataset(datasetId).getName());
+                            idPeptideTableLayout = new IdentificationPeptidesTableLayout(validPep, pepProtList.size(), desc, pepProtList, accession, handler.getDataset(datasetId).getName());
                             idPeptidesLayout.setMargin(false);
                             idPeptidesLayout.addComponent(idPeptideTableLayout);
 
@@ -107,7 +112,7 @@ public class IdDataSearchingTabLayout extends VerticalLayout implements Serializ
                             idPeptideTableLayout.setExpBtnPepTable(proteinPeptidesExportLayout);
 
                         }
-                        List<StandardProteinBean> standerdProtList = handler.retrieveStandardProtPlotList(datasetId);//                          
+                        List<StandardIdentificationFractionPlotProteinBean> standerdProtList = handler.getStandardIdentificationFractionProteinsList(datasetId);//                          
 
                         if (fractionNumber == 0 || datasetId == 0 || standerdProtList == null || standerdProtList.isEmpty()) {
                             idFractionLayout.removeAllComponents();
@@ -119,7 +124,7 @@ public class IdDataSearchingTabLayout extends VerticalLayout implements Serializ
                                 idPeptideTableLayout.setPeptideTableHeight("267.5px");
                             }
                         } else {
-                            Map<Integer, IdentificationProteinBean> fractionsList = handler.getProtGelFractionsList(datasetId, accession, otherAccession);
+                            Map<Integer, IdentificationProteinBean> fractionsList = handler.getIdentificationProteinsGelFractionsList(datasetId, accession, otherAccession);
 
                             if (fractionsList != null && !fractionsList.isEmpty()) {
 
@@ -135,7 +140,7 @@ public class IdDataSearchingTabLayout extends VerticalLayout implements Serializ
                                     mw = Double.valueOf(str);
                                 }
 
-                                idFractionLayout.addComponent(new GelFractionsLayout(handler,accession, mw, fractionsList, standerdProtList, handler.getDataset(datasetId).getName()));
+                                idFractionLayout.addComponent(new IdentificationGelFractionsLayout(handler,accession, mw, fractionsList, standerdProtList, handler.getDataset(datasetId).getName()));
 
                             }
                         }

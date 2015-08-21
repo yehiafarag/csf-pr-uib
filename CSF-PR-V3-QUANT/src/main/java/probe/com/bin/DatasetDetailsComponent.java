@@ -12,7 +12,7 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.themes.Runo;
-import probe.com.handlers.MainHandler;
+import probe.com.handlers.CSFPRHandler;
 import probe.com.view.core.exporter.ExporterBtnsGenerator;
 import probe.com.view.core.IconGenerator;
 import probe.com.view.core.ShowLabel;
@@ -26,7 +26,7 @@ public class DatasetDetailsComponent extends VerticalLayout implements Serializa
     private final IconGenerator excelExporterIconGenerator = new IconGenerator();
 
     private final ShowLabel show;
-    public DatasetDetailsComponent(boolean visability, MainHandler handler) {
+    public DatasetDetailsComponent(boolean visability, CSFPRHandler handler) {
         
         this.setMargin(new MarginInfo(true, true, false, true));
         this.setWidth("100%");
@@ -57,7 +57,7 @@ public class DatasetDetailsComponent extends VerticalLayout implements Serializa
     }
 
     @SuppressWarnings("deprecation")
-    private VerticalLayout FormWithComplexLayout(MainHandler handler) {
+    private VerticalLayout FormWithComplexLayout(CSFPRHandler handler) {
         VerticalLayout vlo1 = new VerticalLayout();
         vlo1.setSpacing(true);
         vlo1.setMargin(false);

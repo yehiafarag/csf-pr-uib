@@ -22,6 +22,11 @@ public class SearchingAreaFilter extends VerticalLayout implements Serializable 
     private final SearchingFiltersControl searchingFiltersControl;
     private final Button searchingBtn = new Button("");
 
+    /**
+     *
+     * @param filtersController
+     * @param defaultText
+     */
     public SearchingAreaFilter(SearchingFiltersControl filtersController, String defaultText) {
         this.setHeight("100%");
         this.setSpacing(true);
@@ -97,21 +102,42 @@ public class SearchingAreaFilter extends VerticalLayout implements Serializable 
         searchbyLayout.setComponentAlignment(searchingBtn, Alignment.MIDDLE_CENTER);
     }
 
+    /**
+     *
+     */
     public void SearchFieldFocus() {
         searchFieldFilter.focus();
     }
 
+    /**
+     *
+     * @param searchingBtnClickListener
+     */
     public void addSearchingClickListener(Button.ClickListener searchingBtnClickListener) {
         searchingBtn.addClickListener(searchingBtnClickListener);
     }
+
+    /**
+     *
+     * @return
+     */
     public String getSearchingKeyWords(){
         return searchFieldFilter.getValue();
     
     }
+
+    /**
+     *
+     * @return
+     */
     public String getSearchingByValue(){
         return (String)searchbyGroup.getOptionGroup().getValue();
     }
     
+    /**
+     *
+     * @param value
+     */
     public void setSearchingFieldValue(String value){
     
     searchFieldFilter.setValue(value);

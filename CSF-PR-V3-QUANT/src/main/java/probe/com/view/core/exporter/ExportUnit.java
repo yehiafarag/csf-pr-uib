@@ -23,6 +23,9 @@ public class ExportUnit extends VerticalLayout {
     private final HorizontalLayout topLayout, bottomLayout;
     private final Button exportBtn;
 
+    /**
+     *
+     */
     public ExportUnit() {
 
         topLayout = new HorizontalLayout();
@@ -73,19 +76,35 @@ public class ExportUnit extends VerticalLayout {
 
     }
 
+    /**
+     *
+     * @param clickListener
+     */
     public void addClickListener(Button.ClickListener clickListener) {
         exportBtn.addClickListener(clickListener);
 
     }
 
+    /**
+     *
+     * @return
+     */
     public String getTypeGroupValue() {
         return typeGroup.getValue().toString();
     }
 
+    /**
+     *
+     * @return
+     */
     public String getExportGroupValue() {
         return exportGroup.getValue().toString();
     }
 
+    /**
+     *
+     * @param visible
+     */
     public void typeGroupOptionVisible(boolean visible) {
         this.typeGroup.setVisible(visible);
 

@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
-import probe.com.model.beans.IdentificationProteinBean;
+import probe.com.model.beans.identification.IdentificationProteinBean;
 import probe.com.view.core.CustomEmbedded;
 import probe.com.view.core.CustomExternalLink;
 import probe.com.view.core.CustomPI;
@@ -30,7 +30,7 @@ public class IdentificationProteinsTableComponent extends Table implements Seria
      */
     private static final long serialVersionUID = 1L;
     private DecimalFormat df = null;
-    private Map<String, Integer> tableSearchMap = new HashMap<String, Integer>();
+    private Map<String, Integer> protToIndexSearchingMap = new HashMap<String, Integer>();
     private Map<String, Integer> tableSearchMapIndex = new HashMap<String, Integer>();
 
     private int firstIndex;
@@ -215,12 +215,12 @@ public class IdentificationProteinsTableComponent extends Table implements Seria
         }
        
 
-        tableSearchMap.clear();
+        protToIndexSearchingMap.clear();
         tableSearchMapIndex.clear();
         for (int indexValue = 1; indexValue <= sortMap.size(); indexValue++) {
             String str = sortMap.get(indexValue); 
             int itemId = Integer.valueOf(str.split(",")[str.split(",").length - 1]);
-            tableSearchMap.put(str, itemId);
+            protToIndexSearchingMap.put(str, itemId);
             tableSearchMapIndex.put(str, indexValue);
         }
 
@@ -230,12 +230,16 @@ public class IdentificationProteinsTableComponent extends Table implements Seria
      * search proteins map for searching proteins by accession or description
      * (name)
      *
-     * @return tableSearchMap
+     * @return protToIndexSearchingMap
      */
-    public Map<String, Integer> getTableSearchMap() {
-        return tableSearchMap;
+    public Map<String, Integer> getProtToIndexSearchingMap() {
+        return protToIndexSearchingMap;
     }
 
+    /**
+     *
+     * @return
+     */
     public Map<String, Integer> getTableSearchMapIndex() {
         return tableSearchMapIndex;
     }
@@ -279,6 +283,10 @@ public class IdentificationProteinsTableComponent extends Table implements Seria
         super.setCurrentPageFirstItemId(itemId);
     }
     
+    /**
+     *
+     * @return
+     */
     public int getFirstIndex() {
         return firstIndex;
     }

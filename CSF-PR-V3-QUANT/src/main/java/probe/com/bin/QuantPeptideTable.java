@@ -13,7 +13,7 @@ import com.vaadin.ui.Table;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
-import probe.com.model.beans.QuantProtein;
+import probe.com.model.beans.quant.QuantProtein;
 
 /**
  *

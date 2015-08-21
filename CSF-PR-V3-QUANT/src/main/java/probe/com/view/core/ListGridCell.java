@@ -27,10 +27,23 @@ public class ListGridCell extends HorizontalLayout {
     private final ThemeResource darkblueSrc = new ThemeResource("img/blackdot.png");
     private final Image icon = new Image(null,blueSrc);
     private final float cellvalue;
+
+    /**
+     *
+     * @return
+     */
     public String getCellId() {
         return cellId;
     }
 
+    /**
+     *
+     * @param value
+     * @param cellId
+     * @param mouseOverListener
+     * @param mouseOutListener
+     * @param showIcon
+     */
     public ListGridCell(String value, String cellId, MouseEvents.MouseOverListener mouseOverListener, MouseEvents.MouseOutListener mouseOutListener, boolean showIcon) {
         this.cellId = cellId;
         label = new Label(value);
@@ -55,7 +68,15 @@ public class ListGridCell extends HorizontalLayout {
     }
 
     //sparkline constractor
-    public ListGridCell(VerticalLayout sparkline, String cellId, MouseEvents.MouseOverListener mouseOverListener, MouseEvents.MouseOutListener mouseOutListener) {
+
+    /**
+     *
+     * @param sparkline
+     * @param cellId
+     * @param mouseOverListener
+     * @param mouseOutListener
+     */
+        public ListGridCell(VerticalLayout sparkline, String cellId, MouseEvents.MouseOverListener mouseOverListener, MouseEvents.MouseOutListener mouseOutListener) {
         this.cellId = cellId;
         this.sparkline=sparkline;
         final MouseEvents mouseEvents = MouseEvents.enableFor(this.sparkline);
@@ -65,14 +86,18 @@ public class ListGridCell extends HorizontalLayout {
         cellvalue=100;
     }
     
-    
-    
-    
-
+    /**
+     *
+     * @return
+     */
     public float getCellValue() {
         return cellvalue;
     }
 
+    /**
+     *
+     * @param selected
+     */
     public void setSelected(boolean selected) {
         if (selected) {
             icon.setSource(darkblueSrc);

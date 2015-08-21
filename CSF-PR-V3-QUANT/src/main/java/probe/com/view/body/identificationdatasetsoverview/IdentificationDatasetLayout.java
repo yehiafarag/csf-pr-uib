@@ -19,12 +19,12 @@ import java.util.Map;
 import java.util.TreeMap;
 import org.vaadin.actionbuttontextfield.ActionButtonTextField;
 import org.vaadin.actionbuttontextfield.widgetset.client.ActionButtonType;
-import probe.com.handlers.MainHandler;
-import probe.com.model.beans.IdentificationProteinBean;
-import probe.com.model.beans.PeptideBean;
-import probe.com.model.beans.StandardProteinBean;
-import probe.com.view.body.identificationlayoutcomponents.GelFractionsLayout;
-import probe.com.view.body.identificationlayoutcomponents.PeptidesTableLayout;
+import probe.com.handlers.CSFPRHandler;
+import probe.com.model.beans.identification.IdentificationProteinBean;
+import probe.com.model.beans.identification.IdentificationPeptideBean;
+import probe.com.model.beans.identification.StandardIdentificationFractionPlotProteinBean;
+import probe.com.view.body.identificationlayoutcomponents.IdentificationGelFractionsLayout;
+import probe.com.view.body.identificationlayoutcomponents.IdentificationPeptidesTableLayout;
 import probe.com.view.body.identificationdatasetsoverview.identificationdataset.ProteinsTableLayout;
 import probe.com.view.core.exporter.ExporterBtnsGenerator;
 import probe.com.view.core.CustomExternalLink;
@@ -36,17 +36,22 @@ import probe.com.view.core.HideOnClickLayout;
  */
 public class IdentificationDatasetLayout extends VerticalLayout implements Serializable, Property.ValueChangeListener {
 
-    private final MainHandler handler;
+    private final CSFPRHandler handler;
     private final int datasetId;
     private final VerticalLayout fractionsLayout, peptidesLayout;
     private ProteinsTableLayout protTableLayout;
-    private PeptidesTableLayout peptideTableLayout;
+    private IdentificationPeptidesTableLayout peptideTableLayout;
 
     private Map<String, IdentificationProteinBean> proteinsList;
     private TreeMap<Integer, Object> selectionIndexes;
     private int nextIndex;
 
-    public IdentificationDatasetLayout(MainHandler handler, int datasetId) {
+    /**
+     *
+     * @param handler
+     * @param datasetId
+     */
+    public IdentificationDatasetLayout(CSFPRHandler handler, int datasetId) {
         this.setSizeFull();
         setMargin(true);
         this.handler = handler;
@@ -72,7 +77,7 @@ public class IdentificationDatasetLayout extends VerticalLayout implements Seria
         dsLayout.setMargin(new MarginInfo(false, false, false, false));
         this.addComponent(dsLayout);
         //get proteins List
-        proteinsList = handler.retriveProteinsList(datasetId);
+        proteinsList = handler.getIdentificationProteinsList(datasetId);
 
         protTableLayout = new ProteinsTableLayout(proteinsList, handler.getDataset(datasetId).getFractionsNumber(), handler.getDataset(datasetId).getNumberValidProt(), handler.getDataset(datasetId).getProteinsNumber());
         this.addComponent(protTableLayout);
@@ -84,7 +89,7 @@ public class IdentificationDatasetLayout extends VerticalLayout implements Seria
         this.addComponent(fractionsLayout);
         peptidesLayout.setWidth("100%");
         this.addComponent(peptidesLayout);
-        selectionIndexes = handler.getSearchIndexesSet(protTableLayout.getProteinTableComponent().getTableSearchMap(), protTableLayout.getProteinTableComponent().getTableSearchMapIndex(), protTableLayout.getSearchField().getValue().toUpperCase().trim());
+        selectionIndexes = handler.calculateIdentificationProteinsTableSearchIndexesSet(protTableLayout.getProteinTableComponent().getProtToIndexSearchingMap(),protTableLayout.getProteinTableComponent().getTableSearchMapIndex(), protTableLayout.getSearchField().getValue().toUpperCase().trim());
         protTableLayout.getProteinTableComponent().setCurrentPageFirstItemId(protTableLayout.getProteinTableComponent().getFirstIndex());
         protTableLayout.getProteinTableComponent().select(protTableLayout.getProteinTableComponent().getFirstIndex());
         protTableLayout.getProteinTableComponent().commit();
@@ -93,7 +98,7 @@ public class IdentificationDatasetLayout extends VerticalLayout implements Seria
         searchButtonTextField.addClickListener(new ActionButtonTextField.ClickListener() {
             @Override
             public void buttonClick(ActionButtonTextField.ClickEvent clickEvent) {
-                selectionIndexes = handler.getSearchIndexesSet(protTableLayout.getProteinTableComponent().getTableSearchMap(), protTableLayout.getProteinTableComponent().getTableSearchMapIndex(), protTableLayout.getSearchField().getValue().toUpperCase().trim());
+                selectionIndexes = handler.calculateIdentificationProteinsTableSearchIndexesSet(protTableLayout.getProteinTableComponent().getProtToIndexSearchingMap(), protTableLayout.getProteinTableComponent().getTableSearchMapIndex(), protTableLayout.getSearchField().getValue().toUpperCase().trim());
                 if (!selectionIndexes.isEmpty()) {
                     if (selectionIndexes.size() > 1) {
                         protTableLayout.getNextSearch().setEnabled(true);
@@ -182,14 +187,14 @@ public class IdentificationDatasetLayout extends VerticalLayout implements Seria
         protTableLayout.setExpBtnProtAllPepTable(allPeptidesProteinsExportLayout, datasetProteinsExportLayout);
 
         if (proteinskey >= 0) {
-            Map<Integer, PeptideBean> peptideProteintList = handler.getPeptidesProtList(datasetId, accession, otherAccession);
+            Map<Integer, IdentificationPeptideBean> peptideProteintList = handler.getIdentificationProteinPeptidesList(datasetId, accession, otherAccession);
 
             if (!peptideProteintList.isEmpty()) {
-                int validPep = handler.getValidatedPepNumber(peptideProteintList);
+                int validPep = handler.countValidatedPeptidesNumber(peptideProteintList);
                 if (peptideTableLayout != null) {
                     peptidesLayout.removeComponent(peptideTableLayout);
                 }
-                peptideTableLayout = new PeptidesTableLayout(validPep, peptideProteintList.size(), desc, peptideProteintList, accession, handler.getDataset(datasetId).getName());
+                peptideTableLayout = new IdentificationPeptidesTableLayout(validPep, peptideProteintList.size(), desc, peptideProteintList, accession, handler.getDataset(datasetId).getName());
 
                 peptideTableLayout.setHeight("" + protTableLayout.getHeight());
                 peptidesLayout.setHeight("" + protTableLayout.getHeight());
@@ -200,7 +205,7 @@ public class IdentificationDatasetLayout extends VerticalLayout implements Seria
                 peptideTableLayout.setExpBtnPepTable(proteinPeptidesExportLayout);
 
             }
-            List<StandardProteinBean> standerdProtList = handler.retrieveStandardProtPlotList(datasetId);
+            List<StandardIdentificationFractionPlotProteinBean> standerdProtList = handler.getStandardIdentificationFractionProteinsList(datasetId);
 
             int fractionsNumber = handler.getDataset(datasetId).getFractionsNumber();
 
@@ -216,7 +221,7 @@ public class IdentificationDatasetLayout extends VerticalLayout implements Seria
                 }
             } else {
 
-                Map<Integer, IdentificationProteinBean> fractionsList = handler.getProtGelFractionsList(datasetId, accession, otherAccession);
+                Map<Integer, IdentificationProteinBean> fractionsList = handler.getIdentificationProteinsGelFractionsList(datasetId, accession, otherAccession);
 
                 if (fractionsList != null && !fractionsList.isEmpty()) {
                     double mw = 0.0;
@@ -230,7 +235,7 @@ public class IdentificationDatasetLayout extends VerticalLayout implements Seria
                         }
                         mw = Double.valueOf(str);
                     }
-                    GelFractionsLayout gelFractionLayout = new GelFractionsLayout(handler, accession, mw, fractionsList, standerdProtList, handler.getDataset(datasetId).getName());
+                    IdentificationGelFractionsLayout gelFractionLayout = new IdentificationGelFractionsLayout(handler, accession, mw, fractionsList, standerdProtList, handler.getDataset(datasetId).getName());
                     gelFractionLayout.setMargin(new MarginInfo(false, false, false, true));
                     fractionsLayout.addComponent(gelFractionLayout);
 

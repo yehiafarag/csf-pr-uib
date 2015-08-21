@@ -37,10 +37,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import probe.com.handlers.MainHandler;
+import probe.com.handlers.CSFPRHandler;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.ComparisonProtein;
-import probe.com.model.beans.GroupsComparison;
-import probe.com.model.beans.QuantProtein;
+import probe.com.model.beans.quant.QuantGroupsComparison;
+import probe.com.model.beans.quant.QuantProtein;
 import probe.com.selectionmanager.CSFFilter;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 import probe.com.view.core.CustomExternalLink;
@@ -55,7 +55,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
 
     private final DatasetExploringCentralSelectionManager selectionManager;
     private final Table groupsComparisonProteinsTable;
-    private final MainHandler handler;
+    private final CSFPRHandler handler;
     private final HorizontalLayout topLayout, chartsLayoutContainer, bottomLayout;
     private final GridLayout searchingFieldLayout;
     private final TextField searchField;
@@ -68,6 +68,10 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
     private final OptionGroup hideUniqueProteinsOption;
     private String sortComparisonTableColumn;
 
+    /**
+     *
+     * @param width
+     */
     public void setLayoutWidth(int width) {
         this.width = width;
         this.setWidth(width + "px");
@@ -117,7 +121,13 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
 
     private final List<QuantProtein> searchQuantificationProtList;
 
-    public QuantProteinsComparisonsContainer(DatasetExploringCentralSelectionManager selectionManager, final MainHandler handler, List<QuantProtein> searchQuantificationProtList) {
+    /**
+     *
+     * @param selectionManager
+     * @param handler
+     * @param searchQuantificationProtList
+     */
+    public QuantProteinsComparisonsContainer(DatasetExploringCentralSelectionManager selectionManager, final CSFPRHandler handler, List<QuantProtein> searchQuantificationProtList) {
         this.selectionManager = selectionManager;
         this.searchQuantificationProtList = searchQuantificationProtList;
         selectionManager.registerFilter(QuantProteinsComparisonsContainer.this);
@@ -319,7 +329,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
                         Item item = groupsComparisonProteinsTable.getItem(id);
                         tableItems.put(id, item);
                         protAccssions.add(item.getItemProperty("Accession").toString());
-                        for (GroupsComparison gc : comparisonsArray) {
+                        for (QuantGroupsComparison gc : comparisonsArray) {
                             if (item.getItemProperty(gc.getComparisonHeader()).getValue() == null) {
                                 groupsComparisonProteinsTable.removeItem(id);
                                 break;
@@ -399,49 +409,61 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
 
     }
 
+    /**
+     *
+     * @return
+     */
     public HorizontalLayout getBottomLayout() {
         return bottomLayout;
     }
 
+    /**
+     *
+     * @return
+     */
     public VerticalLayout getHideCompariosonTableBtn() {
         return hideCompBtn;
     }
 
-    private final Set<GroupsComparison> comparisonMap = new HashSet<GroupsComparison>();
+    private final Set<QuantGroupsComparison> comparisonMap = new HashSet<QuantGroupsComparison>();
     private final Map<String, String> accessionMap = new HashMap<String, String>();
-    private GroupsComparison[] comparisonsArray = new GroupsComparison[]{};
+    private QuantGroupsComparison[] comparisonsArray = new QuantGroupsComparison[]{};
     private boolean selfselection = false;
 
+    /**
+     *
+     * @param type
+     */
     @Override
     public void selectionChanged(String type) {
         if (type.equalsIgnoreCase("ComparisonSelection")) {
             Set<String> selectedAccessions = null;
-            Set<GroupsComparison> selectedComparisonList = selectionManager.getSelectedComparisonList();
-            Set<GroupsComparison> newComparisons = new HashSet<GroupsComparison>();
-            Set<GroupsComparison> removingComparisons = new HashSet<GroupsComparison>();
-            for (GroupsComparison comparison : selectedComparisonList) {
+            Set<QuantGroupsComparison> selectedComparisonList = selectionManager.getSelectedComparisonList();
+            Set<QuantGroupsComparison> newComparisons = new HashSet<QuantGroupsComparison>();
+            Set<QuantGroupsComparison> removingComparisons = new HashSet<QuantGroupsComparison>();
+            for (QuantGroupsComparison comparison : selectedComparisonList) {
                 if (!comparisonMap.contains(comparison)) {
                     newComparisons.add(comparison);
                 }
             }
-            for (GroupsComparison comparison : comparisonMap) {
+            for (QuantGroupsComparison comparison : comparisonMap) {
                 if (!selectedComparisonList.contains(comparison)) {
                     removingComparisons.add(comparison);
                 }
             }
             newComparisons = handler.getComparisonProtList(newComparisons, searchQuantificationProtList);
-            for (GroupsComparison comparison : removingComparisons) {
+            for (QuantGroupsComparison comparison : removingComparisons) {
                 comparisonMap.remove(comparison);
             }
-            GroupsComparison[] tcompArr = new GroupsComparison[comparisonMap.size() + newComparisons.size()];
+            QuantGroupsComparison[] tcompArr = new QuantGroupsComparison[comparisonMap.size() + newComparisons.size()];
             int u = 0;
-            for (GroupsComparison comparison : comparisonsArray) {
+            for (QuantGroupsComparison comparison : comparisonsArray) {
                 if (comparisonMap.contains(comparison)) {
                     tcompArr[u] = comparison;
                     u++;
                 }
             }
-            for (GroupsComparison comparison : newComparisons) {
+            for (QuantGroupsComparison comparison : newComparisons) {
                 tcompArr[u] = comparison;
                 u++;
             }
@@ -465,7 +487,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
                 groupsComparisonProteinsTable.setVisible(true);
                 bottomLayout.setVisible(true);
             }
-            selectionManager.updateSelectedComparisonList(new LinkedHashSet<GroupsComparison>(Arrays.asList(comparisonsArray)));
+            selectionManager.updateSelectedComparisonList(new LinkedHashSet<QuantGroupsComparison>(Arrays.asList(comparisonsArray)));
             updateTableData(comparisonsArray, selectedAccessions);
             updateProtCountLabel(accessionMap.size());
 
@@ -492,17 +514,25 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
 
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String getFilterId() {
         return "comparisonTable";
     }
 
+    /**
+     *
+     * @param value
+     */
     @Override
     public void removeFilterValue(String value) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    private void updateTableData(GroupsComparison[] comparisonMap, Set<String> selectedAccessions) {
+    private void updateTableData(QuantGroupsComparison[] comparisonMap, Set<String> selectedAccessions) {
         this.chartsLayoutContainer.removeAllComponents();
         this.groupsComparisonProteinsTable.removeAllItems();
         chartSet.clear();
@@ -538,7 +568,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
 
         comparisonProteinSet = new HashMap<String, ComparisonProtein[]>();
         for (int compIndex = 0; compIndex < comparisonMap.length; compIndex++) {
-            GroupsComparison comp = comparisonMap[compIndex];
+            QuantGroupsComparison comp = comparisonMap[compIndex];
             ComparisonChartContainer chartPlot = generateColumnBarChart(comp, columnWidth, (searchQuantificationProtList != null));
             this.chartsLayoutContainer.addComponent(chartPlot);
             this.chartsLayoutContainer.setComponentAlignment(chartPlot, Alignment.MIDDLE_CENTER);
@@ -571,7 +601,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
             tableRow[i++] = index;
             tableRow[i++] = acc;
             tableRow[i++] = protName;
-            for (GroupsComparison cg : comparisonMap) {
+            for (QuantGroupsComparison cg : comparisonMap) {
                 ComparisonProtein cp = comparisonProteinSet.get(protAccName)[i - 3];
                 if (cp == null) {
                     tableRow[i] = null;
@@ -589,7 +619,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
             index++;
         }
         if (comparisonMap.length > 0) {
-            sortComparisonTableColumn = ((GroupsComparison) comparisonMap[comparisonMap.length - 1]).getComparisonHeader();
+            sortComparisonTableColumn = ((QuantGroupsComparison) comparisonMap[comparisonMap.length - 1]).getComparisonHeader();
         }
         this.groupsComparisonProteinsTable.sort(new String[]{sortComparisonTableColumn}, new boolean[]{false});
         this.groupsComparisonProteinsTable.setSortAscending(false);
@@ -645,7 +675,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
     private final Set<ComparisonChartContainer> chartSet = new HashSet<ComparisonChartContainer>();
     private ComparisonChartContainer lastHeighlitedChart;
 
-    private ComparisonChartContainer generateColumnBarChart(final GroupsComparison comparison, int width, boolean searchingMode) {
+    private ComparisonChartContainer generateColumnBarChart(final QuantGroupsComparison comparison, int width, boolean searchingMode) {
         final ComparisonChartContainer chart = new ComparisonChartContainer(comparison, width, searchingMode);
         LayoutEvents.LayoutClickListener chartDataClickHandler = new LayoutEvents.LayoutClickListener() {
             private final Map<Integer, Set<String>> localCompProtMap = chart.getCompProtMap();
@@ -674,11 +704,11 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
 
         LayoutEvents.LayoutClickListener closeListener = new LayoutEvents.LayoutClickListener() {
 
-            private final GroupsComparison localComparison = comparison;
+            private final QuantGroupsComparison localComparison = comparison;
 
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-                Set<GroupsComparison> selectedComparisonList = selectionManager.getSelectedComparisonList();
+                Set<QuantGroupsComparison> selectedComparisonList = selectionManager.getSelectedComparisonList();
                 selectedComparisonList.remove(localComparison);
                 selectionManager.setComparisonSelection(selectedComparisonList);
             }
@@ -701,12 +731,12 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
 
     private Map<String, ComparisonProtein[]> comparisonProteinSet;
 
-    private void filterTable(Set<String> accessions, GroupsComparison[] comparisonProteinsArray, String sortCompColumnName) {
+    private void filterTable(Set<String> accessions, QuantGroupsComparison[] comparisonProteinsArray, String sortCompColumnName) {
         groupsComparisonProteinsTable.removeValueChangeListener(QuantProteinsComparisonsContainer.this);
         this.groupsComparisonProteinsTable.removeAllItems();
         comparisonProteinSet = new HashMap<String, ComparisonProtein[]>();
         for (int compIndex = 0; compIndex < comparisonProteinsArray.length; compIndex++) {
-            GroupsComparison comp = comparisonProteinsArray[compIndex];
+            QuantGroupsComparison comp = comparisonProteinsArray[compIndex];
             Map<String, ComparisonProtein> protList = comp.getComparProtsMap();
             for (String key2 : protList.keySet()) {
                 ComparisonProtein prot = protList.get(key2);
@@ -735,7 +765,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
             tableRow[i++] = index;
             tableRow[i++] = acc;
             tableRow[i++] = protName;
-            for (GroupsComparison cg : comparisonProteinsArray) {
+            for (QuantGroupsComparison cg : comparisonProteinsArray) {
                 ComparisonProtein cp = comparisonProteinSet.get(protAccName)[i - 3];
                 if (cp == null) {
                     tableRow[i] = null;
@@ -750,7 +780,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
             index++;
         }
         if (sortCompColumnName.equalsIgnoreCase("")) {
-            sortCompColumnName = ((GroupsComparison) comparisonProteinsArray[0]).getComparisonHeader();
+            sortCompColumnName = ((QuantGroupsComparison) comparisonProteinsArray[0]).getComparisonHeader();
         }
 
         if (comparisonProteinsArray.length > 0) {
@@ -818,7 +848,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
         LinkedHashMap<String, ComparisonProtein[]> protSelectionMap = new LinkedHashMap<String, ComparisonProtein[]>();
         for (String accession : accessions) {
             for (int compIndex = 0; compIndex < comparisonsArray.length; compIndex++) {
-                GroupsComparison comp = comparisonsArray[compIndex];
+                QuantGroupsComparison comp = comparisonsArray[compIndex];
                 Map<String, ComparisonProtein> protList = comp.getComparProtsMap();
                 for (ComparisonProtein prot : protList.values()) {
                     if (prot.getUniProtAccess().equalsIgnoreCase(accession)) {
@@ -871,6 +901,10 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
 
     }
 
+    /**
+     *
+     * @param width
+     */
     public void resizeCharts(int width) {
         for (ComparisonChartContainer chart : chartSet) {
             chart.resizeChart(width);

@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.ComparisonProtein;
-import probe.com.model.beans.GroupsComparison;
+import probe.com.model.beans.quant.QuantGroupsComparison;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 
 /**
@@ -21,10 +21,18 @@ import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
  */
 public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
 
-    private final Map<GroupsComparison, ProteinComparisonScatterPlotLayout> compLayoutMap = new LinkedHashMap<GroupsComparison, ProteinComparisonScatterPlotLayout>();
+    private final Map<QuantGroupsComparison, ProteinComparisonScatterPlotLayout> compLayoutMap = new LinkedHashMap<QuantGroupsComparison, ProteinComparisonScatterPlotLayout>();
     private final GridLayout mainbodyLayout;
 
-    public ProteinStudiesComparisonsContainerLayout(ComparisonProtein[] proteinsComparisonsArr, Set<GroupsComparison> selectedComparisonList, final DatasetExploringCentralSelectionManager selectionManager, int width,boolean searchingMode) {
+    /**
+     *
+     * @param proteinsComparisonsArr
+     * @param selectedComparisonList
+     * @param selectionManager
+     * @param width
+     * @param searchingMode
+     */
+    public ProteinStudiesComparisonsContainerLayout(ComparisonProtein[] proteinsComparisonsArr, Set<QuantGroupsComparison> selectedComparisonList, final DatasetExploringCentralSelectionManager selectionManager, int width,boolean searchingMode) {
         setStyleName(Reindeer.LAYOUT_WHITE);
         this.setWidth("100%");
         this.setHeightUndefined();
@@ -35,7 +43,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
         int rowIndex = 0;
         for (ComparisonProtein cprot : proteinsComparisonsArr) {
             if (cprot == null) {
-                GroupsComparison gc = (GroupsComparison) selectedComparisonList.toArray()[rowIndex];
+                QuantGroupsComparison gc = (QuantGroupsComparison) selectedComparisonList.toArray()[rowIndex];
                 cprot = new ComparisonProtein(width, gc, -1);
                 continue;
             }
@@ -47,11 +55,11 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
             final ComparisonProtein gc = cprot;
             LayoutEvents.LayoutClickListener closeListener = new LayoutEvents.LayoutClickListener() {
 
-                private final GroupsComparison localComparison = gc.getComparison();
+                private final QuantGroupsComparison localComparison = gc.getComparison();
 
                 @Override
                 public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-                    Set<GroupsComparison> selectedComparisonList = selectionManager.getSelectedComparisonList();
+                    Set<QuantGroupsComparison> selectedComparisonList = selectionManager.getSelectedComparisonList();
                     selectedComparisonList.remove(localComparison);
                     selectionManager.setComparisonSelection(selectedComparisonList);
                 }
@@ -61,6 +69,10 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
         }
     }
 
+    /**
+     *
+     * @param ordComparisonProteins
+     */
     public void orderComparisons(ComparisonProtein[] ordComparisonProteins) {
         mainbodyLayout.removeAllComponents();
         int rowIndex = 0;
@@ -76,7 +88,12 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
     }
     private ProteinComparisonScatterPlotLayout lastheighlitedlayout;
 
-    public void highlightComparison(GroupsComparison groupComp, boolean clicked) {
+    /**
+     *
+     * @param groupComp
+     * @param clicked
+     */
+    public void highlightComparison(QuantGroupsComparison groupComp, boolean clicked) {
         if (lastheighlitedlayout != null) {
             lastheighlitedlayout.highlight(false, clicked);
         }
@@ -87,13 +104,23 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
         layout.highlight(true, clicked);
         lastheighlitedlayout = layout;
     }
-    public String getComparisonChart(GroupsComparison groupComp) {
+
+    /**
+     *
+     * @param groupComp
+     * @return
+     */
+    public String getComparisonChart(QuantGroupsComparison groupComp) {
         ProteinComparisonScatterPlotLayout layout = compLayoutMap.get(groupComp);
         if (layout == null) {
             return "";
         }
         return layout.getUrl();
     }
+
+    /**
+     *
+     */
     public void redrawCharts() {
         for (ProteinComparisonScatterPlotLayout layout : compLayoutMap.values()) {
             layout.redrawChart();

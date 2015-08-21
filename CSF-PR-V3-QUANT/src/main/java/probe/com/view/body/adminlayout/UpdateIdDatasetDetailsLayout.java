@@ -16,8 +16,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import probe.com.handlers.MainHandler;
-import probe.com.model.beans.IdentificationDataset;
+import probe.com.handlers.CSFPRHandler;
+import probe.com.model.beans.identification.IdentificationDatasetBean;
 import probe.com.model.beans.User;
 
 /**
@@ -31,22 +31,27 @@ public class UpdateIdDatasetDetailsLayout extends VerticalLayout implements Seri
     private TextField expNameField, speciesField, sampleTypeField, sampleProcessingField, instrumentTypeField, fragModeField, UploadedByNameField, emailField, publicationLinkField;
     private TextArea descriptionField;
     private final VerticalLayout selectLayout = new VerticalLayout();
-    private Map<Integer, IdentificationDataset> datasetList;
-    private IdentificationDataset dataset;
-    private final MainHandler handler;
+    private Map<Integer, IdentificationDatasetBean> datasetList;
+    private IdentificationDatasetBean dataset;
+    private final CSFPRHandler handler;
     private final User user;
     private final Property.ValueChangeListener listener;
     private int id;
 
-    public UpdateIdDatasetDetailsLayout(final MainHandler handler, User user) {
+    /**
+     *
+     * @param handler
+     * @param user
+     */
+    public UpdateIdDatasetDetailsLayout(final CSFPRHandler handler, User user) {
         this.setWidth("100%");
         this.addComponent(selectLayout);
         this.handler = handler;
         this.user = user;
 
-        datasetList = handler.getDatasetList();
+        datasetList = handler.getIdentificationDatasetList();
         List<String> strExpList = new ArrayList<String>();
-        for (IdentificationDataset exp : datasetList.values()) {
+        for (IdentificationDatasetBean exp : datasetList.values()) {
             if (user.getEmail().equalsIgnoreCase("csf-pr@googlegroups.com") || exp.getEmail().equalsIgnoreCase(user.getEmail())) {
                 String str = exp.getDatasetId() + "	" + exp.getName() + "	( " + exp.getUploadedByName() + " )";
                 strExpList.add(str);
@@ -235,7 +240,7 @@ public class UpdateIdDatasetDetailsLayout extends VerticalLayout implements Seri
         select.addValueChangeListener(listener);
     }
 
-    private IdentificationDataset validateForm(IdentificationDataset newExp, int id) {
+    private IdentificationDatasetBean validateForm(IdentificationDatasetBean newExp, int id) {
 
         String expName = (String) expNameField.getValue();
         String expSpecies = (String) speciesField.getValue();
@@ -259,7 +264,7 @@ public class UpdateIdDatasetDetailsLayout extends VerticalLayout implements Seri
 
             if (expName.equals(expName)) {
             } else {
-                for (IdentificationDataset exp : datasetList.values()) {
+                for (IdentificationDatasetBean exp : datasetList.values()) {
                     if (exp.getName().equalsIgnoreCase(expName)) {
                         checkName = true;
                         break;
@@ -291,9 +296,9 @@ public class UpdateIdDatasetDetailsLayout extends VerticalLayout implements Seri
     private void updateSelect() {
         select.removeValueChangeListener(listener);
         selectLayout.removeAllComponents();
-        datasetList = handler.getDatasetList();
+        datasetList = handler.getIdentificationDatasetList();
         List<String> strExpList = new ArrayList<String>();
-        for (IdentificationDataset exp : datasetList.values()) {
+        for (IdentificationDatasetBean exp : datasetList.values()) {
             if (user.getEmail().equalsIgnoreCase("csf-pr@googlegroups.com") || exp.getEmail().equalsIgnoreCase(user.getEmail())) {
                 String str = exp.getDatasetId() + "	" + exp.getName() + "	( " + exp.getUploadedByName() + " )";
                 strExpList.add(str);
@@ -307,7 +312,7 @@ public class UpdateIdDatasetDetailsLayout extends VerticalLayout implements Seri
     }
 
     private int getValidatedPeptideNumber(int datasetId) {
-        return handler.getPeptidesNumber(datasetId, true);
+        return handler.getIdentificationDatasetPeptidesNumber(datasetId, true);
 
     }
 

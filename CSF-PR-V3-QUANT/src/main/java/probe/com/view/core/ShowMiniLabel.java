@@ -17,14 +17,25 @@ public class ShowMiniLabel extends Label implements Serializable {
 
     boolean show = false;
 
+    /**
+     *
+     */
     public ShowMiniLabel() {
         updateIcon(show);
     }
-     public ShowMiniLabel(boolean v) {
+
+    /**
+     *
+     * @param v
+     */
+    public ShowMiniLabel(boolean v) {
         updateIcon(v);
     }
 
-     
+    /**
+     *
+     * @param show
+     */
     public final void updateIcon(boolean show) {
         if (show) {
             show = false;

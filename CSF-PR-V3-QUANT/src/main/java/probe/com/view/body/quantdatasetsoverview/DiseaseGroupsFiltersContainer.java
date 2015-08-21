@@ -41,6 +41,12 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
     private final Button selectAllFilterBtn;
     int pageWidth;
     
+    /**
+     *
+     * @param exploringFiltersManager
+     * @param pieChartFiltersBtn
+     * @param compTable
+     */
     public DiseaseGroupsFiltersContainer(final DatasetExploringCentralSelectionManager exploringFiltersManager, PopupInteractiveDSFiltersLayout pieChartFiltersBtn, final QuantProteinsComparisonsContainer compTable) {
         pageWidth = Page.getCurrent().getWebBrowser().getScreenWidth();
 //        this.setHeight("100%");
@@ -188,12 +194,19 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
 
     }
     
+    /**
+     *
+     */
     public void selectAllComparisons() {
         if (diseaseGroupsHeatmapFilter.isActiveSelectAll()) {
             selectAllFilterBtn.click();
         }
     }
     
+    /**
+     *
+     * @param type
+     */
     @Override
     public void selectionChanged(String type) {
         selectAllFilterBtn.setEnabled(diseaseGroupsHeatmapFilter.isActiveSelectAll());
@@ -223,11 +236,19 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         
     }
     
+    /**
+     *
+     * @return
+     */
     @Override
     public String getFilterId() {
         return "DiseaseGroupsFilter";
     }
     
+    /**
+     *
+     * @param value
+     */
     @Override
     public void removeFilterValue(String value) {
     }

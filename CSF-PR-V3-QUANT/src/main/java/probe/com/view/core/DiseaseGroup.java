@@ -20,62 +20,123 @@ public class DiseaseGroup {
     private String patientsGroupILabel;
     private String patientsGroupIILabel;
 
+    /**
+     *
+     * @return
+     */
     public String getPatientsGroupI() {
         return patientsGroupI;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getQuantDatasetIndex() {
         return quantDatasetIndex;
     }
 
+    /**
+     *
+     * @param quantDatasetIndex
+     */
     public void setQuantDatasetIndex(int quantDatasetIndex) {
         this.quantDatasetIndex = quantDatasetIndex;
     }
 
+    /**
+     *
+     * @param patientsGroupI
+     */
     public void setPatientsGroupI(String patientsGroupI) {
         this.patientsGroupI = patientsGroupI;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getPatientsGroupII() {
         return patientsGroupII;
     }
 
+    /**
+     *
+     * @param patientsGroupII
+     */
     public void setPatientsGroupII(String patientsGroupII) {
         this.patientsGroupII = patientsGroupII;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getPatientsSubGroupI() {
         return patientsSubGroupI;
     }
 
+    /**
+     *
+     * @param patientsSubGroupI
+     */
     public void setPatientsSubGroupI(String patientsSubGroupI) {
         this.patientsSubGroupI = patientsSubGroupI;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getPatientsSubGroupII() {
         return patientsSubGroupII;
     }
 
+    /**
+     *
+     * @param patientsSubGroupII
+     */
     public void setPatientsSubGroupII(String patientsSubGroupII) {
         this.patientsSubGroupII = patientsSubGroupII;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getPatientsGroupILabel() {
         return patientsGroupILabel;
     }
 
+    /**
+     *
+     * @param patientsGroupILabel
+     */
     public void setPatientsGroupILabel(String patientsGroupILabel) {
         this.patientsGroupILabel = patientsGroupILabel;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getPatientsGroupIILabel() {
         return patientsGroupIILabel;
     }
 
+    /**
+     *
+     * @param patientsGroupIILabel
+     */
     public void setPatientsGroupIILabel(String patientsGroupIILabel) {
         this.patientsGroupIILabel = patientsGroupIILabel;
     }
 
+    /**
+     *
+     * @param label
+     * @return
+     */
     public boolean checkLabel(String label) {
         if (label.equalsIgnoreCase(patientsGroupILabel) || label.equalsIgnoreCase(patientsGroupIILabel)) {
             return true;
@@ -84,6 +145,11 @@ public class DiseaseGroup {
 
     }
 
+    /**
+     *
+     * @param key
+     * @return
+     */
     public String getValLabel(String key) {
         if (key.equalsIgnoreCase(patientsGroupILabel)) {
             return patientsGroupIILabel;
@@ -95,10 +161,18 @@ public class DiseaseGroup {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public int getOriginalDatasetIndex() {
         return originalDatasetIndex;
     }
 
+    /**
+     *
+     * @param originalDatasetIndex
+     */
     public void setOriginalDatasetIndex(int originalDatasetIndex) {
         this.originalDatasetIndex = originalDatasetIndex;
     }

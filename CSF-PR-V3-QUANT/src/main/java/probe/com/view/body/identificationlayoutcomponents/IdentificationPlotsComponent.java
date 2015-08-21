@@ -31,16 +31,27 @@ import org.dussan.vaadin.dcharts.options.Options;
 import org.dussan.vaadin.dcharts.options.Series;
 import org.dussan.vaadin.dcharts.options.SeriesDefaults;
 import org.dussan.vaadin.dcharts.renderers.tick.CanvasAxisTickRenderer;
-import probe.com.model.beans.IdentificationProteinBean;
-import probe.com.model.beans.StandardProteinBean;
-/*
+import probe.com.model.beans.identification.IdentificationProteinBean;
+import probe.com.model.beans.identification.StandardIdentificationFractionPlotProteinBean;
+/*/*
  * @author Yehia Farag
  */
 
-public class PlotsComponent extends VerticalLayout implements Serializable {
+/**
+ *
+ * @author Yehia Farag
+ */
+public class IdentificationPlotsComponent extends VerticalLayout implements Serializable {
 
+    /**
+     *
+     * @param lable
+     * @param protienFractionList
+     * @param standProtList
+     * @param mw
+     */
     @SuppressWarnings("BoxingBoxedValue")
-    public PlotsComponent(String lable, Map<Integer, IdentificationProteinBean> protienFractionList, Map<String, List<StandardProteinBean>> standProtList, double mw) {
+    public IdentificationPlotsComponent(String lable, Map<Integer, IdentificationProteinBean> protienFractionList, Map<String, List<StandardIdentificationFractionPlotProteinBean>> standProtList, double mw) {
         if (!protienFractionList.isEmpty()) {
 
             Label pepLable = new Label("<h5 style='font-family:verdana;color:#4d749f;text-align:left'>" + lable + "</h5>");
@@ -50,17 +61,16 @@ public class PlotsComponent extends VerticalLayout implements Serializable {
             this.addComponent(pepLable);
             this.setComponentAlignment(pepLable, Alignment.BOTTOM_LEFT);
             this.setMargin(false);
-            List<StandardProteinBean> borderList = standProtList.get("#79AFFF");
-            List<StandardProteinBean> standardList = standProtList.get("#CDE1FF");
+            List<StandardIdentificationFractionPlotProteinBean> borderList = standProtList.get("#79AFFF");
+            List<StandardIdentificationFractionPlotProteinBean> standardList = standProtList.get("#CDE1FF");
 
             Double[] initRealValue = new Double[(protienFractionList.size() + borderList.size() + standardList.size())];
-
-            //
-            Map<StandardProteinBean, Double[]> standardValuesList = new HashMap<StandardProteinBean, Double[]>();
-            Map<StandardProteinBean, Double[]> tempStandardValuesList = new HashMap<StandardProteinBean, Double[]>();
+           
+            Map<StandardIdentificationFractionPlotProteinBean, Double[]> standardValuesList = new HashMap<StandardIdentificationFractionPlotProteinBean, Double[]>();
+            Map<StandardIdentificationFractionPlotProteinBean, Double[]> tempStandardValuesList = new HashMap<StandardIdentificationFractionPlotProteinBean, Double[]>();
             double lower = -1;
             double upper = -2;
-            for (StandardProteinBean spb : borderList) {
+            for (StandardIdentificationFractionPlotProteinBean spb : borderList) {
                 Double[] standardValues = new Double[initRealValue.length];
                 standardValues[0] = 0d;
                 spb.setColor("#79AFFF");
@@ -74,7 +84,7 @@ public class PlotsComponent extends VerticalLayout implements Serializable {
                 }
                 standardValuesList.put(spb, standardValues);
             }
-            for (StandardProteinBean spb : standardList) {
+            for (StandardIdentificationFractionPlotProteinBean spb : standardList) {
                 Double[] standardValues = new Double[initRealValue.length];
                 standardValues[0] = 0d;
                 spb.setColor("#CDE1FF");
@@ -96,7 +106,7 @@ public class PlotsComponent extends VerticalLayout implements Serializable {
                     IdentificationProteinBean pb = protienFractionList.get(index);
                     initRealValue[x] = (double) pb.getNumberOfPeptidePerFraction();
                     strArr[x] = f + "";
-                    for (StandardProteinBean spb : standardValuesList.keySet()) {
+                    for (StandardIdentificationFractionPlotProteinBean spb : standardValuesList.keySet()) {
                         if (spb.getLowerFraction() == f) {
                             ++x;
                             initRealValue[x] = 0.0d;
@@ -129,7 +139,7 @@ public class PlotsComponent extends VerticalLayout implements Serializable {
                     initRealValue[x] = (double) pb.getNumberOfSpectraPerFraction();
                     strArr[x] = f + "";
 
-                    for (StandardProteinBean spb : standardValuesList.keySet()) {
+                    for (StandardIdentificationFractionPlotProteinBean spb : standardValuesList.keySet()) {
                         if (spb.getLowerFraction() == f) {
                             ++x;
                             initRealValue[x] = 0.0d;
@@ -165,7 +175,7 @@ public class PlotsComponent extends VerticalLayout implements Serializable {
                     double avg = (pb.getAveragePrecursorIntensityPerFraction());
                     initRealValue[x] = avg;
                     strArr[x] = f + "";
-                    for (StandardProteinBean spb : standardValuesList.keySet()) {
+                    for (StandardIdentificationFractionPlotProteinBean spb : standardValuesList.keySet()) {
                         if (spb.getLowerFraction() == f) {
                             ++x;
                             initRealValue[x] = 0.0d;
@@ -200,7 +210,7 @@ public class PlotsComponent extends VerticalLayout implements Serializable {
                 } catch (Exception e) {
                     continue;
                 }
-                for (StandardProteinBean spb : standardValuesList.keySet()) {
+                for (StandardIdentificationFractionPlotProteinBean spb : standardValuesList.keySet()) {
                     if (spb.getLowerFraction() == indexLable) {
                         Double[] values = standardValuesList.get(spb);
                         for (int localx = 0; localx < values.length; localx++) {
@@ -235,7 +245,7 @@ public class PlotsComponent extends VerticalLayout implements Serializable {
             String[] lables = new String[standardValuesList.size()];
 
             int z = 1;
-            for (StandardProteinBean spb : standardValuesList.keySet()) {
+            for (StandardIdentificationFractionPlotProteinBean spb : standardValuesList.keySet()) {
                 Double[] initValues = standardValuesList.get(spb);
                 Object[] values = new Double[(initValues.length)];
                 System.arraycopy(initValues, 0, values, 0, values.length);

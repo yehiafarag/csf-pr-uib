@@ -2,8 +2,8 @@
 package probe.com.bin;
 
 import probe.com.view.body.identificationdatasetsoverview.identificationdataset.ProteinsTableLayout;
-import probe.com.view.body.identificationlayoutcomponents.PeptidesTableLayout;
-import probe.com.view.body.identificationlayoutcomponents.GelFractionsLayout;
+import probe.com.view.body.identificationlayoutcomponents.IdentificationPeptidesTableLayout;
+import probe.com.view.body.identificationlayoutcomponents.IdentificationGelFractionsLayout;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.event.FieldEvents;
@@ -27,10 +27,10 @@ import java.util.Map;
 import java.util.TreeMap;
 import org.vaadin.actionbuttontextfield.ActionButtonTextField;
 import org.vaadin.actionbuttontextfield.widgetset.client.ActionButtonType;
-import probe.com.handlers.MainHandler;
-import probe.com.model.beans.PeptideBean;
-import probe.com.model.beans.IdentificationProteinBean;
-import probe.com.model.beans.StandardProteinBean;
+import probe.com.handlers.CSFPRHandler;
+import probe.com.model.beans.identification.IdentificationPeptideBean;
+import probe.com.model.beans.identification.IdentificationProteinBean;
+import probe.com.model.beans.identification.StandardIdentificationFractionPlotProteinBean;
 import probe.com.view.core.exporter.ExporterBtnsGenerator;
 import probe.com.view.core.CustomExternalLink;
 import probe.com.view.core.IconGenerator;
@@ -51,12 +51,12 @@ public final class ProjectsLayout extends VerticalLayout implements Serializable
     private VerticalLayout peptideLayout;
     private final String defaultSelectString = "\t \t \t Please Select Dataset";
     private int starter = 1;
-    private final MainHandler handler;
+    private final CSFPRHandler handler;
     private ProteinsTableLayout protTableLayout;
     private String accession;
     private String otherAccession;
     private Map<Integer, IdentificationProteinBean> fractionsList = null;
-    private PeptidesTableLayout peptideTableLayout;
+    private IdentificationPeptidesTableLayout peptideTableLayout;
     private VerticalLayout fractionLayout;
     private Map<String, IdentificationProteinBean> proteinsList;
     private final VerticalLayout typeILayout;
@@ -74,7 +74,7 @@ public final class ProjectsLayout extends VerticalLayout implements Serializable
      *
      * @param handler dataset handler
      */
-    public ProjectsLayout(MainHandler handler) {
+    public ProjectsLayout(CSFPRHandler handler) {
         this.setSizeFull();
         setMargin(true);
         this.handler = handler;
@@ -156,7 +156,7 @@ public final class ProjectsLayout extends VerticalLayout implements Serializable
         
         identificationSelectLayout.removeAllComponents();
         identificationSelectLayout.setVisible(true);
-         if (handler.getDatasetList() == null || handler.getDatasetList().isEmpty()) {
+         if (handler.getIdentificationDatasetList() == null || handler.getIdentificationDatasetList().isEmpty()) {
             Label noExpLable = new Label("<h4 style='font-family:verdana;color:black;font-weight:bold;'>Sorry No Dataset Availabe Now !</h4>");
             noExpLable.setContentMode(ContentMode.HTML);
             identificationSelectLayout.addComponent(noExpLable);
@@ -179,7 +179,7 @@ public final class ProjectsLayout extends VerticalLayout implements Serializable
             selectDataset.setValue(defaultSelectString);
             selectDataset.focus();
 
-            for (String str : handler.getDatasetNamesList().values()) {
+            for (String str : handler.getIdentificationDatasetNamesList().values()) {
                 selectDataset.addItem(str);
             }
             selectDataset.setImmediate(true);
@@ -221,7 +221,7 @@ public final class ProjectsLayout extends VerticalLayout implements Serializable
         if (selectedDatasetKey != null && (!selectedDatasetKey.toString().equals(defaultSelectString))) {
             String datasetString = selectDataset.getValue().toString();
             //set the main dataset on logic layer
-            handler.setMainDatasetId(datasetString);
+            handler.setMainIdentificationDatasetId(datasetString);
             fractionNumber = handler.getDataset(handler.getMainDatasetId()).getFractionsNumber();
             //layout for dataset type 1 Identification dataset
             if (handler.getMainDatasetId() != 0 &&  handler.getDataset(handler.getMainDatasetId()).getDatasetType() == 1) {
@@ -237,7 +237,7 @@ public final class ProjectsLayout extends VerticalLayout implements Serializable
                 typeILayout.addComponent(datasetDetailsLayout);
                 typeILayout.setComponentAlignment(datasetDetailsLayout, Alignment.TOP_LEFT);
 
-                proteinsList = handler.retriveProteinsList(handler.getMainDatasetId());
+                proteinsList = handler.getIdentificationProteinsList(handler.getMainDatasetId());
                
                if (protTableLayout != null) {
 //                    protTableLayout.getProteinTableComponent().removeValueChangeListener(protTableListener);
@@ -314,7 +314,7 @@ public final class ProjectsLayout extends VerticalLayout implements Serializable
                             
                             //testing 
                            
-                            Map<Integer, PeptideBean> peptideProteintList = handler.getPeptidesProtList(handler.getMainDatasetId(), accession, otherAccession);
+                            Map<Integer, IdentificationPeptideBean> peptideProteintList = handler.getIdentificationProteinPeptidesList(handler.getMainDatasetId(), accession, otherAccession);
 //                            if (handler.getMainDataset().getPeptideList() == null) {
 //                                handler.getMainDataset().setPeptideList(peptideProteintList);
 //                            } else {
@@ -324,11 +324,11 @@ public final class ProjectsLayout extends VerticalLayout implements Serializable
                             
                             
                             if (!peptideProteintList.isEmpty()) {
-                                int validPep = handler.getValidatedPepNumber(peptideProteintList);
+                                int validPep = handler.countValidatedPeptidesNumber(peptideProteintList);
                                 if (peptideTableLayout != null) {
                                     peptideLayout.removeComponent(peptideTableLayout);
                                 }
-                                peptideTableLayout = new PeptidesTableLayout(validPep, peptideProteintList.size(), desc, peptideProteintList, accession, handler.getDataset(handler.getMainDatasetId()).getName());
+                                peptideTableLayout = new IdentificationPeptidesTableLayout(validPep, peptideProteintList.size(), desc, peptideProteintList, accession, handler.getDataset(handler.getMainDatasetId()).getName());
                                 peptideLayout.setMargin(true);
                                 peptideTableLayout.setHeight("" + protTableLayout.getHeight());
                                 peptideLayout.setHeight("" + protTableLayout.getHeight());
@@ -339,7 +339,7 @@ public final class ProjectsLayout extends VerticalLayout implements Serializable
 //                                peptideTableLayout.setExpBtnPepTable(ExportDatasetProtenPeptidesLayout);
 
                             }  
-                            List<StandardProteinBean>  standerdProtList = handler.retrieveStandardProtPlotList(handler.getMainDatasetId());
+                            List<StandardIdentificationFractionPlotProteinBean>  standerdProtList = handler.getStandardIdentificationFractionProteinsList(handler.getMainDatasetId());
                             if(fractionNumber == 0 || handler.getMainDatasetId() == 0 || standerdProtList == null || standerdProtList.isEmpty() ){
                                 fractionLayout.removeAllComponents();
                                 if (protTableLayout.getProteinTableComponent() != null) {
@@ -352,7 +352,7 @@ public final class ProjectsLayout extends VerticalLayout implements Serializable
                                 }
                             }else{
                            
-                            fractionsList = handler.getProtGelFractionsList(handler.getMainDatasetId(),accession, otherAccession);
+                            fractionsList = handler.getIdentificationProteinsGelFractionsList(handler.getMainDatasetId(),accession, otherAccession);
                               System.out.println((fractionsList != null)+" &&"+( !fractionsList.isEmpty()));
                                  
                                 if (fractionsList != null && !fractionsList.isEmpty()) {
@@ -393,7 +393,7 @@ public final class ProjectsLayout extends VerticalLayout implements Serializable
                 protTableLayout.getProteinTableComponent().addValueChangeListener(protTableListener);
                 protTableLayout.setListener(protTableListener);
 
-                selectionIndexes = handler.getSearchIndexesSet(protTableLayout.getProteinTableComponent().getTableSearchMap(), protTableLayout.getProteinTableComponent().getTableSearchMapIndex(), protTableLayout.getSearchField().getValue().toUpperCase().trim());
+                selectionIndexes = handler.calculateIdentificationProteinsTableSearchIndexesSet(protTableLayout.getProteinTableComponent().getProtToIndexSearchingMap(), protTableLayout.getProteinTableComponent().getTableSearchMapIndex(), protTableLayout.getSearchField().getValue().toUpperCase().trim());
                 protTableLayout.getProteinTableComponent().setCurrentPageFirstItemId(protTableLayout.getProteinTableComponent().getFirstIndex());
                 protTableLayout.getProteinTableComponent().select(protTableLayout.getProteinTableComponent().getFirstIndex());
                 protTableLayout.getProteinTableComponent().commit();
@@ -402,7 +402,7 @@ public final class ProjectsLayout extends VerticalLayout implements Serializable
                 searchButtonTextField.addClickListener(new ActionButtonTextField.ClickListener() {
                     @Override
                     public void buttonClick(ActionButtonTextField.ClickEvent clickEvent) {
-                        selectionIndexes = handler.getSearchIndexesSet(protTableLayout.getProteinTableComponent().getTableSearchMap(), protTableLayout.getProteinTableComponent().getTableSearchMapIndex(), protTableLayout.getSearchField().getValue().toUpperCase().trim());
+                        selectionIndexes = handler.calculateIdentificationProteinsTableSearchIndexesSet(protTableLayout.getProteinTableComponent().getProtToIndexSearchingMap(), protTableLayout.getProteinTableComponent().getTableSearchMapIndex(), protTableLayout.getSearchField().getValue().toUpperCase().trim());
                         if (!selectionIndexes.isEmpty()) {
                             if (selectionIndexes.size() > 1) {
                                 protTableLayout.getNextSearch().setEnabled(true);
@@ -558,7 +558,7 @@ public final class ProjectsLayout extends VerticalLayout implements Serializable
 //                            } 
 //                            
 //                           
-//                            fractionsList = handler.getProtGelFractionsList(handler.getMainDatasetId(),accession, otherAccession);
+//                            fractionsList = handler.getIdentificationProteinsGelFractionsList(handler.getMainDatasetId(),accession, otherAccession);
 //                             
 //                                 
 //                                 List<StandardProteinBean>  standerdProtList = handler.retrieveStandardProtPlotList(handler.getMainDatasetId());

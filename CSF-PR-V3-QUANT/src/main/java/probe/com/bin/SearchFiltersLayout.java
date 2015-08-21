@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeMap;
-import probe.com.handlers.MainHandler;
+import probe.com.handlers.CSFPRHandler;
 import probe.com.view.unused.DoubleBetweenValuesFilter;
 import probe.com.view.core.SearchingFiltersControl_t;
 import probe.com.view.core.ComboBoxFilter;
@@ -90,11 +90,11 @@ public class SearchFiltersLayout extends VerticalLayout implements Serializable,
         
     }
     
-    public SearchFiltersLayout(MainHandler handler) {
+    public SearchFiltersLayout(CSFPRHandler handler) {
         this.setMargin(new MarginInfo(false, false, false, false));
         this.setWidth("100%");
         this.setHeightUndefined();
-        this.datasetNamesList = handler.getDatasetNamesList();
+        this.datasetNamesList = handler.getIdentificationDatasetNamesList();
         
         
         //init filters values

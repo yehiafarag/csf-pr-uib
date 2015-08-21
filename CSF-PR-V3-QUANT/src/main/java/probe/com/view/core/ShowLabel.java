@@ -16,13 +16,25 @@ public final class ShowLabel extends Label implements Serializable {
 
     boolean show = false;
 
+    /**
+     *
+     */
     public ShowLabel() {
         updateIcon(show);
     }
-     public ShowLabel(boolean v) {
+
+    /**
+     *
+     * @param v
+     */
+    public ShowLabel(boolean v) {
         updateIcon(v);
     }
 
+    /**
+     *
+     * @param show
+     */
     public void updateIcon(boolean show) {
         if (show) {
             show = false;

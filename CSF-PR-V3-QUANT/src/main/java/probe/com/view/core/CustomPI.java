@@ -5,6 +5,10 @@ import java.io.Serializable;
 
 import com.vaadin.ui.Embedded;
 
+/**
+ *
+ * @author Yehia Farag
+ */
 public class CustomPI extends Embedded implements Serializable,Comparable<CustomPI> {
 
 	/**
@@ -12,7 +16,13 @@ public class CustomPI extends Embedded implements Serializable,Comparable<Custom
 	 */
 	private static final long serialVersionUID = 1L;
 	private String value;
-	public CustomPI(String value,Resource res){
+
+    /**
+     *
+     * @param value
+     * @param res
+     */
+    public CustomPI(String value,Resource res){
 		super(value,res);
 		this.value = value;
                 this.setHeight("15px");

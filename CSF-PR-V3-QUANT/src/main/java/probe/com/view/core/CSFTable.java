@@ -27,6 +27,15 @@ public class CSFTable extends VerticalLayout implements Serializable {
     private final String labelStr;
     private   final HorizontalLayout underTableLayout;
 
+    /**
+     *
+     * @param mainTable
+     * @param labelStr
+     * @param counter
+     * @param searchFieldLayout
+     * @param lowerLeftLayout
+     * @param exportLayout
+     */
     public CSFTable(Table mainTable, String labelStr, String counter, HorizontalLayout searchFieldLayout, HorizontalLayout lowerLeftLayout, HorizontalLayout exportLayout) {
 
         this.labelStr = labelStr;
@@ -110,6 +119,10 @@ public class CSFTable extends VerticalLayout implements Serializable {
 
     }
 
+    /**
+     *
+     * @param stat
+     */
     public void setShowTable(boolean stat) {
         this.stat = stat;
         show.updateIcon(stat);
@@ -118,14 +131,26 @@ public class CSFTable extends VerticalLayout implements Serializable {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public String getCsfTableHeight() {
         return csfTableHeight;
     }
 
+    /**
+     *
+     * @param csfTableHeight
+     */
     public void setCsfTableHeight(String csfTableHeight) {
         this.csfTableHeight = csfTableHeight;
     }
 
+    /**
+     *
+     * @param counter
+     */
     public void updateCounter(String counter) {
 
         csfLabel.setValue(labelStr + " (" + counter + ")");

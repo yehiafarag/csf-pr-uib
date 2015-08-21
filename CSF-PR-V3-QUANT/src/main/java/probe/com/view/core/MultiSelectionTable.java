@@ -35,6 +35,10 @@ public class MultiSelectionTable  extends VerticalLayout implements SelectionLis
 //        private Set<BeanItem<BugEntry>> editedItems = new HashSet<BeanItem<BugEntry>>();
 //        private Set<BeanItem<BugEntry>> oldEditedItems = new HashSet<BeanItem<BugEntry>>();
  
+    /**
+     *
+     */
+     
         public MultiSelectionTable() {
             setSpacing(true);
             // Set up combo boxes with possible values         

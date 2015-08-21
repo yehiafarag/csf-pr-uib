@@ -22,8 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import probe.com.model.beans.QuantProtein;
-import probe.com.view.body.identificationlayoutcomponents.PeptideTable;
+import probe.com.model.beans.quant.QuantProtein;
+import probe.com.view.body.identificationlayoutcomponents.IdentificationPeptideTable;
 import probe.com.view.core.ShowLabel;
 import probe.com.view.core.TableResizeSet;
 
@@ -48,7 +48,7 @@ public class QuantSearchResultLayout extends VerticalLayout implements Serializa
 
     private String searchTableHeight, peptideTableHeight = "260px";
     private TableResizeSet trs;
-    private PeptideTable peptideTable;
+    private IdentificationPeptideTable peptideTable;
     private VerticalLayout mainLayout;
     private ShowLabel show, showPeptideLayout;
     private boolean stat = true;
