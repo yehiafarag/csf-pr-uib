@@ -1077,3 +1077,10 @@ v-gridlayout-slot:focus{
     font-weight:bold;
     
 }
+.linklike div{
+    text-decoration: underline;
+    color: blue;
+    cursor: pointer;
+    font-style: initial
+    
+}

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package probe.com.view.body.adminlayout;
 
 import probe.com.view.core.ExperimentUploadPanel;
@@ -28,7 +24,7 @@ public class AdminControlPanel extends VerticalLayout implements Serializable {
     private final VerticalLayout layout1 = new VerticalLayout();
     private final TabSheet t;
     private TabSheet.Tab t1;
-    private VerticalLayout l1, l2, l3, l4,l5;
+    private VerticalLayout l1, l2, l3, l4, l5;
 
     /**
      *
@@ -84,9 +80,9 @@ public class AdminControlPanel extends VerticalLayout implements Serializable {
         l4 = new VerticalLayout();
         l4.setMargin(true);
         l4.setHeight("100%");
-        l4.addComponent(new UpdateIdDatasetDetailsLayout(handler, user));
-        
-          l5 = new VerticalLayout();
+        l4.addComponent(new IdentificationDatasetUpdatingDetailsFormLayout(handler, user));
+
+        l5 = new VerticalLayout();
         l5.setMargin(true);
         l5.setHeight("100%");
         l5.addComponent(new QuantDataUploader(handler, user));

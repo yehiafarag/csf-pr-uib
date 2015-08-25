@@ -6,7 +6,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import probe.com.model.Authenticator;
+import probe.com.model.AuthenticatorLogic;
 
 import probe.com.dal.DataAccess;
 
@@ -56,7 +56,7 @@ public class ContextListener implements ServletContextListener, Serializable {
         DataAccess da = new DataAccess(URL, D_B_NAME, DRIVER, USER_NAME, PASSWORD);
 
         da.createTable();
-        Authenticator auth = new Authenticator(URL, D_B_NAME, DRIVER, USER_NAME, PASSWORD);
+        AuthenticatorLogic auth = new AuthenticatorLogic(URL, D_B_NAME, DRIVER, USER_NAME, PASSWORD);
         if (adminName != null && adminPassword != null) {
             adminName = adminName.toUpperCase();
             auth.registerNewUser(adminName, adminPassword, true, adminEmail.toUpperCase());

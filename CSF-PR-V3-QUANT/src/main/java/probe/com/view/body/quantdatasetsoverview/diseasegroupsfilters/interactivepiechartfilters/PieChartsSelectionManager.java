@@ -40,7 +40,7 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
             selectedDsIds.clear();
 //            
 
-            for (QuantDatasetObject qDs : centralSelectionManager.getFilteredDatasetArr().values()) {
+            for (QuantDatasetObject qDs : centralSelectionManager.getFilteredQuantDatasetArr().values()) {
                 selectedDsIds.add(qDs.getUniqId());
             }
 
@@ -178,7 +178,7 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
         }
 
         Set<Integer> tempSelectedDsIds = new HashSet<Integer>();
-        for (QuantDatasetObject qDs : centralSelectionManager.getFilteredDatasetArr().values()) {
+        for (QuantDatasetObject qDs : centralSelectionManager.getFilteredQuantDatasetArr().values()) {
             tempSelectedDsIds.add(qDs.getUniqId());
         }
         tempSelectedDsIds.removeAll(selectedDsIds);

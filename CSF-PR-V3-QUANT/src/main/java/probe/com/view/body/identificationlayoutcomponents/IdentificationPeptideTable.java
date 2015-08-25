@@ -16,24 +16,26 @@ import probe.com.view.core.CustomLabel;
 import probe.com.view.core.CustomPI;
 
 /**
- * @author Yehia Farag initialize and create peptides table
+ * @author Yehia Farag
+ *
+ * initialize and create identification peptides table
  */
 public class IdentificationPeptideTable extends Table implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private DecimalFormat df = null;
+    private final DecimalFormat decimalFormat;
 
     /**
      *
-     * @param peptideList
+     * @param identificationPeptideList
      * @param pepSet
      * @param isExporter
      * @param mainProtDesc
      */
-    public IdentificationPeptideTable(Map<Integer, IdentificationPeptideBean> peptideList, Set<String> pepSet, boolean isExporter, String mainProtDesc) {
+    public IdentificationPeptideTable(Map<Integer, IdentificationPeptideBean> identificationPeptideList, Set<String> pepSet, boolean isExporter, String mainProtDesc) {
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
         otherSymbols.setGroupingSeparator('.');
-        df = new DecimalFormat("#.##", otherSymbols);
+        decimalFormat = new DecimalFormat("#.##", otherSymbols);
         this.setSelectable(false);
         this.setColumnReorderingAllowed(true);
         this.setColumnCollapsingAllowed(true);
@@ -95,7 +97,7 @@ public class IdentificationPeptideTable extends Table implements Serializable {
 
         CustomEmbedded validated;
         int index = 1;
-        for (IdentificationPeptideBean pb : peptideList.values()) {
+        for (IdentificationPeptideBean pb : identificationPeptideList.values()) {
             if (pb.isEnzymatic()) {
                 res = new ThemeResource("img/true.jpg");//new ExternalResource("http://sphotos-e.ak.fbcdn.net/hphotos-ak-ash3/550027_118467228336878_534577050_n.jpg");
             } else {
@@ -204,7 +206,7 @@ public class IdentificationPeptideTable extends Table implements Serializable {
 
             this.addItem(new Object[]{index, pi, pb.getPeptideProteins(), pb.getPeptideProteinsDescriptions(), seq, pb.getAaBefore(), pb.getAaAfter(), pb.getPeptideStart(), pb.getPeptideEnd(), pb.getNumberOfValidatedSpectra(),
                 pb.getOtherProteins(), pb.getOtherProteinDescriptions(),
-                pb.getVariableModification(), pb.getLocationConfidence(), pb.getPrecursorCharges(), enz, pb.getSequenceTagged(), deamidationAndGlycopattern, pb.getGlycopatternPositions(), Double.valueOf(df.format(pb.getConfidence())), validated}, index);
+                pb.getVariableModification(), pb.getLocationConfidence(), pb.getPrecursorCharges(), enz, pb.getSequenceTagged(), deamidationAndGlycopattern, pb.getGlycopatternPositions(), Double.valueOf(decimalFormat.format(pb.getConfidence())), validated}, index);
             index++;
         }
         this.sort(new String[]{Confidence, "# Validated Spectra"}, new boolean[]{false, false});

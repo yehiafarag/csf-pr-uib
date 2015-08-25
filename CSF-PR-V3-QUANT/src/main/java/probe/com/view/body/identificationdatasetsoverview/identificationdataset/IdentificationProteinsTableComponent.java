@@ -21,7 +21,9 @@ import probe.com.view.core.CustomExternalLink;
 import probe.com.view.core.CustomPI;
 
 /**
- * @author Yehia Farag main proteins table component
+ * @author Yehia Farag
+ *
+ * main identification proteins table component
  */
 public class IdentificationProteinsTableComponent extends Table implements Serializable {
 
@@ -65,7 +67,7 @@ public class IdentificationProteinsTableComponent extends Table implements Seria
 
         this.addContainerProperty("Sequence Coverage(%)", Double.class, null, "Coverage(%)", null, Table.Align.RIGHT);
         this.addContainerProperty("Non Enzymatic Peptides", CustomEmbedded.class, null, "Non Enzymatic Peptides", null, Table.Align.CENTER);
-        Object validatedPeptide  = "# Validated Peptides";
+        Object validatedPeptide = "# Validated Peptides";
         this.addContainerProperty(validatedPeptide, Integer.class, null, "#Peptides", null, Table.Align.RIGHT);
         this.addContainerProperty("# Validated Spectra", Integer.class, null, "#Spectra", null, Table.Align.RIGHT);
         this.addContainerProperty("NSAF", Double.class, null, "NSAF", null, Table.Align.RIGHT);
@@ -74,14 +76,14 @@ public class IdentificationProteinsTableComponent extends Table implements Seria
         Object Confidence = "Confidence";
         this.addContainerProperty(Confidence, Double.class, null, Confidence.toString(), null, Table.Align.RIGHT);
         if (fractionNumber > 0) {
-            this.addContainerProperty("SpectrumFractionSpread lower range_kDa", Double.class, null, "Spectrum Lower Range", null, Table.Align.RIGHT);
-            this.addContainerProperty("SpectrumFractionSpread upper range kDa", Double.class, null, "Spectrum Upper Range", null, Table.Align.RIGHT);
-            this.addContainerProperty("PeptideFractionSpread lower range kDa", Double.class, null, "Peptide Lower Range", null, Table.Align.RIGHT);
-            this.addContainerProperty("PeptideFractionSpread upper range kDa", Double.class, null, "Peptide Upper Range", null, Table.Align.RIGHT);
-            this.setColumnCollapsed("SpectrumFractionSpread lower range_kDa", true);
-            this.setColumnCollapsed("SpectrumFractionSpread upper range kDa", true);
-            this.setColumnCollapsed("PeptideFractionSpread lower range kDa", true);
-            this.setColumnCollapsed("PeptideFractionSpread upper range kDa", true);
+//            this.addContainerProperty("SpectrumFractionSpread lower range_kDa", Double.class, null, "Spectrum Lower Range", null, Table.Align.RIGHT);
+//            this.addContainerProperty("SpectrumFractionSpread upper range kDa", Double.class, null, "Spectrum Upper Range", null, Table.Align.RIGHT);
+//            this.addContainerProperty("PeptideFractionSpread lower range kDa", Double.class, null, "Peptide Lower Range", null, Table.Align.RIGHT);
+//            this.addContainerProperty("PeptideFractionSpread upper range kDa", Double.class, null, "Peptide Upper Range", null, Table.Align.RIGHT);
+//            this.setColumnCollapsed("SpectrumFractionSpread lower range_kDa", true);
+//            this.setColumnCollapsed("SpectrumFractionSpread upper range kDa", true);
+//            this.setColumnCollapsed("PeptideFractionSpread lower range kDa", true);
+//            this.setColumnCollapsed("PeptideFractionSpread upper range kDa", true);
 
         }
         this.addContainerProperty("Validated", CustomEmbedded.class, null, "Validated", null, Table.Align.CENTER);
@@ -89,17 +91,17 @@ public class IdentificationProteinsTableComponent extends Table implements Seria
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
         otherSymbols.setGroupingSeparator('.');
         df = new DecimalFormat("#.##", otherSymbols);
-        CustomExternalLink link ;
-        CustomEmbedded nonEnz ;
-        CustomEmbedded validated ;
-        Resource res ;
-        Double d1 ;
-        Double d2 ;
-        Double d3 = null;
-        Double d4 = null;
-        CustomPI pi ;
-        Resource res2 =null;
-        Resource res3 ;
+        CustomExternalLink link;
+        CustomEmbedded nonEnz;
+        CustomEmbedded validated;
+        Resource res;
+//        Double d1 = null;
+//        Double d2 = null;
+//        Double d3 = null;
+//        Double d4 = null;
+        CustomPI pi;
+        Resource res2 = null;
+        Resource res3;
         for (IdentificationProteinBean pb : proteinsList.values()) {
 
             link = new CustomExternalLink(pb.getAccession(), "http://www.uniprot.org/uniprot/" + pb.getAccession());
@@ -143,39 +145,51 @@ public class IdentificationProteinsTableComponent extends Table implements Seria
 
             pi = new CustomPI(pb.getProteinInferenceClass(), res2);
             pi.setDescription(pb.getProteinInferenceClass());
-            try {
-                d1 = Double.valueOf(pb.getSpectrumFractionSpread_lower_range_kDa());
-            } catch (Exception nfx) {
-                d1 = null;
-            }
-            try {
-                d2 = Double.valueOf(pb.getSpectrumFractionSpread_upper_range_kDa());
-            } catch (Exception nfx) {
-                d2 = null;
-            }
-
-            try {
-                d3 = Double.valueOf(pb.getPeptideFractionSpread_lower_range_kDa());
-            } catch (Exception nfx) {
-            }
-            try {
-                d4 = Double.valueOf(pb.getPeptideFractionSpread_upper_range_kDa());
-            } catch (Exception nfx) {
-            }
+            
+//            if (fractionNumber > 0) {
+//            try {
+//                d1 = Double.valueOf(pb.getSpectrumFractionSpread_lower_range_kDa());
+//            } catch (Exception nfx) {
+//                d1 = null;
+//                System.err.println("at error " + this.getClass().getName() + "   line 152 " + nfx.getLocalizedMessage());
+//            }
+//            try {
+//                d2 = Double.valueOf(pb.getSpectrumFractionSpread_upper_range_kDa());
+//            } catch (Exception nfx) {
+//
+//                System.err.println("at error " + this.getClass().getName() + "   line 158 " + nfx.getLocalizedMessage());
+//                d2 = null;
+//            }
+//
+//            try {
+//                d3 = Double.valueOf(pb.getPeptideFractionSpread_lower_range_kDa());
+//            } catch (Exception nfx) {
+//
+//                System.err.println("at error " + this.getClass().getName() + "   line 166 " + nfx.getLocalizedMessage());
+//            }
+//            try {
+//                d4 = Double.valueOf(pb.getPeptideFractionSpread_upper_range_kDa());
+//            } catch (Exception nfx) {
+//
+//                System.err.println("at error " + this.getClass().getName() + "   line 172 " + nfx.getLocalizedMessage());
+//            }
+//            }
 
             int rank = rankMap.get(pb.getAccession() + "," + pb.getOtherProteins());
-            if (fractionNumber <= 0) {
+//            if (fractionNumber <= 0) {
                 this.addItem(new Object[]{index, pi, link, pb.getOtherProteins(), pb.getDescription(), pb.getChromosomeNumber(), pb.getGeneName(), Double.valueOf(df.format(pb.getSequenceCoverage())), nonEnz, pb.getNumberValidatedPeptides(), pb.getNumberValidatedSpectra(), Double.valueOf(df.format(pb.getNsaf())), rank, Double.valueOf(df.format(pb.getMw_kDa())), Double.valueOf(df.format(pb.getConfidence())), validated}, index);
-            } else {
-                this.addItem(new Object[]{index, pi, link, pb.getOtherProteins(), pb.getDescription(), pb.getChromosomeNumber(), pb.getGeneName(), Double.valueOf(df.format(pb.getSequenceCoverage())), nonEnz, pb.getNumberValidatedPeptides(), pb.getNumberValidatedSpectra(), Double.valueOf(df.format(pb.getNsaf())), rank, Double.valueOf(df.format(pb.getMw_kDa())), Double.valueOf(df.format(pb.getConfidence())), d1, d2, d3, d4, validated}, index);
-            }
+//            } else {
+//                this.addItem(new Object[]{index, pi, link, pb.getOtherProteins(), pb.getDescription(), pb.getChromosomeNumber(), pb.getGeneName(), Double.valueOf(df.format(pb.getSequenceCoverage())), nonEnz, pb.getNumberValidatedPeptides(), pb.getNumberValidatedSpectra(), Double.valueOf(df.format(pb.getNsaf())), rank, Double.valueOf(df.format(pb.getMw_kDa())), Double.valueOf(df.format(pb.getConfidence())), d1, d2, d3, d4, validated}, index);
+//            }
 
             index++;
 
         }
-        try{
-        this.sort(new Object[]{Confidence, validatedPeptide}, new boolean[]{false, false});
-        }catch(Exception exp){System.err.println("at line 178 error "+getClass().getName());}
+        try {
+            this.sort(new Object[]{Confidence, validatedPeptide}, new boolean[]{false, false});
+        } catch (Exception exp) {
+            System.err.println("at line 188 error " + getClass().getName() + "   " + exp.getLocalizedMessage());
+        }
 
         setColumnWidth("Index", 33);
         setColumnWidth("Protein_Inference", 33);
@@ -213,12 +227,11 @@ public class IdentificationProteinsTableComponent extends Table implements Seria
             sortMap.put(indexing, accObject.toString().toUpperCase().trim() + "," + otherAccObject.toString().toUpperCase().trim() + "," + descObject.toString().toUpperCase().trim() + "," + (Integer) id);
             indexing++;
         }
-       
 
         protToIndexSearchingMap.clear();
         tableSearchMapIndex.clear();
         for (int indexValue = 1; indexValue <= sortMap.size(); indexValue++) {
-            String str = sortMap.get(indexValue); 
+            String str = sortMap.get(indexValue);
             int itemId = Integer.valueOf(str.split(",")[str.split(",").length - 1]);
             protToIndexSearchingMap.put(str, itemId);
             tableSearchMapIndex.put(str, indexValue);
@@ -270,22 +283,22 @@ public class IdentificationProteinsTableComponent extends Table implements Seria
         return rankMap;
 
     }
-    
+
     @Override
-    public void select(Object itemId){
+    public void select(Object itemId) {
         super.select(itemId);
-        
+
     }
-    
+
     @Override
-    public void setCurrentPageFirstItemIndex(int itemId)
-    {
+    public void setCurrentPageFirstItemIndex(int itemId) {
         super.setCurrentPageFirstItemId(itemId);
     }
-    
+
     /**
+     * get the first protein index in the proteins table
      *
-     * @return
+     * @return integer the row index of the first protein in the table
      */
     public int getFirstIndex() {
         return firstIndex;

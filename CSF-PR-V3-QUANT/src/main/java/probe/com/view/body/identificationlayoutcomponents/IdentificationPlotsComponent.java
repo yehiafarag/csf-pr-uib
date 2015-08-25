@@ -33,13 +33,12 @@ import org.dussan.vaadin.dcharts.options.SeriesDefaults;
 import org.dussan.vaadin.dcharts.renderers.tick.CanvasAxisTickRenderer;
 import probe.com.model.beans.identification.IdentificationProteinBean;
 import probe.com.model.beans.identification.StandardIdentificationFractionPlotProteinBean;
-/*/*
- * @author Yehia Farag
- */
 
 /**
  *
  * @author Yehia Farag
+ *
+ * the main interactive identification proteins gel plot component
  */
 public class IdentificationPlotsComponent extends VerticalLayout implements Serializable {
 
@@ -48,10 +47,10 @@ public class IdentificationPlotsComponent extends VerticalLayout implements Seri
      * @param lable
      * @param protienFractionList
      * @param standProtList
-     * @param mw
+     * @param molecularWeight
      */
     @SuppressWarnings("BoxingBoxedValue")
-    public IdentificationPlotsComponent(String lable, Map<Integer, IdentificationProteinBean> protienFractionList, Map<String, List<StandardIdentificationFractionPlotProteinBean>> standProtList, double mw) {
+    public IdentificationPlotsComponent(String lable, Map<Integer, IdentificationProteinBean> protienFractionList, Map<String, List<StandardIdentificationFractionPlotProteinBean>> standProtList, double molecularWeight) {
         if (!protienFractionList.isEmpty()) {
 
             Label pepLable = new Label("<h5 style='font-family:verdana;color:#4d749f;text-align:left'>" + lable + "</h5>");
@@ -65,7 +64,7 @@ public class IdentificationPlotsComponent extends VerticalLayout implements Seri
             List<StandardIdentificationFractionPlotProteinBean> standardList = standProtList.get("#CDE1FF");
 
             Double[] initRealValue = new Double[(protienFractionList.size() + borderList.size() + standardList.size())];
-           
+
             Map<StandardIdentificationFractionPlotProteinBean, Double[]> standardValuesList = new HashMap<StandardIdentificationFractionPlotProteinBean, Double[]>();
             Map<StandardIdentificationFractionPlotProteinBean, Double[]> tempStandardValuesList = new HashMap<StandardIdentificationFractionPlotProteinBean, Double[]>();
             double lower = -1;

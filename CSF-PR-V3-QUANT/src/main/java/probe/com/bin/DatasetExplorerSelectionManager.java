@@ -93,7 +93,7 @@ public class DatasetExplorerSelectionManager {
             this.FilterStudies();
             
             }
-            else if(selection.getType().equalsIgnoreCase("comparisonfilter")){            
+            else if(selection.getType().equalsIgnoreCase("Comparison_Filter")){            
             
             }
             this.SelectionChanged(selection.getType());

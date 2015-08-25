@@ -14,7 +14,9 @@ import probe.com.view.body.ProteinsSearchingLayout;
 
 /**
  *
- * @author Yehia Farag the main tables and charts layout
+ * @author Yehia Farag
+ *
+ * the main body layout of csf-pr web application
  */
 public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeListener, Button.ClickListener, Serializable {
 
@@ -25,6 +27,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
     private WelcomeLayout welcomeLayout;
     private QuantDatasetsOverviewLayout datasetOverviewTabLayout;
     private final CSFPRHandler handler;
+    private IdentificationDatasetsLayout identificationDatasetsTabLayout;
 
     /**
      * initialize body layout
@@ -42,8 +45,6 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
         mainTabSheet.setHeight("100%");
         mainTabSheet.setWidth("100%");
         adminIcon = this.initAdminIcoBtn();
-
-//        Tab 3 content
         initBodyLayout();
     }
 
@@ -66,7 +67,6 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
         identificationDatasetsLayout = new VerticalLayout();
         identificationDatasetsLayout.setMargin(true);
         identificationDatasetsLayout.setHeight("100%");
-        identificationDatasetsLayout.addComponent(new IdentificationDatasetsLayout(handler, mainTabSheet));
         mainTabSheet.addTab(this.identificationDatasetsLayout, "Identification Datasets Overview");
 
 //      Tab 4 content  searching proteins tab 
@@ -101,10 +101,16 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
             adminTab.setVisible(false);
         } else if (c.equals("Quantitative Datasets Overview")) {
             adminTab.setVisible(false);
-            if (datasetOverviewTabLayout == null) //            datasetsOverviewLayout.removeAllComponents();
-            {
+            if (datasetOverviewTabLayout == null) {
                 datasetOverviewTabLayout = new QuantDatasetsOverviewLayout(handler, false);
                 datasetsOverviewLayout.addComponent(datasetOverviewTabLayout);
+            }
+
+        } else if (c.equals("Identification Datasets Overview")) {
+
+            if (identificationDatasetsTabLayout == null) {
+                identificationDatasetsTabLayout = new IdentificationDatasetsLayout(handler, mainTabSheet);
+                identificationDatasetsLayout.addComponent(identificationDatasetsTabLayout);
             }
 
         }

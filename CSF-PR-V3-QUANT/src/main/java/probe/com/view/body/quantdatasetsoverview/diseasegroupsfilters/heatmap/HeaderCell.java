@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import probe.com.model.beans.quant.QuantGroupsComparison;
+import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 
 /**
  * this class give the control on the header label style and events
@@ -39,7 +39,7 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
      *
      * @return
      */
-    public Set<QuantGroupsComparison> getIncludedComparisons() {
+    public Set<QuantDiseaseGroupsComparison> getIncludedComparisons() {
         return includedComparisons;
     }
 
@@ -51,7 +51,7 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
         return valueLabel.getValue();
     }
     private boolean selected = false;
-    private final Set<QuantGroupsComparison>includedComparisons = new LinkedHashSet<QuantGroupsComparison>();
+    private final Set<QuantDiseaseGroupsComparison>includedComparisons = new LinkedHashSet<QuantDiseaseGroupsComparison>();
      private final List<HeatmapCell>includedCells = new ArrayList<HeatmapCell>();
     private final HeatMapComponent parentcom;
 
@@ -141,7 +141,7 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
      * @param groupComp
      * @param cell
      */
-    public void addComparison(QuantGroupsComparison groupComp,HeatmapCell cell){
+    public void addComparison(QuantDiseaseGroupsComparison groupComp,HeatmapCell cell){
     this.includedComparisons.add(groupComp);
     this.includedCells.add(cell);
     }

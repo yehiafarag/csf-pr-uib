@@ -22,7 +22,7 @@ import probe.com.model.beans.identification.StandardIdentificationFractionPlotPr
 
 /**
  *
- * @author Yehia Farag
+ * @author Yehia Farag reader for uploaded files
  */
 public class FilesReader implements Serializable {
 
@@ -30,23 +30,25 @@ public class FilesReader implements Serializable {
      *
      */
     private static final long serialVersionUID = 1L;
-    private FileValidator fv = new FileValidator();
+    private final FileValidator fileValidator = new FileValidator();
 
     /**
+     * read the identification text files in order to store the data in the
+     * dataset
      *
      * @param file
      * @param MIMEType
-     * @param exp
-     * @return
+     * @param identificationDatasetBean
+     * @return updated identificationDatasetBean
      * @throws IOException
      * @throws SQLException
      */
-    @SuppressWarnings("resource")
-    public IdentificationDatasetBean readTextFile(File file, String MIMEType, IdentificationDatasetBean exp) throws IOException, SQLException//method to extract data from proteins files to store them in database
+    @SuppressWarnings({"resource", "UnnecessaryBoxing"})
+    public IdentificationDatasetBean readIdentificationTextFile(File file, String MIMEType, IdentificationDatasetBean identificationDatasetBean) throws IOException, SQLException//method to extract data from proteins files to store them in database
     {
         //if excel file
         //else text file
-        int fileType = 0;
+        int fileType;
         String[] strArr = null;
         String[] lineArr = null;
         Map<Integer, IdentificationFractionBean> fractionRanges = null;
@@ -66,117 +68,102 @@ public class FilesReader implements Serializable {
                 }
 
             } catch (Exception e) {
-                System.err.println(e.getLocalizedMessage());
+                System.err.println("at error " + this.getClass().getName() + "  at line 69 " + e.getLocalizedMessage());
             }
         } else {
-            FileReader fr = new FileReader(file);
-            bufRdr = new BufferedReader(fr);
+            FileReader fileReader = new FileReader(file);
+            bufRdr = new BufferedReader(fileReader);
             line = bufRdr.readLine();
             if (MIMEType.equals("text/plain")) {
                 strArr = line.split("\t");
             }
-            
-            System.out.println("str is "+line+"   ");
-            for(int x=0;x<strArr.length;x++)                
-                 System.out.println("index is "+x+"   value is "+strArr[x]);
-
         }
 
         Map<Integer, IdentificationFractionBean> fractionsList = new HashMap<Integer, IdentificationFractionBean>();
         Map<Integer, IdentificationPeptideBean> peptideList = null;
-        Map<String, IdentificationPeptideBean> gPeptideList = new HashMap<String, IdentificationPeptideBean>();      
-            
-        fileType = fv.validateFile(strArr, MIMEType);//check if the file type and  file format 
-        exp.setExpFile(fileType);
+        Map<String, IdentificationPeptideBean> gPeptideList = new HashMap<String, IdentificationPeptideBean>();
+
+        fileType = fileValidator.validateFile(strArr, MIMEType);//check if the file type and  file format 
+        identificationDatasetBean.setExpFile(fileType);
         Map<String, IdentificationProteinBean> proteinList = new HashMap<String, IdentificationProteinBean>();//use only in case of protein files
         if (fileType == -1)//wrong file 
         {
             return null;
-        }else if(fileType == -7)//glyco file
+        } else if (fileType == -7 && bufRdr != null)//glyco file
         {
-             IdentificationPeptideBean pb = null;
+            IdentificationPeptideBean pb;
             try {
                 while ((line = bufRdr.readLine()) != null && row < 1000) {
-                    
+
                     pb = new IdentificationPeptideBean();
                     strArr = line.split("\t");
-                      if (strArr.length > 24 && strArr[24] != null && !strArr[24].equals("")) {
-                            pb.setDeamidationAndGlycopattern(Boolean.valueOf(strArr[24]));
-                       } else {
-                            pb.setDeamidationAndGlycopattern(false);
-                        }
-                       if (strArr.length > 25 && strArr[25] != null && !strArr[25].equals("")) {
-                            pb.setGlycopatternPositions((strArr[25]));
-                        } else {
-                            pb.setGlycopatternPositions("");
+                    if (strArr.length > 24 && strArr[24] != null && !strArr[24].equals("")) {
+                        pb.setDeamidationAndGlycopattern(Boolean.valueOf(strArr[24]));
+                    } else {
+                        pb.setDeamidationAndGlycopattern(false);
                     }
-//                    
-                        pb.setLikelyNotGlycosite(false);                    
+                    if (strArr.length > 25 && strArr[25] != null && !strArr[25].equals("")) {
+                        pb.setGlycopatternPositions((strArr[25]));
+                    } else {
+                        pb.setGlycopatternPositions("");
+                    }
+                    pb.setLikelyNotGlycosite(false);
                     String key = "[" + strArr[0].trim() + "][" + strArr[9].trim() + "]";
                     gPeptideList.put(key, pb);
                 }
-                
-                
+
             } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println(e.getLocalizedMessage());
+                System.err.println("at error " + this.getClass() + "  line 114   " + e.getLocalizedMessage());
             }
-            exp.setgPeptideList(gPeptideList);
-            return exp;
-        
-        
-        }
-        
-        else if (fileType == -2)//peptide file
+            identificationDatasetBean.setgPeptideList(gPeptideList);
+            return identificationDatasetBean;
+
+        } else if (fileType == -2)//peptide file
         {
             peptideList = new HashMap<Integer, IdentificationPeptideBean>();
-            exp.setExpFile(fileType);
-        } else if (fileType == -100)//Standard plot file
+            identificationDatasetBean.setExpFile(fileType);
+        } else if (fileType == -100 && lineArr != null)//Standard plot file
         {
-            try{
-            List<StandardIdentificationFractionPlotProteinBean> standerdPlotProt = new ArrayList<StandardIdentificationFractionPlotProteinBean>();
-            for (int x = 2; x < lineArr.length; x++) {
-                String str = lineArr[x].trim();
-                if (str != null && (!str.equals(""))) {
-                    StandardIdentificationFractionPlotProteinBean spb = new StandardIdentificationFractionPlotProteinBean();
-                    spb.setMW_kDa(Double.valueOf(str.trim().split("\t")[0]));
-                    spb.setName(str.split("\t")[1]);
-                    double d = (Double.valueOf(str.split("\t")[2]));
-                    spb.setLowerFraction((int) d);
-                    d = (Double.valueOf(str.split("\t")[3]));
-                    spb.setUpperFraction((int) d);
-                    spb.setColor(str.split("\t")[4]);
-                    standerdPlotProt.add(spb);
+            try {
+                List<StandardIdentificationFractionPlotProteinBean> standerdPlotProt = new ArrayList<StandardIdentificationFractionPlotProteinBean>();
+                for (int x = 2; x < lineArr.length; x++) {
+                    String str = lineArr[x].trim();
+                    if (str != null && (!str.equals(""))) {
+                        StandardIdentificationFractionPlotProteinBean spb = new StandardIdentificationFractionPlotProteinBean();
+                        spb.setMW_kDa(Double.valueOf(str.trim().split("\t")[0]));
+                        spb.setName(str.split("\t")[1]);
+                        double d = (Double.valueOf(str.split("\t")[2]));
+                        spb.setLowerFraction((int) d);
+                        d = (Double.valueOf(str.split("\t")[3]));
+                        spb.setUpperFraction((int) d);
+                        spb.setColor(str.split("\t")[4]);
+                        standerdPlotProt.add(spb);
+                    }
                 }
-            }  exp.setStanderdPlotProt(standerdPlotProt);
-            }catch(Exception e){e.printStackTrace();}
-          
-            return exp;
+                identificationDatasetBean.setStanderdPlotProt(standerdPlotProt);
+            } catch (Exception e) {
+                System.err.println("at error " + this.getClass() + "  line 143   " + e.getLocalizedMessage());
+            }
+
+            return identificationDatasetBean;
         } else if (fileType == 0)//Protein file
         {
-        } 
-        else if (fileType == -5)//fraction range file
+        } else if (fileType == -5 && lineArr != null)//fraction range file
         {
             fractionRanges = new TreeMap<Integer, IdentificationFractionBean>();
             for (int x = 1; x < lineArr.length; x++) {
                 String str = lineArr[x];
                 IdentificationFractionBean fb = new IdentificationFractionBean();
-//                fb.setMinRange(Double.valueOf(str.split("\t")[1]));
-//                fb.setMaxRange(Double.valueOf(str.split("\t")[2]));
 
                 double keyDuble = Double.parseDouble(str.split("\t")[0]);
                 int key = (int) keyDuble;
                 fb.setFractionIndex(key);
                 fractionRanges.put(key, fb);
             }
-//            exp.setFractionsList(fractionRanges);
-
-
-
-            return exp;
+            return identificationDatasetBean;
         } else {
             if (fileType > 0) {
-                exp.setFractionsNumber(fileType);//file type in case of protein fraction file return the number of fractions
+                identificationDatasetBean.setFractionsNumber(fileType);//file type in case of protein fraction file return the number of fractions
                 //create a number of fractions for the experiment
                 for (int x = 0; x < fileType; x++) {
                     IdentificationFractionBean fb = new IdentificationFractionBean();
@@ -188,37 +175,34 @@ public class FilesReader implements Serializable {
             }
         }
         int inedxId = 0;
+        if (bufRdr == null) {
+            return null;
+        }
         while (fileType != -5 && fileType != -7 && fileType != -100 && (line = bufRdr.readLine()) != null && row < 1000)//loop to fill the protein beans and add it to fraction list
         {
-           
-
             strArr = line.split("\t");
 
-
-            IdentificationProteinBean prot = null;
+            IdentificationProteinBean identificationProteinBean = null;
             if (fileType != -2) {
-                prot = new IdentificationProteinBean();
-                prot.setAccession(strArr[0]);
-                prot.setOtherProteins(strArr[1]);
-                prot.setProteinInferenceClass(strArr[2]);
-                prot.setDescription(strArr[3]);
+                identificationProteinBean = new IdentificationProteinBean();
+                identificationProteinBean.setAccession(strArr[0]);
+                identificationProteinBean.setOtherProteins(strArr[1]);
+                identificationProteinBean.setProteinInferenceClass(strArr[2]);
+                identificationProteinBean.setDescription(strArr[3]);
             }
 
             if (fileType == -2) {
-
 
                 IdentificationPeptideBean pb = new IdentificationPeptideBean();
                 pb.setProtein(strArr[0]);
                 pb.setOtherProteins(strArr[1]);
 
                 pb.setPeptideProteins(strArr[2]);
-                //set prot desc 3
+                //set identificationProteinBean desc 3
                 pb.setOtherProteinDescriptions(strArr[4]);
 
                 pb.setPeptideProteinsDescriptions(strArr[5]);
                 pb.setProteinInference(strArr[6].toUpperCase());
-
-
                 pb.setAaBefore(strArr[7]);
                 pb.setSequence(strArr[8]);
 
@@ -254,8 +238,6 @@ public class FilesReader implements Serializable {
                 pb.setDecoy(Integer.valueOf(strArr[22]));
                 pb.setStarred(Boolean.valueOf(strArr[23]));
                 if (strArr.length == 24) {
-                    //pb.setDeamidationAndGlycopattern();
-                    //pb.setGlycopatternPositions(strArr[25]);
                 } else {
                     if (strArr[24] != null) {
                         pb.setDeamidationAndGlycopattern(Boolean.valueOf(strArr[24]));
@@ -264,55 +246,58 @@ public class FilesReader implements Serializable {
                         pb.setGlycopatternPositions(strArr[25]);
                     }
                 }
-                if (pb.getDecoy() == 0) {
+                if (pb.getDecoy() == 0 && peptideList != null) {
                     pb.setPeptideId(inedxId);
                     peptideList.put(pb.getPeptideId(), pb);
                     inedxId++;
                 } else {
                 }
 
-            } else if (fileType == 0) //Protein file
+            } else if (fileType == 0 && identificationProteinBean != null) //Protein file
             {
-                prot.setSequenceCoverage(Double.valueOf(strArr[4]));
-                prot.setObservableCoverage(Double.valueOf(strArr[5]));
-                prot.setNonEnzymaticPeptides(Boolean.valueOf(strArr[6]));
-                prot.setConfidentPtmSites(strArr[7]);
-                prot.setNumberConfident(strArr[8]);
-                prot.setOtherPtmSites(strArr[9]);
-                prot.setNumberOfOther(strArr[10]);
-                prot.setNumberValidatedPeptides(Integer.valueOf(strArr[11]));
-                prot.setNumberValidatedSpectra(Integer.valueOf(strArr[12]));
-                prot.setEmPai(Double.valueOf(strArr[13]));
-                prot.setNsaf(Double.valueOf(strArr[14]));
-                prot.setMw_kDa(Double.valueOf(strArr[15]));
-                prot.setScore(Double.valueOf(strArr[16]));
-                prot.setConfidence(Double.valueOf(strArr[17]));
-                prot.setStarred(Boolean.valueOf(strArr[18]));
-                proteinList.put(prot.getAccession(), prot);
+                identificationProteinBean.setSequenceCoverage(Double.valueOf(strArr[4]));
+                identificationProteinBean.setObservableCoverage(Double.valueOf(strArr[5]));
+                identificationProteinBean.setNonEnzymaticPeptides(Boolean.valueOf(strArr[6]));
+                identificationProteinBean.setConfidentPtmSites(strArr[7]);
+                identificationProteinBean.setNumberConfident(strArr[8]);
+                identificationProteinBean.setOtherPtmSites(strArr[9]);
+                identificationProteinBean.setNumberOfOther(strArr[10]);
+                identificationProteinBean.setNumberValidatedPeptides(Integer.valueOf(strArr[11]));
+                identificationProteinBean.setNumberValidatedSpectra(Integer.valueOf(strArr[12]));
+                identificationProteinBean.setEmPai(Double.valueOf(strArr[13]));
+                identificationProteinBean.setNsaf(Double.valueOf(strArr[14]));
+                identificationProteinBean.setMw_kDa(Double.valueOf(strArr[15]));
+                identificationProteinBean.setScore(Double.valueOf(strArr[16]));
+                identificationProteinBean.setConfidence(Double.valueOf(strArr[17]));
+                identificationProteinBean.setStarred(Boolean.valueOf(strArr[18]));
+                proteinList.put(identificationProteinBean.getAccession(), identificationProteinBean);
             } else //Protein fraction file
             {
-                IdentificationProteinBean tempProt = null;
+                IdentificationProteinBean tempProt;
+                if (identificationProteinBean == null) {
+                    return null;
+                }
 
-                prot.setStarred(Boolean.valueOf(strArr[strArr.length - 1]));
-                prot.setSpectrumFractionSpread_upper_range_kDa(strArr[strArr.length - 3]);
-                prot.setSpectrumFractionSpread_lower_range_kDa(strArr[strArr.length - 4]);
-                prot.setPeptideFractionSpread_upper_range_kDa(strArr[strArr.length - 5]);
-                prot.setPeptideFractionSpread_lower_range_kDa(strArr[strArr.length - 6]);
+                identificationProteinBean.setStarred(Boolean.valueOf(strArr[strArr.length - 1]));
+                identificationProteinBean.setSpectrumFractionSpread_upper_range_kDa(strArr[strArr.length - 3]);
+                identificationProteinBean.setSpectrumFractionSpread_lower_range_kDa(strArr[strArr.length - 4]);
+                identificationProteinBean.setPeptideFractionSpread_upper_range_kDa(strArr[strArr.length - 5]);
+                identificationProteinBean.setPeptideFractionSpread_lower_range_kDa(strArr[strArr.length - 6]);
                 for (int x = 0; x < fileType; x++) {
 
                     tempProt = new IdentificationProteinBean();
-                    tempProt.setAccession(prot.getAccession());
-                    tempProt.setOtherProteins(prot.getOtherProteins());
-                    tempProt.setProteinInferenceClass(prot.getProteinInferenceClass());
-                    tempProt.setDescription(prot.getDescription());
-                    tempProt.setStarred(prot.isStarred());
-                    tempProt.setSpectrumFractionSpread_upper_range_kDa(prot.getSpectrumFractionSpread_upper_range_kDa());
+                    tempProt.setAccession(identificationProteinBean.getAccession());
+                    tempProt.setOtherProteins(identificationProteinBean.getOtherProteins());
+                    tempProt.setProteinInferenceClass(identificationProteinBean.getProteinInferenceClass());
+                    tempProt.setDescription(identificationProteinBean.getDescription());
+                    tempProt.setStarred(identificationProteinBean.isStarred());
+                    tempProt.setSpectrumFractionSpread_upper_range_kDa(identificationProteinBean.getSpectrumFractionSpread_upper_range_kDa());
 
-                    tempProt.setPeptideFractionSpread_lower_range_kDa(prot.getPeptideFractionSpread_lower_range_kDa());
+                    tempProt.setPeptideFractionSpread_lower_range_kDa(identificationProteinBean.getPeptideFractionSpread_lower_range_kDa());
 
-                    tempProt.setSpectrumFractionSpread_lower_range_kDa(prot.getSpectrumFractionSpread_lower_range_kDa());
+                    tempProt.setSpectrumFractionSpread_lower_range_kDa(identificationProteinBean.getSpectrumFractionSpread_lower_range_kDa());
 
-                    tempProt.setPeptideFractionSpread_upper_range_kDa(prot.getPeptideFractionSpread_upper_range_kDa());
+                    tempProt.setPeptideFractionSpread_upper_range_kDa(identificationProteinBean.getPeptideFractionSpread_upper_range_kDa());
 
                     try {
                         tempProt.setNumberOfPeptidePerFraction(Integer.valueOf(strArr[(9 + x)]));
@@ -335,109 +320,101 @@ public class FilesReader implements Serializable {
                     temFb.setProteinList(temProteinList);
                     fractionsList.put(x, temFb);
 
-
                 }
             }
 
         }
-        if( fileType == -7)
-            {
-                exp.setgPeptideList(gPeptideList);
-                return exp;
-            
-            }
+        if (fileType == -7) {
+            identificationDatasetBean.setgPeptideList(gPeptideList);
+            return identificationDatasetBean;
 
+        }
 
-        if (peptideList != null && peptideList.size() > 0) {
-//            exp.setPeptideList(peptideList);
+        if (peptideList != null && !peptideList.isEmpty()) {
             peptideList = this.addSharedPeptides(peptideList);
-            exp.setPeptidesNumber(this.getNumValidatedPep(peptideList));
+            identificationDatasetBean.setPeptidesNumber(this.getNumValidatedIdentificationPeptides(peptideList));
         }
-        if (fractionsList.isEmpty() && fractionRanges == null) {
-//            exp.setProteinList(proteinList);
-            exp.setProteinsNumber(proteinList.size());
-
-        } else {
-            fractionsList = getFractionRange(fractionsList);//will be updated by dataset
-//            exp.setFractionsList(fractionsList);
+        if (fractionRanges == null && fractionsList.isEmpty()) {
+            identificationDatasetBean.setProteinsNumber(proteinList.size());
         }
-        return exp;
+        return identificationDatasetBean;
     }
 
-    private Map<Integer, IdentificationPeptideBean> addSharedPeptides(Map<Integer, IdentificationPeptideBean> peptideList) {
-        int index = peptideList.size() + 1;
+    /**
+     * extract the shared peptides data and add them as separated peptides
+     *
+     * @param fullIdentificationPeptideList
+     *
+     * @return list of shared peptides
+     * @throws IOException
+     * @throws SQLException
+     */
+    private Map<Integer, IdentificationPeptideBean> addSharedPeptides(Map<Integer, IdentificationPeptideBean> fullIdentificationPeptideList) {
+        int index = fullIdentificationPeptideList.size() + 1;
         Map<Integer, IdentificationPeptideBean> updatedPeptideList = new HashMap<Integer, IdentificationPeptideBean>();
-        updatedPeptideList.putAll(peptideList);
-        for (IdentificationPeptideBean pb : peptideList.values()) {
-            if (pb.getProtein().trim().equalsIgnoreCase("shared peptide")) {
+        updatedPeptideList.putAll(fullIdentificationPeptideList);
+        for (IdentificationPeptideBean identificationPeptideBean : fullIdentificationPeptideList.values()) {
+            if (identificationPeptideBean.getProtein().trim().equalsIgnoreCase("shared peptide")) {
 
-                String str = pb.getPeptideProteins();
+                String str = identificationPeptideBean.getPeptideProteins();
 
                 String[] strArr = str.split(",");
                 for (String newProt : strArr) {
-                    IdentificationPeptideBean tPb = new IdentificationPeptideBean();
-                    tPb.setAaAfter(pb.getAaAfter());
-                    tPb.setAaBefore(pb.getAaBefore());
-                    tPb.setConfidence(pb.getConfidence());
-                    tPb.setFixedModification(pb.getFixedModification());
-                    tPb.setLocationConfidence(pb.getLocationConfidence());
-                    tPb.setNumberOfValidatedSpectra(pb.getNumberOfValidatedSpectra());
-                    tPb.setOtherProteinDescriptions(pb.getOtherProteinDescriptions());
-                    tPb.setPeptideEnd(pb.getPeptideEnd());
-                    tPb.setOtherProteins(pb.getOtherProteins());
-                    tPb.setPeptideId(index);
-                    tPb.setPeptideProteins(pb.getPeptideProteins());
-                    tPb.setPeptideProteinsDescriptions(pb.getPeptideProteinsDescriptions());
-                    tPb.setPeptideStart(pb.getPeptideStart());
-                    tPb.setPrecursorCharges(pb.getPrecursorCharges());
-                    tPb.setProtein(newProt.trim());
-                    tPb.setScore(pb.getScore());
-                    tPb.setSequence(pb.getSequence());
-                    tPb.setVariableModification(pb.getVariableModification());
-                    updatedPeptideList.put(index, tPb);
+                    IdentificationPeptideBean tempIdentificationPeptideBean = new IdentificationPeptideBean();
+                    tempIdentificationPeptideBean.setAaAfter(identificationPeptideBean.getAaAfter());
+                    tempIdentificationPeptideBean.setAaBefore(identificationPeptideBean.getAaBefore());
+                    tempIdentificationPeptideBean.setConfidence(identificationPeptideBean.getConfidence());
+                    tempIdentificationPeptideBean.setFixedModification(identificationPeptideBean.getFixedModification());
+                    tempIdentificationPeptideBean.setLocationConfidence(identificationPeptideBean.getLocationConfidence());
+                    tempIdentificationPeptideBean.setNumberOfValidatedSpectra(identificationPeptideBean.getNumberOfValidatedSpectra());
+                    tempIdentificationPeptideBean.setOtherProteinDescriptions(identificationPeptideBean.getOtherProteinDescriptions());
+                    tempIdentificationPeptideBean.setPeptideEnd(identificationPeptideBean.getPeptideEnd());
+                    tempIdentificationPeptideBean.setOtherProteins(identificationPeptideBean.getOtherProteins());
+                    tempIdentificationPeptideBean.setPeptideId(index);
+                    tempIdentificationPeptideBean.setPeptideProteins(identificationPeptideBean.getPeptideProteins());
+                    tempIdentificationPeptideBean.setPeptideProteinsDescriptions(identificationPeptideBean.getPeptideProteinsDescriptions());
+                    tempIdentificationPeptideBean.setPeptideStart(identificationPeptideBean.getPeptideStart());
+                    tempIdentificationPeptideBean.setPrecursorCharges(identificationPeptideBean.getPrecursorCharges());
+                    tempIdentificationPeptideBean.setProtein(newProt.trim());
+                    tempIdentificationPeptideBean.setScore(identificationPeptideBean.getScore());
+                    tempIdentificationPeptideBean.setSequence(identificationPeptideBean.getSequence());
+                    tempIdentificationPeptideBean.setVariableModification(identificationPeptideBean.getVariableModification());
+                    updatedPeptideList.put(index, tempIdentificationPeptideBean);
                     index++;
-
 
                 }
             }
         }
-        peptideList.clear();
-        peptideList.putAll(updatedPeptideList);
+        fullIdentificationPeptideList.clear();
+        fullIdentificationPeptideList.putAll(updatedPeptideList);
         return updatedPeptideList;
     }
 
-    private Map<Integer, IdentificationFractionBean> getFractionRange(Map<Integer, IdentificationFractionBean> fractionsList) {
-        Map<Integer, IdentificationFractionBean> tempFractionsList = new HashMap<Integer, IdentificationFractionBean>();
-        for (int key : fractionsList.keySet()) {
-            IdentificationFractionBean fraction = fractionsList.get(key);
-//            fraction.setMaxRange(0.0);
-//            fraction.setMaxRange(0.0);
-            tempFractionsList.put(key, fraction);
-
-        }
-
-        return tempFractionsList;
-    }
-
-    private int getNumValidatedPep(Map<Integer, IdentificationPeptideBean> peptideList) {
-        int vp = 0;
+    /**
+     * count the validated identification peptides within a giving list
+     *
+     * @param peptideList
+     * @return number of identification validated peptides
+     */
+    private int getNumValidatedIdentificationPeptides(Map<Integer, IdentificationPeptideBean> peptideList) {
+        int validatedPeptideCounter = 0;
         for (IdentificationPeptideBean pb : peptideList.values()) {
             if (pb.getValidated() == 1.0) {
-                ++vp;
+                ++validatedPeptideCounter;
             }
 
         }
-        return vp;
+        return validatedPeptideCounter;
 
     }
-    
+
     /**
+     * read CSV file for quant combined data
      *
      * @param dataFile
      * @return
      */
     public List<QuantProtein> readCSVQuantFile(File dataFile) {
-//        File dataFile = new File(path);
         List<QuantProtein> QuantProtList = new ArrayList<QuantProtein>();
 
         try {
@@ -454,11 +431,11 @@ public class FilesReader implements Serializable {
             int row = 1;
             String line;
             while ((line = bufRdr.readLine()) != null && row < 1000000000) {
-                
+
                 index = 0;
                 QuantProtein qProt = new QuantProtein();
                 String[] rowArr = line.split(",");
-                
+
                 String[] updatedRowArr = new String[headerArr.length];
                 if (rowArr.length < headerArr.length) {
                     System.arraycopy(rowArr, 0, updatedRowArr, 0, rowArr.length);
@@ -469,7 +446,7 @@ public class FilesReader implements Serializable {
                 if (!updatedRowArr[index].equalsIgnoreCase("")) {
                     qProt.setQuantifiedProteinsNumber(Integer.valueOf(updatedRowArr[index]));
                 } else {
-                    qProt.setQuantifiedProteinsNumber(-1000000000);    
+                    qProt.setQuantifiedProteinsNumber(-1000000000);
                 }
                 index++;
                 qProt.setUniprotAccession(updatedRowArr[index++]);
@@ -477,12 +454,12 @@ public class FilesReader implements Serializable {
                 qProt.setPublicationAccNumber(updatedRowArr[index++]);
                 qProt.setPublicationProteinName(updatedRowArr[index++]);
                 qProt.setRawDataAvailable(updatedRowArr[index++]);
-                
+
                 if (!updatedRowArr[index].equalsIgnoreCase("")) {
-                    
+
                     qProt.setPeptideIdNumb(Integer.valueOf(updatedRowArr[index]));
                 } else {
-                    qProt.setPeptideIdNumb(-1000000000);                   
+                    qProt.setPeptideIdNumb(-1000000000);
                 }
                 index++;
                 if (!updatedRowArr[index].equalsIgnoreCase("")) {
@@ -526,43 +503,39 @@ public class FilesReader implements Serializable {
                 qProt.setSampleMatching(updatedRowArr[index++]);
                 qProt.setNormalizationStrategy(updatedRowArr[index++]);
                 if (!updatedRowArr[index].equalsIgnoreCase("")) {
-                    try{
-                    qProt.setFcPatientGroupIonPatientGroupII(Double.valueOf(updatedRowArr[index]));
-                    if(qProt.getFcPatientGroupIonPatientGroupII() > 0)
-                        qProt.setStringFCValue("Increased"); 
-                    else{
-                        qProt.setStringFCValue("Decreased"); 
-                    }
-                    }catch(NumberFormatException exp){
-                     qProt.setFcPatientGroupIonPatientGroupII(-1000000000.0);
-                     qProt.setStringFCValue(updatedRowArr[index]);                    
-                    }finally{                    
-                    index++;
+                    try {
+                        qProt.setFcPatientGroupIonPatientGroupII(Double.valueOf(updatedRowArr[index]));
+                        if (qProt.getFcPatientGroupIonPatientGroupII() > 0) {
+                            qProt.setStringFCValue("Increased");
+                        } else {
+                            qProt.setStringFCValue("Decreased");
+                        }
+                    } catch (NumberFormatException exp) {
+                        qProt.setFcPatientGroupIonPatientGroupII(-1000000000.0);
+                        qProt.setStringFCValue(updatedRowArr[index]);
+                    } finally {
+                        index++;
                     }
                 } else {
                     qProt.setFcPatientGroupIonPatientGroupII(-1000000000.0);
-                     qProt.setStringFCValue(updatedRowArr[index++]); 
+                    qProt.setStringFCValue(updatedRowArr[index++]);
                 }
-                
-                
+
                 if (!updatedRowArr[index].equalsIgnoreCase("")) {
-                    try{
-                    qProt.setpValue(Double.valueOf(updatedRowArr[index]));
-                  
-                   
-                    }catch(NumberFormatException exp){
-                     qProt.setpValue(-1000000000.0);                  
-                    }
-                    finally{  
-                        qProt.setStringPValue(updatedRowArr[index]); 
+                    try {
+                        qProt.setpValue(Double.valueOf(updatedRowArr[index]));
+
+                    } catch (NumberFormatException exp) {
+                        qProt.setpValue(-1000000000.0);
+                    } finally {
+                        qProt.setStringPValue(updatedRowArr[index]);
                         index++;
                     }
                 } else {
                     qProt.setpValue(-1000000000.0);
-                     qProt.setStringPValue(updatedRowArr[index++]); 
+                    qProt.setStringPValue(updatedRowArr[index++]);
                 }
-                
-              
+
                 if (!updatedRowArr[index].equalsIgnoreCase("")) {
                     qProt.setRocAuc(Double.valueOf(updatedRowArr[index++]));
                 } else {
@@ -576,22 +549,23 @@ public class FilesReader implements Serializable {
                 qProt.setQuantificationBasis(updatedRowArr[index++]);
                 qProt.setQuantBasisComment(updatedRowArr[index++]);
                 qProt.setAdditionalComments(updatedRowArr[index++]);
-                
-                if(qProt.isPeptideProt()){
-                String pepKey = qProt.getPumedID()+"_"+qProt.getUniprotAccession()+"_"+qProt.getTypeOfStudy()+"_"+qProt.getAnalyticalApproach();
-                qProt.setqPeptideKey(pepKey);                
-                }else{
-                qProt.setqPeptideKey(""); 
-                
+
+                if (qProt.isPeptideProt()) {
+                    String pepKey = qProt.getPumedID() + "_" + qProt.getUniprotAccession() + "_" + qProt.getTypeOfStudy() + "_" + qProt.getAnalyticalApproach();
+                    qProt.setqPeptideKey(pepKey);
+                } else {
+                    qProt.setqPeptideKey("");
+
                 }
                 QuantProtList.add(qProt);
 
-            } //       
+            }
             System.out.println("index is " + index);
             bufRdr.close();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            System.out.println("ssleeping error " + ex.getMessage());
+        } catch (IOException exp) {
+            System.err.println("at error " + this.getClass() + "  line 565   " + exp.getLocalizedMessage());
+        } catch (NumberFormatException exp) {
+            System.err.println("at error " + this.getClass() + "  line 567   " + exp.getLocalizedMessage());
         }
 
         return QuantProtList;

@@ -19,6 +19,9 @@ import probe.com.view.core.TableResizeSet;
 /**
  *
  * @author Yehia Farag
+ * 
+ * this class represents the identification peptides table container
+ * this container contains the identification peptides table, table resize buttons  and export buttons
  */
 public class IdentificationPeptidesTableLayout extends VerticalLayout implements Serializable {
 
@@ -30,12 +33,12 @@ public class IdentificationPeptidesTableLayout extends VerticalLayout implements
     private boolean stat;
     private VerticalLayout pepTableLayout = new VerticalLayout();
     private final VerticalLayout exportPepLayout = new VerticalLayout();
-    private VerticalLayout expBtnPepPepTable;
+    private VerticalLayout exportBtnForIdentificationPeptideTable;
     private IdentificationPeptideTable validPeptideTable, currentTable;
 
     /**
-     *
-     * @return
+     * get the current active identification peptides table 
+     * @return identification peptides table
      */
     public IdentificationPeptideTable getPepTable() {
         return currentTable;
@@ -43,14 +46,14 @@ public class IdentificationPeptidesTableLayout extends VerticalLayout implements
 
     /**
      *
-     * @param validPep
-     * @param totalPep
-     * @param desc
-     * @param pepProtList
+     * @param validatedPeptidesNumber
+     * @param totalPeptidesNumber
+     * @param proteinDescription
+     * @param identificationProteinPeptidesList
      * @param accession
-     * @param expName
+     * @param datasetName
      */
-    public IdentificationPeptidesTableLayout(final int validPep, final int totalPep, final String desc, final Map<Integer, IdentificationPeptideBean> pepProtList, final String accession, final String expName) {
+    public IdentificationPeptidesTableLayout(final int validatedPeptidesNumber, final int totalPeptidesNumber, final String proteinDescription, final Map<Integer, IdentificationPeptideBean> identificationProteinPeptidesList, final String accession, final String datasetName) {
         MarginInfo m = new MarginInfo(false, false, true, false);
         this.setMargin(m);
         this.setSpacing(false);
@@ -64,7 +67,7 @@ public class IdentificationPeptidesTableLayout extends VerticalLayout implements
         headerLayout.setComponentAlignment(show, Alignment.BOTTOM_LEFT);
         stat = true;
 
-        final Label pepLabel = new Label("<h4 style='font-family:verdana;color:black;'>Peptides (" + validPep + ") " + desc + "</h4>");
+        final Label pepLabel = new Label("<h4 style='font-family:verdana;color:black;'>Peptides (" + validatedPeptidesNumber + ") " + proteinDescription + "</h4>");
 
         pepLabel.setContentMode(ContentMode.HTML);
         pepLabel.setHeight("45px");
@@ -78,9 +81,9 @@ public class IdentificationPeptidesTableLayout extends VerticalLayout implements
         mainLayout.addComponent(pepTableLayout);
         mainLayout.setComponentAlignment(pepTableLayout, Alignment.MIDDLE_CENTER);
 
-        Map<Integer, IdentificationPeptideBean> vPepProtList = getValidatedList(pepProtList);
+        Map<Integer, IdentificationPeptideBean> vPepProtList = getValidatedList(identificationProteinPeptidesList);
 
-        validPeptideTable = new IdentificationPeptideTable(vPepProtList, null, false, desc);
+        validPeptideTable = new IdentificationPeptideTable(vPepProtList, null, false, proteinDescription);
         pepTableLayout.addComponent(validPeptideTable);
         if (trs != null) {
             peptideTableHeight = trs.getCurrentSize();
@@ -163,13 +166,13 @@ public class IdentificationPeptidesTableLayout extends VerticalLayout implements
                     headerLayout.removeAllComponents();
                     headerLayout.addComponent(show);
                     headerLayout.setComponentAlignment(show, Alignment.BOTTOM_LEFT);
-                    Label pepLabel = new Label("<h4 style='font-family:verdana;color:black;'>Peptides (" + validPep + "/" + totalPep + ") " + desc + "</h4>");
+                    Label pepLabel = new Label("<h4 style='font-family:verdana;color:black;'>Peptides (" + validatedPeptidesNumber + "/" + totalPeptidesNumber + ") " + proteinDescription + "</h4>");
                     pepLabel.setContentMode(ContentMode.HTML);
                     headerLayout.addComponent(pepLabel);
                     headerLayout.setComponentAlignment(pepLabel, Alignment.TOP_RIGHT);
 
                     pepTableLayout.removeAllComponents();
-                    peptideTable = new IdentificationPeptideTable(pepProtList, null, false, desc);
+                    peptideTable = new IdentificationPeptideTable(identificationProteinPeptidesList, null, false, proteinDescription);
                     pepTableLayout.addComponent(peptideTable);
                     trs1.setTable(peptideTable);
                     peptideTable.setHeight(validPeptideTable.getHeight() + "");
@@ -195,52 +198,29 @@ public class IdentificationPeptidesTableLayout extends VerticalLayout implements
 
     }
 
+   
     /**
-     *
-     * @return
+     * update the current visualized identification peptides table height
+     * @param peptideTableHeight
      */
-    public String getPeptideTableHeight() {
-        return peptideTableHeight;
+    public void setPeptideTableHeight(String peptideTableHeight) {
+        this.peptideTableHeight = peptideTableHeight;
     }
 
-    /**
-     *
-     * @param PepSize
-     */
-    public void setPeptideTableHeight(String PepSize) {
-        this.peptideTableHeight = PepSize;
-    }
+   
+
 
     /**
-     *
-     * @return
-     */
-    public TableResizeSet getTrs() {
-        return trs;
-    }
-
-    /**
-     *
-     * @param trs
-     */
-    public void setTrs(TableResizeSet trs) {
-        this.trs = trs;
-    }
-
-    /**
-     *
+     * add exporting button to the current identification peptides table layout
      * @param expBtnPepPepTable
      */
-    public void setExpBtnPepTable(VerticalLayout expBtnPepPepTable) {
-        this.expBtnPepPepTable = expBtnPepPepTable;
-        updateExportLayouts();
-
-    }
-
-    private void updateExportLayouts() {
+    public void setExportingBtnForIdentificationPeptidesTable(VerticalLayout expBtnPepPepTable) {
+        this.exportBtnForIdentificationPeptideTable = expBtnPepPepTable;
         exportPepLayout.removeAllComponents();
-        exportPepLayout.addComponent(expBtnPepPepTable);
-        exportPepLayout.setComponentAlignment(expBtnPepPepTable, Alignment.MIDDLE_LEFT);
+        exportPepLayout.addComponent(exportBtnForIdentificationPeptideTable);
+        exportPepLayout.setComponentAlignment(exportBtnForIdentificationPeptideTable, Alignment.MIDDLE_LEFT);
 
     }
+
+   
 }

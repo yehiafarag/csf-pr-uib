@@ -58,7 +58,7 @@ public class IdentificationSearchResultsTableLayout extends VerticalLayout imple
         this.fullExpProtList = fullExpProtList;
         this.datasetDetailsList = datasetDetailsList;
 
-        vProteinsList = handler.getValidatedProteinsList(fullExpProtList);
+        vProteinsList = handler.getValidatedIdentificationProteinsList(fullExpProtList);
         searchResultstLabel.setValue("<h4 style='font-family:verdana;color:black;'> Search Results (" + vProteinsList.size() + ")</h4>");
         searcheResultsTable = new IdentificationSearchResultsTable(datasetDetailsList, vProteinsList);
         searchResultsTableLayout.addComponent(searcheResultsTable);

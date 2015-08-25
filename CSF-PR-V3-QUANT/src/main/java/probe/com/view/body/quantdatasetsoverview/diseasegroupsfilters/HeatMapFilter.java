@@ -7,7 +7,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.util.HashSet;
 import java.util.Set;
-import probe.com.model.beans.quant.QuantGroupsComparison;
+import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.beans.quant.QuantDSIndexes;
 import probe.com.selectionmanager.CSFFilter;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
@@ -31,8 +31,8 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
         }
         if (type.equalsIgnoreCase("HeatMap_Update_level")) {
             this.updateHeatmap(centralFiltersSelectionManager.getSelectedHeatMapRows(), centralFiltersSelectionManager.getSelectedHeatMapColumns(), centralFiltersSelectionManager.getDiseaseGroupsArr());
-        } else if (type.equalsIgnoreCase("ComparisonSelection")) {
-            this.updateCellSelection(centralFiltersSelectionManager.getSelectedComparisonList());
+        } else if (type.equalsIgnoreCase("Comparison_Selection")) {
+            this.updateCellSelection(centralFiltersSelectionManager.getSelectedDiseaseGroupsComparisonList());
 
         }
     }
@@ -78,8 +78,8 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
 
         heatMap = new HeatMapComponent() {
             @Override
-            public void updateSelectionManager(Set<QuantGroupsComparison> selectedDsList) {
-                centralFiltersSelectionManager.setComparisonSelection(selectedDsList);
+            public void updateSelectionManager(Set<QuantDiseaseGroupsComparison> selectedDsList) {
+                centralFiltersSelectionManager.setDiseaseGroupsComparisonSelection(selectedDsList);
             }
         };
 
@@ -171,7 +171,7 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
      *
      * @param selectedComparisonList
      */
-    public void updateCellSelection(Set<QuantGroupsComparison> selectedComparisonList) {
+    public void updateCellSelection(Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
         heatMap.updateDsCellSelection(selectedComparisonList);
     }
     

@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package probe.com.view.body.identificationdatasetsoverview;
 
 import probe.com.view.core.exporter.ExporterBtnsGenerator;
@@ -260,7 +256,7 @@ public class IdentificationDatasetInformationLayout extends VerticalLayout imple
 
     @Override
     public void buttonClick(Button.ClickEvent event) {
-        if (datasetLayout == null) {
+        if (datasetLayout == null) {            
             datasetLayout = new IdentificationDatasetLayout(handler, datasetId);
         }
         if (identificationLayoutTab == null || mainTabSheet.getTabPosition(identificationLayoutTab) < 0) {

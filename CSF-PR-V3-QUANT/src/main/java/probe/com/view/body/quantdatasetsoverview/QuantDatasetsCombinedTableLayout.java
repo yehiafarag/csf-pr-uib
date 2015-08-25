@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package probe.com.view.body.quantdatasetsoverview;
 
 import com.vaadin.data.Item;
@@ -22,10 +17,12 @@ import probe.com.view.core.CustomExternalLink;
 /**
  *
  * @author Yehia Farag
+ *
+ * quant dataset combined table layout
  */
-public class QuantDatasetsTableLayout extends VerticalLayout implements CSFFilter, Property.ValueChangeListener {
+public class QuantDatasetsCombinedTableLayout extends VerticalLayout implements CSFFilter, Property.ValueChangeListener {
 
-    private final DatasetExploringCentralSelectionManager exploringFiltersManager;
+    private final DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager;
     private final String filter_id = "datasetsTable";
     private final Table datasetsTable;
     private CustomExternalLink pumedLabel;
@@ -37,21 +34,26 @@ public class QuantDatasetsTableLayout extends VerticalLayout implements CSFFilte
 
     /**
      *
-     * @param exploringFiltersManager
-     * @param activeHeaders
+     * @param datasetExploringCentralSelectionManager
+     * @param activeColumnHeaders
      */
-    public QuantDatasetsTableLayout(DatasetExploringCentralSelectionManager exploringFiltersManager, boolean[] activeHeaders) {
-        this.exploringFiltersManager = exploringFiltersManager;
-        exploringFiltersManager.registerFilter(QuantDatasetsTableLayout.this);
+    public QuantDatasetsCombinedTableLayout(DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager, boolean[] activeColumnHeaders) {
+        this.datasetExploringCentralSelectionManager = datasetExploringCentralSelectionManager;
+        datasetExploringCentralSelectionManager.registerFilter(QuantDatasetsCombinedTableLayout.this);
         this.datasetsTable = new Table();
-        this.totalStudiesNumber = exploringFiltersManager.getFilteredDatasetsList().size();
+        this.totalStudiesNumber = datasetExploringCentralSelectionManager.getFilteredDatasetsList().size();
         tableLayout = new CSFTable(datasetsTable, "Dataset Table", totalStudiesNumber + "/" + totalStudiesNumber, null, null, null);
-        initStudiesTable(activeHeaders);
+        initCombinedQuantDatasetTable(activeColumnHeaders);
         this.addComponent(tableLayout);
         tableLayout.setShowTable(false);
     }
 
-    private void initStudiesTable(boolean[] activeHeaders) {
+    /**
+     * initialize the main quant dataset table
+     *
+     * @param activeColumnHeaders the visualized columns in the table
+     */
+    private void initCombinedQuantDatasetTable(boolean[] activeColumnHeaders) {
         datasetsTable.setSelectable(true);
         datasetsTable.setLocale(Locale.UK);
         datasetsTable.setColumnReorderingAllowed(true);
@@ -66,110 +68,112 @@ public class QuantDatasetsTableLayout extends VerticalLayout implements CSFFilte
         datasetsTable.addContainerProperty("Year", String.class, null, "Year", null, Table.Align.RIGHT);
         datasetsTable.setColumnCollapsed("Year", false);
         datasetsTable.addContainerProperty("#Identified Proteins", Integer.class, null, "#Identified Proteins", null, Table.Align.RIGHT);
-        datasetsTable.setColumnCollapsed("#Identified Proteins", !activeHeaders[2]);
+        datasetsTable.setColumnCollapsed("#Identified Proteins", !activeColumnHeaders[2]);
         datasetsTable.addContainerProperty("#Quantified Proteins ", Integer.class, null, "#Quantified Proteins", null, Table.Align.RIGHT);
-        datasetsTable.setColumnCollapsed("#Quantified Proteins", !activeHeaders[3]);
+        datasetsTable.setColumnCollapsed("#Quantified Proteins", !activeColumnHeaders[3]);
 
         datasetsTable.addContainerProperty("Disease group ", String.class, null);
-        datasetsTable.setColumnCollapsed("Disease group", !activeHeaders[4]);
+        datasetsTable.setColumnCollapsed("Disease group", !activeColumnHeaders[4]);
 
         datasetsTable.addContainerProperty("Raw Data", CustomExternalLink.class, null);
-        datasetsTable.setColumnCollapsed("Raw Data", !activeHeaders[5]);
+        datasetsTable.setColumnCollapsed("Raw Data", !activeColumnHeaders[5]);
         datasetsTable.addContainerProperty("#Files", Integer.class, null, "#Files", null, Table.Align.RIGHT);
-        datasetsTable.setColumnCollapsed("#Files", !activeHeaders[6]);
+        datasetsTable.setColumnCollapsed("#Files", !activeColumnHeaders[6]);
         datasetsTable.addContainerProperty("typeOfStudy", String.class, null, "Study Type", null, Table.Align.LEFT);
-        datasetsTable.setColumnCollapsed("typeOfStudy", !activeHeaders[7]);
+        datasetsTable.setColumnCollapsed("typeOfStudy", !activeColumnHeaders[7]);
 
         datasetsTable.addContainerProperty("sampleType", String.class, null, "Sample Type", null, Table.Align.LEFT);
-        datasetsTable.setColumnCollapsed("sampleType", !activeHeaders[8]);
+        datasetsTable.setColumnCollapsed("sampleType", !activeColumnHeaders[8]);
 
         datasetsTable.addContainerProperty("sampleMatching", String.class, null, "Sample Matching", null, Table.Align.LEFT);
-        datasetsTable.setColumnCollapsed("sampleMatching", !activeHeaders[9]);
+        datasetsTable.setColumnCollapsed("sampleMatching", !activeColumnHeaders[9]);
 
         datasetsTable.addContainerProperty("shotgunTargeted", String.class, null, "Shotgun/Targeted", null, Table.Align.LEFT);
-        datasetsTable.setColumnCollapsed("shotgunTargeted", !activeHeaders[10]);
+        datasetsTable.setColumnCollapsed("shotgunTargeted", !activeColumnHeaders[10]);
 
         datasetsTable.addContainerProperty("technology", String.class, null, "Technology", null, Table.Align.LEFT);
-        datasetsTable.setColumnCollapsed("technology", !activeHeaders[11]);
+        datasetsTable.setColumnCollapsed("technology", !activeColumnHeaders[11]);
 
         datasetsTable.addContainerProperty("analyticalApproach", String.class, null, "Analytical Approach", null, Table.Align.LEFT);
-        datasetsTable.setColumnCollapsed("analyticalApproach", !activeHeaders[12]);
+        datasetsTable.setColumnCollapsed("analyticalApproach", !activeColumnHeaders[12]);
 
         datasetsTable.addContainerProperty("enzyme", String.class, null, "Enzyme", null, Table.Align.LEFT);
-        datasetsTable.setColumnCollapsed("enzyme", !activeHeaders[13]);
+        datasetsTable.setColumnCollapsed("enzyme", !activeColumnHeaders[13]);
 
         datasetsTable.addContainerProperty("quantificationBasis", String.class, null, "Quant Basis", null, Table.Align.LEFT);
-        datasetsTable.setColumnCollapsed("quantificationBasis", !activeHeaders[14]);
+        datasetsTable.setColumnCollapsed("quantificationBasis", !activeColumnHeaders[14]);
 
         datasetsTable.addContainerProperty("quantBasisComment", String.class, null, "Quant Basis Comment", null, Table.Align.LEFT);
-        datasetsTable.setColumnCollapsed("quantBasisComment", !activeHeaders[15]);
+        datasetsTable.setColumnCollapsed("quantBasisComment", !activeColumnHeaders[15]);
 
         datasetsTable.addContainerProperty("normalization_strategy", String.class, null, "Normalization Strategy", null, Table.Align.LEFT);
-        datasetsTable.setColumnCollapsed("normalization_strategy", !activeHeaders[16]);
+        datasetsTable.setColumnCollapsed("normalization_strategy", !activeColumnHeaders[16]);
 
         datasetsTable.addContainerProperty("PumedID", CustomExternalLink.class, null);
-        datasetsTable.setColumnCollapsed("PumedID", !activeHeaders[17]);
+        datasetsTable.setColumnCollapsed("PumedID", !activeColumnHeaders[17]);
 
         datasetsTable.addContainerProperty("patientsGroup1", String.class, null, "Patients Gr.I", null, Table.Align.RIGHT);
-        datasetsTable.setColumnCollapsed("patientsGroup1", !activeHeaders[18]);
+        datasetsTable.setColumnCollapsed("patientsGroup1", !activeColumnHeaders[18]);
 
         datasetsTable.addContainerProperty("patientsGroup1Number", Integer.class, null, "#Patients Gr.I", null, Table.Align.RIGHT);
-        datasetsTable.setColumnCollapsed("patientsGroup1Number", !activeHeaders[19]);
+        datasetsTable.setColumnCollapsed("patientsGroup1Number", !activeColumnHeaders[19]);
 
         datasetsTable.addContainerProperty("patientsGroup1Comm", String.class, null, "Patients Gr.I Comm", null, Table.Align.RIGHT);
-        datasetsTable.setColumnCollapsed("patientsGroup1Comm", !activeHeaders[20]);
+        datasetsTable.setColumnCollapsed("patientsGroup1Comm", !activeColumnHeaders[20]);
 
         datasetsTable.addContainerProperty("patientsSubGroup1", String.class, null, "Patients Sub-Gr.I", null, Table.Align.RIGHT);
-        datasetsTable.setColumnCollapsed("patientsSubGroup1", !activeHeaders[21]);
+        datasetsTable.setColumnCollapsed("patientsSubGroup1", !activeColumnHeaders[21]);
 
         datasetsTable.addContainerProperty("patientsGroup2", String.class, null, "Patients Gr.II", null, Table.Align.RIGHT);
-        datasetsTable.setColumnCollapsed("patientsGroup2", !activeHeaders[22]);
+        datasetsTable.setColumnCollapsed("patientsGroup2", !activeColumnHeaders[22]);
 
         datasetsTable.addContainerProperty("patientsGroup2Number", Integer.class, null, "#Patients Gr.II", null, Table.Align.RIGHT);
-        datasetsTable.setColumnCollapsed("patientsGroup2Number", !activeHeaders[23]);
+        datasetsTable.setColumnCollapsed("patientsGroup2Number", !activeColumnHeaders[23]);
 
         datasetsTable.addContainerProperty("patientsGroup2Comm", String.class, null, "Patients Gr.II Comm", null, Table.Align.RIGHT);
-        datasetsTable.setColumnCollapsed("patientsGroup2Comm", !activeHeaders[24]);
+        datasetsTable.setColumnCollapsed("patientsGroup2Comm", !activeColumnHeaders[24]);
 
         datasetsTable.addContainerProperty("patientsSubGroup2", String.class, null, "Patients Sub-Gr.II", null, Table.Align.RIGHT);
-        datasetsTable.setColumnCollapsed("patientsSubGroup2", !activeHeaders[25]);
+        datasetsTable.setColumnCollapsed("patientsSubGroup2", !activeColumnHeaders[25]);
 
         datasetsTable.addContainerProperty("additionalComments", String.class, null, "Comments", null, Table.Align.RIGHT);
-        datasetsTable.setColumnCollapsed("additionalComments", !activeHeaders[26]);
-
-
-
-//        updateTableRecords(filteredStudiesList);
+        datasetsTable.setColumnCollapsed("additionalComments", !activeColumnHeaders[26]);
 
         datasetsTable.addValueChangeListener(this);
-     
+
         selectionChanged("Disease_Groups_Level");
 
     }
 
-    
-    private void updateTableRecords(Map<Integer,QuantDatasetObject> updatedStudiesList) {
-        dsIndexes = new int[updatedStudiesList.size()];       
-            datasetsTable.removeAllItems();
-            tableLayout.updateCounter(updatedStudiesList.size()+ "/" +totalStudiesNumber);
-            int index = 0;
+    /**
+     * update table items
+     *
+     * @param datasetExploringCentralSelectionManager
+     * @param activeHeaders
+     */
+    private void updateCombinedQuantDatasetTableRecords(Map<Integer, QuantDatasetObject> updatedStudiesList) {
+        dsIndexes = new int[updatedStudiesList.size()];
+        datasetsTable.removeAllItems();
+        tableLayout.updateCounter(updatedStudiesList.size() + "/" + totalStudiesNumber);
+        int index = 0;
 
-            for (QuantDatasetObject pb : updatedStudiesList.values()) {
-                if(pb == null)
-                    continue;
-                CustomExternalLink rawDatalink = null;
-                if (pb.getRawDataUrl().equalsIgnoreCase("Raw Data Not Available")) {
-                    rawDatalink = null;
-                } else {
-                    rawDatalink = new CustomExternalLink("Get Raw Data", pb.getRawDataUrl());
-                    rawDatalink.setDescription("Link To Raw Data");
-                }
-                Integer quantProtNum = pb.getQuantifiedProteinsNumber();
-                if (quantProtNum == -1) {
-                    quantProtNum = null;
-                }
+        for (QuantDatasetObject pb : updatedStudiesList.values()) {
+            if (pb == null) {
+                continue;
+            }
+            CustomExternalLink rawDatalink;
+            if (pb.getRawDataUrl().equalsIgnoreCase("Raw Data Not Available")) {
+                rawDatalink = null;
+            } else {
+                rawDatalink = new CustomExternalLink("Get Raw Data", pb.getRawDataUrl());
+                rawDatalink.setDescription("Link To Raw Data");
+            }
+            Integer quantProtNum = pb.getQuantifiedProteinsNumber();
+            if (quantProtNum == -1) {
+                quantProtNum = null;
+            }
 
-                Integer patGr1Num = pb.getPatientsGroup1Number();
+            Integer patGr1Num = pb.getPatientsGroup1Number();
             if (patGr1Num == -1) {
                 patGr1Num = null;
             }
@@ -179,16 +183,14 @@ public class QuantDatasetsTableLayout extends VerticalLayout implements CSFFilte
             }
 
             CustomExternalLink pumedID = new CustomExternalLink(pb.getPumedID(), "http://www.ncbi.nlm.nih.gov/pubmed/" + pb.getPumedID());
-            datasetsTable.addItem(new Object[]{index, pb.getAuthor(), pb.getYear()+"",pb.getIdentifiedProteinsNumber(),quantProtNum,pb.getDiseaseGroups(),   rawDatalink,  pb.getFilesNumber(),pb.getTypeOfStudy(),pb.getSampleType(),pb.getSampleMatching(),pb.getShotgunTargeted(),pb.getTechnology(),pb.getAnalyticalApproach(),pb.getEnzyme(),pb.getQuantificationBasis(),pb.getQuantBasisComment(),pb.getNormalizationStrategy(),pumedID,pb.getPatientsGroup1(),patGr1Num,pb.getPatientsGroup1Comm(),pb.getPatientsSubGroup1(),pb.getPatientsGroup2(),patGr2Num,pb.getPatientsGroup2Comm(),pb.getPatientsSubGroup2(),pb.getAdditionalcomments()}, index);
+            datasetsTable.addItem(new Object[]{index, pb.getAuthor(), pb.getYear() + "", pb.getIdentifiedProteinsNumber(), quantProtNum, pb.getDiseaseGroups(), rawDatalink, pb.getFilesNumber(), pb.getTypeOfStudy(), pb.getSampleType(), pb.getSampleMatching(), pb.getShotgunTargeted(), pb.getTechnology(), pb.getAnalyticalApproach(), pb.getEnzyme(), pb.getQuantificationBasis(), pb.getQuantBasisComment(), pb.getNormalizationStrategy(), pumedID, pb.getPatientsGroup1(), patGr1Num, pb.getPatientsGroup1Comm(), pb.getPatientsSubGroup1(), pb.getPatientsGroup2(), patGr2Num, pb.getPatientsGroup2Comm(), pb.getPatientsSubGroup2(), pb.getAdditionalcomments()}, index);
             dsIndexes[index] = pb.getUniqId();
             index++;
         }
         datasetsTable.sort(new Object[]{"Year"}, new boolean[]{false});
-       
 
     }
-    
-    
+
     @Override
     public void valueChange(Property.ValueChangeEvent event) {
         if (datasetsTable.getValue() != null) {
@@ -198,11 +200,11 @@ public class QuantDatasetsTableLayout extends VerticalLayout implements CSFFilte
         }
         if (pumedLabel != null) {
             pumedLabel.rePaintLable("black");
-           
+
         }
-         if (rawDataLabel != null) {
+        if (rawDataLabel != null) {
             rawDataLabel.rePaintLable("black");
-           
+
         }
         final Item item = datasetsTable.getItem(pumedkey);
         pumedLabel = (CustomExternalLink) item.getItemProperty("PumedID").getValue();
@@ -211,24 +213,23 @@ public class QuantDatasetsTableLayout extends VerticalLayout implements CSFFilte
         if (rawDataLabel != null) {
             rawDataLabel.rePaintLable("white");
         }
-        int dsIndex = dsIndexes[(Integer)item.getItemProperty("Index").getValue()];
-        exploringFiltersManager.setSelectedDataset(dsIndex);
-        exploringFiltersManager.setStudyLevelFilterSelection(new CSFFilterSelection("dsSelection",new int[]{dsIndex},filter_id, null));
-        
+        int dsIndex = dsIndexes[(Integer) item.getItemProperty("Index").getValue()];
+        datasetExploringCentralSelectionManager.setSelectedDataset(dsIndex);
+        datasetExploringCentralSelectionManager.setStudyLevelFilterSelection(new CSFFilterSelection("DS_Selection", new int[]{dsIndex}, filter_id, null));
+
     }
 
     /**
+     * event from the central selection manager
      *
      * @param type
      */
     @Override
     public void selectionChanged(String type) {
-        if(type.equalsIgnoreCase("Disease_Groups_Level")){
-        updateTableRecords(exploringFiltersManager.getFilteredDatasetsList());        
-        }
-        else if(type.equalsIgnoreCase("StudySelection")){
-//             updateTableRecords(exploringFiltersManager.getFilteredDatasetsList()); 
-            int datasetId = exploringFiltersManager.getSelectedDataset();
+        if (type.equalsIgnoreCase("Disease_Groups_Level")) {
+            updateCombinedQuantDatasetTableRecords(datasetExploringCentralSelectionManager.getFilteredDatasetsList());
+        } else if (type.equalsIgnoreCase("Study_Selection")) {
+            int datasetId = datasetExploringCentralSelectionManager.getSelectedDataset();
             int i = 0;
             for (; i < dsIndexes.length; i++) {
                 if (dsIndexes[i] == datasetId) {
@@ -237,19 +238,17 @@ public class QuantDatasetsTableLayout extends VerticalLayout implements CSFFilte
                 }
 
             }
-            QuantDatasetObject qds = exploringFiltersManager.getFullDatasetArr().get(datasetId);
-            Map<Integer,QuantDatasetObject> temp = new LinkedHashMap<Integer, QuantDatasetObject>();
+            QuantDatasetObject qds = datasetExploringCentralSelectionManager.getFullQuantDatasetArr().get(datasetId);
+            Map<Integer, QuantDatasetObject> temp = new LinkedHashMap<Integer, QuantDatasetObject>();
             temp.put(0, qds);
-             updateTableRecords(temp);    
-         
-
-//            selectDataset(datasetId);
+            updateCombinedQuantDatasetTableRecords(temp);
         }
     }
 
     /**
+     * get filter id
      *
-     * @return
+     * @return string filter id
      */
     @Override
     public String getFilterId() {
@@ -257,12 +256,13 @@ public class QuantDatasetsTableLayout extends VerticalLayout implements CSFFilte
     }
 
     /**
+     * remove(un select) filter in the central selection manager (not apply to
+     * this class)
      *
      * @param value
      */
     @Override
     public void removeFilterValue(String value) {
     }
-    
 
 }

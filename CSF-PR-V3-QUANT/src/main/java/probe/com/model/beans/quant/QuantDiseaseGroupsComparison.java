@@ -5,7 +5,7 @@
  */
 package probe.com.model.beans.quant;
 
-import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.ComparisonProtein;
+import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiiseaseGroupsComparisonsProtein;
 import java.io.Serializable;
 import java.util.Map;
 
@@ -13,10 +13,10 @@ import java.util.Map;
  *
  * @author Yehia Farag
  */
-public class QuantGroupsComparison implements Serializable, Comparable<QuantGroupsComparison>{
+public class QuantDiseaseGroupsComparison implements Serializable, Comparable<QuantDiseaseGroupsComparison>{
     private String comparisonHeader;
     private int[] datasetIndexes;
-    private Map<String, ComparisonProtein> comparProtsMap;
+    private Map<String, DiiseaseGroupsComparisonsProtein> comparProtsMap;
 
     /**
      *
@@ -54,7 +54,7 @@ public class QuantGroupsComparison implements Serializable, Comparable<QuantGrou
      *
      * @return
      */
-    public Map<String, ComparisonProtein>  getComparProtsMap() {
+    public Map<String, DiiseaseGroupsComparisonsProtein>  getComparProtsMap() {
         return comparProtsMap;
     }
 
@@ -62,12 +62,12 @@ public class QuantGroupsComparison implements Serializable, Comparable<QuantGrou
      *
      * @param comparProtsMap
      */
-    public void setComparProtsMap(Map<String, ComparisonProtein>  comparProtsMap) {
+    public void setComparProtsMap(Map<String, DiiseaseGroupsComparisonsProtein>  comparProtsMap) {
         this.comparProtsMap = comparProtsMap;
     }
 
     @Override
-    public int compareTo(QuantGroupsComparison t) {
+    public int compareTo(QuantDiseaseGroupsComparison t) {
         return this.comparisonHeader.compareTo(t.comparisonHeader);
     }
 

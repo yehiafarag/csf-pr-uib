@@ -231,8 +231,8 @@ public class InteractiveFilter extends VerticalLayout implements ChartDataClickH
 
             }
             active = !selectionValues.isEmpty();
-            CSFFilterSelection selectionEvent = new CSFFilterSelection(filterId, selectionValues, active, filterIndex, filterColor,"interactivefilter",null);
-            Filter_Manager.updateSelection(selectionEvent,false);
+//            CSFFilterSelection selectionEvent = new CSFFilterSelection(filterId, selectionValues, active, filterIndex, filterColor,"interactivefilter",null);
+//            Filter_Manager.updateSelection(selectionEvent,false);
       
     
     
@@ -272,8 +272,8 @@ public class InteractiveFilter extends VerticalLayout implements ChartDataClickH
             dsIndex[i] = key;
                     i++;
             }
-            CSFFilterSelection selectionEvent = new CSFFilterSelection(filterId, selectionValues, active, filterIndex, filterColor,"interactivefilter",dsIndex);
-            Filter_Manager.updateSelection(selectionEvent,true);
+//            CSFFilterSelection selectionEvent = new CSFFilterSelection(filterId, selectionValues, active, filterIndex, filterColor,"interactivefilter",dsIndex);
+//            Filter_Manager.updateSelection(selectionEvent,true);
         }
 
     }

@@ -18,7 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import probe.com.model.beans.quant.QuantGroupsComparison;
+import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.beans.quant.QuantDSIndexes;
 
 /**
@@ -35,8 +35,8 @@ public class HeatMapComponent extends VerticalLayout {
     private HeaderCell[] columnCells;
     private HeaderCell[] rowCells;
     private final Map<String, HeatmapCell> comparisonsCellsMap = new HashMap<String, HeatmapCell>();
-    private final Set<QuantGroupsComparison> selectedDsList = new HashSet<QuantGroupsComparison>();
-    private final Set<QuantGroupsComparison> availableComparisonsList = new HashSet<QuantGroupsComparison>();
+    private final Set<QuantDiseaseGroupsComparison> selectedDsList = new HashSet<QuantDiseaseGroupsComparison>();
+    private final Set<QuantDiseaseGroupsComparison> availableComparisonsList = new HashSet<QuantDiseaseGroupsComparison>();
 
     private boolean singleSelection = true;
     private boolean selfSelection = false;
@@ -125,7 +125,7 @@ public class HeatMapComponent extends VerticalLayout {
      * @param comparison
      * @param cell
      */
-    protected void addSelectedDs(QuantGroupsComparison comparison, HeatmapCell cell) {
+    protected void addSelectedDs(QuantDiseaseGroupsComparison comparison, HeatmapCell cell) {
         for (HeaderCell header : columnCells) {
             header.unSelectCellStyle();
         }
@@ -223,7 +223,7 @@ public class HeatMapComponent extends VerticalLayout {
      *
      * @param selectedDsList
      */
-    public void updateDsCellSelection(Set<QuantGroupsComparison> selectedDsList) {
+    public void updateDsCellSelection(Set<QuantDiseaseGroupsComparison> selectedDsList) {
         if (selectedDsList.isEmpty()) {
             hideCompBtn.setEnabled(false);
         } else {
@@ -242,7 +242,7 @@ public class HeatMapComponent extends VerticalLayout {
         }
         List<HeatmapCell> localSelectedCells = new ArrayList<HeatmapCell>();
         localSelectedCells.addAll(this.selectedCells);
-        for (QuantGroupsComparison gr : this.selectedDsList) {
+        for (QuantDiseaseGroupsComparison gr : this.selectedDsList) {
             String kI = gr.getComparisonHeader();
             String[] k1Arr = kI.split(" vs ");
             String kII = k1Arr[1] + " vs " + k1Arr[0];
@@ -277,7 +277,7 @@ public class HeatMapComponent extends VerticalLayout {
      * @param comparison
      * @param cell
      */
-    protected void removeSelectedDs(QuantGroupsComparison comparison, HeatmapCell cell) {
+    protected void removeSelectedDs(QuantDiseaseGroupsComparison comparison, HeatmapCell cell) {
         for (HeaderCell header : columnCells) {
             header.unSelectCellStyle();
         }
@@ -333,8 +333,8 @@ public class HeatMapComponent extends VerticalLayout {
     private void updateSelectionManagerIndexes() {
         //filter datasets
         selfSelection = true;
-        Map<String, QuantGroupsComparison> filteredComp = new HashMap<String, QuantGroupsComparison>();
-        for (QuantGroupsComparison comp : selectedDsList) {
+        Map<String, QuantDiseaseGroupsComparison> filteredComp = new HashMap<String, QuantDiseaseGroupsComparison>();
+        for (QuantDiseaseGroupsComparison comp : selectedDsList) {
             String kI = comp.getComparisonHeader();
             String[] k1Arr = kI.split(" vs ");
             String kII = k1Arr[1] + " vs " + k1Arr[0];
@@ -344,7 +344,7 @@ public class HeatMapComponent extends VerticalLayout {
             filteredComp.put(kI, comp);
 
         }
-        Set<QuantGroupsComparison> filteredSelectedDsList = new HashSet<QuantGroupsComparison>();
+        Set<QuantDiseaseGroupsComparison> filteredSelectedDsList = new HashSet<QuantDiseaseGroupsComparison>();
         filteredSelectedDsList.addAll(filteredComp.values());
 
         updateSelectionManager(filteredSelectedDsList);
@@ -355,7 +355,7 @@ public class HeatMapComponent extends VerticalLayout {
      *
      * @return
      */
-    public Set<QuantGroupsComparison> getAvailableComparisonsList() {
+    public Set<QuantDiseaseGroupsComparison> getAvailableComparisonsList() {
         return availableComparisonsList;
     }
 
@@ -435,7 +435,7 @@ public class HeatMapComponent extends VerticalLayout {
 
         }
         Set<String> keymap = new HashSet<String>();
-        for (QuantGroupsComparison gr : this.availableComparisonsList) {
+        for (QuantDiseaseGroupsComparison gr : this.availableComparisonsList) {
             String kI = gr.getComparisonHeader();
             String[] k1Arr = kI.split(" vs ");
             String kII = k1Arr[1] + " vs " + k1Arr[0];
@@ -503,7 +503,7 @@ public class HeatMapComponent extends VerticalLayout {
      *
      * @param selectedDsList
      */
-    public void updateSelectionManager(Set<QuantGroupsComparison> selectedDsList) {
+    public void updateSelectionManager(Set<QuantDiseaseGroupsComparison> selectedDsList) {
         ///to be overided
     }
 
@@ -511,9 +511,9 @@ public class HeatMapComponent extends VerticalLayout {
      *
      */
     public void selectAll() {
-        if (!isActiveSelectAll()) {
-            return;
-        }
+//        if (!isActiveSelectAll()) {
+//            return;
+//        }
 
         for (HeatmapCell cell : comparisonsCellsMap.values()) {
             if (cell.getValue() != 0 && !cell.getComparison().getComparisonHeader().trim().equalsIgnoreCase("vs") && availableComparisonsList.contains(cell.getComparison())) {
@@ -535,9 +535,9 @@ public class HeatMapComponent extends VerticalLayout {
         for (HeatmapCell cell : comparisonsCellsMap.values()) {
             cell.unselect();
         }
-        updateDsCellSelection(new HashSet<QuantGroupsComparison>());
+        updateDsCellSelection(new HashSet<QuantDiseaseGroupsComparison>());
         selectedDsList.clear();
-        selectedDsList.addAll(new HashSet<QuantGroupsComparison>());
+        selectedDsList.addAll(new HashSet<QuantDiseaseGroupsComparison>());
         updateSelectionManagerIndexes();
 
     }

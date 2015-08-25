@@ -38,7 +38,7 @@ import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
-import probe.com.model.beans.quant.QuantGroupsComparison;
+import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.view.core.jfreeutil.SquaredDot;
 
 /**
@@ -70,7 +70,7 @@ public class JFreeBarchartDivaWrapper extends AbsoluteLayout  {
      * @param comparison
      * @param searchingMode
      */
-    public JFreeBarchartDivaWrapper(int imgWidth, QuantGroupsComparison comparison,boolean searchingMode) {
+    public JFreeBarchartDivaWrapper(int imgWidth, QuantDiseaseGroupsComparison comparison,boolean searchingMode) {
 
         this.searchingMode=searchingMode;
         this.setWidth(imgWidth + "px");
@@ -90,12 +90,12 @@ public class JFreeBarchartDivaWrapper extends AbsoluteLayout  {
 
     }
 
-    private String initBarChart(int width, int height, QuantGroupsComparison comparison) {
-        Map<String, ComparisonProtein> protList = comparison.getComparProtsMap();
+    private String initBarChart(int width, int height, QuantDiseaseGroupsComparison comparison) {
+        Map<String, DiiseaseGroupsComparisonsProtein> protList = comparison.getComparProtsMap();
         double[] values = new double[5];
 //        }
         for (String key2 : protList.keySet()) {
-            ComparisonProtein prot = protList.get(key2);
+            DiiseaseGroupsComparisonsProtein prot = protList.get(key2);
             prot.updateLabelLayout();
             int indexer = prot.getTrindCategory();//(int) (prot.getCellValue() / maxIndexerValue * 10.0);
             switch (indexer) {

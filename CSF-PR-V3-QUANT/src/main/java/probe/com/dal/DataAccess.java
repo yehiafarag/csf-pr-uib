@@ -87,7 +87,7 @@ public class DataAccess implements Serializable {
     }
 
     /**
-     * get identification proteins map for especial dataset
+     * get identification proteins map for especial identification dataset
      *
      * @param datasetId
      * @return proteinsList
@@ -377,6 +377,17 @@ public class DataAccess implements Serializable {
         Set<QuantProtein> datasetProteinsSearchingList = db.getQuantificationProteins(quantDatasetId);
         return datasetProteinsSearchingList;
     }
+    
+     /**
+     * get quant proteins list for a number of quant datasets
+     *
+     * @param quantDatasetIds
+     * @return quant proteins list
+     */
+    public Set<QuantProtein> getQuantificationProteins(int[] quantDatasetIds) {
+        Set<QuantProtein> datasetProteinsSearchingList = db.getQuantificationProteins(quantDatasetIds);
+        return datasetProteinsSearchingList;
+    }
 
     /**
      * get quant peptides list for specific quant dataset
@@ -387,6 +398,19 @@ public class DataAccess implements Serializable {
     public Map<String, Set<QuantPeptide>> getQuantificationPeptides(int quantDatasetId) {
 
         Map<String, Set<QuantPeptide>> datasetProteinsSearchingList = db.getQuantificationPeptides(quantDatasetId);
+
+        return datasetProteinsSearchingList;
+    }
+    
+     /**
+     * get all quant peptides list for  quant dataset list
+     *
+     * @param quantDatasetIds
+     * @return quant peptides list
+     */
+    public Map<String, Set<QuantPeptide>> getQuantificationPeptides(int[] quantDatasetIds) {
+
+        Map<String, Set<QuantPeptide>> datasetProteinsSearchingList = db.getQuantificationPeptides(quantDatasetIds);
 
         return datasetProteinsSearchingList;
     }

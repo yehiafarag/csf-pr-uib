@@ -23,6 +23,7 @@ import probe.com.model.beans.identification.IdentificationProteinBean;
 import probe.com.view.body.identificationlayoutcomponents.IdentificationPeptideTable;
 import probe.com.view.body.identificationdatasetsoverview.identificationdataset.IdentificationProteinsTableComponent;
 import probe.com.view.body.searching.id.IdentificationSearchResultsTable;
+
 /**
  *
  * @author Yehia Farag
@@ -49,10 +50,9 @@ public class ExporterBtnsGenerator implements Serializable {
      * @param btnName
      * @return
      */
-    public VerticalLayout exportDatasetProteins(int datasetId, boolean linkBtn, String btnName) {
+    public VerticalLayout exportDatasetProteins(final int datasetId, boolean linkBtn, String btnName) {
         final String datasetName = handler.getDataset(datasetId).getName();
-        final Map<String, IdentificationProteinBean> proteinsList = handler.getIdentificationProteinsList(datasetId);
-        final int fractionNumber = handler.getDataset(datasetId).getFractionsNumber();
+
         String tupdatedExpName = datasetName;
         if (datasetName != null) {
             tupdatedExpName = datasetName.replaceAll("[-+.^:,/]", " ");
@@ -86,6 +86,8 @@ public class ExporterBtnsGenerator implements Serializable {
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
+
+               
                 String exportGroupValue = protExportLayout.getExportGroupValue();
                 String typeGroupValue = protExportLayout.getTypeGroupValue();
                 if (handler.checkFileAvailable("CSF-PR - " + datasetName + " - " + typeGroupValue + " - Proteins." + exportGroupValue)) {
@@ -93,8 +95,10 @@ public class ExporterBtnsGenerator implements Serializable {
                     Resource res = new FileResource(new File(fileURL));
                     Page.getCurrent().open(res, null, false);
                     return;
-                }
-
+                } 
+                
+                final Map<String, IdentificationProteinBean> proteinsList = handler.getIdentificationProteinsList(datasetId);
+                final int fractionNumber = handler.getDataset(datasetId).getFractionsNumber();
                 IdentificationProteinsTableComponent protTable;
                 if (typeGroupValue.equalsIgnoreCase("Validated Only")) {
                     Map<String, IdentificationProteinBean> vProteinsList = new HashMap<String, IdentificationProteinBean>();
@@ -175,15 +179,14 @@ public class ExporterBtnsGenerator implements Serializable {
                 }
 
                 if (typeGroupValue.equalsIgnoreCase("Validated Only")) {
-                    handler.exportPeptidesToFile(datasetId, true, datasetName, typeGroupValue, exportGroupValue);
+                    handler.exportIdentificationPeptidesToFile(datasetId, true, datasetName, typeGroupValue, exportGroupValue);
                 } else if (typeGroupValue.equalsIgnoreCase("All")) {
-                    handler.exportPeptidesToFile(datasetId, false, datasetName, typeGroupValue, exportGroupValue);
+                    handler.exportIdentificationPeptidesToFile(datasetId, false, datasetName, typeGroupValue, exportGroupValue);
                 }
                 if (handler.checkFileAvailable("CSF-PR - " + datasetName + " - All - " + typeGroupValue + " - Peptides." + exportGroupValue)) {
                     String fileURL = handler.getFileUrl("CSF-PR - " + datasetName + " - All - " + typeGroupValue + " - Peptides." + exportGroupValue);
                     Resource res = new FileResource(new File(fileURL));
                     Page.getCurrent().open(res, null, false);
-                    System.out.println("use new exporter");
                     return;
                 }
 
@@ -263,11 +266,7 @@ public class ExporterBtnsGenerator implements Serializable {
 
                 Map<String, IdentificationPeptideTable> peptidesTableList = null;
                 if (typeGroupValue.equalsIgnoreCase("Validated Only")) {
-                    
-                    
-                    
-                    
-                    
+
                     peptidesTableList = getProteinPeptidesAllDatasets(accession, otherAccessions, true);// handler.getProteinPeptidesAllDatasets(accession, otherAccessions, true);
                 } else if (typeGroupValue.equalsIgnoreCase("All")) {
                     peptidesTableList = getProteinPeptidesAllDatasets(accession, otherAccessions, false);
@@ -526,7 +525,7 @@ public class ExporterBtnsGenerator implements Serializable {
                 } else if (typeGroupValue.equalsIgnoreCase("All")) {
                     tempFullExpProtList = fullDatasetProtList;
                 }
-                Map<Integer, IdentificationDatasetDetailsBean> datasetDetailsList = handler.getDatasetDetailsList();
+                Map<Integer, IdentificationDatasetDetailsBean> datasetDetailsList = handler.getIdentificationDatasetDetailsList();
                 IdentificationSearchResultsTable searcheResultsTable = new IdentificationSearchResultsTable(datasetDetailsList, tempFullExpProtList);
                 searcheResultsTable.setVisible(false);
                 buttonBody.addComponent(searcheResultsTable);
@@ -615,18 +614,17 @@ public class ExporterBtnsGenerator implements Serializable {
         return vPeptideList;
 
     }
-    
-    
-    
+
     /**
-     * get identification protein peptides from all available identification datasets
+     * get identification protein peptides from all available identification
+     * datasets
      *
      * @param accession
      * @param otherAccession
      * @param validated
      * @return peptideTableList map of all available peptides for the protein
      */
-    private  Map<String, IdentificationPeptideTable> getProteinPeptidesAllDatasets(String accession, String otherAccession, boolean validated) {
+    private Map<String, IdentificationPeptideTable> getProteinPeptidesAllDatasets(String accession, String otherAccession, boolean validated) {
         Map<String, IdentificationPeptideTable> identificationPeptideTableList = new HashMap<String, IdentificationPeptideTable>();
         for (IdentificationDatasetBean tempDataset : handler.getIdentificationDatasetList().values()) {
             Map<Integer, IdentificationPeptideBean> pepProtList = handler.getIdentificationProteinPeptidesList(tempDataset.getDatasetId(), accession, otherAccession);

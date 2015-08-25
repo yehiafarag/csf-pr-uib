@@ -25,7 +25,7 @@ import probe.com.model.beans.identification.IdentificationPeptideBean;
 import probe.com.model.beans.identification.StandardIdentificationFractionPlotProteinBean;
 import probe.com.view.body.identificationlayoutcomponents.IdentificationGelFractionsLayout;
 import probe.com.view.body.identificationlayoutcomponents.IdentificationPeptidesTableLayout;
-import probe.com.view.body.identificationdatasetsoverview.identificationdataset.ProteinsTableLayout;
+import probe.com.view.body.identificationdatasetsoverview.identificationdataset.IdentificationProteinsTableLayout;
 import probe.com.view.core.exporter.ExporterBtnsGenerator;
 import probe.com.view.core.CustomExternalLink;
 import probe.com.view.core.HideOnClickLayout;
@@ -33,13 +33,15 @@ import probe.com.view.core.HideOnClickLayout;
 /**
  *
  * @author Yehia Farag
+ * 
+ * this class represent the identification dataset information layout (one row in the available identification datasets list)
  */
 public class IdentificationDatasetLayout extends VerticalLayout implements Serializable, Property.ValueChangeListener {
 
     private final CSFPRHandler handler;
     private final int datasetId;
     private final VerticalLayout fractionsLayout, peptidesLayout;
-    private ProteinsTableLayout protTableLayout;
+    private IdentificationProteinsTableLayout protTableLayout;
     private IdentificationPeptidesTableLayout peptideTableLayout;
 
     private Map<String, IdentificationProteinBean> proteinsList;
@@ -79,7 +81,7 @@ public class IdentificationDatasetLayout extends VerticalLayout implements Seria
         //get proteins List
         proteinsList = handler.getIdentificationProteinsList(datasetId);
 
-        protTableLayout = new ProteinsTableLayout(proteinsList, handler.getDataset(datasetId).getFractionsNumber(), handler.getDataset(datasetId).getNumberValidProt(), handler.getDataset(datasetId).getProteinsNumber());
+        protTableLayout = new IdentificationProteinsTableLayout(proteinsList, handler.getDataset(datasetId).getFractionsNumber(), handler.getDataset(datasetId).getNumberValidProt(), handler.getDataset(datasetId).getProteinsNumber());
         this.addComponent(protTableLayout);
         this.setComponentAlignment(protTableLayout, Alignment.TOP_LEFT);
         protTableLayout.getProteinTableComponent().addValueChangeListener(IdentificationDatasetLayout.this);
@@ -202,7 +204,7 @@ public class IdentificationDatasetLayout extends VerticalLayout implements Seria
 
                 VerticalLayout proteinPeptidesExportLayout = dataExporter.exportPeptidesForProtein(datasetId, accession, otherAccession, desc, peptideProteintList, true, "Export Peptides from Selected Dataset for ( " + accession + " )");
                 proteinPeptidesExportLayout.setDescription("Export Peptides from ( " + handler.getDataset(datasetId).getName() + " ) Dataset for ( " + accession + " )");
-                peptideTableLayout.setExpBtnPepTable(proteinPeptidesExportLayout);
+                peptideTableLayout.setExportingBtnForIdentificationPeptidesTable(proteinPeptidesExportLayout);
 
             }
             List<StandardIdentificationFractionPlotProteinBean> standerdProtList = handler.getStandardIdentificationFractionProteinsList(datasetId);

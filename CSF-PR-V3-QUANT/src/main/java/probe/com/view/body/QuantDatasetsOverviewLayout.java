@@ -5,10 +5,10 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.VerticalLayout;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 import probe.com.handlers.CSFPRHandler;
-import probe.com.selectionmanager.FilterUtility;
+import probe.com.selectionmanager.QuantFilterUtility;
 import probe.com.view.body.quantdatasetsoverview.DiseaseGroupsFiltersContainer;
 import probe.com.view.body.quantdatasetsoverview.QuantProteinsComparisonsContainer;
-import probe.com.view.body.quantdatasetsoverview.QuantDatasetsTableLayout;
+import probe.com.view.body.quantdatasetsoverview.QuantDatasetsCombinedTableLayout;
 import probe.com.view.core.HideOnClickLayout;
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.interactivepiechartfilters.StudiesPieChartFiltersContainerLayout;
 import probe.com.view.body.quantdatasetsoverview.QuantProteinsTabsheetContainerLayout;
@@ -22,8 +22,7 @@ import probe.com.view.body.quantdatasetsoverview.QuantProteinsTabsheetContainerL
 public class QuantDatasetsOverviewLayout extends VerticalLayout {
 
     private final StudiesPieChartFiltersContainerLayout pieChartFiltersLayout;
-//     private final DatasetsExplorerTreeLayout studiesExplorerTreeLayout;
-    private final FilterUtility filterUtility;
+    private final QuantFilterUtility filterUtility;
     private final DatasetExploringCentralSelectionManager exploringFiltersManager;
     private final QuantProteinsTabsheetContainerLayout proteinsLayout;
     private final QuantProteinsComparisonsContainer compTableLayout;
@@ -38,7 +37,7 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
         if (searchingMode) {
 
         }
-        filterUtility = new FilterUtility(handler);
+        filterUtility = new QuantFilterUtility(handler);
         exploringFiltersManager = new DatasetExploringCentralSelectionManager(filterUtility.getQuantDatasetArr(), filterUtility.getActiveFilters());//,filterUtility.getFullFilterList()
 
         this.setMargin(true);
@@ -62,14 +61,14 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
                 super.layoutClick(event);
-                proteinsLayout.redrawCharts();
+//                proteinsLayout.redrawCharts();
             }
 
         };
         this.addComponent(proteinsLevelLayout);
         proteinsLevelLayout.setVisability(true);
 
-        QuantDatasetsTableLayout quantStudiesTable = new QuantDatasetsTableLayout(exploringFiltersManager, filterUtility.getActiveHeaders());
+        QuantDatasetsCombinedTableLayout quantStudiesTable = new QuantDatasetsCombinedTableLayout(exploringFiltersManager, filterUtility.getActiveCombinedQuantTableHeaders());
         if (searchingMode) {
         } else {
             this.addComponent(quantStudiesTable);

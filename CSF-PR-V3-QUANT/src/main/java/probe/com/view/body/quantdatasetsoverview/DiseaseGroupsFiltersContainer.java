@@ -19,20 +19,18 @@ import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.DiseaseGro
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.HeatMapFilter;
 
 /**
- * this class represents the top filters layout for exploring datasets tab the
+ * This class represents the top filters layout for exploring datasets tab the
  * class include the the patients group comparison lists, filtering heat-map and
  * pie chart filters
  *
  * @author Yehia Farag
  */
 public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilter {
-    
-    private final DatasetExploringCentralSelectionManager exploringFiltersManager;
-    
+
     private final OptionGroup optionGroup;
     private final DiseaseGroupsListFilter diseaseGroupsListFilter;
     private final HeatMapFilter diseaseGroupsHeatmapFilter;
-    
+
     private final HorizontalLayout btnsLayout;
     private final QuantProteinsComparisonsContainer compTable;
     private final int tableWidth, heatmapW;
@@ -40,7 +38,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
     private final float heatmapRatio;
     private final Button selectAllFilterBtn;
     int pageWidth;
-    
+
     /**
      *
      * @param exploringFiltersManager
@@ -49,35 +47,32 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
      */
     public DiseaseGroupsFiltersContainer(final DatasetExploringCentralSelectionManager exploringFiltersManager, PopupInteractiveDSFiltersLayout pieChartFiltersBtn, final QuantProteinsComparisonsContainer compTable) {
         pageWidth = Page.getCurrent().getWebBrowser().getScreenWidth();
-//        this.setHeight("100%");
         this.setWidth(pageWidth + "px");
         this.setHeightUndefined();
         this.setSpacing(true);
         this.setColumns(2);
         this.setMargin(false);
         this.setRows(2);
-        
-        this.exploringFiltersManager = exploringFiltersManager;
+
         this.compTable = compTable;
-        
+
         diseaseGroupsListFilter = new DiseaseGroupsListFilter(exploringFiltersManager);
         Set<String> diseaseGroupsSet = diseaseGroupsListFilter.getDiseaseGroupsSet();
-//        heatmapW = 156 + (50 * diseaseGroupsSet.size());
         heatmapW = Math.max((156 + (50 * diseaseGroupsSet.size())), 580);
         tableWidth = (pageWidth - heatmapW - 150);
         heatmapRatio = (float) heatmapW / (float) (pageWidth);
         tableRatio = (float) (tableWidth) / (float) (pageWidth);
         int heatmapH = 660;
-        
+
         diseaseGroupsHeatmapFilter = new HeatMapFilter(exploringFiltersManager, heatmapW, diseaseGroupsSet, diseaseGroupsSet, diseaseGroupsListFilter.getPatientsGroupArr());
         diseaseGroupsHeatmapFilter.setHeight(heatmapH + "px");
-        
+
         btnsLayout = new HorizontalLayout();
         btnsLayout.setWidth("100%");
         btnsLayout.setSpacing(true);
         btnsLayout.addComponent(diseaseGroupsListFilter.getDiseaseGroupsFilterBtn());
         btnsLayout.setComponentAlignment(diseaseGroupsListFilter.getDiseaseGroupsFilterBtn(), Alignment.MIDDLE_CENTER);
-        
+
         Button clearFilterBtn = new Button("Reset");
         clearFilterBtn.setHeight("30px");
         clearFilterBtn.setStyleName(Reindeer.BUTTON_LINK);
@@ -91,50 +86,46 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
             public void buttonClick(Button.ClickEvent event) {
                 exploringFiltersManager.resetFilters();
             }
-            
+
         });
-        
+
         selectAllFilterBtn = new Button("Select All");
         selectAllFilterBtn.setHeight("30px");
         selectAllFilterBtn.setStyleName(Reindeer.BUTTON_LINK);
         btnsLayout.addComponent(selectAllFilterBtn);
         btnsLayout.setComponentAlignment(selectAllFilterBtn, Alignment.TOP_LEFT);
-        selectAllFilterBtn.setDescription("Select All Comparisons");
-//        btnsLayout.setWidthUndefined();
-//        btnsLayout.setHeight("100%");
+        selectAllFilterBtn.setDescription("Select All Disease Groups Comparisons");
         selectAllFilterBtn.addClickListener(new ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 diseaseGroupsHeatmapFilter.selectAll();
             }
         });
-        selectAllFilterBtn.setEnabled(diseaseGroupsHeatmapFilter.isActiveSelectAll());
-        
+//        selectAllFilterBtn.setEnabled(diseaseGroupsHeatmapFilter.isActiveSelectAll());
+
         final Button unSelectAllFilterBtn = new Button("Unselect All");
         unSelectAllFilterBtn.setHeight("30px");
         unSelectAllFilterBtn.setStyleName(Reindeer.BUTTON_LINK);
         btnsLayout.addComponent(unSelectAllFilterBtn);
         btnsLayout.setComponentAlignment(unSelectAllFilterBtn, Alignment.TOP_LEFT);
-        unSelectAllFilterBtn.setDescription("Unselect All Comparisons");
-//        btnsLayout.setWidthUndefined();
-//        btnsLayout.setHeight("100%");
+        unSelectAllFilterBtn.setDescription("Unselect All Disease Groups Comparisons");
         unSelectAllFilterBtn.addClickListener(new ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                
+
                 diseaseGroupsHeatmapFilter.unselectAll();
             }
-            
+
         });
-        
+
         this.optionGroup = new OptionGroup();
         btnsLayout.addComponent(optionGroup);
         btnsLayout.setComponentAlignment(optionGroup, Alignment.TOP_CENTER);
-        
+
         optionGroup.setWidth("250px");
         optionGroup.setNullSelectionAllowed(false); // user can not 'unselect'
         optionGroup.setMultiSelect(false);
-        
+
         optionGroup.addItem("Single selection");
         optionGroup.addItem("Multiple selection");
         optionGroup.setValue("Single selection");
@@ -151,26 +142,26 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         });
         btnsLayout.addComponent(pieChartFiltersBtn);
         btnsLayout.setComponentAlignment(pieChartFiltersBtn, Alignment.TOP_RIGHT);
-        
+
         this.addComponent(diseaseGroupsHeatmapFilter, 0, 0);
         this.setComponentAlignment(diseaseGroupsHeatmapFilter, Alignment.TOP_LEFT);
-        
+
         this.addComponent(btnsLayout, 0, 1);
-        
+
         this.addComponent(compTable, 1, 0);
         this.setComponentAlignment(compTable, Alignment.TOP_CENTER);
-        
+
         compTable.setLayoutWidth(tableWidth);
         this.setColumnExpandRatio(0, heatmapW);
         this.setColumnExpandRatio(1, tableWidth);
         this.addComponent(compTable.getBottomLayout(), 1, 1);
         this.setComponentAlignment(compTable.getBottomLayout(), Alignment.TOP_CENTER);
         LayoutEvents.LayoutClickListener hideShowCompTableListener = new LayoutEvents.LayoutClickListener() {
-            
+
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-                
-                compTable.getHideCompariosonTableBtn().setVisible(diseaseGroupsHeatmapFilter.isVisible());
+
+                compTable.getHideDiseaseGroupsComparisonsHeatmapBtn().setVisible(diseaseGroupsHeatmapFilter.isVisible());
                 diseaseGroupsHeatmapFilter.setVisible(!diseaseGroupsHeatmapFilter.isVisible());
                 btnsLayout.setVisible(!btnsLayout.isVisible());
                 if (!btnsLayout.isVisible()) {
@@ -181,76 +172,54 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
                     compTable.setLayoutWidth(tableWidth);
                     setColumnExpandRatio(0, heatmapW);
                     setColumnExpandRatio(1, tableWidth);
-                    
+
                 }
             }
         };
-        
-        compTable.getHideCompariosonTableBtn().addLayoutClickListener(hideShowCompTableListener);
+
+        compTable.getHideDiseaseGroupsComparisonsHeatmapBtn().addLayoutClickListener(hideShowCompTableListener);
         diseaseGroupsHeatmapFilter.addHideHeatmapBtnListener(hideShowCompTableListener);
-        
+
         exploringFiltersManager.registerFilter(DiseaseGroupsFiltersContainer.this);
-//        selectAllFilterBtn.click();
 
     }
-    
+
     /**
-     *
+     * select all available disease groups comparisons
      */
     public void selectAllComparisons() {
         if (diseaseGroupsHeatmapFilter.isActiveSelectAll()) {
             selectAllFilterBtn.click();
         }
     }
-    
+
     /**
      *
      * @param type
      */
     @Override
     public void selectionChanged(String type) {
-        selectAllFilterBtn.setEnabled(diseaseGroupsHeatmapFilter.isActiveSelectAll());
-//        if (type.equalsIgnoreCase("ComparisonSelection")) {
-//            if (exploringFiltersManager.getSelectedComparisonList().isEmpty()) {
-//                viewComparisonHeatmap(true);
-//            }
-//
-//        }
+//        selectAllFilterBtn.setEnabled(diseaseGroupsHeatmapFilter.isActiveSelectAll());
 
     }
-    
-    private void viewComparisonHeatmap(boolean view) {
-        diseaseGroupsHeatmapFilter.setVisible(view);
-        btnsLayout.setVisible(view);
-        if (view) {
-            compTable.setLayoutWidth(tableWidth);
-            setColumnExpandRatio(0, heatmapRatio);
-            setColumnExpandRatio(1, tableRatio);
-            
-        } else {
-            compTable.setLayoutWidth((tableWidth + heatmapW));
-            setColumnExpandRatio(0, 0f);
-            setColumnExpandRatio(1, 1f);
-            
-        }
-        
-    }
-    
+
     /**
+     * get filter id
      *
-     * @return
+     * @return string filter id
      */
     @Override
     public String getFilterId() {
         return "DiseaseGroupsFilter";
     }
-    
+
     /**
+     * remove filter from selection manager (not apply for this class)
      *
      * @param value
      */
     @Override
     public void removeFilterValue(String value) {
     }
-    
+
 }

@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package probe.com.view.body.identificationlayoutcomponents;
 
 import com.vaadin.event.LayoutEvents;
@@ -26,6 +23,8 @@ import probe.com.view.core.ShowLabel;
 /**
  *
  * @author Yehia Farag
+ * 
+ * this class represents the identification proteins fractions layout
  */
 public class IdentificationGelFractionsLayout extends VerticalLayout implements Serializable {
 
@@ -38,12 +37,12 @@ public class IdentificationGelFractionsLayout extends VerticalLayout implements 
      *
      * @param handler
      * @param accession
-     * @param mw
+     * @param molecularWeight
      * @param proteinFractionAvgList
      * @param standardProtPlotList
      * @param datasetName
      */
-    public IdentificationGelFractionsLayout(final CSFPRHandler handler, final String accession, final double mw, Map<Integer, IdentificationProteinBean> proteinFractionAvgList, List<StandardIdentificationFractionPlotProteinBean> standardProtPlotList, final String datasetName) {
+    public IdentificationGelFractionsLayout(final CSFPRHandler handler, final String accession, final double molecularWeight, Map<Integer, IdentificationProteinBean> proteinFractionAvgList, List<StandardIdentificationFractionPlotProteinBean> standardProtPlotList, final String datasetName) {
         this.setSpacing(false);
         this.setWidth("100%");
         this.setMargin(new MarginInfo(false, false, false, false));
@@ -64,7 +63,7 @@ public class IdentificationGelFractionsLayout extends VerticalLayout implements 
 
         stat = true;
 
-        Label fractionLabel = new Label("<h4 style='font-family:verdana;color:black;'>Fractions (Protein: " + accession + "  MW: " + mw + " kDa)</h4>");
+        Label fractionLabel = new Label("<h4 style='font-family:verdana;color:black;'>Fractions (Protein: " + accession + "  MW: " + molecularWeight + " kDa)</h4>");
         fractionLabel.setContentMode(ContentMode.HTML);
         fractionLabel.setHeight("45px");
         clickableheaderLayout.addComponent(fractionLabel);
@@ -74,7 +73,7 @@ public class IdentificationGelFractionsLayout extends VerticalLayout implements 
         mainLayout = new VerticalLayout();
         this.addComponent(mainLayout);
 
-        IdentificationFractionPlotLayout plotsLayout = new IdentificationFractionPlotLayout(proteinFractionAvgList, mw, standardProtPlotList);
+        IdentificationFractionPlotLayout plotsLayout = new IdentificationFractionPlotLayout(proteinFractionAvgList, molecularWeight, standardProtPlotList);
         mainLayout.addComponent(plotsLayout);
         mainLayout.setComponentAlignment(plotsLayout, Alignment.MIDDLE_CENTER);
 
@@ -120,6 +119,13 @@ public class IdentificationGelFractionsLayout extends VerticalLayout implements 
 
     }
 
+    
+    /**
+     * this is a hidden fraction table that used for exporting data
+     * @param proteinFractionAvgList
+     * return fractions information table
+     *
+     */
     private Table getFractionTable(Map<Integer, IdentificationProteinBean> proteinFractionAvgList) {
         Table table = new Table();
         table.setStyleName(Reindeer.TABLE_STRONG + " " + Reindeer.TABLE_BORDERLESS);

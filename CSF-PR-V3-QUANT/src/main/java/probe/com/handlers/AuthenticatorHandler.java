@@ -8,6 +8,7 @@ import probe.com.model.beans.User;
 /**
  *
  * @author Yehia Farag
+ * this class is responsible for authentication process for admin login and future users login
  */
 public class AuthenticatorHandler implements Serializable {
 	/**
@@ -15,7 +16,7 @@ public class AuthenticatorHandler implements Serializable {
 	 */
 	
 	private static final long serialVersionUID = 1L;
-	private final probe.com.model.Authenticator auth ;
+	private final probe.com.model.AuthenticatorLogic auth ;
 
     /**
      *
@@ -27,14 +28,14 @@ public class AuthenticatorHandler implements Serializable {
      */
     public AuthenticatorHandler(String url,String dbName,String driver,String userName, String password)
 	{
-		auth = new probe.com.model.Authenticator(url,dbName,driver,userName, password);
+		auth = new probe.com.model.AuthenticatorLogic(url,dbName,driver,userName, password);
 	}
 
     /**
      *
      * @param email
      * @param password
-     * @return
+     * @return user
      * @throws SQLException
      * @throws InstantiationException
      * @throws IllegalAccessException
@@ -53,7 +54,7 @@ public class AuthenticatorHandler implements Serializable {
      * @param email
      * @return
      */
-    public boolean reg(String username, String password, boolean admin,String email) {
+    public boolean registerNewUser(String username, String password, boolean admin,String email) {
 		
 		return auth.registerNewUser(username, password, admin,email);
 	}

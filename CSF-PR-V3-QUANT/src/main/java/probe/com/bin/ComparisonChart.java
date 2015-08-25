@@ -44,8 +44,8 @@ import org.dussan.vaadin.dcharts.options.Series;
 import org.dussan.vaadin.dcharts.options.SeriesDefaults;
 import org.dussan.vaadin.dcharts.renderers.tick.AxisTickRenderer;
 import org.dussan.vaadin.dcharts.renderers.tick.CanvasAxisTickRenderer;
-import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.ComparisonProtein;
-import probe.com.model.beans.quant.QuantGroupsComparison;
+import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiiseaseGroupsComparisonsProtein;
+import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 
 /**
  *
@@ -65,7 +65,7 @@ public class ComparisonChart extends GridLayout {
     private ChartDataClickHandler chartDataClickHandler;
     private final ChartDataMouseEnterHandler localChartDataClickHandler;
     private final VerticalLayout closeCompariosonBtn, spacer1,spacer2;
-    private final QuantGroupsComparison comparison;
+    private final QuantDiseaseGroupsComparison comparison;
     private final  Label title;
     private String[] defaultSerColours = new String[]{"#50B747", "#8ECCA3", "#CDE1FF", "#CC707F", "#cc0000"};
     private  String []serColor = new String[]{"#E5E5E5","#E5E5E5","#E5E5E5","#E5E5E5","#E5E5E5"};
@@ -83,11 +83,11 @@ public class ComparisonChart extends GridLayout {
         return closeCompariosonBtn;
     }
 
-    public QuantGroupsComparison getComparison() {
+    public QuantDiseaseGroupsComparison getComparison() {
         return comparison;
     }
 
-    public ComparisonChart(QuantGroupsComparison comparison) {
+    public ComparisonChart(QuantDiseaseGroupsComparison comparison) {
         this.setStyleName("lightborder");
         this.setWidth("99%");
         this.setHeight("100%");
@@ -116,7 +116,7 @@ public class ComparisonChart extends GridLayout {
         
 //        this.setMargin(new MarginInfo(false, false, false, true));
         this.comparison = comparison;
-        Map<String, ComparisonProtein> protList = comparison.getComparProtsMap();
+        Map<String, DiiseaseGroupsComparisonsProtein> protList = comparison.getComparProtsMap();
         compProtMap = new HashMap<Integer, Set<String>>();
         double[] values = new double[5];
         Object[] labels = new String[5];
@@ -128,7 +128,7 @@ public class ComparisonChart extends GridLayout {
         upReglabels = new String[(values.length)];
         //init values 
         for (String key2 : protList.keySet()) {
-            ComparisonProtein prot = protList.get(key2);
+            DiiseaseGroupsComparisonsProtein prot = protList.get(key2);
             prot.updateLabelLayout();
             if (maxIndexerValue < Math.abs(prot.getCellValue())) {
                 maxIndexerValue = Math.abs(prot.getCellValue());
@@ -136,7 +136,7 @@ public class ComparisonChart extends GridLayout {
 
         }
         for (String key2 : protList.keySet()) {
-            ComparisonProtein prot = protList.get(key2);
+            DiiseaseGroupsComparisonsProtein prot = protList.get(key2);
             int indexer = (int) (prot.getCellValue() / maxIndexerValue * 10.0);
 //            indexer = indexer + 10;
             if (indexer == 10) {

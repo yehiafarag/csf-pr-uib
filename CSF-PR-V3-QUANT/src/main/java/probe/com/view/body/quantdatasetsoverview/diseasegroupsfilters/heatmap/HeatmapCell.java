@@ -11,7 +11,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import org.vaadin.marcus.MouseEvents;
-import probe.com.model.beans.quant.QuantGroupsComparison;
+import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 
 /**
  * This class represents heat map cell
@@ -47,11 +47,11 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
      *
      * @return
      */
-    public QuantGroupsComparison getComparison() {
+    public QuantDiseaseGroupsComparison getComparison() {
         return comparison;
     }
     
-    private final QuantGroupsComparison comparison;
+    private final QuantDiseaseGroupsComparison comparison;
 
     /**
      *
@@ -77,7 +77,7 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
         this.setHeight("50px");
         strValue = "";
         pointer = "default";
-        this.comparison = new QuantGroupsComparison();
+        this.comparison = new QuantDiseaseGroupsComparison();
         comparison.setComparisonHeader(groupCompTitle);
         comparison.setDatasetIndexes(dsIndexes);
         mouseOverListener = new MouseEvents.MouseOverListener() {

@@ -5,8 +5,6 @@ import java.sql.SQLException;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,13 +14,12 @@ import probe.com.model.CoreLogic;
 import probe.com.model.beans.identification.IdentificationDatasetBean;
 import probe.com.model.beans.identification.IdentificationDatasetDetailsBean;
 import probe.com.model.beans.identification.IdentificationFractionBean;
-import probe.com.model.beans.quant.QuantGroupsComparison;
+import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.beans.identification.IdentificationPeptideBean;
 import probe.com.model.beans.identification.IdentificationProteinBean;
 import probe.com.model.beans.quant.QuantProtein;
 import probe.com.model.beans.identification.StandardIdentificationFractionPlotProteinBean;
 import probe.com.model.beans.quant.QuantDatasetInitialInformationObject;
-import probe.com.view.body.identificationlayoutcomponents.IdentificationPeptideTable;
 
 /**
  * @author Yehia Farag this class represent the main handler for the
@@ -290,8 +287,8 @@ public class CSFPRHandler implements Serializable {
      *
      * @return datasetDetailsList
      */
-    public Map<Integer, IdentificationDatasetDetailsBean> getDatasetDetailsList() {
-        Map<Integer, IdentificationDatasetDetailsBean> datasetDetailsList = logicLayer.getDatasetDetailsList();
+    public Map<Integer, IdentificationDatasetDetailsBean> getIdentificationDatasetDetailsList() {
+        Map<Integer, IdentificationDatasetDetailsBean> datasetDetailsList = logicLayer.getIdentificationDatasetDetailsList();
         return datasetDetailsList;
 
     }
@@ -330,8 +327,8 @@ public class CSFPRHandler implements Serializable {
      * @param identificationProteinsList identification peptide list
      * @return list of validated identification proteins list
      */
-    public Map<Integer, IdentificationProteinBean> getValidatedProteinsList(Map<Integer, IdentificationProteinBean> identificationProteinsList) {
-        Map<Integer, IdentificationProteinBean> vProteinsList = logicLayer.getValidatedProteinsList(identificationProteinsList);
+    public Map<Integer, IdentificationProteinBean> getValidatedIdentificationProteinsList(Map<Integer, IdentificationProteinBean> identificationProteinsList) {
+        Map<Integer, IdentificationProteinBean> vProteinsList = logicLayer.getValidatedIdentificationProteinsList(identificationProteinsList);
         return vProteinsList;
 
     }
@@ -345,8 +342,8 @@ public class CSFPRHandler implements Serializable {
      * @param dataType validated/all
      * @param exportFileType csv or xls
      */
-    public void exportPeptidesToFile(int datasetId, boolean validated, String datasetName, String dataType, String exportFileType) {
-        logicLayer.exportPeptidesToFile(datasetId, validated, datasetName, dataType, exportFileType);
+    public void exportIdentificationPeptidesToFile(int datasetId, boolean validated, String datasetName, String dataType, String exportFileType) {
+        logicLayer.exportIdentificationPeptidesToFile(datasetId, validated, datasetName, dataType, exportFileType);
 
     }
 
@@ -361,7 +358,7 @@ public class CSFPRHandler implements Serializable {
      * @return not found keywords within the searching list
      */
     public String filterIdSearchingKeywords(Map<Integer, IdentificationProteinBean> identificationProteinsList, String SearchingKeys, String searchBy) {
-        return logicLayer.filterIdSearchingKeywords(identificationProteinsList, SearchingKeys, searchBy);
+        return logicLayer.filterIdentificationSearchingKeywords(identificationProteinsList, SearchingKeys, searchBy);
 
     }
 
@@ -375,7 +372,7 @@ public class CSFPRHandler implements Serializable {
      * @return list of identification hits results
      */
     public Map<String, Integer> getIdHitsList(Map<Integer, IdentificationProteinBean> identificationProteinsList, String searchBy) {
-        return logicLayer.getIdHitsList(identificationProteinsList, searchBy);
+        return logicLayer.getIdentificationHitsList(identificationProteinsList, searchBy);
 
     }
 
@@ -497,7 +494,7 @@ public class CSFPRHandler implements Serializable {
      *
      * @return updated Selected Comparison set
      */
-    public Set<QuantGroupsComparison> getComparisonProtList(Set<QuantGroupsComparison> selectedComparisonList, List<QuantProtein> searchQuantificationProtList) {
+    public Set<QuantDiseaseGroupsComparison> getComparisonProtList(Set<QuantDiseaseGroupsComparison> selectedComparisonList, List<QuantProtein> searchQuantificationProtList) {
         return logicLayer.getComparisonProtList(selectedComparisonList, searchQuantificationProtList);
 
     }

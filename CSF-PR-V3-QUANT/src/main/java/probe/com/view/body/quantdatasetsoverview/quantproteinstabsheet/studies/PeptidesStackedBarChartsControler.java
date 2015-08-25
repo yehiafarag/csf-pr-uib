@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.ComparisonProtein;
+import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiiseaseGroupsComparisonsProtein;
 import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.model.beans.quant.QuantPeptide;
 import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.peptidescontainer.PeptideSequanceLocationOverview;
@@ -32,7 +32,7 @@ public class PeptidesStackedBarChartsControler {
      * @param width
      * @param cp
      */
-    public PeptidesStackedBarChartsControler(int width, ComparisonProtein cp) {
+    public PeptidesStackedBarChartsControler(int width, DiiseaseGroupsComparisonsProtein cp) {
 
         int panelWidth = Page.getCurrent().getBrowserWindowWidth() - width-100;
         peptidesOverviewPopupPanel = new ProteinInformationPopupComponent(panelWidth);

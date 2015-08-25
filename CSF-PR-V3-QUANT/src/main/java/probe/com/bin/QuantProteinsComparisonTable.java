@@ -41,8 +41,8 @@ import java.util.TreeMap;
 import org.dussan.vaadin.dcharts.events.click.ChartDataClickEvent;
 import org.dussan.vaadin.dcharts.events.click.ChartDataClickHandler;
 import probe.com.handlers.CSFPRHandler;
-import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.ComparisonProtein;
-import probe.com.model.beans.quant.QuantGroupsComparison;
+import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiiseaseGroupsComparisonsProtein;
+import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.selectionmanager.CSFFilter;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 import probe.com.view.core.CustomExternalLink;
@@ -425,7 +425,7 @@ public class QuantProteinsComparisonTable extends VerticalLayout implements CSFF
                     for (Object id : itemIds) {
                         Item item = groupsComparisonTable.getItem(id); 
                         protAccssions.add(item.getItemProperty("Accession").toString());
-                        for (QuantGroupsComparison gc : compArr) {
+                        for (QuantDiseaseGroupsComparison gc : compArr) {
                             if (item.getItemProperty(gc.getComparisonHeader()).getValue() == null) {
                                
                                 groupsComparisonTable.removeItem(id);                                
@@ -520,44 +520,44 @@ public class QuantProteinsComparisonTable extends VerticalLayout implements CSFF
         return hideCompBtn;
     }
 
-    private final Set<QuantGroupsComparison> comparisonMap = new HashSet<QuantGroupsComparison>();
+    private final Set<QuantDiseaseGroupsComparison> comparisonMap = new HashSet<QuantDiseaseGroupsComparison>();
     private final Map<String, String> accessionMap = new HashMap<String, String>();
-    private QuantGroupsComparison[] compArr = new QuantGroupsComparison[]{};
+    private QuantDiseaseGroupsComparison[] compArr = new QuantDiseaseGroupsComparison[]{};
 private boolean selfselection = false;
     @Override
     public void selectionChanged(String type) {
-        if (type.equalsIgnoreCase("ComparisonSelection")) {
+        if (type.equalsIgnoreCase("Comparison_Selection")) {
             Set<String> selectedAccessions = null;
-            Set<QuantGroupsComparison> selectedComparisonList = selectionManager.getSelectedComparisonList();
-            Set<QuantGroupsComparison> newComparisons = new HashSet<QuantGroupsComparison>();
-            Set<QuantGroupsComparison> removingComparisons = new HashSet<QuantGroupsComparison>();
-            for (QuantGroupsComparison comparison : selectedComparisonList) {
+            Set<QuantDiseaseGroupsComparison> selectedComparisonList = selectionManager.getSelectedDiseaseGroupsComparisonList();
+            Set<QuantDiseaseGroupsComparison> newComparisons = new HashSet<QuantDiseaseGroupsComparison>();
+            Set<QuantDiseaseGroupsComparison> removingComparisons = new HashSet<QuantDiseaseGroupsComparison>();
+            for (QuantDiseaseGroupsComparison comparison : selectedComparisonList) {
                 if (!comparisonMap.contains(comparison)) {
                     newComparisons.add(comparison);
                 }
 
             }
-            for (QuantGroupsComparison comparison : comparisonMap) {
+            for (QuantDiseaseGroupsComparison comparison : comparisonMap) {
                 if (!selectedComparisonList.contains(comparison)) {
                     removingComparisons.add(comparison);
                 }
             }
             newComparisons = handler.getComparisonProtList(newComparisons,null);
 
-            for (QuantGroupsComparison comparison : removingComparisons) {
+            for (QuantDiseaseGroupsComparison comparison : removingComparisons) {
                 comparisonMap.remove(comparison);
             }
 
-            QuantGroupsComparison[] tcompArr = new QuantGroupsComparison[comparisonMap.size() + newComparisons.size()];
+            QuantDiseaseGroupsComparison[] tcompArr = new QuantDiseaseGroupsComparison[comparisonMap.size() + newComparisons.size()];
             int u = 0;
-            for (QuantGroupsComparison comparison : compArr) {
+            for (QuantDiseaseGroupsComparison comparison : compArr) {
                 if (comparisonMap.contains(comparison)) {
                     tcompArr[u] = comparison;
                     u++;
                 }
 
             }
-            for (QuantGroupsComparison comparison : newComparisons) {
+            for (QuantDiseaseGroupsComparison comparison : newComparisons) {
                 tcompArr[u] = comparison;
                 u++;
 
@@ -575,7 +575,7 @@ private boolean selfselection = false;
 
             } else {
 
-                selectedAccessions = selectionManager.getProtSelectionMap().keySet();
+                selectedAccessions = selectionManager.getQuantProteinsLayoutSelectionMap().keySet();
                 startLayout.setVisible(false);
                 topLayout.setVisible(true);
                 groupsComparisonTable.setVisible(true);
@@ -583,14 +583,14 @@ private boolean selfselection = false;
             }
             
             
-            selectionManager.updateSelectedComparisonList(new LinkedHashSet<QuantGroupsComparison>(Arrays.asList(compArr)));
+            selectionManager.updateSelectedComparisonList(new LinkedHashSet<QuantDiseaseGroupsComparison>(Arrays.asList(compArr)));
             updateTableData(compArr, selectedAccessions);
             updateProtCountLabel(accessionMap.size());
 
-        } else if (type.equalsIgnoreCase("quantProtSelection") && !selfselection) {
+        } else if (type.equalsIgnoreCase("Quant_Proten_Selection") && !selfselection) {
             externalSelection= true;
             selfselection = false;
-            Set<String> selectedAccessions = selectionManager.getProtSelectionMap().keySet();
+            Set<String> selectedAccessions = selectionManager.getQuantProteinsLayoutSelectionMap().keySet();
             if (selectedAccessions.isEmpty()) {
                 updateTableData(compArr, null);
             } else {
@@ -620,7 +620,7 @@ private boolean selfselection = false;
     }
 
 //    private final Set<ComparisonChart> comparisonChartsSet= new HashSet<ComparisonChart>();
-    private void updateTableData(QuantGroupsComparison[] comparisonMap, Set<String> selectedAccessions) {
+    private void updateTableData(QuantDiseaseGroupsComparison[] comparisonMap, Set<String> selectedAccessions) {
         this.chartsLayoutContainer.removeAllComponents();
         this.groupsComparisonTable.removeAllItems();
         chartSet.clear();
@@ -652,25 +652,25 @@ private boolean selfselection = false;
 
       
         
-        Map<String, ComparisonProtein[]> protSetMap = new HashMap<String, ComparisonProtein[]>();
+        Map<String, DiiseaseGroupsComparisonsProtein[]> protSetMap = new HashMap<String, DiiseaseGroupsComparisonsProtein[]>();
         for (int compIndex = 0; compIndex < comparisonMap.length; compIndex++) {
-            QuantGroupsComparison comp = comparisonMap[compIndex];
+            QuantDiseaseGroupsComparison comp = comparisonMap[compIndex];
             ComparisonChart chartPlot = generateColumnBarChart(comp);
             this.chartsLayoutContainer.addComponent(chartPlot);
             this.chartsLayoutContainer.setComponentAlignment(chartPlot, Alignment.MIDDLE_CENTER);
-            this.groupsComparisonTable.addContainerProperty(comp.getComparisonHeader(), ComparisonProtein.class, null, comp.getComparisonHeader() + " (#Proteins: " + comp.getComparProtsMap().size() + ")", null, Table.Align.CENTER);
+            this.groupsComparisonTable.addContainerProperty(comp.getComparisonHeader(), DiiseaseGroupsComparisonsProtein.class, null, comp.getComparisonHeader() + " (#Proteins: " + comp.getComparProtsMap().size() + ")", null, Table.Align.CENTER);
              groupsComparisonTable.setColumnWidth(comp.getComparisonHeader(), 100);
             
             
-            Map<String, ComparisonProtein> protList = comp.getComparProtsMap();
+            Map<String, DiiseaseGroupsComparisonsProtein> protList = comp.getComparProtsMap();
 
             for (String key2 : protList.keySet()) {
-                ComparisonProtein prot = protList.get(key2);
+                DiiseaseGroupsComparisonsProtein prot = protList.get(key2);
                 accessionMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), prot.getUniProtAccess());
                 if (!protSetMap.containsKey(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim())) {
-                    protSetMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), new ComparisonProtein[comparisonMap.length]);
+                    protSetMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), new DiiseaseGroupsComparisonsProtein[comparisonMap.length]);
                 }
-                ComparisonProtein[] tCompArr = protSetMap.get(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim());
+                DiiseaseGroupsComparisonsProtein[] tCompArr = protSetMap.get(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim());
                 tCompArr[compIndex] = prot;
                 protSetMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), tCompArr);
             }
@@ -688,8 +688,8 @@ private boolean selfselection = false;
             tableRow[i++] = index;
             tableRow[i++] = acc;
             tableRow[i++] = protName;
-            for (QuantGroupsComparison cg : comparisonMap) {
-                ComparisonProtein cp = protSetMap.get(protAccName)[i - 3];
+            for (QuantDiseaseGroupsComparison cg : comparisonMap) {
+                DiiseaseGroupsComparisonsProtein cp = protSetMap.get(protAccName)[i - 3];
                 if (cp == null) {
                     tableRow[i] = null;
                 } else {
@@ -707,7 +707,7 @@ private boolean selfselection = false;
         }
 
         if (comparisonMap.length > 0) {
-            sortComparisonTableColumn = ((QuantGroupsComparison) comparisonMap[comparisonMap.length-1]).getComparisonHeader();
+            sortComparisonTableColumn = ((QuantDiseaseGroupsComparison) comparisonMap[comparisonMap.length-1]).getComparisonHeader();
           
         }  
         this.groupsComparisonTable.sort(new String[]{sortComparisonTableColumn}, new boolean[]{false});
@@ -762,7 +762,7 @@ private boolean selfselection = false;
     }
     private final Set<ComparisonChart> chartSet = new HashSet<ComparisonChart>();
 
-    private ComparisonChart generateColumnBarChart(final QuantGroupsComparison comparison) {
+    private ComparisonChart generateColumnBarChart(final QuantDiseaseGroupsComparison comparison) {
         final ComparisonChart chart = new ComparisonChart(comparison);
         ChartDataClickHandler chartDataClickHandler = new ChartDataClickHandler() {
             private final Map<Integer, Set<String>> localCompProtMap = chart.getCompProtMap();
@@ -783,13 +783,13 @@ private boolean selfselection = false;
 
         LayoutEvents.LayoutClickListener closeListener = new LayoutEvents.LayoutClickListener() {
 
-            private final QuantGroupsComparison localComparison = comparison;
+            private final QuantDiseaseGroupsComparison localComparison = comparison;
 
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-                Set<QuantGroupsComparison> selectedComparisonList = selectionManager.getSelectedComparisonList();
+                Set<QuantDiseaseGroupsComparison> selectedComparisonList = selectionManager.getSelectedDiseaseGroupsComparisonList();
                 selectedComparisonList.remove(localComparison);
-                selectionManager.setComparisonSelection(selectedComparisonList);
+                selectionManager.setDiseaseGroupsComparisonSelection(selectedComparisonList);
             }
         };
         chart.getCloseCompariosonBtn().addLayoutClickListener(closeListener);
@@ -810,23 +810,23 @@ private boolean selfselection = false;
         return subAccessionMap;
     }
 
-    private void filterTable(Set<String> accessions, QuantGroupsComparison[] comparisonMap, String sortCompColumnName) {
+    private void filterTable(Set<String> accessions, QuantDiseaseGroupsComparison[] comparisonMap, String sortCompColumnName) {
         groupsComparisonTable.removeValueChangeListener(QuantProteinsComparisonTable.this);
         this.groupsComparisonTable.removeAllItems();
-        Map<String, ComparisonProtein[]> protSetMap = new HashMap<String, ComparisonProtein[]>();
+        Map<String, DiiseaseGroupsComparisonsProtein[]> protSetMap = new HashMap<String, DiiseaseGroupsComparisonsProtein[]>();
         for (int compIndex = 0; compIndex < comparisonMap.length; compIndex++) {
-            QuantGroupsComparison comp = comparisonMap[compIndex];
-            Map<String, ComparisonProtein> protList = comp.getComparProtsMap();
+            QuantDiseaseGroupsComparison comp = comparisonMap[compIndex];
+            Map<String, DiiseaseGroupsComparisonsProtein> protList = comp.getComparProtsMap();
             for (String key2 : protList.keySet()) {
-                ComparisonProtein prot = protList.get(key2);
+                DiiseaseGroupsComparisonsProtein prot = protList.get(key2);
                 if (!accessions.contains(prot.getUniProtAccess())) {
                     continue;
                 }
 
                 if (!protSetMap.containsKey(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim())) {
-                    protSetMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), new ComparisonProtein[comparisonMap.length]);
+                    protSetMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), new DiiseaseGroupsComparisonsProtein[comparisonMap.length]);
                 }
-                ComparisonProtein[] tCompArr = protSetMap.get(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim());
+                DiiseaseGroupsComparisonsProtein[] tCompArr = protSetMap.get(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim());
                 tCompArr[compIndex] = prot;
                 protSetMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), tCompArr);
             }
@@ -844,8 +844,8 @@ private boolean selfselection = false;
             tableRow[i++] = index;
             tableRow[i++] = acc;
             tableRow[i++] = protName;
-            for (QuantGroupsComparison cg : comparisonMap) {
-                ComparisonProtein cp = protSetMap.get(protAccName)[i - 3];
+            for (QuantDiseaseGroupsComparison cg : comparisonMap) {
+                DiiseaseGroupsComparisonsProtein cp = protSetMap.get(protAccName)[i - 3];
                 if (cp == null) {
                     tableRow[i] = null;
                 } else {
@@ -859,7 +859,7 @@ private boolean selfselection = false;
             index++;
         }
         if (sortCompColumnName.equalsIgnoreCase("")) {
-            sortCompColumnName = ((QuantGroupsComparison) comparisonMap[0]).getComparisonHeader();
+            sortCompColumnName = ((QuantDiseaseGroupsComparison) comparisonMap[0]).getComparisonHeader();
         }
 
         if (comparisonMap.length > 0) {
@@ -955,17 +955,17 @@ private boolean selfselection = false;
      
         updateChartsWithSelectedProteins(new HashSet<String>(accessions), true, sortComparisonTableColumn);
 
-        LinkedHashMap<String, ComparisonProtein[]> protSelectionMap = new LinkedHashMap<String, ComparisonProtein[]>();
+        LinkedHashMap<String, DiiseaseGroupsComparisonsProtein[]> protSelectionMap = new LinkedHashMap<String, DiiseaseGroupsComparisonsProtein[]>();
         for (String accession : accessions) {
             for (int compIndex = 0; compIndex < compArr.length; compIndex++) {
-                QuantGroupsComparison comp = compArr[compIndex];
-                Map<String, ComparisonProtein> protList = comp.getComparProtsMap();
-                for (ComparisonProtein prot : protList.values()) {
+                QuantDiseaseGroupsComparison comp = compArr[compIndex];
+                Map<String, DiiseaseGroupsComparisonsProtein> protList = comp.getComparProtsMap();
+                for (DiiseaseGroupsComparisonsProtein prot : protList.values()) {
                     if (prot.getUniProtAccess().equalsIgnoreCase(accession)) {
                         if (!protSelectionMap.containsKey(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim())) {
-                            protSelectionMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), new ComparisonProtein[compArr.length]);
+                            protSelectionMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), new DiiseaseGroupsComparisonsProtein[compArr.length]);
                         }
-                        ComparisonProtein[] tCompArr = protSelectionMap.get(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim());
+                        DiiseaseGroupsComparisonsProtein[] tCompArr = protSelectionMap.get(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim());
                         tCompArr[compIndex] = prot;
                         protSelectionMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), tCompArr);
 
@@ -982,7 +982,7 @@ private boolean selfselection = false;
 //          return;
         } else {
             selfselection = true; 
-            selectionManager.setProteinsSelection(protSelectionMap);
+            selectionManager.setQuantProteinsSelectionLayout(protSelectionMap);
         }
        
 

@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package probe.com.model.util;
+package probe.com.bin;
 
 import com.vaadin.ui.VerticalLayout;
 
 /**
  *
- * @author y-mok_000
+ * @author Yehia Farag
  */
 public class SparkLineGen {
     

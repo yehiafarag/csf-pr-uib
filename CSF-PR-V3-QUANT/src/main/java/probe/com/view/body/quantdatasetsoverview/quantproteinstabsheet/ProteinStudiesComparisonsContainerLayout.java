@@ -11,8 +11,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.ComparisonProtein;
-import probe.com.model.beans.quant.QuantGroupsComparison;
+import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiiseaseGroupsComparisonsProtein;
+import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 
 /**
@@ -21,62 +21,72 @@ import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
  */
 public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
 
-    private final Map<QuantGroupsComparison, ProteinComparisonScatterPlotLayout> compLayoutMap = new LinkedHashMap<QuantGroupsComparison, ProteinComparisonScatterPlotLayout>();
+    private final Map<QuantDiseaseGroupsComparison, ProteinComparisonScatterPlotLayout> compLayoutMap = new LinkedHashMap<QuantDiseaseGroupsComparison, ProteinComparisonScatterPlotLayout>();
     private final GridLayout mainbodyLayout;
+    private final DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager;
+    private final  int width;
+    private final DiiseaseGroupsComparisonsProtein[] diiseaseGroupsComparisonsProteinArr;
+    private final Set<QuantDiseaseGroupsComparison> selectedComparisonList;
+    private final boolean searchingMode;
 
     /**
      *
      * @param proteinsComparisonsArr
      * @param selectedComparisonList
-     * @param selectionManager
+     * @param datasetExploringCentralSelectionManager
      * @param width
      * @param searchingMode
      */
-    public ProteinStudiesComparisonsContainerLayout(ComparisonProtein[] proteinsComparisonsArr, Set<QuantGroupsComparison> selectedComparisonList, final DatasetExploringCentralSelectionManager selectionManager, int width,boolean searchingMode) {
+    public ProteinStudiesComparisonsContainerLayout(DiiseaseGroupsComparisonsProtein[] proteinsComparisonsArr, Set<QuantDiseaseGroupsComparison> selectedComparisonList, final DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager, int width,boolean searchingMode) {
         setStyleName(Reindeer.LAYOUT_WHITE);
         this.setWidth("100%");
         this.setHeightUndefined();
+        this.datasetExploringCentralSelectionManager = datasetExploringCentralSelectionManager;
+        this.searchingMode=searchingMode;
         mainbodyLayout = new GridLayout(1, selectedComparisonList.size() + 1);
         this.addComponent(mainbodyLayout);
         mainbodyLayout.setWidthUndefined();
         mainbodyLayout.setHeightUndefined();
-        int rowIndex = 0;
-        for (ComparisonProtein cprot : proteinsComparisonsArr) {
-            if (cprot == null) {
-                QuantGroupsComparison gc = (QuantGroupsComparison) selectedComparisonList.toArray()[rowIndex];
-                cprot = new ComparisonProtein(width, gc, -1);
-                continue;
-            }
-            ProteinComparisonScatterPlotLayout protCompLayout = new ProteinComparisonScatterPlotLayout(cprot, width, selectionManager,searchingMode);
-            mainbodyLayout.addComponent(protCompLayout, 0, rowIndex);
-            mainbodyLayout.setComponentAlignment(protCompLayout, Alignment.MIDDLE_CENTER);
-            compLayoutMap.put(cprot.getComparison(), protCompLayout);
-
-            final ComparisonProtein gc = cprot;
-            LayoutEvents.LayoutClickListener closeListener = new LayoutEvents.LayoutClickListener() {
-
-                private final QuantGroupsComparison localComparison = gc.getComparison();
-
-                @Override
-                public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-                    Set<QuantGroupsComparison> selectedComparisonList = selectionManager.getSelectedComparisonList();
-                    selectedComparisonList.remove(localComparison);
-                    selectionManager.setComparisonSelection(selectedComparisonList);
-                }
-            };
-            protCompLayout.getCloseBtn().addLayoutClickListener(closeListener);
-            rowIndex++;
-        }
+        this.width=width;
+        this.diiseaseGroupsComparisonsProteinArr=proteinsComparisonsArr;
+        this.selectedComparisonList=selectedComparisonList;
+//        int rowIndex = 0;
+//        for (DiiseaseGroupsComparisonsProtein cprot : proteinsComparisonsArr) {
+//            if (cprot == null) {
+//                QuantDiseaseGroupsComparison gc = (QuantDiseaseGroupsComparison) selectedComparisonList.toArray()[rowIndex];
+//                cprot = new DiiseaseGroupsComparisonsProtein(width, gc, -1);
+//                continue;
+//            }
+//            ProteinComparisonScatterPlotLayout protCompLayout = new ProteinComparisonScatterPlotLayout(cprot, width, datasetExploringCentralSelectionManager,searchingMode);
+//            mainbodyLayout.addComponent(protCompLayout, 0, rowIndex);
+//            mainbodyLayout.setComponentAlignment(protCompLayout, Alignment.MIDDLE_CENTER);
+//            compLayoutMap.put(cprot.getComparison(), protCompLayout);
+//
+//            final DiiseaseGroupsComparisonsProtein gc = cprot;
+//            LayoutEvents.LayoutClickListener closeListener = new LayoutEvents.LayoutClickListener() {
+//
+//                private final QuantDiseaseGroupsComparison localComparison = gc.getComparison();
+//
+//                @Override
+//                public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+//                    Set<QuantDiseaseGroupsComparison> selectedComparisonList = datasetExploringCentralSelectionManager.getSelectedDiseaseGroupsComparisonList();
+//                    selectedComparisonList.remove(localComparison);
+//                    datasetExploringCentralSelectionManager.setDiseaseGroupsComparisonSelection(selectedComparisonList);
+//                }
+//            };
+//            protCompLayout.getCloseBtn().addLayoutClickListener(closeListener);
+//            rowIndex++;
+//        }
     }
 
     /**
      *
      * @param ordComparisonProteins
      */
-    public void orderComparisons(ComparisonProtein[] ordComparisonProteins) {
+    public void orderComparisons(DiiseaseGroupsComparisonsProtein[] ordComparisonProteins) {
         mainbodyLayout.removeAllComponents();
         int rowIndex = 0;
-        for (final ComparisonProtein cp : ordComparisonProteins) {
+        for (final DiiseaseGroupsComparisonsProtein cp : ordComparisonProteins) {
             if (cp == null) {
                 continue;
             }
@@ -93,7 +103,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
      * @param groupComp
      * @param clicked
      */
-    public void highlightComparison(QuantGroupsComparison groupComp, boolean clicked) {
+    public void highlightComparison(QuantDiseaseGroupsComparison groupComp, boolean clicked) {
         if (lastheighlitedlayout != null) {
             lastheighlitedlayout.highlight(false, clicked);
         }
@@ -110,7 +120,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
      * @param groupComp
      * @return
      */
-    public String getComparisonChart(QuantGroupsComparison groupComp) {
+    public String getComparisonChart(QuantDiseaseGroupsComparison groupComp) {
         ProteinComparisonScatterPlotLayout layout = compLayoutMap.get(groupComp);
         if (layout == null) {
             return "";
@@ -122,7 +132,39 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
      *
      */
     public void redrawCharts() {
+        
+        if(compLayoutMap.isEmpty()){
+          int rowIndex = 0;
+        for (DiiseaseGroupsComparisonsProtein cprot : diiseaseGroupsComparisonsProteinArr) {
+            if (cprot == null) {
+                QuantDiseaseGroupsComparison gc = (QuantDiseaseGroupsComparison) selectedComparisonList.toArray()[rowIndex];
+                cprot = new DiiseaseGroupsComparisonsProtein(width, gc, -1);
+                continue;
+            }
+            ProteinComparisonScatterPlotLayout protCompLayout = new ProteinComparisonScatterPlotLayout(cprot, width, datasetExploringCentralSelectionManager,searchingMode);
+            mainbodyLayout.addComponent(protCompLayout, 0, rowIndex);
+            mainbodyLayout.setComponentAlignment(protCompLayout, Alignment.MIDDLE_CENTER);
+            compLayoutMap.put(cprot.getComparison(), protCompLayout);
+
+            final DiiseaseGroupsComparisonsProtein gc = cprot;
+            LayoutEvents.LayoutClickListener closeListener = new LayoutEvents.LayoutClickListener() {
+
+                private final QuantDiseaseGroupsComparison localComparison = gc.getComparison();
+
+                @Override
+                public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+                    Set<QuantDiseaseGroupsComparison> selectedComparisonList = datasetExploringCentralSelectionManager.getSelectedDiseaseGroupsComparisonList();
+                    selectedComparisonList.remove(localComparison);
+                    datasetExploringCentralSelectionManager.setDiseaseGroupsComparisonSelection(selectedComparisonList);
+                }
+            };
+            protCompLayout.getCloseBtn().addLayoutClickListener(closeListener);
+            rowIndex++;
+        }
+        
+        }
         for (ProteinComparisonScatterPlotLayout layout : compLayoutMap.values()) {
+            
             layout.redrawChart();
         }
     }

@@ -1,6 +1,4 @@
-/*
- * this class represent the main header in the main layout 
- */
+
 package probe.com.view;
 
 import com.vaadin.server.ExternalResource;
@@ -15,7 +13,10 @@ import com.vaadin.ui.themes.Reindeer;
 
 /**
  *
- * @author Yehia Farag the layout of the top part of the web page
+ * @author Yehia Farag 
+ * 
+ * this class represent the main header in the main layout which is 
+ * the layout of the top part of the web page
  */
 public class Header extends VerticalLayout {
 
@@ -23,8 +24,6 @@ public class Header extends VerticalLayout {
 
     /**
      * initialize top body layout for the web page
-     *
-     *
      */
     public Header() {
 

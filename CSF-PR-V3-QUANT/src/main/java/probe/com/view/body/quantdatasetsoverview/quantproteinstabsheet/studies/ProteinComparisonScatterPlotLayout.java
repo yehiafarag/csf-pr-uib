@@ -41,7 +41,7 @@ import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.util.ShapeUtilities;
-import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.ComparisonProtein;
+import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiiseaseGroupsComparisonsProtein;
 import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.selectionmanager.CSFFilterSelection;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
@@ -71,7 +71,7 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
     private final DatasetExploringCentralSelectionManager exploringFiltersManager;
     private final String teststyle;
     private final Page.Styles styles = Page.getCurrent().getStyles();
-    private final ComparisonProtein comparisonProtein;
+    private final DiiseaseGroupsComparisonsProtein comparisonProtein;
     private final PeptidesStackedBarChartsControler peptidesOverviewLayoutManager;
     private final boolean searchingMode;
 
@@ -82,7 +82,7 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
      * @param exploringFiltersManagerinst
      * @param searchingMode
      */
-    public ProteinComparisonScatterPlotLayout(final ComparisonProtein cp, int width, DatasetExploringCentralSelectionManager exploringFiltersManagerinst, final boolean searchingMode) {
+    public ProteinComparisonScatterPlotLayout(final DiiseaseGroupsComparisonsProtein cp, int width, DatasetExploringCentralSelectionManager exploringFiltersManagerinst, final boolean searchingMode) {
         this.searchingMode = searchingMode;
         this.exploringFiltersManager = exploringFiltersManagerinst;
         this.setColumns(4);
@@ -135,9 +135,9 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
                         int y = ((XYItemEntity) entity).getItem();
 
                         if (searchingMode) {
-                            ds = exploringFiltersManager.getFullDatasetArr().get(comparisonProtein.getDSID(x, y) - 1);
+                            ds = exploringFiltersManager.getFullQuantDatasetArr().get(comparisonProtein.getDSID(x, y) - 1);
                         } else {
-                            ds = exploringFiltersManager.getFullDatasetArr().get(comparisonProtein.getDSID(x, y));
+                            ds = exploringFiltersManager.getFullQuantDatasetArr().get(comparisonProtein.getDSID(x, y));
                         }
 
                     }
@@ -146,7 +146,7 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
                     return;
                 }
                 exploringFiltersManager.setSelectedDataset(ds.getUniqId());
-                exploringFiltersManager.setStudyLevelFilterSelection(new CSFFilterSelection("StudySelection", new int[]{ds.getUniqId()}, "scatter", null));//               
+                exploringFiltersManager.setStudyLevelFilterSelection(new CSFFilterSelection("Study_Selection", new int[]{ds.getUniqId()}, "scatter", null));//               
                 peptidesOverviewLayoutManager.updateSelectedProteinInformation(ds.getUniqId(), ds, cp.getUniProtAccess());
 
             }
@@ -169,7 +169,7 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
      *
      * @return The jFreeChart.
      */
-    private void generateScatterplotchart(ComparisonProtein cp, int w, int h) {
+    private void generateScatterplotchart(DiiseaseGroupsComparisonsProtein cp, int w, int h) {
 
         final XYSeriesCollection dataset = new XYSeriesCollection();
         XYSeries downSer = new XYSeries(0);
@@ -317,9 +317,9 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
                 int y = ((XYItemEntity) entity).getItem();
                 QuantDatasetObject ds;
                 if (searchingMode) {
-                    ds = exploringFiltersManager.getFullDatasetArr().get(comparisonProtein.getDSID(x, y) - 1);
+                    ds = exploringFiltersManager.getFullQuantDatasetArr().get(comparisonProtein.getDSID(x, y) - 1);
                 } else {
-                    ds = exploringFiltersManager.getFullDatasetArr().get(comparisonProtein.getDSID(x, y));
+                    ds = exploringFiltersManager.getFullQuantDatasetArr().get(comparisonProtein.getDSID(x, y));
                 }
                 SquaredDot square = new SquaredDot();
                 square.setWidth(10 + "px");

@@ -496,7 +496,7 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
 //            }
 ////            parent.updateHeatmap(selectedRows, selectedColumns, indexes, patientsGroupArr);
 //
-//        } else if (type.equalsIgnoreCase("ComparisonSelection")) {
+//        } else if (type.equalsIgnoreCase("Comparison_Selection")) {
 ////            parent.updateDsCellSelection();
 ////            heatMap.updateDsCellSelection(exploringFiltersManager.getSelectedComparisonList());
 ////            if (exploringFiltersManager.getSelectedComparisonList().isEmpty()) {

@@ -14,7 +14,7 @@ public class FileValidator implements Serializable {
     private static final long serialVersionUID = -14218494555136445L;
 
     /**
-     *
+     * find out the type of the updated file
      * @param strArr
      * @param MIMEType
      * @return
@@ -32,17 +32,12 @@ public class FileValidator implements Serializable {
         } else if (strArr.length == 19 && (strArr[0].equalsIgnoreCase("Accession") && strArr[13].equalsIgnoreCase("emPAI") && strArr[18].equalsIgnoreCase("Starred"))) {
             return 0; //the file is protein file
         }
-//        else if ((strArr.length == 26 || strArr.length == 24) && (strArr[0].equalsIgnoreCase("Protein") && strArr[16].equalsIgnoreCase("Location Confidence") && strArr[20].equalsIgnoreCase("Confidence"))) {
-//
-//            return -2;
-//
-//        }
         else if (strArr.length >= 18 && strArr[0].equalsIgnoreCase("Accession") && strArr[3].equalsIgnoreCase("Description") && strArr[(strArr.length - 1)].equalsIgnoreCase("Starred")) {
             int fractionNumber = (strArr.length + 1 - 15) / 3; //return the number of the fractions 
 
             return fractionNumber; //for fraction   file			
         }
-        if (strArr.length == 26/*26*/ && strArr[0].trim().equalsIgnoreCase("Protein") && strArr[8].trim().equalsIgnoreCase("Sequence") && strArr[11].trim().equalsIgnoreCase("Enzymatic")) {
+        if (strArr.length == 26&& strArr[0].trim().equalsIgnoreCase("Protein") && strArr[8].trim().equalsIgnoreCase("Sequence") && strArr[11].trim().equalsIgnoreCase("Enzymatic")) {
             return -7; //glycofile
         }
         return -1;

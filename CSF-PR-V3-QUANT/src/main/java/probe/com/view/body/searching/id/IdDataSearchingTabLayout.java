@@ -46,7 +46,7 @@ public class IdDataSearchingTabLayout extends VerticalLayout implements Serializ
         this.addComponent(idFractionLayout);
         this.addComponent(idPeptidesLayout);
 
-        final IdentificationSearchResultsTableLayout searcheResultsTableLayout = new IdentificationSearchResultsTableLayout(handler, handler.getDatasetDetailsList(), searchIdentificationProtList, false);
+        final IdentificationSearchResultsTableLayout searcheResultsTableLayout = new IdentificationSearchResultsTableLayout(handler, handler.getIdentificationDatasetDetailsList(), searchIdentificationProtList, false);
         idSearchingResultsTableLayout.addComponent(searcheResultsTableLayout);
         final ExporterBtnsGenerator dataExporter = new ExporterBtnsGenerator(handler);
         Property.ValueChangeListener listener = new Property.ValueChangeListener() {
@@ -109,7 +109,7 @@ public class IdDataSearchingTabLayout extends VerticalLayout implements Serializ
                             VerticalLayout proteinPeptidesExportLayout = dataExporter.exportPeptidesForProtein(datasetId, accession, otherAccession, desc, pepProtList, true, "Export Peptides from Selected Dataset for ( " + accession + " )");
                             proteinPeptidesExportLayout.setDescription("Export Peptides from ( " + handler.getDataset(datasetId).getName() + " ) Dataset for ( " + accession + " )");
 
-                            idPeptideTableLayout.setExpBtnPepTable(proteinPeptidesExportLayout);
+                            idPeptideTableLayout.setExportingBtnForIdentificationPeptidesTable(proteinPeptidesExportLayout);
 
                         }
                         List<StandardIdentificationFractionPlotProteinBean> standerdProtList = handler.getStandardIdentificationFractionProteinsList(datasetId);//                          

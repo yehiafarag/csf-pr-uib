@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package probe.com.view.body;
 
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
@@ -21,30 +15,32 @@ import probe.com.view.core.HideOnClickLayout;
 /**
  *
  * @author Yehia Farag
+ *
+ * main layout for identification tab
  */
-public class IdentificationDatasetsLayout extends VerticalLayout implements Serializable, Button.ClickListener {
-    
-    private final CSFPRHandler handler;
+public class IdentificationDatasetsLayout extends VerticalLayout implements Serializable {
+
+    private final CSFPRHandler csfprHandler;
 
     /**
      *
-     * @param handler
+     * @param csfprHandler
      * @param mainTabSheet
      */
-    public IdentificationDatasetsLayout(CSFPRHandler handler, TabSheet mainTabSheet) {
-        this.handler = handler;
+    public IdentificationDatasetsLayout(CSFPRHandler csfprHandler, TabSheet mainTabSheet) {
+        this.csfprHandler = csfprHandler;
         this.setSpacing(true);
         this.setMargin(true);
-        
+
         //no id data available
-        if (handler.getIdentificationDatasetList() == null || handler.getIdentificationDatasetList().isEmpty()) {
+        if (csfprHandler.getIdentificationDatasetList() == null || csfprHandler.getIdentificationDatasetList().isEmpty()) {
             Label noExpLable = new Label("<h4 style='font-family:verdana;color:black;font-weight:bold;'>Sorry No Dataset Availabe Now !</h4>");
             noExpLable.setContentMode(ContentMode.HTML);
             this.addComponent(noExpLable);
         } else {
-            Map<Integer, IdentificationDatasetDetailsBean> dsList = handler.getDatasetDetailsList();
+            Map<Integer, IdentificationDatasetDetailsBean> dsList = csfprHandler.getIdentificationDatasetDetailsList();
             for (int x : dsList.keySet()) {
-                HideOnClickLayout dslayout = initDatasetLayout(x, dsList.get(x), mainTabSheet);
+                HideOnClickLayout dslayout = initIdentificationDatasetRowLayout(x, dsList.get(x), mainTabSheet);
                 this.addComponent(dslayout);
                 Label spacer = new Label();
                 spacer.setContentMode(ContentMode.HTML);
@@ -56,16 +52,18 @@ public class IdentificationDatasetsLayout extends VerticalLayout implements Seri
 
     }
 
-    private HideOnClickLayout initDatasetLayout(int dsId, IdentificationDatasetDetailsBean ds, TabSheet mainTabSheet) {
-        IdentificationDatasetInformationLayout IdentificationDatasetInfoLayout = new IdentificationDatasetInformationLayout(handler, dsId, mainTabSheet);
-        HideOnClickLayout dsLayout = new HideOnClickLayout(ds.getName(), IdentificationDatasetInfoLayout, IdentificationDatasetInfoLayout.getMiniLayout());
+    /**
+     * initialize the identification datasets list layout
+     *
+     * @param dsId dataset id
+     * @param identificationDataset
+     * @param mainTabSheet
+     */
+    private HideOnClickLayout initIdentificationDatasetRowLayout(int dsId, IdentificationDatasetDetailsBean identificationDataset, TabSheet mainTabSheet) {
+        IdentificationDatasetInformationLayout IdentificationDatasetInfoLayout = new IdentificationDatasetInformationLayout(csfprHandler, dsId, mainTabSheet);
+        HideOnClickLayout dsLayout = new HideOnClickLayout(identificationDataset.getName(), IdentificationDatasetInfoLayout, IdentificationDatasetInfoLayout.getMiniLayout());
         dsLayout.setMargin(new MarginInfo(false, false, true, false));
         return dsLayout;
-    }
-
-    @Override
-    public void buttonClick(Button.ClickEvent event) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

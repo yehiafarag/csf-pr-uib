@@ -5,7 +5,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
 import java.util.Map;
 import java.util.Set;
-import probe.com.model.beans.quant.QuantGroupsComparison;
+import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 
 /**
  * this class is the container for the comparison bar chart the class developed
@@ -18,7 +18,7 @@ public class ComparisonChartContainer extends HorizontalLayout{
 
     private final  JFreeBarchartDivaWrapper chart ;
     private final VerticalLayout closeCompariosonBtn;
-    private final QuantGroupsComparison comparison; 
+    private final QuantDiseaseGroupsComparison comparison; 
     
     /**
      *
@@ -53,7 +53,7 @@ public class ComparisonChartContainer extends HorizontalLayout{
      * @param width
      * @param searchingMode
      */
-    public ComparisonChartContainer(QuantGroupsComparison comparison, int width,boolean searchingMode) {
+    public ComparisonChartContainer(QuantDiseaseGroupsComparison comparison, int width,boolean searchingMode) {
         this.setStyleName("lightborder");
         this.setWidthUndefined();
         this.setHeight("250px");

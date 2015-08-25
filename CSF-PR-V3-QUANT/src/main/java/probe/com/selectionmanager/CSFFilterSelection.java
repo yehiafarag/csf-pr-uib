@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package probe.com.selectionmanager;
 
 import java.io.Serializable;
@@ -10,39 +5,16 @@ import java.util.Set;
 
 /**
  *
- * @author Yehia Farag
+ * @author Yehia Farag Selection class is made to work together with the csf
+ * central selection manager
  */
 public class CSFFilterSelection implements Serializable {
 
     private final String filterId;
-    private  Set<String> values;
-    private boolean active;
+    private final Set<String> values;
     private int filterIndex;
-    private String filterColor;
     private final String type;
-    private  int[] datasetIndex;
-    private Set<Integer> datasetIndexesSet;
-
-    /**
-     *
-     * @param filterId
-     * @param values
-     * @param active
-     * @param filterIndex
-     * @param filterColor
-     * @param type
-     * @param datasetIndex
-     */
-    public CSFFilterSelection(String filterId, Set<String> values, boolean active, int filterIndex, String filterColor, String type, int[] datasetIndex) {
-        this.filterId = filterId;
-        this.values = values;
-        this.active = active;
-        this.filterIndex = filterIndex;
-        this.filterColor = filterColor;
-        this.type = type;
-        this.datasetIndex = datasetIndex;
-
-    }
+    private final int[] datasetIndex;
 
     /**
      *
@@ -58,71 +30,50 @@ public class CSFFilterSelection implements Serializable {
         this.values = values;
 
     }
+
     
     /**
+     * get the filter id
      *
-     * @param filterId
-     * @param type
-     * @param datasetIndexesSet
-     */
-    public CSFFilterSelection(String filterId,String type, Set<Integer> datasetIndexesSet ) {
-        this.type = type;
-        this.datasetIndexesSet = datasetIndexesSet;
-        this.filterId = filterId;
-
-    }
-
-    /**
-     *
-     * @return
+     * @return filter id
      */
     public String getFilterId() {
         return filterId;
     }
 
     /**
-     *
-     * @return
-     */
-    public Set<Integer> getDatasetIndexesSet() {
-        return datasetIndexesSet;
-    }
-
-    /**
-     *
-     * @return
+     * get selected filter values
+     * @return set of selected values
      */
     public Set<String> getValues() {
         return values;
     }
 
-    /**
+     /**
+     * get the selected quant dataset indexes
      *
-     * @return
+     * @return array of selected quant dataset ids 
      */
     public int[] getDatasetIndexes() {
         return datasetIndex;
     }
 
-    /**
-     *
-     * @return
-     */
-    public boolean isActive() {
-        return active;
-    }
-
-    /**
-     *
-     * @return
+     /**
+     * the index of the filter in the standard  order
+     * @return filter index
      */
     public int getFilterIndex() {
         return filterIndex;
     }
 
     /**
-     *
-     * @return
+     * get type of selection 
+     * 1. Disease_Groups_Level 
+     * 2. Comparison_Filter
+     * 3. DS_Selection
+     * 4. Study_Selection
+     * 5. Filter
+     * @return selection type
      */
     public String getType() {
         return type;

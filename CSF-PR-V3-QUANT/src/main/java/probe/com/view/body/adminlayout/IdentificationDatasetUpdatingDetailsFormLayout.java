@@ -6,6 +6,7 @@ package probe.com.view.body.adminlayout;
 
 import com.vaadin.data.Property;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Form;
 import com.vaadin.ui.Select;
 import com.vaadin.ui.TextArea;
@@ -23,10 +24,12 @@ import probe.com.model.beans.User;
 /**
  *
  * @author Yehia Farag
+ *
+ * this class represents the updating form that has identification dataset information layout 
  */
-public class UpdateIdDatasetDetailsLayout extends VerticalLayout implements Serializable {
+public class IdentificationDatasetUpdatingDetailsFormLayout extends VerticalLayout implements Serializable {
 
-    private Select select;
+    private ComboBox select;
     private final Form existExpForm;
     private TextField expNameField, speciesField, sampleTypeField, sampleProcessingField, instrumentTypeField, fragModeField, UploadedByNameField, emailField, publicationLinkField;
     private TextArea descriptionField;
@@ -43,7 +46,7 @@ public class UpdateIdDatasetDetailsLayout extends VerticalLayout implements Seri
      * @param handler
      * @param user
      */
-    public UpdateIdDatasetDetailsLayout(final CSFPRHandler handler, User user) {
+    public IdentificationDatasetUpdatingDetailsFormLayout(final CSFPRHandler handler, User user) {
         this.setWidth("100%");
         this.addComponent(selectLayout);
         this.handler = handler;
@@ -57,7 +60,7 @@ public class UpdateIdDatasetDetailsLayout extends VerticalLayout implements Seri
                 strExpList.add(str);
             }
         }
-        select = new Select("Experiment ID", strExpList);
+        select = new ComboBox("Experiment ID", strExpList);
         select.setImmediate(true);
         selectLayout.addComponent(select);
         existExpForm = new Form();
@@ -164,32 +167,31 @@ public class UpdateIdDatasetDetailsLayout extends VerticalLayout implements Seri
         existExpForm.addField(10, publicationLinkField);
         this.addComponent(updateBtn);
         updateBtn.setEnabled(false);
-          updateBtn.addClickListener(new Button.ClickListener() {
+        updateBtn.addClickListener(new Button.ClickListener() {
 
-                        @Override
-                        public void buttonClick(Button.ClickEvent event) {
-                            dataset = validateForm(dataset, id);
-                            if (dataset != null) {
-                                handler.updatedatasetData(dataset);
-                            }
-                            updateSelect();
-                            clean();
-                        }
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                dataset = validateForm(dataset, id);
+                if (dataset != null) {
+                    handler.updatedatasetData(dataset);
+                }
+                updateSelect();
+                clean();
+            }
 
-                        private void clean() {
-                            expNameField.setValue("");
-                            speciesField.setValue("");
-                            sampleTypeField.setValue("");
-                            sampleProcessingField.setValue("");
-                            instrumentTypeField.setValue("");
-                            fragModeField.setValue("");
-//                            UploadedByNameField.setValue("");
-                            emailField.setValue("");
-                            publicationLinkField.setValue("");
-                            descriptionField.setValue("");
+            private void clean() {
+                expNameField.setValue("");
+                speciesField.setValue("");
+                sampleTypeField.setValue("");
+                sampleProcessingField.setValue("");
+                instrumentTypeField.setValue("");
+                fragModeField.setValue("");
+                emailField.setValue("");
+                publicationLinkField.setValue("");
+                descriptionField.setValue("");
 
-                        }
-                    });
+            }
+        });
         listener = new Property.ValueChangeListener() {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
@@ -219,19 +221,16 @@ public class UpdateIdDatasetDetailsLayout extends VerticalLayout implements Seri
                     fragModeField.setValue(dataset.getFragMode());
                     fragModeField.setEnabled(true);
 
-                    if(dataset.getEmail().equalsIgnoreCase("ADMIN@CSF.NO"))
+                    if (dataset.getEmail().equalsIgnoreCase("ADMIN@CSF.NO")) {
                         emailField.setValue("csf-pr@googlegroups.com");
-                    else
+                    } else {
                         emailField.setValue(dataset.getEmail());
-                    // emailField.setEnabled(true);
-
+                    }
                     descriptionField.setValue(dataset.getDescription());
                     descriptionField.setEnabled(true);
 
                     publicationLinkField.setValue(dataset.getPublicationLink());
                     publicationLinkField.setEnabled(true);
-
-                  
 
                 }
 
@@ -304,7 +303,7 @@ public class UpdateIdDatasetDetailsLayout extends VerticalLayout implements Seri
                 strExpList.add(str);
             }
         }
-        select = new Select("Experiment ID", strExpList);
+        select = new ComboBox("Experiment ID", strExpList);
         select.setImmediate(true);
         selectLayout.addComponent(select);
         select.addValueChangeListener(listener);

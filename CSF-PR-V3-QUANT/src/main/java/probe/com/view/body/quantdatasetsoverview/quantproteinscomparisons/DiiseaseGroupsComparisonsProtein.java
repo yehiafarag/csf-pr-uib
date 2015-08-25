@@ -19,14 +19,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import probe.com.model.beans.quant.QuantGroupsComparison;
+import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.beans.quant.QuantPeptide;
 
 /**
  *
  * @author Yehia Farag
  */
-public class ComparisonProtein extends HorizontalLayout implements Serializable, Comparable<ComparisonProtein> {
+public class DiiseaseGroupsComparisonsProtein extends HorizontalLayout implements Serializable, Comparable<DiiseaseGroupsComparisonsProtein> {
 
     private String uniProtAccess;
     private String protName;
@@ -66,11 +66,11 @@ public class ComparisonProtein extends HorizontalLayout implements Serializable,
      *
      * @return
      */
-    public QuantGroupsComparison getComparison() {
+    public QuantDiseaseGroupsComparison getComparison() {
         return comparison;
     }
 
-    private final QuantGroupsComparison comparison;
+    private final QuantDiseaseGroupsComparison comparison;
 
     /**
      *
@@ -106,7 +106,7 @@ public class ComparisonProtein extends HorizontalLayout implements Serializable,
      * @param comparison
      * @param uniqueId
      */
-    public ComparisonProtein(int total, QuantGroupsComparison comparison, int uniqueId) {        
+    public DiiseaseGroupsComparisonsProtein(int total, QuantDiseaseGroupsComparison comparison, int uniqueId) {        
         this.comparison = comparison;
         this.uniqueId = uniqueId;
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
@@ -324,7 +324,7 @@ public class ComparisonProtein extends HorizontalLayout implements Serializable,
     }
 
     @Override
-    public int compareTo(ComparisonProtein t) {
+    public int compareTo(DiiseaseGroupsComparisonsProtein t) {
         Double v1 = null;
         if (up.intValue() == down.intValue()) {
             v1 = trendValue;

@@ -1,13 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package probe.com.selectionmanager;
 
 /**
  *
- * @author Yehia Farag
+ * @author Yehia Farag 
+ * CSF Filter interface that has the important abstracted
+ * methods
  */
 public interface CSFFilter {
 
@@ -15,7 +12,7 @@ public interface CSFFilter {
      *
      * @param type
      */
-    public void selectionChanged(String type);    
+    public void selectionChanged(String type);
 
     /**
      *
@@ -28,5 +25,5 @@ public interface CSFFilter {
      * @param value
      */
     public void removeFilterValue(String value);
-    
+
 }

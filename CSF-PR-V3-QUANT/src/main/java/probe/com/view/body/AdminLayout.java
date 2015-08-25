@@ -88,9 +88,6 @@ public class AdminLayout extends VerticalLayout implements Serializable, Button.
      * initialize the welcome administrator layout the layout contains username
      * and password fields and login button
      *
-     * @param handler main dataset handler
-     *
-     *
      */
     private void initLoginLayout() {
         loginLayout.removeAllComponents();
@@ -135,7 +132,7 @@ public class AdminLayout extends VerticalLayout implements Serializable, Button.
             }
         });
 
-        Label l = new Label("<h5>Login To Be Able To Add/Edit Experiments </h5><h5 style='color:blue'>For Sign Up Please Contact Us at admin@csf.no </h5>");
+        Label l = new Label("<h5>Login to be able to add/edit data </h5><h5 style='color:blue'>For sign up please contact us at csf-pr@googlegroups.com </h5>");
         l.setContentMode(ContentMode.HTML);
         helpLayout = new VerticalLayout();
         helpLayout.setWidth("100%");

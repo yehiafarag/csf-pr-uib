@@ -189,29 +189,10 @@ public class LocalSelectionManager implements Serializable, CSFFilter {
         }
     }
 
-//    private HashSet<QuantDatasetObject> filterStudies(HashSet<QuantDatasetObject> studies, Set<String> filter, String filterId) {
-//        HashSet<QuantDatasetObject> subset = new HashSet<QuantDatasetObject>();
-//        for (QuantDatasetObject study : studies) {
-//            for (String f : filter) {
-//                if (study.getProperty(filterId).toString().equalsIgnoreCase(f)) {
-//                    subset.add(study);
-//                }
-//
-//            }
-//
-//        }
-//        return subset;
-
-//    }
 
     public Map<String, Set<String>> getAppliedFilterList() {
         return appliedFilterList;
     }
-
-//    private void updateSelectedFilter(int filterIndex, boolean value) {
-//        activeFilters[filterIndex] = value;
-//
-//    }
     private void updateCharts() {
         for (InteractiveFilter ifilter : registeredFilters) {
             ifilter.selectionChanged(selectedDatasetsIndexes, activeFilters);
@@ -221,7 +202,7 @@ public class LocalSelectionManager implements Serializable, CSFFilter {
     public void updateCentralSelectionManager(boolean selfselection) {
         this.selfselection = selfselection;
         if (selectionPerformed) {
-            exploringFiltersManager.setStudyLevelFilterSelection(new CSFFilterSelection("filter", selectedDatasetsIndexes, Filter_ID, null));
+            exploringFiltersManager.setStudyLevelFilterSelection(new CSFFilterSelection("Filter", selectedDatasetsIndexes, Filter_ID, null));
         }
         selectionPerformed = false;
 

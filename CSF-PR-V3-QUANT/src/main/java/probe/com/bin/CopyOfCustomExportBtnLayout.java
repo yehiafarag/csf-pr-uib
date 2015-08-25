@@ -146,7 +146,7 @@ public class CopyOfCustomExportBtnLayout extends VerticalLayout implements Seria
             }
 
             if (typeGroup.getValue().toString().equalsIgnoreCase("Validated")) {
-                handler.exportPeptidesToFile(datasetId, true, datasetName, typeGroup.getValue().toString(), exportGroup.getValue().toString());
+                handler.exportIdentificationPeptidesToFile(datasetId, true, datasetName, typeGroup.getValue().toString(), exportGroup.getValue().toString());
 //                if (handler.checkFileAvailable("CSF-PR - " + datasetName + " - All - " + typeGroup.getValue().toString() + " - Peptides." + exportGroup.getValue().toString())) {
 //                    String fileURL = handler.getFileUrl("CSF-PR - " + datasetName + " - All - " + typeGroup.getValue().toString() + " - Peptides." + exportGroup.getValue().toString());
 //                    Resource res = new FileResource(new File(fileURL));
@@ -157,7 +157,7 @@ public class CopyOfCustomExportBtnLayout extends VerticalLayout implements Seria
                 //peptidesList = handler.getPeptidesList(datasetId, true);
             } else if (typeGroup.getValue().toString().equalsIgnoreCase("All")) {
                 //peptidesList = handler.getPeptidesList(datasetId, false);
-                handler.exportPeptidesToFile(datasetId, false, datasetName, typeGroup.getValue().toString(), exportGroup.getValue().toString());
+                handler.exportIdentificationPeptidesToFile(datasetId, false, datasetName, typeGroup.getValue().toString(), exportGroup.getValue().toString());
 //                if (handler.checkFileAvailable("CSF-PR - " + datasetName + " - All - " + typeGroup.getValue().toString() + " - Peptides." + exportGroup.getValue().toString())) {
 //                    String fileURL = handler.getFileUrl("CSF-PR - " + datasetName + " - All - " + typeGroup.getValue().toString() + " - Peptides." + exportGroup.getValue().toString());
 //                    Resource res = new FileResource(new File(fileURL));
@@ -170,7 +170,6 @@ public class CopyOfCustomExportBtnLayout extends VerticalLayout implements Seria
                 String fileURL = handler.getFileUrl("CSF-PR - " + datasetName + " - All - " + typeGroup.getValue().toString() + " - Peptides." + exportGroup.getValue().toString());
                 Resource res = new FileResource(new File(fileURL));
                 Page.getCurrent().open(res, null, false);
-                System.out.println("use new exporter");
                 return;
             }
 
@@ -213,7 +212,7 @@ public class CopyOfCustomExportBtnLayout extends VerticalLayout implements Seria
             } else if (typeGroup.getValue().toString().equalsIgnoreCase("All")) {
                 tempFullExpProtList = fullExpProtList;
             }
-            Map<Integer, IdentificationDatasetDetailsBean> datasetDetailsList = handler.getDatasetDetailsList();
+            Map<Integer, IdentificationDatasetDetailsBean> datasetDetailsList = handler.getIdentificationDatasetDetailsList();
             IdentificationSearchResultsTable searcheResultsTable = new IdentificationSearchResultsTable(datasetDetailsList, tempFullExpProtList);
             searcheResultsTable.setVisible(false);
             this.addComponent(searcheResultsTable);

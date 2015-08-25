@@ -183,7 +183,7 @@ public class SearchLayout_t extends VerticalLayout implements Serializable, Butt
             searchLayout.setVisible(true);
             searchingUnit.hideLayout();
             if (searchingUnit.getFiltersController().getQuery().getSearchDataType().equalsIgnoreCase("Identification Data")) {
-                final IdentificationSearchResultsTableLayout searcheResultsTableLayout = new IdentificationSearchResultsTableLayout(handler, handler.getDatasetDetailsList(), searchIdentificationProtList, searchingUnit.getFiltersController().getQuery().isValidatedProteins());
+                final IdentificationSearchResultsTableLayout searcheResultsTableLayout = new IdentificationSearchResultsTableLayout(handler, handler.getIdentificationDatasetDetailsList(), searchIdentificationProtList, searchingUnit.getFiltersController().getQuery().isValidatedProteins());
                 searchTableLayout.addComponent(searcheResultsTableLayout);
                 Property.ValueChangeListener listener = new Property.ValueChangeListener() {
                     /*
@@ -246,7 +246,7 @@ public class SearchLayout_t extends VerticalLayout implements Serializable, Butt
 //                                    PopupView exportAllProteinsPeptidesPopup = new PopupView("Export Peptides from Selected Dataset for (" + accession + " )", exportAllProteinsPeptidesLayout);
 //                                    
 //                                    exportAllProteinsPeptidesPopup.setDescription("Export Peptides from ( " + handler.getDataset(handler.getMainDatasetId()).getName() + " ) Dataset for ( " + accession + " )");
-//                                    peptideTableLayout.setExpBtnPepTable(exportAllProteinsPeptidesPopup);
+//                                    peptideTableLayout.setExportingBtnForIdentificationPeptidesTable(exportAllProteinsPeptidesPopup);
                                     
                                 }
                               List<StandardIdentificationFractionPlotProteinBean> standerdProtList = handler.getStandardIdentificationFractionProteinsList(handler.getMainDatasetId());//                          

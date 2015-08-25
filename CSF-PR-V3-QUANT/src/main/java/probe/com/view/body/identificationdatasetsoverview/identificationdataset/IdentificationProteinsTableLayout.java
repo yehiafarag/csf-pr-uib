@@ -25,8 +25,12 @@ import probe.com.view.core.TableResizeSet;
 /**
  *
  * @author Yehia Farag
+ *
+ * the container of the identification proteins table the container contains the
+ * identification proteins table, search field, the table resize icons and
+ * exporting buttons
  */
-public class ProteinsTableLayout extends VerticalLayout implements Serializable {
+public class IdentificationProteinsTableLayout extends VerticalLayout implements Serializable {
 
     private String protTableHeight = "160px";
     private Label protCounterLabel;
@@ -43,8 +47,8 @@ public class ProteinsTableLayout extends VerticalLayout implements Serializable 
     /**
      * set protein table height in string pixels
      *
-     * @param protSize  protein table height
- */
+     * @param protSize protein table height
+     */
     public void setProtTableHeight(String protSize) {
         this.protTableHeight = protSize;
     }
@@ -79,8 +83,8 @@ public class ProteinsTableLayout extends VerticalLayout implements Serializable 
      * @param validProtNumber the number of valid proteins
      * @param datasetProteinsNumber number of all proteins in the dataset
      */
-    public ProteinsTableLayout(final Map<String, IdentificationProteinBean> proteinsList, final int fractionNumber, final int validProtNumber, final int datasetProteinsNumber) {
-       
+    public IdentificationProteinsTableLayout(final Map<String, IdentificationProteinBean> proteinsList, final int fractionNumber, final int validProtNumber, final int datasetProteinsNumber) {
+
         this.setWidth("100%");
         this.setSpacing(true);
         this.setMargin(true);
@@ -199,8 +203,6 @@ public class ProteinsTableLayout extends VerticalLayout implements Serializable 
                     protTable.removeValueChangeListener(listener);
                     validProteinsTable.addValueChangeListener(listener);
                     validProteinsTable.select(lastSelectedIndex);
-//                    validProteinsTable.commit();
-//                    currentVisibleTable = validProteinsTable;
 
                 } else {
                     protLabelLayout.removeAllComponents();
@@ -215,37 +217,37 @@ public class ProteinsTableLayout extends VerticalLayout implements Serializable 
                     currentVisibleTable = protTable;
                     validProteinsTable.removeValueChangeListener(listener);
                     protTable.addValueChangeListener(listener);
-//                    protTable.select(protTable.get);
-//                    protTable.commit();
                 }
             }
         });
     }
 
-     /**
- *get current visible protein table
- * @return currentVisibleTable 
- * 
- */
+    /**
+     * get current visible protein table this table could be all identification
+     * proteins table or validated identification proteins table only
+     *
+     * @return currentVisibleTable
+     *
+     */
     public IdentificationProteinsTableComponent getProteinTableComponent() {
         return currentVisibleTable;
     }
 
-     /**
- * get the popup view for export all peptides for the selected proteins 
- * 
- * @return datasetBtnProtAllPepTablePopup
- */
+    /**
+     * get the popup view for export all peptides for the selected proteins
+     *
+     * @return datasetBtnProtAllPepTablePopup
+     */
     public VerticalLayout getDatasetBtnProtAllPepTable() {
         return allAvailablePeptidesForProteinLayout;
     }
 
-      /**
- * set the popup view for export all peptides for the selected proteins 
- * 
- * @param  allPeptidesAvailableForProteinLayout
- * @param datasetProteinsLayout 
- */
+    /**
+     * set the popup view for export all peptides for the selected proteins
+     *
+     * @param allPeptidesAvailableForProteinLayout
+     * @param datasetProteinsLayout
+     */
     public void setExpBtnProtAllPepTable(VerticalLayout allPeptidesAvailableForProteinLayout, VerticalLayout datasetProteinsLayout) {
         this.allAvailablePeptidesForProteinLayout = allPeptidesAvailableForProteinLayout;
         this.datasetProteinsTable = datasetProteinsLayout;
@@ -253,10 +255,9 @@ public class ProteinsTableLayout extends VerticalLayout implements Serializable 
 
     }
 
-      /**
- * update the layout for exporting buttons
- * and reset the fields
- */
+    /**
+     * update the layout for exporting buttons and reset the fields
+     */
     private void updateExportLayouts() {
         exportAllPepLayout.removeAllComponents();
         exportAllPepLayout.addComponent(allAvailablePeptidesForProteinLayout);
@@ -266,35 +267,39 @@ public class ProteinsTableLayout extends VerticalLayout implements Serializable 
         exportProtLayout.setComponentAlignment(datasetProteinsTable, Alignment.MIDDLE_LEFT);
     }
 
-      /**
- * add value change listener for the proteins table
- * @param listener value change listener
- */
+    /**
+     * add value change listener for the proteins table
+     *
+     * @param listener value change listener
+     */
     public void setListener(Property.ValueChangeListener listener) {
         this.listener = listener;
     }
 
-      /**
- * get nextSearchBtn button 
- * @return  nextSearchBtn button
- */
+    /**
+     * get nextSearchBtn button
+     *
+     * @return nextSearchBtn button
+     */
     public Button getNextSearch() {
         return nextSearchBtn;
     }
 
     /**
- * get label contains the found proteins numbers 
- * @return  protCounterLabel 
- */
+     * get label contains the found proteins numbers
+     *
+     * @return protCounterLabel
+     */
     public Label getProtCounter() {
         return protCounterLabel;
     }
 
-     /**
- * get valid proteins list (filter the proteins list)
- * @param proteinsList 
- * @return  validProteinsList 
- */
+    /**
+     * get valid proteins list (filter the proteins list)
+     *
+     * @param proteinsList
+     * @return validProteinsList
+     */
     private Map<String, IdentificationProteinBean> getValidatedList(Map<String, IdentificationProteinBean> proteinsList) {
         Map<String, IdentificationProteinBean> validProteinsList = new HashMap<String, IdentificationProteinBean>();
         for (String str : proteinsList.keySet()) {

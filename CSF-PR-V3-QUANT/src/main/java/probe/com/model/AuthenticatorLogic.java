@@ -16,7 +16,7 @@ import probe.com.model.beans.User;
  *
  * @author Yehia Farag
  */
-public class Authenticator implements Serializable {
+public class AuthenticatorLogic implements Serializable {
 
     /**
      *
@@ -37,7 +37,7 @@ public class Authenticator implements Serializable {
      * @param userName
      * @param password
      */
-    public Authenticator(String url, String dbName, String driver, String userName, String password) {
+    public AuthenticatorLogic(String url, String dbName, String driver, String userName, String password) {
         daAuthenticator = new probe.com.dal.DALAuthenticator(url, dbName, driver, userName, password);
     }
 
