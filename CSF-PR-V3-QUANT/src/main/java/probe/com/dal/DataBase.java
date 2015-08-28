@@ -3457,6 +3457,7 @@ public class DataBase implements Serializable {
      */
     public Set<QuantProtein> getQuantificationProteins(int[] quantDatasetIds) {
         Set<QuantProtein> quantProtList = new HashSet<QuantProtein>();
+         Set<QuantProtein> tquantProtList = new HashSet<QuantProtein>();
         try {
             StringBuilder sb = new StringBuilder();
 
@@ -3473,17 +3474,13 @@ public class DataBase implements Serializable {
             }
             String selectDsGroupNum = "SELECT `patients_group_i_number` , `patients_group_ii_number`,`index` FROM `combined_dataset_table` WHERE  " + stat + " ;";
             PreparedStatement selectselectDsGroupNumStat = conn.prepareStatement(selectDsGroupNum);
-//            selectselectDsGroupNumStat.setInt(1, quantDatasetId + 1);
             ResultSet rs = selectselectDsGroupNumStat.executeQuery();
-//            int groupINum = 0;
-//            int groupIINum = 0;
             Map<Integer, int[]> datasetIdDesGrs = new HashMap<Integer, int[]>();
             while (rs.next()) {
                 datasetIdDesGrs.put(rs.getInt("index"), new int[]{rs.getInt("patients_group_i_number"), rs.getInt("patients_group_ii_number")});
-//                groupINum = rs.getInt("patients_group_i_number");
-//                groupIINum = rs.getInt("patients_group_ii_number");
             }
             rs.close();
+        
 
             sb = new StringBuilder();
             for (int index : quantDatasetIds) {
@@ -3493,18 +3490,13 @@ public class DataBase implements Serializable {
             }
             stat = sb.toString().substring(0, sb.length() - 4);
 
-            String selectQuantProt = "SELECT * FROM `quantitative_proteins_table`  WHERE  "+stat+" ;";
+            String selectQuantProt = "SELECT * FROM `quantitative_proteins_table`  WHERE  " + stat + " ;";
             PreparedStatement selectQuantProtStat = conn.prepareStatement(selectQuantProt);
-//            selectQuantProtStat.setInt(1, quantDatasetId + 1);
             ResultSet rs1 = selectQuantProtStat.executeQuery();
             while (rs1.next()) {
                 QuantProtein quantProt = new QuantProtein();
-//                quantProt.setPatientsGroupIINumber(groupIINum);
-//                quantProt.setPatientsGroupINumber(groupINum);
-                quantProt.setPatientsGroupIINumber(datasetIdDesGrs.get(rs1.getInt("ds_ID"))[1]);
-                quantProt.setPatientsGroupINumber(datasetIdDesGrs.get(rs1.getInt("ds_ID"))[0]);
                 quantProt.setProtKey(rs1.getInt("index"));
-                quantProt.setDsKey(rs1.getInt("ds_ID")-1);
+                quantProt.setDsKey(rs1.getInt("ds_ID") - 1);
                 quantProt.setSequance(rs1.getString("sequance"));
                 quantProt.setUniprotAccession(rs1.getString("uniprot_accession"));
                 quantProt.setUniprotProteinName(rs1.getString("uniprot_protein_name"));
@@ -3516,21 +3508,28 @@ public class DataBase implements Serializable {
                 quantProtList.add(quantProt);
             }
             rs1.close();
+            for (QuantProtein qp : quantProtList) {
+                qp.setPatientsGroupIINumber(datasetIdDesGrs.get(qp.getDsKey() + 1)[1]);
+                qp.setPatientsGroupINumber(datasetIdDesGrs.get(qp.getDsKey() + 1)[0]);
+                tquantProtList.add(qp);
+                
+            }
+
         } catch (ClassNotFoundException exp) {
-            System.out.println("at error  "+this.getClass().getName()+"   line 3521   "+exp.getLocalizedMessage());
+            System.out.println("at error  " + this.getClass().getName() + "   line 3521   " + exp.getLocalizedMessage());
             return null;
         } catch (IllegalAccessException exp) {
-            System.out.println("at error  "+this.getClass().getName()+"   line 3524   "+exp.getLocalizedMessage());
+            System.out.println("at error  " + this.getClass().getName() + "   line 3524   " + exp.getLocalizedMessage());
             return null;
         } catch (InstantiationException exp) {
-           System.out.println("at error  "+this.getClass().getName()+"   line 3527   "+exp.getLocalizedMessage());
+            System.out.println("at error  " + this.getClass().getName() + "   line 3527   " + exp.getLocalizedMessage());
             return null;
         } catch (SQLException exp) {
-            System.out.println("at error  "+this.getClass().getName()+"   line 3530   "+exp.getLocalizedMessage());
+            System.out.println("at error  " + this.getClass().getName() + "   line 3530   " + exp.getLocalizedMessage());
             return null;
         }
         System.gc();
-        return quantProtList;
+        return tquantProtList;
 
     }
 

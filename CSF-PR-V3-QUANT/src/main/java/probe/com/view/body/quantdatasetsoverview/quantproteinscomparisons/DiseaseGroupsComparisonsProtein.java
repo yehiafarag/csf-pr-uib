@@ -26,7 +26,7 @@ import probe.com.model.beans.quant.QuantPeptide;
  *
  * @author Yehia Farag
  */
-public class DiiseaseGroupsComparisonsProtein extends HorizontalLayout implements Serializable, Comparable<DiiseaseGroupsComparisonsProtein> {
+public class DiseaseGroupsComparisonsProtein extends HorizontalLayout implements Serializable, Comparable<DiseaseGroupsComparisonsProtein> {
 
     private String uniProtAccess;
     private String protName;
@@ -106,7 +106,7 @@ public class DiiseaseGroupsComparisonsProtein extends HorizontalLayout implement
      * @param comparison
      * @param uniqueId
      */
-    public DiiseaseGroupsComparisonsProtein(int total, QuantDiseaseGroupsComparison comparison, int uniqueId) {        
+    public DiseaseGroupsComparisonsProtein(int total, QuantDiseaseGroupsComparison comparison, int uniqueId) {
         this.comparison = comparison;
         this.uniqueId = uniqueId;
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
@@ -124,7 +124,7 @@ public class DiiseaseGroupsComparisonsProtein extends HorizontalLayout implement
         patientsNumToDSIDMap.put("up", new ArrayList<Integer>());
         patientsNumToDSIDMap.put("notReg", new ArrayList<Integer>());
         patientsNumToDSIDMap.put("down", new ArrayList<Integer>());
-        
+
         initLabelLayout();
     }
 
@@ -221,7 +221,7 @@ public class DiiseaseGroupsComparisonsProtein extends HorizontalLayout implement
     public int getUp() {
         return up;
     }
-    int counter =0;
+    int counter = 0;
 
     /**
      *
@@ -230,7 +230,7 @@ public class DiiseaseGroupsComparisonsProtein extends HorizontalLayout implement
      * @param dsID
      */
     public void addUp(int up, int patientsNumber, int dsID) {
-        
+
         trendValue += (double) up;
         this.up += up;
         List<Integer> upList = this.patientsNumToTrindMap.get("up");
@@ -324,7 +324,7 @@ public class DiiseaseGroupsComparisonsProtein extends HorizontalLayout implement
     }
 
     @Override
-    public int compareTo(DiiseaseGroupsComparisonsProtein t) {
+    public int compareTo(DiseaseGroupsComparisonsProtein t) {
         Double v1 = null;
         if (up.intValue() == down.intValue()) {
             v1 = trendValue;
@@ -352,36 +352,40 @@ public class DiiseaseGroupsComparisonsProtein extends HorizontalLayout implement
         return (v1).compareTo(v2);
 
     }
+    private String fullDownLabelValue = "";
+    private String fullUpLabelValue = "";
 
     /**
      *
      */
     public void updateLabelLayout() {
-        int counter = 0;
+        int dcounter = 0;
 //        this.setExpandRatio(downLabel, ((float) 1.5 / total));
 //        this.setExpandRatio(upLabel, ((float) 1.5 / total));
         int subTotal = this.total;
-        downLabel.setValue("<p style='text-align: right;line-height:0.1'><strong> " + df.format(((double) down / (double) subTotal) * 100.0) + "% &#8595; </strong>&nbsp;</p>");
-        upLabel.setValue("<p style='text-align: left;line-height:0.1'><strong>&nbsp;&#8593; " + df.format(((double) up / (double) subTotal) * 100.0) + "%</strong></p>");
+        fullDownLabelValue = "<p style='text-align: right;line-height:0.1'><strong> " + df.format(((double) down / (double) subTotal) * 100.0) + "% &#8595; </strong>&nbsp;</p>";
+        downLabel.setValue(fullDownLabelValue);
+        fullUpLabelValue = "<p style='text-align: left;line-height:0.1'><strong>&nbsp;&#8593; " + df.format(((double) up / (double) subTotal) * 100.0) + "%</strong></p>";
+        upLabel.setValue(fullUpLabelValue);
 //        if (((float) up / subTotal) <= 0.0) {
 //            upLayout.setVisible(false);
 //        } 
 //        else {
-//            counter += up;
+//            dcounter += up;
 //            this.setExpandRatio(upLayout, ((float) up / subTotal));
 //        }
 //        if (((float) notProvided / subTotal) <= 0.0) {
 //            notProvidedLayout.setVisible(false);
 //        } 
 //        else {
-//            counter += notProvided;
+//            dcounter += notProvided;
 //            this.setExpandRatio(notProvidedLayout, ((float) notProvided / subTotal));
 //        }
 //        if (((float) down / subTotal) <= 0.0) {
 //            downLayout.setVisible(false);
 //        } 
 //        else {
-//            counter += down;
+//            dcounter += down;
 //            this.setExpandRatio(downLayout, ((float) down / subTotal));
 //        }
 
@@ -403,7 +407,7 @@ public class DiiseaseGroupsComparisonsProtein extends HorizontalLayout implement
             cellValue = Math.max(v1, -1);
         }
 
-        this.setExpandRatio(notRegLayout, ((float) (subTotal - counter) / subTotal));
+        this.setExpandRatio(notRegLayout, ((float) (subTotal - dcounter) / subTotal));
         String overall;
         if (cellValue > 0) {
             overall = "Up Regulated (" + cellValue + ")";
@@ -495,47 +499,49 @@ public class DiiseaseGroupsComparisonsProtein extends HorizontalLayout implement
      */
     public void updateWidth(int width) {
         this.setWidth(width + "px");
-        float freeArea=width;
+        float freeArea = width;
         int subTotal = this.total;
 //        float labelRatio= 80.0f/(float)width;
 //         this.setExpandRatio(downLabel, labelRatio);
 //        this.setExpandRatio(upLabel, labelRatio);
-        
+
         if (width > 200) {
             downLabel.setWidth("80px");
             upLabel.setWidth("80px");
             freeArea = width - 160;
             downLabel.setVisible(true);
             upLabel.setVisible(true);
-        }
-        
-        
-        else {
+        } else if (width > 140) {
+            downLabel.setWidth("50px");
+            upLabel.setWidth("50px");
+            freeArea = width - 100;
+            downLabel.setVisible(true);
+            upLabel.setVisible(true);
+        } else {
             downLabel.setVisible(false);
             upLabel.setVisible(false);
 
         }
-            if (((float) up / subTotal) <= 0.0) {
-                upLayout.setVisible(false);
-            } else {
-                float upWidth = ((float) up / (float) subTotal) * freeArea;
-                upLayout.setWidth(upWidth + "px");
-            }
-            if (((float) notProvided / subTotal) <= 0.0) {
-                notProvidedLayout.setVisible(false);
-            } else {
-                float notProvidedWidth = ((float) notProvided / (float) subTotal) * freeArea;
-                notProvidedLayout.setWidth(notProvidedWidth + "px");
+        if (((float) up / subTotal) <= 0.0) {
+            upLayout.setVisible(false);
+        } else {
+            float upWidth = ((float) up / (float) subTotal) * freeArea;
+            upLayout.setWidth(upWidth + "px");
+        }
+        if (((float) notProvided / subTotal) <= 0.0) {
+            notProvidedLayout.setVisible(false);
+        } else {
+            float notProvidedWidth = ((float) notProvided / (float) subTotal) * freeArea;
+            notProvidedLayout.setWidth(notProvidedWidth + "px");
 
-            }
-            if (((float) down / subTotal) <= 0.0) {
-                downLayout.setVisible(false);
-            } else {
-                float downWidth = ((float) down / (float) subTotal) * freeArea;
-                downLayout.setWidth(downWidth + "px");
-            }
+        }
+        if (((float) down / subTotal) <= 0.0) {
+            downLayout.setVisible(false);
+        } else {
+            float downWidth = ((float) down / (float) subTotal) * freeArea;
+            downLayout.setWidth(downWidth + "px");
+        }
 
     }
 
-    
 }

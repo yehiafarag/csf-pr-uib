@@ -41,7 +41,7 @@ import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.util.ShapeUtilities;
-import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiiseaseGroupsComparisonsProtein;
+import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProtein;
 import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.selectionmanager.CSFFilterSelection;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
@@ -71,7 +71,7 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
     private final DatasetExploringCentralSelectionManager exploringFiltersManager;
     private final String teststyle;
     private final Page.Styles styles = Page.getCurrent().getStyles();
-    private final DiiseaseGroupsComparisonsProtein comparisonProtein;
+    private final DiseaseGroupsComparisonsProtein comparisonProtein;
     private final PeptidesStackedBarChartsControler peptidesOverviewLayoutManager;
     private final boolean searchingMode;
 
@@ -82,7 +82,7 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
      * @param exploringFiltersManagerinst
      * @param searchingMode
      */
-    public ProteinComparisonScatterPlotLayout(final DiiseaseGroupsComparisonsProtein cp, int width, DatasetExploringCentralSelectionManager exploringFiltersManagerinst, final boolean searchingMode) {
+    public ProteinComparisonScatterPlotLayout(final DiseaseGroupsComparisonsProtein cp, int width, DatasetExploringCentralSelectionManager exploringFiltersManagerinst, final boolean searchingMode) {
         this.searchingMode = searchingMode;
         this.exploringFiltersManager = exploringFiltersManagerinst;
         this.setColumns(4);
@@ -112,7 +112,7 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
 
         imgWidth = (width - 70);
         ProteinScatterPlotContainer = new AbsoluteLayout();
-        this.generateScatterplotchart(cp, imgWidth, 150);
+//        this.generateScatterplotchart(cp, imgWidth, 150);
 
         this.addComponent(ProteinScatterPlotContainer, 1, 1);
         ProteinScatterPlotContainer.setWidth(imgWidth + "px");
@@ -169,7 +169,7 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
      *
      * @return The jFreeChart.
      */
-    private void generateScatterplotchart(DiiseaseGroupsComparisonsProtein cp, int w, int h) {
+    private void generateScatterplotchart(DiseaseGroupsComparisonsProtein cp, int w, int h) {
 
         final XYSeriesCollection dataset = new XYSeriesCollection();
         XYSeries downSer = new XYSeries(0);
@@ -381,17 +381,13 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
      *
      */
     public void redrawChart() {
+        if (defaultScatterPlottImgUrl == null) {
+            this.generateScatterplotchart(comparisonProtein, imgWidth, 150);
+        }
         styles.add("." + teststyle + " {  background-image: url(" + defaultScatterPlottImgUrl + " );background-position:center; background-repeat: no-repeat; }");
 
     }
 
-    /**
-     *
-     * @return
-     */
-    public String getUrl() {
-
-        return heighlightedScatterPlottImgUrl;
-    }
+    
 
 }

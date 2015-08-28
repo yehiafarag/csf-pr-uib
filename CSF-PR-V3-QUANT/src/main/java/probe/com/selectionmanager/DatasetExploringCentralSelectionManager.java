@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiiseaseGroupsComparisonsProtein;
+import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProtein;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.view.core.DiseaseGroup;
@@ -25,7 +25,7 @@ public class DatasetExploringCentralSelectionManager {
     private final boolean[] activeFilters;
     private QuantDatasetObject[] selectedQuantDatasetIndexes;
     private Set<QuantDiseaseGroupsComparison> selectedDiseaseGroupsComparisonList;
-    private Map<String, DiiseaseGroupsComparisonsProtein[]> quantProteinsLayoutSelectionMap;
+    private Map<String, DiseaseGroupsComparisonsProtein[]> quantProteinsLayoutSelectionMap;
 
     /**
      * get selected heat map rows
@@ -196,14 +196,17 @@ public class DatasetExploringCentralSelectionManager {
      *
      * @param protSelectionMap
      */
-    public void setQuantProteinsSelectionLayout(Map<String, DiiseaseGroupsComparisonsProtein[]> protSelectionMap) {
+    public void setQuantProteinsSelectionLayout(Map<String, DiseaseGroupsComparisonsProtein[]> protSelectionMap) {
         try {
 
             VaadinSession.getCurrent().getLockInstance().lock();
             this.quantProteinsLayoutSelectionMap = protSelectionMap;
             this.SelectionChanged("Quant_Proten_Selection");
-
-        } finally {
+            
+        } catch(Exception exp){
+            System.err.println("at error "+this.getClass().getName()+"  line 207  "+ exp.getMessage());
+        
+        }finally {
             VaadinSession.getCurrent().getLockInstance().unlock();
         }
 
@@ -258,7 +261,7 @@ public class DatasetExploringCentralSelectionManager {
      * @return map of quant proteins array that include the comparisons
      * information columns for each protein
      */
-    public Map<String, DiiseaseGroupsComparisonsProtein[]> getQuantProteinsLayoutSelectionMap() {
+    public Map<String, DiseaseGroupsComparisonsProtein[]> getQuantProteinsLayoutSelectionMap() {
         return quantProteinsLayoutSelectionMap;
     }
 

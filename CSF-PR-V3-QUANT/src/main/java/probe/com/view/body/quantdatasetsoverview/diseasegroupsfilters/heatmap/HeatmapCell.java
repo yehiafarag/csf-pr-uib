@@ -20,8 +20,6 @@ import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
  */
 public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutClickListener{
 
-    private final VerticalLayout tooltipLayout;
-    private final int[] dsIndexes;
     private final double value;
     private final int rowLabelIndex;
     private final int colLabelIndex;
@@ -33,7 +31,6 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
     public double getValue() {
         return value;
     }
-    private final String color;
     private final HeatMapComponent parent;
     private final MouseEvents.MouseOverListener mouseOverListener;
     private final MouseEvents.MouseOutListener mouseOutListener;
@@ -65,13 +62,12 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
      * @param groupCompTitle
      */
     public HeatmapCell(double value, final String color, int[] dsIndexes, final int rowLabelIndex, final int colLabelIndex, VerticalLayout tooltipLayout, HeatMapComponent parentcom, String groupCompTitle) {
-        this.tooltipLayout = tooltipLayout;
+      
         this.colLabelIndex = colLabelIndex;
         this.rowLabelIndex = rowLabelIndex;
         this.valueLabel = new Label();
         this.value = value;
-        this.dsIndexes = dsIndexes;
-        this.color = color;
+       
         this.parent = parentcom;
         this.setWidth("50px");
         this.setHeight("50px");

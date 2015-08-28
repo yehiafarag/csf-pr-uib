@@ -57,7 +57,7 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
         comparisonLevelLayout.setVisability(true);
 
         proteinsLayout = new QuantProteinsTabsheetContainerLayout(exploringFiltersManager,searchingMode);
-        HideOnClickLayout proteinsLevelLayout = new HideOnClickLayout("Proteins", proteinsLayout, null) {
+        HideOnClickLayout proteinsLevelLayout = new HideOnClickLayout("Proteins Information", proteinsLayout, null) {
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
                 super.layoutClick(event);
@@ -66,7 +66,7 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
 
         };
         this.addComponent(proteinsLevelLayout);
-        proteinsLevelLayout.setVisability(true);
+        proteinsLevelLayout.setVisability(false);
 
         QuantDatasetsCombinedTableLayout quantStudiesTable = new QuantDatasetsCombinedTableLayout(exploringFiltersManager, filterUtility.getActiveCombinedQuantTableHeaders());
         if (searchingMode) {

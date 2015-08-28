@@ -45,7 +45,8 @@ import probe.com.view.core.jfreeutil.SquaredDot;
  *
  * @author Yehia Farag
  */
-public class JFreeBarchartDivaWrapper extends AbsoluteLayout  {
+public class JFreeBarchartDivaWrapper extends AbsoluteLayout {
+
     private final String defaultImgURL;
     private String inUseImgURL;
     private int imgWidth;
@@ -70,9 +71,9 @@ public class JFreeBarchartDivaWrapper extends AbsoluteLayout  {
      * @param comparison
      * @param searchingMode
      */
-    public JFreeBarchartDivaWrapper(int imgWidth, QuantDiseaseGroupsComparison comparison,boolean searchingMode) {
+    public JFreeBarchartDivaWrapper(int imgWidth, QuantDiseaseGroupsComparison comparison, boolean searchingMode) {
 
-        this.searchingMode=searchingMode;
+        this.searchingMode = searchingMode;
         this.setWidth(imgWidth + "px");
         this.setHeight("250px");
         this.imgWidth = imgWidth;
@@ -91,11 +92,11 @@ public class JFreeBarchartDivaWrapper extends AbsoluteLayout  {
     }
 
     private String initBarChart(int width, int height, QuantDiseaseGroupsComparison comparison) {
-        Map<String, DiiseaseGroupsComparisonsProtein> protList = comparison.getComparProtsMap();
+        Map<String, DiseaseGroupsComparisonsProtein> protList = comparison.getComparProtsMap();
         double[] values = new double[5];
 //        }
         for (String key2 : protList.keySet()) {
-            DiiseaseGroupsComparisonsProtein prot = protList.get(key2);
+            DiseaseGroupsComparisonsProtein prot = protList.get(key2);
             prot.updateLabelLayout();
             int indexer = prot.getTrindCategory();//(int) (prot.getCellValue() / maxIndexerValue * 10.0);
             switch (indexer) {
@@ -215,10 +216,11 @@ public class JFreeBarchartDivaWrapper extends AbsoluteLayout  {
         NumberAxis rangeAxis = (NumberAxis) cp.getRangeAxis();
         rangeAxis.setTickLabelFont(axisFont);
         rangeAxis.setLabelFont(titleFont);
-        if(searchingMode)
-        rangeAxis.setUpperBound(1);
-        else
+        if (searchingMode) {
+            rangeAxis.setUpperBound(1);
+        } else {
             rangeAxis.setUpperBound(0.8);
+        }
         NumberFormat nf = NumberFormat.getPercentInstance(Locale.US);
         nf.setMinimumFractionDigits(0);
         nf.setMaximumFractionDigits(1);
@@ -235,6 +237,24 @@ public class JFreeBarchartDivaWrapper extends AbsoluteLayout  {
     private final ChartRenderingInfo chartRenderingInfo = new ChartRenderingInfo();
 
     private String saveToFile(final JFreeChart chart, final double width, final double height) {
+        CategoryPlot cp = chart.getCategoryPlot();
+        CategoryAxis domainAxis = cp.getDomainAxis();
+        NumberAxis rangeAxis = (NumberAxis) cp.getRangeAxis();
+        boolean check = (width > 120);
+
+        domainAxis.setVisible(check);
+        rangeAxis.setVisible(check);
+        ((BarRenderer) cp.getRenderer()).setSeriesVisible(0, check);
+        ((BarRenderer) cp.getRenderer()).setSeriesVisible(1, check);
+        ((BarRenderer) cp.getRenderer()).setSeriesVisible(2, check);
+        ((BarRenderer) cp.getRenderer()).setSeriesVisible(3, check);
+        ((BarRenderer) cp.getRenderer()).setSeriesVisible(4, check);
+        if (check) {
+            cp.setRangeGridlinePaint(Color.LIGHT_GRAY);
+        } else {
+            cp.setRangeGridlinePaint(Color.WHITE);
+        }
+
         byte imageData[];
         try {
 

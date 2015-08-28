@@ -38,7 +38,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import probe.com.handlers.CSFPRHandler;
-import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiiseaseGroupsComparisonsProtein;
+import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProtein;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.beans.quant.QuantProtein;
 import probe.com.selectionmanager.CSFFilter;
@@ -79,7 +79,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
     private boolean externalSelection = false;
     private final Set<ComparisonChartContainer> quantBarchartSet = new HashSet<ComparisonChartContainer>();
     private ComparisonChartContainer lastHeighlitedChart;
-    private Map<String, DiiseaseGroupsComparisonsProtein[]> diseaseGroupsComparisonsProteinsMap;
+    private Map<String, DiseaseGroupsComparisonsProtein[]> diseaseGroupsComparisonsProteinsMap;
     private final Set<Integer> proteinskeys = new HashSet<Integer>();
     private final TreeMap<Integer, CustomExternalLink> lastSelectedProts = new TreeMap<Integer, CustomExternalLink>();
 
@@ -127,8 +127,8 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
      */
     private void updateQuantProteinsSparkLineLabels(int columnWidth) {
         if (diseaseGroupsComparisonsProteinsMap != null) {
-            for (DiiseaseGroupsComparisonsProtein[] cpArr : diseaseGroupsComparisonsProteinsMap.values()) {
-                for (DiiseaseGroupsComparisonsProtein cp : cpArr) {
+            for (DiseaseGroupsComparisonsProtein[] cpArr : diseaseGroupsComparisonsProteinsMap.values()) {
+                for (DiseaseGroupsComparisonsProtein cp : cpArr) {
                     if (cp != null) {
                         cp.updateWidth(columnWidth);
                     }
@@ -593,24 +593,24 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
         this.groupsComparisonProteinsTable.addContainerProperty("Accession", CustomExternalLink.class, null, "Accession", null, Table.Align.LEFT);
         this.groupsComparisonProteinsTable.addContainerProperty("Name", String.class, null, "Name", null, Table.Align.LEFT);
 
-        diseaseGroupsComparisonsProteinsMap = new HashMap<String, DiiseaseGroupsComparisonsProtein[]>();
+        diseaseGroupsComparisonsProteinsMap = new HashMap<String, DiseaseGroupsComparisonsProtein[]>();
         for (int compIndex = 0; compIndex < quantDiseaseGroupsComparisonArr.length; compIndex++) {
             QuantDiseaseGroupsComparison comp = quantDiseaseGroupsComparisonArr[compIndex];
             ComparisonChartContainer chartPlot = generateColumnBarChart(comp, columnWidth, (searchQuantificationProtList != null));
             this.chartsLayoutContainer.addComponent(chartPlot);
             this.chartsLayoutContainer.setComponentAlignment(chartPlot, Alignment.MIDDLE_CENTER);
-            this.groupsComparisonProteinsTable.addContainerProperty(comp.getComparisonHeader(), DiiseaseGroupsComparisonsProtein.class, null, comp.getComparisonHeader() + " (#Proteins: " + comp.getComparProtsMap().size() + ")", null, Table.Align.CENTER);
+            this.groupsComparisonProteinsTable.addContainerProperty(comp.getComparisonHeader(), DiseaseGroupsComparisonsProtein.class, null, comp.getComparisonHeader() + " (#Proteins: " + comp.getComparProtsMap().size() + ")", null, Table.Align.CENTER);
             groupsComparisonProteinsTable.setColumnWidth(comp.getComparisonHeader(), 100);
 
-            Map<String, DiiseaseGroupsComparisonsProtein> protList = comp.getComparProtsMap();
+            Map<String, DiseaseGroupsComparisonsProtein> protList = comp.getComparProtsMap();
 
             for (String key2 : protList.keySet()) {
-                DiiseaseGroupsComparisonsProtein prot = protList.get(key2);
+                DiseaseGroupsComparisonsProtein prot = protList.get(key2);
                 quantAccessionMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), prot.getUniProtAccess());
                 if (!diseaseGroupsComparisonsProteinsMap.containsKey(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim())) {
-                    diseaseGroupsComparisonsProteinsMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), new DiiseaseGroupsComparisonsProtein[quantDiseaseGroupsComparisonArr.length]);
+                    diseaseGroupsComparisonsProteinsMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), new DiseaseGroupsComparisonsProtein[quantDiseaseGroupsComparisonArr.length]);
                 }
-                DiiseaseGroupsComparisonsProtein[] tCompArr = diseaseGroupsComparisonsProteinsMap.get(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim());
+                DiseaseGroupsComparisonsProtein[] tCompArr = diseaseGroupsComparisonsProteinsMap.get(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim());
                 tCompArr[compIndex] = prot;
                 diseaseGroupsComparisonsProteinsMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), tCompArr);
             }
@@ -629,7 +629,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
             tableRow[i++] = acc;
             tableRow[i++] = protName;
             for (QuantDiseaseGroupsComparison cg : quantDiseaseGroupsComparisonArr) {
-                DiiseaseGroupsComparisonsProtein cp = diseaseGroupsComparisonsProteinsMap.get(protAccName)[i - 3];
+                DiseaseGroupsComparisonsProtein cp = diseaseGroupsComparisonsProteinsMap.get(protAccName)[i - 3];
                 if (cp == null) {
                     tableRow[i] = null;
                 } else {
@@ -784,20 +784,20 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
     private void filterTable(Set<String> accessions, QuantDiseaseGroupsComparison[] comparisonProteinsArray, String sortCompColumnName) {
         groupsComparisonProteinsTable.removeValueChangeListener(QuantProteinsComparisonsContainer.this);
         this.groupsComparisonProteinsTable.removeAllItems();
-        diseaseGroupsComparisonsProteinsMap = new HashMap<String, DiiseaseGroupsComparisonsProtein[]>();
+        diseaseGroupsComparisonsProteinsMap = new HashMap<String, DiseaseGroupsComparisonsProtein[]>();
         for (int compIndex = 0; compIndex < comparisonProteinsArray.length; compIndex++) {
             QuantDiseaseGroupsComparison comp = comparisonProteinsArray[compIndex];
-            Map<String, DiiseaseGroupsComparisonsProtein> protList = comp.getComparProtsMap();
+            Map<String, DiseaseGroupsComparisonsProtein> protList = comp.getComparProtsMap();
             for (String key2 : protList.keySet()) {
-                DiiseaseGroupsComparisonsProtein prot = protList.get(key2);
+                DiseaseGroupsComparisonsProtein prot = protList.get(key2);
                 if (!accessions.contains(prot.getUniProtAccess())) {
                     continue;
                 }
 
                 if (!diseaseGroupsComparisonsProteinsMap.containsKey(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim())) {
-                    diseaseGroupsComparisonsProteinsMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), new DiiseaseGroupsComparisonsProtein[comparisonProteinsArray.length]);
+                    diseaseGroupsComparisonsProteinsMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), new DiseaseGroupsComparisonsProtein[comparisonProteinsArray.length]);
                 }
-                DiiseaseGroupsComparisonsProtein[] tCompArr = diseaseGroupsComparisonsProteinsMap.get(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim());
+                DiseaseGroupsComparisonsProtein[] tCompArr = diseaseGroupsComparisonsProteinsMap.get(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim());
                 tCompArr[compIndex] = prot;
                 diseaseGroupsComparisonsProteinsMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), tCompArr);
             }
@@ -816,7 +816,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
             tableRow[i++] = acc;
             tableRow[i++] = protName;
             for (QuantDiseaseGroupsComparison cg : comparisonProteinsArray) {
-                DiiseaseGroupsComparisonsProtein cp = diseaseGroupsComparisonsProteinsMap.get(protAccName)[i - 3];
+                DiseaseGroupsComparisonsProtein cp = diseaseGroupsComparisonsProteinsMap.get(protAccName)[i - 3];
                 if (cp == null) {
                     tableRow[i] = null;
                 } else {
@@ -899,17 +899,17 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
             accessions.add(str.toString());
         }
         this.updateChartsWithTableSelectedProteins(new HashSet<String>(accessions));
-        LinkedHashMap<String, DiiseaseGroupsComparisonsProtein[]> protSelectionMap = new LinkedHashMap<String, DiiseaseGroupsComparisonsProtein[]>();
+        LinkedHashMap<String, DiseaseGroupsComparisonsProtein[]> protSelectionMap = new LinkedHashMap<String, DiseaseGroupsComparisonsProtein[]>();
         for (String accession : accessions) {
             for (int compIndex = 0; compIndex < quantDiseaseGroupsComparisonArr.length; compIndex++) {
                 QuantDiseaseGroupsComparison comp = quantDiseaseGroupsComparisonArr[compIndex];
-                Map<String, DiiseaseGroupsComparisonsProtein> protList = comp.getComparProtsMap();
-                for (DiiseaseGroupsComparisonsProtein prot : protList.values()) {
+                Map<String, DiseaseGroupsComparisonsProtein> protList = comp.getComparProtsMap();
+                for (DiseaseGroupsComparisonsProtein prot : protList.values()) {
                     if (prot.getUniProtAccess().equalsIgnoreCase(accession)) {
                         if (!protSelectionMap.containsKey(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim())) {
-                            protSelectionMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), new DiiseaseGroupsComparisonsProtein[quantDiseaseGroupsComparisonArr.length]);
+                            protSelectionMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), new DiseaseGroupsComparisonsProtein[quantDiseaseGroupsComparisonArr.length]);
                         }
-                        DiiseaseGroupsComparisonsProtein[] tCompArr = protSelectionMap.get(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim());
+                        DiseaseGroupsComparisonsProtein[] tCompArr = protSelectionMap.get(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim());
                         tCompArr[compIndex] = prot;
                         protSelectionMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), tCompArr);
 

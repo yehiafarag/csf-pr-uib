@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import probe.com.dal.DataAccess;
 import probe.com.dal.Query;
-import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiiseaseGroupsComparisonsProtein;
+import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProtein;
 import probe.com.model.beans.identification.IdentificationDatasetBean;
 import probe.com.model.beans.identification.IdentificationDatasetDetailsBean;
 import probe.com.model.beans.identification.IdentificationFractionBean;
@@ -843,15 +843,15 @@ public class CoreLogic implements Serializable {
 
         comparisonPeptideMap.putAll(da.getQuantificationPeptides(comparison.getDatasetIndexes()));
 
-        Map<String, DiiseaseGroupsComparisonsProtein> comparProtList = new HashMap<String, DiiseaseGroupsComparisonsProtein>();
+        Map<String, DiseaseGroupsComparisonsProtein> comparProtList = new HashMap<String, DiseaseGroupsComparisonsProtein>();
         for (QuantProtein quant : comparisonProtMap) {
 
             {
 
                 if (!comparProtList.containsKey(quant.getUniprotAccession())) {
-                    comparProtList.put(quant.getUniprotAccession(), new DiiseaseGroupsComparisonsProtein(comparison.getDatasetIndexes().length, comparison, quant.getProtKey()));
+                    comparProtList.put(quant.getUniprotAccession(), new DiseaseGroupsComparisonsProtein(comparison.getDatasetIndexes().length, comparison, quant.getProtKey()));
                 }
-                DiiseaseGroupsComparisonsProtein comProt = comparProtList.get(quant.getUniprotAccession());
+                DiseaseGroupsComparisonsProtein comProt = comparProtList.get(quant.getUniprotAccession());
                 if (quant.getStringFCValue().equalsIgnoreCase("Decreased")) {
                     comProt.addDown(1, (quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
                 } else if (quant.getStringFCValue().equalsIgnoreCase("Increased")) {
@@ -882,9 +882,9 @@ public class CoreLogic implements Serializable {
 
             //init pep for prot
         //sort the protiens map
-        Map<String, DiiseaseGroupsComparisonsProtein> sortedcomparProtList = new TreeMap<String, DiiseaseGroupsComparisonsProtein>(Collections.reverseOrder());
+        Map<String, DiseaseGroupsComparisonsProtein> sortedcomparProtList = new TreeMap<String, DiseaseGroupsComparisonsProtein>(Collections.reverseOrder());
         for (String Key : comparProtList.keySet()) {
-            DiiseaseGroupsComparisonsProtein temp = comparProtList.get(Key);
+            DiseaseGroupsComparisonsProtein temp = comparProtList.get(Key);
             sortedcomparProtList.put((temp.getUp() + "_" + Key), temp);
         }
 

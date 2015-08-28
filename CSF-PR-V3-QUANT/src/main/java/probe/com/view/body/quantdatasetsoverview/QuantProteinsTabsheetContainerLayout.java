@@ -1,10 +1,13 @@
 package probe.com.view.body.quantdatasetsoverview;
 
+import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.Page;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
@@ -17,12 +20,14 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiiseaseGroupsComparisonsProtein;
+import probe.com.bin.HorizontalClickToDisplay;
+import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProtein;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.selectionmanager.CSFFilter;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 import probe.com.view.core.CustomExternalLink;
 import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.ProteinOverviewJFreeLineChartContainer;
+import probe.com.view.core.HideOnClickLayout;
 
 /**
  *
@@ -34,13 +39,17 @@ import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.ProteinOv
 public class QuantProteinsTabsheetContainerLayout extends VerticalLayout implements CSFFilter, TabSheet.SelectedTabChangeListener {
 
     private final boolean searchingMode;
-    private final LinkedHashMap<String, DiiseaseGroupsComparisonsProtein[]> protSelectionMap = new LinkedHashMap<String, DiiseaseGroupsComparisonsProtein[]>();
+    private final LinkedHashMap<String, DiseaseGroupsComparisonsProtein[]> protSelectionMap = new LinkedHashMap<String, DiseaseGroupsComparisonsProtein[]>();
     private boolean selfSelection = false;
     private final Map<Component, String> protSelectionTabMap = new HashMap<Component, String>();
     private boolean initScroll = true;
     private final DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager;
-    private final TabSheet proteinsTabsheet;
+    private TabSheet proteinsTabsheet;
     private Label compOrederTitle;
+    private final Map<Integer, Tab> tabIndexMap = new HashMap<Integer, Tab>();
+    private Label noProtLabel = new Label("<h4 style='font-family:verdana;color:red;font-weight:bold;'>\t \t Select proteins to show their information !</h4>");
+
+    private final Map<Integer, ProteinOverviewJFreeLineChartContainer> tabLayoutIndexMap = new HashMap<Integer, ProteinOverviewJFreeLineChartContainer>();
 
     /**
      * central selection manager event
@@ -51,7 +60,11 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
     public void selectionChanged(String type) {
         if (type.equalsIgnoreCase("Quant_Proten_Selection") && !selfSelection) {
 
-            proteinsTabsheet.removeAllComponents();
+            if (proteinsTabsheet != null && proteinsTabsheet.getComponentCount() < 100) {
+                proteinsTabsheet.removeAllComponents();
+            } else {
+                this.initTabsheet();
+            }
             protSelectionMap.clear();
             protSelectionTabMap.clear();
             protSelectionMap.putAll(datasetExploringCentralSelectionManager.getQuantProteinsLayoutSelectionMap());
@@ -67,20 +80,30 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
                     + "    color:blue;"
                     + "}");
 
+            int tabCounter = 0;
+            tabIndexMap.clear();
+            tabLayoutIndexMap.clear();
+            System.out.println("at size of the list "+protSelectionMap.size());
             for (final String key : protSelectionMap.keySet()) {
                 String protAcc = key.replace("--", "").trim().split(",")[0].toUpperCase();
                 String protName = key.replace("--", "").trim().split(",")[1];
-                HorizontalLayout vlo = generateProtTab(protName, protAcc, protSelectionMap.get(key), selectedComparisonList);
+                HorizontalLayout vlo = generateProtTab(protName, protAcc, protSelectionMap.get(key), selectedComparisonList,protSelectionMap);
                 final Tab t1;
                 t1 = proteinsTabsheet.addTab(vlo);
                 t1.setCaption(protName);
                 t1.setClosable(true);
                 t1.setStyleName("tabwithcharticon");
-                t1.setIcon(new ExternalResource(((ProteinOverviewJFreeLineChartContainer) vlo.getComponent(1)).getThumbChart()));
-                protSelectionTabMap.put(vlo, key);//                
-                redrawCharts();
+                ProteinOverviewJFreeLineChartContainer tabLayout = (ProteinOverviewJFreeLineChartContainer) vlo.getComponent(0);
+                tabLayoutIndexMap.put(tabCounter, tabLayout);
+                if (tabCounter < 30) {
+                    t1.setIcon(new ExternalResource(tabLayout.getThumbChart()));
+                }
+                protSelectionTabMap.put(vlo, key);//      
+                tabIndexMap.put(tabCounter, t1);
+                tabCounter++;
 
             }
+
             if (initScroll) {
                 initScroll = false;
                 if (this.getUI() != null) {
@@ -89,9 +112,12 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
             }
 
         } else {
+            redrawCharts();
             selfSelection = false;
         }
 
+//        for(int x=0;x<proteinsTabsheet.getComponentCount();x++){
+//        }
     }
 
     /**
@@ -125,7 +151,60 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
         this.datasetExploringCentralSelectionManager.registerFilter(QuantProteinsTabsheetContainerLayout.this);
         this.setHeight("100%");
         this.setMargin(new MarginInfo(true, false, false, false));
-        proteinsTabsheet = new TabSheet();
+        this.noProtLabel.setContentMode(ContentMode.HTML);
+        noProtLabel.setWidth("400px");
+        noProtLabel.setHeight("40px");
+        this.addComponent(noProtLabel);
+        this.setComponentAlignment(noProtLabel, Alignment.TOP_LEFT);
+
+//        proteinsTabsheet = new TabSheet() {
+//
+//        };
+//        proteinsTabsheet.setCaptionAsHtml(true);
+//        proteinsTabsheet.setHeightUndefined();
+//        proteinsTabsheet.setStyleName(Reindeer.TABSHEET_MINIMAL);
+//        proteinsTabsheet.setVisible(false);
+//        proteinsTabsheet.addStyleName("hideoverflow");
+//        proteinsTabsheet.addSelectedTabChangeListener(QuantProteinsTabsheetContainerLayout.this);
+//        proteinsTabsheet.setCloseHandler(new TabSheet.CloseHandler() {
+//            @Override
+//            public void onTabClose(TabSheet tabsheet, Component tabContent) {
+//                protSelectionMap.remove(protSelectionTabMap.get(tabContent));
+//                if (protSelectionMap.isEmpty()) {
+//                    proteinsTabsheet.setVisible(false);
+//                }
+//
+//                datasetExploringCentralSelectionManager.setQuantProteinsSelectionLayout(new LinkedHashMap<String, DiseaseGroupsComparisonsProtein[]>(protSelectionMap));
+//            }
+//        });
+//        this.addComponent(proteinsTabsheet);
+//        this.initTabsheet();
+        this.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+            private int layoutCounter = 30;
+
+            @Override
+            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+                if (event.getClickedComponent() == null || event.getClickedComponent().getPrimaryStyleName() == null) {
+                    return;
+                }
+                int targetedLocation = Page.getCurrent().getBrowserWindowWidth() - event.getClientX();
+                if (layoutCounter < protSelectionMap.size() && event.getClickedComponent().getPrimaryStyleName().trim().equalsIgnoreCase("v-tabsheet") && (targetedLocation > 55 && targetedLocation < 101) && (event.getRelativeY() > 44 && event.getRelativeY() < 60)) {
+                    tabIndexMap.get(layoutCounter).setIcon(new ExternalResource(tabLayoutIndexMap.get(layoutCounter++).getThumbChart()));
+
+                }
+            }
+        });
+    }
+
+    private void initTabsheet() {
+        if (proteinsTabsheet != null) {
+            this.removeComponent(proteinsTabsheet);
+//            proteinsTabsheet.detach();
+        }
+
+        proteinsTabsheet = new TabSheet() {
+
+        };
         proteinsTabsheet.setCaptionAsHtml(true);
         proteinsTabsheet.setHeightUndefined();
         proteinsTabsheet.setStyleName(Reindeer.TABSHEET_MINIMAL);
@@ -140,10 +219,11 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
                     proteinsTabsheet.setVisible(false);
                 }
 
-                datasetExploringCentralSelectionManager.setQuantProteinsSelectionLayout(new LinkedHashMap<String, DiiseaseGroupsComparisonsProtein[]>(protSelectionMap));
+                datasetExploringCentralSelectionManager.setQuantProteinsSelectionLayout(new LinkedHashMap<String, DiseaseGroupsComparisonsProtein[]>(protSelectionMap));
             }
         });
         this.addComponent(proteinsTabsheet);
+
     }
 
     /**
@@ -155,7 +235,7 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
      * @param selectedDiseaseGroupsComparisonsList disease groups comparisons
      * list in case of searching mode
      */
-    private HorizontalLayout generateProtTab(String quantProteinName, String quantProteinAccession, DiiseaseGroupsComparisonsProtein[] diseaseGroupsComparisonsProteinArray, Set<QuantDiseaseGroupsComparison> selectedDiseaseGroupsComparisonsList) {
+    private HorizontalLayout generateProtTab(String quantProteinName, String quantProteinAccession, DiseaseGroupsComparisonsProtein[] diseaseGroupsComparisonsProteinArray, Set<QuantDiseaseGroupsComparison> selectedDiseaseGroupsComparisonsList,LinkedHashMap<String, DiseaseGroupsComparisonsProtein[]> protSelectionMap) {
         HorizontalLayout bodyLayout = new HorizontalLayout();
         Page page = Page.getCurrent();
         int pageWidth = page.getBrowserWindowWidth();
@@ -164,36 +244,10 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
         bodyLayout.setMargin(true);
         bodyLayout.setHeightUndefined();
         bodyLayout.setStyleName(Reindeer.LAYOUT_WHITE);
-        GridLayout protInfoLayout = new GridLayout(1, 6);
-        protInfoLayout.setMargin(true);
-        protInfoLayout.setSpacing(true);
 
-        Label accTitle = new Label("<b>Protein Accession</b>");
-        accTitle.setContentMode(ContentMode.HTML);
-        protInfoLayout.addComponent(accTitle, 0, 0);
-        CustomExternalLink acc = new CustomExternalLink(quantProteinAccession.toUpperCase(), "http://www.uniprot.org/uniprot/" + quantProteinAccession.toUpperCase());
-        protInfoLayout.addComponent(acc, 0, 1);
-        Label nameTitle = new Label("<b>Protein Name</b>");
-        nameTitle.setContentMode(ContentMode.HTML);
-        protInfoLayout.addComponent(nameTitle, 0, 2);
-
-        Label nameValue = new Label("<textarea rows='4' cols='20' readonly>" + quantProteinName + "</textarea>");
-        nameValue.setContentMode(ContentMode.HTML);
-        nameValue.setStyleName("valuelabel");
-        nameValue.setReadOnly(true);
-        protInfoLayout.addComponent(nameValue, 0, 3);
-        protInfoLayout.setWidth("150px");
-        bodyLayout.addComponent(protInfoLayout);
-
-        compOrederTitle = new Label("<b>Comparisons Order</b>");
-        compOrederTitle.setContentMode(ContentMode.HTML);
-        protInfoLayout.addComponent(compOrederTitle, 0, 4);
-        protInfoLayout.setWidth("250px");
-        int width = (pageWidth - 300);
-
-        ProteinOverviewJFreeLineChartContainer overallPlotLayout = new ProteinOverviewJFreeLineChartContainer(datasetExploringCentralSelectionManager, diseaseGroupsComparisonsProteinArray, selectedDiseaseGroupsComparisonsList, (width), quantProteinName, searchingMode);
-        protInfoLayout.addComponent(overallPlotLayout.getOrederingOptionGroup(), 0, 5);
-
+       
+        ProteinOverviewJFreeLineChartContainer overallPlotLayout = new ProteinOverviewJFreeLineChartContainer(datasetExploringCentralSelectionManager, diseaseGroupsComparisonsProteinArray, selectedDiseaseGroupsComparisonsList, (pageWidth), quantProteinName,quantProteinAccession, searchingMode,protSelectionMap);
+//        protInfoLayout.addComponent(overallPlotLayout.getOrederingOptionGroup(), 0, 5);
         bodyLayout.addComponent(overallPlotLayout);
         bodyLayout.setComponentAlignment(overallPlotLayout, Alignment.TOP_CENTER);
 
@@ -205,18 +259,22 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
      * redraw quant bar charts
      */
     public void redrawCharts() {
-        if (proteinsTabsheet.getSelectedTab() == null) {
+        if (proteinsTabsheet == null || proteinsTabsheet.getSelectedTab() == null) {
+            ((HideOnClickLayout) this.getParent()).setVisability(false);
+            this.noProtLabel.setVisible(true);
             return;
         }
+        this.noProtLabel.setVisible(false);
+        ((HideOnClickLayout) this.getParent()).setVisability(true);
         HorizontalLayout selectedTab = (HorizontalLayout) proteinsTabsheet.getSelectedTab();
-        ProteinOverviewJFreeLineChartContainer overallPlotLayout = (ProteinOverviewJFreeLineChartContainer) selectedTab.getComponent(1);
+        ProteinOverviewJFreeLineChartContainer overallPlotLayout = (ProteinOverviewJFreeLineChartContainer) selectedTab.getComponent(0);
         overallPlotLayout.redrawCharts();
     }
 
     @Override
     public void selectedTabChange(TabSheet.SelectedTabChangeEvent event) {
         redrawCharts();
-        
+
     }
 
 }
