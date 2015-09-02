@@ -41,7 +41,7 @@ import java.util.TreeMap;
 import org.dussan.vaadin.dcharts.events.click.ChartDataClickEvent;
 import org.dussan.vaadin.dcharts.events.click.ChartDataClickHandler;
 import probe.com.handlers.CSFPRHandler;
-import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProtein;
+import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.selectionmanager.CSFFilter;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
@@ -652,25 +652,25 @@ private boolean selfselection = false;
 
       
         
-        Map<String, DiseaseGroupsComparisonsProtein[]> protSetMap = new HashMap<String, DiseaseGroupsComparisonsProtein[]>();
+        Map<String, DiseaseGroupsComparisonsProteinLayout[]> protSetMap = new HashMap<String, DiseaseGroupsComparisonsProteinLayout[]>();
         for (int compIndex = 0; compIndex < comparisonMap.length; compIndex++) {
             QuantDiseaseGroupsComparison comp = comparisonMap[compIndex];
             ComparisonChart chartPlot = generateColumnBarChart(comp);
             this.chartsLayoutContainer.addComponent(chartPlot);
             this.chartsLayoutContainer.setComponentAlignment(chartPlot, Alignment.MIDDLE_CENTER);
-            this.groupsComparisonTable.addContainerProperty(comp.getComparisonHeader(), DiseaseGroupsComparisonsProtein.class, null, comp.getComparisonHeader() + " (#Proteins: " + comp.getComparProtsMap().size() + ")", null, Table.Align.CENTER);
+            this.groupsComparisonTable.addContainerProperty(comp.getComparisonHeader(), DiseaseGroupsComparisonsProteinLayout.class, null, comp.getComparisonHeader() + " (#Proteins: " + comp.getComparProtsMap().size() + ")", null, Table.Align.CENTER);
              groupsComparisonTable.setColumnWidth(comp.getComparisonHeader(), 100);
             
             
-            Map<String, DiseaseGroupsComparisonsProtein> protList = comp.getComparProtsMap();
+            Map<String, DiseaseGroupsComparisonsProteinLayout> protList = comp.getComparProtsMap();
 
             for (String key2 : protList.keySet()) {
-                DiseaseGroupsComparisonsProtein prot = protList.get(key2);
+                DiseaseGroupsComparisonsProteinLayout prot = protList.get(key2);
                 accessionMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), prot.getUniProtAccess());
                 if (!protSetMap.containsKey(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim())) {
-                    protSetMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), new DiseaseGroupsComparisonsProtein[comparisonMap.length]);
+                    protSetMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), new DiseaseGroupsComparisonsProteinLayout[comparisonMap.length]);
                 }
-                DiseaseGroupsComparisonsProtein[] tCompArr = protSetMap.get(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim());
+                DiseaseGroupsComparisonsProteinLayout[] tCompArr = protSetMap.get(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim());
                 tCompArr[compIndex] = prot;
                 protSetMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), tCompArr);
             }
@@ -689,7 +689,7 @@ private boolean selfselection = false;
             tableRow[i++] = acc;
             tableRow[i++] = protName;
             for (QuantDiseaseGroupsComparison cg : comparisonMap) {
-                DiseaseGroupsComparisonsProtein cp = protSetMap.get(protAccName)[i - 3];
+                DiseaseGroupsComparisonsProteinLayout cp = protSetMap.get(protAccName)[i - 3];
                 if (cp == null) {
                     tableRow[i] = null;
                 } else {
@@ -813,20 +813,20 @@ private boolean selfselection = false;
     private void filterTable(Set<String> accessions, QuantDiseaseGroupsComparison[] comparisonMap, String sortCompColumnName) {
         groupsComparisonTable.removeValueChangeListener(QuantProteinsComparisonTable.this);
         this.groupsComparisonTable.removeAllItems();
-        Map<String, DiseaseGroupsComparisonsProtein[]> protSetMap = new HashMap<String, DiseaseGroupsComparisonsProtein[]>();
+        Map<String, DiseaseGroupsComparisonsProteinLayout[]> protSetMap = new HashMap<String, DiseaseGroupsComparisonsProteinLayout[]>();
         for (int compIndex = 0; compIndex < comparisonMap.length; compIndex++) {
             QuantDiseaseGroupsComparison comp = comparisonMap[compIndex];
-            Map<String, DiseaseGroupsComparisonsProtein> protList = comp.getComparProtsMap();
+            Map<String, DiseaseGroupsComparisonsProteinLayout> protList = comp.getComparProtsMap();
             for (String key2 : protList.keySet()) {
-                DiseaseGroupsComparisonsProtein prot = protList.get(key2);
+                DiseaseGroupsComparisonsProteinLayout prot = protList.get(key2);
                 if (!accessions.contains(prot.getUniProtAccess())) {
                     continue;
                 }
 
                 if (!protSetMap.containsKey(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim())) {
-                    protSetMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), new DiseaseGroupsComparisonsProtein[comparisonMap.length]);
+                    protSetMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), new DiseaseGroupsComparisonsProteinLayout[comparisonMap.length]);
                 }
-                DiseaseGroupsComparisonsProtein[] tCompArr = protSetMap.get(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim());
+                DiseaseGroupsComparisonsProteinLayout[] tCompArr = protSetMap.get(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim());
                 tCompArr[compIndex] = prot;
                 protSetMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), tCompArr);
             }
@@ -845,7 +845,7 @@ private boolean selfselection = false;
             tableRow[i++] = acc;
             tableRow[i++] = protName;
             for (QuantDiseaseGroupsComparison cg : comparisonMap) {
-                DiseaseGroupsComparisonsProtein cp = protSetMap.get(protAccName)[i - 3];
+                DiseaseGroupsComparisonsProteinLayout cp = protSetMap.get(protAccName)[i - 3];
                 if (cp == null) {
                     tableRow[i] = null;
                 } else {
@@ -955,17 +955,17 @@ private boolean selfselection = false;
      
         updateChartsWithSelectedProteins(new HashSet<String>(accessions), true, sortComparisonTableColumn);
 
-        LinkedHashMap<String, DiseaseGroupsComparisonsProtein[]> protSelectionMap = new LinkedHashMap<String, DiseaseGroupsComparisonsProtein[]>();
+        LinkedHashMap<String, DiseaseGroupsComparisonsProteinLayout[]> protSelectionMap = new LinkedHashMap<String, DiseaseGroupsComparisonsProteinLayout[]>();
         for (String accession : accessions) {
             for (int compIndex = 0; compIndex < compArr.length; compIndex++) {
                 QuantDiseaseGroupsComparison comp = compArr[compIndex];
-                Map<String, DiseaseGroupsComparisonsProtein> protList = comp.getComparProtsMap();
-                for (DiseaseGroupsComparisonsProtein prot : protList.values()) {
+                Map<String, DiseaseGroupsComparisonsProteinLayout> protList = comp.getComparProtsMap();
+                for (DiseaseGroupsComparisonsProteinLayout prot : protList.values()) {
                     if (prot.getUniProtAccess().equalsIgnoreCase(accession)) {
                         if (!protSelectionMap.containsKey(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim())) {
-                            protSelectionMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), new DiseaseGroupsComparisonsProtein[compArr.length]);
+                            protSelectionMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), new DiseaseGroupsComparisonsProteinLayout[compArr.length]);
                         }
-                        DiseaseGroupsComparisonsProtein[] tCompArr = protSelectionMap.get(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim());
+                        DiseaseGroupsComparisonsProteinLayout[] tCompArr = protSelectionMap.get(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim());
                         tCompArr[compIndex] = prot;
                         protSelectionMap.put(("--" + prot.getUniProtAccess().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim(), tCompArr);
 

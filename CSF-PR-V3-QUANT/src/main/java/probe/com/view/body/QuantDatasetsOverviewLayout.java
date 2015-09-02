@@ -56,7 +56,7 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
         this.addComponent(comparisonLevelLayout);
         comparisonLevelLayout.setVisability(true);
 
-        proteinsLayout = new QuantProteinsTabsheetContainerLayout(exploringFiltersManager,searchingMode);
+        proteinsLayout = new QuantProteinsTabsheetContainerLayout(exploringFiltersManager,searchingMode,handler);
         HideOnClickLayout proteinsLevelLayout = new HideOnClickLayout("Proteins Information", proteinsLayout, null) {
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {

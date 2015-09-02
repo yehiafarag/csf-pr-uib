@@ -34,7 +34,7 @@ import org.dussan.vaadin.dcharts.options.Series;
 import org.dussan.vaadin.dcharts.options.SeriesDefaults;
 import org.dussan.vaadin.dcharts.renderers.tick.AxisTickRenderer;
 import org.dussan.vaadin.dcharts.renderers.tick.CanvasAxisTickRenderer;
-import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProtein;
+import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 
 /**
  *
@@ -48,7 +48,7 @@ public class ProtOverviewLineChart extends HorizontalLayout{
     private final DCharts chart2;
     private int height;
 //    private VerticalLayout overallPlotLayout;
-    public ProtOverviewLineChart(DiseaseGroupsComparisonsProtein[] comparisonProteins, int width){
+    public ProtOverviewLineChart(DiseaseGroupsComparisonsProteinLayout[] comparisonProteins, int width){
 
         this.setHeight("100%");
         this.initLineChart();
@@ -64,7 +64,7 @@ public class ProtOverviewLineChart extends HorizontalLayout{
         DataSeries dataSeries = new DataSeries();
         DataSeries dataSeries2 = dataSeries.newSeries();
         DataSeries dataSeries1 = dataSeries.newSeries();
-        for (DiseaseGroupsComparisonsProtein cp : comparisonProteins) {
+        for (DiseaseGroupsComparisonsProteinLayout cp : comparisonProteins) {
             if (cp == null) {
                 continue;
             }

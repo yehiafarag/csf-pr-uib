@@ -5,7 +5,7 @@
  */
 package probe.com.model.beans.quant;
 
-import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProtein;
+import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import java.io.Serializable;
 import java.util.Map;
 
@@ -16,8 +16,9 @@ import java.util.Map;
 public class QuantDiseaseGroupsComparison implements Serializable, Comparable<QuantDiseaseGroupsComparison>{
     private String comparisonHeader;
     private int[] datasetIndexes;
-    private Map<String, DiseaseGroupsComparisonsProtein> comparProtsMap;
+    private Map<String, DiseaseGroupsComparisonsProteinLayout> comparProtsMap;
 
+   
     /**
      *
      * @return
@@ -54,7 +55,7 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
      *
      * @return
      */
-    public Map<String, DiseaseGroupsComparisonsProtein>  getComparProtsMap() {
+    public Map<String, DiseaseGroupsComparisonsProteinLayout>  getComparProtsMap() {
         return comparProtsMap;
     }
 
@@ -62,7 +63,7 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
      *
      * @param comparProtsMap
      */
-    public void setComparProtsMap(Map<String, DiseaseGroupsComparisonsProtein>  comparProtsMap) {
+    public void setComparProtsMap(Map<String, DiseaseGroupsComparisonsProteinLayout>  comparProtsMap) {
         this.comparProtsMap = comparProtsMap;
     }
 

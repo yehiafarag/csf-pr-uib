@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProtein;
+import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.view.core.DiseaseGroup;
@@ -25,7 +25,7 @@ public class DatasetExploringCentralSelectionManager {
     private final boolean[] activeFilters;
     private QuantDatasetObject[] selectedQuantDatasetIndexes;
     private Set<QuantDiseaseGroupsComparison> selectedDiseaseGroupsComparisonList;
-    private Map<String, DiseaseGroupsComparisonsProtein[]> quantProteinsLayoutSelectionMap;
+    private Map<String, DiseaseGroupsComparisonsProteinLayout[]> quantProteinsLayoutSelectionMap;
 
     /**
      * get selected heat map rows
@@ -196,7 +196,7 @@ public class DatasetExploringCentralSelectionManager {
      *
      * @param protSelectionMap
      */
-    public void setQuantProteinsSelectionLayout(Map<String, DiseaseGroupsComparisonsProtein[]> protSelectionMap) {
+    public void setQuantProteinsSelectionLayout(Map<String, DiseaseGroupsComparisonsProteinLayout[]> protSelectionMap) {
         try {
 
             VaadinSession.getCurrent().getLockInstance().lock();
@@ -261,7 +261,7 @@ public class DatasetExploringCentralSelectionManager {
      * @return map of quant proteins array that include the comparisons
      * information columns for each protein
      */
-    public Map<String, DiseaseGroupsComparisonsProtein[]> getQuantProteinsLayoutSelectionMap() {
+    public Map<String, DiseaseGroupsComparisonsProteinLayout[]> getQuantProteinsLayoutSelectionMap() {
         return quantProteinsLayoutSelectionMap;
     }
 

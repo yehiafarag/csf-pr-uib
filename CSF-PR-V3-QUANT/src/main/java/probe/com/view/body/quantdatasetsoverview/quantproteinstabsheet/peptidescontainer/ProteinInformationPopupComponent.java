@@ -5,7 +5,6 @@
  */
 package probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.peptidescontainer;
 
-import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.peptidescontainer.PeptideSequanceLocationOverview;
 import com.vaadin.server.Page;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.window.WindowMode;

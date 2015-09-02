@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -497,6 +498,19 @@ public class CSFPRHandler implements Serializable {
     public Set<QuantDiseaseGroupsComparison> getComparisonProtList(Set<QuantDiseaseGroupsComparison> selectedComparisonList, List<QuantProtein> searchQuantificationProtList) {
         return logicLayer.getComparisonProtList(selectedComparisonList, searchQuantificationProtList);
 
+    }
+    
+   
+     /**
+     * k-means clustering for protein 
+     *
+     * @param samples the samples
+     * @param sampleIds the sample identifiers
+     * @param numClusters the number of clusters
+     * @param proteinKey  protein key
+     */
+    public ArrayList<String> runKMeanClustering(double[][] samples, String[] sampleIds,int numClusters,String proteinKey){
+     return this.logicLayer.runKMeanClustering(samples, sampleIds, numClusters,proteinKey);
     }
 
 }

@@ -493,7 +493,7 @@
     cursor: pointer;
 }
 .hmcolumnlabel:hover{
-     border: 1px solid #006699; 
+     border: 1px solid #4d749f; 
     
 }
 
@@ -519,7 +519,7 @@
 
 
 .hmcolumnlabel_selected {
-    border: 1px solid  #006699;
+    border: 1px solid  #4d749f;
      margin-top: 150px;
      text-align: center;
      line-height: 50px;
@@ -529,7 +529,7 @@
     -o-transform:rotate(270deg); /* Opera */
     transform-origin: 0%  0%;    
     position: absolute;
-    background-color: #006699;
+    background-color: #4d749f;
     color: white;
     cursor: pointer; 
 
@@ -548,7 +548,7 @@
     -o-transform:rotate(270deg); /* Opera */
     transform-origin: 0%  0%;    
     position: absolute;
-    background-color: #006699;
+    background-color: #4d749f;
     color: white;
     cursor: pointer; 
 
@@ -565,7 +565,7 @@
 
 }
 .hmrowlabel:hover{
-     border: 1px solid #006699; 
+     border: 1px solid #4d749f; 
     
 }
 .hmrowlabel div{
@@ -582,10 +582,10 @@
 
 
 .hmrowlabel_selected {
-    border: 1px solid  #006699;
+    border: 1px solid  #4d749f;
      text-align: center;
      line-height: 50px;
-     background-color: #006699;
+     background-color: #4d749f;
     color: white;
      cursor: pointer;  
   
@@ -599,7 +599,7 @@
     border: 1px solid #fc690a;
      text-align: center;
      line-height: 50px;
-     background-color: #006699;
+     background-color: #4d749f;
     color: white;
   
 
@@ -622,7 +622,7 @@
     
 }
 .heatmapcoloredcell:hover{
-    border: 2px solid #006699; 
+    border: 2px solid #4d749f; 
     opacity: 1;
 }
 .selectedheatmapcoloredcell{
@@ -721,7 +721,7 @@ background-color: lightgray;
 }
 .matrixbtn:hover{
     background-color:  #EFF2FB;
-    border: 2px solid #006699;   
+    border: 2px solid #4d749f;   
 }
 .grcompbtn{
     width: 100px;
@@ -799,7 +799,7 @@ background-color: lightgray;
 
 }
 .lightselectedborder{
-     border: 1px solid #006699;  
+     border: 1px solid #4d749f;  
     background: #ffffff;
      overflow-y:hidden;
 }

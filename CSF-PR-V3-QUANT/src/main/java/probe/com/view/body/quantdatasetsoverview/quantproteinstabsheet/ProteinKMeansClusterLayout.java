@@ -1,24 +1,24 @@
 package probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet;
 
+import com.vaadin.data.Item;
+import com.vaadin.data.Property;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.Page;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
-import java.util.LinkedHashMap;
-import org.jfree.chart.entity.ChartEntity;
-import org.jfree.chart.entity.XYItemEntity;
-import probe.com.model.beans.quant.QuantDatasetObject;
-import probe.com.selectionmanager.CSFFilterSelection;
-import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProtein;
+import java.util.Map;
+import java.util.Set;
+import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
+import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
+import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.kmeansclustering.KMeansClusteringLineChart;
 import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.kmeansclustering.KMeansClusteringTable;
-import probe.com.view.core.jfreeutil.SquaredDot;
+import probe.com.view.core.CustomExternalLink;
 
 /**
  *
@@ -26,28 +26,25 @@ import probe.com.view.core.jfreeutil.SquaredDot;
  *
  * k-means clustering layout for selected protein
  */
-public class ProteinKMeansClusterLayout extends VerticalLayout {
+public class ProteinKMeansClusterLayout extends VerticalLayout implements Property.ValueChangeListener {
 
     private final Label kMeansClusteringTitle;
     private final VerticalLayout closeBtn;
-    private final AbsoluteLayout ProteinKMeansClusteringPlotContainer;
+    private final KMeansClusteringLineChart proteinKMeansClusteringLineChart;
     private final int imgWidth;
-     private final String teststyle;
-    private final Page.Styles styles = Page.getCurrent().getStyles();
-    private String defaultKMeansClusteringImgUrl;
+    private final KMeansClusteringTable kMeansClusteringTable;
 
-    public ProteinKMeansClusterLayout(String proteinName,String proteinAccession,int width,LinkedHashMap<String, DiseaseGroupsComparisonsProtein[]> protSelectionMap) {
+    public ProteinKMeansClusterLayout(String proteinKey, String proteinName, String proteinAccession, int width, Map<String, DiseaseGroupsComparisonsProteinLayout[]> protSelectionMap, Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
 
-//        this.setColumns(4);
-//        this.setRows(2);
         this.setSpacing(true);
         this.setMargin(new MarginInfo(false, false, true, false));
+        this.setHeightUndefined();
         HorizontalLayout topLayout = new HorizontalLayout();
         topLayout.setWidthUndefined();
         topLayout.setHeight("20px");
         topLayout.setStyleName(Reindeer.LAYOUT_WHITE);
 
-        kMeansClusteringTitle = new Label("K-means clustering for ( "+proteinName+" )");
+        kMeansClusteringTitle = new Label("K-means clustering for ( " + proteinName + " )");
         kMeansClusteringTitle.setContentMode(ContentMode.HTML);
         kMeansClusteringTitle.setStyleName("custChartLabelHeader");
         kMeansClusteringTitle.setWidth((width - 70) + "px");
@@ -60,41 +57,24 @@ public class ProteinKMeansClusterLayout extends VerticalLayout {
         closeBtn.setStyleName("closebtn");
         topLayout.addComponent(closeBtn);
         topLayout.setComponentAlignment(closeBtn, Alignment.TOP_RIGHT);
-        
+
         this.addComponent(topLayout);
-        
-        
+
         HorizontalLayout kMeansComponentContainer = new HorizontalLayout();
         kMeansComponentContainer.setWidthUndefined();
-        kMeansComponentContainer.setHeight("100%");
-        
+        kMeansComponentContainer.setHeight("500px");
+
         this.addComponent(kMeansComponentContainer);
-        
-        
-        KMeansClusteringTable kMeansClusteringTable= new KMeansClusteringTable(protSelectionMap.keySet());
+
+        kMeansClusteringTable = new KMeansClusteringTable(protSelectionMap.keySet());
         kMeansComponentContainer.addComponent(kMeansClusteringTable);
-        
-        
-        
-        
-        
+        kMeansClusteringTable.addValueChangeListener(ProteinKMeansClusterLayout.this);
 
-        imgWidth = (width - 70);
-        ProteinKMeansClusteringPlotContainer = new AbsoluteLayout();
-//        this.generateScatterplotchart(cp, imgWidth, 150);
+        imgWidth = (width - 300);
+        proteinKMeansClusteringLineChart = new KMeansClusteringLineChart(imgWidth, proteinKey, proteinAccession, proteinName, protSelectionMap, selectedComparisonList);
+        kMeansComponentContainer.addComponent(proteinKMeansClusteringLineChart);
 
-//        kMeansComponentContainer.addComponent(ProteinKMeansClusteringPlotContainer);
-        ProteinKMeansClusteringPlotContainer.setWidth(imgWidth + "px");
-        ProteinKMeansClusteringPlotContainer.setHeight(150 + "px");
-
-        teststyle = proteinAccession.replace(" ", "_").replace(")", "_").replace("(", "_").toLowerCase() + "_" + proteinName.replace(" ", "_").replace(")", "_").replace("(", "_").toLowerCase() + "_kmeansclusteringplot";
-        
-        styles.add("." + teststyle + " {  background-image: url(" + defaultKMeansClusteringImgUrl + " );background-position:center; background-repeat: no-repeat; }");
-        ProteinKMeansClusteringPlotContainer.setStyleName(teststyle);
-        
-        
-        
-//        ProteinKMeansClusteringPlotContainer.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+//        proteinKMeansClusteringLineChart.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 //            @Override
 //            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
 ////                final ChartEntity entity = defaultScatterPlotRenderingInfo.getEntityCollection().getEntity(event.getRelativeX(), event.getRelativeY());
@@ -124,7 +104,7 @@ public class ProteinKMeansClusterLayout extends VerticalLayout {
 ////
 ////            }
 //        });
-        closeBtn.addLayoutClickListener(new  LayoutEvents.LayoutClickListener() {
+        closeBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
@@ -133,5 +113,23 @@ public class ProteinKMeansClusterLayout extends VerticalLayout {
         });
 
     }
+
+    private int proteinskey;
+
+    @Override
+    public void valueChange(Property.ValueChangeEvent event) {
+        if (kMeansClusteringTable.getValue() != null) {
+            proteinskey = (Integer) kMeansClusteringTable.getValue();
+        } 
+        
+        final Item item = kMeansClusteringTable.getItem(proteinskey);
+        String proteinAccsessionLabel = item.getItemProperty("Accession").getValue().toString();
+        String proteinNamenLabel = item.getItemProperty("Name").getValue().toString();
+        String key = ("--" + proteinAccsessionLabel.toLowerCase().trim() + "," + proteinNamenLabel.toLowerCase().trim()).toLowerCase().trim();
+        proteinKMeansClusteringLineChart.updateChartImage(key);
+
+    }
+
+
 
 }

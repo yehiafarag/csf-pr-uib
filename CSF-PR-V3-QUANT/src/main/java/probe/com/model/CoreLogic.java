@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,7 +14,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import probe.com.dal.DataAccess;
 import probe.com.dal.Query;
-import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProtein;
+import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import probe.com.model.beans.identification.IdentificationDatasetBean;
 import probe.com.model.beans.identification.IdentificationDatasetDetailsBean;
 import probe.com.model.beans.identification.IdentificationFractionBean;
@@ -26,6 +27,7 @@ import probe.com.model.beans.quant.QuantDatasetInitialInformationObject;
 import probe.com.model.beans.quant.QuantPeptide;
 import probe.com.model.util.FileExporter;
 import probe.com.model.util.FilesReader;
+import probe.com.model.util.KMeansClustering;
 
 /**
  * @author Yehia Farag
@@ -839,62 +841,88 @@ public class CoreLogic implements Serializable {
                 comparisonProtMap.addAll(da.getQuantificationProteins(comparison.getDatasetIndexes()));
             }
 
-        
+            comparisonPeptideMap.putAll(da.getQuantificationPeptides(comparison.getDatasetIndexes()));
 
-        comparisonPeptideMap.putAll(da.getQuantificationPeptides(comparison.getDatasetIndexes()));
+            Map<String, DiseaseGroupsComparisonsProteinLayout> comparProtList = new HashMap<String, DiseaseGroupsComparisonsProteinLayout>();
+            for (QuantProtein quant : comparisonProtMap) {
 
-        Map<String, DiseaseGroupsComparisonsProtein> comparProtList = new HashMap<String, DiseaseGroupsComparisonsProtein>();
-        for (QuantProtein quant : comparisonProtMap) {
+                {
 
-            {
-
-                if (!comparProtList.containsKey(quant.getUniprotAccession())) {
-                    comparProtList.put(quant.getUniprotAccession(), new DiseaseGroupsComparisonsProtein(comparison.getDatasetIndexes().length, comparison, quant.getProtKey()));
-                }
-                DiseaseGroupsComparisonsProtein comProt = comparProtList.get(quant.getUniprotAccession());
-                if (quant.getStringFCValue().equalsIgnoreCase("Decreased")) {
-                    comProt.addDown(1, (quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
-                } else if (quant.getStringFCValue().equalsIgnoreCase("Increased")) {
-                    comProt.addUp(1, (quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
-                } else if (quant.getStringFCValue().equalsIgnoreCase("Not Provided")) {
-                    comProt.addNotProvided(1, (quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
-                } else if (quant.getStringFCValue().equalsIgnoreCase("Not Regulated")) {
-                    comProt.addNotReg(1, (quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
-                }
-                comProt.setUniProtAccess(quant.getUniprotAccession());
-                String protName = quant.getUniprotProteinName();
-                if (protName == null || protName.equalsIgnoreCase("Not Available")) {
-                    protName = quant.getPublicationProteinName();
-                }
-                comProt.setProtName(protName);
-                comProt.setSequance(quant.getSequance());
-                comparProtList.put(quant.getUniprotAccession(), comProt);
-
-                Set<QuantPeptide> quantPeptidesList = new HashSet<QuantPeptide>();
-                for (String key : comparisonPeptideMap.keySet()) {
-                    if (key.contains("_" + comProt.getUniProtAccess() + "_")) {
-                        quantPeptidesList.addAll(comparisonPeptideMap.get(key));
+                    if (!comparProtList.containsKey(quant.getUniprotAccession())) {
+                        comparProtList.put(quant.getUniprotAccession(), new DiseaseGroupsComparisonsProteinLayout(comparison.getDatasetIndexes().length, comparison, quant.getProtKey()));
                     }
+                    DiseaseGroupsComparisonsProteinLayout comProt = comparProtList.get(quant.getUniprotAccession());
+                    if (quant.getStringFCValue().equalsIgnoreCase("Decreased")) {
+                        comProt.addDown(1, (quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
+                    } else if (quant.getStringFCValue().equalsIgnoreCase("Increased")) {
+                        comProt.addUp(1, (quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
+                    } else if (quant.getStringFCValue().equalsIgnoreCase("Not Provided")) {
+                        comProt.addNotProvided(1, (quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
+                    } else if (quant.getStringFCValue().equalsIgnoreCase("Not Regulated")) {
+                        comProt.addNotReg(1, (quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
+                    }
+                    comProt.setUniProtAccess(quant.getUniprotAccession());
+                    String protName = quant.getUniprotProteinName();
+                    if (protName == null || protName.equalsIgnoreCase("Not Available")) {
+                        protName = quant.getPublicationProteinName();
+                    }
+                    comProt.setProtName(protName);
+                    comProt.setSequance(quant.getSequance());
+                    comparProtList.put(quant.getUniprotAccession(), comProt);
+
+                    Set<QuantPeptide> quantPeptidesList = new HashSet<QuantPeptide>();
+                    for (String key : comparisonPeptideMap.keySet()) {
+                        if (key.contains("_" + comProt.getUniProtAccess() + "_")) {
+                            quantPeptidesList.addAll(comparisonPeptideMap.get(key));
+                        }
+                    }
+                    comProt.setQuantPeptidesList(quantPeptidesList);
                 }
-                comProt.setQuantPeptidesList(quantPeptidesList);
             }
-        }
 
             //init pep for prot
-        //sort the protiens map
-        Map<String, DiseaseGroupsComparisonsProtein> sortedcomparProtList = new TreeMap<String, DiseaseGroupsComparisonsProtein>(Collections.reverseOrder());
-        for (String Key : comparProtList.keySet()) {
-            DiseaseGroupsComparisonsProtein temp = comparProtList.get(Key);
-            sortedcomparProtList.put((temp.getUp() + "_" + Key), temp);
+            //sort the protiens map
+            Map<String, DiseaseGroupsComparisonsProteinLayout> sortedcomparProtList = new TreeMap<String, DiseaseGroupsComparisonsProteinLayout>(Collections.reverseOrder());
+            for (String Key : comparProtList.keySet()) {
+                DiseaseGroupsComparisonsProteinLayout temp = comparProtList.get(Key);
+                sortedcomparProtList.put((temp.getUp() + "_" + Key), temp);
+            }
+
+            comparison.setComparProtsMap(sortedcomparProtList);
+            updatedSelectedComparisonList.add(comparison);
+
         }
 
-        comparison.setComparProtsMap(sortedcomparProtList);
-        updatedSelectedComparisonList.add(comparison);
+        return updatedSelectedComparisonList;
 
     }
 
-    return updatedSelectedComparisonList ;
+    /**
+     * k-means clustering for protein
+     *
+     * @param samples the samples
+     * @param sampleIds the sample identifiers
+     * @param numClusters the number of clusters
+     * @param proteinKey the protein name
+     * @return list of samplesId
+     */
+    public ArrayList<String> runKMeanClustering(double[][] samples, String[] sampleIds, int numClusters, String proteinKey) {
+        KMeansClustering kMeansClutering = new KMeansClustering(samples, sampleIds, numClusters);
+        // exectute the clustering
+        kMeansClutering.kMeanCluster();
+        int z = kMeansClutering.getClusters(proteinKey);
+        ArrayList<String> clusterinList = kMeansClutering.getClusterMembers(z);
+        
+          // print the clustering results
+        kMeansClutering.printClusters();
 
-}
+        // print the centroid results
+        System.out.println(z+ " --- Centroids finalized at:");
+        kMeansClutering.printCentroids();
+        System.out.print("\n");
+        
+        return clusterinList;
+
+    }
 
 }

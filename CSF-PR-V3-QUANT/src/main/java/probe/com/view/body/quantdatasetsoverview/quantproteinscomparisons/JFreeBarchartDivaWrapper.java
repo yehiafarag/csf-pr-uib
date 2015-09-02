@@ -92,11 +92,11 @@ public class JFreeBarchartDivaWrapper extends AbsoluteLayout {
     }
 
     private String initBarChart(int width, int height, QuantDiseaseGroupsComparison comparison) {
-        Map<String, DiseaseGroupsComparisonsProtein> protList = comparison.getComparProtsMap();
+        Map<String, DiseaseGroupsComparisonsProteinLayout> protList = comparison.getComparProtsMap();
         double[] values = new double[5];
 //        }
         for (String key2 : protList.keySet()) {
-            DiseaseGroupsComparisonsProtein prot = protList.get(key2);
+            DiseaseGroupsComparisonsProteinLayout prot = protList.get(key2);
             prot.updateLabelLayout();
             int indexer = prot.getTrindCategory();//(int) (prot.getCellValue() / maxIndexerValue * 10.0);
             switch (indexer) {

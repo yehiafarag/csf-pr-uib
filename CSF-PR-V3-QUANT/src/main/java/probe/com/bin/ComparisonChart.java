@@ -44,7 +44,7 @@ import org.dussan.vaadin.dcharts.options.Series;
 import org.dussan.vaadin.dcharts.options.SeriesDefaults;
 import org.dussan.vaadin.dcharts.renderers.tick.AxisTickRenderer;
 import org.dussan.vaadin.dcharts.renderers.tick.CanvasAxisTickRenderer;
-import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProtein;
+import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 
 /**
@@ -116,7 +116,7 @@ public class ComparisonChart extends GridLayout {
         
 //        this.setMargin(new MarginInfo(false, false, false, true));
         this.comparison = comparison;
-        Map<String, DiseaseGroupsComparisonsProtein> protList = comparison.getComparProtsMap();
+        Map<String, DiseaseGroupsComparisonsProteinLayout> protList = comparison.getComparProtsMap();
         compProtMap = new HashMap<Integer, Set<String>>();
         double[] values = new double[5];
         Object[] labels = new String[5];
@@ -128,7 +128,7 @@ public class ComparisonChart extends GridLayout {
         upReglabels = new String[(values.length)];
         //init values 
         for (String key2 : protList.keySet()) {
-            DiseaseGroupsComparisonsProtein prot = protList.get(key2);
+            DiseaseGroupsComparisonsProteinLayout prot = protList.get(key2);
             prot.updateLabelLayout();
             if (maxIndexerValue < Math.abs(prot.getCellValue())) {
                 maxIndexerValue = Math.abs(prot.getCellValue());
@@ -136,7 +136,7 @@ public class ComparisonChart extends GridLayout {
 
         }
         for (String key2 : protList.keySet()) {
-            DiseaseGroupsComparisonsProtein prot = protList.get(key2);
+            DiseaseGroupsComparisonsProteinLayout prot = protList.get(key2);
             int indexer = (int) (prot.getCellValue() / maxIndexerValue * 10.0);
 //            indexer = indexer + 10;
             if (indexer == 10) {

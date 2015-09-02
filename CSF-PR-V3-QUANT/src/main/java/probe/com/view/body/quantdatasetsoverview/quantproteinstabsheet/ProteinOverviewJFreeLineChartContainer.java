@@ -24,9 +24,11 @@ import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import org.apache.commons.codec.binary.Base64;
@@ -47,7 +49,8 @@ import org.jfree.ui.RectangleEdge;
 import org.jfree.ui.TextAnchor;
 import org.jfree.util.ShapeUtilities;
 import org.vaadin.marcus.MouseEvents;
-import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProtein;
+import probe.com.handlers.CSFPRHandler;
+import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 import probe.com.view.core.CustomExternalLink;
@@ -70,6 +73,14 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
     private JFreeChart orderedChart;
     private final int selectedComparisonListSize;
     private final VerticalLayout bottomLiftSide;
+    private final int width;
+    private final OptionGroup orederingOptionGroup = new OptionGroup();
+    private final ProteinStudiesComparisonsContainerLayout studiesScatterChartsLayout;
+    private final AbsoluteLayout lineChartContainer;
+    private final String teststyle;
+    private final Page.Styles styles = Page.getCurrent().getStyles();
+    private final DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager;
+    private final CSFPRHandler mainHandler;
 
     /**
      *
@@ -84,13 +95,6 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         return thumbChart;
     }
 
-    private final int width;
-    private final OptionGroup orederingOptionGroup = new OptionGroup();
-    private final ProteinStudiesComparisonsContainerLayout studiesScatterChartsLayout;
-    private final AbsoluteLayout lineChartContainer;
-    private final String teststyle;
-    private final Page.Styles styles = Page.getCurrent().getStyles();
-
     /**
      *
      * @return
@@ -102,19 +106,21 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
     /**
      *
-     * @param selectionManager
+     * @param datasetExploringCentralSelectionManager
      * @param comparisonProteins
      * @param selectedComparisonList
      * @param widthValue
      * @param proteinName
      * @param searchingMode
      */
-    public ProteinOverviewJFreeLineChartContainer(DatasetExploringCentralSelectionManager selectionManager, final DiseaseGroupsComparisonsProtein[] comparisonProteins, final Set<QuantDiseaseGroupsComparison> selectedComparisonList, int widthValue, final String proteinName,final  String proteinAccession, boolean searchingMode,final LinkedHashMap<String, DiseaseGroupsComparisonsProtein[]> protSelectionMap) {
+    public ProteinOverviewJFreeLineChartContainer(DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager, final DiseaseGroupsComparisonsProteinLayout[] comparisonProteins, final Set<QuantDiseaseGroupsComparison> selectedComparisonList, int widthValue, final String proteinName, final String proteinAccession, boolean searchingMode, final String proteinKey, CSFPRHandler mainHandler) {
 
         this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.setSpacing(false);
         this.setHeightUndefined();
         this.setWidth(widthValue + "px");
+        this.datasetExploringCentralSelectionManager = datasetExploringCentralSelectionManager;
+        this.mainHandler = mainHandler;
 
         height = 400;
         widthValue = widthValue - 300;
@@ -156,12 +162,12 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         clusterKMeanBtn.setStyleName(Reindeer.BUTTON_LINK);
         clusterKMeanLayout.addComponent(clusterKMeanBtn);
         clusterKMeanLayout.setComponentAlignment(clusterKMeanBtn, Alignment.MIDDLE_CENTER);
-        final int kmeanWidth  =widthValue-width+190;
+        final int kmeanWidth = widthValue - width + 190;
         clusterKMeanBtn.addClickListener(new Button.ClickListener() {
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                runKmeansClustering(proteinName, proteinAccession, kmeanWidth,protSelectionMap);
+                runKmeansClustering(proteinKey, proteinName, proteinAccession, kmeanWidth, selectedComparisonList);
             }
         });
 
@@ -186,7 +192,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
         bottomLiftSide = new VerticalLayout();
         bottomLiftSide.setWidth("100%");
-        bottomLiftSide.setHeight(height + "px");
+        bottomLiftSide.setHeight(520 + "px");
         bottomLiftSide.setStyleName(Reindeer.LAYOUT_WHITE);
         leftSideLayout.addComponent(bottomLiftSide);
 
@@ -231,7 +237,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         orederingOptionGroup.setValue("Default order");
         orederingOptionGroup.addStyleName("horizontal");
         orederingOptionGroup.addValueChangeListener(new Property.ValueChangeListener() {
-            private DiseaseGroupsComparisonsProtein[] ordComparisonProteins;
+            private DiseaseGroupsComparisonsProteinLayout[] ordComparisonProteins;
 
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
@@ -243,9 +249,9 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                 } else {
                     if (orderedLineChartImg.equalsIgnoreCase("")) {
                         //order the comparisons and proteins
-                        TreeMap<String, DiseaseGroupsComparisonsProtein> orderedCompProteins = new TreeMap<String, DiseaseGroupsComparisonsProtein>();
+                        TreeMap<String, DiseaseGroupsComparisonsProteinLayout> orderedCompProteins = new TreeMap<String, DiseaseGroupsComparisonsProteinLayout>();
                         LinkedHashSet<QuantDiseaseGroupsComparison> orederedComparisonSet = new LinkedHashSet<QuantDiseaseGroupsComparison>();
-                        for (DiseaseGroupsComparisonsProtein cp : comparisonProteins) {
+                        for (DiseaseGroupsComparisonsProteinLayout cp : comparisonProteins) {
                             if (cp == null) {
                                 continue;
                             }
@@ -255,9 +261,9 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                                 orderedCompProteins.put((cp.getCellValue()) + "-" + cp.getComparison().getComparisonHeader(), cp);
                             }
                         }
-                        ordComparisonProteins = new DiseaseGroupsComparisonsProtein[orderedCompProteins.size()];
+                        ordComparisonProteins = new DiseaseGroupsComparisonsProteinLayout[orderedCompProteins.size()];
                         int i = 0;
-                        for (DiseaseGroupsComparisonsProtein cp : orderedCompProteins.values()) {
+                        for (DiseaseGroupsComparisonsProteinLayout cp : orderedCompProteins.values()) {
                             ordComparisonProteins[i] = cp;
                             orederedComparisonSet.add(cp.getComparison());
                             i++;
@@ -286,22 +292,22 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         dsInfoPopupContainerLayout.setStyleName(Reindeer.LAYOUT_WHITE);
 
 //        init rightside components 
-        studiesScatterChartsLayout = new ProteinStudiesComparisonsContainerLayout(comparisonProteins, selectedComparisonList, selectionManager, width, searchingMode);
+        studiesScatterChartsLayout = new ProteinStudiesComparisonsContainerLayout(comparisonProteins, selectedComparisonList, datasetExploringCentralSelectionManager, width, searchingMode);
         rightSideLayout.addComponent(studiesScatterChartsLayout);
         studiesScatterChartsLayout.setWidth(width * 2 + "px");
         this.setExpandRatio(leftSideLayout, 1.5f);
         this.setExpandRatio(rightSideLayout, 1.4f);
     }
 
-    private DiseaseGroupsComparisonsProtein[] inUseComparisonProteins;
+    private DiseaseGroupsComparisonsProteinLayout[] inUseComparisonProteins;
 
-    private JFreeChart generateLineChart(DiseaseGroupsComparisonsProtein[] comparisonProteins, Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
+    private JFreeChart generateLineChart(DiseaseGroupsComparisonsProteinLayout[] comparisonProteins, Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
         int upcounter = 0;
         int notcounter = 0;
         int downcounter = 0;
         int counter = 0;
 
-        for (DiseaseGroupsComparisonsProtein cp : comparisonProteins) {
+        for (DiseaseGroupsComparisonsProteinLayout cp : comparisonProteins) {
             if (cp == null) {
                 continue;
             }
@@ -320,7 +326,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
             orederingOptionGroup.setEnabled(false);
 
         }
-        inUseComparisonProteins = new DiseaseGroupsComparisonsProtein[counter];
+        inUseComparisonProteins = new DiseaseGroupsComparisonsProteinLayout[counter];
 
         DefaultXYDataset dataset = new DefaultXYDataset();
 
@@ -347,7 +353,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
         int compIndex = 0;
         int comparisonIndexer = 0;
-        for (DiseaseGroupsComparisonsProtein cp : comparisonProteins) {
+        for (DiseaseGroupsComparisonsProteinLayout cp : comparisonProteins) {
             if (cp == null) {
                 comparisonIndexer++;
                 continue;
@@ -656,12 +662,43 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         studiesScatterChartsLayout.redrawCharts();
 
     }
-    
-    
-    private void runKmeansClustering(String proteinName,String proteinAccession, int width,LinkedHashMap<String, DiseaseGroupsComparisonsProtein[]> protSelectionMap){
+
+    private void runKmeansClustering(String protKey, String proteinName, String proteinAccession, int width, Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
         bottomLiftSide.removeAllComponents();
-        ProteinKMeansClusterLayout proteinKMeansClusterLayout = new ProteinKMeansClusterLayout(proteinName, proteinAccession, width,protSelectionMap);
+        Map<String, DiseaseGroupsComparisonsProteinLayout[]> protSelectionMap = datasetExploringCentralSelectionManager.getQuantProteinsLayoutSelectionMap();
+        double[][] samples = new double[protSelectionMap.size()][selectedComparisonList.size()];
+        String[] sampleIds = new String[protSelectionMap.size()];
+        int x = 0;
+        for (String key : protSelectionMap.keySet()) {
+            sampleIds[x] = key;
+            DiseaseGroupsComparisonsProteinLayout[] dGr = protSelectionMap.get(key);
+            double[] sampleRow = new double[dGr.length];
+            int y = 0;
+            for (DiseaseGroupsComparisonsProteinLayout dBean : dGr) {
+                if (dBean == null) {
+                    sampleRow[y] = 0;
+                             
+                } else {
+                    sampleRow[y] = dBean.getCellValue();
+                }
+                y++;
+            }
+            samples[x] = sampleRow;
+            x++;
+        }
+        int iterationNumber = Math.min(5, samples.length);
+        ArrayList<String> proteinsKeysList = mainHandler.runKMeanClustering(samples, sampleIds, iterationNumber, protKey);
+
+        Map<String, DiseaseGroupsComparisonsProteinLayout[]> updatedProtSelectionMap = new LinkedHashMap<String, DiseaseGroupsComparisonsProteinLayout[]>();
+        for (String key : proteinsKeysList) {
+            if (protSelectionMap.containsKey(key)) {
+                updatedProtSelectionMap.put(key, protSelectionMap.get(key));
+            }
+
+        }
+        ProteinKMeansClusterLayout proteinKMeansClusterLayout = new ProteinKMeansClusterLayout(protKey, proteinName, proteinAccession, width, updatedProtSelectionMap, selectedComparisonList);
         bottomLiftSide.addComponent(proteinKMeansClusterLayout);
-    
+
     }
+
 }
