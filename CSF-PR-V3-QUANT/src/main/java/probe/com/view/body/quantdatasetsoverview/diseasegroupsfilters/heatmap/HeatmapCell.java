@@ -36,7 +36,7 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
     private final MouseEvents.MouseOutListener mouseOutListener;
     private String strValue;
     private String pointer;
-    private String defaultStyle = "heatmapcoloredcell";
+    private String defaultStyle = "initheatmapcoloredcell";
     private final Label valueLabel;
     private boolean selected =false;
 
@@ -152,6 +152,11 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
         defaultStyle = "selectedheatmapcoloredcell";
         valueLabel.setPrimaryStyleName(defaultStyle);
 
+    }
+    public void initStyle(){
+    defaultStyle = "initheatmapcoloredcell";
+        valueLabel.setPrimaryStyleName(defaultStyle);
+    
     }
 
 }

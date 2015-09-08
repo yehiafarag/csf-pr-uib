@@ -84,12 +84,13 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
      * @param ordComparisonProteins
      */
     public void orderComparisons(DiseaseGroupsComparisonsProteinLayout[] ordComparisonProteins) {
+       
         mainbodyLayout.removeAllComponents();
         int rowIndex = 0;
         for (final DiseaseGroupsComparisonsProteinLayout cp : ordComparisonProteins) {
             if (cp == null) {
                 continue;
-            }
+            } 
             ProteinComparisonScatterPlotLayout protCompLayout = compLayoutMap.get(cp.getComparison());
             mainbodyLayout.addComponent(protCompLayout, 0, rowIndex);
             mainbodyLayout.setComponentAlignment(protCompLayout, Alignment.MIDDLE_CENTER);

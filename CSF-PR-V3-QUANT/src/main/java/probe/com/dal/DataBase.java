@@ -3457,7 +3457,7 @@ public class DataBase implements Serializable {
      */
     public Set<QuantProtein> getQuantificationProteins(int[] quantDatasetIds) {
         Set<QuantProtein> quantProtList = new HashSet<QuantProtein>();
-         Set<QuantProtein> tquantProtList = new HashSet<QuantProtein>();
+        Set<QuantProtein> tquantProtList = new HashSet<QuantProtein>();
         try {
             StringBuilder sb = new StringBuilder();
 
@@ -3472,15 +3472,14 @@ public class DataBase implements Serializable {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
-            String selectDsGroupNum = "SELECT `patients_group_i_number` , `patients_group_ii_number`,`index` FROM `combined_dataset_table` WHERE  " + stat + " ;";
+            String selectDsGroupNum = "SELECT `patients_group_i_number` , `patients_group_ii_number`,`patient_group_i`,`patient_group_ii`,`patient_sub_group_i`,`patient_sub_group_ii`,`index` FROM `combined_dataset_table` WHERE  " + stat + " ;";
             PreparedStatement selectselectDsGroupNumStat = conn.prepareStatement(selectDsGroupNum);
             ResultSet rs = selectselectDsGroupNumStat.executeQuery();
-            Map<Integer, int[]> datasetIdDesGrs = new HashMap<Integer, int[]>();
+            Map<Integer, Object[]> datasetIdDesGrs = new HashMap<Integer, Object[]>();
             while (rs.next()) {
-                datasetIdDesGrs.put(rs.getInt("index"), new int[]{rs.getInt("patients_group_i_number"), rs.getInt("patients_group_ii_number")});
+                datasetIdDesGrs.put(rs.getInt("index"), new Object[]{rs.getInt("patients_group_i_number"), rs.getInt("patients_group_ii_number"), rs.getString("patient_group_i"), rs.getString("patient_group_ii"), rs.getString("patient_sub_group_i"), rs.getString("patient_sub_group_ii")});
             }
             rs.close();
-        
 
             sb = new StringBuilder();
             for (int index : quantDatasetIds) {
@@ -3509,10 +3508,14 @@ public class DataBase implements Serializable {
             }
             rs1.close();
             for (QuantProtein qp : quantProtList) {
-                qp.setPatientsGroupIINumber(datasetIdDesGrs.get(qp.getDsKey() + 1)[1]);
-                qp.setPatientsGroupINumber(datasetIdDesGrs.get(qp.getDsKey() + 1)[0]);
+                qp.setPatientsGroupIINumber((Integer) datasetIdDesGrs.get(qp.getDsKey() + 1)[1]);
+                qp.setPatientsGroupINumber((Integer) datasetIdDesGrs.get(qp.getDsKey() + 1)[0]);
+                qp.setPatientGroupI(datasetIdDesGrs.get(qp.getDsKey() + 1)[2].toString());
+                qp.setPatientGroupII(datasetIdDesGrs.get(qp.getDsKey() + 1)[3].toString());
+                qp.setPatientSubGroupI(datasetIdDesGrs.get(qp.getDsKey() + 1)[4].toString());
+                qp.setPatientSubGroupII(datasetIdDesGrs.get(qp.getDsKey() + 1)[5].toString());
                 tquantProtList.add(qp);
-                
+
             }
 
         } catch (ClassNotFoundException exp) {

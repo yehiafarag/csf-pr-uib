@@ -71,7 +71,7 @@ public class StudiesChartComponentII extends VerticalLayout implements CSFFilter
         studiesFilterLayout.addComponent(studiesChartLayout);
         studiesFilterLayout.addComponent(studiesInformationLayout);
 
-        exploringFiltersManager.registerFilter(StudiesChartComponentII.this);
+//        exploringFiltersManager.registerFilter(StudiesChartComponentII.this);
 
         studiesFilterLayout.setExpandRatio(studiesChartLayout, 0.7f);
         studiesFilterLayout.setExpandRatio(studiesInformationLayout, 0.29f);
@@ -267,7 +267,7 @@ public class StudiesChartComponentII extends VerticalLayout implements CSFFilter
     @Override
     public void selectionChanged(String type) {
 //        this.updateStudyChart(exploringFiltersManager.getFilteredDatasetsList());
-        this.studiesChart.show();
+//        this.studiesChart.show();
         
         
     }

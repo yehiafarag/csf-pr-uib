@@ -610,6 +610,17 @@
     border: 1px solid #dce0e0;    
 }
 
+.initheatmapcoloredcell{
+    border: 2px solid #EFF2FB;   
+    height:50px;
+    width:50px; 
+    text-align:center;
+    color: #e0e0e0 ;
+    line-height: 48px;
+    font-weight: bold;
+    
+}
+
 .heatmapcoloredcell{
     border: 2px solid #EFF2FB;   
     height:50px;

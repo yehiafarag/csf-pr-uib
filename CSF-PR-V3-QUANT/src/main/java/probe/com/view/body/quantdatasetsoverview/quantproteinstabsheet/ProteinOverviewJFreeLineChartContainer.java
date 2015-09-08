@@ -1,5 +1,6 @@
 package probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet;
 
+import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.kmeansclustering.ProteinKMeansClusterLayout;
 import com.vaadin.data.Property;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.Page;
@@ -53,6 +54,7 @@ import probe.com.handlers.CSFPRHandler;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
+import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.kmeansclustering.KMeansClusteringPopupPanel;
 import probe.com.view.core.CustomExternalLink;
 import probe.com.view.core.jfreeutil.SquaredDot;
 
@@ -162,12 +164,10 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         clusterKMeanBtn.setStyleName(Reindeer.BUTTON_LINK);
         clusterKMeanLayout.addComponent(clusterKMeanBtn);
         clusterKMeanLayout.setComponentAlignment(clusterKMeanBtn, Alignment.MIDDLE_CENTER);
-        final int kmeanWidth = widthValue - width + 190;
         clusterKMeanBtn.addClickListener(new Button.ClickListener() {
-
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                runKmeansClustering(proteinKey, proteinName, proteinAccession, kmeanWidth, selectedComparisonList);
+                runKmeansClustering(proteinKey, proteinName, proteinAccession, selectedComparisonList);
             }
         });
 
@@ -277,10 +277,11 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
                         orderedChart = generateLineChart(ordComparisonProteins, orederedComparisonSet);//, (width - 100), height, orderedLineChartRenderingInfo);
                         orderedLineChartImg = generateChartImage(orderedChart, (width - 100), height, orderedLineChartRenderingInfo);
-                        studiesScatterChartsLayout.orderComparisons(ordComparisonProteins);
+//                        studiesScatterChartsLayout.orderComparisons(ordComparisonProteins);
                     }
                     styles.add("." + teststyle + " {  background-image: url(" + orderedLineChartImg + " );background-position:center; background-repeat: no-repeat; }");
                     lineChartContainer.setStyleName(teststyle);
+                    studiesScatterChartsLayout.orderComparisons(ordComparisonProteins);
                 }
             }
         });
@@ -662,43 +663,13 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         studiesScatterChartsLayout.redrawCharts();
 
     }
-
-    private void runKmeansClustering(String protKey, String proteinName, String proteinAccession, int width, Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
-        bottomLiftSide.removeAllComponents();
-        Map<String, DiseaseGroupsComparisonsProteinLayout[]> protSelectionMap = datasetExploringCentralSelectionManager.getQuantProteinsLayoutSelectionMap();
-        double[][] samples = new double[protSelectionMap.size()][selectedComparisonList.size()];
-        String[] sampleIds = new String[protSelectionMap.size()];
-        int x = 0;
-        for (String key : protSelectionMap.keySet()) {
-            sampleIds[x] = key;
-            DiseaseGroupsComparisonsProteinLayout[] dGr = protSelectionMap.get(key);
-            double[] sampleRow = new double[dGr.length];
-            int y = 0;
-            for (DiseaseGroupsComparisonsProteinLayout dBean : dGr) {
-                if (dBean == null) {
-                    sampleRow[y] = 0;
-                             
-                } else {
-                    sampleRow[y] = dBean.getCellValue();
-                }
-                y++;
-            }
-            samples[x] = sampleRow;
-            x++;
+    private  KMeansClusteringPopupPanel kMeansClusteringPanel;
+    private void runKmeansClustering(String protKey, String proteinName, String proteinAccession, Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
+        if(kMeansClusteringPanel == null){
+            Map<String, DiseaseGroupsComparisonsProteinLayout[]> protSelectionMap = datasetExploringCentralSelectionManager.getQuantProteinsLayoutSelectionMap();       
+            kMeansClusteringPanel = new KMeansClusteringPopupPanel(datasetExploringCentralSelectionManager,mainHandler,protKey, proteinName, proteinAccession, protSelectionMap, selectedComparisonList);        
         }
-        int iterationNumber = Math.min(5, samples.length);
-        ArrayList<String> proteinsKeysList = mainHandler.runKMeanClustering(samples, sampleIds, iterationNumber, protKey);
-
-        Map<String, DiseaseGroupsComparisonsProteinLayout[]> updatedProtSelectionMap = new LinkedHashMap<String, DiseaseGroupsComparisonsProteinLayout[]>();
-        for (String key : proteinsKeysList) {
-            if (protSelectionMap.containsKey(key)) {
-                updatedProtSelectionMap.put(key, protSelectionMap.get(key));
-            }
-
-        }
-        ProteinKMeansClusterLayout proteinKMeansClusterLayout = new ProteinKMeansClusterLayout(protKey, proteinName, proteinAccession, width, updatedProtSelectionMap, selectedComparisonList);
-        bottomLiftSide.addComponent(proteinKMeansClusterLayout);
-
+        kMeansClusteringPanel.setVisible(true);
     }
 
 }

@@ -345,7 +345,7 @@ public class KMeansClustering {
 
     /**
      * get required cluster
-     *
+     *@param key protein key
      * @return cluster number
      */
     public int getClusters(String key) {

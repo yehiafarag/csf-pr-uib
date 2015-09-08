@@ -38,6 +38,7 @@ import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.ui.RectangleEdge;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.view.core.jfreeutil.SquaredDot;
 
@@ -153,7 +154,10 @@ public class JFreeBarchartDivaWrapper extends AbsoluteLayout {
         Font titleFont = new Font("Verdana", Font.PLAIN, 12);
         TextTitle title = new TextTitle(comparison.getComparisonHeader() + " (Studies# " + comparison.getDatasetIndexes().length + ")", titleFont);
         title.setPaint(Color.BLACK);
+        title.setExpandToFitSpace(true);
+     
         barchart.setTitle(title);
+        
         barchart.setBackgroundPaint(Color.WHITE);    // Set the background colour of the chart  
         CategoryPlot cp = barchart.getCategoryPlot();  // Get the Plot object for a bar graph  
 
@@ -251,8 +255,15 @@ public class JFreeBarchartDivaWrapper extends AbsoluteLayout {
         ((BarRenderer) cp.getRenderer()).setSeriesVisible(4, check);
         if (check) {
             cp.setRangeGridlinePaint(Color.LIGHT_GRAY);
+            TextTitle title = chart.getTitle();
+            title.setPosition(RectangleEdge.TOP);
+            chart.setTitle(title);
+                        
         } else {
             cp.setRangeGridlinePaint(Color.WHITE);
+            TextTitle title = chart.getTitle();
+            title.setPosition(RectangleEdge.RIGHT);
+            chart.setTitle(title);
         }
 
         byte imageData[];

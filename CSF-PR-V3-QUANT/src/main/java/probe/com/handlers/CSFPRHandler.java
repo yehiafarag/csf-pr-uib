@@ -508,6 +508,7 @@ public class CSFPRHandler implements Serializable {
      * @param sampleIds the sample identifiers
      * @param numClusters the number of clusters
      * @param proteinKey  protein key
+     * @return list of clustered proteins
      */
     public ArrayList<String> runKMeanClustering(double[][] samples, String[] sampleIds,int numClusters,String proteinKey){
      return this.logicLayer.runKMeanClustering(samples, sampleIds, numClusters,proteinKey);

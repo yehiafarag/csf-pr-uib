@@ -126,6 +126,13 @@ public class HeatMapComponent extends VerticalLayout {
      * @param cell
      */
     protected void addSelectedDs(QuantDiseaseGroupsComparison comparison, HeatmapCell cell) {
+        if (selectedDsList.isEmpty()) {
+            //reset all cells to transpairent 
+            for (HeatmapCell hmcell : comparisonsCellsMap.values()) {
+                hmcell.unselect();
+            }
+
+        }
         for (HeaderCell header : columnCells) {
             header.unSelectCellStyle();
         }
@@ -149,7 +156,7 @@ public class HeatMapComponent extends VerticalLayout {
         equalCall.select();
         this.selectedDsList.add(comparison);
         this.selectedCells.add(cell);
-        this.selectedDsList.add(equalCall.getComparison());
+//        this.selectedDsList.add(equalCall.getComparison());
         this.selectedCells.add(equalCall);
         updateSelectionManagerIndexes();
     }
@@ -159,6 +166,13 @@ public class HeatMapComponent extends VerticalLayout {
      * @param selectedheader
      */
     protected void addRowSelectedDs(String selectedheader) {
+        if (selectedDsList.isEmpty()) {
+            //reset all cells to transpairent 
+            for (HeatmapCell hmcell : comparisonsCellsMap.values()) {
+                hmcell.unselect();
+            }
+
+        }
         if (singleSelection) {
             for (HeatmapCell tcell : selectedCells) {
                 tcell.unselect();
@@ -173,7 +187,7 @@ public class HeatMapComponent extends VerticalLayout {
                     }
                     header.selectCellStyle();
                     selectedCells.addAll(header.getIncludedCells());
-                    selectedDsList.addAll(header.getIncludedComparisons());
+
                     continue;
                 }
                 header.unSelectCellStyle();
@@ -185,6 +199,7 @@ public class HeatMapComponent extends VerticalLayout {
                     }
                     header.selectCellStyle();
                     selectedCells.addAll(header.getIncludedCells());
+                    selectedDsList.addAll(header.getIncludedComparisons());
                     continue;
                 }
                 header.unSelectCellStyle();
@@ -269,6 +284,13 @@ public class HeatMapComponent extends VerticalLayout {
         this.selectedCells.addAll(localSelectedCells);
         this.selectedDsList.clear();
         this.selectedDsList.addAll(selectedDsList);
+        if (this.selectedDsList.isEmpty()) {
+            //reset all cells to transpairent 
+            for (HeatmapCell hmcell : comparisonsCellsMap.values()) {
+                hmcell.initStyle();
+            }
+
+        }
 
     }
 
@@ -294,6 +316,13 @@ public class HeatMapComponent extends VerticalLayout {
         this.selectedDsList.remove(equalCall.getComparison());
         this.selectedCells.remove(equalCall);
         updateSelectionManagerIndexes();
+        if (selectedDsList.isEmpty()) {
+            //reset all cells 
+            for (HeatmapCell hmcell : comparisonsCellsMap.values()) {
+                hmcell.initStyle();
+            }
+
+        }
 
     }
 
@@ -327,6 +356,13 @@ public class HeatMapComponent extends VerticalLayout {
         }
 
         updateSelectionManagerIndexes();
+        if (selectedDsList.isEmpty()) {
+            //reset all cells to transpairent 
+            for (HeatmapCell hmcell : comparisonsCellsMap.values()) {
+                hmcell.initStyle();
+            }
+
+        }
 
     }
 
@@ -526,14 +562,14 @@ public class HeatMapComponent extends VerticalLayout {
         selectedDsList.addAll(availableComparisonsList);
         updateSelectionManagerIndexes();
     }
-    
+
     /**
      *
      */
     public void unselectAll() {
         selectedCells.clear();
         for (HeatmapCell cell : comparisonsCellsMap.values()) {
-            cell.unselect();
+            cell.initStyle();
         }
         updateDsCellSelection(new HashSet<QuantDiseaseGroupsComparison>());
         selectedDsList.clear();

@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Paint;
+import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.text.NumberFormat;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import org.apache.commons.codec.binary.Base64;
 import org.jfree.chart.ChartRenderingInfo;
@@ -24,12 +26,14 @@ import org.jfree.chart.axis.NumberTick;
 import org.jfree.chart.axis.SymbolAxis;
 import org.jfree.chart.axis.Tick;
 import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.plot.SeriesRenderingOrder;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.text.TextUtilities;
 import org.jfree.ui.RectangleEdge;
 import org.jfree.ui.TextAnchor;
+import org.jfree.util.ShapeUtilities;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 
@@ -44,19 +48,20 @@ public class KMeansClusteringLineChart extends AbsoluteLayout implements LayoutE
     private String defaultKMeansClusteringImgUrl;
     private final ChartRenderingInfo chartRenderingInfo;
     private final JFreeChart chart;
-    private final int imgWidth;
+    private final int imgWidth, imgHeight;
 
-    public KMeansClusteringLineChart(int imgWidth, String proteinKey, String proteinAccession, String proteinName, Map<String, DiseaseGroupsComparisonsProteinLayout[]> protSelectionMap, Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
-        imgWidth=imgWidth-100;
+    public KMeansClusteringLineChart(int imgWidth, int imgHeight, String proteinKey, String proteinAccession, String proteinName, Map<String, DiseaseGroupsComparisonsProteinLayout[]> protSelectionMap, Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
+        imgWidth = imgWidth - 100;
         setWidth(imgWidth + "px");
-        setHeight(500 + "px");
+        setHeight(imgHeight + "px");
         this.imgWidth = imgWidth;
+        this.imgHeight = imgHeight;
         teststyle = proteinAccession.replace(" ", "_").replace(")", "_").replace("(", "_").toLowerCase() + "_" + proteinName.replace(" ", "_").replace(")", "_").replace("(", "_").toLowerCase() + "_kmeansclusteringplot";
 
         addLayoutClickListener(KMeansClusteringLineChart.this);
         chart = this.generateLineChart(proteinKey, protSelectionMap, selectedComparisonList);
         chartRenderingInfo = new ChartRenderingInfo();
-        defaultKMeansClusteringImgUrl = this.generateChartImage(chart, imgWidth, 500, chartRenderingInfo);
+        defaultKMeansClusteringImgUrl = this.generateChartImage(chart, imgWidth, imgHeight, chartRenderingInfo);
         styles.add("." + teststyle + " {  background-image: url(" + defaultKMeansClusteringImgUrl + " );background-position:center; background-repeat: no-repeat; }");
         setStyleName(teststyle);
 
@@ -66,40 +71,66 @@ public class KMeansClusteringLineChart extends AbsoluteLayout implements LayoutE
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
 
     }
-    private int lastSelectedIndex = -1;
+    private String lastSelectedIndex = "";
+    private String mainProteinSeriesKey = "";
     private int mainProteinSeriesIndex = -1;
+    private final Random rand = new Random();
+    private final BasicStroke lineStyle = new BasicStroke(
+            1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
+            1.0f, new float[]{10.0f, 6.0f}, 0.0f
+    );
+    private final Shape defaultShape = ShapeUtilities.createRegularCross(2f, 5f);
+    private final Shape lineShape = ShapeUtilities.createDiamond(2f);
+
+    ;
 
     public final void updateChartImage(String proteinKey) {
         XYPlot plot = ((XYPlot) chart.getPlot());
         XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
+        DefaultXYDataset dataset = (DefaultXYDataset) plot.getDataset();
 
-        if (lastSelectedIndex != -1) {
-            renderer.setSeriesPaint(lastSelectedIndex, Color.LIGHT_GRAY);
+        for (int serId = 0; serId < dataset.getSeriesCount(); serId++) {
+            renderer.setSeriesPaint(serId,Color.LIGHT_GRAY);// new Color(240, 240, 240));
         }
+        if (lastSelectedIndex.equalsIgnoreCase(proteinKey)) {
+            proteinKey = mainProteinSeriesKey;
+        }
+
         Integer seriesIndex = proteinToSeriesMap.get(proteinKey);
+        String tempProtKey = "__" + proteinKey + "__" + (rand.nextInt(100000000) + 1);
+        dataset.addSeries(tempProtKey, seriesKeyToSeriesMap.get(proteinKey));
+                 
+        
         if (seriesIndex == null || seriesIndex == mainProteinSeriesIndex) {
-            if (lastSelectedIndex == -1) {
-                return;        
-            }
-        } else {
+            renderer.setSeriesPaint(dataset.getSeriesCount() - 1, Color.RED);
 
-            if (lastSelectedIndex == seriesIndex) {
-                renderer.setSeriesPaint(lastSelectedIndex, Color.LIGHT_GRAY);
-                lastSelectedIndex = -1;
-            } else {
-                renderer.setSeriesPaint(seriesIndex, Color.BLUE);
-                lastSelectedIndex = seriesIndex;
-            }
+        } else {
+            renderer.setSeriesPaint(dataset.getSeriesCount() - 1, Color.BLUE);
+
+        }
+        if (dataset.getItemCount(dataset.getSeriesCount() - 1) > 1) {
+            renderer.setSeriesStroke(dataset.getSeriesCount() - 1, lineStyle);
+            renderer.setSeriesShapesVisible(dataset.getSeriesCount() - 1, true);
+             renderer.setSeriesShape(dataset.getSeriesCount() - 1, lineShape);
+            renderer.setSeriesLinesVisible(dataset.getSeriesCount() - 1, true);
+
+        } else {
+            renderer.setSeriesShape(dataset.getSeriesCount() - 1, defaultShape);
+            renderer.setSeriesShapesVisible(dataset.getSeriesCount() - 1, true);
+            renderer.setSeriesLinesVisible(dataset.getSeriesCount() - 1, false);
         }
 
+       lastSelectedIndex = proteinKey;
         plot.setRenderer(renderer);
-        defaultKMeansClusteringImgUrl = this.generateChartImage(chart, imgWidth, 500, chartRenderingInfo);
+        plot.setSeriesRenderingOrder(SeriesRenderingOrder.FORWARD);
+        defaultKMeansClusteringImgUrl = this.generateChartImage(chart, imgWidth, imgHeight, chartRenderingInfo);
         styles.add("." + teststyle + " {  background-image: url(" + defaultKMeansClusteringImgUrl + " );background-position:center; background-repeat: no-repeat; }");
         setStyleName(teststyle);
 
     }
 
     private final Map<String, Integer> proteinToSeriesMap = new HashMap<String, Integer>();
+    private final Map<String, double[][]> seriesKeyToSeriesMap = new HashMap<String, double[][]>();
 
     private JFreeChart generateLineChart(String proteinKey, Map<String, DiseaseGroupsComparisonsProteinLayout[]> comparisonProteins, Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
 
@@ -108,6 +139,7 @@ public class KMeansClusteringLineChart extends AbsoluteLayout implements LayoutE
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
         int seriousCounter = 0;
         DefaultXYDataset dataset = new DefaultXYDataset();
+
         for (String key : comparisonProteins.keySet()) {
             List<Double> xLineList = new ArrayList<Double>();
             List<Double> yLineList = new ArrayList<Double>();
@@ -115,6 +147,7 @@ public class KMeansClusteringLineChart extends AbsoluteLayout implements LayoutE
             comparisonsSize = comparisonProteins.get(key).length;
             int comparisonIndexer = 0;
             int compIndex = 0;
+
             for (DiseaseGroupsComparisonsProteinLayout cp : comparisonProteins.get(key)) {
                 if (cp == null) {
                     comparisonIndexer++;
@@ -139,6 +172,7 @@ public class KMeansClusteringLineChart extends AbsoluteLayout implements LayoutE
                 comparisonIndexer++;
 
             }
+
             double[] xLineValues = new double[xLineList.size()];
             double[] yLineValues = new double[yLineList.size()];
             for (int x = 0; x < yLineList.size(); x++) {
@@ -150,6 +184,7 @@ public class KMeansClusteringLineChart extends AbsoluteLayout implements LayoutE
             linevalues[1] = yLineValues;
 
             dataset.addSeries(key, linevalues);
+
             if (key.equalsIgnoreCase(proteinKey)) {
                 renderer.setSeriesPaint(seriousCounter, Color.RED);
                 renderer.setSeriesStroke(seriousCounter, new BasicStroke(
@@ -157,11 +192,18 @@ public class KMeansClusteringLineChart extends AbsoluteLayout implements LayoutE
                         1.0f, new float[]{10.0f, 6.0f}, 0.0f
                 ));
                 mainProteinSeriesIndex = seriousCounter;
+                mainProteinSeriesKey = proteinKey;
             } else {
                 renderer.setSeriesPaint(seriousCounter, Color.LIGHT_GRAY);
             }
-            renderer.setSeriesShapesVisible(seriousCounter, false);
+            if (comparisonProteins.get(key).length == 1) {
+                renderer.setSeriesShape(seriousCounter, defaultShape);
+
+            } else {
+                renderer.setSeriesShapesVisible(seriousCounter, false);
+            }
             proteinToSeriesMap.put(key, seriousCounter);
+            seriesKeyToSeriesMap.put(key, linevalues);
 
             seriousCounter++;
 
@@ -277,6 +319,7 @@ public class KMeansClusteringLineChart extends AbsoluteLayout implements LayoutE
                 }
             }
         };
+//        xyplot.setSeriesRenderingOrder(SeriesRenderingOrder.REVERSE);
 
 //
         xyplot.setRangeTickBandPaint(Color.WHITE);

@@ -26,6 +26,7 @@ public class DatasetExploringCentralSelectionManager {
     private QuantDatasetObject[] selectedQuantDatasetIndexes;
     private Set<QuantDiseaseGroupsComparison> selectedDiseaseGroupsComparisonList;
     private Map<String, DiseaseGroupsComparisonsProteinLayout[]> quantProteinsLayoutSelectionMap;
+    private String selectedProteinKey;
 
     /**
      * get selected heat map rows
@@ -198,13 +199,12 @@ public class DatasetExploringCentralSelectionManager {
      */
     public void setQuantProteinsSelectionLayout(Map<String, DiseaseGroupsComparisonsProteinLayout[]> protSelectionMap) {
         try {
-
             VaadinSession.getCurrent().getLockInstance().lock();
             this.quantProteinsLayoutSelectionMap = protSelectionMap;
             this.SelectionChanged("Quant_Proten_Selection");
             
         } catch(Exception exp){
-            System.err.println("at error "+this.getClass().getName()+"  line 207  "+ exp.getMessage());
+            System.err.println("at error "+this.getClass().getName()+"  line 207  "+ exp.getLocalizedMessage());
         
         }finally {
             VaadinSession.getCurrent().getLockInstance().unlock();
@@ -302,6 +302,20 @@ public class DatasetExploringCentralSelectionManager {
      */
     public Set<QuantDiseaseGroupsComparison> getSelectedDiseaseGroupsComparisonList() {
         return selectedDiseaseGroupsComparisonList;
+    }
+    
+    /**
+     * get Selected proteinKey 
+     *
+     * @return selected Protein key
+     */
+    public String getSelectedProteinKey() {
+        return selectedProteinKey;
+    }
+
+    public void setSelectedProteinKey(String selectedProteinKey) {
+        this.selectedProteinKey = selectedProteinKey;
+        this.SelectionChanged("Quant_Proten_Tab_Selection");
     }
 
 }
