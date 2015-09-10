@@ -101,7 +101,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
             adminTab.setVisible(false);
         } else if (c.equals("Quantitative Datasets Overview")) {
             adminTab.setVisible(false);
-            if (datasetOverviewTabLayout == null) {
+            if (datasetOverviewTabLayout == null && handler != null) {
                 datasetOverviewTabLayout = new QuantDatasetsOverviewLayout(handler, false);
                 datasetsOverviewLayout.addComponent(datasetOverviewTabLayout);
             }

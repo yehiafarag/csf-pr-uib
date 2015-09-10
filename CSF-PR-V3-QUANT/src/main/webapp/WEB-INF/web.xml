@@ -39,7 +39,7 @@
         <param-value>jdbc:mysql://localhost:3306/</param-value>
     </context-param>
     <context-param>
-        <description>Database name csf_db_v2_1</description>
+        <description>Database name csf_db_v2_1  dbtest</description>
         <param-name>dbName</param-name>
         <param-value>dbtest</param-value>
     </context-param>

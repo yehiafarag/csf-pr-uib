@@ -42,7 +42,11 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
         this.setSpacing(true);
         boolean[] activeFilters = exploringFiltersManager.getActiveFilters();
         Map<Integer, QuantDatasetObject> quantDatasetArr = exploringFiltersManager.getFilteredDatasetsList();
+
         internalSelectionManager = new PieChartsSelectionManager(exploringFiltersManager);
+        if (quantDatasetArr == null) {
+            return;
+        }
         this.setRows(3);
         this.setColumns(4);
         int colCounter = 0;

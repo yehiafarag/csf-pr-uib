@@ -23,8 +23,14 @@ public class QuantFilterUtility implements Serializable {
      */
     public QuantFilterUtility(CSFPRHandler quantHandler) {
         QuantDatasetInitialInformationObject quantDatasetListObject = quantHandler.getQuantDatasetInitialInformationObject();
-        this.quantDatasetArr = quantDatasetListObject.getQuantDatasetsList();
-        activeCombinedQuantTableHeaders = quantDatasetListObject.getActiveHeaders();
+        if (quantDatasetListObject == null) {
+            this.quantDatasetArr = null;
+            activeCombinedQuantTableHeaders = null;
+        } else {
+            this.quantDatasetArr = quantDatasetListObject.getQuantDatasetsList(); 
+            activeCombinedQuantTableHeaders = quantDatasetListObject.getActiveHeaders();
+        }
+      
         //which fillters are exist
         activeQuantFilters = quantHandler.getActivePieChartQuantFilters();
 

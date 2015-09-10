@@ -2,6 +2,8 @@ package probe.com.view.body;
 
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 import probe.com.handlers.CSFPRHandler;
@@ -39,11 +41,22 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
         }
         filterUtility = new QuantFilterUtility(handler);
         exploringFiltersManager = new DatasetExploringCentralSelectionManager(filterUtility.getQuantDatasetArr(), filterUtility.getActiveFilters());//,filterUtility.getFullFilterList()
+       
 
         this.setMargin(true);
         this.setSpacing(true);
         this.setWidth("100%");
-        this.setHeightUndefined();
+        this.setHeightUndefined(); if(exploringFiltersManager.getFullQuantDatasetArr() == null || exploringFiltersManager.getFullQuantDatasetArr().isEmpty())
+        {
+            Label noExpLable = new Label("<h4 style='font-family:verdana;color:black;font-weight:bold;'>Sorry No Dataset Availabe Now !</h4>");
+            noExpLable.setContentMode(ContentMode.HTML);
+            this.addComponent(noExpLable);
+            pieChartFiltersLayout = null;
+            proteinsLayout = null;
+            compTableLayout=null;
+            return;
+        
+        }
         // init piecharts filter
         pieChartFiltersLayout = new StudiesPieChartFiltersContainerLayout(exploringFiltersManager);
 
