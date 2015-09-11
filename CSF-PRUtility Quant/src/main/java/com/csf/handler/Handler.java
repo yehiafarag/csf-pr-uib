@@ -52,7 +52,7 @@ public class Handler {
         return test;
     }
 
-    public void exportDataBase(String mysqldumpUrl,String sqlFileUrl) {
+    public void exportDataBase(String mysqldumpUrl, String sqlFileUrl) {
         dal.exportDataBase(mysqldumpUrl, sqlFileUrl);
     }
 
@@ -60,41 +60,34 @@ public class Handler {
         return dal.restoreDB(source);
     }
 
-    public boolean handelQuantPubData(String quantDataFilePath,String sequanceFilePath) {
+    public boolean handelQuantPubData(String quantDataFilePath, String sequanceFilePath) {
 
         //1.read file
-        List<QuantProtein> qProtList = qDataHandler.readCSVQuantFile(quantDataFilePath,sequanceFilePath);
+        List<QuantProtein> qProtList = qDataHandler.readCSVQuantFile(quantDataFilePath, sequanceFilePath);
         //2.store full data
-        boolean test  = dal.storeCombinedQuantProtTable(qProtList);
+        boolean test = dal.storeCombinedQuantProtTable(qProtList);
         //3.update dataset table
         dal.storeQuantDatasets();
-        //handel quant prot     
+//        //handel quant prot     
         Set<QuantDatasetObject> datasetsList = dal.getQuantDatasetListObject();
-        qProtList = this.handleQuantData(datasetsList,qProtList);
-        int protIndex = dal.getCurrentProtIndex();
-        List<QuantPeptide> peptidesList = handelQuantPeptides(qProtList,protIndex);        
-        
-        //foldchange
-        
-        defineProtFoldChange(qProtList, peptidesList);
-        
-        
-        //store quant protiens
-        dal.storeQuantitiveProteins(qProtList);
-        
+        List<QuantProtein> updatedQuantProtList = this.handleQuantData(datasetsList, qProtList);
+
+//        //store quant protiens
+        Map<String, Integer> peptideKeyToProteinIndexMap = dal.storeQuantitiveProteins(updatedQuantProtList);
+        List<QuantProtein> peptidesList = handelQuantPeptides(qProtList, peptideKeyToProteinIndexMap);
         //store quant peptides
         dal.storeQuantitivePeptides(peptidesList);
-        
-        System.out.println("final prot list updated (should be smaller)  " + qProtList.size() + "  prer " + peptidesList.size());
+//        
+//        System.out.println("final prot list updated (should be smaller)  " + qProtList.size() + "  prer " + peptidesList.size());
 
         return true;
     }
-     public boolean handelProtSequanceData(String path) {
-         System.out.println("file path "+path);
-          
+
+    public boolean handelProtSequanceData(String path) {
+        System.out.println("file path " + path);
+
         //1.read file 
 //         Map<String,String> protSeqMap=qDataHandler.readSequanceFile(path);
-        
 //        //2.store full data
 //        bool ean test  = dal.updateProtSequances(protSeqMap);
 //        //3.update dataset table
@@ -117,54 +110,65 @@ public class Handler {
 //        dal.storeQuantitivePeptides(peptidesList);
 //        
 //        System.out.println("final prot list updated (should be smaller)  " + qProtList.size() + "  prer " + peptidesList.size());
-
         return true;
     }
 
-    private List<QuantPeptide> handelQuantPeptides(List<QuantProtein> qProtList, int protIndex) {
+    private List<QuantProtein> handelQuantPeptides(List<QuantProtein> fullQuantProtList, Map<String, Integer> peptideKeyToProteinIndexMap) {
 //        Map<String, QuantPeptide> peptides = new HashMap<String, QuantPeptide>();
-        Map<String, QuantProtein> proteins = new HashMap<String, QuantProtein>();
-        List<QuantPeptide> peptidesList = new ArrayList<QuantPeptide>();
+        List<QuantProtein> peptidesList = new ArrayList<QuantProtein>();
 //        List<QuantProtein> updatedQuantProtList = new ArrayList<QuantProtein>();
-        for (QuantProtein prot : qProtList) {
-            QuantPeptide pep = new QuantPeptide();
-            pep.setDsKey(prot.getDsKey());
-            pep.setFc(prot.getStringFCValue());
-            pep.setPvalue(prot.getpValue());
-            pep.setRoc(prot.getRocAuc());
-            pep.setFcPatientGroupIonPatientGroupII(prot.getFcPatientGroupIonPatientGroupII());
-            pep.setModificationComment(prot.getModificationComment());
-            pep.setPeptideModification(prot.getPeptideModification());
-            pep.setPeptideSequance(prot.getPeptideSequance());
-            pep.setStrPvalue(prot.getStringPValue());
-            pep.setPvalueComment(prot.getPvalueComment());
-
-            String acc = prot.getUniprotAccession();
-            if (acc.equalsIgnoreCase("Not Available")) {
-                acc = prot.getPublicationAccNumber();
+        for (QuantProtein prot : fullQuantProtList) {
+            if (!prot.isPeptideProtein()) {
+                continue;
             }
-            if (!proteins.containsKey(prot.getDsKey() + "-" + acc)) {
-                pep.setProtKey(protIndex);
-                prot.setProtKey(protIndex);
-                proteins.put(prot.getDsKey() + "-" + acc, prot);
-                protIndex++;
+
+            if (peptideKeyToProteinIndexMap.containsKey(prot.getqPeptideKey())) {
+                prot.setProtKey(peptideKeyToProteinIndexMap.get(prot.getqPeptideKey()));
 
             } else {
-                pep.setProtKey(proteins.get(prot.getDsKey() + "-" + acc).getProtKey());
+                System.out.println("not related to any protein peptides keys is " + prot.getqPeptideKey());
             }
-            peptidesList.add(pep);
+            peptidesList.add(prot);
+//            
+//
+//            QuantPeptide pep = new QuantPeptide();
+//            pep.setDsKey(prot.getDsKey());
+//            pep.setFc(prot.getStringFCValue());
+//            pep.setPvalue(prot.getpValue());
+//            pep.setRoc(prot.getRocAuc());
+//            pep.setFcPatientGroupIonPatientGroupII(prot.getFcPatientGroupIonPatientGroupII());
+//            pep.setModificationComment(prot.getModificationComment());
+//            pep.setPeptideModification(prot.getPeptideModification());
+//            pep.setPeptideSequance(prot.getPeptideSequance());
+//            pep.setStrPvalue(prot.getStringPValue());
+//            pep.setPvalueComment(prot.getPvalueComment());
+//
+//            String acc = prot.getUniprotAccession();
+//            if (acc.equalsIgnoreCase("Not Available")) {
+//                acc = prot.getPublicationAccNumber();
+//            }
+//            if (!proteins.containsKey(prot.getDsKey() + "-" + acc)) {
+//                pep.setProtKey(protIndex);
+//                prot.setProtKey(protIndex);
+//                proteins.put(prot.getDsKey() + "-" + acc, prot);
+//                protIndex++;
+//
+//            } else {
+//                pep.setProtKey(proteins.get(prot.getDsKey() + "-" + acc).getProtKey());
+//            }
+//            peptidesList.add(pep);
         }
-        qProtList.clear();
-        for (QuantProtein qprot : proteins.values()) {
-            qProtList.add(qprot);
-
-        }
+//        fullQuantProtList.clear();
+//        for (QuantProtein qprot : proteins.values()) {
+//            fullQuantProtList.add(qprot);
+//
+//        }
 
 //        Set<String> ids = new HashSet<String>();
 //        for( QuantPeptide pep  :peptidesList)
 //            ids.add(pep.getProtKey()+"");
 //
-//        System.out.println("at qProtList " + qProtList.size() + "   -- filtered to " + proteins.size() + "   peptides are " + peptidesList.size()+"  ids size "+ids.size());
+//        System.out.println("at fullQuantProtList " + fullQuantProtList.size() + "   -- filtered to " + proteins.size() + "   peptides are " + peptidesList.size()+"  ids size "+ids.size());
 //        
 //        ready to store in db
         return peptidesList;
@@ -174,6 +178,9 @@ public class Handler {
 
         List<QuantProtein> updatedQuantProtList = new ArrayList<QuantProtein>();
         for (QuantProtein qp : qProtList) {
+            if (qp.isPeptideProtein()) {
+                continue;
+            }
             for (QuantDatasetObject ds : dss) {
 
                 if (!ds.getPumedID().equalsIgnoreCase(qp.getPumedID())) {
@@ -184,13 +191,12 @@ public class Handler {
                     continue;
                 }
 
-                if (!ds.getAdditionalcomments().equalsIgnoreCase(qp.getAdditionalComments())) {
-                    continue;
-                }
+//                if (!ds.getAdditionalcomments().equalsIgnoreCase(qp.getAdditionalComments())) {
+//                    continue;
+//                }
 //                if (ds.getFilesNumber() != (qp.getFilesNum())) {
 //                    continue;
 //                }
-
                 if (ds.getIdentifiedProteinsNumber() != (qp.getIdentifiedProteinsNum())) {
                     continue;
                 }
@@ -328,9 +334,9 @@ public class Handler {
         }
 
     }
-    public void correctProtInfo(){
-    dal.correctProtInfo();
-    
-    
+
+    public void correctProtInfo() {
+        dal.correctProtInfo();
+
     }
 }

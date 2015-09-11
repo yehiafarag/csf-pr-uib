@@ -85,11 +85,11 @@ public class DAL {
          database.storeQuantDatasets();
      }
      
-     public void storeQuantitiveProteins(List<QuantProtein> qProtList){
-         database.storeQuantitiveProteins(qProtList);
+     public Map<String,Integer> storeQuantitiveProteins(List<QuantProtein> qProtList){
+         return database.storeQuantitiveProteins(qProtList);
      }
      
-      public void storeQuantitivePeptides(List<QuantPeptide> qPeptidestList ){
+      public void storeQuantitivePeptides(List<QuantProtein> qPeptidestList ){
          database.storeQuantitivePeptides(qPeptidestList);
      }
       public int getCurrentProtIndex() {

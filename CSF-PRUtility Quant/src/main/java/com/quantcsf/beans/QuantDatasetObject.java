@@ -20,7 +20,15 @@ public class QuantDatasetObject implements Serializable, Comparable {
     private final List<QuantProtein> quantProtList = new ArrayList<QuantProtein>();
     
     
-   
+
+    public String getStudyKey() {
+        return values[27].toString();
+    }
+
+    public void setStudyKey(String studyKey) {
+        values[27] = studyKey;
+        valuesMap.put("studyKey", studyKey);
+    }
     private int uniqId;
     
     
@@ -35,10 +43,10 @@ public class QuantDatasetObject implements Serializable, Comparable {
     public Object[] getValues() {
         return values;
     }
-    private final Object[] values = new Object[27];
+    private final Object[] values = new Object[28];
     private final Map<String, Object> valuesMap = new HashMap<String, Object>();
     private String uniqueValues;
-    private final String[] headers = new String[]{"Author", "Year", "#Identified Proteins", "#Quantified Proteins", "Disease Groups", "Raw Data", "#Files", "Study Type", "Sample Type", "Sample Matching", "Shotgun/Targeted", "Technology", "Analytical Approach", "Enzyme", "Quantification Basis", "Quantification Basis Comment","Normalization Strategy", "PumedID","Patients Gr.I", "#Patients Gr.I", "Patients Gr.I Comments", "Patients Sub-Gr.I", "Patients Gr.II","#Patients Gr.II", "Patients Gr.II Comments", "Patients Sub-Gr.II", "Additional Comments"};
+    private final String[] headers = new String[]{"Author", "Year", "#Identified Proteins", "#Quantified Proteins", "Disease Groups", "Raw Data", "#Files", "Study Type", "Sample Type", "Sample Matching", "Shotgun/Targeted", "Technology", "Analytical Approach", "Enzyme", "Quantification Basis", "Quantification Basis Comment","Normalization Strategy", "PumedID","Patients Gr.I", "#Patients Gr.I", "Patients Gr.I Comments", "Patients Sub-Gr.I", "Patients Gr.II","#Patients Gr.II", "Patients Gr.II Comments", "Patients Sub-Gr.II", "Additional Comments","studyKey"};
 
     public String getFilterTitle(int index) {
         return headers[index];
@@ -295,7 +303,6 @@ public class QuantDatasetObject implements Serializable, Comparable {
         return (String) values[26];
     }
     
-    private String studyKey;
     private boolean peptideProtein;
     
     

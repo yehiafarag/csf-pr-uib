@@ -49,7 +49,7 @@ public class QuantProtein {
     }
     private double pValue,rocAuc;
     private double fcPatientGroupIonPatientGroupII,logFC;
-    private boolean peptideProt;
+    
     private String significanceThreshold,analyticalMethod;
 
     public int getYear() {
@@ -99,17 +99,6 @@ public class QuantProtein {
     public void setStringFCValue(String StringFC) {
         this.stringFCValue = StringFC;
     }
-
-    public boolean isPeptideProt() {
-        return peptideProt;
-    }
-
-    public void setPeptideProt(boolean peptideProt) {
-        this.peptideProt = peptideProt;
-    }
-
-
-   
 
     public String getPumedID() {
         return pumedID;
@@ -442,6 +431,15 @@ public String getTechnology() {
 
     public void setAnalyticalMethod(String analyticalMethod) {
         this.analyticalMethod = analyticalMethod;
+    }
+    private String sequance;
+
+    public String getSequance() {
+        return sequance;
+    }
+
+    public void setSequance(String sequance) {
+        this.sequance = sequance;
     }
     
  
