@@ -7,6 +7,7 @@ import com.pepshaker.util.beans.ProteinBean;
 import com.quantcsf.beans.QuantDatasetObject;
 import com.quantcsf.beans.QuantPeptide;
 import com.quantcsf.beans.QuantProtein;
+import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -92,14 +93,13 @@ public class DB implements Serializable {
             try {
                 Statement st = conn.createStatement();
 
-                String statment = "CREATE TABLE IF NOT EXISTS `combined_dataset_table` (\n"
+                String statment = "CREATE TABLE IF NOT EXISTS `quant_dataset_table` (\n"
                         + "  `study_key` varchar(100) NOT NULL default 'Not Available',\n"
                         + "  `pumed_id` varchar(30) NOT NULL default 'Not Available',\n"
                         + "  `files_num` int(255) NOT NULL default '-1',\n"
-                        + "  `identified _proteins_num` int(255) NOT NULL default '-1',\n"
-                        + "  `quantified_protein_num` int(255) NOT NULL default '-1',\n"
-                        + "  `disease_group` varchar(300) NOT NULL default 'Not Available',\n"
-                        + "  `raw_data_url` varchar(500) NOT NULL default 'Raw Data Not Available',\n"
+                        + "  `identified_proteins_number` int(255) NOT NULL default '-1',\n"
+                        + "  `quantified_proteins_number` int(255) NOT NULL default '-1',\n"
+                        + "  `raw_data_available` varchar(500) NOT NULL default 'Raw Data Not Available',\n"
                         + "  `year` int(4) NOT NULL default '0',\n"
                         + "  `index` int(255) NOT NULL auto_increment,\n"
                         + "  `type_of_study` varchar(200) NOT NULL default 'Not Available',\n"
@@ -121,11 +121,12 @@ public class DB implements Serializable {
                         + "  `patient_group_ii` varchar(700) NOT NULL default 'Not Available',\n"
                         + "  `patient_sub_group_ii` varchar(700) NOT NULL default 'Not Available',\n"
                         + "  `patient_gr_ii_comment` varchar(700) NOT NULL default 'Not Available',\n"
+                        + "  `analytical_method` varchar(500) NOT NULL default 'Not Available',\n"
                         + "  KEY `index` (`index`)\n"
                         + ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;";
                 st.executeUpdate(statment);
 
-                statment = "CREATE TABLE IF NOT EXISTS `combined_quant_table` (\n"
+                statment = "CREATE TABLE IF NOT EXISTS `quant_full_table` (\n"
                         + "  `author` varchar(500) NOT NULL,\n"
                         + "  `year` int(255) NOT NULL,\n"
                         + "  `pumed_id` varchar(150) NOT NULL default 'Not Available',\n"
@@ -162,7 +163,7 @@ public class DB implements Serializable {
                         + "  `string_p_value` varchar(200) NOT NULL default 'Not Available',\n"
                         + "  `pvalue_comments` varchar(500) NOT NULL default 'Not Available',\n"
                         + "  `quantified_proteins_number` int(255) NOT NULL default '-1',\n"
-                        + "  `identified _proteins_num` int(255) NOT NULL default '-1',\n"
+                        + "  `identified_proteins_number` int(255) NOT NULL default '-1',\n"
                         + "  `peptideId_number` int(255) NOT NULL default '-1',\n"
                         + "  `quantified_peptides_number` int(255) NOT NULL default '-1',\n"
                         + "  `patients_group_i_number` int(255) NOT NULL default '-1',\n"
@@ -317,21 +318,26 @@ public class DB implements Serializable {
                         + ") ENGINE=MyISAM DEFAULT CHARSET=utf8; ";
                 st.executeUpdate(statment);
 
-                statment = "CREATE TABLE IF NOT EXISTS `quantitative_peptides_table` ( "
-                        + "  `index` int(255) NOT NULL auto_increment, "
-                        + "  `prot_index` int(255) NOT NULL default '-1', "
-                        + "  `peptide_sequance` varchar(600) NOT NULL default 'Not Available', "
-                        + "  `peptide_modification` varchar(600) NOT NULL default 'Not Available', "
-                        + "  `modification_comment` varchar(600) NOT NULL default 'Not Available', "
-                        + "  `string_fc_value` varchar(200) NOT NULL default 'Not Provided', "
-                        + "  `string_p_value` varchar(200) NOT NULL default 'Not Available', "
-                        + "  `p_value` double NOT NULL default '-1000000000', "
-                        + "  `roc_auc` double NOT NULL default '-1000000000', "
-                        + "  `fc_value` double NOT NULL default '-1000000000', "
-                        + "  `DsKey` int(255) NOT NULL default '-1', "
-                        + "  `p_value_comments` varchar(500) NOT NULL default 'Not Available', "
-                        + "  `proteinAccession` varchar(50) NOT NULL default 'Not Available', "
-                        + "  KEY `index` (`index`) "
+                statment = "CREATE TABLE IF NOT EXISTS `quantitative_peptides_table` (\n"
+                        + "  `index` int(255) NOT NULL auto_increment,\n"
+                        + "  `prot_index` int(255) NOT NULL default '-1',\n"
+                        + "  `peptide_sequance` varchar(600) NOT NULL default 'Not Available',\n"
+                        + "  `peptide_modification` varchar(600) NOT NULL default 'Not Available',\n"
+                        + "  `modification_comment` varchar(600) NOT NULL default 'Not Available',\n"
+                        + "  `string_fc_value` varchar(200) NOT NULL default 'Not Provided',\n"
+                        + "  `string_p_value` varchar(200) NOT NULL default 'Not Available',\n"
+                        + "  `p_value` double NOT NULL default '-1000000000',\n"
+                        + "  `roc_auc` double NOT NULL default '-1000000000',\n"
+                        + "  `fc_value` double NOT NULL default '-1000000000',\n"
+                        + "  `DsKey` int(255) NOT NULL default '-1',\n"
+                        + "  `p_value_comments` varchar(500) NOT NULL default 'Not Available',\n"
+                        + "  `proteinAccession` varchar(50) NOT NULL default 'Not Available',\n"
+                        + "  `additional_comments` varchar(100) NOT NULL default 'Not Available',\n"
+                        + "  `log_2_FC` double NOT NULL default '-1000000000',\n"
+                        + "  `pvalue_significance_threshold` varchar(500) NOT NULL default 'Not Available',\n"
+                        + "  `sequence_annotated` varchar(600) NOT NULL default 'Not Available',\n"
+                        + "  `peptide_charge` int(255) NOT NULL default '-1',\n"
+                        + "  KEY `index` (`index`)\n"
                         + ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
                 st.executeUpdate(statment);
 
@@ -345,92 +351,17 @@ public class DB implements Serializable {
                         + "  `quantified_peptides_number` int(255) NOT NULL default '-1',\n"
                         + "  `identified_peptides_number` int(255) NOT NULL default '-1',\n"
                         + "  `fold_change` varchar(20) NOT NULL default 'Not Available',\n"
-                        + "  `sequance` text NOT NULL,\n"
+                        + "  `sequance` text,\n"
                         + "  `fc_value` double NOT NULL default '-1000000000',\n"
                         + "  `roc_auc` double NOT NULL default '-1000000000',\n"
                         + "  `string_p_value` varchar(100) NOT NULL default 'Not Available',\n"
                         + "  `p_value` double NOT NULL default '-1000000000',\n"
                         + "  `p_value_comments` varchar(500) NOT NULL default 'Not Available',\n"
                         + "  `additional_comments` varchar(1000) NOT NULL default 'Not Available',\n"
+                        + "  `log_2_FC` double NOT NULL default '-1000000000',\n"
+                        + "  `pvalue_significance_threshold` varchar(500) NOT NULL default 'Not Available',\n"
                         + "  KEY `index` (`index`)\n"
-                        + ") ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
-                st.executeUpdate(statment);
-
-                statment = "CREATE TABLE IF NOT EXISTS `quant_dataset_table` ( "
-                        + "  `additional_comments` varchar(700) NOT NULL default 'Not Available', "
-                        + "  `pumed_id` varchar(30) NOT NULL, "
-                        + "  `files_num` int(255) NOT NULL default '-1', "
-                        + "  `identified _proteins_num` int(255) NOT NULL default '-1', "
-                        + "  `quantified_protein_num` int(255) NOT NULL default '-1', "
-                        + "  `disease_group` varchar(300) NOT NULL default 'Not Available', "
-                        + "  `raw_data_url` varchar(500) NOT NULL default 'Raw Data Not Available', "
-                        + "  `year` int(4) NOT NULL default '0', "
-                        + "  `index` int(255) NOT NULL auto_increment, "
-                        + "  `type_of_study` varchar(200) NOT NULL default 'Not Available', "
-                        + "  `sample_type` varchar(200) NOT NULL default 'Not Available', "
-                        + "  `sample_matching` varchar(300) NOT NULL default 'Not Available', "
-                        + "  `technology` varchar(300) NOT NULL default 'Not Available', "
-                        + "  `analytical_approach` varchar(300) NOT NULL default 'Not Available', "
-                        + "  `enzyme` varchar(300) NOT NULL default 'Not Available', "
-                        + "  `shotgun_targeted` varchar(200) NOT NULL default 'Not Available', "
-                        + "  `quantification_basis` varchar(200) NOT NULL default 'Not Available', "
-                        + "  `quant_basis_comment` varchar(500) NOT NULL default 'Not Available', "
-                        + "  `patients_group_i_number` int(255) NOT NULL default '-1000000000', "
-                        + "  `patients_group_ii_number` int(255) NOT NULL default '-1000000000', "
-                        + "  `normalization_strategy` varchar(600) NOT NULL default 'Not Available', "
-                        + "  `author` varchar(300) NOT NULL default 'John Smith', "
-                        + "  `patient_group_i` varchar(700) NOT NULL default 'Not Available', "
-                        + "  `patient_gr_i_comment` varchar(700) NOT NULL default 'Not Available', "
-                        + "  `patient_sub_group_i` varchar(700) NOT NULL default 'Not Available', "
-                        + "  `patient_group_ii` varchar(700) NOT NULL default 'Not Available', "
-                        + "  `patient_sub_group_ii` varchar(700) NOT NULL default 'Not Available', "
-                        + "  `patient_gr_ii_comment` varchar(700) NOT NULL default 'Not Available', "
-                        + "  PRIMARY KEY  (`index`) "
                         + ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
-                st.executeUpdate(statment);
-
-                statment = "CREATE TABLE IF NOT EXISTS `quant_prot_table` ( "
-                        + "  `pumed_id` varchar(150) NOT NULL, "
-                        + "  `uniprot_accession` varchar(150) NOT NULL, "
-                        + "  `uniprot_protein_name` varchar(700) NOT NULL, "
-                        + "  `publication_acc_number` varchar(150) default 'Not Available', "
-                        + "  `publication_protein_name` varchar(700) default 'Not Available', "
-                        + "  `raw_data_available` varchar(700) default 'Not Available', "
-                        + "  `type_of_study` varchar(150) default 'Not Available', "
-                        + "  `sample_type` varchar(150) default 'Not Available', "
-                        + "  `patient_group_i` varchar(700) default 'Not Available', "
-                        + "  `patient_sub_group_i` varchar(700) default 'Not Available', "
-                        + "  `patient_gr_i_comment` varchar(700) default 'Not Available', "
-                        + "  `patient_group_ii` varchar(700) default 'Not Available',  "
-                        + "  `patient_sub_group_ii` varchar(700) default 'Not Available', "
-                        + "  `patient_gr_ii_comment` varchar(700) default 'Not Available',   "
-                        + "  `sample_matching` varchar(500) default 'Not Available', "
-                        + "  `normalization_strategy` varchar(500) default 'Not Available', "
-                        + "  `technology` varchar(500) default 'Not Available', "
-                        + "  `analytical_approach` varchar(500) default 'Not Available', "
-                        + "  `enzyme` varchar(500) default 'Not Available', "
-                        + "  `shotgun_targeted` varchar(100) default 'Not Available', "
-                        + "  `quantification_basis` varchar(500) default 'Not Available', "
-                        + "  `quant_basis_comment` varchar(700) default 'Not Available', "
-                        + "  `additional_comments` varchar(700) default 'Not Available', "
-                        + "  `q_peptide_key` varchar(700) default 'Not Available', "
-                        + "  `peptide_sequance` varchar(700) default 'Not Available', "
-                        + "  `peptide_modification` varchar(700) default 'Not Available', "
-                        + "  `modification_comment` varchar(700) default 'Not Available', "
-                        + "  `string_fc_value` varchar(200) default 'Not Available',  "
-                        + "  `string_p_value` varchar(200) default 'Not Available', "
-                        + "  `quantified_proteins_number` int(255) default NULL, "
-                        + "  `peptideId_number` int(255) default NULL, "
-                        + "  `quantified_peptides_number` int(255) default NULL, "
-                        + "  `patients_group_i_number` int(255) default NULL, "
-                        + "  `patients_group_ii_number` int(255) default NULL, "
-                        + "  `p_value` double default NULL, "
-                        + "  `roc_auc` double default NULL, "
-                        + "  `fc_value` double default NULL, "
-                        + "  `peptide_prot` varchar(5) NOT NULL default 'False', "
-                        + "  `index` int(255) NOT NULL auto_increment, "
-                        + "  PRIMARY KEY  (`index`) "
-                        + ") ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
                 st.executeUpdate(statment);
 
                 statment = "CREATE TABLE IF NOT EXISTS `standard_plot_proteins` ( "
@@ -441,39 +372,6 @@ public class DB implements Serializable {
                         + "  `upper` int(11) NOT NULL, "
                         + "  `color` varchar(30) NOT NULL "
                         + ") ENGINE=MyISAM DEFAULT CHARSET=utf8; ";
-                st.executeUpdate(statment);
-
-                statment = "CREATE TABLE IF NOT EXISTS `studies_table` ( "
-                        + "  `pumed_id` varchar(30) NOT NULL, "
-                        + "  `files_num` int(255) NOT NULL default '0', "
-                        + "  `identified _proteins_num` int(255) NOT NULL default '0', "
-                        + "  `quantified_protein_num` int(255) NOT NULL default '0', "
-                        + "  `disease_group` varchar(300) NOT NULL default 'Not Available', "
-                        + "  `raw_data_url` varchar(500) NOT NULL default 'Not Available', "
-                        + "  `year` int(4) NOT NULL default '0', "
-                        + "  `index` int(255) NOT NULL auto_increment, "
-                        + "  `type_of_study` varchar(200) NOT NULL default 'Not Available', "
-                        + "  `sample_type` varchar(200) NOT NULL default 'Not Available', "
-                        + "  `sample_matching` varchar(300) NOT NULL default 'Not Available', "
-                        + "  `technology` varchar(300) NOT NULL default 'Not Available', "
-                        + "  `analytical_approach` varchar(300) NOT NULL default 'Not Available', "
-                        + "  `enzyme` varchar(300) NOT NULL default 'Not Available', "
-                        + "  `shotgun_targeted` varchar(200) NOT NULL default 'Not Available', "
-                        + "  `quantification_basis` varchar(200) NOT NULL default 'Not Available', "
-                        + "  `quant_basis_comment` varchar(500) NOT NULL default 'Not Available', "
-                        + "  `quantified_proteins_number` int(255) NOT NULL default '-1000000000', "
-                        + "  `patients_group_i_number` int(255) NOT NULL default '-1000000000', "
-                        + "  `patients_group_ii_number` int(255) NOT NULL default '-1000000000', "
-                        + "  `normalization_strategy` varchar(600) NOT NULL default 'Not Available', "
-                        + "  `author` varchar(300) NOT NULL default 'John Smith', "
-                        + "  `patient_group_i` varchar(700) NOT NULL default 'Not Available', "
-                        + "  `patient_gr_i_comment` varchar(700) NOT NULL default 'Not Available', "
-                        + "  `patient_sub_group_i` varchar(700) NOT NULL default 'Not Available', "
-                        + "  `patient_group_ii` varchar(700) NOT NULL default 'Not Available', "
-                        + "  `patient_sub_group_ii` varchar(700) NOT NULL default 'Not Available', "
-                        + "  `patient_gr_ii_comment` varchar(700) NOT NULL default 'Not Available', "
-                        + "  PRIMARY KEY  (`index`) "
-                        + ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
                 st.executeUpdate(statment);
 
                 statment = "CREATE TABLE IF NOT EXISTS `users_table` ( "
@@ -646,10 +544,10 @@ public class DB implements Serializable {
 ////                String studies_table = "CREATE TABLE IF NOT EXISTS `studies_table` (\n"
 ////                        + "  `pumed_id` varchar(30) NOT NULL,\n"
 ////                        + "  `files_num` int(255) NOT NULL default '0',\n"
-////                        + "  `identified _proteins_num` int(255) NOT NULL default '0',\n"
-////                        + "  `quantified_protein_num` int(255) NOT NULL default '0',\n"
+////                        + "  `identified_proteins_number` int(255) NOT NULL default '0',\n"
+////                        + "  `quantified_proteins_number` int(255) NOT NULL default '0',\n"
 ////                        + "  `disease_group` varchar(300) NOT NULL default 'Not Available',\n"
-////                        + "  `raw_data_url` varchar(500) NOT NULL default 'Not Available',\n"
+////                        + "  `raw_data_available` varchar(500) NOT NULL default 'Not Available',\n"
 ////                        + "  `year` int(4) NOT NULL default '0',\n"
 ////                        + "  `index` int(255) NOT NULL auto_increment,\n"
 ////                        + "  `type_of_study` varchar(200) NOT NULL default 'Not Available',\n"
@@ -674,10 +572,10 @@ public class DB implements Serializable {
 //                String quant_ds_table = "CREATE TABLE IF NOT EXISTS `quant_dataset_table` (\n"
 //                        + "  `pumed_id` varchar(30) NOT NULL,\n"
 //                        + "  `files_num` int(255) NOT NULL default '0',\n"
-//                        + "  `identified _proteins_num` int(255) NOT NULL default '0',\n"
-//                        + "  `quantified_protein_num` int(255) NOT NULL default '0',\n"
+//                        + "  `identified_proteins_number` int(255) NOT NULL default '0',\n"
+//                        + "  `quantified_proteins_number` int(255) NOT NULL default '0',\n"
 //                        + "  `disease_group` varchar(300) NOT NULL default 'Not Available',\n"
-//                        + "  `raw_data_url` varchar(500) NOT NULL default 'Not Available',\n"
+//                        + "  `raw_data_available` varchar(500) NOT NULL default 'Not Available',\n"
 //                        + "  `year` int(4) NOT NULL default '0',\n"
 //                        + "  `index` int(255) NOT NULL auto_increment,\n"
 //                        + "  `type_of_study` varchar(200) NOT NULL default 'Not Available',\n"
@@ -1210,20 +1108,19 @@ public class DB implements Serializable {
                 + "-- --------------------------------------------------------\n"
                 + "\n"
                 + "-- \n"
-                + "-- Table structure for table `combined_dataset_table`\n"
+                + "-- Table structure for table `quant_dataset_table`\n"
                 + "-- \n"
                 + "-- Creation: Jun 25, 2015 at 01:07 PM\n"
                 + "-- Last update: Jun 25, 2015 at 01:07 PM\n"
                 + "-- \n"
                 + "\n"
-                + "CREATE TABLE IF NOT EXISTS `combined_dataset_table` (\n"
+                + "CREATE TABLE IF NOT EXISTS `quant_dataset_table` (\n"
                 + "  `additional_comments` varchar(700) NOT NULL default 'Not Available',\n"
                 + "  `pumed_id` varchar(30) NOT NULL default 'Not Available',\n"
                 + "  `files_num` int(255) NOT NULL default '-1',\n"
-                + "  `identified _proteins_num` int(255) NOT NULL default '-1',\n"
-                + "  `quantified_protein_num` int(255) NOT NULL default '-1',\n"
-                + "  `disease_group` varchar(300) NOT NULL default 'Not Available',\n"
-                + "  `raw_data_url` varchar(500) NOT NULL default 'Raw Data Not Available',\n"
+                + "  `identified_proteins_number` int(255) NOT NULL default '-1',\n"
+                + "  `quantified_proteins_number` int(255) NOT NULL default '-1',\n"
+                + "  `raw_data_available` varchar(500) NOT NULL default 'Raw Data Not Available',\n"
                 + "  `year` int(4) NOT NULL default '0',\n"
                 + "  `index` int(255) NOT NULL auto_increment,\n"
                 + "  `type_of_study` varchar(200) NOT NULL default 'Not Available',\n"
@@ -1251,13 +1148,13 @@ public class DB implements Serializable {
                 + "-- --------------------------------------------------------\n"
                 + "\n"
                 + "-- \n"
-                + "-- Table structure for table `combined_quant_table`\n"
+                + "-- Table structure for table `quant_full_table`\n"
                 + "-- \n"
                 + "-- Creation: Jun 25, 2015 at 01:07 PM\n"
                 + "-- Last update: Jun 25, 2015 at 01:07 PM\n"
                 + "-- \n"
                 + "\n"
-                + "CREATE TABLE IF NOT EXISTS `combined_quant_table` (\n"
+                + "CREATE TABLE IF NOT EXISTS `quant_full_table` (\n"
                 + "  `author` varchar(500) NOT NULL,\n"
                 + "  `year` int(255) NOT NULL,\n"
                 + "  `pumed_id` varchar(150) NOT NULL default 'Not Available',\n"
@@ -1290,7 +1187,7 @@ public class DB implements Serializable {
                 + "  `string_fc_value` varchar(200) NOT NULL default 'Not Available',\n"
                 + "  `string_p_value` varchar(200) NOT NULL default 'Not Available',\n"
                 + "  `quantified_proteins_number` int(255) NOT NULL default '-1',\n"
-                + "  `identified _proteins_num` int(255) NOT NULL default '-1',\n"
+                + "  `identified_proteins_number` int(255) NOT NULL default '-1',\n"
                 + "  `peptideId_number` int(255) NOT NULL default '-1',\n"
                 + "  `quantified_peptides_number` int(255) NOT NULL default '-1',\n"
                 + "  `patients_group_i_number` int(255) NOT NULL default '-1',\n"
@@ -1565,10 +1462,9 @@ public class DB implements Serializable {
                 + "  `additional_comments` varchar(700) NOT NULL default 'Not Available',\n"
                 + "  `pumed_id` varchar(30) NOT NULL,\n"
                 + "  `files_num` int(255) NOT NULL default '-1',\n"
-                + "  `identified _proteins_num` int(255) NOT NULL default '-1',\n"
-                + "  `quantified_protein_num` int(255) NOT NULL default '-1',\n"
-                + "  `disease_group` varchar(300) NOT NULL default 'Not Available',\n"
-                + "  `raw_data_url` varchar(500) NOT NULL default 'Raw Data Not Available',\n"
+                + "  `identified_proteins_number` int(255) NOT NULL default '-1',\n"
+                + "  `quantified_proteins_number` int(255) NOT NULL default '-1',\n"
+                + "  `raw_data_available` varchar(500) NOT NULL default 'Raw Data Not Available',\n"
                 + "  `year` int(4) NOT NULL default '0',\n"
                 + "  `index` int(255) NOT NULL auto_increment,\n"
                 + "  `type_of_study` varchar(200) NOT NULL default 'Not Available',\n"
@@ -1675,10 +1571,9 @@ public class DB implements Serializable {
                 + "CREATE TABLE IF NOT EXISTS `studies_table` (\n"
                 + "  `pumed_id` varchar(30) NOT NULL,\n"
                 + "  `files_num` int(255) NOT NULL default '0',\n"
-                + "  `identified _proteins_num` int(255) NOT NULL default '0',\n"
-                + "  `quantified_protein_num` int(255) NOT NULL default '0',\n"
-                + "  `disease_group` varchar(300) NOT NULL default 'Not Available',\n"
-                + "  `raw_data_url` varchar(500) NOT NULL default 'Not Available',\n"
+                + "  `identified_proteins_number` int(255) NOT NULL default '0',\n"
+                + "  `quantified_proteins_number` int(255) NOT NULL default '0',\n"
+                + "  `raw_data_available` varchar(500) NOT NULL default 'Not Available',\n"
                 + "  `year` int(4) NOT NULL default '0',\n"
                 + "  `index` int(255) NOT NULL auto_increment,\n"
                 + "  `type_of_study` varchar(200) NOT NULL default 'Not Available',\n"
@@ -1748,41 +1643,38 @@ public class DB implements Serializable {
     public boolean restoreDB(String sqlFileUrl) {
         //create if not exist
 
-        String cleanStatment = "TRUNCATE `combined_dataset_table`;TRUNCATE `combined_quant_table`;TRUNCATE `experiments_table`;TRUNCATE `experiment_fractions_table`;TRUNCATE `experiment_peptides_proteins_table`; TRUNCATE `experiment_peptides_table`; TRUNCATE `experiment_protein_table`;TRUNCATE `fractions_table`;TRUNCATE `quantitative_peptides_table`;TRUNCATE `quantitative_proteins_table`;TRUNCATE `quant_dataset_table`;TRUNCATE `proteins_peptides_table`;TRUNCATE `standard_plot_proteins`;TRUNCATE `users_table`;TRUNCATE `quant_prot_table`";
-        String[] tabls = cleanStatment.split(";");
-
+//        String cleanStatment = "TRUNCATE `quant_dataset_table`;TRUNCATE `quant_full_table`;TRUNCATE `experiments_table`;TRUNCATE `experiment_fractions_table`;TRUNCATE `experiment_peptides_proteins_table`; TRUNCATE `experiment_peptides_table`; TRUNCATE `experiment_protein_table`;TRUNCATE `fractions_table`;TRUNCATE `quantitative_peptides_table`;TRUNCATE `quantitative_proteins_table`;TRUNCATE `quant_dataset_table`;TRUNCATE `proteins_peptides_table`;TRUNCATE `standard_plot_proteins`;TRUNCATE `users_table`;TRUNCATE `quant_prot_table`";
+//        String[] tabls = cleanStatment.split(";");
         try {
-//            createTables();
-            this.createUpdatedTables();
-            int test = 0;
-
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
+            String[] executeCmd = new String[]{"C:\\AppServ\\MySQL\\bin\\mysql", "--user=" + userName, "--password=" + password, dbName, "-e", "source " + sqlFileUrl};///usr/bin/mysql
 
-//            for (String str : tabls) {
-//                PreparedStatement cleanTableStat = conn.prepareStatement(str);
-//                test = cleanTableStat.executeUpdate();
-////            cleanTableStat.close();
-//            }
-            if (true) {
-                String[] executeCmd = new String[]{"C:\\AppServ\\MySQL\\bin\\mysql", "--user=" + userName, "--password=" + password, dbName, "-e", "source " + sqlFileUrl};///usr/bin/mysql
+            Process runtimeProcess;
+            runtimeProcess = Runtime.getRuntime().exec(executeCmd);
+            int processComplete = runtimeProcess.waitFor();
 
-                Process runtimeProcess;
-                runtimeProcess = Runtime.getRuntime().exec(executeCmd);
-                int processComplete = runtimeProcess.waitFor();
-
-                if (processComplete == 0) {
-                    System.out.println("Backup restored successfully");
-                    return true;
-                } else {
-                    System.out.println("Could not restore the backup");
-                }
+            if (processComplete == 0) {
+                System.out.println("Backup restored successfully");
+                return true;
+            } else {
+                System.out.println("Could not restore the backup");
             }
 
-        } catch (Exception e) {
-            System.out.println(e.getLocalizedMessage());
+        } catch (SQLException e) {
+            System.out.println(e);
+        } catch (ClassNotFoundException e) {
+            System.out.println(e);
+        } catch (InstantiationException e) {
+            System.out.println(e);
+        } catch (IllegalAccessException e) {
+            System.out.println(e);
+        } catch (IOException e) {
+            System.out.println(e);
+        } catch (InterruptedException e) {
+            System.out.println(e);
         }
 
         return false;
@@ -1791,10 +1683,9 @@ public class DB implements Serializable {
     //handel quant data
     @SuppressWarnings("CallToPrintStackTrace")
     public boolean storeCombinedQuantProtTable(List<QuantProtein> qProtList) {
-
         System.out.println("start store data");
         boolean success = true;
-        String insertQProt = "INSERT INTO  `" + dbName + "`.`combined_quant_table` (`author` ,`year` ,`pumed_id`,`study_key` ,`quantified_proteins_number`,`uniprot_accession` ,`uniprot_protein_name` ,`publication_acc_number` ,`publication_protein_name`,`peptide_prot` ,`raw_data_available` ,`peptideId_number`,`quantified_peptides_number`,`peptide_charge`"
+        String insertQProt = "INSERT INTO  `" + dbName + "`.`quant_full_table` (`author` ,`year` ,`pumed_id`,`study_key` ,`quantified_proteins_number`,`uniprot_accession` ,`uniprot_protein_name` ,`publication_acc_number` ,`publication_protein_name`,`peptide_prot` ,`raw_data_available` ,`peptideId_number`,`quantified_peptides_number`,`peptide_charge`"
                 + ",`peptide_sequance`,`sequence_annotated`,`peptide_modification`,`modification_comment`,`type_of_study` ,`sample_type`,"
                 + "`patients_group_i_number`,`patient_group_i` ,`patient_sub_group_i` ,`patient_gr_i_comment`,`patients_group_ii_number`,"
                 + "`patient_group_ii` ,`patient_sub_group_ii` ,`patient_gr_ii_comment`,"
@@ -1802,7 +1693,7 @@ public class DB implements Serializable {
                 + ",`string_fc_value`,`fc_value`,`log_2_FC`,`string_p_value`,`p_value`,`pvalue_significance_threshold`,`pvalue_comments`,"
                 + "`roc_auc`,`technology`,`analytical_method`,`analytical_approach`,"
                 + "`shotgun_targeted`,`enzyme`,`quantification_basis`,`quant_basis_comment`,`additional_comments`,"
-                + "`q_peptide_key`,`identified _proteins_num`)VALUES ("
+                + "`q_peptide_key`,`identified_proteins_number`)VALUES ("
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
         PreparedStatement insertQProtStat;
@@ -1891,6 +1782,13 @@ public class DB implements Serializable {
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println(e);
+            try {
+                createTables();
+            } catch (SQLException ex) {
+                Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            DB.this.storeCombinedQuantProtTable(qProtList);
+
             success = false;
         } catch (ClassNotFoundException exp) {
             System.err.println(exp);
@@ -1948,10 +1846,10 @@ public class DB implements Serializable {
 
     public void storeQuantDatasets() {
 
-        String selectPro = "SELECT DISTINCT  `author` ,`year` ,`pumed_id` , `study_key`, `quantified_proteins_number` , `identified _proteins_num` ,`raw_data_available` ,  `type_of_study` ,  `sample_type` ,  `sample_matching` ,  `normalization_strategy` ,  `technology` ,  `analytical_approach`  ,  `analytical_method`,  `enzyme` ,  `shotgun_targeted` ,  `quantification_basis` ,  `quant_basis_comment`  ,  `patients_group_i_number` ,  `patients_group_ii_number` ,  `patient_group_i` ,  `patient_gr_i_comment` ,  `patient_sub_group_i` ,  `patient_group_ii` ,  `patient_sub_group_ii` , `patient_gr_ii_comment` \n"
-                + "FROM  `combined_quant_table` ";
+        String selectPro = "SELECT DISTINCT  `author` ,`year` ,`pumed_id` , `study_key`, `quantified_proteins_number` , `identified_proteins_number` ,`raw_data_available` ,  `type_of_study` ,  `sample_type` ,  `sample_matching` ,  `normalization_strategy` ,  `technology` ,  `analytical_approach`  ,  `analytical_method`,  `enzyme` ,  `shotgun_targeted` ,  `quantification_basis` ,  `quant_basis_comment`  ,  `patients_group_i_number` ,  `patients_group_ii_number` ,  `patient_group_i` ,  `patient_gr_i_comment` ,  `patient_sub_group_i` ,  `patient_group_ii` ,  `patient_sub_group_ii` , `patient_gr_ii_comment` \n"
+                + "FROM  `quant_full_table` ";
 
-        PreparedStatement selectProStat = null;
+        PreparedStatement selectProStat;
 //        List<QuantProtein> quantProtResultList = null;
         Set<QuantDatasetObject> pubmidIds = new HashSet<QuantDatasetObject>();
         try {
@@ -1975,13 +1873,14 @@ public class DB implements Serializable {
                 pb.setSampleMatching(rs.getString("sample_matching"));
                 pb.setTechnology(rs.getString("technology"));
                 pb.setAnalyticalApproach(rs.getString("analytical_approach"));
+                pb.setAnalyticalMethod(rs.getString("analytical_method"));
                 pb.setEnzyme(rs.getString("enzyme"));
                 pb.setShotgunTargeted(rs.getString("shotgun_targeted"));
                 pb.setQuantificationBasis(rs.getString("quantification_basis"));
                 pb.setQuantBasisComment(rs.getString("quant_basis_comment"));
                 pb.setPatientsGroup1Number(rs.getInt("patients_group_i_number"));
                 pb.setPatientsGroup2Number(rs.getInt("patients_group_ii_number"));
-                pb.setIdentifiedProteinsNumber(rs.getInt("identified _proteins_num"));
+                pb.setIdentifiedProteinsNumber(rs.getInt("identified_proteins_number"));
 
                 pb.setRawDataUrl(rs.getString("raw_data_available"));
                 pb.setNormalizationStrategy(rs.getString("normalization_strategy"));
@@ -1995,12 +1894,11 @@ public class DB implements Serializable {
                 x++;
             }
 
-            System.out.println("start updating publications");
-            String insertQProt = "INSERT INTO  `" + dbName + "`.`combined_dataset_table` (`pumed_id` ,\n"
+            String insertQProt = "INSERT INTO  `" + dbName + "`.`quant_dataset_table` (`pumed_id` ,\n"
                     + "`author` ,\n"
-                    + "`identified _proteins_num` ,\n"
-                    + "`quantified_protein_num` ,\n"
-                    + "`raw_data_url` ,\n"
+                    + "`identified_proteins_number` ,\n"
+                    + "`quantified_proteins_number` ,\n"
+                    + "`raw_data_available` ,\n"
                     + "`year` ,\n"
                     + "`type_of_study` ,\n"
                     + "`sample_type` ,\n"
@@ -2013,9 +1911,9 @@ public class DB implements Serializable {
                     + "`quant_basis_comment` ,\n"
                     + "`patients_group_i_number` ,\n"
                     + "`patients_group_ii_number` ,  `normalization_strategy`"
-                    + ",`patient_group_i`,`patient_gr_i_comment`,`patient_sub_group_i`,`patient_group_ii`,`patient_gr_ii_comment`,`patient_sub_group_ii`,`study_key`)VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                    + ",`patient_group_i`,`patient_gr_i_comment`,`patient_sub_group_i`,`patient_group_ii`,`patient_gr_ii_comment`,`patient_sub_group_ii`,`study_key`,`analytical_method`)VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
-            PreparedStatement insertPbublicationStat = null;
+            PreparedStatement insertPbublicationStat;
 
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
@@ -2038,14 +1936,9 @@ public class DB implements Serializable {
                 insertPbublicationStat.setString(10, pb.getTechnology());
                 insertPbublicationStat.setString(11, pb.getAnalyticalApproach());
                 insertPbublicationStat.setString(12, pb.getEnzyme());
-//                if (pb.getShotgunTargeted() == null) {
-//                    pb.setShotgunTargeted("Not Available");
-//                }
+
                 insertPbublicationStat.setString(13, pb.getShotgunTargeted());
 
-//                if (pb.getQuantificationBasis() == null) {
-//                    pb.setQuantificationBasis("Not Available");
-//                }
                 insertPbublicationStat.setString(14, pb.getQuantificationBasis());
                 if (pb.getQuantBasisComment() == null) {
                     pb.setQuantBasisComment("Not Available");
@@ -2054,91 +1947,28 @@ public class DB implements Serializable {
                 insertPbublicationStat.setInt(16, pb.getPatientsGroup1Number());
                 insertPbublicationStat.setInt(17, pb.getPatientsGroup2Number());
                 insertPbublicationStat.setString(18, pb.getNormalizationStrategy());
-//                if (pb.getPatientsGroup1() == null) {
-//                    pb.setPatientsGroup1("Not Available");
-//                }
+
                 insertPbublicationStat.setString(19, pb.getPatientsGroup1());
-//                if (pb.getPatientsGroup1Comm()== null) {
-//                    pb.setPatientsGroup1Comm("Not Available");
-//                }
+
                 insertPbublicationStat.setString(20, pb.getPatientsGroup1Comm());
 
-//                if (pb.getPatientsSubGroup1()== null) {
-//                    pb.setPatientsSubGroup1("Not Available");
-//                }
                 insertPbublicationStat.setString(21, pb.getPatientsSubGroup1());
 
-//               if (pb.getPatientsGroup2() == null) {
-//                    pb.setPatientsGroup2("Not Available");
-//                }
                 insertPbublicationStat.setString(22, pb.getPatientsGroup2());
-//                if (pb.getPatientsGroup2Comm()== null) {
-//                    pb.setPatientsGroup2Comm("Not Available");
-//                }
+
                 insertPbublicationStat.setString(23, pb.getPatientsGroup2Comm());
 
-//                if (pb.getPatientsSubGroup2()== null) {
-//                    pb.setPatientsSubGroup2("Not Available");
-//                }
                 insertPbublicationStat.setString(24, pb.getPatientsSubGroup2());
                 insertPbublicationStat.setString(25, pb.getStudyKey());
+                insertPbublicationStat.setString(26, pb.getAnalyticalMethod());
                 insertPbublicationStat.executeUpdate();
                 insertPbublicationStat.clearParameters();
                 insertPbublicationStat.close();
 
             }
 
-//            String updateDSStat = "UPDATE  `csf_db_v2`.`quant_dataset_table` SET  `patient_group_ii` =  ? AND `patient_sub_group_ii` =? AND `patient_gr_ii_comment` =? WHERE  `quant_dataset_table`.`pumed_id` =? AND `type_of_study` =? AND `sample_type` =? AND `sample_matching` =? AND `technology` =? AND `analytical_approach` =? AND `enzyme` =? AND `shotgun_targeted` =? AND `quantification_basis` =? AND `quant_basis_comment` =? AND `patients_group_i_number` =? AND `patients_group_ii_number` =? AND `normalization_strategy` =?;";
-//
-//              PreparedStatement insertPbublicationStat = null;
-//
-//            if (conn == null || conn.isClosed()) {
-//                Class.forName(driver).newInstance();
-//                conn = DriverManager.getConnection(url + dbName, userName, password);
-//            }
-//
-//            for (QuantDatasetObject pb : pubmidIds) {
-//                insertPbublicationStat = conn.prepareStatement(updateDSStat);
-//                insertPbublicationStat.setString(1, pb.getPatientsGroup2());
-//                insertPbublicationStat.setString(2, pb.getPatientsSubGroup2());
-//                insertPbublicationStat.setString(3, pb.getPatientsGroup2Comm());
-//                
-//                
-//                insertPbublicationStat.setString(4, pb.getPumedID());
-//                insertPbublicationStat.setString(5, pb.getTypeOfStudy().toUpperCase());
-//                insertPbublicationStat.setString(6, pb.getSampleType().toUpperCase());
-//                insertPbublicationStat.setString(7, pb.getSampleMatching());
-//                insertPbublicationStat.setString(8, pb.getTechnology());
-//                insertPbublicationStat.setString(9, pb.getAnalyticalApproach());
-//                insertPbublicationStat.setString(10, pb.getEnzyme().toUpperCase());
-//                if (pb.getShotgunTargeted() == null) {
-//                    pb.setShotgunTargeted("Not Available");
-//                }
-//                insertPbublicationStat.setString(11, pb.getShotgunTargeted());
-//
-//                if (pb.getQuantificationBasis() == null) {
-//                    pb.setQuantificationBasis("Not Available");
-//                }
-//                insertPbublicationStat.setString(12, pb.getQuantificationBasis());
-//                if (pb.getQuantBasisComment() == null) {
-//                    pb.setQuantBasisComment("Not Available");
-//                }
-//                insertPbublicationStat.setString(13, pb.getQuantBasisComment());
-//                insertPbublicationStat.setInt(14, pb.getPatientsGroup1Number());
-//                insertPbublicationStat.setInt(15, pb.getPatientsGroup2Number());
-//                insertPbublicationStat.setString(16, pb.getNormalizationStrategy());
-//                if (pb.getPatientsGroup1() == null) {
-//                    pb.setPatientsGroup1("Not Available");
-//                }
-//                              
-//                int z = insertPbublicationStat.executeUpdate();
-//                insertPbublicationStat.clearParameters();
-//                insertPbublicationStat.close();
-//               
-//                System.out.println("at index " + z);
-//            
-//
-//            }
+            System.out.println("done with storing ds ");
+
         } catch (ClassNotFoundException e) {
             System.err.println("at error" + e.getLocalizedMessage());
 
@@ -2350,7 +2180,7 @@ public class DB implements Serializable {
 
         try {
             PreparedStatement selectStudiesStat;
-            String selectStudies = "SELECT * FROM  `combined_dataset_table` ";
+            String selectStudies = "SELECT * FROM  `quant_dataset_table` ";
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
@@ -2369,29 +2199,28 @@ public class DB implements Serializable {
                     activeHeaders[1] = true;
                 }
                 pb.setYear(year);
-                int identified_proteins_num = rs.getInt("identified _proteins_num");
-                if (!activeHeaders[2] && identified_proteins_num != -1 && identified_proteins_num != 0) {
+                int identified_proteins_number = rs.getInt("identified_proteins_number");
+                if (!activeHeaders[2] && identified_proteins_number != -1 && identified_proteins_number != 0) {
                     activeHeaders[2] = true;
                 }
-                pb.setIdentifiedProteinsNumber(identified_proteins_num);
+                pb.setIdentifiedProteinsNumber(identified_proteins_number);
 
-                int quantified_protein_num = rs.getInt("quantified_protein_num");
-                if (!activeHeaders[3] && quantified_protein_num != -1) {
+                int quantified_proteins_number = rs.getInt("quantified_proteins_number");
+                if (!activeHeaders[3] && quantified_proteins_number != -1) {
                     activeHeaders[3] = true;
                 }
-                pb.setQuantifiedProteinsNumber(quantified_protein_num);
+                pb.setQuantifiedProteinsNumber(quantified_proteins_number);
 
-                String disease_group = rs.getString("disease_group");
-                if (!activeHeaders[4] && disease_group != null && !disease_group.equalsIgnoreCase("Not Available")) {
-                    activeHeaders[4] = true;
-                }
-                pb.setDiseaseGroups(disease_group);
-
-                String raw_data_url = rs.getString("raw_data_url");
-                if (!activeHeaders[5] && raw_data_url != null && !raw_data_url.equalsIgnoreCase("Not Available")) {
+//                String disease_group = rs.getString("disease_group");
+//                if (!activeHeaders[4] && disease_group != null && !disease_group.equalsIgnoreCase("Not Available")) {
+//                    activeHeaders[4] = true;
+//                }
+//                pb.setAnalyticalMethod(disease_group);
+                String raw_data_available = rs.getString("raw_data_available");
+                if (!activeHeaders[5] && raw_data_available != null && !raw_data_available.equalsIgnoreCase("Not Available")) {
                     activeHeaders[5] = true;
                 }
-                pb.setRawDataUrl(raw_data_url);
+                pb.setRawDataUrl(raw_data_available);
 
                 int files_num = rs.getInt("files_num");
                 if (!activeHeaders[6] && files_num != -1) {

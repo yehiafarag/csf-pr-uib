@@ -21,10 +21,12 @@ import javax.swing.SwingWorker;
 public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
 
     private ExperimentBean exp;
-    private final String database_name = "quantdataupdated_10_9";
+    private final String database_name = "quantdataupdated_14_9";
     private final String executeCmd;
-    private final String backupFileUrl = "D:\\backups\\sqlQuant18-8\\backup-quant.sql"; // "/home/probe/user/CSF-PR-FILES/backup.sql";             //"D:\\backups\\sqlQuant18-8\\backup-quant.sql";                        //   
-    private final String processUrl = "C:\\AppServ\\MySQL\\bin\\mysqldump.exe";;//         "C:\\AppServ\\MySQL\\bin\\mysqldump.exe";//"C:\\AppServ\\MySQL\\bin\\mysqldump.exe"           ///usr/bin/mysqldump
+    private final String backupFileUrl = "D:\\backups\\sqlQuant18-8\\backup18-8-2015.sql"; // "/home/probe/user/CSF-PR-FILES/backup.sql";             //"D:\\backups\\sqlQuant18-8\\backup-quant.sql";                        //   
+    private final String processUrl = "C:\\AppServ\\MySQL\\bin\\mysqldump.exe";
+
+    ;//         "C:\\AppServ\\MySQL\\bin\\mysqldump.exe";//"C:\\AppServ\\MySQL\\bin\\mysqldump.exe"           ///usr/bin/mysqldump
 
     /* Creates new form GUI */
     public GUI() {
@@ -101,8 +103,12 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
         jButton7.setText("Select Application Folder");
         jTextField14.setText("");
         this.setTitle("CSF-PR File Reader");
+        String password = "";
+        for (char c : jPasswordField1.getPassword()) {
+            password += c;
+        }
 
-        executeCmd = processUrl + "  -u " + jTextField1.getText() + " -p" + jPasswordField1.getText() + " " + jTextField13.getText() + " -r  " + backupFileUrl;
+        executeCmd = processUrl + "  -u " + jTextField1.getText() + " -p" + password + " " + jTextField13.getText() + " -r  " + backupFileUrl;
     }
     /* This method is called from within the constructor to
      * Initialize the form.
@@ -625,9 +631,13 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
         if (correct) {
             if (exphandeler == null) {
                 try {
-                    exphandeler = new Handler("jdbc:mysql://" + jTextField13.getText() + ":3306/", database_name, "com.mysql.jdbc.Driver", jTextField1.getText(), jPasswordField1.getText());
+                    String password = "";
+                    for (char c : jPasswordField1.getPassword()) {
+                        password += c;
+                    }
+                    exphandeler = new Handler("jdbc:mysql://" + jTextField13.getText() + ":3306/", database_name, "com.mysql.jdbc.Driver", jTextField1.getText(), password);
                 } catch (SQLException sqlE) {
-                    System.out.println("at error line 630 "+this.getClass().getName()+"   "+sqlE);
+                    System.out.println("at error line 630 " + this.getClass().getName() + "   " + sqlE);
                 }
             }
             exphandeler.correctProtInfo();
@@ -640,7 +650,7 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
             String errorMessage1 = "Not .csv file";
             jTextField3.setForeground(Color.black);
             jTextField4.setForeground(Color.black);
-        
+
             if (jTextField3.getText() != null) {
 
                 if (jTextField3.getText().equalsIgnoreCase("") || !jTextField3.getText().endsWith(".txt")) {
@@ -649,7 +659,7 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                     return;
 
                 }
-              
+
             } else if (jTextField4.getText() != null && jTextField3.getText() == null) {
                 if (jTextField4.getText() == null || jTextField4.getText().equalsIgnoreCase("") || !jTextField4.getText().endsWith(".csv")) {
                     jTextField4.setText(errorMessage1);
@@ -657,13 +667,12 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                     return;
 
                 }
-                
-              
+
                 jTextField3.setText(errorMessage);
                 jTextField3.setForeground(Color.red);
 
             }
-           
+
             try {
                 new Thread() {
                     @Override
@@ -674,30 +683,28 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                 }.start();
                 Thread t = new Thread("DisplayThread") {
                     @Override
+                    @SuppressWarnings("CallToPrintStackTrace")
                     public void run() {
                         jLabel13.setText("reading and storing data");
                         jProgressBar1.setVisible(true);
                         jProgressBar1.setMaximum(100);
                         if (exphandeler == null) {
                             try {
-                                exphandeler = new Handler("jdbc:mysql://" + jTextField13.getText() + ":3306/", database_name, "com.mysql.jdbc.Driver", jTextField1.getText(), jPasswordField1.getText());
+                                String password = "";
+                                for (char c : jPasswordField1.getPassword()) {
+                                    password += c;
+                                }
+                                exphandeler = new Handler("jdbc:mysql://" + jTextField13.getText() + ":3306/", database_name, "com.mysql.jdbc.Driver", jTextField1.getText(), password);
                             } catch (SQLException sqlE) {
                                 sqlE.printStackTrace();
                             }
                         }
-                        boolean processing = false;
-//                        if (!localSequance) {
-                            processing = exphandeler.handelQuantPubData(jTextField4.getText(),jTextField3.getText());
-//                        } else {
-
-//                            processing = exphandeler.handelProtSequanceData(jTextField3.getText());
-//                        }
+                        boolean processing = exphandeler.handelQuantPubData(jTextField4.getText(), jTextField3.getText());
                         if (processing) {
                             jLabel13.setText("done");
                         } else {
                             jLabel13.setText("error in storing data check the input file");
                         }
-
                     }
                 };
                 t.start();
@@ -709,8 +716,8 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
             } catch (Exception e) {
                 System.err.println("error: " + e.getLocalizedMessage());
             }
-            
-        } else{
+
+        } else {
             boolean test = this.valiField();
             if (test) {
                 try {
@@ -728,7 +735,7 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                             exp = initExperiment();
                             jButton2.setEnabled(false);
                             jProgressBar1.setMaximum(100);
-                            
+
                             final File cpsFile = new File(jTextField3.getText());
                             String res = jTextField14.getText();
                             resourcefolder = new File(res, "resources");
@@ -740,7 +747,7 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                                         }
                                     }
                                 }
-                                
+
                             } else {
                                 System.out.println("this file is not exist");
                             }
@@ -873,7 +880,7 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                 }
                 exphandeler = new Handler("jdbc:mysql://" + jTextField13.getText() + ":3306/", database_name, "com.mysql.jdbc.Driver", jTextField1.getText(), password);
             } catch (SQLException sqlE) {
-                System.out.println("at error SQL Exception line 879 "+this.getClass().getName()+"  "+sqlE.getMessage());
+                System.out.println("at error SQL Exception line 879 " + this.getClass().getName() + "  " + sqlE.getMessage());
             }
         }
         exphandeler.exportDataBase(processUrl, jTextField3.getText());
@@ -884,13 +891,13 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
         // TODO add your handling code here:
         if (exphandeler == null) {
             try {
-                 String password = "";
+                String password = "";
                 for (char c : jPasswordField1.getPassword()) {
                     password += c;
                 }
                 exphandeler = new Handler("jdbc:mysql://" + jTextField13.getText() + ":3306/", database_name, "com.mysql.jdbc.Driver", jTextField1.getText(), password);
             } catch (SQLException sqlE) {
-                 System.out.println("at error SQL Exception line 896 "+this.getClass().getName()+"  "+sqlE.getMessage());
+                System.out.println("at error SQL Exception line 896 " + this.getClass().getName() + "  " + sqlE.getMessage());
             }
         }
         final String resource = jTextField3.getText();
@@ -1231,7 +1238,11 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
         }
         if (valid) {
             try {
-                exphandeler = new Handler("jdbc:mysql://" + jTextField13.getText() + ":3306/", database_name, "com.mysql.jdbc.Driver", jTextField1.getText(), jPasswordField1.getText());
+                String password = "";
+                for (char c : jPasswordField1.getPassword()) {
+                    password += c;
+                }
+                exphandeler = new Handler("jdbc:mysql://" + jTextField13.getText() + ":3306/", database_name, "com.mysql.jdbc.Driver", jTextField1.getText(), password);
             } catch (SQLException sqlE) {
                 valid = false;
                 jTextField13.setText("Please check Database Params");

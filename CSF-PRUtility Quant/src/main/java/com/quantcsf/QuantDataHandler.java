@@ -29,28 +29,28 @@ public class QuantDataHandler {
         QuantDatasetObject qa7 = new QuantDatasetObject();
         qa7.setYear(2011);
         qa7.setFilesNumber(10);
-        qa7.setDiseaseGroups("Disease Group I");
+        qa7.setAnalyticalMethod("Disease Group I");
         qa7.setAuthor("Li, Yun, et al.");
         authormap.put("21445879", qa7);
 
         QuantDatasetObject qa8 = new QuantDatasetObject();
         qa8.setYear(2014);
         qa8.setFilesNumber(10);
-        qa8.setDiseaseGroups("Disease Group I");
+        qa8.setAnalyticalMethod("Disease Group I");
         qa8.setAuthor("Liguori, Maria, et al.");
         authormap.put("25098164", qa8);
 
         QuantDatasetObject qa9 = new QuantDatasetObject();
         qa9.setYear(2010);
         qa9.setFilesNumber(10);
-        qa9.setDiseaseGroups("Disease Group I");
+        qa9.setAnalyticalMethod("Disease Group I");
         qa9.setAuthor("Ottervald, Jan, et al");
         authormap.put("20093204", qa9);
 
         QuantDatasetObject qa1 = new QuantDatasetObject();
         qa1.setYear(2010);
         qa1.setFilesNumber(10);
-        qa1.setDiseaseGroups("Disease Group I");
+        qa1.setAnalyticalMethod("Disease Group I");
         qa1.setAuthor("Comabella, Manuel, et al.");
         authormap.put("20237129", qa1);
 
@@ -58,27 +58,27 @@ public class QuantDataHandler {
         qa2.setYear(2010);
         qa2.setAuthor("Harris, Violaine K., et al.");
         qa2.setFilesNumber(15);
-        qa2.setDiseaseGroups("Disease Group II");
+        qa2.setAnalyticalMethod("Disease Group II");
         authormap.put("20600910", qa2);
 
         QuantDatasetObject qa3 = new QuantDatasetObject();
         qa3.setYear(2012);
         qa3.setFilesNumber(13);
-        qa3.setDiseaseGroups("Disease Group II");
+        qa3.setAnalyticalMethod("Disease Group II");
         qa3.setAuthor("Dhaunchak, Ajit Singh, et al.");
         authormap.put("22473675", qa3);
 
         QuantDatasetObject qa4 = new QuantDatasetObject();
         qa4.setYear(2012);
         qa4.setFilesNumber(14);
-        qa4.setDiseaseGroups("Disease Group I");
+        qa4.setAnalyticalMethod("Disease Group I");
         qa4.setAuthor("Jia, Yan et al.");
         authormap.put("22846148", qa4);
 
         QuantDatasetObject qa5 = new QuantDatasetObject();
         qa5.setYear(2013);
         qa5.setFilesNumber(5);
-        qa5.setDiseaseGroups("Disease Group III");
+        qa5.setAnalyticalMethod("Disease Group III");
         qa5.setAuthor("Kroksveen, Ann C., et al.");
         authormap.put("23059536", qa5);
 
@@ -86,34 +86,34 @@ public class QuantDataHandler {
         qa6.setYear(2012);
         qa6.setFilesNumber(16);
         qa6.setAuthor("Kroksveen, Ann C., et al.");
-        qa6.setDiseaseGroups("Disease Group II");
+        qa6.setAnalyticalMethod("Disease Group II");
         authormap.put("23278663", qa6);
 
         QuantDatasetObject qa11 = new QuantDatasetObject();
         qa11.setYear(2014);
         qa11.setFilesNumber(10);
-        qa11.setDiseaseGroups("Disease Group I");
+        qa11.setAnalyticalMethod("Disease Group I");
         qa11.setAuthor("Cantó, Ester, et al.");
         authormap.put("25406498", qa11);
 
         QuantDatasetObject qa12 = new QuantDatasetObject();
         qa12.setYear(2015);
         qa12.setFilesNumber(10);
-        qa12.setDiseaseGroups("Disease Group I");
+        qa12.setAnalyticalMethod("Disease Group I");
         qa12.setAuthor("Hinsinger, G., et al.");
         authormap.put("25698171", qa12);
 
         QuantDatasetObject qa13 = new QuantDatasetObject();
         qa13.setYear(2013);
         qa13.setFilesNumber(10);
-        qa13.setDiseaseGroups("Disease Group I");
+        qa13.setAnalyticalMethod("Disease Group I");
         qa13.setAuthor("Stoop, Marcel P., et al");
         authormap.put("23339689", qa13);
 
         QuantDatasetObject qa10 = new QuantDatasetObject();
         qa10.setYear(2012);
         qa10.setFilesNumber(10);
-        qa10.setDiseaseGroups("Disease Group I");
+        qa10.setAnalyticalMethod("Disease Group I");
         qa10.setAuthor("Kroksveen, A. C., et al.");
         authormap.put("23278663", qa10);
     }

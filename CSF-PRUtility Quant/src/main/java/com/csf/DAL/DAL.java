@@ -7,7 +7,6 @@ package com.csf.DAL;
 import com.pepshaker.util.beans.ExperimentBean;
 import com.pepshaker.util.beans.ProteinBean;
 import com.quantcsf.beans.QuantDatasetObject;
-import com.quantcsf.beans.QuantPeptide;
 import com.quantcsf.beans.QuantProtein;
 import java.sql.SQLException;
 import java.util.List;
@@ -20,7 +19,7 @@ import java.util.Set;
  */
 public class DAL {
 
-    private DB database;
+    private final DB database;
 
     public DAL(String url, String dbName, String driver, String userName, String password) throws SQLException {
         database = new DB(url, dbName, driver, userName, password);
@@ -36,7 +35,6 @@ public class DAL {
         for (String key : exp.getProteinList().keySet()) {
             ProteinBean pb = exp.getProteinList().get(key);
             database.insertProteinExper(exp.getExpId(), pb, pb.getAccession() + "," + pb.getOtherProteins());
-//            database.insertProt(pb.getAccession(), pb.getDescription());
         }
 
         return true;
@@ -52,60 +50,54 @@ public class DAL {
         return test;
     }
 
-    public boolean checkName(String name)  throws SQLException {
+    public boolean checkName(String name) throws SQLException {
         boolean test = database.checkName(name);
         return test;
 
     }
-     
-    public void exportDataBase(String mysqldumpUrl,String sqlFileUrl){
-        database.exportDataBase( mysqldumpUrl, sqlFileUrl);
-        
-    
-    }
-     public boolean restoreDB(String source) {
-        return database.restoreDB(source);
-     }
-     
-     
-     ///quant data store 
-     public  boolean storeCombinedQuantProtTable(List<QuantProtein> qProtList){
-         return database.storeCombinedQuantProtTable(qProtList);
-     
-     
-     }
-     //quant data store 
-     public  boolean updateProtSequances( Map<String,String> protSeqMap){
-         return database.updateProtSequances(protSeqMap);
-     
-     
-     }
-     
-     public void storeQuantDatasets(){
-         database.storeQuantDatasets();
-     }
-     
-     public Map<String,Integer> storeQuantitiveProteins(List<QuantProtein> qProtList){
-         return database.storeQuantitiveProteins(qProtList);
-     }
-     
-      public void storeQuantitivePeptides(List<QuantProtein> qPeptidestList ){
-         database.storeQuantitivePeptides(qPeptidestList);
-     }
-      public int getCurrentProtIndex() {
-       return database.getCurrentProtIndex();
-       
-       
-       }
-     
-       public Set<QuantDatasetObject> getQuantDatasetListObject() {
-       return database.getQuantDatasetListObject();
-       }
-       
-       public void correctProtInfo(){
-           database.correctProtInfo();
-           
-           
 
-}
+    public void exportDataBase(String mysqldumpUrl, String sqlFileUrl) {
+        database.exportDataBase(mysqldumpUrl, sqlFileUrl);
+
+    }
+
+    public boolean restoreDB(String source) {
+        return database.restoreDB(source);
+    }
+
+    ///quant data store 
+    public boolean storeCombinedQuantProtTable(List<QuantProtein> qProtList) {
+        return database.storeCombinedQuantProtTable(qProtList);
+
+    }
+
+    //quant data store 
+
+    public boolean updateProtSequances(Map<String, String> protSeqMap) {
+        return database.updateProtSequances(protSeqMap);
+    }
+
+    public void storeQuantDatasets() {
+        database.storeQuantDatasets();
+    }
+
+    public Map<String, Integer> storeQuantitiveProteins(List<QuantProtein> qProtList) {
+        return database.storeQuantitiveProteins(qProtList);
+    }
+
+    public void storeQuantitivePeptides(List<QuantProtein> qPeptidestList) {
+        database.storeQuantitivePeptides(qPeptidestList);
+    }
+
+    public int getCurrentProtIndex() {
+        return database.getCurrentProtIndex();
+    }
+
+    public Set<QuantDatasetObject> getQuantDatasetListObject() {
+        return database.getQuantDatasetListObject();
+    }
+
+    public void correctProtInfo() {
+        database.correctProtInfo();
+    }
 }

@@ -88,13 +88,13 @@ public class QuantDatasetObject implements Serializable, Comparable {
         valuesMap.put("quantifiedProteinsNumber", quantifiedProteinsNumber);
     }
 
-    public String getDiseaseGroups() {
+    public String getAnalyticalMethod() {
         return values[4].toString();
     }
 
-    public void setDiseaseGroups(String diseaeGroups) {
-        values[4] = diseaeGroups;
-        valuesMap.put("diseaeGroups", diseaeGroups);
+    public void setAnalyticalMethod(String analytical_method) {
+        values[4] = analytical_method;
+        valuesMap.put("analytical_method", analytical_method);
     }
 
     public String getRawDataUrl() {

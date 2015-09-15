@@ -65,20 +65,19 @@ public class Handler {
         //1.read file
         List<QuantProtein> qProtList = qDataHandler.readCSVQuantFile(quantDataFilePath, sequanceFilePath);
         //2.store full data
-        boolean test = dal.storeCombinedQuantProtTable(qProtList);
+        dal.storeCombinedQuantProtTable(qProtList);
         //3.update dataset table
         dal.storeQuantDatasets();
 //        //handel quant prot     
         Set<QuantDatasetObject> datasetsList = dal.getQuantDatasetListObject();
         List<QuantProtein> updatedQuantProtList = this.handleQuantData(datasetsList, qProtList);
-
 //        //store quant protiens
         Map<String, Integer> peptideKeyToProteinIndexMap = dal.storeQuantitiveProteins(updatedQuantProtList);
         List<QuantProtein> peptidesList = handelQuantPeptides(qProtList, peptideKeyToProteinIndexMap);
         //store quant peptides
         dal.storeQuantitivePeptides(peptidesList);
-//        
-//        System.out.println("final prot list updated (should be smaller)  " + qProtList.size() + "  prer " + peptidesList.size());
+        
+        System.out.println("final prot list updated (should be smaller)  " + qProtList.size() + "  prer " + peptidesList.size());
 
         return true;
     }
