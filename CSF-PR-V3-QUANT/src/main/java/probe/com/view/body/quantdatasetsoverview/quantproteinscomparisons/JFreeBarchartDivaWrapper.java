@@ -13,6 +13,7 @@ import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,6 +28,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.entity.AxisEntity;
 import org.jfree.chart.entity.CategoryItemEntity;
 import org.jfree.chart.entity.ChartEntity;
 import org.jfree.chart.labels.CategoryItemLabelGenerator;
@@ -46,7 +48,7 @@ import probe.com.view.core.jfreeutil.SquaredDot;
  *
  * @author Yehia Farag
  */
-public class JFreeBarchartDivaWrapper extends AbsoluteLayout {
+public class JFreeBarchartDivaWrapper extends AbsoluteLayout implements Serializable {
 
     private final String defaultImgURL;
     private String inUseImgURL;
@@ -63,7 +65,7 @@ public class JFreeBarchartDivaWrapper extends AbsoluteLayout {
     private Color[] colorsInUse = defaultColors;
     private final String[] itemLabels = new String[5];
     private final String[] itemTotalLabels = new String[]{"", "", "", "", ""};
-    private final Set<String> upAccessions, midUpAccessions, notRegAccessions, midDownAccessions, downAccessions, notDefinedAccession;
+    private final Set<String> upAccessions, midUpAccessions, notRegAccessions, midDownAccessions, downAccessions;
     private final boolean searchingMode;
 
     /**
@@ -83,11 +85,10 @@ public class JFreeBarchartDivaWrapper extends AbsoluteLayout {
         this.notRegAccessions = new HashSet<String>();
         this.midDownAccessions = new HashSet<String>();
         this.downAccessions = new HashSet<String>();
-        this.notDefinedAccession = new HashSet<String>();
         this.compProtMap = new HashMap<Integer, Set<String>>();
         this.defaultImgURL = initBarChart(imgWidth, 250, comparison);
         inUseImgURL = defaultImgURL;
-        teststyle = comparison.getComparisonHeader().replace(" ", "_").replace(")", "_").replace("(", "_").toLowerCase() + "barchart";
+        teststyle = comparison.getComparisonHeader().replace(" ", "_").replace(")", "_").replace("(", "_").replace("/", "_").toLowerCase() + "barchart";
         this.redrawChart();
 
     }
@@ -99,22 +100,22 @@ public class JFreeBarchartDivaWrapper extends AbsoluteLayout {
         for (String key2 : protList.keySet()) {
             DiseaseGroupsComparisonsProteinLayout prot = protList.get(key2);
             prot.updateLabelLayout();
-            int indexer = prot.getTrindCategory();//(int) (prot.getCellValue() / maxIndexerValue * 10.0);
+            int indexer = prot.getSignificantTrindCategory();//(int) (prot.getCellValue() / maxIndexerValue * 10.0);
             switch (indexer) {
                 case (0):
-                    downAccessions.add(prot.getUniProtAccess());
+                    downAccessions.add(prot.getProteinAccssionNumber());
                     break;
                 case (1):
-                    midDownAccessions.add(prot.getUniProtAccess());
+                    midDownAccessions.add(prot.getProteinAccssionNumber());
                     break;
                 case (2):
-                    notRegAccessions.add(prot.getUniProtAccess());
+                    notRegAccessions.add(prot.getProteinAccssionNumber());
                     break;
                 case (3):
-                    midUpAccessions.add(prot.getUniProtAccess());
+                    midUpAccessions.add(prot.getProteinAccssionNumber());
                     break;
                 case (4):
-                    upAccessions.add(prot.getUniProtAccess());
+                    upAccessions.add(prot.getProteinAccssionNumber());
                     break;
             }
 
@@ -123,7 +124,7 @@ public class JFreeBarchartDivaWrapper extends AbsoluteLayout {
             }
             values[indexer] = (Double) values[indexer] + 1.0;
             Set<String> protSet = compProtMap.get(indexer);
-            protSet.add(prot.getUniProtAccess());
+            protSet.add(prot.getProteinAccssionNumber());
             compProtMap.put(indexer, protSet);
         }
         protNumbers[0] = downAccessions.size();
@@ -155,9 +156,9 @@ public class JFreeBarchartDivaWrapper extends AbsoluteLayout {
         TextTitle title = new TextTitle(comparison.getComparisonHeader() + " (Studies# " + comparison.getDatasetIndexes().length + ")", titleFont);
         title.setPaint(Color.BLACK);
         title.setExpandToFitSpace(true);
-     
+
         barchart.setTitle(title);
-        
+
         barchart.setBackgroundPaint(Color.WHITE);    // Set the background colour of the chart  
         CategoryPlot cp = barchart.getCategoryPlot();  // Get the Plot object for a bar graph  
 
@@ -220,11 +221,11 @@ public class JFreeBarchartDivaWrapper extends AbsoluteLayout {
         NumberAxis rangeAxis = (NumberAxis) cp.getRangeAxis();
         rangeAxis.setTickLabelFont(axisFont);
         rangeAxis.setLabelFont(titleFont);
-        if (searchingMode) {
-            rangeAxis.setUpperBound(1);
-        } else {
-            rangeAxis.setUpperBound(0.8);
-        }
+//        if (searchingMode) {
+        rangeAxis.setUpperBound(1);
+//        } else {
+//            rangeAxis.setUpperBound(0.8);
+//        }
         NumberFormat nf = NumberFormat.getPercentInstance(Locale.US);
         nf.setMinimumFractionDigits(0);
         nf.setMaximumFractionDigits(1);
@@ -245,7 +246,6 @@ public class JFreeBarchartDivaWrapper extends AbsoluteLayout {
         CategoryAxis domainAxis = cp.getDomainAxis();
         NumberAxis rangeAxis = (NumberAxis) cp.getRangeAxis();
         boolean check = (width > 120);
-
         domainAxis.setVisible(check);
         rangeAxis.setVisible(check);
         ((BarRenderer) cp.getRenderer()).setSeriesVisible(0, check);
@@ -258,7 +258,7 @@ public class JFreeBarchartDivaWrapper extends AbsoluteLayout {
             TextTitle title = chart.getTitle();
             title.setPosition(RectangleEdge.TOP);
             chart.setTitle(title);
-                        
+
         } else {
             cp.setRangeGridlinePaint(Color.WHITE);
             TextTitle title = chart.getTitle();
@@ -271,21 +271,35 @@ public class JFreeBarchartDivaWrapper extends AbsoluteLayout {
 
             imageData = ChartUtilities.encodeAsPNG(chart.createBufferedImage((int) width, (int) height, chartRenderingInfo));
             this.removeAllComponents();
+            String zeroYCoords = "";
+            for (int i = 0; i < chartRenderingInfo.getEntityCollection().getEntityCount(); i++) {
+                ChartEntity entity = chartRenderingInfo.getEntityCollection().getEntity(i);
+                if (entity instanceof AxisEntity && ((AxisEntity) entity).getAxis() instanceof NumberAxis) {
+                    AxisEntity ai = (AxisEntity) entity;
+                    String[] coords = ai.getShapeCoords().split(",");
+                    zeroYCoords = coords[3];
+                    break;
+
+                }
+
+            }
+
             int barCounter = 0;
             for (int i = 0; i < chartRenderingInfo.getEntityCollection().getEntityCount(); i++) {
                 ChartEntity entity = chartRenderingInfo.getEntityCollection().getEntity(i);
+
                 if (entity instanceof CategoryItemEntity) {
                     CategoryItemEntity catEnt = (CategoryItemEntity) entity;
-                    SquaredDot square = new SquaredDot();
+                    SquaredDot square = new SquaredDot("squared");
                     String[] coords = catEnt.getShapeCoords().split(",");
                     int sqheight = Integer.valueOf(coords[3]) - Integer.valueOf(coords[1]);
-                    if (sqheight < 2) {
+                    if (sqheight < 2 && coords[1].trim().equalsIgnoreCase(zeroYCoords)) {
                         barCounter++;
                         continue;
-                    } else if (sqheight < 14) {
+                    }
+                    else if (sqheight < 14) {
                         coords[1] = (Integer.valueOf(coords[1]) - (14 - sqheight)) + "";
                     }
-
                     int sqwidth = Integer.valueOf(coords[2]) - Integer.valueOf(coords[0]);
                     square.setWidth(sqwidth + "px");
                     square.setHeight(sqheight + "px");
@@ -308,6 +322,7 @@ public class JFreeBarchartDivaWrapper extends AbsoluteLayout {
      */
     public final void redrawChart() {
         styles.add("." + teststyle + " {  background-image: url(" + inUseImgURL + " );background-position:center; background-repeat: no-repeat; }");
+
         this.setStyleName(teststyle);
     }
 

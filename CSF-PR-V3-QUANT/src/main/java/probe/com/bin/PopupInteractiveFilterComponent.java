@@ -107,7 +107,7 @@ public class PopupInteractiveFilterComponent extends VerticalLayout{
 
                             }
                             List<Integer> list = dsIndexesMap.get(pb.getRawDataUrl());
-                            list.add(pb.getUniqId());
+                            list.add(pb.getDsKey());
                             dsIndexesMap.put(pb.getRawDataUrl(), list);
                             valueSet.add(pb.getRawDataUrl());
                             
@@ -127,7 +127,7 @@ public class PopupInteractiveFilterComponent extends VerticalLayout{
 
                             }
                             List<Integer> list = dsIndexesMap.get(pb.getYear()+"");
-                            list.add(pb.getUniqId());
+                            list.add(pb.getDsKey());
                             dsIndexesMap.put(pb.getYear()+"", list);
                             int value = pb.getYear();
                             valueSet.add(value);
@@ -145,7 +145,7 @@ public class PopupInteractiveFilterComponent extends VerticalLayout{
 
                             }
                             List<Integer> list = dsIndexesMap.get(pb.getTypeOfStudy());
-                            list.add(pb.getUniqId());
+                            list.add(pb.getDsKey());
                             dsIndexesMap.put(pb.getTypeOfStudy(), list);
                             String value = pb.getTypeOfStudy();
                             valueSet.add(value);
@@ -163,7 +163,7 @@ public class PopupInteractiveFilterComponent extends VerticalLayout{
 
                             }
                             List<Integer> list = dsIndexesMap.get(pb.getSampleType());
-                            list.add(pb.getUniqId());
+                            list.add(pb.getDsKey());
                             dsIndexesMap.put(pb.getSampleType(), list);
                             String value = pb.getSampleType();
                             valueSet.add(value);
@@ -181,7 +181,7 @@ public class PopupInteractiveFilterComponent extends VerticalLayout{
 
                             }
                             List<Integer> list = dsIndexesMap.get(pb.getSampleMatching());
-                            list.add(pb.getUniqId());
+                            list.add(pb.getDsKey());
                             dsIndexesMap.put(pb.getSampleMatching(), list);
                             
                             String value = pb.getSampleMatching();
@@ -204,7 +204,7 @@ public class PopupInteractiveFilterComponent extends VerticalLayout{
 
                             }
                             List<Integer> list = dsIndexesMap.get(value);
-                            list.add(pb.getUniqId());
+                            list.add(pb.getDsKey());
                             dsIndexesMap.put(value, list);
                             valueSet.add(value);
                         }
@@ -226,7 +226,7 @@ public class PopupInteractiveFilterComponent extends VerticalLayout{
 
                             }
                             List<Integer> list = dsIndexesMap.get(pb.getAnalyticalApproach());
-                            list.add(pb.getUniqId());
+                            list.add(pb.getDsKey());
                             dsIndexesMap.put(value, list);
                             valueSet.add(value);
                         }
@@ -247,7 +247,7 @@ public class PopupInteractiveFilterComponent extends VerticalLayout{
 
                             }
                             List<Integer> list = dsIndexesMap.get(value);
-                            list.add(pb.getUniqId());
+                            list.add(pb.getDsKey());
                             dsIndexesMap.put(value, list);
                             valueSet.add(value);
                         }
@@ -265,7 +265,7 @@ public class PopupInteractiveFilterComponent extends VerticalLayout{
 
                             }
                             List<Integer> list = dsIndexesMap.get(value);
-                            list.add(pb.getUniqId());
+                            list.add(pb.getDsKey());
                             dsIndexesMap.put(value, list);
                             valueSet.add(value);
                         }
@@ -284,7 +284,7 @@ public class PopupInteractiveFilterComponent extends VerticalLayout{
 
                             }
                             List<Integer> list = dsIndexesMap.get(value);
-                            list.add(pb.getUniqId());
+                            list.add(pb.getDsKey());
                             dsIndexesMap.put(value, list);
                             valueSet.add(value);
                         }
@@ -302,7 +302,7 @@ public class PopupInteractiveFilterComponent extends VerticalLayout{
 
                             }
                             List<Integer> list = dsIndexesMap.get(value);
-                            list.add(pb.getUniqId());
+                            list.add(pb.getDsKey());
                             dsIndexesMap.put(value, list);
                             valueSet.add(value);
                         }

@@ -17,9 +17,44 @@ public class QuantPeptide implements Serializable {
     private int protIndex;
     private int DsKey;
     private String peptideSequance;
+    private String sequenceAnnotated;
+    private String additionalComments,pvalueSignificanceThreshold;
+    private int peptideCharge;
     private String string_p_value;
     private String peptideModification;
     private String modification_comment;
+
+    public String getSequenceAnnotated() {
+        return sequenceAnnotated;
+    }
+
+    public void setSequenceAnnotated(String sequenceAnnotated) {
+        this.sequenceAnnotated = sequenceAnnotated;
+    }
+
+    public String getAdditionalComments() {
+        return additionalComments;
+    }
+
+    public void setAdditionalComments(String additionalComments) {
+        this.additionalComments = additionalComments;
+    }
+
+    public String getPvalueSignificanceThreshold() {
+        return pvalueSignificanceThreshold;
+    }
+
+    public void setPvalueSignificanceThreshold(String pvalueSignificanceThreshold) {
+        this.pvalueSignificanceThreshold = pvalueSignificanceThreshold;
+    }
+
+    public int getPeptideCharge() {
+        return peptideCharge;
+    }
+
+    public void setPeptideCharge(int peptideCharge) {
+        this.peptideCharge = peptideCharge;
+    }
     private String p_value_comments;
 
     /**

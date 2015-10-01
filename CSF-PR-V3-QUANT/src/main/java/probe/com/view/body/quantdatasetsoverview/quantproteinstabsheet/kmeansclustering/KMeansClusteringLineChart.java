@@ -157,15 +157,15 @@ public class KMeansClusteringLineChart extends AbsoluteLayout implements LayoutE
                     break;
                 }
                 xLineList.add((double) comparisonIndexer);
-                if (cp.getTrindCategory() == 4) {
+                if (cp.getSignificantTrindCategory() == 4) {
                     yLineList.add(4d);
-                } else if (cp.getTrindCategory() == 3) {
+                } else if (cp.getSignificantTrindCategory() == 3) {
                     yLineList.add(3d);
-                } else if (cp.getTrindCategory() == 2) {
+                } else if (cp.getSignificantTrindCategory() == 2) {
                     yLineList.add(2d);
-                } else if (cp.getTrindCategory() == 1) {
+                } else if (cp.getSignificantTrindCategory() == 1) {
                     yLineList.add(1d);
-                } else if (cp.getTrindCategory() == 0) {
+                } else if (cp.getSignificantTrindCategory() == 0) {
                     yLineList.add(0d);
                 }
                 compIndex++;

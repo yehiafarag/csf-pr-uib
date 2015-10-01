@@ -18,7 +18,7 @@ public class QuantDatasetObject implements Serializable, Comparable {
     
     
    
-    private int uniqId;
+    private int dsKey;
 
     /**
      *
@@ -113,17 +113,17 @@ public class QuantDatasetObject implements Serializable, Comparable {
      *
      * @return
      */
-    public String getDiseaseGroups() {
+    public String getAnalyticalMethod() {
         return values[4].toString();
     }
 
     /**
      *
-     * @param diseaeGroups
+     * @param analyticalMethod
      */
-    public void setDiseaseGroups(String diseaeGroups) {
-        values[4] = diseaeGroups;
-        valuesMap.put("diseaeGroups", diseaeGroups);
+    public void setAnalyticalMethod(String analyticalMethod) {
+        values[4] = analyticalMethod;
+        valuesMap.put("analytical_method", analyticalMethod);
     }
 
     /**
@@ -569,16 +569,16 @@ public class QuantDatasetObject implements Serializable, Comparable {
      *
      * @return
      */
-    public int getUniqId() {
-        return uniqId;
+    public int getDsKey() {
+        return dsKey;
     }
 
     /**
      *
-     * @param uniqId
+     * @param dsKey
      */
-    public void setUniqId(int uniqId) {
-        this.uniqId = uniqId;
+    public void setDsKey(int dsKey) {
+        this.dsKey = dsKey;
     }
 
     /**

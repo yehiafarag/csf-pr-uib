@@ -41,7 +41,7 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
 //            
 
             for (QuantDatasetObject qDs : centralSelectionManager.getFilteredQuantDatasetArr().values()) {
-                selectedDsIds.add(qDs.getUniqId());
+                selectedDsIds.add(qDs.getDsKey());
             }
 
         } else if (type.equalsIgnoreCase("Reset_Disease_Groups_Level")) {
@@ -80,6 +80,7 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
         titleMap.put("analyticalApproach", "Analytical Approach");
         titleMap.put("enzyme", "Enzyme");
         titleMap.put("shotgunTargeted", "Shotgun/Targeted");
+        titleMap.put("quantificationBasis", "Quantification Basis");
     }
 
     /**
@@ -179,7 +180,7 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
 
         Set<Integer> tempSelectedDsIds = new HashSet<Integer>();
         for (QuantDatasetObject qDs : centralSelectionManager.getFilteredQuantDatasetArr().values()) {
-            tempSelectedDsIds.add(qDs.getUniqId());
+            tempSelectedDsIds.add(qDs.getDsKey());
         }
         tempSelectedDsIds.removeAll(selectedDsIds);
         if (tempSelectedDsIds.isEmpty()) {

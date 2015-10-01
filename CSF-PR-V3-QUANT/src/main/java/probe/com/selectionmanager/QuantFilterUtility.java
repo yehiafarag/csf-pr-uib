@@ -15,7 +15,7 @@ public class QuantFilterUtility implements Serializable {
     private final boolean[] activeCombinedQuantTableHeaders;
     private final boolean[] activeQuantFilters;
 
-    private final Map<Integer, QuantDatasetObject> quantDatasetArr;
+    private final Map<Integer, QuantDatasetObject> quantDatasetMap;
 
     /**
      *
@@ -24,10 +24,10 @@ public class QuantFilterUtility implements Serializable {
     public QuantFilterUtility(CSFPRHandler quantHandler) {
         QuantDatasetInitialInformationObject quantDatasetListObject = quantHandler.getQuantDatasetInitialInformationObject();
         if (quantDatasetListObject == null) {
-            this.quantDatasetArr = null;
+            this.quantDatasetMap = null;
             activeCombinedQuantTableHeaders = null;
         } else {
-            this.quantDatasetArr = quantDatasetListObject.getQuantDatasetsList(); 
+            this.quantDatasetMap = quantDatasetListObject.getQuantDatasetsList(); 
             activeCombinedQuantTableHeaders = quantDatasetListObject.getActiveHeaders();
         }
       
@@ -59,8 +59,8 @@ public class QuantFilterUtility implements Serializable {
      *
      * @return map of quant datasets with quant data set ids as keys
      */
-    public Map<Integer, QuantDatasetObject> getQuantDatasetArr() {
-        return quantDatasetArr;
+    public Map<Integer, QuantDatasetObject> getQuantDatasetMap() {
+        return quantDatasetMap;
     }
 
 }

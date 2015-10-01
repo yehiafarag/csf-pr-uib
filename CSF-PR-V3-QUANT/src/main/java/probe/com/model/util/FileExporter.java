@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.util.Map;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -17,7 +18,7 @@ import probe.com.model.beans.identification.IdentificationPeptideBean;
  * @author Yehia Farag
  * represent the data exporter class
  */
-public class FileExporter {
+public class FileExporter implements Serializable{
 
     /**
      * this function to be use for csv peptides exporting with large datasets

@@ -20,9 +20,13 @@ public class SquaredDot extends Label {
     /**
      *
      */
-    public SquaredDot() {
+    public SquaredDot(String type) {
         this.setValue(" ");
-        this.setStyleName("transparentcomp");
+        if(type.equalsIgnoreCase("cycle"))
+        this.setStyleName("transparentcyclecomp");
+        else
+            this.setStyleName("transparentsquaredcomp");
+            
 
     }
 

@@ -54,6 +54,7 @@ public class ComparisonChartContainer extends HorizontalLayout{
      * @param searchingMode
      */
     public ComparisonChartContainer(QuantDiseaseGroupsComparison comparison, int width,boolean searchingMode) {
+        
         this.setStyleName("lightborder");
         this.setWidthUndefined();
         this.setHeight("250px");

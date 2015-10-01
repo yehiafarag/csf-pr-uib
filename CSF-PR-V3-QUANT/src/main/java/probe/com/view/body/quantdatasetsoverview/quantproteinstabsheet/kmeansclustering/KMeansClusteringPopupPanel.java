@@ -80,7 +80,7 @@ public class KMeansClusteringPopupPanel extends Window {
                     sampleRow[y] = 0;
 
                 } else {
-                    sampleRow[y] = dBean.getCellValue();
+                    sampleRow[y] = dBean.getSignificantCellValue();
                 }
                 y++;
             }

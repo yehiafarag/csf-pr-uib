@@ -1,8 +1,10 @@
 package probe.com.view.body;
 
 import com.vaadin.event.LayoutEvents;
+import com.vaadin.server.Page;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
@@ -27,7 +29,6 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
     private final QuantFilterUtility filterUtility;
     private final DatasetExploringCentralSelectionManager exploringFiltersManager;
     private final QuantProteinsTabsheetContainerLayout proteinsLayout;
-    private final QuantProteinsComparisonsContainer compTableLayout;
 
     /**
      *
@@ -40,41 +41,52 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
 
         }
         filterUtility = new QuantFilterUtility(handler);
-        exploringFiltersManager = new DatasetExploringCentralSelectionManager(filterUtility.getQuantDatasetArr(), filterUtility.getActiveFilters());//,filterUtility.getFullFilterList()
+        exploringFiltersManager = new DatasetExploringCentralSelectionManager(filterUtility.getQuantDatasetMap(), filterUtility.getActiveFilters());//,filterUtility.getFullFilterList()
        
 
         this.setMargin(true);
         this.setSpacing(true);
         this.setWidth("100%");
-        this.setHeightUndefined(); if(exploringFiltersManager.getFullQuantDatasetArr() == null || exploringFiltersManager.getFullQuantDatasetArr().isEmpty())
+        this.setHeightUndefined();
+        
+        if(exploringFiltersManager.getFullQuantDatasetMap() == null || exploringFiltersManager.getFullQuantDatasetMap().isEmpty())
         {
             Label noExpLable = new Label("<h4 style='font-family:verdana;color:black;font-weight:bold;'>Sorry No Dataset Availabe Now !</h4>");
             noExpLable.setContentMode(ContentMode.HTML);
             this.addComponent(noExpLable);
             pieChartFiltersLayout = null;
             proteinsLayout = null;
-            compTableLayout=null;
             return;
         
         }
         // init piecharts filter
         pieChartFiltersLayout = new StudiesPieChartFiltersContainerLayout(exploringFiltersManager);
 
-        compTableLayout = new QuantProteinsComparisonsContainer(exploringFiltersManager, handler, null);
-        DiseaseGroupsFiltersContainer heatmapFilter = new DiseaseGroupsFiltersContainer(exploringFiltersManager, pieChartFiltersLayout.getPieChartFiltersBtn(), compTableLayout);
+      
+        DiseaseGroupsFiltersContainer heatmapFilter = new DiseaseGroupsFiltersContainer(exploringFiltersManager,handler, pieChartFiltersLayout.getPieChartFiltersBtn());
         heatmapFilter.setWidth("100%");
         heatmapFilter.setMargin(new MarginInfo(false, false, true, false));
 
         HideOnClickLayout comparisonLevelLayout = new HideOnClickLayout("Datasets", heatmapFilter, null);
         this.addComponent(comparisonLevelLayout);
         comparisonLevelLayout.setVisability(true);
+        
+         QuantProteinsComparisonsContainer quantProteinsComparisonsContainer = new QuantProteinsComparisonsContainer(exploringFiltersManager, handler, null);
+         HideOnClickLayout comparisonsTableContainer = new HideOnClickLayout("Proteins", quantProteinsComparisonsContainer, null,Alignment.TOP_LEFT);
+        
+         int pageWidth = Page.getCurrent().getWebBrowser().getScreenWidth();
+         int layoutWidth = (pageWidth - 70);
+         quantProteinsComparisonsContainer.setLayoutWidth(layoutWidth);
+        this.addComponent(comparisonsTableContainer);
+        comparisonsTableContainer.setVisability(true);
+        
+        
 
         proteinsLayout = new QuantProteinsTabsheetContainerLayout(exploringFiltersManager,searchingMode,handler);
         HideOnClickLayout proteinsLevelLayout = new HideOnClickLayout("Proteins Information", proteinsLayout, null) {
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
                 super.layoutClick(event);
-//                proteinsLayout.redrawCharts();
             }
 
         };

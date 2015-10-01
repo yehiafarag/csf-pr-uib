@@ -46,12 +46,12 @@ public class DataAccess implements Serializable {
      * @return test boolean (successful creation)
      *
      */
-    public boolean createTable() {
-
-        boolean test = db.createTables();
-        return test;
-
-    }
+//    public boolean createTable() {
+//
+////        boolean test = db.createTables();
+//        return test;
+//
+//    }
 
     /**
      * remove dataset from the database
@@ -409,9 +409,7 @@ public class DataAccess implements Serializable {
      * @return quant peptides list
      */
     public Map<String, Set<QuantPeptide>> getQuantificationPeptides(int[] quantDatasetIds) {
-
         Map<String, Set<QuantPeptide>> datasetProteinsSearchingList = db.getQuantificationPeptides(quantDatasetIds);
-
         return datasetProteinsSearchingList;
     }
 }

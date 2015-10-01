@@ -84,7 +84,17 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
             tabIndexMap.clear();
             tabLayoutIndexMap.clear();
             for (final String key : protSelectionMap.keySet()) {
-                String protAcc = key.replace("--", "").trim().split(",")[0].toUpperCase();
+                int i = 0;
+                String protAcc = key.replace("--", "").trim().split(",")[0];
+//            String protURL = "http://www.uniprot.org/uniprot/" + protAcc.toUpperCase();
+//            String tooltip = "UniProt link for " + protAcc.toUpperCase();
+//            if (protAcc.equalsIgnoreCase("") || protAcc.equalsIgnoreCase("Not Available") || protAcc.equalsIgnoreCase("Entry Deleted") || protAcc.equalsIgnoreCase("Entry Demerged") || protAcc.equalsIgnoreCase("NOT RETRIEVED") || protAcc.equalsIgnoreCase("DELETED")) {
+//                tooltip = "UniProt Not Available ";
+////                protAcc = key.replace("--", "").trim().split(",")[0];
+//                protURL = null;
+//
+//            }
+
                 String protName = key.replace("--", "").trim().split(",")[1];
                 HorizontalLayout vlo = generateProtTab(key, protName, protAcc, protSelectionMap.get(key), selectedComparisonList);
                 final Tab t1;
@@ -119,7 +129,7 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
                 Integer index = (Integer) ((HorizontalLayout) tab.getComponent()).getData();
                 proteinsTabsheet.setSelectedTab(index);
                 proteinsTabsheet.focus();
-                
+
             } else {
 
             }
@@ -157,11 +167,12 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
      *
      * @param datasetExploringCentralSelectionManager
      * @param searchingMode
-     * @param mainHandler 
+     * @param mainHandler
      */
     public QuantProteinsTabsheetContainerLayout(final DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager, boolean searchingMode, CSFPRHandler mainHandler) {
         this.searchingMode = searchingMode;
         this.mainHandler = mainHandler;
+
         this.datasetExploringCentralSelectionManager = datasetExploringCentralSelectionManager;
         this.datasetExploringCentralSelectionManager.registerFilter(QuantProteinsTabsheetContainerLayout.this);
         this.setHeight("100%");
@@ -272,16 +283,21 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
      * redraw quant bar charts
      */
     public void redrawCharts() {
-        if (proteinsTabsheet == null || proteinsTabsheet.getSelectedTab() == null) {
-            ((HideOnClickLayout) this.getParent()).setVisability(false);
-            this.noProtLabel.setVisible(true);
-            return;
+        try {
+            if (proteinsTabsheet == null || proteinsTabsheet.getSelectedTab() == null) {
+                ((HideOnClickLayout) this.getParent()).setVisability(false);
+                this.noProtLabel.setVisible(true);
+                return;
+            }
+
+            this.noProtLabel.setVisible(false);
+            ((HideOnClickLayout) this.getParent()).setVisability(true);
+            HorizontalLayout selectedTab = (HorizontalLayout) proteinsTabsheet.getSelectedTab();
+            ProteinOverviewJFreeLineChartContainer overallPlotLayout = (ProteinOverviewJFreeLineChartContainer) selectedTab.getComponent(0);
+            overallPlotLayout.redrawCharts();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        this.noProtLabel.setVisible(false);
-        ((HideOnClickLayout) this.getParent()).setVisability(true);
-        HorizontalLayout selectedTab = (HorizontalLayout) proteinsTabsheet.getSelectedTab();
-        ProteinOverviewJFreeLineChartContainer overallPlotLayout = (ProteinOverviewJFreeLineChartContainer) selectedTab.getComponent(0);
-        overallPlotLayout.redrawCharts();
     }
 
     @Override
@@ -289,16 +305,16 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
         redrawCharts();
         Integer index = (Integer) ((HorizontalLayout) event.getTabSheet().getSelectedTab()).getData();
         if (index != null) {
-            {
-                for (int x = index - 10; x < index + 10; x++) {
+            int mincounter = Math.max(0, index - 10);
+            int maxcounter = Math.min(index + 10, tabIndexMap.size());
+            if (index < 10) {
+                for (int x = mincounter; x < maxcounter; x++) {
                     if (tabIndexMap.get(x) != null && tabIndexMap.get(x).getIcon() == null) {
                         tabIndexMap.get(x).setIcon(new ExternalResource(tabLayoutIndexMap.get(x).getThumbChart()));
                     }
                 }
-
             }
 
-            
         }
 
     }

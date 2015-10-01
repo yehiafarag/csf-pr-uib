@@ -1,4 +1,3 @@
-
 package probe.com.view.core;
 
 import com.vaadin.server.ExternalResource;
@@ -14,7 +13,7 @@ import com.vaadin.ui.VerticalLayout;
 public class InformationField extends VerticalLayout {
     
     private final Link valueLabel;
-    
+
     /**
      *
      * @param title
@@ -37,8 +36,6 @@ public class InformationField extends VerticalLayout {
         this.addComponent(valueLabel);
         this.setComponentAlignment(valueLabel, Alignment.TOP_LEFT);
         
-
-    
     }
 
     /**
@@ -46,14 +43,32 @@ public class InformationField extends VerticalLayout {
      * @param value
      * @param urlAddress
      */
-    public void setValue(String value,String urlAddress) {
-        if (value == null || value.trim().equalsIgnoreCase("")  || value.equalsIgnoreCase("-1")) {
+    public void setValue(String value, String urlAddress) {
+        if (value == null || value.trim().equalsIgnoreCase("") || value.equalsIgnoreCase("-1")) {
 //            this.setVisible(false);
-            valueLabel.setCaption("NOT AVAILABLE");
-             valueLabel.setStyleName("valuelabel");
+            valueLabel.setCaption("");
+            valueLabel.setStyleName("valuelabel");
             return;
         }
-
+        if (value.contains("Increased")) {
+            valueLabel.setCaption(value);
+            valueLabel.setStyleName("redvaluelabel");
+            return;
+            
+        }
+        if (value.contains("Decreased")) {
+            valueLabel.setCaption(value);
+            valueLabel.setStyleName("greenvaluelabel");
+            return;
+            
+        }
+        if (value.contains("Significant (")&& !value.contains("Not Significant (")) {
+            valueLabel.setCaption(value);
+            valueLabel.setStyleName("bluevaluelabel");
+            return;
+            
+        }
+        
         if (value.toCharArray().length > 25) {
             valueLabel.setCaption("<textarea rows='3' cols='25' readonly>" + value + "</textarea>");
             valueLabel.setCaptionAsHtml(true);
@@ -61,12 +76,12 @@ public class InformationField extends VerticalLayout {
         } else {
             valueLabel.setCaption(value);
         }
-        if(urlAddress != null){
-         valueLabel.setStyleName("valuelink");
-         valueLabel.setResource(new ExternalResource(urlAddress));
+        if (urlAddress != null) {
+            valueLabel.setStyleName("valuelink");
+            valueLabel.setResource(new ExternalResource(urlAddress));
+        } else {
+            valueLabel.setStyleName("valuelabel");
         }
-        else
-             valueLabel.setStyleName("valuelabel");
 //        this.setVisible(true);
     }
 }

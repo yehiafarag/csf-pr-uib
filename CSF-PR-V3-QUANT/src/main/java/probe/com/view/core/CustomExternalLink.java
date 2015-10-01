@@ -11,7 +11,7 @@ import com.vaadin.ui.VerticalLayout;
  * @author Yehia Farag
  */
 public class CustomExternalLink extends VerticalLayout implements Serializable, Comparable<Object> {
-
+    
     private String link;
     private String url;
     private Label label;
@@ -21,32 +21,37 @@ public class CustomExternalLink extends VerticalLayout implements Serializable, 
     private static final long serialVersionUID = 1L;
 
     /**
-     * @param link 
+     * @param link
      * @param url
      */
     public CustomExternalLink(String link, String url) {
         this.link = link;
         this.url = url;
-        label = new Label("<a href='" + url + "' target='_blank'>" + link + "</a>");
-        label.setContentMode(ContentMode.HTML);
+        label = new Label();
+        if (url != null) {
+            label.setValue("<a href='" + url + "' target='_blank'>" + link + "</a>");
+            label.setContentMode(ContentMode.HTML);
+        } else {
+            label.setValue(link);
+        }
+        
         label.setStyleName("externalLinkTableLabel");
         this.addComponent(label);
-
+        
     }
-
+    
     @Override
     public String toString() {
         return link;
     }
-
+    
     @Override
     public int compareTo(Object myLink) {
-
+        
         String compareLink = ((CustomExternalLink) myLink).getLink();
         //ascending order
         return (this.link.compareTo(compareLink));
-
-
+        
     }
 
     /**
@@ -62,10 +67,11 @@ public class CustomExternalLink extends VerticalLayout implements Serializable, 
      * @param color
      */
     public synchronized void rePaintLable(final String color) {
-        if(color.equalsIgnoreCase("black"))
+        if (color.equalsIgnoreCase("black")) {
             label.setStyleName("externalLinkTableLabel");
-        else
+        } else {
             label.setStyleName("externalLinkTableClickedLabel");
+        }
 //        synchronized (this) {
 //            Thread t = new Thread(new Runnable() {
 //                @Override

@@ -35,7 +35,7 @@ public class Header extends VerticalLayout {
         header.setStyleName(Reindeer.LAYOUT_WHITE);
 
         //Coronetscript, cursive Helvetica
-        Label csfLable = new Label("<a href='' style='text-decoration:none'><p   align='left' ; style='margin-left:40px;font-family:verdana;color:#4d749f;font-weight:bold;text-decoration:none '><FONT SIZE='5.5'>CSF Proteome Resource (CSF-PR)</FONT></p></a>");
+        Label csfLable = new Label("<a href='' style='text-decoration:none'><p   align='left' ; style='margin-left:40px;font-family:verdana;color:#4d749f;font-weight:bold;text-decoration:none '><FONT SIZE='5.5'>CSF Proteome Resource (CSF-PR)</FONT><font size='2' > v2.0</font></p></a>");
         csfLable.setContentMode(ContentMode.HTML);
         csfLable.setStyleName(Reindeer.LABEL_SMALL);
         csfLable.setWidth("100%");

@@ -17,6 +17,15 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
     private String comparisonHeader;
     private int[] datasetIndexes;
     private Map<String, DiseaseGroupsComparisonsProteinLayout> comparProtsMap;
+    private String rgbStringColor;
+
+    public String getRgbStringColor() {
+        return rgbStringColor;
+    }
+
+    public void setRgbStringColor(String rgbStringColor) {
+        this.rgbStringColor = rgbStringColor;
+    }
 
    
     /**

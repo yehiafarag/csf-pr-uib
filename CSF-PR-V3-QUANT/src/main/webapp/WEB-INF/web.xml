@@ -39,9 +39,9 @@
         <param-value>jdbc:mysql://localhost:3306/</param-value>
     </context-param>
     <context-param>
-        <description>Database name csf_db_v2_1  dbtest</description>
+        <description>Database name csf_db_v2_1  dbtest, quantdataupdated_10_9</description>
         <param-name>dbName</param-name>
-        <param-value>dbtest</param-value>
+        <param-value>quantdataupdated_16_9</param-value>
     </context-param>
     <context-param>
         <description>Database Driver</description>
@@ -61,7 +61,7 @@
     <context-param>
         <description>exported files folder url C:\CSF_Files(/home/probe/user/CSF-PR-FILES)</description>
         <param-name>filesURL</param-name>
-        <param-value>C:\CSF_Files</param-value>
+        <param-value>/home/probe/user/CSF-PR-FILES</param-value>
     </context-param>
     <servlet>
         <servlet-name>Vaadin Application Servlet</servlet-name>

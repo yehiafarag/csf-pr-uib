@@ -18,7 +18,7 @@ import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
  *
  * @author yehia Farag
  */
-public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutClickListener{
+public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
     private final double value;
     private final int rowLabelIndex;
@@ -38,7 +38,7 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
     private String pointer;
     private String defaultStyle = "initheatmapcoloredcell";
     private final Label valueLabel;
-    private boolean selected =false;
+    private boolean selected = false;
 
     /**
      *
@@ -47,7 +47,7 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
     public QuantDiseaseGroupsComparison getComparison() {
         return comparison;
     }
-    
+
     private final QuantDiseaseGroupsComparison comparison;
 
     /**
@@ -60,28 +60,29 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
      * @param tooltipLayout
      * @param parentcom
      * @param groupCompTitle
+     * @param heatmapCellWidth
      */
-    public HeatmapCell(double value, final String color, int[] dsIndexes, final int rowLabelIndex, final int colLabelIndex, VerticalLayout tooltipLayout, HeatMapComponent parentcom, String groupCompTitle) {
-      
+    public HeatmapCell(double value, final String color, int[] dsIndexes, final int rowLabelIndex, final int colLabelIndex, VerticalLayout tooltipLayout, HeatMapComponent parentcom, String groupCompTitle,int heatmapCellWidth) {
+
         this.colLabelIndex = colLabelIndex;
         this.rowLabelIndex = rowLabelIndex;
         this.valueLabel = new Label();
         this.value = value;
-       
+
         this.parent = parentcom;
-        this.setWidth("50px");
-        this.setHeight("50px");
+        this.setWidth(heatmapCellWidth+"px");
+        this.setHeight(heatmapCellWidth+"px");
         strValue = "";
         pointer = "default";
         this.comparison = new QuantDiseaseGroupsComparison();
         comparison.setComparisonHeader(groupCompTitle);
+        comparison.setRgbStringColor(color);
         comparison.setDatasetIndexes(dsIndexes);
         mouseOverListener = new MouseEvents.MouseOverListener() {
 
             @Override
             public void mouseOver() {
 
-                
                 parent.highlightHeaders(colLabelIndex, rowLabelIndex);
 //                setValue("<div style='background-color: " + heighlightColor + " ;height:50px;width:50px; cursor:" + pointer + "; '><b>" + strValue + "</b></div>");
 
@@ -108,25 +109,24 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
             mouseEvents.addMouseOverListener(mouseOverListener);
             this.addLayoutClickListener(HeatmapCell.this);
 
-
         }
         valueLabel.setContentMode(ContentMode.HTML);
         valueLabel.setPrimaryStyleName(defaultStyle);
-        valueLabel.setValue("<div style='background-color:" + color + "; background-position: center;height:46px;width:46px; cursor:" + pointer + "; '><b>" + strValue + "</b></div>");
+        valueLabel.setValue("<div  align='center' style='background-color:" + color + "; background-position: center;height:"+(heatmapCellWidth-4)+"px;width:"+(heatmapCellWidth-4)+"px; cursor:" + pointer + "; '><b>" + strValue + "</b></div>");
         this.addComponent(valueLabel);
-        this.setComponentAlignment(valueLabel,Alignment.MIDDLE_CENTER);
-       
+        this.setComponentAlignment(valueLabel, Alignment.MIDDLE_CENTER);
+
     }
 
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         if (defaultStyle.equalsIgnoreCase("selectedheatmapcoloredcell")) {
-            parent.removeSelectedDs(this.comparison,this);
-             parent.resetHeadersStyle(colLabelIndex, rowLabelIndex);
-            unselect();
+            parent.unSelectDs(this.comparison, this);
+            parent.resetHeadersStyle(colLabelIndex, rowLabelIndex);
+//            unselect();
         } else {
 //            selected = true;
-            parent.addSelectedDs(this.comparison,this);
+            parent.addSelectedDs(this.comparison, this);
             defaultStyle = "selectedheatmapcoloredcell";
             valueLabel.setPrimaryStyleName(defaultStyle);
         }
@@ -153,10 +153,11 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
         valueLabel.setPrimaryStyleName(defaultStyle);
 
     }
-    public void initStyle(){
-    defaultStyle = "initheatmapcoloredcell";
-        valueLabel.setPrimaryStyleName(defaultStyle);
-    
+
+    public void initStyle() {
+        defaultStyle = "initheatmapcoloredcell";
+        valueLabel.setPrimaryStyleName("initheatmapcoloredcell");
+
     }
 
 }

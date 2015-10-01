@@ -420,7 +420,7 @@ DCharts chart = new DCharts()
                     patGr2Num = null;
                 }
                 CustomExternalLink pumedID = new CustomExternalLink(pb.getPumedID(), "http://www.ncbi.nlm.nih.gov/pubmed/" + pb.getPumedID());
-                studiesTable.addItem(new Object[]{index, pumedID, pb.getFilesNumber(), pb.getIdentifiedProteinsNumber(), quantProyNum, pb.getDiseaseGroups(), rawDatalink, pb.getYear(), pb.getTypeOfStudy(), pb.getSampleType(), pb.getSampleMatching(), pb.getTechnology(), pb.getAnalyticalApproach(), pb.getEnzyme(), pb.getShotgunTargeted(), pb.getQuantificationBasis(), pb.getQuantBasisComment(), patGr1Num, patGr2Num, pb.getNormalizationStrategy()}, index);
+//                studiesTable.addItem(new Object[]{index, pumedID, pb.getFilesNumber(), pb.getIdentifiedProteinsNumber(), quantProyNum, pb.getDiseaseGroups(), rawDatalink, pb.getYear(), pb.getTypeOfStudy(), pb.getSampleType(), pb.getSampleMatching(), pb.getTechnology(), pb.getAnalyticalApproach(), pb.getEnzyme(), pb.getShotgunTargeted(), pb.getQuantificationBasis(), pb.getQuantBasisComment(), patGr1Num, patGr2Num, pb.getNormalizationStrategy()}, index);
                 index++;
             }
         } finally {

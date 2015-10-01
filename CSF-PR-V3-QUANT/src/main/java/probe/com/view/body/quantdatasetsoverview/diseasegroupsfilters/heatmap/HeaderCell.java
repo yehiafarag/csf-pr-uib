@@ -21,11 +21,12 @@ import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
  *
  * @author Yehia Farag
  */
-public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutClickListener{
+public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutClickListener {
+
     private final int index;
-    private final  String cellStyleName;
-    private String selectStyle ="";
-    private final Label valueLabel ;
+    private final String cellStyleName;
+    private String selectStyle = "";
+    private final Label valueLabel;
 
     /**
      *
@@ -51,8 +52,8 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
         return valueLabel.getValue();
     }
     private boolean selected = false;
-    private final Set<QuantDiseaseGroupsComparison>includedComparisons = new LinkedHashSet<QuantDiseaseGroupsComparison>();
-     private final List<HeatmapCell>includedCells = new ArrayList<HeatmapCell>();
+    private final Set<QuantDiseaseGroupsComparison> includedComparisons = new LinkedHashSet<QuantDiseaseGroupsComparison>();
+    private final List<HeatmapCell> includedCells = new ArrayList<HeatmapCell>();
     private final HeatMapComponent parentcom;
 
     /**
@@ -61,15 +62,16 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
      * @param value
      * @param index
      * @param parentcom
+     * @param heatmapCellWidth
      */
-    public HeaderCell(boolean rowHeader, String value, int index,HeatMapComponent parentcom) {
-        this.parentcom=parentcom;
+    public HeaderCell(boolean rowHeader, String value, int index, HeatMapComponent parentcom, int heatmapCellWidth) {
+        this.parentcom = parentcom;
         valueLabel = new Label("<center><b>" + value + "</b></center>");
 //        super("<b>" + value + "</b>");
         valueLabel.setWidth("150px");
-        valueLabel.setHeight("40px");
+        valueLabel.setHeight((heatmapCellWidth - 10) + "px");
         this.setWidth("150px");
-        this.setHeight("50px");
+        this.setHeight(heatmapCellWidth + "px");
         this.valueLabel.setContentMode(ContentMode.HTML);
         this.index = index;
         if (rowHeader) {
@@ -82,43 +84,42 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
         this.addComponent(valueLabel);
         this.setComponentAlignment(valueLabel, Alignment.BOTTOM_CENTER);
         this.addLayoutClickListener(HeaderCell.this);
-        
 
-    }
-    
-    /**
-     *
-     */
-    public void heighlightCellStyle(){
-        
-    this.setStyleName(cellStyleName+selectStyle+"_heighlightcell");
-    
     }
 
     /**
      *
      */
-    public void resetCellStyle(){
-    this.setStyleName(cellStyleName+selectStyle);
-    
+    public void heighlightCellStyle() {
+
+        this.setStyleName(cellStyleName + selectStyle + "_heighlightcell");
+
     }
 
     /**
      *
      */
-    public void selectCellStyle(){
-      selectStyle ="_selected";
-    this.setStyleName(cellStyleName+selectStyle);
-    
+    public void resetCellStyle() {
+        this.setStyleName(cellStyleName + selectStyle);
+
     }
 
     /**
      *
      */
-    public void unSelectCellStyle(){
-        selectStyle="";
-    this.setStyleName(cellStyleName);
-    
+    public void selectCellStyle() {
+        selectStyle = "_selected";
+        this.setStyleName(cellStyleName + selectStyle);
+
+    }
+
+    /**
+     *
+     */
+    public void unSelectCellStyle() {
+        selectStyle = "";
+        this.setStyleName(cellStyleName);
+
     }
 
     @Override
@@ -127,23 +128,22 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
             selected = false;
 //            unSelectCellStyle();
             parentcom.removeRowSelectedDs(valueLabel.getValue());
-          
-            
+
         } else {
             selected = true;
 //            selectCellStyle();
             parentcom.addRowSelectedDs(valueLabel.getValue());
         }
     }
-    
+
     /**
      *
      * @param groupComp
      * @param cell
      */
-    public void addComparison(QuantDiseaseGroupsComparison groupComp,HeatmapCell cell){
-    this.includedComparisons.add(groupComp);
-    this.includedCells.add(cell);
+    public void addComparison(QuantDiseaseGroupsComparison groupComp, HeatmapCell cell) {
+        this.includedComparisons.add(groupComp);
+        this.includedCells.add(cell);
     }
 
 }

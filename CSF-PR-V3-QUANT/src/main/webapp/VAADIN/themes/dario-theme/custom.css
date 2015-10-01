@@ -5,6 +5,22 @@
     Description:
         Purpose of the stylesheet follows.
 */
+
+/* This font-face declaration must be outside your theme mixin. */
+@font-face {
+    font-family: 'Vaadin-Icons';
+    src: url('fonts/Vaadin-Icons.eot');
+    src: url('fonts/Vaadin-Icons.eot?#iefix') format('embedded-opentype'),
+        url('fonts/Vaadin-Icons.woff') format('woff'),
+        url('fonts/Vaadin-Icons.ttf') format('truetype'),
+        url('fonts/Vaadin-Icons.svg#icomoon') format('svg');
+}
+.Vaadin-Icons {
+    font-family: 'Vaadin-Icons';
+
+}
+
+
 .v-loading-indicator,  
 .v-loading-indicator-delay,  
 .v-loading-indicator-wait {  
@@ -227,7 +243,7 @@
     font-size: 11px;
 }
 .titleLabel{
-     clear: both;
+    clear: both;
     font-size: 14px;
     /*height: 14px;*/
     font-family: Verdana;
@@ -238,7 +254,7 @@
     margin-top: 5px;
     padding: 0 0 0 0;
     text-align: center;
-    
+
 }
 .caption{
     font-family:Verdana;
@@ -256,18 +272,42 @@
 }
 
 .valuelabel span{
-     font-family: Verdana;    
+    font-family: Verdana;    
     /*    text-transform: inherit;*/
     text-decoration: none;
     color:gray;    
 }
+
+
+.redvaluelabel span{
+    font-family: Verdana;    
+    /*    text-transform: inherit;*/
+    text-decoration: none;
+    color:red;    
+}
+
+
+.greenvaluelabel span{
+    font-family: Verdana;    
+    /*    text-transform: inherit;*/
+    text-decoration: none;
+    color:#009900;    
+}
+
+.bluevaluelabel span{
+    font-family: Verdana;    
+    /*    text-transform: inherit;*/
+    text-decoration: none;
+    color:blue;    
+}
+
 .valuelabel textArea{
     font-family: Verdana;    
     background-color:  white;
     border:none;
-     color:gray;    
-     resize: none;
-     /*text-transform: uppercase;*/
+    color:gray;    
+    resize: none;
+    /*text-transform: uppercase;*/
 }
 .filterShowLabel{
     clear: both;
@@ -344,6 +384,15 @@
     font-weight: bold;
 
 }
+
+.comparisonHeaders{
+    font-family: Verdana; 
+    font-size: 12px;
+    text-align: center;
+    color:black;
+    line-height:22px;
+
+}
 .datasetInfoValues{
     font-family:Verdana; 
     font-size: 12px;
@@ -358,7 +407,7 @@
     height: 50px;
     overflow-x: hidden;
     overflow-y: scroll;
-        
+
     border: none;
     resize: none;
     text-justify: distribute;
@@ -383,8 +432,8 @@
 .spacer{
     height: 1px;
     border: 1px #dce0e0 dotted;
-    
-    
+
+
 }
 
 .v-select-optiongroup-horizontal .v-select-option {
@@ -399,13 +448,13 @@
     padding-right: 10px;
 }
 .interactiveFilter{
-     font-family:Verdana; 
-    
+    font-family:Verdana; 
+
 }
 
 .grayborder{
     border: none;
-    
+
 }
 
 .v-tree-node-caption-treeHeader{
@@ -413,37 +462,37 @@
     font-size: 12px;
     font-weight: bold;
     color:rgb(59, 90, 122);    
-    
+
 }
 .v-tree-node-caption-treeValue{
     font-family:Verdana; 
     font-size: 10px;
     font-weight: bold;
     color:gray;    
-    
+
 }
 .publicationoverviewlabel{
-    
+
     color:#000000;
     font-size: 12px;
     font-weight: normal;
     cursor: pointer;
-    
+
 }
 .publicationoverviewlabel span:hover{
     color: rgb(59, 90, 122);
     cursor: pointer;
-    
-    
+
+
 }
 
 .selectedpublicationoverviewlabel{
     color: rgb(59, 90, 122);
-     font-size: 14px;
+    font-size: 14px;
     font-weight: bold;
     cursor: pointer;
-    
-    
+
+
 }
 .bluesparkline div{
     clear: both;
@@ -451,14 +500,14 @@
     background: url(img/lightbluesparkline.png)no-repeat;
 }
 .bluesparkline div:hover{
-    
-     background: url(img/darkbluesparkline.png)no-repeat;
-    
+
+    background: url(img/darkbluesparkline.png)no-repeat;
+
 }
 .selectedbluesparkline div{
-    
-     background: url(img/darkbluesparkline.png)no-repeat;
-    
+
+    background: url(img/darkbluesparkline.png)no-repeat;
+
 }
 .bluebullet img{
     clear: both;
@@ -467,21 +516,21 @@
     content:  url(img/dot.png);
 }
 .bluebullet img:hover{
-    
-     background: url(img/blackdot.png)no-repeat;
-    
+
+    background: url(img/blackdot.png)no-repeat;
+
 }
 .darkbluebullet img{
-    
-     background: url(img/blackdot.png)no-repeat;
-    
+
+    background: url(img/blackdot.png)no-repeat;
+
 }
 
 .hmcolumnlabel {
     border: 1px solid #F6F0F0;
-     margin-top: 150px;
-     text-align: center;
-     line-height: 50px;
+    margin-top: 148px;
+    text-align: center;
+    line-height: 45px;
     -ms-transform:rotate(270deg); /* IE 9 */
     -moz-transform:rotate(270deg); /* Firefox */
     -webkit-transform:rotate(270deg); /* Safari and Chrome */
@@ -493,15 +542,15 @@
     cursor: pointer;
 }
 .hmcolumnlabel:hover{
-     border: 1px solid #4d749f; 
-    
+    border: 1px solid #4d749f; 
+
 }
 
 .hmcolumnlabel_heighlightcell {
     border: 1px solid #fc690a;
-    margin-top: 150px;
+    margin-top: 148px;
     text-align: center;
-    line-height: 50px;
+    line-height: 45px;
     -ms-transform:rotate(270deg); /* IE 9*/ 
     -moz-transform:rotate(270deg);  /*Firefox */
     -webkit-transform:rotate(270deg); /* Safari and Chrome */
@@ -509,20 +558,20 @@
     transform-origin: 0%  0%;    
     position: absolute;
     /*background-color: #006699;*/
-/*    color: white;*/
+    /*    color: white;*/
     cursor: pointer; 
 
 }
 .hmcolumnlabel div{
-      cursor: pointer;    
+    cursor: pointer;    
 }
 
 
 .hmcolumnlabel_selected {
     border: 1px solid  #4d749f;
-     margin-top: 150px;
-     text-align: center;
-     line-height: 50px;
+    margin-top: 148px;
+    text-align: center;
+    line-height: 45px;
     -ms-transform:rotate(270deg); /* IE 9 */
     -moz-transform:rotate(270deg); /* Firefox */
     -webkit-transform:rotate(270deg); /* Safari and Chrome */
@@ -539,9 +588,9 @@
 }
 .hmcolumnlabel_selected_heighlightcell {
     border: 1px solid #fc690a;
-    margin-top: 150px;
+    margin-top: 148px;
     text-align: center;
-    line-height: 50px;
+    line-height: 45px;
     -ms-transform:rotate(270deg); /* IE 9*/ 
     -moz-transform:rotate(270deg);  /*Firefox */
     -webkit-transform:rotate(270deg); /* Safari and Chrome */
@@ -557,51 +606,51 @@
 
 .hmrowlabel {
     border: 1px solid #F6F0F0;
-     text-align: center;
-     line-height: 50px;
-     background-color:    #ffffff;
+    text-align: center;
+    line-height: 45px;
+    background-color:    #ffffff;
     color: #000000; 
-     cursor: pointer;  
+    cursor: pointer;  
 
 }
 .hmrowlabel:hover{
-     border: 1px solid #4d749f; 
-    
+    border: 1px solid #4d749f; 
+
 }
 .hmrowlabel div{
-      cursor: pointer;    
+    cursor: pointer;    
 }
 
 
 .hmrowlabel_heighlightcell {
     border: 1px solid #fc690a;
-     text-align: center;
-     line-height: 50px; 
+    text-align: center;
+    line-height: 45px; 
 }
 
 
 
 .hmrowlabel_selected {
     border: 1px solid  #4d749f;
-     text-align: center;
-     line-height: 50px;
-     background-color: #4d749f;
+    text-align: center;
+    line-height: 45px;
+    background-color: #4d749f;
     color: white;
-     cursor: pointer;  
-  
+    cursor: pointer;  
+
 
 }
 .hmrowlabel_selected div{
-      cursor: pointer;    
+    cursor: pointer;    
 }
 
 .hmrowlabel_selected_heighlightcell {
     border: 1px solid #fc690a;
-     text-align: center;
-     line-height: 50px;
-     background-color: #4d749f;
+    text-align: center;
+    line-height: 45px;
+    background-color: #4d749f;
     color: white;
-  
+
 
 }
 
@@ -612,25 +661,25 @@
 
 .initheatmapcoloredcell{
     border: 2px solid #EFF2FB;   
-    height:50px;
-    width:50px; 
+    height:45px;
+    width:45px; 
     text-align:center;
     color: #e0e0e0 ;
-    line-height: 48px;
+    line-height: 43px;
     font-weight: bold;
-    
+
 }
 
 .heatmapcoloredcell{
     border: 2px solid #EFF2FB;   
-    height:50px;
-    width:50px; 
+    height:45px; 
+    width:45px; 
     text-align:center;
     color: #e0e0e0 ;
-    line-height: 48px;
+    line-height: 43px;
     font-weight: bold;
     opacity: 0.4;
-    
+
 }
 .heatmapcoloredcell:hover{
     border: 2px solid #4d749f; 
@@ -639,15 +688,15 @@
 .selectedheatmapcoloredcell{
     border: 2px solid #FF8000;
     background-color: #FF8000;
-   opacity: 1;
+    opacity: 1;
     border-radius: 3px;
-    height:50px;
-    width:50px; 
+    height:45px;
+    width:45px; 
     text-align:center;
     color: #ffffff ;
     font-size: 20px;
     font-weight: bolder;
-    line-height: 48px;    
+    line-height: 43px;    
 
 }
 .filterlabelbtn{
@@ -664,15 +713,15 @@
 
 }
 .filterlabelbtn:hover{
-background-color: lightgray;
-    
+    background-color: lightgray;
+
 }
 .interactiveFilterLayout{
     position: absolute;
     top: auto;
     left: auto;
-    
-    
+
+
 }
 .closelabel{
     clear: both;
@@ -690,8 +739,8 @@ background-color: lightgray;
     width: 100px;
     height: 30px;
     background-color:  whitesmoke;
-/*    background-image: url(img/reset.png);
-    background-repeat: no-repeat;*/
+    /*    background-image: url(img/reset.png);
+        background-repeat: no-repeat;*/
     background-position:center;
     border: 1px solid  rgb(169, 169, 169) ;
     border-radius: 3px;
@@ -700,14 +749,14 @@ background-color: lightgray;
 
 }
 resetlabelbtn p{
-     margin-top:5px;
-     cursor: pointer;
+    margin-top:5px;
+    cursor: pointer;
 
 
 }
 .resetlabelbtn:hover{
-background-color: lightgray;
-    
+    background-color: lightgray;
+
 }
 .matrixbtn{
     background-color:  #ffffff;
@@ -747,18 +796,18 @@ background-color: lightgray;
 
 }
 .grcompbtn p{
-    
-     margin-top:5px;
-     cursor: pointer;
-    
+
+    margin-top:5px;
+    cursor: pointer;
+
 }
 .grcompbtn:hover{
-background-color: lightgray;
-    
+    background-color: lightgray;
+
 }
 
 .tablesearchingbtn{
-     /*width: 40px;*/
+    /*width: 40px;*/
     height: 24px;
     background-color:  whitesmoke;
     background-image: url(img/icon_find.png);
@@ -767,15 +816,15 @@ background-color: lightgray;
     border: 1px solid  rgb(169, 169, 169) ;
     border-radius: 3px;
     cursor:pointer;
-    
+
 }
 
 .tablesearchingbtn:hover{
-background-color: lightgray;
-    
+    background-color: lightgray;
+
 }
 .smallresetbtn div{
-     width: 70px;
+    width: 70px;
     height: 24px;
     background-color:  whitesmoke;
     background-image: url(img/reset.png);
@@ -784,12 +833,12 @@ background-color: lightgray;
     border: 1px solid  rgb(169, 169, 169) ;
     border-radius: 3px;
     cursor:pointer;
-    
+
 }
 
 .smallresetbtn:hover{
-background-color: lightgray;
-    
+    background-color: lightgray;
+
 }
 
 .closebtn{
@@ -800,19 +849,20 @@ background-color: lightgray;
     background-image: url(img/close_1.png);
     background-position:center;
     background-repeat: no-repeat;
+    margin-right: 10px;
     cursor:pointer;
 
 }
 .lightborder{
     border: 1px solid #EFF2FB;  
     background: #ffffff;
-     overflow-y:hidden;
+    overflow-y:hidden;
 
 }
 .lightselectedborder{
-     border: 1px solid #4d749f;  
+    border: 1px solid #4d749f;  
     background: #ffffff;
-     overflow-y:hidden;
+    overflow-y:hidden;
 }
 
 
@@ -837,8 +887,8 @@ background-color: lightgray;
     background-image: url(img/red_right.png);
     background-position:center;
     background-repeat: no-repeat;
-    
-    
+
+
 }
 
 .lightbluearr{
@@ -847,8 +897,8 @@ background-color: lightgray;
     background-image: url(img/light_blue.png);
     background-position:center;
     background-repeat: no-repeat;
-    
-    
+
+
 }
 
 .greenleftarr{
@@ -857,57 +907,57 @@ background-color: lightgray;
     background-image: url(img/green_left.png);
     background-position:center;
     background-repeat: no-repeat;
-    
-    
+
+
 }
 .hideoverflow div{
     overflow: hidden;
-    
+
 }
 .hideoverflowlayout {
     overflow: hidden;
-    
+
 }
 .lightgraylayout{
     background-color: rgb(242,242,242);
     border: 1px solid  lightgray ;
 }
 .upregchartlabel {
-     font-family: Verdana;    
-     color: red;
-     /* top:-5px; */
-     height:100%;
-     overflow: visible;
-     font-weight:bold;
-     font-size: 10px;
-     line-height:100%;
-     text-align:center;
-     margin-top:10px;
-    
+    font-family: Verdana;    
+    color: red;
+    /* top:-5px; */
+    height:100%;
+    overflow: visible;
+    font-weight:bold;
+    font-size: 10px;
+    line-height:100%;
+    text-align:center;
+    margin-top:10px;
+
 }
 .notregchartlabel {
-      font-family: Verdana;    
-     color: #9fd3ff;//rgb(205, 225, 255) ;
-     /* top:-5px; */
-     height:30px;
-     font-weight:bold;
-     font-size: 10px;
-     line-height:100%;
-     text-align:center;
-     margin-top:15px;
-    
+    font-family: Verdana;    
+    color: #9fd3ff;//rgb(205, 225, 255) ;
+    /* top:-5px; */
+    height:30px;
+    font-weight:bold;
+    font-size: 10px;
+    line-height:100%;
+    text-align:center;
+    margin-top:15px;
+
 }
 .downregchartlabel {
-       font-family: Verdana;    
-     color: #009900;
-     /* top:-5px; */
-     height:30px;
-     font-weight:bold;
-     font-size: 10px;
-     line-height:100%;
-     text-align:center;
-     margin-top:20px;
-    
+    font-family: Verdana;    
+    color: #009900;
+    /* top:-5px; */
+    height:30px;
+    font-weight:bold;
+    font-size: 10px;
+    line-height:100%;
+    text-align:center;
+    margin-top:20px;
+
 }
 .cursorcanvas {    
     cursor: pointer;
@@ -929,19 +979,28 @@ background-color: lightgray;
 
 }
 .cursorcanvas:focus {
-  outline: none;
+    outline: none;
 }
 .defaultcursorcanvas:focus {
-  outline: none;
+    outline: none;
+}.transparentsquaredcomp{    
+    background-color: #000000;
+    opacity: 0.0;
 }
-.transparentcomp{    
-     background-color: #ffffff;
-    opacity: .35;
-}
-.transparentcomp:hover{
+.transparentsquaredcomp:hover{
     cursor: pointer;
-    opacity: .0;
-    
+    opacity: .1;
+
+}
+.transparentcyclecomp{    
+    background-color: #000000;
+    opacity: 0.0;
+}
+.transparentcyclecomp:hover{
+    cursor: pointer;
+    opacity: .1;
+    border-radius: 50%;
+
 }
 
 .v-tooltip{
@@ -949,46 +1008,129 @@ background-color: lightgray;
     font-weight:bold !important;
 
 }
+.v-tooltip p{
+    width:100% !important;
+    height:3px !important;
+    border-bottom:1px dotted black !important;
+
+
+}
+.v-tooltip h3{
+    font-size: 13px !important;
+    margin-left:10px;
+    margin-right:10px;
+}
 .lightgrayborger{
     border:1px solid lightgray;
     border-left-color: lightgray;
     border-right-color: lightgray;    
 }
-.selectedbar{
-     background: black;  
-      cursor: pointer;
-    
-}
+
 .greenstackedlayout div{
     background: #009900;
-     border: 1px solid black;     
+    border: 1px solid black;     
     cursor:pointer;
+    opacity: 0.3;
 }
 .midgreenstackedlayout div{
     background: #D0F5A9;
-     border: 1px solid black; 
-     
+    border: 1px solid black; 
+     opacity: 0.3;
+
     cursor:pointer;
 }
 
 
 .lightbluestackedlayout div{
     background: rgb(1, 141, 244); 
-     border: 1px solid black;    
+    border: 1px solid black;    
     cursor: pointer;
+     opacity: 0.3;
 }
 
 .redstackedlayout div{
     background: #cc0000;
-      border: 1px solid black;    
+    border: 1px solid black;    
     cursor:pointer;
+     opacity: 0.3;
 }
 
 .midredstackedlayout div{
     background: #FF7F7F;
-      border: 1px solid black;     
+    border: 1px solid black;     
+    cursor:pointer;
+     opacity: 0.3;
+}
+
+
+.greenstackedlayout div:hover{
+     opacity: 1;
+}
+.midgreenstackedlayout div:hover{
+     opacity: 1;
+}
+
+
+.lightbluestackedlayout div:hover{
+     opacity: 1;
+}
+
+.redstackedlayout div:hover{
+     opacity: 1;
+}
+
+.midredstackedlayout div:hover{
+     opacity: 1;
+}
+
+
+
+
+.selectedgreenstackedlayout div{
+    background: #009900;
+    border: 1px solid black;     
+    cursor:pointer;
+     opacity: 1;
+}
+.selectedmidgreenstackedlayout div{
+    background: #D0F5A9;
+    border: 1px solid black; 
+    opacity: 1;
+
     cursor:pointer;
 }
+
+
+.selectedlightbluestackedlayout div{
+    background: rgb(1, 141, 244); 
+    border: 1px solid black;    
+    cursor: pointer;
+    opacity: 1;
+}
+
+.selectedredstackedlayout div{
+    background: #cc0000;
+    border: 1px solid black;    
+    cursor:pointer;
+    opacity: 1;
+}
+
+.selectedmidredstackedlayout div{
+    background: #FF7F7F;
+    border: 1px solid black;     
+    cursor:pointer;
+    opacity: 1;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 .greenlayout div{
@@ -1000,29 +1142,29 @@ background-color: lightgray;
 }
 .midgreenlayout div{
     background: #00937A;
-    
-    
+
+
 }
 .midredlayout{
     background: #FF3333;
-    
+
 }
 .redlayout div{
     background: #cc0000;
 }
 .empty div{
-      /*background-image: url(img/empty.png);*/
-      background:#cccccc;
-      background-position:center;
-    
+    /*background-image: url(img/empty.png);*/
+    background:#cccccc;
+    background-position:center;
+
 }
 
 
 .orangestackedlayout div{
     background: #FF8000;
-      border-left: 1px solid black;
-      border-right: 1px solid black;     
-      cursor:pointer;
+    border-left: 1px solid black;
+    border-right: 1px solid black;     
+    cursor:pointer;
 }
 
 .intersectransparentcomp{    
@@ -1055,45 +1197,102 @@ background-color: lightgray;
 }
 
 .v-window-wrap{
-background:white !important;
+    background:white !important;
 }
 .v.button-link:focus {
-  outline: none !important;
+    outline: none !important;
 }
 v-gridlayout-slot:focus{
-     outline: none !important;
-    
+    outline: none !important;
+
 }
 
 .studyexplorer{
-     width: 31px;
+    width: 31px;
     height: 31px;
     background-image: url(img/exploringfiltermin.png);
     background-position:center;
     background-repeat: no-repeat;
     cursor: pointer;
-    
+
 }
 
 .studyexplorer:focus{
-    
-     outline: none !important;
+
+    outline: none !important;
 }
 
 .proteinsLinkLabel div{
     font-size:13px;
     font-style: italic;
     cursor:pointer;   
-    
+
 }
 .proteinsLinkLabel div:hover{
     font-weight:bold;
-    
+
 }
 .linklike div{
     text-decoration: underline;
     color: blue;
     cursor: pointer;
     font-style: initial
+
+}
+
+.tabbtn{
+    border:1px solid gray;
+    border-radius:5px;
+    background:whitesmoke;
+    cursor:pointer;
+
+
+}
+.tabbtn div{
+    text-align:center;
+    line-height:100%;
+    margin-top:auto;
+    position:relative;
+    cursor:pointer;
+    font-family:Verdana;
+    font-size:13px;
+
+
+
+}
+
+.tabbtn div:hover{ 
+    font-weight: bold;  
+    color: #ee5311;
+
+
+
+}
+.selectedtabbtn{
+    border:1px solid #4d749f;
+    border-radius:5px;
+    background:#4d749f;
+    cursor:pointer;
+
+
+}
+
+.selectedtabbtn div{ 
+    text-align:center;
+    line-height:100%;
+    margin-top:auto;
+    position:relative;
+    cursor:pointer;
+    font-family:Verdana;
+    font-size:13px;  
+    color: white;
+    font-weight: bold; 
+
+
+
+}
+.borderlayout{
+    
+    
     
 }

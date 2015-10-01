@@ -4,7 +4,9 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import probe.com.selectionmanager.CSFFilter;
@@ -72,8 +74,8 @@ public class QuantDatasetsCombinedTableLayout extends VerticalLayout implements 
         datasetsTable.addContainerProperty("#Quantified Proteins ", Integer.class, null, "#Quantified Proteins", null, Table.Align.RIGHT);
         datasetsTable.setColumnCollapsed("#Quantified Proteins", !activeColumnHeaders[3]);
 
-        datasetsTable.addContainerProperty("Disease group ", String.class, null);
-        datasetsTable.setColumnCollapsed("Disease group", !activeColumnHeaders[4]);
+        datasetsTable.addContainerProperty("Analytical Method", String.class, null);
+        datasetsTable.setColumnCollapsed("Analytical Method", !activeColumnHeaders[4]);
 
         datasetsTable.addContainerProperty("Raw Data", CustomExternalLink.class, null);
         datasetsTable.setColumnCollapsed("Raw Data", !activeColumnHeaders[5]);
@@ -118,7 +120,7 @@ public class QuantDatasetsCombinedTableLayout extends VerticalLayout implements 
         datasetsTable.addContainerProperty("patientsGroup1Number", Integer.class, null, "#Patients Gr.I", null, Table.Align.RIGHT);
         datasetsTable.setColumnCollapsed("patientsGroup1Number", !activeColumnHeaders[19]);
 
-        datasetsTable.addContainerProperty("patientsGroup1Comm", String.class, null, "Patients Gr.I Comm", null, Table.Align.RIGHT);
+        datasetsTable.addContainerProperty("patientsGroup1Comm", String.class, null, "Patients Gr.I Comm", null, Table.Align.LEFT);
         datasetsTable.setColumnCollapsed("patientsGroup1Comm", !activeColumnHeaders[20]);
 
         datasetsTable.addContainerProperty("patientsSubGroup1", String.class, null, "Patients Sub-Gr.I", null, Table.Align.RIGHT);
@@ -130,7 +132,7 @@ public class QuantDatasetsCombinedTableLayout extends VerticalLayout implements 
         datasetsTable.addContainerProperty("patientsGroup2Number", Integer.class, null, "#Patients Gr.II", null, Table.Align.RIGHT);
         datasetsTable.setColumnCollapsed("patientsGroup2Number", !activeColumnHeaders[23]);
 
-        datasetsTable.addContainerProperty("patientsGroup2Comm", String.class, null, "Patients Gr.II Comm", null, Table.Align.RIGHT);
+        datasetsTable.addContainerProperty("patientsGroup2Comm", String.class, null, "Patients Gr.II Comm", null, Table.Align.LEFT);
         datasetsTable.setColumnCollapsed("patientsGroup2Comm", !activeColumnHeaders[24]);
 
         datasetsTable.addContainerProperty("patientsSubGroup2", String.class, null, "Patients Sub-Gr.II", null, Table.Align.RIGHT);
@@ -183,8 +185,8 @@ public class QuantDatasetsCombinedTableLayout extends VerticalLayout implements 
             }
 
             CustomExternalLink pumedID = new CustomExternalLink(pb.getPumedID(), "http://www.ncbi.nlm.nih.gov/pubmed/" + pb.getPumedID());
-            datasetsTable.addItem(new Object[]{index, pb.getAuthor(), pb.getYear() + "", pb.getIdentifiedProteinsNumber(), quantProtNum, pb.getDiseaseGroups(), rawDatalink, pb.getFilesNumber(), pb.getTypeOfStudy(), pb.getSampleType(), pb.getSampleMatching(), pb.getShotgunTargeted(), pb.getTechnology(), pb.getAnalyticalApproach(), pb.getEnzyme(), pb.getQuantificationBasis(), pb.getQuantBasisComment(), pb.getNormalizationStrategy(), pumedID, pb.getPatientsGroup1(), patGr1Num, pb.getPatientsGroup1Comm(), pb.getPatientsSubGroup1(), pb.getPatientsGroup2(), patGr2Num, pb.getPatientsGroup2Comm(), pb.getPatientsSubGroup2(), pb.getAdditionalcomments()}, index);
-            dsIndexes[index] = pb.getUniqId();
+            datasetsTable.addItem(new Object[]{index, pb.getAuthor(), pb.getYear() + "", pb.getIdentifiedProteinsNumber(), quantProtNum, pb.getAnalyticalMethod(), rawDatalink, pb.getFilesNumber(), pb.getTypeOfStudy(), pb.getSampleType(), pb.getSampleMatching(), pb.getShotgunTargeted(), pb.getTechnology(), pb.getAnalyticalApproach(), pb.getEnzyme(), pb.getQuantificationBasis(), pb.getQuantBasisComment(), pb.getNormalizationStrategy(), pumedID, pb.getPatientsGroup1(), patGr1Num, pb.getPatientsGroup1Comm(), pb.getPatientsSubGroup1(), pb.getPatientsGroup2(), patGr2Num, pb.getPatientsGroup2Comm(), pb.getPatientsSubGroup2(), pb.getAdditionalcomments()}, index);
+            dsIndexes[index] = pb.getDsKey();
             index++;
         }
         datasetsTable.sort(new Object[]{"Year"}, new boolean[]{false});
@@ -213,9 +215,9 @@ public class QuantDatasetsCombinedTableLayout extends VerticalLayout implements 
         if (rawDataLabel != null) {
             rawDataLabel.rePaintLable("white");
         }
-        int dsIndex = dsIndexes[(Integer) item.getItemProperty("Index").getValue()];
-        datasetExploringCentralSelectionManager.setSelectedDataset(dsIndex);
-        datasetExploringCentralSelectionManager.setStudyLevelFilterSelection(new CSFFilterSelection("DS_Selection", new int[]{dsIndex}, filter_id, null));
+//        int dsIndex = dsIndexes[(Integer) item.getItemProperty("Index").getValue()];
+//        datasetExploringCentralSelectionManager.setSelectedDataset(new ArrayList<Integer>(dsIndex));
+//        datasetExploringCentralSelectionManager.setStudyLevelFilterSelection(new CSFFilterSelection("Study_Selection", new int[]{dsIndex}, filter_id, null));
 
     }
 
@@ -229,18 +231,22 @@ public class QuantDatasetsCombinedTableLayout extends VerticalLayout implements 
         if (type.equalsIgnoreCase("Disease_Groups_Level")) {
             updateCombinedQuantDatasetTableRecords(datasetExploringCentralSelectionManager.getFilteredDatasetsList());
         } else if (type.equalsIgnoreCase("Study_Selection")) {
-            int datasetId = datasetExploringCentralSelectionManager.getSelectedDataset();
+            Map<Integer, QuantDatasetObject> temp = new LinkedHashMap<Integer, QuantDatasetObject>();
+            List<Integer> datasetIds = datasetExploringCentralSelectionManager.getSelectedDataset();
             int i = 0;
+           for(int datasetId :datasetIds){
             for (; i < dsIndexes.length; i++) {
                 if (dsIndexes[i] == datasetId) {
                     datasetsTable.select(i);
                     break;
                 }
 
-            }
-            QuantDatasetObject qds = datasetExploringCentralSelectionManager.getFullQuantDatasetArr().get(datasetId);
-            Map<Integer, QuantDatasetObject> temp = new LinkedHashMap<Integer, QuantDatasetObject>();
-            temp.put(0, qds);
+            } 
+            QuantDatasetObject qds = datasetExploringCentralSelectionManager.getFullQuantDatasetMap().get(datasetId);
+           
+            temp.put(i, qds);
+           }
+           
             updateCombinedQuantDatasetTableRecords(temp);
         }
     }

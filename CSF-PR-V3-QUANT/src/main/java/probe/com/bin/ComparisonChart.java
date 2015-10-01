@@ -88,6 +88,7 @@ public class ComparisonChart extends GridLayout {
     }
 
     public ComparisonChart(QuantDiseaseGroupsComparison comparison) {
+        System.out.println("comparison is "+comparison.getComparisonHeader());
         this.setStyleName("lightborder");
         this.setWidth("99%");
         this.setHeight("100%");
@@ -130,14 +131,14 @@ public class ComparisonChart extends GridLayout {
         for (String key2 : protList.keySet()) {
             DiseaseGroupsComparisonsProteinLayout prot = protList.get(key2);
             prot.updateLabelLayout();
-            if (maxIndexerValue < Math.abs(prot.getCellValue())) {
-                maxIndexerValue = Math.abs(prot.getCellValue());
+            if (maxIndexerValue < Math.abs(prot.getSignificantCellValue())) {
+                maxIndexerValue = Math.abs(prot.getSignificantCellValue());
             }
 
         }
         for (String key2 : protList.keySet()) {
             DiseaseGroupsComparisonsProteinLayout prot = protList.get(key2);
-            int indexer = (int) (prot.getCellValue() / maxIndexerValue * 10.0);
+            int indexer = (int) (prot.getSignificantCellValue() / maxIndexerValue * 10.0);
 //            indexer = indexer + 10;
             if (indexer == 10) {
                 indexer = 4;
@@ -156,7 +157,7 @@ public class ComparisonChart extends GridLayout {
             }
             values[indexer] = (Double) values[indexer] + 1.0;
             Set<String> protSet = compProtMap.get(indexer);
-            protSet.add(prot.getUniProtAccess());
+            protSet.add(prot.getProteinAccssionNumber());
             compProtMap.put(indexer, protSet);
         }
 

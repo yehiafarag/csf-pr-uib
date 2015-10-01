@@ -20,7 +20,6 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
 
     private final Map<String, Object> param = new HashMap<String, Object>();
     private String defaultStyleShowAllMode;
-    private String defaultStyleShowSignificatntMode;
     private boolean significant;
 
     /**
@@ -40,21 +39,8 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
     }
     private int level = 0;
 
-    /**
-     *
-     * @return
-     */
-    public String getDefaultStyleShowSignificatntMode() {
-        return defaultStyleShowSignificatntMode;
-    }
-
-    /**
-     *
-     * @param defaultStyleShowSignificatntMode
-     */
-    public void setDefaultStyleShowSignificatntMode(String defaultStyleShowSignificatntMode) {
-        this.defaultStyleShowSignificatntMode = defaultStyleShowSignificatntMode;
-    }
+ 
+    
     private boolean overlapped;
 
     /**
@@ -104,7 +90,7 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
      * @param defaultStyleShowAllMode
      */
     public void setDefaultStyleShowAllMode(String defaultStyleShowAllMode) {
-        this.defaultStyleShowAllMode = defaultStyleShowAllMode;
+        this.defaultStyleShowAllMode = defaultStyleShowAllMode.replace("selected", "").trim();;
          this.setStyleName(defaultStyleShowAllMode);
     }
 
@@ -163,7 +149,7 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
      */
     public void heighlight(boolean select) {
         if (select) {
-            this.setStyleName("selectedbar");
+            this.setStyleName("selected"+defaultStyleShowAllMode);
         } else {
             this.setStyleName(defaultStyleShowAllMode);
         }

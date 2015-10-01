@@ -39,6 +39,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
     public Body(CSFPRHandler handler) {
         this.setWidth("100%");
         this.handler = handler;
+      
 
         mainTabSheet = new TabSheet();
         this.addComponent(mainTabSheet);
@@ -100,6 +101,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
         } else if (c.equals("Search")) {
             adminTab.setVisible(false);
         } else if (c.equals("Quantitative Datasets Overview")) {
+             
             adminTab.setVisible(false);
             if (datasetOverviewTabLayout == null && handler != null) {
                 datasetOverviewTabLayout = new QuantDatasetsOverviewLayout(handler, false);

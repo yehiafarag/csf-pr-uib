@@ -53,9 +53,9 @@ public class ContextListener implements ServletContextListener, Serializable {
         adminName = scx.getInitParameter("adminName");
         adminEmail = scx.getInitParameter("adminEmail");
         adminPassword = scx.getInitParameter("adminPassword");
-        DataAccess da = new DataAccess(URL, D_B_NAME, DRIVER, USER_NAME, PASSWORD);
-
-        da.createTable();
+//        DataAccess da = new DataAccess(URL, D_B_NAME, DRIVER, USER_NAME, PASSWORD);
+//
+//        da.createTable();
         AuthenticatorLogic auth = new AuthenticatorLogic(URL, D_B_NAME, DRIVER, USER_NAME, PASSWORD);
         if (adminName != null && adminPassword != null) {
             adminName = adminName.toUpperCase();

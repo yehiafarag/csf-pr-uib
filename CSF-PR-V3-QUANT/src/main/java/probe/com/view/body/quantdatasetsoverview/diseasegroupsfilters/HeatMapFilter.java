@@ -60,6 +60,7 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
     private final HeatMapComponent heatMap;
     private boolean selfselected = false;
     private final DatasetExploringCentralSelectionManager centralFiltersSelectionManager;
+    private final int heatmapW;
 
     /**
      *
@@ -68,15 +69,17 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
      * @param rowheaders
      * @param colheaders
      * @param patientsGroupArr
+     * @param heatmapCellWidth
      */
-    public HeatMapFilter(final DatasetExploringCentralSelectionManager centralFiltersSelectionManager, int heatmapW, Set<String> rowheaders, Set<String> colheaders, DiseaseGroup[] patientsGroupArr) {
+    public HeatMapFilter(final DatasetExploringCentralSelectionManager centralFiltersSelectionManager, int heatmapW, Set<String> rowheaders, Set<String> colheaders, DiseaseGroup[] patientsGroupArr, int heatmapCellWidth) {
 
         this.setWidth(heatmapW + "px");
+        this.heatmapW=heatmapW;
         this.setHeight("100%");
         this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.centralFiltersSelectionManager = centralFiltersSelectionManager;
 
-        heatMap = new HeatMapComponent() {
+        heatMap = new HeatMapComponent(heatmapCellWidth) {
             @Override
             public void updateSelectionManager(Set<QuantDiseaseGroupsComparison> selectedDsList) {
                 centralFiltersSelectionManager.setDiseaseGroupsComparisonSelection(selectedDsList);
@@ -174,21 +177,21 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
     public void updateCellSelection(Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
         heatMap.updateDsCellSelection(selectedComparisonList);
     }
-    
+
     /**
      *
      */
-    public void selectAll(){
+    public void selectAll() {
         heatMap.selectAll();
-    
+
     }
 
     /**
      *
      */
-    public void unselectAll(){
+    public void unselectAll() {
         heatMap.unselectAll();
-    
+
     }
 
     /**
@@ -198,6 +201,23 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
     public boolean isActiveSelectAll() {
         return heatMap.isActiveSelectAll();
     }
-   
+
+    public boolean isVisibleComponent() {
+        return heatMap.isVisibleComponent();
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        heatMap.setVisible(visible);
+        if (visible) {
+            this.setWidth(heatmapW + "px");
+            this.setHeight("100%");
+
+        } else {
+            this.setWidthUndefined();
+            this.setHeightUndefined();
+        }
+        
+    }
 
 }

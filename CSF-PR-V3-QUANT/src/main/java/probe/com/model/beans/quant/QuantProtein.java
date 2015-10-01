@@ -13,7 +13,15 @@ public class QuantProtein {
     private String pumedID,uniprotAccession, uniprotProteinName, publicationAccNumber,publicationProteinName,rawDataAvailable,typeOfStudy,sampleType,patientGroupI,patientSubGroupI,patientGrIComment,patientGroupII,patientSubGroupII,patientGrIIComment,sampleMatching,normalizationStrategy,technology,analyticalApproach,enzyme,shotgunOrTargetedQquant,quantificationBasis,quantBasisComment,additionalComments;		
     private int quantifiedProteinsNumber,peptideIdNumb,quantifiedPeptidesNumber, patientsGroupINumber,patientsGroupIINumber,year,filesNum,IdentifiedProteinsNum, dsKey,protKey;    
     private String qPeptideKey,    peptideSequance,	peptideModification,modificationComment , stringFCValue,stringPValue,author,diseaseGroups,pvalueComment; 
+private boolean uniprotAccSource;
 
+    public boolean isUniprotAccSource() {
+        return uniprotAccSource;
+    }
+
+    public void setUniprotAccSource(boolean uniprotAccSource) {
+        this.uniprotAccSource = uniprotAccSource;
+    }
     private String pValueComment,sequance;
    
     /**

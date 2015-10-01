@@ -150,7 +150,7 @@ public class LocalSelectionManager implements Serializable, CSFFilter {
             int x = 0;
             for (QuantDatasetObject ds : filteredDatasetArr) {
 //                filteredDatasetArr[x] = ds;
-                selectedDatasetsIndexes[x] = ds.getUniqId();
+                selectedDatasetsIndexes[x] = ds.getDsKey();
                 x++;
             }
         } 

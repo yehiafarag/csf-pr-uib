@@ -68,11 +68,11 @@ public class ProtOverviewLineChart extends HorizontalLayout{
             if (cp == null) {
                 continue;
             }
-            if (cp.getCellValue() < 0) {
-                dataSeries1.add(cp.getComparison().getComparisonHeader(), cp.getCellValue() * 100);
+            if (cp.getSignificantCellValue() < 0) {
+                dataSeries1.add(cp.getComparison().getComparisonHeader(), cp.getSignificantCellValue() * 100);
             }
 
-            dataSeries2.add(cp.getComparison().getComparisonHeader(), cp.getCellValue() * 100);
+            dataSeries2.add(cp.getComparison().getComparisonHeader(), cp.getSignificantCellValue() * 100);
         }
         this.setHeight(height + "px");
 

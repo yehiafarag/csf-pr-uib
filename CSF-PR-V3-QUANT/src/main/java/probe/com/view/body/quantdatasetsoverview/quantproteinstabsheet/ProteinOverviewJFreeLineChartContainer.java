@@ -56,6 +56,7 @@ import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.kmeansclustering.KMeansClusteringPopupPanel;
 import probe.com.view.core.CustomExternalLink;
+import probe.com.view.core.JfreeExporter;
 import probe.com.view.core.jfreeutil.SquaredDot;
 
 /**
@@ -74,7 +75,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
     private final JFreeChart defaultChart;
     private JFreeChart orderedChart;
     private final int selectedComparisonListSize;
-    private final VerticalLayout bottomLiftSide;
+//    private final VerticalLayout bottomLiftSide;
     private final int width;
     private final OptionGroup orederingOptionGroup = new OptionGroup();
     private final ProteinStudiesComparisonsContainerLayout studiesScatterChartsLayout;
@@ -136,7 +137,15 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         Label accTitle = new Label("<b>Protein Accession</b>");
         accTitle.setContentMode(ContentMode.HTML);
         protInfoLayout.addComponent(accTitle, 0, 0);
-        CustomExternalLink acc = new CustomExternalLink(proteinAccession.toUpperCase(), "http://www.uniprot.org/uniprot/" + proteinAccession.toUpperCase());
+        boolean isUniprot = Boolean.valueOf(proteinKey.split(",")[2].trim());
+        CustomExternalLink acc;
+        if (isUniprot) {
+            acc = new CustomExternalLink(proteinAccession.toUpperCase(), "http://www.uniprot.org/uniprot/" + proteinAccession.toUpperCase());
+        } else {
+            acc = new CustomExternalLink(proteinAccession.toUpperCase(), null);
+        }
+        acc.setMargin(new MarginInfo(false, false, true, false));
+
         protInfoLayout.addComponent(acc, 0, 1);
         Label nameTitle = new Label("<b>Protein Name</b>");
         nameTitle.setContentMode(ContentMode.HTML);
@@ -190,12 +199,11 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         leftSideLayout.addComponent(topLeftSideLayout);
         topLeftSideLayout.addComponent(protInfoLayout);
 
-        bottomLiftSide = new VerticalLayout();
-        bottomLiftSide.setWidth("100%");
-        bottomLiftSide.setHeight(520 + "px");
-        bottomLiftSide.setStyleName(Reindeer.LAYOUT_WHITE);
-        leftSideLayout.addComponent(bottomLiftSide);
-
+//        bottomLiftSide = new VerticalLayout();
+//        bottomLiftSide.setWidth("100%");
+//        bottomLiftSide.setHeight(520 + "px");
+//        bottomLiftSide.setStyleName(Reindeer.LAYOUT_WHITE);
+//        leftSideLayout.addComponent(bottomLiftSide);
         VerticalLayout rightSideLayout = new VerticalLayout();
         rightSideLayout.setWidth("100%");
         rightSideLayout.setHeightUndefined();
@@ -211,7 +219,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         lineChartContainer.setWidth((width - 100) + "px");
         lineChartContainer.setHeight(height + "px");
 
-        teststyle = proteinName.replace(" ", "_").replace(")", "_").replace("(", "_").replace(";", "_").toLowerCase() + "linechart";
+        teststyle = proteinName.replace(" ", "_").replace(")", "_").replace("(", "_").replace(";", "_").toLowerCase().replace("#","_").replace("?","_") + "linechart";
         styles.add("." + teststyle + " {  background-image: url(" + defaultLineChartImgUrl + " );background-position:center; background-repeat: no-repeat; }");
         lineChartContainer.setStyleName(teststyle);
         chartListener = new LayoutEvents.LayoutClickListener() {
@@ -255,10 +263,10 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                             if (cp == null) {
                                 continue;
                             }
-                            if (cp.getCellValue() < 0 && cp.getCellValue() > -1) {
-                                orderedCompProteins.put((cp.getCellValue() - 1) + "-" + cp.getComparison().getComparisonHeader(), cp);
+                            if (cp.getSignificantCellValue() < 0 && cp.getSignificantCellValue() > -1) {
+                                orderedCompProteins.put((cp.getSignificantCellValue() - 1) + "-" + cp.getComparison().getComparisonHeader(), cp);
                             } else {
-                                orderedCompProteins.put((cp.getCellValue()) + "-" + cp.getComparison().getComparisonHeader(), cp);
+                                orderedCompProteins.put((cp.getSignificantCellValue()) + "-" + cp.getComparison().getComparisonHeader(), cp);
                             }
                         }
                         ordComparisonProteins = new DiseaseGroupsComparisonsProteinLayout[orderedCompProteins.size()];
@@ -313,11 +321,11 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                 continue;
             }
 
-            if (cp.getCellValue() > 0) {
+            if (cp.getSignificantCellValue() > 0) {
                 upcounter++;
-            } else if (cp.getCellValue() == 0) {
+            } else if (cp.getSignificantCellValue() == 0) {
                 notcounter++;
-            } else if (cp.getCellValue() < 0) {
+            } else if (cp.getSignificantCellValue() < 0) {
                 downcounter++;
             }
             counter++;
@@ -362,27 +370,27 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                 inUseComparisonProteins[compIndex] = cp;
                 xLineValues[compIndex] = comparisonIndexer;
 
-                if (cp.getTrindCategory() == 4) {
+                if (cp.getSignificantTrindCategory() == 4) {
                     yLineValues[compIndex] = 4d;
                     xUpValues[upIndex] = comparisonIndexer;
                     yUpValues[upIndex] = 4d;
                     upIndex++;
-                } else if (cp.getTrindCategory() == 3) {
+                } else if (cp.getSignificantTrindCategory() == 3) {
                     xUpValues[upIndex] = comparisonIndexer;
                     yUpValues[upIndex] = 3d;
                     upIndex++;
                     yLineValues[compIndex] = 3d;
-                } else if (cp.getTrindCategory() == 2) {
+                } else if (cp.getSignificantTrindCategory() == 2) {
                     yLineValues[compIndex] = 2d;
                     xNotValues[notIndex] = comparisonIndexer;
                     yNotValues[notIndex] = 2d;
                     notIndex++;
-                } else if (cp.getTrindCategory() == 1) {
+                } else if (cp.getSignificantTrindCategory() == 1) {
                     yLineValues[compIndex] = 1d;
                     xDownValues[downIndex] = comparisonIndexer;
                     yDownValues[downIndex] = 1d;
                     downIndex++;
-                } else if (cp.getTrindCategory() == 0) {
+                } else if (cp.getSignificantTrindCategory() == 0) {
                     yLineValues[compIndex] = 0d;
                     xDownValues[downIndex] = comparisonIndexer;
                     yDownValues[downIndex] = 0d;
@@ -556,6 +564,9 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         plot.setOutlinePaint(Color.GRAY);
         jFreeChart.setBorderVisible(false);
 
+        JfreeExporter exporter = new JfreeExporter();
+        exporter.writeChartToPDFFile(jFreeChart, 595, 842, "line" + teststyle + ".pdf");
+
         return jFreeChart;
     }
 
@@ -567,7 +578,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                 String[] arr = ((XYItemEntity) entity).getShapeCoords().split(",");
                 int xSer = Integer.valueOf(arr[10]);
                 int ySer = Integer.valueOf(arr[11]);
-                SquaredDot square = new SquaredDot();
+                SquaredDot square = new SquaredDot("cycle");
                 square.setWidth(20 + "px");
                 square.setHeight(20 + "px");
                 QuantDiseaseGroupsComparison gc = inUseComparisonProteins[((XYItemEntity) entity).getItem()].getComparison();
@@ -663,11 +674,12 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         studiesScatterChartsLayout.redrawCharts();
 
     }
-    private  KMeansClusteringPopupPanel kMeansClusteringPanel;
+    private KMeansClusteringPopupPanel kMeansClusteringPanel;
+
     private void runKmeansClustering(String protKey, String proteinName, String proteinAccession, Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
-        if(kMeansClusteringPanel == null){
-            Map<String, DiseaseGroupsComparisonsProteinLayout[]> protSelectionMap = datasetExploringCentralSelectionManager.getQuantProteinsLayoutSelectionMap();       
-            kMeansClusteringPanel = new KMeansClusteringPopupPanel(datasetExploringCentralSelectionManager,mainHandler,protKey, proteinName, proteinAccession, protSelectionMap, selectedComparisonList);        
+        if (kMeansClusteringPanel == null) {
+            Map<String, DiseaseGroupsComparisonsProteinLayout[]> protSelectionMap = datasetExploringCentralSelectionManager.getQuantProteinsLayoutSelectionMap();
+            kMeansClusteringPanel = new KMeansClusteringPopupPanel(datasetExploringCentralSelectionManager, mainHandler, protKey, proteinName, proteinAccession, protSelectionMap, selectedComparisonList);
         }
         kMeansClusteringPanel.setVisible(true);
     }

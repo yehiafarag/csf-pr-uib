@@ -25,6 +25,7 @@ import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.PopupInter
  */
 public class StudiesPieChartFiltersContainerLayout extends GridLayout {
 
+//     private JfreeExporter exporter = new JfreeExporter();
     private final PieChartsSelectionManager internalSelectionManager;
     private PopupInteractiveDSFiltersLayout pieChartFiltersBtn;
 
@@ -47,7 +48,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
         if (quantDatasetArr == null) {
             return;
         }
-        this.setRows(3);
+        this.setRows(4);
         this.setColumns(4);
         int colCounter = 0;
         int rowCounter = 0;
@@ -82,35 +83,35 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
                         break;
 
                     case 2:
-//                        filterId = "diseaeGroups";
-//                        for (QuantDatasetObject pb : quantDatasetArr) {
+//                        filterId = "analyticalMethod";
+//                        for (QuantDatasetObject pb : quantDatasetArr.values()) {
 //                            if (pb == null) {
 //                                continue;
 //                            }
-//                            String value = pb.getDiseaseGroups();
+//                            String value = pb.getAnalyticalMethod();
 //                            valueSet.add(value);
 //
 //                        }
                         break;
 
                     case 3:
-                        filterId = "rawDataUrl";
-                        for (QuantDatasetObject pb : quantDatasetArr.values()) {
-
-                            if (pb == null) {
-                                continue;
-                            }
-                            if (!dsIndexesMap.containsKey(pb.getRawDataUrl())) {
-                                List<Integer> list = new ArrayList<Integer>();
-                                dsIndexesMap.put(pb.getRawDataUrl(), list);
-
-                            }
-                            List<Integer> list = dsIndexesMap.get(pb.getRawDataUrl());
-                            list.add(pb.getUniqId());
-                            dsIndexesMap.put(pb.getRawDataUrl(), list);
-                            valueSet.add(pb.getRawDataUrl());
-
-                        }
+//                        filterId = "rawDataUrl";
+//                        for (QuantDatasetObject pb : quantDatasetArr.values()) {
+//
+//                            if (pb == null) {
+//                                continue;
+//                            }
+//                            if (!dsIndexesMap.containsKey(pb.getRawDataUrl())) {
+//                                List<Integer> list = new ArrayList<Integer>();
+//                                dsIndexesMap.put(pb.getRawDataUrl(), list);
+//
+//                            }
+//                            List<Integer> list = dsIndexesMap.get(pb.getRawDataUrl());
+//                            list.add(pb.getUniqId());
+//                            dsIndexesMap.put(pb.getRawDataUrl(), list);
+//                            valueSet.add(pb.getRawDataUrl());
+//
+//                        }
                         break;
                     case 4:
 
@@ -125,7 +126,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
 
                             }
                             List<Integer> list = dsIndexesMap.get(pb.getYear() + "");
-                            list.add(pb.getUniqId());
+                            list.add(pb.getDsKey());
                             dsIndexesMap.put(pb.getYear() + "", list);
                             int value = pb.getYear();
                             valueSet.add(value);
@@ -143,7 +144,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
 
                             }
                             List<Integer> list = dsIndexesMap.get(pb.getTypeOfStudy());
-                            list.add(pb.getUniqId());
+                            list.add(pb.getDsKey());
                             dsIndexesMap.put(pb.getTypeOfStudy(), list);
                             String value = pb.getTypeOfStudy();
                             valueSet.add(value);
@@ -161,7 +162,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
 
                             }
                             List<Integer> list = dsIndexesMap.get(pb.getSampleType());
-                            list.add(pb.getUniqId());
+                            list.add(pb.getDsKey());
                             dsIndexesMap.put(pb.getSampleType(), list);
                             String value = pb.getSampleType();
                             valueSet.add(value);
@@ -179,7 +180,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
 
                             }
                             List<Integer> list = dsIndexesMap.get(pb.getSampleMatching());
-                            list.add(pb.getUniqId());
+                            list.add(pb.getDsKey());
                             dsIndexesMap.put(pb.getSampleMatching(), list);
 
                             String value = pb.getSampleMatching();
@@ -202,7 +203,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
 
                             }
                             List<Integer> list = dsIndexesMap.get(value);
-                            list.add(pb.getUniqId());
+                            list.add(pb.getDsKey());
                             dsIndexesMap.put(value, list);
                             valueSet.add(value);
                         }
@@ -224,7 +225,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
 
                             }
                             List<Integer> list = dsIndexesMap.get(pb.getAnalyticalApproach());
-                            list.add(pb.getUniqId());
+                            list.add(pb.getDsKey());
                             dsIndexesMap.put(value, list);
                             valueSet.add(value);
                         }
@@ -245,7 +246,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
 
                             }
                             List<Integer> list = dsIndexesMap.get(value);
-                            list.add(pb.getUniqId());
+                            list.add(pb.getDsKey());
                             dsIndexesMap.put(value, list);
                             valueSet.add(value);
                         }
@@ -263,7 +264,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
 
                             }
                             List<Integer> list = dsIndexesMap.get(value);
-                            list.add(pb.getUniqId());
+                            list.add(pb.getDsKey());
                             dsIndexesMap.put(value, list);
                             valueSet.add(value);
                         }
@@ -282,7 +283,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
 
                             }
                             List<Integer> list = dsIndexesMap.get(value);
-                            list.add(pb.getUniqId());
+                            list.add(pb.getDsKey());
                             dsIndexesMap.put(value, list);
                             valueSet.add(value);
                         }
@@ -300,7 +301,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
 
                             }
                             List<Integer> list = dsIndexesMap.get(value);
-                            list.add(pb.getUniqId());
+                            list.add(pb.getDsKey());
                             dsIndexesMap.put(value, list);
                             valueSet.add(value);
                         }
@@ -351,7 +352,13 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
         btnLayout.setWidthUndefined();
         btnLayout.setSpacing(true);
         btnLayout.setStyleName(Reindeer.LAYOUT_WHITE);
-        this.addComponent(btnLayout, 0, 2);
+
+        if (rowCounter == 2 && colCounter < 4) {
+            this.addComponent(btnLayout, 3, 2);
+        } else {
+            this.addComponent(btnLayout, 0, 3);
+        }
+
         this.setComponentAlignment(btnLayout, Alignment.MIDDLE_CENTER);
         Button applyFilters = new Button("Apply Filters");
         applyFilters.setStyleName(Reindeer.BUTTON_SMALL);

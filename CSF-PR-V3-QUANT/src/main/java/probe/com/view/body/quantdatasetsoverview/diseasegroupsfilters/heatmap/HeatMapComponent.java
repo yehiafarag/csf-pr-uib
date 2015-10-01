@@ -40,6 +40,7 @@ public class HeatMapComponent extends VerticalLayout {
 
     private boolean singleSelection = true;
     private boolean selfSelection = false;
+    private final int heatmapCellWidth;
 
     /**
      *
@@ -50,24 +51,28 @@ public class HeatMapComponent extends VerticalLayout {
     }
 
     private final VerticalLayout hideCompBtn;
+    private final HorizontalLayout topLayout;
+    private final HorizontalLayout bottomLayout;
 
     /**
-     *
+     *@param heatmapCellWidth
      */
-    public HeatMapComponent() {
+    public HeatMapComponent(int heatmapCellWidth) {
         this.setMargin(false);
         this.setSpacing(true);
         this.setWidth("100%");
+        this.heatmapCellWidth =heatmapCellWidth;
+
         this.columnHeader = new GridLayout();
         this.rowHeader = new GridLayout();
         this.heatmapBody = new GridLayout();
 
-        HorizontalLayout h1Layout = new HorizontalLayout();
+        topLayout = new HorizontalLayout();
+        topLayout.setHeight("150px");
         VerticalLayout spacer = new VerticalLayout();
         spacer.setWidth("150px");
         spacer.setHeight("150px");
         spacer.setStyleName(Reindeer.LAYOUT_WHITE);
-
         hideCompBtn = new VerticalLayout();
         hideCompBtn.setWidth("150px");
         hideCompBtn.setHeight("150px");
@@ -80,18 +85,20 @@ public class HeatMapComponent extends VerticalLayout {
         spacer.setComponentAlignment(hideCompBtn, Alignment.MIDDLE_CENTER);
         hideCompBtn.setEnabled(false);
 
-        h1Layout.addComponent(spacer);
-        h1Layout.setSpacing(true);
-        h1Layout.addComponent(columnHeader);
-        h1Layout.setComponentAlignment(columnHeader, Alignment.TOP_LEFT);
-        this.addComponent(h1Layout);
+        topLayout.addComponent(spacer);
+        topLayout.setSpacing(true);
+        topLayout.addComponent(columnHeader);
+        topLayout.setComponentAlignment(columnHeader, Alignment.TOP_LEFT);
+        this.addComponent(topLayout);
 
-        final HorizontalLayout h2Layout = new HorizontalLayout();
-        h2Layout.addComponent(rowHeader);
-        h2Layout.addComponent(heatmapBody);
-        h2Layout.setSpacing(true);
-        h2Layout.setComponentAlignment(heatmapBody, Alignment.MIDDLE_LEFT);
-        this.addComponent(h2Layout);
+        bottomLayout = new HorizontalLayout();
+        rowHeader.setWidth("150px");
+        rowHeader.setHeight("100%");
+        bottomLayout.addComponent(rowHeader);
+        bottomLayout.addComponent(heatmapBody);
+        bottomLayout.setSpacing(true);
+        bottomLayout.setComponentAlignment(heatmapBody, Alignment.MIDDLE_LEFT);
+        this.addComponent(bottomLayout);
 
     }
 
@@ -118,7 +125,7 @@ public class HeatMapComponent extends VerticalLayout {
 
     }
 
-    private final List<HeatmapCell> selectedCells = new ArrayList<HeatmapCell>();
+    private final Set<HeatmapCell> selectedCells = new HashSet<HeatmapCell>();
 
     /**
      *
@@ -299,15 +306,16 @@ public class HeatMapComponent extends VerticalLayout {
      * @param comparison
      * @param cell
      */
-    protected void removeSelectedDs(QuantDiseaseGroupsComparison comparison, HeatmapCell cell) {
+    protected void unSelectDs(QuantDiseaseGroupsComparison comparison, HeatmapCell cell) {
         for (HeaderCell header : columnCells) {
             header.unSelectCellStyle();
         }
         for (HeaderCell header : rowCells) {
             header.unSelectCellStyle();
         }
+
         this.selectedDsList.remove(comparison);
-        this.selectedCells.remove(cell);
+        boolean removed = this.selectedCells.remove(cell);
         String kI = cell.getComparison().getComparisonHeader();
         String[] k1Arr = kI.split(" vs ");
         String kII = k1Arr[1] + " vs " + k1Arr[0];
@@ -316,11 +324,15 @@ public class HeatMapComponent extends VerticalLayout {
         this.selectedDsList.remove(equalCall.getComparison());
         this.selectedCells.remove(equalCall);
         updateSelectionManagerIndexes();
-        if (selectedDsList.isEmpty()) {
+        if (selectedCells.isEmpty()) {
             //reset all cells 
             for (HeatmapCell hmcell : comparisonsCellsMap.values()) {
                 hmcell.initStyle();
             }
+
+        } else {
+            cell.unselect();
+            equalCall.unselect();
 
         }
 
@@ -405,20 +417,20 @@ public class HeatMapComponent extends VerticalLayout {
 
         columnHeader.setColumns(colheaders.size());
         columnHeader.setRows(1);
-        columnHeader.setWidth((colheaders.size() * 50) + "px");
+        columnHeader.setWidth((colheaders.size() * heatmapCellWidth) + "px");
         columnHeader.setHeight("150px");
         columnCells = new HeaderCell[colheaders.size()];
 
         rowHeader.setColumns(1);
         rowHeader.setRows(rowheaders.size());
         rowHeader.setWidth("150px");
-        rowHeader.setHeight((50 * rowheaders.size()) + "px");
+        rowHeader.setHeight((heatmapCellWidth * rowheaders.size()) + "px");
         rowCells = new HeaderCell[rowheaders.size()];
 
         heatmapBody.setColumns(colheaders.size());
         heatmapBody.setRows(rowheaders.size());
-        heatmapBody.setWidth((colheaders.size() * 50) + "px");
-        heatmapBody.setHeight((50 * rowheaders.size()) + "px");
+        heatmapBody.setWidth((colheaders.size() * heatmapCellWidth) + "px");
+        heatmapBody.setHeight((heatmapCellWidth * rowheaders.size()) + "px");
 
 //init col headers
         for (int i = 0; i < colheaders.size(); i++) {
@@ -426,7 +438,7 @@ public class HeatMapComponent extends VerticalLayout {
             if (la.equalsIgnoreCase("")) {
                 la = "Not Available";
             }
-            HeaderCell headerCell = new HeaderCell(false, la, i, HeatMapComponent.this);
+            HeaderCell headerCell = new HeaderCell(false, la, i, HeatMapComponent.this,heatmapCellWidth);
             columnHeader.addComponent(headerCell, i, 0);
             columnHeader.setComponentAlignment(headerCell, Alignment.MIDDLE_CENTER);
             columnCells[i] = headerCell;
@@ -441,7 +453,7 @@ public class HeatMapComponent extends VerticalLayout {
             if (la.equalsIgnoreCase("")) {
                 la = "Not Available";
             }
-            HeaderCell headerCell = new HeaderCell(true, la, i, HeatMapComponent.this);
+            HeaderCell headerCell = new HeaderCell(true, la, i, HeatMapComponent.this,heatmapCellWidth);
             rowHeader.addComponent(headerCell, 0, i);
             rowHeader.setComponentAlignment(headerCell, Alignment.MIDDLE_CENTER);
             rowCells[i] = headerCell;
@@ -456,7 +468,7 @@ public class HeatMapComponent extends VerticalLayout {
                     color = hmColorGen.getColor((float) value);
                 }
 
-                HeatmapCell cell = new HeatmapCell(value, color, values[x][y].getIndexes(), x, y, null, HeatMapComponent.this, headerTitle);
+                HeatmapCell cell = new HeatmapCell(value, color, values[x][y].getIndexes(), x, y, null, HeatMapComponent.this, headerTitle,heatmapCellWidth);
                 comparisonsCellsMap.put(headerTitle, cell);
                 heatmapBody.addComponent(cell, y, x);
                 if (cell.getComparison().getDatasetIndexes().length > 0) {
@@ -575,6 +587,25 @@ public class HeatMapComponent extends VerticalLayout {
         selectedDsList.clear();
         selectedDsList.addAll(new HashSet<QuantDiseaseGroupsComparison>());
         updateSelectionManagerIndexes();
+
+    }
+    private boolean visibleComponent= true;
+    public boolean isVisibleComponent() {
+        return visibleComponent;
+    }
+
+
+    @Override
+    public void setVisible(boolean visible) {
+        visibleComponent=visible;
+        System.out.println("visable heatmap "+visible);
+        bottomLayout.setVisible(visible);
+        columnHeader.setVisible(visible);
+        if (visible) {
+            this.setWidth("100%");
+        } else {
+            this.setWidthUndefined();
+        }
 
     }
 

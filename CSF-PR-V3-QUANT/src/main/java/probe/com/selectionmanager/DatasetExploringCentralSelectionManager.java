@@ -1,8 +1,10 @@
 package probe.com.selectionmanager;
 
 import com.vaadin.server.VaadinSession;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
@@ -17,9 +19,9 @@ import probe.com.view.core.DiseaseGroup;
  * central selection manager for quant data that is responsible for quant data
  * layout interactivity
  */
-public class DatasetExploringCentralSelectionManager {
+public class DatasetExploringCentralSelectionManager implements Serializable {
 
-    private final Map<Integer, QuantDatasetObject> fullQuantDatasetArr;
+    private final Map<Integer, QuantDatasetObject> fullQuantDatasetMap;
     private Map<Integer, QuantDatasetObject> filteredQuantDatasetArr = new LinkedHashMap<Integer, QuantDatasetObject>();
     private final Set<CSFFilter> registeredFilterSet = new HashSet<CSFFilter>();
     private final boolean[] activeFilters;
@@ -67,7 +69,7 @@ public class DatasetExploringCentralSelectionManager {
      *
      * @return
      */
-    public int getSelectedDataset() {
+    public List<Integer> getSelectedDataset() {
         return selectedDataset;
     }
 
@@ -75,11 +77,11 @@ public class DatasetExploringCentralSelectionManager {
      *
      * @param selectedDataset
      */
-    public void setSelectedDataset(int selectedDataset) {
+    public void setSelectedDataset(List<Integer> selectedDataset) {
         this.selectedDataset = selectedDataset;
     }
 
-    private int selectedDataset = -1;
+    private List<Integer> selectedDataset = null;
 
     /**
      *
@@ -87,7 +89,7 @@ public class DatasetExploringCentralSelectionManager {
      * @param activeFilters
      */
     public DatasetExploringCentralSelectionManager(Map<Integer, QuantDatasetObject> quantDatasetsList, boolean[] activeFilters) {
-        this.fullQuantDatasetArr = quantDatasetsList;
+        this.fullQuantDatasetMap = quantDatasetsList;
         this.activeFilters = activeFilters;
 
     }
@@ -100,12 +102,12 @@ public class DatasetExploringCentralSelectionManager {
     private void updateFilteredDatasetList(int[] datasetIndexes) {
 
         if (datasetIndexes.length == 0) {
-            filteredQuantDatasetArr = fullQuantDatasetArr;
+            filteredQuantDatasetArr = fullQuantDatasetMap;
             return;
         }
         filteredQuantDatasetArr.clear();
         for (int i : datasetIndexes) {
-            filteredQuantDatasetArr.put(i, fullQuantDatasetArr.get(i));
+            filteredQuantDatasetArr.put(i, fullQuantDatasetMap.get(i));
         }
 
     }
@@ -191,6 +193,30 @@ public class DatasetExploringCentralSelectionManager {
         }
 
     }
+    private boolean significantOnly = false;
+
+    /**
+     * set the selected Quant Disease Groups Comparison to the selection manager
+     *
+     * @param selectedDiseaseGroupsComparisonList
+     */
+    public void updateSignificantOnlySelection(boolean significantOnly) {
+        try {
+
+            VaadinSession.getCurrent().getLockInstance().lock();
+            this.significantOnly = significantOnly;
+           
+            for (CSFFilter filter : registeredFilterSet) {
+                if (!filter.getFilterId().equalsIgnoreCase("HeatMapFilter")) {
+                    filter.selectionChanged("Comparison_Selection");
+                }
+            }
+
+        } finally {
+            VaadinSession.getCurrent().getLockInstance().unlock();
+        }
+
+    }
 
     /**
      * set the selected Quant proteins to the selection manager
@@ -202,11 +228,11 @@ public class DatasetExploringCentralSelectionManager {
             VaadinSession.getCurrent().getLockInstance().lock();
             this.quantProteinsLayoutSelectionMap = protSelectionMap;
             this.SelectionChanged("Quant_Proten_Selection");
-            
-        } catch(Exception exp){
-            System.err.println("at error "+this.getClass().getName()+"  line 207  "+ exp.getLocalizedMessage());
-        
-        }finally {
+
+        } catch (Exception exp) {
+            System.err.println("at error " + this.getClass().getName() + "  line 207  " + exp.getLocalizedMessage());
+
+        } finally {
             VaadinSession.getCurrent().getLockInstance().unlock();
         }
 
@@ -281,7 +307,7 @@ public class DatasetExploringCentralSelectionManager {
      */
     public Map<Integer, QuantDatasetObject> getFilteredDatasetsList() {
         if (filteredQuantDatasetArr == null || filteredQuantDatasetArr.isEmpty()) {
-            return fullQuantDatasetArr;
+            return fullQuantDatasetMap;
         }
         return filteredQuantDatasetArr;
     }
@@ -291,8 +317,8 @@ public class DatasetExploringCentralSelectionManager {
      *
      * @return
      */
-    public Map<Integer, QuantDatasetObject> getFullQuantDatasetArr() {
-        return fullQuantDatasetArr;
+    public Map<Integer, QuantDatasetObject> getFullQuantDatasetMap() {
+        return fullQuantDatasetMap;
     }
 
     /**
@@ -303,9 +329,9 @@ public class DatasetExploringCentralSelectionManager {
     public Set<QuantDiseaseGroupsComparison> getSelectedDiseaseGroupsComparisonList() {
         return selectedDiseaseGroupsComparisonList;
     }
-    
+
     /**
-     * get Selected proteinKey 
+     * get Selected proteinKey
      *
      * @return selected Protein key
      */
@@ -316,6 +342,10 @@ public class DatasetExploringCentralSelectionManager {
     public void setSelectedProteinKey(String selectedProteinKey) {
         this.selectedProteinKey = selectedProteinKey;
         this.SelectionChanged("Quant_Proten_Tab_Selection");
+    }
+
+    public boolean isSignificantOnly() {
+        return significantOnly;
     }
 
 }
