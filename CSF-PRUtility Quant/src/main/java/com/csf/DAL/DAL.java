@@ -61,8 +61,8 @@ public class DAL {
 
     }
 
-    public boolean restoreDB(String source) {
-        return database.restoreDB(source);
+    public boolean restoreDB(String source,String mysqlPath) {
+        return database.restoreDB(source,mysqlPath);
     }
 
     ///quant data store 

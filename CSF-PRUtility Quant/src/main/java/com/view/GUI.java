@@ -21,10 +21,10 @@ import javax.swing.SwingWorker;
 public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
 
     private ExperimentBean exp;
-    private final String database_name = "quantdataupdated_14_9";
+    private final String database_name = "quantdataupdated_16_9";
     private final String executeCmd;
     private final String backupFileUrl = "D:\\backups\\sqlQuant18-8\\backup18-8-2015.sql"; // "/home/probe/user/CSF-PR-FILES/backup.sql";             //"D:\\backups\\sqlQuant18-8\\backup-quant.sql";                        //   
-    private final String processUrl = "C:\\AppServ\\MySQL\\bin\\mysqldump.exe";
+    private final String processUrl = " /usr/bin/mysqldump";//"C:\\AppServ\\MySQL\\bin\\mysqldump.exe";
 
     ;//         "C:\\AppServ\\MySQL\\bin\\mysqldump.exe";//"C:\\AppServ\\MySQL\\bin\\mysqldump.exe"           ///usr/bin/mysqldump
 
@@ -901,11 +901,13 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
             }
         }
         final String resource = jTextField3.getText();
-        if (resource == null || resource.equalsIgnoreCase("")) {
+        final String mysqlPath = jTextField4.getText();
+        if (resource == null || resource.equalsIgnoreCase("") || mysqlPath == null || mysqlPath.equalsIgnoreCase("")) {
             System.err.println("select file");
 
         } else {
             try {
+
                 new Thread() {
                     @Override
                     public void run() {
@@ -915,11 +917,19 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                     }
                 }.start();
                 Thread t = new Thread("DisplayThread") {
+
+                    public boolean success;
+
                     @Override
                     public void run() {
 
                         jProgressBar1.setMaximum(100);
-                        exphandeler.restoreDB(resource);//"C:\\Users\\y-mok_000\\Google Drive\\csf-pr-backup\\backup.sql");
+                        success = exphandeler.restoreDB(resource, mysqlPath);//"C:\\Users\\y-mok_000\\Google Drive\\csf-pr-backup\\backup.sql");
+                        if (!success) {
+                            jProgressBar1.setVisible(false);
+                            jLabel13.setText("Faild to restore the DB");
+
+                        }
 
                     }
                 };
@@ -927,8 +937,9 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                 while (t.isAlive()) {
                     Thread.sleep(100);
                 }
-                jLabel13.setText("Done");
-
+                if (!jLabel13.getText().equalsIgnoreCase("Faild to restore the DB")) {
+                    jLabel13.setText("Done");
+                }
                 jProgressBar1.setVisible(false);
 
             } catch (Exception e) {
@@ -979,6 +990,10 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
         jButton1.setEnabled(true);
         jTextField3.setEnabled(true);
         jTextField3.setText(backupFileUrl);
+        jTextField4.setEnabled(true);
+        jTextField4.setText("///usr/bin/mysql ");
+        jButton3.setText("MySQL service path ");
+        jButton3.setEnabled(false);
         jButton1.setText("Select SQL File");
     }//GEN-LAST:event_jRadioButton5ActionPerformed
 

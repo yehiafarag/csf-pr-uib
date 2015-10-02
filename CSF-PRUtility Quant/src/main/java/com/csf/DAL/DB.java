@@ -92,6 +92,8 @@ public class DB implements Serializable {
             }
             try {
                 Statement st = conn.createStatement();
+                String dropStat = "DROP TABLE IF EXISTS `quant_dataset_table`;";
+                st.executeUpdate(dropStat);
 
                 String statment = "CREATE TABLE IF NOT EXISTS `quant_dataset_table` (\n"
                         + "  `study_key` varchar(100) NOT NULL default 'Not Available',\n"
@@ -126,6 +128,8 @@ public class DB implements Serializable {
                         + ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;";
                 st.executeUpdate(statment);
 
+                dropStat = "DROP TABLE IF EXISTS `quant_full_table`;";
+                st.executeUpdate(dropStat);
                 statment = "CREATE TABLE IF NOT EXISTS `quant_full_table` (\n"
                         + "  `author` varchar(500) NOT NULL,\n"
                         + "  `year` int(255) NOT NULL,\n"
@@ -318,6 +322,8 @@ public class DB implements Serializable {
                         + ") ENGINE=MyISAM DEFAULT CHARSET=utf8; ";
                 st.executeUpdate(statment);
 
+                dropStat = "DROP TABLE IF EXISTS `quantitative_peptides_table`;";
+                st.executeUpdate(dropStat);
                 statment = "CREATE TABLE IF NOT EXISTS `quantitative_peptides_table` (\n"
                         + "  `index` int(255) NOT NULL auto_increment,\n"
                         + "  `prot_index` int(255) NOT NULL default '-1',\n"
@@ -341,6 +347,8 @@ public class DB implements Serializable {
                         + ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
                 st.executeUpdate(statment);
 
+                dropStat = "DROP TABLE IF EXISTS `quantitative_proteins_table`;";
+                st.executeUpdate(dropStat);
                 statment = "CREATE TABLE IF NOT EXISTS `quantitative_proteins_table` (\n"
                         + "  `index` int(255) NOT NULL auto_increment,\n"
                         + "  `ds_ID` int(255) NOT NULL default '-1',\n"
@@ -1640,7 +1648,7 @@ public class DB implements Serializable {
 
     }
 
-    public boolean restoreDB(String sqlFileUrl) {
+    public boolean restoreDB(String sqlFileUrl, String sqlMysqlPath) {
         //create if not exist
 
 //        String cleanStatment = "TRUNCATE `quant_dataset_table`;TRUNCATE `quant_full_table`;TRUNCATE `experiments_table`;TRUNCATE `experiment_fractions_table`;TRUNCATE `experiment_peptides_proteins_table`; TRUNCATE `experiment_peptides_table`; TRUNCATE `experiment_protein_table`;TRUNCATE `fractions_table`;TRUNCATE `quantitative_peptides_table`;TRUNCATE `quantitative_proteins_table`;TRUNCATE `quant_dataset_table`;TRUNCATE `proteins_peptides_table`;TRUNCATE `standard_plot_proteins`;TRUNCATE `users_table`;TRUNCATE `quant_prot_table`";
@@ -1650,7 +1658,7 @@ public class DB implements Serializable {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
-            String[] executeCmd = new String[]{"C:\\AppServ\\MySQL\\bin\\mysql", "--user=" + userName, "--password=" + password, dbName, "-e", "source " + sqlFileUrl};///usr/bin/mysql
+            String[] executeCmd = new String[]{sqlMysqlPath, "--user=" + userName, "--password=" + password, dbName, "-e", "source " + sqlFileUrl};//  C:\\AppServ\\MySQL\\bin\\mysql
 
             Process runtimeProcess;
             runtimeProcess = Runtime.getRuntime().exec(executeCmd);
@@ -2005,6 +2013,9 @@ public class DB implements Serializable {
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
             for (QuantProtein quantProt : qProtList) {
+                if (quantProt.isPeptideProtein()) {
+                    continue;
+                }
                 insertQuantProtStat = conn.prepareStatement(sqlStat, Statement.RETURN_GENERATED_KEYS);
 //                insertQuantProtStat.setInt(1, quantProt.getProtKey());
                 insertQuantProtStat.setInt(1, quantProt.getDsKey());
@@ -2094,6 +2105,7 @@ public class DB implements Serializable {
                 insertQuantPeptidtStat.setDouble(9, quantPept.getRocAuc());
                 insertQuantPeptidtStat.setDouble(10, quantPept.getFcPatientGroupIonPatientGroupII());
                 insertQuantPeptidtStat.setString(11, quantPept.getPvalueComment());
+                 
                 insertQuantPeptidtStat.setString(12, quantPept.getUniprotAccession());
                 insertQuantPeptidtStat.setString(13, quantPept.getAdditionalComments());
                 insertQuantPeptidtStat.setDouble(14, quantPept.getLogFC());

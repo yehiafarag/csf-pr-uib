@@ -13,6 +13,7 @@ import com.quantcsf.beans.QuantProtein;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -56,8 +57,8 @@ public class Handler {
         dal.exportDataBase(mysqldumpUrl, sqlFileUrl);
     }
 
-    public boolean restoreDB(String source) {
-        return dal.restoreDB(source);
+    public boolean restoreDB(String source, String mysqlPath) {
+        return dal.restoreDB(source,mysqlPath);
     }
 
     public boolean handelQuantPubData(String quantDataFilePath, String sequanceFilePath) {
@@ -68,16 +69,17 @@ public class Handler {
         dal.storeCombinedQuantProtTable(qProtList);
         //3.update dataset table
         dal.storeQuantDatasets();
-//        //handel quant prot     
+//        //handel quant peptideProtein     
         Set<QuantDatasetObject> datasetsList = dal.getQuantDatasetListObject();
         List<QuantProtein> updatedQuantProtList = this.handleQuantData(datasetsList, qProtList);
 //        //store quant protiens
         Map<String, Integer> peptideKeyToProteinIndexMap = dal.storeQuantitiveProteins(updatedQuantProtList);
+        
+        
         List<QuantProtein> peptidesList = handelQuantPeptides(qProtList, peptideKeyToProteinIndexMap);
         //store quant peptides
         dal.storeQuantitivePeptides(peptidesList);
         
-        System.out.println("final prot list updated (should be smaller)  " + qProtList.size() + "  prer " + peptidesList.size());
 
         return true;
     }
@@ -91,7 +93,7 @@ public class Handler {
 //        bool ean test  = dal.updateProtSequances(protSeqMap);
 //        //3.update dataset table
 //        dal.storeQuantDatasets();
-//        //handel quant prot     
+//        //handel quant peptideProtein     
 //        Set<QuantDatasetObject> datasetsList = dal.getQuantDatasetListObject();
 //        qProtList = this.handleQuantData(datasetsList,qProtList);
 //        int protIndex = dal.getCurrentProtIndex();
@@ -108,52 +110,57 @@ public class Handler {
 //        //store quant peptides
 //        dal.storeQuantitivePeptides(peptidesList);
 //        
-//        System.out.println("final prot list updated (should be smaller)  " + qProtList.size() + "  prer " + peptidesList.size());
+//        System.out.println("final peptideProtein list updated (should be smaller)  " + qProtList.size() + "  prer " + peptidesList.size());
         return true;
     }
 
     private List<QuantProtein> handelQuantPeptides(List<QuantProtein> fullQuantProtList, Map<String, Integer> peptideKeyToProteinIndexMap) {
 //        Map<String, QuantPeptide> peptides = new HashMap<String, QuantPeptide>();
         List<QuantProtein> peptidesList = new ArrayList<QuantProtein>();
+        Set<String>KeyCounter = new HashSet<String>();
 //        List<QuantProtein> updatedQuantProtList = new ArrayList<QuantProtein>();
-        for (QuantProtein prot : fullQuantProtList) {
-            if (!prot.isPeptideProtein()) {
+        for (QuantProtein peptideProtein : fullQuantProtList) {
+            if (!peptideProtein.isPeptideProtein()) {
                 continue;
             }
 
-            if (peptideKeyToProteinIndexMap.containsKey(prot.getqPeptideKey())) {
-                prot.setProtKey(peptideKeyToProteinIndexMap.get(prot.getqPeptideKey()));
+            if (peptideKeyToProteinIndexMap.containsKey(peptideProtein.getqPeptideKey())) {
+                peptideProtein.setProtKey(peptideKeyToProteinIndexMap.get(peptideProtein.getqPeptideKey()));
+                KeyCounter.add(peptideProtein.getqPeptideKey());
 
             } else {
-                System.out.println("not related to any protein peptides keys is " + prot.getqPeptideKey());
+                System.out.println("not related to any protein peptides keys is " + peptideProtein.getqPeptideKey());
             }
-            peptidesList.add(prot);
+            if (peptideProtein.getUniprotAccession().equalsIgnoreCase("") || peptideProtein.getUniprotAccession().equalsIgnoreCase("Not Available") || peptideProtein.getUniprotAccession().equalsIgnoreCase("Entry Deleted") || peptideProtein.getUniprotAccession().equalsIgnoreCase("Entry Demerged") || peptideProtein.getUniprotAccession().equalsIgnoreCase("NOT RETRIEVED") || peptideProtein.getUniprotAccession().equalsIgnoreCase("DELETED")) {
+                     peptideProtein.setUniprotAccession(peptideProtein.getPublicationAccNumber());
+                 }
+            peptidesList.add(peptideProtein);
 //            
 //
 //            QuantPeptide pep = new QuantPeptide();
-//            pep.setDsKey(prot.getDsKey());
-//            pep.setFc(prot.getStringFCValue());
-//            pep.setPvalue(prot.getpValue());
-//            pep.setRoc(prot.getRocAuc());
-//            pep.setFcPatientGroupIonPatientGroupII(prot.getFcPatientGroupIonPatientGroupII());
-//            pep.setModificationComment(prot.getModificationComment());
-//            pep.setPeptideModification(prot.getPeptideModification());
-//            pep.setPeptideSequance(prot.getPeptideSequance());
-//            pep.setStrPvalue(prot.getStringPValue());
-//            pep.setPvalueComment(prot.getPvalueComment());
+//            pep.setDsKey(peptideProtein.getDsKey());
+//            pep.setFc(peptideProtein.getStringFCValue());
+//            pep.setPvalue(peptideProtein.getpValue());
+//            pep.setRoc(peptideProtein.getRocAuc());
+//            pep.setFcPatientGroupIonPatientGroupII(peptideProtein.getFcPatientGroupIonPatientGroupII());
+//            pep.setModificationComment(peptideProtein.getModificationComment());
+//            pep.setPeptideModification(peptideProtein.getPeptideModification());
+//            pep.setPeptideSequance(peptideProtein.getPeptideSequance());
+//            pep.setStrPvalue(peptideProtein.getStringPValue());
+//            pep.setPvalueComment(peptideProtein.getPvalueComment());
 //
-//            String acc = prot.getUniprotAccession();
+//            String acc = peptideProtein.getUniprotAccession();
 //            if (acc.equalsIgnoreCase("Not Available")) {
-//                acc = prot.getPublicationAccNumber();
+//                acc = peptideProtein.getPublicationAccNumber();
 //            }
-//            if (!proteins.containsKey(prot.getDsKey() + "-" + acc)) {
+//            if (!proteins.containsKey(peptideProtein.getDsKey() + "-" + acc)) {
 //                pep.setProtKey(protIndex);
-//                prot.setProtKey(protIndex);
-//                proteins.put(prot.getDsKey() + "-" + acc, prot);
+//                peptideProtein.setProtKey(protIndex);
+//                proteins.put(peptideProtein.getDsKey() + "-" + acc, peptideProtein);
 //                protIndex++;
 //
 //            } else {
-//                pep.setProtKey(proteins.get(prot.getDsKey() + "-" + acc).getProtKey());
+//                pep.setProtKey(proteins.get(peptideProtein.getDsKey() + "-" + acc).getProtKey());
 //            }
 //            peptidesList.add(pep);
         }
@@ -177,9 +184,9 @@ public class Handler {
 
         List<QuantProtein> updatedQuantProtList = new ArrayList<QuantProtein>();
         for (QuantProtein qp : qProtList) {
-            if (qp.isPeptideProtein()) {
-                continue;
-            }
+//            if (qp.isPeptideProtein()) {
+//                continue;
+//            }
             for (QuantDatasetObject ds : dss) {
 
                 if (!ds.getPumedID().equalsIgnoreCase(qp.getPumedID())) {
@@ -290,7 +297,6 @@ public class Handler {
 
                     continue;
                 }
-
                 qp.setDsKey(ds.getUniqId());
                 ds.addQuantProt(qp);
                 updatedQuantProtList.add(qp);
