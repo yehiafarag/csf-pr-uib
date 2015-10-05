@@ -35,7 +35,7 @@ import probe.com.model.beans.User;
  * @author Yehia Farag abstraction for database queries
  */
 public class DataBase implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
     private Connection conn = null;
     private Connection conn_i = null;
@@ -686,9 +686,9 @@ public class DataBase implements Serializable {
                 datasetList.put(dataset.getDatasetId(), dataset);
             }
             rs.close();
-            
+
             Map<Integer, List<Integer>> datasetFractionsMap = this.getFullIdentificationProteinFractionIdsList();
-            
+
             for (int datasetId : datasetList.keySet()) {
                 IdentificationDatasetBean dataset = datasetList.get(datasetId);
                 if (datasetFractionsMap.containsKey(datasetId)) {
@@ -696,12 +696,12 @@ public class DataBase implements Serializable {
                     dataset.setFractionIds(fractionIds);
                 }
                 tempDatasetList.put(datasetId, dataset);
-                
+
             }
             datasetList.clear();
             datasetList.putAll(tempDatasetList);
             tempDatasetList.clear();
-            
+
         } catch (ClassNotFoundException e) {
             System.err.println("at error line 987 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
             return null;
@@ -719,7 +719,7 @@ public class DataBase implements Serializable {
 //        singleuseUpdateDb();
 //        initPublications();
         return datasetList;
-        
+
     }
 
     /**
@@ -758,19 +758,19 @@ public class DataBase implements Serializable {
                 fractionList.add(rs.getInt("fraction_id"));
             }
             rs.close();
-            
+
         } catch (ClassNotFoundException e) {
             System.err.println("at error line 1045 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (IllegalAccessException e) {
             System.err.println("at error line 1047 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (InstantiationException e) {
             System.err.println("at error line 1049 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (SQLException e) {
             System.err.println("at error line 1053 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         }
         return fractionList;
     }
@@ -783,7 +783,7 @@ public class DataBase implements Serializable {
     private Map<Integer, List<Integer>> getFullIdentificationProteinFractionIdsList() {
         PreparedStatement selectDatasetFractionStat;
         String selectDatasetFraction = "SELECT `fraction_id` , `exp_id` FROM `experiment_fractions_table` ;";
-        
+
         Map<Integer, List<Integer>> datasetFractionsMap = new HashMap<Integer, List<Integer>>();
         try {
             if (conn == null || conn.isClosed()) {
@@ -797,27 +797,27 @@ public class DataBase implements Serializable {
                 if (!datasetFractionsMap.containsKey(dsId)) {
                     List<Integer> fractionList = new ArrayList<Integer>();
                     datasetFractionsMap.put(dsId, fractionList);
-                    
+
                 }
                 List<Integer> fractionList = datasetFractionsMap.get(dsId);
                 fractionList.add(rs.getInt("fraction_id"));
                 datasetFractionsMap.put(dsId, fractionList);
-                
+
             }
             rs.close();
-            
+
         } catch (ClassNotFoundException e) {
             System.err.println("at error line 1045 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (IllegalAccessException e) {
             System.err.println("at error line 1047 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (InstantiationException e) {
             System.err.println("at error line 1049 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (SQLException e) {
             System.err.println("at error line 1053 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         }
         return datasetFractionsMap;
     }
@@ -873,22 +873,22 @@ public class DataBase implements Serializable {
                 dataset.setNumberValidProt(rs.getInt("valid_prot"));
             }
             rs.close();
-            
+
         } catch (ClassNotFoundException e) {
             System.err.println("at error line 1112 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (IllegalAccessException e) {
             System.err.println("at error line 1115 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (InstantiationException e) {
             System.err.println("at error line 1118 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (SQLException e) {
             System.err.println("at error line 1121 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         }
         return dataset;
-        
+
     }
 
     /**
@@ -914,7 +914,7 @@ public class DataBase implements Serializable {
             Map<Integer, IdentificationProteinBean> proteinList = new HashMap<Integer, IdentificationProteinBean>();
             otherSymbols.setGroupingSeparator('.');
             df = new DecimalFormat("#.##", otherSymbols);
-            
+
             int x = 0;
             while (rs.next()) {
                 IdentificationProteinBean pb = new IdentificationProteinBean();//fraction_id		  			
@@ -928,28 +928,28 @@ public class DataBase implements Serializable {
             rs.close();
             conn.close();
             return proteinList;
-            
+
         } catch (ClassNotFoundException e) {
             System.err.println("at error line 1166 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (IllegalAccessException e) {
             System.err.println("at error line 1170 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (InstantiationException e) {
             System.err.println("at error line 1173 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (NumberFormatException e) {
             System.err.println("at error line 1176 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
             System.err.println("at error line 1177 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (SQLException e) {
             System.err.println("at error line 1180 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         }
-        
+
         System.gc();
         return null;
-        
+
     }
 
     /**
@@ -981,16 +981,16 @@ public class DataBase implements Serializable {
             identificationPeptidesList = fillPeptideInformation(rs);
         } catch (ClassNotFoundException e) {
             System.err.println("at error line 1217 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (IllegalAccessException e) {
             System.err.println("at error line 1220 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (InstantiationException e) {
             System.err.println("at error line 1223 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (SQLException e) {
             System.err.println("at error line 1226 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         }
         System.gc();
         return identificationPeptidesList;
@@ -1004,7 +1004,7 @@ public class DataBase implements Serializable {
      * @return identification peptides number
      */
     public int getAllIdentificationDatasetPeptidesNumber(int datasetId, boolean validated) {
-        
+
         try {
             PreparedStatement selectPeptideListStat;
             String selectPeptideList;
@@ -1021,19 +1021,19 @@ public class DataBase implements Serializable {
             selectPeptideListStat.setInt(1, datasetId);
             ResultSet rs = selectPeptideListStat.executeQuery();
             return rs.getRow();
-            
+
         } catch (ClassNotFoundException e) {
             System.err.println("at error line 1260 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (IllegalAccessException e) {
             System.err.println("at error line 1263 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (InstantiationException e) {
             System.err.println("at error line 1266 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (SQLException e) {
             System.err.println("at error line 1269 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         }
         System.gc();
         return 0;
@@ -1081,10 +1081,10 @@ public class DataBase implements Serializable {
                 temPb.setSpectrumFractionSpread_upper_range_kDa(rs.getString("spectrum_fraction_spread_upper_range_kDa"));
                 temPb.setPeptideFractionSpread_lower_range_kDa(rs.getString("peptide_fraction_spread_lower_range_kDa"));
                 temPb.setPeptideFractionSpread_upper_range_kDa(rs.getString("peptide_fraction_spread_upper_range_kDa"));
-                
+
                 temPb.setGeneName(rs.getString("gene_name"));
                 temPb.setChromosomeNumber(rs.getString("chromosome_number"));
-                
+
                 temPb.setValidated(Boolean.valueOf(rs.getString("valid")));
                 temPb.setDescription(rs.getString("description"));
                 if (temPb.getOtherProteins() == null || temPb.getOtherProteins().equals("")) {
@@ -1094,19 +1094,19 @@ public class DataBase implements Serializable {
                 }
             }
             rs.close();
-            
+
         } catch (ClassNotFoundException e) {
             System.err.println("at error line 1333 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (IllegalAccessException e) {
             System.err.println("at error line 1336 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (InstantiationException e) {
             System.err.println("at error line 1339 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (SQLException e) {
             System.err.println("at error line 1340 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         }
         System.gc();
         return proteinDatasetList;
@@ -1119,7 +1119,7 @@ public class DataBase implements Serializable {
      * @return boolean successful process
      */
     public synchronized boolean removeIdentificationDataset(int datasetId) {
-        
+
         PreparedStatement remDatasetStat;
         PreparedStatement getFractDatasetStat;
         PreparedStatement remFractStat;
@@ -1128,7 +1128,7 @@ public class DataBase implements Serializable {
         PreparedStatement remPepDatasetStat;
         PreparedStatement remPeptStat;
         PreparedStatement remProtStat;
-        
+
         try {
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
@@ -1136,13 +1136,13 @@ public class DataBase implements Serializable {
             }
             this.removeIdentificationStandarPlotProteins(datasetId);
             String remDataset = "DELETE FROM `experiments_table`  WHERE  `exp_id`=? ";
-            
+
             String remFract = "DELETE FROM `" + dbName + "`.`fractions_table`   WHERE  `fraction_id` =? ";
-            
+
             remDatasetStat = conn.prepareStatement(remDataset);
             remDatasetStat.setInt(1, datasetId);
             remDatasetStat.executeUpdate();
-            
+
             String selectPeptideList = "SELECT `pep_id` FROM `experiment_peptides_table` WHERE `exp_id` = ?;";
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
@@ -1155,14 +1155,14 @@ public class DataBase implements Serializable {
             while (rs.next()) {
                 int peptideId = rs.getInt("pep_id");
                 peptideIdList.add(peptideId);
-                
+
             }
-            
+
             rs.close();
             String selectPeptide = "DELETE FROM `proteins_peptides_table` WHERE  `peptide_id`=? ;";
-            
+
             for (int pepId : peptideIdList) {
-                
+
                 if (conn == null || conn.isClosed()) {
                     Class.forName(driver).newInstance();
                     conn = DriverManager.getConnection(url + dbName, userName, password);
@@ -1170,9 +1170,9 @@ public class DataBase implements Serializable {
                 remPeptStat = conn.prepareStatement(selectPeptide);
                 remPeptStat.setInt(1, pepId);
                 remPeptStat.executeUpdate();
-                
+
             }
-            
+
             String removePeptide = "DELETE FROM `experiment_peptides_table` WHERE  `exp_id` = ? ;";
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
@@ -1181,12 +1181,12 @@ public class DataBase implements Serializable {
             remPepDatasetStat = conn.prepareStatement(removePeptide);
             remPepDatasetStat.setInt(1, datasetId);
             remPepDatasetStat.executeUpdate();
-            
+
             String remDatasetPro = "DELETE FROM `" + dbName + "`.`experiment_protein_table`  WHERE  `exp_id`=? ";
             remProtStat = conn.prepareStatement(remDatasetPro);
             remProtStat.setInt(1, datasetId);
             remProtStat.executeUpdate();
-            
+
             String selectFractList = "SELECT `fraction_id` FROM `experiment_fractions_table` where `exp_id` = ?";
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
@@ -1199,16 +1199,16 @@ public class DataBase implements Serializable {
             while (rs.next()) {
                 int fraction_id = rs.getInt("fraction_id");
                 fractionIdList.add(fraction_id);
-                
+
             }
             rs.close();
-            
+
             for (int fb : fractionIdList) {
                 remFractStat = conn.prepareStatement(remFract);
                 remFractStat.setInt(1, fb);
                 remFractStat.executeUpdate();
             }
-            
+
             String removeFraction = "DELETE FROM `experiment_fractions_table`   WHERE `exp_id` = ? ;";
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
@@ -1217,23 +1217,23 @@ public class DataBase implements Serializable {
             remFractDatasetStat = conn.prepareStatement(removeFraction);
             remFractDatasetStat.setInt(1, datasetId);
             remFractDatasetStat.executeUpdate();
-            
+
             return true;
         } catch (ClassNotFoundException e) {
             System.err.println("at error line 1457 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
             return false;
         } catch (IllegalAccessException e) {
             System.err.println("at error line 1461 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
             return false;
         } catch (InstantiationException e) {
             System.err.println("at error line 1465 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
             return false;
         } catch (SQLException e) {
             System.err.println("at error line 1469 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
             return false;
         }
     }
@@ -1249,29 +1249,29 @@ public class DataBase implements Serializable {
     public synchronized Map<Integer, IdentificationProteinBean> searchIdentificationProteinByAccession(String accession, int datasetId, boolean validatedOnly) {
         PreparedStatement selectProStat;
         String selectPro;
-        
+
         String[] queryWordsArr = accession.split(",");
         StringBuilder sb = new StringBuilder();
-        
+
         Set<String> searchSet = new HashSet<String>();
         for (String str : queryWordsArr) {
             searchSet.add(str.trim());
         }
-        
+
         for (int x = 0; x < searchSet.size(); x++) {
             if (x > 0) {
                 sb.append(" OR ");
             }
             sb.append("`prot_key` LIKE(?) ");
-            
+
         }
-        
+
         if (validatedOnly) {
             selectPro = "SELECT * FROM `experiment_protein_table` Where `exp_id` = ? AND  " + (sb.toString()) + " AND `valid`=?;";
         } else {
             selectPro = "SELECT * FROM `experiment_protein_table` Where `exp_id` = ? AND  " + (sb.toString());
         }
-        
+
         try {
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
@@ -1283,33 +1283,33 @@ public class DataBase implements Serializable {
             for (String str : searchSet) {
                 selectProStat.setString(index++, "%" + str + "%");
             }
-            
+
             if (validatedOnly) {
                 selectProStat.setString(index, "TRUE");
             }
             ResultSet rs = selectProStat.executeQuery();
-            
+
             Map<Integer, IdentificationProteinBean> proteinsList = fillProteinInformation(rs);
             System.gc();
             return proteinsList;
-            
+
         } catch (ClassNotFoundException e) {
             System.err.println("at error line 1531 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
             return null;
         } catch (IllegalAccessException e) {
             System.err.println("at error line 1534 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
             return null;
         } catch (InstantiationException e) {
             System.err.println("at error line 1538 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
             return null;
         } catch (SQLException e) {
             System.err.println("at error line 1542 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
             return null;
         }
-        
+
     }
 
     /**
@@ -1322,16 +1322,16 @@ public class DataBase implements Serializable {
     public synchronized Map<Integer, IdentificationProteinBean> searchIdentificationProteinAllDatasetsByAccession(Set<String> searchSet, boolean validatedOnly) {
         PreparedStatement selectProStat;
         String selectPro;
-        
+
         StringBuilder sb = new StringBuilder();
         for (int x = 0; x < searchSet.size(); x++) {
             if (x > 0) {
                 sb.append(" OR ");
             }
             sb.append("`prot_key` LIKE (?)");
-            
+
         }
-        
+
         if (validatedOnly) {
             selectPro = "SELECT * FROM `experiment_protein_table` Where  " + (sb.toString()) + " AND `valid`=?;";
         } else {
@@ -1350,29 +1350,29 @@ public class DataBase implements Serializable {
             if (validatedOnly) {
                 selectProStat.setString(index, "TRUE");
             }
-            
+
             ResultSet rs = selectProStat.executeQuery();
-            
+
             Map<Integer, IdentificationProteinBean> proteinsList = fillProteinInformation(rs);
             System.gc();
             return proteinsList;
-            
+
         } catch (ClassNotFoundException e) {
             System.err.println("at error line 1595 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
             return new HashMap<Integer, IdentificationProteinBean>();
         } catch (IllegalAccessException e) {
             System.err.println("at error line 1598 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
             return new HashMap<Integer, IdentificationProteinBean>();
         } catch (InstantiationException e) {
             System.err.println("at error line 1602 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
             return new HashMap<Integer, IdentificationProteinBean>();
         } catch (SQLException e) {
             System.err.println("at error line 1606 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
             return new HashMap<Integer, IdentificationProteinBean>();
         }
-        
+
     }
 
     /**
@@ -1384,7 +1384,7 @@ public class DataBase implements Serializable {
      * @return peptides list
      */
     public synchronized Map<Integer, IdentificationPeptideBean> getIdentificationPeptidesList(String accession, String otherAcc, int datasetId) {
-        
+
         ResultSet rs;
         StringBuilder sb = new StringBuilder();
         sb.append("`protein` = ?");
@@ -1393,7 +1393,7 @@ public class DataBase implements Serializable {
             sb.append("`other_protein(s)` = ?");
         }
         try {
-            
+
             PreparedStatement selectPeptidesStat;
             String selectPeptide = "SELECT * FROM `proteins_peptides_table` WHERE  `exp_id` = ? AND " + (sb.toString()) + ";";
             if (conn == null || conn.isClosed()) {
@@ -1407,7 +1407,7 @@ public class DataBase implements Serializable {
                 selectPeptidesStat.setString(3, otherAcc);
             }
             rs = selectPeptidesStat.executeQuery();
-            
+
             Map<Integer, IdentificationPeptideBean> peptideList = fillPeptideInformation(rs);
             String missingPepStr = "SELECT * FROM  `proteins_peptides_table` WHERE  `exp_id` =? AND  `proteins_peptides_table`.`peptide_protein(s)` LIKE (?)";
             if (conn == null || conn.isClosed()) {
@@ -1417,22 +1417,22 @@ public class DataBase implements Serializable {
             selectPeptidesStat = conn.prepareStatement(missingPepStr);
             selectPeptidesStat.setInt(1, datasetId);
             selectPeptidesStat.setString(2, "%" + accession + "%");
-            
+
             rs = selectPeptidesStat.executeQuery();
             peptideList.putAll(fillPeptideInformation(rs));
             return peptideList;
         } catch (ClassNotFoundException e) {
             System.err.println("at error line 1659 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (IllegalAccessException e) {
             System.err.println("at error line 1662 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (InstantiationException e) {
             System.err.println("at error line 1665 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (SQLException e) {
             System.err.println("at error line 1668 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         }
         System.gc();
         return null;
@@ -1464,7 +1464,7 @@ public class DataBase implements Serializable {
                 int fraction_id = rs.getInt("fraction_id");
                 index = rs.getInt("index");
                 fractionIdList.add(fraction_id);
-                
+
             }
             rs.close();
             //get fractions 
@@ -1493,32 +1493,32 @@ public class DataBase implements Serializable {
                     pb.setAveragePrecursorIntensityPerFraction(Double.valueOf(df.format(rs.getDouble("average_ precursor_intensity"))));
                     proteinList.put(pb.getAccession(), pb);
                 }
-                
+
                 fb.setProteinList(proteinList);
                 fractionsList.put(fb.getFractionId(), fb);
                 rs.close();
-                
+
             }
-            
+
         } catch (ClassNotFoundException e) {
             System.err.println("at error line 1738 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (IllegalAccessException e) {
             System.err.println("at error line 1741 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (InstantiationException e) {
             System.err.println("at error line 1744 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (NumberFormatException e) {
             System.err.println("at error line 1747 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (SQLException e) {
             System.err.println("at error line 1750 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         }
         System.gc();
         return fractionsList;
-        
+
     }
 
     /**
@@ -1543,9 +1543,9 @@ public class DataBase implements Serializable {
                 sb.append(" OR ");
             }
             sb.append("`description` LIKE(?)");
-            
+
         }
-        
+
         if (validatedOnly) {
             selectPro = "SELECT * FROM `experiment_protein_table` WHERE " + (sb.toString()) + " AND `exp_id`=? AND `valid`=?;";
         } else {
@@ -1573,18 +1573,18 @@ public class DataBase implements Serializable {
             return proteinsList;
         } catch (ClassNotFoundException e) {
             System.err.println("at error line 1809 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (IllegalAccessException e) {
             System.err.println("at error line 1812 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (InstantiationException e) {
             System.err.println("at error line 1815 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (SQLException e) {
             System.err.println("at error line 1818 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         }
-        
+
         System.gc();
         return null;
     }
@@ -1612,7 +1612,7 @@ public class DataBase implements Serializable {
                 sb.append(" OR ");
             }
             sb.append("`description` LIKE(?)");
-            
+
         }
         if (validatedOnly) {
             selectPro = "SELECT * FROM `experiment_protein_table` WHERE " + (sb.toString()) + " AND `valid`=?;";
@@ -1632,25 +1632,25 @@ public class DataBase implements Serializable {
             if (validatedOnly) {
                 selectProStat.setString(index, "TRUE");
             }
-            
+
             ResultSet rs = selectProStat.executeQuery();
             Map<Integer, IdentificationProteinBean> proteinsList = fillProteinInformation(rs);
             System.gc();
             return proteinsList;
         } catch (ClassNotFoundException e) {
             System.err.println("at error line 1875 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (IllegalAccessException e) {
             System.err.println("at error line 1878 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (InstantiationException e) {
             System.err.println("at error line 1881 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (SQLException e) {
             System.err.println("at error line 1884 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         }
-        
+
         System.gc();
         return new HashMap<Integer, IdentificationProteinBean>();
     }
@@ -1675,21 +1675,21 @@ public class DataBase implements Serializable {
                 pepb.setAaBefore(resultSet.getString("aa_before"));
                 pepb.setAaAfter(resultSet.getString("aa_after"));
                 pepb.setSequence(resultSet.getString("sequence"));
-                
+
                 pepb.setPeptideEnd(resultSet.getString("peptide_end"));
                 pepb.setPeptideStart(resultSet.getString("peptide_start"));
-                
+
                 pepb.setVariableModification(resultSet.getString("variable_modification"));
-                
+
                 pepb.setLocationConfidence(resultSet.getString("location_confidence"));
                 pepb.setPrecursorCharges(resultSet.getString("precursor_charge(s)"));
                 pepb.setNumberOfValidatedSpectra(resultSet.getInt("number_of_validated_spectra"));
                 pepb.setScore(resultSet.getDouble("score"));
                 pepb.setConfidence(resultSet.getDouble("confidence"));
                 pepb.setPeptideId(resultSet.getInt("peptide_id"));
-                
+
                 pepb.setFixedModification(resultSet.getString("fixed_modification"));
-                
+
                 pepb.setProteinInference(resultSet.getString("protein_inference"));
                 pepb.setSequenceTagged(resultSet.getString("sequence_tagged"));
                 pepb.setEnzymatic(Boolean.valueOf(resultSet.getString("enzymatic")));
@@ -1701,11 +1701,11 @@ public class DataBase implements Serializable {
                     pepb.setDeamidationAndGlycopattern(Boolean.valueOf(str));
                 }
                 pepb.setLikelyNotGlycosite(Boolean.valueOf(resultSet.getString("likelyNotGlycosite")));
-                
+
                 peptidesList.put(pepb.getPeptideId(), pepb);
             }
             resultSet.close();
-            
+
         } catch (Exception exp) {
             System.err.println("at error line 1078 " + this.getClass().getName() + "   " + exp.getLocalizedMessage());
         }
@@ -1744,25 +1744,25 @@ public class DataBase implements Serializable {
                 temPb.setConfidence(rs.getDouble("confidence"));
                 temPb.setStarred(Boolean.valueOf(rs.getString("starred")));
                 temPb.setNonEnzymaticPeptides(Boolean.valueOf(rs.getString("non_enzymatic_peptides").toUpperCase()));
-                
+
                 temPb.setSpectrumFractionSpread_lower_range_kDa(rs.getString("spectrum_fraction_spread_lower_range_kDa"));
                 temPb.setSpectrumFractionSpread_upper_range_kDa(rs.getString("spectrum_fraction_spread_upper_range_kDa"));
                 temPb.setPeptideFractionSpread_lower_range_kDa(rs.getString("peptide_fraction_spread_lower_range_kDa"));
                 temPb.setPeptideFractionSpread_upper_range_kDa(rs.getString("peptide_fraction_spread_upper_range_kDa"));
-                
+
                 temPb.setGeneName(rs.getString("gene_name"));
                 temPb.setChromosomeNumber(rs.getString("chromosome_number"));
                 temPb.setValidated(Boolean.valueOf(rs.getString("valid")));
                 temPb.setProtGroupId(rs.getInt("prot_group_id"));
                 proteinsList.put(temPb.getProtGroupId(), temPb);
-                
+
             }
             rs.close();
         } catch (SQLException sqlExcp) {
             System.err.println("at error line 1996 " + this.getClass().getName() + "   " + sqlExcp.getLocalizedMessage());
         }
         return proteinsList;
-        
+
     }
 
     /**
@@ -1776,7 +1776,7 @@ public class DataBase implements Serializable {
         PreparedStatement selectPepIdStat;
         Map<Integer, IdentificationProteinBean> proteinsList;
         Map<Integer, IdentificationProteinBean> filteredProteinsList = new HashMap<Integer, IdentificationProteinBean>();
-        
+
         String[] queryWordsArr = peptideSequenceKeyword.split("\n");
         Set<String> searchSet = new HashSet<String>();
         for (String str : queryWordsArr) {
@@ -1790,9 +1790,9 @@ public class DataBase implements Serializable {
                 sb.append(" OR ");
             }
             sb.append(" `sequence` LIKE(?) ");
-            
+
         }
-        
+
         Set<String> protAccessionQuerySet = new LinkedHashSet<String>();
         Set<Integer> expIds = new HashSet<Integer>();
         String selectProtAccession = "SELECT  `protein` ,  `other_protein(s)` ,  `peptide_protein(s)` , `exp_id` FROM  `proteins_peptides_table`  WHERE " + (sb.toString()) + " ;";
@@ -1801,11 +1801,11 @@ public class DataBase implements Serializable {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
-            
+
             selectPepIdStat = conn.prepareStatement(selectProtAccession);
             int index = 1;
             for (String str : searchSet) {
-                
+
                 selectPepIdStat.setString(index++, "%" + str.trim() + "%");
             }
             ResultSet rs = selectPepIdStat.executeQuery();
@@ -1823,9 +1823,9 @@ public class DataBase implements Serializable {
                     protAccessionQuerySet.addAll(Arrays.asList(peptideProt.split(",")));
                 }
                 expIds.add(rs.getInt("exp_id"));
-                
+
             }
-            
+
             rs.close();
             proteinsList = this.searchIdentificationProteinAllDatasetsByAccession(protAccessionQuerySet, validatedOnly);
             if (proteinsList == null) {
@@ -1841,18 +1841,18 @@ public class DataBase implements Serializable {
             return filteredProteinsList;
         } catch (ClassNotFoundException e) {
             System.err.println("at error line 2087 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (IllegalAccessException e) {
             System.err.println("at error line 2081 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (InstantiationException e) {
             System.err.println("at error line 2074 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (SQLException e) {
             System.err.println("at error line 2078 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         }
-        
+
         System.gc();
         return null;
     }
@@ -1870,21 +1870,21 @@ public class DataBase implements Serializable {
         PreparedStatement selectPepIdStat;
         Map<Integer, IdentificationProteinBean> proteinsList;
         Map<Integer, IdentificationProteinBean> filteredProteinsList = new HashMap<Integer, IdentificationProteinBean>();
-        
+
         String[] queryWordsArr = peptideSequenceKeyword.split("\n");
         StringBuilder sb = new StringBuilder();
-        
+
         Set<String> searchSet = new HashSet<String>();
         for (String str : queryWordsArr) {
             searchSet.add(str.trim());
         }
-        
+
         for (int x = 0; x < searchSet.size(); x++) {
             if (x > 0) {
                 sb.append(" OR ");
             }
             sb.append("`sequence` = ?");
-            
+
         }
         Set<String> protAccessionQuerySet = new HashSet<String>();
         Set<Integer> expIds = new HashSet<Integer>();
@@ -1895,7 +1895,7 @@ public class DataBase implements Serializable {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
-            
+
             selectPepIdStat = conn.prepareStatement(selectProtAccession);
             int index = 1;
             for (String str : searchSet) {
@@ -1917,7 +1917,7 @@ public class DataBase implements Serializable {
                     protAccessionQuerySet.addAll(Arrays.asList(peptideProt.split(",")));
                 }
                 expIds.add(rs.getInt("exp_id"));
-                
+
             }
             rs.close();
             proteinsList = this.searchIdentificationProteinAllDatasetsByAccession(protAccessionQuerySet, validatedOnly);
@@ -1927,7 +1927,7 @@ public class DataBase implements Serializable {
             for (int key : proteinsList.keySet()) {
                 IdentificationProteinBean pb = proteinsList.get(key);
                 if (expIds.contains(pb.getDatasetId())) {
-                    
+
                     filteredProteinsList.put(key, pb);
                 }
             }
@@ -1935,18 +1935,18 @@ public class DataBase implements Serializable {
             return filteredProteinsList;
         } catch (ClassNotFoundException e) {
             System.err.println("at error line 2171 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (IllegalAccessException e) {
             System.err.println("at error line 2175 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (InstantiationException e) {
             System.err.println("at error line 2178 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (SQLException e) {
             System.err.println("at error line 2181 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         }
-        
+
         System.gc();
         return null;
     }
@@ -1979,13 +1979,13 @@ public class DataBase implements Serializable {
             if (rs > 0) {
                 test = true;
             }
-            
+
         } catch (ClassNotFoundException e) {
         } catch (IllegalAccessException e) {
         } catch (InstantiationException e) {
         } catch (SQLException e) {
         }
-        
+
         return test;
     }
 
@@ -2070,7 +2070,7 @@ public class DataBase implements Serializable {
      */
     public synchronized User getUser(String email) {
         PreparedStatement selectUserStat;
-        
+
         try {
             String selectuser = "SELECT * FROM `users_table` WHERE `email` =  ?";
             if (conn == null || conn.isClosed()) {
@@ -2086,7 +2086,7 @@ public class DataBase implements Serializable {
                 user.setUsername(rs.getString("user_name"));
                 user.setEmail(rs.getString("email"));
                 return user;
-                
+
             }
             rs.close();
         } catch (ClassNotFoundException e) {
@@ -2109,7 +2109,7 @@ public class DataBase implements Serializable {
     public synchronized Map<Integer, String> getUsersList() {
         Map<Integer, String> usersList = new HashMap<Integer, String>();
         PreparedStatement selectUsersStat;
-        
+
         try {
             String selectusers = "SELECT * FROM `users_table` WHERE `admin` = 'false'; ";
             if (conn == null || conn.isClosed()) {
@@ -2119,9 +2119,9 @@ public class DataBase implements Serializable {
             selectUsersStat = conn.prepareStatement(selectusers);
             ResultSet rs = selectUsersStat.executeQuery();
             while (rs.next()) {
-                
+
                 usersList.put(rs.getInt("id"), rs.getString("user_name"));
-                
+
             }
             rs.close();
         } catch (ClassNotFoundException e) {
@@ -2145,7 +2145,7 @@ public class DataBase implements Serializable {
      */
     public synchronized boolean removeUser(String username) {
         try {
-            
+
             PreparedStatement removeUserStat;
             String removeuser = "DELETE  FROM `users_table` WHERE `user_name` = ?;";
             if (conn == null || conn.isClosed()) {
@@ -2181,13 +2181,13 @@ public class DataBase implements Serializable {
      * @return test boolean successful process
      */
     public synchronized boolean updateUserPassword(String username, String newpassword) {
-        
+
         try {
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
-            
+
             String updateProtDesc = "UPDATE  `" + dbName + "`.`users_table` SET `password`= ? WHERE `user_name` = ? ;";
             PreparedStatement updateProtDescStat = conn.prepareStatement(updateProtDesc);
             updateProtDescStat.setString(1, newpassword);
@@ -2207,7 +2207,7 @@ public class DataBase implements Serializable {
         } catch (SQLException e2) {
             System.err.println(e2.getLocalizedMessage());
         }
-        
+
         return false;
     }
 
@@ -2238,7 +2238,7 @@ public class DataBase implements Serializable {
     public boolean insertStandardPlotProtein(int datasetId, StandardIdentificationFractionPlotProteinBean standardProteinBean) {
         int check;
         try {
-            
+
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
@@ -2253,7 +2253,7 @@ public class DataBase implements Serializable {
             insertStandPlotStat.setString(6, standardProteinBean.getColor().toUpperCase());
             check = insertStandPlotStat.executeUpdate();
             insertStandPlotStat.close();
-            
+
         } catch (ClassNotFoundException e) {
             System.err.println("at error line 2493 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
             return false;
@@ -2268,7 +2268,7 @@ public class DataBase implements Serializable {
             return false;
         }
         return check > 0;
-        
+
     }
 
     /**
@@ -2286,7 +2286,7 @@ public class DataBase implements Serializable {
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
             String StandarPlot = "DELETE FROM `standard_plot_proteins`  WHERE  `exp_id`=? ";
-            
+
             PreparedStatement remDatasetStat = conn.prepareStatement(StandarPlot);
             remDatasetStat.setInt(1, datasetId);
             x = remDatasetStat.executeUpdate();
@@ -2312,7 +2312,7 @@ public class DataBase implements Serializable {
     public List<StandardIdentificationFractionPlotProteinBean> getStandardIdentificationFractionProteinsList(int datasetId) {
         List<StandardIdentificationFractionPlotProteinBean> standardPlotList = new ArrayList<StandardIdentificationFractionPlotProteinBean>();
         try {
-            
+
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
@@ -2356,7 +2356,7 @@ public class DataBase implements Serializable {
      */
     @SuppressWarnings({"BroadCatchBlock", "TooBroadCatch"})
     public boolean updateIdentificationDatasetInformation(IdentificationDatasetBean dataset) {
-        
+
         String updateExp = "UPDATE  `" + dbName + "`.`experiments_table`  SET `name`=?,`ready`=? ,`uploaded_by`=?,`species`=?,`sample_type`=?,`sample_processing`=?,`instrument_type`=?,`frag_mode` =?,`proteins_number` = ? ,	`email` =?,`pblication_link`=?,`description`=?,`peptides_number` =?  WHERE `exp_id` = ? ;";
         try {
             if (conn == null || conn.isClosed()) {
@@ -2400,7 +2400,7 @@ public class DataBase implements Serializable {
             System.err.println("at error line 2635 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
             return false;
         }
-        
+
         return false;
     }
 
@@ -2413,10 +2413,10 @@ public class DataBase implements Serializable {
      * @return QuantDatasetInitialInformationObject
      */
     public QuantDatasetInitialInformationObject getQuantDatasetInitialInformationObject() {
-        
+
         Set<QuantDatasetObject> quantDatasetList = new HashSet<QuantDatasetObject>();
         boolean[] activeHeaders = new boolean[27];
-        
+
         try {
             PreparedStatement selectStudiesStat;
             String selectStudies = "SELECT * FROM  `quant_dataset_table` ";
@@ -2443,143 +2443,143 @@ public class DataBase implements Serializable {
                     activeHeaders[2] = true;
                 }
                 pb.setIdentifiedProteinsNumber(identified_proteins_num);
-                
+
                 int quantified_proteins_number = rs.getInt("quantified_proteins_number");
                 if (!activeHeaders[3] && quantified_proteins_number != -1) {
                     activeHeaders[3] = true;
                 }
                 pb.setQuantifiedProteinsNumber(quantified_proteins_number);
-                
+
                 String analytical_method = rs.getString("analytical_method");
                 if (!activeHeaders[4] && analytical_method != null && !analytical_method.equalsIgnoreCase("Not Available")) {
                     activeHeaders[4] = true;
                 }
                 pb.setAnalyticalMethod(analytical_method);
-                
+
                 String raw_data_available = rs.getString("raw_data_available");
                 if (!activeHeaders[5] && raw_data_available != null && !raw_data_available.equalsIgnoreCase("Not Available")) {
                     activeHeaders[5] = true;
                 }
                 pb.setRawDataUrl(raw_data_available);
-                
+
                 int files_num = rs.getInt("files_num");
                 if (!activeHeaders[6] && files_num != -1) {
                     activeHeaders[6] = true;
                 }
                 pb.setFilesNumber(files_num);
-                
+
                 String type_of_study = rs.getString("type_of_study");
                 if (!activeHeaders[7] && type_of_study != null && !type_of_study.equalsIgnoreCase("Not Available")) {
                     activeHeaders[7] = true;
                 }
                 pb.setTypeOfStudy(type_of_study);
-                
+
                 String sample_type = rs.getString("sample_type");
                 if (!activeHeaders[8] && sample_type != null && !sample_type.equalsIgnoreCase("Not Available")) {
                     activeHeaders[8] = true;
                 }
                 pb.setSampleType(sample_type);
-                
+
                 String sample_matching = rs.getString("sample_matching");
                 if (!activeHeaders[9] && sample_matching != null && !sample_matching.equalsIgnoreCase("Not Available")) {
                     activeHeaders[9] = true;
                 }
                 pb.setSampleMatching(sample_matching);
-                
+
                 String shotgun_targeted = rs.getString("shotgun_targeted");
                 if (!activeHeaders[10] && shotgun_targeted != null && !shotgun_targeted.equalsIgnoreCase("Not Available")) {
                     activeHeaders[10] = true;
                 }
                 pb.setShotgunTargeted(shotgun_targeted);
-                
+
                 String technology = rs.getString("technology");
                 if (!activeHeaders[11] && technology != null && !technology.equalsIgnoreCase("Not Available")) {
                     activeHeaders[11] = true;
                 }
                 pb.setTechnology(technology);
-                
+
                 String analytical_approach = rs.getString("analytical_approach");
                 if (!activeHeaders[12] && analytical_approach != null && !analytical_approach.equalsIgnoreCase("Not Available")) {
                     activeHeaders[12] = true;
                 }
                 pb.setAnalyticalApproach(analytical_approach);
-                
+
                 String enzyme = rs.getString("enzyme");
                 if (!activeHeaders[13] && enzyme != null && !enzyme.equalsIgnoreCase("Not Available")) {
                     activeHeaders[13] = true;
                 }
                 pb.setEnzyme(enzyme);
-                
+
                 String quantification_basis = rs.getString("quantification_basis");
                 if (!activeHeaders[14] && quantification_basis != null && !quantification_basis.equalsIgnoreCase("Not Available")) {
                     activeHeaders[14] = true;
                 }
-                
+
                 pb.setQuantificationBasis(quantification_basis);
-                
+
                 String quant_basis_comment = rs.getString("quant_basis_comment");
                 if (!activeHeaders[15] && quant_basis_comment != null && !quant_basis_comment.equalsIgnoreCase("Not Available")) {
                     activeHeaders[15] = true;
                 }
                 pb.setQuantBasisComment(quant_basis_comment);
-                
+
                 int id = rs.getInt("index");
                 pb.setDsKey(id - 1);
-                
+
                 String normalization_strategy = rs.getString("normalization_strategy");
                 if (!activeHeaders[16] && normalization_strategy != null && !normalization_strategy.equalsIgnoreCase("Not Available")) {
                     activeHeaders[16] = true;
                 }
                 pb.setNormalizationStrategy(normalization_strategy);
-                
+
                 String pumed_id = rs.getString("pumed_id");
                 if (!activeHeaders[17] && pumed_id != null && !pumed_id.equalsIgnoreCase("Not Available")) {
                     activeHeaders[17] = true;
                 }
                 pb.setPumedID(pumed_id);
-                
+
                 String patient_group_i = rs.getString("patient_group_i");
                 if (!activeHeaders[18] && patient_group_i != null && !patient_group_i.equalsIgnoreCase("Not Available")) {
                     activeHeaders[18] = true;
                 }
                 pb.setPatientsGroup1(patient_group_i);
-                
+
                 int patients_group_i_number = rs.getInt("patients_group_i_number");
                 if (!activeHeaders[19] && patients_group_i_number != -1) {
                     activeHeaders[19] = true;
                 }
                 pb.setPatientsGroup1Number(patients_group_i_number);
-                
+
                 String patient_gr_i_comment = rs.getString("patient_gr_i_comment");
                 if (!activeHeaders[20] && patient_gr_i_comment != null && !patient_gr_i_comment.equalsIgnoreCase("Not Available")) {
                     activeHeaders[20] = true;
                 }
                 pb.setPatientsGroup1Comm(patient_gr_i_comment);
-                
+
                 String patient_sub_group_i = rs.getString("patient_sub_group_i");
                 if (!activeHeaders[21] && patient_sub_group_i != null && !patient_sub_group_i.equalsIgnoreCase("Not Available")) {
                     activeHeaders[21] = true;
                 }
                 pb.setPatientsSubGroup1(patient_sub_group_i);
-                
+
                 String patient_group_ii = rs.getString("patient_group_ii");
                 if (!activeHeaders[22] && patient_group_ii != null && !patient_group_ii.equalsIgnoreCase("Not Available")) {
                     activeHeaders[22] = true;
                 }
                 pb.setPatientsGroup2(patient_group_ii);
-                
+
                 int patients_group_ii_number = rs.getInt("patients_group_ii_number");
                 if (!activeHeaders[23] && patients_group_ii_number != -1) {
                     activeHeaders[23] = true;
                 }
                 pb.setPatientsGroup2Number(patients_group_ii_number);
-                
+
                 String patient_gr_ii_comment = rs.getString("patient_gr_ii_comment");
                 if (!activeHeaders[24] && patient_gr_ii_comment != null && !patient_gr_ii_comment.equalsIgnoreCase("Not Available")) {
                     activeHeaders[24] = true;
                 }
                 pb.setPatientsGroup2Comm(patient_gr_ii_comment);
-                
+
                 String patient_sub_group_ii = rs.getString("patient_sub_group_ii");
                 if (!activeHeaders[25] && patient_sub_group_ii != null && !patient_sub_group_ii.equalsIgnoreCase("Not Available")) {
                     activeHeaders[25] = true;
@@ -2595,7 +2595,7 @@ public class DataBase implements Serializable {
                 pb.setAdditionalcomments("Not Available");
                 activeHeaders[26] = false;
                 quantDatasetList.add(pb);
-                
+
             }
             rs.close();
             QuantDatasetInitialInformationObject datasetObject = new QuantDatasetInitialInformationObject();
@@ -2604,28 +2604,28 @@ public class DataBase implements Serializable {
             for (QuantDatasetObject ds : quantDatasetList) {
                 updatedQuantDatasetObjectMap.put(ds.getDsKey(), ds);
             }
-            
+
             datasetObject.setQuantDatasetsList(updatedQuantDatasetObjectMap);
             datasetObject.setActiveHeaders(activeHeaders);
             return datasetObject;
-            
+
         } catch (ClassNotFoundException e) {
             System.err.println("at error line 2846 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (IllegalAccessException e) {
             System.err.println("at error line 1849 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (InstantiationException e) {
             System.err.println("at error line 2852 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (SQLException e) {
             System.err.println("at error line 2855 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         }
         System.gc();
-        
+
         return null;
-        
+
     }
 
     /**
@@ -2638,9 +2638,9 @@ public class DataBase implements Serializable {
     public boolean[] getActivePieChartQuantFilters() {
         String[] columnArr = new String[]{"`identified_proteins_number`", "`quantified_proteins_number`", "`analytical_method`", "`raw_data_available`", "`year`", "`type_of_study`", "`sample_type`", "`sample_matching`", "`technology`", "`analytical_approach`", "`enzyme`", "`shotgun_targeted`", "`quantification_basis`", "`quant_basis_comment`", "`patients_group_i_number`", "`patients_group_ii_number`", "`normalization_strategy`"};
         boolean[] activeFilters = new boolean[columnArr.length];
-        
+
         try {
-            
+
             PreparedStatement selectPumed_idStat;
             String selectPumed_id = "SELECT  `pumed_id` FROM  `quant_dataset_table` GROUP BY  `pumed_id` ORDER BY  `pumed_id` ";
             if (conn == null || conn.isClosed()) {
@@ -2691,9 +2691,9 @@ public class DataBase implements Serializable {
         activeFilters[activeFilters.length - 2] = false;
         activeFilters[activeFilters.length - 3] = false;
         activeFilters[activeFilters.length - 4] = false;
-        
+
         return activeFilters;
-        
+
     }
 
     /**
@@ -2705,7 +2705,7 @@ public class DataBase implements Serializable {
      * @return QuantDatasetInitialInformationObject
      */
     public QuantDatasetInitialInformationObject getQuantDatasetListObject(List<QuantProtein> searchQuantificationProtList) {
-        
+
         Set<QuantDatasetObject> quantDatasetList = new HashSet<QuantDatasetObject>();
         boolean[] activeHeaders = new boolean[27];
         Set<Integer> QuantDatasetIds = new HashSet<Integer>();
@@ -2713,22 +2713,22 @@ public class DataBase implements Serializable {
             QuantDatasetIds.add(quantProt.getDsKey());
         }
         StringBuilder sb = new StringBuilder();
-        
+
         for (int index : QuantDatasetIds) {
             sb.append("  `index` = ").append(index);
             sb.append(" OR ");
-            
+
         }
         String stat = sb.toString().substring(0, sb.length() - 4);
         try {
             PreparedStatement selectStudiesStat;
-            
+
             String selectStudies = "SELECT * FROM  `quant_dataset_table` WHERE  " + stat;
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
-            
+
             selectStudiesStat = conn.prepareStatement(selectStudies);
             ResultSet rs = selectStudiesStat.executeQuery();
             while (rs.next()) {
@@ -2748,143 +2748,143 @@ public class DataBase implements Serializable {
                     activeHeaders[2] = true;
                 }
                 quantDSObject.setIdentifiedProteinsNumber(identified_proteins_num);
-                
+
                 int quantified_proteins_number = rs.getInt("quantified_proteins_number");
                 if (!activeHeaders[3] && quantified_proteins_number != -1) {
                     activeHeaders[3] = true;
                 }
                 quantDSObject.setQuantifiedProteinsNumber(quantified_proteins_number);
-                
+
                 String analyticalMethod = rs.getString("analytical_method");
                 if (!activeHeaders[4] && analyticalMethod != null && !analyticalMethod.equalsIgnoreCase("Not Available")) {
                     activeHeaders[4] = true;
                 }
                 quantDSObject.setAnalyticalMethod(analyticalMethod);
-                
+
                 String raw_data_available = rs.getString("raw_data_available");
                 if (!activeHeaders[5] && raw_data_available != null && !raw_data_available.equalsIgnoreCase("Not Available")) {
                     activeHeaders[5] = true;
                 }
                 quantDSObject.setRawDataUrl(raw_data_available);
-                
+
                 int files_num = rs.getInt("files_num");
                 if (!activeHeaders[6] && files_num != -1) {
                     activeHeaders[6] = true;
                 }
                 quantDSObject.setFilesNumber(files_num);
-                
+
                 String type_of_study = rs.getString("type_of_study");
                 if (!activeHeaders[7] && type_of_study != null && !type_of_study.equalsIgnoreCase("Not Available")) {
                     activeHeaders[7] = true;
                 }
                 quantDSObject.setTypeOfStudy(type_of_study);
-                
+
                 String sample_type = rs.getString("sample_type");
                 if (!activeHeaders[8] && sample_type != null && !sample_type.equalsIgnoreCase("Not Available")) {
                     activeHeaders[8] = true;
                 }
                 quantDSObject.setSampleType(sample_type);
-                
+
                 String sample_matching = rs.getString("sample_matching");
                 if (!activeHeaders[9] && sample_matching != null && !sample_matching.equalsIgnoreCase("Not Available")) {
                     activeHeaders[9] = true;
                 }
                 quantDSObject.setSampleMatching(sample_matching);
-                
+
                 String shotgun_targeted = rs.getString("shotgun_targeted");
                 if (!activeHeaders[10] && shotgun_targeted != null && !shotgun_targeted.equalsIgnoreCase("Not Available")) {
                     activeHeaders[10] = true;
                 }
                 quantDSObject.setShotgunTargeted(shotgun_targeted);
-                
+
                 String technology = rs.getString("technology");
                 if (!activeHeaders[11] && technology != null && !technology.equalsIgnoreCase("Not Available")) {
                     activeHeaders[11] = true;
                 }
                 quantDSObject.setTechnology(technology);
-                
+
                 String analytical_approach = rs.getString("analytical_approach");
                 if (!activeHeaders[12] && analytical_approach != null && !analytical_approach.equalsIgnoreCase("Not Available")) {
                     activeHeaders[12] = true;
                 }
                 quantDSObject.setAnalyticalApproach(analytical_approach);
-                
+
                 String enzyme = rs.getString("enzyme");
                 if (!activeHeaders[13] && enzyme != null && !enzyme.equalsIgnoreCase("Not Available")) {
                     activeHeaders[13] = true;
                 }
                 quantDSObject.setEnzyme(enzyme);
-                
+
                 String quantification_basis = rs.getString("quantification_basis");
                 if (!activeHeaders[14] && quantification_basis != null && !quantification_basis.equalsIgnoreCase("Not Available")) {
                     activeHeaders[14] = true;
                 }
-                
+
                 quantDSObject.setQuantificationBasis(quantification_basis);
-                
+
                 String quant_basis_comment = rs.getString("quant_basis_comment");
                 if (!activeHeaders[15] && quant_basis_comment != null && !quant_basis_comment.equalsIgnoreCase("Not Available")) {
                     activeHeaders[15] = true;
                 }
                 quantDSObject.setQuantBasisComment(quant_basis_comment);
-                
+
                 int id = rs.getInt("index");
                 quantDSObject.setDsKey(id - 1);
-                
+
                 String normalization_strategy = rs.getString("normalization_strategy");
                 if (!activeHeaders[16] && normalization_strategy != null && !normalization_strategy.equalsIgnoreCase("Not Available")) {
                     activeHeaders[16] = true;
                 }
                 quantDSObject.setNormalizationStrategy(normalization_strategy);
-                
+
                 String pumed_id = rs.getString("pumed_id");
                 if (!activeHeaders[17] && pumed_id != null && !pumed_id.equalsIgnoreCase("Not Available")) {
                     activeHeaders[17] = true;
                 }
                 quantDSObject.setPumedID(pumed_id);
-                
+
                 String patient_group_i = rs.getString("patient_group_i");
                 if (!activeHeaders[18] && patient_group_i != null && !patient_group_i.equalsIgnoreCase("Not Available")) {
                     activeHeaders[18] = true;
                 }
                 quantDSObject.setPatientsGroup1(patient_group_i);
-                
+
                 int patients_group_i_number = rs.getInt("patients_group_i_number");
                 if (!activeHeaders[19] && patients_group_i_number != -1) {
                     activeHeaders[19] = true;
                 }
                 quantDSObject.setPatientsGroup1Number(patients_group_i_number);
-                
+
                 String patient_gr_i_comment = rs.getString("patient_gr_i_comment");
                 if (!activeHeaders[20] && patient_gr_i_comment != null && !patient_gr_i_comment.equalsIgnoreCase("Not Available")) {
                     activeHeaders[20] = true;
                 }
                 quantDSObject.setPatientsGroup1Comm(patient_gr_i_comment);
-                
+
                 String patient_sub_group_i = rs.getString("patient_sub_group_i");
                 if (!activeHeaders[21] && patient_sub_group_i != null && !patient_sub_group_i.equalsIgnoreCase("Not Available")) {
                     activeHeaders[21] = true;
                 }
                 quantDSObject.setPatientsSubGroup1(patient_sub_group_i);
-                
+
                 String patient_group_ii = rs.getString("patient_group_ii");
                 if (!activeHeaders[22] && patient_group_ii != null && !patient_group_ii.equalsIgnoreCase("Not Available")) {
                     activeHeaders[22] = true;
                 }
                 quantDSObject.setPatientsGroup2(patient_group_ii);
-                
+
                 int patients_group_ii_number = rs.getInt("patients_group_ii_number");
                 if (!activeHeaders[23] && patients_group_ii_number != -1) {
                     activeHeaders[23] = true;
                 }
                 quantDSObject.setPatientsGroup2Number(patients_group_ii_number);
-                
+
                 String patient_gr_ii_comment = rs.getString("patient_gr_ii_comment");
                 if (!activeHeaders[24] && patient_gr_ii_comment != null && !patient_gr_ii_comment.equalsIgnoreCase("Not Available")) {
                     activeHeaders[24] = true;
                 }
                 quantDSObject.setPatientsGroup2Comm(patient_gr_ii_comment);
-                
+
                 String patient_sub_group_ii = rs.getString("patient_sub_group_ii");
                 if (!activeHeaders[25] && patient_sub_group_ii != null && !patient_sub_group_ii.equalsIgnoreCase("Not Available")) {
                     activeHeaders[25] = true;
@@ -2897,37 +2897,37 @@ public class DataBase implements Serializable {
 //                }
 //                quantDSObject.setAdditionalcomments(additional_comments);
                 quantDatasetList.add(quantDSObject);
-                
+
             }
             rs.close();
             QuantDatasetInitialInformationObject datasetObject = new QuantDatasetInitialInformationObject();
             Map<Integer, QuantDatasetObject> updatedQuantDatasetObjectMap = new LinkedHashMap<Integer, QuantDatasetObject>();
-            
+
             for (QuantDatasetObject ds : quantDatasetList) {
                 updatedQuantDatasetObjectMap.put(ds.getDsKey(), ds);
             }
-            
+
             datasetObject.setQuantDatasetsList(updatedQuantDatasetObjectMap);
             datasetObject.setActiveHeaders(activeHeaders);
             return datasetObject;
-            
+
         } catch (ClassNotFoundException e) {
             System.err.println("at error line 3156 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (IllegalAccessException e) {
             System.err.println("at error line 3159 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (InstantiationException e) {
             System.err.println("at error line 3162 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (SQLException e) {
             System.err.println("at error line 3165 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         }
         System.gc();
-        
+
         return null;
-        
+
     }
 
     /**
@@ -2946,16 +2946,16 @@ public class DataBase implements Serializable {
             QuantDatasetIds.add(quantProt.getDsKey());
         }
         StringBuilder sb = new StringBuilder();
-        
+
         for (int index : QuantDatasetIds) {
             sb.append("  `index` = ").append(index);
             sb.append(" OR ");
-            
+
         }
         String stat = sb.toString().substring(0, sb.length() - 4);
-        
+
         try {
-            
+
             PreparedStatement selectPumed_idStat;
             String selectPumed_id = "SELECT  `pumed_id` FROM  `quant_dataset_table` WHERE " + stat + "  GROUP BY  `pumed_id` ORDER BY  `pumed_id` ";
             if (conn == null || conn.isClosed()) {
@@ -2986,22 +2986,22 @@ public class DataBase implements Serializable {
                 rs.close();
                 if (pumed_id_index != pumed_id_com_index) {
                     activeFilters[index] = true;
-                    
+
                 }
-                
+
             }
         } catch (ClassNotFoundException e) {
             System.err.println("at error line 3235 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (IllegalAccessException e) {
             System.err.println("at error line 3238 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (InstantiationException e) {
             System.err.println("at error line 3241 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         } catch (SQLException e) {
             System.err.println("at error line 3244 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
         }
         System.gc();
         activeFilters[0] = false;
@@ -3013,9 +3013,9 @@ public class DataBase implements Serializable {
         activeFilters[activeFilters.length - 2] = false;
         activeFilters[activeFilters.length - 3] = false;
         activeFilters[activeFilters.length - 4] = false;
-        
+
         return activeFilters;
-        
+
     }
 
     /**
@@ -3029,14 +3029,14 @@ public class DataBase implements Serializable {
         String insertQProt = "INSERT INTO  `" + dbName + "`.`quant_prot_table` (`pumed_id` ,`uniprot_accession` ,`uniprot_protein_name` ,`publication_acc_number` ,`publication_protein_name` ,`raw_data_available` ,`type_of_study` ,"
                 + "`sample_type` ,`patient_group_i` ,`patient_sub_group_i` ,`patient_gr_i_comment` ,`patient_group_ii` ,`patient_sub_group_ii` ,`patient_gr_ii_comment` ,`sample_matching` ,`normalization_strategy` ,`technology`,`analytical_approach`,`enzyme`,`shotgun_targeted`,`quantification_basis`,`quant_basis_comment`,`additional_comments`,`q_peptide_key`,`peptide_sequance`,`peptide_modification`,`modification_comment` ,`string_fc_value`,`string_p_value`,`peptideId_number`,`quantified_peptides_number`,`patients_group_i_number`,`patients_group_ii_number`,`p_value`,`roc_auc`,`fc_value`,`peptide_prot`)VALUES ("
                 + "?,?,?,?,?,?,?,?,?,?,? , ? , ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-        
+
         PreparedStatement insertQProtStat;
         try {
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
-            
+
             for (QuantProtein qprot : quantProeinstList) {
                 insertQProtStat = conn.prepareStatement(insertQProt, Statement.RETURN_GENERATED_KEYS);
                 insertQProtStat.setString(1, qprot.getPumedID().toUpperCase());
@@ -3062,47 +3062,47 @@ public class DataBase implements Serializable {
                 insertQProtStat.setString(21, qprot.getQuantificationBasis());
                 insertQProtStat.setString(22, qprot.getQuantBasisComment());
                 insertQProtStat.setString(23, qprot.getAdditionalComments());
-                
+
                 insertQProtStat.setString(24, qprot.getqPeptideKey());
                 insertQProtStat.setString(25, qprot.getPeptideSequance());
                 insertQProtStat.setString(26, qprot.getPeptideModification());
                 insertQProtStat.setString(27, qprot.getModificationComment());
                 insertQProtStat.setString(28, qprot.getStringFCValue());
                 insertQProtStat.setString(29, qprot.getStringPValue());
-                
+
                 Integer num = qprot.getQuantifiedProteinsNumber();
-                
+
                 insertQProtStat.setInt(30, num);
-                
+
                 num = qprot.getPeptideIdNumb();
                 insertQProtStat.setInt(31, num);
-                
+
                 num = qprot.getQuantifiedPeptidesNumber();
                 insertQProtStat.setInt(32, num);
-                
+
                 num = qprot.getPatientsGroupINumber();
                 insertQProtStat.setInt(33, num);
                 num = qprot.getPatientsGroupIINumber();
-                
+
                 insertQProtStat.setInt(34, num);
-                
+
                 Double dnum = qprot.getpValue();
                 insertQProtStat.setDouble(35, dnum);
-                
+
                 dnum = qprot.getRocAuc();
                 insertQProtStat.setDouble(36, dnum);
-                
+
                 dnum = qprot.getFcPatientGroupIonPatientGroupII();
                 insertQProtStat.setDouble(37, dnum);
                 insertQProtStat.setString(38, String.valueOf(qprot.isPeptideProt()));
-                
+
                 insertQProtStat.executeUpdate();
-                
+
                 insertQProtStat.clearParameters();
                 insertQProtStat.close();
-                
+
             }
-            
+
         } catch (SQLException e) {
             System.err.println("at error line 3360 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
             success = false;
@@ -3116,9 +3116,9 @@ public class DataBase implements Serializable {
             System.err.println("at error line 3369 " + this.getClass().getName() + "   " + exp.getLocalizedMessage());
             success = false;
         }
-        
+
         return success;
-        
+
     }
 
     /**
@@ -3130,7 +3130,7 @@ public class DataBase implements Serializable {
     public Set<QuantProtein> getQuantificationProteins(int quantDatasetId) {
         Set<QuantProtein> quantProtList = new HashSet<QuantProtein>();
         try {
-            
+
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
@@ -3146,7 +3146,7 @@ public class DataBase implements Serializable {
                 groupIINum = rs.getInt("patients_group_ii_number");
             }
             rs.close();
-            
+
             String selectQuantProt = "SELECT * FROM `quantitative_proteins_table`  where `ds_ID` = ?;";
             PreparedStatement selectQuantProtStat = conn.prepareStatement(selectQuantProt);
             selectQuantProtStat.setInt(1, quantDatasetId + 1);
@@ -3187,7 +3187,7 @@ public class DataBase implements Serializable {
         }
         System.gc();
         return quantProtList;
-        
+
     }
 
     /**
@@ -3201,11 +3201,11 @@ public class DataBase implements Serializable {
         Set<QuantProtein> tquantProtList = new HashSet<QuantProtein>();
         try {
             StringBuilder sb = new StringBuilder();
-            
+
             for (int index : quantDatasetIds) {
                 sb.append("  `index` = ").append(index + 1);
                 sb.append(" OR ");
-                
+
             }
             String stat = sb.toString().substring(0, sb.length() - 4);
             if (conn == null || conn.isClosed()) {
@@ -3220,17 +3220,16 @@ public class DataBase implements Serializable {
                 datasetIdDesGrs.put(rs.getInt("index"), new Object[]{rs.getInt("patients_group_i_number"), rs.getInt("patients_group_ii_number"), rs.getString("patient_group_i"), rs.getString("patient_group_ii"), rs.getString("patient_sub_group_i"), rs.getString("patient_sub_group_ii")});
             }
             rs.close();
-            
+
             sb = new StringBuilder();
             for (int index : quantDatasetIds) {
                 sb.append("  `ds_ID` = ").append(index + 1);
                 sb.append(" OR ");
-                
+
             }
             stat = sb.toString().substring(0, sb.length() - 4);
             Set<String> dsIds = new HashSet<String>();
-             
-                
+
             String selectQuantProt = "SELECT * FROM `quantitative_proteins_table`  WHERE  " + stat + " ;";
             PreparedStatement selectQuantProtStat = conn.prepareStatement(selectQuantProt);
             ResultSet rs1 = selectQuantProtStat.executeQuery();
@@ -3238,16 +3237,16 @@ public class DataBase implements Serializable {
                 QuantProtein quantProt = new QuantProtein();
                 quantProt.setProtKey(rs1.getInt("index"));
                 quantProt.setDsKey(rs1.getInt("ds_ID") - 1);
-                dsIds.add(""+quantProt.getDsKey());
-                
+                dsIds.add("" + quantProt.getDsKey());
+
                 quantProt.setSequance(rs1.getString("sequance"));
-                
+
                 quantProt.setUniprotAccession(rs1.getString("uniprot_accession"));
                 if (rs1.getString("uniprot_accession").equalsIgnoreCase("Not Available")) {
 //                    quantProt.setUniprotAccession(rs1.getString("publication_acc_number"));
                     quantProt.setUniprotAccSource(false);
                 } else {
-                    
+
                     quantProt.setUniprotAccSource(true);
                 }
                 quantProt.setUniprotProteinName(rs1.getString("uniprot_protein_name"));
@@ -3257,8 +3256,14 @@ public class DataBase implements Serializable {
                 quantProt.setIdentifiedProteinsNum(rs1.getInt("identified_peptides_number"));
                 quantProt.setStringFCValue(rs1.getString("fold_change"));
                 quantProt.setStringPValue(rs1.getString("string_p_value"));
+                quantProt.setFcPatientGroupIonPatientGroupII(rs1.getDouble("log_2_FC"));
+                quantProt.setRocAuc(rs1.getDouble("roc_auc"));
+                quantProt.setpValue(rs1.getDouble("p_value"));
+                quantProt.setPvalueComment(rs1.getString("p_value_comments"));
+                quantProt.setPvalueSignificanceThreshold(rs1.getString("pvalue_significance_threshold"));
+                quantProt.setAdditionalComments(rs1.getString("additional_comments"));
                 quantProtList.add(quantProt);
-                
+
             }
             rs1.close();
             for (QuantProtein qp : quantProtList) {
@@ -3269,9 +3274,9 @@ public class DataBase implements Serializable {
                 qp.setPatientSubGroupI(datasetIdDesGrs.get(qp.getDsKey() + 1)[4].toString());
                 qp.setPatientSubGroupII(datasetIdDesGrs.get(qp.getDsKey() + 1)[5].toString());
                 tquantProtList.add(qp);
-                
+
             }
-            
+
         } catch (ClassNotFoundException exp) {
             System.out.println("at error  " + this.getClass().getName() + "   line 3521   " + exp.getLocalizedMessage());
             return null;
@@ -3287,7 +3292,7 @@ public class DataBase implements Serializable {
         }
         System.gc();
         return tquantProtList;
-        
+
     }
 
     /**
@@ -3299,7 +3304,7 @@ public class DataBase implements Serializable {
     public Map<String, Set<QuantPeptide>> getQuantificationPeptides(int quantDatasetId) {
         Set<QuantPeptide> quantPeptidetList = new HashSet<QuantPeptide>();
         try {
-            
+
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
@@ -3326,19 +3331,19 @@ public class DataBase implements Serializable {
                 quantPeptidetList.add(quantPeptide);
             }
             rs1.close();
-            
+
             Map<String, Set<QuantPeptide>> quantProtPeptidetList = new HashMap<String, Set<QuantPeptide>>();
             for (QuantPeptide qp : quantPeptidetList) {
                 if (!quantProtPeptidetList.containsKey("_" + qp.getUniprotProteinAccession() + "_" + qp.getProtIndex() + "_")) {
                     Set<QuantPeptide> quantPepProtSet = new HashSet<QuantPeptide>();
                     quantProtPeptidetList.put("_" + qp.getUniprotProteinAccession() + "_" + qp.getProtIndex() + "_", quantPepProtSet);
-                    
+
                 }
                 Set<QuantPeptide> quantPepProtSet = quantProtPeptidetList.get("_" + qp.getUniprotProteinAccession() + "_" + qp.getProtIndex() + "_");
                 quantPepProtSet.add(qp);
-                
+
                 quantProtPeptidetList.put("_" + qp.getUniprotProteinAccession() + "_" + qp.getProtIndex() + "_", quantPepProtSet);
-                
+
             }
             System.gc();
             return quantProtPeptidetList;
@@ -3367,19 +3372,19 @@ public class DataBase implements Serializable {
         Set<QuantPeptide> quantPeptidetList = new HashSet<QuantPeptide>();
         try {
             StringBuilder sb = new StringBuilder();
-            
+
             for (int index : quantDatasetIds) {
                 sb.append("  `DsKey` = ").append(index + 1);
                 sb.append(" OR ");
-                
+
             }
             String stat = sb.toString().substring(0, sb.length() - 4);
-            
+
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
-               Set<String> dsIds = new HashSet<String>();
+//               Set<String> dsIds = new HashSet<String>();
             String selectQuantPeptides = "SELECT * FROM `quantitative_peptides_table` WHERE " + stat;
             PreparedStatement selectQuantProtStat = conn.prepareStatement(selectQuantPeptides);
 //            selectQuantProtStat.setInt(1, quantDatasetId + 1);
@@ -3387,8 +3392,7 @@ public class DataBase implements Serializable {
             while (rs1.next()) {
                 QuantPeptide quantPeptide = new QuantPeptide();
                 quantPeptide.setDsKey(rs1.getInt("DsKey") - 1);
-               
-                dsIds.add(quantPeptide.getDsKey()+"");
+//                dsIds.add(quantPeptide.getDsKey()+"");
                 quantPeptide.setProtIndex(rs1.getInt("prot_index"));
                 quantPeptide.setUniqueId(rs1.getInt("index"));
                 quantPeptide.setPeptideModification(rs1.getString("peptide_modification"));
@@ -3408,23 +3412,22 @@ public class DataBase implements Serializable {
                 quantPeptidetList.add(quantPeptide);
             }
             rs1.close();
-            
+
             Map<String, Set<QuantPeptide>> quantProtPeptidetList = new HashMap<String, Set<QuantPeptide>>();
             for (QuantPeptide qp : quantPeptidetList) {
-              
-                if (!quantProtPeptidetList.containsKey("_" + qp.getUniprotProteinAccession() + "_" + qp.getProtIndex() + "_"+qp.getDsKey()+"_")) {
+
+                if (!quantProtPeptidetList.containsKey("_" + qp.getProtIndex() + "_" + qp.getDsKey() + "_")) {
                     Set<QuantPeptide> quantPepProtSet = new HashSet<QuantPeptide>();
-                    quantProtPeptidetList.put("_" + qp.getUniprotProteinAccession() + "_" + qp.getProtIndex() + "_"+qp.getDsKey()+"_", quantPepProtSet);
-                    
+                    quantProtPeptidetList.put("_" + qp.getProtIndex() + "_" + qp.getDsKey() + "_", quantPepProtSet);
+
                 }
-                Set<QuantPeptide> quantPepProtSet = quantProtPeptidetList.get("_" + qp.getUniprotProteinAccession() + "_" + qp.getProtIndex() + "_"+qp.getDsKey()+"_");
+                Set<QuantPeptide> quantPepProtSet = quantProtPeptidetList.get("_" + qp.getProtIndex() + "_" + qp.getDsKey() + "_");
                 quantPepProtSet.add(qp);
-                quantProtPeptidetList.put("_" + qp.getProtIndex() + "_"+qp.getDsKey()+"_", quantPepProtSet);
-                
-                
+                quantProtPeptidetList.put("_" + qp.getProtIndex() + "__" + qp.getDsKey() + "__", quantPepProtSet);
+
             }
             System.gc();
-            
+
             return quantProtPeptidetList;
         } catch (ClassNotFoundException exp) {
             System.err.println(exp.getLocalizedMessage());
@@ -3448,12 +3451,12 @@ public class DataBase implements Serializable {
      * @return quant proteins List
      */
     private List<QuantProtein> fillQuantProtData(ResultSet rs) {
-        
+
         List<QuantProtein> quantProtResultList = new ArrayList<QuantProtein>();
-        
+
         try {
             while (rs.next()) {
-                
+
                 QuantProtein qpb = new QuantProtein();
                 if (rs.getString("uniprot_accession").equalsIgnoreCase("Not Available")) {
                     qpb.setUniprotAccession(rs.getString("publication_acc_number"));
@@ -3477,14 +3480,14 @@ public class DataBase implements Serializable {
                 qpb.setPvalueComment(rs.getString("p_value_comments"));
                 qpb.setSequance(rs.getString("sequance"));
                 quantProtResultList.add(qpb);
-                
+
             }
-            
+
         } catch (Exception exp) {
             System.err.println("at error line 2119 " + this.getClass().getName() + "   " + exp.getLocalizedMessage());
         }
         return quantProtResultList;
-        
+
     }
 
     /**
@@ -3494,15 +3497,15 @@ public class DataBase implements Serializable {
      * @return Quant Proteins Searching List
      */
     public synchronized List<QuantProtein> searchQuantificationProteins(Query query) {
-        
+
         StringBuilder sb = new StringBuilder();
         QueryConstractorHandler qhandler = new QueryConstractorHandler();
-        
+
         PreparedStatement selectProStat;
         String selectPro;
         //main filters  
         if (query.getSearchKeyWords() != null && !query.getSearchKeyWords().equalsIgnoreCase("")) {
-            
+
             String[] queryWordsArr = query.getSearchKeyWords().split(" ");
             HashSet<String> searchSet = new HashSet<String>();
             for (String str : queryWordsArr) {
@@ -3512,7 +3515,7 @@ public class DataBase implements Serializable {
                 searchSet.add(str.trim());
             }
             if (query.getSearchBy().equalsIgnoreCase("Protein Accession")) {
-                
+
                 int x = 0;
                 for (String str : searchSet) {
                     if (x > 0) {
@@ -3522,9 +3525,9 @@ public class DataBase implements Serializable {
                     qhandler.addQueryParam("String", str);
                     qhandler.addQueryParam("String", str);
                     x++;
-                    
+
                 }
-                
+
             } else if (query.getSearchBy().equalsIgnoreCase("Protein Name")) {
                 int x = 0;
                 for (String str : searchSet) {
@@ -3544,14 +3547,14 @@ public class DataBase implements Serializable {
                     sb.append("`sequance` LIKE (?)");//
                     qhandler.addQueryParam("String", "%" + str + "%");
                     x++;
-                    
+
                 }
-                
+
             }
         }
-        
+
         selectPro = "SELECT * FROM   `quantitative_proteins_table`  Where " + (sb.toString());
-        
+
         try {
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
@@ -3559,63 +3562,63 @@ public class DataBase implements Serializable {
             }
             selectProStat = conn.prepareStatement(selectPro);
             selectProStat = qhandler.initStatment(selectProStat);
-            
+
             ResultSet rs = selectProStat.executeQuery();
 //           
             List<QuantProtein> quantProtResultList = fillQuantProtData(rs);
             System.gc();
-            
+
             Set<Integer> datasetsIds = new HashSet<Integer>();
             for (QuantProtein quantProt : quantProtResultList) {
-                
+
                 datasetsIds.add(quantProt.getDsKey());
             }
-            
+
             String selectDsGroupNum = "SELECT `patients_group_i_number` , `patients_group_ii_number` FROM `quant_dataset_table` Where  `index`=?;";
             PreparedStatement selectselectDsGroupNumStat = conn.prepareStatement(selectDsGroupNum);
-            
+
             Map<Integer, int[]> dsDGrNumMap = new HashMap<Integer, int[]>();
             for (int i : datasetsIds) {
                 selectselectDsGroupNumStat.setInt(1, i);
                 ResultSet dsIdRs = selectselectDsGroupNumStat.executeQuery();
-                
+
                 while (dsIdRs.next()) {
                     int[] grNumArr = new int[]{dsIdRs.getInt("patients_group_i_number"), dsIdRs.getInt("patients_group_ii_number")};
                     dsDGrNumMap.put(i, grNumArr);
                 }
                 dsIdRs.close();
-                
+
             }
             List<QuantProtein> updatedQuantProtResultList = new ArrayList<QuantProtein>();
             for (QuantProtein quantProt : quantProtResultList) {
-                
+
                 if (dsDGrNumMap.containsKey(quantProt.getDsKey())) {
                     int[] grNumArr = dsDGrNumMap.get(quantProt.getDsKey());
                     quantProt.setPatientsGroupINumber(grNumArr[0]);
                     quantProt.setPatientsGroupIINumber(grNumArr[1]);
                     updatedQuantProtResultList.add(quantProt);
-                    
+
                 }
             }
-            
+
             return updatedQuantProtResultList;
-            
+
         } catch (ClassNotFoundException e) {
             System.err.println("at error line 3654 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
             return null;
         } catch (IllegalAccessException e) {
             System.err.println("at error line 3657 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
             return null;
         } catch (InstantiationException e) {
             System.err.println("at error line 3660 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
             return null;
         } catch (SQLException e) {
             System.err.println("at error line 3665 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-            
+
             return null;
         }
-        
+
     }
 }

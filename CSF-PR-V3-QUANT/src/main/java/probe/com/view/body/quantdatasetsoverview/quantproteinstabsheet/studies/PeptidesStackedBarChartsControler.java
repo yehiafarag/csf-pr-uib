@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import probe.com.model.beans.quant.QuantDatasetObject;
+import probe.com.model.beans.quant.QuantProtein;
 import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.peptidescontainer.ComparisonDetailsBean;
 import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.peptidescontainer.StudyInformationPopupComponent;
 
@@ -22,28 +23,31 @@ import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.peptidesc
 public class PeptidesStackedBarChartsControler {
 
     private final Map<String, StudyPopupLayout> studyPopupLayoutDSIndexMap = new HashMap<String, StudyPopupLayout>();
-
     private final StudyInformationPopupComponent studyInformationPopupPanel;
-  
 
     /**
      *
      * @param width
      * @param patientGroupsNumToDsIdMap
+     * @param protAccsession
+     * @param protName
+     * @param url
+     * @param comparisonHeader
+     * @param datasetQuantProteinsMap
+     * @param datasetIdDsObjectProteinsMap
      */
-    public PeptidesStackedBarChartsControler(int width, Map<Integer, ComparisonDetailsBean> patientGroupsNumToDsIdMap ,String protName, String url,String comparisonHeader) {
+    public PeptidesStackedBarChartsControler(int width, Map<Integer, ComparisonDetailsBean> patientGroupsNumToDsIdMap, String protAccsession, String protName, String url, String comparisonHeader, Map<String, QuantProtein> datasetQuantProteinsMap, Map<String, QuantDatasetObject> datasetIdDsObjectProteinsMap) {
 
         int panelWidth = Page.getCurrent().getBrowserWindowWidth() - width - 100;
-       
-        studyInformationPopupPanel = new StudyInformationPopupComponent(panelWidth,protName,url,comparisonHeader);
+
+        studyInformationPopupPanel = new StudyInformationPopupComponent(panelWidth, protName, url, comparisonHeader);
         studyInformationPopupPanel.setVisible(false);
         int counter = 0;
         for (int pateintGrNum : patientGroupsNumToDsIdMap.keySet()) {
             while (counter < 3) {
                 if (!patientGroupsNumToDsIdMap.get(pateintGrNum).getRegulatedList(counter).isEmpty()) {
-                   StudyPopupLayout studyLayout = new StudyPopupLayout(panelWidth);
-//                    PeptideSequanceLocationOverview peptideStackedBarChart = new PeptideSequanceLocationOverview(new HashSet<Integer>(patientGroupsNumToDsIdMap.get(pateintGrNum).getRegulatedList(counter)), subWidth);
-                    studyPopupLayoutDSIndexMap.put("-" + pateintGrNum + "-" + counter + "-", studyLayout);                    
+                    StudyPopupLayout studyLayout = new StudyPopupLayout(panelWidth, datasetQuantProteinsMap, datasetIdDsObjectProteinsMap, protAccsession, url, protName);
+                    studyPopupLayoutDSIndexMap.put("-" + pateintGrNum + "-" + counter + "-", studyLayout);
                 }
                 counter++;
 
@@ -52,42 +56,17 @@ public class PeptidesStackedBarChartsControler {
 
         }
 
-        //init leftside components        
-//        Map<Integer, Set<QuantPeptide>> dsQuantPepMap = new HashMap<Integer, Set<QuantPeptide>>();
-//         for (QuantPeptide quantPep : cp.getQuantPeptidesList()) { 
-//             System.out.println("peptide key is "+quantPep.getDsKey());
-//            if (!dsQuantPepMap.containsKey(quantPep.getDsKey())) {
-//                Set<QuantPeptide> subList = new HashSet<QuantPeptide>();
-//                dsQuantPepMap.put(quantPep.getDsKey(), subList);
-//            }
-//            Set<QuantPeptide> subList = dsQuantPepMap.get(quantPep.getDsKey());
-//            subList.add(quantPep);
-//            dsQuantPepMap.put(quantPep.getDsKey(), subList);
-//        }
-//        int counter = 0;
-//        for (int pateintGrNum : patientGroupsNumToDsIdMap.keySet()) {
-//            int subWidth = (int) ((double) panelWidth * 0.9);
-//            while (counter < 3) {
-//                if (!patientGroupsNumToDsIdMap.get(pateintGrNum).getRegulatedList(counter).isEmpty()) {
-//                    PeptideSequanceLocationOverview peptideStackedBarChart = new PeptideSequanceLocationOverview(new HashSet<Integer>(patientGroupsNumToDsIdMap.get(pateintGrNum).getRegulatedList(counter)), subWidth);
-//                    studyPopupLayoutDSIndexMap.put("" + counter + "-" + pateintGrNum + "_" + counter + "-", peptideStackedBarChart);
-//                    counter++;
-//                }
-//
-//            }
-//            counter = 0;
-//        }
-
     }
 
     /**
      *
-     * @param dsIndex
-     * @param dataset
-     * @param protAcc
+     * @param pateintGrNum
+     * @param trend
+     * @param dsObjects
+     * @param cp
      */
-    public void updateSelectedProteinInformation(int pateintGrNum, int trend, Set<QuantDatasetObject> dsObjects,DiseaseGroupsComparisonsProteinLayout cp) {
-//        int dsIndex = dsIndexs[0];
+    public void updateSelectedProteinInformation(int pateintGrNum, int trend, Set<QuantDatasetObject> dsObjects, DiseaseGroupsComparisonsProteinLayout cp) {
+
         String pGrkey = "-" + pateintGrNum + "-" + trend + "-";
         for (String key : studyPopupLayoutDSIndexMap.keySet()) {
             if (key.contains(pGrkey)) {
@@ -95,9 +74,7 @@ public class PeptidesStackedBarChartsControler {
                 if (popupPanel == null) {
                     Notification.show("No Information  available at this bar");
                 } else {
-//                    String peptidesNumber = bar.getSignificantPeptidesNumber() + "/" + bar.getTotalPeptidesNumber() + "";
-//                    studyInformationPopupPanel.updateForm(datasets.iterator().next(), bar, peptidesNumber, protAcc);
-                    popupPanel.setInformationData(dsObjects,cp);
+                    popupPanel.setInformationData(dsObjects, cp);
                     studyInformationPopupPanel.updateContent(popupPanel);
                 }
                 return;

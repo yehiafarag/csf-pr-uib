@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  *
- * @author yfa041
+ * @author Yehia Farag
  */
 public class ComparisonDetailsBean  {
 

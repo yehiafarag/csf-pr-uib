@@ -44,7 +44,7 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
     private TabSheet proteinsTabsheet;
     private Label compOrederTitle;
     private final Map<Integer, Tab> tabIndexMap = new HashMap<Integer, Tab>();
-    private Label noProtLabel = new Label("<h4 style='font-family:verdana;color:red;font-weight:bold;'>\t \t Select proteins to show their information !</h4>");
+    private Label noProtLabel = new Label("<h4 style='font-family:verdana;color:#8A0808;font-weight:bold;'>\t \t Select proteins to show their information !</h4>");
     private final CSFPRHandler mainHandler;
     private final Map<Integer, ProteinOverviewJFreeLineChartContainer> tabLayoutIndexMap = new HashMap<Integer, ProteinOverviewJFreeLineChartContainer>();
 

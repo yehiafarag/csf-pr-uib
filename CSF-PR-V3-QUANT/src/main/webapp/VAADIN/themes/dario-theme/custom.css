@@ -257,6 +257,7 @@
 
 }
 .caption{
+    font-size:11px;
     font-family:Verdana;
     font-weight: bold;    
     /*    text-transform: inherit;*/
@@ -273,6 +274,7 @@
 
 .valuelabel span{
     font-family: Verdana;    
+    font-size:11px;
     /*    text-transform: inherit;*/
     text-decoration: none;
     color:gray;    
@@ -280,6 +282,7 @@
 
 
 .redvaluelabel span{
+    font-size:11px;
     font-family: Verdana;    
     /*    text-transform: inherit;*/
     text-decoration: none;
@@ -288,6 +291,7 @@
 
 
 .greenvaluelabel span{
+    font-size:11px;
     font-family: Verdana;    
     /*    text-transform: inherit;*/
     text-decoration: none;
@@ -295,6 +299,7 @@
 }
 
 .bluevaluelabel span{
+    font-size:11px;
     font-family: Verdana;    
     /*    text-transform: inherit;*/
     text-decoration: none;
@@ -302,6 +307,17 @@
 }
 
 .valuelabel textArea{
+    font-size:11px;
+    font-family: Verdana;    
+    background-color:  white;
+    border:none;
+    color:gray;    
+    resize: none;
+    /*text-transform: uppercase;*/
+}
+
+.valuelink  textArea{
+    font-size:11px;
     font-family: Verdana;    
     background-color:  white;
     border:none;

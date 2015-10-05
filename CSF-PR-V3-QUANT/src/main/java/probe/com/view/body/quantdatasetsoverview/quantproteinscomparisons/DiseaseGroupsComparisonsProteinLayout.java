@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Set;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.beans.quant.QuantPeptide;
+import probe.com.model.beans.quant.QuantProtein;
 
 /**
  *
@@ -72,6 +73,15 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
     private Set<QuantPeptide> quantPeptidesList;
     private final Map<String, List<Integer>> patientsNumToTrindMap = new HashMap<String, List<Integer>>();
     private final Map<String, List<Integer>> patientsNumToDSIDMap = new HashMap<String, List<Integer>>();
+    private Map<String, QuantProtein> dsQuantProteinsMap = new HashMap<String, QuantProtein>();
+
+    public Map<String, QuantProtein> getDsQuantProteinsMap() {
+        return dsQuantProteinsMap;
+    }
+
+    public void setDsQuantProteinsMap(Map<String,QuantProtein> dsQuantProteinsMap) {
+        this.dsQuantProteinsMap = dsQuantProteinsMap;
+    }
 
     /**
      *

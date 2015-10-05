@@ -1,12 +1,14 @@
-package probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.peptidescontainer;
+package probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.peptidescontainer.popupcomponents;
 
 import com.vaadin.data.Property;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
@@ -25,7 +27,7 @@ import probe.com.view.core.jfreeutil.StackedBarPeptideComponent;
  *
  * @author Yehia Farag
  */
-public class PeptideSequanceLocationOverview extends VerticalLayout {
+public class PeptidesInformationOverviewLayout extends VerticalLayout {
 
     private boolean noPeptide = true;
     private DecimalFormat df = null;
@@ -35,13 +37,15 @@ public class PeptideSequanceLocationOverview extends VerticalLayout {
     private int totalPeptidesNumber = 0;
     private OptionGroup showSigneficantPeptidesOnly;
 
+    private Label noselectionLabel = new Label("<h4 style='font-family:verdana;color:#8A0808;font-weight:bold;'>\t \t Select peptide to show information!</h4>");
+
     /**
      *
      * @param sequance
      * @param quantPepSet
      * @param width
      */
-    public PeptideSequanceLocationOverview(String sequance, Set<QuantPeptide> quantPepSet, int width) {
+    public PeptidesInformationOverviewLayout(String sequance, Set<QuantPeptide> quantPepSet, int width) {
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
         otherSymbols.setGroupingSeparator('.');
         df = new DecimalFormat("#.###", otherSymbols);
@@ -55,7 +59,7 @@ public class PeptideSequanceLocationOverview extends VerticalLayout {
         peptideForm = initPeptidesForm(width);
         peptideForm.setVisible(false);
 
-        if (!sequance.equalsIgnoreCase("Not Available")) {
+        if (!sequance.equalsIgnoreCase("Not Available") && !sequance.equalsIgnoreCase("")) {
             //init containers
             allPeptidesContainer = new AbsoluteLayout();
             allPeptidesContainer.setVisible(false);
@@ -71,7 +75,7 @@ public class PeptideSequanceLocationOverview extends VerticalLayout {
             showSigneficantPeptidesOnly = new OptionGroup();
             this.addComponent(showSigneficantPeptidesOnly);
             this.setComponentAlignment(showSigneficantPeptidesOnly, Alignment.TOP_RIGHT);
-            showSigneficantPeptidesOnly.setWidth("150px");
+            showSigneficantPeptidesOnly.setWidth("200px");
             showSigneficantPeptidesOnly.setNullSelectionAllowed(true); // user can not 'unselect'
             showSigneficantPeptidesOnly.setMultiSelect(true);
 
@@ -85,24 +89,20 @@ public class PeptideSequanceLocationOverview extends VerticalLayout {
                         lastselectedPeptideComp.heighlight(false);
                         lastselectedPeptideComp = null;
                     }
+                    noselectionLabel.setVisible(true);
                     peptideForm.setVisible(false);
-
                     if (showSigneficantPeptidesOnly.getValue().toString().equalsIgnoreCase("[Significant Peptides Only]")) {
                         allPeptidesContainer.setVisible(false);
                         significantPeptidesContainer.setVisible(true);
                         if (significantPeptidesContainer.getComponentCount() == 1) {
-                            peptideForm.setVisible(false);
+//                           
+
                         }
 
                     } else {
-                        
+
                         allPeptidesContainer.setVisible(true);
                         significantPeptidesContainer.setVisible(false);
-                        if (allPeptidesContainer.getComponentCount() == 2) {
-                            peptideForm.setVisible(true);
-                        } else {
-                            peptideForm.setVisible(false);
-                        }
 
                     }
                 }
@@ -130,26 +130,10 @@ public class PeptideSequanceLocationOverview extends VerticalLayout {
             this.initPeptidesStackedBarComponentsLayout(allPeptidesStackedBarComponentsMap, allPeptidesContainer);
             this.initPeptidesStackedBarComponentsLayout(significantPeptidesStackedBarComponentsMap, significantPeptidesContainer);
 
-//            
-//            if (totalPeptidesNumber == 1) {
-//                updatePeptidesForm((QuantPeptide) quantPepSet.toArray()[0]);
-//
-//            }
         }
-        if (noPeptide) {
-            updateProtForm((QuantPeptide) quantPepSet.toArray()[0]);
-            if (allPeptidesContainer != null) {
-                allPeptidesContainer.setVisible(false);
-            }
-            if (significantPeptidesContainer != null) {
-                significantPeptidesContainer.setVisible(false);
-            }
-            if (showSigneficantPeptidesOnly != null) {
-                showSigneficantPeptidesOnly.setVisible(false);
-            }
-        }
-
+        noselectionLabel.setContentMode(ContentMode.HTML);
         this.addComponent(peptideForm);
+        this.addComponent(noselectionLabel);
 
     }
 
@@ -165,53 +149,46 @@ public class PeptideSequanceLocationOverview extends VerticalLayout {
     private InformationField pepSequance, peptideModification, modificationComment, pValue, pValueComm, foldChange, roc, additionalComments, pvalueSignificanceThreshold, sequenceAnnotated, peptideCharge;
 
     private GridLayout initPeptidesForm(int width) {
-        GridLayout peptideFormLayout = new GridLayout(3, 5);
+        GridLayout peptideFormLayout = new GridLayout(4, 5);
         peptideFormLayout.setWidth(width + "px");
         peptideFormLayout.setHeightUndefined();
-        pepSequance = new InformationField("Peptide Sequance");
+        pepSequance = new InformationField("Peptide Sequence");
         peptideFormLayout.addComponent(pepSequance, 0, 0);
 
-        sequenceAnnotated = new InformationField("Sequance Annotated");
+        sequenceAnnotated = new InformationField("Sequence Annotated");
         peptideFormLayout.addComponent(sequenceAnnotated, 1, 0);
 
         peptideCharge = new InformationField("Peptide Charge");
         peptideFormLayout.addComponent(peptideCharge, 2, 0);
 
         peptideModification = new InformationField("Peptide Modification");
-        peptideFormLayout.addComponent(peptideModification, 0, 1);
+        peptideFormLayout.addComponent(peptideModification, 3, 0);
 
         modificationComment = new InformationField("Modification Comment");
-        peptideFormLayout.addComponent(modificationComment, 1, 1);
+        peptideFormLayout.addComponent(modificationComment, 0, 1);
 
         foldChange = new InformationField("Fold Change");
-        peptideFormLayout.addComponent(foldChange, 2, 1);
-
-        pValue = new InformationField("p-Value");
-        peptideFormLayout.addComponent(pValue, 0, 3);
-
-        pvalueSignificanceThreshold = new InformationField("p-Value Significance Threshold");
-        peptideFormLayout.addComponent(pvalueSignificanceThreshold, 1, 3);
-
-        pValueComm = new InformationField("p-Value Comments");
-        peptideFormLayout.addComponent(pValueComm, 2, 3);
+        peptideFormLayout.addComponent(foldChange, 1, 1);
 
         roc = new InformationField("Roc Auc");
-        peptideFormLayout.addComponent(roc, 0, 4);
+        peptideFormLayout.addComponent(roc, 2, 1);
+
+        pValue = new InformationField("p-Value");
+        peptideFormLayout.addComponent(pValue, 3, 1);
+
+        pvalueSignificanceThreshold = new InformationField("p-Value Significance Threshold");
+        peptideFormLayout.addComponent(pvalueSignificanceThreshold, 0, 2);
+
+        pValueComm = new InformationField("p-Value Comments");
+        peptideFormLayout.addComponent(pValueComm, 1, 2);
 
         additionalComments = new InformationField("Additional Comments");
-        peptideFormLayout.addComponent(additionalComments, 1, 4);
+        peptideFormLayout.addComponent(additionalComments, 2, 2);
 
         return peptideFormLayout;
     }
 
     private void updatePeptidesForm(QuantPeptide peptide) {
-
-        pepSequance.setVisible(true);
-        peptideModification.setVisible(true);
-        modificationComment.setVisible(true);
-        sequenceAnnotated.setVisible(true);
-        pvalueSignificanceThreshold.setVisible(true);
-        additionalComments.setVisible(true);
 
         pepSequance.setValue(peptide.getPeptideSequance(), null);
         sequenceAnnotated.setValue(peptide.getSequenceAnnotated(), null);
@@ -260,47 +237,6 @@ public class PeptideSequanceLocationOverview extends VerticalLayout {
             peptideChargeValue = "";
         }
         this.peptideCharge.setValue(peptideChargeValue, null);
-
-        this.peptideForm.setVisible(true);
-    }
-
-    private void updateProtForm(QuantPeptide peptide) {
-
-        pepSequance.setVisible(false);
-        peptideModification.setVisible(false);
-        modificationComment.setVisible(false);
-
-        String pval;
-        if (peptide.getString_p_value() != null && !peptide.getString_p_value().equalsIgnoreCase("") && !peptide.getString_p_value().equalsIgnoreCase("Not Available")) {
-            pval = peptide.getString_p_value() + " ";
-        } else {
-            pval = "          ";
-        }
-        if (peptide.getP_value() != -1000000000) {
-            pval += "(" + this.df.format(peptide.getP_value()) + ")";
-        }
-        pValue.setValue(pval, null);
-
-        pValueComm.setValue(peptide.getP_value_comments(), null);
-
-        String foldChane;
-        if (peptide.getString_fc_value() != null && !peptide.getString_fc_value().equalsIgnoreCase("") && !peptide.getString_fc_value().equalsIgnoreCase("Not Available")) {
-            foldChane = peptide.getString_fc_value() + " ";
-        } else {
-            foldChane = "          ";
-        }
-        if (peptide.getFc_value() != -1000000000) {
-            foldChane += "(" + df.format(peptide.getFc_value()) + ")";
-        }
-        foldChange.setValue(foldChane, null);
-        String rocv;
-        if (peptide.getRoc_auc() != -1000000000) {
-            rocv = df.format(peptide.getRoc_auc()) + "";
-        } else {
-            rocv = "";
-        }
-        this.roc.setValue(rocv, null);
-        this.peptideForm.setVisible(true);
 
     }
 
@@ -378,15 +314,15 @@ public class PeptideSequanceLocationOverview extends VerticalLayout {
                         if (pepComp instanceof StackedBarPeptideComponent) {
                             StackedBarPeptideComponent pepBarComp = (StackedBarPeptideComponent) pepComp;
                             if (lastselectedPeptideComp == pepBarComp) {
-                                pepBarComp.heighlight(false);
-                                if (totalPeptidesNumber != 1) {
-                                    peptideForm.setVisible(false);
-                                }
+//                             
                                 lastselectedPeptideComp = null;
                                 for (StackedBarPeptideComponent sbar : barComponentMap) {
                                     sbar.heighlight(true);
                                 }
                                 firstSelection = true;
+
+                                peptideForm.setVisible(false);
+                                noselectionLabel.setVisible(true);
                                 return;
                             }
 
@@ -398,14 +334,9 @@ public class PeptideSequanceLocationOverview extends VerticalLayout {
                             lastselectedPeptideComp = pepBarComp;
                             QuantPeptide peptide = (QuantPeptide) pepBarComp.getParam("peptide");
                             updatePeptidesForm(peptide);
-                            if (lastselectedPeptideComp == null) {
-                                for (StackedBarPeptideComponent sbar : barComponentMap) {
-                                    sbar.heighlight(true);
 
-                                }
-                                firstSelection = true;
-
-                            }
+                            peptideForm.setVisible(true);
+                            noselectionLabel.setVisible(false);
 
                         }
                     }
@@ -450,8 +381,8 @@ public class PeptideSequanceLocationOverview extends VerticalLayout {
                             if (pepComp instanceof StackedBarPeptideComponent) {
                                 StackedBarPeptideComponent pepBarComp = (StackedBarPeptideComponent) pepComp;
                                 if (lastselectedPeptideComp == pepBarComp) {
-                                    pepBarComp.heighlight(false);
                                     peptideForm.setVisible(false);
+                                    noselectionLabel.setVisible(true);
                                     lastselectedPeptideComp = null;
                                     for (StackedBarPeptideComponent sbar : barComponentMap) {
                                         sbar.heighlight(true);
@@ -470,6 +401,8 @@ public class PeptideSequanceLocationOverview extends VerticalLayout {
                                 lastselectedPeptideComp = pepBarComp;
                                 QuantPeptide peptide = (QuantPeptide) pepBarComp.getParam("peptide");
                                 updatePeptidesForm(peptide);
+                                peptideForm.setVisible(true);
+                                noselectionLabel.setVisible(false);
                             }
 
                         }
@@ -509,7 +442,7 @@ public class PeptideSequanceLocationOverview extends VerticalLayout {
                     boolean check;
                     if (pepBarComp.getX0() > pepBarComp2.getX0()) {
                         check = checkIntersect(pepBarComp2, pepBarComp);
-                    } else //if(barComp.getX0()>pepBarComp.getX0())
+                    } else 
                     {
                         check = checkIntersect(pepBarComp, pepBarComp2);
                     }
@@ -566,11 +499,11 @@ public class PeptideSequanceLocationOverview extends VerticalLayout {
                 updatedLevel.addAll(nextLevel);
                 nextLevel.clear();
                 intersect = true;
-                top = top +20;
+                top = top + 20;
             }
 
         }
-         top = top +20;
+        top = top + 20;
         peptidesComponentsContainer.setHeight(Math.max(40, top) + "px");
 
     }

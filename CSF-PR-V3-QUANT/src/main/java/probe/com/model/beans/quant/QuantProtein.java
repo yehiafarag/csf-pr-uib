@@ -12,7 +12,7 @@ package probe.com.model.beans.quant;
 public class QuantProtein {
     private String pumedID,uniprotAccession, uniprotProteinName, publicationAccNumber,publicationProteinName,rawDataAvailable,typeOfStudy,sampleType,patientGroupI,patientSubGroupI,patientGrIComment,patientGroupII,patientSubGroupII,patientGrIIComment,sampleMatching,normalizationStrategy,technology,analyticalApproach,enzyme,shotgunOrTargetedQquant,quantificationBasis,quantBasisComment,additionalComments;		
     private int quantifiedProteinsNumber,peptideIdNumb,quantifiedPeptidesNumber, patientsGroupINumber,patientsGroupIINumber,year,filesNum,IdentifiedProteinsNum, dsKey,protKey;    
-    private String qPeptideKey,    peptideSequance,	peptideModification,modificationComment , stringFCValue,stringPValue,author,diseaseGroups,pvalueComment; 
+    private String qPeptideKey,    peptideSequance,	peptideModification,modificationComment , stringFCValue,stringPValue,author,diseaseGroups,pvalueComment,pvalueSignificanceThreshold; 
 private boolean uniprotAccSource;
 
     public boolean isUniprotAccSource() {
@@ -22,7 +22,7 @@ private boolean uniprotAccSource;
     public void setUniprotAccSource(boolean uniprotAccSource) {
         this.uniprotAccSource = uniprotAccSource;
     }
-    private String pValueComment,sequance;
+    private String sequance;
    
     /**
      *
@@ -48,21 +48,7 @@ private boolean uniprotAccSource;
         return dsKey;
     }
 
-    /**
-     *
-     * @return
-     */
-    public String getpValueComment() {
-        return pValueComment;
-    }
-
-    /**
-     *
-     * @param pValueComment
-     */
-    public void setpValueComment(String pValueComment) {
-        this.pValueComment = pValueComment;
-    }
+  
 
     /**
      *
@@ -799,6 +785,14 @@ private boolean uniprotAccSource;
      */
     public void setqPeptideKey(String qPeptideKey) {
         this.qPeptideKey = qPeptideKey;
+    }
+
+    public String getPvalueSignificanceThreshold() {
+        return pvalueSignificanceThreshold;
+    }
+
+    public void setPvalueSignificanceThreshold(String pvalueSignificanceThreshold) {
+        this.pvalueSignificanceThreshold = pvalueSignificanceThreshold;
     }
     
  

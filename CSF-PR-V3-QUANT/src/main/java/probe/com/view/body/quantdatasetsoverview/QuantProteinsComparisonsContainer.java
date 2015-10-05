@@ -141,7 +141,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
 
     }
 
-    private Label noProtLabel = new Label("<h4 style='font-family:verdana;color:red;font-weight:bold;'>\t \t Select comparisons  first!</h4>");
+    private Label noProtLabel = new Label("<h4 style='font-family:verdana;color:#8A0808;font-weight:bold;'>\t \t Select comparisons  first!</h4>");
 
     /**
      *
