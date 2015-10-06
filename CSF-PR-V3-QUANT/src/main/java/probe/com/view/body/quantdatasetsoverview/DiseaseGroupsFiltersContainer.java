@@ -21,7 +21,7 @@ import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.DiseaseGroupsListFilter;
 
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.HeatMapFilter;
-import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.HeatMapSelectionOverviewBubbleChart;
+import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.ComparisonsSelectionOverviewBubbleChart;
 
 /**
  * This class represents the top filters layout for exploring datasets tab the
@@ -88,7 +88,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         topLayout.addComponent(diseaseGroupsHeatmapFilter);
         topLayout.setComponentAlignment(diseaseGroupsHeatmapFilter, Alignment.TOP_LEFT);
         
-        final HeatMapSelectionOverviewBubbleChart selectionOverviewBubbleChart = new HeatMapSelectionOverviewBubbleChart(exploringFiltersManager,handler,initLayoutWidth, heatmapH,new HashSet<QuantDiseaseGroupsComparison>());
+        final ComparisonsSelectionOverviewBubbleChart selectionOverviewBubbleChart = new ComparisonsSelectionOverviewBubbleChart(exploringFiltersManager,handler,initLayoutWidth, heatmapH,new HashSet<QuantDiseaseGroupsComparison>());
         topLayout.addComponent(selectionOverviewBubbleChart);
         topLayout.setComponentAlignment(selectionOverviewBubbleChart, Alignment.TOP_LEFT);
 

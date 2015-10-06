@@ -6,6 +6,7 @@
 package probe.com.view.core.jfreeutil;
 
 import com.vaadin.ui.Label;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,20 +14,24 @@ import java.util.Map;
  *
  * @author Yehia Farag
  */
-public class SquaredDot extends Label {
+public class SquaredDot extends Label implements Comparable<Label> {
 
     private final Map<String, Object> param = new HashMap<String, Object>();
+    private final String defaultStyleName;
 
     /**
      *
+     * @param type
      */
     public SquaredDot(String type) {
-        this.setValue(" ");
-        if(type.equalsIgnoreCase("cycle"))
-        this.setStyleName("transparentcyclecomp");
-        else
+        this.setValue("  ");
+        if (type.equalsIgnoreCase("cycle")) {
+            defaultStyleName = "transparentcyclecomp";
+            this.setStyleName("transparentcyclecomp");
+        } else {
+            defaultStyleName = "transparentsquaredcomp";
             this.setStyleName("transparentsquaredcomp");
-            
+        }
 
     }
 
@@ -49,5 +54,41 @@ public class SquaredDot extends Label {
         return param.get(key);
     }
 
+    public void select() {
+        if (this.getWidth() < 21) {
+            this.setStyleName("select_heighlightedsquare");
+            return;
+
+        }
+        this.setStyleName("selected_" + defaultStyleName);
+
+    }
+
+    public void unselect() {
+        if (this.getWidth() < 21) {
+            this.setStyleName("unselect_heighlightedsquare");
+            return;
+
+        }
+        this.setStyleName("unselected_" + defaultStyleName);
+    }
+
+    public void reset() {
+        this.setStyleName(defaultStyleName);
+    }
+
+    @Override
+    public int compareTo(Label other) {
+        if (this.getWidth() > other.getWidth()) {
+            return -1;
+        } else {
+            return 1;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "SquaredDot{" + "param=" + param + ", defaultStyleName=" + defaultStyleName + '}';
+    }
 
 }

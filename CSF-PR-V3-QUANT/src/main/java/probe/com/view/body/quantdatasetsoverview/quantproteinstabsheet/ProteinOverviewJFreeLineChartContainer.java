@@ -219,7 +219,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         lineChartContainer.setWidth((width - 100) + "px");
         lineChartContainer.setHeight(height + "px");
 
-        teststyle = proteinName.replace(" ", "_").replace(")", "_").replace("(", "_").replace(";", "_").toLowerCase().replace("#","_").replace("?","_") + "linechart";
+        teststyle = proteinName.replace(" ", "_").replace(")", "_").replace("(", "_").replace(";", "_").toLowerCase().replace("#","_").replace("?","_").replace("[", "").replace("]","") + "linechart";
         styles.add("." + teststyle + " {  background-image: url(" + defaultLineChartImgUrl + " );background-position:center; background-repeat: no-repeat; }");
         lineChartContainer.setStyleName(teststyle);
         chartListener = new LayoutEvents.LayoutClickListener() {

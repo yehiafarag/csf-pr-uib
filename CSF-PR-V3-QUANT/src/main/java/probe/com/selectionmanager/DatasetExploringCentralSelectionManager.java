@@ -237,6 +237,28 @@ public class DatasetExploringCentralSelectionManager implements Serializable {
         }
 
     }
+    
+    
+    private Set<String> protSelectionSet;
+    /**
+     * set the selected Quant proteins to the selection manager
+     *
+     * @param protSelectionSet 
+     */
+    public void setQuantProteinsSelection(Set<String> protSelectionSet) {
+        try {
+            VaadinSession.getCurrent().getLockInstance().lock();
+            this.protSelectionSet = protSelectionSet;
+            this.SelectionChanged("Protens_Selection");
+
+        } catch (Exception exp) {
+            System.err.println("at error " + this.getClass().getName() + "  line 207  " + exp.getLocalizedMessage());
+
+        } finally {
+            VaadinSession.getCurrent().getLockInstance().unlock();
+        }
+
+    }
 
     /**
      * reset all disease groups filters
@@ -271,6 +293,10 @@ public class DatasetExploringCentralSelectionManager implements Serializable {
 
         }
 
+    }
+
+    public Set<String> getProtSelectionSet() {
+        return protSelectionSet;
     }
 
     /**

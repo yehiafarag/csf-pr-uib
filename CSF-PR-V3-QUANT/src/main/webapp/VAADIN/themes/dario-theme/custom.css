@@ -1019,6 +1019,60 @@ resetlabelbtn p{
 
 }
 
+.unselected_transparentcyclecomp{    
+     background-color: #ffffff;
+    opacity: 0.5;
+    border-radius: 50%;
+}
+.unselected_transparentcyclecomp:hover{
+   cursor: pointer;
+     background-color: #000000;
+    opacity: .1;
+    border-radius: 50%;
+
+}
+.selected_transparentcyclecomp{    
+    background-color: #000000;
+     opacity: 0.4;
+    border-radius: 50%;
+    border:2px solid black;
+}
+.selected_transparentcyclecomp:hover{
+    cursor: pointer;
+    opacity: .5;
+    border-radius: 50%;
+
+}
+.select_heighlightedsquare{
+    opacity: 0.7;
+    border-radius: 50%;
+    border:5px solid orange;
+    cursor: pointer;
+    
+    
+}
+
+.unselect_heighlightedsquare{
+    cursor: pointer;
+     background-color:  rgba(255, 255, 255, 0.9);
+     background-size:60px 60px;
+    opacity: .6;
+    border-radius: 50%;
+    cursor: pointer;
+    
+    
+}
+.unselect_heighlightedsquare:hover{
+    cursor: pointer;
+     background-color: #000000;
+     background-size:60px 60px;
+    opacity: .1;
+    border-radius: 50%;
+    cursor: pointer;
+    
+    
+}
+
 .v-tooltip{
     z-index: 30000 !important;
     font-weight:bold !important;

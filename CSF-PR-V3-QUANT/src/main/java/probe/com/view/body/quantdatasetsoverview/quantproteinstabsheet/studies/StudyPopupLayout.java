@@ -1,4 +1,3 @@
-
 package probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.studies;
 
 import com.vaadin.event.LayoutEvents;
@@ -29,15 +28,15 @@ import probe.com.view.core.HideOnClickLayout;
 public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
     private final Map<VerticalLayout, VerticalLayout> tabLayoutMap = new HashMap<VerticalLayout, VerticalLayout>();
-    private final VerticalLayout bottomLayout, peptidesInformationContainer, proteinsInformationContainer,datasetsInformationContainer ;
+    private final VerticalLayout bottomLayout, peptidesInformationContainer, proteinsInformationContainer, datasetsInformationContainer;
     private final GridLayout topLayout;
     private final HideOnClickLayout peptideProteinInfoHideShow;
     private VerticalLayout lastSelectedBtn;
     private final Map<String, PeptidesInformationOverviewLayout> peptidesInfoLayoutDSIndexMap = new HashMap<String, PeptidesInformationOverviewLayout>();
     private final Map<String, ProteinsInformationOverviewLayout> proteinInfoLayoutDSIndexMap = new HashMap<String, ProteinsInformationOverviewLayout>();
-     private final Map<String, DatasetInformationOverviewLayout> datasetInfoLayoutDSIndexMap = new HashMap<String, DatasetInformationOverviewLayout>();
-     private final Map<String, QuantProtein> datasetQuantProteinsMap;
-     private final Map<String, QuantDatasetObject> datasetIdDsObjectProteinsMap;
+    private final Map<String, DatasetInformationOverviewLayout> datasetInfoLayoutDSIndexMap = new HashMap<String, DatasetInformationOverviewLayout>();
+    private final Map<String, QuantProtein> datasetQuantProteinsMap;
+    private final Map<String, QuantDatasetObject> datasetIdDsObjectProteinsMap;
     private final String accession, url, name;
 
     public StudyPopupLayout(int width, Map<String, QuantProtein> datasetQuantProteinsMap, Map<String, QuantDatasetObject> datasetIdDsObjectProteinsMap, String accession, String url, String name) {
@@ -46,7 +45,7 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
         this.url = url;
         this.name = name;
         this.datasetQuantProteinsMap = datasetQuantProteinsMap;
-        this.datasetIdDsObjectProteinsMap=datasetIdDsObjectProteinsMap;
+        this.datasetIdDsObjectProteinsMap = datasetIdDsObjectProteinsMap;
         this.setWidthUndefined();
         int height = Page.getCurrent().getBrowserWindowHeight() - 200;
         this.setHeightUndefined();
@@ -194,7 +193,6 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
 
     }
 
- 
     private VerticalLayout initInformationContainer(int width) {
         VerticalLayout generatedPeptidesInformationContainer = new VerticalLayout();
         generatedPeptidesInformationContainer.setWidth(width - 10 + "px");
@@ -203,8 +201,6 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
 
     }
 
-  
-   
     private void updatePeptideInfoLayout(String protStudyKey) {
         peptidesInformationContainer.removeAllComponents();
         for (String key : this.peptidesInfoLayoutDSIndexMap.keySet()) {
@@ -232,11 +228,11 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
                 proteinInfoLayoutDSIndexMap.get(key).updateProteinsForm(datasetQuantProteinsMap.get(key), accession, url, name);
                 proteinsInformationContainer.addComponent(proteinInfoLayoutDSIndexMap.get(key));
                 proteinsInformationContainer.setComponentAlignment(proteinInfoLayoutDSIndexMap.get(key), Alignment.TOP_CENTER);
-                
+
                 datasetInfoLayoutDSIndexMap.get(key).updateDatasetForm(datasetIdDsObjectProteinsMap.get(key));
                 datasetsInformationContainer.addComponent(datasetInfoLayoutDSIndexMap.get(key));
                 datasetsInformationContainer.setComponentAlignment(datasetInfoLayoutDSIndexMap.get(key), Alignment.TOP_CENTER);
-                
+
                 break;
 
             }
@@ -244,6 +240,5 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
         }
 
     }
-    
 
 }

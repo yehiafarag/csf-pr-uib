@@ -946,6 +946,21 @@ public class CoreLogic implements Serializable {
 
                 Map<String, QuantProtein> dsQuantProteinsMap = comProt.getDsQuantProteinsMap();
                 if (!dsQuantProteinsMap.containsKey("-" + quant.getDsKey() + "-" + comProt.getProteinAccssionNumber() + "-")) {
+                    if(inverted)
+                    {
+                         if (quant.getStringFCValue().equalsIgnoreCase("Increased")) {
+
+                                    quant.setStringFCValue("Decreased");
+
+                                } else if (quant.getStringFCValue().equalsIgnoreCase("Decreased")) {
+                                     quant.setStringFCValue("Increased");
+
+                                }
+                                if (quant.getFcPatientGroupIonPatientGroupII()!= -1000000000.0) {
+                                    quant.setFcPatientGroupIonPatientGroupII(1.0 / quant.getFcPatientGroupIonPatientGroupII());
+                                }
+                    
+                    }
                     dsQuantProteinsMap.put("-" + quant.getDsKey() + "-" + comProt.getProteinAccssionNumber() + "-", quant);
                 } else {
                     System.out.println("at major error in data dublicated keys " + ("-" + quant.getDsKey() + "-" + comProt.getProteinAccssionNumber() + "-"));

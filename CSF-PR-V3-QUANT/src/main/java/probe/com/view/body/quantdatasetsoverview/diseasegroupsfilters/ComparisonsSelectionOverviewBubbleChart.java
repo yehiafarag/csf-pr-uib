@@ -5,11 +5,15 @@
  */
 package probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters;
 
+import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.Page;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
@@ -22,10 +26,13 @@ import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import org.apache.commons.codec.binary.Base64;
 import org.jfree.chart.ChartRenderingInfo;
 import org.jfree.chart.ChartUtilities;
@@ -36,7 +43,6 @@ import org.jfree.chart.axis.Tick;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.entity.ChartEntity;
 import org.jfree.chart.entity.XYItemEntity;
-import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYBubbleRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
@@ -56,7 +62,7 @@ import probe.com.view.core.jfreeutil.SquaredDot;
  *
  * @author Yehia Farag
  */
-public class HeatMapSelectionOverviewBubbleChart extends AbsoluteLayout implements CSFFilter {
+public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout implements CSFFilter, LayoutEvents.LayoutClickListener {
 
     private final String teststyle;
     private final Page.Styles styles = Page.getCurrent().getStyles();
@@ -67,27 +73,39 @@ public class HeatMapSelectionOverviewBubbleChart extends AbsoluteLayout implemen
     private final CSFPRHandler handler;
     private final VerticalLayout initialLayout;
     private JFreeChart chart;
+    private final AbsoluteLayout chartLayout = new AbsoluteLayout();
+    private final HorizontalLayout btnsLayout = new HorizontalLayout();
+    private final Button resetBtn;
+
     private JfreeExporter exporter = new JfreeExporter();
 
     public void updateSize(int updatedWidth) {
         defaultImgURL = saveToFile(chart, updatedWidth, height);
         this.setWidth(updatedWidth + "px");
+        this.chartLayout.setWidth(updatedWidth + "px");
+        btnsLayout.setExpandRatio(btnsLayout.getComponent(0), updatedWidth - 110);
+        btnsLayout.setExpandRatio(btnsLayout.getComponent(1), 110);
         this.redrawChart();
 
     }
 
-    public HeatMapSelectionOverviewBubbleChart(DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager, CSFPRHandler handler, int chartWidth, int chartHeight, Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
+    public ComparisonsSelectionOverviewBubbleChart(final DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager, CSFPRHandler handler, int chartWidth, int chartHeight, Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
         this.width = chartWidth;
-        this.height = chartHeight;
+        this.height = chartHeight - 20;
         this.handler = handler;
         this.setWidth(width + "px");
-        this.setHeight(height + "px");
+        this.setHeightUndefined();
+
+        chartLayout.setWidth(width + "px");
+        chartLayout.setHeight(height + "px");
+
+        btnsLayout.setWidth(100 + "%");
+        btnsLayout.setHeight(20 + "px");
+
         this.datasetExploringCentralSelectionManager = datasetExploringCentralSelectionManager;
-        this.datasetExploringCentralSelectionManager.registerFilter(HeatMapSelectionOverviewBubbleChart.this);
-//        this.defaultImgURL = initBarChart(chartWidth, chartHeight, selectedComparisonList);
+        this.datasetExploringCentralSelectionManager.registerFilter(ComparisonsSelectionOverviewBubbleChart.this);
         this.teststyle = "heatmapOverviewBubbleChart";
         initialLayout = new VerticalLayout();
-//        this.addComponent(initialLayout);
         initialLayout.setWidth("100%");
         initialLayout.setHeightUndefined();
 
@@ -107,7 +125,37 @@ public class HeatMapSelectionOverviewBubbleChart extends AbsoluteLayout implemen
         handleft.setSource(new ThemeResource("img/handleft.png"));
         initialLayout.addComponent(handleft);
         initialLayout.setComponentAlignment(handleft, Alignment.MIDDLE_CENTER);
+
+        resetBtn = new Button("Reset Selection");
+        resetBtn.setDescription("Unselect all data");
+        resetBtn.setStyleName(Reindeer.BUTTON_LINK);
+        btnsLayout.addComponent(resetBtn);
+        btnsLayout.setExpandRatio(resetBtn, width - 110);
+        btnsLayout.setComponentAlignment(resetBtn, Alignment.MIDDLE_RIGHT);
+
+        Button exportBtn = new Button("Save Chart Image");
+        exportBtn.setDescription("Save the chart image as pdf");
+        exportBtn.setStyleName(Reindeer.BUTTON_LINK);
+        btnsLayout.addComponent(exportBtn);
+        btnsLayout.setExpandRatio(exportBtn, 110);
+        btnsLayout.setComponentAlignment(exportBtn, Alignment.MIDDLE_RIGHT);
+        this.btnsLayout.setVisible(false);
+        this.chartLayout.setVisible(false);
         this.addComponent(initialLayout);
+        this.addComponent(chartLayout);
+        this.addComponent(btnsLayout);
+
+        resetBtn.addClickListener(new Button.ClickListener() {
+
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                datasetExploringCentralSelectionManager.setQuantProteinsSelection(new HashSet<String>());
+                resetChart();
+
+            }
+        });
+
+        chartLayout.addLayoutClickListener(ComparisonsSelectionOverviewBubbleChart.this);
 
     }
     private boolean isNewImge = true;
@@ -115,11 +163,6 @@ public class HeatMapSelectionOverviewBubbleChart extends AbsoluteLayout implemen
     private JFreeChart updateBubbleChartChart(Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
 
         DefaultXYZDataset defaultxyzdataset = new DefaultXYZDataset();
-
-//        double ad[] = {0, 1, 2};
-//        double ad1[] = {0, 1, 3};
-//        double ad2[] = {0.1, 1, 0.1};
-//        double ad3[][] = {ad, ad1, ad2};
         int counter = 0;
         int upper = -1;
         boolean significantOnly = this.datasetExploringCentralSelectionManager.isSignificantOnly();
@@ -136,11 +179,12 @@ public class HeatMapSelectionOverviewBubbleChart extends AbsoluteLayout implemen
                     if (qp.getSignificantTrindCategory() == 2) {
                         continue;
                     }
-                    
+
                     upperCounter++;
                 }
-                if(upperCounter>upper)
-                    upper=upperCounter;
+                if (upperCounter > upper) {
+                    upper = upperCounter;
+                }
 
             } else {
                 if (qc.getComparProtsMap() == null) {
@@ -157,7 +201,6 @@ public class HeatMapSelectionOverviewBubbleChart extends AbsoluteLayout implemen
         final Map<Integer, Color[]> seriousColorMap = new HashMap<Integer, Color[]>();
         Color[] dataColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0)};
 
-//        String[] rgbColorArr = new String[selectedComparisonList.size()];
         for (QuantDiseaseGroupsComparison qc : selectedComparisonList) {
 
             double[] tempWidthValue = new double[5];
@@ -203,27 +246,15 @@ public class HeatMapSelectionOverviewBubbleChart extends AbsoluteLayout implemen
             }
 
             if (length == 1 && selectedComparisonList.size() == 1) {
-//                    System.out.print(" , " + scaleValues(tempWidthValue[x],upper,2.5,0.05));
                 widthValue[0] = 1;
             }
             seriousColorMap.put(counter, serColorArr);
 
             double[][] seriesValues = {yAxisValue, xAxisValue, widthValue};
             defaultxyzdataset.addSeries(qc.getComparisonHeader(), seriesValues);
-//            rgbColorArr[counter] = qc.getRgbStringColor();
             counter++;
         }
-//         defaultxyzdataset.addSeries("ser 1", ad3);
 
-//        JFreeChart jfreechart = ChartFactory.createBubbleChart(
-//                null,
-//                null,
-//                null,
-//                defaultxyzdataset,
-//                PlotOrientation.HORIZONTAL,
-//                false, true, false);
-//
-//        XYPlot rendererPlot = (XYPlot) jfreechart.getPlot();
         final Color[] labelsColor = new Color[]{new Color(80, 183, 71), Color.LIGHT_GRAY, new Color(1, 141, 244), Color.LIGHT_GRAY, new Color(204, 0, 0)};
         SymbolAxis yAxis = new SymbolAxis(null, new String[]{"Down Regulated", " ", "Not Regulated", " ", "Up Regulated"}) {
             int x = 0;
@@ -320,10 +351,6 @@ public class HeatMapSelectionOverviewBubbleChart extends AbsoluteLayout implemen
         };
         xAxis.setGridBandsVisible(false);
         xAxis.setAxisLinePaint(Color.LIGHT_GRAY);
-//
-//        yAxis.setUpperBound(5);
-//        yAxis.setLowerBound(-1);
-
         int scale = XYBubbleRenderer.SCALE_ON_RANGE_AXIS;
 
         XYItemRenderer xyitemrenderer = new XYBubbleRenderer(scale) {
@@ -341,12 +368,11 @@ public class HeatMapSelectionOverviewBubbleChart extends AbsoluteLayout implemen
                 Color c = seriousColorMap.get(series)[counter];
                 counter++;
 
-                return c;//super.getSeriesPaint(series); //To change body of generated methods, choose Tools | Templates.
+                return c;
             }
 
         };
 
-//        xyitemrenderer.setSeriesShape(0, );
         XYPlot xyplot = new XYPlot(defaultxyzdataset, xAxis, yAxis, xyitemrenderer);
 
         JFreeChart generatedChart = new JFreeChart(xyplot);
@@ -357,20 +383,6 @@ public class HeatMapSelectionOverviewBubbleChart extends AbsoluteLayout implemen
         xyplot.setBackgroundPaint(Color.WHITE);
         generatedChart.setBackgroundPaint(Color.WHITE);
 
-//        
-//        for (int z = 0; z < rgbColorArr.length; z++) {
-//            String rgb = rgbColorArr[z];
-//            rgb = rgb.replace("RGB", "").replace("(", "").replace(")", "");Integer R = Integer.valueOf(rgb.split(",")[0]);
-//            Integer G = Integer.valueOf(rgb.split(",")[1]);
-//            Integer B = Integer.valueOf(rgb.split(",")[2]);
-//            xyitemrenderer.setSeriesPaint(z, new Color(R, G, B));
-//        }
-//        NumberAxis numberaxis = (NumberAxis) xyplot.getDomainAxis();
-//        numberaxis.setLowerMargin(0.2);
-//        numberaxis.setUpperMargin(0.5);
-//        NumberAxis numberaxis1 = (NumberAxis) xyplot.getRangeAxis();
-//        numberaxis1.setLowerMargin(0.8);
-//        numberaxis1.setUpperMargin(0.9);
         exporter.writeChartToPDFFile(generatedChart, 595, 842, "bublechart.pdf");
         return generatedChart;
 
@@ -378,36 +390,14 @@ public class HeatMapSelectionOverviewBubbleChart extends AbsoluteLayout implemen
 
     private String saveToFile(final JFreeChart chart, final double width, final double height) {
         isNewImge = true;
-//        CategoryPlot cp = generatedChart.getCategoryPlot();
-//        CategoryAxis domainAxis = cp.getDomainAxis();
-//        NumberAxis rangeAxis = (NumberAxis) cp.getRangeAxis();
-//        boolean check = (width > 120);
-//
-//        domainAxis.setVisible(check);
-//        rangeAxis.setVisible(check);
-//        ((BarRenderer) cp.getRenderer()).setSeriesVisible(0, check);
-//        ((BarRenderer) cp.getRenderer()).setSeriesVisible(1, check);
-//        ((BarRenderer) cp.getRenderer()).setSeriesVisible(2, check);
-//        ((BarRenderer) cp.getRenderer()).setSeriesVisible(3, check);
-//        ((BarRenderer) cp.getRenderer()).setSeriesVisible(4, check);
-//        if (check) {
-//            cp.setRangeGridlinePaint(Color.LIGHT_GRAY);
-//            TextTitle title = generatedChart.getTitle();
-//            title.setPosition(RectangleEdge.TOP);
-//            generatedChart.setTitle(title);
-//                        
-//        } else {
-//            cp.setRangeGridlinePaint(Color.WHITE);
-//            TextTitle title = generatedChart.getTitle();
-//            title.setPosition(RectangleEdge.RIGHT);
-//            generatedChart.setTitle(title);
-//        }
 
         byte imageData[];
+        Map<String , SquaredDot> arrangeMap = new TreeMap<String,SquaredDot>();
+        Set<SquaredDot> set = new TreeSet<SquaredDot>();
         try {
 
             imageData = ChartUtilities.encodeAsPNG(chart.createBufferedImage((int) width, (int) height, chartRenderingInfo));
-            this.removeAllComponents();
+            chartLayout.removeAllComponents();
             for (int i = 0; i < chartRenderingInfo.getEntityCollection().getEntityCount(); i++) {
                 ChartEntity entity = chartRenderingInfo.getEntityCollection().getEntity(i);
                 if (entity instanceof XYItemEntity) {
@@ -437,15 +427,6 @@ public class HeatMapSelectionOverviewBubbleChart extends AbsoluteLayout implemen
                         }
 
                     }
-
-//                     Integer.valueOf(coords[3]) - Integer.valueOf(coords[1]);
-//                    if (sqheight < 2) {
-//                        barCounter++;
-//                        continue;
-//                    } else if (sqheight < 14) {
-//                        coords[1] = (Integer.valueOf(coords[1]) - (14 - sqheight)) + "";
-//                    }
-//
                     int sqheight = (largeY - smallY);
                     if (sqheight < 2) {
                         continue;
@@ -454,12 +435,39 @@ public class HeatMapSelectionOverviewBubbleChart extends AbsoluteLayout implemen
                     }
 
                     int sqwidth = (largeX - smallX);
-                    square.setWidth(sqwidth + "px");
-                    square.setHeight(sqheight + "px");
-                    square.setDescription("#Proteins " + ((QuantDiseaseGroupsComparison) selectedComparisonList.toArray()[catEnt.getSeriesIndex()]).getComparProtsMap().size());
-                    square.setParam("barIndex", ((XYItemEntity) entity).getSeriesIndex());
-                    this.addComponent(square, "left: " + smallX + "px; top: " + (smallY) + "px;");
+                    int finalWidth;
+                    if (sqwidth < 20) {
+                        finalWidth = 20;
+                        smallX = smallX - ((finalWidth - sqwidth) / 2);
+
+                    } else {
+                        finalWidth = sqwidth;
+                    }
+                    int finalHeight;
+
+                    if (sqheight < 20) {
+                        finalHeight = 20;
+                        if (sqheight < 14) {
+                            smallY = smallY - (((finalHeight - sqheight) / 2) - (14 - sqheight));
+                        } else {
+                            smallY = smallY - ((finalHeight - sqheight) / 2);
+                        }
+
+                    } else {
+                        finalHeight = sqheight;
+                    }
+                    square.setWidth(finalWidth + "px");
+                    square.setHeight(finalHeight + "px");
+
+                    square.setDescription(((QuantDiseaseGroupsComparison) selectedComparisonList.toArray()[catEnt.getSeriesIndex()]).getComparisonHeader() + "    <br/>#Proteins " + ((QuantDiseaseGroupsComparison) selectedComparisonList.toArray()[catEnt.getSeriesIndex()]).getComparProtsMap().size());
+                    square.setParam("seriesIndex", ((XYItemEntity) entity).getSeriesIndex());
+                    square.setParam("categIndex", ((XYItemEntity) entity).getDataset().getYValue(((XYItemEntity) entity).getSeriesIndex(), ((XYItemEntity) entity).getItem()));
+                    square.setParam("position", "left: " + smallX + "px; top: " + (smallY) + "px;");
+                    set.add(square);
                 }
+            }
+            for(SquaredDot square:set){               
+                chartLayout.addComponent(square, square.getParam("position").toString());
             }
             String base64 = Base64.encodeBase64String(imageData);
             base64 = "data:image/png;base64," + base64;
@@ -469,13 +477,16 @@ public class HeatMapSelectionOverviewBubbleChart extends AbsoluteLayout implemen
         }
         return "";
     }
+    
+    
+  
 
     /**
      *
      */
     public final void redrawChart() {
         styles.add("." + teststyle + " {  background-image: url(" + defaultImgURL + " );background-position:center; background-repeat: no-repeat; }");
-        this.setStyleName(teststyle);
+        chartLayout.setStyleName(teststyle);
     }
 
     private Set<QuantDiseaseGroupsComparison> selectedComparisonList;
@@ -494,11 +505,15 @@ public class HeatMapSelectionOverviewBubbleChart extends AbsoluteLayout implemen
             }
             if (selectedComparisonList.isEmpty()) {
                 initialLayout.setVisible(true);
-                this.removeAllComponents();
+                chartLayout.removeAllComponents();
+                chartLayout.setVisible(false);
+                btnsLayout.setVisible(false);
                 this.addComponent(initialLayout);
                 defaultImgURL = "";
             } else {
                 initialLayout.setVisible(false);
+                btnsLayout.setVisible(true);
+                chartLayout.setVisible(true);
                 chart = this.updateBubbleChartChart(selectedComparisonList);
                 defaultImgURL = saveToFile(chart, width, height);;
             }
@@ -535,6 +550,59 @@ public class HeatMapSelectionOverviewBubbleChart extends AbsoluteLayout implemen
 
 //        float inverseNaturalLogBase = 1.0f / (float) Math.log(2.0f);
 //        return (float) Math.log(linearValue) * inverseNaturalLogBase/10.0f;
+    }
+
+    private SquaredDot lastselectedComponent;
+
+    @Override
+    public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+        if (event.getClickedComponent() == null) {
+            return;
+        }
+        if (event.getClickedComponent() instanceof SquaredDot) {
+            SquaredDot square = (SquaredDot) event.getClickedComponent();
+            if (square == lastselectedComponent) {
+               resetBtn.click();
+
+                return;
+
+            }
+
+            double trendIndex = (Double) ((SquaredDot) square).getParam("categIndex");
+            int seriousIndex = (Integer) ((SquaredDot) square).getParam("seriesIndex");
+            Set<String> selectionMap = new HashSet<String>();
+
+            for (String key : ((QuantDiseaseGroupsComparison) datasetExploringCentralSelectionManager.getSelectedDiseaseGroupsComparisonList().toArray()[seriousIndex]).getComparProtsMap().keySet()) {
+                DiseaseGroupsComparisonsProteinLayout compProt = ((QuantDiseaseGroupsComparison) datasetExploringCentralSelectionManager.getSelectedDiseaseGroupsComparisonList().toArray()[seriousIndex]).getComparProtsMap().get(key);
+                if (compProt.getSignificantTrindCategory() == trendIndex) {
+                    selectionMap.add(key.split("_")[1]);
+
+                }
+
+            }
+
+            datasetExploringCentralSelectionManager.setQuantProteinsSelection(selectionMap);
+
+            Iterator<Component> itr = chartLayout.iterator();
+            while (itr.hasNext()) {
+                SquaredDot tsquare = (SquaredDot) itr.next();
+                tsquare.unselect();
+            }
+            square.select();
+            lastselectedComponent = square;
+
+        }
+    }
+    
+    private void resetChart(){     
+                lastselectedComponent = null;
+                Iterator<Component> itr = chartLayout.iterator();
+                while (itr.hasNext()) {
+                    SquaredDot tsquare = (SquaredDot) itr.next();
+                    tsquare.reset();
+
+                }
+    
     }
 
 }
