@@ -307,7 +307,7 @@
 }
 
 .valuelabel textArea{
-    font-size:11px;
+    font-size:12px;
     font-family: Verdana;    
     background-color:  white;
     border:none;
@@ -566,6 +566,7 @@
     border: 1px solid #fc690a;
     margin-top: 148px;
     text-align: center;
+    font-size:14px;
     line-height: 45px;
     -ms-transform:rotate(270deg); /* IE 9*/ 
     -moz-transform:rotate(270deg);  /*Firefox */
@@ -579,12 +580,15 @@
 
 }
 .hmcolumnlabel div{
+    font-size:14px;
+    line-height:100%;
     cursor: pointer;    
 }
 
 
 .hmcolumnlabel_selected {
     border: 1px solid  #4d749f;
+    font-size:14px;
     margin-top: 148px;
     text-align: center;
     line-height: 45px;
@@ -600,13 +604,49 @@
 
 }
 .hmcolumnlabel_selected div{
+    font-size:14px;
+    line-height:100%;
     cursor: pointer;    
+}
+.hmcolumnlabel_selected_heighlightcell div{
+
+    font-size:14px;
+    line-height:100%;
+    cursor: pointer;    
+
+
+}
+.hmrowlabel_selected_heighlightcell div{
+
+    font-size:14px;
+    line-height:100%;
+    cursor: pointer;    
+
+
+}
+.hmrowlabel_heighlightcell div{
+
+    font-size:14px;
+    line-height:100%;
+    cursor: pointer;    
+
+
+}
+.hmcolumnlabel_heighlightcell div{
+
+    font-size:14px;
+    line-height:100%;
+    cursor: pointer;    
+
+
 }
 .hmcolumnlabel_selected_heighlightcell {
     border: 1px solid #fc690a;
     margin-top: 148px;
     text-align: center;
     line-height: 45px;
+
+    font-size:14px;
     -ms-transform:rotate(270deg); /* IE 9*/ 
     -moz-transform:rotate(270deg);  /*Firefox */
     -webkit-transform:rotate(270deg); /* Safari and Chrome */
@@ -634,13 +674,18 @@
 
 }
 .hmrowlabel div{
+    font-size:14px;
+    line-height:100%;
     cursor: pointer;    
 }
 
 
 .hmrowlabel_heighlightcell {
+
     border: 1px solid #fc690a;
     text-align: center;
+    font-size:14px;
+
     line-height: 45px; 
 }
 
@@ -657,13 +702,17 @@
 
 }
 .hmrowlabel_selected div{
+    font-size:14px;
+    line-height:100%;
     cursor: pointer;    
 }
 
-.hmrowlabel_selected_heighlightcell {
+.col {
     border: 1px solid #fc690a;
     text-align: center;
     line-height: 45px;
+
+    font-size:14px;
     background-color: #4d749f;
     color: white;
 
@@ -682,7 +731,7 @@
     text-align:center;
     color: #e0e0e0 ;
     line-height: 43px;
-    font-weight: bold;
+    font-size:14px;
 
 }
 
@@ -693,7 +742,7 @@
     text-align:center;
     color: #e0e0e0 ;
     line-height: 43px;
-    font-weight: bold;
+    font-size:14px;
     opacity: 0.4;
 
 }
@@ -711,7 +760,6 @@
     text-align:center;
     color: #ffffff ;
     font-size: 20px;
-    font-weight: bolder;
     line-height: 43px;    
 
 }
@@ -1020,20 +1068,20 @@ resetlabelbtn p{
 }
 
 .unselected_transparentcyclecomp{    
-     background-color: #ffffff;
+    background-color: #ffffff;
     opacity: 0.5;
     border-radius: 50%;
 }
 .unselected_transparentcyclecomp:hover{
-   cursor: pointer;
-     background-color: #000000;
+    cursor: pointer;
+    background-color: #000000;
     opacity: .1;
     border-radius: 50%;
 
 }
 .selected_transparentcyclecomp{    
     background-color: #000000;
-     opacity: 0.4;
+    opacity: 0.4;
     border-radius: 50%;
     border:2px solid black;
 }
@@ -1048,29 +1096,29 @@ resetlabelbtn p{
     border-radius: 50%;
     border:5px solid orange;
     cursor: pointer;
-    
-    
+
+
 }
 
 .unselect_heighlightedsquare{
     cursor: pointer;
-     background-color:  rgba(255, 255, 255, 0.9);
-     background-size:60px 60px;
+    background-color:  rgba(255, 255, 255, 0.9);
+    background-size:60px 60px;
     opacity: .6;
     border-radius: 50%;
     cursor: pointer;
-    
-    
+
+
 }
 .unselect_heighlightedsquare:hover{
     cursor: pointer;
-     background-color: #000000;
-     background-size:60px 60px;
+    background-color: #000000;
+    background-size:60px 60px;
     opacity: .1;
     border-radius: 50%;
     cursor: pointer;
-    
-    
+
+
 }
 
 .v-tooltip{
@@ -1105,7 +1153,7 @@ resetlabelbtn p{
 .midgreenstackedlayout div{
     background: #D0F5A9;
     border: 1px solid black; 
-     opacity: 0.3;
+    opacity: 0.3;
 
     cursor:pointer;
 }
@@ -1115,42 +1163,42 @@ resetlabelbtn p{
     background: rgb(1, 141, 244); 
     border: 1px solid black;    
     cursor: pointer;
-     opacity: 0.3;
+    opacity: 0.3;
 }
 
 .redstackedlayout div{
     background: #cc0000;
     border: 1px solid black;    
     cursor:pointer;
-     opacity: 0.3;
+    opacity: 0.3;
 }
 
 .midredstackedlayout div{
     background: #FF7F7F;
     border: 1px solid black;     
     cursor:pointer;
-     opacity: 0.3;
+    opacity: 0.3;
 }
 
 
 .greenstackedlayout div:hover{
-     opacity: 1;
+    opacity: 1;
 }
 .midgreenstackedlayout div:hover{
-     opacity: 1;
+    opacity: 1;
 }
 
 
 .lightbluestackedlayout div:hover{
-     opacity: 1;
+    opacity: 1;
 }
 
 .redstackedlayout div:hover{
-     opacity: 1;
+    opacity: 1;
 }
 
 .midredstackedlayout div:hover{
-     opacity: 1;
+    opacity: 1;
 }
 
 
@@ -1160,7 +1208,7 @@ resetlabelbtn p{
     background: #009900;
     border: 1px solid black;     
     cursor:pointer;
-     opacity: 1;
+    opacity: 1;
 }
 .selectedmidgreenstackedlayout div{
     background: #D0F5A9;
@@ -1277,19 +1325,73 @@ v-gridlayout-slot:focus{
 
 }
 
-.studyexplorer{
+/*.studyexplorer{
     width: 31px;
     height: 31px;
     background-image: url(img/exploringfiltermin.png);
-    background-position:center;
     background-repeat: no-repeat;
     cursor: pointer;
 
-}
+}*/
+.studyexplorer div{
+    width: 45px;
+    line-height: 14px;
+    text-decoration:underline;
+    cursor: pointer;
+    -webkit-user-select: none;
+    color: rgb(27, 105, 159);
+    cursor: pointer;
+    display: inline;
+    font-family: Verdana;
+    font-size: 12px;
+    font-stretch: normal;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    height: auto;
+    text-align: left;
+    text-shadow: none;
+    vertical-align: baseline;
+    white-space: nowrap;
+    width: auto;
+    zoom: 1;
 
+}
 .studyexplorer:focus{
 
     outline: none !important;
+}
+.filtercaption{
+      /* width: 45px; */
+    
+     line-height: 14px;
+    
+     /* cursor: pointer; */
+    -webkit-user-select: none;
+    background-image: url(img/filters-128.png);
+    padding:0 19px;    
+    margin-right:-19px;
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:0 1px;
+    color: gray;
+    
+     /* cursor: pointer; */
+    display: inline;
+    font-family: Verdana;
+    font-size: 13px;
+    font-stretch: normal;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: bolder;
+    
+     height: 30px !important;
+    text-align: left;
+    text-shadow: none;
+    vertical-align: baseline;
+    white-space: nowrap;
+    width: auto;
+    zoom: 1;
 }
 
 .proteinsLinkLabel div{
@@ -1362,7 +1464,204 @@ v-gridlayout-slot:focus{
 
 }
 .borderlayout{
+
+
+
+}
+
+.selectallbtn{
+    clear: both;
+    width: 24px;
+    height: 24px;
+    border-radius: 5px;
+    border:  1px solid lightgray;
+    background-color:  whitesmoke;
+    background-image: url(img/selectall.gif);
+    background-position:center;
+    background-repeat: no-repeat;
+    cursor:pointer;
+
+}
+.selectallbtn:hover{
+    background-color: lightgray;
+
+}
+
+.unselectallbtn{
+    clear: both;
+    width: 24px;
+    height: 24px;
+    border:  1px solid lightgray;
+    border-radius: 5px;
+    background-color:  whitesmoke;
+    background-image: url(img/unselectall.gif);
+    background-position:center;
+    background-repeat: no-repeat;
+    cursor:pointer;
+
+}
+.unselectallbtn:hover{
+    background-color: lightgray;
+
+}
+
+.selectmultibtn{
+    clear: both;
+    width: 24px;
+    height: 24px;
+    border:  1px solid lightgray;
+    border-radius: 5px;
+    background-color:  whitesmoke;
+    background-image: url(img/selectmulti.gif);
+    background-position:center;
+    background-repeat: no-repeat;
+    cursor:pointer;
+
+}
+.selectmultibtn:hover{
+    background-color: lightgray;
+
+}
+
+.selectmultiselectedbtn{
+    clear: both;
+    width: 24px;
+    height: 24px;
+    border:  1px solid lightgray;
+    border-radius: 5px;
+    background-color:  lightgray;
+    background-image: url(img/selectmultiselected.png);
+    background-position:center;
+    background-repeat: no-repeat;
+    cursor:pointer;
+
+}
+.selectmultiselectedbtn:hover{
+    background-color: lightgray;
+
+}
+
+
+.exportpdfbtn{
+    clear: both;
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    border:  1px solid lightgray;
+    background-color:  whitesmoke;
+    background-image: url(img/document-pdf.png);
+    background-position:center;
+    background-repeat: no-repeat;
+    cursor:pointer;
+
+}
+.exportpdfbtn:hover{
+    background-color: lightgray;
+
+}
+.exportpdfbtn:focus {
+    outline: none;
+}
+
+
+.clearselectionbtn{
+    clear: both;
+    width: 50px;
+    height: 20px;
+    border-radius: 5px;
+    border:  1px solid lightgray;
+    background-color:  whitesmoke;
+    font-size:11px;
+     font-family:Verdana;
+     line-height:150%;
+     text-align:center;
+    /* font-weight: bold; */
+    background-position:center;
+    background-repeat: no-repeat;
+    cursor:pointer;
+
+}
+.clearselectionbtn:hover{
+    background-color: lightgray;
+
+}
+.clearselectionbtn:focus {
+    outline: none;
+}
+
+.exportxslbtn{
+    clear: both;
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    border:  1px solid lightgray;
+    background-color:  whitesmoke;
+    background-image: url(img/document-xsl.png);
+    background-position:center;
+    background-repeat: no-repeat;
+    cursor:pointer;
+
+}
+.exportxslbtn:hover{
+    background-color: lightgray;
+
+}
+
+.exportxslbtn:focus {
+    outline: none;
+}
+
+
+.resetbtn{
+    clear: both;
+    width: 50px;
+    height: 20px;
+    border-radius: 5px;
+    border:  1px solid lightgray;
+    background-color:  whitesmoke;
+    font-size:11px;
+     font-family:Verdana;
+     line-height:20px;
+     text-align:center;
+    /* font-weight: bold; */
+    background-position:center;
+    background-repeat: no-repeat;
+    cursor:pointer;
     
+
+}
+.resetbtn:hover{
+    background-color: lightgray;
+
+}
+.resetbtn:focus {
+    outline: none;
+}
+
+.exportzipbtn{
+    clear: both;
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    border:  1px solid lightgray;
+    background-color:  whitesmoke;
+    background-image: url(img/zip.png);
+    background-position:center;
+    background-repeat: no-repeat;
+    cursor:pointer;
+
+}
+.exportzipbtn:hover{
+    background-color: lightgray;
+
+}
+
+.exportzipbtn:focus {
+    outline: none;
+}
+.peptideslayoutlabel{
     
-    
+    font-size:12px;
+    font-family:Verdana;
+    font-weight:normal;
 }

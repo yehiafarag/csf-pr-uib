@@ -31,7 +31,6 @@ import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
-import probe.com.view.core.JfreeExporter;
 
 /**
  *
@@ -39,7 +38,15 @@ import probe.com.view.core.JfreeExporter;
  */
 public class JfreeDivaPieChartFilter extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
-    private JfreeExporter exporter = new JfreeExporter();
+    public Map<String, Color> getDefaultKeyColorMap() {
+        return defaultKeyColorMap;
+    }
+
+    public JFreeChart getChart() {
+        return chart;
+    }
+
+    
     private final String defaultImgURL, teststyle;
     private String inUseImgURL;
     private final Color selectedColor = new Color(59, 90, 122);
@@ -227,9 +234,7 @@ public class JfreeDivaPieChartFilter extends VerticalLayout implements LayoutEve
         chart.getLegend().setFrame(BlockBorder.NONE);
         chart.getLegend().setItemFont(new Font("Verdana", Font.PLAIN, 12));
         String imgUrl = saveToFile(chart, width, height);
-        if (chart.getTitle().getText().contains("Year")) {
-            exporter.writeChartToPDFFile(chart, 595, 842, "pie" + teststyle + ".pdf");
-        }
+        
         return imgUrl;
         
     }

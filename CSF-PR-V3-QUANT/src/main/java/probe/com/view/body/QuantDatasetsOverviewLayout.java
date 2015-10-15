@@ -60,7 +60,7 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
         
         }
         // init piecharts filter
-        pieChartFiltersLayout = new StudiesPieChartFiltersContainerLayout(exploringFiltersManager);
+        pieChartFiltersLayout = new StudiesPieChartFiltersContainerLayout(exploringFiltersManager,handler);
 
       
         DiseaseGroupsFiltersContainer heatmapFilter = new DiseaseGroupsFiltersContainer(exploringFiltersManager,handler, pieChartFiltersLayout.getPieChartFiltersBtn());

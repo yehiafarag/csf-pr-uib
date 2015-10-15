@@ -66,7 +66,7 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
      */
     public HeaderCell(boolean rowHeader, String value, int index, HeatMapComponent parentcom, int heatmapCellWidth) {
         this.parentcom = parentcom;
-        valueLabel = new Label("<center><b>" + value + "</b></center>");
+        valueLabel = new Label("<center>" + value + "</center>");
 //        super("<b>" + value + "</b>");
         valueLabel.setWidth("150px");
         valueLabel.setHeight((heatmapCellWidth - 10) + "px");

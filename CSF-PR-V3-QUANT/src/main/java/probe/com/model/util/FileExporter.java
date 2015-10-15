@@ -1,24 +1,39 @@
-
 package probe.com.model.util;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Header;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.DefaultFontMapper;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfTemplate;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Set;
+import javax.swing.JLabel;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.IOUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.jfree.chart.JFreeChart;
 import probe.com.model.beans.identification.IdentificationPeptideBean;
 
 /**
  *
- * @author Yehia Farag
- * represent the data exporter class
+ * @author Yehia Farag represent the data exporter class
  */
-public class FileExporter implements Serializable{
+public class FileExporter implements Serializable {
 
     /**
      * this function to be use for csv peptides exporting with large datasets
@@ -227,6 +242,240 @@ public class FileExporter implements Serializable{
 
     }
 
-   
+    public byte[] exportImgAsPdf(Set<JFreeChart> component, String fileName, String url) {
+        int width = 600;
+        int height = 1000;
+        int startx = 0;
+
+        try {
+
+            File csfFolder = new File(url);
+            csfFolder.mkdir();
+
+            File file = new File(url + "\\" + fileName);
+            if (file.exists()) {
+                file.delete();
+                System.out.println("file deleted");
+            }
+            Document document = new Document();
+
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
+
+            document.open();
+            document.newPage();
+
+            PdfContentByte contentByte = writer.getDirectContent();
+            PdfTemplate template;
+
+            Graphics2D g2d;
+            int starty = 170;
+            int counter = 0;
+
+            if (fileName.equalsIgnoreCase("proteins_information_charts.pdf")) {
+//                height = (150 * component.size()) + 100;
+                template = contentByte.createTemplate(width, height);
+                g2d = template.createGraphics(width, height, new DefaultFontMapper());
+                Font font = new Font("Verdana", Font.PLAIN, 7);
+
+                Rectangle2D rect2d;
+                for (JFreeChart chart : component) {
+                    chart.getXYPlot().getRangeAxis().setTickLabelFont(font);
+                    chart.getXYPlot().getDomainAxis().setTickLabelFont(font);
+                    if (counter == 0) {
+
+                        rect2d = new Rectangle2D.Double(50, starty, 500, 350);
+
+                        starty += 370;
+
+                    } else {
+                        rect2d = new Rectangle2D.Double(50, starty, 500, 133);
+                        starty += 150;
+                        
+                    }
+                   chart.draw(g2d, rect2d); 
+
+                    counter++;
+                     
+                    if (starty > 700) {
+                        g2d.dispose();
+                        contentByte.addTemplate(template, 0, 0);
+                        document.newPage();
+
+                        template = contentByte.createTemplate(width, height);
+                        g2d = template.createGraphics(width, height, new DefaultFontMapper());
+                        
+                        starty= 170;
+
+                    }
+
+                }
+
+            } else if (component.size() > 1) {
+                template = contentByte.createTemplate(width, height);
+
+                g2d = template.createGraphics(width, height, new DefaultFontMapper());
+                for (JFreeChart chart : component) {
+
+                    Rectangle2D rect2d = new Rectangle2D.Double(startx, starty, 250, 250);
+                    chart.draw(g2d, rect2d);
+                    startx += 250 + 50;
+                    if (counter == 1 || counter == 3) {
+                        startx = 0;
+                        starty += 275;
+
+                    }
+                    counter++;
+
+                }
+            } else {
+                template = contentByte.createTemplate(width, height);
+                g2d = template.createGraphics(width, height, new DefaultFontMapper());
+
+                for (JFreeChart chart : component) {
+
+                    Rectangle2D rect2d = new Rectangle2D.Double(10, 200, 550, 750);
+                    chart.draw(g2d, rect2d);
+
+                }
+
+            }
+            g2d.dispose();
+            contentByte.addTemplate(template, 0, 0);          
+            
+            document.close();
+            byte fileData[] = IOUtils.toByteArray(new FileInputStream(file));
+//            String base64 = Base64.encodeBase64String(fileData.);
+//            base64 = "data:image/png;base64," + base64;
+
+            return fileData;
+        } catch (Exception exp) {
+            exp.printStackTrace();
+        }
+
+//          
+        return null;//url + userFolder.getName() + "/" + pdfFile.getName();
+
+    }
+    
+    
+    
+     public byte[] exportfullReportAsZip(Set<JFreeChart> component, String fileName, String url) {
+        int width = 600;
+        int height = 1000;
+        int startx = 0;
+
+        try {
+
+            File csfFolder = new File(url);
+            csfFolder.mkdir();
+
+            File file = new File(url + "\\" + fileName);
+            if (file.exists()) {
+                file.delete();
+                System.out.println("file deleted");
+            }
+            Document document = new Document();
+
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
+
+            document.open();
+            document.newPage();
+
+            PdfContentByte contentByte = writer.getDirectContent();
+            PdfTemplate template;
+
+            Graphics2D g2d;
+            int starty = 300;
+            int counter = 0;
+            
+            document.addHeader("csf-pr v2 report", "");
+            
+            
+
+            if (true) {
+//                height = (150 * component.size()) + 100;
+                template = contentByte.createTemplate(width, height);
+                g2d = template.createGraphics(width, height, new DefaultFontMapper());
+                Font font = new Font("Verdana", Font.PLAIN, 7);             
+                
+                Rectangle2D rect2d;
+                for (JFreeChart chart : component) {
+                    chart.getXYPlot().getRangeAxis().setTickLabelFont(font);
+                    chart.getXYPlot().getDomainAxis().setTickLabelFont(font);
+                    if (counter == 0) {
+
+                        rect2d = new Rectangle2D.Double(50, starty, 500, 350);
+
+                        starty += 370;
+
+                    } else {
+                        rect2d = new Rectangle2D.Double(50, starty, 500, 133);
+                        starty += 150;
+                        
+                    }
+                   chart.draw(g2d, rect2d); 
+
+                    counter++;
+                     
+                    if (starty > 700) {
+                        g2d.dispose();
+                        contentByte.addTemplate(template, 0, 0);
+                        document.newPage();
+
+                        template = contentByte.createTemplate(width, height);
+                        g2d = template.createGraphics(width, height, new DefaultFontMapper());
+                        
+                        starty= 170;
+
+                    }
+
+                }
+
+            } else if (component.size() > 1) {
+                template = contentByte.createTemplate(width, height);
+
+                g2d = template.createGraphics(width, height, new DefaultFontMapper());
+                for (JFreeChart chart : component) {
+
+                    Rectangle2D rect2d = new Rectangle2D.Double(startx, starty, 250, 250);
+                    chart.draw(g2d, rect2d);
+                    startx += 250 + 50;
+                    if (counter == 1 || counter == 3) {
+                        startx = 0;
+                        starty += 275;
+
+                    }
+                    counter++;
+
+                }
+            } else {
+                template = contentByte.createTemplate(width, height);
+                g2d = template.createGraphics(width, height, new DefaultFontMapper());
+
+                for (JFreeChart chart : component) {
+
+                    Rectangle2D rect2d = new Rectangle2D.Double(10, 200, 550, 750);
+                    chart.draw(g2d, rect2d);
+
+                }
+
+            }
+            g2d.dispose();
+            contentByte.addTemplate(template, 0, 0);          
+            
+            document.close();
+            byte fileData[] = IOUtils.toByteArray(new FileInputStream(file));
+//            String base64 = Base64.encodeBase64String(fileData.);
+//            base64 = "data:image/png;base64," + base64;
+
+            return fileData;
+        } catch (Exception exp) {
+            exp.printStackTrace();
+        }
+
+//          
+        return null;//url + userFolder.getName() + "/" + pdfFile.getName();
+
+    }
 
 }

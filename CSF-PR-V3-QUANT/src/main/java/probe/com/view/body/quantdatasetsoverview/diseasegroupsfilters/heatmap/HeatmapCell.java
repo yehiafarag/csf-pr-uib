@@ -62,7 +62,7 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
      * @param groupCompTitle
      * @param heatmapCellWidth
      */
-    public HeatmapCell(double value, final String color, int[] dsIndexes, final int rowLabelIndex, final int colLabelIndex, VerticalLayout tooltipLayout, HeatMapComponent parentcom, String groupCompTitle,int heatmapCellWidth) {
+    public HeatmapCell(double value, final String color, int[] dsIndexes, final int rowLabelIndex, final int colLabelIndex, VerticalLayout tooltipLayout, HeatMapComponent parentcom, String groupCompTitle, int heatmapCellWidth) {
 
         this.colLabelIndex = colLabelIndex;
         this.rowLabelIndex = rowLabelIndex;
@@ -70,8 +70,8 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
         this.value = value;
 
         this.parent = parentcom;
-        this.setWidth(heatmapCellWidth+"px");
-        this.setHeight(heatmapCellWidth+"px");
+        this.setWidth(heatmapCellWidth + "px");
+        this.setHeight(heatmapCellWidth + "px");
         strValue = "";
         pointer = "default";
         this.comparison = new QuantDiseaseGroupsComparison();
@@ -112,9 +112,12 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
         }
         valueLabel.setContentMode(ContentMode.HTML);
         valueLabel.setPrimaryStyleName(defaultStyle);
-        valueLabel.setValue("<div  align='center' style='background-color:" + color + "; background-position: center;height:"+(heatmapCellWidth-4)+"px;width:"+(heatmapCellWidth-4)+"px; cursor:" + pointer + "; '><b>" + strValue + "</b></div>");
+        valueLabel.setValue("<div  align='center' style='background-color:" + color + "; background-position: center;height:" + (heatmapCellWidth - 4) + "px;width:" + (heatmapCellWidth - 4) + "px; cursor:" + pointer + "; '>" + strValue + "</div>");
         this.addComponent(valueLabel);
         this.setComponentAlignment(valueLabel, Alignment.MIDDLE_CENTER);
+        if (value > 0) {
+            this.setDescription("<h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + strValue + " available " + (value == 1 ? "study" : "studies") + " </h3>");
+        }
 
     }
 

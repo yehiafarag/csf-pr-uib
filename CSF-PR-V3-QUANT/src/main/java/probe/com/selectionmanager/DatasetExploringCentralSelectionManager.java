@@ -205,7 +205,7 @@ public class DatasetExploringCentralSelectionManager implements Serializable {
 
             VaadinSession.getCurrent().getLockInstance().lock();
             this.significantOnly = significantOnly;
-           
+
             for (CSFFilter filter : registeredFilterSet) {
                 if (!filter.getFilterId().equalsIgnoreCase("HeatMapFilter")) {
                     filter.selectionChanged("Comparison_Selection");
@@ -237,18 +237,25 @@ public class DatasetExploringCentralSelectionManager implements Serializable {
         }
 
     }
-    
-    
+
     private Set<String> protSelectionSet;
+
+    public String getSelectedComparisonHeader() {
+        return selectedComparisonHeader;
+    }
+    private String selectedComparisonHeader;
+
     /**
      * set the selected Quant proteins to the selection manager
      *
-     * @param protSelectionSet 
+     * @param protSelectionSet
+     * @param selectedComparisonHeader
      */
-    public void setQuantProteinsSelection(Set<String> protSelectionSet) {
+    public void setQuantProteinsSelection(Set<String> protSelectionSet, String selectedComparisonHeader) {
         try {
             VaadinSession.getCurrent().getLockInstance().lock();
             this.protSelectionSet = protSelectionSet;
+            this.selectedComparisonHeader = selectedComparisonHeader;
             this.SelectionChanged("Protens_Selection");
 
         } catch (Exception exp) {
@@ -372,6 +379,10 @@ public class DatasetExploringCentralSelectionManager implements Serializable {
 
     public boolean isSignificantOnly() {
         return significantOnly;
+    }
+
+    public void exportFullReport() {
+
     }
 
 }

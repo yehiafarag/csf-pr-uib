@@ -10,6 +10,7 @@ import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.interactiv
 import com.vaadin.server.Page;
 import com.vaadin.shared.ui.window.WindowMode;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -38,14 +39,16 @@ public class PopupInteractiveDSFiltersLayout extends VerticalLayout implements L
      */
     public PopupInteractiveDSFiltersLayout(final StudiesPieChartFiltersContainerLayout interactivePieChartFiltersContainerLayout) {
         VerticalLayout datasetExplorerFiltersIcon = new VerticalLayout();
-        datasetExplorerFiltersIcon.setWidth("23px");
+        datasetExplorerFiltersIcon.setWidth("45px");
         datasetExplorerFiltersIcon.setHeight("23px");
+        Label btnTitle = new Label("Studies");
+        datasetExplorerFiltersIcon.addComponent(btnTitle);
         datasetExplorerFiltersIcon.setStyleName("studyexplorer");
         datasetExplorerFiltersIcon.setDescription("Datasets Expolorer Filters");
         this.addComponent(datasetExplorerFiltersIcon);
         this.setComponentAlignment(datasetExplorerFiltersIcon, Alignment.BOTTOM_CENTER);
         datasetExplorerFiltersIcon.addLayoutClickListener(PopupInteractiveDSFiltersLayout.this);
-        this.setHeightUndefined();
+this.setHeightUndefined();
 
         int height = Page.getCurrent().getBrowserWindowHeight() - 100;
         int width = Page.getCurrent().getBrowserWindowWidth() - 100;

@@ -1,5 +1,6 @@
 package probe.com.model;
 
+import com.vaadin.server.VaadinSession;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -29,6 +31,15 @@ import probe.com.model.util.FileExporter;
 import probe.com.model.util.FilesReader;
 import probe.com.model.util.KMeansClustering;
 
+import org.jfree.chart.JFreeChart;
+//import org.apache.batik.svggen.SVGGraphics2D;
+//import org.apache.batik.dom.svg.SVGDOMImplementation;
+//import org.apache.batik.dom.svg12.SVG12DOMImplementation;
+//
+//import org.apache.batik.transcoder.TranscoderInput;
+//import org.apache.batik.transcoder.TranscoderOutput;
+
+
 /**
  * @author Yehia Farag
  */
@@ -41,6 +52,7 @@ public class CoreLogic implements Serializable {
     private final DataAccess da;
     private int mainDatasetId;
     private final String filesURL;
+    private final String userFolderUrl;
     private final TreeMap<Integer, String> identificationDatasetNamesList = new TreeMap<Integer, String>();//for dropdown select list
     private Map<Integer, IdentificationDatasetBean> identificationDatasetList;
     private final Map<Integer, Integer> datasetIndex = new HashMap<Integer, Integer>();
@@ -67,8 +79,11 @@ public class CoreLogic implements Serializable {
         datasetIndex.put(15, 5);
         datasetIndex.put(16, 6);
         datasetIndex.put(9, 7);
-//        identificationDatasetList = da.getIdentificationDatasetsList();
         this.filesURL = filesURL;
+        this.userFolderUrl = filesURL + "\\" + VaadinSession.getCurrent().getSession().getId();
+        File csfFolder = new File(userFolderUrl);
+        csfFolder.mkdir();
+
     }
 
     /**
@@ -98,7 +113,6 @@ public class CoreLogic implements Serializable {
 
     /**
      * read and store datasets files in the database
-     *
      * @param file the dataset file
      * @param MIMEType the file type (txt or xls)
      * @param dataset dataset bean (in case of update existing dataset)
@@ -107,17 +121,12 @@ public class CoreLogic implements Serializable {
      * @exception SQLException
      */
     public boolean handelIdentificationDatasetFile(File file, String MIMEType, IdentificationDatasetBean dataset) throws IOException, SQLException {
-
         boolean test = false;
-
         if (dataset.getDatasetFile() == -100)//Standard plot file
         {
             test = da.updateIdentificationStandardPlotProteins(dataset);
-
         }
-
         return test;
-
     }
 
     /**
@@ -646,6 +655,20 @@ public class CoreLogic implements Serializable {
         }
     }
 
+    public byte[] exportImgAsPdf(Set<JFreeChart> component, String fileName) {
+        return exporter.exportImgAsPdf(component, fileName, userFolderUrl);
+//          
+//         "";//url + userFolder.getName() + "/" + pdfFile.getName();
+
+    }
+    
+    public byte[] exportfullReportAsZip(Set<JFreeChart> component, String fileName) {
+        return exporter.exportfullReportAsZip(component, fileName, userFolderUrl);
+//          
+//         "";//url + userFolder.getName() + "/" + pdfFile.getName();
+
+    }
+
     /**
      * this function to filter the identification search results based on
      * keywords and detect the not found keywords
@@ -807,7 +830,7 @@ public class CoreLogic implements Serializable {
      */
     public Set<QuantDiseaseGroupsComparison> getComparisonProtList(Set<QuantDiseaseGroupsComparison> selectedComparisonList, List<QuantProtein> searchQuantificationProtList) {
 
-        Set<QuantDiseaseGroupsComparison> updatedSelectedComparisonList = new HashSet<QuantDiseaseGroupsComparison>();
+        Set<QuantDiseaseGroupsComparison> updatedSelectedComparisonList = new LinkedHashSet<QuantDiseaseGroupsComparison>();
         for (QuantDiseaseGroupsComparison comparison : selectedComparisonList) {
             Set<QuantProtein> comparisonProtMap = new HashSet<QuantProtein>();
 //            Map<String, Set<QuantPeptide>> comparisonPeptideMap = new HashMap<String, Set<QuantPeptide>>();
@@ -946,20 +969,33 @@ public class CoreLogic implements Serializable {
 
                 Map<String, QuantProtein> dsQuantProteinsMap = comProt.getDsQuantProteinsMap();
                 if (!dsQuantProteinsMap.containsKey("-" + quant.getDsKey() + "-" + comProt.getProteinAccssionNumber() + "-")) {
-                    if(inverted)
-                    {
-                         if (quant.getStringFCValue().equalsIgnoreCase("Increased")) {
+                    if (inverted) {
+                        if (quant.getStringFCValue().equalsIgnoreCase("Increased")) {
 
-                                    quant.setStringFCValue("Decreased");
+                            quant.setStringFCValue("Decreased");
 
-                                } else if (quant.getStringFCValue().equalsIgnoreCase("Decreased")) {
-                                     quant.setStringFCValue("Increased");
+                        } else if (quant.getStringFCValue().equalsIgnoreCase("Decreased")) {
+                            quant.setStringFCValue("Increased");
 
-                                }
-                                if (quant.getFcPatientGroupIonPatientGroupII()!= -1000000000.0) {
-                                    quant.setFcPatientGroupIonPatientGroupII(1.0 / quant.getFcPatientGroupIonPatientGroupII());
-                                }
-                    
+                        }
+                        if (quant.getFcPatientGroupIonPatientGroupII() != -1000000000.0) {
+                            quant.setFcPatientGroupIonPatientGroupII(1.0 / quant.getFcPatientGroupIonPatientGroupII());
+                        }
+                        String pgI = quant.getPatientGroupII();
+                        String pSubGI = quant.getPatientSubGroupII();
+                        String pGrIComm = quant.getPatientGrIIComment();
+                        int pGrINum = quant.getPatientsGroupIINumber();
+
+                        quant.setPatientGroupII(quant.getPatientGroupI());
+                        quant.setPatientGrIIComment(quant.getPatientGrIComment());
+                        quant.setPatientSubGroupII(quant.getPatientSubGroupI());
+                        quant.setPatientsGroupIINumber(quant.getPatientsGroupINumber());
+
+                        quant.setPatientGroupI(pgI);
+                        quant.setPatientGrIComment(pSubGI);
+                        quant.setPatientSubGroupI(pGrIComm);
+                        quant.setPatientsGroupINumber(pGrINum);
+
                     }
                     dsQuantProteinsMap.put("-" + quant.getDsKey() + "-" + comProt.getProteinAccssionNumber() + "-", quant);
                 } else {

@@ -44,8 +44,9 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
      * @param sequance
      * @param quantPepSet
      * @param width
+     * @param minMode
      */
-    public PeptidesInformationOverviewLayout(String sequance, Set<QuantPeptide> quantPepSet, int width) {
+    public PeptidesInformationOverviewLayout(String sequance, Set<QuantPeptide> quantPepSet, int width, final boolean minMode) {
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
         otherSymbols.setGroupingSeparator('.');
         df = new DecimalFormat("#.###", otherSymbols);
@@ -56,9 +57,11 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
         this.setStyleName(Reindeer.LAYOUT_WHITE);
 
         //init peptides form layout  
-        peptideForm = initPeptidesForm(width);
-        peptideForm.setVisible(false);
-
+        if (!minMode) {
+            peptideForm = initPeptidesForm(width);
+            peptideForm.setVisible(false);
+        }
+       
         if (!sequance.equalsIgnoreCase("Not Available") && !sequance.equalsIgnoreCase("")) {
             //init containers
             allPeptidesContainer = new AbsoluteLayout();
@@ -79,7 +82,7 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
             showSigneficantPeptidesOnly.setNullSelectionAllowed(true); // user can not 'unselect'
             showSigneficantPeptidesOnly.setMultiSelect(true);
 
-            showSigneficantPeptidesOnly.addItem("Significant Peptides Only");
+            showSigneficantPeptidesOnly.addItem("Significant Regulation");
             showSigneficantPeptidesOnly.setValue(showSigneficantPeptidesOnly.getItemIds());
             showSigneficantPeptidesOnly.addStyleName("horizontal");
             showSigneficantPeptidesOnly.addValueChangeListener(new Property.ValueChangeListener() {
@@ -89,9 +92,11 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
                         lastselectedPeptideComp.heighlight(false);
                         lastselectedPeptideComp = null;
                     }
-                    noselectionLabel.setVisible(true);
-                    peptideForm.setVisible(false);
-                    if (showSigneficantPeptidesOnly.getValue().toString().equalsIgnoreCase("[Significant Peptides Only]")) {
+                    if (!minMode) {
+                        noselectionLabel.setVisible(true);
+                        peptideForm.setVisible(false);
+                    }
+                    if (showSigneficantPeptidesOnly.getValue().toString().equalsIgnoreCase("[Significant Regulation]")) {
                         allPeptidesContainer.setVisible(false);
                         significantPeptidesContainer.setVisible(true);
                         if (significantPeptidesContainer.getComponentCount() == 1) {
@@ -123,17 +128,19 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
             sigProtSeqBar.setStyleName("lightgraylayout");
             significantPeptidesContainer.addComponent(sigProtSeqBar, "left: " + (0) + "px; top: " + (0) + "px;");
             //init barchart components
-            LinkedHashSet<StackedBarPeptideComponent> allPeptidesStackedBarComponentsMap = this.initAllBarChartComponents(false, width, sequance, quantPepSet, true);
-            LinkedHashSet<StackedBarPeptideComponent> significantPeptidesStackedBarComponentsMap = this.initAllBarChartComponents(true, width, sequance, quantPepSet, false);
+            LinkedHashSet<StackedBarPeptideComponent> allPeptidesStackedBarComponentsMap = this.initAllBarChartComponents(false, width, sequance, quantPepSet, true, minMode);
+            LinkedHashSet<StackedBarPeptideComponent> significantPeptidesStackedBarComponentsMap = this.initAllBarChartComponents(true, width, sequance, quantPepSet, false, minMode);
 
             //sort peptides based on sequance length
-            this.initPeptidesStackedBarComponentsLayout(allPeptidesStackedBarComponentsMap, allPeptidesContainer);
-            this.initPeptidesStackedBarComponentsLayout(significantPeptidesStackedBarComponentsMap, significantPeptidesContainer);
+            this.initPeptidesStackedBarComponentsLayout(allPeptidesStackedBarComponentsMap, allPeptidesContainer, minMode);
+            this.initPeptidesStackedBarComponentsLayout(significantPeptidesStackedBarComponentsMap, significantPeptidesContainer, minMode);
 
         }
-        noselectionLabel.setContentMode(ContentMode.HTML);
-        this.addComponent(peptideForm);
-        this.addComponent(noselectionLabel);
+        if (!minMode) {
+            noselectionLabel.setContentMode(ContentMode.HTML);
+            this.addComponent(peptideForm);
+            this.addComponent(noselectionLabel);
+        }
 
     }
 
@@ -144,7 +151,7 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
     public boolean isNoPeptide() {
         return noPeptide;
     }
-    private final GridLayout peptideForm;
+    private GridLayout peptideForm;
     private StackedBarPeptideComponent lastselectedPeptideComp, lastselectedSigPeptideComp;
     private InformationField pepSequance, peptideModification, modificationComment, pValue, pValueComm, foldChange, roc, additionalComments, pvalueSignificanceThreshold, sequenceAnnotated, peptideCharge;
 
@@ -246,7 +253,7 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
 
     }
 
-    private LinkedHashSet<StackedBarPeptideComponent> initAllBarChartComponents(boolean significatOnly, int width, String sequance, Set<QuantPeptide> quantPepSet, boolean count) {
+    private LinkedHashSet<StackedBarPeptideComponent> initAllBarChartComponents(boolean significatOnly, int width, String sequance, Set<QuantPeptide> quantPepSet, boolean count, boolean minMode) {
 
         final LinkedHashSet<StackedBarPeptideComponent> barComponentMap = new LinkedHashSet<StackedBarPeptideComponent>();
 
@@ -297,51 +304,52 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
                 }
 
                 //add listener
-                peptideStackedBarComponent.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+                if (!minMode) {
+                    peptideStackedBarComponent.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
-                    private boolean firstSelection = true;
+                        private boolean firstSelection = true;
 
-                    @Override
-                    public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-                        if (firstSelection) {
-                            for (StackedBarPeptideComponent sbar : barComponentMap) {
-                                sbar.heighlight(false);
-                            }
-                            firstSelection = false;
-                        }
-
-                        Component pepComp = event.getComponent();
-                        if (pepComp instanceof StackedBarPeptideComponent) {
-                            StackedBarPeptideComponent pepBarComp = (StackedBarPeptideComponent) pepComp;
-                            if (lastselectedPeptideComp == pepBarComp) {
-//                             
-                                lastselectedPeptideComp = null;
+                        @Override
+                        public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+                            if (firstSelection) {
                                 for (StackedBarPeptideComponent sbar : barComponentMap) {
-                                    sbar.heighlight(true);
+                                    sbar.heighlight(false);
                                 }
-                                firstSelection = true;
-
-                                peptideForm.setVisible(false);
-                                noselectionLabel.setVisible(true);
-                                return;
+                                firstSelection = false;
                             }
 
-                            if (lastselectedPeptideComp != null) {
-                                lastselectedPeptideComp.heighlight(false);
+                            Component pepComp = event.getComponent();
+                            if (pepComp instanceof StackedBarPeptideComponent) {
+                                StackedBarPeptideComponent pepBarComp = (StackedBarPeptideComponent) pepComp;
+                                if (lastselectedPeptideComp == pepBarComp) {
+//                             
+                                    lastselectedPeptideComp = null;
+                                    for (StackedBarPeptideComponent sbar : barComponentMap) {
+                                        sbar.heighlight(true);
+                                    }
+                                    firstSelection = true;
+
+                                    peptideForm.setVisible(false);
+                                    noselectionLabel.setVisible(true);
+                                    return;
+                                }
+
+                                if (lastselectedPeptideComp != null) {
+                                    lastselectedPeptideComp.heighlight(false);
+                                }
+
+                                pepBarComp.heighlight(true);
+                                lastselectedPeptideComp = pepBarComp;
+                                QuantPeptide peptide = (QuantPeptide) pepBarComp.getParam("peptide");
+                                updatePeptidesForm(peptide);
+
+                                peptideForm.setVisible(true);
+                                noselectionLabel.setVisible(false);
+
                             }
-
-                            pepBarComp.heighlight(true);
-                            lastselectedPeptideComp = pepBarComp;
-                            QuantPeptide peptide = (QuantPeptide) pepBarComp.getParam("peptide");
-                            updatePeptidesForm(peptide);
-
-                            peptideForm.setVisible(true);
-                            noselectionLabel.setVisible(false);
-
                         }
-                    }
-                });
-
+                    });
+                }
                 barComponentMap.add(peptideStackedBarComponent);
 
             } else {
@@ -363,51 +371,52 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
 
                     }
 
-                    peptideStackedBarComponent.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+                    if (!minMode) {
+                        peptideStackedBarComponent.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
-                        private boolean firstSelection = true;
+                            private boolean firstSelection = true;
 
-                        @Override
-                        public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-                            if (firstSelection) {
-                                for (StackedBarPeptideComponent sbar : barComponentMap) {
-                                    sbar.heighlight(false);
-
-                                }
-                                firstSelection = false;
-
-                            }
-                            Component pepComp = event.getComponent();
-                            if (pepComp instanceof StackedBarPeptideComponent) {
-                                StackedBarPeptideComponent pepBarComp = (StackedBarPeptideComponent) pepComp;
-                                if (lastselectedPeptideComp == pepBarComp) {
-                                    peptideForm.setVisible(false);
-                                    noselectionLabel.setVisible(true);
-                                    lastselectedPeptideComp = null;
+                            @Override
+                            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+                                if (firstSelection) {
                                     for (StackedBarPeptideComponent sbar : barComponentMap) {
-                                        sbar.heighlight(true);
+                                        sbar.heighlight(false);
 
                                     }
-                                    firstSelection = true;
+                                    firstSelection = false;
 
-                                    return;
+                                }
+                                Component pepComp = event.getComponent();
+                                if (pepComp instanceof StackedBarPeptideComponent) {
+                                    StackedBarPeptideComponent pepBarComp = (StackedBarPeptideComponent) pepComp;
+                                    if (lastselectedPeptideComp == pepBarComp) {
+                                        peptideForm.setVisible(false);
+                                        noselectionLabel.setVisible(true);
+                                        lastselectedPeptideComp = null;
+                                        for (StackedBarPeptideComponent sbar : barComponentMap) {
+                                            sbar.heighlight(true);
+
+                                        }
+                                        firstSelection = true;
+
+                                        return;
+                                    }
+
+                                    if (lastselectedPeptideComp != null) {
+                                        lastselectedPeptideComp.heighlight(false);
+                                    }
+
+                                    pepBarComp.heighlight(true);
+                                    lastselectedPeptideComp = pepBarComp;
+                                    QuantPeptide peptide = (QuantPeptide) pepBarComp.getParam("peptide");
+                                    updatePeptidesForm(peptide);
+                                    peptideForm.setVisible(true);
+                                    noselectionLabel.setVisible(false);
                                 }
 
-                                if (lastselectedPeptideComp != null) {
-                                    lastselectedPeptideComp.heighlight(false);
-                                }
-
-                                pepBarComp.heighlight(true);
-                                lastselectedPeptideComp = pepBarComp;
-                                QuantPeptide peptide = (QuantPeptide) pepBarComp.getParam("peptide");
-                                updatePeptidesForm(peptide);
-                                peptideForm.setVisible(true);
-                                noselectionLabel.setVisible(false);
                             }
-
-                        }
-                    });
-
+                        });
+                    }
                     barComponentMap.add(peptideStackedBarComponent);
                 }
             }
@@ -423,7 +432,7 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
 
     }
 
-    private void initPeptidesStackedBarComponentsLayout(LinkedHashSet<StackedBarPeptideComponent> stackedBarComponents, AbsoluteLayout peptidesComponentsContainer) {
+    private void initPeptidesStackedBarComponentsLayout(LinkedHashSet<StackedBarPeptideComponent> stackedBarComponents, AbsoluteLayout peptidesComponentsContainer, boolean minMode) {
         int top = 0;
         List< StackedBarPeptideComponent> initLevel = new ArrayList<StackedBarPeptideComponent>(stackedBarComponents);
         List< StackedBarPeptideComponent> updatedLevel = new ArrayList<StackedBarPeptideComponent>(stackedBarComponents);
@@ -442,8 +451,7 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
                     boolean check;
                     if (pepBarComp.getX0() > pepBarComp2.getX0()) {
                         check = checkIntersect(pepBarComp2, pepBarComp);
-                    } else 
-                    {
+                    } else {
                         check = checkIntersect(pepBarComp, pepBarComp2);
                     }
                     if (check) {

@@ -10,7 +10,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<vaadin.version>7.5.6</vaadin.version>
+		<vaadin.version>7.5.7</vaadin.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 	</properties>
 	<repositories>
@@ -57,12 +57,26 @@
    <groupId>org.vaadin.icons</groupId>
    <artifactId>vaadin-icons</artifactId>
    <version>1.0.1</version>
-</dependency>
+        </dependency>
                 <dependency>
 	<groupId>com.itextpdf</groupId>
 	<artifactId>itextpdf</artifactId>
 	<version>5.0.6</version>
+    </dependency>
+    
+        <dependency>
+	<groupId>com.kenai.nbpwr</groupId>
+	<artifactId>org-apache-batik-all</artifactId>
+	<version>1.7-201002241055</version>
 </dependency>
+
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-transcoder</artifactId>
+	<version>1.7</version>
+    </dependency>
+
+
 
 		<!--
 		  Needed when using the widgetset optimizer (custom ConnectorBundleLoaderFactory).

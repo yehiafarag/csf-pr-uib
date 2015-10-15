@@ -1,9 +1,10 @@
 package probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet;
 
-import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.kmeansclustering.ProteinKMeansClusterLayout;
 import com.vaadin.data.Property;
 import com.vaadin.event.LayoutEvents;
+import com.vaadin.server.FileDownloader;
 import com.vaadin.server.Page;
+import com.vaadin.server.StreamResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.AbsoluteLayout;
@@ -23,10 +24,11 @@ import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +58,7 @@ import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.kmeansclustering.KMeansClusteringPopupPanel;
 import probe.com.view.core.CustomExternalLink;
-import probe.com.view.core.JfreeExporter;
+import probe.com.view.core.pdfexporters.JfreeExporter;
 import probe.com.view.core.jfreeutil.SquaredDot;
 
 /**
@@ -130,9 +132,10 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         width = ((widthValue) / 2);
         this.selectedComparisonListSize = selectedComparisonList.size();
 
-        GridLayout protInfoLayout = new GridLayout(2, 7);
+        GridLayout protInfoLayout = new GridLayout(2, 8);
         protInfoLayout.setMargin(false);
         protInfoLayout.setSpacing(true);
+        protInfoLayout.setHeightUndefined();
 
         Label accTitle = new Label("<b>Protein Accession</b>");
         accTitle.setContentMode(ContentMode.HTML);
@@ -166,7 +169,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
         HorizontalLayout clusterKMeanLayout = new HorizontalLayout();
         clusterKMeanLayout.setMargin(new MarginInfo(true, false, false, false));
-        clusterKMeanLayout.setHeight("100px");
+        clusterKMeanLayout.setHeight("50px");
         clusterKMeanLayout.setStyleName(Reindeer.LAYOUT_WHITE);
 
         Button clusterKMeanBtn = new Button("Protein K-Means Clustering ");
@@ -181,6 +184,42 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         });
 
         protInfoLayout.addComponent(clusterKMeanLayout, 0, 6);
+
+        HorizontalLayout exportBtnLayout = new HorizontalLayout();
+        exportBtnLayout.setWidthUndefined();
+        exportBtnLayout.setHeightUndefined();
+        exportBtnLayout.setSpacing(true);
+        
+        protInfoLayout.addComponent(exportBtnLayout, 0, 7);
+        Button exportChartBtn = new Button("");
+        exportChartBtn.setStyleName(Reindeer.BUTTON_LINK);
+         exportChartBtn.setWidth("30px");
+        exportChartBtn.setHeight("30px");
+        exportChartBtn.setPrimaryStyleName("exportpdfbtn");
+        exportChartBtn.setDescription("Export Protein Information");
+        exportBtnLayout.addComponent(exportChartBtn);
+        StreamResource proteinInformationResource = createProteinsInformationResource();
+        FileDownloader fileDownloader = new FileDownloader(proteinInformationResource);
+        fileDownloader.extend(exportChartBtn);
+        
+        Button exportFullReportBtn = new Button("");
+        exportFullReportBtn.setStyleName(Reindeer.BUTTON_LINK);
+         exportFullReportBtn.setWidth("30px");
+        exportFullReportBtn.setHeight("30px");
+        exportFullReportBtn.setPrimaryStyleName("exportzipbtn");
+        exportFullReportBtn.setDescription("Export Full Report");
+        exportBtnLayout.addComponent(exportFullReportBtn);
+        
+//        clusterKMeanLayout.setComponentAlignment(exportChartBtn, Alignment.MIDDLE_CENTER);
+//        exportChartBtn.addClickListener(new Button.ClickListener() {
+//            @Override
+//            public void buttonClick(Button.ClickEvent event) {
+//                
+//            }
+//        });
+        StreamResource fullReportResource = createFullReportResource();
+        FileDownloader fullReportDownloader = new FileDownloader(fullReportResource);
+        fullReportDownloader.extend(exportFullReportBtn);
 
         VerticalLayout leftSideLayout = new VerticalLayout();
         leftSideLayout.setWidthUndefined();
@@ -219,7 +258,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         lineChartContainer.setWidth((width - 100) + "px");
         lineChartContainer.setHeight(height + "px");
 
-        teststyle = proteinName.replace(" ", "_").replace(")", "_").replace("(", "_").replace(";", "_").toLowerCase().replace("#","_").replace("?","_").replace("[", "").replace("]","") + "linechart";
+        teststyle = proteinName.replace(" ", "_").replace(")", "_").replace("(", "_").replace(";", "_").toLowerCase().replace("#", "_").replace("?", "_").replace("[", "").replace("]", "") + "linechart";
         styles.add("." + teststyle + " {  background-image: url(" + defaultLineChartImgUrl + " );background-position:center; background-repeat: no-repeat; }");
         lineChartContainer.setStyleName(teststyle);
         chartListener = new LayoutEvents.LayoutClickListener() {
@@ -424,6 +463,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
             x++;
 
         }
+        Font font = new Font("Verdana", Font.PLAIN, 14);
         SymbolAxis xAxis = new SymbolAxis(null, xAxisLabels) {
             @Override
             protected List refreshTicksHorizontal(Graphics2D g2, Rectangle2D dataArea, RectangleEdge edge) {
@@ -495,6 +535,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                 return ticks;
             }
         };
+        xAxis.setTickLabelFont(font);
         final Color[] labelsColor = new Color[]{new Color(80, 183, 71), Color.LIGHT_GRAY, new Color(1, 141, 244), Color.LIGHT_GRAY, Color.RED};
         SymbolAxis yAxis = new SymbolAxis(null, new String[]{"Down Regulated", " ", "Not Regulated", " ", "Up Regulated"}) {
             int x = 0;
@@ -507,6 +548,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                 return labelsColor[x++];
             }
         };
+        yAxis.setTickLabelFont(font);
         xAxis.setGridBandsVisible(false);
         yAxis.setGridBandsVisible(false);
         yAxis.setAxisLinePaint(Color.WHITE);
@@ -683,5 +725,80 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         }
         kMeansClusteringPanel.setVisible(true);
     }
+
+    private StreamResource createProteinsInformationResource() {
+        return new StreamResource(new StreamResource.StreamSource() {
+            @Override
+            @SuppressWarnings("CallToPrintStackTrace")
+            public InputStream getStream() {
+                Set<JFreeChart> set = new LinkedHashSet<JFreeChart>();
+                if (orederingOptionGroup.getValue().toString().equalsIgnoreCase("Default order")) {
+                    try {
+
+                        set.add(defaultChart);
+                        set.addAll(studiesScatterChartsLayout.getScatterCharts());
+                        byte[] pdfFile = mainHandler.exportImgAsPdf(set, "proteins_information_charts.pdf");
+                        return new ByteArrayInputStream(pdfFile);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+
+                } else {
+                    try {
+                        set.add(orderedChart);
+                        set.addAll(studiesScatterChartsLayout.getScatterCharts());
+                        byte[] pdfFile = mainHandler.exportImgAsPdf(set, "proteins_information_charts.pdf");
+                        return new ByteArrayInputStream(pdfFile);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+
+                }
+
+            }
+        }, "proteins_information_charts.pdf");
+    }
+
+
+
+ private StreamResource createFullReportResource() {
+        return new StreamResource(new StreamResource.StreamSource() {
+            @Override
+            @SuppressWarnings("CallToPrintStackTrace")
+            public InputStream getStream() {
+                Set<JFreeChart> set = new LinkedHashSet<JFreeChart>();
+                if (orederingOptionGroup.getValue().toString().equalsIgnoreCase("Default order")) {
+                    try {
+
+                        set.add(defaultChart);
+                        
+                           datasetExploringCentralSelectionManager.exportFullReport();
+                        set.addAll(studiesScatterChartsLayout.getScatterCharts());
+                        byte[] pdfFile = mainHandler.exportImgAsPdf(set, "full_Reaport.pdf");
+                        return new ByteArrayInputStream(pdfFile);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+
+                } else {
+                    try {
+                        set.add(orderedChart);
+                        set.addAll(studiesScatterChartsLayout.getScatterCharts());
+                        byte[] pdfFile = mainHandler.exportfullReportAsZip(set, "full_Reaport.pdf");
+                        return new ByteArrayInputStream(pdfFile);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+
+                }
+
+            }
+        }, "full_Reaport.zip");
+    }
+
 
 }

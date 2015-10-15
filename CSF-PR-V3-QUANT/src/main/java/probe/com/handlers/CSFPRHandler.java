@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import org.jfree.chart.JFreeChart;
 import probe.com.dal.Query;
 import probe.com.model.CoreLogic;
 import probe.com.model.beans.identification.IdentificationDatasetBean;
@@ -345,6 +346,20 @@ public class CSFPRHandler implements Serializable {
      */
     public void exportIdentificationPeptidesToFile(int datasetId, boolean validated, String datasetName, String dataType, String exportFileType) {
         logicLayer.exportIdentificationPeptidesToFile(datasetId, validated, datasetName, dataType, exportFileType);
+
+    }
+    
+      
+  public byte[] exportImgAsPdf(Set<JFreeChart> component, String fileName) {
+     return  logicLayer.exportImgAsPdf(component, fileName);
+//          
+//         "";//url + userFolder.getName() + "/" + pdfFile.getName();
+
+    }
+   public byte[] exportfullReportAsZip(Set<JFreeChart> component, String fileName) {
+     return  logicLayer.exportfullReportAsZip(component, fileName);
+//          
+//         "";//url + userFolder.getName() + "/" + pdfFile.getName();
 
     }
 

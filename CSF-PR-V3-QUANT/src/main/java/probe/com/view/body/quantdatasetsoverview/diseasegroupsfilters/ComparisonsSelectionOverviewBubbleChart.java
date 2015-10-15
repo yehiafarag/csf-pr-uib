@@ -5,9 +5,14 @@
  */
 package probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters;
 
+import com.vaadin.data.Property;
 import com.vaadin.event.LayoutEvents;
+import com.vaadin.server.FileDownloader;
 import com.vaadin.server.Page;
+import com.vaadin.server.StreamResource;
+import com.vaadin.server.StreamResource.StreamSource;
 import com.vaadin.server.ThemeResource;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
@@ -16,6 +21,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.awt.Color;
@@ -23,7 +29,9 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.geom.Rectangle2D;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,7 +39,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
 import org.apache.commons.codec.binary.Base64;
 import org.jfree.chart.ChartRenderingInfo;
@@ -55,18 +62,16 @@ import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.selectionmanager.CSFFilter;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
-import probe.com.view.core.JfreeExporter;
 import probe.com.view.core.jfreeutil.SquaredDot;
 
-/**
- *
+/*
  * @author Yehia Farag
  */
 public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout implements CSFFilter, LayoutEvents.LayoutClickListener {
 
     private final String teststyle;
     private final Page.Styles styles = Page.getCurrent().getStyles();
-    private String defaultImgURL;
+    private String defaultImgURL = "";
     private final ChartRenderingInfo chartRenderingInfo = new ChartRenderingInfo();
     private final DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager;
     private final int width, height;
@@ -76,20 +81,23 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
     private final AbsoluteLayout chartLayout = new AbsoluteLayout();
     private final HorizontalLayout btnsLayout = new HorizontalLayout();
     private final Button resetBtn;
-
-    private JfreeExporter exporter = new JfreeExporter();
+    private final Button exportPdfBtn;
 
     public void updateSize(int updatedWidth) {
         defaultImgURL = saveToFile(chart, updatedWidth, height);
         this.setWidth(updatedWidth + "px");
         this.chartLayout.setWidth(updatedWidth + "px");
-        btnsLayout.setExpandRatio(btnsLayout.getComponent(0), updatedWidth - 110);
-        btnsLayout.setExpandRatio(btnsLayout.getComponent(1), 110);
+//        btnsLayout.setExpandRatio(btnsLayout.getComponent(0), updatedWidth - 50);
+//        btnsLayout.setExpandRatio(btnsLayout.getComponent(1), 50);
         this.redrawChart();
 
     }
 
-    public ComparisonsSelectionOverviewBubbleChart(final DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager, CSFPRHandler handler, int chartWidth, int chartHeight, Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
+    public HorizontalLayout getBtnsLayout() {
+        return btnsLayout;
+    }
+
+    public ComparisonsSelectionOverviewBubbleChart(final DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager, final CSFPRHandler handler, int chartWidth, int chartHeight, Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
         this.width = chartWidth;
         this.height = chartHeight - 20;
         this.handler = handler;
@@ -101,6 +109,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
         btnsLayout.setWidth(100 + "%");
         btnsLayout.setHeight(20 + "px");
+        btnsLayout.setSpacing(true);
 
         this.datasetExploringCentralSelectionManager = datasetExploringCentralSelectionManager;
         this.datasetExploringCentralSelectionManager.registerFilter(ComparisonsSelectionOverviewBubbleChart.this);
@@ -125,31 +134,92 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         handleft.setSource(new ThemeResource("img/handleft.png"));
         initialLayout.addComponent(handleft);
         initialLayout.setComponentAlignment(handleft, Alignment.MIDDLE_CENTER);
+         
+        
+        HorizontalLayout btnContainerLayout = new HorizontalLayout();
+        btnContainerLayout.setSpacing(true);
+        btnContainerLayout.setMargin(new MarginInfo(false, true, false, false));
+        btnContainerLayout.setWidthUndefined();
+        btnContainerLayout.setHeightUndefined();
+         btnsLayout.addComponent(btnContainerLayout);
+        btnsLayout.setComponentAlignment(btnContainerLayout, Alignment.TOP_RIGHT);
+        
+        final OptionGroup   significantProteinsOnlyOption = new OptionGroup();
+        btnContainerLayout.addComponent(significantProteinsOnlyOption);
+        significantProteinsOnlyOption.setWidth("140px");
+//        significantProteinsOnlyOption.setHeight("40px");
+        significantProteinsOnlyOption.setNullSelectionAllowed(true); // user can not 'unselect'
+        significantProteinsOnlyOption.setMultiSelect(true);
 
-        resetBtn = new Button("Reset Selection");
+        significantProteinsOnlyOption.addItem("Significant Regulation");
+        significantProteinsOnlyOption.addStyleName("horizontal");
+        significantProteinsOnlyOption.addValueChangeListener(new Property.ValueChangeListener() {
+
+            @Override
+            public void valueChange(Property.ValueChangeEvent event) {
+                datasetExploringCentralSelectionManager.updateSignificantOnlySelection(significantProteinsOnlyOption.getValue().toString().equalsIgnoreCase("[Significant Regulation]"));
+
+            }
+
+        });
+        
+
+        resetBtn = new Button("Clear");
         resetBtn.setDescription("Unselect all data");
-        resetBtn.setStyleName(Reindeer.BUTTON_LINK);
-        btnsLayout.addComponent(resetBtn);
-        btnsLayout.setExpandRatio(resetBtn, width - 110);
-        btnsLayout.setComponentAlignment(resetBtn, Alignment.MIDDLE_RIGHT);
+        resetBtn.setPrimaryStyleName("clearselectionbtn");
+        resetBtn.setWidth("50px");
+        resetBtn.setHeight("20px");
+        
+       
+        btnContainerLayout.addComponent(resetBtn);
 
-        Button exportBtn = new Button("Save Chart Image");
-        exportBtn.setDescription("Save the chart image as pdf");
-        exportBtn.setStyleName(Reindeer.BUTTON_LINK);
-        btnsLayout.addComponent(exportBtn);
-        btnsLayout.setExpandRatio(exportBtn, 110);
-        btnsLayout.setComponentAlignment(exportBtn, Alignment.MIDDLE_RIGHT);
+//        Button exportBtn = new Button("Save Chart Image");
+//        exportBtn.setDescription("Save the chart image as pdf");
+//        exportBtn.setStyleName(Reindeer.BUTTON_LINK);
+//        exportBtn.addClickListener(new Button.ClickListener() {
+//
+//            @Override
+//            public void buttonClick(Button.ClickEvent event) {
+////                exporter.writeChartToPDFFile(chart, 595, 842, "comparisons_overview.pdf");
+//                ExternalResource res =new ExternalResource(defaultImgURL, "image/png");
+//             LegacyWindow lw = new LegacyWindow();
+//             lw.open(res, "save image ",595,842,BorderStyle.MINIMAL);
+//                    
+//                     
+//            }
+//        });
+        exportPdfBtn = new Button("");
+        exportPdfBtn.setWidth("20px");
+        exportPdfBtn.setHeight("20px");
+        exportPdfBtn.setPrimaryStyleName("exportpdfbtn");
+        exportPdfBtn.setDescription("Export chart image");
+        
+        
+        
+        StreamResource myResource = createResource();
+        FileDownloader fileDownloader = new FileDownloader(myResource);
+        fileDownloader.extend(exportPdfBtn);
+
+        btnContainerLayout.addComponent(exportPdfBtn);
+//        btnsLayout.setExpandRatio(exportPdfBtn, 50);
+//        btnsLayout.setComponentAlignment(exportPdfBtn, Alignment.MIDDLE_RIGHT);
         this.btnsLayout.setVisible(false);
         this.chartLayout.setVisible(false);
         this.addComponent(initialLayout);
+        
+        
+        
+        
+        
+        
         this.addComponent(chartLayout);
-        this.addComponent(btnsLayout);
+//        this.addComponent(btnsLayout);
 
         resetBtn.addClickListener(new Button.ClickListener() {
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                datasetExploringCentralSelectionManager.setQuantProteinsSelection(new HashSet<String>());
+                datasetExploringCentralSelectionManager.setQuantProteinsSelection(new HashSet<String>(),"");
                 resetChart();
 
             }
@@ -158,6 +228,26 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         chartLayout.addLayoutClickListener(ComparisonsSelectionOverviewBubbleChart.this);
 
     }
+
+    private StreamResource createResource() {
+        return new StreamResource(new StreamSource() {
+            @Override
+            @SuppressWarnings("CallToPrintStackTrace")
+            public InputStream getStream() {
+                try {
+                    Set<JFreeChart> set = new HashSet<JFreeChart>();
+                    set.add(chart);
+                    byte[] pdfFile = handler.exportImgAsPdf(set, "bubblechart_comparisons_selection.pdf");
+                    return new ByteArrayInputStream(pdfFile);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+
+            }
+        }, "bubblechart_comparisons_selection.pdf");
+    }
+
     private boolean isNewImge = true;
 
     private JFreeChart updateBubbleChartChart(Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
@@ -256,6 +346,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         }
 
         final Color[] labelsColor = new Color[]{new Color(80, 183, 71), Color.LIGHT_GRAY, new Color(1, 141, 244), Color.LIGHT_GRAY, new Color(204, 0, 0)};
+        Font font = new Font("Verdana", Font.PLAIN, 14);
         SymbolAxis yAxis = new SymbolAxis(null, new String[]{"Down Regulated", " ", "Not Regulated", " ", "Up Regulated"}) {
             int x = 0;
 
@@ -267,7 +358,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                 return labelsColor[x++];
             }
         };
-//        
+        yAxis.setTickLabelFont(font);
         yAxis.setGridBandsVisible(false);
         yAxis.setAxisLinePaint(Color.LIGHT_GRAY);
 
@@ -349,23 +440,25 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                 return ticks;
             }
         };
+
+        xAxis.setTickLabelFont(font);
         xAxis.setGridBandsVisible(false);
         xAxis.setAxisLinePaint(Color.LIGHT_GRAY);
         int scale = XYBubbleRenderer.SCALE_ON_RANGE_AXIS;
 
         XYItemRenderer xyitemrenderer = new XYBubbleRenderer(scale) {
-            int counter = 0;
-            int localSerious = -1;
+            private int counter = 0;
+            private int localSerious = -1;
+            private final Map<Integer, Color[]> localSeriousColorMap = seriousColorMap;
 
             @Override
             public Paint getSeriesPaint(int series) {
-
-                if (series != localSerious || isNewImge) {
+                if (series != localSerious || isNewImge || localSeriousColorMap.get(series).length == counter) {
                     counter = 0;
                     isNewImge = false;
                 }
                 localSerious = series;
-                Color c = seriousColorMap.get(series)[counter];
+                Color c = localSeriousColorMap.get(series)[counter];
                 counter++;
 
                 return c;
@@ -383,16 +476,15 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         xyplot.setBackgroundPaint(Color.WHITE);
         generatedChart.setBackgroundPaint(Color.WHITE);
 
-        exporter.writeChartToPDFFile(generatedChart, 595, 842, "bublechart.pdf");
+//        exporter.writeChartToPDFFile(generatedChart, 595, 842, "bublechart.pdf");
         return generatedChart;
 
     }
+    byte imageData[];
 
     private String saveToFile(final JFreeChart chart, final double width, final double height) {
         isNewImge = true;
 
-        byte imageData[];
-        Map<String , SquaredDot> arrangeMap = new TreeMap<String,SquaredDot>();
         Set<SquaredDot> set = new TreeSet<SquaredDot>();
         try {
 
@@ -466,20 +558,20 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                     set.add(square);
                 }
             }
-            for(SquaredDot square:set){               
+            for (SquaredDot square : set) {
                 chartLayout.addComponent(square, square.getParam("position").toString());
             }
             String base64 = Base64.encodeBase64String(imageData);
             base64 = "data:image/png;base64," + base64;
+
+//         exportPdfBtn.setValue("<a href='" + base64 + "'style='color: rgb(27, 105, 159);font-family: Verdana,;font-size: 12px;font-stretch: normal;font-style: normal;font-variant: normal;font-weight: normal;height: auto;line-height: normal;text-align: left;text-decoration: underline;text-shadow: none;'target='_blank' download> Export</a>");
+//         exportPdfBtn.setImmediate(true);
             return base64;
         } catch (IOException e) {
             System.err.println("at error " + e.getMessage());
         }
         return "";
     }
-    
-    
-  
 
     /**
      *
@@ -538,6 +630,9 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
      * be any double value.
      *
      * @param linearValue the value to be converted to log scale
+     * @param max
+     * @param upperLimit
+     * @param lowerLimit
      * @return the value in log scale
      * @throws IllegalArgumentException if value out of range
      */
@@ -562,7 +657,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         if (event.getClickedComponent() instanceof SquaredDot) {
             SquaredDot square = (SquaredDot) event.getClickedComponent();
             if (square == lastselectedComponent) {
-               resetBtn.click();
+                resetBtn.click();
 
                 return;
 
@@ -581,7 +676,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
             }
 
-            datasetExploringCentralSelectionManager.setQuantProteinsSelection(selectionMap);
+            datasetExploringCentralSelectionManager.setQuantProteinsSelection(selectionMap,((QuantDiseaseGroupsComparison) datasetExploringCentralSelectionManager.getSelectedDiseaseGroupsComparisonList().toArray()[seriousIndex]).getComparisonHeader());
 
             Iterator<Component> itr = chartLayout.iterator();
             while (itr.hasNext()) {
@@ -593,16 +688,16 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
         }
     }
-    
-    private void resetChart(){     
-                lastselectedComponent = null;
-                Iterator<Component> itr = chartLayout.iterator();
-                while (itr.hasNext()) {
-                    SquaredDot tsquare = (SquaredDot) itr.next();
-                    tsquare.reset();
 
-                }
-    
+    private void resetChart() {
+        lastselectedComponent = null;
+        Iterator<Component> itr = chartLayout.iterator();
+        while (itr.hasNext()) {
+            SquaredDot tsquare = (SquaredDot) itr.next();
+            tsquare.reset();
+
+        }
+
     }
 
 }

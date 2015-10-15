@@ -39,31 +39,39 @@ import org.jfree.chart.axis.SymbolAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.entity.ChartEntity;
 import org.jfree.chart.entity.XYItemEntity;
+import org.jfree.chart.labels.ItemLabelAnchor;
+import org.jfree.chart.labels.ItemLabelPosition;
+import org.jfree.chart.labels.SymbolicXYItemLabelGenerator;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.SeriesRenderingOrder;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYItemRenderer;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.title.TextTitle;
+import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.ui.TextAnchor;
 import org.jfree.util.ShapeUtilities;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.selectionmanager.CSFFilterSelection;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.peptidescontainer.ComparisonDetailsBean;
-import probe.com.view.core.JfreeExporter;
 import probe.com.view.core.jfreeutil.SquaredDot;
 
 /**
  *
  * @author Yehia Farag
  */
-public class ProteinComparisonScatterPlotLayout extends GridLayout {
+public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
 
     private final Label comparisonTitle;
     private final VerticalLayout closeBtn;
     private final AbsoluteLayout ProteinScatterPlotContainer;
     private final int imgWidth;
-    private Map<String,QuantDatasetObject> dsKeyDatasetMap = new HashMap<String, QuantDatasetObject>();;
+    private Map<String, QuantDatasetObject> dsKeyDatasetMap = new HashMap<String, QuantDatasetObject>();
+
+    ;
 
     /**
      *
@@ -79,9 +87,10 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
     private final String teststyle;
     private final Page.Styles styles = Page.getCurrent().getStyles();
     private final DiseaseGroupsComparisonsProteinLayout comparisonProtein;
-    private  PeptidesStackedBarChartsControler studyPopupLayoutManager;
+    private PeptidesStackedBarChartsControler studyPopupLayoutManager;
     private final boolean searchingMode;
-      private final int width;
+    private final int width;
+    private JFreeChart scatterPlot;
 
     /**
      *
@@ -90,12 +99,12 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
      * @param exploringFiltersManagerinst
      * @param searchingMode
      */
-    public ProteinComparisonScatterPlotLayout(final DiseaseGroupsComparisonsProteinLayout cp, int width, DatasetExploringCentralSelectionManager exploringFiltersManagerinst, final boolean searchingMode) {
+    public ProteinStudyComparisonScatterPlotLayout(final DiseaseGroupsComparisonsProteinLayout cp, int width, DatasetExploringCentralSelectionManager exploringFiltersManagerinst, final boolean searchingMode) {
         this.searchingMode = searchingMode;
         this.exploringFiltersManager = exploringFiltersManagerinst;
-        this.setColumns(4); 
+        this.setColumns(4);
         this.setRows(2);
-        this.width=width;
+        this.width = width;
         this.setSpacing(true);
         this.setMargin(new MarginInfo(false, false, true, false));
         this.comparisonProtein = cp;
@@ -126,8 +135,7 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
         ProteinScatterPlotContainer.setWidth(imgWidth + "px");
         ProteinScatterPlotContainer.setHeight(150 + "px");
 
-        
-        teststyle = "_"+cp.getProteinAccssionNumber().replace(" ", "_").replace(")", "_").replace("(", "_").toLowerCase() + "_" + cp.getComparison().getComparisonHeader().replace(" ", "_").replace(")", "_").replace("(", "_").toLowerCase().replace("/", "_") + "_scatterplot";
+        teststyle = "_" + cp.getProteinAccssionNumber().replace(" ", "_").replace(")", "_").replace("(", "_").toLowerCase() + "_" + cp.getComparison().getComparisonHeader().replace(" ", "_").replace(")", "_").replace("(", "_").toLowerCase().replace("/", "_") + "_scatterplot";
         styles.add("." + teststyle + " {  background-image: url(" + defaultScatterPlottImgUrl + " );background-position:center; background-repeat: no-repeat; }");
         ProteinScatterPlotContainer.setStyleName(teststyle);
         ProteinScatterPlotContainer.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
@@ -140,19 +148,19 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
                     int pGrNumber = (Integer) dot.getParam("pGrNumber");
                     exploringFiltersManager.setSelectedDataset(patientGroupsNumToDsIdMap.get(pGrNumber).getRegulatedList(trend));
                     int[] dssArr = new int[patientGroupsNumToDsIdMap.get(pGrNumber).getRegulatedList(trend).size()];
-                    for (int x = 0; x < dssArr.length; x++) {                        
+                    for (int x = 0; x < dssArr.length; x++) {
                         dssArr[x] = patientGroupsNumToDsIdMap.get(pGrNumber).getRegulatedList(trend).get(x);
                     }
                     exploringFiltersManager.setStudyLevelFilterSelection(new CSFFilterSelection("Study_Selection", dssArr, "scatter", null));//  
-                   Set<QuantDatasetObject> dsObjects = new HashSet<QuantDatasetObject>();
+                    Set<QuantDatasetObject> dsObjects = new HashSet<QuantDatasetObject>();
                     for (int dsId : dssArr) {
                         dsObjects.add(exploringFiltersManager.getFullQuantDatasetMap().get(dsId));
                     }
-                    studyPopupLayoutManager.updateSelectedProteinInformation(pGrNumber,trend,dsObjects,cp);
+                    studyPopupLayoutManager.updateSelectedProteinInformation(pGrNumber, trend, dsObjects, cp);
                 }
             }
         });
-        
+
     }
 
     /**
@@ -177,13 +185,19 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
         XYSeries downSer = new XYSeries(0);
         XYSeries notSer = new XYSeries(1);
         XYSeries upSer = new XYSeries(2);
+
+        XYSeries downSerII = new XYSeries(3);
+        XYSeries notSerII = new XYSeries(4);
+        XYSeries upSerII = new XYSeries(5);
+
+//        XYSeries plusSeries = new XYSeries(6);
         double downCounter = 1;
         double notCounter = 3;
         double upCounter = 5;
 
         patientGroupsNumToDsIdMap.clear();
 
-        Map<Integer, int[]> paTGrNumbtrendMap = new HashMap<Integer, int[]>();
+        final Map<Integer, int[]> paTGrNumbtrendMap = new HashMap<Integer, int[]>();
         for (String protTrend : cp.getPatientsNumToTrindMap().keySet()) {
             List<Integer> patNums = cp.getPatientsNumToTrindMap().get(protTrend);
             int coun = 0;
@@ -223,30 +237,66 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
             int[] values = paTGrNumbtrendMap.get(i);
             if ((values[2] > 1)) {
                 upSer.add(upCounter, i);
-                upSer.add(upCounter, ((double) i + 0.45));
-                upSer.add(upCounter, (double) i + 0.85);
-            } else if ((values[2] == 1)) {
+                upSerII.add(upCounter, i);
+//                plusSeries.add(upCounter, i);
+//                upSer.add(upCounter, ((double) i + 0.45));
+//                upSer.add(upCounter, (double) i + 0.85);
+
+            } //            else if ((values[2] > 2)) {
+            //                upSer.add(upCounter, i);
+            ////                 upSer.add(upCounter, (double) i + 0.45);
+            //                upSerII.add(upCounter, i);
+            //                plusSeries.add(upCounter, i);
+            //
+            ////                plusSeries.add(upCounter,  (double) i + 0.85);
+            //            }
+            else if ((values[2] == 1)) {
                 upSer.add(upCounter, i);
             }
-            if ((values[1] > 1)) {
-                notSer.add(notCounter, ((double) i + 0.45));
+            if ((values[1] == 1)) {
+//                notSer.add(notCounter, ((double) i + 0.45));
                 notSer.add(notCounter, i);
-                notSer.add(notCounter, (double) i + 0.85);
-            } else if ((values[1] == 1)) {
+//                notSer.add(notCounter, (double) i + 0.85);
+//                plusSeries.add(notCounter,  (double) i + 0.45);
+            } else if ((values[1] > 1)) {
                 notSer.add(notCounter, i);
+                notSerII.add(notCounter, i);
+//                plusSeries.add(notCounter, (double) i);
             }
+//            else if ((values[1] > 2)) {
+////                 downSer.add(downCounter, ((double) i + 0.45));
+//                notSer.add(notCounter, i);
+//                notSer.add(notCounter, i);
+////                downSer.add(downCounter, (double) i + 0.85);
+//                plusSeries.add(notCounter, (double) i);
+//            }
             if ((values[0] > 1)) {
-                downSer.add(downCounter, ((double) i + 0.45));
+//                downSer.add(downCounter, ((double) i + 0.45));
                 downSer.add(downCounter, i);
-                downSer.add(downCounter, (double) i + 0.85);
-            } else if ((values[0] == 1)) {
+                downSerII.add(downCounter, i);
+
+//                downSer.add(downCounter, (double) i + 0.85);
+//                plusSeries.add(downCounter, (double) i);
+            } //            else if ((values[0] == 2)) {
+            ////                 downSer.add(downCounter, ((double) i + 0.45));
+            //                downSer.add(downCounter, i);
+            //                downSerII.add(downCounter, i);
+            ////                downSer.add(downCounter, (double) i + 0.85);
+            ////                plusSeries.add(downCounter,  (double) i + 0.45);
+            //            } 
+            else if ((values[0] == 1)) {
                 downSer.add(downCounter, i);
             }
 
         }
-        dataset.addSeries(upSer);
-        dataset.addSeries(notSer);
+
         dataset.addSeries(downSer);
+        dataset.addSeries(notSer);
+        dataset.addSeries(upSer);
+        dataset.addSeries(downSerII);
+        dataset.addSeries(notSerII);
+        dataset.addSeries(upSerII);
+//        dataset.addSeries(plusSeries);
         final String[] labels = new String[]{" ", ("Down Regulated (" + cp.getSignificantDown() + ")"), " ", ("Not Regulated (" + cp.getNotProvided() + ")"), " ", ("Up Regulated (" + cp.getSignificantUp() + ")"), ""};
         final Color[] labelsColor = new Color[]{Color.LIGHT_GRAY, new Color(80, 183, 71), Color.LIGHT_GRAY, new Color(1, 141, 244), Color.LIGHT_GRAY, Color.RED, Color.LIGHT_GRAY};
         final SymbolAxis domainAxis = new SymbolAxis("X", labels) {
@@ -262,7 +312,7 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
 
         };
         domainAxis.setAutoRangeIncludesZero(false);
-        Font f = new Font("Verdana", Font.PLAIN, 10);
+        Font f = new Font("Verdana", Font.PLAIN, 11);
         domainAxis.setTickLabelFont(f);
         domainAxis.setAutoRange(false);
         domainAxis.setLabel(null);
@@ -301,9 +351,9 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
             }
         };
         plot.setOrientation(PlotOrientation.HORIZONTAL);
-        JFreeChart scatter = new JFreeChart(plot);
-        scatter.setBackgroundPaint(Color.WHITE);
-        scatter.getLegend().setVisible(false);
+        JFreeChart tempScatterPlot = new JFreeChart(plot);
+        tempScatterPlot.setBackgroundPaint(Color.WHITE);
+        tempScatterPlot.getLegend().setVisible(false);
         Color c = new Color(242, 242, 242);
         plot.setDomainAxis(domainAxis);
         plot.setDomainGridlinePaint(Color.GRAY);
@@ -311,7 +361,7 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
         plot.setRangeGridlinesVisible(true);
         plot.setRangeGridlinePaint(Color.GRAY);
         plot.setOutlinePaint(Color.GRAY);
-        XYItemRenderer renderer = plot.getRenderer();
+        XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
         ValueAxis va = plot.getDomainAxis();
         va.setAutoRange(false);
         va.setMinorTickCount(0);
@@ -326,21 +376,94 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
 
         va.setRange(0, 6);
         plot.setBackgroundPaint(Color.WHITE);
+        renderer.setUseOutlinePaint(true);
 
-        renderer.setSeriesPaint(2, new Color(80, 183, 71));
-        renderer.setSeriesPaint(1, new Color(1, 141, 244));
-        renderer.setSeriesPaint(0, new Color(204, 0, 0));
-        Shape notRShape = ShapeUtilities.createDiamond(5f);
-        Shape leftArr = ShapeUtilities.createDownTriangle(5f);
-        Shape rightArr = ShapeUtilities.createUpTriangle(5f);
-        renderer.setSeriesShape(2, leftArr);
+        Color c0 = new Color(80, 183, 71);
+        renderer.setSeriesPaint(0, c0);
+        renderer.setSeriesOutlinePaint(0, Color.WHITE);
+
+        Color c1 = new Color(1, 141, 244);
+        renderer.setSeriesPaint(1, c1);
+        renderer.setSeriesOutlinePaint(1, Color.WHITE);
+
+        Color c2 = new Color(204, 0, 0);
+        renderer.setSeriesPaint(2, c2);
+        renderer.setSeriesOutlinePaint(2, Color.WHITE);
+
+        renderer.setSeriesPaint(3, new Color(150, 212, 145));
+        renderer.setSeriesOutlinePaint(3, new Color(150, 212, 145));
+
+        renderer.setSeriesPaint(4, new Color(103, 187, 248));
+        renderer.setSeriesOutlinePaint(4,new Color(103, 187, 248));
+
+        renderer.setSeriesPaint(5, new Color(224, 102, 102));
+        renderer.setSeriesOutlinePaint(5, new Color(224, 102, 102));
+
+//        renderer.setSeriesPaint(6, Color.BLACK);
+//        renderer.setSeriesOutlinePaint(6, Color.BLACK);
+        Shape downArr = ShapeUtilities.createDownTriangle(7f);
+        Shape notRShape = ShapeUtilities.createDiamond(7f);        
+        Shape upArr = ShapeUtilities.createUpTriangle(7);
+
+        Shape downArrII = ShapeUtilities.createTranslatedShape(ShapeUtilities.createDownTriangle(6f), 5, -5);
+        Shape notRShapeII = ShapeUtilities.createTranslatedShape(ShapeUtilities.createDiamond(6f), 0, -7);
+        Shape upArrII = ShapeUtilities.createTranslatedShape(ShapeUtilities.createUpTriangle(6f), 4, -4);
+
+//        Shape plus = ShapeUtilities.createTranslatedShape(ShapeUtilities.createRegularCross(3f, 0.4f), 11, -7);
+        renderer.setSeriesShape(0, downArr);
         renderer.setSeriesShape(1, notRShape);
-        renderer.setSeriesShape(0, rightArr);
-        scatter.setBorderVisible(false);
+        renderer.setSeriesShape(2, upArr);
 
-        JfreeExporter exporter = new JfreeExporter();
-        exporter.writeChartToPDFFile(scatter, 595, 842, "scatter 1" + teststyle + ".pdf");
-        defaultScatterPlottImgUrl = saveToFile(scatter, w, h, defaultScatterPlotRenderingInfo);
+        renderer.setSeriesShape(3, downArrII);
+        renderer.setSeriesShape(4, notRShapeII);
+        renderer.setSeriesShape(5, upArrII);
+//       renderer.setSeriesShape(6, plus);
+
+        renderer.setBaseItemLabelsVisible(true);
+        renderer.setBaseItemLabelGenerator(new SymbolicXYItemLabelGenerator() {
+            private final int[] indexer = new int[]{0, 0, 0, 1, 0, 2};
+
+            @Override
+            public String generateLabel(XYDataset dataset, int series, int category) {
+                if (series > 2) {
+                    int patNumber = (int) dataset.getYValue(series, category);
+                    int trend = (int) dataset.getXValue(series, category);
+                    return "\t   " + paTGrNumbtrendMap.get(patNumber)[indexer[trend]];
+
+                }
+
+                return super.generateLabel(dataset, series, category); //To change body of generated methods, choose Tools | Templates.
+            }
+
+        });
+        ItemLabelPosition position = new ItemLabelPosition(
+                ItemLabelAnchor.OUTSIDE12, TextAnchor.BASELINE_LEFT,
+                TextAnchor.TOP_LEFT, 0.0);
+        renderer.setSeriesPositiveItemLabelPosition(3, position);
+        renderer.setSeriesPositiveItemLabelPosition(4, position);
+        renderer.setSeriesPositiveItemLabelPosition(5, position);
+
+        renderer.setBaseItemLabelFont(f);
+
+        tempScatterPlot.setBorderVisible(false);
+
+        plot.setSeriesRenderingOrder(SeriesRenderingOrder.REVERSE);
+
+        plot.setBackgroundPaint(c);
+
+        heighlightedScatterPlottImgUrl = saveToFile(tempScatterPlot, w, h, defaultScatterPlotRenderingInfo);
+
+        plot.setBackgroundPaint(Color.WHITE);
+        defaultScatterPlottImgUrl = saveToFile(tempScatterPlot, w, h, defaultScatterPlotRenderingInfo);
+
+        TextTitle title = new TextTitle(comparisonTitle.getValue(), f);
+
+        scatterPlot = new JFreeChart(plot);
+        scatterPlot.setTitle(title);
+
+        scatterPlot.setBorderVisible(false);
+        scatterPlot.setBackgroundPaint(Color.WHITE);
+        scatterPlot.getLegend().setVisible(false);
         dsKeyDatasetMap.clear();
         for (int i = 0; i < defaultScatterPlotRenderingInfo.getEntityCollection().getEntityCount(); i++) {
             final ChartEntity entity = defaultScatterPlotRenderingInfo.getEntityCollection().getEntity(i);
@@ -350,6 +473,10 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
                 int y = ((XYItemEntity) entity).getItem();
 
                 if (((XYItemEntity) entity).getDataset().getYValue(x, y) > (int) ((XYItemEntity) entity).getDataset().getYValue(x, y)) {
+                    continue;
+                }
+                if (((XYItemEntity) entity).getSeriesIndex() > 2) {
+                    
                     continue;
                 }
 
@@ -363,17 +490,14 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
                 ComparisonDetailsBean cpDetails = patientGroupsNumToDsIdMap.get(patGrNumber);
                 List<Integer> dsList = cpDetails.getRegulatedList(trend);
                 StringBuilder sb = new StringBuilder();
-                
-         
-                
+
                 for (int dsId : dsList) {
-                     QuantDatasetObject ds;
-                     if (searchingMode) {
+                    QuantDatasetObject ds;
+                    if (searchingMode) {
 
                         sb.append("<h3>").append((exploringFiltersManager.getFullQuantDatasetMap().get(dsId - 1)).getAuthor()).append(" (").append((exploringFiltersManager.getFullQuantDatasetMap().get(dsId - 1)).getYear()).append(")<h3/>");
                         sb.append("<p></p>");
-                         ds = exploringFiltersManager.getFullQuantDatasetMap().get(dsId - 1);
-                       
+                        ds = exploringFiltersManager.getFullQuantDatasetMap().get(dsId - 1);
 
                     } else {
                         sb.append("<h3>").append((exploringFiltersManager.getFullQuantDatasetMap().get(dsId)).getAuthor()).append(" (").append((exploringFiltersManager.getFullQuantDatasetMap().get(dsId)).getYear()).append(")<h3/>");
@@ -381,13 +505,13 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
                         ds = exploringFiltersManager.getFullQuantDatasetMap().get(dsId);
 
                     }
-                    dsKeyDatasetMap.put("-"+dsId+"-"+comparisonProtein.getProteinAccssionNumber()+"-", ds);
+                    dsKeyDatasetMap.put("-" + dsId + "-" + comparisonProtein.getProteinAccssionNumber() + "-", ds);
                 }
                 String tooltip = sb.toString().substring(0, sb.toString().length() - 7);
                 SquaredDot square = new SquaredDot("squared");
                 if (paTGrNumbtrendMap.get(patGrNumber)[trend] > 1) {
-                    square.setWidth(15 + "px");
-                    square.setHeight(10 + "px");
+                    square.setWidth(20 + "px");
+                    square.setHeight(15 + "px");
                 } else {
                     square.setWidth(10 + "px");
                     square.setHeight(10 + "px");
@@ -402,9 +526,7 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
                 ProteinScatterPlotContainer.addComponent(square, "left: " + (xSer - 5) + "px; top: " + top + "px;");
             }
         }
-        plot.setBackgroundPaint(c);
-        exporter.writeChartToPDFFile(jFreeChart, 595, 842, "scatter selected" + teststyle + ".pdf");
-        heighlightedScatterPlottImgUrl = saveToFile(scatter, w, h, defaultScatterPlotRenderingInfo);
+
     }
 
     private String saveToFile(final JFreeChart chart, final double width, final double height, ChartRenderingInfo chartRenderingInfo) {
@@ -452,10 +574,14 @@ public class ProteinComparisonScatterPlotLayout extends GridLayout {
     public void redrawChart() {
         if (defaultScatterPlottImgUrl == null) {
             this.generateScatterplotchart(comparisonProtein, imgWidth, 150);
-            studyPopupLayoutManager = new PeptidesStackedBarChartsControler(width, patientGroupsNumToDsIdMap,comparisonProtein.getProteinAccssionNumber(),comparisonProtein.getProtName(),comparisonProtein.getUrl(),comparisonProtein.getComparison().getComparisonHeader(),comparisonProtein.getDsQuantProteinsMap(),dsKeyDatasetMap);
+            studyPopupLayoutManager = new PeptidesStackedBarChartsControler(width, patientGroupsNumToDsIdMap, comparisonProtein.getProteinAccssionNumber(), comparisonProtein.getProtName(), comparisonProtein.getUrl(), comparisonProtein.getComparison().getComparisonHeader(), comparisonProtein.getDsQuantProteinsMap(), dsKeyDatasetMap);
         }
         styles.add("." + teststyle + " {  background-image: url(" + defaultScatterPlottImgUrl + " );background-position:center; background-repeat: no-repeat; }");
 
+    }
+
+    public JFreeChart getScatterPlot() {
+        return scatterPlot;
     }
 
 }

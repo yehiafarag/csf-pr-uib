@@ -5,16 +5,26 @@
  */
 package probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.interactivepiechartfilters;
 
+import com.vaadin.event.LayoutEvents;
+import com.vaadin.server.FileDownloader;
 import com.vaadin.server.Page;
+import com.vaadin.server.StreamResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import org.jfree.chart.JFreeChart;
+import probe.com.handlers.CSFPRHandler;
 import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.PopupInteractiveDSFiltersLayout;
@@ -28,12 +38,13 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
 //     private JfreeExporter exporter = new JfreeExporter();
     private final PieChartsSelectionManager internalSelectionManager;
     private PopupInteractiveDSFiltersLayout pieChartFiltersBtn;
+    Set<JFreeChart> chartSet = new HashSet<JFreeChart>();
 
     /**
      *
      * @param exploringFiltersManager
      */
-    public StudiesPieChartFiltersContainerLayout(DatasetExploringCentralSelectionManager exploringFiltersManager) {
+    public StudiesPieChartFiltersContainerLayout(DatasetExploringCentralSelectionManager exploringFiltersManager, final CSFPRHandler handler) {
 
         int layoutHeight = Page.getCurrent().getBrowserWindowHeight() - 200;
         int layoutWidth = Page.getCurrent().getBrowserWindowWidth() - 200;
@@ -52,7 +63,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
         this.setColumns(4);
         int colCounter = 0;
         int rowCounter = 0;
-
+        this.chartSet.clear();
         for (int x = 0; x < activeFilters.length; x++) {
             String filterId = "";
             if (activeFilters[x]) {
@@ -143,6 +154,9 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
                                 dsIndexesMap.put(pb.getTypeOfStudy(), list);
 
                             }
+                            if (pb.getTypeOfStudy().trim().equalsIgnoreCase("")) {
+                                pb.setTypeOfStudy("Not Available");
+                            }
                             List<Integer> list = dsIndexesMap.get(pb.getTypeOfStudy());
                             list.add(pb.getDsKey());
                             dsIndexesMap.put(pb.getTypeOfStudy(), list);
@@ -155,6 +169,9 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
                         for (QuantDatasetObject pb : quantDatasetArr.values()) {
                             if (pb == null) {
                                 continue;
+                            }
+                            if (pb.getSampleType().trim().equalsIgnoreCase("")) {
+                                pb.setSampleType("Not Available");
                             }
                             if (!dsIndexesMap.containsKey(pb.getSampleType())) {
                                 List<Integer> list = new ArrayList<Integer>();
@@ -173,6 +190,9 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
                         for (QuantDatasetObject pb : quantDatasetArr.values()) {
                             if (pb == null) {
                                 continue;
+                            }
+                            if (pb.getSampleMatching().trim().equalsIgnoreCase("")) {
+                                pb.setSampleMatching("Not Available");
                             }
                             if (!dsIndexesMap.containsKey(pb.getSampleMatching())) {
                                 List<Integer> list = new ArrayList<Integer>();
@@ -216,7 +236,8 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
                                 continue;
                             }
                             String value = pb.getAnalyticalApproach();
-                            if (value == null || value.equalsIgnoreCase("")) {
+                            if (value == null || value.trim().equalsIgnoreCase("")) {
+                                pb.setAnalyticalApproach("Not Available");
                                 value = "Not Available";
                             }
                             if (!dsIndexesMap.containsKey(value)) {
@@ -237,8 +258,9 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
                                 continue;
                             }
                             String value = pb.getEnzyme();
-                            if (value == null || value.equalsIgnoreCase("")) {
+                            if (value == null || value.trim().equalsIgnoreCase("")) {
                                 value = "Not Available";
+                                pb.setEnzyme(value);
                             }
                             if (!dsIndexesMap.containsKey(value)) {
                                 List<Integer> list = new ArrayList<Integer>();
@@ -258,6 +280,10 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
                                 continue;
                             }
                             String value = pb.getShotgunTargeted();
+                            if (value == null || value.trim().equalsIgnoreCase("")) {
+                                value = "Not Available";
+                                pb.setShotgunTargeted(value);
+                            }
                             if (!dsIndexesMap.containsKey(value)) {
                                 List<Integer> list = new ArrayList<Integer>();
                                 dsIndexesMap.put(value, list);
@@ -277,6 +303,10 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
                                 continue;
                             }
                             String value = pb.getQuantificationBasis();
+                            if (value == null || value.trim().equalsIgnoreCase("")) {
+                                value = "Not Available";
+                                pb.setQuantificationBasis(value);
+                            }
                             if (!dsIndexesMap.containsKey(value)) {
                                 List<Integer> list = new ArrayList<Integer>();
                                 dsIndexesMap.put(value, list);
@@ -295,6 +325,10 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
                                 continue;
                             }
                             String value = pb.getQuantBasisComment();
+                            if (value == null || value.trim().equalsIgnoreCase("")) {
+                                value = "Not Available";
+                                pb.setQuantBasisComment(value);
+                            }
                             if (!dsIndexesMap.containsKey(value)) {
                                 List<Integer> list = new ArrayList<Integer>();
                                 dsIndexesMap.put(value, list);
@@ -335,6 +369,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
                 if (!valueSet.isEmpty()) {
                     //do we need valueSet;;
                     JfreeDivaPieChartFilter iFilter = new JfreeDivaPieChartFilter(filterId, x, internalSelectionManager, dsIndexesMap, filterWidth);
+                    chartSet.add(iFilter.getChart());
 //                    fullFilterList.put(filterId, valueSet);
                     this.addComponent(iFilter, colCounter++, rowCounter);
                     this.setComponentAlignment(iFilter, Alignment.MIDDLE_CENTER);
@@ -360,8 +395,12 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
         }
 
         this.setComponentAlignment(btnLayout, Alignment.MIDDLE_CENTER);
-        Button applyFilters = new Button("Apply Filters");
-        applyFilters.setStyleName(Reindeer.BUTTON_SMALL);
+        Button applyFilters = new Button("Apply");
+        applyFilters.setDescription("Apply the selected filters");
+        applyFilters.setPrimaryStyleName("resetbtn");
+        applyFilters.setWidth("50px");
+        applyFilters.setHeight("24px");
+        
         btnLayout.addComponent(applyFilters);
         applyFilters.addClickListener(new Button.ClickListener() {
 
@@ -371,21 +410,39 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
             }
         });
 
-        Button unselectAllBtn = new Button("Unselect All");
-        unselectAllBtn.setStyleName(Reindeer.BUTTON_SMALL);
+//        Button unselectAllBtn = new Button("Unselect All");
+//        unselectAllBtn.setStyleName(Reindeer.BUTTON_SMALL);
+//        btnLayout.addComponent(unselectAllBtn);
+//        unselectAllBtn.addClickListener(new Button.ClickListener() {
+//
+//            @Override
+//            public void buttonClick(Button.ClickEvent event) {
+//
+//                internalSelectionManager.unselectAll();
+//
+//            }
+//        });
+//        
+        
+        
+        VerticalLayout unselectAllBtn = new VerticalLayout();
+        unselectAllBtn.setStyleName("unselectallbtn");
         btnLayout.addComponent(unselectAllBtn);
-        unselectAllBtn.addClickListener(new Button.ClickListener() {
+        btnLayout.setComponentAlignment(unselectAllBtn, Alignment.TOP_LEFT);
+        unselectAllBtn.setDescription("Unselect All Filters");
+        unselectAllBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
             @Override
-            public void buttonClick(Button.ClickEvent event) {
-
-                internalSelectionManager.unselectAll();
-
+            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+              internalSelectionManager.unselectAll();
             }
         });
+        
 
         Button resetFiltersBtn = new Button("Reset");
-        resetFiltersBtn.setStyleName(Reindeer.BUTTON_SMALL);
+        resetFiltersBtn.setPrimaryStyleName("resetbtn");
+        resetFiltersBtn.setWidth("50px");
+        resetFiltersBtn.setHeight("24px");
         btnLayout.addComponent(resetFiltersBtn);
         resetFiltersBtn.setDescription("Reset all applied filters");
         resetFiltersBtn.addClickListener(new Button.ClickListener() {
@@ -395,6 +452,27 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
                 internalSelectionManager.resetCentralSelectionManager();
             }
         });
+        
+        
+          Button exportChartsBtn = new Button("");
+          
+        exportChartsBtn.setWidth("24px");
+        exportChartsBtn.setHeight("24px");
+        exportChartsBtn.setPrimaryStyleName("exportpdfbtn");
+        btnLayout.addComponent(exportChartsBtn);
+        exportChartsBtn.setDescription("Export all charts filters as pdf file");
+//        exportChartsBtn.addClickListener(new Button.ClickListener() {
+//            @Override
+//            public void buttonClick(Button.ClickEvent event) {
+//               String url = handler.exportImgAsPdf(chartSet, "piechart_filters.pdf");
+//                FileResource res = new FileResource(new File(url));
+//                Page.getCurrent().open(res, "_blank", true);
+//            }
+//        });
+        
+           StreamResource myResource = createResource(handler);
+        FileDownloader fileDownloader = new FileDownloader(myResource);
+        fileDownloader.extend(exportChartsBtn);
         pieChartFiltersBtn = new PopupInteractiveDSFiltersLayout(this);
     }
 
@@ -421,6 +499,26 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
     public void updateSelectionManager(boolean selfSelection) {
         internalSelectionManager.updateCentralSelectionManager(selfSelection);
 
+    }
+    
+      
+    private StreamResource createResource(final CSFPRHandler handler) {
+        return new StreamResource(new StreamResource.StreamSource() {
+            @Override
+            public InputStream getStream() {
+
+//                BufferedImage bi = chart.createBufferedImage(width, height, chartRenderingInfo);
+                try {
+                    
+                    byte[] pdfFile = handler.exportImgAsPdf(chartSet, "piechart_filters.pdf");
+                    return new ByteArrayInputStream(pdfFile);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+
+            }
+        }, "piechart_filters.pdf");
     }
 
 }

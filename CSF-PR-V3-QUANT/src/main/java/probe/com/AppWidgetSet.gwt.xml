@@ -61,4 +61,6 @@
     
 
     <inherits name="com.alsnightsoft.vaadin.widgets.canvasplus.CanvasplusWidgetset" />
+
+    
 </module>

@@ -169,7 +169,7 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
 
         this.addComponent(patientGroupIIFilter);
 
-        diseaseGroupsFilterBtn = new Button("Disease Groups Filter");
+        diseaseGroupsFilterBtn = new Button("Disease Groups");
         diseaseGroupsFilterBtn.setStyleName(Reindeer.BUTTON_LINK);
         diseaseGroupsFilterBtn.addClickListener(DiseaseGroupsListFilter.this);
 
