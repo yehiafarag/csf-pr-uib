@@ -81,7 +81,7 @@ public class DAL {
         database.storeQuantDatasets();
     }
 
-    public Map<String, Integer> storeQuantitiveProteins(List<QuantProtein> qProtList) {
+    public Object[] storeQuantitiveProteins(List<QuantProtein> qProtList) {
         return database.storeQuantitiveProteins(qProtList);
     }
 

@@ -58,7 +58,7 @@ public class Handler {
     }
 
     public boolean restoreDB(String source, String mysqlPath) {
-        return dal.restoreDB(source,mysqlPath);
+        return dal.restoreDB(source, mysqlPath);
     }
 
     public boolean handelQuantPubData(String quantDataFilePath, String sequanceFilePath) {
@@ -73,13 +73,13 @@ public class Handler {
         Set<QuantDatasetObject> datasetsList = dal.getQuantDatasetListObject();
         List<QuantProtein> updatedQuantProtList = this.handleQuantData(datasetsList, qProtList);
 //        //store quant protiens
-        Map<String, Integer> peptideKeyToProteinIndexMap = dal.storeQuantitiveProteins(updatedQuantProtList);
-        
-        
-        List<QuantProtein> peptidesList = handelQuantPeptides(qProtList, peptideKeyToProteinIndexMap);
+        Object[] maps = dal.storeQuantitiveProteins(updatedQuantProtList);
+        Map<String, Integer> peptideKeyToProteinIndexMap = (Map<String, Integer>) maps[0];
+        Map<Integer, Integer> protKeyToDsIndexMap = (Map<Integer, Integer>) maps[1];
+
+        List<QuantProtein> peptidesList = handelQuantPeptides(qProtList, peptideKeyToProteinIndexMap, protKeyToDsIndexMap);
         //store quant peptides
         dal.storeQuantitivePeptides(peptidesList);
-        
 
         return true;
     }
@@ -114,27 +114,45 @@ public class Handler {
         return true;
     }
 
-    private List<QuantProtein> handelQuantPeptides(List<QuantProtein> fullQuantProtList, Map<String, Integer> peptideKeyToProteinIndexMap) {
+    private List<QuantProtein> handelQuantPeptides(List<QuantProtein> fullQuantProtList, Map<String, Integer> peptideKeyToProteinIndexMap, Map<Integer, Integer> protKeyToDsIndexMap) {
 //        Map<String, QuantPeptide> peptides = new HashMap<String, QuantPeptide>();
         List<QuantProtein> peptidesList = new ArrayList<QuantProtein>();
-        Set<String>KeyCounter = new HashSet<String>();
+//        Set<String>KeyCounter = new HashSet<String>();
 //        List<QuantProtein> updatedQuantProtList = new ArrayList<QuantProtein>();
+        Map<String, QuantProtein> potentialPeptidesList = new HashMap<String, QuantProtein>();
+        Set<String> currentPeptidesList = new HashSet<String>();
+
         for (QuantProtein peptideProtein : fullQuantProtList) {
+
             if (!peptideProtein.isPeptideProtein()) {
+                if (peptideProtein.getPeptideSequance() != null && !peptideProtein.getPeptideSequance().trim().equalsIgnoreCase("") && !peptideProtein.getPeptideSequance().trim().equalsIgnoreCase("Not Available")) {
+                    peptideProtein.setProtKey(peptideKeyToProteinIndexMap.get(peptideProtein.getQuantPeptideKey()));
+                    peptideProtein.setDsKey(protKeyToDsIndexMap.get(peptideProtein.getProtKey()));
+                    if (potentialPeptidesList.containsKey(peptideProtein.getQuantPeptideKey())) //                        System.out.println("this is error 2 proteins has peptide info "+ peptideProtein.getPumedID()+"  "+ peptideProtein.getProtKey()+"  "+ peptideProtein.getStudyKey()+"   "+peptideProtein.getUniprotAccession());
+                    {
+                        System.out.println("error for the key " + peptideProtein.getQuantPeptideKey());
+                    } else {
+                        potentialPeptidesList.put(peptideProtein.getQuantPeptideKey(), peptideProtein);
+                    }
+//                    System.out.println("added new potential added "+ peptideProtein.getProtKey());
+                }
                 continue;
             }
 
-            if (peptideKeyToProteinIndexMap.containsKey(peptideProtein.getqPeptideKey())) {
-                peptideProtein.setProtKey(peptideKeyToProteinIndexMap.get(peptideProtein.getqPeptideKey()));
-                KeyCounter.add(peptideProtein.getqPeptideKey());
+            if (peptideKeyToProteinIndexMap.containsKey(peptideProtein.getQuantPeptideKey())) {
+                peptideProtein.setProtKey(peptideKeyToProteinIndexMap.get(peptideProtein.getQuantPeptideKey()));
+                peptideProtein.setDsKey(protKeyToDsIndexMap.get(peptideProtein.getProtKey()));
+//                KeyCounter.add(peptideProtein.getqPeptideKey());
 
             } else {
-                System.out.println("not related to any protein peptides keys is " + peptideProtein.getqPeptideKey());
+                System.out.println("not related to any protein peptides keys is " + peptideProtein.getQuantPeptideKey());
             }
             if (peptideProtein.getUniprotAccession().equalsIgnoreCase("") || peptideProtein.getUniprotAccession().equalsIgnoreCase("Not Available") || peptideProtein.getUniprotAccession().equalsIgnoreCase("Entry Deleted") || peptideProtein.getUniprotAccession().equalsIgnoreCase("Entry Demerged") || peptideProtein.getUniprotAccession().equalsIgnoreCase("NOT RETRIEVED") || peptideProtein.getUniprotAccession().equalsIgnoreCase("DELETED")) {
-                     peptideProtein.setUniprotAccession(peptideProtein.getPublicationAccNumber());
-                 }
+                peptideProtein.setUniprotAccession(peptideProtein.getPublicationAccNumber());
+            }
+            currentPeptidesList.add(peptideProtein.getQuantPeptideKey());
             peptidesList.add(peptideProtein);
+
 //            
 //
 //            QuantPeptide pep = new QuantPeptide();
@@ -164,12 +182,24 @@ public class Handler {
 //            }
 //            peptidesList.add(pep);
         }
+
+        for (String peptideKey : potentialPeptidesList.keySet()) {
+            if (!currentPeptidesList.contains(peptideKey)) {
+                QuantProtein quantPeptide = potentialPeptidesList.get(peptideKey);
+                quantPeptide.setPeptideProtein(true);
+                peptidesList.add(quantPeptide);
+
+            } else {
+
+            }
+
+        }
+
 //        fullQuantProtList.clear();
 //        for (QuantProtein qprot : proteins.values()) {
 //            fullQuantProtList.add(qprot);
 //
 //        }
-
 //        Set<String> ids = new HashSet<String>();
 //        for( QuantPeptide pep  :peptidesList)
 //            ids.add(pep.getProtKey()+"");
@@ -337,6 +367,10 @@ public class Handler {
             }
 
         }
+
+    }
+
+    private void validatePeptidesList(List<QuantProtein> peptidesList, List<QuantProtein> fullQuantProtList) {
 
     }
 

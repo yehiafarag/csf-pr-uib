@@ -12,7 +12,7 @@ package com.quantcsf.beans;
 public class QuantProtein {
     private String pumedID,uniprotAccession, uniprotProteinName, publicationAccNumber,publicationProteinName,rawDataAvailable,typeOfStudy,sampleType,patientGroupI,patientSubGroupI,patientGrIComment,patientGroupII,patientSubGroupII,patientGrIIComment,sampleMatching,normalizationStrategy,technology,analyticalApproach,enzyme,shotgunOrTargetedQquant,quantificationBasis,quantBasisComment,additionalComments;		
     private int peptideCharge,quantifiedProteinsNumber,peptideIdNumb,quantifiedPeptidesNumber, patientsGroupINumber,patientsGroupIINumber,year,filesNum,IdentifiedProteinsNum, dsKey,protKey;    
-    private String peptideSequenceAnnotated,studyKey,qPeptideKey,    peptideSequance,	peptideModification,modificationComment , stringFCValue,stringPValue,author,diseaseGroups,pvalueComment; 
+    private String peptideSequenceAnnotated,studyKey,quantPeptideKey,    peptideSequance,	peptideModification,modificationComment , stringFCValue,stringPValue,author,diseaseGroups,pvalueComment; 
 
     private boolean peptideProtein;
     public int getDsKey() {
@@ -369,12 +369,12 @@ public String getTechnology() {
         this.modificationComment = modificationComment;
     }
 
-    public String getqPeptideKey() {
-        return qPeptideKey;
+    public String getQuantPeptideKey() {
+        return quantPeptideKey;
     }
 
-    public void setqPeptideKey(String qPeptideKey) {
-        this.qPeptideKey = qPeptideKey;
+    public void setQuantPeptideKey(String quantPeptideKey) {
+        this.quantPeptideKey = quantPeptideKey;
     }
 
     public int getPeptideCharge() {

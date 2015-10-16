@@ -1778,7 +1778,7 @@ public class DB implements Serializable {
                 insertQProtStat.setString(45, qprot.getQuantBasisComment());
                 insertQProtStat.setString(46, qprot.getAdditionalComments());
 
-                insertQProtStat.setString(47, qprot.getqPeptideKey());
+                insertQProtStat.setString(47, qprot.getQuantPeptideKey());
                 insertQProtStat.setInt(48, qprot.getIdentifiedProteinsNum());
 
                 insertQProtStat.executeUpdate();
@@ -1992,8 +1992,9 @@ public class DB implements Serializable {
 
     }
 
-    public Map<String, Integer> storeQuantitiveProteins(List<QuantProtein> qProtList) {
+    public Object[] storeQuantitiveProteins(List<QuantProtein> qProtList) {
         Map<String, Integer> updatedProtList = new HashMap<String, Integer>();
+        Map<Integer , Integer>protDsMap = new HashMap<Integer, Integer>();
         String sqlStat = "INSERT INTO "
                 + " `quantitative_proteins_table` ( "
                 + "`ds_ID` , "
@@ -2047,7 +2048,8 @@ public class DB implements Serializable {
 
                 }
                 rs.close();
-                updatedProtList.put(quantProt.getqPeptideKey(), quantProt.getProtKey());
+                updatedProtList.put(quantProt.getQuantPeptideKey(), quantProt.getProtKey());
+                protDsMap.put(quantProt.getProtKey(), quantProt.getDsKey());
             }
 
         } catch (ClassNotFoundException e) {
@@ -2065,7 +2067,10 @@ public class DB implements Serializable {
         }
         System.out.println("done storing prote");
         System.gc();
-        return updatedProtList;
+        Object[] maps = new Object[2];
+        maps[0]= updatedProtList;
+        maps[1]= protDsMap;
+        return maps;
 
     }
 

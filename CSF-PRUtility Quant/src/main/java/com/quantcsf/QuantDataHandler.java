@@ -118,6 +118,14 @@ public class QuantDataHandler {
         qa14.setAnalyticalMethod("Disease Group I");
         qa14.setAuthor("Kroksveen, Ann C., et al.");
         authormap.put("26152395", qa14);
+        
+        
+        QuantDatasetObject qa15 = new QuantDatasetObject();
+        qa15.setYear(2015);
+        qa15.setFilesNumber(10);
+        qa15.setAnalyticalMethod("Disease Group I");
+        qa15.setAuthor("Astrid et al.");
+        authormap.put("99999999", qa15);
     }
 
     @SuppressWarnings("CallToPrintStackTrace")
@@ -134,6 +142,7 @@ public class QuantDataHandler {
             BufferedReader sequanceBufRdr = new BufferedReader(sequanceReader);
             sequanceBufRdr.readLine();
             Map<String, String> proteinAccSequanceMap = new HashMap<String, String>();
+             Map<String, String> proteinAccNameMap = new HashMap<String, String>();
             String seqline;
             int row = 1;
             while ((seqline = sequanceBufRdr.readLine()) != null && row < 1000000000) {
@@ -516,8 +525,7 @@ public class QuantDataHandler {
                 }
 
 //                if (qProt.isPeptideProtein()) {
-                String pepKey = qProt.getPumedID() + "_" + qProt.getUniprotAccession() + "_" + qProt.getPublicationAccNumber() + "_" + qProt.getTypeOfStudy() + "_" + qProt.getAnalyticalApproach();
-                qProt.setqPeptideKey(pepKey);
+               
 //                } else {
 //                    qProt.setqPeptideKey("");
 //
@@ -530,7 +538,10 @@ public class QuantDataHandler {
                 if ((!qProt.getPatientGroupII().equalsIgnoreCase(" ")) && qProt.getPatientSubGroupII().equalsIgnoreCase(" ")) {
                     qProt.setPatientGroupII(qProt.getPatientGroupII() + " (Undefined)");
                 }
-                qProt.setIdentifiedProteinsNum(-1);
+                qProt.setIdentifiedProteinsNum(-1); 
+                
+                String pepKey = qProt.getPumedID()+ "_" + qProt.getStudyKey()+ "_" + qProt.getUniprotAccession() + "_" + qProt.getPublicationAccNumber() + "_" + qProt.getTypeOfStudy() + "_" + qProt.getSampleType()+ "_" + qProt.getTechnology()+ "_" + qProt.getAnalyticalApproach()+ "_" + qProt.getAnalyticalMethod()+ "_" + qProt.getPatientsGroupINumber()+ "_" + qProt.getPatientsGroupIINumber()+"_"+qProt.getPatientSubGroupI()+"_"+qProt.getPatientSubGroupII();
+                qProt.setQuantPeptideKey(pepKey);
                 QuantProtList.add(qProt);
                 row++;
             } //    
@@ -670,11 +681,11 @@ public class QuantDataHandler {
         return prot;
     }
 
-    public Map<String, String> readSequanceFile(String path) {
+    public Map<String, QuantProtein> readSequanceFile(String path) {
 
         File dataFile = new File(path);
         String lastKey = "";
-        Map<String, String> protSeqMap = new HashMap<String, String>();
+        Map<String, QuantProtein> protSeqMap = new HashMap<String, QuantProtein>();
         try {
 
             FileReader fr = new FileReader(dataFile);
@@ -684,13 +695,16 @@ public class QuantDataHandler {
             System.out.println(header + "  headers " + headerArr[0]);
             String line;
             while ((line = bufRdr.readLine()) != null) {
+                QuantProtein quantProtein =new QuantProtein();
                 String[] lineArr = line.split("\t");
                 if (lineArr.length > 1) {
-                    protSeqMap.put(lineArr[0].trim(), lineArr[1].trim());
+                    quantProtein.setSequance(lineArr[1].trim());
+                    protSeqMap.put(lineArr[0].trim(), quantProtein);
                     lastKey = lineArr[0];
                 } else {
                     String str = protSeqMap.get(lastKey) + lineArr[0].trim();
-                    protSeqMap.put(lastKey, str);
+                      quantProtein.setSequance(str);
+                    protSeqMap.put(lastKey, quantProtein);
 
                 }
 
