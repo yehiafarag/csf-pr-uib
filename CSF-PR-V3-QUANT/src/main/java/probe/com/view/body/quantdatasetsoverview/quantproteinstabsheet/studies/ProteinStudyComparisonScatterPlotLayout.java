@@ -69,7 +69,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
     private final VerticalLayout closeBtn;
     private final AbsoluteLayout ProteinScatterPlotContainer;
     private final int imgWidth;
-    private Map<String, QuantDatasetObject> dsKeyDatasetMap = new HashMap<String, QuantDatasetObject>();
+    private final Map<String, QuantDatasetObject> dsKeyDatasetMap = new HashMap<String, QuantDatasetObject>();
 
     ;
 
@@ -88,7 +88,6 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
     private final Page.Styles styles = Page.getCurrent().getStyles();
     private final DiseaseGroupsComparisonsProteinLayout comparisonProtein;
     private PeptidesStackedBarChartsControler studyPopupLayoutManager;
-    private final boolean searchingMode;
     private final int width;
     private JFreeChart scatterPlot;
 
@@ -97,10 +96,8 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
      * @param cp
      * @param width
      * @param exploringFiltersManagerinst
-     * @param searchingMode
      */
-    public ProteinStudyComparisonScatterPlotLayout(final DiseaseGroupsComparisonsProteinLayout cp, int width, DatasetExploringCentralSelectionManager exploringFiltersManagerinst, final boolean searchingMode) {
-        this.searchingMode = searchingMode;
+    public ProteinStudyComparisonScatterPlotLayout(final DiseaseGroupsComparisonsProteinLayout cp, int width, DatasetExploringCentralSelectionManager exploringFiltersManagerinst) {
         this.exploringFiltersManager = exploringFiltersManagerinst;
         this.setColumns(4);
         this.setRows(2);
@@ -154,13 +151,19 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
                     exploringFiltersManager.setStudyLevelFilterSelection(new CSFFilterSelection("Study_Selection", dssArr, "scatter", null));//  
                     Set<QuantDatasetObject> dsObjects = new HashSet<QuantDatasetObject>();
                     for (int dsId : dssArr) {
+
                         dsObjects.add(exploringFiltersManager.getFullQuantDatasetMap().get(dsId));
+
                     }
                     studyPopupLayoutManager.updateSelectedProteinInformation(pGrNumber, trend, dsObjects, cp);
                 }
             }
         });
 
+    }
+
+    public PeptidesStackedBarChartsControler getStudyPopupLayoutManager() {
+        return studyPopupLayoutManager;
     }
 
     /**
@@ -394,7 +397,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         renderer.setSeriesOutlinePaint(3, new Color(150, 212, 145));
 
         renderer.setSeriesPaint(4, new Color(103, 187, 248));
-        renderer.setSeriesOutlinePaint(4,new Color(103, 187, 248));
+        renderer.setSeriesOutlinePaint(4, new Color(103, 187, 248));
 
         renderer.setSeriesPaint(5, new Color(224, 102, 102));
         renderer.setSeriesOutlinePaint(5, new Color(224, 102, 102));
@@ -402,7 +405,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
 //        renderer.setSeriesPaint(6, Color.BLACK);
 //        renderer.setSeriesOutlinePaint(6, Color.BLACK);
         Shape downArr = ShapeUtilities.createDownTriangle(7f);
-        Shape notRShape = ShapeUtilities.createDiamond(7f);        
+        Shape notRShape = ShapeUtilities.createDiamond(7f);
         Shape upArr = ShapeUtilities.createUpTriangle(7);
 
         Shape downArrII = ShapeUtilities.createTranslatedShape(ShapeUtilities.createDownTriangle(6f), 5, -5);
@@ -476,7 +479,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
                     continue;
                 }
                 if (((XYItemEntity) entity).getSeriesIndex() > 2) {
-                    
+
                     continue;
                 }
 
@@ -493,18 +496,11 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
 
                 for (int dsId : dsList) {
                     QuantDatasetObject ds;
-                    if (searchingMode) {
 
-                        sb.append("<h3>").append((exploringFiltersManager.getFullQuantDatasetMap().get(dsId - 1)).getAuthor()).append(" (").append((exploringFiltersManager.getFullQuantDatasetMap().get(dsId - 1)).getYear()).append(")<h3/>");
-                        sb.append("<p></p>");
-                        ds = exploringFiltersManager.getFullQuantDatasetMap().get(dsId - 1);
+                    sb.append("<h3>").append((exploringFiltersManager.getFullQuantDatasetMap().get(dsId)).getAuthor()).append(" (").append((exploringFiltersManager.getFullQuantDatasetMap().get(dsId)).getYear()).append(")<h3/>");
+                    sb.append("<p></p>");
+                    ds = exploringFiltersManager.getFullQuantDatasetMap().get(dsId);
 
-                    } else {
-                        sb.append("<h3>").append((exploringFiltersManager.getFullQuantDatasetMap().get(dsId)).getAuthor()).append(" (").append((exploringFiltersManager.getFullQuantDatasetMap().get(dsId)).getYear()).append(")<h3/>");
-                        sb.append("<p></p>");
-                        ds = exploringFiltersManager.getFullQuantDatasetMap().get(dsId);
-
-                    }
                     dsKeyDatasetMap.put("-" + dsId + "-" + comparisonProtein.getProteinAccssionNumber() + "-", ds);
                 }
                 String tooltip = sb.toString().substring(0, sb.toString().length() - 7);
@@ -563,7 +559,10 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         }
         if (clicked) {
             isclicked = true;
-            this.getUI().scrollIntoView(this.ProteinScatterPlotContainer);
+            if (this.getParent().isVisible()) {
+                this.getUI().scrollIntoView(this.ProteinScatterPlotContainer);
+            }
+
         }
 
     }

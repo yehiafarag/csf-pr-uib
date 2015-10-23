@@ -74,7 +74,7 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
     public HeatMapFilter(final DatasetExploringCentralSelectionManager centralFiltersSelectionManager, int heatmapW, Set<String> rowheaders, Set<String> colheaders, DiseaseGroup[] patientsGroupArr, int heatmapCellWidth) {
 
         this.setWidth(heatmapW + "px");
-        this.heatmapW=heatmapW;
+        this.heatmapW = heatmapW;
         this.setHeight("100%");
         this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.centralFiltersSelectionManager = centralFiltersSelectionManager;
@@ -82,6 +82,7 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
         heatMap = new HeatMapComponent(heatmapCellWidth) {
             @Override
             public void updateSelectionManager(Set<QuantDiseaseGroupsComparison> selectedDsList) {
+                
                 centralFiltersSelectionManager.setDiseaseGroupsComparisonSelection(selectedDsList);
             }
         };
@@ -217,7 +218,7 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
             this.setWidthUndefined();
             this.setHeightUndefined();
         }
-        
+
     }
 
 }

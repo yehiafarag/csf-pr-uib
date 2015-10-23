@@ -36,46 +36,51 @@
 			<url>http://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
 			<releases>
 				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
-	<dependencies>
-		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-server</artifactId>
-			<version>${vaadin.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-client-compiled</artifactId>
-			<version>${vaadin.version}</version>
-		</dependency>
-                <dependency>
-   <groupId>org.vaadin.icons</groupId>
-   <artifactId>vaadin-icons</artifactId>
-   <version>1.0.1</version>
-        </dependency>
-                <dependency>
-	<groupId>com.itextpdf</groupId>
-	<artifactId>itextpdf</artifactId>
-	<version>5.0.6</version>
-    </dependency>
+                        </releases>
+                        <snapshots>
+                            <enabled>true</enabled>
+                        </snapshots>
+                </pluginRepository>
+        </pluginRepositories>
+        <dependencies>
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-server</artifactId>
+                <version>${vaadin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-client-compiled</artifactId>
+                <version>${vaadin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.vaadin.icons</groupId>
+                <artifactId>vaadin-icons</artifactId>
+                <version>1.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.itextpdf</groupId>
+                <artifactId>itextpdf</artifactId>
+                <version>5.0.6</version>
+            </dependency>
     
-        <dependency>
-	<groupId>com.kenai.nbpwr</groupId>
-	<artifactId>org-apache-batik-all</artifactId>
-	<version>1.7-201002241055</version>
-</dependency>
+            <dependency>
+                <groupId>com.kenai.nbpwr</groupId>
+                <artifactId>org-apache-batik-all</artifactId>
+                <version>1.7-201002241055</version>
+            </dependency>
 
-        <dependency>
-            <groupId>org.apache.xmlgraphics</groupId>
-            <artifactId>batik-transcoder</artifactId>
-	<version>1.7</version>
-    </dependency>
-
+            <dependency>
+                <groupId>org.apache.xmlgraphics</groupId>
+                <artifactId>batik-transcoder</artifactId>
+                <version>1.7</version>
+            </dependency>
+    
+            <dependency>
+                <groupId>org.vaadin.addon</groupId>
+                <artifactId>visjs-addon</artifactId>
+                <version>1.0.1.0</version>
+            </dependency>
 
 
 		<!--

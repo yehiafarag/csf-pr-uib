@@ -49,6 +49,7 @@ public class AppController extends UI {
         setContent(application);
 
         this.addDetachListener(new DetachListener() {
+            @Override
             public void detach(DetachEvent event) {
                 System.out.println("######### Detached ##########");
             }

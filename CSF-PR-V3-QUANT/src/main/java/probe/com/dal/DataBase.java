@@ -2524,7 +2524,7 @@ public class DataBase implements Serializable {
                 pb.setQuantBasisComment(quant_basis_comment);
 
                 int id = rs.getInt("index");
-                pb.setDsKey(id - 1);
+                pb.setDsKey(id);
 
                 String normalization_strategy = rs.getString("normalization_strategy");
                 if (!activeHeaders[16] && normalization_strategy != null && !normalization_strategy.equalsIgnoreCase("Not Available")) {
@@ -2599,7 +2599,7 @@ public class DataBase implements Serializable {
             }
             rs.close();
             QuantDatasetInitialInformationObject datasetObject = new QuantDatasetInitialInformationObject();
-            QuantDatasetObject[] dss = new QuantDatasetObject[quantDatasetList.size()];
+//            QuantDatasetObject[] dss = new QuantDatasetObject[quantDatasetList.size()];
             Map<Integer, QuantDatasetObject> updatedQuantDatasetObjectMap = new LinkedHashMap<Integer, QuantDatasetObject>();
             for (QuantDatasetObject ds : quantDatasetList) {
                 updatedQuantDatasetObjectMap.put(ds.getDsKey(), ds);
@@ -2829,7 +2829,7 @@ public class DataBase implements Serializable {
                 quantDSObject.setQuantBasisComment(quant_basis_comment);
 
                 int id = rs.getInt("index");
-                quantDSObject.setDsKey(id - 1);
+                quantDSObject.setDsKey(id );
 
                 String normalization_strategy = rs.getString("normalization_strategy");
                 if (!activeHeaders[16] && normalization_strategy != null && !normalization_strategy.equalsIgnoreCase("Not Available")) {
@@ -3137,7 +3137,7 @@ public class DataBase implements Serializable {
             }
             String selectDsGroupNum = "SELECT `patients_group_i_number` , `patients_group_ii_number` FROM `quant_dataset_table` Where  `index`=?;";
             PreparedStatement selectselectDsGroupNumStat = conn.prepareStatement(selectDsGroupNum);
-            selectselectDsGroupNumStat.setInt(1, quantDatasetId + 1);
+            selectselectDsGroupNumStat.setInt(1, quantDatasetId);
             ResultSet rs = selectselectDsGroupNumStat.executeQuery();
             int groupINum = 0;
             int groupIINum = 0;
@@ -3149,7 +3149,7 @@ public class DataBase implements Serializable {
 
             String selectQuantProt = "SELECT * FROM `quantitative_proteins_table`  where `ds_ID` = ?;";
             PreparedStatement selectQuantProtStat = conn.prepareStatement(selectQuantProt);
-            selectQuantProtStat.setInt(1, quantDatasetId + 1);
+            selectQuantProtStat.setInt(1, quantDatasetId);
             ResultSet rs1 = selectQuantProtStat.executeQuery();
             while (rs1.next()) {
                 QuantProtein quantProt = new QuantProtein();
@@ -3189,21 +3189,21 @@ public class DataBase implements Serializable {
         return quantProtList;
 
     }
-
     /**
      * get quant proteins list for a number of quant datasets
      *
      * @param quantDatasetIds
      * @return quant proteins list
      */
-    public Set<QuantProtein> getQuantificationProteins(int[] quantDatasetIds) {
+    public Set<QuantProtein> getQuantificationProteins(Object[] quantDatasetIds) {
+   
         Set<QuantProtein> quantProtList = new HashSet<QuantProtein>();
         Set<QuantProtein> tquantProtList = new HashSet<QuantProtein>();
         try {
             StringBuilder sb = new StringBuilder();
 
-            for (int index : quantDatasetIds) {
-                sb.append("  `index` = ").append(index + 1);
+            for (Object index : quantDatasetIds) {
+                sb.append("  `index` = ").append(index);
                 sb.append(" OR ");
 
             }
@@ -3222,13 +3222,13 @@ public class DataBase implements Serializable {
             rs.close();
 
             sb = new StringBuilder();
-            for (int index : quantDatasetIds) {
-                sb.append("  `ds_ID` = ").append(index + 1);
+            for (Object index : quantDatasetIds) {
+                sb.append("  `ds_ID` = ").append(index);
                 sb.append(" OR ");
 
             }
             stat = sb.toString().substring(0, sb.length() - 4);
-            Set<String> dsIds = new HashSet<String>();
+//            Set<String> dsIdsList = new HashSet<String>();
 
             String selectQuantProt = "SELECT * FROM `quantitative_proteins_table`  WHERE  " + stat + " ;";
             PreparedStatement selectQuantProtStat = conn.prepareStatement(selectQuantProt);
@@ -3236,19 +3236,13 @@ public class DataBase implements Serializable {
             while (rs1.next()) {
                 QuantProtein quantProt = new QuantProtein();
                 quantProt.setProtKey(rs1.getInt("index"));
-                quantProt.setDsKey(rs1.getInt("ds_ID") - 1);
-                dsIds.add("" + quantProt.getDsKey());
+                quantProt.setDsKey(rs1.getInt("ds_ID"));
+//                dsIdsList.add("" + quantProt.getDsKey());
 
                 quantProt.setSequance(rs1.getString("sequance"));
 
                 quantProt.setUniprotAccession(rs1.getString("uniprot_accession"));
-                if (rs1.getString("uniprot_accession").equalsIgnoreCase("Not Available")) {
-//                    quantProt.setUniprotAccession(rs1.getString("publication_acc_number"));
-                    quantProt.setUniprotAccSource(false);
-                } else {
-
-                    quantProt.setUniprotAccSource(true);
-                }
+               
                 quantProt.setUniprotProteinName(rs1.getString("uniprot_protein_name"));
                 quantProt.setPublicationAccNumber(rs1.getString("publication_acc_number"));
                 quantProt.setPublicationProteinName(rs1.getString("publication_protein_name"));
@@ -3266,13 +3260,14 @@ public class DataBase implements Serializable {
 
             }
             rs1.close();
+            System.gc();
             for (QuantProtein qp : quantProtList) {
-                qp.setPatientsGroupIINumber((Integer) datasetIdDesGrs.get(qp.getDsKey() + 1)[1]);
-                qp.setPatientsGroupINumber((Integer) datasetIdDesGrs.get(qp.getDsKey() + 1)[0]);
-                qp.setPatientGroupI(datasetIdDesGrs.get(qp.getDsKey() + 1)[2].toString());
-                qp.setPatientGroupII(datasetIdDesGrs.get(qp.getDsKey() + 1)[3].toString());
-                qp.setPatientSubGroupI(datasetIdDesGrs.get(qp.getDsKey() + 1)[4].toString());
-                qp.setPatientSubGroupII(datasetIdDesGrs.get(qp.getDsKey() + 1)[5].toString());
+                qp.setPatientsGroupIINumber((Integer) datasetIdDesGrs.get(qp.getDsKey())[1]);
+                qp.setPatientsGroupINumber((Integer) datasetIdDesGrs.get(qp.getDsKey())[0]);
+                qp.setPatientGroupI(datasetIdDesGrs.get(qp.getDsKey() )[2].toString());
+                qp.setPatientGroupII(datasetIdDesGrs.get(qp.getDsKey() )[3].toString());
+                qp.setPatientSubGroupI(datasetIdDesGrs.get(qp.getDsKey() )[4].toString());
+                qp.setPatientSubGroupII(datasetIdDesGrs.get(qp.getDsKey() )[5].toString());
                 tquantProtList.add(qp);
 
             }
@@ -3311,7 +3306,7 @@ public class DataBase implements Serializable {
             }
             String selectQuantPeptides = "SELECT * FROM `quantitative_peptides_table` WHERE `DsKey`=?;";
             PreparedStatement selectQuantProtStat = conn.prepareStatement(selectQuantPeptides);
-            selectQuantProtStat.setInt(1, quantDatasetId + 1);
+            selectQuantProtStat.setInt(1, quantDatasetId);
             ResultSet rs1 = selectQuantProtStat.executeQuery();
             while (rs1.next()) {
                 QuantPeptide quantPeptide = new QuantPeptide();
@@ -3368,13 +3363,13 @@ public class DataBase implements Serializable {
      * @param quantDatasetIds
      * @return quant peptides list
      */
-    public Map<String, Set<QuantPeptide>> getQuantificationPeptides(int[] quantDatasetIds) {
+    public Map<String, Set<QuantPeptide>> getQuantificationPeptides(Object[] quantDatasetIds) {
         Set<QuantPeptide> quantPeptidetList = new HashSet<QuantPeptide>();
         try {
             StringBuilder sb = new StringBuilder();
 
-            for (int index : quantDatasetIds) {
-                sb.append("  `DsKey` = ").append(index + 1);
+            for (Object index : quantDatasetIds) {
+                sb.append("  `DsKey` = ").append(index);
                 sb.append(" OR ");
 
             }
@@ -3384,15 +3379,16 @@ public class DataBase implements Serializable {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
-//               Set<String> dsIds = new HashSet<String>();
+//               Set<String> dsIdsList = new HashSet<String>();
             String selectQuantPeptides = "SELECT * FROM `quantitative_peptides_table` WHERE " + stat;
             PreparedStatement selectQuantProtStat = conn.prepareStatement(selectQuantPeptides);
-//            selectQuantProtStat.setInt(1, quantDatasetId + 1);
+//            selectQuantProtStat.setInt(1, quantDatasetId );
             ResultSet rs1 = selectQuantProtStat.executeQuery();
+            int pepCounter = 0;
             while (rs1.next()) {
                 QuantPeptide quantPeptide = new QuantPeptide();
-                quantPeptide.setDsKey(rs1.getInt("DsKey") - 1);
-//                dsIds.add(quantPeptide.getDsKey()+"");
+                quantPeptide.setDsKey(rs1.getInt("DsKey"));
+//                dsIdsList.add(quantPeptide.getDsKey()+"");
                 quantPeptide.setProtIndex(rs1.getInt("prot_index"));
                 quantPeptide.setUniqueId(rs1.getInt("index"));
                 quantPeptide.setPeptideModification(rs1.getString("peptide_modification"));
@@ -3410,8 +3406,10 @@ public class DataBase implements Serializable {
                 quantPeptide.setPeptideCharge(rs1.getInt("peptide_charge"));
                 quantPeptide.setAdditionalComments(rs1.getString("additional_comments"));
                 quantPeptidetList.add(quantPeptide);
+                pepCounter++;
             }
             rs1.close();
+            System.out.println("at db pepcounter "+pepCounter);
 
             Map<String, Set<QuantPeptide>> quantProtPeptidetList = new HashMap<String, Set<QuantPeptide>>();
             for (QuantPeptide qp : quantPeptidetList) {
@@ -3450,40 +3448,38 @@ public class DataBase implements Serializable {
      * @param resultSet results set to fill identification peptides data
      * @return quant proteins List
      */
-    private List<QuantProtein> fillQuantProtData(ResultSet rs) {
+    private List<QuantProtein> fillQuantProtData(ResultSet resultSet) {
 
         List<QuantProtein> quantProtResultList = new ArrayList<QuantProtein>();
 
         try {
-            while (rs.next()) {
+            while (resultSet.next()) {
 
-                QuantProtein qpb = new QuantProtein();
-                if (rs.getString("uniprot_accession").equalsIgnoreCase("Not Available")) {
-                    qpb.setUniprotAccession(rs.getString("publication_acc_number"));
-                    qpb.setUniprotAccSource(false);
-                } else {
-                    qpb.setUniprotAccession(rs.getString("uniprot_accession"));
-                    qpb.setUniprotAccSource(true);
-                }
-                qpb.setUniprotProteinName(rs.getString("uniprot_protein_name"));
-                qpb.setPublicationAccNumber(rs.getString("publication_acc_number"));
-                qpb.setPublicationProteinName(rs.getString("publication_protein_name"));
-                qpb.setStringFCValue(rs.getString("fold_change"));
-                qpb.setStringPValue(rs.getString("string_p_value"));
-                qpb.setPeptideIdNumb(rs.getInt("identified_peptides_number"));
-                qpb.setQuantifiedPeptidesNumber(rs.getInt("quantified_peptides_number"));
-                qpb.setFcPatientGroupIonPatientGroupII(rs.getDouble("fc_value"));
-                qpb.setRocAuc(rs.getDouble("roc_auc"));
-                qpb.setpValue(rs.getDouble("p_value"));
-                qpb.setProtKey(rs.getInt("index"));
-                qpb.setDsKey(rs.getInt("ds_ID"));
-                qpb.setPvalueComment(rs.getString("p_value_comments"));
-                qpb.setSequance(rs.getString("sequance"));
-                quantProtResultList.add(qpb);
+                QuantProtein quantProt = new QuantProtein();
+                quantProt.setProtKey(resultSet.getInt("index"));
+                quantProt.setDsKey(resultSet.getInt("ds_ID"));
+                quantProt.setSequance(resultSet.getString("sequance"));
+                quantProt.setUniprotAccession(resultSet.getString("uniprot_accession"));
+                
+                quantProt.setUniprotProteinName(resultSet.getString("uniprot_protein_name"));
+                quantProt.setPublicationAccNumber(resultSet.getString("publication_acc_number"));
+                quantProt.setPublicationProteinName(resultSet.getString("publication_protein_name"));
+                quantProt.setQuantifiedPeptidesNumber(resultSet.getInt("quantified_peptides_number"));
+                quantProt.setIdentifiedProteinsNum(resultSet.getInt("identified_peptides_number"));
+                quantProt.setStringFCValue(resultSet.getString("fold_change"));
+                quantProt.setStringPValue(resultSet.getString("string_p_value"));
+                quantProt.setFcPatientGroupIonPatientGroupII(resultSet.getDouble("log_2_FC"));
+                quantProt.setRocAuc(resultSet.getDouble("roc_auc"));
+                quantProt.setpValue(resultSet.getDouble("p_value"));
+                quantProt.setPvalueComment(resultSet.getString("p_value_comments"));
+                quantProt.setPvalueSignificanceThreshold(resultSet.getString("pvalue_significance_threshold"));
+                quantProt.setAdditionalComments(resultSet.getString("additional_comments"));
+                quantProtResultList.add(quantProt);
 
             }
 
         } catch (Exception exp) {
+            exp.printStackTrace();
             System.err.println("at error line 2119 " + this.getClass().getName() + "   " + exp.getLocalizedMessage());
         }
         return quantProtResultList;

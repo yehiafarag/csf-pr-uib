@@ -10,6 +10,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import probe.com.model.beans.quant.QuantDatasetObject;
@@ -47,7 +48,6 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
         this.datasetQuantProteinsMap = datasetQuantProteinsMap;
         this.datasetIdDsObjectProteinsMap = datasetIdDsObjectProteinsMap;
         this.setWidthUndefined();
-        int height = Page.getCurrent().getBrowserWindowHeight() - 200;
         this.setHeightUndefined();
         this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.setMargin(false);
@@ -90,6 +90,64 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
         bottomLayout.setVisible(false);
 
     }
+    
+     public StudyPopupLayout(int width,QuantProtein datasetQuantProtein, QuantDatasetObject qds, String accession, String url, String name) {
+
+        this.accession = accession;
+        this.url = url;
+        this.name = name;
+        this.setWidthUndefined();
+        this.setHeightUndefined();
+        this.setStyleName(Reindeer.LAYOUT_WHITE);
+        this.setMargin(false);
+        this.setSpacing(true);
+        int colNum = Math.max(1, width / 200);
+
+        topLayout = new GridLayout(colNum, 3);
+        topLayout.setStyleName(Reindeer.LAYOUT_WHITE);
+
+        topLayout.setHeightUndefined();
+        topLayout.setSpacing(true);
+        
+         this.datasetQuantProteinsMap = new LinkedHashMap<String, QuantProtein>();
+         datasetQuantProteinsMap.put("-" + datasetQuantProtein.getDsKey() + "-" + accession + "-", datasetQuantProtein);
+         this.datasetIdDsObjectProteinsMap = new HashMap<String, QuantDatasetObject>();
+         datasetIdDsObjectProteinsMap.put("-" + datasetQuantProtein.getDsKey() + "-" + accession + "-", qds);         
+         
+        
+
+        bottomLayout = new VerticalLayout();
+        bottomLayout.setSpacing(true);
+        this.addComponent(topLayout);
+        bottomLayout.setMargin(new MarginInfo(true, false, false, false));
+        this.addComponent(bottomLayout);
+        bottomLayout.setWidth((width) + "px");
+//        bottomLayout.setHeight(height+"px");
+        bottomLayout.setStyleName("borderlayout");
+
+        peptidesInformationContainer = this.initInformationContainer(width);
+        proteinsInformationContainer = this.initInformationContainer(width);
+        datasetsInformationContainer = this.initInformationContainer(width);
+
+        peptideProteinInfoHideShow = new HideOnClickLayout("Peptides Information", peptidesInformationContainer, null, Alignment.TOP_CENTER);
+        peptideProteinInfoHideShow.setHeightUndefined();
+        bottomLayout.addComponent(peptideProteinInfoHideShow);
+        peptideProteinInfoHideShow.setVisability(true);
+
+        HideOnClickLayout proteinInfoHideShow = new HideOnClickLayout("Proteins Information", proteinsInformationContainer, null, Alignment.TOP_CENTER);
+        proteinInfoHideShow.setHeightUndefined();
+        bottomLayout.addComponent(proteinInfoHideShow);
+        proteinInfoHideShow.setVisability(true);
+
+        HideOnClickLayout datasetInfoLayout = new HideOnClickLayout("Dataset Information", datasetsInformationContainer, null);
+        datasetInfoLayout.setMargin(new MarginInfo(false, false, false, false));
+        bottomLayout.addComponent(datasetInfoLayout);
+        datasetInfoLayout.setVisability(false);
+        bottomLayout.setVisible(false);
+
+    }
+    
+    
 
     private VerticalLayout generateBtn(int dsKey, String protAccession, String btnName) {
         VerticalLayout btn = new VerticalLayout();
@@ -179,11 +237,12 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
         }
 
         for (int dsID : dsQuantPepMap.keySet()) {
+         
             String key = "-" + dsID + "-" + cp.getProteinAccssionNumber() + "-";
-            PeptidesInformationOverviewLayout peptideInfoLayout = new PeptidesInformationOverviewLayout(cp.getSequance(), dsQuantPepMap.get(dsID), subWidth,false);
+            PeptidesInformationOverviewLayout peptideInfoLayout = new PeptidesInformationOverviewLayout(cp.getSequance(), dsQuantPepMap.get(dsID), subWidth,false,null,0);
             peptidesInfoLayoutDSIndexMap.put(key, peptideInfoLayout);
         }
-        for (String key : cp.getDsQuantProteinsMap().keySet()) {
+        for (String key : cp.getDsQuantProteinsMap().keySet()) { 
             ProteinsInformationOverviewLayout proteinInfoLayout = new ProteinsInformationOverviewLayout(subWidth);
             DatasetInformationOverviewLayout datasetInfoLayout = new DatasetInformationOverviewLayout(subWidth);
             proteinInfoLayoutDSIndexMap.put(key, proteinInfoLayout);

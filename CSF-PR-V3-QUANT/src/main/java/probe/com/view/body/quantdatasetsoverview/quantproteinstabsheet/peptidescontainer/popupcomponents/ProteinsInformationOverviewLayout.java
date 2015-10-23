@@ -87,6 +87,7 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
         name.setValue(protName, url);
         pvalueSignificanceThreshold.setVisible(true);
         additionalComments.setVisible(true);
+        
 
         pvalueSignificanceThreshold.setValue(quantProtein.getPvalueSignificanceThreshold(), null);
         additionalComments.setValue(quantProtein.getAdditionalComments(), null);

@@ -25,15 +25,16 @@
 .v-loading-indicator-delay,  
 .v-loading-indicator-wait {  
     width: 100%;  
-    height: 100%;  
-    margin: 0;  
+    height: 100% !important;   
+    margin: 0 ;  
     background-position: 50%;  
     background-color: gray;  
     background-repeat: no-repeat;  
     background-attachment: fixed;   
     opacity: .8;  
     -ms-filter: alpha(opacity=80);  
-    filter: alpha(opacity=80);  
+    filter: alpha(opacity=80); 
+    position: fixed !important;
 }  
 .spacer v-verticallayout v-layout v-vertical v-widget spacer v-verticallayout-spacer v-has-width v-has-height{
     /*background: #4d749f;*/
@@ -986,6 +987,11 @@ resetlabelbtn p{
     background-color: rgb(242,242,242);
     border: 1px solid  lightgray ;
 }
+.selectablelightgraylayout{
+    background-color: rgb(242,242,242);
+    border: 1px solid  lightgray ;
+    cursor: pointer;
+}
 .upregchartlabel {
     font-family: Verdana;    
     color: red;
@@ -1362,11 +1368,11 @@ v-gridlayout-slot:focus{
     outline: none !important;
 }
 .filtercaption{
-      /* width: 45px; */
-    
-     line-height: 14px;
-    
-     /* cursor: pointer; */
+    /* width: 45px; */
+
+    line-height: 14px;
+
+    /* cursor: pointer; */
     -webkit-user-select: none;
     background-image: url(img/filters-128.png);
     padding:0 19px;    
@@ -1375,8 +1381,8 @@ v-gridlayout-slot:focus{
     background-repeat:no-repeat;
     background-position:0 1px;
     color: gray;
-    
-     /* cursor: pointer; */
+
+    /* cursor: pointer; */
     display: inline;
     font-family: Verdana;
     font-size: 13px;
@@ -1384,8 +1390,8 @@ v-gridlayout-slot:focus{
     font-style: normal;
     font-variant: normal;
     font-weight: bolder;
-    
-     height: 30px !important;
+
+    height: 30px !important;
     text-align: left;
     text-shadow: none;
     vertical-align: baseline;
@@ -1464,7 +1470,6 @@ v-gridlayout-slot:focus{
 
 }
 .borderlayout{
-
 
 
 }
@@ -1572,9 +1577,9 @@ v-gridlayout-slot:focus{
     border:  1px solid lightgray;
     background-color:  whitesmoke;
     font-size:11px;
-     font-family:Verdana;
-     line-height:150%;
-     text-align:center;
+    font-family:Verdana;
+    line-height:150%;
+    text-align:center;
     /* font-weight: bold; */
     background-position:center;
     background-repeat: no-repeat;
@@ -1620,14 +1625,14 @@ v-gridlayout-slot:focus{
     border:  1px solid lightgray;
     background-color:  whitesmoke;
     font-size:11px;
-     font-family:Verdana;
-     line-height:20px;
-     text-align:center;
+    font-family:Verdana;
+    line-height:20px;
+    text-align:center;
     /* font-weight: bold; */
     background-position:center;
     background-repeat: no-repeat;
     cursor:pointer;
-    
+
 
 }
 .resetbtn:hover{
@@ -1660,8 +1665,68 @@ v-gridlayout-slot:focus{
     outline: none;
 }
 .peptideslayoutlabel{
-    
     font-size:12px;
     font-family:Verdana;
     font-weight:normal;
+    cursor: pointer;
+}
+.ptmcycle {
+    /*background: url(http://www.damtp.cam.ac.uk/user/sjc1/damtp/icons/10x10/pinkball.gif) no-repeat;*/
+    background: url(img/orange_ptm.png) no-repeat;
+    background-position:center;
+    border: 1px solid black;
+    border-radius: 50%;
+
+
+
+}
+
+.downarricon {
+    /*background: url(http://www.damtp.cam.ac.uk/user/sjc1/damtp/icons/10x10/pinkball.gif) no-repeat;*/
+    background: url(img/down.png) no-repeat;
+     background-position:0px 3px;
+    padding:0px 12px;
+    background-size:10px 10px;
+      font-size:12px;
+    font-family:Verdana;
+    font-weight:normal;
+
+
+
+}
+
+.notregicon {
+    /*background: url(http://www.damtp.cam.ac.uk/user/sjc1/damtp/icons/10x10/pinkball.gif) no-repeat;*/
+    background: url(img/notreg.png) no-repeat;
+     background-position:0px 3px;
+    padding:0px 12px;
+    background-size:10px 10px;
+      font-size:12px;
+    font-family:Verdana;
+    font-weight:normal;
+
+
+
+}
+
+.uparricon {
+    /*background: url(http://www.damtp.cam.ac.uk/user/sjc1/damtp/icons/10x10/pinkball.gif) no-repeat;*/
+    background: url(img/up.png) no-repeat;
+     background-position:0px 3px;
+    padding:0px 12px;
+    background-size:10px 10px;
+      font-size:12px;
+    font-family:Verdana;
+    font-weight:normal;
+
+
+
+}
+.highlightlayout div{
+color:#4d749f;
+
+}
+.dottedline{
+    
+    /*border-bottom: 1px dotted black;*/
 }

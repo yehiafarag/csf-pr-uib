@@ -59,6 +59,7 @@ import org.jfree.ui.RectangleEdge;
 import org.jfree.ui.TextAnchor;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
+import probe.com.model.beans.quant.QuantProtein;
 import probe.com.selectionmanager.CSFFilter;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
@@ -82,6 +83,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
     private final HorizontalLayout btnsLayout = new HorizontalLayout();
     private final Button resetBtn;
     private final Button exportPdfBtn;
+    private final List<QuantProtein> searchQuantificationProtList;
 
     public void updateSize(int updatedWidth) {
         defaultImgURL = saveToFile(chart, updatedWidth, height);
@@ -97,7 +99,8 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         return btnsLayout;
     }
 
-    public ComparisonsSelectionOverviewBubbleChart(final DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager, final CSFPRHandler handler, int chartWidth, int chartHeight, Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
+    public ComparisonsSelectionOverviewBubbleChart(final DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager, final CSFPRHandler handler, int chartWidth, int chartHeight, Set<QuantDiseaseGroupsComparison> selectedComparisonList, List<QuantProtein> searchQuantificationProtList) {
+        this.searchQuantificationProtList=searchQuantificationProtList;
         this.width = chartWidth;
         this.height = chartHeight - 20;
         this.handler = handler;
@@ -590,7 +593,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
             Iterator<QuantDiseaseGroupsComparison> itr = selectedComparisonList.iterator();
             while (itr.hasNext()) {
                 if (itr.next().getComparProtsMap() == null) {
-                    selectedComparisonList = handler.getComparisonProtList(selectedComparisonList, null);
+                    selectedComparisonList = handler.getComparisonProtList(selectedComparisonList, searchQuantificationProtList);
                     break;
                 }
 

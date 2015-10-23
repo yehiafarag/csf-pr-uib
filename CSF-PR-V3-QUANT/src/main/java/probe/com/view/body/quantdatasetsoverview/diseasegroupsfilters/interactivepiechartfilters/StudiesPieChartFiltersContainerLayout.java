@@ -505,6 +505,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
     private StreamResource createResource(final CSFPRHandler handler) {
         return new StreamResource(new StreamResource.StreamSource() {
             @Override
+            @SuppressWarnings("CallToPrintStackTrace")
             public InputStream getStream() {
 
 //                BufferedImage bi = chart.createBufferedImage(width, height, chartRenderingInfo);

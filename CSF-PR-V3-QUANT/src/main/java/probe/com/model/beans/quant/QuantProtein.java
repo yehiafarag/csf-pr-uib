@@ -9,21 +9,16 @@ package probe.com.model.beans.quant;
  *
  * @author Yehia Farag
  */
-public class QuantProtein {
-    private String pumedID,uniprotAccession, uniprotProteinName, publicationAccNumber,publicationProteinName,rawDataAvailable,typeOfStudy,sampleType,patientGroupI,patientSubGroupI,patientGrIComment,patientGroupII,patientSubGroupII,patientGrIIComment,sampleMatching,normalizationStrategy,technology,analyticalApproach,enzyme,shotgunOrTargetedQquant,quantificationBasis,quantBasisComment,additionalComments;		
-    private int quantifiedProteinsNumber,peptideIdNumb,quantifiedPeptidesNumber, patientsGroupINumber,patientsGroupIINumber,year,filesNum,IdentifiedProteinsNum, dsKey,protKey;    
-    private String qPeptideKey,    peptideSequance,	peptideModification,modificationComment , stringFCValue,stringPValue,author,diseaseGroups,pvalueComment,pvalueSignificanceThreshold; 
-private boolean uniprotAccSource;
+public class QuantProtein implements Comparable<QuantProtein> {
 
-    public boolean isUniprotAccSource() {
-        return uniprotAccSource;
-    }
+    private String pumedID, uniprotAccession, uniprotProteinName, publicationAccNumber, publicationProteinName, rawDataAvailable, typeOfStudy, sampleType, patientGroupI, patientSubGroupI, patientGrIComment, patientGroupII, patientSubGroupII, patientGrIIComment, sampleMatching, normalizationStrategy, technology, analyticalApproach, enzyme, shotgunOrTargetedQquant, quantificationBasis, quantBasisComment, additionalComments;
+    private int quantifiedProteinsNumber, peptideIdNumb, quantifiedPeptidesNumber, patientsGroupINumber, patientsGroupIINumber, year, filesNum, IdentifiedProteinsNum, dsKey, protKey;
+    private String qPeptideKey, peptideSequance, peptideModification, modificationComment, stringFCValue, stringPValue, author, diseaseGroups, pvalueComment, pvalueSignificanceThreshold;
+    
 
-    public void setUniprotAccSource(boolean uniprotAccSource) {
-        this.uniprotAccSource = uniprotAccSource;
-    }
-    private String sequance;
    
+    private String sequance;
+
     /**
      *
      * @return
@@ -47,8 +42,6 @@ private boolean uniprotAccSource;
     public int getDsKey() {
         return dsKey;
     }
-
-  
 
     /**
      *
@@ -89,7 +82,7 @@ private boolean uniprotAccSource;
     public void setDsKey(int dsKey) {
         this.dsKey = dsKey;
     }
-    
+
     /**
      *
      * @return
@@ -105,7 +98,7 @@ private boolean uniprotAccSource;
     public void setStringPValue(String stringPValue) {
         this.stringPValue = stringPValue;
     }
-    private double pValue,rocAuc;
+    private double pValue, rocAuc;
     private double fcPatientGroupIonPatientGroupII;
     private boolean peptideProt;
 
@@ -236,7 +229,7 @@ private boolean uniprotAccSource;
     public void setPumedID(String pumedID) {
         this.pumedID = pumedID;
     }
-        
+
     /**
      *
      * @return
@@ -252,7 +245,7 @@ private boolean uniprotAccSource;
     public void setQuantifiedProteinsNumber(int quantifiedProteinsNumber) {
         this.quantifiedProteinsNumber = quantifiedProteinsNumber;
     }
-    
+
     /**
      *
      * @return
@@ -284,7 +277,7 @@ private boolean uniprotAccSource;
     public void setUniprotProteinName(String uniprotProteinName) {
         this.uniprotProteinName = uniprotProteinName;
     }
-    
+
     /**
      *
      * @return
@@ -316,7 +309,7 @@ private boolean uniprotAccSource;
     public void setPublicationProteinName(String publicationProteinName) {
         this.publicationProteinName = publicationProteinName;
     }
-    
+
     /**
      *
      * @return
@@ -332,7 +325,7 @@ private boolean uniprotAccSource;
     public void setRawDataAvailable(String rawDataAvailable) {
         this.rawDataAvailable = rawDataAvailable;
     }
-    
+
     /**
      *
      * @return
@@ -348,7 +341,7 @@ private boolean uniprotAccSource;
     public void setPeptideIdNumb(int peptideIdNumb) {
         this.peptideIdNumb = peptideIdNumb;
     }
-    
+
     /**
      *
      * @return
@@ -364,16 +357,14 @@ private boolean uniprotAccSource;
     public void setQuantifiedPeptidesNumber(int quantifiedPeptidesNumber) {
         this.quantifiedPeptidesNumber = quantifiedPeptidesNumber;
     }
-     
-    //move to peptideProt?? 
-    
-    // dublicate in both??
 
+    //move to peptideProt?? 
+    // dublicate in both??
     /**
      *
      * @return
      */
-         public double getFcPatientGroupIonPatientGroupII() {
+    public double getFcPatientGroupIonPatientGroupII() {
         return fcPatientGroupIonPatientGroupII;
     }
 
@@ -384,14 +375,13 @@ private boolean uniprotAccSource;
     public void setFcPatientGroupIonPatientGroupII(double fcPatientGroupIonPatientGroupII) {
         this.fcPatientGroupIonPatientGroupII = fcPatientGroupIonPatientGroupII;
     }
-    
-     //can dublicate in both??
 
+     //can dublicate in both??
     /**
      *
      * @return
      */
-         public String getTypeOfStudy() {
+    public String getTypeOfStudy() {
         return typeOfStudy;
     }
 
@@ -498,7 +488,7 @@ private boolean uniprotAccSource;
     public void setPatientsGroupIINumber(int patientsGroupIINumber) {
         this.patientsGroupIINumber = patientsGroupIINumber;
     }
-    
+
     /**
      *
      * @return
@@ -674,7 +664,7 @@ private boolean uniprotAccSource;
     public void setShotgunOrTargetedQquant(String shotgunOrTargetedQquant) {
         this.shotgunOrTargetedQquant = shotgunOrTargetedQquant;
     }
-   
+
     /**
      *
      * @return
@@ -722,7 +712,7 @@ private boolean uniprotAccSource;
     public void setAdditionalComments(String additionalComments) {
         this.additionalComments = additionalComments;
     }
-    
+
     /**
      *
      * @return
@@ -794,36 +784,14 @@ private boolean uniprotAccSource;
     public void setPvalueSignificanceThreshold(String pvalueSignificanceThreshold) {
         this.pvalueSignificanceThreshold = pvalueSignificanceThreshold;
     }
-    
- 
-     
-   
 
-    
+    @Override
+    public int compareTo(QuantProtein o) {
+        if ((this.getPatientsGroupINumber() + this.getPatientsGroupIINumber()) > (o.getPatientsGroupINumber() + o.getPatientsGroupIINumber())) {
+            return 1;
+        } else {
+            return -1;
+        }
+    }
 
-    
-
-   
-
-   
-
-
-
-    
-    
-
-    
-    
-
-    
-
-  
-    
-
-
-   
-   
-
-   
-    
 }

@@ -29,7 +29,7 @@ public class StudyInformationPopupComponent extends VerticalLayout {
      * @param url
      * @param comparisonHeader
      */
-    public StudyInformationPopupComponent(int width,String protName,String url,String comparisonHeader) {
+    public StudyInformationPopupComponent(int width, String protName, String url, String comparisonHeader) {
 
         int height = Page.getCurrent().getBrowserWindowHeight() - 100;
         popupBody = new VerticalLayout();
@@ -45,7 +45,7 @@ public class StudyInformationPopupComponent extends VerticalLayout {
             }
 
         };
-        popupWindow.setCaption("<a href='" + url + "'target=\"_blank\"> " + protName + "</a>  <font size='1'> ("+comparisonHeader+")</font>");
+        popupWindow.setCaption("<a href='" + url + "'target=\"_blank\"> " + protName + "</a>  <font size='1'> (" + comparisonHeader + ")</font>");
         popupWindow.setContent(popupBody);
         popupWindow.setWindowMode(WindowMode.NORMAL);
         popupWindow.setWidth((width + 40) + "px");
@@ -67,6 +67,7 @@ public class StudyInformationPopupComponent extends VerticalLayout {
         popupBody.setMargin(true);
         popupBody.setSpacing(true);
     }
+
     public void updateContent(Layout componentsLayout) {
         this.popupBody.removeAllComponents();
         this.popupBody.addComponent(componentsLayout);

@@ -27,7 +27,10 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.SymbolAxis;
+import org.jfree.ui.RectangleInsets;
 import probe.com.model.beans.identification.IdentificationPeptideBean;
+import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 
 /**
  *
@@ -273,38 +276,55 @@ public class FileExporter implements Serializable {
 
             if (fileName.equalsIgnoreCase("proteins_information_charts.pdf")) {
 //                height = (150 * component.size()) + 100;
+
                 template = contentByte.createTemplate(width, height);
                 g2d = template.createGraphics(width, height, new DefaultFontMapper());
-                Font font = new Font("Verdana", Font.PLAIN, 7);
+                Font font = new Font("Verdana", Font.PLAIN, 8);
 
                 Rectangle2D rect2d;
+                boolean newpage=false;
                 for (JFreeChart chart : component) {
-                    chart.getXYPlot().getRangeAxis().setTickLabelFont(font);
-                    chart.getXYPlot().getDomainAxis().setTickLabelFont(font);
+                    if(newpage){
+                        newpage=false;
+                        document.newPage();
+                    }
+                    
+                        
                     if (counter == 0) {
-
-                        rect2d = new Rectangle2D.Double(50, starty, 500, 350);
-
-                        starty += 370;
+                        
+                        int labelHeight = 0;
+                       for (String str :((SymbolAxis)chart.getXYPlot().getDomainAxis()).getSymbols() ) {
+                            if ((str.length() * 6) > labelHeight) {
+                                labelHeight = (str.length() * 6);
+                            }
+                        }
+                        int chartHeight = 400 + labelHeight;
+                        rect2d = new Rectangle2D.Double(50, starty, 500, chartHeight);
+                        starty += chartHeight+20;
 
                     } else {
-                        rect2d = new Rectangle2D.Double(50, starty, 500, 133);
-                        starty += 150;
                         
+//                    chart.getXYPlot().getDomainAxis().setTickLabelInsets(new RectangleInsets(0.1,0.1, 0.1,0.1));
+//                    chart.getXYPlot().getRangeAxis().setTickLabelFont(font);
+//                    chart.getXYPlot().getRangeAxis().setTickLabelInsets(new RectangleInsets(2.5,3, 2.5, 3));
+                    
+                        rect2d = new Rectangle2D.Double(50, starty, 500, 200);
+                        starty += 220;
+
                     }
-                   chart.draw(g2d, rect2d); 
+                    chart.draw(g2d, rect2d);
 
                     counter++;
-                     
+
                     if (starty > 700) {
                         g2d.dispose();
                         contentByte.addTemplate(template, 0, 0);
-                        document.newPage();
+                        newpage=true;
 
                         template = contentByte.createTemplate(width, height);
                         g2d = template.createGraphics(width, height, new DefaultFontMapper());
-                        
-                        starty= 170;
+
+                        starty = 200;
 
                     }
 
@@ -312,17 +332,14 @@ public class FileExporter implements Serializable {
 
             } else if (component.size() > 1) {
                 template = contentByte.createTemplate(width, height);
-
                 g2d = template.createGraphics(width, height, new DefaultFontMapper());
                 for (JFreeChart chart : component) {
-
                     Rectangle2D rect2d = new Rectangle2D.Double(startx, starty, 250, 250);
                     chart.draw(g2d, rect2d);
                     startx += 250 + 50;
                     if (counter == 1 || counter == 3) {
                         startx = 0;
                         starty += 275;
-
                     }
                     counter++;
 
@@ -340,8 +357,8 @@ public class FileExporter implements Serializable {
 
             }
             g2d.dispose();
-            contentByte.addTemplate(template, 0, 0);          
-            
+            contentByte.addTemplate(template, 0, 0);
+
             document.close();
             byte fileData[] = IOUtils.toByteArray(new FileInputStream(file));
 //            String base64 = Base64.encodeBase64String(fileData.);
@@ -356,10 +373,8 @@ public class FileExporter implements Serializable {
         return null;//url + userFolder.getName() + "/" + pdfFile.getName();
 
     }
-    
-    
-    
-     public byte[] exportfullReportAsZip(Set<JFreeChart> component, String fileName, String url) {
+
+    public byte[] exportfullReportAsZip(Set<JFreeChart> component, String fileName, String url) {
         int width = 600;
         int height = 1000;
         int startx = 0;
@@ -387,17 +402,15 @@ public class FileExporter implements Serializable {
             Graphics2D g2d;
             int starty = 300;
             int counter = 0;
-            
+
             document.addHeader("csf-pr v2 report", "");
-            
-            
 
             if (true) {
 //                height = (150 * component.size()) + 100;
                 template = contentByte.createTemplate(width, height);
                 g2d = template.createGraphics(width, height, new DefaultFontMapper());
-                Font font = new Font("Verdana", Font.PLAIN, 7);             
-                
+                Font font = new Font("Verdana", Font.PLAIN, 7);
+
                 Rectangle2D rect2d;
                 for (JFreeChart chart : component) {
                     chart.getXYPlot().getRangeAxis().setTickLabelFont(font);
@@ -411,12 +424,12 @@ public class FileExporter implements Serializable {
                     } else {
                         rect2d = new Rectangle2D.Double(50, starty, 500, 133);
                         starty += 150;
-                        
+
                     }
-                   chart.draw(g2d, rect2d); 
+                    chart.draw(g2d, rect2d);
 
                     counter++;
-                     
+
                     if (starty > 700) {
                         g2d.dispose();
                         contentByte.addTemplate(template, 0, 0);
@@ -424,8 +437,8 @@ public class FileExporter implements Serializable {
 
                         template = contentByte.createTemplate(width, height);
                         g2d = template.createGraphics(width, height, new DefaultFontMapper());
-                        
-                        starty= 170;
+
+                        starty = 170;
 
                     }
 
@@ -461,8 +474,8 @@ public class FileExporter implements Serializable {
 
             }
             g2d.dispose();
-            contentByte.addTemplate(template, 0, 0);          
-            
+            contentByte.addTemplate(template, 0, 0);
+
             document.close();
             byte fileData[] = IOUtils.toByteArray(new FileInputStream(file));
 //            String base64 = Base64.encodeBase64String(fileData.);

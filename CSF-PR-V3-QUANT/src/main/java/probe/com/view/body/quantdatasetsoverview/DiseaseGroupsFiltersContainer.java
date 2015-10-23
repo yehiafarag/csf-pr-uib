@@ -17,10 +17,12 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import probe.com.bin.HorizontalClickToDisplay;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
+import probe.com.model.beans.quant.QuantProtein;
 import probe.com.selectionmanager.CSFFilter;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.DiseaseGroupsListFilter;
@@ -55,8 +57,9 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
      * @param exploringFiltersManager
      * @param handler
      * @param pieChartFiltersBtn
+     * @param searchQuantificationProtList
      */
-    public DiseaseGroupsFiltersContainer(final DatasetExploringCentralSelectionManager exploringFiltersManager, CSFPRHandler handler, PopupInteractiveDSFiltersLayout pieChartFiltersBtn) {
+    public DiseaseGroupsFiltersContainer(final DatasetExploringCentralSelectionManager exploringFiltersManager, CSFPRHandler handler, PopupInteractiveDSFiltersLayout pieChartFiltersBtn, List<QuantProtein> searchQuantificationProtList) {
         pageWidth = Page.getCurrent().getWebBrowser().getScreenWidth();
         this.handler = handler;
         this.setWidth(pageWidth + "px");
@@ -69,7 +72,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         int heatmapCellWidth = 45;
         diseaseGroupsListFilter = new DiseaseGroupsListFilter(exploringFiltersManager);
         Set<String> diseaseGroupsSet = diseaseGroupsListFilter.getDiseaseGroupsSet();
-        heatmapW = (156 + (heatmapCellWidth * diseaseGroupsSet.size()));
+        heatmapW = Math.max((156 + (heatmapCellWidth * diseaseGroupsSet.size())),700);
 
         final HorizontalLayout topLayout = new HorizontalLayout();
         topLayout.setWidthUndefined();
@@ -127,18 +130,20 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         this.addComponent(middleLayout, 0, 1);
         this.setComponentAlignment(middleLayout, Alignment.TOP_LEFT);
 //               
-        initLayoutWidth = (pageWidth - heatmapW - 300);
+        initLayoutWidth = (pageWidth - heatmapW  - 300);
         heatmapRatio = (float) heatmapW / (float) (pageWidth);
         initialLayoutRatio = (float) (initLayoutWidth) / (float) (pageWidth);
         int heatmapH = heatmapW + 20;
 
-        diseaseGroupsHeatmapFilter = new HeatMapFilter(exploringFiltersManager, heatmapW, diseaseGroupsSet, diseaseGroupsSet, diseaseGroupsListFilter.getPatientsGroupArr(), heatmapCellWidth);
-        diseaseGroupsHeatmapFilter.setHeight(heatmapH + "px");
+        diseaseGroupsHeatmapFilter = new HeatMapFilter(exploringFiltersManager, heatmapW , diseaseGroupsSet, diseaseGroupsSet, diseaseGroupsListFilter.getPatientsGroupArr(), heatmapCellWidth);
+        
+        diseaseGroupsHeatmapFilter.setHeight(Math.max(heatmapH,720) + "px");
+//        diseaseGroupsHeatmapFilter.setWidth(Math.max(700,heatmapW )+"px");
         diseaseGroupsHeatmapFilter.setSingleSelection(false);
         middleLayout.addComponent(diseaseGroupsHeatmapFilter);
         middleLayout.setComponentAlignment(diseaseGroupsHeatmapFilter, Alignment.TOP_LEFT);
 
-        final ComparisonsSelectionOverviewBubbleChart selectionOverviewBubbleChart = new ComparisonsSelectionOverviewBubbleChart(exploringFiltersManager, handler, initLayoutWidth, heatmapH, new LinkedHashSet<QuantDiseaseGroupsComparison>());
+        final ComparisonsSelectionOverviewBubbleChart selectionOverviewBubbleChart = new ComparisonsSelectionOverviewBubbleChart(exploringFiltersManager, handler, initLayoutWidth, heatmapH, new LinkedHashSet<QuantDiseaseGroupsComparison>(), searchQuantificationProtList);
         middleLayout.addComponent(selectionOverviewBubbleChart);
         middleLayout.setComponentAlignment(selectionOverviewBubbleChart, Alignment.TOP_LEFT);
 
@@ -162,7 +167,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         btnsLayout.setComponentAlignment(leftBottomBtnLayout, Alignment.TOP_LEFT);
 
         Label filterTitle = new Label("Filters:");
-        filterTitle.setHeight("50px");
+        filterTitle.setHeight("24px");
         filterTitle.setDescription("Available filters");
         filterTitle.setStyleName("filtercaption");
         leftBottomBtnLayout.addComponent(filterTitle);
@@ -172,13 +177,13 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         leftBottomBtnLayout.setComponentAlignment(pieChartFiltersBtn, Alignment.TOP_LEFT);
 
         Button diseaseGroupsFilterBtn = diseaseGroupsListFilter.getDiseaseGroupsFilterBtn();
-        diseaseGroupsFilterBtn.setHeight("30px");
+        diseaseGroupsFilterBtn.setHeight("24px");
 
         leftBottomBtnLayout.addComponent(diseaseGroupsFilterBtn);
         leftBottomBtnLayout.setComponentAlignment(diseaseGroupsFilterBtn, Alignment.MIDDLE_LEFT);
 
         Button clearFilterBtn = new Button("Reset");
-        clearFilterBtn.setHeight("30px");
+        clearFilterBtn.setHeight("24px");
         clearFilterBtn.setStyleName(Reindeer.BUTTON_LINK);
         leftBottomBtnLayout.addComponent(clearFilterBtn);
         leftBottomBtnLayout.setComponentAlignment(clearFilterBtn, Alignment.MIDDLE_LEFT);

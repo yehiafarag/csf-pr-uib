@@ -7,8 +7,10 @@ import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
+import java.util.List;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 import probe.com.handlers.CSFPRHandler;
+import probe.com.model.beans.quant.QuantProtein;
 import probe.com.selectionmanager.QuantFilterUtility;
 import probe.com.view.body.quantdatasetsoverview.DiseaseGroupsFiltersContainer;
 import probe.com.view.body.quantdatasetsoverview.QuantProteinsComparisonsContainer;
@@ -35,7 +37,7 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
      * @param handler
      * @param searchingMode
      */
-    public QuantDatasetsOverviewLayout(CSFPRHandler handler, boolean searchingMode) {
+    public QuantDatasetsOverviewLayout(CSFPRHandler handler, boolean searchingMode,List<QuantProtein> searchQuantificationProtList) {
 
         if (searchingMode) {
 
@@ -63,7 +65,7 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
         pieChartFiltersLayout = new StudiesPieChartFiltersContainerLayout(exploringFiltersManager,handler);
 
       
-        DiseaseGroupsFiltersContainer heatmapFilter = new DiseaseGroupsFiltersContainer(exploringFiltersManager,handler, pieChartFiltersLayout.getPieChartFiltersBtn());
+        DiseaseGroupsFiltersContainer heatmapFilter = new DiseaseGroupsFiltersContainer(exploringFiltersManager,handler, pieChartFiltersLayout.getPieChartFiltersBtn(),searchQuantificationProtList);
         heatmapFilter.setWidth("100%");
         heatmapFilter.setMargin(new MarginInfo(false, false, true, false));
 

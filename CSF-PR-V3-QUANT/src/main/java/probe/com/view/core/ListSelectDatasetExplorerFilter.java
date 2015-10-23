@@ -6,6 +6,8 @@
 package probe.com.view.core;
 
 import com.vaadin.data.Property;
+import com.vaadin.event.LayoutEvents;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -74,8 +76,13 @@ public class ListSelectDatasetExplorerFilter extends VerticalLayout implements B
         hlo.setSpacing(true);
         hlo.addComponent(list);
         this.addComponent(hlo);
+        
+   
+        
         clearBtn = new Button("Clear");
-        clearBtn.setStyleName(Reindeer.BUTTON_SMALL);
+        clearBtn.setPrimaryStyleName("resetbtn");
+        clearBtn.setWidth("50px");
+        clearBtn.setHeight("24px");
         clearBtn.addClickListener(ListSelectDatasetExplorerFilter.this);
         hlo.addComponent(clearBtn);
 //        exploringFiltersManager.registerFilter(ListSelectDatasetExplorerFilter.this);

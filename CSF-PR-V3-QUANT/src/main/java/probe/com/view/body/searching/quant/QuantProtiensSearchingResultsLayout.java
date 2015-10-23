@@ -63,11 +63,11 @@ public class QuantProtiensSearchingResultsLayout extends VerticalLayout {
         pieChartFiltersLayout = new StudiesPieChartFiltersContainerLayout(exploringFiltersManager,handler);
 
         
-        DiseaseGroupsFiltersContainer heatmapFilter = new DiseaseGroupsFiltersContainer(exploringFiltersManager,handler, pieChartFiltersLayout.getPieChartFiltersBtn());
-//        heatmapFilter.setWidth("100%");
+        DiseaseGroupsFiltersContainer heatmapFilter = new DiseaseGroupsFiltersContainer(exploringFiltersManager,handler, pieChartFiltersLayout.getPieChartFiltersBtn(),searchQuantificationProtList);
+        heatmapFilter.setWidth("100%");
         heatmapFilter.setMargin(new MarginInfo(false, false, true, false));
 
-        HideOnClickLayout DatasetFilteringContainer = new HideOnClickLayout("Datasets", heatmapFilter, null,Alignment.TOP_LEFT);
+        HideOnClickLayout DatasetFilteringContainer = new HideOnClickLayout("Datasets", heatmapFilter, null);
         this.addComponent(DatasetFilteringContainer);
         DatasetFilteringContainer.setVisability(true);
         

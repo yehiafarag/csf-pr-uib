@@ -81,6 +81,11 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
         return this.comparisonHeader.compareTo(t.comparisonHeader);
     }
 
+    
+    public String toString(){
+    
+        return comparisonHeader+" -- "+ comparProtsMap.size();
+    }
    
     
 }

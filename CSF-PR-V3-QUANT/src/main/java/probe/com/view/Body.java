@@ -1,5 +1,6 @@
 package probe.com.view;
 
+import com.vaadin.server.Page;
 import probe.com.view.body.AdminLayout;
 import probe.com.view.body.IdentificationDatasetsLayout;
 import probe.com.view.body.WelcomeLayout;
@@ -19,7 +20,7 @@ import probe.com.view.body.ProteinsSearchingLayout;
  * the main body layout of csf-pr web application
  */
 public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeListener, Button.ClickListener, Serializable {
-
+    
     private final Button adminIcon;
     private TabSheet.Tab homeTab, adminTab;//tabs for Experiments Editor,Proteins, Search
     private final TabSheet mainTabSheet;//tab sheet for first menu (Experiments Editor,Proteins, Search)
@@ -39,8 +40,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
     public Body(CSFPRHandler handler) {
         this.setWidth("100%");
         this.handler = handler;
-      
-
+        
         mainTabSheet = new TabSheet();
         this.addComponent(mainTabSheet);
         mainTabSheet.setHeight("100%");
@@ -83,14 +83,15 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
         adminLayout.setHeight("100%");
         adminLayout.addComponent(new AdminLayout(handler));
         adminTab = mainTabSheet.addTab(adminLayout, "Dataset Editor (Require Sign In)", null);
-
+        
         mainTabSheet.addSelectedTabChangeListener(this);
         mainTabSheet.setSelectedTab(homeTab);
         mainTabSheet.markAsDirty();
         adminTab.setVisible(false);
-
+     
+        
     }
-
+    
     @Override
     public void selectedTabChange(TabSheet.SelectedTabChangeEvent event) {
         String c = mainTabSheet.getTab(event.getTabSheet().getSelectedTab()).getCaption();
@@ -101,35 +102,38 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
         } else if (c.equals("Search")) {
             adminTab.setVisible(false);
         } else if (c.equals("Quantitative Datasets Overview")) {
-             
+            
             adminTab.setVisible(false);
             if (datasetOverviewTabLayout == null && handler != null) {
-                datasetOverviewTabLayout = new QuantDatasetsOverviewLayout(handler, false);
+                datasetOverviewTabLayout = new QuantDatasetsOverviewLayout(handler, false, null);
                 datasetsOverviewLayout.addComponent(datasetOverviewTabLayout);
             }
-
+            
         } else if (c.equals("Identification Datasets Overview")) {
-
+            
             if (identificationDatasetsTabLayout == null) {
                 identificationDatasetsTabLayout = new IdentificationDatasetsLayout(handler, mainTabSheet);
                 identificationDatasetsLayout.addComponent(identificationDatasetsTabLayout);
+//              
+//                BasicUsageView bv = new BasicUsageView();
+//                identificationDatasetsLayout.addComponent(bv);
             }
-
+            
         }
     }
-
+    
     @Override
     public void buttonClick(Button.ClickEvent event) {
         mainTabSheet.markAsDirty();
     }
-
+    
     private Button initAdminIcoBtn() {
         Button b = new Button("(Admin Login)");
         b.setStyleName(Runo.BUTTON_LINK);
         b.setDescription("Dataset Editor (Require Sign In)");
         Button.ClickListener adminClickListener = new Button.ClickListener() {
             private static final long serialVersionUID = 1L;
-
+            
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 adminTab.setVisible(true);
@@ -141,5 +145,5 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
         b.addClickListener(adminClickListener);
         return b;
     }
-
+    
 }
