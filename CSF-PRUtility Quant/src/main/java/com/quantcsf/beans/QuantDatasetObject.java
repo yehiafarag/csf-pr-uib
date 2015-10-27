@@ -18,7 +18,16 @@ public class QuantDatasetObject implements Serializable, Comparable {
     private int x;
     private int y;
     private final List<QuantProtein> quantProtList = new ArrayList<QuantProtein>();
-    
+   
+
+    public String getDiseaseCategory() {
+          return values[28].toString();
+    }
+
+    public void setDiseaseCategory(String diseaseCategory) {
+         values[28] = diseaseCategory;
+        valuesMap.put("diseaseCategory", diseaseCategory);
+    }
     
 
     public String getStudyKey() {
@@ -43,7 +52,7 @@ public class QuantDatasetObject implements Serializable, Comparable {
     public Object[] getValues() {
         return values;
     }
-    private final Object[] values = new Object[28];
+    private final Object[] values = new Object[29];
     private final Map<String, Object> valuesMap = new HashMap<String, Object>();
     private String uniqueValues;
     private final String[] headers = new String[]{"Author", "Year", "#Identified Proteins", "#Quantified Proteins", "Disease Groups", "Raw Data", "#Files", "Study Type", "Sample Type", "Sample Matching", "Shotgun/Targeted", "Technology", "Analytical Approach", "Enzyme", "Quantification Basis", "Quantification Basis Comment","Normalization Strategy", "PumedID","Patients Gr.I", "#Patients Gr.I", "Patients Gr.I Comments", "Patients Sub-Gr.I", "Patients Gr.II","#Patients Gr.II", "Patients Gr.II Comments", "Patients Sub-Gr.II", "Additional Comments","studyKey"};

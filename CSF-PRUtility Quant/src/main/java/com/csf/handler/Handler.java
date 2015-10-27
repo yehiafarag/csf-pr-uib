@@ -65,11 +65,11 @@ public class Handler {
 
         //1.read file
         List<QuantProtein> qProtList = qDataHandler.readCSVQuantFile(quantDataFilePath, sequanceFilePath);
-        //2.store full data
+//        2.store full data
         dal.storeCombinedQuantProtTable(qProtList);
-        //3.update dataset table
+//        3.update dataset table
         dal.storeQuantDatasets();
-//        //handel quant peptideProtein     
+        //handel quant peptideProtein     
         Set<QuantDatasetObject> datasetsList = dal.getQuantDatasetListObject();
         List<QuantProtein> updatedQuantProtList = this.handleQuantData(datasetsList, qProtList);
 //        //store quant protiens
@@ -84,35 +84,35 @@ public class Handler {
         return true;
     }
 
-    public boolean handelProtSequanceData(String path) {
-        System.out.println("file path " + path);
-
-        //1.read file 
-//         Map<String,String> protSeqMap=qDataHandler.readSequanceFile(path);
-//        //2.store full data
-//        bool ean test  = dal.updateProtSequances(protSeqMap);
-//        //3.update dataset table
-//        dal.storeQuantDatasets();
-//        //handel quant peptideProtein     
-//        Set<QuantDatasetObject> datasetsList = dal.getQuantDatasetListObject();
-//        qProtList = this.handleQuantData(datasetsList,qProtList);
-//        int protIndex = dal.getCurrentProtIndex();
-//        List<QuantPeptide> peptidesList = handelQuantPeptides(qProtList,protIndex);        
-//        
-//        //foldchange
-//        
-//        defineProtFoldChange(qProtList, peptidesList);
-//        
-//        
-//        //store quant protiens
-//        dal.storeQuantitiveProteins(qProtList);
-//        
-//        //store quant peptides
-//        dal.storeQuantitivePeptides(peptidesList);
-//        
-//        System.out.println("final peptideProtein list updated (should be smaller)  " + qProtList.size() + "  prer " + peptidesList.size());
-        return true;
-    }
+//    public boolean handelProtSequanceData(String path) {
+//        System.out.println("file path " + path);
+//
+//        //1.read file 
+////         Map<String,QuantProtein> protSeqMap=qDataHandler.readSequanceFile(path);
+////        //2.store full data
+////        bool ean test  = dal.updateProtSequances(protSeqMap);
+////        //3.update dataset table
+////        dal.storeQuantDatasets();
+////        //handel quant peptideProtein     
+////        Set<QuantDatasetObject> datasetsList = dal.getQuantDatasetListObject();
+////        qProtList = this.handleQuantData(datasetsList,qProtList);
+////        int protIndex = dal.getCurrentProtIndex();
+////        List<QuantPeptide> peptidesList = handelQuantPeptides(qProtList,protIndex);        
+////        
+////        //foldchange
+////        
+////        defineProtFoldChange(qProtList, peptidesList);
+////        
+////        
+////        //store quant protiens
+////        dal.storeQuantitiveProteins(qProtList);
+////        
+////        //store quant peptides
+////        dal.storeQuantitivePeptides(peptidesList);
+////        
+////        System.out.println("final peptideProtein list updated (should be smaller)  " + qProtList.size() + "  prer " + peptidesList.size());
+//        return true;
+//    }
 
     private List<QuantProtein> handelQuantPeptides(List<QuantProtein> fullQuantProtList, Map<String, Integer> peptideKeyToProteinIndexMap, Map<Integer, Integer> protKeyToDsIndexMap) {
 //        Map<String, QuantPeptide> peptides = new HashMap<String, QuantPeptide>();

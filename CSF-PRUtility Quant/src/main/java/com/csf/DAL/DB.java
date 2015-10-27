@@ -103,7 +103,7 @@ public class DB implements Serializable {
                         + "  `quantified_proteins_number` int(255) NOT NULL default '-1',\n"
                         + "  `raw_data_available` varchar(500) NOT NULL default 'Raw Data Not Available',\n"
                         + "  `year` int(4) NOT NULL default '0',\n"
-                        + "  `index` int(255) NOT NULL auto_increment,\n"
+                        + "  `index` int(255) NOT NULL default '0',\n"
                         + "  `type_of_study` varchar(200) NOT NULL default 'Not Available',\n"
                         + "  `sample_type` varchar(200) NOT NULL default 'Not Available',\n"
                         + "  `sample_matching` varchar(300) NOT NULL default 'Not Available',\n"
@@ -124,8 +124,9 @@ public class DB implements Serializable {
                         + "  `patient_sub_group_ii` varchar(700) NOT NULL default 'Not Available',\n"
                         + "  `patient_gr_ii_comment` varchar(700) NOT NULL default 'Not Available',\n"
                         + "  `analytical_method` varchar(500) NOT NULL default 'Not Available',\n"
-                        + "  KEY `index` (`index`)\n"
-                        + ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;";
+                        + "  `disease_category` varchar(200) NOT NULL default ' ',\n"
+                        + "  PRIMARY KEY  (`index`)\n"
+                        + ") ENGINE=MyISAM DEFAULT CHARSET=utf8;";
                 st.executeUpdate(statment);
 
                 dropStat = "DROP TABLE IF EXISTS `quant_full_table`;";
@@ -178,10 +179,11 @@ public class DB implements Serializable {
                         + "  `fc_value` double NOT NULL default '-1000000000',\n"
                         + "  `log_2_FC` double NOT NULL default '-1000000000',\n"
                         + "  `peptide_prot` varchar(5) NOT NULL default 'False',\n"
-                        + "  `index` int(255) NOT NULL auto_increment,\n"
+                        + "  `index` int(255) NOT NULL default '0',\n"
                         + "  `peptide_charge` int(255) NOT NULL default '-1',\n"
+                        + "  `disease_category` varchar(200) NOT NULL default ' ',\n"
                         + "  PRIMARY KEY  (`index`)\n"
-                        + ") ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
+                        + ") ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
                 st.executeUpdate(statment);
 
@@ -325,7 +327,7 @@ public class DB implements Serializable {
                 dropStat = "DROP TABLE IF EXISTS `quantitative_peptides_table`;";
                 st.executeUpdate(dropStat);
                 statment = "CREATE TABLE IF NOT EXISTS `quantitative_peptides_table` (\n"
-                        + "  `index` int(255) NOT NULL auto_increment,\n"
+                        + "  `index` int(255) NOT NULL default '0',\n"
                         + "  `prot_index` int(255) NOT NULL default '-1',\n"
                         + "  `peptide_sequance` varchar(600) NOT NULL default 'Not Available',\n"
                         + "  `peptide_modification` varchar(600) NOT NULL default 'Not Available',\n"
@@ -343,14 +345,14 @@ public class DB implements Serializable {
                         + "  `pvalue_significance_threshold` varchar(500) NOT NULL default 'Not Available',\n"
                         + "  `sequence_annotated` varchar(600) NOT NULL default 'Not Available',\n"
                         + "  `peptide_charge` int(255) NOT NULL default '-1',\n"
-                        + "  KEY `index` (`index`)\n"
-                        + ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
+                        + "  PRIMARY KEY  (`index`)\n"
+                        + ") ENGINE=MyISAM  DEFAULT CHARSET=utf8; ";
                 st.executeUpdate(statment);
 
                 dropStat = "DROP TABLE IF EXISTS `quantitative_proteins_table`;";
                 st.executeUpdate(dropStat);
                 statment = "CREATE TABLE IF NOT EXISTS `quantitative_proteins_table` (\n"
-                        + "  `index` int(255) NOT NULL auto_increment,\n"
+                        + "  `index` int(255) NOT NULL default '0',\n"
                         + "  `ds_ID` int(255) NOT NULL default '-1',\n"
                         + "  `uniprot_accession` varchar(150) NOT NULL default 'Not Available',\n"
                         + "  `uniprot_protein_name` varchar(700) NOT NULL default 'Not Available',\n"
@@ -368,8 +370,8 @@ public class DB implements Serializable {
                         + "  `additional_comments` varchar(1000) NOT NULL default 'Not Available',\n"
                         + "  `log_2_FC` double NOT NULL default '-1000000000',\n"
                         + "  `pvalue_significance_threshold` varchar(500) NOT NULL default 'Not Available',\n"
-                        + "  KEY `index` (`index`)\n"
-                        + ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
+                        + "  PRIMARY KEY  (`index`)\n"
+                        + ") ENGINE=MyISAM  DEFAULT CHARSET=utf8; ";
                 st.executeUpdate(statment);
 
                 statment = "CREATE TABLE IF NOT EXISTS `standard_plot_proteins` ( "
@@ -1701,8 +1703,8 @@ public class DB implements Serializable {
                 + ",`string_fc_value`,`fc_value`,`log_2_FC`,`string_p_value`,`p_value`,`pvalue_significance_threshold`,`pvalue_comments`,"
                 + "`roc_auc`,`technology`,`analytical_method`,`analytical_approach`,"
                 + "`shotgun_targeted`,`enzyme`,`quantification_basis`,`quant_basis_comment`,`additional_comments`,"
-                + "`q_peptide_key`,`identified_proteins_number`)VALUES ("
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                + "`q_peptide_key`,`identified_proteins_number`,`index`,`disease_category`)VALUES ("
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
         PreparedStatement insertQProtStat;
         try {
@@ -1711,6 +1713,7 @@ public class DB implements Serializable {
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
 
+            int counter = 0;
             for (QuantProtein qprot : qProtList) {
                 insertQProtStat = conn.prepareStatement(insertQProt, Statement.RETURN_GENERATED_KEYS);
                 insertQProtStat.setString(1, updateStringFormat(qprot.getAuthor()));
@@ -1724,6 +1727,9 @@ public class DB implements Serializable {
                 insertQProtStat.setString(8, qprot.getPublicationAccNumber());
                 insertQProtStat.setString(9, qprot.getPublicationProteinName());
                 insertQProtStat.setString(10, String.valueOf(qprot.isPeptideProtein()));
+                if (qprot.getDiseaseCategory() == null || qprot.getDiseaseCategory().trim().equalsIgnoreCase("")) {
+                    System.out.println(" --- qprot.getDiseaseCategory() --------------" + qprot.getDiseaseCategory());
+                }
 
                 insertQProtStat.setString(11, qprot.getRawDataAvailable());
                 num = qprot.getPeptideIdNumb();
@@ -1780,6 +1786,8 @@ public class DB implements Serializable {
 
                 insertQProtStat.setString(47, qprot.getQuantPeptideKey());
                 insertQProtStat.setInt(48, qprot.getIdentifiedProteinsNum());
+                insertQProtStat.setInt(49, counter++);
+                insertQProtStat.setString(50, qprot.getDiseaseCategory());
 
                 insertQProtStat.executeUpdate();
                 insertQProtStat.clearParameters();
@@ -1854,7 +1862,7 @@ public class DB implements Serializable {
 
     public void storeQuantDatasets() {
 
-        String selectPro = "SELECT DISTINCT  `author` ,`year` ,`pumed_id` , `study_key`, `quantified_proteins_number` , `identified_proteins_number` ,`raw_data_available` ,  `type_of_study` ,  `sample_type` ,  `sample_matching` ,  `normalization_strategy` ,  `technology` ,  `analytical_approach`  ,  `analytical_method`,  `enzyme` ,  `shotgun_targeted` ,  `quantification_basis` ,  `quant_basis_comment`  ,  `patients_group_i_number` ,  `patients_group_ii_number` ,  `patient_group_i` ,  `patient_gr_i_comment` ,  `patient_sub_group_i` ,  `patient_group_ii` ,  `patient_sub_group_ii` , `patient_gr_ii_comment` \n"
+        String selectPro = "SELECT DISTINCT  `author` ,`disease_category` ,`year` ,`pumed_id` , `study_key`, `quantified_proteins_number` , `identified_proteins_number` ,`raw_data_available` ,  `type_of_study` ,  `sample_type` ,  `sample_matching` ,  `normalization_strategy` ,  `technology` ,  `analytical_approach`  ,  `analytical_method`,  `enzyme` ,  `shotgun_targeted` ,  `quantification_basis` ,  `quant_basis_comment`  ,  `patients_group_i_number` ,  `patients_group_ii_number` ,  `patient_group_i` ,  `patient_gr_i_comment` ,  `patient_sub_group_i` ,  `patient_group_ii` ,  `patient_sub_group_ii` , `patient_gr_ii_comment` \n"
                 + "FROM  `quant_full_table` ";
 
         PreparedStatement selectProStat;
@@ -1898,6 +1906,7 @@ public class DB implements Serializable {
                 pb.setPatientsGroup2(rs.getString("patient_group_ii"));
                 pb.setPatientsGroup2Comm(rs.getString("patient_gr_ii_comment"));
                 pb.setPatientsSubGroup2(rs.getString("patient_sub_group_ii"));
+                pb.setDiseaseCategory(rs.getString("disease_category"));
                 pubmidIds.add(pb);
                 x++;
             }
@@ -1919,7 +1928,7 @@ public class DB implements Serializable {
                     + "`quant_basis_comment` ,\n"
                     + "`patients_group_i_number` ,\n"
                     + "`patients_group_ii_number` ,  `normalization_strategy`"
-                    + ",`patient_group_i`,`patient_gr_i_comment`,`patient_sub_group_i`,`patient_group_ii`,`patient_gr_ii_comment`,`patient_sub_group_ii`,`study_key`,`analytical_method`)VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                    + ",`patient_group_i`,`patient_gr_i_comment`,`patient_sub_group_i`,`patient_group_ii`,`patient_gr_ii_comment`,`patient_sub_group_ii`,`study_key`,`analytical_method`,`index`,`disease_category`)VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
             PreparedStatement insertPbublicationStat;
 
@@ -1928,6 +1937,7 @@ public class DB implements Serializable {
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
 
+            int counter = 0;
             for (QuantDatasetObject pb : pubmidIds) {
                 insertPbublicationStat = conn.prepareStatement(insertQProt, Statement.RETURN_GENERATED_KEYS);
                 insertPbublicationStat.setString(1, pb.getPumedID());
@@ -1969,6 +1979,8 @@ public class DB implements Serializable {
                 insertPbublicationStat.setString(24, pb.getPatientsSubGroup2());
                 insertPbublicationStat.setString(25, pb.getStudyKey());
                 insertPbublicationStat.setString(26, pb.getAnalyticalMethod());
+                insertPbublicationStat.setInt(27, counter++);
+                insertPbublicationStat.setString(28, pb.getDiseaseCategory());
                 insertPbublicationStat.executeUpdate();
                 insertPbublicationStat.clearParameters();
                 insertPbublicationStat.close();
@@ -1994,7 +2006,7 @@ public class DB implements Serializable {
 
     public Object[] storeQuantitiveProteins(List<QuantProtein> qProtList) {
         Map<String, Integer> updatedProtList = new HashMap<String, Integer>();
-        Map<Integer , Integer>protDsMap = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> protDsMap = new HashMap<Integer, Integer>();
         String sqlStat = "INSERT INTO "
                 + " `quantitative_proteins_table` ( "
                 + "`ds_ID` , "
@@ -2003,9 +2015,9 @@ public class DB implements Serializable {
                 + "`publication_acc_number` , "
                 + "`publication_protein_name` , "
                 + "`quantified_peptides_number` , "
-                + "`identified_peptides_number`,`fold_change`,`additional_comments`,`sequance`,`fc_value`,`roc_auc`,`string_p_value`, `p_value`, `p_value_comments`, `log_2_FC`, `pvalue_significance_threshold`"
+                + "`identified_peptides_number`,`fold_change`,`additional_comments`,`sequance`,`fc_value`,`roc_auc`,`string_p_value`, `p_value`, `p_value_comments`, `log_2_FC`, `pvalue_significance_threshold`, `index`"
                 + ")"
-                + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
         try {
             PreparedStatement insertQuantProtStat;
@@ -2013,6 +2025,7 @@ public class DB implements Serializable {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
+            int counter = 0;
             for (QuantProtein quantProt : qProtList) {
                 if (quantProt.isPeptideProtein()) {
                     continue;
@@ -2038,15 +2051,18 @@ public class DB implements Serializable {
                 insertQuantProtStat.setString(15, quantProt.getPvalueComment());
                 insertQuantProtStat.setDouble(16, quantProt.getLogFC());
                 insertQuantProtStat.setString(17, quantProt.getSignificanceThreshold());
+                insertQuantProtStat.setInt(18, counter);
 
                 insertQuantProtStat.executeUpdate();
                 ResultSet rs = insertQuantProtStat.getGeneratedKeys();
+                quantProt.setProtKey(counter++);
 
-                while (rs.next()) {
-                    int index = rs.getInt(1);
-                    quantProt.setProtKey(index);
-
-                }
+//                while (rs.next()) {
+//                    int index = rs.getInt(1);
+//                    System.out.println("generated key is "+index);
+//                    quantProt.setProtKey(index);
+//
+//                }
                 rs.close();
                 updatedProtList.put(quantProt.getQuantPeptideKey(), quantProt.getProtKey());
                 protDsMap.put(quantProt.getProtKey(), quantProt.getDsKey());
@@ -2068,8 +2084,8 @@ public class DB implements Serializable {
         System.out.println("done storing prote");
         System.gc();
         Object[] maps = new Object[2];
-        maps[0]= updatedProtList;
-        maps[1]= protDsMap;
+        maps[0] = updatedProtList;
+        maps[1] = protDsMap;
         return maps;
 
     }
@@ -2085,10 +2101,10 @@ public class DB implements Serializable {
                 + "`string_p_value` , "
                 + "`p_value` , "
                 + "`roc_auc` , "
-                + "`fc_value`,`p_value_comments`,`proteinAccession` ,`additional_comments`,`log_2_FC`, `pvalue_significance_threshold`,`sequence_annotated`,`peptide_charge`"
+                + "`fc_value`,`p_value_comments`,`proteinAccession` ,`additional_comments`,`log_2_FC`, `pvalue_significance_threshold`,`sequence_annotated`,`peptide_charge`,`index`"
                 + ")\n"
                 + "VALUES ( "
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
         try {
             PreparedStatement insertQuantPeptidtStat;
@@ -2096,6 +2112,7 @@ public class DB implements Serializable {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
+            int counter = 0;
             for (QuantProtein quantPept : qPeptidestList) {
                 insertQuantPeptidtStat = conn.prepareStatement(sqlStat, Statement.RETURN_GENERATED_KEYS);
                 insertQuantPeptidtStat.setInt(2, quantPept.getProtKey());
@@ -2110,13 +2127,14 @@ public class DB implements Serializable {
                 insertQuantPeptidtStat.setDouble(9, quantPept.getRocAuc());
                 insertQuantPeptidtStat.setDouble(10, quantPept.getFcPatientGroupIonPatientGroupII());
                 insertQuantPeptidtStat.setString(11, quantPept.getPvalueComment());
-                 
+
                 insertQuantPeptidtStat.setString(12, quantPept.getUniprotAccession());
                 insertQuantPeptidtStat.setString(13, quantPept.getAdditionalComments());
                 insertQuantPeptidtStat.setDouble(14, quantPept.getLogFC());
                 insertQuantPeptidtStat.setString(15, quantPept.getSignificanceThreshold());
                 insertQuantPeptidtStat.setString(16, quantPept.getPeptideSequenceAnnotated());
                 insertQuantPeptidtStat.setInt(17, quantPept.getPeptideCharge());
+                insertQuantPeptidtStat.setInt(18, counter++);
                 insertQuantPeptidtStat.executeUpdate();
                 ResultSet rs = insertQuantPeptidtStat.getGeneratedKeys();
                 rs.close();

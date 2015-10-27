@@ -13,10 +13,18 @@ public class QuantProtein {
     private String pumedID,uniprotAccession, uniprotProteinName, publicationAccNumber,publicationProteinName,rawDataAvailable,typeOfStudy,sampleType,patientGroupI,patientSubGroupI,patientGrIComment,patientGroupII,patientSubGroupII,patientGrIIComment,sampleMatching,normalizationStrategy,technology,analyticalApproach,enzyme,shotgunOrTargetedQquant,quantificationBasis,quantBasisComment,additionalComments;		
     private int peptideCharge,quantifiedProteinsNumber,peptideIdNumb,quantifiedPeptidesNumber, patientsGroupINumber,patientsGroupIINumber,year,filesNum,IdentifiedProteinsNum, dsKey,protKey;    
     private String peptideSequenceAnnotated,studyKey,quantPeptideKey,    peptideSequance,	peptideModification,modificationComment , stringFCValue,stringPValue,author,diseaseGroups,pvalueComment; 
-
+    private String diseaseCategory;
     private boolean peptideProtein;
     public int getDsKey() {
         return dsKey;
+    }
+
+    public String getDiseaseCategory() {
+        return diseaseCategory;
+    }
+
+    public void setDiseaseCategory(String diseaseCategory) {
+        this.diseaseCategory = diseaseCategory;
     }
 
     public String getPvalueComment() {
