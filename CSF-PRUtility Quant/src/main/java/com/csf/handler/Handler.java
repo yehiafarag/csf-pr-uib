@@ -226,6 +226,9 @@ public class Handler {
                 if (!ds.getAuthor().equalsIgnoreCase(qp.getAuthor())) {
                     continue;
                 }
+                 if (!ds.getDiseaseCategory().equalsIgnoreCase(qp.getDiseaseCategory())) {
+                    continue;
+                }
 
 //                if (!ds.getAdditionalcomments().equalsIgnoreCase(qp.getAdditionalComments())) {
 //                    continue;

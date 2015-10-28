@@ -124,7 +124,7 @@ public class DB implements Serializable {
                         + "  `patient_sub_group_ii` varchar(700) NOT NULL default 'Not Available',\n"
                         + "  `patient_gr_ii_comment` varchar(700) NOT NULL default 'Not Available',\n"
                         + "  `analytical_method` varchar(500) NOT NULL default 'Not Available',\n"
-                        + "  `disease_category` varchar(200) NOT NULL default ' ',\n"
+                        + "  `disease_category` varchar(200) NOT NULL default 'Not Available',\n"
                         + "  PRIMARY KEY  (`index`)\n"
                         + ") ENGINE=MyISAM DEFAULT CHARSET=utf8;";
                 st.executeUpdate(statment);
@@ -181,7 +181,7 @@ public class DB implements Serializable {
                         + "  `peptide_prot` varchar(5) NOT NULL default 'False',\n"
                         + "  `index` int(255) NOT NULL default '0',\n"
                         + "  `peptide_charge` int(255) NOT NULL default '-1',\n"
-                        + "  `disease_category` varchar(200) NOT NULL default ' ',\n"
+                        + "  `disease_category` varchar(200) NOT NULL default 'Not Available',\n"
                         + "  PRIMARY KEY  (`index`)\n"
                         + ") ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
@@ -2380,6 +2380,8 @@ public class DB implements Serializable {
                     activeHeaders[25] = true;
                 }
                 pb.setPatientsSubGroup2(patient_sub_group_ii);
+                
+                pb.setDiseaseCategory(rs.getString("disease_category"));
 
 //                String additional_comments = rs.getString("additional_comments");
 //                if (!activeHeaders[26] && additional_comments != null && !additional_comments.equalsIgnoreCase("Not Available")) {
