@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import probe.com.model.beans.OverviewInfoBean;
 
 import probe.com.model.beans.identification.IdentificationDatasetBean;
 import probe.com.model.beans.identification.IdentificationFractionBean;
@@ -2747,7 +2748,7 @@ public class DataBase implements Serializable {
      */
     public Map<String, QuantDatasetInitialInformationObject> getQuantDatasetListObject(List<QuantProtein> searchQuantificationProtList) {
 
-       Map<String, QuantDatasetInitialInformationObject> diseaseCategoriesMap = new LinkedHashMap<String, QuantDatasetInitialInformationObject>();
+        Map<String, QuantDatasetInitialInformationObject> diseaseCategoriesMap = new LinkedHashMap<String, QuantDatasetInitialInformationObject>();
 //       Set<QuantDatasetObject> quantDatasetList = new HashSet<QuantDatasetObject>();
 //        boolean[] activeHeaders = new boolean[27];
         Set<Integer> QuantDatasetIds = new HashSet<Integer>();
@@ -2762,7 +2763,7 @@ public class DataBase implements Serializable {
 
         }
         String stat = sb.toString().substring(0, sb.length() - 4);
-       
+
         try {
             PreparedStatement selectStudiesStat;
             String selectStudies = "SELECT * FROM  `quant_dataset_table` WHERE  " + stat;
@@ -3002,9 +3003,7 @@ public class DataBase implements Serializable {
         System.gc();
 
         return null;
-        
-        
-        
+
 //        
 //        
 //        
@@ -3230,7 +3229,6 @@ public class DataBase implements Serializable {
 //        System.gc();
 //
 //        return null;
-
     }
 
     /**
@@ -3876,12 +3874,10 @@ public class DataBase implements Serializable {
 
         StringBuilder sb = new StringBuilder();
         QueryConstractorHandler qhandler = new QueryConstractorHandler();
-
         PreparedStatement selectProStat;
         String selectPro;
         //main filters  
         if (query.getSearchKeyWords() != null && !query.getSearchKeyWords().equalsIgnoreCase("")) {
-
             String[] queryWordsArr = query.getSearchKeyWords().split(" ");
             HashSet<String> searchSet = new HashSet<String>();
             for (String str : queryWordsArr) {
@@ -3891,7 +3887,6 @@ public class DataBase implements Serializable {
                 searchSet.add(str.trim());
             }
             if (query.getSearchBy().equalsIgnoreCase("Protein Accession")) {
-
                 int x = 0;
                 for (String str : searchSet) {
                     if (x > 0) {
@@ -3901,9 +3896,7 @@ public class DataBase implements Serializable {
                     qhandler.addQueryParam("String", str);
                     qhandler.addQueryParam("String", str);
                     x++;
-
                 }
-
             } else if (query.getSearchBy().equalsIgnoreCase("Protein Name")) {
                 int x = 0;
                 for (String str : searchSet) {
@@ -3923,14 +3916,10 @@ public class DataBase implements Serializable {
                     sb.append("`sequance` LIKE (?)");//
                     qhandler.addQueryParam("String", "%" + str + "%");
                     x++;
-
                 }
-
             }
         }
-
         selectPro = "SELECT * FROM   `quantitative_proteins_table`  Where " + (sb.toString());
-
         try {
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
@@ -3949,10 +3938,8 @@ public class DataBase implements Serializable {
 
                 datasetsIds.add(quantProt.getDsKey());
             }
-
             String selectDsGroupNum = "SELECT `patients_group_i_number` , `patients_group_ii_number` FROM `quant_dataset_table` Where  `index`=?;";
             PreparedStatement selectselectDsGroupNumStat = conn.prepareStatement(selectDsGroupNum);
-
             Map<Integer, int[]> dsDGrNumMap = new HashMap<Integer, int[]>();
             for (int i : datasetsIds) {
                 selectselectDsGroupNumStat.setInt(1, i);
@@ -3963,7 +3950,6 @@ public class DataBase implements Serializable {
                     dsDGrNumMap.put(i, grNumArr);
                 }
                 dsIdRs.close();
-
             }
             List<QuantProtein> updatedQuantProtResultList = new ArrayList<QuantProtein>();
             for (QuantProtein quantProt : quantProtResultList) {
@@ -3973,10 +3959,8 @@ public class DataBase implements Serializable {
                     quantProt.setPatientsGroupINumber(grNumArr[0]);
                     quantProt.setPatientsGroupIINumber(grNumArr[1]);
                     updatedQuantProtResultList.add(quantProt);
-
                 }
             }
-
             return updatedQuantProtResultList;
 
         } catch (ClassNotFoundException e) {
@@ -3995,6 +3979,114 @@ public class DataBase implements Serializable {
 
             return null;
         }
+
+    }
+
+    public OverviewInfoBean getResourceOverviewInformation() {
+
+        OverviewInfoBean infoBean = new OverviewInfoBean();
+
+        try {
+
+            if (conn == null || conn.isClosed()) {
+                Class.forName(driver).newInstance();
+                conn = DriverManager.getConnection(url + dbName, userName, password);
+            }
+            String selectIdPublicationStudies = "SELECT COUNT(*) AS `Rows`, `pblication_link` FROM `experiments_table` GROUP BY `pblication_link` ORDER BY `pblication_link`";
+            PreparedStatement selectIdPublicationStudiesStat = conn.prepareStatement(selectIdPublicationStudies);
+
+            ResultSet rs = selectIdPublicationStudiesStat.executeQuery();
+            int numStudies = 0;
+            int numPublications = 0;
+
+            while (rs.next()) {
+                numStudies += rs.getInt("Rows");
+                numPublications++;
+
+            }
+            infoBean.setNumberOfIdPublication(numPublications);
+            infoBean.setNumberOfIdStudies(numStudies);
+
+            rs.close();
+
+            String selectIdProteinsNumber = "SELECT COUNT( DISTINCT  `prot_accession` ) AS `Rows` FROM  `experiment_protein_table` ;";
+            PreparedStatement selectIdProteinsNumberStat = conn.prepareStatement(selectIdProteinsNumber);
+
+             rs = selectIdProteinsNumberStat.executeQuery();
+            int numProteins = 0;
+
+            while (rs.next()) {
+                numProteins += rs.getInt("Rows");
+            }
+            infoBean.setNumberOfIdProteins(numProteins);
+            rs.close();
+            
+            
+            String selectIdPeptidesNumber = "SELECT COUNT( DISTINCT  `sequence` ) AS `Rows` FROM  `proteins_peptides_table` ;";
+            PreparedStatement selectIdPeptidesNumberStat = conn.prepareStatement(selectIdPeptidesNumber);
+
+             rs = selectIdPeptidesNumberStat.executeQuery();
+            int numPeptides = 0;
+
+            while (rs.next()) {
+                numPeptides += rs.getInt("Rows");
+            }
+            infoBean.setNumberOfIdPeptides(numPeptides);
+            rs.close();
+            
+            
+            //quant data
+            
+            String selectQuantPublicationStudies = "SELECT COUNT( * ) AS  `Rows` ,  `pumed_id` FROM  `quant_dataset_table` GROUP BY  `pumed_id` ORDER BY  `pumed_id` ";
+            PreparedStatement selectQuantPublicationStudiesStat = conn.prepareStatement(selectQuantPublicationStudies);
+
+            rs = selectQuantPublicationStudiesStat.executeQuery();
+             numStudies = 0;
+             numPublications = 0;
+
+            while (rs.next()) {
+                numStudies += rs.getInt("Rows");
+                numPublications++;
+
+            }
+            infoBean.setNumberOfQuantPublication(numPublications);
+            infoBean.setNumberOfQuantStudies(numStudies);
+
+            rs.close();
+            
+            String selectQuantProteinsNumber = "SELECT COUNT( DISTINCT  `publication_acc_number` ,  `uniprot_accession` ) AS  `Rows` FROM  `quantitative_proteins_table` ;";
+            PreparedStatement selectQuantProteinsNumberStat = conn.prepareStatement(selectQuantProteinsNumber);
+
+             rs = selectQuantProteinsNumberStat.executeQuery();
+             numProteins = 0;
+
+            while (rs.next()) {
+                numProteins += rs.getInt("Rows");
+            }
+            infoBean.setNumberOfQuantProteins(numProteins);
+            rs.close();
+            
+             String selectQuantPeptidesNumber = "SELECT COUNT( DISTINCT  `peptide_sequance` ) AS `Rows` FROM  `quantitative_peptides_table` ;";
+            PreparedStatement selectQuantPeptidesNumberStat = conn.prepareStatement(selectQuantPeptidesNumber);
+
+             rs = selectQuantPeptidesNumberStat.executeQuery();
+             numPeptides = 0;
+
+            while (rs.next()) {
+                numPeptides += rs.getInt("Rows");
+            }
+            infoBean.setNumberOfQuantPeptides(numPeptides);
+            rs.close();
+            
+            
+            
+            
+
+        } catch (Exception exp) {
+            exp.printStackTrace();
+        }
+
+        return infoBean;
 
     }
 

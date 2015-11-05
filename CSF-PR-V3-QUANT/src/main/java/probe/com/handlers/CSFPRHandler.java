@@ -13,6 +13,7 @@ import java.util.TreeMap;
 import org.jfree.chart.JFreeChart;
 import probe.com.dal.Query;
 import probe.com.model.CoreLogic;
+import probe.com.model.beans.OverviewInfoBean;
 import probe.com.model.beans.identification.IdentificationDatasetBean;
 import probe.com.model.beans.identification.IdentificationDatasetDetailsBean;
 import probe.com.model.beans.identification.IdentificationFractionBean;
@@ -529,6 +530,11 @@ public class CSFPRHandler implements Serializable {
      return this.logicLayer.runKMeanClustering(samples, sampleIds, numClusters,proteinKey);
     }
     
+    public OverviewInfoBean getResourceOverviewInformation(){
+        return this.logicLayer.getResourceOverviewInformation();
     
+    
+    
+    }
 
 }

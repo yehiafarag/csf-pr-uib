@@ -142,5 +142,17 @@ public class SearchingAreaFilter extends VerticalLayout implements Serializable 
     
     searchFieldFilter.setValue(value);
     }
+     /**
+     *
+     * @param value
+     */
+    public void setSearchingByValue(String value){
+    
+     searchbyGroup.getOptionGroup().setValue(value);
+    }
+    
+    public void startSearching(){
+    searchingBtn.click();
+    }
 
 }

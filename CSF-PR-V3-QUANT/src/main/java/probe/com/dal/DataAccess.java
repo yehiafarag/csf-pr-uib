@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import probe.com.model.beans.OverviewInfoBean;
 
 import probe.com.model.beans.identification.IdentificationDatasetBean;
 import probe.com.model.beans.identification.IdentificationFractionBean;
@@ -411,6 +412,13 @@ public class DataAccess implements Serializable {
     public Map<String, Set<QuantPeptide>> getQuantificationPeptides(Object[] quantDatasetIds) {
         Map<String, Set<QuantPeptide>> datasetProteinsSearchingList = db.getQuantificationPeptides(quantDatasetIds);
         return datasetProteinsSearchingList;
+    }
+    
+    public OverviewInfoBean getResourceOverviewInformation(){
+        return this.db.getResourceOverviewInformation();
+    
+    
+    
     }
    
 }

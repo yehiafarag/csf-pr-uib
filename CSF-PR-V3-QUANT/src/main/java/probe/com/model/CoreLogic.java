@@ -33,6 +33,7 @@ import probe.com.model.util.FilesReader;
 import probe.com.model.util.KMeansClustering;
 
 import org.jfree.chart.JFreeChart;
+import probe.com.model.beans.OverviewInfoBean;
 //import org.apache.batik.svggen.SVGGraphics2D;
 //import org.apache.batik.dom.svg.SVGDOMImplementation;
 //import org.apache.batik.dom.svg12.SVG12DOMImplementation;
@@ -1537,6 +1538,14 @@ public class CoreLogic implements Serializable {
 
         return clusterinList;
 
+    }
+    
+    
+    public OverviewInfoBean getResourceOverviewInformation(){
+        return this.da.getResourceOverviewInformation();
+    
+    
+    
     }
 
 }

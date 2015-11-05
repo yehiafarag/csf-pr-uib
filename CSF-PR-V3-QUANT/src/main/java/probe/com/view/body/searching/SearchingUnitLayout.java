@@ -62,6 +62,7 @@ public class SearchingUnitLayout extends HorizontalLayout implements Serializabl
         rightPanel.addComponent(errorLabelII);
         rightPanel.setComponentAlignment(errorLabelII, Alignment.TOP_LEFT);
         errorLabelII.setVisible(false);
+       
 
     }
 
@@ -118,5 +119,11 @@ public class SearchingUnitLayout extends HorizontalLayout implements Serializabl
             errorLabelII.setVisible(false);
         }
 
+    }
+    
+    public void searchingProcess(String keyword){
+            searchingAreaFilter.setSearchingFieldValue(keyword);
+            searchingAreaFilter.setSearchingByValue("Protein Accession");
+            searchingAreaFilter.startSearching();
     }
 }

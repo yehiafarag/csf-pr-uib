@@ -1,6 +1,8 @@
 package probe.com.view.body;
 
 import com.vaadin.event.LayoutEvents;
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinService;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
@@ -51,6 +53,7 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
         this.handler = handler;
         this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.setSpacing(true);
+       
         searchingUnitLayout = new SearchingUnitLayout(ProteinsSearchingLayout.this);
         idLayoutListener = new LayoutEvents.LayoutClickListener() {
             @Override
@@ -125,7 +128,7 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
         searchingResultsOverview.setSpacing(true);
         searchingResultsOverview.setMargin(new MarginInfo(true, false, true, false));
         this.addComponent(searchingResultsOverview);
-        
+
         Label searchingResultsTitle = new Label("<h4 style='font-family:verdana;color:black;'> Search Results </h4>");
         searchingResultsTitle.setContentMode(ContentMode.HTML);
         searchingResultsOverview.addComponent(searchingResultsTitle);
@@ -134,7 +137,7 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
         idResultsOverview.setStyleName(Reindeer.BUTTON_LINK);
         idResultsOverview.setHeight("20px");
         searchingResultsOverview.addComponent(idResultsOverview);
-        
+
         idResultsOverview.addClickListener(new Button.ClickListener() {
 
             @Override
@@ -148,7 +151,7 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
         quantResultsOverview.setStyleName(Reindeer.BUTTON_LINK);
         quantResultsOverview.setHeight("20px");
         searchingResultsOverview.addComponent(quantResultsOverview);
-        
+
         quantResultsOverview.addClickListener(new Button.ClickListener() {
 
             @Override
@@ -185,6 +188,14 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
         searchingResultsLayout.addComponent(quantProteinsDataLayoutContainer);
         quantProteinsDataLayoutContainer.setVisability(true);
         quantProteinsDataLayoutContainer.setVisible(false);
+        
+        
+         String requestSearching = VaadinService.getCurrentRequest().getPathInfo();
+        if (!requestSearching.trim().endsWith("/")) {
+            requestSearching = requestSearching.replace("/", "");
+            searchingUnitLayout.searchingProcess(requestSearching);
+        } 
+
 
     }
     private Map<Integer, IdentificationProteinBean> searchIdentificationProtList;
@@ -193,8 +204,9 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
     public void buttonClick(Button.ClickEvent event) {
 
         boolean validQuery = searchingUnitLayout.isValidQuery();
-        if(searchingUnitLayout.getSearchingByValue() == null || searchingUnitLayout.getSearchingByValue().equalsIgnoreCase(""))
-                return;
+        if (searchingUnitLayout.getSearchingByValue() == null || searchingUnitLayout.getSearchingByValue().equalsIgnoreCase("")) {
+            return;
+        }
         if (validQuery) {
             Query query = new Query();
             query.setValidatedProteins(false);
@@ -215,7 +227,7 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
 
             //searching quant data
             query.setSearchDataType("Quantification Data");
-           
+
             searchQuantificationProtList = handler.searchQuantificationProtein(query);
             String quantNotFound = handler.filterQuantSearchingKeywords(searchQuantificationProtList, query.getSearchKeyWords(), query.getSearchBy());
             Map<String, Integer> quantHitsList = handler.getQuantHitsList(searchQuantificationProtList, query.getSearchBy());

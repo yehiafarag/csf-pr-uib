@@ -35,6 +35,7 @@ public class AppController extends UI {
     @Override
     protected void init(final VaadinRequest request) {
         //init param for DB
+      
         ServletContext scx = VaadinServlet.getCurrent().getServletContext();
         dbURL = (scx.getInitParameter("url"));
         dbName = (scx.getInitParameter("dbName"));
@@ -77,10 +78,10 @@ public class AppController extends UI {
                     System.out.println("close everythings now :-D bye bye !");
                     deleteFiles(new File(filesURL));
                     timer.cancel();
-                    
+
                     request.getWrappedSession().invalidate();
                 }
-            },(5 * 60 * 1000 * 60));
+            }, (5 * 60 * 1000 * 60));
         }
 
     }
