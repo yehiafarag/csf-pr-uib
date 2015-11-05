@@ -255,7 +255,7 @@ public class FileExporter implements Serializable {
             File csfFolder = new File(url);
             csfFolder.mkdir();
 
-            File file = new File(url + "\\" + fileName);
+            File file = new File(url + "/" + fileName);
             if (file.exists()) {
                 file.delete();
                 System.out.println("file deleted");
@@ -282,32 +282,30 @@ public class FileExporter implements Serializable {
                 Font font = new Font("Verdana", Font.PLAIN, 8);
 
                 Rectangle2D rect2d;
-                boolean newpage=false;
+                boolean newpage = false;
                 for (JFreeChart chart : component) {
-                    if(newpage){
-                        newpage=false;
+                    if (newpage) {
+                        newpage = false;
                         document.newPage();
                     }
-                    
-                        
+
                     if (counter == 0) {
-                        
+
                         int labelHeight = 0;
-                       for (String str :((SymbolAxis)chart.getXYPlot().getDomainAxis()).getSymbols() ) {
+                        for (String str : ((SymbolAxis) chart.getXYPlot().getDomainAxis()).getSymbols()) {
                             if ((str.length() * 6) > labelHeight) {
                                 labelHeight = (str.length() * 6);
                             }
                         }
                         int chartHeight = 400 + labelHeight;
                         rect2d = new Rectangle2D.Double(50, starty, 500, chartHeight);
-                        starty += chartHeight+20;
+                        starty += chartHeight + 20;
 
                     } else {
-                        
+
 //                    chart.getXYPlot().getDomainAxis().setTickLabelInsets(new RectangleInsets(0.1,0.1, 0.1,0.1));
 //                    chart.getXYPlot().getRangeAxis().setTickLabelFont(font);
 //                    chart.getXYPlot().getRangeAxis().setTickLabelInsets(new RectangleInsets(2.5,3, 2.5, 3));
-                    
                         rect2d = new Rectangle2D.Double(50, starty, 500, 200);
                         starty += 220;
 
@@ -319,7 +317,7 @@ public class FileExporter implements Serializable {
                     if (starty > 700) {
                         g2d.dispose();
                         contentByte.addTemplate(template, 0, 0);
-                        newpage=true;
+                        newpage = true;
 
                         template = contentByte.createTemplate(width, height);
                         g2d = template.createGraphics(width, height, new DefaultFontMapper());
@@ -382,9 +380,11 @@ public class FileExporter implements Serializable {
         try {
 
             File csfFolder = new File(url);
-            csfFolder.mkdir();
+            if (!csfFolder.exists()) {
+                csfFolder.mkdir();
+            }
 
-            File file = new File(url + "\\" + fileName);
+            File file = new File(csfFolder, fileName);
             if (file.exists()) {
                 file.delete();
                 System.out.println("file deleted");

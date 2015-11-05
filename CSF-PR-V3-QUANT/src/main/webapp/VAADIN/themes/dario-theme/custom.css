@@ -1472,6 +1472,7 @@ v-gridlayout-slot:focus{
 .borderlayout{
 
 
+
 }
 
 .selectallbtn{
@@ -1684,10 +1685,10 @@ v-gridlayout-slot:focus{
 .downarricon {
     /*background: url(http://www.damtp.cam.ac.uk/user/sjc1/damtp/icons/10x10/pinkball.gif) no-repeat;*/
     background: url(img/down.png) no-repeat;
-     background-position:0px 3px;
+    background-position:0px 3px;
     padding:0px 12px;
     background-size:10px 10px;
-      font-size:12px;
+    font-size:12px;
     font-family:Verdana;
     font-weight:normal;
 
@@ -1698,10 +1699,10 @@ v-gridlayout-slot:focus{
 .notregicon {
     /*background: url(http://www.damtp.cam.ac.uk/user/sjc1/damtp/icons/10x10/pinkball.gif) no-repeat;*/
     background: url(img/notreg.png) no-repeat;
-     background-position:0px 3px;
+    background-position:0px 3px;
     padding:0px 12px;
     background-size:10px 10px;
-      font-size:12px;
+    font-size:12px;
     font-family:Verdana;
     font-weight:normal;
 
@@ -1712,10 +1713,10 @@ v-gridlayout-slot:focus{
 .uparricon {
     /*background: url(http://www.damtp.cam.ac.uk/user/sjc1/damtp/icons/10x10/pinkball.gif) no-repeat;*/
     background: url(img/up.png) no-repeat;
-     background-position:0px 3px;
+    background-position:0px 3px;
     padding:0px 12px;
     background-size:10px 10px;
-      font-size:12px;
+    font-size:12px;
     font-family:Verdana;
     font-weight:normal;
 
@@ -1723,10 +1724,63 @@ v-gridlayout-slot:focus{
 
 }
 .highlightlayout div{
-color:#4d749f;
+    color:#4d749f;
 
 }
 .dottedline{
-    
+
     /*border-bottom: 1px dotted black;*/
+}
+
+.infoicon {
+    /*background: url(http://www.damtp.cam.ac.uk/user/sjc1/damtp/icons/10x10/pinkball.gif) no-repeat;*/
+    background: url(img/info_icon.png) no-repeat;
+    background-position:center;
+    background-size:16px 16px;
+    cursor: pointer;
+}
+
+.diseaseselectionlist select{
+
+    border-radius:4px !important;
+    color:#4d749f;
+    text-align:center;
+    background:whitesmoke;
+    font-family:Verdana;
+}
+
+
+.framelayout{
+        border-right: 1px solid lightgray;
+    border-bottom:1px solid #f5f5f5;
+    background:  #f5f5f5;
+    display: block;
+
+
+}
+.framelayout h1{
+    color: black;
+    font-size: 1.5em;
+    border:none;
+}
+.framelayout h2{
+    font-size: 14px;
+    border:none;
+    margin-left:20px !important;
+
+}
+.framelayout h3{
+    font-size: 14px;
+    border:none;
+    margin-left:40px !important;
+    font-weight:normal;
+}
+.bottomborder{
+    border-bottom: 1px solid lightgray;
+    
+}
+.fulloverview{
+       background: url(img/fulloverview.png) no-repeat;
+    background-size:contain;
+    
 }

@@ -47,14 +47,14 @@ public class QuantProtiensSearchingResultsLayout extends VerticalLayout {
 
 //        filterUtility = new FilterUtility(handler);
         //get quant dataset arr
-        QuantDatasetInitialInformationObject quantDatasetListObject = handler.getQuantDatasetInitialInformationObject(searchQuantificationProtList);
-        Map<Integer, QuantDatasetObject> quantDatasetArr = quantDatasetListObject.getQuantDatasetsList();
+        Map<String, QuantDatasetInitialInformationObject> quantDatasetListObject = handler.getQuantDatasetInitialInformationObject(searchQuantificationProtList);
+//        Map<Integer, QuantDatasetObject> quantDatasetArr = quantDatasetListObject.getQuantDatasetsList();
 
 //        boolean[] activeHeaders = quantDatasetListObject.getActiveHeaders();
         //which fillters are exist
-        boolean[] activeFilters = handler.getActivePieChartQuantFilters(searchQuantificationProtList);
+        Map<String, boolean[]> activeFiltersMap = handler.getActivePieChartQuantFilters(searchQuantificationProtList);
         //get active filters
-        exploringFiltersManager = new DatasetExploringCentralSelectionManager(quantDatasetArr, activeFilters);//,filterUtility.getFullFilterList()
+        exploringFiltersManager = new DatasetExploringCentralSelectionManager(quantDatasetListObject, activeFiltersMap);//,filterUtility.getFullFilterList()
         this.setMargin(true);
         this.setSpacing(true);
         this.setWidth("100%");
@@ -63,7 +63,7 @@ public class QuantProtiensSearchingResultsLayout extends VerticalLayout {
         pieChartFiltersLayout = new StudiesPieChartFiltersContainerLayout(exploringFiltersManager,handler);
 
         
-        DiseaseGroupsFiltersContainer heatmapFilter = new DiseaseGroupsFiltersContainer(exploringFiltersManager,handler, pieChartFiltersLayout.getPieChartFiltersBtn(),searchQuantificationProtList);
+        DiseaseGroupsFiltersContainer heatmapFilter = new DiseaseGroupsFiltersContainer(exploringFiltersManager,handler, searchQuantificationProtList);
         heatmapFilter.setWidth("100%");
         heatmapFilter.setMargin(new MarginInfo(false, false, true, false));
 

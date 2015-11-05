@@ -159,7 +159,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         nameTitle.setContentMode(ContentMode.HTML);
         protInfoLayout.addComponent(nameTitle, 0, 2);
 
-        Label nameValue = new Label("<textarea rows='4' cols='20' readonly>" + proteinName + "</textarea>");
+        Label nameValue = new Label("<textarea rows='4' cols='30' readonly>" + proteinName + "</textarea>");
         nameValue.setContentMode(ContentMode.HTML);
         nameValue.setStyleName("valuelabel");
         nameValue.setReadOnly(true);
@@ -179,6 +179,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
         Button clusterKMeanBtn = new Button("Protein K-Means Clustering ");
         clusterKMeanBtn.setStyleName(Reindeer.BUTTON_LINK);
+        clusterKMeanBtn.setEnabled(false);
         clusterKMeanLayout.addComponent(clusterKMeanBtn);
         clusterKMeanLayout.setComponentAlignment(clusterKMeanBtn, Alignment.MIDDLE_CENTER);
         clusterKMeanBtn.addClickListener(new Button.ClickListener() {
@@ -263,7 +264,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         lineChartContainer.setWidth((width - 100) + "px");
         lineChartContainer.setHeight(height + "px");
 
-        teststyle = proteinName.replace(" ", "_").replace(")", "_").replace("(", "_").replace(";", "_").toLowerCase().replace("#", "_").replace("?", "_").replace("[", "").replace("]", "").replace("/", "_") + "linechart";
+        teststyle = proteinName.replace(" ", "_").replace(")", "_").replace("(", "_").replace(";", "_").toLowerCase().replace("#", "_").replace("?", "_").replace("[", "").replace("]", "").replace("/", "_").replace(":", "_").replace("'", "_") + "linechart";
         styles.add("." + teststyle + " {  background-image: url(" + defaultLineChartImgUrl + " );background-position:center; background-repeat: no-repeat; }");
         lineChartContainer.setStyleName(teststyle);
         chartListener = new LayoutEvents.LayoutClickListener() {
@@ -542,7 +543,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         };
         xAxis.setTickLabelFont(font);
         final Color[] labelsColor = new Color[]{new Color(80, 183, 71), Color.LIGHT_GRAY, new Color(1, 141, 244), Color.LIGHT_GRAY, Color.RED};
-        SymbolAxis yAxis = new SymbolAxis(null, new String[]{"Down Regulated", " ", "Not Regulated", " ", "Up Regulated"}) {
+        SymbolAxis yAxis = new SymbolAxis(null, new String[]{"Low", " ", "Stable", " ", "High"}) {
             int x = 0;
 
             @Override

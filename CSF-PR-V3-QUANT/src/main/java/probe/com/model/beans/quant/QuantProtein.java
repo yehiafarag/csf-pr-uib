@@ -14,10 +14,18 @@ public class QuantProtein implements Comparable<QuantProtein> {
     private String pumedID, uniprotAccession, uniprotProteinName, publicationAccNumber, publicationProteinName, rawDataAvailable, typeOfStudy, sampleType, patientGroupI, patientSubGroupI, patientGrIComment, patientGroupII, patientSubGroupII, patientGrIIComment, sampleMatching, normalizationStrategy, technology, analyticalApproach, enzyme, shotgunOrTargetedQquant, quantificationBasis, quantBasisComment, additionalComments;
     private int quantifiedProteinsNumber, peptideIdNumb, quantifiedPeptidesNumber, patientsGroupINumber, patientsGroupIINumber, year, filesNum, IdentifiedProteinsNum, dsKey, protKey;
     private String qPeptideKey, peptideSequance, peptideModification, modificationComment, stringFCValue, stringPValue, author, diseaseGroups, pvalueComment, pvalueSignificanceThreshold;
-    
+    private String diseaseCategory;
 
    
     private String sequance;
+
+    public String getDiseaseCategory() {
+        return diseaseCategory;
+    }
+
+    public void setDiseaseCategory(String diseaseCategory) {
+        this.diseaseCategory = diseaseCategory;
+    }
 
     /**
      *

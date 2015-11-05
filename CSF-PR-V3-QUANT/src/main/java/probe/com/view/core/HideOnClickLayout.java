@@ -26,6 +26,7 @@ public class HideOnClickLayout extends VerticalLayout implements Serializable, L
     private final ShowLabel show;
     private final Layout fullBodyLayout;
     private final VerticalLayout miniBodyLayout;
+    private final InfoPopupBtn info; 
 
     /**
      *
@@ -64,9 +65,11 @@ public class HideOnClickLayout extends VerticalLayout implements Serializable, L
         titleHeaderLayout.addLayoutClickListener(HideOnClickLayout.this);
 
         VerticalLayout titleHeaderContainer = new VerticalLayout(titleHeaderLayout);
-        titleHeaderContainer.setWidth("500px");
+        titleHeaderContainer.setWidthUndefined();
 
         titleLayout.addComponent(titleHeaderContainer);
+         info = new InfoPopupBtn(title);
+          titleLayout.addComponent(info);
         this.addComponent(titleLayout);
         this.addComponent(this.fullBodyLayout);
         this.setComponentAlignment(this.fullBodyLayout, Alignment.MIDDLE_CENTER);
@@ -107,6 +110,11 @@ public class HideOnClickLayout extends VerticalLayout implements Serializable, L
         titleLayout.addComponent(titleLabel);
         titleLayout.setComponentAlignment(titleLabel, Alignment.TOP_RIGHT);
         titleLayout.addLayoutClickListener(HideOnClickLayout.this);
+        
+         info = new InfoPopupBtn(title);
+          titleLayout.addComponent(info);
+        titleLayout.setComponentAlignment(info, Alignment.TOP_RIGHT);
+        
         this.addComponent(titleLayout);
         this.addComponent(this.fullBodyLayout);
         this.setComponentAlignment(this.fullBodyLayout, align);
@@ -118,6 +126,8 @@ public class HideOnClickLayout extends VerticalLayout implements Serializable, L
 
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+        if(event.getClickedComponent() instanceof  InfoPopupBtn)
+            return;
         if (fullBodyLayout.isVisible()) {
             this.hideLayout();
 

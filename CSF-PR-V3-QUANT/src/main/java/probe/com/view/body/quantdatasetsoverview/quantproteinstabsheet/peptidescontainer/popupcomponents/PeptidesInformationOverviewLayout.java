@@ -40,7 +40,8 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
     private final Set<VerticalLayout> ptmsLayoutMap = new HashSet<VerticalLayout>();
     private LayoutEvents.LayoutClickListener studyListener;
     private Label noselectionLabel = new Label("<h4 style='font-family:verdana;color:#8A0808;font-weight:bold;'>\t \t Select peptide to show information!</h4>");
-    private boolean hasPTM=false;
+    private boolean hasPTM = false;
+
     /**
      *
      * @param sequance
@@ -172,7 +173,7 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
                 Set<String> ids = new HashSet<String>();
                 ids.add("PTMs");
                 showSigneficantPeptidesOnly.setValue(ids);
-                hasPTM=true;
+                hasPTM = true;
                 break;
             }
         }
@@ -224,9 +225,6 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
     private StackedBarPeptideComponent lastselectedPeptideComp;
     private InformationField pepSequance, peptideModification, modificationComment, pValue, pValueComm, foldChange, roc, additionalComments, pvalueSignificanceThreshold, sequenceAnnotated, peptideCharge;
 
-    
-    
-    
     private GridLayout initPeptidesForm(int width) {
         GridLayout peptideFormLayout = new GridLayout(4, 5);
         peptideFormLayout.setWidth(width + "px");
@@ -565,8 +563,11 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
             if (!intersect) {
                 for (StackedBarPeptideComponent pepBarComp : updatedLevel) {
                     peptidesComponentsContainer.addComponent(pepBarComp, "left: " + pepBarComp.getX0() + "px; top: " + (top + 10) + "px;");
-                    peptidesContainer.addComponent(pepBarComp.getPtmLayout(), "left: " + (pepBarComp.getX0() + (pepBarComp.getWidth() / 2) - 5) + "px; top: " + (top - 4) + "px;");
-                    ptmsLayoutMap.add(pepBarComp.getPtmLayout());
+                    if (pepBarComp.isPtmAvailable()) {
+                        peptidesContainer.addComponent(pepBarComp.getPtmLayout(), "left: " + (pepBarComp.getX0() + (pepBarComp.getWidth() / 2) - 5) + "px; top: " + (top - 4) + "px;"); 
+                        ptmsLayoutMap.add(pepBarComp.getPtmLayout());
+                    }
+                   
                 }
                 updatedLevel.clear();
                 updatedLevel.addAll(initLevel);

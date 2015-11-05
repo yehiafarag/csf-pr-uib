@@ -80,9 +80,10 @@ public class CoreLogic implements Serializable {
         datasetIndex.put(16, 6);
         datasetIndex.put(9, 7);
         this.filesURL = filesURL;
-        this.userFolderUrl = filesURL + "\\" + VaadinSession.getCurrent().getSession().getId();
-        File csfFolder = new File(userFolderUrl);
+//        this.userFolderUrl = filesURL + "/" + VaadinSession.getCurrent().getSession().getId();
+        File csfFolder = new File(filesURL,VaadinSession.getCurrent().getSession().getId());
         csfFolder.mkdir();
+        this.userFolderUrl  =csfFolder.getAbsolutePath();
 
     }
 
@@ -505,7 +506,7 @@ public class CoreLogic implements Serializable {
      *
      * @return QuantDatasetInitialInformationObject
      */
-    public QuantDatasetInitialInformationObject getQuantDatasetInitialInformationObject() {
+    public Map<String, QuantDatasetInitialInformationObject> getQuantDatasetInitialInformationObject() {
         return da.getQuantDatasetInitialInformationObject();
 
     }
@@ -518,7 +519,7 @@ public class CoreLogic implements Serializable {
      * @param searchQuantificationProtList
      * @return QuantDatasetInitialInformationObject
      */
-    public QuantDatasetInitialInformationObject getQuantDatasetInitialInformationObject(List<QuantProtein> searchQuantificationProtList) {
+    public Map<String, QuantDatasetInitialInformationObject> getQuantDatasetInitialInformationObject(List<QuantProtein> searchQuantificationProtList) {
         return da.getQuantDatasetInitialInformationObject(searchQuantificationProtList);
 
     }
@@ -530,7 +531,7 @@ public class CoreLogic implements Serializable {
      * @return boolean array for the active and not active pie chart filters
      * indexes
      */
-    public boolean[] getActivePieChartQuantFilters() {
+    public Map<String, boolean[]> getActivePieChartQuantFilters() {
         return da.getActivePieChartQuantFilters();
 
     }
@@ -543,7 +544,7 @@ public class CoreLogic implements Serializable {
      * @return boolean array for the active and not active pie chart filters
      * indexes
      */
-    public boolean[] getActivePieChartQuantFilters(List<QuantProtein> searchQuantificationProtList) {
+    public Map<String, boolean[]> getActivePieChartQuantFilters(List<QuantProtein> searchQuantificationProtList) {
         return da.getActivePieChartQuantFilters(searchQuantificationProtList);
 
     }
@@ -883,9 +884,9 @@ public class CoreLogic implements Serializable {
                 }
 
                 if ((pGrI.equalsIgnoreCase(quant.getPatientGroupI()) || pGrI.equalsIgnoreCase(quant.getPatientSubGroupI())) && (pGrII.equalsIgnoreCase(quant.getPatientGroupII()) || pGrII.equalsIgnoreCase(quant.getPatientSubGroupII()))) {
-                    if (quant.getStringFCValue().equalsIgnoreCase("Decreased")) {
+                    if (quant.getStringFCValue().equalsIgnoreCase("Decreased") || quant.getStringFCValue().equalsIgnoreCase("Decrease")) {
                         comProt.addDown((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
-                    } else if (quant.getStringFCValue().equalsIgnoreCase("Increased")) {
+                    } else if (quant.getStringFCValue().equalsIgnoreCase("Increased")||quant.getStringFCValue().equalsIgnoreCase("Increase")) {
                         comProt.addUp((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
                     } else if (quant.getStringFCValue().equalsIgnoreCase("Not Provided")) {
                         comProt.addNotProvided((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
@@ -912,9 +913,9 @@ public class CoreLogic implements Serializable {
                 } else {
                     inverted = true;
 
-                    if (quant.getStringFCValue().equalsIgnoreCase("Decreased")) {
+                    if (quant.getStringFCValue().equalsIgnoreCase("Decreased") || quant.getStringFCValue().equalsIgnoreCase("Decrease")) {
                         comProt.addUp((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
-                    } else if (quant.getStringFCValue().equalsIgnoreCase("Increased")) {
+                    } else if (quant.getStringFCValue().equalsIgnoreCase("Increased")||quant.getStringFCValue().equalsIgnoreCase("Increase") ) {
                         comProt.addDown((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
                     } else if (quant.getStringFCValue().equalsIgnoreCase("Not Provided")) {
                         comProt.addNotProvided((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
@@ -930,7 +931,7 @@ public class CoreLogic implements Serializable {
                 String accession;
                 String url;
 
-                if (uniprotAcc.equalsIgnoreCase("") || uniprotAcc.equalsIgnoreCase("Not Available") || uniprotAcc.equalsIgnoreCase("Entry Deleted") || uniprotAcc.equalsIgnoreCase("Entry Demerged") || uniprotAcc.equalsIgnoreCase("NOT RETRIEVED") || uniprotAcc.equalsIgnoreCase("DELETED")) {
+                if (uniprotAcc.trim().equalsIgnoreCase("") || uniprotAcc.equalsIgnoreCase("Not Available") || uniprotAcc.equalsIgnoreCase("Entry Deleted") || uniprotAcc.equalsIgnoreCase("Entry Demerged") || uniprotAcc.equalsIgnoreCase("NOT RETRIEVED") || uniprotAcc.equalsIgnoreCase("DELETED")) {
                     protName = quant.getPublicationProteinName();
                     accession = quant.getPublicationAccNumber();
                     url = null;
@@ -940,11 +941,15 @@ public class CoreLogic implements Serializable {
                     accession = quant.getUniprotAccession();
                     url = "http://www.uniprot.org/uniprot/" + protAcc.toUpperCase();
                 }
+                if (protName == null || protName.trim().equalsIgnoreCase("")) {
+                    System.out.println("another error --- " + accession);
+                }
 
+                
                 comProt.setProtName(protName);
                 comProt.setProteinAccssionNumber(accession);
                 comProt.setUrl(url);
-
+             
                 comProt.setSequance(quant.getSequance());
 
                 Set<QuantPeptide> quantPeptidesList = comProt.getQuantPeptidesList();
@@ -954,11 +959,11 @@ public class CoreLogic implements Serializable {
                         if (inverted) {
                             Set<QuantPeptide> updatedQuantPeptidesList = new HashSet<QuantPeptide>();
                             for (QuantPeptide quantPeptide : comparisonPeptideMap.get(key)) {
-                                if (quantPeptide.getString_fc_value().equalsIgnoreCase("Increased")) {
+                                if (quantPeptide.getString_fc_value().equalsIgnoreCase("Increased")|| quant.getStringFCValue().equalsIgnoreCase("Increase")) {
 
                                     quantPeptide.setString_fc_value("Decreased");
 
-                                } else if (quantPeptide.getString_fc_value().equalsIgnoreCase("Decreased")) {
+                                } else if (quantPeptide.getString_fc_value().equalsIgnoreCase("Decreased")||quant.getStringFCValue().equalsIgnoreCase("Decrease")) {
                                     quantPeptide.setString_fc_value("Increased");
 
                                 }
@@ -978,11 +983,11 @@ public class CoreLogic implements Serializable {
                 Map<String, QuantProtein> dsQuantProteinsMap = comProt.getDsQuantProteinsMap();
                 if (!dsQuantProteinsMap.containsKey("-" + quant.getDsKey() + "-" + comProt.getProteinAccssionNumber() + "-")) {
                     if (inverted) {
-                        if (quant.getStringFCValue().equalsIgnoreCase("Increased")) {
+                        if (quant.getStringFCValue().equalsIgnoreCase("Increased")||quant.getStringFCValue().equalsIgnoreCase("Increase")) {
 
                             quant.setStringFCValue("Decreased");
 
-                        } else if (quant.getStringFCValue().equalsIgnoreCase("Decreased")) {
+                        } else if (quant.getStringFCValue().equalsIgnoreCase("Decreased")||quant.getStringFCValue().equalsIgnoreCase("Decrease")) {
                             quant.setStringFCValue("Increased");
 
                         }
@@ -1011,7 +1016,7 @@ public class CoreLogic implements Serializable {
                     dsQuantProteinsMap.put("-" + quant.getDsKey() + "-" + comProt.getProteinAccssionNumber() + "-", quant);
 //                    }
                 } else {
-                    System.out.println("at major error in data dublicated keys " + ("-" + quant.getDsKey() + "-" + comProt.getProteinAccssionNumber() + "-"));
+//                    System.out.println("at major error in data dublicated keys " + ("-" + quant.getDsKey() + "-" + comProt.getProteinAccssionNumber() + "-"));
 //                    dsQuantProteinsMap.remove("-" + quant.getDsKey() + "-" + comProt.getProteinAccssionNumber() + "-");
                     continue;
                 }
@@ -1041,6 +1046,7 @@ public class CoreLogic implements Serializable {
     }
 
     int pepCount = 0;
+
     public Set<QuantDiseaseGroupsComparison> getComparisonProtList2(Set<QuantDiseaseGroupsComparison> selectedComparisonList, List<QuantProtein> searchQuantificationProtList) {
 
         Set<QuantDiseaseGroupsComparison> updatedSelectedComparisonList = new LinkedHashSet<QuantDiseaseGroupsComparison>();
@@ -1111,9 +1117,9 @@ public class CoreLogic implements Serializable {
             }
 
             if ((pGrI.equalsIgnoreCase(quantProtein.getPatientGroupI()) || pGrI.equalsIgnoreCase(quantProtein.getPatientSubGroupI())) && (pGrII.equalsIgnoreCase(quantProtein.getPatientGroupII()) || pGrII.equalsIgnoreCase(quantProtein.getPatientSubGroupII()))) {
-                if (quantProtein.getStringFCValue().equalsIgnoreCase("Decreased")) {
+                if (quantProtein.getStringFCValue().equalsIgnoreCase("Decreased")||quantProtein.getStringFCValue().equalsIgnoreCase("Decrease")) {
                     comProt.addDown((quantProtein.getPatientsGroupINumber() + quantProtein.getPatientsGroupIINumber()), quantProtein.getDsKey(), significantPValue);
-                } else if (quantProtein.getStringFCValue().equalsIgnoreCase("Increased")) {
+                } else if (quantProtein.getStringFCValue().equalsIgnoreCase("Increased")||quantProtein.getStringFCValue().equalsIgnoreCase("Increase")) {
                     comProt.addUp((quantProtein.getPatientsGroupINumber() + quantProtein.getPatientsGroupIINumber()), quantProtein.getDsKey(), significantPValue);
                 } else if (quantProtein.getStringFCValue().equalsIgnoreCase("Not Provided")) {
                     comProt.addNotProvided((quantProtein.getPatientsGroupINumber() + quantProtein.getPatientsGroupIINumber()), quantProtein.getDsKey());
@@ -1124,9 +1130,9 @@ public class CoreLogic implements Serializable {
             } else {
                 inverted = true;
 
-                if (quantProtein.getStringFCValue().equalsIgnoreCase("Decreased")) {
+                if (quantProtein.getStringFCValue().equalsIgnoreCase("Decreased")||quantProtein.getStringFCValue().equalsIgnoreCase("Decrease")) {
                     comProt.addUp((quantProtein.getPatientsGroupINumber() + quantProtein.getPatientsGroupIINumber()), quantProtein.getDsKey(), significantPValue);
-                } else if (quantProtein.getStringFCValue().equalsIgnoreCase("Increased")) {
+                } else if (quantProtein.getStringFCValue().equalsIgnoreCase("Increased")||quantProtein.getStringFCValue().equalsIgnoreCase("Increase")) {
                     comProt.addDown((quantProtein.getPatientsGroupINumber() + quantProtein.getPatientsGroupIINumber()), quantProtein.getDsKey(), significantPValue);
                 } else if (quantProtein.getStringFCValue().equalsIgnoreCase("Not Provided")) {
                     comProt.addNotProvided((quantProtein.getPatientsGroupINumber() + quantProtein.getPatientsGroupIINumber()), quantProtein.getDsKey());
@@ -1160,11 +1166,11 @@ public class CoreLogic implements Serializable {
             Map<String, QuantProtein> dsQuantProteinsMap = comProt.getDsQuantProteinsMap();
             if (!dsQuantProteinsMap.containsKey("-" + quantProtein.getDsKey() + "-" + comProt.getProteinAccssionNumber() + "-")) {
                 if (inverted) {
-                    if (quantProtein.getStringFCValue().equalsIgnoreCase("Increased")) {
+                    if (quantProtein.getStringFCValue().equalsIgnoreCase("Increased")||quantProtein.getStringFCValue().equalsIgnoreCase("Increase")) {
 
                         quantProtein.setStringFCValue("Decreased");
 
-                    } else if (quantProtein.getStringFCValue().equalsIgnoreCase("Decreased")) {
+                    } else if (quantProtein.getStringFCValue().equalsIgnoreCase("Decreased")||quantProtein.getStringFCValue().equalsIgnoreCase("Decrease")) {
                         quantProtein.setStringFCValue("Increased");
 
                     }
@@ -1199,11 +1205,11 @@ public class CoreLogic implements Serializable {
                 if (key.equalsIgnoreCase("_" + (quantProtein.getProtKey()) + "__" + quantProtein.getDsKey() + "__")) {
                     if (inverted) {
                         for (QuantPeptide quantPeptide : fullComparisonPeptideMap.get(key)) {
-                            if (quantPeptide.getString_fc_value().equalsIgnoreCase("Increased")) {
+                            if (quantPeptide.getString_fc_value().equalsIgnoreCase("Increased")||quantPeptide.getString_fc_value().equalsIgnoreCase("Increase")) {
 
                                 quantPeptide.setString_fc_value("Decreased");
 
-                            } else if (quantPeptide.getString_fc_value().equalsIgnoreCase("Decreased")) {
+                            } else if (quantPeptide.getString_fc_value().equalsIgnoreCase("Decreased")||quantPeptide.getString_fc_value().equalsIgnoreCase("Decrease")) {
                                 quantPeptide.setString_fc_value("Increased");
 
                             }
@@ -1254,7 +1260,6 @@ public class CoreLogic implements Serializable {
         Set<QuantProtein> fullComparisonProtMap = new HashSet<QuantProtein>();
 //        Map<QuantDiseaseGroupsComparison, Set<QuantProtein>> comparisonsToProtMap = new HashMap<QuantDiseaseGroupsComparison, Set<QuantProtein>>();
         Map<Integer, QuantDiseaseGroupsComparison> dsIndexToComparisonsMap = new HashMap<Integer, QuantDiseaseGroupsComparison>();
-        Map<String, QuantDiseaseGroupsComparison> headerToComparisonsMap = new HashMap<String, QuantDiseaseGroupsComparison>();
 
         Set<Integer> dsIdsList = new HashSet<Integer>();
 
@@ -1309,17 +1314,15 @@ public class CoreLogic implements Serializable {
 ////            fullComparisonToProtMap.put(compKey, comparisonProtMap);
 //
 //        }
-        
 
         for (QuantDiseaseGroupsComparison comparison : selectedComparisonList) {
             Set<QuantProtein> comparisonProtMap = fullComparisonToProtMap.get(comparison.getComparisonHeader());
-            
+
 //            Object[] iArr = new Object[comparison.getDatasetIndexes().length];
 //            for (int x = 0; x < iArr.length; x++) {
 //                iArr[x] = comparison.getDatasetIndexes()[x];
 //            }
 //            Map<String, Set<QuantPeptide>> comparisonPeptideMap = (da.getQuantificationPeptides(iArr));
-
             Map<String, DiseaseGroupsComparisonsProteinLayout> comparProtList = new HashMap<String, DiseaseGroupsComparisonsProteinLayout>();
             String pGrI = comparison.getComparisonHeader().split("vs")[0].trim();
             String pGrII = comparison.getComparisonHeader().split("vs")[1].trim();
@@ -1346,9 +1349,9 @@ public class CoreLogic implements Serializable {
                 }
 
                 if ((pGrI.equalsIgnoreCase(quant.getPatientGroupI()) || pGrI.equalsIgnoreCase(quant.getPatientSubGroupI())) && (pGrII.equalsIgnoreCase(quant.getPatientGroupII()) || pGrII.equalsIgnoreCase(quant.getPatientSubGroupII()))) {
-                    if (quant.getStringFCValue().equalsIgnoreCase("Decreased")) {
+                    if (quant.getStringFCValue().equalsIgnoreCase("Decreased")||quant.getStringFCValue().equalsIgnoreCase("Decrease")) {
                         comProt.addDown((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
-                    } else if (quant.getStringFCValue().equalsIgnoreCase("Increased")) {
+                    } else if (quant.getStringFCValue().equalsIgnoreCase("Increased")||quant.getStringFCValue().equalsIgnoreCase("Increase")) {
                         comProt.addUp((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
                     } else if (quant.getStringFCValue().equalsIgnoreCase("Not Provided")) {
                         comProt.addNotProvided((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
@@ -1375,9 +1378,9 @@ public class CoreLogic implements Serializable {
                 } else {
                     inverted = true;
 
-                    if (quant.getStringFCValue().equalsIgnoreCase("Decreased")) {
+                    if (quant.getStringFCValue().equalsIgnoreCase("Decreased")||quant.getStringFCValue().equalsIgnoreCase("Decrease")) {
                         comProt.addUp((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
-                    } else if (quant.getStringFCValue().equalsIgnoreCase("Increased")) {
+                    } else if (quant.getStringFCValue().equalsIgnoreCase("Increased")||quant.getStringFCValue().equalsIgnoreCase("Increase")) {
                         comProt.addDown((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
                     } else if (quant.getStringFCValue().equalsIgnoreCase("Not Provided")) {
                         comProt.addNotProvided((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
@@ -1388,12 +1391,11 @@ public class CoreLogic implements Serializable {
 
                 }
                 String uniprotAcc = quant.getUniprotAccession();
-//                comProt.setUniProtAcc(uniprotAcc);
                 String protName;
                 String accession;
                 String url;
 
-                if (uniprotAcc.equalsIgnoreCase("") || uniprotAcc.equalsIgnoreCase("Not Available") || uniprotAcc.equalsIgnoreCase("Entry Deleted") || uniprotAcc.equalsIgnoreCase("Entry Demerged") || uniprotAcc.equalsIgnoreCase("NOT RETRIEVED") || uniprotAcc.equalsIgnoreCase("DELETED")) {
+                if (uniprotAcc.trim().equalsIgnoreCase("") || uniprotAcc.equalsIgnoreCase("Not Available") || uniprotAcc.equalsIgnoreCase("Entry Deleted") || uniprotAcc.equalsIgnoreCase("Entry Demerged") || uniprotAcc.equalsIgnoreCase("NOT RETRIEVED") || uniprotAcc.equalsIgnoreCase("DELETED")) {
                     protName = quant.getPublicationProteinName();
                     accession = quant.getPublicationAccNumber();
                     url = null;
@@ -1403,26 +1405,29 @@ public class CoreLogic implements Serializable {
                     accession = quant.getUniprotAccession();
                     url = "http://www.uniprot.org/uniprot/" + protAcc.toUpperCase();
                 }
+                if(protName.trim().equalsIgnoreCase(""))
+                    protName = quant.getPublicationProteinName();
 
                 comProt.setProtName(protName);
                 comProt.setProteinAccssionNumber(accession);
                 comProt.setUrl(url);
-
+                   
+               
                 comProt.setSequance(quant.getSequance());
 
                 Set<QuantPeptide> quantPeptidesList = comProt.getQuantPeptidesList();
                 for (String key : fullComparisonPeptideMap.keySet()) {
 
                     if (key.equalsIgnoreCase("_" + (quant.getProtKey()) + "__" + quant.getDsKey() + "__")) {
-                      
+
                         if (inverted) {
                             Set<QuantPeptide> updatedQuantPeptidesList = new HashSet<QuantPeptide>();
                             for (QuantPeptide quantPeptide : fullComparisonPeptideMap.get(key)) {
-                                if (quantPeptide.getString_fc_value().equalsIgnoreCase("Increased")) {
+                                if (quantPeptide.getString_fc_value().equalsIgnoreCase("Increased")||quantPeptide.getString_fc_value().equalsIgnoreCase("Increase")) {
 
                                     quantPeptide.setString_fc_value("Decreased");
 
-                                } else if (quantPeptide.getString_fc_value().equalsIgnoreCase("Decreased")) {
+                                } else if (quantPeptide.getString_fc_value().equalsIgnoreCase("Decreased")||quantPeptide.getString_fc_value().equalsIgnoreCase("Decrease")) {
                                     quantPeptide.setString_fc_value("Increased");
 
                                 }
@@ -1432,27 +1437,25 @@ public class CoreLogic implements Serializable {
                                 updatedQuantPeptidesList.add(quantPeptide);
                             }
                             quantPeptidesList.addAll(updatedQuantPeptidesList);
-                            pepCount+= updatedQuantPeptidesList.size();
+                            pepCount += updatedQuantPeptidesList.size();
+
+                        } else {
+                            quantPeptidesList.addAll(fullComparisonPeptideMap.get(key));
+                            pepCount += fullComparisonPeptideMap.get(key).size();
 
                         }
-                        else{
-                        quantPeptidesList.addAll(fullComparisonPeptideMap.get(key));
-                        pepCount+= fullComparisonPeptideMap.get(key).size();
-                        
-                        }
 
-                        
                     }
                 }
 
                 Map<String, QuantProtein> dsQuantProteinsMap = comProt.getDsQuantProteinsMap();
                 if (!dsQuantProteinsMap.containsKey("-" + quant.getDsKey() + "-" + comProt.getProteinAccssionNumber() + "-")) {
                     if (inverted) {
-                        if (quant.getStringFCValue().equalsIgnoreCase("Increased")) {
+                        if (quant.getStringFCValue().equalsIgnoreCase("Increased")||quant.getStringFCValue().equalsIgnoreCase("Increase")) {
 
                             quant.setStringFCValue("Decreased");
 
-                        } else if (quant.getStringFCValue().equalsIgnoreCase("Decreased")) {
+                        } else if (quant.getStringFCValue().equalsIgnoreCase("Decreased")||quant.getStringFCValue().equalsIgnoreCase("Decrease")) {
                             quant.setStringFCValue("Increased");
 
                         }
@@ -1505,9 +1508,6 @@ public class CoreLogic implements Serializable {
             updatedSelectedComparisonList.add(comparison);
 
         }
-        
-          System.out.println("at peptided added to "+pepCount);
-
         return updatedSelectedComparisonList;
 
     }

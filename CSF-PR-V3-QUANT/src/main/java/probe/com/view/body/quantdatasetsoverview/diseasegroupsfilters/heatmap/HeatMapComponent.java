@@ -73,8 +73,7 @@ public class HeatMapComponent extends VerticalLayout {
         spacer.setWidth("150px");
         spacer.setHeight("150px");
         spacer.setStyleName(Reindeer.LAYOUT_WHITE);
-        
-        
+
         hideCompBtn = new VerticalLayout();
         hideCompBtn.setWidth("150px");
         hideCompBtn.setHeight("150px");
@@ -239,7 +238,19 @@ public class HeatMapComponent extends VerticalLayout {
             }
 
         }
-
+//        Set<QuantDiseaseGroupsComparison> tempSelectedDsList = new HashSet<QuantDiseaseGroupsComparison>();
+//        for (QuantDiseaseGroupsComparison gr : selectedDsList) {
+//            String kI = gr.getComparisonHeader();
+//            String[] k1Arr = kI.split(" vs ");
+//            if (! k1Arr[0].contains(selectedheader)) {
+//
+//                gr.setComparisonHeader(k1Arr[1] + " vs " + k1Arr[0]);
+//            }
+//            tempSelectedDsList.add(gr);
+//
+//        }
+//        selectedDsList.clear();
+//        selectedDsList.addAll(tempSelectedDsList);
         updateSelectionManagerIndexes();
     }
 
@@ -338,6 +349,7 @@ public class HeatMapComponent extends VerticalLayout {
         }
 
     }
+
     /**
      *
      * @param selectedHeadercell
@@ -392,6 +404,7 @@ public class HeatMapComponent extends VerticalLayout {
         filteredSelectedDsList.addAll(filteredComp.values());
         updateSelectionManager(filteredSelectedDsList);
     }
+
     /**
      *
      * @return

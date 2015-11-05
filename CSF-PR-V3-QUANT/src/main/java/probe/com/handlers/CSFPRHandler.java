@@ -428,7 +428,7 @@ public class CSFPRHandler implements Serializable {
      *
      * @return QuantDatasetInitialInformationObject
      */
-    public QuantDatasetInitialInformationObject getQuantDatasetInitialInformationObject() {
+    public  Map<String, QuantDatasetInitialInformationObject>  getQuantDatasetInitialInformationObject() {
         return logicLayer.getQuantDatasetInitialInformationObject();
 
     }
@@ -441,7 +441,7 @@ public class CSFPRHandler implements Serializable {
      * @param searchQuantificationProtList
      * @return QuantDatasetInitialInformationObject
      */
-    public QuantDatasetInitialInformationObject getQuantDatasetInitialInformationObject(List<QuantProtein> searchQuantificationProtList) {
+    public Map<String, QuantDatasetInitialInformationObject> getQuantDatasetInitialInformationObject(List<QuantProtein> searchQuantificationProtList) {
         return logicLayer.getQuantDatasetInitialInformationObject(searchQuantificationProtList);
 
     }
@@ -453,7 +453,7 @@ public class CSFPRHandler implements Serializable {
      * @return boolean array for the active and not active pie chart filters
      * indexes
      */
-    public boolean[] getActivePieChartQuantFilters() {
+    public Map<String, boolean[]>  getActivePieChartQuantFilters() {
         return logicLayer.getActivePieChartQuantFilters();
 
     }
@@ -466,7 +466,7 @@ public class CSFPRHandler implements Serializable {
      * @return boolean array for the active and not active pie chart filters
      * indexes
      */
-    public boolean[] getActivePieChartQuantFilters(List<QuantProtein> searchQuantificationProtList) {
+    public Map<String, boolean[]> getActivePieChartQuantFilters(List<QuantProtein> searchQuantificationProtList) {
         return logicLayer.getActivePieChartQuantFilters(searchQuantificationProtList);
 
     }
@@ -528,5 +528,7 @@ public class CSFPRHandler implements Serializable {
     public ArrayList<String> runKMeanClustering(double[][] samples, String[] sampleIds,int numClusters,String proteinKey){
      return this.logicLayer.runKMeanClustering(samples, sampleIds, numClusters,proteinKey);
     }
+    
+    
 
 }

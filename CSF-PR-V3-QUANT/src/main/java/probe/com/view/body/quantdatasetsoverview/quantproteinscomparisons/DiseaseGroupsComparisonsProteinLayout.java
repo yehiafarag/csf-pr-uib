@@ -488,35 +488,35 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
         this.setExpandRatio(notRegLayout, ((float) (subTotal - dcounter) / subTotal));
         String overall;
         if (cellValue > 0) {
-            overall = "Up Regulated (" + cellValue + ")";
+            overall = "High (" + cellValue + ")";
             if (notProvided > 0 || notRegSignificant > 0 || downSignificant > 0) {
                 significantTrindCategory = 3;
             } else {
                 significantTrindCategory = 4;
             }
         } else if (cellValue == 0) {
-            overall = "Not Regulated (" + cellValue + ")";
+            overall = "Stable (" + cellValue + ")";
             significantTrindCategory = 2;
         } else {
-            overall = "Down Regulated (" + cellValue + ")";
+            overall = "Low (" + cellValue + ")";
             if (notProvided > 0 || notRegSignificant > 0 || upSignificant > 0) {
                 significantTrindCategory = 1;
             } else {
                 significantTrindCategory = 0;
             }
         }
-        this.setDescription("Down Regulated: " + downSignificant + "  /  Not Regulated : " + notRegSignificant + " /  Up Regulated: " + upSignificant + " Overall Trend " + overall);
+        this.setDescription("Low: " + downSignificant + "  /  Stable : " + notRegSignificant + " /  High: " + upSignificant + " Overall Trend " + overall);
 
     }
 
     @Override
     public String toString() {
         if (cellValue > 0) {
-            return "Up Regulated (" + cellValue + ")";
+            return "High (" + cellValue + ")";
         } else if (cellValue == 0) {
-            return "Not Regulated (" + cellValue + ")";
+            return "Stable (" + cellValue + ")";
         } else {
-            return "Down Regulated (" + cellValue + ")";
+            return "Low (" + cellValue + ")";
         }
     }
 

@@ -373,10 +373,7 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
         if (datasetIndexes != null) {
             centralSelectionManager.setStudyLevelFilterSelection(new CSFFilterSelection("Disease_Groups_Level", datasetIndexes, "", new HashSet<String>()));
         }
-        System.out.println("selectedRows " + selectedRows + "    selectedColumns  " + selectedColumns + "");
-        for (DiseaseGroup dg : patientsGroupArr) {
-            System.out.println("at dgroup " + dg.getPatientsGroupI() + "  " + dg.getPatientsGroupII());
-        }
+   
         centralSelectionManager.setHeatMapLevelSelection(selectedRows, selectedColumns, patientsGroupArr);
     }
 

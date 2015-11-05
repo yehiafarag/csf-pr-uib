@@ -99,8 +99,10 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         return btnsLayout;
     }
 
+    private final Map<String, double[]> tooltipsProtNumberMap = new HashMap<String, double[]>();
+
     public ComparisonsSelectionOverviewBubbleChart(final DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager, final CSFPRHandler handler, int chartWidth, int chartHeight, Set<QuantDiseaseGroupsComparison> selectedComparisonList, List<QuantProtein> searchQuantificationProtList) {
-        this.searchQuantificationProtList=searchQuantificationProtList;
+        this.searchQuantificationProtList = searchQuantificationProtList;
         this.width = chartWidth;
         this.height = chartHeight - 20;
         this.handler = handler;
@@ -137,17 +139,16 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         handleft.setSource(new ThemeResource("img/handleft.png"));
         initialLayout.addComponent(handleft);
         initialLayout.setComponentAlignment(handleft, Alignment.MIDDLE_CENTER);
-         
-        
+
         HorizontalLayout btnContainerLayout = new HorizontalLayout();
         btnContainerLayout.setSpacing(true);
         btnContainerLayout.setMargin(new MarginInfo(false, true, false, false));
         btnContainerLayout.setWidthUndefined();
         btnContainerLayout.setHeightUndefined();
-         btnsLayout.addComponent(btnContainerLayout);
+        btnsLayout.addComponent(btnContainerLayout);
         btnsLayout.setComponentAlignment(btnContainerLayout, Alignment.TOP_RIGHT);
-        
-        final OptionGroup   significantProteinsOnlyOption = new OptionGroup();
+
+        final OptionGroup significantProteinsOnlyOption = new OptionGroup();
         btnContainerLayout.addComponent(significantProteinsOnlyOption);
         significantProteinsOnlyOption.setWidth("140px");
 //        significantProteinsOnlyOption.setHeight("40px");
@@ -165,15 +166,13 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
             }
 
         });
-        
 
         resetBtn = new Button("Clear");
         resetBtn.setDescription("Unselect all data");
         resetBtn.setPrimaryStyleName("clearselectionbtn");
         resetBtn.setWidth("50px");
         resetBtn.setHeight("20px");
-        
-       
+
         btnContainerLayout.addComponent(resetBtn);
 
 //        Button exportBtn = new Button("Save Chart Image");
@@ -196,9 +195,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         exportPdfBtn.setHeight("20px");
         exportPdfBtn.setPrimaryStyleName("exportpdfbtn");
         exportPdfBtn.setDescription("Export chart image");
-        
-        
-        
+
         StreamResource myResource = createResource();
         FileDownloader fileDownloader = new FileDownloader(myResource);
         fileDownloader.extend(exportPdfBtn);
@@ -209,12 +206,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         this.btnsLayout.setVisible(false);
         this.chartLayout.setVisible(false);
         this.addComponent(initialLayout);
-        
-        
-        
-        
-        
-        
+
         this.addComponent(chartLayout);
 //        this.addComponent(btnsLayout);
 
@@ -222,7 +214,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                datasetExploringCentralSelectionManager.setQuantProteinsSelection(new HashSet<String>(),"");
+                datasetExploringCentralSelectionManager.setQuantProteinsSelection(new HashSet<String>(), "");
                 resetChart();
 
             }
@@ -255,13 +247,13 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
     private JFreeChart updateBubbleChartChart(Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
 
+        tooltipsProtNumberMap.clear();
         DefaultXYZDataset defaultxyzdataset = new DefaultXYZDataset();
         int counter = 0;
         int upper = -1;
         boolean significantOnly = this.datasetExploringCentralSelectionManager.isSignificantOnly();
 
         for (QuantDiseaseGroupsComparison qc : selectedComparisonList) {
-
             if (significantOnly) {
                 int upperCounter = 0;
                 for (DiseaseGroupsComparisonsProteinLayout qp : qc.getComparProtsMap().values()) {
@@ -314,6 +306,9 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
             if (upper < 10) {
                 upper = 10;
             }
+            double[] tooltipNumbess = new double[tempWidthValue.length];
+            System.arraycopy(tempWidthValue, 0, tooltipNumbess, 0, tempWidthValue.length);
+            this.tooltipsProtNumberMap.put(qc.getComparisonHeader(), tooltipNumbess);
             for (int x = 0; x < tempWidthValue.length; x++) {
                 if (tempWidthValue[x] > 0) {
                     tempWidthValue[x] = scaleValues(tempWidthValue[x], upper, 2.5, 0.05);//Math.max(tempWidthValue[x] * 1.5 / upper, 0.05);
@@ -327,6 +322,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
             double[] widthValue = new double[length];
             Color[] serColorArr = new Color[length];
             length = 0;
+
             for (int x = 0; x < tempWidthValue.length; x++) {
                 if (tempWidthValue[x] > 0) {
                     xAxisValue[length] = x;
@@ -350,7 +346,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
         final Color[] labelsColor = new Color[]{new Color(80, 183, 71), Color.LIGHT_GRAY, new Color(1, 141, 244), Color.LIGHT_GRAY, new Color(204, 0, 0)};
         Font font = new Font("Verdana", Font.PLAIN, 14);
-        SymbolAxis yAxis = new SymbolAxis(null, new String[]{"Down Regulated", " ", "Not Regulated", " ", "Up Regulated"}) {
+        SymbolAxis yAxis = new SymbolAxis(null, new String[]{"Low", " ", "Stable", " ", "High"}) {
             int x = 0;
 
             @Override
@@ -483,7 +479,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         return generatedChart;
 
     }
-    byte imageData[];
+    private byte imageData[];
 
     private String saveToFile(final JFreeChart chart, final double width, final double height) {
         isNewImge = true;
@@ -551,12 +547,22 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                     } else {
                         finalHeight = sqheight;
                     }
+                    finalHeight=finalHeight;
                     square.setWidth(finalWidth + "px");
                     square.setHeight(finalHeight + "px");
 
-                    square.setDescription(((QuantDiseaseGroupsComparison) selectedComparisonList.toArray()[catEnt.getSeriesIndex()]).getComparisonHeader() + "    <br/>#Proteins " + ((QuantDiseaseGroupsComparison) selectedComparisonList.toArray()[catEnt.getSeriesIndex()]).getComparProtsMap().size());
+                    String header = ((QuantDiseaseGroupsComparison) selectedComparisonList.toArray()[catEnt.getSeriesIndex()]).getComparisonHeader();
+                    int itemNumber =(int)((XYItemEntity) entity).getDataset().getYValue(((XYItemEntity) entity).getSeriesIndex(), ((XYItemEntity) entity).getItem());
+
+                    square.setDescription(header + "    <br/>#Proteins " + (int)tooltipsProtNumberMap.get(header)[itemNumber]);
                     square.setParam("seriesIndex", ((XYItemEntity) entity).getSeriesIndex());
-                    square.setParam("categIndex", ((XYItemEntity) entity).getDataset().getYValue(((XYItemEntity) entity).getSeriesIndex(), ((XYItemEntity) entity).getItem()));
+                    square.setParam("categIndex", (double)itemNumber);
+//                    System.out.println("at top is "+smallY+"   ");
+                    if(smallY <0)
+                    {
+//                       square.setHeight((finalHeight-smallY) + "px");
+//                       smallY=0;
+                    }
                     square.setParam("position", "left: " + smallX + "px; top: " + (smallY) + "px;");
                     set.add(square);
                 }
@@ -580,7 +586,8 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
      *
      */
     public final void redrawChart() {
-        styles.add("." + teststyle + " {  background-image: url(" + defaultImgURL + " );background-position:center; background-repeat: no-repeat; }");
+       
+        styles.add("." + teststyle + " { background-image: url(" + defaultImgURL + " );background-position:0px 0px; background-repeat: no-repeat; }");
         chartLayout.setStyleName(teststyle);
     }
 
@@ -679,7 +686,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
             }
 
-            datasetExploringCentralSelectionManager.setQuantProteinsSelection(selectionMap,((QuantDiseaseGroupsComparison) datasetExploringCentralSelectionManager.getSelectedDiseaseGroupsComparisonList().toArray()[seriousIndex]).getComparisonHeader());
+            datasetExploringCentralSelectionManager.setQuantProteinsSelection(selectionMap, ((QuantDiseaseGroupsComparison) datasetExploringCentralSelectionManager.getSelectedDiseaseGroupsComparisonList().toArray()[seriousIndex]).getComparisonHeader());
 
             Iterator<Component> itr = chartLayout.iterator();
             while (itr.hasNext()) {

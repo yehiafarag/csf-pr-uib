@@ -11,12 +11,10 @@ import java.util.List;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.model.beans.quant.QuantProtein;
-import probe.com.selectionmanager.QuantFilterUtility;
 import probe.com.view.body.quantdatasetsoverview.DiseaseGroupsFiltersContainer;
 import probe.com.view.body.quantdatasetsoverview.QuantProteinsComparisonsContainer;
 import probe.com.view.body.quantdatasetsoverview.QuantDatasetsCombinedTableLayout;
 import probe.com.view.core.HideOnClickLayout;
-import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.interactivepiechartfilters.StudiesPieChartFiltersContainerLayout;
 import probe.com.view.body.quantdatasetsoverview.QuantProteinsTabsheetContainerLayout;
 
 /**
@@ -25,25 +23,27 @@ import probe.com.view.body.quantdatasetsoverview.QuantProteinsTabsheetContainerL
  *
  * @author Yehia Farag
  */
-public class QuantDatasetsOverviewLayout extends VerticalLayout {
+public class QuantDatasetsOverviewLayout extends VerticalLayout{
 
-    private final StudiesPieChartFiltersContainerLayout pieChartFiltersLayout;
-    private final QuantFilterUtility filterUtility;
+//    private final StudiesPieChartFiltersContainerLayout pieChartFiltersLayout;
+//    private final QuantFilterUtility filterUtility;
     private final DatasetExploringCentralSelectionManager exploringFiltersManager;
     private final QuantProteinsTabsheetContainerLayout proteinsLayout;
+
 
     /**
      *
      * @param handler
      * @param searchingMode
+     * @param searchQuantificationProtList
      */
     public QuantDatasetsOverviewLayout(CSFPRHandler handler, boolean searchingMode,List<QuantProtein> searchQuantificationProtList) {
 
         if (searchingMode) {
 
         }
-        filterUtility = new QuantFilterUtility(handler);
-        exploringFiltersManager = new DatasetExploringCentralSelectionManager(filterUtility.getQuantDatasetMap(), filterUtility.getActiveFilters());//,filterUtility.getFullFilterList()
+//        filterUtility = new QuantFilterUtility(handler);
+        exploringFiltersManager = new DatasetExploringCentralSelectionManager(handler.getQuantDatasetInitialInformationObject(), handler.getActivePieChartQuantFilters());//,filterUtility.getFullFilterList()
        
 
         this.setMargin(true);
@@ -56,16 +56,16 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
             Label noExpLable = new Label("<h4 style='font-family:verdana;color:black;font-weight:bold;'>Sorry No Dataset Availabe Now !</h4>");
             noExpLable.setContentMode(ContentMode.HTML);
             this.addComponent(noExpLable);
-            pieChartFiltersLayout = null;
+//            pieChartFiltersLayout = null;
             proteinsLayout = null;
             return;
         
         }
         // init piecharts filter
-        pieChartFiltersLayout = new StudiesPieChartFiltersContainerLayout(exploringFiltersManager,handler);
+      
 
       
-        DiseaseGroupsFiltersContainer heatmapFilter = new DiseaseGroupsFiltersContainer(exploringFiltersManager,handler, pieChartFiltersLayout.getPieChartFiltersBtn(),searchQuantificationProtList);
+        DiseaseGroupsFiltersContainer heatmapFilter = new DiseaseGroupsFiltersContainer(exploringFiltersManager,handler,searchQuantificationProtList);
         heatmapFilter.setWidth("100%");
         heatmapFilter.setMargin(new MarginInfo(false, false, true, false));
 
@@ -95,7 +95,7 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
         this.addComponent(proteinsLevelLayout);
         proteinsLevelLayout.setVisability(false);
 
-        QuantDatasetsCombinedTableLayout quantStudiesTable = new QuantDatasetsCombinedTableLayout(exploringFiltersManager, filterUtility.getActiveCombinedQuantTableHeaders());
+        QuantDatasetsCombinedTableLayout quantStudiesTable = new QuantDatasetsCombinedTableLayout(exploringFiltersManager);
         if (searchingMode) {
         } else {
             this.addComponent(quantStudiesTable);

@@ -5,16 +5,11 @@
  */
 package probe.com.view.core.jfreeutil;
 
-import com.vaadin.ui.PopupView;
 import com.vaadin.ui.VerticalLayout;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import org.vaadin.visjs.networkDiagram.Edge;
-import org.vaadin.visjs.networkDiagram.NetworkDiagram;
-import org.vaadin.visjs.networkDiagram.Node;
-import org.vaadin.visjs.networkDiagram.options.Options;
 import probe.com.model.beans.quant.QuantPeptide;
 
 /**
@@ -123,11 +118,13 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
     private final int x0;
     private final Integer widthArea;
     private final  VerticalLayout ptmLayout = new VerticalLayout();
+    private boolean ptmAvailable= false;
     /**
      *
      * @param x0
      * @param widthArea
      * @param peptideKey
+     * @param peptideModification
      */
     public StackedBarPeptideComponent(int x0, int widthArea, String peptideKey, String peptideModification) {
         this.setHeight("15px");
@@ -149,6 +146,7 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
 //            ptmDiagram.addEdge(edge1);
 //            ptmDiagram.setWidth("50px");
 //            ptmDiagram.setHeight("500px");
+            ptmAvailable=true;
 //            
             ptmLayout.setStyleName("ptmcycle");
             ptmLayout.setWidth("10px");
@@ -166,6 +164,10 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
 //            labelpopup.setVisible(true);
 
         }
+    }
+
+    public boolean isPtmAvailable() {
+        return ptmAvailable;
     }
 
     public VerticalLayout getPtmLayout() {

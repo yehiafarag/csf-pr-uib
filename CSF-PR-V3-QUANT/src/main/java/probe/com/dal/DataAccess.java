@@ -187,7 +187,7 @@ public class DataAccess implements Serializable {
      *
      * @return QuantDatasetInitialInformationObject
      */
-    public QuantDatasetInitialInformationObject getQuantDatasetInitialInformationObject() {
+    public  Map<String, QuantDatasetInitialInformationObject>  getQuantDatasetInitialInformationObject() {
         return db.getQuantDatasetInitialInformationObject();
 
     }
@@ -200,7 +200,7 @@ public class DataAccess implements Serializable {
      * @param searchQuantificationProtList
      * @return QuantDatasetInitialInformationObject
      */
-    public QuantDatasetInitialInformationObject getQuantDatasetInitialInformationObject(List<QuantProtein> searchQuantificationProtList) {
+    public Map<String, QuantDatasetInitialInformationObject> getQuantDatasetInitialInformationObject(List<QuantProtein> searchQuantificationProtList) {
         return db.getQuantDatasetListObject(searchQuantificationProtList);
 
     }
@@ -212,7 +212,7 @@ public class DataAccess implements Serializable {
      * @return boolean array for the active and not active pie chart filters
      * indexes
      */
-    public boolean[] getActivePieChartQuantFilters() {
+    public Map<String, boolean[]>  getActivePieChartQuantFilters() {
         return db.getActivePieChartQuantFilters();
 
     }
@@ -225,7 +225,7 @@ public class DataAccess implements Serializable {
      * @return boolean array for the active and not active pie chart filters
      * indexes
      */
-    public boolean[] getActivePieChartQuantFilters(List<QuantProtein> searchQuantificationProtList) {
+    public Map<String, boolean[]> getActivePieChartQuantFilters(List<QuantProtein> searchQuantificationProtList) {
         return db.getActivePieChartQuantFilters(searchQuantificationProtList);
 
     }
@@ -412,4 +412,5 @@ public class DataAccess implements Serializable {
         Map<String, Set<QuantPeptide>> datasetProteinsSearchingList = db.getQuantificationPeptides(quantDatasetIds);
         return datasetProteinsSearchingList;
     }
+   
 }

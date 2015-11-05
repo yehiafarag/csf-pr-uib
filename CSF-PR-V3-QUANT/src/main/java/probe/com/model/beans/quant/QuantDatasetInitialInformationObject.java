@@ -6,20 +6,31 @@
 package probe.com.model.beans.quant;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
  * @author Yehia Farag
  */
 public class QuantDatasetInitialInformationObject {
-    private  Map<Integer,QuantDatasetObject> quantDatasetsList;
-        private boolean[] activeHeaders;
+
+    private Map<Integer, QuantDatasetObject> quantDatasetsList;
+    private boolean[] activeHeaders;
+    private Set<String>diseaseCategories;
+
+    public Set<String> getDiseaseCategories() {
+        return diseaseCategories;
+    }
+
+    public void setDiseaseCategories(Set<String> diseaseCategories) {
+        this.diseaseCategories = diseaseCategories;
+    }
 
     /**
      *
      * @return
      */
-    public  Map<Integer,QuantDatasetObject> getQuantDatasetsList() {
+    public Map<Integer, QuantDatasetObject> getQuantDatasetsList() {
         return quantDatasetsList;
     }
 
@@ -27,7 +38,7 @@ public class QuantDatasetInitialInformationObject {
      *
      * @param quantDatasetsList
      */
-    public void setQuantDatasetsList( Map<Integer,QuantDatasetObject> quantDatasetsList) {
+    public void setQuantDatasetsList(Map<Integer, QuantDatasetObject> quantDatasetsList) {
         this.quantDatasetsList = quantDatasetsList;
     }
 

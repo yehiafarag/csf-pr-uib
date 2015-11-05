@@ -35,27 +35,29 @@ public class SessionListener implements HttpSessionListener, Serializable {
         session = hse.getSession();
         String sessionId = session.getId();
         String csfFolderUrl = session.getServletContext().getInitParameter("filesURL");
-        userFolderUrl = csfFolderUrl + "\\" + sessionId;        
-        if (session != null) {
-            timer = new Timer();
-            timer.schedule(new RemindTask(),(5 * 60 * 1000 * 60));//); //* 60 * 60 * 1000
-        }
-        
+        userFolderUrl = csfFolderUrl + "\\" + sessionId;       
+//        RemindTask task = new RemindTask();
+//        if (session != null) {
+//            
+//            timer = new Timer();
+//            timer.schedule(task,(5 * 60 * 1000 * 60));//); //* 60 * 60 * 1000
+//        }
+//        
 
     }
 
-    private void deleteFiles(File f) {
-        if (f.isDirectory() && f.listFiles().length > 0) {
-            for (File subFile : f.listFiles()) {
-                deleteFiles(subFile);
-
-            }
-
-        } else if (!f.getName().equalsIgnoreCase("CSF_Files")) {
-            f.delete();
-        }
-
-    }
+//    private void deleteFiles(File f) {
+//        if (f.isDirectory() && f.listFiles().length > 0) {
+//            for (File subFile : f.listFiles()) {
+//                deleteFiles(subFile);
+//
+//            }
+//
+//        } else if (!f.getName().equalsIgnoreCase("CSF_Files")) {
+//            f.delete();
+//        }
+//
+//    }
 
     /**
      *
@@ -64,19 +66,19 @@ public class SessionListener implements HttpSessionListener, Serializable {
     @Override
     public void sessionDestroyed(HttpSessionEvent hse) {
         System.gc();
-        deleteFiles(new File(userFolderUrl));
+//        deleteFiles(new File(userFolderUrl));
     }
 
-    class RemindTask extends TimerTask {
-
-        @Override
-        public void run() {
-            timer.cancel();
-            System.out.println("Time's up!");
-            session.invalidate();
-
-//            VaadinSession.getCurrent().close();
-        }
-    };
+//    class RemindTask extends TimerTask {
+//
+//        @Override
+//        public void run() {
+//            timer.cancel();
+//            System.out.println("Time's up!");           
+////            session.invalidate();
+//
+////            VaadinSession.getCurrent().close();
+//        }
+//    };
 
 }

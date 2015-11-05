@@ -43,6 +43,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
     /**
      *
      * @param exploringFiltersManager
+     * @param handler
      */
     public StudiesPieChartFiltersContainerLayout(DatasetExploringCentralSelectionManager exploringFiltersManager, final CSFPRHandler handler) {
 

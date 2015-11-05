@@ -13,9 +13,11 @@ import com.vaadin.event.LayoutEvents;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.shared.ui.MultiSelectMode;
 import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.AbstractTextField;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -342,7 +344,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
                         Item item = groupsComparisonProteinsTable.getItem(id);
                         tableItems.put(id, item);
                         protAccssions.add(item.getItemProperty("Accession").toString());
-                        
+
 //                        for (QuantDiseaseGroupsComparison gc : quantDiseaseGroupsComparisonArr) {
 //                            if (item.getItemProperty(gc.getComparisonHeader()).getValue() == null) {                               
 //                                groupsComparisonProteinsTable.removeItem(id);
@@ -644,7 +646,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
                     continue;
                 }
                 String protAcc = prot.getProteinAccssionNumber().toLowerCase().trim();
-                String key = ("--" + protAcc.toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim();
+                String key = ("--" + protAcc.toLowerCase().trim() + "," + prot.getProtName().trim()).trim();
                 if (prot.getUrl() == null) {
                     uniprotAvailable = false;
                 }
@@ -659,11 +661,15 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
                 protCounter++;
             }
             this.groupsComparisonProteinsTable.setColumnHeader(comp.getComparisonHeader(), " (" + protCounter + ((protCounter == 1) ? " Protein / " : " Proteins / ") + comp.getDatasetIndexes().length + ((comp.getDatasetIndexes().length == 1) ? " Study)" : " Studies)"));
+          columnTitleLayout.setDescription("<h3>"+comp.getComparisonHeader()+ "</h3><center><h4>(" + protCounter + ((protCounter == 1) ? " Protein / " : " Proteins / ") + comp.getDatasetIndexes().length + ((comp.getDatasetIndexes().length == 1) ? " Study)" : " Studies)</h4></center>"));
 //            this.groupsComparisonProteinsTable.setColumnFooter(comp.getComparisonHeader(), " (#Proteins: " + protCounter + "/#Studies" + comp.getDatasetIndexes().length + ")");
         }
         int index = 0;
         Set<Object> selectedProtId = new HashSet<Object>();
         for (String key : diseaseGroupsComparisonsProteinsMap.keySet()) {
+            if (key.replace("--", "").trim().split(",").length == 1) {
+                System.out.println("at---- key is ----" + key);
+            }
             int i = 0;
             String protAcc = key.replace("--", "").trim().split(",")[0];
             String protURL = "http://www.uniprot.org/uniprot/" + protAcc.toUpperCase();
@@ -788,7 +794,8 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
 
         Label label = new Label(comparison.getComparisonHeader());
         label.setStyleName("comparisonHeaders");
-        label.setDescription(comparison.getComparisonHeader());
+//        System.out.println(groupsComparisonProteinsTable.getColumnHeaders().;
+//        label.setDescription(comparison.getComparisonHeader() + "  " + groupsComparisonProteinsTable.getItemCaption(comparison.getComparisonHeader()));
         label.setWidth("90%");
 
         VerticalLayout closeCompariosonBtn = new VerticalLayout();
@@ -907,10 +914,10 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
                 if (!accessions.contains(prot.getProteinAccssionNumber())) {
                     continue;
                 }
-                 if (selectionManager.isSignificantOnly() && prot.getSignificantTrindCategory() == 2) {
+                if (selectionManager.isSignificantOnly() && prot.getSignificantTrindCategory() == 2) {
                     continue;
                 }
-                String key = ("--" + prot.getProteinAccssionNumber().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim();
+                String key = ("--" + prot.getProteinAccssionNumber().toLowerCase().trim() + "," + prot.getProtName().trim()).trim();
 
                 if (!filteredDiseaseGroupsComparisonsProteinsMap.containsKey(key)) {
                     filteredDiseaseGroupsComparisonsProteinsMap.put(key, new DiseaseGroupsComparisonsProteinLayout[comparisonProteinsArray.length]);
@@ -1046,7 +1053,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
                 Map<String, DiseaseGroupsComparisonsProteinLayout> protList = comp.getComparProtsMap();
                 for (DiseaseGroupsComparisonsProteinLayout prot : protList.values()) {
                     if (prot.getProteinAccssionNumber().equalsIgnoreCase(accession)) {
-                        String key = ("--" + prot.getProteinAccssionNumber().toLowerCase().trim() + "," + prot.getProtName().toLowerCase().trim()).toLowerCase().trim();
+                        String key = ("--" + prot.getProteinAccssionNumber().toLowerCase().trim() + "," + prot.getProtName().trim()).trim();
                         key = key + "," + uniprotProteinsMap.get(key);
                         if (!protSelectionMap.containsKey(key)) {
                             protSelectionMap.put(key, new DiseaseGroupsComparisonsProteinLayout[quantDiseaseGroupsComparisonArr.length]);
@@ -1140,7 +1147,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
     }
 
     private Table initComparisonsTable() {
-        Table comparisonsTable = new Table() {
+        final Table comparisonsTable = new Table() {
 
         };
 
@@ -1160,31 +1167,33 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
             @Override
             public void columnResize(Table.ColumnResizeEvent event) {
 
-                columnLabelContainer.setWidth((event.getCurrentWidth() - event.getPreviousWidth() + columnLabelContainer.getWidth()) + "px");
-
-                HorizontalLayout labelLayoutSet1 = labelLayoutSet.get(event.getPropertyId().toString());
-                labelLayoutSet1.setWidth(event.getCurrentWidth() + "px");
-
-                for (DiseaseGroupsComparisonsProteinLayout[] protArr : diseaseGroupsComparisonsProteinsMap.values()) {
-                    int columnIndex = 0;
-                    boolean done = false;
-                    for (DiseaseGroupsComparisonsProteinLayout prot : protArr) {
-                        if (prot == null) {
-                            columnIndex++;
-                            continue;
-                        }
-                        if (prot.getComparison().getComparisonHeader().equalsIgnoreCase(event.getPropertyId().toString())) {
-                            done = true;
-                            break;
-                        }
-                        columnIndex++;
-                    }
-                    if (done) {
-                        protArr[columnIndex].updateWidth(event.getCurrentWidth());
-                    }
-
-                }
-
+                comparisonsTable.setColumnWidth(event.getPropertyId(), event.getPreviousWidth());
+//                return;
+//                columnLabelContainer.setWidth((event.getCurrentWidth() - event.getPreviousWidth() + columnLabelContainer.getWidth()) + "px");
+//                
+//                HorizontalLayout labelLayoutSet1 = labelLayoutSet.get(event.getPropertyId().toString());
+//                labelLayoutSet1.setWidth(event.getCurrentWidth() + "px");
+//                
+//                for (DiseaseGroupsComparisonsProteinLayout[] protArr : diseaseGroupsComparisonsProteinsMap.values()) {
+//                    int columnIndex = 0;
+//                    boolean done = false;
+//                    for (DiseaseGroupsComparisonsProteinLayout prot : protArr) {
+//                        if (prot == null) {
+//                            columnIndex++;
+//                            continue;
+//                        }
+//                        if (prot.getComparison().getComparisonHeader().equalsIgnoreCase(event.getPropertyId().toString())) {
+//                            done = true;
+//                            break;
+//                        }
+//                        columnIndex++;
+//                    }
+//                    if (done) {
+//                        protArr[columnIndex].updateWidth(event.getCurrentWidth());
+//                    }
+//                    
+//                }
+//                
             }
         });
 

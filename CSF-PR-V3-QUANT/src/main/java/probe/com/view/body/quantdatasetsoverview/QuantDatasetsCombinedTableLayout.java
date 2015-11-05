@@ -35,15 +35,14 @@ public class QuantDatasetsCombinedTableLayout extends VerticalLayout implements 
     /**
      *
      * @param datasetExploringCentralSelectionManager
-     * @param activeColumnHeaders
      */
-    public QuantDatasetsCombinedTableLayout(DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager, boolean[] activeColumnHeaders) {
+    public QuantDatasetsCombinedTableLayout(DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager) {
         this.datasetExploringCentralSelectionManager = datasetExploringCentralSelectionManager;
         datasetExploringCentralSelectionManager.registerFilter(QuantDatasetsCombinedTableLayout.this);
         this.datasetsTable = new Table();
         this.totalStudiesNumber = datasetExploringCentralSelectionManager.getFilteredDatasetsList().size();
         tableLayout = new CSFTable(datasetsTable, "Dataset Table", totalStudiesNumber + "/" + totalStudiesNumber, null, null, null);
-        initCombinedQuantDatasetTable(activeColumnHeaders);
+        initCombinedQuantDatasetTable(datasetExploringCentralSelectionManager.getActiveHeader());
         this.addComponent(tableLayout);
         tableLayout.setShowTable(false);
     }
@@ -232,19 +231,19 @@ public class QuantDatasetsCombinedTableLayout extends VerticalLayout implements 
             Map<Integer, QuantDatasetObject> temp = new LinkedHashMap<Integer, QuantDatasetObject>();
             List<Integer> datasetIds = datasetExploringCentralSelectionManager.getSelectedDataset();
             int i = 0;
-           for(int datasetId :datasetIds){
-            for (; i < dsIndexes.length; i++) {
-                if (dsIndexes[i] == datasetId) {
-                    datasetsTable.select(i);
-                    break;
-                }
+            for (int datasetId : datasetIds) {
+                for (; i < dsIndexes.length; i++) {
+                    if (dsIndexes[i] == datasetId) {
+                        datasetsTable.select(i);
+                        break;
+                    }
 
-            } 
-            QuantDatasetObject qds = datasetExploringCentralSelectionManager.getFullQuantDatasetMap().get(datasetId);
-           
-            temp.put(i, qds);
-           }
-           
+                }
+                QuantDatasetObject qds = datasetExploringCentralSelectionManager.getFullQuantDatasetMap().get(datasetId);
+
+                temp.put(i, qds);
+            }
+
             updateCombinedQuantDatasetTableRecords(temp);
         }
     }

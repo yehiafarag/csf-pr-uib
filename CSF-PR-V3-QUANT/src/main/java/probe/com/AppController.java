@@ -9,6 +9,8 @@ import com.vaadin.ui.JavaScriptFunction;
 import com.vaadin.ui.UI;
 import elemental.json.JsonArray;
 import java.io.File;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.servlet.ServletContext;
 import probe.com.handlers.CSFPRHandler;
 
@@ -31,7 +33,7 @@ public class AppController extends UI {
      *
      */
     @Override
-    protected void init(VaadinRequest request) {
+    protected void init(final VaadinRequest request) {
         //init param for DB
         ServletContext scx = VaadinServlet.getCurrent().getServletContext();
         dbURL = (scx.getInitParameter("url"));
@@ -60,12 +62,25 @@ public class AppController extends UI {
             JavaScript.getCurrent().addFunction("aboutToClose", new JavaScriptFunction() {
                 @Override
                 public void call(JsonArray arguments) {
-                    System.out.println("at system is closing the tab");                   
+                    System.out.println("at system is closing the tab");
                     deleteFiles(new File(filesURL));
                 }
             });
 
             Page.getCurrent().getJavaScript().execute("window.onbeforeunload = function (e) { var e = e || window.event; aboutToClose(); return; };");
+        } else {
+            System.out.println("its iE");
+            final Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    System.out.println("close everythings now :-D bye bye !");
+                    deleteFiles(new File(filesURL));
+                    timer.cancel();
+                    
+                    request.getWrappedSession().invalidate();
+                }
+            },(5 * 60 * 1000 * 60));
         }
 
     }

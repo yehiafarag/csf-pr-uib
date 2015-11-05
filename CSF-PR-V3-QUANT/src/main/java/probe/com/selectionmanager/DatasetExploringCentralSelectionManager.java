@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import probe.com.model.beans.quant.QuantDatasetInitialInformationObject;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.beans.quant.QuantDatasetObject;
@@ -21,14 +22,23 @@ import probe.com.view.core.DiseaseGroup;
  */
 public class DatasetExploringCentralSelectionManager implements Serializable {
 
-    private final Map<Integer, QuantDatasetObject> fullQuantDatasetMap;
+    private Map<Integer, QuantDatasetObject> fullQuantDatasetMap;
     private Map<Integer, QuantDatasetObject> filteredQuantDatasetArr = new LinkedHashMap<Integer, QuantDatasetObject>();
     private final Set<CSFFilter> registeredFilterSet = new HashSet<CSFFilter>();
-    private final boolean[] activeFilters;
+    private final Map<String, boolean[]> activeFilterMap;
+    private boolean[] activeFilters;
+
+    public boolean[] getActiveHeader() {
+        return activeHeader;
+    }
+    private boolean[] activeHeader;
     private QuantDatasetObject[] selectedQuantDatasetIndexes;
     private Set<QuantDiseaseGroupsComparison> selectedDiseaseGroupsComparisonList;
     private Map<String, DiseaseGroupsComparisonsProteinLayout[]> quantProteinsLayoutSelectionMap;
     private String selectedProteinKey;
+    private Set<String> diseaseCategorySet;
+    
+    private int totalDsNumber,currentDsNumber;
 
     /**
      * get selected heat map rows
@@ -81,16 +91,34 @@ public class DatasetExploringCentralSelectionManager implements Serializable {
         this.selectedDataset = selectedDataset;
     }
 
+    public Set<String> getDiseaseCategorySet() {
+        return diseaseCategorySet;
+    }
+
     private List<Integer> selectedDataset = null;
+    private final Map<String, QuantDatasetInitialInformationObject> quantDatasetListObject;
 
     /**
      *
-     * @param quantDatasetsList
-     * @param activeFilters
+     * @param quantDatasetListObject
+     * @param activeFilterMap
      */
-    public DatasetExploringCentralSelectionManager(Map<Integer, QuantDatasetObject> quantDatasetsList, boolean[] activeFilters) {
-        this.fullQuantDatasetMap = quantDatasetsList;
-        this.activeFilters = activeFilters;
+    public DatasetExploringCentralSelectionManager(Map<String, QuantDatasetInitialInformationObject> quantDatasetListObject, Map<String, boolean[]> activeFilterMap) {
+        this.quantDatasetListObject = quantDatasetListObject;
+        String key = quantDatasetListObject.keySet().iterator().next();
+        this.totalDsNumber=0;
+                for(String k:quantDatasetListObject.keySet()){
+                totalDsNumber+=quantDatasetListObject.get(k).getQuantDatasetsList().size();
+                
+                
+                }
+                    
+        this.fullQuantDatasetMap = quantDatasetListObject.get(key).getQuantDatasetsList();
+        this.currentDsNumber = fullQuantDatasetMap.size();
+        this.activeFilterMap = activeFilterMap;
+        this.activeFilters = activeFilterMap.get(key);
+        this.activeHeader = quantDatasetListObject.get(key).getActiveHeaders();
+        this.diseaseCategorySet = quantDatasetListObject.keySet();
 
     }
 
@@ -383,6 +411,25 @@ public class DatasetExploringCentralSelectionManager implements Serializable {
 
     public void exportFullReport() {
 
+    }
+
+    public void changeDiseaseCategory(String diseaseCategory) {
+        this.fullQuantDatasetMap = quantDatasetListObject.get(diseaseCategory).getQuantDatasetsList();
+        this.filteredQuantDatasetArr.clear();
+        this.diseaseCategorySet = quantDatasetListObject.get(diseaseCategory).getDiseaseCategories();
+        this.activeHeader = quantDatasetListObject.get(diseaseCategory).getActiveHeaders();
+        this.activeFilters = activeFilterMap.get(diseaseCategory);
+        this.currentDsNumber = fullQuantDatasetMap.size();
+//        this.SelectionChanged("Disease_Category_Selection");
+
+    }
+
+    public int getTotalDsNumber() {
+        return totalDsNumber;
+    }
+
+    public int getCurrentDsNumber() {
+        return currentDsNumber;
     }
 
 }
