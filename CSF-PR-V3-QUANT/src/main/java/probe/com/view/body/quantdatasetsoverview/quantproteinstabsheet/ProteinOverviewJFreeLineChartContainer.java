@@ -84,6 +84,10 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
     private final Page.Styles styles = Page.getCurrent().getStyles();
     private final DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager;
     private final CSFPRHandler mainHandler;
+    private final Shape notRShape = ShapeUtilities.createDiamond(6f);
+    private final Shape emptyRShape = ShapeUtilities.createDiamond(6f);
+    private final Shape leftArr = ShapeUtilities.createDownTriangle(6f);
+    private final Shape rightArr = ShapeUtilities.createUpTriangle(6f);
 
     /**
      *
@@ -110,13 +114,13 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
     /**
      *
      * @param datasetExploringCentralSelectionManager
-     * @param comparisonProteins
+     * @param orgComparisonProteins
      * @param selectedComparisonList
      * @param widthValue
      * @param proteinName
      * @param searchingMode
      */
-    public ProteinOverviewJFreeLineChartContainer(DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager, final DiseaseGroupsComparisonsProteinLayout[] comparisonProteins, final Set<QuantDiseaseGroupsComparison> selectedComparisonList, int widthValue, final String proteinName, final String proteinAccession, boolean searchingMode, final String proteinKey, CSFPRHandler mainHandler) {
+    public ProteinOverviewJFreeLineChartContainer(DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager, final DiseaseGroupsComparisonsProteinLayout[] orgComparisonProteins, final Set<QuantDiseaseGroupsComparison> selectedComparisonList, int widthValue, final String proteinName, final String proteinAccession, boolean searchingMode, final String proteinKey, CSFPRHandler mainHandler) {
 
         this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.setSpacing(false);
@@ -124,11 +128,25 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         this.setWidth(widthValue + "px");
         this.datasetExploringCentralSelectionManager = datasetExploringCentralSelectionManager;
         this.mainHandler = mainHandler;
+        final DiseaseGroupsComparisonsProteinLayout[] comparisonProteins = new DiseaseGroupsComparisonsProteinLayout[orgComparisonProteins.length];
+        int count = 0;
+        for (DiseaseGroupsComparisonsProteinLayout quantProt : orgComparisonProteins) {
+            if (quantProt == null) {
+
+                QuantDiseaseGroupsComparison qdcomp = (QuantDiseaseGroupsComparison) selectedComparisonList.toArray()[count];
+                quantProt = new DiseaseGroupsComparisonsProteinLayout(count, qdcomp, count);
+                quantProt.setSignificantTrindCategory(-1);
+            }
+            comparisonProteins[count] = quantProt;
+            count++;
+
+        }
 
         int labelHeight = 0;
         for (QuantDiseaseGroupsComparison qdcomp : selectedComparisonList) {
             if ((qdcomp.getComparisonHeader().length() * 6) > labelHeight) {
                 labelHeight = (qdcomp.getComparisonHeader().length() * 6);
+
             }
         }
         height = 400 + labelHeight;
@@ -305,20 +323,23 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                         TreeMap<String, DiseaseGroupsComparisonsProteinLayout> orderedCompProteins = new TreeMap<String, DiseaseGroupsComparisonsProteinLayout>();
                         LinkedHashSet<QuantDiseaseGroupsComparison> orederedComparisonSet = new LinkedHashSet<QuantDiseaseGroupsComparison>();
                         for (DiseaseGroupsComparisonsProteinLayout cp : comparisonProteins) {
-                            if (cp == null) {
-                                continue;
-                            }
-                            if (cp.getSignificantCellValue() < 0 && cp.getSignificantCellValue() > -1) {
-                                orderedCompProteins.put((cp.getSignificantCellValue() - 1) + "-" + cp.getComparison().getComparisonHeader(), cp);
+                            if (cp.getSignificantTrindCategory() == -1) {
+                                orderedCompProteins.put((2) + "-z" + cp.getComparison().getComparisonHeader(), cp);
                             } else {
-                                orderedCompProteins.put((cp.getSignificantCellValue()) + "-" + cp.getComparison().getComparisonHeader(), cp);
+                                orderedCompProteins.put((cp.getSignificantTrindCategory()) + "-" + cp.getComparison().getComparisonHeader(), cp);
                             }
                         }
+//                        System.out.println("at orderedCompProteins " + orderedCompProteins.keySet());
                         ordComparisonProteins = new DiseaseGroupsComparisonsProteinLayout[orderedCompProteins.size()];
                         int i = 0;
-                        for (DiseaseGroupsComparisonsProteinLayout cp : orderedCompProteins.values()) {
+                        for (String cpHeader : orderedCompProteins.keySet()) {
+                            DiseaseGroupsComparisonsProteinLayout cp = orderedCompProteins.get(cpHeader);
                             ordComparisonProteins[i] = cp;
+//                            if (cp == null) {
+//                                orederedComparisonSet.add(null);
+//                            } else {
                             orederedComparisonSet.add(cp.getComparison());
+//                            }
                             i++;
                         }
                         for (QuantDiseaseGroupsComparison gv : selectedComparisonList) {
@@ -351,6 +372,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         studiesScatterChartsLayout.setWidth(width * 2 + "px");
         this.setExpandRatio(leftSideLayout, 1.5f);
         this.setExpandRatio(rightSideLayout, 1.4f);
+
     }
 
     private DiseaseGroupsComparisonsProteinLayout[] inUseComparisonProteins;
@@ -360,13 +382,12 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         int notcounter = 0;
         int downcounter = 0;
         int counter = 0;
+        int emptyCounter = 0;
 
         for (DiseaseGroupsComparisonsProteinLayout cp : comparisonProteins) {
-            if (cp == null) {
-                continue;
-            }
-
-            if (cp.getSignificantCellValue() > 0) {
+            if (cp == null || cp.getSignificantTrindCategory() == -1) {
+                emptyCounter++;
+            } else if (cp.getSignificantCellValue() > 0) {
                 upcounter++;
             } else if (cp.getSignificantCellValue() == 0) {
                 notcounter++;
@@ -401,48 +422,55 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         double[] xDownValues = new double[downcounter];
         double[] yDownValues = new double[downcounter];
 
+        double[][] emptyValues = new double[2][emptyCounter];
+        double[] xEmptyValues = new double[emptyCounter];
+        double[] yEmptyValues = new double[emptyCounter];
+
         int upIndex = 0;
         int notIndex = 0;
         int downIndex = 0;
+        int emptyIndex = 0;
 
         int compIndex = 0;
         int comparisonIndexer = 0;
         for (DiseaseGroupsComparisonsProteinLayout cp : comparisonProteins) {
-            if (cp == null) {
-                comparisonIndexer++;
-                continue;
-            } else {
-                inUseComparisonProteins[compIndex] = cp;
-                xLineValues[compIndex] = comparisonIndexer;
-
-                if (cp.getSignificantTrindCategory() == 4) {
-                    yLineValues[compIndex] = 4d;
-                    xUpValues[upIndex] = comparisonIndexer;
-                    yUpValues[upIndex] = 4d;
-                    upIndex++;
-                } else if (cp.getSignificantTrindCategory() == 3) {
-                    xUpValues[upIndex] = comparisonIndexer;
-                    yUpValues[upIndex] = 3d;
-                    upIndex++;
-                    yLineValues[compIndex] = 3d;
-                } else if (cp.getSignificantTrindCategory() == 2) {
-                    yLineValues[compIndex] = 2d;
-                    xNotValues[notIndex] = comparisonIndexer;
-                    yNotValues[notIndex] = 2d;
-                    notIndex++;
-                } else if (cp.getSignificantTrindCategory() == 1) {
-                    yLineValues[compIndex] = 1d;
-                    xDownValues[downIndex] = comparisonIndexer;
-                    yDownValues[downIndex] = 1d;
-                    downIndex++;
-                } else if (cp.getSignificantTrindCategory() == 0) {
-                    yLineValues[compIndex] = 0d;
-                    xDownValues[downIndex] = comparisonIndexer;
-                    yDownValues[downIndex] = 0d;
-                    downIndex++;
-                }
-
+            inUseComparisonProteins[compIndex] = cp;
+            xLineValues[compIndex] = comparisonIndexer;
+            if (cp == null || cp.getSignificantTrindCategory() == -1) {
+                yLineValues[compIndex] = 2d;
+                xEmptyValues[emptyIndex] = comparisonIndexer;
+                yEmptyValues[emptyIndex] = 2d;
+                emptyIndex++;
+//                continue;
+            } //            else {
+            else if (cp.getSignificantTrindCategory() == 4) {
+                yLineValues[compIndex] = 4d;
+                xUpValues[upIndex] = comparisonIndexer;
+                yUpValues[upIndex] = 4d;
+                upIndex++;
+            } else if (cp.getSignificantTrindCategory() == 3) {
+                xUpValues[upIndex] = comparisonIndexer;
+                yUpValues[upIndex] = 3d;
+                upIndex++;
+                yLineValues[compIndex] = 3d;
+            } else if (cp.getSignificantTrindCategory() == 2) {
+                yLineValues[compIndex] = 2d;
+                xNotValues[notIndex] = comparisonIndexer;
+                yNotValues[notIndex] = 2d;
+                notIndex++;
+            } else if (cp.getSignificantTrindCategory() == 1) {
+                yLineValues[compIndex] = 1d;
+                xDownValues[downIndex] = comparisonIndexer;
+                yDownValues[downIndex] = 1d;
+                downIndex++;
+            } else if (cp.getSignificantTrindCategory() == 0) {
+                yLineValues[compIndex] = 0d;
+                xDownValues[downIndex] = comparisonIndexer;
+                yDownValues[downIndex] = 0d;
+                downIndex++;
             }
+
+//            }
             compIndex++;
             comparisonIndexer++;
 
@@ -457,10 +485,14 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         downvalues[0] = xDownValues;
         downvalues[1] = yDownValues;
 
+        emptyValues[0] = xEmptyValues;
+        emptyValues[1] = yEmptyValues;
+
         dataset.addSeries("line", linevalues);
         dataset.addSeries("up", upvalues);
         dataset.addSeries("not", notvalues);
         dataset.addSeries("down", downvalues);
+        dataset.addSeries("empty", emptyValues);
 
         String[] xAxisLabels = new String[selectedComparisonList.size()];
         int x = 0;
@@ -562,13 +594,17 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
         renderer.setSeriesPaint(0, Color.GRAY);
 
+        renderer.setUseOutlinePaint(true);
         renderer.setSeriesPaint(1, new Color(204, 0, 0));
+        renderer.setSeriesOutlinePaint(1, new Color(204, 0, 0));
         renderer.setSeriesPaint(2, new Color(1, 141, 244));
+        renderer.setSeriesOutlinePaint(2, new Color(1, 141, 244));
         renderer.setSeriesPaint(3, new Color(80, 183, 71));
+        renderer.setSeriesOutlinePaint(3, new Color(80, 183, 71));
+        renderer.setSeriesPaint(4, Color.WHITE);
+        renderer.setSeriesOutlinePaint(4, new Color(1, 141, 244));
 
-        Shape notRShape = ShapeUtilities.createDiamond(6f);
-        Shape leftArr = ShapeUtilities.createDownTriangle(6f);
-        Shape rightArr = ShapeUtilities.createUpTriangle(6f);
+        renderer.setSeriesShape(4, emptyRShape);
         renderer.setSeriesShape(3, leftArr);
         renderer.setSeriesShape(2, notRShape);
         renderer.setSeriesShape(1, rightArr);
@@ -617,6 +653,8 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         return jFreeChart;
     }
 
+    private final String[] tooltipLabels = new String[]{"( Low <img src='VAADIN/themes/dario-theme/img/sdown.png' alt='Low'>"+ " )","( Low <img src='VAADIN/themes/dario-theme/img/sdown.png' alt='Low'>"+ " )", "( Stable <img src='VAADIN/themes/dario-theme/img/snotreg.png' alt='Stable'>"+ " )"," ( High <img src='VAADIN/themes/dario-theme/img/sup.png' alt='High'>"+ " )"," ( High <img src='VAADIN/themes/dario-theme/img/sup.png' alt='High'>"+ " )"};
+
     private String generateChartImage(JFreeChart jFreeChart, int w, int h, ChartRenderingInfo chartRenderingInfo) {
         String imgUrl = saveToFile(jFreeChart, w, h, chartRenderingInfo);
         for (int i = 0; i < chartRenderingInfo.getEntityCollection().getEntityCount(); i++) {
@@ -625,30 +663,63 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                 String[] arr = ((XYItemEntity) entity).getShapeCoords().split(",");
                 int xSer = Integer.valueOf(arr[10]);
                 int ySer = Integer.valueOf(arr[11]);
+                int trend;
                 SquaredDot square = new SquaredDot("cycle");
-                square.setWidth(20 + "px");
-                square.setHeight(20 + "px");
-                QuantDiseaseGroupsComparison gc = inUseComparisonProteins[((XYItemEntity) entity).getItem()].getComparison();
-                square.setDescription(gc.getComparisonHeader());
-                square.setParam("GroupsComparison", gc);
-                lineChartContainer.addComponent(square, "left: " + (xSer - 7) + "px; top: " + (ySer - 10) + "px;");
-                MouseEvents.MouseOverListener mouseOverListener = new MouseEvents.MouseOverListener() {
-                    private final QuantDiseaseGroupsComparison gc = inUseComparisonProteins[((XYItemEntity) entity).getItem()].getComparison();
+                square.setWidth(17 + "px");
+                square.setHeight(17 + "px");
+                QuantDiseaseGroupsComparison gc;
+                String paramName = "GroupsComparison";
+                if (inUseComparisonProteins[((XYItemEntity) entity).getItem()] == null || inUseComparisonProteins[((XYItemEntity) entity).getItem()].getSignificantTrindCategory() == -1) {
+                    gc = new QuantDiseaseGroupsComparison();
+                    gc.setComparisonHeader("No data available");
+                    paramName = "Empty value";
+                    trend = 2;
+                    square.setDescription(gc.getComparisonHeader());
+                } else {
+                    gc = inUseComparisonProteins[((XYItemEntity) entity).getItem()].getComparison();
+                    trend = inUseComparisonProteins[((XYItemEntity) entity).getItem()].getSignificantTrindCategory();
+                    square.setDescription(gc.getComparisonHeader() + tooltipLabels[trend]);
+                }
+                
+                square.setParam(paramName, gc);
+                switch (trend) {
+                    case 0:
+                        lineChartContainer.addComponent(square, "left: " + (xSer - 6) + "px; top: " + (ySer - 8) + "px;");
+                        break;
+                    case 1:
+                        lineChartContainer.addComponent(square, "left: " + (xSer - 6) + "px; top: " + (ySer - 8) + "px;");
+                        break;
+                    case 2:
+                        lineChartContainer.addComponent(square, "left: " + (xSer - 6) + "px; top: " + (ySer - 5) + "px;");
+                        break;
+                    case 3:
+                        lineChartContainer.addComponent(square, "left: " + (xSer - 6) + "px; top: " + (ySer - 5) + "px;");
+                        break;
+                    case 4:
+                        lineChartContainer.addComponent(square, "left: " + (xSer - 6) + "px; top: " + (ySer - 5) + "px;");
+                        break;
 
-                    @Override
-                    public void mouseOver() {
-                        studiesScatterChartsLayout.highlightComparison(gc, false);
-                    }
-                };
-                MouseEvents.MouseOutListener mouseOutListener = new MouseEvents.MouseOutListener() {
-                    @Override
-                    public void mouseOut() {
-                        studiesScatterChartsLayout.highlightComparison(null, false);
-                    }
-                };
-                final MouseEvents mouseEvents = MouseEvents.enableFor(square);
-                mouseEvents.addMouseOutListener(mouseOutListener);
-                mouseEvents.addMouseOverListener(mouseOverListener);
+                }
+
+                if (paramName.equalsIgnoreCase("GroupsComparison")) {
+                    MouseEvents.MouseOverListener mouseOverListener = new MouseEvents.MouseOverListener() {
+                        private final QuantDiseaseGroupsComparison gc = inUseComparisonProteins[((XYItemEntity) entity).getItem()].getComparison();
+
+                        @Override
+                        public void mouseOver() {
+                            studiesScatterChartsLayout.highlightComparison(gc, false);
+                        }
+                    };
+                    MouseEvents.MouseOutListener mouseOutListener = new MouseEvents.MouseOutListener() {
+                        @Override
+                        public void mouseOut() {
+                            studiesScatterChartsLayout.highlightComparison(null, false);
+                        }
+                    };
+                    final MouseEvents mouseEvents = MouseEvents.enableFor(square);
+                    mouseEvents.addMouseOutListener(mouseOutListener);
+                    mouseEvents.addMouseOverListener(mouseOverListener);
+                }
             }
         }
         return imgUrl;
@@ -668,10 +739,15 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         plot.setOutlineVisible(isFullChart);
 
         XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
-        renderer.setSeriesShapesVisible(1, isFullChart);
-        renderer.setSeriesShapesVisible(2, isFullChart);
-        renderer.setSeriesShapesVisible(3, isFullChart);
+//        renderer.setSeriesShapesVisible(1, isFullChart);
+//        renderer.setSeriesShapesVisible(2, isFullChart);
+//        renderer.setSeriesShapesVisible(3, isFullChart);
         if (isFullChart) {
+
+            renderer.setSeriesShape(4, emptyRShape);
+            renderer.setSeriesShape(3, leftArr);
+            renderer.setSeriesShape(2, notRShape);
+            renderer.setSeriesShape(1, rightArr);
             renderer.setSeriesPaint(0, Color.GRAY);
             renderer.setSeriesPaint(1, new Color(204, 0, 0));
             renderer.setSeriesPaint(2, new Color(1, 141, 244));
@@ -681,6 +757,15 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                     1.0f, new float[]{10.0f, 6.0f}, 0.0f
             ));
         } else {
+
+            Shape snotRShape = ShapeUtilities.createDiamond(3f);
+            final Shape semptyRShape = ShapeUtilities.createDiamond(3f);
+            final Shape sleftArr = ShapeUtilities.createDownTriangle(3f);
+            final Shape srightArr = ShapeUtilities.createUpTriangle(3f);
+            renderer.setSeriesShape(4, semptyRShape);
+            renderer.setSeriesShape(3, sleftArr);
+            renderer.setSeriesShape(2, snotRShape);
+            renderer.setSeriesShape(1, srightArr);
             renderer.setSeriesPaint(0, Color.DARK_GRAY);
             renderer.setSeriesStroke(0, null);
         }

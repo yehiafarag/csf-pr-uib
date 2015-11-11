@@ -1,11 +1,15 @@
 package probe.com.view.body;
 
+import com.ejt.vaadin.sizereporter.ComponentResizeEvent;
+import com.ejt.vaadin.sizereporter.ComponentResizeListener;
+import com.ejt.vaadin.sizereporter.SizeReporter;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.Page;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import java.util.List;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
@@ -23,13 +27,13 @@ import probe.com.view.body.quantdatasetsoverview.QuantProteinsTabsheetContainerL
  *
  * @author Yehia Farag
  */
-public class QuantDatasetsOverviewLayout extends VerticalLayout{
+public class QuantDatasetsOverviewLayout extends VerticalLayout {
 
 //    private final StudiesPieChartFiltersContainerLayout pieChartFiltersLayout;
 //    private final QuantFilterUtility filterUtility;
     private final DatasetExploringCentralSelectionManager exploringFiltersManager;
     private final QuantProteinsTabsheetContainerLayout proteinsLayout;
-
+    private int resizedCounter = 0;
 
     /**
      *
@@ -37,54 +41,48 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout{
      * @param searchingMode
      * @param searchQuantificationProtList
      */
-    public QuantDatasetsOverviewLayout(CSFPRHandler handler, boolean searchingMode,List<QuantProtein> searchQuantificationProtList) {
+    public QuantDatasetsOverviewLayout(CSFPRHandler handler, boolean searchingMode, List<QuantProtein> searchQuantificationProtList) {
 
         if (searchingMode) {
 
         }
 //        filterUtility = new QuantFilterUtility(handler);
         exploringFiltersManager = new DatasetExploringCentralSelectionManager(handler.getQuantDatasetInitialInformationObject(), handler.getActivePieChartQuantFilters());//,filterUtility.getFullFilterList()
-       
 
         this.setMargin(true);
         this.setSpacing(true);
         this.setWidth("100%");
         this.setHeightUndefined();
-        
-        if(exploringFiltersManager.getFullQuantDatasetMap() == null || exploringFiltersManager.getFullQuantDatasetMap().isEmpty())
-        {
+
+        if (exploringFiltersManager.getFullQuantDatasetMap() == null || exploringFiltersManager.getFullQuantDatasetMap().isEmpty()) {
             Label noExpLable = new Label("<h4 style='font-family:verdana;color:black;font-weight:bold;'>Sorry No Dataset Availabe Now !</h4>");
             noExpLable.setContentMode(ContentMode.HTML);
             this.addComponent(noExpLable);
 //            pieChartFiltersLayout = null;
             proteinsLayout = null;
             return;
-        
+
         }
         // init piecharts filter
-      
 
-      
-        DiseaseGroupsFiltersContainer heatmapFilter = new DiseaseGroupsFiltersContainer(exploringFiltersManager,handler,searchQuantificationProtList);
+        DiseaseGroupsFiltersContainer heatmapFilter = new DiseaseGroupsFiltersContainer(exploringFiltersManager, handler, searchQuantificationProtList);
         heatmapFilter.setWidth("100%");
         heatmapFilter.setMargin(new MarginInfo(false, false, true, false));
 
         HideOnClickLayout comparisonLevelLayout = new HideOnClickLayout("Datasets", heatmapFilter, null);
         this.addComponent(comparisonLevelLayout);
         comparisonLevelLayout.setVisability(true);
-        
-         QuantProteinsComparisonsContainer quantProteinsComparisonsContainer = new QuantProteinsComparisonsContainer(exploringFiltersManager, handler, null);
-         HideOnClickLayout comparisonsTableContainer = new HideOnClickLayout("Proteins", quantProteinsComparisonsContainer, null,Alignment.TOP_LEFT);
-        
-         int pageWidth = Page.getCurrent().getWebBrowser().getScreenWidth();
-         int layoutWidth = (pageWidth - 70);
-         quantProteinsComparisonsContainer.setLayoutWidth(layoutWidth);
+
+        QuantProteinsComparisonsContainer quantProteinsComparisonsContainer = new QuantProteinsComparisonsContainer(exploringFiltersManager, handler, null);
+        HideOnClickLayout comparisonsTableContainer = new HideOnClickLayout("Proteins", quantProteinsComparisonsContainer, null, Alignment.TOP_LEFT);
+
+        int pageWidth = Page.getCurrent().getWebBrowser().getScreenWidth();
+        int layoutWidth = (pageWidth - 70);
+        quantProteinsComparisonsContainer.setLayoutWidth(layoutWidth);
         this.addComponent(comparisonsTableContainer);
         comparisonsTableContainer.setVisability(true);
-        
-        
 
-        proteinsLayout = new QuantProteinsTabsheetContainerLayout(exploringFiltersManager,searchingMode,handler);
+        proteinsLayout = new QuantProteinsTabsheetContainerLayout(exploringFiltersManager, searchingMode, handler);
         HideOnClickLayout proteinsLevelLayout = new HideOnClickLayout("Proteins Information", proteinsLayout, null) {
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
@@ -93,6 +91,19 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout{
 
         };
         this.addComponent(proteinsLevelLayout);
+
+        SizeReporter sizeReporter = new SizeReporter(proteinsLevelLayout);
+        sizeReporter.addResizeListener(new ComponentResizeListener() {
+            @Override
+            public void sizeChanged(ComponentResizeEvent event) {
+
+                if (resizedCounter > 4) {
+                    return;
+                }
+                UI.getCurrent().setScrollTop(1000);
+                resizedCounter++;
+            }
+        });
         proteinsLevelLayout.setVisability(false);
 
         QuantDatasetsCombinedTableLayout quantStudiesTable = new QuantDatasetsCombinedTableLayout(exploringFiltersManager);

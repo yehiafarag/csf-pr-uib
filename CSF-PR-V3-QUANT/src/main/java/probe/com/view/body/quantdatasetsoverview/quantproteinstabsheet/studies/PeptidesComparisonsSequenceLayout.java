@@ -91,8 +91,8 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
         this.addComponent(closeBtn, 2, 0);
         this.setComponentAlignment(closeBtn, Alignment.TOP_RIGHT);
 
-        GridLayout proteinSequanceComparisonsContainer = new GridLayout(2, cprot.getComparison().getDatasetIndexes().length);
-        this.addComponent(proteinSequanceComparisonsContainer, 1, 1);
+        GridLayout proteinSequenceComparisonsContainer = new GridLayout(2, cprot.getComparison().getDatasetIndexes().length);
+        this.addComponent(proteinSequenceComparisonsContainer, 1, 1);
         coverageWidth = (width - 100 - 100);
         VerticalLayout bottomSpacer = new VerticalLayout();
         bottomSpacer.setWidth((width - 100) + "px");
@@ -100,10 +100,10 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
         bottomSpacer.setStyleName("dottedline");
         this.addComponent(bottomSpacer, 1, 2);
 
-        proteinSequanceComparisonsContainer.setWidthUndefined();
-        proteinSequanceComparisonsContainer.setHeightUndefined();
-        proteinSequanceComparisonsContainer.setStyleName(Reindeer.LAYOUT_WHITE);
-        proteinSequanceComparisonsContainer.setSpacing(true);
+        proteinSequenceComparisonsContainer.setWidthUndefined();
+        proteinSequenceComparisonsContainer.setHeightUndefined();
+        proteinSequenceComparisonsContainer.setStyleName(Reindeer.LAYOUT_WHITE);
+        proteinSequenceComparisonsContainer.setSpacing(true);
 
         Map<Integer, Set<QuantPeptide>> dsQuantPepMap = new HashMap<Integer, Set<QuantPeptide>>();
         for (QuantPeptide quantPep : cprot.getQuantPeptidesList()) {
@@ -163,8 +163,8 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
 
             labelContainer.addComponent(iconTitle);
 
-            proteinSequanceComparisonsContainer.addComponent(labelContainer, 0, count);
-            proteinSequanceComparisonsContainer.setComponentAlignment(labelContainer, Alignment.TOP_CENTER);
+            proteinSequenceComparisonsContainer.addComponent(labelContainer, 0, count);
+            proteinSequenceComparisonsContainer.setComponentAlignment(labelContainer, Alignment.TOP_CENTER);
 
             Map<Integer, ComparisonDetailsBean> patientGroupsNumToDsIdMap = new HashMap<Integer, ComparisonDetailsBean>();
             ComparisonDetailsBean pGr = new ComparisonDetailsBean();
@@ -197,17 +197,17 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
                 labelValueContainer.addLayoutClickListener(studyListener);
                 labelValueContainer.setData(ds.getDsKey());
 
-                proteinSequanceComparisonsContainer.addComponent(labelValueContainer, 1, count);
-                proteinSequanceComparisonsContainer.setComponentAlignment(labelValueContainer, Alignment.TOP_CENTER);
+                proteinSequenceComparisonsContainer.addComponent(labelValueContainer, 1, count);
+                proteinSequenceComparisonsContainer.setComponentAlignment(labelValueContainer, Alignment.TOP_CENTER);
                 count++;
                 continue;
             }
 
             String key = "-" + quantProtein.getDsKey() + "-" + cprot.getProteinAccssionNumber() + "-";
-            PeptidesInformationOverviewLayout peptideInfoLayout = new PeptidesInformationOverviewLayout(cprot.getSequance(), dsQuantPepMap.get(quantProtein.getDsKey()), coverageWidth, true, studyListener, ds.getDsKey());
+            PeptidesInformationOverviewLayout peptideInfoLayout = new PeptidesInformationOverviewLayout(cprot.getSequence(), dsQuantPepMap.get(quantProtein.getDsKey()), coverageWidth, true, studyListener, ds.getDsKey());
             hasPTM = peptideInfoLayout.isHasPTM();
             peptidesInfoLayoutDSIndexMap.put(key, peptideInfoLayout);
-            proteinSequanceComparisonsContainer.addComponent(peptideInfoLayout, 1, count);
+            proteinSequenceComparisonsContainer.addComponent(peptideInfoLayout, 1, count);
             count++;
 
         }

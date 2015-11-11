@@ -357,7 +357,6 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
     @Override
     public void selectionChanged(String type) {
         if (type.equalsIgnoreCase("Disease_Category_Selection")) {
-            System.out.println("at ------------------------------------------- update the entire ");
 //            pieChartFiltersBtnLayout.removeAllComponents();
 //            StudiesPieChartFiltersContainerLayout pieChartFiltersLayout = new StudiesPieChartFiltersContainerLayout(centralFiltersSelectionManager, handler);
 ////            pieChartFiltersBtnLayout.addComponent(pieChartFiltersLayout.getPieChartFiltersBtn());

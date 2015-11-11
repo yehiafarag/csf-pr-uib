@@ -58,9 +58,9 @@ public class QuantPeptideTable extends Table implements Serializable{
 ////        String numQuantProt = "# Quantified Proteins";
 ////        this.addContainerProperty(numQuantProt, Integer.class, null, numQuantProt, null, Table.Align.RIGHT);
 //////        columnController.addItem(numQuantProt);
-        String pepSequance = "Peptide Sequance";
-        this.addContainerProperty(pepSequance, String.class, null);
-        this.setColumnCollapsible(pepSequance, false);
+        String pepSequence = "Peptide Sequence";
+        this.addContainerProperty(pepSequence, String.class, null);
+        this.setColumnCollapsible(pepSequence, false);
         String PepModi = "Peptide Modification";
         this.addContainerProperty(PepModi, String.class, null);
         this.setColumnCollapsible(PepModi, false);
@@ -132,12 +132,12 @@ public class QuantPeptideTable extends Table implements Serializable{
             }
 
             this.addItem(new Object[]{index,/* uniprotAccessionlink, pb.getUniprotProteinName(), pb.getPublicationAccNumber(), pb.getPublicationProteinName(), rawDatalink,
-                 pb.getQuantifiedProteinsNumber(),*/ pb.getPeptideSequance(), pb.getPeptideModification(), pb.getModificationComment(),/* pumedID,*/ pb.getTypeOfStudy(), pb.getSampleType(), pb.getPatientGroupI(), grn, pb.getPatientSubGroupI(), pb.getPatientGrIComment(), pb.getPatientGroupII(), grni, pb.getPatientSubGroupII(), pb.getPatientGrIIComment(), pb.getSampleMatching(), pb.getNormalizationStrategy(), fc, pvalue, roc, pb.getTechnology(), pb.getAnalyticalApproach(), pb.getEnzyme(), pb.getShotgunOrTargetedQquant(), pb.getAnalyticalApproach(), pb.getQuantBasisComment(), pb.getAdditionalComments(), pb.getqPeptideKey()}, index);
+                 pb.getQuantifiedProteinsNumber(),*/pb.getPeptideSequence(), pb.getPeptideModification(), pb.getModificationComment(),/* pumedID,*/ pb.getTypeOfStudy(), pb.getSampleType(), pb.getPatientGroupI(), grn, pb.getPatientSubGroupI(), pb.getPatientGrIComment(), pb.getPatientGroupII(), grni, pb.getPatientSubGroupII(), pb.getPatientGrIIComment(), pb.getSampleMatching(), pb.getNormalizationStrategy(), fc, pvalue, roc, pb.getTechnology(), pb.getAnalyticalApproach(), pb.getEnzyme(), pb.getShotgunOrTargetedQquant(), pb.getAnalyticalApproach(), pb.getQuantBasisComment(), pb.getAdditionalComments(), pb.getqPeptideKey()}, index);
             index++;
         }
         initColumnControllerLayout();
         for (Object o : this.getColumnHeaders()) {
-            if (o.toString().equalsIgnoreCase("Peptide Sequance")|| o.toString().equalsIgnoreCase("modification Comment") ||o.toString().equalsIgnoreCase("Peptide Modification") ){// || o.toString().equalsIgnoreCase("Analytical Approach") ||o.toString().equalsIgnoreCase("Analytical Approach")) {
+            if (o.toString().equalsIgnoreCase("Peptide Sequence")|| o.toString().equalsIgnoreCase("modification Comment") ||o.toString().equalsIgnoreCase("Peptide Modification") ){// || o.toString().equalsIgnoreCase("Analytical Approach") ||o.toString().equalsIgnoreCase("Analytical Approach")) {
                 this.setColumnCollapsed(o, false);
 //                columnController.select(o);
                 continue;
@@ -147,7 +147,7 @@ public class QuantPeptideTable extends Table implements Serializable{
         }
         if (filtersList != null && !filtersList.isEmpty()) {
             for (String header : filtersList) {
-                if (header.equalsIgnoreCase("Peptide Sequance") || header.equalsIgnoreCase("modification Comment") || header.equalsIgnoreCase("Peptide Modification") ){//|| header.equalsIgnoreCase("Analytical Approach")) {
+                if (header.equalsIgnoreCase("Peptide Sequence") || header.equalsIgnoreCase("modification Comment") || header.equalsIgnoreCase("Peptide Modification") ){//|| header.equalsIgnoreCase("Analytical Approach")) {
                     this.setColumnCollapsed(header, false);
                 } else {
                     this.setColumnCollapsed(header, true);
@@ -270,7 +270,7 @@ public class QuantPeptideTable extends Table implements Serializable{
          control6 = new OptionGroup();
         control6.setMultiSelect(true);
         for (Object o : this.getColumnHeaders()) {
-            if (o.toString().equalsIgnoreCase("")|| o.toString().equalsIgnoreCase("Peptide Sequance")|| o.toString().equalsIgnoreCase("modification Comment") ||o.toString().equalsIgnoreCase("Peptide Modification")) {
+            if (o.toString().equalsIgnoreCase("")|| o.toString().equalsIgnoreCase("Peptide Sequence")|| o.toString().equalsIgnoreCase("modification Comment") ||o.toString().equalsIgnoreCase("Peptide Modification")) {
                 continue;
             }
             if (control1.getItemIds().size() < 5) {

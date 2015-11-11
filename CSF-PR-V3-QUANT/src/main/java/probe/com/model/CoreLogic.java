@@ -895,22 +895,7 @@ public class CoreLogic implements Serializable {
                         comProt.addNotProvided((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
 //                        comProt.addNotReg((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
                     }
-////                    comProt.setUniProtAccess(quant.getUniprotAccession());
-//                    String protName = quant.getUniprotProteinName();
-//                    if (protName == null || protName.equalsIgnoreCase("Not Available")) {
-//                        protName = quant.getPublicationProteinName();
-//                    }
-//                    comProt.setProtName(protName);
-//                    comProt.setSequance(quant.getSequance());
-//                    comparProtList.put(quant.getUniprotAccession(), comProt);
-//
-//                    Set<QuantPeptide> quantPeptidesList = new HashSet<QuantPeptide>();
-//                    for (String key : comparisonPeptideMap.keySet()) {
-//                        if (key.contains("_" + comProt.getUniProtAccess() + "_")) {
-//                            quantPeptidesList.addAll(comparisonPeptideMap.get(key));
-//                        }
-//                    }
-//                    comProt.setQuantPeptidesList(quantPeptidesList);
+
                 } else {
                     inverted = true;
 
@@ -951,7 +936,7 @@ public class CoreLogic implements Serializable {
                 comProt.setProteinAccssionNumber(accession);
                 comProt.setUrl(url);
              
-                comProt.setSequance(quant.getSequance());
+                comProt.setSequence(quant.getSequence());
 
                 Set<QuantPeptide> quantPeptidesList = comProt.getQuantPeptidesList();
                 for (String key : comparisonPeptideMap.keySet()) {
@@ -1162,7 +1147,7 @@ public class CoreLogic implements Serializable {
             comProt.setProteinAccssionNumber(accession);
             comProt.setUrl(url);
 
-            comProt.setSequance(quantProtein.getSequance());
+            comProt.setSequence(quantProtein.getSequence());
 
             Map<String, QuantProtein> dsQuantProteinsMap = comProt.getDsQuantProteinsMap();
             if (!dsQuantProteinsMap.containsKey("-" + quantProtein.getDsKey() + "-" + comProt.getProteinAccssionNumber() + "-")) {
@@ -1360,22 +1345,7 @@ public class CoreLogic implements Serializable {
                         comProt.addNotProvided((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
 //                        comProt.addNotReg((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
                     }
-////                    comProt.setUniProtAccess(quant.getUniprotAccession());
-//                    String protName = quant.getUniprotProteinName();
-//                    if (protName == null || protName.equalsIgnoreCase("Not Available")) {
-//                        protName = quant.getPublicationProteinName();
-//                    }
-//                    comProt.setProtName(protName);
-//                    comProt.setSequance(quant.getSequance());
-//                    comparProtList.put(quant.getUniprotAccession(), comProt);
-//
-//                    Set<QuantPeptide> quantPeptidesList = new HashSet<QuantPeptide>();
-//                    for (String key : comparisonPeptideMap.keySet()) {
-//                        if (key.contains("_" + comProt.getUniProtAccess() + "_")) {
-//                            quantPeptidesList.addAll(comparisonPeptideMap.get(key));
-//                        }
-//                    }
-//                    comProt.setQuantPeptidesList(quantPeptidesList);
+
                 } else {
                     inverted = true;
 
@@ -1414,7 +1384,7 @@ public class CoreLogic implements Serializable {
                 comProt.setUrl(url);
                    
                
-                comProt.setSequance(quant.getSequance());
+                comProt.setSequence(quant.getSequence());
 
                 Set<QuantPeptide> quantPeptidesList = comProt.getQuantPeptidesList();
                 for (String key : fullComparisonPeptideMap.keySet()) {

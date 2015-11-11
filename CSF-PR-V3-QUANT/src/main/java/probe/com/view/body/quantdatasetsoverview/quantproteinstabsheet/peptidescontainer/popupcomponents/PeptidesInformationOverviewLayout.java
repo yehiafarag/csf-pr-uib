@@ -44,14 +44,14 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
 
     /**
      *
-     * @param sequance
+     * @param sequence
      * @param quantPepSet
      * @param width
      * @param minMode
      * @param listener
      * @param dsID
      */
-    public PeptidesInformationOverviewLayout(String sequance, Set<QuantPeptide> quantPepSet, int width, final boolean minMode, LayoutEvents.LayoutClickListener listener, final int dsID) {
+    public PeptidesInformationOverviewLayout(String sequence, Set<QuantPeptide> quantPepSet, int width, final boolean minMode, LayoutEvents.LayoutClickListener listener, final int dsID) {
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
         otherSymbols.setGroupingSeparator('.');
         df = new DecimalFormat("#.###", otherSymbols);
@@ -69,7 +69,7 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
             studyListener = listener;
         }
 
-        if (!sequance.equalsIgnoreCase("Not Available") && !sequance.equalsIgnoreCase("")) {
+        if (!sequence.equalsIgnoreCase("Not Available") && !sequence.equalsIgnoreCase("")) {
             //init containers
             allPeptidesContainer = new AbsoluteLayout();
             allPeptidesContainer.setVisible(true);
@@ -148,13 +148,13 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
                 sigProtSeqBar.setStyleName("selectablelightgraylayout");
             }
             //init barchart components
-            LinkedHashSet<StackedBarPeptideComponent> allPeptidesStackedBarComponentsMap = this.initAllBarChartComponents(false, width, sequance, quantPepSet, true, minMode);
-            LinkedHashSet<StackedBarPeptideComponent> significantPeptidesStackedBarComponentsMap = this.initAllBarChartComponents(true, width, sequance, quantPepSet, false, minMode);
+            LinkedHashSet<StackedBarPeptideComponent> allPeptidesStackedBarComponentsMap = this.initAllBarChartComponents(false, width, sequence, quantPepSet, true, minMode);
+            LinkedHashSet<StackedBarPeptideComponent> significantPeptidesStackedBarComponentsMap = this.initAllBarChartComponents(true, width, sequence, quantPepSet, false, minMode);
 
 //             ptmAllPeptidesOptions = new Options();
 //            ptmAllPeptidesDiagram = new NetworkDiagram(ptmAllPeptidesOptions);
             ptmsLayoutMap.clear();
-            //sort peptides based on sequance length
+            //sort peptides based on sequence length
             this.initPeptidesStackedBarComponentsLayout(allPeptidesStackedBarComponentsMap, allPeptidesContainer, allPeptidesContainer);
             this.initPeptidesStackedBarComponentsLayout(significantPeptidesStackedBarComponentsMap, significantPeptidesContainer, significantPeptidesContainer);
 
@@ -223,14 +223,14 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
     }
     private GridLayout peptideForm;
     private StackedBarPeptideComponent lastselectedPeptideComp;
-    private InformationField pepSequance, peptideModification, modificationComment, pValue, pValueComm, foldChange, roc, additionalComments, pvalueSignificanceThreshold, sequenceAnnotated, peptideCharge;
+    private InformationField pepSequence, peptideModification, modificationComment, pValue, pValueComm, foldChange, roc, additionalComments, pvalueSignificanceThreshold, sequenceAnnotated, peptideCharge;
 
     private GridLayout initPeptidesForm(int width) {
         GridLayout peptideFormLayout = new GridLayout(4, 5);
         peptideFormLayout.setWidth(width + "px");
         peptideFormLayout.setHeightUndefined();
-        pepSequance = new InformationField("Peptide Sequence");
-        peptideFormLayout.addComponent(pepSequance, 0, 0);
+        pepSequence = new InformationField("Peptide Sequence");
+        peptideFormLayout.addComponent(pepSequence, 0, 0);
 
         sequenceAnnotated = new InformationField("Sequence Annotated");
         peptideFormLayout.addComponent(sequenceAnnotated, 1, 0);
@@ -267,7 +267,7 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
 
     private void updatePeptidesForm(QuantPeptide peptide) {
 
-        pepSequance.setValue(peptide.getPeptideSequance(), null);
+        pepSequence.setValue(peptide.getPeptideSequence(), null);
         sequenceAnnotated.setValue(peptide.getSequenceAnnotated(), null);
         peptideModification.setValue(peptide.getPeptideModification(), null);
         modificationComment.setValue(peptide.getModification_comment(), null);
@@ -323,29 +323,29 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
 
     }
 
-    private LinkedHashSet<StackedBarPeptideComponent> initAllBarChartComponents(boolean significatOnly, int width, String sequance, Set<QuantPeptide> quantPepSet, boolean count, boolean minMode) {
+    private LinkedHashSet<StackedBarPeptideComponent> initAllBarChartComponents(boolean significatOnly, int width, String sequence, Set<QuantPeptide> quantPepSet, boolean count, boolean minMode) {
 
         final LinkedHashSet<StackedBarPeptideComponent> barComponentMap = new LinkedHashSet<StackedBarPeptideComponent>();
 
-        double charW = (double) width / (double) sequance.length();
+        double charW = (double) width / (double) sequence.length();
         for (QuantPeptide quantPeptide : quantPepSet) {
-            if (quantPeptide.getPeptideSequance().equalsIgnoreCase("not available")) {
+            if (quantPeptide.getPeptideSequence().equalsIgnoreCase("not available")) {
                 continue;
             }
             noPeptide = false;
 
-            String peptideSequance = quantPeptide.getPeptideSequance().trim();
-            if (peptideSequance.contains(".")) {
-                peptideSequance = quantPeptide.getPeptideSequance().replace(".", "").trim().substring(1, quantPeptide.getPeptideSequance().length() - 2);
+            String peptideSequence = quantPeptide.getPeptideSequence().trim();
+            if (peptideSequence.contains(".")) {
+                peptideSequence = quantPeptide.getPeptideSequence().replace(".", "").trim().substring(1, quantPeptide.getPeptideSequence().length() - 2);
             }
-            double peptideLayoutWidth = peptideSequance.length() * charW;
-            int x0 = (int) (sequance.split(peptideSequance)[0].length() * charW);
+            double peptideLayoutWidth = peptideSequence.length() * charW;
+            int x0 = (int) (sequence.split(peptideSequence)[0].length() * charW);
             if (!significatOnly) {
                 StackedBarPeptideComponent peptideStackedBarComponent = new StackedBarPeptideComponent(x0, (int) (peptideLayoutWidth - 2), quantPeptide.getUniqueId() + "", quantPeptide.getPeptideModification());
                 peptideStackedBarComponent.setWidth(peptideLayoutWidth - 2 + "px");
-                peptideStackedBarComponent.setDescription("Sequance: " + quantPeptide.getPeptideSequance());
+                peptideStackedBarComponent.setDescription("Sequence: " + quantPeptide.getPeptideSequence());
                 peptideStackedBarComponent.setParam("peptide", quantPeptide);
-                peptideStackedBarComponent.setParam("sequance", quantPeptide.getPeptideSequance());
+                peptideStackedBarComponent.setParam("sequence", quantPeptide.getPeptideSequence());
                 if (count) {
                     this.totalPeptidesNumber++;
                 }
@@ -428,9 +428,9 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
                     StackedBarPeptideComponent peptideStackedBarComponent = new StackedBarPeptideComponent(x0, (int) (peptideLayoutWidth - 2), quantPeptide.getUniqueId() + "", quantPeptide.getPeptideModification());
                     peptideStackedBarComponent.setSignificant(true);
                     peptideStackedBarComponent.setWidth(peptideLayoutWidth - 2 + "px");
-                    peptideStackedBarComponent.setDescription("Sequance: " + quantPeptide.getPeptideSequance());//                
+                    peptideStackedBarComponent.setDescription("Sequence: " + quantPeptide.getPeptideSequence());//                
                     peptideStackedBarComponent.setParam("peptide", quantPeptide);
-                    peptideStackedBarComponent.setParam("sequance", quantPeptide.getPeptideSequance());
+                    peptideStackedBarComponent.setParam("sequence", quantPeptide.getPeptideSequence());
 
                     if (quantPeptide.getString_fc_value().equalsIgnoreCase("Increased") || quantPeptide.getString_fc_value().equalsIgnoreCase("Up")) {
                         peptideStackedBarComponent.setDefaultStyleShowAllMode("redstackedlayout");

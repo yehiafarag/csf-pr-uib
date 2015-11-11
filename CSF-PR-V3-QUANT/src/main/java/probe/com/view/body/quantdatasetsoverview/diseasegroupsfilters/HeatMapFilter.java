@@ -82,7 +82,7 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
         heatMap = new HeatMapComponent(heatmapCellWidth) {
             @Override
             public void updateSelectionManager(Set<QuantDiseaseGroupsComparison> selectedDsList) {
-                
+              
                 centralFiltersSelectionManager.setDiseaseGroupsComparisonSelection(selectedDsList);
             }
         };

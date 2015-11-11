@@ -3444,7 +3444,7 @@ public class DataBase implements Serializable {
                 insertQProtStat.setString(23, qprot.getAdditionalComments());
 
                 insertQProtStat.setString(24, qprot.getqPeptideKey());
-                insertQProtStat.setString(25, qprot.getPeptideSequance());
+                insertQProtStat.setString(25, qprot.getPeptideSequence());
                 insertQProtStat.setString(26, qprot.getPeptideModification());
                 insertQProtStat.setString(27, qprot.getModificationComment());
                 insertQProtStat.setString(28, qprot.getStringFCValue());
@@ -3537,7 +3537,7 @@ public class DataBase implements Serializable {
                 quantProt.setPatientsGroupINumber(groupINum);
                 quantProt.setProtKey(rs1.getInt("index"));
                 quantProt.setDsKey(quantDatasetId);
-                quantProt.setSequance(rs1.getString("sequance"));
+                quantProt.setSequence(rs1.getString("sequance"));
                 if (rs1.getString("uniprot_accession").equalsIgnoreCase("Not Available")) {
                     quantProt.setUniprotAccession(rs1.getString("publication_acc_number"));
                 } else {
@@ -3620,7 +3620,7 @@ public class DataBase implements Serializable {
                 quantProt.setDsKey(rs1.getInt("ds_ID"));
 //                dsIdsList.add("" + quantProt.getDsKey());
 
-                quantProt.setSequance(rs1.getString("sequance"));
+                quantProt.setSequence(rs1.getString("sequance"));
 
                 quantProt.setUniprotAccession(rs1.getString("uniprot_accession"));
 
@@ -3695,7 +3695,7 @@ public class DataBase implements Serializable {
                 quantPeptide.setProtIndex(rs1.getInt("prot_index"));
                 quantPeptide.setUniqueId(rs1.getInt("index"));
                 quantPeptide.setPeptideModification(rs1.getString("peptide_modification"));
-                quantPeptide.setPeptideSequance(rs1.getString("peptide_sequance"));
+                quantPeptide.setPeptideSequence(rs1.getString("peptide_sequance"));
                 quantPeptide.setModification_comment(rs1.getString("modification_comment"));
                 quantPeptide.setString_fc_value(rs1.getString("string_fc_value"));
                 quantPeptide.setString_p_value(rs1.getString("string_p_value"));
@@ -3772,7 +3772,7 @@ public class DataBase implements Serializable {
                 quantPeptide.setProtIndex(rs1.getInt("prot_index"));
                 quantPeptide.setUniqueId(rs1.getInt("index"));
                 quantPeptide.setPeptideModification(rs1.getString("peptide_modification"));
-                quantPeptide.setPeptideSequance(rs1.getString("peptide_sequance"));
+                quantPeptide.setPeptideSequence(rs1.getString("peptide_sequance"));
                 quantPeptide.setModification_comment(rs1.getString("modification_comment"));
                 quantPeptide.setString_fc_value(rs1.getString("string_fc_value"));
                 quantPeptide.setString_p_value(rs1.getString("string_p_value"));
@@ -3836,7 +3836,7 @@ public class DataBase implements Serializable {
                 QuantProtein quantProt = new QuantProtein();
                 quantProt.setProtKey(resultSet.getInt("index"));
                 quantProt.setDsKey(resultSet.getInt("ds_ID"));
-                quantProt.setSequance(resultSet.getString("sequance"));
+                quantProt.setSequence(resultSet.getString("sequance"));
                 quantProt.setUniprotAccession(resultSet.getString("uniprot_accession"));
 
                 quantProt.setUniprotProteinName(resultSet.getString("uniprot_protein_name"));
@@ -4008,33 +4008,33 @@ public class DataBase implements Serializable {
             infoBean.setNumberOfIdStudies(numStudies);
 
             rs.close();
-
-            String selectIdProteinsNumber = "SELECT COUNT( DISTINCT  `prot_accession` ) AS `Rows` FROM  `experiment_protein_table` ;";
-            PreparedStatement selectIdProteinsNumberStat = conn.prepareStatement(selectIdProteinsNumber);
-
-             rs = selectIdProteinsNumberStat.executeQuery();
+//
+//            String selectIdProteinsNumber = "SELECT COUNT( DISTINCT  `prot_accession` ) AS `Rows` FROM  `experiment_protein_table` where `valid`='TRUE'  ;";
+//            PreparedStatement selectIdProteinsNumberStat = conn.prepareStatement(selectIdProteinsNumber);
+//
+//             rs = selectIdProteinsNumberStat.executeQuery();
             int numProteins = 0;
-
-            while (rs.next()) {
-                numProteins += rs.getInt("Rows");
-            }
-            infoBean.setNumberOfIdProteins(numProteins);
-            rs.close();
-            
-            
-            String selectIdPeptidesNumber = "SELECT COUNT( DISTINCT  `sequence` ) AS `Rows` FROM  `proteins_peptides_table` ;";
-            PreparedStatement selectIdPeptidesNumberStat = conn.prepareStatement(selectIdPeptidesNumber);
-
-             rs = selectIdPeptidesNumberStat.executeQuery();
+//
+//            while (rs.next()) {
+//                numProteins += rs.getInt("Rows");
+//            }
+//            infoBean.setNumberOfIdProteins(numProteins);
+//            rs.close();
+//            
+//            
+//            String selectIdPeptidesNumber = "SELECT COUNT( DISTINCT  `sequence` ) AS `Rows` FROM  `proteins_peptides_table` ;";
+//            PreparedStatement selectIdPeptidesNumberStat = conn.prepareStatement(selectIdPeptidesNumber);
+//
+//             rs = selectIdPeptidesNumberStat.executeQuery();
             int numPeptides = 0;
-
-            while (rs.next()) {
-                numPeptides += rs.getInt("Rows");
-            }
-            infoBean.setNumberOfIdPeptides(numPeptides);
-            rs.close();
-            
-            
+//
+//            while (rs.next()) {
+//                numPeptides += rs.getInt("Rows");
+//            }
+//            infoBean.setNumberOfIdPeptides(numPeptides);
+//            rs.close();
+            infoBean.setNumberOfIdProteins(3081);
+             infoBean.setNumberOfIdPeptides(28811);
             //quant data
             
             String selectQuantPublicationStudies = "SELECT COUNT( * ) AS  `Rows` ,  `pumed_id` FROM  `quant_dataset_table` GROUP BY  `pumed_id` ORDER BY  `pumed_id` ";

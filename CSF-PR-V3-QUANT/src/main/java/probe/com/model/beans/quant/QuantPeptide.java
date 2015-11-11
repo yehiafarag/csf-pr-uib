@@ -16,7 +16,7 @@ public class QuantPeptide implements Serializable {
     private int uniqueId;
     private int protIndex;
     private int DsKey;
-    private String peptideSequance;
+    private String peptideSequence;
     private String sequenceAnnotated;
     private String additionalComments,pvalueSignificanceThreshold;
     private int peptideCharge;
@@ -128,16 +128,16 @@ public class QuantPeptide implements Serializable {
      *
      * @return
      */
-    public String getPeptideSequance() {
-        return peptideSequance;
+    public String getPeptideSequence() {
+        return peptideSequence;
     }
 
     /**
      *
-     * @param peptideSequance
+     * @param peptideSequence
      */
-    public void setPeptideSequance(String peptideSequance) {
-        this.peptideSequance = peptideSequance;
+    public void setPeptideSequence(String peptideSequence) {
+        this.peptideSequence = peptideSequence;
     }
 
     /**
@@ -271,7 +271,7 @@ public class QuantPeptide implements Serializable {
     
     @Override
     public String toString() {
-        return "prot index "+protIndex+" ----- ds "+DsKey+" ----- pepSequance  " + peptideSequance;
+        return "prot index "+protIndex+" ----- ds "+DsKey+" ----- pepsequence  " + peptideSequence;
     }
     
     

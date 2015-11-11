@@ -58,18 +58,18 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
      *
      * @return
      */
-    public String getSequance() {
-        return sequance;
+    public String getSequence() {
+        return sequence;
     }
 
     /**
      *
-     * @param sequance
+     * @param sequence
      */
-    public void setSequance(String sequance) {
-        this.sequance = sequance;
+    public void setSequence(String sequence) {
+        this.sequence = sequence;
     }
-    private String sequance;
+    private String sequence;
     private Set<QuantPeptide> quantPeptidesList;
     private final Map<String, List<Integer>> patientsNumToTrindMap = new HashMap<String, List<Integer>>();
     private final Map<String, List<Integer>> patientsNumToDSIDMap = new HashMap<String, List<Integer>>();
@@ -156,6 +156,10 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
          
 
         initLabelLayout();
+    }
+
+    public void setSignificantTrindCategory(int significantTrindCategory) {
+        this.significantTrindCategory = significantTrindCategory;
     }
 
     final VerticalLayout upLayout, downLayout, notRegLayout, notProvidedLayout;

@@ -547,19 +547,17 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                     } else {
                         finalHeight = sqheight;
                     }
-                    finalHeight=finalHeight;
                     square.setWidth(finalWidth + "px");
                     square.setHeight(finalHeight + "px");
 
                     String header = ((QuantDiseaseGroupsComparison) selectedComparisonList.toArray()[catEnt.getSeriesIndex()]).getComparisonHeader();
-                    int itemNumber =(int)((XYItemEntity) entity).getDataset().getYValue(((XYItemEntity) entity).getSeriesIndex(), ((XYItemEntity) entity).getItem());
+                    int itemNumber = (int) ((XYItemEntity) entity).getDataset().getYValue(((XYItemEntity) entity).getSeriesIndex(), ((XYItemEntity) entity).getItem());
 
-                    square.setDescription(header + "    <br/>#Proteins " + (int)tooltipsProtNumberMap.get(header)[itemNumber]);
+                    square.setDescription(header + "    <br/>#Proteins " + (int) tooltipsProtNumberMap.get(header)[itemNumber]);
                     square.setParam("seriesIndex", ((XYItemEntity) entity).getSeriesIndex());
-                    square.setParam("categIndex", (double)itemNumber);
+                    square.setParam("categIndex", (double) itemNumber);
 //                    System.out.println("at top is "+smallY+"   ");
-                    if(smallY <0)
-                    {
+                    if (smallY < 0) {
 //                       square.setHeight((finalHeight-smallY) + "px");
 //                       smallY=0;
                     }
@@ -586,7 +584,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
      *
      */
     public final void redrawChart() {
-       
+
         styles.add("." + teststyle + " { background-image: url(" + defaultImgURL + " );background-position:0px 0px; background-repeat: no-repeat; }");
         chartLayout.setStyleName(teststyle);
     }
@@ -597,6 +595,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
     public void selectionChanged(String type) {
         if (type.equalsIgnoreCase("Comparison_Selection")) {
             selectedComparisonList = this.datasetExploringCentralSelectionManager.getSelectedDiseaseGroupsComparisonList();
+        
             Iterator<QuantDiseaseGroupsComparison> itr = selectedComparisonList.iterator();
             while (itr.hasNext()) {
                 if (itr.next().getComparProtsMap() == null) {

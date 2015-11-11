@@ -1,8 +1,6 @@
 package probe.com.model.util;
 
 import com.itextpdf.text.Document;
-import com.itextpdf.text.Header;
-import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.DefaultFontMapper;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfTemplate;
@@ -14,13 +12,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
-import javax.swing.JLabel;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -28,9 +23,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.SymbolAxis;
-import org.jfree.ui.RectangleInsets;
 import probe.com.model.beans.identification.IdentificationPeptideBean;
-import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 
 /**
  *

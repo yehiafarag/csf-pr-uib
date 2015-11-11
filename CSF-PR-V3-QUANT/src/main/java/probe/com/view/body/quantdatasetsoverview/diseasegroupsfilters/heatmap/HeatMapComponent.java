@@ -13,11 +13,13 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.beans.quant.QuantDSIndexes;
 
@@ -34,9 +36,9 @@ public class HeatMapComponent extends VerticalLayout {
 
     private HeaderCell[] columnCells;
     private HeaderCell[] rowCells;
-    private final Map<String, HeatmapCell> comparisonsCellsMap = new HashMap<String, HeatmapCell>();
-    private final Set<QuantDiseaseGroupsComparison> selectedDsList = new HashSet<QuantDiseaseGroupsComparison>();
-    private final Set<QuantDiseaseGroupsComparison> availableComparisonsList = new HashSet<QuantDiseaseGroupsComparison>();
+    private final Map<String, HeatmapCell> comparisonsCellsMap = new LinkedHashMap<String, HeatmapCell>();
+    private final Set<QuantDiseaseGroupsComparison> selectedDsList = new TreeSet<QuantDiseaseGroupsComparison>();
+    private final Set<QuantDiseaseGroupsComparison> availableComparisonsList = new TreeSet<QuantDiseaseGroupsComparison>();
 
     private boolean singleSelection = true;
     private boolean selfSelection = false;
@@ -207,7 +209,20 @@ public class HeatMapComponent extends VerticalLayout {
                     }
                     header.selectCellStyle();
                     selectedCells.addAll(header.getIncludedCells());
-                    selectedDsList.addAll(header.getIncludedComparisons());
+
+                    for (QuantDiseaseGroupsComparison qdComp : header.getIncludedComparisons()) {
+                        String kI = qdComp.getComparisonHeader();
+                        if (!kI.startsWith(selectedheader.replace("<center>", "").replace("</center>","").trim()+" vs ")) {
+                            String[] k1Arr = kI.split(" vs ");
+                            String kII = k1Arr[1] + " vs " + k1Arr[0];
+                            qdComp.setComparisonHeader(kII);
+
+                        }
+                        selectedDsList.add(qdComp);
+
+                    }
+
+//                    selectedDsList.addAll(header.getIncludedComparisons());
                     continue;
                 }
                 header.unSelectCellStyle();
@@ -222,7 +237,18 @@ public class HeatMapComponent extends VerticalLayout {
                     }
                     header.selectCellStyle();
                     selectedCells.addAll(header.getIncludedCells());
-                    selectedDsList.addAll(header.getIncludedComparisons());
+                    for (QuantDiseaseGroupsComparison qdComp : header.getIncludedComparisons()) {
+                        String kI = qdComp.getComparisonHeader();
+                        if (!kI.startsWith(selectedheader.replace("<center>", "").replace("</center>","").trim()+" vs ")) {
+                            String[] k1Arr = kI.split(" vs ");
+                            String kII = k1Arr[1] + " vs " + k1Arr[0];
+                            qdComp.setComparisonHeader(kII);
+
+                        }
+                        selectedDsList.add(qdComp);
+
+                    }
+//                    selectedDsList.addAll(header.getIncludedComparisons());
                     break;
                 }
             }
@@ -390,7 +416,7 @@ public class HeatMapComponent extends VerticalLayout {
 
     private void updateSelectionManagerIndexes() {
         selfSelection = true;
-        Map<String, QuantDiseaseGroupsComparison> filteredComp = new HashMap<String, QuantDiseaseGroupsComparison>();
+        Map<String, QuantDiseaseGroupsComparison> filteredComp = new LinkedHashMap<String, QuantDiseaseGroupsComparison>();
         for (QuantDiseaseGroupsComparison comp : selectedDsList) {
             String kI = comp.getComparisonHeader();
             String[] k1Arr = kI.split(" vs ");
@@ -400,8 +426,8 @@ public class HeatMapComponent extends VerticalLayout {
             }
             filteredComp.put(kI, comp);
         }
-        Set<QuantDiseaseGroupsComparison> filteredSelectedDsList = new HashSet<QuantDiseaseGroupsComparison>();
-        filteredSelectedDsList.addAll(filteredComp.values());
+        Set<QuantDiseaseGroupsComparison> filteredSelectedDsList = new LinkedHashSet<QuantDiseaseGroupsComparison>();
+        filteredSelectedDsList.addAll(filteredComp.values());        
         updateSelectionManager(filteredSelectedDsList);
     }
 

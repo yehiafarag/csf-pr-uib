@@ -155,7 +155,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
         mainPeptidesLayout.removeAllComponents();
         int rowIndex = 0;
         for (final DiseaseGroupsComparisonsProteinLayout cp : ordComparisonProteins) {
-            if (cp == null) {
+            if (cp == null || cp.getSignificantTrindCategory() == -1) {
                 continue;
             }
             ProteinStudyComparisonScatterPlotLayout studyCompLayout = studyCompLayoutMap.get(cp.getComparison());
@@ -203,9 +203,9 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
         if (studyCompLayoutMap.isEmpty()) {
             int rowIndex = 0;
             for (DiseaseGroupsComparisonsProteinLayout cprot : diiseaseGroupsComparisonsProteinArr) {
-                if (cprot == null) {
-                    QuantDiseaseGroupsComparison gc = (QuantDiseaseGroupsComparison) selectedComparisonList.toArray()[rowIndex];
-                    cprot = new DiseaseGroupsComparisonsProteinLayout(width, gc, -1);
+                if (cprot == null || cprot.getSignificantTrindCategory()==-1) {
+//                    QuantDiseaseGroupsComparison gc = (QuantDiseaseGroupsComparison) selectedComparisonList.toArray()[rowIndex];
+//                    cprot = new DiseaseGroupsComparisonsProteinLayout(width, gc, -1);
                     continue;
                 }
                 ProteinStudyComparisonScatterPlotLayout protCompLayout = new ProteinStudyComparisonScatterPlotLayout(cprot, width, datasetExploringCentralSelectionManager);
@@ -238,7 +238,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
 
             int rowIndex = 0;
             for (DiseaseGroupsComparisonsProteinLayout cprot : diiseaseGroupsComparisonsProteinArr) {
-                if (cprot == null) {
+                if (cprot == null || cprot.getSignificantTrindCategory() == -1) {
 //                    QuantDiseaseGroupsComparison gc = (QuantDiseaseGroupsComparison) selectedComparisonList.toArray()[rowIndex];
 //                    cprot = new DiseaseGroupsComparisonsProteinLayout(width, gc, -1);
                     continue;

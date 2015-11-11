@@ -468,12 +468,12 @@ public class FilesReader implements Serializable {
                     index++;
                 }
                 //fill peptides 
-                if (!updatedRowArr[index].equalsIgnoreCase("")) { //peptide sequance 
+                if (!updatedRowArr[index].equalsIgnoreCase("")) { //peptide sequence 
                     qProt.setPeptideProt(true);
                 } else {
                     qProt.setPeptideProt(false);
                 }
-                qProt.setPeptideSequance(updatedRowArr[index++]);
+                qProt.setPeptideSequence(updatedRowArr[index++]);
                 qProt.setPeptideModification(updatedRowArr[index++]);
                 qProt.setModificationComment(updatedRowArr[index++]);
                 qProt.setTypeOfStudy(updatedRowArr[index++]);

@@ -99,6 +99,7 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
                 HorizontalLayout vlo = generateProtTab(key, protName, protAcc, protSelectionMap.get(key), selectedComparisonList);
                 final Tab t1;
                 t1 = proteinsTabsheet.addTab(vlo);
+                
                 t1.setCaption(protName);
                 t1.setClosable(true);
                 t1.setStyleName("tabwithcharticon");

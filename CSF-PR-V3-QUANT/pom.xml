@@ -76,6 +76,11 @@
                 <version>1.7</version>
             </dependency>
 
+<dependency>
+   <groupId>org.vaadin.addons</groupId>
+   <artifactId>sizereporter</artifactId>
+   <version>0.1.4</version>
+</dependency>
 
 		<!--
 		  Needed when using the widgetset optimizer (custom ConnectorBundleLoaderFactory).

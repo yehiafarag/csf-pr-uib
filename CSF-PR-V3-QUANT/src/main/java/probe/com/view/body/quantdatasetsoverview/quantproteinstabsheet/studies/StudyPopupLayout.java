@@ -239,7 +239,7 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
         for (int dsID : dsQuantPepMap.keySet()) {
          
             String key = "-" + dsID + "-" + cp.getProteinAccssionNumber() + "-";
-            PeptidesInformationOverviewLayout peptideInfoLayout = new PeptidesInformationOverviewLayout(cp.getSequance(), dsQuantPepMap.get(dsID), subWidth,false,null,0);
+            PeptidesInformationOverviewLayout peptideInfoLayout = new PeptidesInformationOverviewLayout(cp.getSequence(), dsQuantPepMap.get(dsID), subWidth,false,null,0);
             peptidesInfoLayoutDSIndexMap.put(key, peptideInfoLayout);
         }
         for (String key : cp.getDsQuantProteinsMap().keySet()) { 

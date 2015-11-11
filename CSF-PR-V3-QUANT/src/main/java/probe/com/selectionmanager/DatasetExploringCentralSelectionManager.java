@@ -1,9 +1,11 @@
 package probe.com.selectionmanager;
 
+import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.ui.UI;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,7 +26,7 @@ public class DatasetExploringCentralSelectionManager implements Serializable {
 
     private Map<Integer, QuantDatasetObject> fullQuantDatasetMap;
     private Map<Integer, QuantDatasetObject> filteredQuantDatasetArr = new LinkedHashMap<Integer, QuantDatasetObject>();
-    private final Set<CSFFilter> registeredFilterSet = new HashSet<CSFFilter>();
+    private final Set<CSFFilter> registeredFilterSet = new LinkedHashSet<CSFFilter>();
     private final Map<String, boolean[]> activeFilterMap;
     private boolean[] activeFilters;
 
@@ -226,7 +228,7 @@ public class DatasetExploringCentralSelectionManager implements Serializable {
     /**
      * set the selected Quant Disease Groups Comparison to the selection manager
      *
-     * @param selectedDiseaseGroupsComparisonList
+     * @param significantOnly
      */
     public void updateSignificantOnlySelection(boolean significantOnly) {
         try {
@@ -258,7 +260,8 @@ public class DatasetExploringCentralSelectionManager implements Serializable {
             this.SelectionChanged("Quant_Proten_Selection");
 
         } catch (Exception exp) {
-            System.err.println("at error " + this.getClass().getName() + "  line 207  " + exp.getLocalizedMessage());
+            exp.printStackTrace();
+            System.err.println("at error " + this.getClass().getName() + "  line 2261  " + exp.getLocalizedMessage());
 
         } finally {
             VaadinSession.getCurrent().getLockInstance().unlock();
@@ -287,7 +290,8 @@ public class DatasetExploringCentralSelectionManager implements Serializable {
             this.SelectionChanged("Protens_Selection");
 
         } catch (Exception exp) {
-            System.err.println("at error " + this.getClass().getName() + "  line 207  " + exp.getLocalizedMessage());
+            exp.printStackTrace();
+            System.err.println("at error " + this.getClass().getName() + "  line 291  " + exp.getLocalizedMessage());
 
         } finally {
             VaadinSession.getCurrent().getLockInstance().unlock();
@@ -341,6 +345,7 @@ public class DatasetExploringCentralSelectionManager implements Serializable {
         for (CSFFilter filter : registeredFilterSet) {
             filter.selectionChanged(type);
         }
+        
     }
 
     /**

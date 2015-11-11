@@ -13,11 +13,11 @@ public class QuantProtein implements Comparable<QuantProtein> {
 
     private String pumedID, uniprotAccession, uniprotProteinName, publicationAccNumber, publicationProteinName, rawDataAvailable, typeOfStudy, sampleType, patientGroupI, patientSubGroupI, patientGrIComment, patientGroupII, patientSubGroupII, patientGrIIComment, sampleMatching, normalizationStrategy, technology, analyticalApproach, enzyme, shotgunOrTargetedQquant, quantificationBasis, quantBasisComment, additionalComments;
     private int quantifiedProteinsNumber, peptideIdNumb, quantifiedPeptidesNumber, patientsGroupINumber, patientsGroupIINumber, year, filesNum, IdentifiedProteinsNum, dsKey, protKey;
-    private String qPeptideKey, peptideSequance, peptideModification, modificationComment, stringFCValue, stringPValue, author, diseaseGroups, pvalueComment, pvalueSignificanceThreshold;
+    private String qPeptideKey, peptideSequence, peptideModification, modificationComment, stringFCValue, stringPValue, author, diseaseGroups, pvalueComment, pvalueSignificanceThreshold;
     private String diseaseCategory;
 
    
-    private String sequance;
+    private String sequence;
 
     public String getDiseaseCategory() {
         return diseaseCategory;
@@ -31,16 +31,16 @@ public class QuantProtein implements Comparable<QuantProtein> {
      *
      * @return
      */
-    public String getSequance() {
-        return sequance;
+    public String getSequence() {
+        return sequence;
     }
 
     /**
      *
-     * @param sequance
+     * @param sequence
      */
-    public void setSequance(String sequance) {
-        this.sequance = sequance;
+    public void setSequence(String sequence) {
+        this.sequence = sequence;
     }
 
     /**
@@ -725,16 +725,16 @@ public class QuantProtein implements Comparable<QuantProtein> {
      *
      * @return
      */
-    public String getPeptideSequance() {
-        return peptideSequance;
+    public String getPeptideSequence() {
+        return peptideSequence;
     }
 
     /**
      *
-     * @param peptideSequance
+     * @param peptideSequence
      */
-    public void setPeptideSequance(String peptideSequance) {
-        this.peptideSequance = peptideSequance;
+    public void setPeptideSequence(String peptideSequence) {
+        this.peptideSequence = peptideSequence;
     }
 
     /**

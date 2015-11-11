@@ -67,4 +67,6 @@
     
 
     
+
+    <inherits name="com.ejt.vaadin.sizereporter.WidgetSet" />
 </module>
