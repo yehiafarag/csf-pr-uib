@@ -64,7 +64,7 @@ public class StudiesChartComponentII extends VerticalLayout implements CSFFilter
         this.setHeight("100%");
         studiesFilterLayout.setMargin(false);
         studiesFilterLayout.setWidth("100%");
-        HideOnClickLayout mainBodyLayout = new HideOnClickLayout("Studies Overview II", studiesFilterLayout, null);
+        HideOnClickLayout mainBodyLayout = null;// new HideOnClickLayout("Studies Overview II", studiesFilterLayout, null);
         this.addComponent(mainBodyLayout);
 
         this.exploringFiltersManager = exploringFiltersManager;

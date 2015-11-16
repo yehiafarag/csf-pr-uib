@@ -35,7 +35,7 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
      *
      *
      */
-    public WelcomeLayout(Button adminIcon,CSFPRHandler handler) {
+    public WelcomeLayout(Button adminIcon, CSFPRHandler handler) {
 
         int fullWidth = Page.getCurrent().getBrowserWindowWidth();
         this.setWidth(fullWidth + "px");
@@ -126,9 +126,8 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         bottomLayout.setExpandRatio(adminIcon, 0.05f);
 
         // the stat layout
-        
-        OverviewInfoBean  infoBean = handler.getResourceOverviewInformation();
-        
+        OverviewInfoBean infoBean = handler.getResourceOverviewInformation();
+
         Label statLabel = new Label("<h1>Resource  Status</h1>");
         statLabel.setContentMode(ContentMode.HTML);
         statLabel.setWidth("100%");
@@ -138,102 +137,93 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         Label idStatLabel = new Label("<h2>Identification Data</h2>");
         idStatLabel.setContentMode(ContentMode.HTML);
         leftLayout.addComponent(idStatLabel);
-        
-        
-        GridLayout subIdStatLayout = new GridLayout(2,4);
+
+        GridLayout subIdStatLayout = new GridLayout(2, 4);
         subIdStatLayout.setWidth("100%");
         leftLayout.addComponent(subIdStatLayout);
 
-        Label sub1IdStatLabel = new Label("<h3>#Publications:</h3>");
-        sub1IdStatLabel.setContentMode(ContentMode.HTML);
-        subIdStatLayout.addComponent(sub1IdStatLabel,0,0);
-        
-        Label sub1IdStatValue = new Label("<h3>"+infoBean.getNumberOfIdPublication()+"</h3>");
-        sub1IdStatValue.setContentMode(ContentMode.HTML);
-        subIdStatLayout.addComponent(sub1IdStatValue,1,0);
-        subIdStatLayout.setComponentAlignment(sub1IdStatValue, Alignment.MIDDLE_RIGHT);
-        
-        
-
-        Label sub2IdStatLabel = new Label("<h3>#Studies:</h3>");
+//        Label sub1IdStatLabel = new Label("<h3>#Publications:</h3>");
+//        sub1IdStatLabel.setContentMode(ContentMode.HTML);
+//        subIdStatLayout.addComponent(sub1IdStatLabel,0,0);
+//        Label sub1IdStatValue = new Label("<h3>"+infoBean.getNumberOfIdPublication()+"</h3>");
+//        sub1IdStatValue.setContentMode(ContentMode.HTML);
+//        subIdStatLayout.addComponent(sub1IdStatValue,1,0);
+//        subIdStatLayout.setComponentAlignment(sub1IdStatValue, Alignment.MIDDLE_RIGHT);
+        Label sub2IdStatLabel = new Label("<h3>Datasets Number</h3>");
         sub2IdStatLabel.setContentMode(ContentMode.HTML);
-        subIdStatLayout.addComponent(sub2IdStatLabel,0,1);
-        
-          Label sub2IdStatValue = new Label("<h3>"+infoBean.getNumberOfIdStudies()+"</h3>");
+        subIdStatLayout.addComponent(sub2IdStatLabel, 0, 1);
+        subIdStatLayout.setColumnExpandRatio(0, 2);
+        subIdStatLayout.setColumnExpandRatio(1,1);
+
+        Label sub2IdStatValue = new Label("<h3 style='text-align: right;'>" + infoBean.getNumberOfIdStudies() + "</h3>");
         sub2IdStatValue.setContentMode(ContentMode.HTML);
-        subIdStatLayout.addComponent(sub2IdStatValue,1,1);
+        subIdStatLayout.addComponent(sub2IdStatValue, 1, 1);
         subIdStatLayout.setComponentAlignment(sub2IdStatValue, Alignment.MIDDLE_RIGHT);
-        
 
-        Label sub3IdStatLabel = new Label("<h3>#Proteins:</h3>");
+        Label sub3IdStatLabel = new Label("<h3>Proteins Number</h3>");
         sub3IdStatLabel.setContentMode(ContentMode.HTML);
-        subIdStatLayout.addComponent(sub3IdStatLabel,0,2);
-        
-          Label sub3IdStatValue = new Label("<h3>"+infoBean.getNumberOfIdProteins()+"</h3>");
+        subIdStatLayout.addComponent(sub3IdStatLabel, 0, 2);
+
+        Label sub3IdStatValue = new Label("<h3 style='text-align: right;'>" + infoBean.getNumberOfIdProteins() + "</h3>");
         sub3IdStatValue.setContentMode(ContentMode.HTML);
-        subIdStatLayout.addComponent(sub3IdStatValue,1,2);
+        subIdStatLayout.addComponent(sub3IdStatValue, 1, 2);
         subIdStatLayout.setComponentAlignment(sub3IdStatValue, Alignment.MIDDLE_RIGHT);
-        
 
-        Label sub4IdStatLabel = new Label("<h3>#Peptides:</h3>");
+        Label sub4IdStatLabel = new Label("<h3>Peptides Number</h3>");
         sub4IdStatLabel.setContentMode(ContentMode.HTML);
-        subIdStatLayout.addComponent(sub4IdStatLabel,0,3);
+        subIdStatLayout.addComponent(sub4IdStatLabel, 0, 3);
 
-          Label sub4IdStatValue = new Label("<h3>"+infoBean.getNumberOfIdPeptides()+"</h3>");
+        Label sub4IdStatValue = new Label("<h3 style='text-align: right;'>" + infoBean.getNumberOfIdPeptides() + "</h3>");
         sub4IdStatValue.setContentMode(ContentMode.HTML);
-        subIdStatLayout.addComponent(sub4IdStatValue,1,3);
+        subIdStatLayout.addComponent(sub4IdStatValue, 1, 3);
         subIdStatLayout.setComponentAlignment(sub4IdStatValue, Alignment.MIDDLE_RIGHT);
-        
-        
+
         Label quantStatLabel = new Label("<h2>Quantitative  Data</h2>");
         quantStatLabel.setContentMode(ContentMode.HTML);
         leftLayout.addComponent(quantStatLabel);
-        
-        
-        GridLayout subQuantStatLayout = new GridLayout(2,4);
+
+        GridLayout subQuantStatLayout = new GridLayout(2, 4);
         subQuantStatLayout.setWidth("100%");
         leftLayout.addComponent(subQuantStatLayout);
-        
-          
-        
 
-        Label sub1quantStatLabel = new Label("<h3>#Publications:</h3>");
+        Label sub1quantStatLabel = new Label("<h3>Publications Number</h3>");
         sub1quantStatLabel.setContentMode(ContentMode.HTML);
-        subQuantStatLayout.addComponent(sub1quantStatLabel,0,0);
-        
-         Label sub1QuantStatValue = new Label("<h3>"+infoBean.getNumberOfQuantPublication()+"</h3>");
+        subQuantStatLayout.addComponent(sub1quantStatLabel, 0, 0);
+
+        Label sub1QuantStatValue = new Label("<h3 style='text-align: right;' >" + infoBean.getNumberOfQuantPublication() + "</h3>");
         sub1QuantStatValue.setContentMode(ContentMode.HTML);
-        subQuantStatLayout.addComponent(sub1QuantStatValue,1,0);
+        subQuantStatLayout.addComponent(sub1QuantStatValue, 1, 0);
         subQuantStatLayout.setComponentAlignment(sub1QuantStatValue, Alignment.MIDDLE_RIGHT);
 
-        Label sub2quantStatLabel = new Label("<h3>#Studies:</h3>");
+        Label sub2quantStatLabel = new Label("<h3>Studies Number</h3>");
         sub2quantStatLabel.setContentMode(ContentMode.HTML);
-        subQuantStatLayout.addComponent(sub2quantStatLabel,0,1);
-        
-         Label sub2QuantStatValue = new Label("<h3>"+infoBean.getNumberOfQuantStudies()+"</h3>");
+        subQuantStatLayout.addComponent(sub2quantStatLabel, 0, 1);
+
+        Label sub2QuantStatValue = new Label("<h3 style='text-align: right;'>" + infoBean.getNumberOfQuantStudies() + "</h3>");
         sub2QuantStatValue.setContentMode(ContentMode.HTML);
-        subQuantStatLayout.addComponent(sub2QuantStatValue,1,1);
+        subQuantStatLayout.addComponent(sub2QuantStatValue, 1, 1);
         subQuantStatLayout.setComponentAlignment(sub2QuantStatValue, Alignment.MIDDLE_RIGHT);
 
-        Label sub3quantStatLabel = new Label("<h3>#Proteins:</h3>");
+        Label sub3quantStatLabel = new Label("<h3>Proteins Number</h3>");
         sub3quantStatLabel.setContentMode(ContentMode.HTML);
-        subQuantStatLayout.addComponent(sub3quantStatLabel,0,2);
-        
-         Label sub3QuantStatValue = new Label("<h3>"+infoBean.getNumberOfQuantProteins()+"</h3>");
-        sub3QuantStatValue.setContentMode(ContentMode.HTML);
-        subQuantStatLayout.addComponent(sub3QuantStatValue,1,2);
-        subQuantStatLayout.setComponentAlignment(sub3QuantStatValue, Alignment.MIDDLE_RIGHT);
-        
-        
+        subQuantStatLayout.addComponent(sub3quantStatLabel, 0, 2);
 
-        Label sub4quantStatLabel = new Label("<h3>#Peptides:</h3>");
+        Label sub3QuantStatValue = new Label("<h3 style='text-align: right;'>" + infoBean.getNumberOfQuantProteins() + "</h3>");
+        sub3QuantStatValue.setContentMode(ContentMode.HTML);
+        subQuantStatLayout.addComponent(sub3QuantStatValue, 1, 2);
+        subQuantStatLayout.setComponentAlignment(sub3QuantStatValue, Alignment.MIDDLE_RIGHT);
+
+        Label sub4quantStatLabel = new Label("<h3>Peptides Number</h3>");
         sub4quantStatLabel.setContentMode(ContentMode.HTML);
-        subQuantStatLayout.addComponent(sub4quantStatLabel,0,3);
-        
-        Label sub4QuantStatValue = new Label("<h3>"+infoBean.getNumberOfQuantPeptides()+"</h3>");
+        subQuantStatLayout.addComponent(sub4quantStatLabel, 0, 3);
+
+        Label sub4QuantStatValue = new Label("<h3 style='text-align: right;'>" + infoBean.getNumberOfQuantPeptides() + "</h3>");
         sub4QuantStatValue.setContentMode(ContentMode.HTML);
-        subQuantStatLayout.addComponent(sub4QuantStatValue,1,3);
+        subQuantStatLayout.addComponent(sub4QuantStatValue, 1, 3);
         subQuantStatLayout.setComponentAlignment(sub4QuantStatValue, Alignment.MIDDLE_RIGHT);
+        
+         subQuantStatLayout.setColumnExpandRatio(0, 2);
+        subQuantStatLayout.setColumnExpandRatio(1,1);
 
 //        
 //        VerticalLayout idStatLayout = new VerticalLayout();

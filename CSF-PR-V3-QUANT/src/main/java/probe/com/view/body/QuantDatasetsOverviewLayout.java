@@ -68,13 +68,15 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
         DiseaseGroupsFiltersContainer heatmapFilter = new DiseaseGroupsFiltersContainer(exploringFiltersManager, handler, searchQuantificationProtList);
         heatmapFilter.setWidth("100%");
         heatmapFilter.setMargin(new MarginInfo(false, false, true, false));
+        String infoText = "Select a disease category (Multiple Sclerosis, Alzheimer, etc)<img href='img/disease_category.png' alt='disease category'> in the roll down menu on top to view all available  patients group comparisons on the interactive heat-map <img href='img/hideshow.png' alt='heat-map'> that belong to the selected disease . Select single or multiple comparisons from the heatmap to show the overall proteins information on the bubble chart and proteins information table.";
 
-        HideOnClickLayout comparisonLevelLayout = new HideOnClickLayout("Datasets", heatmapFilter, null);
+        HideOnClickLayout comparisonLevelLayout = new HideOnClickLayout("Datasets", heatmapFilter, null, infoText);
         this.addComponent(comparisonLevelLayout);
         comparisonLevelLayout.setVisability(true);
 
         QuantProteinsComparisonsContainer quantProteinsComparisonsContainer = new QuantProteinsComparisonsContainer(exploringFiltersManager, handler, null);
-        HideOnClickLayout comparisonsTableContainer = new HideOnClickLayout("Proteins", quantProteinsComparisonsContainer, null, Alignment.TOP_LEFT);
+
+        HideOnClickLayout comparisonsTableContainer = new HideOnClickLayout("Proteins", quantProteinsComparisonsContainer, null, Alignment.TOP_LEFT, infoText);
 
         int pageWidth = Page.getCurrent().getWebBrowser().getScreenWidth();
         int layoutWidth = (pageWidth - 70);
@@ -83,7 +85,7 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
         comparisonsTableContainer.setVisability(true);
 
         proteinsLayout = new QuantProteinsTabsheetContainerLayout(exploringFiltersManager, searchingMode, handler);
-        HideOnClickLayout proteinsLevelLayout = new HideOnClickLayout("Proteins Information", proteinsLayout, null) {
+        HideOnClickLayout proteinsLevelLayout = new HideOnClickLayout("Proteins Information", proteinsLayout, null, infoText) {
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
                 super.layoutClick(event);

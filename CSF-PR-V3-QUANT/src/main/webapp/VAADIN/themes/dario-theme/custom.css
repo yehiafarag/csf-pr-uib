@@ -328,13 +328,10 @@
 }
 .filterShowLabel{
     clear: both;
-    font-size: 14px;
+    font-size: 16px;
     /*height: 14px;*/
     font-family:Verdana;
-    font-weight: bold;    
-    /*    text-transform: inherit;*/
-    color:#666;    
-    /* margin: 0 0 0 0; */
+    font-weight: bold;  
     padding: 0 0 0 0;
     cursor: pointer;
 }
@@ -1570,6 +1567,7 @@ v-gridlayout-slot:focus{
 }
 
 
+
 .clearselectionbtn{
     clear: both;
     width: 50px;
@@ -1734,11 +1732,32 @@ v-gridlayout-slot:focus{
 
 .infoicon {
     /*background: url(http://www.damtp.cam.ac.uk/user/sjc1/damtp/icons/10x10/pinkball.gif) no-repeat;*/
-    background: url(img/info_icon.png) no-repeat;
+    background: url(img/info.png) no-repeat;
     background-position:center;
-    background-size:16px 16px;
     cursor: pointer;
 }
+
+.infoicon{
+    clear: both;
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    border:  1px solid lightgray;
+    background-color:  whitesmoke;
+    background-image:  url(img/info.png);
+    background-position:center;
+    background-repeat: no-repeat;
+    cursor:pointer;
+
+}
+.infoicon:hover{
+    background-color: lightgray;
+
+}
+.infoicon:focus {
+    outline: none;
+}
+
 
 .diseaseselectionlist select{
 
@@ -1783,6 +1802,22 @@ v-gridlayout-slot:focus{
        background: url(img/fulloverview.png) no-repeat;
     background-size:contain;
     
+}
+.popupmainbody{
+    
+    border:1px outset black;
+}
+
+.defaultclosebtn{
+    clear: both;
+    width: 16px;
+    height: 16px;
+    background-color:  whitesmoke;
+    background-image: url(img/close_1.png);
+    background-position:center;
+    background-repeat: no-repeat;
+    cursor:pointer;
+
 }
 
 

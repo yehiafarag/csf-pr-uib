@@ -63,6 +63,7 @@ import probe.com.model.beans.quant.QuantProtein;
 import probe.com.selectionmanager.CSFFilter;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
+import probe.com.view.core.InfoPopupBtn;
 import probe.com.view.core.jfreeutil.SquaredDot;
 
 /*
@@ -201,6 +202,12 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         fileDownloader.extend(exportPdfBtn);
 
         btnContainerLayout.addComponent(exportPdfBtn);
+
+        InfoPopupBtn info = new InfoPopupBtn("add text");
+        info.setWidth("20px");
+        info.setHeight("20px");
+        btnContainerLayout.addComponent(info);
+
 //        btnsLayout.setExpandRatio(exportPdfBtn, 50);
 //        btnsLayout.setComponentAlignment(exportPdfBtn, Alignment.MIDDLE_RIGHT);
         this.btnsLayout.setVisible(false);
@@ -230,9 +237,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
             @SuppressWarnings("CallToPrintStackTrace")
             public InputStream getStream() {
                 try {
-                    Set<JFreeChart> set = new HashSet<JFreeChart>();
-                    set.add(chart);
-                    byte[] pdfFile = handler.exportImgAsPdf(set, "bubblechart_comparisons_selection.pdf");
+                    byte[] pdfFile = handler.exportBubbleChartAsPdf(chart, "bubblechart_comparisons_selection.pdf");
                     return new ByteArrayInputStream(pdfFile);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -363,14 +368,36 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
         String[] xAxisLabels = new String[selectedComparisonList.size()];
         int x = 0;
+        int maxLength = -1;
         for (QuantDiseaseGroupsComparison comp : selectedComparisonList) {
             xAxisLabels[x] = comp.getComparisonHeader() + " (" + comp.getDatasetIndexes().length + ")";
+            if (xAxisLabels[x].length() > maxLength) {
+                maxLength = xAxisLabels[x].length();
+            }
             x++;
 
         }
-        SymbolAxis xAxis = new SymbolAxis(null, xAxisLabels) {
+        SymbolAxis xAxis;
+        final boolean finalNum;
+        if (maxLength > 30 && selectedComparisonList.size() > 4) {
+            finalNum = true;
+        } else {
+            finalNum = false;
+        }
+//        if(maxLength >30){
+//             xAxis = new SymbolAxis(null, xAxisLabels);
+//             xAxis.setVerticalTickLabels(true);
+//        }
+//        else{
+        xAxis = new SymbolAxis(null, xAxisLabels) {
+            private final boolean localfinal = finalNum;
+
             @Override
             protected List refreshTicksHorizontal(Graphics2D g2, Rectangle2D dataArea, RectangleEdge edge) {
+                if (localfinal) {
+                    setVerticalTickLabels(finalNum);
+                    return super.refreshTicksHorizontal(g2, dataArea, edge);
+                }
                 List ticks = new java.util.ArrayList();
                 Font tickLabelFont = getTickLabelFont();
                 g2.setFont(tickLabelFont);
@@ -440,6 +467,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
             }
         };
 
+//        }
         xAxis.setTickLabelFont(font);
         xAxis.setGridBandsVisible(false);
         xAxis.setAxisLinePaint(Color.LIGHT_GRAY);
@@ -480,6 +508,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
     }
     private byte imageData[];
+    private final String[] tooltipLabels = new String[]{"( Low <img src='VAADIN/themes/dario-theme/img/greendot.png' alt='Low'>" + " )", "( Low <img src='VAADIN/themes/dario-theme/img/lgreendot.png' alt='Low'>" + " )", "( Stable <img src='VAADIN/themes/dario-theme/img/bluedot.png' alt='Stable'>" + " )", " ( High <img src='VAADIN/themes/dario-theme/img/lreddot.png' alt='High'>" + " )", " ( High <img src='VAADIN/themes/dario-theme/img/reddot.png' alt='High'>" + " )"};
 
     private String saveToFile(final JFreeChart chart, final double width, final double height) {
         isNewImge = true;
@@ -553,7 +582,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                     String header = ((QuantDiseaseGroupsComparison) selectedComparisonList.toArray()[catEnt.getSeriesIndex()]).getComparisonHeader();
                     int itemNumber = (int) ((XYItemEntity) entity).getDataset().getYValue(((XYItemEntity) entity).getSeriesIndex(), ((XYItemEntity) entity).getItem());
 
-                    square.setDescription(header + "    <br/>#Proteins " + (int) tooltipsProtNumberMap.get(header)[itemNumber]);
+                    square.setDescription(header + "    <br/>#Proteins " + (int) tooltipsProtNumberMap.get(header)[itemNumber] + tooltipLabels[itemNumber]);
                     square.setParam("seriesIndex", ((XYItemEntity) entity).getSeriesIndex());
                     square.setParam("categIndex", (double) itemNumber);
 //                    System.out.println("at top is "+smallY+"   ");
@@ -595,7 +624,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
     public void selectionChanged(String type) {
         if (type.equalsIgnoreCase("Comparison_Selection")) {
             selectedComparisonList = this.datasetExploringCentralSelectionManager.getSelectedDiseaseGroupsComparisonList();
-        
+
             Iterator<QuantDiseaseGroupsComparison> itr = selectedComparisonList.iterator();
             while (itr.hasNext()) {
                 if (itr.next().getComparProtsMap() == null) {

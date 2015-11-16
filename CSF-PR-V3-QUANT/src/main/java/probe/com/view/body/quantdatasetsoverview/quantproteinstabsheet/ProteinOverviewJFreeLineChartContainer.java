@@ -57,6 +57,7 @@ import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.kmeansclustering.KMeansClusteringPopupPanel;
 import probe.com.view.core.CustomExternalLink;
+import probe.com.view.core.InfoPopupBtn;
 import probe.com.view.core.jfreeutil.SquaredDot;
 
 /**
@@ -233,6 +234,11 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         exportFullReportBtn.setPrimaryStyleName("exportzipbtn");
         exportFullReportBtn.setDescription("Export Full Report");
         exportBtnLayout.addComponent(exportFullReportBtn);
+        
+          InfoPopupBtn info = new InfoPopupBtn("add text");
+        info.setWidth("30px");
+        info.setHeight("30px");
+        exportBtnLayout.addComponent(info);
 
 //        clusterKMeanLayout.setComponentAlignment(exportChartBtn, Alignment.MIDDLE_CENTER);
 //        exportChartBtn.addClickListener(new Button.ClickListener() {

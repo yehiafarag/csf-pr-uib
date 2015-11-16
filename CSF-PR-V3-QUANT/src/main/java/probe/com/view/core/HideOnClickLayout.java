@@ -34,7 +34,7 @@ public class HideOnClickLayout extends VerticalLayout implements Serializable, L
      * @param fullBodyLayout
      * @param miniBodyLayout
      */
-    public HideOnClickLayout(String title, Layout fullBodyLayout, VerticalLayout miniBodyLayout) {
+    public HideOnClickLayout(String title, Layout fullBodyLayout, VerticalLayout miniBodyLayout,String infoText) {
         this.setMargin(new MarginInfo(false, false, false, false));
         this.setWidth("100%");
         this.fullBodyLayout = fullBodyLayout;
@@ -42,7 +42,7 @@ public class HideOnClickLayout extends VerticalLayout implements Serializable, L
         this.miniBodyLayout = miniBodyLayout;
 
         titleLayout = new HorizontalLayout();
-        titleLayout.setHeight("20px");
+        titleLayout.setHeight("30px");
         titleLayout.setWidthUndefined();
         titleLayout.setSpacing(true);
         HorizontalLayout titleHeaderLayout = new HorizontalLayout();
@@ -68,7 +68,8 @@ public class HideOnClickLayout extends VerticalLayout implements Serializable, L
         titleHeaderContainer.setWidthUndefined();
 
         titleLayout.addComponent(titleHeaderContainer);
-         info = new InfoPopupBtn(title);
+        
+         info = new InfoPopupBtn(infoText);
           titleLayout.addComponent(info);
         this.addComponent(titleLayout);
         this.addComponent(this.fullBodyLayout);
@@ -87,7 +88,7 @@ public class HideOnClickLayout extends VerticalLayout implements Serializable, L
      * @param miniBodyLayout
      * @param align
      */
-    public HideOnClickLayout(String title, Layout fullBodyLayout, VerticalLayout miniBodyLayout, Alignment align) {
+    public HideOnClickLayout(String title, Layout fullBodyLayout, VerticalLayout miniBodyLayout, Alignment align,String infoText) {
         this.setMargin(new MarginInfo(false, false, false, false));
         this.setWidth("100%");
         this.fullBodyLayout = fullBodyLayout;
@@ -95,7 +96,7 @@ public class HideOnClickLayout extends VerticalLayout implements Serializable, L
         this.miniBodyLayout = miniBodyLayout;
 
         titleLayout = new HorizontalLayout();
-        titleLayout.setHeight("20px");
+        titleLayout.setHeight("30px");
         titleLayout.setSpacing(true);
         show = new ShowLabel();
         show.setHeight("20px");
@@ -106,12 +107,11 @@ public class HideOnClickLayout extends VerticalLayout implements Serializable, L
         titleLabel.setContentMode(ContentMode.HTML);
 
         titleLabel.setStyleName("filterShowLabel");
-        titleLabel.setHeight("20px");
+        titleLabel.setHeight("22px");
         titleLayout.addComponent(titleLabel);
         titleLayout.setComponentAlignment(titleLabel, Alignment.TOP_RIGHT);
         titleLayout.addLayoutClickListener(HideOnClickLayout.this);
-        
-         info = new InfoPopupBtn(title);
+         info = new InfoPopupBtn(infoText);
           titleLayout.addComponent(info);
         titleLayout.setComponentAlignment(info, Alignment.TOP_RIGHT);
         

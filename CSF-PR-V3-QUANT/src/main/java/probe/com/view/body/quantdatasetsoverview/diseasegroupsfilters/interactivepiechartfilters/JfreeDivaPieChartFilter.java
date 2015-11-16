@@ -85,7 +85,7 @@ public class JfreeDivaPieChartFilter extends VerticalLayout implements LayoutEve
             defaultKeyColorMap.put(labels[z], defaultColors[z]);
         }
         width = filterWidth;
-        height = 250;
+        height = (Page.getCurrent().getBrowserWindowHeight()-200)/3;
         this.setWidth(width + "px");
         this.setHeight(height + "px");
         this.defaultImgURL = initPieChart(width, height);

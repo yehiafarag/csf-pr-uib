@@ -58,13 +58,13 @@ public class InformationField extends VerticalLayout {
                 valueLabel.setStyleName("valuelabel");
                 return;
             }
-            if (stringValue.contains("Increased")) {
+            if (stringValue.contains("Increase")) {
                 valueLabel.setCaption(stringValue);
                 valueLabel.setStyleName("redvaluelabel");
                 return;
 
             }
-            if (stringValue.contains("Decreased")) {
+            if (stringValue.contains("Decrease")) {
                 valueLabel.setCaption(stringValue);
                 valueLabel.setStyleName("greenvaluelabel");
                 return;

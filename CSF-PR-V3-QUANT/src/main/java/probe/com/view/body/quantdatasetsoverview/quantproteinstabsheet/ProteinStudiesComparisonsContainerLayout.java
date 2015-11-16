@@ -22,6 +22,7 @@ import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.Diseas
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.studies.PeptidesComparisonsSequenceLayout;
+import probe.com.view.core.InfoPopupBtn;
 
 /**
  *
@@ -53,7 +54,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
         this.setHeightUndefined();
         this.setSpacing(true);
         this.datasetExploringCentralSelectionManager = datasetExploringCentralSelectionManager;
-        studiesPeptidesSwich.setWidth("250px");
+        studiesPeptidesSwich.setWidth("140px");
         studiesPeptidesSwich.setNullSelectionAllowed(false); // user can not 'unselect'
         studiesPeptidesSwich.setMultiSelect(false);
         studiesPeptidesSwich.addItem("Studies");
@@ -118,12 +119,26 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
                 }
             });
 
+        
         HorizontalLayout topPanelLayout = new HorizontalLayout();
         topPanelLayout.setWidth((width - 80) + "px");
         topPanelLayout.setHeightUndefined();
         topPanelLayout.setStyleName(Reindeer.LAYOUT_WHITE);
-        topPanelLayout.addComponent(studiesPeptidesSwich);
-        topPanelLayout.setComponentAlignment(studiesPeptidesSwich, Alignment.MIDDLE_LEFT);
+        HorizontalLayout topLeftLayout = new HorizontalLayout();
+        topLeftLayout.setWidthUndefined();
+        topLeftLayout.setSpacing(true);
+        
+        topPanelLayout.addComponent(topLeftLayout);
+        
+        
+        topLeftLayout.addComponent(studiesPeptidesSwich);
+        topLeftLayout.setComponentAlignment(studiesPeptidesSwich, Alignment.MIDDLE_LEFT);
+        
+         InfoPopupBtn info = new InfoPopupBtn("add text");
+        info.setWidth("20px");
+        info.setHeight("20px");
+        topLeftLayout.addComponent(info);
+        topLeftLayout.setComponentAlignment(info, Alignment.MIDDLE_LEFT);
 
         topPanelLayout.addComponent(showSigneficantPeptidesOnly);
         topPanelLayout.setComponentAlignment(showSigneficantPeptidesOnly, Alignment.MIDDLE_RIGHT);

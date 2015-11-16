@@ -1,12 +1,19 @@
 package probe.com.model.util;
 
 import com.itextpdf.text.Document;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.DefaultFontMapper;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.vaadin.server.ClassResource;
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinService;
+import com.vaadin.server.VaadinSession;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,6 +23,7 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
+import javax.imageio.ImageIO;
 import org.apache.commons.io.IOUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -272,8 +280,6 @@ public class FileExporter implements Serializable {
 
                 template = contentByte.createTemplate(width, height);
                 g2d = template.createGraphics(width, height, new DefaultFontMapper());
-                Font font = new Font("Verdana", Font.PLAIN, 8);
-
                 Rectangle2D rect2d;
                 boolean newpage = false;
                 for (JFreeChart chart : component) {
@@ -336,6 +342,7 @@ public class FileExporter implements Serializable {
 
                 }
             } else {
+                System.out.println("the targeted chart");
                 template = contentByte.createTemplate(width, height);
                 g2d = template.createGraphics(width, height, new DefaultFontMapper());
 
@@ -365,9 +372,67 @@ public class FileExporter implements Serializable {
 
     }
 
+    public byte[] exportBubbleChartAsPdf(JFreeChart chart, String fileName, String url) {
+        int width = 842;
+        int height = 595;
+        Font font = new Font("Verdana", Font.PLAIN, 12);
+        chart.getXYPlot().getDomainAxis().setTickLabelFont(font);
+        chart.getXYPlot().getRangeAxis().setTickLabelFont(font);
+        Toolkit.getDefaultToolkit().getImage("src/main/resources/img/legend1.png");
+
+        try {
+            File csfFolder = new File(url);
+            csfFolder.mkdir();
+
+            File file = new File(url + "/" + fileName);
+            if (file.exists()) {
+                file.delete();
+                System.out.println("file deleted");
+            }
+            Document document = new Document(PageSize.A4.rotate());
+
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
+
+            document.open();
+            document.newPage();
+
+            PdfContentByte contentByte = writer.getDirectContent();
+            PdfTemplate template;
+
+            Graphics2D g2d;
+
+            template = contentByte.createTemplate(width, height);
+            g2d = template.createGraphics(width, height, new DefaultFontMapper());
+
+            Rectangle2D rect2d = new Rectangle2D.Double(10, 10, width - 20, height - 110);
+            chart.draw(g2d, rect2d);
+
+//            System.out.println(VaadinService.getCurrent().getClassLoader().getResource("legend1.png").toURI());
+            File res = new File(csfFolder.getParent(),"Resources");
+            System.out.println("file exise "+res.exists()+"   "+csfFolder.getParent());
+            g2d.drawImage(ImageIO.read(new File(res,"legend1.png")), 10, height - 90, null);
+
+            g2d.dispose();
+            contentByte.addTemplate(template, 0, 0);
+//            document.add(legend);
+            document.close();
+            byte fileData[] = IOUtils.toByteArray(new FileInputStream(file));
+//            String base64 = Base64.encodeBase64String(fileData.);
+//            base64 = "data:image/png;base64," + base64;
+
+            return fileData;
+        } catch (Exception exp) {
+            exp.printStackTrace();
+        }
+
+//          
+        return null;//url + userFolder.getName() + "/" + pdfFile.getName();
+
+    }
+
     public byte[] exportfullReportAsZip(Set<JFreeChart> component, String fileName, String url) {
-        int width = 600;
-        int height = 1000;
+        int width = 595;
+        int height = 842;
         int startx = 0;
 
         try {

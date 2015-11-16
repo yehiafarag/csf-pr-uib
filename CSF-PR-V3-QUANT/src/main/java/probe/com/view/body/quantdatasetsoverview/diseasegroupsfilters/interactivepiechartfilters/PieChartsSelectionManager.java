@@ -8,9 +8,9 @@ package probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.interacti
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.selectionmanager.CSFFilter;
 import probe.com.selectionmanager.CSFFilterSelection;
@@ -123,7 +123,7 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
 
     }
 
-    private final Set<Integer> selectedDsIds = new HashSet<Integer>();
+    private final Set<Integer> selectedDsIds = new LinkedHashSet<Integer>();
 
     /**
      *
@@ -178,7 +178,7 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
             ifilter.unselectFilter();
         }
 
-        Set<Integer> tempSelectedDsIds = new HashSet<Integer>();
+        Set<Integer> tempSelectedDsIds = new LinkedHashSet<Integer>();
         for (QuantDatasetObject qDs : centralSelectionManager.getFilteredQuantDatasetArr().values()) {
             tempSelectedDsIds.add(qDs.getDsKey());
         }
@@ -214,7 +214,7 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
     public void updateDsIndexSelection() {
         selectedDsIds.clear();
         Set<JfreeDivaPieChartFilter> activeFilterSet = new HashSet<JfreeDivaPieChartFilter>();
-        Set<Integer> activeSelectedDsIds = new HashSet<Integer>();
+        Set<Integer> activeSelectedDsIds = new LinkedHashSet<Integer>();
         for (JfreeDivaPieChartFilter ifilter : registeredFilters) {
             if (!ifilter.getSelectedDsIds().isEmpty()) {
                 activeFilterSet.add(ifilter);

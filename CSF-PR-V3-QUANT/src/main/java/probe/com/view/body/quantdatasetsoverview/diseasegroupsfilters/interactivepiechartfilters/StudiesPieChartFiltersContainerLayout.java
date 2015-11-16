@@ -51,7 +51,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
         int layoutWidth = Page.getCurrent().getBrowserWindowWidth() - 200;
         this.setWidth(layoutWidth + "px");
         this.setHeight(layoutHeight + "px");
-        int filterWidth = layoutWidth / 4;
+        int filterWidth = layoutWidth / 3;
         this.setSpacing(true);
         boolean[] activeFilters = exploringFiltersManager.getActiveFilters();
         Map<Integer, QuantDatasetObject> quantDatasetArr = exploringFiltersManager.getFilteredDatasetsList();
@@ -298,26 +298,26 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
                         break;
 
                     case 12:
-                        filterId = "quantificationBasis";
-                        for (QuantDatasetObject pb : quantDatasetArr.values()) {
-                            if (pb == null) {
-                                continue;
-                            }
-                            String value = pb.getQuantificationBasis();
-                            if (value == null || value.trim().equalsIgnoreCase("")) {
-                                value = "Not Available";
-                                pb.setQuantificationBasis(value);
-                            }
-                            if (!dsIndexesMap.containsKey(value)) {
-                                List<Integer> list = new ArrayList<Integer>();
-                                dsIndexesMap.put(value, list);
-
-                            }
-                            List<Integer> list = dsIndexesMap.get(value);
-                            list.add(pb.getDsKey());
-                            dsIndexesMap.put(value, list);
-                            valueSet.add(value);
-                        }
+//                        filterId = "quantificationBasis";
+//                        for (QuantDatasetObject pb : quantDatasetArr.values()) {
+//                            if (pb == null) {
+//                                continue;
+//                            }
+//                            String value = pb.getQuantificationBasis();
+//                            if (value == null || value.trim().equalsIgnoreCase("")) {
+//                                value = "Not Available";
+//                                pb.setQuantificationBasis(value);
+//                            }
+//                            if (!dsIndexesMap.containsKey(value)) {
+//                                List<Integer> list = new ArrayList<Integer>();
+//                                dsIndexesMap.put(value, list);
+//
+//                            }
+//                            List<Integer> list = dsIndexesMap.get(value);
+//                            list.add(pb.getDsKey());
+//                            dsIndexesMap.put(value, list);
+//                            valueSet.add(value);
+//                        }
                         break;
                     case 13:
                         filterId = "quantBasisComment";
@@ -374,7 +374,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
 //                    fullFilterList.put(filterId, valueSet);
                     this.addComponent(iFilter, colCounter++, rowCounter);
                     this.setComponentAlignment(iFilter, Alignment.MIDDLE_CENTER);
-                    if (colCounter == 4) {
+                    if (colCounter == 3) {
                         colCounter = 0;
                         rowCounter++;
                     }
@@ -388,11 +388,10 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
         btnLayout.setWidthUndefined();
         btnLayout.setSpacing(true);
         btnLayout.setStyleName(Reindeer.LAYOUT_WHITE);
-
-        if (rowCounter == 2 && colCounter < 4) {
-            this.addComponent(btnLayout, 3, 2);
+        if (colCounter == 3) {
+            this.addComponent(btnLayout, 2, ++rowCounter);
         } else {
-            this.addComponent(btnLayout, 0, 3);
+            this.addComponent(btnLayout, 2, rowCounter);
         }
 
         this.setComponentAlignment(btnLayout, Alignment.MIDDLE_CENTER);

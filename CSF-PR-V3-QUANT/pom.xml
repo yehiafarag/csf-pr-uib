@@ -307,5 +307,12 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        
+         <resources>
+        <resource>
+            <directory>src/main/resources/img</directory>
+        </resource>
+    </resources>
+        
     </build>
 </project>

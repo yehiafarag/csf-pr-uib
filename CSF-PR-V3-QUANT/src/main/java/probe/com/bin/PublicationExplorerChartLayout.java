@@ -74,7 +74,7 @@ public class PublicationExplorerChartLayout extends VerticalLayout implements CS
         headers[17] = "#PGr2:";
         
         
-        layout = new HideOnClickLayout("Publications Overview", mainbodyLayout, null);
+        layout =null;// new HideOnClickLayout("Publications Overview", mainbodyLayout, null);
         
         this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.exploringFiltersManager = exploringFiltersManager;

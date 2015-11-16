@@ -52,7 +52,7 @@ public class PublicationExplorerTreeLayout extends VerticalLayout implements CSF
         headers[19] = "#PGr1:";
         headers[23] = "#PGr2:";
 
-        layout = new HideOnClickLayout("Publications Overview", mainbodyLayout, null);
+        layout = null;// new HideOnClickLayout("Publications Overview", mainbodyLayout, null);
         this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.exploringFiltersManager = exploringFiltersManager;
         this.addComponent(layout);

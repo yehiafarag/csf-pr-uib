@@ -664,6 +664,10 @@ public class CoreLogic implements Serializable {
 //         "";//url + userFolder.getName() + "/" + pdfFile.getName();
 
     }
+     public byte[] exportBubbleChartAsPdf(JFreeChart chart, String fileName) {
+        return exporter.exportBubbleChartAsPdf(chart, fileName, userFolderUrl);
+    }
+
 
     public byte[] exportfullReportAsZip(Set<JFreeChart> component, String fileName) {
         return exporter.exportfullReportAsZip(component, fileName, userFolderUrl);
@@ -883,6 +887,12 @@ public class CoreLogic implements Serializable {
                     significantPValue = false;
 
                 }
+                
+                
+                
+                
+                
+                 System.out.println(" "+pGrI+"   "+quant.getPatientGroupI()+"   ---  "+quant.getPatientSubGroupI()+"  " );
 
                 if ((pGrI.equalsIgnoreCase(quant.getPatientGroupI()) || pGrI.equalsIgnoreCase(quant.getPatientSubGroupI())) && (pGrII.equalsIgnoreCase(quant.getPatientGroupII()) || pGrII.equalsIgnoreCase(quant.getPatientSubGroupII()))) {
                     if (quant.getStringFCValue().equalsIgnoreCase("Decreased") || quant.getStringFCValue().equalsIgnoreCase("Decrease")) {
@@ -896,7 +906,8 @@ public class CoreLogic implements Serializable {
 //                        comProt.addNotReg((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
                     }
 
-                } else {
+                } else if((pGrII.equalsIgnoreCase(quant.getPatientGroupI()) || pGrII.equalsIgnoreCase(quant.getPatientSubGroupI())) && (pGrI.equalsIgnoreCase(quant.getPatientGroupII()) || pGrI.equalsIgnoreCase(quant.getPatientSubGroupII()))) {
+                    System.out.println("now invert");
                     inverted = true;
 
                     if (quant.getStringFCValue().equalsIgnoreCase("Decreased") || quant.getStringFCValue().equalsIgnoreCase("Decrease")) {
@@ -910,6 +921,11 @@ public class CoreLogic implements Serializable {
 //                        comProt.addNotReg((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
                     }
 
+                }
+                else
+                {
+                
+                    System.out.println("waw error");
                 }
                 String uniprotAcc = quant.getUniprotAccession();
 //                comProt.setUniProtAcc(uniprotAcc);

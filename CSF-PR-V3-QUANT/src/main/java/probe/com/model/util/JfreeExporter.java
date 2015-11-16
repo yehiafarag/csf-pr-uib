@@ -8,7 +8,6 @@ import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
@@ -17,7 +16,6 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import org.apache.batik.dom.svg.SVGDOMImplementation;
-import org.apache.batik.dom.svg12.SVG12DOMImplementation;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.batik.transcoder.Transcoder;
 import org.apache.batik.transcoder.TranscoderInput;
@@ -54,42 +52,9 @@ public class JfreeExporter {
 
     }
 
-//    public void writeChartToPDFFile(JFreeChart chart, int width, int height, String fileNAme) {
-//        PdfWriter writer = null;
-//        Document document = new Document();
-//        try {
-//            writer = PdfWriter.getInstance(document, new FileOutputStream("D:\\astrid_export\\" + fileNAme));
-//            document.open();
-//            PdfContentByte contentByte = writer.getDirectContent();
-//            PdfTemplate template = contentByte.createTemplate(width, height);
-//            Graphics2D g2d = template.createGraphics(width, height, new DefaultFontMapper());
-//            Rectangle2D rect2d = new Rectangle2D.Double(0, 0, width, height);
-//            chart.draw(g2d, rect2d);
-//            g2d.dispose();
-//            contentByte.addTemplate(template, 0, 0);
-//
-//        } catch (Exception exp) {
-//            exp.printStackTrace();
-//        }
-//        document.close();
-//
-//    }
    
 
-    private SVGGraphics2D drawSvgGraphics(JFreeChart component, Rectangle bounds) {
-
-        // Get a SVGDOMImplementation and create an XML document
-        DOMImplementation domImpl = new SVG12DOMImplementation();
-        String svgNS = "http://www.w3.org/2000/svg";
-        SVGDocument svgDocument = (SVGDocument) domImpl.createDocument(svgNS, "svg", null);
-
-        // Create an instance of the SVG Generator
-        SVGGraphics2D svgGenerator = new SVGGraphics2D(svgDocument);
-        svgGenerator.setSVGCanvasSize(bounds.getSize());
-//        component.paintAll(svgGenerator);
-        return svgGenerator;
-    }
-
+   
     public String exportClusteringImgAsPdf(File userFolder, String url, String textFileName, BufferedImage upperTreeBImg, BufferedImage sideTreeBImg, BufferedImage heatMapImg, BufferedImage interactiveColumnImg, boolean clustColumn) {
         try {
             int totalWidth = sideTreeBImg.getWidth() + heatMapImg.getWidth() + interactiveColumnImg.getWidth() + 10;
