@@ -67,7 +67,7 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
         this.addComponent(bottomLayout);
         bottomLayout.setWidth((width) + "px");
 //        bottomLayout.setHeight(height+"px");
-        bottomLayout.setStyleName("borderlayout");
+        bottomLayout.setStyleName(Reindeer.LAYOUT_WHITE);
 
         peptidesInformationContainer = this.initInformationContainer(width);
         proteinsInformationContainer = this.initInformationContainer(width);
@@ -122,7 +122,7 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
         this.addComponent(bottomLayout);
         bottomLayout.setWidth((width) + "px");
 //        bottomLayout.setHeight(height+"px");
-        bottomLayout.setStyleName("borderlayout");
+        bottomLayout.setStyleName(Reindeer.LAYOUT_WHITE);
 
         peptidesInformationContainer = this.initInformationContainer(width);
         proteinsInformationContainer = this.initInformationContainer(width);

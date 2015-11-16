@@ -63,6 +63,11 @@
 .v-tabsheet-tabitem-selected:hover {
     color: #ee5311;
 }
+.v-tabsheet-tabs .v-tabsheet-tabitemcell-selected .v-captiontext{
+    
+    font-size:14px;
+     text-shadow:none;
+}
 
 
 /* Lay the options horizontally */
@@ -1467,8 +1472,9 @@ v-gridlayout-slot:focus{
 
 }
 .borderlayout{
-
-
+    margin-top:5px;
+    padding-top: 25px;
+    padding-left: 20px;
 
 }
 

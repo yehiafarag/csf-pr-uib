@@ -77,7 +77,7 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
             Page.getCurrent().getStyles().add(".v-tabsheet-tabs .v-icon{"
                     + "    width:" + selectedComparisonList.size() * 15 + "px !important;"
                     + "    height:35px !important;"
-                    + "    color:blue;"
+                    + "    color:blue !important;"
                     + "}");
 
             int tabCounter = 0;

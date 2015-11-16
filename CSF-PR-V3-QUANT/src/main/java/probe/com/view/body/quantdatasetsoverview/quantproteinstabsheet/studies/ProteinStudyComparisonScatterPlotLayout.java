@@ -132,7 +132,8 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         ProteinScatterPlotContainer.setWidth(imgWidth + "px");
         ProteinScatterPlotContainer.setHeight(150 + "px");
 
-        teststyle = "_" + cp.getProteinAccssionNumber().replace(" ", "_").replace(")", "_").replace("(", "_").toLowerCase() + "_" + cp.getComparison().getComparisonHeader().replace(" ", "_").replace(")", "_").replace("(", "_").toLowerCase().replace("/", "_") + "_scatterplot";
+        String styleString = "_" + cp.getProteinAccssionNumber()+"_" + cp.getComparison().getComparisonHeader();
+        teststyle = styleString.replace(" ", "_").replace("+", "_").replace(")", "_").replace("(", "_").toLowerCase().replace(" ", "_").replace(")", "_").replace("(", "_").toLowerCase().replace("+", "_").replace("/", "_") + "_scatterplot";
         styles.add("." + teststyle + " {  background-image: url(" + defaultScatterPlottImgUrl + " );background-position:center; background-repeat: no-repeat; }");
         ProteinScatterPlotContainer.setStyleName(teststyle);
         ProteinScatterPlotContainer.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {

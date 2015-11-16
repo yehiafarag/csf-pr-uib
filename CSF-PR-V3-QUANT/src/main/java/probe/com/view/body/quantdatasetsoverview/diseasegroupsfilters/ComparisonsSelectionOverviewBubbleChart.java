@@ -105,7 +105,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
     public ComparisonsSelectionOverviewBubbleChart(final DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager, final CSFPRHandler handler, int chartWidth, int chartHeight, Set<QuantDiseaseGroupsComparison> selectedComparisonList, List<QuantProtein> searchQuantificationProtList) {
         this.searchQuantificationProtList = searchQuantificationProtList;
         this.width = chartWidth;
-        this.height = chartHeight - 20;
+        this.height = chartHeight;
         this.handler = handler;
         this.setWidth(width + "px");
         this.setHeightUndefined();
@@ -379,11 +379,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         }
         SymbolAxis xAxis;
         final boolean finalNum;
-        if (maxLength > 30 && selectedComparisonList.size() > 4) {
-            finalNum = true;
-        } else {
-            finalNum = false;
-        }
+        finalNum = maxLength > 30 && selectedComparisonList.size() > 4;
 //        if(maxLength >30){
 //             xAxis = new SymbolAxis(null, xAxisLabels);
 //             xAxis.setVerticalTickLabels(true);
@@ -395,7 +391,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
             @Override
             protected List refreshTicksHorizontal(Graphics2D g2, Rectangle2D dataArea, RectangleEdge edge) {
                 if (localfinal) {
-                    setVerticalTickLabels(finalNum);
+                    setVerticalTickLabels(localfinal);
                     return super.refreshTicksHorizontal(g2, dataArea, edge);
                 }
                 List ticks = new java.util.ArrayList();

@@ -46,7 +46,6 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
         if (searchingMode) {
 
         }
-//        filterUtility = new QuantFilterUtility(handler);
         exploringFiltersManager = new DatasetExploringCentralSelectionManager(handler.getQuantDatasetInitialInformationObject(), handler.getActivePieChartQuantFilters());//,filterUtility.getFullFilterList()
 
         this.setMargin(true);
@@ -99,10 +98,10 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
             @Override
             public void sizeChanged(ComponentResizeEvent event) {
 
-                if (resizedCounter > 4) {
-                    return;
+                if (resizedCounter == 3) {
+                    UI.getCurrent().setScrollTop(1000); 
                 }
-                UI.getCurrent().setScrollTop(1000);
+               
                 resizedCounter++;
             }
         });

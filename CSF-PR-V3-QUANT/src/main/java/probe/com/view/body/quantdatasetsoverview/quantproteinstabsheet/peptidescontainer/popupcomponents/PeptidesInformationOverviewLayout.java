@@ -352,7 +352,7 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
 
                 if (quantPeptide.getString_p_value().equalsIgnoreCase("Significant")) {
                     peptideStackedBarComponent.setSignificant(true);
-                    if (quantPeptide.getString_fc_value().equalsIgnoreCase("Increased") || quantPeptide.getString_fc_value().equalsIgnoreCase("Up")) {
+                    if (quantPeptide.getString_fc_value().equalsIgnoreCase("Increased") || quantPeptide.getString_fc_value().equalsIgnoreCase("Increase")|| quantPeptide.getString_fc_value().equalsIgnoreCase("Up")) {
                         peptideStackedBarComponent.setDefaultStyleShowAllMode("redstackedlayout");
                     } else if (quantPeptide.getString_fc_value() == null || quantPeptide.getString_fc_value().equalsIgnoreCase("") || quantPeptide.getString_fc_value().trim().equalsIgnoreCase("Not Provided")) {
                         peptideStackedBarComponent.setDefaultStyleShowAllMode("lightbluestackedlayout");
@@ -363,7 +363,7 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
 
                 } else {
                     peptideStackedBarComponent.setSignificant(false);
-                    if (quantPeptide.getString_fc_value().equalsIgnoreCase("Increased") || quantPeptide.getString_fc_value().equalsIgnoreCase("Up")) {
+                    if (quantPeptide.getString_fc_value().equalsIgnoreCase("Increased") || quantPeptide.getString_fc_value().equalsIgnoreCase("Increase")|| quantPeptide.getString_fc_value().equalsIgnoreCase("Up")) {
                         peptideStackedBarComponent.setDefaultStyleShowAllMode("midredstackedlayout");
                     } else if (quantPeptide.getString_fc_value() == null || quantPeptide.getString_fc_value().equalsIgnoreCase("") || quantPeptide.getString_fc_value().trim().equalsIgnoreCase("Not Provided")) {
                         peptideStackedBarComponent.setDefaultStyleShowAllMode("lightbluestackedlayout");
