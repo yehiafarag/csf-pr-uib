@@ -58,6 +58,8 @@ public class DAL {
 
     public void exportDataBase(String mysqldumpUrl, String sqlFileUrl) {
         database.exportDataBase(mysqldumpUrl, sqlFileUrl);
+//        database.getIdentificationProteinsList();
+//        database.updateIdentificationProteinsList(sqlFileUrl);
 
     }
 

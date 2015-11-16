@@ -21,12 +21,12 @@ import javax.swing.SwingWorker;
 public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
 
     private ExperimentBean exp;
-    private final String database_name = "quantdataupdated_16_9";
+    private final String database_name = "quantdataupdated_09_11";
     private final String executeCmd;
-    private final String backupFileUrl = "D:\\backups\\sqlQuant18-8\\backup18-8-2015.sql"; // "/home/probe/user/CSF-PR-FILES/backup.sql";             //"D:\\backups\\sqlQuant18-8\\backup-quant.sql";                        //   
-    private final String processUrl = " /usr/bin/mysqldump";//"C:\\AppServ\\MySQL\\bin\\mysqldump.exe";
+    private final String backupFileUrl = "D:\\backups\\sqlQuant18-8\\backup-quant-6-11.sql"; // "/home/probe/user/CSF-PR-FILES/backup.sql";             //"D:\\backups\\sqlQuant18-8\\backup-quant.sql";                        //   
+    private final String processUrl = "C:\\AppServ\\MySQL\\bin\\mysqldump.exe"; ///usr/bin/mysqldump";
 
-    ;//         "C:\\AppServ\\MySQL\\bin\\mysqldump.exe";//"C:\\AppServ\\MySQL\\bin\\mysqldump.exe"           ///usr/bin/mysqldump
+    ;//         "C:\\AppServ\\MySQL\\bin\\mysqldump.exe";//"C:\\AppServ\\MySQL\\bin\\mysqldump.exe"           ///usr/bin/mysqldump   C:\\AppServ\\MySQL\\bin\\mysql.exe
 
     /* Creates new form GUI */
     public GUI() {
@@ -335,6 +335,11 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
         });
 
         jTextField14.setText("jTextField14");
+        jTextField14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField14ActionPerformed(evt);
+            }
+        });
 
         jButton7.setText("jButton7");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
@@ -886,7 +891,12 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                 System.out.println("at error SQL Exception line 879 " + this.getClass().getName() + "  " + sqlE.getMessage());
             }
         }
+        jProgressBar1.setIndeterminate(true);
+        jProgressBar1.setVisible(true);
+        jLabel13.setText("Start backup process for (  "+database_name+" ) database");
         exphandeler.exportDataBase(processUrl, jTextField3.getText());
+        jLabel13.setText("Done");
+        jProgressBar1.setVisible(false);
     }//GEN-LAST:event_jButton9ActionPerformed
 
     @SuppressWarnings("SleepWhileInLoop")
@@ -1007,6 +1017,10 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
     private void jTextField13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField13ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField13ActionPerformed
+
+    private void jTextField14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField14ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField14ActionPerformed
 
     /**
      * @param args the command line arguments

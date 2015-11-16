@@ -373,9 +373,6 @@ public class Handler {
 
     }
 
-    private void validatePeptidesList(List<QuantProtein> peptidesList, List<QuantProtein> fullQuantProtList) {
-
-    }
 
     public void correctProtInfo() {
         dal.correctProtInfo();

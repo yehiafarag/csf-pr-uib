@@ -125,6 +125,27 @@ public class QuantDataHandler {
         qa15.setAnalyticalMethod("Disease Group I");
         qa15.setAuthor("Astrid et al.");
         authormap.put("99999999", qa15);
+
+        QuantDatasetObject qa16 = new QuantDatasetObject();
+        qa16.setYear(2014);
+        qa16.setFilesNumber(10);
+        qa16.setAnalyticalMethod("Disease Group I");
+        qa16.setAuthor("Wildsmith, Kristin R., et al.");
+        authormap.put("24902845", qa16);
+
+        QuantDatasetObject qa17 = new QuantDatasetObject();
+        qa17.setYear(2015);
+        qa17.setFilesNumber(10);
+        qa17.setAnalyticalMethod("Disease Group I");
+        qa17.setAuthor("Barucker, Christian, et al.");
+        authormap.put("25318543", qa17);
+
+        QuantDatasetObject qa18 = new QuantDatasetObject();
+        qa18.setYear(2013);
+        qa18.setFilesNumber(10);
+        qa18.setAnalyticalMethod("Disease Group I");
+        qa18.setAuthor("Schutzer, Steven E., et al.");
+        authormap.put("24039694", qa16);
     }
 
     @SuppressWarnings("CallToPrintStackTrace")
@@ -134,38 +155,74 @@ public class QuantDataHandler {
 
         File dataFile = new File(path);
         List<QuantProtein> QuantProtList = new ArrayList<QuantProtein>();
-
+        boolean belongtoPreviuosLine = false;
+        QuantProtein quantProt = new QuantProtein();
         try {
 
             FileReader sequanceReader = new FileReader(sequanceFile);
             BufferedReader sequanceBufRdr = new BufferedReader(sequanceReader);
-            sequanceBufRdr.readLine();
+//            sequanceBufRdr.readLine();
 
             Map<String, QuantProtein> proteinAccSequanceMap = new HashMap<String, QuantProtein>();
 //             Map<String, String> proteinAccNameMap = new HashMap<String, String>();
             String seqline;
 
             int row = 1;
-            while ((seqline = sequanceBufRdr.readLine()) != null && row < 1000000000) {
-                String[] seqArr = seqline.split("\t");
+            while ((seqline = sequanceBufRdr.readLine()) != null && !seqline.trim().equalsIgnoreCase("") && row < 1000000000) {
 
-                if (proteinAccSequanceMap.containsKey(seqArr[0].replace(" ", "").trim().toLowerCase())) {
-                    continue;
-                }
-                QuantProtein quantProt = new QuantProtein();
-
-                if (seqArr.length == 4) {
-                    quantProt.setUniprotAccession(seqArr[1].replace(" ", "").trim().toLowerCase());
-                    quantProt.setSequance(seqArr[2]);
-                    quantProt.setUniprotProteinName(seqArr[3]);
-                    if (seqArr[3].trim().equalsIgnoreCase("")) {
-                        System.out.println("even worest error empty prot name mapping " + seqline);
+//                System.out.println(" sqline "+seqline);
+                if (seqline.startsWith(">sp|")) {
+                    if (quantProt.getUniprotAccession() != null) {
+                        proteinAccSequanceMap.put(quantProt.getUniprotAccession().trim().toLowerCase(), quantProt);
                     }
-                    proteinAccSequanceMap.put(seqArr[0].replace(" ", "").trim().toLowerCase(), quantProt);
+                    quantProt = new QuantProtein();
+                    String[] seqArr = seqline.replace("|", "----").split("----");
+                    quantProt.setUniprotAccession(seqArr[1]);
+                    String secSide = seqArr[2].split("OS=")[0].trim();
+                    String protName = secSide.replace(secSide.split(" ")[0], "")+" ("+secSide.split(" ")[0]+")";
+                    quantProt.setUniprotProteinName(protName);
+
                 } else {
-                    System.out.println("error again at the reader --- " + seqline);
-//                    proteinAccSequanceMap.put(seqArr[0].replace(" ", "").toLowerCase(), null);
+                    quantProt.setSequance(quantProt.getSequance() + seqline);
+
                 }
+//                
+//                String[] seqArr = seqline.split("\t");
+//
+//                if (proteinAccSequanceMap.containsKey(seqArr[0].replace(" ", "").trim().toLowerCase())) {
+//                    continue;
+//                }
+//
+//                if (belongtoPreviuosLine && quantProt != null) {
+//                    belongtoPreviuosLine = false;
+//                    quantProt.setSequance(quantProt.getSequance() + seqArr[0]);
+//                    quantProt.setUniprotProteinName(seqArr[1].split("\\(")[0]);
+//                    proteinAccSequanceMap.put(seqArr[1].replace(" ", "").trim().toLowerCase(), quantProt);
+//
+//                } else {
+//                    quantProt = new QuantProtein();
+//
+//                    //the case of max line width
+//                    if (seqArr[2].length() >= 32759) {
+//                        belongtoPreviuosLine = true;
+//                    }
+//
+//                    if (!seqArr[0].replace(" ", "").trim().equalsIgnoreCase(seqArr[1].replace(" ", "").trim())) {
+//                        continue;
+//                    }
+//                    if (seqArr.length == 4) {
+//                        quantProt.setUniprotProteinName(seqArr[3].split("\\(")[0]);
+//                         System.out.println(" **************** "+ quantProt.getUniprotProteinName());
+//                        if (seqArr[3].trim().equalsIgnoreCase("")) {
+//                            System.out.println("even worest error empty prot name mapping ");
+//                        }
+//
+//                    } else {
+//                        quantProt.setUniprotAccession(seqArr[1].replace(" ", "").trim().toLowerCase());
+//                        quantProt.setSequance(seqArr[2]);
+//                        proteinAccSequanceMap.put(seqArr[1].replace(" ", "").trim().toLowerCase(), quantProt);
+//                    }
+//                }
             }
 
             sequanceBufRdr.close();
@@ -206,7 +263,6 @@ public class QuantDataHandler {
                 qProt.setAuthor(authormap.get(qProt.getPumedID()).getAuthor());
                 qProt.setYear(authormap.get(qProt.getPumedID()).getYear());
                 qProt.setFilesNum(authormap.get(qProt.getPumedID()).getFilesNumber());
-
                 if (!updatedRowArr[index].trim().equalsIgnoreCase("")) {
                     qProt.setQuantifiedProteinsNumber(Integer.valueOf(updatedRowArr[index]));
                 } else {
@@ -228,13 +284,7 @@ public class QuantDataHandler {
                     qProt.setUniprotProteinName(" ");
                 }
                 index++;
-                //
-//                if (updatedRowArr[index] == null || updatedRowArr[index].trim().equalsIgnoreCase("")) {
-//                    qProt.setUniprotProteinName(" ");
-//                    
-//                } else {
-//                    qProt.setUniprotProteinName(updatedRowArr[index++]);
-//                }
+
 ////
                 if (updatedRowArr[index] == null || updatedRowArr[index].trim().equalsIgnoreCase("")) {
                     qProt.setPublicationAccNumber(" ");
@@ -557,7 +607,7 @@ public class QuantDataHandler {
                 }
                 qProt.setIdentifiedProteinsNum(-1);
 
-                String pepKey = qProt.getPumedID() + "_" + qProt.getStudyKey() + "_" + qProt.getUniprotAccession() + "_" + qProt.getPublicationAccNumber() + "_" + qProt.getTypeOfStudy() + "_" + qProt.getSampleType() + "_" + qProt.getTechnology() + "_" + qProt.getAnalyticalApproach() + "_" + qProt.getAnalyticalMethod() + "_" + qProt.getPatientsGroupINumber() + "_" + qProt.getPatientsGroupIINumber() + "_" + qProt.getPatientSubGroupI() + "_" + qProt.getPatientSubGroupII()+"_" + qProt.getDiseaseCategory();
+                String pepKey = qProt.getPumedID() + "_" + qProt.getStudyKey() + "_" + qProt.getUniprotAccession() + "_" + qProt.getPublicationAccNumber() + "_" + qProt.getTypeOfStudy() + "_" + qProt.getSampleType() + "_" + qProt.getTechnology() + "_" + qProt.getAnalyticalApproach() + "_" + qProt.getAnalyticalMethod() + "_" + qProt.getPatientsGroupINumber() + "_" + qProt.getPatientsGroupIINumber() + "_" + qProt.getPatientSubGroupI() + "_" + qProt.getPatientSubGroupII() + "_" + qProt.getDiseaseCategory();
                 qProt.setQuantPeptideKey(pepKey);
                 QuantProtList.add(qProt);
                 row++;

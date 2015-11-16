@@ -2,12 +2,18 @@ package com.csf.DAL;
 
 import com.pepshaker.util.beans.ExperimentBean;
 import com.pepshaker.util.beans.FractionBean;
+import com.pepshaker.util.beans.IdentificationProteinBean;
 import com.pepshaker.util.beans.PeptideBean;
 import com.pepshaker.util.beans.ProteinBean;
 import com.quantcsf.beans.QuantDatasetObject;
 import com.quantcsf.beans.QuantPeptide;
 import com.quantcsf.beans.QuantProtein;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,6 +22,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -266,7 +273,7 @@ public class DB implements Serializable {
                         + "  `chromosome_number` varchar(20) NOT NULL default '', "
                         + "  `prot_key` varchar(500) NOT NULL, "
                         + "  `valid` varchar(7) NOT NULL default 'false',  "
-                        + "  `description` varchar(500) NOT NULL, "
+                        + "  `description` varchar(1000) NOT NULL, "
                         + "  `prot_group_id` int(255) NOT NULL auto_increment, "
                         + "  PRIMARY KEY  (`prot_group_id`), "
                         + "  KEY `exp_id` (`exp_id`), "
@@ -1662,6 +1669,7 @@ public class DB implements Serializable {
             }
             String[] executeCmd = new String[]{sqlMysqlPath, "--user=" + userName, "--password=" + password, dbName, "-e", "source " + sqlFileUrl};//  C:\\AppServ\\MySQL\\bin\\mysql
 
+            System.out.println(" sqlMysqlPath  "+sqlMysqlPath+"  sqlFileUrl  "+sqlFileUrl);
             Process runtimeProcess;
             runtimeProcess = Runtime.getRuntime().exec(executeCmd);
             int processComplete = runtimeProcess.waitFor();
@@ -1694,6 +1702,11 @@ public class DB implements Serializable {
     @SuppressWarnings("CallToPrintStackTrace")
     public boolean storeCombinedQuantProtTable(List<QuantProtein> qProtList) {
         System.out.println("start store data");
+        try {
+            createTables();
+        } catch (SQLException ex) {
+            Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
+        }
         boolean success = true;
         String insertQProt = "INSERT INTO  `" + dbName + "`.`quant_full_table` (`author` ,`year` ,`pumed_id`,`study_key` ,`quantified_proteins_number`,`uniprot_accession` ,`uniprot_protein_name` ,`publication_acc_number` ,`publication_protein_name`,`peptide_prot` ,`raw_data_available` ,`peptideId_number`,`quantified_peptides_number`,`peptide_charge`"
                 + ",`peptide_sequance`,`sequence_annotated`,`peptide_modification`,`modification_comment`,`type_of_study` ,`sample_type`,"
@@ -1825,6 +1838,7 @@ public class DB implements Serializable {
     }
 
     //quant data store 
+    @SuppressWarnings("null")
     public boolean updateProtSequances(Map<String, String> protSeqMap) {
         String updateProtSeqStat = "UPDATE  `quantitative_proteins_table` SET  `sequance` =  ? WHERE  `quantitative_proteins_table`.`uniprot_accession` =?";
         PreparedStatement updateProtSeqStatment = null;
@@ -2380,7 +2394,7 @@ public class DB implements Serializable {
                     activeHeaders[25] = true;
                 }
                 pb.setPatientsSubGroup2(patient_sub_group_ii);
-                
+
                 pb.setDiseaseCategory(rs.getString("disease_category"));
 
 //                String additional_comments = rs.getString("additional_comments");
@@ -2480,4 +2494,203 @@ public class DB implements Serializable {
         System.gc();
 
     }
+
+    public void getIdentificationProteinsList() {
+        List<IdentificationProteinBean> proteinDatasetList = new ArrayList<IdentificationProteinBean>();
+        try {
+            PreparedStatement selectProtDatasetStat;
+            String selectProtDataset = "SELECT `prot_accession`,`other_protein(s)` FROM `experiment_protein_table`;";
+            if (conn == null || conn.isClosed()) {
+                Class.forName(driver).newInstance();
+                conn = DriverManager.getConnection(url + dbName, userName, password);
+            }
+            selectProtDatasetStat = conn.prepareStatement(selectProtDataset);
+            ResultSet rs = selectProtDatasetStat.executeQuery();
+            while (rs.next()) {
+                IdentificationProteinBean temPb = new IdentificationProteinBean();
+                temPb.setAccession(rs.getString("prot_accession"));
+                temPb.setOtherProteins(rs.getString("other_protein(s)"));
+                proteinDatasetList.add(temPb);
+
+            }
+            rs.close();
+            Set<String> protAccessionSet = new HashSet<String>();
+            for (IdentificationProteinBean pb : proteinDatasetList) {
+                protAccessionSet.add(pb.getAccession());
+                if (pb.getOtherProteins() == null || pb.getOtherProteins().trim().equalsIgnoreCase("")) {
+                    continue;
+                }
+                if (!pb.getOtherProteins().contains(",")) {
+                    protAccessionSet.add(pb.getOtherProteins());
+                } else {
+                    String[] accArr = pb.getOtherProteins().split(",");
+                    protAccessionSet.addAll(Arrays.asList(accArr));
+                }
+
+            }
+
+            File csvText = new File("D:\\iddatanames", "CSF-PR-id-accession-list.csv");// "CSF-PR - " + datasetName + " - All - " + dataType + "- Peptides" + ".csv");
+            PrintWriter out1 = null;
+            try {
+                if (csvText.exists()) {
+                    csvText.delete();
+                }
+                csvText.createNewFile();
+                FileWriter outFile = new FileWriter(csvText, true);
+                out1 = new PrintWriter(outFile);
+                for (String idProt : protAccessionSet) {
+                    out1.append(idProt);
+                    out1.append('\n');
+
+                }
+                out1.flush();
+                out1.close();
+            } catch (Exception exp) {
+                System.err.println(exp.getLocalizedMessage());
+                if (out1 != null) {
+                    out1.flush();
+                    out1.close();
+                }
+            }
+
+        } catch (ClassNotFoundException e) {
+            System.err.println("at error line 1333 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
+
+        } catch (IllegalAccessException e) {
+            System.err.println("at error line 1336 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
+
+        } catch (InstantiationException e) {
+            System.err.println("at error line 1339 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
+
+        } catch (SQLException e) {
+            System.err.println("at error line 1340 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
+
+        }
+        System.gc();
+    }
+
+    public void updateIdentificationProteinsList(String fileUrl) {
+        List<IdentificationProteinBean> proteinDatasetList = new ArrayList<IdentificationProteinBean>();
+        try {
+            PreparedStatement selectProtDatasetStat;
+            String selectProtDataset = "SELECT `prot_accession`,`other_protein(s)`,`description`,`prot_group_id` FROM `experiment_protein_table`;";
+            if (conn == null || conn.isClosed()) {
+                Class.forName(driver).newInstance();
+                conn = DriverManager.getConnection(url + dbName, userName, password);
+            }
+            selectProtDatasetStat = conn.prepareStatement(selectProtDataset);
+            ResultSet rs = selectProtDatasetStat.executeQuery();
+            while (rs.next()) {
+                IdentificationProteinBean temPb = new IdentificationProteinBean();
+                temPb.setAccession(rs.getString("prot_accession"));
+                temPb.setOtherProteins(rs.getString("other_protein(s)"));
+                temPb.setDescription(rs.getString("description"));
+                temPb.setProtGroupId(rs.getInt("prot_group_id"));
+                proteinDatasetList.add(temPb);
+
+            }
+            rs.close();
+            System.out.println("done with db");
+            //load the data
+            Map<String, String> updatedDescriptionSet = new HashMap<String, String>();
+
+            try {
+                FileReader sequanceReader = new FileReader(fileUrl);
+                BufferedReader sequanceBufRdr = new BufferedReader(sequanceReader);
+//            sequanceBufRdr.readLine();
+
+//             Map<String, String> proteinAccNameMap = new HashMap<String, String>();
+                String seqline;
+
+                int row = 1;
+                while ((seqline = sequanceBufRdr.readLine()) != null && !seqline.trim().equalsIgnoreCase("") && row < 1000000000) {
+                    if (seqline.startsWith(">sp|")) {
+                        String[] seqArr = seqline.replace("|", "----").split("----");
+                        String acc = (seqArr[1]);
+                        String secSide = seqArr[2].split("OS=")[0].trim();
+                        String protName = secSide.replace(secSide.split(" ")[0], "") + " (" + secSide.split(" ")[0] + ")";
+                        updatedDescriptionSet.put(acc, protName);
+
+                    }
+//             
+                }
+
+                sequanceBufRdr.close();
+            } catch (IOException ex) {
+                Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            int counter = 0;
+            Set<String> tobeUpdatedSet = new HashSet<String>();
+
+            System.out.println("done with reader");
+            List<IdentificationProteinBean> updateProteinDatasetList = new ArrayList<IdentificationProteinBean>();
+            int size = 0;
+            for (IdentificationProteinBean temPb : proteinDatasetList) {
+                String desc = "";
+                if (updatedDescriptionSet.containsKey(temPb.getAccession())) {
+                    desc = desc + updatedDescriptionSet.get(temPb.getAccession());
+
+                } else {
+                    counter++;
+                    tobeUpdatedSet.add(temPb.getAccession());
+                }
+
+//                if (temPb.getOtherProteins() == null || temPb.getOtherProteins().equalsIgnoreCase("")) {
+//
+//                } else if (!temPb.getOtherProteins().contains(",")) {
+//
+//                    desc = desc + "," + updatedDescriptionSet.get(temPb.getOtherProteins());
+//                } else {
+//                    String[] accArr = temPb.getOtherProteins().split(",");
+//                    for (String str : accArr) {
+//                        desc = desc + "," + updatedDescriptionSet.get(str);
+//                    }
+//
+//                }
+//                if (desc.length() ==3763) {
+//                    System.out.println("-----------------------------------------------------------------");
+//                    System.out.println("dsid : "+temPb.getProtGroupId()+"  "+ temPb.getDescription());
+//                    System.out.println("desc: "+ desc);
+//                    System.out.println("-----------------------------------------------------------------");
+//                }
+                if (!desc.equalsIgnoreCase("")) {
+                    temPb.setDescription(desc);
+                }
+                updateProteinDatasetList.add(temPb);
+
+            }
+            System.out.println("un updated " + counter);
+            System.out.println("tobe updated " + tobeUpdatedSet.size());
+            //update the database
+            String updateProtDescStat = "UPDATE  `experiment_protein_table` SET  `description` =  ? WHERE  `experiment_protein_table`.`prot_group_id` =?";
+            PreparedStatement updateProtDescStatment = null;
+
+            if (conn == null || conn.isClosed()) {
+                Class.forName(driver).newInstance();
+                conn = DriverManager.getConnection(url + dbName, userName, password);
+            }
+
+            for (IdentificationProteinBean pb : updateProteinDatasetList) {
+                updateProtDescStatment = conn.prepareStatement(updateProtDescStat);
+                updateProtDescStatment.setString(1, pb.getDescription());
+                updateProtDescStatment.setInt(2, pb.getProtGroupId());
+                updateProtDescStatment.executeUpdate();
+            }
+
+            updateProtDescStatment.close();
+            System.gc();
+
+        } catch (SQLException e) {
+            System.err.println("at error line 1340 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
+
+        } catch (ClassNotFoundException e) {
+            System.err.println("at error line 1340 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
+        } catch (InstantiationException e) {
+            System.err.println("at error line 1340 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
+        } catch (IllegalAccessException e) {
+            System.err.println("at error line 1340 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
+        }
+        System.gc();
+    }
+
 }
