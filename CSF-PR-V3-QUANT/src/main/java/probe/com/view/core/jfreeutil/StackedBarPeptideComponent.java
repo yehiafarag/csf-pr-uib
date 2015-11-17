@@ -95,8 +95,8 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
      * @param defaultStyleShowAllMode
      */
     public void setDefaultStyleShowAllMode(String defaultStyleShowAllMode) {
-        this.defaultStyleShowAllMode = defaultStyleShowAllMode.replace("selected", "").trim();;
-        this.setStyleName(defaultStyleShowAllMode);
+        this.defaultStyleShowAllMode = defaultStyleShowAllMode.replace("selected", "").trim();
+        this.setStyleName(this.defaultStyleShowAllMode);
     }
 
     /**
@@ -117,8 +117,9 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
 
     private final int x0;
     private final Integer widthArea;
-    private final  VerticalLayout ptmLayout = new VerticalLayout();
-    private boolean ptmAvailable= false;
+    private final VerticalLayout ptmLayout = new VerticalLayout();
+    private boolean ptmAvailable = false;
+
     /**
      *
      * @param x0
@@ -146,7 +147,7 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
 //            ptmDiagram.addEdge(edge1);
 //            ptmDiagram.setWidth("50px");
 //            ptmDiagram.setHeight("500px");
-            ptmAvailable=true;
+            ptmAvailable = true;
 //            
             ptmLayout.setStyleName("ptmcycle");
             ptmLayout.setWidth("10px");
@@ -157,12 +158,10 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
 //            labelpopup.setPopupVisible(true);
 //            labelpopup.setPrimaryStyleName("ptmcycle");
 //            labelpopup.setHideOnMouseOut(false);
-            
+
 //                            exportAllProteinPeptidesPopup.setDescription("Export CSF-PR Peptides for ( " + accession + " ) for All Available Datasets");
-            
 //            this.addComponent(i);
 //            labelpopup.setVisible(true);
-
         }
     }
 
@@ -188,7 +187,6 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
 //        return node;
 //
 //    }
-
     /**
      *
      * @param key
@@ -211,11 +209,13 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
      *
      * @param select
      */
-    public void heighlight(boolean select) {
-        if (select) {
+    public void heighlight(Boolean select) {
+        if (select == null) {
+            this.setStyleName(defaultStyleShowAllMode);
+        } else if (select) {
             this.setStyleName("selected" + defaultStyleShowAllMode);
         } else {
-            this.setStyleName(defaultStyleShowAllMode);
+            this.setStyleName("unselected" + defaultStyleShowAllMode);
         }
     }
 

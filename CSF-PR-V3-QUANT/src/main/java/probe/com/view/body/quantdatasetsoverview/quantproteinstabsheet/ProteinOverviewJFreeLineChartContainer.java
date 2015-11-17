@@ -80,15 +80,15 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
     private final int width;
     private final OptionGroup orederingOptionGroup = new OptionGroup();
     private final ProteinStudiesComparisonsContainerLayout studiesScatterChartsLayout;
-    private final AbsoluteLayout lineChartContainer;
+    private final AbsoluteLayout defaultLineChartContainer, orderedLineChartContainer;
     private final String teststyle;
     private final Page.Styles styles = Page.getCurrent().getStyles();
     private final DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager;
     private final CSFPRHandler mainHandler;
     private final Shape notRShape = ShapeUtilities.createDiamond(6f);
     private final Shape emptyRShape = ShapeUtilities.createDiamond(6f);
-    private final Shape leftArr = ShapeUtilities.createDownTriangle(6f);
-    private final Shape rightArr = ShapeUtilities.createUpTriangle(6f);
+    private final Shape downArr = ShapeUtilities.createDownTriangle(6f);
+    private final Shape upArr = ShapeUtilities.createUpTriangle(6f);
 
     /**
      *
@@ -119,6 +119,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
      * @param selectedComparisonList
      * @param widthValue
      * @param proteinName
+     * @param proteinAccession
      * @param searchingMode
      */
     public ProteinOverviewJFreeLineChartContainer(DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager, final DiseaseGroupsComparisonsProteinLayout[] orgComparisonProteins, final Set<QuantDiseaseGroupsComparison> selectedComparisonList, int widthValue, final String proteinName, final String proteinAccession, boolean searchingMode, final String proteinKey, CSFPRHandler mainHandler) {
@@ -287,17 +288,23 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         rightSideLayout.setSpacing(true);
         rightSideLayout.setMargin(new MarginInfo(true, false, false, true));
         this.addComponent(rightSideLayout);
-        lineChartContainer = new AbsoluteLayout();
+        defaultLineChartContainer = new AbsoluteLayout();
+        orderedLineChartContainer = new AbsoluteLayout();
 
         //init leftside components - linechart 
         defaultChart = generateLineChart(comparisonProteins, selectedComparisonList);//, (width - 100), height, defaultLineChartRenderingInfo);
-        topLeftSideLayout.addComponent(lineChartContainer);
-        lineChartContainer.setWidth((width - 100) + "px");
-        lineChartContainer.setHeight(height + "px");
+        topLeftSideLayout.addComponent(defaultLineChartContainer);
+        defaultLineChartContainer.setWidth((width - 100) + "px");
+        defaultLineChartContainer.setHeight(height + "px");
+
+        topLeftSideLayout.addComponent(orderedLineChartContainer);
+        orderedLineChartContainer.setWidth((width - 100) + "px");
+        orderedLineChartContainer.setHeight(height + "px");
 
         teststyle = proteinName.replace(" ", "_").replace(")", "_").replace("(", "_").replace(";", "_").toLowerCase().replace("#", "_").replace("?", "_").replace("[", "").replace("]", "").replace("/", "_").replace(":", "_").replace("'", "_") + "linechart";
         styles.add("." + teststyle + " {  background-image: url(" + defaultLineChartImgUrl + " );background-position:center; background-repeat: no-repeat; }");
-        lineChartContainer.setStyleName(teststyle);
+        defaultLineChartContainer.setStyleName(teststyle);
+        orderedLineChartContainer.setVisible(false);
         chartListener = new LayoutEvents.LayoutClickListener() {
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
@@ -311,7 +318,8 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
             }
         };
-        lineChartContainer.addLayoutClickListener(chartListener);
+        defaultLineChartContainer.addLayoutClickListener(chartListener);
+        orderedLineChartContainer.addLayoutClickListener(chartListener);
 
         orederingOptionGroup.setWidth("250px");
         orederingOptionGroup.setNullSelectionAllowed(false); // user can not 'unselect'
@@ -327,7 +335,9 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
             public void valueChange(Property.ValueChangeEvent event) {
                 if (orederingOptionGroup.getValue().toString().equalsIgnoreCase("Default order")) {
                     styles.add("." + teststyle + " {  background-image: url(" + defaultLineChartImgUrl + " );background-position:center; background-repeat: no-repeat; }");
-                    lineChartContainer.setStyleName(teststyle);
+                    defaultLineChartContainer.setStyleName(teststyle);
+                    defaultLineChartContainer.setVisible(true);
+                    orderedLineChartContainer.setVisible(false);
                     studiesScatterChartsLayout.orderComparisons(comparisonProteins);
 
                 } else {
@@ -363,11 +373,13 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                         }
 
                         orderedChart = generateLineChart(ordComparisonProteins, orederedComparisonSet);//, (width - 100), height, orderedLineChartRenderingInfo);
-                        orderedLineChartImg = generateChartImage(orderedChart, (width - 100), height, orderedLineChartRenderingInfo);
+                        orderedLineChartImg = generateChartImage(orderedChart, (width - 100), height, orderedLineChartRenderingInfo, orderedLineChartContainer);
 //                        studiesScatterChartsLayout.orderComparisons(ordComparisonProteins);
                     }
                     styles.add("." + teststyle + " {  background-image: url(" + orderedLineChartImg + " );background-position:center; background-repeat: no-repeat; }");
-                    lineChartContainer.setStyleName(teststyle);
+                    orderedLineChartContainer.setStyleName(teststyle);
+                    defaultLineChartContainer.setVisible(false);
+                    orderedLineChartContainer.setVisible(true);
                     studiesScatterChartsLayout.orderComparisons(ordComparisonProteins);
                 }
             }
@@ -688,11 +700,11 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         renderer.setSeriesOutlinePaint(6, dataColor[2]);
 
         renderer.setSeriesShape(6, emptyRShape);
-        renderer.setSeriesShape(5, leftArr);
-        renderer.setSeriesShape(4, leftArr);
+        renderer.setSeriesShape(5, downArr);
+        renderer.setSeriesShape(4, downArr);
         renderer.setSeriesShape(3, notRShape);
-        renderer.setSeriesShape(2, rightArr);
-        renderer.setSeriesShape(1, rightArr);
+        renderer.setSeriesShape(2, upArr);
+        renderer.setSeriesShape(1, upArr);
         renderer.setSeriesShapesVisible(0, false);
         renderer.setSeriesStroke(0, new BasicStroke(
                 1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
@@ -743,7 +755,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
     private final String[] tooltipLabels = new String[]{"( Low <img src='VAADIN/themes/dario-theme/img/sdown.png' alt='Low'>" + " )", "( Low <img src='VAADIN/themes/dario-theme/img/sdown.png' alt='Low'>" + " )", "( Stable <img src='VAADIN/themes/dario-theme/img/snotreg.png' alt='Stable'>" + " )", " ( High <img src='VAADIN/themes/dario-theme/img/sup.png' alt='High'>" + " )", " ( High <img src='VAADIN/themes/dario-theme/img/sup.png' alt='High'>" + " )"};
 
-    private String generateChartImage(JFreeChart jFreeChart, int w, int h, ChartRenderingInfo chartRenderingInfo) {
+    private String generateChartImage(JFreeChart jFreeChart, int w, int h, ChartRenderingInfo chartRenderingInfo, AbsoluteLayout layoutContainer) {
         String imgUrl = saveToFile(jFreeChart, w, h, chartRenderingInfo);
         for (int i = 0; i < chartRenderingInfo.getEntityCollection().getEntityCount(); i++) {
             final ChartEntity entity = chartRenderingInfo.getEntityCollection().getEntity(i);
@@ -772,19 +784,19 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                 square.setParam(paramName, gc);
                 switch (trend) {
                     case 0:
-                        lineChartContainer.addComponent(square, "left: " + (xSer - 6) + "px; top: " + (ySer - 8) + "px;");
+                        layoutContainer.addComponent(square, "left: " + (xSer - 6) + "px; top: " + (ySer - 8) + "px;");
                         break;
                     case 1:
-                        lineChartContainer.addComponent(square, "left: " + (xSer - 6) + "px; top: " + (ySer - 8) + "px;");
+                        layoutContainer.addComponent(square, "left: " + (xSer - 6) + "px; top: " + (ySer - 8) + "px;");
                         break;
                     case 2:
-                        lineChartContainer.addComponent(square, "left: " + (xSer - 6) + "px; top: " + (ySer - 5) + "px;");
+                        layoutContainer.addComponent(square, "left: " + (xSer - 6) + "px; top: " + (ySer - 5) + "px;");
                         break;
                     case 3:
-                        lineChartContainer.addComponent(square, "left: " + (xSer - 6) + "px; top: " + (ySer - 5) + "px;");
+                        layoutContainer.addComponent(square, "left: " + (xSer - 6) + "px; top: " + (ySer - 5) + "px;");
                         break;
                     case 4:
-                        lineChartContainer.addComponent(square, "left: " + (xSer - 6) + "px; top: " + (ySer - 5) + "px;");
+                        layoutContainer.addComponent(square, "left: " + (xSer - 6) + "px; top: " + (ySer - 5) + "px;");
                         break;
 
                 }
@@ -856,11 +868,11 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 //        renderer.setSeriesPaint(6, Color.WHITE);
 //        renderer.setSeriesOutlinePaint(6, dataColor[2]);
             renderer.setSeriesShape(6, emptyRShape);
-            renderer.setSeriesShape(5, leftArr);
-            renderer.setSeriesShape(4, leftArr);
+            renderer.setSeriesShape(5, downArr);
+            renderer.setSeriesShape(4, downArr);
             renderer.setSeriesShape(3, notRShape);
-            renderer.setSeriesShape(2, rightArr);
-            renderer.setSeriesShape(1, rightArr);
+            renderer.setSeriesShape(2, upArr);
+            renderer.setSeriesShape(1, upArr);
             renderer.setSeriesShapesVisible(0, false);
             renderer.setSeriesStroke(0, new BasicStroke(
                     1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
@@ -911,16 +923,22 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         if (orederingOptionGroup.getValue().toString().equalsIgnoreCase("Default order")) {
             if (defaultLineChartImgUrl.equalsIgnoreCase("")) {
 
-                defaultLineChartImgUrl = this.generateChartImage(defaultChart, (width - 100), height, defaultLineChartRenderingInfo);
+                defaultLineChartImgUrl = this.generateChartImage(defaultChart, (width - 100), height, defaultLineChartRenderingInfo, defaultLineChartContainer);
             }
+            defaultLineChartContainer.setVisible(true);
+            orderedLineChartContainer.setVisible(false);
             styles.add("." + teststyle + " {  background-image: url(" + defaultLineChartImgUrl + " );background-position:center; background-repeat: no-repeat; }");
+            defaultLineChartContainer.setStyleName(teststyle);
         } else {
             if (orderedLineChartImg.equalsIgnoreCase("")) {
-                orderedLineChartImg = this.generateChartImage(orderedChart, (width - 100), height, orderedLineChartRenderingInfo);
+                orderedLineChartImg = this.generateChartImage(orderedChart, (width - 100), height, orderedLineChartRenderingInfo, orderedLineChartContainer);
             }
+            defaultLineChartContainer.setVisible(false);
+            orderedLineChartContainer.setVisible(true);
             styles.add("." + teststyle + " {  background-image: url(" + orderedLineChartImg + " );background-position:center; background-repeat: no-repeat; }");
+            orderedLineChartContainer.setStyleName(teststyle);
         }
-        lineChartContainer.setStyleName(teststyle);
+
         studiesScatterChartsLayout.redrawCharts();
 
     }

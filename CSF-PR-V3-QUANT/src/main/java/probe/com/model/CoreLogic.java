@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1345,11 +1344,10 @@ public class CoreLogic implements Serializable {
                     significantPValue = false;
 
                 }
-               
                 if ((pGrI.equalsIgnoreCase(quant.getPatientGroupI()) || pGrI.equalsIgnoreCase(quant.getPatientSubGroupI())) && (pGrII.equalsIgnoreCase(quant.getPatientGroupII()) || pGrII.equalsIgnoreCase(quant.getPatientSubGroupII()))) {
                     if (quant.getStringFCValue().equalsIgnoreCase("Decreased") || quant.getStringFCValue().equalsIgnoreCase("Decrease")) {
                         comProt.addDown((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
-                    } else if (quant.getStringFCValue().equalsIgnoreCase("Increased") || quant.getStringFCValue().equalsIgnoreCase("Increase")) {                      
+                    } else if (quant.getStringFCValue().equalsIgnoreCase("Increased") || quant.getStringFCValue().equalsIgnoreCase("Increase")) {
                         comProt.addUp((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
                     } else if (quant.getStringFCValue().equalsIgnoreCase("Not Provided")) {
                         comProt.addNotProvided((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
@@ -1415,16 +1413,14 @@ public class CoreLogic implements Serializable {
 
                                 }
                                 if (quantPeptide.getFc_value() != -1000000000.0) {
-                                    quantPeptide.setFc_value(1.0 / quantPeptide.getFc_value());
+                                    quantPeptide.setFc_value((1.0 / quantPeptide.getFc_value()) * -1);
                                 }
                                 updatedQuantPeptidesList.add(quantPeptide);
                             }
                             quantPeptidesList.addAll(updatedQuantPeptidesList);
 
                         } else {
-                              if (quant.getUniprotAccession().equalsIgnoreCase("P08294")) {
-                            System.out.println("at increased is ---->>  add up " +fullComparisonPeptideMap.get(key).iterator().next().getString_fc_value());
-                        }
+
                             quantPeptidesList.addAll(fullComparisonPeptideMap.get(key));
 
                         }

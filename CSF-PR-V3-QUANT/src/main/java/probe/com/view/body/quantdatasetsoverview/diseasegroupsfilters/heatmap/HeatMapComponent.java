@@ -164,7 +164,7 @@ public class HeatMapComponent extends VerticalLayout {
         String kII = k1Arr[1] + " vs " + k1Arr[0];
         HeatmapCell equalCall = comparisonsCellsMap.get(kII);
         equalCall.select();
-        this.selectedDsList.add(comparison);
+//        this.selectedDsList.add(equalCall.getComparison());
         this.selectedCells.add(cell);
 //        this.selectedDsList.add(equalCall.getComparison());
         this.selectedCells.add(equalCall);
@@ -212,10 +212,12 @@ public class HeatMapComponent extends VerticalLayout {
 
                     for (QuantDiseaseGroupsComparison qdComp : header.getIncludedComparisons()) {
                         String kI = qdComp.getComparisonHeader();
-                        if (!kI.startsWith(selectedheader.replace("<center>", "").replace("</center>","").trim()+" vs ")) {
+                        if (!kI.startsWith(selectedheader.replace("<center>", "").replace("</center>", "").trim() + " vs ")) {
                             String[] k1Arr = kI.split(" vs ");
                             String kII = k1Arr[1] + " vs " + k1Arr[0];
+                            System.out.println("before " + qdComp.getComparisonHeader());
                             qdComp.setComparisonHeader(kII);
+                            System.out.println("after " + qdComp.getComparisonHeader());
 
                         }
                         selectedDsList.add(qdComp);
@@ -239,7 +241,7 @@ public class HeatMapComponent extends VerticalLayout {
                     selectedCells.addAll(header.getIncludedCells());
                     for (QuantDiseaseGroupsComparison qdComp : header.getIncludedComparisons()) {
                         String kI = qdComp.getComparisonHeader();
-                        if (!kI.startsWith(selectedheader.replace("<center>", "").replace("</center>","").trim()+" vs ")) {
+                        if (!kI.startsWith(selectedheader.replace("<center>", "").replace("</center>", "").trim() + " vs ")) {
                             String[] k1Arr = kI.split(" vs ");
                             String kII = k1Arr[1] + " vs " + k1Arr[0];
                             qdComp.setComparisonHeader(kII);
@@ -427,7 +429,7 @@ public class HeatMapComponent extends VerticalLayout {
             filteredComp.put(kI, comp);
         }
         Set<QuantDiseaseGroupsComparison> filteredSelectedDsList = new LinkedHashSet<QuantDiseaseGroupsComparison>();
-        filteredSelectedDsList.addAll(filteredComp.values());        
+        filteredSelectedDsList.addAll(filteredComp.values());
         updateSelectionManager(filteredSelectedDsList);
     }
 

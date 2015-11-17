@@ -19,8 +19,6 @@
     font-family: 'Vaadin-Icons';
 
 }
-
-
 .v-loading-indicator,  
 .v-loading-indicator-delay,  
 .v-loading-indicator-wait {  
@@ -39,7 +37,6 @@
 .spacer v-verticallayout v-layout v-vertical v-widget spacer v-verticallayout-spacer v-has-width v-has-height{
     /*background: #4d749f;*/
 }
-
 .v-tabsheet-tabitem-selected {
     border: none;
     margin: 0;
@@ -55,21 +52,17 @@
     color: #ee5311;
     alignment-adjust:middle
 }
-
 .v-tabsheet-tabitem:hover {
     color: #ee5311;;
 }
-
 .v-tabsheet-tabitem-selected:hover {
     color: #ee5311;
 }
 .v-tabsheet-tabs .v-tabsheet-tabitemcell-selected .v-captiontext{
-    
+
     font-size:14px;
-     text-shadow:none;
+    text-shadow:none;
 }
-
-
 /* Lay the options horizontally */
 .v-select-optiongroup-horizontal .v-select-option {
     display: inline-block;
@@ -82,8 +75,6 @@
     color:gray;    
     margin: 0 0 0 0px;  
 }
-
-
 .centerLabel{
     font-size:14px;
     height: 17px;
@@ -93,19 +84,15 @@
     text-align: left;
     margin: 0 0 0 0px;
 }
-
-
 /* Avoid wrapping if the layout is too tight */
 .v-select-optiongroup-horizontal {
     white-space: nowrap;
 }
-
 /* Some extra spacing is needed */
 .v-select-optiongroup-horizontal
 .v-select-option.v-radiobutton {
     padding-right: 10px;
 }
-
 .filterLabel{
     /*	background:url(img/label.png) no-repeat;
             width:190px;
@@ -179,8 +166,6 @@
     font-size: 14px;
     background: url(img/close_10_10.png) no-repeat;
 }
-
-
 .filterClosableBtnLabel{
     clear: both;
     background: url(img/remove-icon.jpg) no-repeat;
@@ -201,9 +186,6 @@
 
 
 }
-
-
-
 .studyFilterClosableBtnLabel{
     clear: both;
     background: url(img/remove-icon-blue.jpg) no-repeat;
@@ -277,7 +259,6 @@
     text-decoration: underline;
     color:#666;    
 }
-
 .valuelabel span{
     font-family: Verdana;    
     font-size:11px;
@@ -285,8 +266,6 @@
     text-decoration: none;
     color:gray;    
 }
-
-
 .redvaluelabel span{
     font-size:11px;
     font-family: Verdana;    
@@ -294,8 +273,6 @@
     text-decoration: none;
     color:red;    
 }
-
-
 .greenvaluelabel span{
     font-size:11px;
     font-family: Verdana;    
@@ -303,7 +280,6 @@
     text-decoration: none;
     color:#009900;    
 }
-
 .bluevaluelabel span{
     font-size:11px;
     font-family: Verdana;    
@@ -311,7 +287,6 @@
     text-decoration: none;
     color:blue;    
 }
-
 .valuelabel textArea{
     font-size:12px;
     font-family: Verdana;    
@@ -321,7 +296,6 @@
     resize: none;
     /*text-transform: uppercase;*/
 }
-
 .valuelink  textArea{
     font-size:11px;
     font-family: Verdana;    
@@ -352,7 +326,6 @@
     padding: 0 0 0 0;
     cursor: pointer;
 }
-
 .treeNodeLabel{
     clear: both;
     font-size: 12px;
@@ -381,11 +354,6 @@
     font-size: 14px;    
     font-family:Verdana;
 }
-/*.filterShowLabel:hover{
-    color: black;
-    font-size: 15px;
-}*/
-
 .externalLinkTableClickedLabel a{
     color: #f8f9f9;
     font-size: 12px;
@@ -403,7 +371,6 @@
     font-weight: bold;
 
 }
-
 .comparisonHeaders{
     font-family: Verdana; 
     font-size: 12px;
@@ -433,7 +400,6 @@
     color:gray;
 
 }
-
 .miniDatasetInfoHeaders{
     font-family:Verdana; 
     font-size: 9px;
@@ -447,22 +413,18 @@
     color:gray;
 
 }
-
 .spacer{
     height: 1px;
     border: 1px #dce0e0 dotted;
 
 
 }
-
 .v-select-optiongroup-horizontal .v-select-option {
     display: inline-block;
 }
-
 .v-select-optiongroup-horizontal {
     white-space: nowrap;
 }
-
 .v-select-optiongroup-horizontal .v-select-option.v-radiobutton {
     padding-right: 10px;
 }
@@ -470,12 +432,10 @@
     font-family:Verdana; 
 
 }
-
 .grayborder{
     border: none;
 
 }
-
 .v-tree-node-caption-treeHeader{
     font-family:Verdana; 
     font-size: 12px;
@@ -487,8 +447,7 @@
     font-family:Verdana; 
     font-size: 10px;
     font-weight: bold;
-    color:gray;    
-
+    color:gray;
 }
 .publicationoverviewlabel{
 
@@ -504,7 +463,6 @@
 
 
 }
-
 .selectedpublicationoverviewlabel{
     color: rgb(59, 90, 122);
     font-size: 14px;
@@ -544,7 +502,6 @@
     background: url(img/blackdot.png)no-repeat;
 
 }
-
 .hmcolumnlabel {
     border: 1px solid #F6F0F0;
     margin-top: 148px;
@@ -564,7 +521,6 @@
     border: 1px solid #4d749f; 
 
 }
-
 .hmcolumnlabel_heighlightcell {
     border: 1px solid #fc690a;
     margin-top: 148px;
@@ -587,8 +543,6 @@
     line-height:100%;
     cursor: pointer;    
 }
-
-
 .hmcolumnlabel_selected {
     border: 1px solid  #4d749f;
     font-size:14px;
@@ -661,8 +615,6 @@
     cursor: pointer; 
 
 }
-
-
 .hmrowlabel {
     border: 1px solid #F6F0F0;
     text-align: center;
@@ -681,19 +633,12 @@
     line-height:100%;
     cursor: pointer;    
 }
-
-
 .hmrowlabel_heighlightcell {
-
     border: 1px solid #fc690a;
     text-align: center;
     font-size:14px;
-
     line-height: 45px; 
 }
-
-
-
 .hmrowlabel_selected {
     border: 1px solid  #4d749f;
     text-align: center;
@@ -709,7 +654,6 @@
     line-height:100%;
     cursor: pointer;    
 }
-
 .col {
     border: 1px solid #fc690a;
     text-align: center;
@@ -721,12 +665,9 @@
 
 
 }
-
-
 .heatmapborder div{
     border: 1px solid #dce0e0;    
 }
-
 .initheatmapcoloredcell{
     border: 2px solid #EFF2FB;   
     height:45px;
@@ -737,7 +678,6 @@
     font-size:14px;
 
 }
-
 .heatmapcoloredcell{
     border: 2px solid #EFF2FB;   
     height:45px; 
@@ -801,7 +741,6 @@
     cursor:pointer;
 
 }
-
 .resetlabelbtn{
     width: 100px;
     height: 30px;
@@ -863,18 +802,14 @@ resetlabelbtn p{
 
 }
 .grcompbtn p{
-
     margin-top:5px;
     cursor: pointer;
-
 }
 .grcompbtn:hover{
     background-color: lightgray;
 
 }
-
 .tablesearchingbtn{
-    /*width: 40px;*/
     height: 24px;
     background-color:  whitesmoke;
     background-image: url(img/icon_find.png);
@@ -883,9 +818,7 @@ resetlabelbtn p{
     border: 1px solid  rgb(169, 169, 169) ;
     border-radius: 3px;
     cursor:pointer;
-
 }
-
 .tablesearchingbtn:hover{
     background-color: lightgray;
 
@@ -902,12 +835,10 @@ resetlabelbtn p{
     cursor:pointer;
 
 }
-
 .smallresetbtn:hover{
     background-color: lightgray;
 
 }
-
 .closebtn{
     clear: both;
     width: 16px;
@@ -931,8 +862,6 @@ resetlabelbtn p{
     background: #ffffff;
     overflow-y:hidden;
 }
-
-
 .rotatedlabel {
     margin-top: 200px;
     margin-left:5px;
@@ -954,10 +883,7 @@ resetlabelbtn p{
     background-image: url(img/red_right.png);
     background-position:center;
     background-repeat: no-repeat;
-
-
 }
-
 .lightbluearr{
     width: 13px;
     height: 13px;
@@ -967,7 +893,6 @@ resetlabelbtn p{
 
 
 }
-
 .greenleftarr{
     width: 13px;
     height: 13px;
@@ -1146,123 +1071,151 @@ resetlabelbtn p{
     margin-left:10px;
     margin-right:10px;
 }
-.lightgrayborger{
+.lightgrayborder{
     border:1px solid lightgray;
     border-left-color: lightgray;
     border-right-color: lightgray;    
 }
 
+
+
+
+
 .greenstackedlayout div{
     background: #009900;
     border: 1px solid black;     
     cursor:pointer;
-    opacity: 0.3;
 }
 .midgreenstackedlayout div{
     background: #D0F5A9;
     border: 1px solid black; 
-    opacity: 0.3;
 
     cursor:pointer;
 }
-
-
 .lightbluestackedlayout div{
     background: rgb(1, 141, 244); 
     border: 1px solid black;    
     cursor: pointer;
-    opacity: 0.3;
 }
-
 .redstackedlayout div{
     background: #cc0000;
     border: 1px solid black;    
     cursor:pointer;
-    opacity: 0.3;
 }
-
 .midredstackedlayout div{
     background: #FF7F7F;
     border: 1px solid black;     
     cursor:pointer;
-    opacity: 0.3;
 }
-
 
 .greenstackedlayout div:hover{
-    opacity: 1;
+    border:2px solid gray;
 }
 .midgreenstackedlayout div:hover{
-    opacity: 1;
+    border:2px solid gray;
 }
-
-
 .lightbluestackedlayout div:hover{
-    opacity: 1;
+    border:2px solid gray;
 }
-
 .redstackedlayout div:hover{
-    opacity: 1;
+     border:2px solid gray;
+     
 }
-
 .midredstackedlayout div:hover{
-    opacity: 1;
+      border:2px solid gray;
+       opacity: 1;
 }
-
-
 
 
 .selectedgreenstackedlayout div{
     background: #009900;
-    border: 1px solid black;     
+    border: 2px solid black;     
     cursor:pointer;
     opacity: 1;
 }
 .selectedmidgreenstackedlayout div{
     background: #D0F5A9;
-    border: 1px solid black; 
+    border: 2px solid black; 
     opacity: 1;
-
     cursor:pointer;
 }
-
-
 .selectedlightbluestackedlayout div{
     background: rgb(1, 141, 244); 
-    border: 1px solid black;    
+    border: 2px solid black;    
     cursor: pointer;
     opacity: 1;
 }
-
 .selectedredstackedlayout div{
+    background: #cc0000;
+    border: 2px solid black;    
+    cursor:pointer;
+    opacity: 1;
+}
+.selectedmidredstackedlayout div{
+    background: #FF7F7F;
+    border: 2px solid black;     
+    cursor:pointer;
+    opacity: 1;
+}
+
+
+.unselectedgreenstackedlayout div{
+    background: #009900;
+    border: 1px solid black;     
+    cursor:pointer;
+    opacity: 0.3;
+}
+.unselectedmidgreenstackedlayout div{
+    background: #D0F5A9;
+    border: 1px solid black; 
+    opacity: 0.3;
+
+    cursor:pointer;
+}
+.unselectedlightbluestackedlayout div{
+    background: rgb(1, 141, 244); 
+    border: 1px solid black;    
+    cursor: pointer;
+    opacity: 0.3;
+}
+.unselectedredstackedlayout div{
     background: #cc0000;
     border: 1px solid black;    
     cursor:pointer;
-    opacity: 1;
+    opacity: 0.3;
 }
-
-.selectedmidredstackedlayout div{
+.unselectedmidredstackedlayout div{
     background: #FF7F7F;
     border: 1px solid black;     
     cursor:pointer;
-    opacity: 1;
+    opacity: 0.3;
 }
 
-
-
-
-
-
-
-
-
-
-
+.unselectedgreenstackedlayout div:hover{
+    border:2px solid gray;
+    opacity: 1;
+}
+.unselectedmidgreenstackedlayout div:hover{
+    border:2px solid gray;
+    opacity: 1;
+}
+.unselectedlightbluestackedlayout div:hover{
+    border:2px solid gray;
+    opacity: 1;
+}
+.unselectedredstackedlayout div:hover{
+     border:2px solid gray;
+     opacity: 1;
+     
+}
+.unselectedmidredstackedlayout div:hover{
+      border:2px solid gray;
+       opacity: 1;
+}
 
 .greenlayout div{
     background: #009900;
 }
-
 .lightbluelayout div{
     background: rgb(1, 141, 244);
 }
@@ -1284,15 +1237,12 @@ resetlabelbtn p{
     background-position:center;
 
 }
-
-
 .orangestackedlayout div{
     background: #FF8000;
     border-left: 1px solid black;
     border-right: 1px solid black;     
     cursor:pointer;
 }
-
 .intersectransparentcomp{    
     background-color: rgba(255, 255, 53, 0.2);
     border-left: 1px solid black;
@@ -1321,26 +1271,16 @@ resetlabelbtn p{
     padding: 0 0 0 0;
     cursor: pointer;
 }
-
 .v-window-wrap{
     background:white !important;
 }
 .v.button-link:focus {
     outline: none !important;
 }
-v-gridlayout-slot:focus{
+.v-gridlayout-slot:focus{
     outline: none !important;
 
 }
-
-/*.studyexplorer{
-    width: 31px;
-    height: 31px;
-    background-image: url(img/exploringfiltermin.png);
-    background-repeat: no-repeat;
-    cursor: pointer;
-
-}*/
 .studyexplorer div{
     width: 45px;
     line-height: 14px;
@@ -1366,7 +1306,6 @@ v-gridlayout-slot:focus{
 
 }
 .studyexplorer:focus{
-
     outline: none !important;
 }
 .filtercaption{
@@ -1401,7 +1340,6 @@ v-gridlayout-slot:focus{
     width: auto;
     zoom: 1;
 }
-
 .proteinsLinkLabel div{
     font-size:13px;
     font-style: italic;
@@ -1419,7 +1357,6 @@ v-gridlayout-slot:focus{
     font-style: initial
 
 }
-
 .tabbtn{
     border:1px solid gray;
     border-radius:5px;
@@ -1440,7 +1377,6 @@ v-gridlayout-slot:focus{
 
 
 }
-
 .tabbtn div:hover{ 
     font-weight: bold;  
     color: #ee5311;
@@ -1456,7 +1392,6 @@ v-gridlayout-slot:focus{
 
 
 }
-
 .selectedtabbtn div{ 
     text-align:center;
     line-height:100%;
@@ -1477,7 +1412,6 @@ v-gridlayout-slot:focus{
     padding-left: 20px;
 
 }
-
 .selectallbtn{
     clear: both;
     width: 24px;
@@ -1495,7 +1429,6 @@ v-gridlayout-slot:focus{
     background-color: lightgray;
 
 }
-
 .unselectallbtn{
     clear: both;
     width: 24px;
@@ -1507,13 +1440,11 @@ v-gridlayout-slot:focus{
     background-position:center;
     background-repeat: no-repeat;
     cursor:pointer;
-
 }
 .unselectallbtn:hover{
     background-color: lightgray;
 
 }
-
 .selectmultibtn{
     clear: both;
     width: 24px;
@@ -1525,13 +1456,11 @@ v-gridlayout-slot:focus{
     background-position:center;
     background-repeat: no-repeat;
     cursor:pointer;
-
 }
 .selectmultibtn:hover{
     background-color: lightgray;
 
 }
-
 .selectmultiselectedbtn{
     clear: both;
     width: 24px;
@@ -1549,8 +1478,6 @@ v-gridlayout-slot:focus{
     background-color: lightgray;
 
 }
-
-
 .exportpdfbtn{
     clear: both;
     width: 20px;
@@ -1566,14 +1493,10 @@ v-gridlayout-slot:focus{
 }
 .exportpdfbtn:hover{
     background-color: lightgray;
-
 }
 .exportpdfbtn:focus {
     outline: none;
 }
-
-
-
 .clearselectionbtn{
     clear: both;
     width: 50px;
@@ -1598,7 +1521,6 @@ v-gridlayout-slot:focus{
 .clearselectionbtn:focus {
     outline: none;
 }
-
 .exportxslbtn{
     clear: both;
     width: 20px;
@@ -1616,12 +1538,9 @@ v-gridlayout-slot:focus{
     background-color: lightgray;
 
 }
-
 .exportxslbtn:focus {
     outline: none;
 }
-
-
 .resetbtn{
     clear: both;
     width: 50px;
@@ -1736,12 +1655,6 @@ v-gridlayout-slot:focus{
     /*border-bottom: 1px dotted black;*/
 }
 
-.infoicon {
-    /*background: url(http://www.damtp.cam.ac.uk/user/sjc1/damtp/icons/10x10/pinkball.gif) no-repeat;*/
-    background: url(img/info.png) no-repeat;
-    background-position:center;
-    cursor: pointer;
-}
 
 .infoicon{
     clear: both;
@@ -1750,7 +1663,7 @@ v-gridlayout-slot:focus{
     border-radius: 5px;
     border:  1px solid lightgray;
     background-color:  whitesmoke;
-    background-image:  url(img/info.png);
+    background-image:  url(img/help.png);
     background-position:center;
     background-repeat: no-repeat;
     cursor:pointer;
@@ -1773,10 +1686,8 @@ v-gridlayout-slot:focus{
     background:whitesmoke;
     font-family:Verdana;
 }
-
-
 .framelayout{
-        border-right: 1px solid lightgray;
+    border-right: 1px solid lightgray;
     border-bottom:1px solid #f5f5f5;
     background:  #f5f5f5;
     display: block;
@@ -1802,15 +1713,15 @@ v-gridlayout-slot:focus{
 }
 .bottomborder{
     border-bottom: 1px solid lightgray;
-    
+
 }
 .fulloverview{
-       background: url(img/fulloverview.png) no-repeat;
+    background: url(img/fulloverview.png) no-repeat;
     background-size:contain;
-    
+
 }
 .popupmainbody{
-    
+
     border:1px outset black;
 }
 
@@ -1826,5 +1737,31 @@ v-gridlayout-slot:focus{
 
 }
 
+.subtitle{
+  clear: both;
+    font-size: 16px;
+    height: 16px;
+    line-height:16px;
+    font-family:Verdana;
+    font-weight: bold;
+    color:gray;    
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+}
 
 
+
+
+.v-select-optiongroup-specialhorizontal .v-select-option {
+    display: inline-block;
+    padding-right: 10px; 
+}
+
+
+/* Avoid wrapping if the layout is too tight */
+.v-select-optiongroup-specialhorizontal {
+    white-space: nowrap;
+    font-family:verdana;
+    font-size:16px;
+    color:gray;
+}

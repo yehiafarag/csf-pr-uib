@@ -84,7 +84,7 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
         bottomLayout.addComponent(proteinInfoHideShow);
         proteinInfoHideShow.setVisability(true);
 
-        HideOnClickLayout datasetInfoLayout = new HideOnClickLayout("Dataset Information", datasetsInformationContainer, null,infoText);
+        HideOnClickLayout datasetInfoLayout = new HideOnClickLayout("Dataset Information", datasetsInformationContainer, null, infoText);
         datasetInfoLayout.setMargin(new MarginInfo(false, false, false, false));
         bottomLayout.addComponent(datasetInfoLayout);
         datasetInfoLayout.setVisability(false);
@@ -139,7 +139,7 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
         bottomLayout.addComponent(proteinInfoHideShow);
         proteinInfoHideShow.setVisability(true);
 
-        HideOnClickLayout datasetInfoLayout = new HideOnClickLayout("Dataset Information", datasetsInformationContainer, null,infoText);
+        HideOnClickLayout datasetInfoLayout = new HideOnClickLayout("Dataset Information", datasetsInformationContainer, null, infoText);
         datasetInfoLayout.setMargin(new MarginInfo(false, false, false, false));
         bottomLayout.addComponent(datasetInfoLayout);
         datasetInfoLayout.setVisability(false);
@@ -235,7 +235,6 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
         }
 
         for (int dsID : dsQuantPepMap.keySet()) {
-
             String key = "-" + dsID + "-" + cp.getProteinAccssionNumber() + "-";
             PeptidesInformationOverviewLayout peptideInfoLayout = new PeptidesInformationOverviewLayout(cp.getSequence(), dsQuantPepMap.get(dsID), subWidth, false, null, 0);
             peptidesInfoLayoutDSIndexMap.put(key, peptideInfoLayout);
@@ -245,7 +244,6 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
             DatasetInformationOverviewLayout datasetInfoLayout = new DatasetInformationOverviewLayout(subWidth);
             proteinInfoLayoutDSIndexMap.put(key, proteinInfoLayout);
             datasetInfoLayoutDSIndexMap.put(key, datasetInfoLayout);
-
         }
 
     }
@@ -276,26 +274,18 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
     }
 
     private void updateProteinDatasetInfoLayout(String protStudyKey) {
-
         proteinsInformationContainer.removeAllComponents();
         datasetsInformationContainer.removeAllComponents();
         for (String key : this.proteinInfoLayoutDSIndexMap.keySet()) {
             if (key.equalsIgnoreCase(protStudyKey)) {
-
                 proteinInfoLayoutDSIndexMap.get(key).updateProteinsForm(datasetQuantProteinsMap.get(key), accession, url, name);
                 proteinsInformationContainer.addComponent(proteinInfoLayoutDSIndexMap.get(key));
                 proteinsInformationContainer.setComponentAlignment(proteinInfoLayoutDSIndexMap.get(key), Alignment.TOP_CENTER);
-
                 datasetInfoLayoutDSIndexMap.get(key).updateDatasetForm(datasetIdDsObjectProteinsMap.get(key));
                 datasetsInformationContainer.addComponent(datasetInfoLayoutDSIndexMap.get(key));
                 datasetsInformationContainer.setComponentAlignment(datasetInfoLayoutDSIndexMap.get(key), Alignment.TOP_CENTER);
-
                 break;
-
             }
-
         }
-
     }
-
 }

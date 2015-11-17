@@ -57,16 +57,16 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
         foldChange = new InformationField("Fold Change");
         proteinsFormLayout.addComponent(foldChange, 2, 0);
 
-        roc = new InformationField("Roc Auc");
+        roc = new InformationField("ROC AUC");
         proteinsFormLayout.addComponent(roc, 3, 0);
 
-        pValue = new InformationField("p-Value");
+        pValue = new InformationField("p-value");
         proteinsFormLayout.addComponent(pValue, 0, 1);
 
-        pvalueSignificanceThreshold = new InformationField("p-Value Sig-Threshold");
+        pvalueSignificanceThreshold = new InformationField("p-value Sig-Threshold");
         proteinsFormLayout.addComponent(pvalueSignificanceThreshold, 1, 1);
 
-        pValueComm = new InformationField("p-Value Comments");
+        pValueComm = new InformationField("p-value Comments");
         proteinsFormLayout.addComponent(pValueComm, 2, 1);
 
         quantPeptidesNumber = new InformationField("#Quant Peptides");
@@ -87,7 +87,6 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
         name.setValue(protName, url);
         pvalueSignificanceThreshold.setVisible(true);
         additionalComments.setVisible(true);
-        
 
         pvalueSignificanceThreshold.setValue(quantProtein.getPvalueSignificanceThreshold(), null);
         additionalComments.setValue(quantProtein.getAdditionalComments(), null);

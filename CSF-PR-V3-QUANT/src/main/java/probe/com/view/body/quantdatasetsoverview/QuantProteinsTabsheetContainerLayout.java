@@ -48,6 +48,8 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
     private final CSFPRHandler mainHandler;
     private final Map<Integer, ProteinOverviewJFreeLineChartContainer> tabLayoutIndexMap = new HashMap<Integer, ProteinOverviewJFreeLineChartContainer>();
 
+    private boolean externalSelection = false;
+
     /**
      * central selection manager event
      *
@@ -57,6 +59,9 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
     public void selectionChanged(String type) {
         if (type.equalsIgnoreCase("Quant_Proten_Selection") && !selfSelection) {
 
+            if (lastSelectedTab != null) {
+                externalSelection = true;
+            }
             if (proteinsTabsheet != null && proteinsTabsheet.getComponentCount() < 20) {
                 proteinsTabsheet.removeAllComponents();
             } else {
@@ -84,24 +89,15 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
             tabIndexMap.clear();
             tabLayoutIndexMap.clear();
             for (final String key : protSelectionMap.keySet()) {
-                int i = 0;
                 String protAcc = key.replace("--", "").trim().split(",")[0];
-//            String protURL = "http://www.uniprot.org/uniprot/" + protAcc.toUpperCase();
-//            String tooltip = "UniProt link for " + protAcc.toUpperCase();
-//            if (protAcc.equalsIgnoreCase("") || protAcc.equalsIgnoreCase("Not Available") || protAcc.equalsIgnoreCase("Entry Deleted") || protAcc.equalsIgnoreCase("Entry Demerged") || protAcc.equalsIgnoreCase("NOT RETRIEVED") || protAcc.equalsIgnoreCase("DELETED")) {
-//                tooltip = "UniProt Not Available ";
-////                protAcc = key.replace("--", "").trim().split(",")[0];
-//                protURL = null;
-//
-//            }
-
                 String protName = key.replace("--", "").trim().split(",")[1];
                 HorizontalLayout vlo = generateProtTab(key, protName, protAcc, protSelectionMap.get(key), selectedComparisonList);
                 final Tab t1;
                 t1 = proteinsTabsheet.addTab(vlo);
-                
+
                 t1.setCaption(protName);
                 t1.setClosable(true);
+                t1.setId(key);
                 t1.setStyleName("tabwithcharticon");
                 ProteinOverviewJFreeLineChartContainer tabLayout = (ProteinOverviewJFreeLineChartContainer) vlo.getComponent(0);
                 tabLayoutIndexMap.put(tabCounter, tabLayout);
@@ -113,6 +109,11 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
                 tabIndexMap.put(tabCounter, t1);
                 protSelectionKeyTabMap.put(key, t1);
                 tabCounter++;
+
+            }
+            if (lastSelectedTab != null) {
+                externalSelection = false;
+                proteinsTabsheet.setSelectedTab(protSelectionKeyTabMap.get(lastSelectedTab.getId()));
 
             }
 
@@ -272,7 +273,6 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
         bodyLayout.setMargin(true);
         bodyLayout.setHeightUndefined();
         bodyLayout.setStyleName(Reindeer.LAYOUT_WHITE);
-
         ProteinOverviewJFreeLineChartContainer overallPlotLayout = new ProteinOverviewJFreeLineChartContainer(datasetExploringCentralSelectionManager, diseaseGroupsComparisonsProteinArray, selectedDiseaseGroupsComparisonsList, (pageWidth), quantProteinName, quantProteinAccession, searchingMode, proteinKey, mainHandler);
         bodyLayout.addComponent(overallPlotLayout);
         bodyLayout.setComponentAlignment(overallPlotLayout, Alignment.TOP_CENTER);
@@ -290,16 +290,16 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
                 this.noProtLabel.setVisible(true);
                 return;
             }
-
             this.noProtLabel.setVisible(false);
             ((HideOnClickLayout) this.getParent()).setVisability(true);
             HorizontalLayout selectedTab = (HorizontalLayout) proteinsTabsheet.getSelectedTab();
             ProteinOverviewJFreeLineChartContainer overallPlotLayout = (ProteinOverviewJFreeLineChartContainer) selectedTab.getComponent(0);
             overallPlotLayout.redrawCharts();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("error at line 300 " + this.getClass().getName() + "  " + e.getMessage());
         }
     }
+    private Tab lastSelectedTab = null;
 
     @Override
     public void selectedTabChange(TabSheet.SelectedTabChangeEvent event) {
@@ -316,6 +316,9 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
                 }
             }
 
+        }
+        if (!externalSelection) {
+            lastSelectedTab = event.getTabSheet().getTab(event.getTabSheet().getSelectedTab());
         }
 
     }

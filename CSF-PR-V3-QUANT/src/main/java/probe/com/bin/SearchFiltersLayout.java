@@ -41,8 +41,8 @@ import probe.com.view.core.TextFieldFilter;
  * @author Yehia Farag
  */
 public class SearchFiltersLayout extends VerticalLayout implements Serializable, com.vaadin.event.LayoutEvents.LayoutClickListener {
-    
-    private final String[] studyTypeValues,sampleTypeValues,technologyValues,analyticalApproachValues,patGr1,patSubGr1;
+
+    private final String[] studyTypeValues, sampleTypeValues, technologyValues, analyticalApproachValues, patGr1, patSubGr1;
     private final Label searchingTitle;
     private final HorizontalLayout titleLayout;
     private final ShowLabel show;
@@ -62,10 +62,10 @@ public class SearchFiltersLayout extends VerticalLayout implements Serializable,
     private final Button searchingBtn = new Button("");
     private final Button enableAdvancedSearchBtn = new Button("Show Filters");
     private final String Select_All_Dataset_Str = "Search All Datasets";
-    private Label searchByLabel,dataTypeLabel,datasetLabel;
+    private Label searchByLabel, dataTypeLabel, datasetLabel;
     private final TreeMap<Integer, String> datasetNamesList;
     private final HorizontalLayout searchProtLayout = new HorizontalLayout();
-    
+
     private VerticalLayout searchDatatLayout;
     private final HorizontalLayout searchDatatypeLayout = new HorizontalLayout();
     private final HorizontalLayout selectDatasetLayout = new HorizontalLayout();
@@ -76,36 +76,33 @@ public class SearchFiltersLayout extends VerticalLayout implements Serializable,
     private boolean extendedView = false;
     private String defaultText = "Please use one key-word per line and choose the search options";
     private final VerticalLayout minFilterLabelsLayout = new VerticalLayout();
-    
-    
+
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         if (extendedView) {
             this.hideLayout();
-            
+
         } else {
-            
+
             this.showLayout();
         }
-        
+
     }
-    
+
     public SearchFiltersLayout(CSFPRHandler handler) {
         this.setMargin(new MarginInfo(false, false, false, false));
         this.setWidth("100%");
         this.setHeightUndefined();
         this.datasetNamesList = handler.getIdentificationDatasetNamesList();
-        
-        
+
         //init filters values
-        studyTypeValues =  new String[]{"Discovery", "Verification"};
+        studyTypeValues = new String[]{"Discovery", "Verification"};
         sampleTypeValues = new String[]{"CSF", "Plasma", "Serum"};
         technologyValues = new String[]{"Mass spectrometry", "WB", "ELISA", "2DE"};
         analyticalApproachValues = new String[]{"label-free", "SELDI", "MALDI", "TMT"};
         patGr1 = new String[]{"MS", "CONTROL"};
-        patSubGr1 =  new String[]{"SPMS", "PPMS","CIS-MS"};
-        
-        
+        patSubGr1 = new String[]{"SPMS", "PPMS", "CIS-MS"};
+
         HorizontalLayout clickableTitle = new HorizontalLayout();
         clickableTitle.setSizeUndefined();
         clickableTitle.setSpacing(true);
@@ -129,9 +126,8 @@ public class SearchFiltersLayout extends VerticalLayout implements Serializable,
         clickableTitle.addComponent(searchingTitle);
         clickableTitle.setComponentAlignment(searchingTitle, Alignment.TOP_LEFT);
         clickableTitle.addLayoutClickListener(SearchFiltersLayout.this);
-         titleLayout.addComponent(clickableTitle);
-        
-        
+        titleLayout.addComponent(clickableTitle);
+
         Label infoLable = new Label("<div style='border:1px outset black;text-align:justify;text-justify:inter-word;'><h3 style='font-family:verdana;color:black;font-weight:bold;margin-left:20px;margin-right:20px;'>Information</h3><p  style='font-family:verdana;color:black;margin-left:20px;margin-right:20px;'>Type in search keywords (one per line) and choose the search type. All experiments containing protein(s) where the keyword is found are listed. View the information about each protein from each experiment separately by selecting them from the list.</p></div>");
         infoLable.setContentMode(ContentMode.HTML);
         infoLable.setWidth("300px");
@@ -144,40 +140,33 @@ public class SearchFiltersLayout extends VerticalLayout implements Serializable,
         infoIco.setHeight("16px");
         titleLayout.addComponent(infoIco);
         titleLayout.setComponentAlignment(infoIco, Alignment.TOP_RIGHT);
-       
+
         titleLayout.setExpandRatio(clickableTitle, 0.05f);
 //        titleLayout.setExpandRatio(searchingTitle, 0.01f);
         titleLayout.setExpandRatio(infoIco, 0.98f);
-        
-        
-        this.addComponent(titleLayout); 
+
+        this.addComponent(titleLayout);
         this.addComponent(topLayout);
         initMainComponentBodyLayout();
-       
-        
 
     }
-    
-   
-    
 
     private void initMainComponentBodyLayout() {
-       
-        
+
         topLayout.setHeight("270px");
         topLayout.setWidthUndefined();
         topLayout.addComponent(topFrameLayout);
         topFrameLayout.setWidthUndefined();
         topFrameLayout.setHeight("270px");
         topLayout.setStyleName(Reindeer.LAYOUT_WHITE);
-       topFrameLayout.setSpacing(true);
-        
+        topFrameLayout.setSpacing(true);
+
         topFrameLayout.addComponent(topLeftLayout);
         topFrameLayout.addComponent(topRightLayout);
-        
-         filtersController.getFullFilterLayout().setVisible(true);
+
+        filtersController.getFullFilterLayout().setVisible(true);
         filtersController.getFullFilterLayout().setSpacing(true);
-         topFrameLayout.addComponent(filtersLabelsLayout);
+        topFrameLayout.addComponent(filtersLabelsLayout);
         topFrameLayout.setComponentAlignment(filtersLabelsLayout, Alignment.TOP_LEFT);
         filtersLabelsLayout.setHeight("100%");
 
@@ -190,22 +179,16 @@ public class SearchFiltersLayout extends VerticalLayout implements Serializable,
 //        filtersLabelsLayout.addComponent(searchButtonsLayout);
 
 //        filtersLabelsLayout.setComponentAlignment(searchButtonsLayout, Alignment.BOTTOM_LEFT);
-        
         filtersLabelsLayout.setSpacing(true);
-        
+
 //        topFrameLayout.addComponent(  filtersController.getFullFilterLayout());
-        
-         
-      
         topLeftLayout.setSpacing(true);
         topLeftLayout.setMargin(true);
         topRightLayout.setSpacing(true);
         topRightLayout.setMargin(true);
 //        topRightLayout.setWidth("700px");
 //        topRightLayout.setStyleName(Reindeer.LAYOUT_BLACK);
-        
-       
-        
+
         initTopLeftLayout();
         initTopRightLayout();
 //        this.setWidth("100%");
@@ -233,37 +216,33 @@ public class SearchFiltersLayout extends VerticalLayout implements Serializable,
         keywordFilter.getSearchbyGroup().addStyleName("horizontal");
         searchProtLayout.setWidthUndefined();
         searchProtLayout.addComponent(keywordFilter.getSearchbyGroup());
-        searchProtLayout.setComponentAlignment(keywordFilter.getSearchbyGroup(),Alignment.BOTTOM_LEFT);
+        searchProtLayout.setComponentAlignment(keywordFilter.getSearchbyGroup(), Alignment.BOTTOM_LEFT);
         searchProtLayout.setSpacing(true);
         searchProtLayout.setHeight("50px");
         initValidProtFilter();
-        initSeachingBtnsLayout();           
+        initSeachingBtnsLayout();
         showLayout();
     }
-    
-    
-    private void initSeachingBtnsLayout(){
-     searchButtonsLayout.setHeight("32px");
+
+    private void initSeachingBtnsLayout() {
+        searchButtonsLayout.setHeight("32px");
         searchButtonsLayout.setWidth("200px");
         searchButtonsLayout.addComponent(searchingBtn);
         searchButtonsLayout.setComponentAlignment(searchingBtn, Alignment.BOTTOM_LEFT);
         searchButtonsLayout.addComponent(enableAdvancedSearchBtn);
         searchButtonsLayout.setComponentAlignment(enableAdvancedSearchBtn, Alignment.MIDDLE_RIGHT);
 
-        
 //        topRightLayout.setExpandRatio(filtersLabelsLayout, 0.9f);
-        
-        
         //middle layout search buttons
         searchingBtn.setStyleName(Reindeer.BUTTON_LINK);
         searchingBtn.setIcon(new ThemeResource("img/searchBtn.png"));
         enableAdvancedSearchBtn.setDescription("Activated with Quantification Data Search");
         enableAdvancedSearchBtn.setStyleName(Reindeer.BUTTON_LINK);
         enableAdvancedSearchBtn.addClickListener(new Button.ClickListener() {
-            
+
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                advancedSearchLayoutContainer.setVisible(! advancedSearchLayoutContainer.isVisible());
+                advancedSearchLayoutContainer.setVisible(!advancedSearchLayoutContainer.isVisible());
                 if (enableAdvancedSearchBtn.getCaption().equals("Show Filters")) {
                     enableAdvancedSearchBtn.setCaption("Hide Filters");
                 } else {
@@ -277,15 +256,14 @@ public class SearchFiltersLayout extends VerticalLayout implements Serializable,
 //                }
                 doneFilterBtn.setVisible(false);
 //                getFiltersController().getFullFilterLayout().setVisible(false);
-                
+
             }
         });
-    
-    bottomLeftLayout.addComponent(searchButtonsLayout);
+
+        bottomLeftLayout.addComponent(searchButtonsLayout);
         bottomLeftLayout.setComponentAlignment(searchButtonsLayout, Alignment.BOTTOM_RIGHT);
-    bottomLeftLayout.setHeight("50px");
-    
-    
+        bottomLeftLayout.setHeight("50px");
+
     }
 
     /**
@@ -297,46 +275,36 @@ public class SearchFiltersLayout extends VerticalLayout implements Serializable,
         topRightLayout.setWidthUndefined();
         topRightLayout.setHeight("100%");
 
-        
         //main advanced search layout
         topRightLayout.addComponent(advancedSearchLayoutContainer);
         advancedSearchLayoutContainer.setVisible(false);
         advancedSearchLayoutContainer.setSpacing(true);
 //        topRightLayout.setExpandRatio(advancedSearchLayoutContainer, 3);
-        
-        
-        
-
-       
-
-       
 
         //init advanced search layout container
         advancedSearchLayoutContainer.setWidthUndefined();
-        advancedSearchLayoutContainer.setHeight("270px");        
+        advancedSearchLayoutContainer.setHeight("270px");
 //        advancedSearchLayoutContainer.addComponent(advancedSearchLayout);        
 //        advancedSearchLayout.setSizeFull();
 //        advancedSearchLayout.removeAllComponents();
         advancedSearchLayoutContainer.setMargin(new MarginInfo(false, true, false, true));
-        initQuantificationFiltersLayout();       
-        topRightLayout.setMargin(new MarginInfo(true, true, true, false)); 
+        initQuantificationFiltersLayout();
+        topRightLayout.setMargin(new MarginInfo(true, true, true, false));
 
     }
 
-    
-
     private void showLayout() {
-        show.updateIcon(true);        
-        extendedView = true;        
+        show.updateIcon(true);
+        extendedView = true;
 //        enableAdvancedSearchBtn.setVisible(true);
         topLayout.setHeight("270px");
         topFrameLayout.setHeight("270px");
-         topLeftLayout.setVisible(true);
+        topLeftLayout.setVisible(true);
 //        searchByLabel.setVisible(true);
-         this.searchDatatLayout.setVisible(true);
+        this.searchDatatLayout.setVisible(true);
         this.searchProtLayout.setVisible(true);
         this.bottomLeftLayout.setVisible(true);
-        
+
 //        keywordFilter.getSearchbyGroup().setVisible(true);
 //        validatedResults.setVisible(true);
         minFilterLabelsLayout.setVisible(false);
@@ -344,38 +312,35 @@ public class SearchFiltersLayout extends VerticalLayout implements Serializable,
 //        searchButtonsLayout.setVisible(true);
     }
 
-    public final void hideLayout() {        
+    public final void hideLayout() {
         show.updateIcon(false);
         topLayout.setHeight("20px");
         topFrameLayout.setHeight("15px");
         topLeftLayout.setVisible(false);
-        
+
 //        topFrameLayout.setHeight("75px");
 //        enableAdvancedSearchBtn.setVisible(false);
         doneFilterBtn.click();
-        extendedView = false;        
+        extendedView = false;
         minFilterLabelsLayout.removeAllComponents();
         minFilterLabelsLayout.setVisible(true);
         filtersController.getFullFilterLayout().setVisible(false);
         minFilterLabelsLayout.addComponent(filtersController.getMinimumFilterLayout());
-        
+
         this.searchDatatLayout.setVisible(false);
         this.searchProtLayout.setVisible(false);
         this.bottomLeftLayout.setVisible(false);
-        
+
 //        searchByLabel.setVisible(false);
 //        keywordFilter.getSearchbyGroup().setVisible(false);
-        
 //        validatedResults.setVisible(false);
-        
-        
 //        topLayout.setVisible(false);
     }
 
     public boolean isVisability() {
         return extendedView;
     }
-    
+
     public void setVisibility(boolean test) {
         if (test) {
             this.showLayout();
@@ -383,13 +348,13 @@ public class SearchFiltersLayout extends VerticalLayout implements Serializable,
             this.hideLayout();
         }
     }
-    
+
     public SearchingFiltersControl_t getFiltersController() {
         return filtersController;
     }
-    
+
     private void initDataTypeFilter() {
-        searchDatatypeSelectFilter.getOptionGroup().addItems(Arrays.asList(new String[]{"Identification Data", "Quantification Data","All Data"}));
+        searchDatatypeSelectFilter.getOptionGroup().addItems(Arrays.asList(new String[]{"Identification Data", "Quantification Data", "All Data"}));
         searchDatatypeSelectFilter.setWidth("367px");
         Property.ValueChangeListener searchDatatypeListener = new Property.ValueChangeListener() {
             @Override
@@ -398,10 +363,10 @@ public class SearchFiltersLayout extends VerticalLayout implements Serializable,
                 selectDatasetDropdownList.getComboBox().commit();
                 if (searchDatatypeSelectFilter.getFieldValue() != null && searchDatatypeSelectFilter.getOptionGroup().getValue().toString().equalsIgnoreCase("Identification Data")) {
                     identificationDataFilterReset();
-                    
+
                 } else {
                     quantificationDataFilterReset();
-                    
+
                 }
             }
         };
@@ -419,75 +384,71 @@ public class SearchFiltersLayout extends VerticalLayout implements Serializable,
              *
              */
             private static final long serialVersionUID = 6456118889864963868L;
-            
+
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
                 getMainSearchButton().setClickShortcut(ShortcutAction.KeyCode.ENTER);
             }
         });
-       
+
         selectDatasetDropdownList.getComboBox().setWidth("351px");
-        searchDatatLayout = new VerticalLayout(); 
+        searchDatatLayout = new VerticalLayout();
         searchDatatLayout.setWidthUndefined();
         searchDatatLayout.setSpacing(true);
 //        searchDatatLayout.setWidthUndefined();
-        
+
         dataTypeLabel = labelGenerator("Data Type:");
         dataTypeLabel.setWidth("70px");
-        searchDatatypeSelectFilter.getOptionGroup().addStyleName("horizontal");     
+        searchDatatypeSelectFilter.getOptionGroup().addStyleName("horizontal");
         searchDatatypeLayout.addComponent(dataTypeLabel);
         searchDatatypeLayout.setComponentAlignment(dataTypeLabel, Alignment.BOTTOM_LEFT);
         searchDatatypeLayout.addComponent(searchDatatypeSelectFilter);
-         searchDatatLayout.addComponent(searchDatatypeLayout);
-         searchDatatypeLayout.setSpacing(true);
-        
-        
-         datasetLabel = labelGenerator("Dataset:");
-        datasetLabel.setWidth("70px");    
-        selectDatasetLayout.addComponent(datasetLabel);  
+        searchDatatLayout.addComponent(searchDatatypeLayout);
+        searchDatatypeLayout.setSpacing(true);
+
+        datasetLabel = labelGenerator("Dataset:");
+        datasetLabel.setWidth("70px");
+        selectDatasetLayout.addComponent(datasetLabel);
         selectDatasetLayout.setComponentAlignment(datasetLabel, Alignment.TOP_LEFT);
         selectDatasetLayout.addComponent(selectDatasetDropdownList);
         selectDatasetLayout.setComponentAlignment(selectDatasetDropdownList, Alignment.TOP_RIGHT);
         searchDatatLayout.addComponent(selectDatasetLayout);
         searchDatatLayout.setSpacing(true);
         searchDatatLayout.setHeight("50px");
-        
-        
-             
-        
-        
+
         searchDatatypeSelectFilter.getOptionGroup().select("Identification Data");
         searchDatatypeSelectFilter.getOptionGroup().commit();
         selectDatasetDropdownList.getComboBox().select(Select_All_Dataset_Str);
         selectDatasetDropdownList.getComboBox().commit();
-        
+
     }
-    
+
     private void initSearchByFilterLabel() {
         topLeftLayout.addComponent(searchDatatLayout);
         searchByLabel = labelGenerator("Search By:");
         searchByLabel.setWidth("70px");
-        
-        searchProtLayout.addComponent(searchByLabel);  
+
+        searchProtLayout.addComponent(searchByLabel);
         searchProtLayout.setComponentAlignment(searchByLabel, Alignment.BOTTOM_LEFT);
         topLeftLayout.addComponent(searchProtLayout);
         topLeftLayout.setComponentAlignment(searchProtLayout, Alignment.BOTTOM_LEFT);
 //        searchProtLayout.setWidth("100%");
-        
+
     }
     private final HorizontalLayout bottomLeftLayout = new HorizontalLayout();
+
     private void initValidProtFilter() {
         bottomLeftLayout.setWidth("437px");
         topLeftLayout.addComponent(bottomLeftLayout);
-        
+
         validatedResults.getOptionGroup().setMultiSelect(true);
         validatedResults.getOptionGroup().setNullSelectionAllowed(true);
         validatedResults.getOptionGroup().addItem("Validated Proteins Only");
         validatedResults.setHeight("15px");
-        
+
         bottomLeftLayout.addComponent(validatedResults);
         bottomLeftLayout.setComponentAlignment(validatedResults, Alignment.MIDDLE_LEFT);
-        
+
         validatedResults.getOptionGroup().addValueChangeListener(new Property.ValueChangeListener() {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
@@ -496,36 +457,36 @@ public class SearchFiltersLayout extends VerticalLayout implements Serializable,
         });
         validatedResults.getOptionGroup().select("Validated Proteins Only");
     }
-    
+
     private void identificationDataFilterReset() {
         selectDatasetDropdownList.setEnabled(true);
         validatedResults.setEnabled(true);
         validatedResults.getOptionGroup().select("Validated Proteins Only");
-         advancedSearchLayoutContainer.setVisible(false);
+        advancedSearchLayoutContainer.setVisible(false);
         enableAdvancedSearchBtn.setEnabled(false);
         filtersLabelsLayout.setVisible(true);
         filtersController.resetQuntificationFilters();
         filtersController.getFullFilterLayout().setVisible(true);
-        
+
     }
-    
+
     private void quantificationDataFilterReset() {
-        
+
         selectDatasetDropdownList.getComboBox().select(defaultText);
         filtersController.resetIdentificationFilters();
         selectDatasetDropdownList.setEnabled(false);
         validatedResults.getOptionGroup().unselect("Validated Proteins Only");
-        validatedResults.setEnabled(false);        
+        validatedResults.setEnabled(false);
         enableAdvancedSearchBtn.setEnabled(true);
         enableAdvancedSearchBtn.click();
-        
+
     }
-    
+
     private void initQuantificationFiltersLayout() {
         //advancedSearchLayout
         final VerticalLayout filtersLabelLayout = new VerticalLayout();
         filtersLabelLayout.setWidth("190px");
-        filtersLabelLayout.setSpacing(true);        
+        filtersLabelLayout.setSpacing(true);
         final Set<Component> labelset = new HashSet<Component>();
         Label filtersTitle = new Label("Available Filters");
         filtersTitle.setStyleName("custFilterLabelHeader");
@@ -535,75 +496,75 @@ public class SearchFiltersLayout extends VerticalLayout implements Serializable,
         filtersResultsLayout.setHeight("243px");
         filtersResultsLayout.setSpacing(true);
         filtersResultsLayout.setStyleName(Reindeer.LAYOUT_WHITE);
-        
+
         updatedFilterArea.setHeight("210px");
         updatedFilterArea.setWidth("500px");
         updatedFilterArea.setStyleName(Reindeer.LAYOUT_WHITE);
         filtersResultsLayout.addComponent(updatedFilterArea);
-        
+
         HorizontalLayout doneBtnLayout = new HorizontalLayout();
         doneBtnLayout.setSpacing(true);
         doneBtnLayout.setHeight("30px");
-        doneBtnLayout.setStyleName(Reindeer.LAYOUT_WHITE);        
+        doneBtnLayout.setStyleName(Reindeer.LAYOUT_WHITE);
 //        filtersResultsLayout.addComponent(doneBtnLayout);        
 //        filtersResultsLayout.setComponentAlignment(doneBtnLayout, Alignment.BOTTOM_CENTER);
-        
+
         doneFilterBtn.setStyleName(Reindeer.BUTTON_SMALL);
         doneFilterBtn.setVisible(false);
         doneFilterBtn.setWidth("150px");
         doneBtnLayout.addComponent(doneFilterBtn);
         doneBtnLayout.setComponentAlignment(doneFilterBtn, Alignment.BOTTOM_LEFT);
         doneFilterBtn.addClickListener(new Button.ClickListener() {
-            
+
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 doneFilterBtn.setVisible(false);
 //                advancedSearchLayoutContainer.setWidth("640px");
                 filtersController.getFullFilterLayout().setVisible(true);
                 advancedSearchLayoutContainer.setVisible(false);
-                filtersLabelsLayout.setVisible(true);                
+                filtersLabelsLayout.setVisible(true);
             }
         });
-        
+
         clearFiltersBtn.setStyleName(Reindeer.BUTTON_SMALL);
         clearFiltersBtn.setVisible(true);
         clearFiltersBtn.setWidth("90px");
         doneBtnLayout.addComponent(clearFiltersBtn);
         doneBtnLayout.setComponentAlignment(clearFiltersBtn, Alignment.BOTTOM_LEFT);
         clearFiltersBtn.addClickListener(new Button.ClickListener() {
-            
+
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 filtersController.clearAllFilters(LayoutEvents.LayoutClickEvent.createEvent(topLayout, null, clearFiltersBtn));
             }
         });
-        
+
         miniSearchBtn.setStyleName(Reindeer.BUTTON_SMALL);
         miniSearchBtn.setVisible(true);
         miniSearchBtn.setWidth("90px");
         doneBtnLayout.addComponent(miniSearchBtn);
         doneBtnLayout.setComponentAlignment(miniSearchBtn, Alignment.BOTTOM_LEFT);
         miniSearchBtn.addClickListener(new Button.ClickListener() {
-            
+
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 System.out.println("start search");
                 getMainSearchButton().click();
             }
         });
-        
+
         LayoutEvents.LayoutClickListener listener = new LayoutEvents.LayoutClickListener() {
-            
+
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-                
+
                 updatedFilterArea.removeAllComponents();
                 for (Component label : labelset) {
                     label.setStyleName("filterLabel");
                 }
                 event.getChildComponent().setStyleName("filterBtnLabelClicked");
                 if (event.getChildComponent().toString().replace("&nbsp;", "").trim().equalsIgnoreCase("PumedID")) {
-                    
+
                     initPumedIdFilter(updatedFilterArea);
                 } else if (event.getChildComponent().toString().replace("&nbsp;", "").trim().equalsIgnoreCase("Raw Data Available Only")) {
                     initRawDataAvailableFilter(updatedFilterArea);
@@ -615,66 +576,64 @@ public class SearchFiltersLayout extends VerticalLayout implements Serializable,
                     initTechnologyFilter(updatedFilterArea);
                 } else if (event.getChildComponent().toString().replace("&nbsp;", "").trim().equalsIgnoreCase("Analytical Approach")) {
                     initAnalyticalApproachFilter(updatedFilterArea);
-                } 
-//                else if (event.getChildComponent().toString().replace("&nbsp;", "").trim().equalsIgnoreCase("Analytical Method")) {
-//                    initAnalyticalMethodFilter(updatedFilterArea);
-//                } 
+                } //                else if (event.getChildComponent().toString().replace("&nbsp;", "").trim().equalsIgnoreCase("Analytical Method")) {
+                //                    initAnalyticalMethodFilter(updatedFilterArea);
+                //                } 
                 else if (event.getChildComponent().toString().replace("&nbsp;", "").trim().equalsIgnoreCase("Patients Group")) {
                     initPatientGroupFilter(updatedFilterArea);
                 } else if (event.getChildComponent().toString().replace("&nbsp;", "").trim().equalsIgnoreCase("ROC AUC")) {
                     initRocFilter(updatedFilterArea);
-                } else if (event.getChildComponent().toString().replace("&nbsp;", "").trim().equalsIgnoreCase("P Value")) {
+                } else if (event.getChildComponent().toString().replace("&nbsp;", "").trim().equalsIgnoreCase("p value")) {
                     initPValueFilter(updatedFilterArea);
-                }
-                else if (event.getChildComponent().toString().replace("&nbsp;", "").trim().equalsIgnoreCase("Fold Change")) {
+                } else if (event.getChildComponent().toString().replace("&nbsp;", "").trim().equalsIgnoreCase("Fold Change")) {
                     initFoldChangeValueFilter(updatedFilterArea);
                 }
             }
         };
-        
-        for (String str : new String[]{"PumedID", "Raw Data Available Only", "Study Type", "Sample Type", "Technology", "Analytical Approach"/*, "Analytical Method"*/, "Patients Group", "ROC AUC", "P Value","Fold Change"}) {
+
+        for (String str : new String[]{"PumedID", "Raw Data Available Only", "Study Type", "Sample Type", "Technology", "Analytical Approach"/*, "Analytical Method"*/, "Patients Group", "ROC AUC", "P Value", "Fold Change"}) {
             VerticalLayout filter = generateFilterLabel(str);
             filter.addLayoutClickListener(listener);
             labelset.add(filter.getComponent(0));
             filtersLabelLayout.addComponent(filter);
         }
-        
+
         advancedSearchLayoutContainer.addComponent(filtersLabelLayout);
         advancedSearchLayoutContainer.setComponentAlignment(filtersLabelLayout, Alignment.TOP_LEFT);
         advancedSearchLayoutContainer.addComponent(filtersResultsLayout);
         advancedSearchLayoutContainer.setComponentAlignment(filtersResultsLayout, Alignment.TOP_LEFT);
 //        advancedSearchLayout.setExpandRatio(filtersLabelLayout, 1.5f);
 //        advancedSearchLayout.setExpandRatio(filtersResultsLayout, 3);
-        
+
     }
-    
+
     private VerticalLayout generateFilterLabel(String title) {
         Label filterLabel = new Label("&nbsp; &nbsp; &nbsp; &nbsp; " + title);
         filterLabel.setContentMode(ContentMode.HTML);
         filterLabel.setStyleName("filterLabel");
-        
+
         VerticalLayout layout = new VerticalLayout();
         layout.addComponentAsFirst(filterLabel);
-        
+
         return layout;
-        
+
     }
     private TextFieldFilter pumedIdFilter;
 
     private void initPumedIdFilter(VerticalLayout rightFiltersLayout) {
         if (pumedIdFilter == null) {
             pumedIdFilter = new TextFieldFilter(filtersController, 6, "PumedID");
-            
+
         }
 //        pumedIdFilter.setWidth("420px");
         rightFiltersLayout.addComponent(pumedIdFilter);
         rightFiltersLayout.setComponentAlignment(pumedIdFilter, Alignment.TOP_CENTER);
     }
-    
+
     private OptionGroupFilter rawDataAvailableFilter;
 
     private void initRawDataAvailableFilter(VerticalLayout rightFiltersLayout) {
-        
+
         if (rawDataAvailableFilter == null) {
 //            rawDataAvailableFilter = new OptionGroupFilter(filtersController, "Raw Data Available Only", 7, true);
             rawDataAvailableFilter.getOptionGroup().setMultiSelect(true);
@@ -684,9 +643,9 @@ public class SearchFiltersLayout extends VerticalLayout implements Serializable,
         rightFiltersLayout.addComponent(rawDataAvailableFilter);
         rightFiltersLayout.setComponentAlignment(rawDataAvailableFilter, Alignment.TOP_CENTER);
     }
-    
+
     private ListSelectFilter selectStudyType;
-    
+
     private void initStudyTypeFilter(VerticalLayout rightFiltersLayout) {
 //        Label captionLabel = new Label("Study Type");
 //        captionLabel.setWidth("70px");
@@ -695,25 +654,24 @@ public class SearchFiltersLayout extends VerticalLayout implements Serializable,
 //        filterLayout.setSizeUndefined();
 //        rightFiltersLayout.addComponent(filterLayout);
 //        rightFiltersLayout.setComponentAlignment(filterLayout, Alignment.TOP_CENTER);
-        
+
 //        filterLayout.addComponent(captionLabel);
 //         filterLayout.setComponentAlignment(captionLabel, Alignment.TOP_LEFT);
 //        captionLabel.setHeight("20px");
         if (selectStudyType == null) {
-            selectStudyType = new ListSelectFilter(filtersController, 8, "Study Type",studyTypeValues);
+            selectStudyType = new ListSelectFilter(filtersController, 8, "Study Type", studyTypeValues);
             selectStudyType.setWidth("190px");
 //            selectStudyType.setHeight("20px");
         }
-     
+
 //        rightFiltersLayout.setSizeUndefined();
-         rightFiltersLayout.addComponent(selectStudyType);
+        rightFiltersLayout.addComponent(selectStudyType);
         rightFiltersLayout.setComponentAlignment(selectStudyType, Alignment.TOP_CENTER);
-        
-        
+
     }
-    
+
     private ListSelectFilter selectSampleTypeFilter;
-    
+
     private void initSampleTypeFilter(VerticalLayout rightFiltersLayout) {
         if (selectSampleTypeFilter == null) {
             selectSampleTypeFilter = new ListSelectFilter(filtersController, 9, "Sample Type", sampleTypeValues);
@@ -721,9 +679,9 @@ public class SearchFiltersLayout extends VerticalLayout implements Serializable,
         }
         rightFiltersLayout.addComponent(selectSampleTypeFilter);
         rightFiltersLayout.setComponentAlignment(selectSampleTypeFilter, Alignment.TOP_CENTER);
-        
+
     }
-    
+
     private ListSelectFilter selectTechnologyFilter;
 
     private void initTechnologyFilter(VerticalLayout rightFiltersLayout) {
@@ -733,7 +691,7 @@ public class SearchFiltersLayout extends VerticalLayout implements Serializable,
         rightFiltersLayout.addComponent(selectTechnologyFilter);
         rightFiltersLayout.setComponentAlignment(selectTechnologyFilter, Alignment.TOP_CENTER);
     }
-    
+
     private ListSelectFilter analyticalApproachFilter;
 
     private void initAnalyticalApproachFilter(VerticalLayout rightFiltersLayout) {
@@ -753,36 +711,36 @@ public class SearchFiltersLayout extends VerticalLayout implements Serializable,
         rightFiltersLayout.addComponent(rocFilter);
         rightFiltersLayout.setComponentAlignment(rocFilter, Alignment.TOP_CENTER);
     }
-    
+
     private ListSelectFilter pValueFilter;
 
     private void initPValueFilter(VerticalLayout rightFiltersLayout) {
         if (pValueFilter == null) {
 //            pValueFilter = new DoubleBetweenValuesFilter(filtersController, 20, "P Value");
-               pValueFilter = new ListSelectFilter(filtersController, 20, "P Value",  new String[]{"Significant","Not Significan"});
-                pValueFilter.getList().setHeight("60px");
-                pValueFilter.getList().setWidth("380px");
+            pValueFilter = new ListSelectFilter(filtersController, 20, "P Value", new String[]{"Significant", "Not Significan"});
+            pValueFilter.getList().setHeight("60px");
+            pValueFilter.getList().setWidth("380px");
         }
-        
+
         rightFiltersLayout.addComponent(pValueFilter);
         rightFiltersLayout.setComponentAlignment(pValueFilter, Alignment.TOP_CENTER);
     }
-    
+
     private void initFoldChangeValueFilter(VerticalLayout rightFiltersLayout) {
         if (fcPatientsGrI_patGrIIFilter == null) {
 //            pValueFilter = new DoubleBetweenValuesFilter(filtersController, 20, "P Value");
-               fcPatientsGrI_patGrIIFilter = new ListSelectFilter(filtersController, 20, "Fold Chang Patient Gr. 1 / Patient. Gr 2",  new String[]{"Increased ","Decreased","No Change"});
-                fcPatientsGrI_patGrIIFilter.getList().setHeight("60px");
-                fcPatientsGrI_patGrIIFilter.getList().setWidth("380px");
-                
+            fcPatientsGrI_patGrIIFilter = new ListSelectFilter(filtersController, 20, "Fold Chang Patient Gr. 1 / Patient. Gr 2", new String[]{"Increased ", "Decreased", "No Change"});
+            fcPatientsGrI_patGrIIFilter.getList().setHeight("60px");
+            fcPatientsGrI_patGrIIFilter.getList().setWidth("380px");
+
         }
-        
+
         rightFiltersLayout.addComponent(fcPatientsGrI_patGrIIFilter);
         rightFiltersLayout.setComponentAlignment(fcPatientsGrI_patGrIIFilter, Alignment.TOP_CENTER);
     }
-    
+
     private ListSelectFilter fcPatientsGrI_patGrIIFilter;
-    
+
     private void initPatientGroupFilter(VerticalLayout rightFiltersLayout) {
         VerticalLayout filterLayout = new VerticalLayout();
         filterLayout.setSpacing(true);
@@ -796,24 +754,23 @@ public class SearchFiltersLayout extends VerticalLayout implements Serializable,
 //            fcPatientsGrI_patGrIIFilter = new DoubleBetweenValuesFilter(filtersController, 19, "Fold Chang Patient Gr. 1 / Patient. Gr 2:");
         }
 //        filterLayout.addComponent(fcPatientsGrI_patGrIIFilter);
-          
+
     }
-    
+
     private IntegerTextFieldFilter patientNumberIFilter, patientNumberIIFilter;
     private ListSelectFilter patientGroupIFilter, patientSubGroupIFilter, patientGroupIIFilter, patientSubGroupIIFilter;
-    
+
     private VerticalLayout initPatientGrLayout(int groupIndex) {
         VerticalLayout patientGroupLayout = new VerticalLayout();
         patientGroupLayout.setSpacing(true);
         patientGroupLayout.setWidth("450px");
-       
-       
+
         if (groupIndex == 1) {
             if (patientGroupIFilter == null) {
-                patientGroupIFilter = new ListSelectFilter(filtersController, 15,"Patients Group", patGr1);
+                patientGroupIFilter = new ListSelectFilter(filtersController, 15, "Patients Group", patGr1);
                 patientGroupIFilter.getList().setHeight("60px");
                 patientGroupIFilter.getList().setWidth("380px");
-                patientSubGroupIFilter = new ListSelectFilter(filtersController, 16, "Patients Sub-Group",  new String[]{});
+                patientSubGroupIFilter = new ListSelectFilter(filtersController, 16, "Patients Sub-Group", new String[]{});
                 patientSubGroupIFilter.getList().setHeight("60px");
                 patientSubGroupIFilter.getList().setWidth("380px");
                 patientSubGroupIFilter.setEnabled(false);
@@ -826,19 +783,19 @@ public class SearchFiltersLayout extends VerticalLayout implements Serializable,
             pGILayout.addComponent(patientGroupIFilter);
 //            pGILayout.addComponent(patientSubGroupIFilter);
 //             pGILayout.setComponentAlignment(patientSubGroupIFilter,Alignment.TOP_RIGHT);
-            
+
             patientGroupIFilter.getList().addValueChangeListener(new Property.ValueChangeListener() {
                 /**
                  *
                  */
                 private static final long serialVersionUID = 6456118889864963868L;
-                
+
                 @Override
                 public void valueChange(Property.ValueChangeEvent event) {
-                  patientSubGroupIFilter.getList().removeAllItems();
-                  patientSubGroupIFilter.getList().commit();
+                    patientSubGroupIFilter.getList().removeAllItems();
+                    patientSubGroupIFilter.getList().commit();
                     if (!patientGroupIFilter.getList().getValue().toString().equalsIgnoreCase("CONTROL")) {
-                       
+
                         for (String str : patSubGr1) {
                             patientSubGroupIFilter.getList().addItem(str);
                         }
@@ -846,9 +803,9 @@ public class SearchFiltersLayout extends VerticalLayout implements Serializable,
 
                     } else {
                         patientSubGroupIFilter.getList().addItem("OND");
-                         patientSubGroupIFilter.setEnabled(true);
+                        patientSubGroupIFilter.setEnabled(true);
 //                        patientSubGroupIFilter.setEnabled(false);
-                        
+
                     }
                     patientNumberIFilter.setEnabled(true);
                 }
@@ -860,14 +817,9 @@ public class SearchFiltersLayout extends VerticalLayout implements Serializable,
             patientGroupLayout.addComponent(pGILayout);
 //            pGILayout.addComponent(patientGroupIIFilter);
             pGILayout.addComponent(patientSubGroupIFilter);
-        
-        
-        
-        
-        
-        
+
         } else {
-            
+
 //            if (patientGroupIIFilter == null) {
 //                patientGroupIIFilter = new ListSelectFilter(filtersController, 17,"Patients Group 2",patGr2);
 //                patientGroupIIFilter.getList().setHeight("45px");
@@ -883,7 +835,7 @@ public class SearchFiltersLayout extends VerticalLayout implements Serializable,
             patientGroupLayout.addComponent(pGILayout);
 //            pGILayout.addComponent(patientGroupIIFilter);
             pGILayout.addComponent(patientSubGroupIFilter);
-            
+
 //            patientGroupIIFilter.getList().addValueChangeListener(new Property.ValueChangeListener() {
 //                /**
 //                 *
@@ -901,21 +853,20 @@ public class SearchFiltersLayout extends VerticalLayout implements Serializable,
 //                    }
 //                }
 //            });
-            
         }
-        
-         HorizontalLayout patGrNumLayout = new HorizontalLayout();
+
+        HorizontalLayout patGrNumLayout = new HorizontalLayout();
         patGrNumLayout.setHeight("20px");
         patGrNumLayout.setWidth("380px");
         patientGroupLayout.addComponent(patGrNumLayout);
-        patientGroupLayout.setComponentAlignment(patGrNumLayout,Alignment.TOP_LEFT);
+        patientGroupLayout.setComponentAlignment(patGrNumLayout, Alignment.TOP_LEFT);
         patGrNumLayout.setSpacing(true);
         patGrNumLayout.setMargin(new MarginInfo(false, false, false, false));
-        
-         Label patientsGroupINum = labelGenerator("Minimum Number of Patients:");
+
+        Label patientsGroupINum = labelGenerator("Minimum Number of Patients:");
         patientsGroupINum.setWidth("200px");
         patGrNumLayout.addComponent(patientsGroupINum);
-        
+
 //        Label lessThanLabel = new Label("Less Than <");
 //        lessThanLabel.setStyleName(Reindeer.LABEL_SMALL);
 //        patGrNumLayout.addComponent(lessThanLabel);
@@ -934,31 +885,31 @@ public class SearchFiltersLayout extends VerticalLayout implements Serializable,
             }
             patGrNumLayout.addComponent(patientNumberIFilter);
         }
-        
+
         return patientGroupLayout;
     }
-    
+
     private Label labelGenerator(String text) {
         Label label = new Label(text);
         label.setStyleName("custLabel");
         return label;
-        
+
     }
-    
+
     public String getDefaultText() {
         return defaultText;
     }
-    
+
     public void setDefaultText(String defaultText) {
         this.defaultText = defaultText;
     }
-    
+
     public SearchingAreaFilter getKeywordFilter() {
         return keywordFilter;
     }
-    
+
     public Button getMainSearchButton() {
         return searchingBtn;
     }
-    
+
 }

@@ -3,10 +3,13 @@ package probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet;
 import com.vaadin.data.Property;
 import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.studies.ProteinStudyComparisonScatterPlotLayout;
 import com.vaadin.event.LayoutEvents;
+import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
@@ -28,19 +31,15 @@ import probe.com.view.core.InfoPopupBtn;
  *
  * @author Yehia Farag
  */
-public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
-
+public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {    
     private final Map<QuantDiseaseGroupsComparison, ProteinStudyComparisonScatterPlotLayout> studyCompLayoutMap = new LinkedHashMap<QuantDiseaseGroupsComparison, ProteinStudyComparisonScatterPlotLayout>();
     private final Map<QuantDiseaseGroupsComparison, PeptidesComparisonsSequenceLayout> peptideCompLayoutMap = new LinkedHashMap<QuantDiseaseGroupsComparison, PeptidesComparisonsSequenceLayout>();
-
     private final GridLayout mainStudiesLayout, mainPeptidesLayout;
     private final DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager;
     private final int width;
     private final DiseaseGroupsComparisonsProteinLayout[] diiseaseGroupsComparisonsProteinArr;
-    private final Set<QuantDiseaseGroupsComparison> selectedComparisonList;
     private final OptionGroup studiesPeptidesSwich = new OptionGroup();
     private final OptionGroup showSigneficantPeptidesOnly;
-
     /**
      *
      * @param proteinsComparisonsArr
@@ -54,14 +53,14 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
         this.setHeightUndefined();
         this.setSpacing(true);
         this.datasetExploringCentralSelectionManager = datasetExploringCentralSelectionManager;
-        studiesPeptidesSwich.setWidth("140px");
+        studiesPeptidesSwich.setWidth("180px");
         studiesPeptidesSwich.setNullSelectionAllowed(false); // user can not 'unselect'
         studiesPeptidesSwich.setMultiSelect(false);
         studiesPeptidesSwich.addItem("Studies");
         studiesPeptidesSwich.addItem("Peptides");
         studiesPeptidesSwich.setValue("Studies");
-        studiesPeptidesSwich.addStyleName("horizontal");
-
+        studiesPeptidesSwich.addStyleName("specialhorizontal");
+        
         studiesPeptidesSwich.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
@@ -69,7 +68,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
                     mainStudiesLayout.setVisible(true);
                     mainPeptidesLayout.setVisible(false);
                     showSigneficantPeptidesOnly.setVisible(false);
-
+                    
                 } else {
                     mainStudiesLayout.setVisible(false);
                     mainPeptidesLayout.setVisible(true);
@@ -77,48 +76,26 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
                 }
             }
         });
-
+        
         showSigneficantPeptidesOnly = new OptionGroup();
         showSigneficantPeptidesOnly.setWidth("185px");
         showSigneficantPeptidesOnly.setNullSelectionAllowed(true); // user can not 'unselect'
         showSigneficantPeptidesOnly.setMultiSelect(true);
-
+        
         showSigneficantPeptidesOnly.addItem("Significant Regulation");
         showSigneficantPeptidesOnly.addItem("PTMs");
-
+        
         showSigneficantPeptidesOnly.addStyleName("horizontal");
         showSigneficantPeptidesOnly.setVisible(false);
         
         showSigneficantPeptidesOnly.addValueChangeListener(new Property.ValueChangeListener() {
-                @Override
-                public void valueChange(Property.ValueChangeEvent event) {
-                    showSignificantRegulationOnly(showSigneficantPeptidesOnly.getValue().toString().contains("Significant Regulation"));
-//                    if (lastselectedPeptideComp != null) {
-//                        lastselectedPeptideComp.heighlight(false);
-//                        lastselectedPeptideComp = null;
-//                    }
-//                        noselectionLabel.setVisible(true);
-//                        peptideForm.setVisible(false);
-//                    
-//                    if (showSigneficantPeptidesOnly.getValue().toString().contains("Significant Regulation")) {
-//                        allPeptidesContainer.setVisible(false);
-//                        significantPeptidesContainer.setVisible(true);
-//                        if (significantPeptidesContainer.getComponentCount() == 1) {
-////                           
-//
-//                        }
-//
-//                    } else {
-//
-//                        allPeptidesContainer.setVisible(true);
-//                        significantPeptidesContainer.setVisible(false);
-//
-//                    }
-                    showPTM(showSigneficantPeptidesOnly.getValue().toString().contains("PTMs"));
-
-                }
-            });
-
+            @Override
+            public void valueChange(Property.ValueChangeEvent event) {
+                showSignificantRegulationOnly(showSigneficantPeptidesOnly.getValue().toString().contains("Significant Regulation"));
+                showPTM(showSigneficantPeptidesOnly.getValue().toString().contains("PTMs"));
+                
+            }
+        });
         
         HorizontalLayout topPanelLayout = new HorizontalLayout();
         topPanelLayout.setWidth((width - 80) + "px");
@@ -127,22 +104,27 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
         HorizontalLayout topLeftLayout = new HorizontalLayout();
         topLeftLayout.setWidthUndefined();
         topLeftLayout.setSpacing(true);
+        topLeftLayout.setMargin(new MarginInfo(false, false, true, false));
         
         topPanelLayout.addComponent(topLeftLayout);
         
+        Label overviewLabel = new Label("Overview ");
+        overviewLabel.setContentMode(ContentMode.HTML);
+        topLeftLayout.addComponent(overviewLabel);
+        overviewLabel.setStyleName("subtitle");
         
         topLeftLayout.addComponent(studiesPeptidesSwich);
-        topLeftLayout.setComponentAlignment(studiesPeptidesSwich, Alignment.MIDDLE_LEFT);
+        topLeftLayout.setComponentAlignment(studiesPeptidesSwich, Alignment.TOP_LEFT);
         
-         InfoPopupBtn info = new InfoPopupBtn("add text");
+        InfoPopupBtn info = new InfoPopupBtn("add text");
         info.setWidth("20px");
         info.setHeight("20px");
         topLeftLayout.addComponent(info);
         topLeftLayout.setComponentAlignment(info, Alignment.MIDDLE_LEFT);
-
+        
         topPanelLayout.addComponent(showSigneficantPeptidesOnly);
         topPanelLayout.setComponentAlignment(showSigneficantPeptidesOnly, Alignment.MIDDLE_RIGHT);
-
+        
         this.addComponent(topPanelLayout);
         mainStudiesLayout = new GridLayout(1, selectedComparisonList.size() + 1);
         this.addComponent(mainStudiesLayout);
@@ -153,19 +135,17 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
         mainPeptidesLayout.setWidthUndefined();
         mainPeptidesLayout.setHeightUndefined();
         mainPeptidesLayout.setVisible(false);
-
+        
         this.width = width;
         this.diiseaseGroupsComparisonsProteinArr = proteinsComparisonsArr;
-        this.selectedComparisonList = selectedComparisonList;
-
+        
     }
-
     /**
      *
      * @param ordComparisonProteins
      */
     public void orderComparisons(DiseaseGroupsComparisonsProteinLayout[] ordComparisonProteins) {
-
+        
         mainStudiesLayout.removeAllComponents();
         mainPeptidesLayout.removeAllComponents();
         int rowIndex = 0;
@@ -176,17 +156,16 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
             ProteinStudyComparisonScatterPlotLayout studyCompLayout = studyCompLayoutMap.get(cp.getComparison());
             mainStudiesLayout.addComponent(studyCompLayout, 0, rowIndex);
             mainStudiesLayout.setComponentAlignment(studyCompLayout, Alignment.MIDDLE_CENTER);
-
+            
             PeptidesComparisonsSequenceLayout peptideCompLayout = peptideCompLayoutMap.get(cp.getComparison());
             mainPeptidesLayout.addComponent(peptideCompLayout, 0, rowIndex);
             mainPeptidesLayout.setComponentAlignment(peptideCompLayout, Alignment.MIDDLE_CENTER);
-
+            
             rowIndex++;
         }
     }
     private ProteinStudyComparisonScatterPlotLayout lastHeighlitedStudyLayout;
     private PeptidesComparisonsSequenceLayout lastHeighlitedPeptideLayout;
-
     /**
      *
      * @param groupComp
@@ -209,16 +188,15 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
         lastHeighlitedStudyLayout = studyLayout;
         lastHeighlitedPeptideLayout = peptideLayout;
     }
-
     /**
      *
      */
     public void redrawCharts() {
-
+        
         if (studyCompLayoutMap.isEmpty()) {
             int rowIndex = 0;
             for (DiseaseGroupsComparisonsProteinLayout cprot : diiseaseGroupsComparisonsProteinArr) {
-                if (cprot == null || cprot.getSignificantTrindCategory()==-1) {
+                if (cprot == null || cprot.getSignificantTrindCategory() == -1) {
 //                    QuantDiseaseGroupsComparison gc = (QuantDiseaseGroupsComparison) selectedComparisonList.toArray()[rowIndex];
 //                    cprot = new DiseaseGroupsComparisonsProteinLayout(width, gc, -1);
                     continue;
@@ -227,12 +205,12 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
                 mainStudiesLayout.addComponent(protCompLayout, 0, rowIndex);
                 mainStudiesLayout.setComponentAlignment(protCompLayout, Alignment.MIDDLE_CENTER);
                 studyCompLayoutMap.put(cprot.getComparison(), protCompLayout);
-
+                
                 final DiseaseGroupsComparisonsProteinLayout gc = cprot;
                 LayoutEvents.LayoutClickListener closeListener = new LayoutEvents.LayoutClickListener() {
-
+                    
                     private final QuantDiseaseGroupsComparison localComparison = gc.getComparison();
-
+                    
                     @Override
                     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
                         Set<QuantDiseaseGroupsComparison> selectedComparisonList = datasetExploringCentralSelectionManager.getSelectedDiseaseGroupsComparisonList();
@@ -243,14 +221,14 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
                 protCompLayout.getCloseBtn().addLayoutClickListener(closeListener);
                 rowIndex++;
             }
-
+            
         }
         for (ProteinStudyComparisonScatterPlotLayout layout : studyCompLayoutMap.values()) {
-
+            
             layout.redrawChart();
         }
         if (peptideCompLayoutMap.isEmpty()) {
-
+            
             int rowIndex = 0;
             for (DiseaseGroupsComparisonsProteinLayout cprot : diiseaseGroupsComparisonsProteinArr) {
                 if (cprot == null || cprot.getSignificantTrindCategory() == -1) {
@@ -258,17 +236,17 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
 //                    cprot = new DiseaseGroupsComparisonsProteinLayout(width, gc, -1);
                     continue;
                 }
-
+                
                 PeptidesComparisonsSequenceLayout protCompLayout = new PeptidesComparisonsSequenceLayout(cprot, width, datasetExploringCentralSelectionManager);
                 mainPeptidesLayout.addComponent(protCompLayout, 0, rowIndex);
                 mainPeptidesLayout.setComponentAlignment(protCompLayout, Alignment.MIDDLE_CENTER);
                 peptideCompLayoutMap.put(cprot.getComparison(), protCompLayout);
-
+                
                 final DiseaseGroupsComparisonsProteinLayout gc = cprot;
                 LayoutEvents.LayoutClickListener closeListener = new LayoutEvents.LayoutClickListener() {
-
+                    
                     private final QuantDiseaseGroupsComparison localComparison = gc.getComparison();
-
+                    
                     @Override
                     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
                         Set<QuantDiseaseGroupsComparison> selectedComparisonList = datasetExploringCentralSelectionManager.getSelectedDiseaseGroupsComparisonList();
@@ -279,7 +257,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
                 protCompLayout.getCloseBtn().addLayoutClickListener(closeListener);
                 rowIndex++;
             }
-
+            
             showSigneficantPeptidesOnly.setItemEnabled("PTMs", false);
             for (PeptidesComparisonsSequenceLayout protCompLayout : peptideCompLayoutMap.values()) {
                 if (protCompLayout.isHasPTM()) {
@@ -290,24 +268,22 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
                     break;
                 }
             }
-
+            
         }
-
+        
+    }    
+    private void showPTM(boolean show) {
+        for (PeptidesComparisonsSequenceLayout protCompLayout : peptideCompLayoutMap.values()) {
+            protCompLayout.showPTM(show);
+        }
+        
     }
-    
-    private void showPTM(boolean show){
-     for (PeptidesComparisonsSequenceLayout protCompLayout : peptideCompLayoutMap.values()) {
-                protCompLayout.showPTM(show);
-            }
-    
+    private void showSignificantRegulationOnly(boolean show) {
+        for (PeptidesComparisonsSequenceLayout protCompLayout : peptideCompLayoutMap.values()) {
+            protCompLayout.showSignificantRegulationOnly(show);
+        }
+        
     }
-     private void showSignificantRegulationOnly(boolean show){
-     for (PeptidesComparisonsSequenceLayout protCompLayout : peptideCompLayoutMap.values()) {
-                protCompLayout.showSignificantRegulationOnly(show);
-            }
-    
-    }
-
     public Set<JFreeChart> getScatterCharts() {
         Set<JFreeChart> scatterSet = new LinkedHashSet<JFreeChart>();
         Iterator<Component> itr = mainStudiesLayout.iterator();
@@ -316,11 +292,11 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
             if (comp instanceof ProteinStudyComparisonScatterPlotLayout) {
                 ProteinStudyComparisonScatterPlotLayout psctPlot = (ProteinStudyComparisonScatterPlotLayout) comp;
                 scatterSet.add(psctPlot.getScatterPlot());
-
+                
             }
-
+            
         }
-
+        
         return scatterSet;
     }
 }
