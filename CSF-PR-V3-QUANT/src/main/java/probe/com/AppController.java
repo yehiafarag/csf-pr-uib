@@ -36,7 +36,7 @@ public class AppController extends UI {
     @Override
     protected void init(final VaadinRequest request) {
         //init param for DB
-      
+
         ServletContext scx = VaadinServlet.getCurrent().getServletContext();
         dbURL = (scx.getInitParameter("url"));
         dbName = (scx.getInitParameter("dbName"));
@@ -84,8 +84,8 @@ public class AppController extends UI {
                 }
             }, (5 * 60 * 1000 * 60));
         }
-        
-        JavaScript.getCurrent().addFunction("scroll",new JavaScriptFunction() {
+
+        JavaScript.getCurrent().addFunction("scroll", new JavaScriptFunction() {
 
             @Override
             public void call(JsonArray arguments) {
@@ -96,6 +96,9 @@ public class AppController extends UI {
     }
 
     private void deleteFiles(File f) {
+        if (f.isDirectory() && f.getName().equalsIgnoreCase("Resources")) {
+            return;
+        }
         if (f.isDirectory() && f.listFiles().length > 0) {
             for (File subFile : f.listFiles()) {
                 deleteFiles(subFile);

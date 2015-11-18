@@ -1,16 +1,12 @@
 package probe.com.model.util;
 
 import com.itextpdf.text.Document;
-import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.DefaultFontMapper;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.vaadin.server.ClassResource;
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinService;
-import com.vaadin.server.VaadinSession;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
@@ -31,6 +27,9 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.SymbolAxis;
+import org.jfree.chart.block.BlockBorder;
+import org.jfree.chart.title.LegendTitle;
+import org.jfree.chart.title.TextTitle;
 import probe.com.model.beans.identification.IdentificationPeptideBean;
 
 /**
@@ -246,7 +245,7 @@ public class FileExporter implements Serializable {
 
     }
 
-    public byte[] exportImgAsPdf(Set<JFreeChart> component, String fileName, String url) {
+    public byte[] exportProteinsInfoCharts(Set<JFreeChart> component, String fileName, String url, String title) {
         int width = 600;
         int height = 1000;
         int startx = 0;
@@ -290,6 +289,10 @@ public class FileExporter implements Serializable {
 
                     if (counter == 0) {
 
+                        TextTitle textTitle = new TextTitle(title, new Font("Verdana", Font.PLAIN, 12));
+                        textTitle.setMargin(10, 0, 20, 0);
+                        textTitle.setPaint(Color.DARK_GRAY);
+                        chart.setTitle(textTitle);
                         int labelHeight = 0;
                         for (String str : ((SymbolAxis) chart.getXYPlot().getDomainAxis()).getSymbols()) {
                             if ((str.length() * 6) > labelHeight) {
@@ -359,9 +362,6 @@ public class FileExporter implements Serializable {
 
             document.close();
             byte fileData[] = IOUtils.toByteArray(new FileInputStream(file));
-//            String base64 = Base64.encodeBase64String(fileData.);
-//            base64 = "data:image/png;base64," + base64;
-
             return fileData;
         } catch (Exception exp) {
             exp.printStackTrace();
@@ -372,14 +372,18 @@ public class FileExporter implements Serializable {
 
     }
 
-    public byte[] exportBubbleChartAsPdf(JFreeChart chart, String fileName, String url) {
+    public byte[] exportBubbleChartAsPdf(JFreeChart chart, String fileName, String url, String title) {
         int width = 842;
         int height = 595;
         Font font = new Font("Verdana", Font.PLAIN, 12);
         chart.getXYPlot().getDomainAxis().setTickLabelFont(font);
         chart.getXYPlot().getRangeAxis().setTickLabelFont(font);
-        Toolkit.getDefaultToolkit().getImage("src/main/resources/img/legend1.png");
 
+        TextTitle textTitle = new TextTitle(title, font);
+        textTitle.setMargin(10, 0, 20, 0);
+        textTitle.setPaint(Color.DARK_GRAY);
+
+        chart.setTitle(textTitle);
         try {
             File csfFolder = new File(url);
             csfFolder.mkdir();
@@ -404,14 +408,16 @@ public class FileExporter implements Serializable {
             template = contentByte.createTemplate(width, height);
             g2d = template.createGraphics(width, height, new DefaultFontMapper());
 
-            Rectangle2D rect2d = new Rectangle2D.Double(10, 10, width - 20, height - 110);
+            Rectangle2D rect2d = new Rectangle2D.Double(10, 10, width - 20, height - 20);
             chart.draw(g2d, rect2d);
 
 //            System.out.println(VaadinService.getCurrent().getClassLoader().getResource("legend1.png").toURI());
-            File res = new File(csfFolder.getParent(),"Resources");
-            System.out.println("file exise "+res.exists()+"   "+csfFolder.getParent());
-            g2d.drawImage(ImageIO.read(new File(res,"legend1.png")), 10, height - 90, null);
-
+//            File res = new File(csfFolder.getParent(), "Resources");
+//            System.out.println("file exise " + res.exists() + "   " + csfFolder.getParent());
+//            File legendImageFile = new File(res, "legend1.png");
+//            if (legendImageFile.exists()) {
+//                g2d.drawImage(ImageIO.read(legendImageFile), 10, height - 90, null);
+//            }
             g2d.dispose();
             contentByte.addTemplate(template, 0, 0);
 //            document.add(legend);

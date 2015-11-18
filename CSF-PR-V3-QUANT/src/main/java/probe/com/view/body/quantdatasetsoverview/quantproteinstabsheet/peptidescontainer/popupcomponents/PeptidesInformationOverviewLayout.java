@@ -85,11 +85,11 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
             showSigneficantPeptidesOnly = new OptionGroup();
             this.addComponent(showSigneficantPeptidesOnly);
             this.setComponentAlignment(showSigneficantPeptidesOnly, Alignment.TOP_RIGHT);
-            showSigneficantPeptidesOnly.setWidth("200px");
+            showSigneficantPeptidesOnly.setWidth("135px");
             showSigneficantPeptidesOnly.setNullSelectionAllowed(true); // user can not 'unselect'
             showSigneficantPeptidesOnly.setMultiSelect(true);
 
-            showSigneficantPeptidesOnly.addItem("Significant Regulation");
+            showSigneficantPeptidesOnly.addItem("Significant");
             showSigneficantPeptidesOnly.addItem("PTMs");
 
             showSigneficantPeptidesOnly.addStyleName("horizontal");
@@ -140,7 +140,7 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
 
                     }
                     lastselectedPeptideComp = null;
-                    showSignificantRegulationOnly(showSigneficantPeptidesOnly.getValue().toString().contains("Significant Regulation"));
+                    showSignificantRegulationOnly(showSigneficantPeptidesOnly.getValue().toString().contains("Significant"));
                     showPtms(showSigneficantPeptidesOnly.getValue().toString().contains("PTMs"));
 
                 }

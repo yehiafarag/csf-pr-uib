@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Paint;
+import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -44,19 +45,25 @@ import org.apache.commons.codec.binary.Base64;
 import org.jfree.chart.ChartRenderingInfo;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.LegendItem;
+import org.jfree.chart.LegendItemCollection;
+import org.jfree.chart.LegendItemSource;
 import org.jfree.chart.axis.NumberTick;
 import org.jfree.chart.axis.SymbolAxis;
 import org.jfree.chart.axis.Tick;
 import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.entity.ChartEntity;
 import org.jfree.chart.entity.XYItemEntity;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYBubbleRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
+import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.xy.DefaultXYZDataset;
 import org.jfree.text.TextUtilities;
 import org.jfree.ui.RectangleEdge;
 import org.jfree.ui.TextAnchor;
+import org.jfree.util.ShapeUtilities;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.beans.quant.QuantProtein;
@@ -151,18 +158,18 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
         final OptionGroup significantProteinsOnlyOption = new OptionGroup();
         btnContainerLayout.addComponent(significantProteinsOnlyOption);
-        significantProteinsOnlyOption.setWidth("140px");
+        significantProteinsOnlyOption.setWidth("80px");
 //        significantProteinsOnlyOption.setHeight("40px");
         significantProteinsOnlyOption.setNullSelectionAllowed(true); // user can not 'unselect'
         significantProteinsOnlyOption.setMultiSelect(true);
 
-        significantProteinsOnlyOption.addItem("Significant Regulation");
+        significantProteinsOnlyOption.addItem("Significant");
         significantProteinsOnlyOption.addStyleName("horizontal");
         significantProteinsOnlyOption.addValueChangeListener(new Property.ValueChangeListener() {
 
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
-                datasetExploringCentralSelectionManager.updateSignificantOnlySelection(significantProteinsOnlyOption.getValue().toString().equalsIgnoreCase("[Significant Regulation]"));
+                datasetExploringCentralSelectionManager.updateSignificantOnlySelection(significantProteinsOnlyOption.getValue().toString().equalsIgnoreCase("[Significant]"));
 
             }
 
@@ -237,7 +244,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
             @SuppressWarnings("CallToPrintStackTrace")
             public InputStream getStream() {
                 try {
-                    byte[] pdfFile = handler.exportBubbleChartAsPdf(chart, "bubblechart_comparisons_selection.pdf");
+                    byte[] pdfFile = handler.exportBubbleChartAsPdf(chart, "bubblechart_comparisons_selection.pdf", "Proteins Overview");
                     return new ByteArrayInputStream(pdfFile);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -489,12 +496,39 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
         };
 
-        XYPlot xyplot = new XYPlot(defaultxyzdataset, xAxis, yAxis, xyitemrenderer);
+        XYPlot xyplot = new XYPlot(defaultxyzdataset, xAxis, yAxis, xyitemrenderer) {
+            private final Color[] labelsColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0)};
+            private final Font font = new Font("Verdana", Font.PLAIN, 12);
+            private final String[] labels = new String[]{"Low 100%", "Low <100% ", "Stable", " High <100%", "High <100%"};
 
-        JFreeChart generatedChart = new JFreeChart(xyplot);
+            @Override
+            public LegendItemCollection getLegendItems() {
+                LegendItemCollection legendItemCollection = new LegendItemCollection();
+                for (int i = 0; i < labelsColor.length; i++) {
+                    LegendItem item = new LegendItem(labels[i], labelsColor[i]);
+//                    item.setLabelPaint(Color.GRAY);
+                    item.setLabelFont(font);
+
+                    legendItemCollection.add(item);
+
+                }
+
+                return legendItemCollection;//To change body of generated methods, choose Tools | Templates.
+            }
+
+        };
+
+        JFreeChart generatedChart = new JFreeChart(xyplot) {
+
+        };
         xyplot.setOutlineVisible(false);
+        LegendTitle legend = generatedChart.getLegend();
+        legend.setVisible(true);
+        legend.setMargin(20, 0, 20, 0);
+//        legend.setBorder(1, 1, 1, 1);
+        legend.setFrame(new BlockBorder(1, 0, 1, 0, Color.LIGHT_GRAY));
 
-        generatedChart.removeLegend();
+//        generatedChart.removeLegend();
         xyplot.setForegroundAlpha(0.65F);
         xyplot.setBackgroundPaint(Color.WHITE);
         generatedChart.setBackgroundPaint(Color.WHITE);

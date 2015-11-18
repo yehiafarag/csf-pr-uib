@@ -11,14 +11,11 @@ import com.vaadin.data.Property;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.event.ShortcutListener;
-import com.vaadin.server.Page;
 import com.vaadin.shared.ui.MultiSelectMode;
 import com.vaadin.shared.ui.label.ContentMode;
-import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.AbstractTextField;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -32,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -45,6 +41,7 @@ import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.beans.quant.QuantProtein;
 import probe.com.selectionmanager.CSFFilter;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
+import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.TableLegend;
 import probe.com.view.core.CustomExternalLink;
 
 /**
@@ -365,6 +362,12 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
         rightBottomLayout.setSpacing(true);
         bottomLayout.addComponent(rightBottomLayout);
         bottomLayout.setComponentAlignment(rightBottomLayout, Alignment.TOP_RIGHT);
+        
+        TableLegend tableLegendLayout = new TableLegend();
+          rightBottomLayout.addComponent(tableLegendLayout);
+        rightBottomLayout.setComponentAlignment(tableLegendLayout, Alignment.MIDDLE_CENTER);
+        
+        
 
         VerticalLayout selectAllBtn = new VerticalLayout();
         selectAllBtn.setStyleName("selectallbtn");

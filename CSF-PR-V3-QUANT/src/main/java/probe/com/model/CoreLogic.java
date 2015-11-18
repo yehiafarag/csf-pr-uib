@@ -657,15 +657,15 @@ public class CoreLogic implements Serializable {
         }
     }
 
-    public byte[] exportImgAsPdf(Set<JFreeChart> component, String fileName) {
-        return exporter.exportImgAsPdf(component, fileName, userFolderUrl);
+    public byte[] exportProteinsInfoCharts(Set<JFreeChart> component, String fileName,String title) {
+        return exporter.exportProteinsInfoCharts(component, fileName, userFolderUrl,title);
 //          
 //         "";//url + userFolder.getName() + "/" + pdfFile.getName();
 
     }
 
-    public byte[] exportBubbleChartAsPdf(JFreeChart chart, String fileName) {
-        return exporter.exportBubbleChartAsPdf(chart, fileName, userFolderUrl);
+    public byte[] exportBubbleChartAsPdf(JFreeChart chart, String fileName,String title) {
+        return exporter.exportBubbleChartAsPdf(chart, fileName, userFolderUrl,title);
     }
 
     public byte[] exportfullReportAsZip(Set<JFreeChart> component, String fileName) {

@@ -37,14 +37,18 @@ import org.apache.commons.codec.binary.Base64;
 import org.jfree.chart.ChartRenderingInfo;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.LegendItem;
+import org.jfree.chart.LegendItemCollection;
 import org.jfree.chart.axis.NumberTick;
 import org.jfree.chart.axis.SymbolAxis;
 import org.jfree.chart.axis.Tick;
 import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.entity.ChartEntity;
 import org.jfree.chart.entity.XYItemEntity;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.text.TextUtilities;
 import org.jfree.ui.RectangleEdge;
@@ -111,7 +115,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         return orederingOptionGroup;
     }
     private final LayoutEvents.LayoutClickListener chartListener;
-
+    private final String proteinName;
     /**
      *
      * @param datasetExploringCentralSelectionManager
@@ -124,6 +128,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
      */
     public ProteinOverviewJFreeLineChartContainer(DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager, final DiseaseGroupsComparisonsProteinLayout[] orgComparisonProteins, final Set<QuantDiseaseGroupsComparison> selectedComparisonList, int widthValue, final String proteinName, final String proteinAccession, boolean searchingMode, final String proteinKey, CSFPRHandler mainHandler) {
 
+        this.proteinName=proteinName;
         this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.setSpacing(false);
         this.setHeightUndefined();
@@ -734,10 +739,43 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                     return Color.WHITE;
                 }
             }
+
+            private final Color[] labelsColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), Color.WHITE, new Color(255, 51, 51), new Color(204, 0, 0)};
+            private final Color[] labelsOutColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0)};
+
+            private final Font font = new Font("Verdana", Font.PLAIN, 11);
+            private final String[] labels = new String[]{"Low 100%", "Low <100% ", "Stable", "Empty", " High <100%", "High <100%"};
+            private final Shape[] shapes = new Shape[]{downArr, downArr, notRShape, emptyRShape, upArr, upArr};
+
+            @Override
+            public LegendItemCollection getLegendItems() {
+                LegendItemCollection legendItemCollection = new LegendItemCollection();
+                for (int i = 0; i < labelsColor.length; i++) {
+                    LegendItem item = new LegendItem(labels[i], "", "", "", shapes[i], labelsColor[i]) {
+
+                        @Override
+                        public boolean isShapeOutlineVisible() {
+                            return true; //To change body of generated methods, choose Tools | Templates.
+                        }
+
+                    };
+
+                    item.setOutlinePaint(labelsOutColor[i]);
+
+//                    item.setLabelPaint(Color.GRAY);
+                    item.setLabelFont(font);
+
+                    legendItemCollection.add(item);
+
+                }
+
+                return legendItemCollection;//To change body of generated methods, choose Tools | Templates.
+            }
+
         };
 
         xyplot.setRangeTickBandPaint(Color.WHITE);
-        JFreeChart jFreeChart = new JFreeChart(null, new Font("Verdana", 0, 18), xyplot, false);
+        JFreeChart jFreeChart = new JFreeChart(null, new Font("Verdana", 0, 18), xyplot, true);
         jFreeChart.setBackgroundPaint(Color.WHITE);
         final XYPlot plot = jFreeChart.getXYPlot();
         plot.setBackgroundPaint(Color.WHITE);
@@ -747,6 +785,11 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         plot.setRangeGridlinePaint(Color.LIGHT_GRAY);
         plot.setOutlinePaint(Color.GRAY);
         jFreeChart.setBorderVisible(false);
+        LegendTitle legend = jFreeChart.getLegend();
+        legend.setVisible(true);
+        legend.setMargin(20, 0, 20, 0);
+//        legend.setBorder(1, 1, 1, 1);
+        legend.setFrame(new BlockBorder(1, 0, 1, 0, Color.LIGHT_GRAY));
 
 //        JfreeExporter exporter = new JfreeExporter();
 //        exporter.writeChartToPDFFile(jFreeChart, 595, 842, "line" + teststyle + ".pdf");
@@ -879,6 +922,8 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                     1.0f, new float[]{10.0f, 6.0f}, 0.0f
             ));
 
+            chart.getLegend().setVisible(true);
+
         } else {
 
             Shape snotRShape = ShapeUtilities.createDiamond(3f);
@@ -898,6 +943,8 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 //            renderer.setSeriesShape(1, srightArr);
             renderer.setSeriesPaint(0, Color.DARK_GRAY);
             renderer.setSeriesStroke(0, null);
+
+            chart.getLegend().setVisible(false);
         }
 
     }
@@ -963,7 +1010,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
                         set.add(defaultChart);
                         set.addAll(studiesScatterChartsLayout.getScatterCharts());
-                        byte[] pdfFile = mainHandler.exportImgAsPdf(set, "proteins_information_charts.pdf");
+                        byte[] pdfFile = mainHandler.exportProteinsInfoCharts(set, "proteins_information_charts.pdf",proteinName);
                         return new ByteArrayInputStream(pdfFile);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -974,7 +1021,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                     try {
                         set.add(orderedChart);
                         set.addAll(studiesScatterChartsLayout.getScatterCharts());
-                        byte[] pdfFile = mainHandler.exportImgAsPdf(set, "proteins_information_charts.pdf");
+                        byte[] pdfFile = mainHandler.exportProteinsInfoCharts(set, "proteins_information_charts.pdf",proteinName);
                         return new ByteArrayInputStream(pdfFile);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -1000,7 +1047,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
                         datasetExploringCentralSelectionManager.exportFullReport();
                         set.addAll(studiesScatterChartsLayout.getScatterCharts());
-                        byte[] pdfFile = mainHandler.exportImgAsPdf(set, "full_Reaport.pdf");
+                        byte[] pdfFile = mainHandler.exportfullReportAsZip(set, "full_Reaport.pdf");
                         return new ByteArrayInputStream(pdfFile);
                     } catch (Exception e) {
                         e.printStackTrace();

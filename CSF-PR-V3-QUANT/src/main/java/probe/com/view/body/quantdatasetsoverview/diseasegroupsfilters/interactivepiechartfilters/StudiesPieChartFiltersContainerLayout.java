@@ -511,7 +511,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
 //                BufferedImage bi = chart.createBufferedImage(width, height, chartRenderingInfo);
                 try {
                     
-                    byte[] pdfFile = handler.exportImgAsPdf(chartSet, "piechart_filters.pdf");
+                    byte[] pdfFile = handler.exportProteinsInfoCharts(chartSet, "piechart_filters.pdf","Studies Overview");
                     return new ByteArrayInputStream(pdfFile);
                 } catch (Exception e) {
                     e.printStackTrace();
