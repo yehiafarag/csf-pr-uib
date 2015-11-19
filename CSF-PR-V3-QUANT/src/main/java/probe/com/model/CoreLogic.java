@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import probe.com.dal.DataAccess;
 import probe.com.dal.Query;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
@@ -621,6 +622,7 @@ public class CoreLogic implements Serializable {
         for (QuantProtein prot : quantProteinsList) {
 
             if (searchBy.equalsIgnoreCase("Protein Accession")/* ||*/) {
+                System.out.println("prot.getUniprotProteinName().trim() " + prot.getUniprotProteinName().trim());
                 key = prot.getUniprotAccession().trim() + "__" + prot.getUniprotProteinName().trim();
             } else {
                 key = prot.getUniprotProteinName().trim();
@@ -657,15 +659,15 @@ public class CoreLogic implements Serializable {
         }
     }
 
-    public byte[] exportProteinsInfoCharts(Set<JFreeChart> component, String fileName,String title) {
-        return exporter.exportProteinsInfoCharts(component, fileName, userFolderUrl,title);
+    public byte[] exportProteinsInfoCharts(Set<JFreeChart> component, String fileName, String title) {
+        return exporter.exportProteinsInfoCharts(component, fileName, userFolderUrl, title);
 //          
 //         "";//url + userFolder.getName() + "/" + pdfFile.getName();
 
     }
 
-    public byte[] exportBubbleChartAsPdf(JFreeChart chart, String fileName,String title) {
-        return exporter.exportBubbleChartAsPdf(chart, fileName, userFolderUrl,title);
+    public byte[] exportBubbleChartAsPdf(JFreeChart chart, String fileName, String title) {
+        return exporter.exportBubbleChartAsPdf(chart, fileName, userFolderUrl, title);
     }
 
     public byte[] exportfullReportAsZip(Set<JFreeChart> component, String fileName) {
@@ -732,8 +734,15 @@ public class CoreLogic implements Serializable {
      * sequence )
      * @return list of identification hits results
      */
-    public Map<String, Integer> getIdentificationHitsList(Map<Integer, IdentificationProteinBean> identificationProteinsList, String searchBy) {
-        Map<String, Integer> idHitsList = new HashMap<String, Integer>();
+    public Map<String, Integer> getIdentificationHitsList(Map<Integer, IdentificationProteinBean> identificationProteinsList, String searchBy, String mainProt) {
+        final TreeSet<String> usedKeys = new TreeSet<String>();
+        for (String key : mainProt.split("\n")) {
+            if (key.trim().length() > 3) {
+                usedKeys.add(key);
+            }
+        }
+        
+        Map<String, Integer> idHitsList = new TreeMap<String, Integer>();
         if (identificationProteinsList == null || identificationProteinsList.isEmpty()) {
             return idHitsList;
         }
@@ -743,6 +752,7 @@ public class CoreLogic implements Serializable {
 
             if (searchBy.equalsIgnoreCase("Protein Accession")) {
                 key = prot.getAccession().trim() + "__" + prot.getOtherProteins().trim() + "__" + prot.getDescription().trim();
+
             } else {
                 key = prot.getDescription().trim();
             }
@@ -754,6 +764,11 @@ public class CoreLogic implements Serializable {
             value++;
             idHitsList.put(key, value);
 
+        }
+        if (!idHitsList.keySet().toArray()[0].toString().startsWith(usedKeys.pollFirst())) {
+            Map<String, Integer> revIdHitsList = new TreeMap<String, Integer>(Collections.reverseOrder());
+            revIdHitsList.putAll(idHitsList);
+            return revIdHitsList;
         }
         return idHitsList;
 

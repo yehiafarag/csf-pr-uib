@@ -1,9 +1,15 @@
 package probe.com.view.body.quantdatasetsoverview;
 
+import com.vaadin.addon.tableexport.CsvExport;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
+import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.Reindeer;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -20,13 +26,12 @@ import probe.com.view.core.CustomExternalLink;
  *
  * quant dataset combined table layout
  */
-public class QuantDatasetsCombinedTableLayout extends VerticalLayout implements CSFFilter, Property.ValueChangeListener {
+public class QuantDatasetsfullStudiesTableLayout extends VerticalLayout implements CSFFilter, Property.ValueChangeListener {
 
     private final DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager;
     private final String filter_id = "datasetsTable";
     private final Table datasetsTable;
     private CustomExternalLink pumedLabel;
-    private CustomExternalLink rawDataLabel;
     private int pumedkey;
     private final CSFTable tableLayout;
     private final int totalStudiesNumber;
@@ -36,14 +41,42 @@ public class QuantDatasetsCombinedTableLayout extends VerticalLayout implements 
      *
      * @param datasetExploringCentralSelectionManager
      */
-    public QuantDatasetsCombinedTableLayout(DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager) {
+    public QuantDatasetsfullStudiesTableLayout(DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager) {
         this.datasetExploringCentralSelectionManager = datasetExploringCentralSelectionManager;
-        datasetExploringCentralSelectionManager.registerFilter(QuantDatasetsCombinedTableLayout.this);
+        datasetExploringCentralSelectionManager.registerFilter(QuantDatasetsfullStudiesTableLayout.this);
         this.datasetsTable = new Table();
         this.totalStudiesNumber = datasetExploringCentralSelectionManager.getFilteredDatasetsList().size();
-        tableLayout = new CSFTable(datasetsTable, "Dataset Table", totalStudiesNumber + "/" + totalStudiesNumber, null, null, null);
+
+        this.setStyleName(Reindeer.LAYOUT_WHITE);
+        HorizontalLayout rightBottomLayout = new HorizontalLayout();
+        Button exportTableBtn = new Button("");
+        exportTableBtn.setHeight("24px");
+        exportTableBtn.setWidth("24px");
+        exportTableBtn.setPrimaryStyleName("exportxslbtn");
+        rightBottomLayout.addComponent(exportTableBtn);
+        rightBottomLayout.setComponentAlignment(exportTableBtn, Alignment.BOTTOM_RIGHT);
+//        rightBottomLayout.setMargin(new MarginInfo(true, false, false, false));
+        exportTableBtn.setDescription("Export table data");
+
+        rightBottomLayout.setHeight("30px");
+        rightBottomLayout.setStyleName(Reindeer.LAYOUT_WHITE);
+        exportTableBtn.addClickListener(new Button.ClickListener() {
+
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                CsvExport csvExport = new CsvExport(datasetsTable, "CSF-PR  Quant Studies Information");
+                csvExport.setReportTitle("CSF-PR / Quant Studies Information ");
+                csvExport.setExportFileName("CSF-PR - Quant Studies Information" + ".csv");
+                csvExport.setMimeType(CsvExport.CSV_MIME_TYPE);
+                csvExport.setDisplayTotals(false);
+                csvExport.export();
+
+            }
+        });
+        tableLayout = new CSFTable(datasetsTable, "Studies Table", totalStudiesNumber + "/" + totalStudiesNumber, null, null, rightBottomLayout);
         initCombinedQuantDatasetTable(datasetExploringCentralSelectionManager.getActiveHeader());
         this.addComponent(tableLayout);
+        this.setWidth("100%");
         tableLayout.setShowTable(false);
     }
 
@@ -74,7 +107,7 @@ public class QuantDatasetsCombinedTableLayout extends VerticalLayout implements 
         datasetsTable.addContainerProperty("Analytical Method", String.class, null);
         datasetsTable.setColumnCollapsed("Analytical Method", !activeColumnHeaders[4]);
 
-        datasetsTable.addContainerProperty("Raw Data", CustomExternalLink.class, null);
+        datasetsTable.addContainerProperty("Raw Data", String.class, null);
         datasetsTable.setColumnCollapsed("Raw Data", !activeColumnHeaders[5]);
         datasetsTable.addContainerProperty("#Files", Integer.class, null, "#Files", null, Table.Align.RIGHT);
         datasetsTable.setColumnCollapsed("#Files", !activeColumnHeaders[6]);
@@ -160,12 +193,13 @@ public class QuantDatasetsCombinedTableLayout extends VerticalLayout implements 
             if (pb == null) {
                 continue;
             }
-            CustomExternalLink rawDatalink;
+            String rawDatalink;
             if (pb.getRawDataUrl().equalsIgnoreCase("Raw Data Not Available")) {
-                rawDatalink = null;
+                rawDatalink = "Not available";
             } else {
-                rawDatalink = new CustomExternalLink("Get Raw Data", pb.getRawDataUrl());
-                rawDatalink.setDescription("Link To Raw Data");
+                rawDatalink = "Available";
+//                rawDatalink = new CustomExternalLink("Get Raw Data", pb.getRawDataUrl());
+//                rawDatalink.setDescription("Link To Raw Data");
             }
             Integer quantProtNum = pb.getQuantifiedProteinsNumber();
             if (quantProtNum == -1) {
@@ -195,23 +229,27 @@ public class QuantDatasetsCombinedTableLayout extends VerticalLayout implements 
         if (datasetsTable.getValue() != null) {
             pumedkey = (Integer) datasetsTable.getValue();
         } else {
+            if (pumedLabel != null) {
+                pumedLabel.rePaintLable("black");
+
+            }
             return;
         }
         if (pumedLabel != null) {
             pumedLabel.rePaintLable("black");
 
         }
-        if (rawDataLabel != null) {
-            rawDataLabel.rePaintLable("black");
-
-        }
+//        if (rawDataLabel != null) {
+//            rawDataLabel.rePaintLable("black");
+//
+//        }
         final Item item = datasetsTable.getItem(pumedkey);
         pumedLabel = (CustomExternalLink) item.getItemProperty("PumedID").getValue();
-        rawDataLabel = (CustomExternalLink) item.getItemProperty("Raw Data").getValue();
+//        rawDataLabel = (CustomExternalLink) item.getItemProperty("Raw Data").getValue();
         pumedLabel.rePaintLable("white");
-        if (rawDataLabel != null) {
-            rawDataLabel.rePaintLable("white");
-        }
+//        if (rawDataLabel != null) {
+//            rawDataLabel.rePaintLable("white");
+//        }
 //        int dsIndex = dsIndexes[(Integer) item.getItemProperty("Index").getValue()];
 //        datasetExploringCentralSelectionManager.setSelectedDataset(new ArrayList<Integer>(dsIndex));
 //        datasetExploringCentralSelectionManager.setStudyLevelFilterSelection(new CSFFilterSelection("Study_Selection", new int[]{dsIndex}, filter_id, null));

@@ -48,8 +48,9 @@ public class CSFTable extends VerticalLayout implements Serializable {
         this.setWidth("100%");
 
         final HorizontalLayout headerLayout = new HorizontalLayout();
-        headerLayout.setHeight("20px");
+        headerLayout.setHeight("40px");
         headerLayout.setSpacing(true);
+        headerLayout.setMargin(m);
         show = new ShowLabel(true);
         show.setHeight("20px");
         headerLayout.addComponent(show);

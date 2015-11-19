@@ -391,8 +391,8 @@ public class CSFPRHandler implements Serializable {
      * sequence )
      * @return list of identification hits results
      */
-    public Map<String, Integer> getIdHitsList(Map<Integer, IdentificationProteinBean> identificationProteinsList, String searchBy) {
-        return logicLayer.getIdentificationHitsList(identificationProteinsList, searchBy);
+    public Map<String, Integer> getIdHitsList(Map<Integer, IdentificationProteinBean> identificationProteinsList, String searchBy,String mainProt) {
+        return logicLayer.getIdentificationHitsList(identificationProteinsList, searchBy,mainProt);
 
     }
 

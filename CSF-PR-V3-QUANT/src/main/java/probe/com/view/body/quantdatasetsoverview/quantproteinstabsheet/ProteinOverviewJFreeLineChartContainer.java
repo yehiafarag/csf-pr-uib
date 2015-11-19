@@ -744,7 +744,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
             private final Color[] labelsOutColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0)};
 
             private final Font font = new Font("Verdana", Font.PLAIN, 11);
-            private final String[] labels = new String[]{"Low 100%", "Low <100% ", "Stable", "Empty", " High <100%", "High <100%"};
+            private final String[] labels = new String[]{"Low 100%", "Low <100% ", "Stable", "No Data", " High <100%", "High <100%"};
             private final Shape[] shapes = new Shape[]{downArr, downArr, notRShape, emptyRShape, upArr, upArr};
 
             @Override

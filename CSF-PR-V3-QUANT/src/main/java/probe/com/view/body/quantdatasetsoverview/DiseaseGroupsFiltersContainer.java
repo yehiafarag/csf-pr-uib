@@ -78,6 +78,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         pieChartFiltersBtnLayout.addComponent(pieChartFiltersLayout.getPieChartFiltersBtn());
 
         diseaseGroupsListFilter = new DiseaseGroupsListFilter(centralFiltersSelectionManager);
+        
         Set<String> diseaseGroupsSet = diseaseGroupsListFilter.getDiseaseGroupsSet();
 //        heatmapW = Math.max((156 + (heatmapCellWidth * diseaseGroupsSet.size())), 700);
 
@@ -126,7 +127,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         final Label counterLabel = new Label("( " + centralFiltersSelectionManager.getCurrentDsNumber() + " / " + centralFiltersSelectionManager.getTotalDsNumber() + " )");
         diseaseTypeSelectionList.setWidth("150px");
         diseaseTypeSelectionList.setNullSelectionAllowed(false);
-        diseaseTypeSelectionList.setValue(diseaseSet.iterator().next());
+        diseaseTypeSelectionList.setValue("Multiple Sclerosis");
         diseaseTypeSelectionList.setImmediate(true);
         cont.addComponent(diseaseTypeSelectionList);
         cont.setComponentAlignment(diseaseTypeSelectionList, Alignment.TOP_LEFT);
@@ -345,9 +346,9 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
      * select all available disease groups comparisons
      */
     public void selectAllComparisons() {
-        if (diseaseGroupsHeatmapFilter.isActiveSelectAll()) {
+//        if (diseaseGroupsHeatmapFilter.isActiveSelectAll()) {
             diseaseGroupsHeatmapFilter.selectAll();
-        }
+//        }
     }
 
     /**

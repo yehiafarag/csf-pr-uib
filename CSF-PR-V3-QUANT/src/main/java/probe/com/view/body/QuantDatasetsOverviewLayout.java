@@ -17,7 +17,7 @@ import probe.com.handlers.CSFPRHandler;
 import probe.com.model.beans.quant.QuantProtein;
 import probe.com.view.body.quantdatasetsoverview.DiseaseGroupsFiltersContainer;
 import probe.com.view.body.quantdatasetsoverview.QuantProteinsComparisonsContainer;
-import probe.com.view.body.quantdatasetsoverview.QuantDatasetsCombinedTableLayout;
+import probe.com.view.body.quantdatasetsoverview.QuantDatasetsfullStudiesTableLayout;
 import probe.com.view.core.HideOnClickLayout;
 import probe.com.view.body.quantdatasetsoverview.QuantProteinsTabsheetContainerLayout;
 
@@ -43,9 +43,7 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
      */
     public QuantDatasetsOverviewLayout(CSFPRHandler handler, boolean searchingMode, List<QuantProtein> searchQuantificationProtList) {
 
-        if (searchingMode) {
-
-        }
+      
         exploringFiltersManager = new DatasetExploringCentralSelectionManager(handler.getQuantDatasetInitialInformationObject(), handler.getActivePieChartQuantFilters());//,filterUtility.getFullFilterList()
 
         this.setMargin(true);
@@ -63,6 +61,7 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
 
         }
         // init piecharts filter
+        exploringFiltersManager.changeDiseaseCategory("Multiple Sclerosis");
 
         DiseaseGroupsFiltersContainer heatmapFilter = new DiseaseGroupsFiltersContainer(exploringFiltersManager, handler, searchQuantificationProtList);
         heatmapFilter.setWidth("100%");
@@ -99,18 +98,19 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
             public void sizeChanged(ComponentResizeEvent event) {
 
                 if (resizedCounter == 3) {
-                    UI.getCurrent().setScrollTop(1000); 
+                    UI.getCurrent().setScrollTop(1000);
                 }
-               
+
                 resizedCounter++;
             }
         });
         proteinsLevelLayout.setVisability(false);
 
-        QuantDatasetsCombinedTableLayout quantStudiesTable = new QuantDatasetsCombinedTableLayout(exploringFiltersManager);
+        QuantDatasetsfullStudiesTableLayout quantStudiesTable = new QuantDatasetsfullStudiesTableLayout(exploringFiltersManager);
         if (searchingMode) {
         } else {
             this.addComponent(quantStudiesTable);
+            quantStudiesTable.setWidth(layoutWidth+"px");
         }
 
     }

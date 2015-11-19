@@ -224,7 +224,7 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
             searchingUnitLayout.setSearchingFieldValue(defaultText);
             searchIdentificationProtList = handler.searchIdentificationProtein(query);
             idNotFound = handler.filterIdSearchingKeywords(searchIdentificationProtList, query.getSearchKeyWords(), query.getSearchBy());
-            Map<String, Integer> idHitsList = handler.getIdHitsList(searchIdentificationProtList, query.getSearchBy());
+            Map<String, Integer> idHitsList = handler.getIdHitsList(searchIdentificationProtList, query.getSearchBy(),query.getSearchKeyWords());
             initProteinsIdDataLayout(idHitsList, query.getSearchBy(), searchIdentificationProtList.size(), query.getSearchKeyWords());
 
             //searching quant data
@@ -265,10 +265,10 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
             idResultsOverview.setVisible(false);
             return;
         }
-        idResultsOverview.setCaption("Proteins Identification Data ( #Proteins " + idHitsList.size() + " | #Hits " + totalProtNum + " )");
+        idResultsOverview.setCaption("Proteins Identification Data ( #Protein Groups " + idHitsList.size() + " | #Hits " + totalProtNum + " )");
         idResultsOverview.setVisible(true);
         idProteinsDataLayout.removeAllComponents();
-        idProteinsDataLayoutContainer.updateTitleLabel("Proteins Identification Data ( #Proteins " + idHitsList.size() + " | #Hits " + totalProtNum + " )");
+        idProteinsDataLayoutContainer.updateTitleLabel("Proteins Identification Data ( #Protein Groups " + idHitsList.size() + " | #Hits " + totalProtNum + " )");
         idProteinsDataLayoutContainer.setVisible(true);
         idProteinsDataLayout.setVisible(true);
         if (idHitsList.size() > 1) {
@@ -360,10 +360,10 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
             quantResultsOverview.setVisible(false);
             return;
         }
-        quantResultsOverview.setCaption("Proteins Quantitative Data ( #Proteins " + quantHitsList.size() + " | #Hits " + totalProtNum + " )");
+        quantResultsOverview.setCaption("Proteins Quantitative Data ( #Protein Groups " + quantHitsList.size() + " | #Hits " + totalProtNum + " )");
         quantResultsOverview.setVisible(true);
         quantProteinsDataLayout.removeAllComponents();
-        quantProteinsDataLayoutContainer.updateTitleLabel("Proteins Quantitative Data ( #Proteins " + quantHitsList.size() + " | #Hits " + totalProtNum + " )");
+        quantProteinsDataLayoutContainer.updateTitleLabel("Proteins Quantitative Data ( #Protein Groups " + quantHitsList.size() + " | #Hits " + totalProtNum + " )");
         quantProteinsDataLayoutContainer.setVisible(true);
         quantProteinsDataLayout.setVisible(true);
         if (quantHitsList.size() > 1) {
