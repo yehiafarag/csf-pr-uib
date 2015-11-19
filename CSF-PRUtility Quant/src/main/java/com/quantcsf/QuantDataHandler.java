@@ -161,68 +161,35 @@ public class QuantDataHandler {
 
             FileReader sequanceReader = new FileReader(sequanceFile);
             BufferedReader sequanceBufRdr = new BufferedReader(sequanceReader);
-//            sequanceBufRdr.readLine();
 
             Map<String, QuantProtein> proteinAccSequanceMap = new HashMap<String, QuantProtein>();
-//             Map<String, String> proteinAccNameMap = new HashMap<String, String>();
             String seqline;
 
             int row = 1;
             while ((seqline = sequanceBufRdr.readLine()) != null && !seqline.trim().equalsIgnoreCase("") && row < 1000000000) {
 
-//                System.out.println(" sqline "+seqline);
-                if (seqline.startsWith(">sp|")) {
-                    if (quantProt.getUniprotAccession() != null) {
-                        proteinAccSequanceMap.put(quantProt.getUniprotAccession().trim().toLowerCase(), quantProt);
+               
+                if ((seqline.startsWith(">sp|") || seqline.startsWith(">tr|"))) {                 
+                    if (quantProt.getUniprotAccession() != null) {                       
+                        if (!proteinAccSequanceMap.containsKey(quantProt.getUniprotAccession().trim().toLowerCase())) {
+                            proteinAccSequanceMap.put(quantProt.getUniprotAccession().trim().toLowerCase(), quantProt);
+                        }
                     }
                     quantProt = new QuantProtein();
                     String[] seqArr = seqline.replace("|", "----").split("----");
-                    quantProt.setUniprotAccession(seqArr[1]);
+                    quantProt.setUniprotAccession(seqArr[1].replace(" ", "").trim());
                     String secSide = seqArr[2].split("OS=")[0].trim();
-                    String protName = secSide.replace(secSide.split(" ")[0], "")+" ("+secSide.split(" ")[0]+")";
-                    quantProt.setUniprotProteinName(protName);
+                    String protName = secSide.replace(secSide.split(" ")[0], "") + " (" + secSide.split(" ")[0] + ")";
+                    quantProt.setUniprotProteinName(protName.trim());                  
 
                 } else {
                     quantProt.setSequance(quantProt.getSequance() + seqline);
 
                 }
 //                
-//                String[] seqArr = seqline.split("\t");
-//
-//                if (proteinAccSequanceMap.containsKey(seqArr[0].replace(" ", "").trim().toLowerCase())) {
-//                    continue;
-//                }
-//
-//                if (belongtoPreviuosLine && quantProt != null) {
-//                    belongtoPreviuosLine = false;
-//                    quantProt.setSequance(quantProt.getSequance() + seqArr[0]);
-//                    quantProt.setUniprotProteinName(seqArr[1].split("\\(")[0]);
-//                    proteinAccSequanceMap.put(seqArr[1].replace(" ", "").trim().toLowerCase(), quantProt);
-//
-//                } else {
-//                    quantProt = new QuantProtein();
-//
-//                    //the case of max line width
-//                    if (seqArr[2].length() >= 32759) {
-//                        belongtoPreviuosLine = true;
-//                    }
-//
-//                    if (!seqArr[0].replace(" ", "").trim().equalsIgnoreCase(seqArr[1].replace(" ", "").trim())) {
-//                        continue;
-//                    }
-//                    if (seqArr.length == 4) {
-//                        quantProt.setUniprotProteinName(seqArr[3].split("\\(")[0]);
-//                         System.out.println(" **************** "+ quantProt.getUniprotProteinName());
-//                        if (seqArr[3].trim().equalsIgnoreCase("")) {
-//                            System.out.println("even worest error empty prot name mapping ");
-//                        }
-//
-//                    } else {
-//                        quantProt.setUniprotAccession(seqArr[1].replace(" ", "").trim().toLowerCase());
-//                        quantProt.setSequance(seqArr[2]);
-//                        proteinAccSequanceMap.put(seqArr[1].replace(" ", "").trim().toLowerCase(), quantProt);
-//                    }
-//                }
+            }
+            if (!proteinAccSequanceMap.containsKey(quantProt.getUniprotAccession().trim().toLowerCase())) {
+                proteinAccSequanceMap.put(quantProt.getUniprotAccession().trim().toLowerCase(), quantProt);
             }
 
             sequanceBufRdr.close();
@@ -274,9 +241,15 @@ public class QuantDataHandler {
                     qProt.setUniprotAccession(" ");
                     index++;
                 } else {
+                    if (updatedRowArr[index].contains("(Unreviewed)")) {
+                        continue;
+                    }
+
                     qProt.setUniprotAccession(updatedRowArr[index++].trim());
-                }
+                }             
+
                 if (proteinAccSequanceMap.containsKey(qProt.getUniprotAccession().toLowerCase())) {
+
                     qProt.setSequance(proteinAccSequanceMap.get(qProt.getUniprotAccession().toLowerCase()).getSequance());
                     qProt.setUniprotProteinName(proteinAccSequanceMap.get(qProt.getUniprotAccession().toLowerCase()).getUniprotProteinName());
                 } else {
