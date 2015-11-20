@@ -665,13 +665,19 @@ public class CoreLogic implements Serializable {
 //         "";//url + userFolder.getName() + "/" + pdfFile.getName();
 
     }
+      public byte[] exportStudiesInformationPieCharts(Set<JFreeChart> component, String fileName, String title) {
+        return exporter.exportStudiesInformationPieCharts(component, fileName, userFolderUrl, title);
+//          
+//         "";//url + userFolder.getName() + "/" + pdfFile.getName();
+
+    }
 
     public byte[] exportBubbleChartAsPdf(JFreeChart chart, String fileName, String title) {
         return exporter.exportBubbleChartAsPdf(chart, fileName, userFolderUrl, title);
     }
 
-    public byte[] exportfullReportAsZip(Set<JFreeChart> component, String fileName) {
-        return exporter.exportfullReportAsZip(component, fileName, userFolderUrl);
+    public byte[] exportfullReportAsZip( Map<String,Set<JFreeChart>> chartsMap, String fileName,String title) {
+        return exporter.exportfullReportAsZip(chartsMap, fileName, userFolderUrl,title);
 //          
 //         "";//url + userFolder.getName() + "/" + pdfFile.getName();
 
@@ -741,7 +747,7 @@ public class CoreLogic implements Serializable {
                 usedKeys.add(key);
             }
         }
-        
+
         Map<String, Integer> idHitsList = new TreeMap<String, Integer>();
         if (identificationProteinsList == null || identificationProteinsList.isEmpty()) {
             return idHitsList;
@@ -1419,6 +1425,7 @@ public class CoreLogic implements Serializable {
                         if (inverted) {
                             Set<QuantPeptide> updatedQuantPeptidesList = new HashSet<QuantPeptide>();
                             for (QuantPeptide quantPeptide : fullComparisonPeptideMap.get(key)) {
+
                                 if (quantPeptide.getString_fc_value().equalsIgnoreCase("Increased") || quantPeptide.getString_fc_value().equalsIgnoreCase("Increase")) {
 
                                     quantPeptide.setString_fc_value("Decreased");
@@ -1430,6 +1437,7 @@ public class CoreLogic implements Serializable {
                                 if (quantPeptide.getFc_value() != -1000000000.0) {
                                     quantPeptide.setFc_value((1.0 / quantPeptide.getFc_value()) * -1);
                                 }
+
                                 updatedQuantPeptidesList.add(quantPeptide);
                             }
                             quantPeptidesList.addAll(updatedQuantPeptidesList);
@@ -1455,7 +1463,7 @@ public class CoreLogic implements Serializable {
 
                         }
                         if (quant.getFcPatientGroupIonPatientGroupII() != -1000000000.0) {
-                            quant.setFcPatientGroupIonPatientGroupII(1.0 / quant.getFcPatientGroupIonPatientGroupII());
+                            quant.setFcPatientGroupIonPatientGroupII(1.0 / quant.getFcPatientGroupIonPatientGroupII() * -1);
                         }
                         String pgI = quant.getPatientGroupII();
                         String pSubGI = quant.getPatientSubGroupII();

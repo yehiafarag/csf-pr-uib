@@ -19,7 +19,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -38,14 +38,14 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
 //     private JfreeExporter exporter = new JfreeExporter();
     private final PieChartsSelectionManager internalSelectionManager;
     private PopupInteractiveDSFiltersLayout pieChartFiltersBtn;
-    Set<JFreeChart> chartSet = new HashSet<JFreeChart>();
+    private final Set<JFreeChart> chartSet = new LinkedHashSet<JFreeChart>();
 
     /**
      *
-     * @param exploringFiltersManager
+     * @param datasetExploringCentralSelectionManager
      * @param handler
      */
-    public StudiesPieChartFiltersContainerLayout(DatasetExploringCentralSelectionManager exploringFiltersManager, final CSFPRHandler handler) {
+    public StudiesPieChartFiltersContainerLayout(DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager, final CSFPRHandler handler) {
 
         int layoutHeight = Page.getCurrent().getBrowserWindowHeight() - 200;
         int layoutWidth = Page.getCurrent().getBrowserWindowWidth() - 200;
@@ -53,10 +53,10 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
         this.setHeight(layoutHeight + "px");
         int filterWidth = layoutWidth / 3;
         this.setSpacing(true);
-        boolean[] activeFilters = exploringFiltersManager.getActiveFilters();
-        Map<Integer, QuantDatasetObject> quantDatasetArr = exploringFiltersManager.getFilteredDatasetsList();
+        boolean[] activeFilters = datasetExploringCentralSelectionManager.getActiveFilters();
+        Map<Integer, QuantDatasetObject> quantDatasetArr = datasetExploringCentralSelectionManager.getFilteredDatasetsList();
 
-        internalSelectionManager = new PieChartsSelectionManager(exploringFiltersManager);
+        internalSelectionManager = new PieChartsSelectionManager(datasetExploringCentralSelectionManager);
         if (quantDatasetArr == null) {
             return;
         }
@@ -383,6 +383,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
             }
 
         }
+        datasetExploringCentralSelectionManager.setStudiesOverviewPieChart(chartSet);
         HorizontalLayout btnLayout = new HorizontalLayout();
         btnLayout.setHeight("23px");
         btnLayout.setWidthUndefined();
@@ -511,7 +512,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
 //                BufferedImage bi = chart.createBufferedImage(width, height, chartRenderingInfo);
                 try {
                     
-                    byte[] pdfFile = handler.exportProteinsInfoCharts(chartSet, "piechart_filters.pdf","Studies Overview");
+                    byte[] pdfFile = handler.exportStudiesInformationPieCharts(chartSet, "piechart_filters.pdf","Studies Overview");
                     return new ByteArrayInputStream(pdfFile);
                 } catch (Exception e) {
                     e.printStackTrace();

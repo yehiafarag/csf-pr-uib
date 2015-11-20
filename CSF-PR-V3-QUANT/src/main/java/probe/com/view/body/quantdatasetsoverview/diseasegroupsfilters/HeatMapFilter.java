@@ -11,6 +11,8 @@ import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.beans.quant.QuantDSIndexes;
 import probe.com.selectionmanager.CSFFilter;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
+import probe.com.view.body.quantdatasetsoverview.DiseaseGroupsFiltersContainer;
+import probe.com.view.core.ComponentCapture;
 import probe.com.view.core.DiseaseGroup;
 
 /**
@@ -92,6 +94,13 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
         this.calcHeatMapMatrix(rowheaders, colheaders, patientsGroupArr);
         heatMap.updateHeatMap(rowheaders, colheaders, values, maxDatasetNumber);
         centralFiltersSelectionManager.registerFilter(HeatMapFilter.this);
+         final ComponentCapture cc = new ComponentCapture();
+        this.addComponent(cc);
+//        cc.captureComponent(heatMap);
+//        centralFiltersSelectionManager.addCaptureComponent(this.getClass().getName(), cc);
+//        
+//        this.addComponent(heatMap);
+//        this.setComponentAlignment(heatMap, Alignment.TOP_LEFT);
     }
 
     /**

@@ -353,15 +353,18 @@ public class CSFPRHandler implements Serializable {
       
   public byte[] exportProteinsInfoCharts(Set<JFreeChart> component, String fileName,String title) {
      return  logicLayer.exportProteinsInfoCharts(component, fileName,title);
-//          
-//         "";//url + userFolder.getName() + "/" + pdfFile.getName();
+
+    }
+     
+  public byte[] exportStudiesInformationPieCharts(Set<JFreeChart> component, String fileName,String title) {
+     return  logicLayer.exportStudiesInformationPieCharts(component, fileName,title);
 
     }
    public byte[] exportBubbleChartAsPdf(JFreeChart chart, String fileName,String title) {
         return logicLayer.exportBubbleChartAsPdf(chart, fileName,title);
     }
-   public byte[] exportfullReportAsZip(Set<JFreeChart> component, String fileName) {
-     return  logicLayer.exportfullReportAsZip(component, fileName);
+   public byte[] exportfullReportAsZip( Map<String,Set<JFreeChart>> chartsMap, String fileName,String title) {
+     return  logicLayer.exportfullReportAsZip(chartsMap, fileName,title);
 //          
 //         "";//url + userFolder.getName() + "/" + pdfFile.getName();
 

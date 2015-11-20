@@ -4,15 +4,18 @@ import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.UI;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.jfree.chart.JFreeChart;
 import probe.com.model.beans.quant.QuantDatasetInitialInformationObject;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.beans.quant.QuantDatasetObject;
+import probe.com.view.core.ComponentCapture;
 import probe.com.view.core.DiseaseGroup;
 
 /**
@@ -39,8 +42,8 @@ public class DatasetExploringCentralSelectionManager implements Serializable {
     private Map<String, DiseaseGroupsComparisonsProteinLayout[]> quantProteinsLayoutSelectionMap;
     private String selectedProteinKey;
     private Set<String> diseaseCategorySet;
-    
-    private int totalDsNumber,currentDsNumber;
+
+    private int totalDsNumber, currentDsNumber;
 
     /**
      * get selected heat map rows
@@ -108,13 +111,12 @@ public class DatasetExploringCentralSelectionManager implements Serializable {
     public DatasetExploringCentralSelectionManager(Map<String, QuantDatasetInitialInformationObject> quantDatasetListObject, Map<String, boolean[]> activeFilterMap) {
         this.quantDatasetListObject = quantDatasetListObject;
         String key = quantDatasetListObject.keySet().iterator().next();
-        this.totalDsNumber=0;
-                for(String k:quantDatasetListObject.keySet()){
-                totalDsNumber+=quantDatasetListObject.get(k).getQuantDatasetsList().size();
-                
-                
-                }
-                    
+        this.totalDsNumber = 0;
+        for (String k : quantDatasetListObject.keySet()) {
+            totalDsNumber += quantDatasetListObject.get(k).getQuantDatasetsList().size();
+
+        }
+
         this.fullQuantDatasetMap = quantDatasetListObject.get(key).getQuantDatasetsList();
         this.currentDsNumber = fullQuantDatasetMap.size();
         this.activeFilterMap = activeFilterMap;
@@ -345,7 +347,7 @@ public class DatasetExploringCentralSelectionManager implements Serializable {
         for (CSFFilter filter : registeredFilterSet) {
             filter.selectionChanged(type);
         }
-        
+
     }
 
     /**
@@ -414,6 +416,26 @@ public class DatasetExploringCentralSelectionManager implements Serializable {
         return significantOnly;
     }
 
+    public Set<JFreeChart> getStudiesOverviewPieChart() {
+        return studiesOverviewPieChart;
+    }
+
+    public void setStudiesOverviewPieChart(Set<JFreeChart> studiesOverviewPieChart) {
+        this.studiesOverviewPieChart = studiesOverviewPieChart;
+    }
+
+    private Set<JFreeChart> studiesOverviewPieChart = new LinkedHashSet<JFreeChart>();
+    private final Set<JFreeChart> proteinsOverviewBubbleChart = new LinkedHashSet<JFreeChart>();
+
+    public Set<JFreeChart> getProteinsOverviewBubbleChart() {
+        return proteinsOverviewBubbleChart;
+    }
+
+    public void setProteinsOverviewBubbleChart(JFreeChart proteinsOverviewBubbleChart) {
+        this.proteinsOverviewBubbleChart.clear();
+        this.proteinsOverviewBubbleChart.add(proteinsOverviewBubbleChart);
+    }
+
     public void exportFullReport() {
 
     }
@@ -427,6 +449,19 @@ public class DatasetExploringCentralSelectionManager implements Serializable {
         this.currentDsNumber = fullQuantDatasetMap.size();
 //        this.SelectionChanged("Disease_Category_Selection");
 
+    }
+
+    private Map<String, ComponentCapture> captureComponentMap = new HashMap<String, ComponentCapture>();
+
+    public Map<String, ComponentCapture> getCaptureComponentMap() {
+        return captureComponentMap;
+    }
+
+    public void addCaptureComponent(String title, ComponentCapture captureComponent) {
+        if (captureComponentMap.containsKey(title)) {
+            captureComponentMap.remove(title);
+        }
+        this.captureComponentMap.put(title, captureComponent);
     }
 
     public int getTotalDsNumber() {

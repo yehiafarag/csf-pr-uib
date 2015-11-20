@@ -62,6 +62,8 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
         }
         // init piecharts filter
         exploringFiltersManager.changeDiseaseCategory("Multiple Sclerosis");
+        
+        
 
         DiseaseGroupsFiltersContainer heatmapFilter = new DiseaseGroupsFiltersContainer(exploringFiltersManager, handler, searchQuantificationProtList);
         heatmapFilter.setWidth("100%");

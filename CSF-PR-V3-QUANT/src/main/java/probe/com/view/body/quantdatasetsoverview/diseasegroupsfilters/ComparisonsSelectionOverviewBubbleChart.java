@@ -499,7 +499,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         XYPlot xyplot = new XYPlot(defaultxyzdataset, xAxis, yAxis, xyitemrenderer) {
             private final Color[] labelsColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0)};
             private final Font font = new Font("Verdana", Font.PLAIN, 12);
-            private final String[] labels = new String[]{"Low 100%", "Low <100% ", "Stable", " High <100%", "High <100%"};
+            private final String[] labels = new String[]{"Low 100%", "Low <100% ", "Stable", " High <100%", "High 100%"};
 
             @Override
             public LegendItemCollection getLegendItems() {
@@ -532,7 +532,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         xyplot.setForegroundAlpha(0.65F);
         xyplot.setBackgroundPaint(Color.WHITE);
         generatedChart.setBackgroundPaint(Color.WHITE);
-
+        datasetExploringCentralSelectionManager.setProteinsOverviewBubbleChart(generatedChart);
 //        exporter.writeChartToPDFFile(generatedChart, 595, 842, "bublechart.pdf");
         return generatedChart;
 

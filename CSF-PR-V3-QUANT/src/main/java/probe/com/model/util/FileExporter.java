@@ -1,6 +1,7 @@
 package probe.com.model.util;
 
 import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.DefaultFontMapper;
 import com.itextpdf.text.pdf.PdfContentByte;
@@ -9,17 +10,19 @@ import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Toolkit;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
-import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.border.Border;
 import org.apache.commons.io.IOUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -27,8 +30,6 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.SymbolAxis;
-import org.jfree.chart.block.BlockBorder;
-import org.jfree.chart.title.LegendTitle;
 import org.jfree.chart.title.TextTitle;
 import probe.com.model.beans.identification.IdentificationPeptideBean;
 
@@ -245,10 +246,10 @@ public class FileExporter implements Serializable {
 
     }
 
-    public byte[] exportProteinsInfoCharts(Set<JFreeChart> component, String fileName, String url, String title) {
-        int width = 600;
-        int height = 1000;
-        int startx = 0;
+    public byte[] exportProteinsInfoCharts(Set<JFreeChart> chartsSet, String fileName, String url, String title) {
+        int width = 595;
+        int height = 842;
+        int startx = 30;
 
         try {
 
@@ -271,100 +272,174 @@ public class FileExporter implements Serializable {
             PdfTemplate template;
 
             Graphics2D g2d;
-            int starty = 170;
+            int starty = 0;
             int counter = 0;
 
-            if (fileName.equalsIgnoreCase("proteins_information_charts.pdf")) {
-//                height = (150 * component.size()) + 100;
+            template = contentByte.createTemplate(width, height);
+            g2d = template.createGraphics(width, height, new DefaultFontMapper());
+            Rectangle2D rect2d;
+            boolean newpage = false;
+            for (JFreeChart chart : chartsSet) {
+                if (newpage) {
+                    newpage = false;
+                    document.newPage();
+                }
 
-                template = contentByte.createTemplate(width, height);
-                g2d = template.createGraphics(width, height, new DefaultFontMapper());
-                Rectangle2D rect2d;
-                boolean newpage = false;
-                for (JFreeChart chart : component) {
-                    if (newpage) {
-                        newpage = false;
-                        document.newPage();
-                    }
+                if (counter == 0) {
 
-                    if (counter == 0) {
-
-                        TextTitle textTitle = new TextTitle(title, new Font("Verdana", Font.PLAIN, 12));
-                        textTitle.setMargin(10, 0, 20, 0);
-                        textTitle.setPaint(Color.DARK_GRAY);
-                        chart.setTitle(textTitle);
-                        int labelHeight = 0;
-                        for (String str : ((SymbolAxis) chart.getXYPlot().getDomainAxis()).getSymbols()) {
-                            if ((str.length() * 6) > labelHeight) {
-                                labelHeight = (str.length() * 6);
-                            }
+                    TextTitle textTitle = new TextTitle(title, new Font("Verdana", Font.PLAIN, 12));
+                    textTitle.setMargin(10, 0, 20, 0);
+                    textTitle.setPaint(Color.DARK_GRAY);
+                    chart.setTitle(textTitle);
+                    int labelHeight = 0;
+                    for (String str : ((SymbolAxis) chart.getXYPlot().getDomainAxis()).getSymbols()) {
+                        if ((str.length() * 6) > labelHeight) {
+                            labelHeight = (str.length() * 6);
                         }
-                        int chartHeight = 400 + labelHeight;
-                        rect2d = new Rectangle2D.Double(50, starty, 500, chartHeight);
-                        starty += chartHeight + 20;
-
-                    } else {
-
-//                    chart.getXYPlot().getDomainAxis().setTickLabelInsets(new RectangleInsets(0.1,0.1, 0.1,0.1));
-//                    chart.getXYPlot().getRangeAxis().setTickLabelFont(font);
-//                    chart.getXYPlot().getRangeAxis().setTickLabelInsets(new RectangleInsets(2.5,3, 2.5, 3));
-                        rect2d = new Rectangle2D.Double(50, starty, 500, 200);
-                        starty += 220;
-
                     }
-                    chart.draw(g2d, rect2d);
+                    int chartHeight = 400 + labelHeight;
+                    rect2d = new Rectangle2D.Double(startx, starty, 505, chartHeight);
+                    starty += chartHeight + 20;
 
-                    counter++;
-
-                    if (starty > 700) {
-                        g2d.dispose();
-                        contentByte.addTemplate(template, 0, 0);
-                        newpage = true;
-
-                        template = contentByte.createTemplate(width, height);
-                        g2d = template.createGraphics(width, height, new DefaultFontMapper());
-
-                        starty = 200;
-
-                    }
+                } else {
+                    rect2d = new Rectangle2D.Double(30, starty, 505, 250);
+                    starty += 270;
 
                 }
+                chart.draw(g2d, rect2d);
 
-            } else if (component.size() > 1) {
-                template = contentByte.createTemplate(width, height);
-                g2d = template.createGraphics(width, height, new DefaultFontMapper());
-                for (JFreeChart chart : component) {
-                    Rectangle2D rect2d = new Rectangle2D.Double(startx, starty, 250, 250);
-                    chart.draw(g2d, rect2d);
-                    startx += 250 + 50;
-                    if (counter == 1 || counter == 3) {
-                        startx = 0;
-                        starty += 275;
-                    }
-                    counter++;
+                counter++;
 
-                }
-            } else {
-                System.out.println("the targeted chart");
-                template = contentByte.createTemplate(width, height);
-                g2d = template.createGraphics(width, height, new DefaultFontMapper());
-
-                for (JFreeChart chart : component) {
-
-                    Rectangle2D rect2d = new Rectangle2D.Double(10, 200, 550, 750);
-                    chart.draw(g2d, rect2d);
+                if (starty > 600) {
+                    g2d.dispose();
+                    contentByte.addTemplate(template, 0, 0);
+                    newpage = true;
+                    template = contentByte.createTemplate(width, height);
+                    g2d = template.createGraphics(width, height, new DefaultFontMapper());
+                    starty = 30;
 
                 }
 
             }
+
+//            } 
+//            else if (chartsSet.size() > 1) {
+//                template = contentByte.createTemplate(width, height);
+//                g2d = template.createGraphics(width, height, new DefaultFontMapper());
+//                for (JFreeChart chart : chartsSet) {
+//                    Rectangle2D rect2d = new Rectangle2D.Double(startx, starty, 250, 250);
+//                    chart.draw(g2d, rect2d);
+//                    startx += 250 + 50;
+//                    if (counter == 1 || counter == 3) {
+//                        startx = 0;
+//                        starty += 275;
+//                    }
+//                    counter++;
+//
+//                }
+//            } 
+//            else {
+//                System.out.println("the targeted chart");
+//                template = contentByte.createTemplate(width, height);
+//                g2d = template.createGraphics(width, height, new DefaultFontMapper());
+//
+//                for (JFreeChart chart : chartsSet) {
+//
+//                    Rectangle2D rect2d = new Rectangle2D.Double(10, 200, 550, 750);
+//                    chart.draw(g2d, rect2d);
+//
+//                }
+//
+//            }
             g2d.dispose();
             contentByte.addTemplate(template, 0, 0);
 
             document.close();
             byte fileData[] = IOUtils.toByteArray(new FileInputStream(file));
             return fileData;
-        } catch (Exception exp) {
-            exp.printStackTrace();
+        } catch (DocumentException exp) {
+            System.err.println("at error 367 " + this.getClass().getName() + " -- " + exp.getMessage());
+        } catch (IOException exp) {
+            System.err.println("at error 369 " + this.getClass().getName() + " -- " + exp.getMessage());
+        }
+
+//          
+        return null;//url + userFolder.getName() + "/" + pdfFile.getName();
+
+    }
+
+    public byte[] exportStudiesInformationPieCharts(Set<JFreeChart> chartsSet, String fileName, String url, String title) {
+        int width = 595;
+        int height = 842;
+        int startx = 32;
+        int starty = 47;
+
+        try {
+
+            File csfFolder = new File(url);
+            csfFolder.mkdir();
+
+            File file = new File(url + "/" + fileName);
+            if (file.exists()) {
+                file.delete();
+            }
+            Document document = new Document();
+
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
+
+            document.open();
+            document.newPage();
+
+            PdfContentByte contentByte = writer.getDirectContent();
+            PdfTemplate template;
+
+            Graphics2D g2d;
+
+            int counter = 0;
+            template = contentByte.createTemplate(width, height);
+            g2d = template.createGraphics(width, height, new DefaultFontMapper());
+
+            JLabel headerLabel = new JLabel();
+            headerLabel.setBackground(new java.awt.Color(255, 255, 255));
+            headerLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            headerLabel.setText("Studies Overview");
+            headerLabel.setSize(width, 37);
+            headerLabel.setFont(new Font("Verdana", Font.PLAIN, 12));
+            headerLabel.paint(g2d);
+
+            Font font = new Font("Verdana", Font.PLAIN, 11);
+            Font subfont = new Font("Verdana", Font.PLAIN, 10);
+
+            Font resetTitleFont = new Font("Verdana", Font.BOLD, 13);
+            Font resetFont = new Font("Verdana", Font.PLAIN, 12);
+
+            for (JFreeChart chart : chartsSet) {
+                chart.getTitle().setFont(font);
+                chart.getLegend().setItemFont(subfont);
+                Rectangle2D rect2d = new Rectangle2D.Double(startx, starty, 249, 250);
+                chart.draw(g2d, rect2d);
+
+                startx += 249 + 33;
+                if (counter == 1 || counter == 3) {
+                    startx = 32;
+                    starty += 15 + 250;
+                }
+                chart.getTitle().setFont(resetTitleFont);
+                chart.getLegend().setItemFont(resetFont);
+                counter++;
+
+            }
+
+            g2d.dispose();
+            contentByte.addTemplate(template, 0, 0);
+
+            document.close();
+            byte fileData[] = IOUtils.toByteArray(new FileInputStream(file));
+            return fileData;
+        } catch (DocumentException exp) {
+            System.err.println("at error 444 " + this.getClass().getName() + "  " + exp.getMessage());
+        } catch (IOException exp) {
+            System.err.println("at error 446 " + this.getClass().getName() + "  " + exp.getMessage());
         }
 
 //          
@@ -427,8 +502,10 @@ public class FileExporter implements Serializable {
 //            base64 = "data:image/png;base64," + base64;
 
             return fileData;
-        } catch (Exception exp) {
-            exp.printStackTrace();
+        } catch (DocumentException exp) {
+            System.err.println("at error 512 " + this.getClass().getName() + " -- " + exp.getMessage());
+        } catch (IOException exp) {
+            System.err.println("at error 515 " + this.getClass().getName() + " -- " + exp.getMessage());
         }
 
 //          
@@ -436,10 +513,11 @@ public class FileExporter implements Serializable {
 
     }
 
-    public byte[] exportfullReportAsZip(Set<JFreeChart> component, String fileName, String url) {
+    public byte[] exportfullReportAsZip(Map<String, Set<JFreeChart>> chartsMap, String fileName, String url, String title) {
         int width = 595;
         int height = 842;
-        int startx = 0;
+        int startx = 32;
+        int starty = 0;
 
         try {
 
@@ -454,85 +532,150 @@ public class FileExporter implements Serializable {
                 System.out.println("file deleted");
             }
             Document document = new Document();
-
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
-
             document.open();
             document.newPage();
-
             PdfContentByte contentByte = writer.getDirectContent();
             PdfTemplate template;
-
             Graphics2D g2d;
-            int starty = 300;
+            template = contentByte.createTemplate(width, height);
+            g2d = template.createGraphics(width, height, new DefaultFontMapper());
+
+            JLabel reportTiltleLabel = new JLabel();
+            reportTiltleLabel.setBackground(new java.awt.Color(255, 255, 255));
+            reportTiltleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            reportTiltleLabel.setText("CSF-PR V2.0 Report");
+            reportTiltleLabel.setSize(width, 38);
+            reportTiltleLabel.setFont(new Font("Verdana", Font.BOLD, 13));
+            reportTiltleLabel.paint(g2d);
+            starty += 38;
+
+            JLabel studiesPieCharTheaderLabel = new JLabel();
+            studiesPieCharTheaderLabel.setBackground(new java.awt.Color(255, 255, 255));
+            studiesPieCharTheaderLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+            studiesPieCharTheaderLabel.setText("Studies Overview");
+            studiesPieCharTheaderLabel.setSize(width - 30, 37);
+
+            studiesPieCharTheaderLabel.setFont(new Font("Verdana", Font.PLAIN, 12));
+            g2d.translate(32, starty);
+            studiesPieCharTheaderLabel.paint(g2d);
+//            starty += 37;
+            startx = 0;
+
+            Font font = new Font("Verdana", Font.PLAIN, 11);
+            Font subfont = new Font("Verdana", Font.PLAIN, 10);
+            Font resetTitleFont = new Font("Verdana", Font.BOLD, 13);
+            Font resetFont = new Font("Verdana", Font.PLAIN, 12);
             int counter = 0;
+            for (JFreeChart chart : chartsMap.get("StudiesPieCharts")) {
+                chart.getTitle().setFont(font);
+                chart.getLegend().setItemFont(subfont);
+                Rectangle2D rect2d = new Rectangle2D.Double(startx, starty, 249, 239);
+                chart.draw(g2d, rect2d);
 
-            document.addHeader("csf-pr v2 report", "");
+                startx += 249 + 33;
+                if (counter == 1 || counter == 3) {
+                    startx = 0;
+                    starty += 15 + 239;
+                }
+                chart.getTitle().setFont(resetTitleFont);
+                chart.getLegend().setItemFont(resetFont);
+                counter++;
 
-            if (true) {
-//                height = (150 * component.size()) + 100;
-                template = contentByte.createTemplate(width, height);
-                g2d = template.createGraphics(width, height, new DefaultFontMapper());
-                Font font = new Font("Verdana", Font.PLAIN, 7);
+            }
 
-                Rectangle2D rect2d;
-                for (JFreeChart chart : component) {
-                    chart.getXYPlot().getRangeAxis().setTickLabelFont(font);
-                    chart.getXYPlot().getDomainAxis().setTickLabelFont(font);
-                    if (counter == 0) {
+            g2d.dispose();
+            contentByte.addTemplate(template, 0, 0);
 
-                        rect2d = new Rectangle2D.Double(50, starty, 500, 350);
+            document.setPageSize(PageSize.A4.rotate());
+            template = contentByte.createTemplate(height, width);
+            g2d = template.createGraphics(height, width, new DefaultFontMapper());
+            document.newPage();
 
-                        starty += 370;
+            //bubble chart
+            starty = 0;
+            startx = 0;
 
-                    } else {
-                        rect2d = new Rectangle2D.Double(50, starty, 500, 133);
-                        starty += 150;
+            JLabel proteinsOverviewLabel = new JLabel();
+            proteinsOverviewLabel.setBackground(new java.awt.Color(255, 255, 255));
+            proteinsOverviewLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+            proteinsOverviewLabel.setText("Proteins Overview");
+            proteinsOverviewLabel.setSize(height, 37);
+            proteinsOverviewLabel.setFont(new Font("Verdana", Font.PLAIN, 12));
+            g2d.translate(32, starty);
+            proteinsOverviewLabel.paint(g2d);
 
-                    }
-                    chart.draw(g2d, rect2d);
+            for (JFreeChart chart : chartsMap.get("proteinsOverviewBubbleChart")) {
 
-                    counter++;
+                Rectangle2D rect2d = new Rectangle2D.Double(0, 37, height - 64, width - 60);
+                chart.draw(g2d, rect2d);
+            }
+            g2d.dispose();
+            contentByte.addTemplate(template, 0, 0);
 
-                    if (starty > 700) {
-                        g2d.dispose();
-                        contentByte.addTemplate(template, 0, 0);
-                        document.newPage();
+            //selected protein overview chart
+            document.setPageSize(PageSize.A4);
+            template = contentByte.createTemplate(width, height);
+            g2d = template.createGraphics(width, height, new DefaultFontMapper());
+            document.newPage();
 
-                        template = contentByte.createTemplate(width, height);
-                        g2d = template.createGraphics(width, height, new DefaultFontMapper());
+            starty = 0;
+            startx = 0;
 
-                        starty = 170;
-
-                    }
-
+            JLabel proteinInformationOverviewLabel = new JLabel();
+            proteinInformationOverviewLabel.setBackground(new java.awt.Color(255, 255, 255));
+            proteinInformationOverviewLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+            proteinInformationOverviewLabel.setText("Selected Protein Information ( " + title + " )");
+            proteinInformationOverviewLabel.setSize(width, 37);
+            proteinInformationOverviewLabel.setFont(new Font("Verdana", Font.PLAIN, 12));
+            g2d.translate(32, starty);
+            proteinInformationOverviewLabel.paint(g2d);
+            starty = 37;
+            Rectangle2D rect2d;
+            boolean newpage = false;
+            counter = 0;
+            for (JFreeChart chart : chartsMap.get("proteinInformationCharts")) {
+                if (newpage) {
+                    newpage = false;
+                    document.newPage();
                 }
 
-            } else if (component.size() > 1) {
-                template = contentByte.createTemplate(width, height);
-
-                g2d = template.createGraphics(width, height, new DefaultFontMapper());
-                for (JFreeChart chart : component) {
-
-                    Rectangle2D rect2d = new Rectangle2D.Double(startx, starty, 250, 250);
-                    chart.draw(g2d, rect2d);
-                    startx += 250 + 50;
-                    if (counter == 1 || counter == 3) {
-                        startx = 0;
-                        starty += 275;
-
+                if (counter == 0) {
+//
+//                    TextTitle textTitle = new TextTitle(title, new Font("Verdana", Font.PLAIN, 12));
+//                    textTitle.setMargin(10, 0, 20, 0);
+//                    textTitle.setPaint(Color.DARK_GRAY);
+//                    chart.setTitle(textTitle);
+                    int labelHeight = 30;
+                    if (chart.getXYPlot().getDomainAxis().isVerticalTickLabels()) {
+                        for (String str : ((SymbolAxis) chart.getXYPlot().getDomainAxis()).getSymbols()) {
+                            if ((str.length() * 6) > labelHeight) {
+                                labelHeight = (str.length() * 6);
+                            }
+                        }
                     }
-                    counter++;
+
+                    int chartHeight = 400 + labelHeight;
+                    rect2d = new Rectangle2D.Double(startx, starty, 505, chartHeight);
+                    starty += chartHeight + 20;
+
+                } else {
+                    rect2d = new Rectangle2D.Double(0, starty, 505, 250);
+                    starty += 270;
 
                 }
-            } else {
-                template = contentByte.createTemplate(width, height);
-                g2d = template.createGraphics(width, height, new DefaultFontMapper());
+                chart.draw(g2d, rect2d);
 
-                for (JFreeChart chart : component) {
+                counter++;
 
-                    Rectangle2D rect2d = new Rectangle2D.Double(10, 200, 550, 750);
-                    chart.draw(g2d, rect2d);
+                if (starty > 600) {
+                    g2d.dispose();
+                    contentByte.addTemplate(template, 0, 0);
+                    newpage = true;
+                    template = contentByte.createTemplate(width, height);
+                    g2d = template.createGraphics(width, height, new DefaultFontMapper());
+                    starty = 30;
+                    startx = 32;
 
                 }
 
@@ -542,12 +685,12 @@ public class FileExporter implements Serializable {
 
             document.close();
             byte fileData[] = IOUtils.toByteArray(new FileInputStream(file));
-//            String base64 = Base64.encodeBase64String(fileData.);
-//            base64 = "data:image/png;base64," + base64;
 
             return fileData;
-        } catch (Exception exp) {
-            exp.printStackTrace();
+        } catch (DocumentException exp) {
+            System.err.println("at error 633 " + this.getClass().getName() + " -- " + exp.getMessage());
+        } catch (IOException exp) {
+            System.err.println("at error 635 " + this.getClass().getName() + " -- " + exp.getMessage());
         }
 
 //          

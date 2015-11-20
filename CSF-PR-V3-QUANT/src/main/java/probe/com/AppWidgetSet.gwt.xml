@@ -69,4 +69,6 @@
     
 
     <inherits name="com.ejt.vaadin.sizereporter.WidgetSet" />
+
+    <inherits name="org.vaadin.addons.screenshot.WidgetSet" />
 </module>

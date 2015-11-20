@@ -26,6 +26,7 @@ import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.DiseaseGro
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.HeatMapFilter;
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.ComparisonsSelectionOverviewBubbleChart;
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.interactivepiechartfilters.StudiesPieChartFiltersContainerLayout;
+import probe.com.view.core.ComponentCapture;
 
 /**
  * This class represents the top filters layout for exploring datasets tab the
@@ -78,7 +79,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         pieChartFiltersBtnLayout.addComponent(pieChartFiltersLayout.getPieChartFiltersBtn());
 
         diseaseGroupsListFilter = new DiseaseGroupsListFilter(centralFiltersSelectionManager);
-        
+
         Set<String> diseaseGroupsSet = diseaseGroupsListFilter.getDiseaseGroupsSet();
 //        heatmapW = Math.max((156 + (heatmapCellWidth * diseaseGroupsSet.size())), 700);
 
@@ -340,6 +341,9 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         diseaseGroupsHeatmapFilter.addHideHeatmapBtnListener(hideShowCompTableListener);
         centralFiltersSelectionManager.registerFilter(DiseaseGroupsFiltersContainer.this);
 
+       
+        
+
     }
 
     /**
@@ -347,7 +351,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
      */
     public void selectAllComparisons() {
 //        if (diseaseGroupsHeatmapFilter.isActiveSelectAll()) {
-            diseaseGroupsHeatmapFilter.selectAll();
+        diseaseGroupsHeatmapFilter.selectAll();
 //        }
     }
 

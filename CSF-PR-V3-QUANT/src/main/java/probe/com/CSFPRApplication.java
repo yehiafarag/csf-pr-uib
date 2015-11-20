@@ -1,6 +1,5 @@
 package probe.com;
 
-import com.vaadin.server.Page;
 import java.io.Serializable;
 import com.vaadin.ui.VerticalLayout;
 import probe.com.handlers.CSFPRHandler;
@@ -21,7 +20,6 @@ public class CSFPRApplication extends VerticalLayout implements Serializable {
         this.handler = handler;
         buildMainLayout();
 
-
     }
 
     /**
@@ -35,7 +33,9 @@ public class CSFPRApplication extends VerticalLayout implements Serializable {
         this.addComponent(header);
 
         //body (tables)
-        Body body = new Body(handler);
+        final Body body = new Body(handler);
         this.addComponent(body);
+
     }
+        
 }
