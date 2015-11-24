@@ -110,7 +110,8 @@ public class DatasetExploringCentralSelectionManager implements Serializable {
      */
     public DatasetExploringCentralSelectionManager(Map<String, QuantDatasetInitialInformationObject> quantDatasetListObject, Map<String, boolean[]> activeFilterMap) {
         this.quantDatasetListObject = quantDatasetListObject;
-        String key = quantDatasetListObject.keySet().iterator().next();
+        String key = "Multiple Sclerosis";//quantDatasetListObject.keySet().iterator().next();
+      
         this.totalDsNumber = 0;
         for (String k : quantDatasetListObject.keySet()) {
             totalDsNumber += quantDatasetListObject.get(k).getQuantDatasetsList().size();
@@ -123,6 +124,7 @@ public class DatasetExploringCentralSelectionManager implements Serializable {
         this.activeFilters = activeFilterMap.get(key);
         this.activeHeader = quantDatasetListObject.get(key).getActiveHeaders();
         this.diseaseCategorySet = quantDatasetListObject.keySet();
+       
 
     }
 

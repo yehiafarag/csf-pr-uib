@@ -6,19 +6,21 @@
 package probe.com.view.core;
 
 import com.vaadin.server.ExternalResource;
+import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.vaadin.addons.screenshot.Screenshot;
 import org.vaadin.addons.screenshot.ScreenshotImage;
 import org.vaadin.addons.screenshot.ScreenshotListener;
 import org.vaadin.addons.screenshot.ScreenshotMimeType;
+import probe.com.view.core.exporter.ImageToExport;
 
 /**
  *
@@ -27,14 +29,12 @@ import org.vaadin.addons.screenshot.ScreenshotMimeType;
 public class ComponentCapture extends VerticalLayout {
 
     private final Screenshot component;
-    private final Image img = new Image();
-
     public ComponentCapture() {
         component = Screenshot.newBuilder()
                 .withAllowTaint(true)
                 .withBackground("#f00")
-                .withHeight(768)
-                .withWidth(1024)
+                .withHeight(Page.getCurrent().getBrowserWindowHeight())
+                .withWidth(Page.getCurrent().getBrowserWindowWidth())
                 .withLogging(true)
                 .withMimeType(ScreenshotMimeType.PNG)
                 .build();
@@ -43,41 +43,50 @@ public class ComponentCapture extends VerticalLayout {
 
             @Override
             public void screenshotComplete(ScreenshotImage image) {
-                VaadinSession.getCurrent().lock();
-                url = image.getDataURL();
-//                img.setSource(new ExternalResource(url));
+//                VaadinSession.getCurrent().lock();
+                imageToExport.setImgByteArr(image.getImageData());
                 UI.getCurrent().removeWindow(window);
-                VaadinSession.getCurrent().unlock();
+//                VaadinSession.getCurrent().unlock();
             }
         });
         this.addComponent(component);
-        this.addComponent(img);
-
+     
     }
     private Window window = new Window();
-    private String url = null;
+    private ImageToExport imageToExport = new ImageToExport();
 
-    public void captureComponent(Component comp) {
-        url = null;
-
+    public void captureComponent(Component comp, int width, int height) {
+        Window mainWindow = UI.getCurrent().getWindows().iterator().next();
         window.setWidth("100%");
         window.setHeight("100%");
+//        int yposition = Page.getCurrent().getBrowserWindowHeight();
+//        int xposition = Page.getCurrent().getBrowserWindowWidth();
+//        window.setPositionX(xposition);
+//        window.setPositionY(yposition);
+        window.setStyleName("capturedwindow");
+        window.setClosable(false);
+        window.setResizable(false);
+        
         VerticalLayout vlo = new VerticalLayout();
-        vlo.setWidth("100%");
-        vlo.setHeight("100%");
+        vlo.setWidth(width + "px");
+        vlo.setHeight(height + "px");
+        imageToExport.setHeight(height);
+        imageToExport.setWidth(width);
         vlo.setStyleName(Reindeer.LAYOUT_WHITE);
+       
+        
         window.setContent(vlo);
+   
+//        vlo.addComponent(btn);
         vlo.addComponent(comp);
         UI.getCurrent().addWindow(window);
+        mainWindow.focus(); 
         component.takeScreenshot();
 
     }
 
-    public String getUrlValue() {
-//        if (url == null || VaadinSession.getCurrent().hasLock()) {
-      
-
-        return url;
+    public ImageToExport getImageToExport() {
+        return imageToExport;
     }
 
 }

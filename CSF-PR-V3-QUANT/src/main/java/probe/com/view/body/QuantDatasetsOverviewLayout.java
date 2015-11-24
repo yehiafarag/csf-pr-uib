@@ -29,8 +29,6 @@ import probe.com.view.body.quantdatasetsoverview.QuantProteinsTabsheetContainerL
  */
 public class QuantDatasetsOverviewLayout extends VerticalLayout {
 
-//    private final StudiesPieChartFiltersContainerLayout pieChartFiltersLayout;
-//    private final QuantFilterUtility filterUtility;
     private final DatasetExploringCentralSelectionManager exploringFiltersManager;
     private final QuantProteinsTabsheetContainerLayout proteinsLayout;
     private int resizedCounter = 0;
@@ -42,33 +40,24 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
      * @param searchQuantificationProtList
      */
     public QuantDatasetsOverviewLayout(CSFPRHandler handler, boolean searchingMode, List<QuantProtein> searchQuantificationProtList) {
-
-      
         exploringFiltersManager = new DatasetExploringCentralSelectionManager(handler.getQuantDatasetInitialInformationObject(), handler.getActivePieChartQuantFilters());//,filterUtility.getFullFilterList()
-
         this.setMargin(true);
         this.setSpacing(true);
         this.setWidth("100%");
         this.setHeightUndefined();
-
         if (exploringFiltersManager.getFullQuantDatasetMap() == null || exploringFiltersManager.getFullQuantDatasetMap().isEmpty()) {
             Label noExpLable = new Label("<h4 style='font-family:verdana;color:black;font-weight:bold;'>Sorry No Dataset Availabe Now !</h4>");
             noExpLable.setContentMode(ContentMode.HTML);
             this.addComponent(noExpLable);
-//            pieChartFiltersLayout = null;
             proteinsLayout = null;
             return;
-
         }
         // init piecharts filter
-        exploringFiltersManager.changeDiseaseCategory("Multiple Sclerosis");
-        
-        
-
+//        exploringFiltersManager.changeDiseaseCategory("Multiple Sclerosis");
         DiseaseGroupsFiltersContainer heatmapFilter = new DiseaseGroupsFiltersContainer(exploringFiltersManager, handler, searchQuantificationProtList);
         heatmapFilter.setWidth("100%");
         heatmapFilter.setMargin(new MarginInfo(false, false, true, false));
-        String infoText = "Select a disease category (Multiple Sclerosis, Alzheimer, etc)<img href='img/disease_category.png' alt='disease category'> in the roll down menu on top to view all available  patients group comparisons on the interactive heat-map <img href='img/hideshow.png' alt='heat-map'> that belong to the selected disease . Select single or multiple comparisons from the heatmap to show the overall proteins information on the bubble chart and proteins information table.";
+        String infoText = "Select a disease category (Multiple Sclerosis, Alzheimer, etc)<img src='VAADIN/themes/dario-theme/img/1.png' he alt='disease category' Align='center'> in the roll down menu on top to view all available  patients group comparisons on the interactive heat-map <img src='VAADIN/themes/dario-theme/img/2.png' alt='heat-map'  Align='center'> that belong to the selected disease . Select single or multiple comparisons from the heatmap to show the overall proteins information on the bubble chart and proteins information table.</br>Users can use more filters by clicking on the diffrent available filters <img src='VAADIN/themes/dario-theme/img/4.png' alt='filter'  Align='center'> ";
 
         HideOnClickLayout comparisonLevelLayout = new HideOnClickLayout("Datasets", heatmapFilter, null, infoText);
         this.addComponent(comparisonLevelLayout);
@@ -90,10 +79,8 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
                 super.layoutClick(event);
             }
-
         };
         this.addComponent(proteinsLevelLayout);
-
         SizeReporter sizeReporter = new SizeReporter(proteinsLevelLayout);
         sizeReporter.addResizeListener(new ComponentResizeListener() {
             @Override
@@ -108,13 +95,12 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
         });
         proteinsLevelLayout.setVisability(false);
 
-        QuantDatasetsfullStudiesTableLayout quantStudiesTable = new QuantDatasetsfullStudiesTableLayout(exploringFiltersManager);
-        if (searchingMode) {
-        } else {
-            this.addComponent(quantStudiesTable);
-            quantStudiesTable.setWidth(layoutWidth+"px");
-        }
-
+//        QuantDatasetsfullStudiesTableLayout quantStudiesTable = new QuantDatasetsfullStudiesTableLayout(exploringFiltersManager);
+//        if (searchingMode) {
+//        } else {
+//            this.addComponent(quantStudiesTable);
+//            quantStudiesTable.setWidth(layoutWidth+"px");
+//        }
     }
 
 }

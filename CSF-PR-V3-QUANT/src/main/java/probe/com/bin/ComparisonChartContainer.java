@@ -1,4 +1,4 @@
-package probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons;
+package probe.com.bin;
 
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.ui.HorizontalLayout;

@@ -10,7 +10,11 @@ import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -20,9 +24,8 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
-import javax.swing.BorderFactory;
+import javax.imageio.ImageIO;
 import javax.swing.JLabel;
-import javax.swing.border.Border;
 import org.apache.commons.io.IOUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -32,6 +35,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.SymbolAxis;
 import org.jfree.chart.title.TextTitle;
 import probe.com.model.beans.identification.IdentificationPeptideBean;
+import probe.com.view.core.exporter.ImageToExport;
 
 /**
  *
@@ -513,7 +517,7 @@ public class FileExporter implements Serializable {
 
     }
 
-    public byte[] exportfullReportAsZip(Map<String, Set<JFreeChart>> chartsMap, String fileName, String url, String title) {
+    public byte[] exportfullReportAsZip(Map<String, Set<JFreeChart>> chartsMap, String fileName, String url, String title, ImageToExport img) {
         int width = 595;
         int height = 842;
         int startx = 32;
@@ -682,7 +686,20 @@ public class FileExporter implements Serializable {
             }
             g2d.dispose();
             contentByte.addTemplate(template, 0, 0);
-
+//            ByteArrayInputStream bin = new ByteArrayInputStream(img.getImgByteArr());
+//            BufferedImage i = ImageIO.read(bin);
+//
+//            document.setPageSize(PageSize.A4);
+//            template = contentByte.createTemplate(width, height);
+//            g2d = template.createGraphics(width, height, new DefaultFontMapper());
+//            document.newPage();
+//
+//            g2d.translate(32, 20);
+//
+//            i = i.getSubimage(0, 0, img.getWidth(), img.getHeight());
+//            g2d.drawImage((Image)i,0,0,width-50,width-50, null);
+//            g2d.dispose();
+//            contentByte.addTemplate(template, 0, 0);
             document.close();
             byte fileData[] = IOUtils.toByteArray(new FileInputStream(file));
 

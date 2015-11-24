@@ -1,8 +1,12 @@
 package probe.com;
 
+import com.vaadin.server.ExternalResource;
+import com.vaadin.ui.Image;
 import java.io.Serializable;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.Reindeer;
 import probe.com.handlers.CSFPRHandler;
+import probe.com.model.util.vaadintoimageutil.Convertor;
 import probe.com.view.Body;
 import probe.com.view.Header;
 
@@ -35,6 +39,43 @@ public class CSFPRApplication extends VerticalLayout implements Serializable {
         //body (tables)
         final Body body = new Body(handler);
         this.addComponent(body);
+        
+//        Convertor convertor = new Convertor();
+//        VerticalLayout vlout = new VerticalLayout();
+//        vlout.setHeight("300px");
+//        vlout.setWidth("300px");
+//        vlout.setStyleName(Reindeer.LAYOUT_BLACK);
+//        
+//        
+//        
+//        
+//         VerticalLayout vlout2 = new VerticalLayout();
+//        vlout2.setHeight("100px");
+//        vlout2.setWidth("100px");
+//        vlout2.setStyleName(Reindeer.LAYOUT_BLUE);
+//        vlout.addComponent(vlout2);
+//        
+//        VerticalLayout vlout3 = new VerticalLayout();
+//        vlout3.setHeight("50px");
+//        vlout3.setWidth("50px");
+//        vlout3.setStyleName(Reindeer.LAYOUT_BLACK);
+//        vlout2.addComponent(vlout3);
+//        
+//        
+//        
+//        
+//        
+//        Image img = new Image();
+//        this.addComponent(vlout);
+//        img.setSource(new ExternalResource(convertor.converLayout(vlout)));
+//        
+//        VerticalLayout spacer = new VerticalLayout();
+//        spacer.setWidth("100%");
+//        spacer.setHeight("5px");
+//       this.addComponent(spacer);
+//         this.addComponent(img);
+         
+           
 
     }
         

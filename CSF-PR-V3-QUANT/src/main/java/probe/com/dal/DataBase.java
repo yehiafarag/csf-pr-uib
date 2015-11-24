@@ -2717,7 +2717,8 @@ public class DataBase implements Serializable {
                 activeFilters[2] = false;
                 activeFilters[3] = true;
                 activeFilters[4] = true;
-                activeFilters[7] = false;
+                activeFilters[7] = true;
+                activeFilters[10]= false;
                 activeFilters[activeFilters.length - 2] = false;
                 activeFilters[activeFilters.length - 3] = false;
                 activeFilters[activeFilters.length - 4] = false;

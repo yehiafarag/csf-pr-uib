@@ -2,7 +2,6 @@ package probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet;
 
 import com.vaadin.data.Property;
 import com.vaadin.event.LayoutEvents;
-import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FileDownloader;
 import com.vaadin.server.Page;
 import com.vaadin.server.StreamResource;
@@ -14,12 +13,9 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.OptionGroup;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -68,6 +64,7 @@ import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.kmeansclu
 import probe.com.view.core.ComponentCapture;
 import probe.com.view.core.CustomExternalLink;
 import probe.com.view.core.InfoPopupBtn;
+import probe.com.view.core.exporter.ImageToExport;
 import probe.com.view.core.jfreeutil.SquaredDot;
 
 /**
@@ -1059,20 +1056,21 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                     set.addAll(studiesScatterChartsLayout.getScatterCharts());
                 }
                 chartsMap.put("proteinInformationCharts", set);
-                
-                Window window = new Window();
-                VerticalLayout vlo = new VerticalLayout();
-                
-                window.setWidth("100%");
-                window.setHeight("100%");
-                vlo.setWidth("100%");
-                vlo.setHeight("100%");
-                vlo.setStyleName(Reindeer.LAYOUT_WHITE);
-                window.setContent(vlo);
+//                
+//                Window window = new Window();
+//                VerticalLayout vlo = new VerticalLayout();
+//                
+//                window.setWidth("100%");
+//                window.setHeight("100%");
+//                vlo.setWidth("100%");
+//                vlo.setHeight("100%");
+//                vlo.setStyleName(Reindeer.LAYOUT_WHITE);
+//                window.setContent(vlo);
+                ImageToExport img = null ;
                 for (ComponentCapture comp : datasetExploringCentralSelectionManager.getCaptureComponentMap().values()) {
-                    vlo.addComponent(new Image("", new ExternalResource(comp.getUrlValue())));
+                    img= comp.getImageToExport();
                 }
-                UI.getCurrent().addWindow(window);
+//                UI.getCurrent().addWindow(window);
 
 //
 //                    try {
@@ -1081,7 +1079,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 //
 //                      
 //                        set.addAll(studiesScatterChartsLayout.getScatterCharts());
-                byte[] pdfFile = mainHandler.exportfullReportAsZip(chartsMap, "full_Reaport.pdf", proteinName);
+                byte[] pdfFile = mainHandler.exportfullReportAsZip(chartsMap, "full_Reaport.pdf", proteinName,img);
                 return new ByteArrayInputStream(pdfFile);
 //                    } catch (Exception e) {
 //                        e.printStackTrace();

@@ -23,6 +23,7 @@ import probe.com.model.beans.identification.IdentificationProteinBean;
 import probe.com.model.beans.quant.QuantProtein;
 import probe.com.model.beans.identification.StandardIdentificationFractionPlotProteinBean;
 import probe.com.model.beans.quant.QuantDatasetInitialInformationObject;
+import probe.com.view.core.exporter.ImageToExport;
 
 /**
  * @author Yehia Farag this class represent the main handler for the
@@ -363,8 +364,8 @@ public class CSFPRHandler implements Serializable {
    public byte[] exportBubbleChartAsPdf(JFreeChart chart, String fileName,String title) {
         return logicLayer.exportBubbleChartAsPdf(chart, fileName,title);
     }
-   public byte[] exportfullReportAsZip( Map<String,Set<JFreeChart>> chartsMap, String fileName,String title) {
-     return  logicLayer.exportfullReportAsZip(chartsMap, fileName,title);
+   public byte[] exportfullReportAsZip( Map<String,Set<JFreeChart>> chartsMap, String fileName,String title,ImageToExport img) {
+     return  logicLayer.exportfullReportAsZip(chartsMap, fileName,title,img);
 //          
 //         "";//url + userFolder.getName() + "/" + pdfFile.getName();
 

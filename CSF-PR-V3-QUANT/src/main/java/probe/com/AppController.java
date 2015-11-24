@@ -4,7 +4,6 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.server.WebBrowser;
 import com.vaadin.ui.JavaScript;
 import com.vaadin.ui.JavaScriptFunction;
 import com.vaadin.ui.UI;
@@ -85,13 +84,7 @@ public class AppController extends UI {
             }, (5 * 60 * 1000 * 60));
         }
 
-        JavaScript.getCurrent().addFunction("scroll", new JavaScriptFunction() {
-
-            @Override
-            public void call(JsonArray arguments) {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        });
+      
 
     }
 
@@ -102,9 +95,7 @@ public class AppController extends UI {
         if (f.isDirectory() && f.listFiles().length > 0) {
             for (File subFile : f.listFiles()) {
                 deleteFiles(subFile);
-
             }
-
         } else if (!f.getName().equalsIgnoreCase("CSF_Files")) {
             f.delete();
         }
@@ -113,7 +104,8 @@ public class AppController extends UI {
 
     @Override
     public void doInit(VaadinRequest request, int uiId, String embedId) {
-        super.doInit(request, uiId, embedId); //To change body of generated methods, choose Tools | Templates.
+        super.doInit(request, uiId, embedId); 
+        
     }
 
 }

@@ -34,6 +34,7 @@ import probe.com.model.util.KMeansClustering;
 
 import org.jfree.chart.JFreeChart;
 import probe.com.model.beans.OverviewInfoBean;
+import probe.com.view.core.exporter.ImageToExport;
 //import org.apache.batik.svggen.SVGGraphics2D;
 //import org.apache.batik.dom.svg.SVGDOMImplementation;
 //import org.apache.batik.dom.svg12.SVG12DOMImplementation;
@@ -676,8 +677,8 @@ public class CoreLogic implements Serializable {
         return exporter.exportBubbleChartAsPdf(chart, fileName, userFolderUrl, title);
     }
 
-    public byte[] exportfullReportAsZip( Map<String,Set<JFreeChart>> chartsMap, String fileName,String title) {
-        return exporter.exportfullReportAsZip(chartsMap, fileName, userFolderUrl,title);
+    public byte[] exportfullReportAsZip( Map<String,Set<JFreeChart>> chartsMap, String fileName,String title,ImageToExport img) {
+        return exporter.exportfullReportAsZip(chartsMap, fileName, userFolderUrl,title,img);
 //          
 //         "";//url + userFolder.getName() + "/" + pdfFile.getName();
 

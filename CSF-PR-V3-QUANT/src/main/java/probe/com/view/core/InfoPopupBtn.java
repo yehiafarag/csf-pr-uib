@@ -32,7 +32,7 @@ public class InfoPopupBtn extends VerticalLayout implements LayoutEvents.LayoutC
         infoHeaderLabel.setContentMode(ContentMode.HTML);
         topLayout.addComponent(infoHeaderLabel);
         topLayout.setWidth("100%");
-        Label infoLable = new Label("<div style='text-align:justify;text-justify:inter-word;'><p  style='font-family:verdana;color:black;margin-left:20px;margin-right:20px;'>"+infoText+"</p></div>");
+        Label infoLable = new Label("<div style='text-align:justify;text-justify:inter-word;'><p  style='line-height:60px; font-family:verdana;color:black;margin-left:20px;margin-right:20px;'>"+infoText+"</p></div>");
         infoLable.setContentMode(ContentMode.HTML);
         infoLable.setWidth("450px");
         mainBody.addComponent(infoLable);

@@ -445,6 +445,7 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
         int dcounter = 0;
 //        this.setExpandRatio(downLabel, ((float) 1.5 / total));
 //        this.setExpandRatio(upLabel, ((float) 1.5 / total));
+        
         int subTotal = this.total;
         fullDownLabelValue = "<p style='text-align: right;line-height:0.1'><strong> " + df.format(((double) downSignificant / (double) subTotal) * 100.0) + "% &#8595; </strong>&nbsp;</p>";
         downLabel.setValue(fullDownLabelValue);
@@ -515,13 +516,14 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
 
     @Override
     public String toString() {
-        if (cellValue > 0) {
-            return "High (" + cellValue + ")";
-        } else if (cellValue == 0) {
-            return "Stable (" + cellValue + ")";
-        } else {
-            return "Low (" + cellValue + ")";
-        }
+        return "Low: " + downSignificant +" ( "+ df.format(((double) downSignificant / (double) total) * 100.0)+ "% )  /  Stable : " + notRegSignificant + " /  High: " + upSignificant+" ( "+ df.format(((double) upSignificant / (double) total) * 100.0)+ "% )";
+//        if (cellValue > 0) {
+//            return "High (" + cellValue + ")";
+//        } else if (cellValue == 0) {
+//            return "Stable (" + cellValue + ")";
+//        } else {
+//            return "Low (" + cellValue + ")";
+//        }
     }
 
     /**

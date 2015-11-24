@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons;
+package probe.com.bin;
 
 import com.vaadin.server.Page;
 import com.vaadin.ui.AbsoluteLayout;
@@ -42,6 +42,7 @@ import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.RectangleEdge;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
+import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import probe.com.view.core.jfreeutil.SquaredDot;
 
 /**

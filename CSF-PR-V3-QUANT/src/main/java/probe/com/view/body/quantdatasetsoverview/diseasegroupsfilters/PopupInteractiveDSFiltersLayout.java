@@ -48,7 +48,7 @@ public class PopupInteractiveDSFiltersLayout extends VerticalLayout implements L
         this.addComponent(datasetExplorerFiltersIcon);
         this.setComponentAlignment(datasetExplorerFiltersIcon, Alignment.BOTTOM_CENTER);
         datasetExplorerFiltersIcon.addLayoutClickListener(PopupInteractiveDSFiltersLayout.this);
-this.setHeightUndefined();
+        this.setHeightUndefined();
 
         int height = Page.getCurrent().getBrowserWindowHeight() - 100;
         int width = Page.getCurrent().getBrowserWindowWidth() - 100;

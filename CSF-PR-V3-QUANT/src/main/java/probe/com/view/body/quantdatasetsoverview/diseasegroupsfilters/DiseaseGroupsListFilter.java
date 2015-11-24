@@ -319,6 +319,7 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
             newArr[i] = str;
             i++;
         }
+        
         Arrays.sort(newArr);
         return newArr;
 

@@ -401,7 +401,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
         applyFilters.setPrimaryStyleName("resetbtn");
         applyFilters.setWidth("50px");
         applyFilters.setHeight("24px");
-        
+
         btnLayout.addComponent(applyFilters);
         applyFilters.addClickListener(new Button.ClickListener() {
 
@@ -424,8 +424,6 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
 //            }
 //        });
 //        
-        
-        
         VerticalLayout unselectAllBtn = new VerticalLayout();
         unselectAllBtn.setStyleName("unselectallbtn");
         btnLayout.addComponent(unselectAllBtn);
@@ -435,10 +433,9 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
 
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-              internalSelectionManager.unselectAll();
+                internalSelectionManager.unselectAll();
             }
         });
-        
 
         Button resetFiltersBtn = new Button("Reset");
         resetFiltersBtn.setPrimaryStyleName("resetbtn");
@@ -453,10 +450,9 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
                 internalSelectionManager.resetCentralSelectionManager();
             }
         });
-        
-        
-          Button exportChartsBtn = new Button("");
-          
+
+        Button exportChartsBtn = new Button("");
+
         exportChartsBtn.setWidth("24px");
         exportChartsBtn.setHeight("24px");
         exportChartsBtn.setPrimaryStyleName("exportpdfbtn");
@@ -470,8 +466,8 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
 //                Page.getCurrent().open(res, "_blank", true);
 //            }
 //        });
-        
-           StreamResource myResource = createResource(handler);
+
+        StreamResource myResource = createResource(handler);
         FileDownloader fileDownloader = new FileDownloader(myResource);
         fileDownloader.extend(exportChartsBtn);
         pieChartFiltersBtn = new PopupInteractiveDSFiltersLayout(this);
@@ -501,8 +497,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
         internalSelectionManager.updateCentralSelectionManager(selfSelection);
 
     }
-    
-      
+
     private StreamResource createResource(final CSFPRHandler handler) {
         return new StreamResource(new StreamResource.StreamSource() {
             @Override
@@ -511,8 +506,8 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
 
 //                BufferedImage bi = chart.createBufferedImage(width, height, chartRenderingInfo);
                 try {
-                    
-                    byte[] pdfFile = handler.exportStudiesInformationPieCharts(chartSet, "piechart_filters.pdf","Studies Overview");
+
+                    byte[] pdfFile = handler.exportStudiesInformationPieCharts(chartSet, "piechart_filters.pdf", "Studies Overview");
                     return new ByteArrayInputStream(pdfFile);
                 } catch (Exception e) {
                     e.printStackTrace();
