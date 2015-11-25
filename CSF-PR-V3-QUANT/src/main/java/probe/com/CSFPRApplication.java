@@ -5,8 +5,10 @@ import com.vaadin.ui.Image;
 import java.io.Serializable;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
+import java.awt.image.BufferedImage;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.model.util.vaadintoimageutil.Convertor;
+import probe.com.model.util.vaadintoimageutil.peptideslayout.PeptidesSequenceContainer;
 import probe.com.view.Body;
 import probe.com.view.Header;
 
@@ -64,15 +66,17 @@ public class CSFPRApplication extends VerticalLayout implements Serializable {
 //        
 //        
 //        
-//        
+////        
 //        Image img = new Image();
-//        this.addComponent(vlout);
-//        img.setSource(new ExternalResource(convertor.converLayout(vlout)));
-//        
-//        VerticalLayout spacer = new VerticalLayout();
-//        spacer.setWidth("100%");
-//        spacer.setHeight("5px");
-//       this.addComponent(spacer);
+//          BufferedImage image = new BufferedImage(595, 500, BufferedImage.TYPE_INT_ARGB);
+//        PeptidesSequenceContainer pep = new PeptidesSequenceContainer("test title ",null,image.createGraphics(),null);
+////        this.addComponent(vlout);
+//        img.setSource(new ExternalResource(pep.toImage(image)));
+////        
+////        VerticalLayout spacer = new VerticalLayout();
+////        spacer.setWidth("100%");
+////        spacer.setHeight("5px");
+////       this.addComponent(spacer);
 //         this.addComponent(img);
          
            

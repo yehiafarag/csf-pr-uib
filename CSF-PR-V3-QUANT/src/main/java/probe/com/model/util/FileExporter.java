@@ -35,6 +35,8 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.SymbolAxis;
 import org.jfree.chart.title.TextTitle;
 import probe.com.model.beans.identification.IdentificationPeptideBean;
+import probe.com.model.util.vaadintoimageutil.peptideslayout.PeptidesSequenceContainer;
+import probe.com.model.util.vaadintoimageutil.peptideslayout.ProteinInformationDataForExport;
 import probe.com.view.core.exporter.ImageToExport;
 
 /**
@@ -517,7 +519,7 @@ public class FileExporter implements Serializable {
 
     }
 
-    public byte[] exportfullReportAsZip(Map<String, Set<JFreeChart>> chartsMap, String fileName, String url, String title, ImageToExport img) {
+    public byte[] exportfullReportAsZip(Map<String, Set<JFreeChart>> chartsMap, String fileName, String url, String title, Set<ProteinInformationDataForExport> peptidesSet) {
         int width = 595;
         int height = 842;
         int startx = 32;
@@ -684,22 +686,24 @@ public class FileExporter implements Serializable {
                 }
 
             }
+
             g2d.dispose();
             contentByte.addTemplate(template, 0, 0);
-//            ByteArrayInputStream bin = new ByteArrayInputStream(img.getImgByteArr());
-//            BufferedImage i = ImageIO.read(bin);
-//
-//            document.setPageSize(PageSize.A4);
-//            template = contentByte.createTemplate(width, height);
-//            g2d = template.createGraphics(width, height, new DefaultFontMapper());
-//            document.newPage();
-//
-//            g2d.translate(32, 20);
-//
-//            i = i.getSubimage(0, 0, img.getWidth(), img.getHeight());
-//            g2d.drawImage((Image)i,0,0,width-50,width-50, null);
-//            g2d.dispose();
-//            contentByte.addTemplate(template, 0, 0);
+
+            ///test peptides sequences
+            document.setPageSize(PageSize.A4.rotate());
+            template = contentByte.createTemplate(height,width );
+            g2d = template.createGraphics(height,width , new DefaultFontMapper());
+            document.newPage();
+            g2d.translate(32, 0);
+
+            for (ProteinInformationDataForExport peptidesInfo : peptidesSet) {
+                PeptidesSequenceContainer peptidesSequenceContainer = new PeptidesSequenceContainer(peptidesInfo, g2d, csfFolder.getParent());
+            }
+//            pepSeqContainer.paint(g2d);
+
+            g2d.dispose();
+            contentByte.addTemplate(template, 0, 0);
             document.close();
             byte fileData[] = IOUtils.toByteArray(new FileInputStream(file));
 

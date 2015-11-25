@@ -42,6 +42,10 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
     private Label noselectionLabel = new Label("<h4 style='font-family:verdana;color:#8A0808;font-weight:bold;'>\t \t Select peptide to show information!</h4>");
     private boolean hasPTM = false;
 
+    public int getLevel() {
+        return level;
+    }
+
     /**
      *
      * @param sequence
@@ -500,6 +504,9 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
         return updatedBarComponentMap;
     }
 
+    private List< StackedBarPeptideComponent> stackedPeptides = new ArrayList<StackedBarPeptideComponent>();
+
+    private int level = 1;
     private void initPeptidesStackedBarComponentsLayout(LinkedHashSet<StackedBarPeptideComponent> stackedBarComponents, AbsoluteLayout peptidesComponentsContainer, AbsoluteLayout peptidesContainer) {
         int top = 0;
         List< StackedBarPeptideComponent> initLevel = new ArrayList<StackedBarPeptideComponent>(stackedBarComponents);
@@ -581,12 +588,19 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
                 nextLevel.clear();
                 intersect = true;
                 top = top + 20;
+                level++;
             }
 
         }
+        stackedPeptides.addAll(stackedBarComponents);
+        System.out.println("levers is" +level);
         top = top + 30;
         peptidesComponentsContainer.setHeight(Math.max(40, top) + "px");
 
+    }
+
+    public List<StackedBarPeptideComponent> getStackedPeptides() {
+        return stackedPeptides;
     }
 
     /**

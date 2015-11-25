@@ -23,6 +23,7 @@ import org.jfree.chart.JFreeChart;
 
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
+import probe.com.model.util.vaadintoimageutil.peptideslayout.ProteinInformationDataForExport;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.studies.PeptidesComparisonsSequenceLayout;
 import probe.com.view.core.InfoPopupBtn;
@@ -41,6 +42,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
     private final DiseaseGroupsComparisonsProteinLayout[] diiseaseGroupsComparisonsProteinArr;
     private final OptionGroup studiesPeptidesSwich = new OptionGroup();
     private final OptionGroup showSigneficantPeptidesOnly;
+    private final Set<ProteinInformationDataForExport> peptidesExportInfoSet;
 
     /**
      *
@@ -98,7 +100,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
             }
         });
         HorizontalLayout topPanelLayout = new HorizontalLayout();
-        topPanelLayout.setWidth((width-40) + "px");
+        topPanelLayout.setWidth((width - 40) + "px");
         topPanelLayout.setHeight("40px");
         topPanelLayout.setStyleName(Reindeer.LAYOUT_WHITE);
         this.addComponent(topPanelLayout);
@@ -152,6 +154,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
 
         this.width = width;
         this.diiseaseGroupsComparisonsProteinArr = proteinsComparisonsArr;
+        peptidesExportInfoSet = new LinkedHashSet<ProteinInformationDataForExport>();
 
     }
 
@@ -245,7 +248,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
             layout.redrawChart();
         }
         if (peptideCompLayoutMap.isEmpty()) {
-
+            peptidesExportInfoSet.clear();
             int rowIndex = 0;
             for (DiseaseGroupsComparisonsProteinLayout cprot : diiseaseGroupsComparisonsProteinArr) {
                 if (cprot == null || cprot.getSignificantTrindCategory() == -1) {
@@ -272,6 +275,12 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
                     }
                 };
                 protCompLayout.getCloseBtn().addLayoutClickListener(closeListener);
+
+                ProteinInformationDataForExport peptideInfo = new ProteinInformationDataForExport();
+                peptideInfo.setComparisonsTitle(protCompLayout.getComparisonTitleValue());
+                peptideInfo.setStudies(protCompLayout.getStudiesMap());
+                peptidesExportInfoSet.add(peptideInfo);
+
                 rowIndex++;
             }
 
@@ -318,5 +327,9 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
         }
 
         return scatterSet;
+    }
+
+    public Set<ProteinInformationDataForExport> getPeptidesExportInfoSet() {
+        return peptidesExportInfoSet;
     }
 }

@@ -59,6 +59,7 @@ import org.vaadin.marcus.MouseEvents;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
+import probe.com.model.util.vaadintoimageutil.peptideslayout.ProteinInformationDataForExport;
 import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
 import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.kmeansclustering.KMeansClusteringPopupPanel;
 import probe.com.view.core.ComponentCapture;
@@ -403,11 +404,13 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 //        init rightside components 
         studiesScatterChartsLayout = new ProteinStudiesComparisonsContainerLayout(comparisonProteins, selectedComparisonList, datasetExploringCentralSelectionManager, width);
         rightSideLayout.addComponent(studiesScatterChartsLayout);
+        peptidesExportInfoSet = studiesScatterChartsLayout.getPeptidesExportInfoSet();
         studiesScatterChartsLayout.setWidth(width * 2 + "px");
         this.setExpandRatio(leftSideLayout, 1.5f);
         this.setExpandRatio(rightSideLayout, 1.4f);
         
     }
+    private final Set<ProteinInformationDataForExport> peptidesExportInfoSet;
     
     private DiseaseGroupsComparisonsProteinLayout[] inUseComparisonProteins;
     
@@ -1070,16 +1073,9 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                 for (ComponentCapture comp : datasetExploringCentralSelectionManager.getCaptureComponentMap().values()) {
                     img= comp.getImageToExport();
                 }
-//                UI.getCurrent().addWindow(window);
-
-//
-//                    try {
-//
-//                        set.add(defaultChart);
-//
-//                      
-//                        set.addAll(studiesScatterChartsLayout.getScatterCharts());
-                byte[] pdfFile = mainHandler.exportfullReportAsZip(chartsMap, "full_Reaport.pdf", proteinName,img);
+                
+                
+                byte[] pdfFile = mainHandler.exportfullReportAsZip(chartsMap, "full_Reaport.pdf", proteinName,peptidesExportInfoSet);
                 return new ByteArrayInputStream(pdfFile);
 //                    } catch (Exception e) {
 //                        e.printStackTrace();

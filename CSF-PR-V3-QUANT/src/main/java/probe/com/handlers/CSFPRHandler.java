@@ -23,6 +23,7 @@ import probe.com.model.beans.identification.IdentificationProteinBean;
 import probe.com.model.beans.quant.QuantProtein;
 import probe.com.model.beans.identification.StandardIdentificationFractionPlotProteinBean;
 import probe.com.model.beans.quant.QuantDatasetInitialInformationObject;
+import probe.com.model.util.vaadintoimageutil.peptideslayout.ProteinInformationDataForExport;
 import probe.com.view.core.exporter.ImageToExport;
 
 /**
@@ -364,8 +365,8 @@ public class CSFPRHandler implements Serializable {
    public byte[] exportBubbleChartAsPdf(JFreeChart chart, String fileName,String title) {
         return logicLayer.exportBubbleChartAsPdf(chart, fileName,title);
     }
-   public byte[] exportfullReportAsZip( Map<String,Set<JFreeChart>> chartsMap, String fileName,String title,ImageToExport img) {
-     return  logicLayer.exportfullReportAsZip(chartsMap, fileName,title,img);
+   public byte[] exportfullReportAsZip( Map<String,Set<JFreeChart>> chartsMap, String fileName,String title,Set<ProteinInformationDataForExport> peptidesSet) {
+     return  logicLayer.exportfullReportAsZip(chartsMap, fileName,title,peptidesSet);
 //          
 //         "";//url + userFolder.getName() + "/" + pdfFile.getName();
 
