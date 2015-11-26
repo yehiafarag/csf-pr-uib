@@ -160,7 +160,7 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
 
         showSigneficantPeptidesOnly.setItemEnabled("PTMs", false);
         for (VerticalLayout ptmLayout : ptmsLayoutMap) {
-            if (ptmLayout.getStyleName().equalsIgnoreCase("ptmcycle")) {
+            if (ptmLayout.getStyleName().equalsIgnoreCase("ptmglycosylation")) {
                 showSigneficantPeptidesOnly.setItemEnabled("PTMs", true);
                 Set<String> ids = new HashSet<String>();
                 ids.add("PTMs");
@@ -593,7 +593,6 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
 
         }
         stackedPeptides.addAll(stackedBarComponents);
-        System.out.println("levers is" +level);
         top = top + 30;
         peptidesComponentsContainer.setHeight(Math.max(40, top) + "px");
 

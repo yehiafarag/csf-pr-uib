@@ -1609,7 +1609,7 @@ resetlabelbtn p{
     font-weight:normal;
     cursor: pointer;
 }
-.ptmcycle {
+.ptmglycosylation {
     /*background: url(http://www.damtp.cam.ac.uk/user/sjc1/damtp/icons/10x10/pinkball.gif) no-repeat;*/
     background: url(img/orange_ptm.png) no-repeat;
     background-position:center;

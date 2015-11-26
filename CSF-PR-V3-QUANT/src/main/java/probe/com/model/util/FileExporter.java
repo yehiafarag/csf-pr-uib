@@ -542,10 +542,11 @@ public class FileExporter implements Serializable {
             document.open();
             document.newPage();
             PdfContentByte contentByte = writer.getDirectContent();
+            
             PdfTemplate template;
             Graphics2D g2d;
             template = contentByte.createTemplate(width, height);
-            g2d = template.createGraphics(width, height, new DefaultFontMapper());
+            g2d = template.createGraphics(width, height,false, 0.084666f);
 
             JLabel reportTiltleLabel = new JLabel();
             reportTiltleLabel.setBackground(new java.awt.Color(255, 255, 255));
@@ -693,12 +694,33 @@ public class FileExporter implements Serializable {
             ///test peptides sequences
             document.setPageSize(PageSize.A4.rotate());
             template = contentByte.createTemplate(height,width );
+        
             g2d = template.createGraphics(height,width , new DefaultFontMapper());
             document.newPage();
             g2d.translate(32, 0);
+            newpage = false;
+            starty = 0;
 
             for (ProteinInformationDataForExport peptidesInfo : peptidesSet) {
+                  if (newpage) {
+                    newpage = false;
+                    document.newPage();
+                    g2d.translate(32, 0);
+                }
+
                 PeptidesSequenceContainer peptidesSequenceContainer = new PeptidesSequenceContainer(peptidesInfo, g2d, csfFolder.getParent());
+                starty = peptidesSequenceContainer.getHeight();
+                  if (starty > 600) {
+                    g2d.dispose();
+                    contentByte.addTemplate(template, 0, 0);
+                    newpage = true;
+                    template = contentByte.createTemplate(width, height);
+                    g2d = template.createGraphics(width, height, new DefaultFontMapper());
+                    starty = 30;
+                    startx = 32;
+
+                }
+                
             }
 //            pepSeqContainer.paint(g2d);
 

@@ -149,14 +149,14 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
 //            ptmDiagram.setHeight("500px");
             ptmAvailable = true;
 //            
-            ptmLayout.setStyleName("ptmcycle");
+            ptmLayout.setStyleName("ptmglycosylation");
             ptmLayout.setWidth("10px");
             ptmLayout.setHeight("10px");
             ptmLayout.setDescription(peptideModification);
             ptmLayout.setVisible(false);
 //            PopupView labelpopup = new PopupView(null, i);
 //            labelpopup.setPopupVisible(true);
-//            labelpopup.setPrimaryStyleName("ptmcycle");
+//            labelpopup.setPrimaryStyleName("ptmglycosylation");
 //            labelpopup.setHideOnMouseOut(false);
 
 //                            exportAllProteinPeptidesPopup.setDescription("Export CSF-PR Peptides for ( " + accession + " ) for All Available Datasets");

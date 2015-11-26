@@ -6,7 +6,6 @@
 package probe.com.model.util.vaadintoimageutil.peptideslayout;
 
 import com.itextpdf.text.pdf.codec.Base64;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -16,11 +15,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -36,11 +35,13 @@ import probe.com.view.core.jfreeutil.StackedBarPeptideComponent;
  */
 public class PeptidesSequenceContainer {
 
-    private final int width = 842 - 64;//595 
+    private final int width = 384; //842 - 64;//595 
     private int height = 0;
+    private double resizeFactor = 1;
 
     public PeptidesSequenceContainer(ProteinInformationDataForExport proteinInfoData, Graphics2D g2d, String resourcesPath) {
 
+         File res = new File(resourcesPath, "Resources");
         JLabel comparisonsProteinHeaderLabel = new JLabel();
         comparisonsProteinHeaderLabel.setBackground(new java.awt.Color(255, 255, 255));
         comparisonsProteinHeaderLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -49,6 +50,7 @@ public class PeptidesSequenceContainer {
         comparisonsProteinHeaderLabel.setSize(width, 30);
         comparisonsProteinHeaderLabel.paint(g2d);
         g2d.translate(0, 30);
+
         height = 60;
         Map<String, Color> peptidesColorMap = new HashMap<String, Color>();
         peptidesColorMap.put("redstackedlayout", Color.decode("#cc0000"));
@@ -56,74 +58,89 @@ public class PeptidesSequenceContainer {
         peptidesColorMap.put("lightbluestackedlayout", new Color(1, 141, 244));
         peptidesColorMap.put("midgreenstackedlayout", Color.decode("#D0F5A9"));
         peptidesColorMap.put("greenstackedlayout", Color.decode("#009900"));
-
-        Color[] colors = new Color[]{Color.RED, Color.BLUE, Color.RED, Color.GREEN};
-
         for (String key : proteinInfoData.getStudies().keySet()) {
             StudyInfoData info = proteinInfoData.getStudies().get(key);
             JPanel protSeqContainerLayout = new JPanel() {
                 @Override
                 public boolean isOptimizedDrawingEnabled() {
-                    return true;
+                    return false;
                 }
             };
             protSeqContainerLayout.setBackground(Color.WHITE);
-            protSeqContainerLayout.setSize(width, 50 + (info.getLevelsNumber()-1 * 40));
+            protSeqContainerLayout.setSize(width, 35 + (info.getLevelsNumber() - 1 * 30));
             protSeqContainerLayout.setLayout(new FlowLayout(FlowLayout.LEFT));
-
-            int w = width - info.getCoverageWidth();
-            JLabel studyLable1 = initSubLabel(info.getTitle(), w);
-            studyLable1.setLocation(5, 5);
+            int labelWidth = 145;//width - info.getCoverageWidth();
+            resizeFactor = 376.0 / (double) info.getCoverageWidth();
+            JLabel studyLable1 = initSubLabel(info.getTitle(), labelWidth);
+            studyLable1.setLocation(5, 10);
             protSeqContainerLayout.add(studyLable1);
-
-            resourcesPath = "D:\\CSF_Files\\Resources";
             File iconResFile;
             switch (info.getTrend()) {
                 case -1:
-                    iconResFile = new File(resourcesPath, "down.png");
+                    iconResFile = new File(res, "down.png");
                     break;
                 case 1:
-                    iconResFile = new File(resourcesPath, "up.png");
+                    iconResFile = new File(res, "up.png");
                     break;
                 default:
-                    iconResFile = new File(resourcesPath, "notreg.png");
+                    iconResFile = new File(res, "notreg.png");
                     break;
             }
             try {
                 Image image = ImageIO.read(iconResFile);
                 ImageIcon icon = PeptidesSequenceContainer.this.createImageIcon(image, "");
-                JLabel studyLable2 = initSubLabel(info.getSubTitle(), w);
+                JLabel studyLable2 = initSubLabel(info.getSubTitle(), labelWidth);
                 protSeqContainerLayout.add(studyLable2);
                 studyLable2.setIcon(icon);
                 studyLable2.setIconTextGap(5);
-                studyLable2.setLocation(5, 30);
+                studyLable2.setLocation(5, 25);
             } catch (IOException ex) {
                 Logger.getLogger(PeptidesSequenceContainer.class.getName()).log(Level.SEVERE, null, ex);
             }
+
             if (info.getPeptidesInfoList() != null) {
                 int y = 20;
+                Map<String, StackedBarPeptideComponent> filteredSet = new LinkedHashMap<String, StackedBarPeptideComponent>();
                 for (StackedBarPeptideComponent peptide : info.getPeptidesInfoList()) {
+                    String localKey = peptide.getPeptideKey();
+                    if (filteredSet.containsKey(localKey)) {
+                        continue;
+                    }
+                    filteredSet.put(localKey, peptide);
 
-                    JLabel peptideComponent = initPeptideComponet(peptidesColorMap.get(peptide.getStyleName()), (int) peptide.getWidth(), w + peptide.getX0(), (y + (peptide.getLevel()*40) ));
+                }
+                for (StackedBarPeptideComponent peptide : filteredSet.values()) {
+                    int step = y + (peptide.getLevel() * 30);
+                    int x = labelWidth + (int) ((double) peptide.getX0() * resizeFactor);
+                    JLabel peptideComponent = initPeptideComponet(peptidesColorMap.get(peptide.getStyleName()), (int) (peptide.getWidth() * resizeFactor), x, step);
+
                     protSeqContainerLayout.add(peptideComponent);
-                   
-                    
+                    if (peptide.isPtmAvailable()) {
+                        JLabel ptm = initPTMComponent(res, x + (int) (peptideComponent.getSize().getWidth() / 2.0) - 5, step - 10, peptide.getPtmLayout().getStyleName());
+                        protSeqContainerLayout.add(ptm);
+                    }
+                    if (height < (step + 15)) {
+                        height = step + 15;
+                    }
                 }
                 JPanel protSeqLayout = new JPanel();
                 protSeqLayout.setBackground(new Color(242, 242, 242));
                 protSeqLayout.setBorder(new LineBorder(new Color(211, 211, 211)));
-                protSeqLayout.setLocation(w, 20);
-                protSeqLayout.setSize(info.getCoverageWidth(), 20);
+                protSeqLayout.setLocation(labelWidth, 20);
+                protSeqLayout.setSize((int) ((double) info.getCoverageWidth() * resizeFactor), 15);
                 protSeqContainerLayout.add(protSeqLayout);
-                protSeqContainerLayout.paint(g2d);
+
             }
 
-//            JLabel ptm = initPTMComponent(resourcesPath, w + 20 + 100 - 5);
-//            protSeqContainerLayout.add(ptm);
+            protSeqContainerLayout.paint(g2d);
             g2d.translate(0, height);
 
         }
 
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     /**
@@ -167,7 +184,7 @@ public class PeptidesSequenceContainer {
         JLabel lable = new JLabel(str);
         lable.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lable.setFont(font);
-        lable.setSize(width, 20);
+        lable.setSize(width, 10);
         return lable;
 
     }
@@ -175,26 +192,35 @@ public class PeptidesSequenceContainer {
     private JLabel initPeptideComponet(Color c, int w, int xlocation, int top) {
         JLabel peptideComponent = new JLabel();
         peptideComponent.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        peptideComponent.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        peptideComponent.setLayout(new BorderLayout(1, 1));
+        LineBorder border = new LineBorder(Color.BLACK, 1);
+        peptideComponent.setBorder(border);
+
         peptideComponent.setBackground(c);
         peptideComponent.setOpaque(true);
-        peptideComponent.setSize(w, 20);
+        peptideComponent.setSize(w, 15);
         peptideComponent.setLocation(xlocation, top);
+
         return peptideComponent;
     }
 
-    private JLabel initPTMComponent(String resourcesPath, int xLocation) {
-        File res = new File(resourcesPath, "orange_ptm.png");
+    private JLabel initPTMComponent(File res, int xLocation, int yLocation, String ptmType) {
+       
+        File iconFile=null;
+        if (ptmType.equalsIgnoreCase("ptmglycosylation")) {
+            System.out.println("res "+res.exists());
+            iconFile = new File(res, ptmType+".png");
+
+        }
+
         JLabel PTMComponent = new JLabel();
         PTMComponent.setSize(10, 10);
         try {
-            Image image = ImageIO.read(res);
+            Image image = ImageIO.read(iconFile);
             ImageIcon icon = PeptidesSequenceContainer.this.createImageIcon(image, "");
 
             PTMComponent.setIcon(icon);
             PTMComponent.setIconTextGap(0);
-            PTMComponent.setLocation(xLocation, 9);
+            PTMComponent.setLocation(xLocation, yLocation);
         } catch (IOException ex) {
             Logger.getLogger(PeptidesSequenceContainer.class.getName()).log(Level.SEVERE, null, ex);
         }
