@@ -391,6 +391,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                     defaultLineChartContainer.setVisible(false);
                     orderedLineChartContainer.setVisible(true);
                     studiesScatterChartsLayout.orderComparisons(ordComparisonProteins);
+                    orderedPeptidesExportInfoSet = studiesScatterChartsLayout.getOrderedPeptidesExportInfoSet();
                 }
             }
         });
@@ -404,13 +405,14 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 //        init rightside components 
         studiesScatterChartsLayout = new ProteinStudiesComparisonsContainerLayout(comparisonProteins, selectedComparisonList, datasetExploringCentralSelectionManager, width);
         rightSideLayout.addComponent(studiesScatterChartsLayout);
-        peptidesExportInfoSet = studiesScatterChartsLayout.getPeptidesExportInfoSet();
+        defaultPeptidesExportInfoSet = studiesScatterChartsLayout.getDefaultPeptidesExportInfoSet();
         studiesScatterChartsLayout.setWidth(width * 2 + "px");
         this.setExpandRatio(leftSideLayout, 1.5f);
         this.setExpandRatio(rightSideLayout, 1.4f);
         
     }
-    private final Set<ProteinInformationDataForExport> peptidesExportInfoSet;
+    private final Set<ProteinInformationDataForExport> defaultPeptidesExportInfoSet;
+    private  Set<ProteinInformationDataForExport> orderedPeptidesExportInfoSet;
     
     private DiseaseGroupsComparisonsProteinLayout[] inUseComparisonProteins;
     
@@ -1017,7 +1019,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                         
                         set.add(defaultChart);
                         set.addAll(studiesScatterChartsLayout.getScatterCharts());
-                        byte[] pdfFile = mainHandler.exportProteinsInfoCharts(set, "proteins_information_charts.pdf", proteinName);
+                        byte[] pdfFile = mainHandler.exportProteinsInfoCharts(set, "proteins_information_charts.pdf", proteinName,defaultPeptidesExportInfoSet);
                         return new ByteArrayInputStream(pdfFile);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -1028,7 +1030,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                     try {
                         set.add(orderedChart);
                         set.addAll(studiesScatterChartsLayout.getScatterCharts());
-                        byte[] pdfFile = mainHandler.exportProteinsInfoCharts(set, "proteins_information_charts.pdf", proteinName);
+                        byte[] pdfFile = mainHandler.exportProteinsInfoCharts(set, "proteins_information_charts.pdf", proteinName,orderedPeptidesExportInfoSet);
                         return new ByteArrayInputStream(pdfFile);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -1047,16 +1049,18 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
             @SuppressWarnings("CallToPrintStackTrace")
             public InputStream getStream() {
                 Map<String, Set<JFreeChart>> chartsMap = new LinkedHashMap<String, Set<JFreeChart>>();
+                Set<ProteinInformationDataForExport> peptidesExportInfoSet;
                 chartsMap.put("StudiesPieCharts", datasetExploringCentralSelectionManager.getStudiesOverviewPieChart());
                 chartsMap.put("proteinsOverviewBubbleChart", datasetExploringCentralSelectionManager.getProteinsOverviewBubbleChart());
                 Set<JFreeChart> set = new LinkedHashSet<JFreeChart>();
                 if (orederingOptionGroup.getValue().toString().equalsIgnoreCase("Default order")) {
                     set.add(defaultChart);
                     set.addAll(studiesScatterChartsLayout.getScatterCharts());
-                    
+                    peptidesExportInfoSet = defaultPeptidesExportInfoSet;
                 } else {
                     set.add(orderedChart);
                     set.addAll(studiesScatterChartsLayout.getScatterCharts());
+                    peptidesExportInfoSet = orderedPeptidesExportInfoSet;
                 }
                 chartsMap.put("proteinInformationCharts", set);
 //                
@@ -1075,7 +1079,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                 }
                 
                 
-                byte[] pdfFile = mainHandler.exportfullReportAsZip(chartsMap, "full_Reaport.pdf", proteinName,peptidesExportInfoSet);
+                byte[] pdfFile = mainHandler.exportfullReportAsZip(chartsMap, "full_Report.pdf", proteinName,peptidesExportInfoSet);
                 return new ByteArrayInputStream(pdfFile);
 //                    } catch (Exception e) {
 //                        e.printStackTrace();
@@ -1096,7 +1100,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 //                }
 
             }
-        }, "full_Reaport.pdf");
+        }, "full_Report.pdf");
     }
     
 }

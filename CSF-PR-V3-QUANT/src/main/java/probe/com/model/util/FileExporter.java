@@ -33,6 +33,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.SymbolAxis;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.title.TextTitle;
 import probe.com.model.beans.identification.IdentificationPeptideBean;
 import probe.com.model.util.vaadintoimageutil.peptideslayout.PeptidesSequenceContainer;
@@ -252,7 +253,7 @@ public class FileExporter implements Serializable {
 
     }
 
-    public byte[] exportProteinsInfoCharts(Set<JFreeChart> chartsSet, String fileName, String url, String title) {
+    public byte[] exportProteinsInfoCharts(Set<JFreeChart> chartsSet, String fileName, String url, String title, Set<ProteinInformationDataForExport> peptidesSet) {
         int width = 595;
         int height = 842;
         int startx = 30;
@@ -327,36 +328,50 @@ public class FileExporter implements Serializable {
                 }
 
             }
+             g2d.dispose();
+            contentByte.addTemplate(template, 0, 0);
+            
+            /// peptides sequences
+//            document.setPageSize(PageSize.A4.rotate());
+            template = contentByte.createTemplate(width, height);
+            g2d = template.createGraphics(width, height, new DefaultFontMapper());
+            document.newPage();
+            g2d.translate(32, 0);
+            
+            JLabel peptidesOverviewHeaderLabel = new JLabel();
+            peptidesOverviewHeaderLabel.setBackground(new java.awt.Color(255, 255, 255));
+            peptidesOverviewHeaderLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+            peptidesOverviewHeaderLabel.setText("Sequence Coverage");
+            peptidesOverviewHeaderLabel.setSize(width, 37);
+            peptidesOverviewHeaderLabel.setFont(new Font("Verdana", Font.PLAIN, 14));
+            peptidesOverviewHeaderLabel.paint(g2d);
+            g2d.translate(0, 37);
+            int availableSpace = height - 10-37;
 
-//            } 
-//            else if (chartsSet.size() > 1) {
-//                template = contentByte.createTemplate(width, height);
-//                g2d = template.createGraphics(width, height, new DefaultFontMapper());
-//                for (JFreeChart chart : chartsSet) {
-//                    Rectangle2D rect2d = new Rectangle2D.Double(startx, starty, 250, 250);
-//                    chart.draw(g2d, rect2d);
-//                    startx += 250 + 50;
-//                    if (counter == 1 || counter == 3) {
-//                        startx = 0;
-//                        starty += 275;
-//                    }
-//                    counter++;
-//
-//                }
-//            } 
-//            else {
-//                System.out.println("the targeted chart");
-//                template = contentByte.createTemplate(width, height);
-//                g2d = template.createGraphics(width, height, new DefaultFontMapper());
-//
-//                for (JFreeChart chart : chartsSet) {
-//
-//                    Rectangle2D rect2d = new Rectangle2D.Double(10, 200, 550, 750);
-//                    chart.draw(g2d, rect2d);
-//
-//                }
-//
-//            }
+            for (ProteinInformationDataForExport peptidesInfo : peptidesSet) {
+
+                PeptidesSequenceContainer peptidesSequenceContainer = new PeptidesSequenceContainer(peptidesInfo, csfFolder.getParent());
+                starty = peptidesSequenceContainer.getCurrentHeight()+10;
+                if (starty <= availableSpace) {
+                    peptidesSequenceContainer.paint(g2d);
+                    g2d.translate(0, starty);
+                    availableSpace = availableSpace - starty;
+
+                } else {
+                    g2d.dispose();
+                    contentByte.addTemplate(template, 0, 0);
+                    template = contentByte.createTemplate(width, height);
+                    g2d = template.createGraphics(width, height, new DefaultFontMapper());
+                    document.newPage();
+                    g2d.translate(32, 0);
+                    availableSpace = height - 10;
+                    peptidesSequenceContainer.paint(g2d);
+                    g2d.translate(0, starty);
+                    availableSpace = availableSpace - starty;
+
+                }
+
+            }
             g2d.dispose();
             contentByte.addTemplate(template, 0, 0);
 
@@ -522,7 +537,7 @@ public class FileExporter implements Serializable {
     public byte[] exportfullReportAsZip(Map<String, Set<JFreeChart>> chartsMap, String fileName, String url, String title, Set<ProteinInformationDataForExport> peptidesSet) {
         int width = 595;
         int height = 842;
-        int startx = 32;
+        int startx ;
         int starty = 0;
 
         try {
@@ -542,16 +557,16 @@ public class FileExporter implements Serializable {
             document.open();
             document.newPage();
             PdfContentByte contentByte = writer.getDirectContent();
-            
+
             PdfTemplate template;
             Graphics2D g2d;
             template = contentByte.createTemplate(width, height);
-            g2d = template.createGraphics(width, height,false, 0.084666f);
+            g2d = template.createGraphics(width, height, false, 0.084666f);
 
             JLabel reportTiltleLabel = new JLabel();
             reportTiltleLabel.setBackground(new java.awt.Color(255, 255, 255));
             reportTiltleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-            reportTiltleLabel.setText("CSF-PR V2.0 Report");
+            reportTiltleLabel.setText("CSF-PR v2.0 Report");
             reportTiltleLabel.setSize(width, 38);
             reportTiltleLabel.setFont(new Font("Verdana", Font.BOLD, 13));
             reportTiltleLabel.paint(g2d);
@@ -601,21 +616,22 @@ public class FileExporter implements Serializable {
 
             //bubble chart
             starty = 0;
-            startx = 0;
 
             JLabel proteinsOverviewLabel = new JLabel();
             proteinsOverviewLabel.setBackground(new java.awt.Color(255, 255, 255));
             proteinsOverviewLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
             proteinsOverviewLabel.setText("Proteins Overview");
             proteinsOverviewLabel.setSize(height, 37);
-            proteinsOverviewLabel.setFont(new Font("Verdana", Font.PLAIN, 12));
+            proteinsOverviewLabel.setFont(resetFont);
             g2d.translate(32, starty);
             proteinsOverviewLabel.paint(g2d);
 
             for (JFreeChart chart : chartsMap.get("proteinsOverviewBubbleChart")) {
-
+                chart.getPlot().setNotify(true);
                 Rectangle2D rect2d = new Rectangle2D.Double(0, 37, height - 64, width - 60);
+                ((XYPlot) chart.getPlot()).getDomainAxis().setTickLabelFont(font);
                 chart.draw(g2d, rect2d);
+//                 chart.getPlot().setNotify(false);
             }
             g2d.dispose();
             contentByte.addTemplate(template, 0, 0);
@@ -626,7 +642,7 @@ public class FileExporter implements Serializable {
             g2d = template.createGraphics(width, height, new DefaultFontMapper());
             document.newPage();
 
-            starty = 0;
+            starty = 10;
             startx = 0;
 
             JLabel proteinInformationOverviewLabel = new JLabel();
@@ -645,14 +661,10 @@ public class FileExporter implements Serializable {
                 if (newpage) {
                     newpage = false;
                     document.newPage();
+                    g2d.translate(32, 10);
                 }
 
                 if (counter == 0) {
-//
-//                    TextTitle textTitle = new TextTitle(title, new Font("Verdana", Font.PLAIN, 12));
-//                    textTitle.setMargin(10, 0, 20, 0);
-//                    textTitle.setPaint(Color.DARK_GRAY);
-//                    chart.setTitle(textTitle);
                     int labelHeight = 30;
                     if (chart.getXYPlot().getDomainAxis().isVerticalTickLabels()) {
                         for (String str : ((SymbolAxis) chart.getXYPlot().getDomainAxis()).getSymbols()) {
@@ -665,6 +677,7 @@ public class FileExporter implements Serializable {
                     int chartHeight = 400 + labelHeight;
                     rect2d = new Rectangle2D.Double(startx, starty, 505, chartHeight);
                     starty += chartHeight + 20;
+                    ((XYPlot) chart.getPlot()).getDomainAxis().setTickLabelFont(font);
 
                 } else {
                     rect2d = new Rectangle2D.Double(0, starty, 505, 250);
@@ -691,36 +704,46 @@ public class FileExporter implements Serializable {
             g2d.dispose();
             contentByte.addTemplate(template, 0, 0);
 
-            ///test peptides sequences
-            document.setPageSize(PageSize.A4.rotate());
-            template = contentByte.createTemplate(height,width );
-        
-            g2d = template.createGraphics(height,width , new DefaultFontMapper());
+            /// peptides sequences
+//            document.setPageSize(PageSize.A4.rotate());
+            template = contentByte.createTemplate(width, height);
+            g2d = template.createGraphics(width, height, new DefaultFontMapper());
             document.newPage();
             g2d.translate(32, 0);
-            newpage = false;
-            starty = 0;
+            
+            JLabel peptidesOverviewHeaderLabel = new JLabel();
+            peptidesOverviewHeaderLabel.setBackground(new java.awt.Color(255, 255, 255));
+            peptidesOverviewHeaderLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+            peptidesOverviewHeaderLabel.setText("Sequence Coverage");
+            peptidesOverviewHeaderLabel.setSize(width, 37);
+            peptidesOverviewHeaderLabel.setFont(new Font("Verdana", Font.PLAIN, 14));
+            peptidesOverviewHeaderLabel.paint(g2d);
+            g2d.translate(0, 37);
+            int availableSpace = height - 10-37;
 
             for (ProteinInformationDataForExport peptidesInfo : peptidesSet) {
-                  if (newpage) {
-                    newpage = false;
-                    document.newPage();
-                    g2d.translate(32, 0);
-                }
 
-                PeptidesSequenceContainer peptidesSequenceContainer = new PeptidesSequenceContainer(peptidesInfo, g2d, csfFolder.getParent());
-                starty = peptidesSequenceContainer.getHeight();
-                  if (starty > 600) {
+                PeptidesSequenceContainer peptidesSequenceContainer = new PeptidesSequenceContainer(peptidesInfo, csfFolder.getParent());
+                starty = peptidesSequenceContainer.getCurrentHeight()+10;
+                if (starty <= availableSpace) {
+                    peptidesSequenceContainer.paint(g2d);
+                    g2d.translate(0, starty);
+                    availableSpace = availableSpace - starty;
+
+                } else {
                     g2d.dispose();
                     contentByte.addTemplate(template, 0, 0);
-                    newpage = true;
                     template = contentByte.createTemplate(width, height);
                     g2d = template.createGraphics(width, height, new DefaultFontMapper());
-                    starty = 30;
-                    startx = 32;
+                    document.newPage();
+                    g2d.translate(32, 0);
+                    availableSpace = height - 10;
+                    peptidesSequenceContainer.paint(g2d);
+                    g2d.translate(0, starty);
+                    availableSpace = availableSpace - starty;
 
                 }
-                
+
             }
 //            pepSeqContainer.paint(g2d);
 

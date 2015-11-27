@@ -33,31 +33,37 @@ import probe.com.view.core.jfreeutil.StackedBarPeptideComponent;
  *
  * @author yfa041
  */
-public class PeptidesSequenceContainer {
+public class PeptidesSequenceContainer extends JPanel {
 
-    private final int width = 384; //842 - 64;//595 
-    private int height = 0;
+    private final int width = 563; //842 - 64;//595 
+    private int currentHeight;
     private double resizeFactor = 1;
 
-    public PeptidesSequenceContainer(ProteinInformationDataForExport proteinInfoData, Graphics2D g2d, String resourcesPath) {
+    public PeptidesSequenceContainer(ProteinInformationDataForExport proteinInfoData, String resourcesPath) {
 
-         File res = new File(resourcesPath, "Resources");
-        JLabel comparisonsProteinHeaderLabel = new JLabel();
-        comparisonsProteinHeaderLabel.setBackground(new java.awt.Color(255, 255, 255));
-        comparisonsProteinHeaderLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        comparisonsProteinHeaderLabel.setText(proteinInfoData.getComparisonsTitle());
-        comparisonsProteinHeaderLabel.setFont(new Font("Verdana", Font.PLAIN, 12));
-        comparisonsProteinHeaderLabel.setSize(width, 30);
-        comparisonsProteinHeaderLabel.paint(g2d);
-        g2d.translate(0, 30);
-
-        height = 60;
         Map<String, Color> peptidesColorMap = new HashMap<String, Color>();
         peptidesColorMap.put("redstackedlayout", Color.decode("#cc0000"));
         peptidesColorMap.put("midredstackedlayout", Color.decode("#FF7F7F"));
         peptidesColorMap.put("lightbluestackedlayout", new Color(1, 141, 244));
         peptidesColorMap.put("midgreenstackedlayout", Color.decode("#D0F5A9"));
         peptidesColorMap.put("greenstackedlayout", Color.decode("#009900"));
+        this.setBackground(Color.WHITE);
+        this.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+        File res = new File(resourcesPath, "Resources");
+        JLabel comparisonsProteinHeaderLabel = new JLabel();
+        comparisonsProteinHeaderLabel.setBackground(Color.WHITE);
+        comparisonsProteinHeaderLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        comparisonsProteinHeaderLabel.setText(proteinInfoData.getComparisonsTitle());
+        comparisonsProteinHeaderLabel.setFont(new Font("Verdana", Font.PLAIN, 11));
+        comparisonsProteinHeaderLabel.setSize(width, 30);
+        comparisonsProteinHeaderLabel.setLocation(0, 10);
+        currentHeight = 40;
+        this.setSize(width, currentHeight);
+        this.add(comparisonsProteinHeaderLabel);
+//        comparisonsProteinHeaderLabel.paint(g2d);
+//        g2d.translate(0, 30);
+
         for (String key : proteinInfoData.getStudies().keySet()) {
             StudyInfoData info = proteinInfoData.getStudies().get(key);
             JPanel protSeqContainerLayout = new JPanel() {
@@ -67,12 +73,14 @@ public class PeptidesSequenceContainer {
                 }
             };
             protSeqContainerLayout.setBackground(Color.WHITE);
-            protSeqContainerLayout.setSize(width, 35 + (info.getLevelsNumber() - 1 * 30));
+            int studyHeight = 35 + ((Math.max(info.getLevelsNumber(), 1) - 1) * 30);
+            protSeqContainerLayout.setSize(width, studyHeight);
+
             protSeqContainerLayout.setLayout(new FlowLayout(FlowLayout.LEFT));
             int labelWidth = 145;//width - info.getCoverageWidth();
-            resizeFactor = 376.0 / (double) info.getCoverageWidth();
+            resizeFactor = 380.0 / (double) info.getCoverageWidth();
             JLabel studyLable1 = initSubLabel(info.getTitle(), labelWidth);
-            studyLable1.setLocation(5, 10);
+            studyLable1.setLocation(0, 10);
             protSeqContainerLayout.add(studyLable1);
             File iconResFile;
             switch (info.getTrend()) {
@@ -93,9 +101,15 @@ public class PeptidesSequenceContainer {
                 protSeqContainerLayout.add(studyLable2);
                 studyLable2.setIcon(icon);
                 studyLable2.setIconTextGap(5);
-                studyLable2.setLocation(5, 25);
+                studyLable2.setLocation(0, 25);
             } catch (IOException ex) {
                 Logger.getLogger(PeptidesSequenceContainer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (info.getPeptidesInfoList() == null) {
+                JLabel noInfoLabel = initSubLabel("No Peptides Information Available", 200);
+                noInfoLabel.setLocation(155, 10);
+                protSeqContainerLayout.add(noInfoLabel);
+
             }
 
             if (info.getPeptidesInfoList() != null) {
@@ -119,9 +133,9 @@ public class PeptidesSequenceContainer {
                         JLabel ptm = initPTMComponent(res, x + (int) (peptideComponent.getSize().getWidth() / 2.0) - 5, step - 10, peptide.getPtmLayout().getStyleName());
                         protSeqContainerLayout.add(ptm);
                     }
-                    if (height < (step + 15)) {
-                        height = step + 15;
-                    }
+//                    if (currentHeight < (step + 15)) {
+//                        currentHeight = step + 15;
+//                    }
                 }
                 JPanel protSeqLayout = new JPanel();
                 protSeqLayout.setBackground(new Color(242, 242, 242));
@@ -131,16 +145,19 @@ public class PeptidesSequenceContainer {
                 protSeqContainerLayout.add(protSeqLayout);
 
             }
+            protSeqContainerLayout.setLocation(0, currentHeight);
+            this.currentHeight += studyHeight + 10;
+            this.setSize(width, currentHeight);
+            this.add(protSeqContainerLayout);
 
-            protSeqContainerLayout.paint(g2d);
-            g2d.translate(0, height);
-
+//            protSeqContainerLayout.paint(g2d);
+//            g2d.translate(0, currentHeight);
         }
 
     }
 
-    public int getHeight() {
-        return height;
+    public int getCurrentHeight() {
+        return currentHeight;
     }
 
     /**
@@ -192,9 +209,14 @@ public class PeptidesSequenceContainer {
     private JLabel initPeptideComponet(Color c, int w, int xlocation, int top) {
         JLabel peptideComponent = new JLabel();
         peptideComponent.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        LineBorder border = new LineBorder(Color.BLACK, 1);
-        peptideComponent.setBorder(border);
+        LineBorder border;
+//        if (w > 3) {
+            border = new LineBorder(Color.DARK_GRAY, 1);
 
+//        }else{
+//         border = new LineBorder(c, 1);
+//        }
+        peptideComponent.setBorder(border);
         peptideComponent.setBackground(c);
         peptideComponent.setOpaque(true);
         peptideComponent.setSize(w, 15);
@@ -204,11 +226,11 @@ public class PeptidesSequenceContainer {
     }
 
     private JLabel initPTMComponent(File res, int xLocation, int yLocation, String ptmType) {
-       
-        File iconFile=null;
+
+        File iconFile = null;
         if (ptmType.equalsIgnoreCase("ptmglycosylation")) {
-            System.out.println("res "+res.exists());
-            iconFile = new File(res, ptmType+".png");
+            System.out.println("res " + res.exists());
+            iconFile = new File(res, ptmType + ".png");
 
         }
 

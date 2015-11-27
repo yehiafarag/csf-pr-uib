@@ -501,13 +501,15 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
             private final Font font = new Font("Verdana", Font.PLAIN, 12);
             private final String[] labels = new String[]{"Low 100%", "Low <100% ", "Stable", " High <100%", "High 100%"};
 
+           
+            
+        
             @Override
             public LegendItemCollection getLegendItems() {
                 LegendItemCollection legendItemCollection = new LegendItemCollection();
                 for (int i = 0; i < labelsColor.length; i++) {
-                    LegendItem item = new LegendItem(labels[i], labelsColor[i]);
-//                    item.setLabelPaint(Color.GRAY);
-                    item.setLabelFont(font);
+                    LegendItem item = new LegendItem(labels[i], labelsColor[i]);                 
+                        item.setLabelFont(font);                
 
                     legendItemCollection.add(item);
 
@@ -517,7 +519,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
             }
 
         };
-
+        
         JFreeChart generatedChart = new JFreeChart(xyplot) {
 
         };

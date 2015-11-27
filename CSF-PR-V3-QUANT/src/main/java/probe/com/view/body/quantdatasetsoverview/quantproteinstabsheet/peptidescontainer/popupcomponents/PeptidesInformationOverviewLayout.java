@@ -330,7 +330,7 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
             if (peptideSequence.contains(".")) {
                 peptideSequence = quantPeptide.getPeptideSequence().replace(".", "").trim().substring(1, quantPeptide.getPeptideSequence().length() - 2);
             }
-            double peptideLayoutWidth = peptideSequence.length() * charW;
+            double peptideLayoutWidth = Math.max(peptideSequence.length() * charW,7);
             int x0 = (int) (sequence.split(peptideSequence)[0].length() * charW);
             if (!significatOnly) {
                 StackedBarPeptideComponent peptideStackedBarComponent = new StackedBarPeptideComponent(x0, (int) (peptideLayoutWidth - 2), quantPeptide.getUniqueId() + "", quantPeptide.getPeptideModification());
@@ -507,6 +507,7 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
     private List< StackedBarPeptideComponent> stackedPeptides = new ArrayList<StackedBarPeptideComponent>();
 
     private int level = 1;
+
     private void initPeptidesStackedBarComponentsLayout(LinkedHashSet<StackedBarPeptideComponent> stackedBarComponents, AbsoluteLayout peptidesComponentsContainer, AbsoluteLayout peptidesContainer) {
         int top = 0;
         List< StackedBarPeptideComponent> initLevel = new ArrayList<StackedBarPeptideComponent>(stackedBarComponents);
@@ -592,7 +593,9 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
             }
 
         }
-        stackedPeptides.addAll(stackedBarComponents);
+        if (stackedPeptides.isEmpty()) {
+            stackedPeptides.addAll(stackedBarComponents);
+        }
         top = top + 30;
         peptidesComponentsContainer.setHeight(Math.max(40, top) + "px");
 

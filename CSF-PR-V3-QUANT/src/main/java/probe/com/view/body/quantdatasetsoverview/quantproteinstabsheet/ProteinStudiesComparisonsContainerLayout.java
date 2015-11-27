@@ -13,6 +13,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -42,7 +43,12 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
     private final DiseaseGroupsComparisonsProteinLayout[] diiseaseGroupsComparisonsProteinArr;
     private final OptionGroup studiesPeptidesSwich = new OptionGroup();
     private final OptionGroup showSigneficantPeptidesOnly;
-    private final Set<ProteinInformationDataForExport> peptidesExportInfoSet;
+    private final Set<ProteinInformationDataForExport> defaultPeptidesExportInfoSet,orderedPeptidesExportInfoSet;
+    private final Map<String, ProteinInformationDataForExport> proteinInformationDataForExportMap;
+
+    public Set<ProteinInformationDataForExport> getOrderedPeptidesExportInfoSet() {
+        return orderedPeptidesExportInfoSet;
+    }
 
     /**
      *
@@ -111,6 +117,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
         topLeftLayout.setSpacing(false);
         topLeftLayout.setMargin(new MarginInfo(false, false, false, false));
         topPanelLayout.addComponent(topLeftLayout);
+        topPanelLayout.setExpandRatio(topLeftLayout, 70);
 
         HorizontalLayout upperTopLeftLayout = new HorizontalLayout();
         upperTopLeftLayout.setWidthUndefined();
@@ -139,6 +146,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
         info.setHeight("20px");
         topPanelLayout.addComponent(info);
         topPanelLayout.setComponentAlignment(info, Alignment.TOP_RIGHT);
+         topPanelLayout.setExpandRatio(topLeftLayout, 30);
 
 //        topPanelLayout.addComponent(showSigneficantPeptidesOnly);
 //        topPanelLayout.setComponentAlignment(showSigneficantPeptidesOnly, Alignment.MIDDLE_RIGHT);
@@ -154,7 +162,9 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
 
         this.width = width;
         this.diiseaseGroupsComparisonsProteinArr = proteinsComparisonsArr;
-        peptidesExportInfoSet = new LinkedHashSet<ProteinInformationDataForExport>();
+        defaultPeptidesExportInfoSet = new LinkedHashSet<ProteinInformationDataForExport>();
+        orderedPeptidesExportInfoSet = new LinkedHashSet<ProteinInformationDataForExport>();
+        proteinInformationDataForExportMap = new HashMap<String, ProteinInformationDataForExport>();
 
     }
 
@@ -178,6 +188,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
             PeptidesComparisonsSequenceLayout peptideCompLayout = peptideCompLayoutMap.get(cp.getComparison());
             mainPeptidesLayout.addComponent(peptideCompLayout, 0, rowIndex);
             mainPeptidesLayout.setComponentAlignment(peptideCompLayout, Alignment.MIDDLE_CENTER);
+            orderedPeptidesExportInfoSet.add(proteinInformationDataForExportMap.get(cp.getComparison().getComparisonHeader()));
 
             rowIndex++;
         }
@@ -248,7 +259,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
             layout.redrawChart();
         }
         if (peptideCompLayoutMap.isEmpty()) {
-            peptidesExportInfoSet.clear();
+            defaultPeptidesExportInfoSet.clear();
             int rowIndex = 0;
             for (DiseaseGroupsComparisonsProteinLayout cprot : diiseaseGroupsComparisonsProteinArr) {
                 if (cprot == null || cprot.getSignificantTrindCategory() == -1) {
@@ -279,7 +290,8 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
                 ProteinInformationDataForExport peptideInfo = new ProteinInformationDataForExport();
                 peptideInfo.setComparisonsTitle(protCompLayout.getComparisonTitleValue());
                 peptideInfo.setStudies(protCompLayout.getStudiesMap());
-                peptidesExportInfoSet.add(peptideInfo);
+                defaultPeptidesExportInfoSet.add(peptideInfo);
+                proteinInformationDataForExportMap.put(cprot.getComparison().getComparisonHeader(), peptideInfo);
 
                 rowIndex++;
             }
@@ -329,7 +341,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
         return scatterSet;
     }
 
-    public Set<ProteinInformationDataForExport> getPeptidesExportInfoSet() {
-        return peptidesExportInfoSet;
+    public Set<ProteinInformationDataForExport> getDefaultPeptidesExportInfoSet() {
+        return defaultPeptidesExportInfoSet;
     }
 }

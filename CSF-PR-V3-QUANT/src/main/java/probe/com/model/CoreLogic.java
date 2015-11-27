@@ -624,7 +624,6 @@ public class CoreLogic implements Serializable {
         for (QuantProtein prot : quantProteinsList) {
 
             if (searchBy.equalsIgnoreCase("Protein Accession")/* ||*/) {
-                System.out.println("prot.getUniprotProteinName().trim() " + prot.getUniprotProteinName().trim());
                 key = prot.getUniprotAccession().trim() + "__" + prot.getUniprotProteinName().trim();
             } else {
                 key = prot.getUniprotProteinName().trim();
@@ -661,8 +660,8 @@ public class CoreLogic implements Serializable {
         }
     }
 
-    public byte[] exportProteinsInfoCharts(Set<JFreeChart> component, String fileName, String title) {
-        return exporter.exportProteinsInfoCharts(component, fileName, userFolderUrl, title);
+    public byte[] exportProteinsInfoCharts(Set<JFreeChart> component, String fileName, String title, Set<ProteinInformationDataForExport> peptidesSet) {
+        return exporter.exportProteinsInfoCharts(component, fileName, userFolderUrl, title,peptidesSet);
 //          
 //         "";//url + userFolder.getName() + "/" + pdfFile.getName();
 
