@@ -71,6 +71,7 @@ public class AppController extends UI {
             Page.getCurrent().getJavaScript().execute("window.onbeforeunload = function (e) { var e = e || window.event; aboutToClose(); return; };");
         } else {
             System.out.println("its iE");
+            
             final Timer timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
