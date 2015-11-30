@@ -10,12 +10,16 @@ import java.io.Serializable;
 /**
  *
  * @author Yehia Farag
+ *
+ * This class represents a query bean that has all query information
  */
-public class Query implements Serializable{
-    private String searchDataType,searchDataset,searchBy,searchKeyWords;
+public class Query implements Serializable {
+
+    private String searchDataType, searchDataset, searchBy, searchKeyWords;
     private boolean validatedProteins;
 
     /**
+     * Return the requested dataset name
      *
      * @return
      */
@@ -24,6 +28,7 @@ public class Query implements Serializable{
     }
 
     /**
+     * Set the dataset id
      *
      * @param searchDataset
      */
@@ -32,14 +37,16 @@ public class Query implements Serializable{
     }
 
     /**
+     * Get searching by method (accession, peptide sequence..etc)
      *
-     * @return
+     * @return searching method name
      */
     public String getSearchBy() {
         return searchBy;
     }
 
     /**
+     * Set searching by method (accession, peptide sequence..etc)
      *
      * @param searchBy
      */
@@ -48,6 +55,7 @@ public class Query implements Serializable{
     }
 
     /**
+     * Get searching data type (Id data, quant data)
      *
      * @return
      */
@@ -56,6 +64,7 @@ public class Query implements Serializable{
     }
 
     /**
+     * set searching data type (Id data, quant data)
      *
      * @param searchDataType
      */
@@ -64,6 +73,7 @@ public class Query implements Serializable{
     }
 
     /**
+     * Get searching keywords
      *
      * @return
      */
@@ -72,6 +82,7 @@ public class Query implements Serializable{
     }
 
     /**
+     * Set searching keywords
      *
      * @param searchKeyWords
      */
@@ -80,6 +91,7 @@ public class Query implements Serializable{
     }
 
     /**
+     * Is searching for validated proteins only
      *
      * @return
      */
@@ -88,11 +100,12 @@ public class Query implements Serializable{
     }
 
     /**
+     * Set searching for validated proteins only
      *
      * @param validatedProteins
      */
     public void setValidatedProteins(boolean validatedProteins) {
         this.validatedProteins = validatedProteins;
     }
-    
+
 }

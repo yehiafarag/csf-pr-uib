@@ -6,17 +6,11 @@
 package probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters;
 
 import com.vaadin.data.Property;
-import com.vaadin.event.LayoutEvents;
-import com.vaadin.server.Sizeable;
 import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.shared.ui.window.WindowMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.OptionGroup;
-import com.vaadin.ui.PopupView;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -26,7 +20,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import probe.com.bin.HorizontalClickToDisplay;
 import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.selectionmanager.CSFFilter;
 import probe.com.selectionmanager.CSFFilterSelection;
@@ -319,7 +312,7 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
             newArr[i] = str;
             i++;
         }
-        
+
         Arrays.sort(newArr);
         return newArr;
 
@@ -374,7 +367,7 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
         if (datasetIndexes != null) {
             centralSelectionManager.setStudyLevelFilterSelection(new CSFFilterSelection("Disease_Groups_Level", datasetIndexes, "", new HashSet<String>()));
         }
-   
+
         centralSelectionManager.setHeatMapLevelSelection(selectedRows, selectedColumns, patientsGroupArr);
     }
 

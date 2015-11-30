@@ -7,8 +7,9 @@ import java.util.List;
 
 /**
  *
- * @author Yehia Farag this class responsible for contracting and handling
- * queries
+ * @author Yehia Farag
+ *
+ * This class responsible for contracting and handling queries in a dynamic way
  */
 public class QueryConstractorHandler {
 
@@ -16,6 +17,7 @@ public class QueryConstractorHandler {
     private final List<String> valueList = new ArrayList<String>();
 
     /**
+     * Set the different parameters for the statement
      *
      * @param type
      * @param value
@@ -27,9 +29,10 @@ public class QueryConstractorHandler {
     }
 
     /**
+     * Initialize prepared statement
      *
-     * @param selectStat
-     * @return
+     * @param selectStat PreparedStatement object
+     * @return PreparedStatement after initializing it
      */
     public PreparedStatement initStatment(PreparedStatement selectStat) {
         try {

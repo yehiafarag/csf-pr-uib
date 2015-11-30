@@ -24,13 +24,14 @@ import probe.com.model.beans.quant.QuantProtein;
 import probe.com.model.beans.identification.StandardIdentificationFractionPlotProteinBean;
 import probe.com.model.beans.quant.QuantDatasetInitialInformationObject;
 import probe.com.model.util.vaadintoimageutil.peptideslayout.ProteinInformationDataForExport;
-import probe.com.view.core.exporter.ImageToExport;
 
 /**
- * @author Yehia Farag this class represent the main handler for the
- * application, it works as intermediate layer between visualization layer and
- * logic layer through the main handler responsible for initializing both the
- * logic layer and authenticator handler
+ * @author Yehia Farag
+ *
+ * This class represent the main handler for the application, it works as
+ * intermediate layer between visualization layer and logic layer through the
+ * main handler responsible for initializing both the logic layer and
+ * authenticator handler
  */
 public class CSFPRHandler implements Serializable {
 
@@ -39,6 +40,7 @@ public class CSFPRHandler implements Serializable {
     private final AuthenticatorHandler authenticatorHandler;
 
     /**
+     * create the main handler for all users requests
      *
      * @param url database url
      * @param dbName database name
@@ -67,21 +69,19 @@ public class CSFPRHandler implements Serializable {
      *
      * @param file the dataset file
      * @param MIMEType the file type (txt or xls)
-     * @param idDataset dataset bean (in case of update existing dataset)
+     * @param idDataset identification dataset bean (in case of update existing dataset)
      * @return test boolean
      * @exception IOException
      * @exception SQLException
      */
     public boolean handelIdentificationDatasetFile(File file, String MIMEType, IdentificationDatasetBean idDataset) throws IOException, SQLException {
-        boolean test = logicLayer.handelIdentificationDatasetFile(file, MIMEType, idDataset);
-        return test;
-
+        return logicLayer.handelIdentificationDatasetFile(file, MIMEType, idDataset);
     }
 
     /**
      * get the available id datasets
      *
-     * @return datasetsList
+     * @return identification datasetsList
      */
     public Map<Integer, IdentificationDatasetBean> getIdentificationDatasetList() {
         return logicLayer.getIdentificationDatasetList();
@@ -351,22 +351,23 @@ public class CSFPRHandler implements Serializable {
         logicLayer.exportIdentificationPeptidesToFile(datasetId, validated, datasetName, dataType, exportFileType);
 
     }
-    
-      
-  public byte[] exportProteinsInfoCharts(Set<JFreeChart> component, String fileName,String title, Set<ProteinInformationDataForExport> peptidesSet) {
-     return  logicLayer.exportProteinsInfoCharts(component, fileName,title,peptidesSet);
+
+    public byte[] exportProteinsInfoCharts(Set<JFreeChart> component, String fileName, String title, Set<ProteinInformationDataForExport> peptidesSet) {
+        return logicLayer.exportProteinsInfoCharts(component, fileName, title, peptidesSet);
 
     }
-     
-  public byte[] exportStudiesInformationPieCharts(Set<JFreeChart> component, String fileName,String title) {
-     return  logicLayer.exportStudiesInformationPieCharts(component, fileName,title);
+
+    public byte[] exportStudiesInformationPieCharts(Set<JFreeChart> component, String fileName, String title) {
+        return logicLayer.exportStudiesInformationPieCharts(component, fileName, title);
 
     }
-   public byte[] exportBubbleChartAsPdf(JFreeChart chart, String fileName,String title) {
-        return logicLayer.exportBubbleChartAsPdf(chart, fileName,title);
+
+    public byte[] exportBubbleChartAsPdf(JFreeChart chart, String fileName, String title) {
+        return logicLayer.exportBubbleChartAsPdf(chart, fileName, title);
     }
-   public byte[] exportfullReportAsZip( Map<String,Set<JFreeChart>> chartsMap, String fileName,String title,Set<ProteinInformationDataForExport> peptidesSet) {
-     return  logicLayer.exportfullReportAsZip(chartsMap, fileName,title,peptidesSet);
+
+    public byte[] exportfullReportAsZip(Map<String, Set<JFreeChart>> chartsMap, String fileName, String title, Set<ProteinInformationDataForExport> peptidesSet) {
+        return logicLayer.exportfullReportAsZip(chartsMap, fileName, title, peptidesSet);
 //          
 //         "";//url + userFolder.getName() + "/" + pdfFile.getName();
 
@@ -396,8 +397,8 @@ public class CSFPRHandler implements Serializable {
      * sequence )
      * @return list of identification hits results
      */
-    public Map<String, Integer> getIdHitsList(Map<Integer, IdentificationProteinBean> identificationProteinsList, String searchBy,String mainProt) {
-        return logicLayer.getIdentificationHitsList(identificationProteinsList, searchBy,mainProt);
+    public Map<String, Integer> getIdHitsList(Map<Integer, IdentificationProteinBean> identificationProteinsList, String searchBy, String mainProt) {
+        return logicLayer.getIdentificationHitsList(identificationProteinsList, searchBy, mainProt);
 
     }
 
@@ -437,7 +438,7 @@ public class CSFPRHandler implements Serializable {
      *
      * @return QuantDatasetInitialInformationObject
      */
-    public  Map<String, QuantDatasetInitialInformationObject>  getQuantDatasetInitialInformationObject() {
+    public Map<String, QuantDatasetInitialInformationObject> getQuantDatasetInitialInformationObject() {
         return logicLayer.getQuantDatasetInitialInformationObject();
 
     }
@@ -462,7 +463,7 @@ public class CSFPRHandler implements Serializable {
      * @return boolean array for the active and not active pie chart filters
      * indexes
      */
-    public Map<String, boolean[]>  getActivePieChartQuantFilters() {
+    public Map<String, boolean[]> getActivePieChartQuantFilters() {
         return logicLayer.getActivePieChartQuantFilters();
 
     }
@@ -523,26 +524,23 @@ public class CSFPRHandler implements Serializable {
         return logicLayer.getComparisonProtList(selectedComparisonList, searchQuantificationProtList);
 
     }
-    
-   
-     /**
-     * k-means clustering for protein 
+
+    /**
+     * k-means clustering for protein
      *
      * @param samples the samples
      * @param sampleIds the sample identifiers
      * @param numClusters the number of clusters
-     * @param proteinKey  protein key
+     * @param proteinKey protein key
      * @return list of clustered proteins
      */
-    public ArrayList<String> runKMeanClustering(double[][] samples, String[] sampleIds,int numClusters,String proteinKey){
-     return this.logicLayer.runKMeanClustering(samples, sampleIds, numClusters,proteinKey);
+    public ArrayList<String> runKMeanClustering(double[][] samples, String[] sampleIds, int numClusters, String proteinKey) {
+        return this.logicLayer.runKMeanClustering(samples, sampleIds, numClusters, proteinKey);
     }
-    
-    public OverviewInfoBean getResourceOverviewInformation(){
+
+    public OverviewInfoBean getResourceOverviewInformation() {
         return this.logicLayer.getResourceOverviewInformation();
-    
-    
-    
+
     }
 
 }

@@ -29,7 +29,7 @@ public class DataAccess implements Serializable {
     private final DataBase db;
 
     /**
-     * constructor
+     * Initialize data access layer
      *
      * @param url
      * @param dbName
@@ -42,20 +42,7 @@ public class DataAccess implements Serializable {
     }
 
     /**
-     * create database tables if not exist
-     *
-     * @return test boolean (successful creation)
-     *
-     */
-//    public boolean createTable() {
-//
-////        boolean test = db.createTables();
-//        return test;
-//
-//    }
-
-    /**
-     * remove dataset from the database
+     * Remove dataset from the database
      *
      * @param datasetId
      * @return boolean successful process
@@ -66,7 +53,7 @@ public class DataAccess implements Serializable {
     }
 
     /**
-     * get the available identification datasets
+     * Get the available identification datasets
      *
      * @return identification datasetsList
      */
@@ -77,7 +64,7 @@ public class DataAccess implements Serializable {
     }
 
     /**
-     * get selected identification dataset
+     * Get selected identification dataset
      *
      * @param datasetId
      * @return dataset
@@ -88,7 +75,7 @@ public class DataAccess implements Serializable {
     }
 
     /**
-     * get identification proteins map for especial identification dataset
+     * Get identification proteins map for especial identification dataset
      *
      * @param datasetId
      * @return proteinsList
@@ -99,7 +86,7 @@ public class DataAccess implements Serializable {
     }
 
     /**
-     * get dataset identification peptides list
+     * Get dataset identification peptides list
      *
      * @param datasetId
      * @param valid
@@ -111,7 +98,8 @@ public class DataAccess implements Serializable {
     }
 
     /**
-     * get all peptides number for specific dataset
+     * Get all peptides number for specific dataset
+     *
      * @param datasetId
      * @param validated
      * @return identification peptides number
@@ -122,7 +110,7 @@ public class DataAccess implements Serializable {
     }
 
     /**
-     * get identification dataset fractions list
+     * Get identification dataset fractions list
      *
      * @param datasetId
      * @param accession
@@ -136,7 +124,7 @@ public class DataAccess implements Serializable {
     }
 
     /**
-     * search for identification proteins by accession keywords
+     * Search for identification proteins by accession keywords
      *
      * @param accession array of query words
      * @param datasetId
@@ -149,7 +137,7 @@ public class DataAccess implements Serializable {
     }
 
     /**
-     * search for proteins by accession keywords
+     * Search for proteins by accession keywords
      *
      * @param accession array of query words
      * @param validatedOnly only validated proteins results
@@ -169,7 +157,7 @@ public class DataAccess implements Serializable {
     }
 
     /**
-     * search for proteins by accession keywords
+     * Search for proteins by accession keywords
      *
      * @param query query words
      * @return dataset Proteins Searching List
@@ -182,19 +170,19 @@ public class DataAccess implements Serializable {
     }
 
     /**
-     * get available quantification datasets initial information object that
+     * Get available quantification datasets initial information object that
      * contains the available datasets list and the active columns (to hide them
      * if they are empty)
      *
      * @return QuantDatasetInitialInformationObject
      */
-    public  Map<String, QuantDatasetInitialInformationObject>  getQuantDatasetInitialInformationObject() {
+    public Map<String, QuantDatasetInitialInformationObject> getQuantDatasetInitialInformationObject() {
         return db.getQuantDatasetInitialInformationObject();
 
     }
 
     /**
-     * get available quantification datasets initial information object within
+     * Get available quantification datasets initial information object within
      * quant searching proteins results that contains the available datasets
      * list and the active columns (to hide them if they are empty)
      *
@@ -207,19 +195,19 @@ public class DataAccess implements Serializable {
     }
 
     /**
-     * get active quantification pie charts filters (to hide them if they are
+     * Get active quantification pie charts filters (to hide them if they are
      * empty)
      *
      * @return boolean array for the active and not active pie chart filters
      * indexes
      */
-    public Map<String, boolean[]>  getActivePieChartQuantFilters() {
+    public Map<String, boolean[]> getActivePieChartQuantFilters() {
         return db.getActivePieChartQuantFilters();
 
     }
 
     /**
-     * get active quantification pie charts filters within quant searching
+     * Get active quantification pie charts filters within quant searching
      * proteins results (to hide them if they are empty)
      *
      * @param searchQuantificationProtList
@@ -232,7 +220,7 @@ public class DataAccess implements Serializable {
     }
 
     /**
-     * get identification peptides list form giving ids
+     * Get identification peptides list form giving ids
      *
      * @param accession
      * @param otherAcc
@@ -245,7 +233,7 @@ public class DataAccess implements Serializable {
     }
 
     /**
-     * get proteins fractions average list
+     * Get proteins fractions average list
      *
      * @param accession
      * @param datasetId
@@ -257,7 +245,7 @@ public class DataAccess implements Serializable {
     }
 
     /**
-     * search for identification proteins by protein description keywords
+     * Search for identification proteins by protein description keywords
      *
      * @param protSearchKeyword array of query words
      * @param datasetId dataset Id
@@ -270,7 +258,7 @@ public class DataAccess implements Serializable {
     }
 
     /**
-     * search for identification proteins by protein description keywords
+     * Search for identification proteins by protein description keywords
      *
      * @param protSearchKeyword array of query words
      * @param validatedOnly only validated proteins results
@@ -282,7 +270,7 @@ public class DataAccess implements Serializable {
     }
 
     /**
-     * search for identification proteins by peptide sequence keywords
+     * Search for identification proteins by peptide sequence keywords
      *
      * @param peptideSequenceKeyword array of query words
      * @param validatedOnly only validated proteins results
@@ -295,7 +283,7 @@ public class DataAccess implements Serializable {
     }
 
     /**
-     * search for proteins by peptide sequence keywords
+     * Search for proteins by peptide sequence keywords
      *
      * @param peptideSequenceKeyword array of query words
      * @param datasetId dataset Id
@@ -308,12 +296,8 @@ public class DataAccess implements Serializable {
         return proteinsList;
     }
 
-    
-   
-
-    
     /**
-     *update  standard plot files in the database
+     * Update standard plot files in the database
      *
      *
      * @param dataset dataset bean (in case of update existing dataset)
@@ -325,7 +309,7 @@ public class DataAccess implements Serializable {
     }
 
     /**
-     * retrieve standard proteins data for fraction plot
+     * Retrieve standard proteins data for fraction plot
      *
      * @param datasetId
      * @return
@@ -337,7 +321,7 @@ public class DataAccess implements Serializable {
     }
 
     /**
-     * update identification dataset information
+     * Update identification dataset information
      *
      * @param dataset updated dataset object
      * @return test boolean
@@ -349,16 +333,7 @@ public class DataAccess implements Serializable {
     }
 
     /**
-     * run only once to update the db :to be removed
-     */
-    @Deprecated
-    public void runOnceToUpdateDatabase() {
-//         db.singleuseUpdateDb();
-
-    }
-
-    /**
-     * store quant proteins list to database
+     * Store quant proteins list to database
      *
      * @param quantProeinstList
      * @return is successful process
@@ -369,7 +344,7 @@ public class DataAccess implements Serializable {
     }
 
     /**
-     * get quant proteins list for quant dataset
+     * Get quant proteins list for quant dataset
      *
      * @param quantDatasetId
      * @return quant proteins list
@@ -378,9 +353,9 @@ public class DataAccess implements Serializable {
         Set<QuantProtein> datasetProteinsSearchingList = db.getQuantificationProteins(quantDatasetId);
         return datasetProteinsSearchingList;
     }
-    
-     /**
-     * get quant proteins list for a number of quant datasets
+
+    /**
+     * Get quant proteins list for a number of quant datasets
      *
      * @param quantDatasetIds
      * @return quant proteins list
@@ -391,7 +366,7 @@ public class DataAccess implements Serializable {
     }
 
     /**
-     * get quant peptides list for specific quant dataset
+     * Get quant peptides list for specific quant dataset
      *
      * @param quantDatasetId
      * @return quant peptides list
@@ -402,9 +377,9 @@ public class DataAccess implements Serializable {
 
         return datasetProteinsSearchingList;
     }
-    
-     /**
-     * get all quant peptides list for  quant dataset list
+
+    /**
+     * Get all quant peptides list for quant dataset list
      *
      * @param quantDatasetIds
      * @return quant peptides list
@@ -413,12 +388,15 @@ public class DataAccess implements Serializable {
         Map<String, Set<QuantPeptide>> datasetProteinsSearchingList = db.getQuantificationPeptides(quantDatasetIds);
         return datasetProteinsSearchingList;
     }
-    
-    public OverviewInfoBean getResourceOverviewInformation(){
+
+    /**
+     * Get all required informations for the resource statues
+     *
+     * @return OverviewInfoBean
+     */
+    public OverviewInfoBean getResourceOverviewInformation() {
         return this.db.getResourceOverviewInformation();
-    
-    
-    
+
     }
-   
+
 }

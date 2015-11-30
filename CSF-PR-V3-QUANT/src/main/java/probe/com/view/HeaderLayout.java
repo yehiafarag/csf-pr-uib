@@ -1,4 +1,3 @@
-
 package probe.com.view;
 
 import com.vaadin.server.ExternalResource;
@@ -13,19 +12,19 @@ import com.vaadin.ui.themes.Reindeer;
 
 /**
  *
- * @author Yehia Farag 
- * 
- * this class represent the main header in the main layout which is 
- * the layout of the top part of the web page
+ * @author Yehia Farag
+ *
+ * this class represent the main header in the main layout which is the layout
+ * of the top part of the web page
  */
-public class Header extends VerticalLayout {
+public class HeaderLayout extends VerticalLayout {
 
     private final HorizontalLayout header = new HorizontalLayout();//Title and logo layout (top layout)
 
     /**
-     * initialize top body layout for the web page
+     * Initialize top body layout for the web page
      */
-    public Header() {
+    public HeaderLayout() {
 
         this.setWidth("100%");
         this.setStyleName(Reindeer.LAYOUT_WHITE);
@@ -33,6 +32,10 @@ public class Header extends VerticalLayout {
         header.setWidth("1300px");
         header.setHeight("60px");
         header.setStyleName(Reindeer.LAYOUT_WHITE);
+        header.setWidth("100%");
+        header.setHeight("60px");
+        header.setSpacing(true);
+        this.addComponent(header);
 
         //Coronetscript, cursive Helvetica
         Label csfLable = new Label("<a href='' style='text-decoration:none'><p   align='left' ; style='margin-left:40px;font-family:verdana;color:#4d749f;font-weight:bold;text-decoration:none '><FONT SIZE='5.5'>CSF Proteome Resource (CSF-PR)</FONT><font size='2' > v2.0</font></p></a>");
@@ -66,6 +69,7 @@ public class Header extends VerticalLayout {
         kgj_ico.setTargetName("_blank");
         kgj_ico.setHeight("58px");
         hlo.addComponent(kgj_ico);
+
         Label spacer = new Label("<p   align='left' ; style='margin-left:40px;font-family:verdana;color:#4d749f;font-weight:bold;text-decoration:none '></p>");
         spacer.setContentMode(ContentMode.HTML);
         spacer.setStyleName(Reindeer.LABEL_SMALL);
@@ -87,10 +91,6 @@ public class Header extends VerticalLayout {
 
         header.addComponent(logoLayout);
         header.setComponentAlignment(logoLayout, Alignment.MIDDLE_RIGHT);
-        header.setWidth("100%");
-        header.setHeight("60px");
-        header.setSpacing(true);
-        this.addComponent(header);
 
     }
 }

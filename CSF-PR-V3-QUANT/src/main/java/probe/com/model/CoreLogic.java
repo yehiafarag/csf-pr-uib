@@ -116,7 +116,7 @@ public class CoreLogic implements Serializable {
     }
 
     /**
-     * read and store datasets files in the database
+     * read and store identification datasets files in the database
      *
      * @param file the dataset file
      * @param MIMEType the file type (txt or xls)
@@ -661,12 +661,13 @@ public class CoreLogic implements Serializable {
     }
 
     public byte[] exportProteinsInfoCharts(Set<JFreeChart> component, String fileName, String title, Set<ProteinInformationDataForExport> peptidesSet) {
-        return exporter.exportProteinsInfoCharts(component, fileName, userFolderUrl, title,peptidesSet);
+        return exporter.exportProteinsInfoCharts(component, fileName, userFolderUrl, title, peptidesSet);
 //          
 //         "";//url + userFolder.getName() + "/" + pdfFile.getName();
 
     }
-      public byte[] exportStudiesInformationPieCharts(Set<JFreeChart> component, String fileName, String title) {
+
+    public byte[] exportStudiesInformationPieCharts(Set<JFreeChart> component, String fileName, String title) {
         return exporter.exportStudiesInformationPieCharts(component, fileName, userFolderUrl, title);
 //          
 //         "";//url + userFolder.getName() + "/" + pdfFile.getName();
@@ -677,8 +678,8 @@ public class CoreLogic implements Serializable {
         return exporter.exportBubbleChartAsPdf(chart, fileName, userFolderUrl, title);
     }
 
-    public byte[] exportfullReportAsZip( Map<String,Set<JFreeChart>> chartsMap, String fileName,String title,Set<ProteinInformationDataForExport> peptidesSet) {
-        return exporter.exportfullReportAsZip(chartsMap, fileName, userFolderUrl,title,peptidesSet);
+    public byte[] exportfullReportAsZip(Map<String, Set<JFreeChart>> chartsMap, String fileName, String title, Set<ProteinInformationDataForExport> peptidesSet) {
+        return exporter.exportfullReportAsZip(chartsMap, fileName, userFolderUrl, title, peptidesSet);
 //          
 //         "";//url + userFolder.getName() + "/" + pdfFile.getName();
 

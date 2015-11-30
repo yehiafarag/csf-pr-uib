@@ -473,76 +473,13 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
             hideUniqueProteinsOption.unselect("Hide unique proteins");
             Set<String> selectedQuantAccessionsSet = null;
             Set<QuantDiseaseGroupsComparison> selectedComparisonList = selectionManager.getSelectedDiseaseGroupsComparisonList();
-            Set<QuantDiseaseGroupsComparison> newComparisons = new HashSet<QuantDiseaseGroupsComparison>();
-            Set<QuantDiseaseGroupsComparison> removingComparisons = new HashSet<QuantDiseaseGroupsComparison>();
-//            for (QuantDiseaseGroupsComparison comparison : selectedComparisonList) {
-//                if (!diseaseGroupsComparisonsMap.contains(comparison)) {
-//                    newComparisons.add(comparison);
-//                }
-//            }
-//            for (QuantDiseaseGroupsComparison comparison : diseaseGroupsComparisonsMap) {
-//                if (!selectedComparisonList.contains(comparison)) {
-//                    removingComparisons.add(comparison);
-//                }
-//            }
-//            Iterator<QuantDiseaseGroupsComparison> itr = newComparisons.iterator();
-//            while (itr.hasNext()) {
-//                if (itr.next().getComparProtsMap() == null) {
-//                    newComparisons = handler.getComparisonProtList(newComparisons, searchQuantificationProtList);
-//                    break;
-//                }
-//
-//            }
-//            for (QuantDiseaseGroupsComparison comparison : removingComparisons) {
-//                diseaseGroupsComparisonsMap.remove(comparison);
-//            }
-
-//            QuantDiseaseGroupsComparison[] tempDiseaseGroupsComparisonsArray = new QuantDiseaseGroupsComparison[diseaseGroupsComparisonsMap.size() + newComparisons.size()];
-//            int u = 0;
-//            for (QuantDiseaseGroupsComparison diseaseGroupsComparison : quantDiseaseGroupsComparisonArr) {
-//                if (diseaseGroupsComparisonsMap.contains(diseaseGroupsComparison)) {
-//                    tempDiseaseGroupsComparisonsArray[u] = diseaseGroupsComparison;
-//                    u++;
-//                }
-//            }
-//            for (QuantDiseaseGroupsComparison comparison : newComparisons) {
-//                tempDiseaseGroupsComparisonsArray[u] = comparison;
-//                u++;
-//            }
-//
-//            quantDiseaseGroupsComparisonArr = tempDiseaseGroupsComparisonsArray;
-//            diseaseGroupsComparisonsMap.clear();
-//            diseaseGroupsComparisonsMap.addAll(Arrays.asList(quantDiseaseGroupsComparisonArr));
-//
-//            if (diseaseGroupsComparisonsMap.isEmpty()) {
-////                initialLayout.setVisible(true);
-//                topLayout.setVisible(false);
-//                groupsComparisonProteinsTable.setVisible(false);
-//                bottomLayout.setVisible(false);
-//                noProtLabel.setVisible(true);
-//                searchField.clear();
-//            } else {
-//                if (selectionManager.getQuantProteinsLayoutSelectionMap() != null) {
-//                    selectedQuantAccessionsSet = selectionManager.getQuantProteinsLayoutSelectionMap().keySet();
-//                } else {
-//                    selectedQuantAccessionsSet = new HashSet<String>();
-//                }
-////                initialLayout.setVisible(false);
-//                topLayout.setVisible(true);
-//                groupsComparisonProteinsTable.setVisible(true);
-//                bottomLayout.setVisible(true);
-//                noProtLabel.setVisible(false);
-//            }
-            //////////////////////////
             QuantDiseaseGroupsComparison[] tempDiseaseGroupsComparisonsArray = new QuantDiseaseGroupsComparison[selectedComparisonList.size()];
             int u = 0;
             diseaseGroupsComparisonsMap.clear();
             for (QuantDiseaseGroupsComparison diseaseGroupsComparison : selectedComparisonList) {
-//                if (diseaseGroupsComparisonsMap.contains(diseaseGroupsComparison)) {
                 tempDiseaseGroupsComparisonsArray[u] = diseaseGroupsComparison;
                 diseaseGroupsComparisonsMap.add(diseaseGroupsComparison);
                 u++;
-//                }
             }
 
 //            for (QuantDiseaseGroupsComparison comparison : newComparisons) {
@@ -560,36 +497,44 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
                 bottomLayout.setVisible(false);
                 noProtLabel.setVisible(true);
                 searchField.clear();
+                groupsComparisonProteinsTable.setValue(null);
+                
+                
+                
             } else {
                 if (selectionManager.getQuantProteinsLayoutSelectionMap() != null) {
                     selectedQuantAccessionsSet = selectionManager.getQuantProteinsLayoutSelectionMap().keySet();
                 } else {
                     selectedQuantAccessionsSet = new HashSet<String>();
                 }
-//                initialLayout.setVisible(false);
+
                 topLayout.setVisible(true);
                 groupsComparisonProteinsTable.setVisible(true);
                 bottomLayout.setVisible(true);
                 noProtLabel.setVisible(false);
-            }
+                this.updateTableData(quantDiseaseGroupsComparisonArr, selectedQuantAccessionsSet);
+                selectionManager.updateSelectedComparisonList(new LinkedHashSet<QuantDiseaseGroupsComparison>(Arrays.asList(quantDiseaseGroupsComparisonArr)));
 
-            ////////////////////////////
-            this.updateTableData(quantDiseaseGroupsComparisonArr,
-                    selectedQuantAccessionsSet);
-            selectionManager.updateSelectedComparisonList(new LinkedHashSet<QuantDiseaseGroupsComparison>(Arrays.asList(quantDiseaseGroupsComparisonArr)));
-
-            if (!selectedProtId.isEmpty() && !lastSelectedAccessionToIdMap.isEmpty()) {
-                Set<Object> selectedItemId = new HashSet<Object>();
-                for (Object o : selectedProtId) {
-                    if (lastSelectedAccessionToIdMap.get(o.toString()) != null) {
-                        selectedItemId.add(lastSelectedAccessionToIdMap.get(o.toString()));
+                if (!selectedProtId.isEmpty() && !lastSelectedAccessionToIdMap.isEmpty()) {
+                    Set<Object> selectedItemId = new HashSet<Object>();
+                    for (Object o : selectedProtId) {
+                        if (lastSelectedAccessionToIdMap.get(o.toString()) != null) {
+                            selectedItemId.add(lastSelectedAccessionToIdMap.get(o.toString()));
+                        }
                     }
-                }
-                this.groupsComparisonProteinsTable.setValue(selectedItemId);
+                    if (selectedItemId.isEmpty()) {
+                        groupsComparisonProteinsTable.setValue(null);
+                    } else {
+                        this.groupsComparisonProteinsTable.setValue(selectedItemId);
+                    }
 
+                } else {
+                    groupsComparisonProteinsTable.setValue(null);
+                }
             }
 
         } else if (type.equalsIgnoreCase("Quant_Proten_Selection") && !selfselection) {
+
             externalSelection = true;
             selfselection = false;
             Set<String> selectedQuantAccessionsSet = selectionManager.getQuantProteinsLayoutSelectionMap().keySet();
@@ -609,6 +554,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
             if (selectedQuantAccessionsSet.isEmpty()) {
                 updateTableData(quantDiseaseGroupsComparisonArr, null);
             } else {
+
                 filterTable(selectedQuantAccessionsSet, quantDiseaseGroupsComparisonArr, sortComparisonTableColumn, false);
             }
             updateProtCountLabel(groupsComparisonProteinsTable.getItemIds().size());
@@ -655,9 +601,12 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
      * @param selectedQuantAccessionsSet
      */
     private void updateTableData(QuantDiseaseGroupsComparison[] quantDiseaseGroupsComparisonArr, Set<String> selectedQuantAccessionsSet) {
+
+        //remove listener
+        this.groupsComparisonProteinsTable.removeValueChangeListener(this);
+
         this.columnLabelContainer.removeAllComponents();
         this.groupsComparisonProteinsTable.removeAllItems();
-//        quantBarchartSet.clear();
         quantAccessionMap.clear();
         lastSelectedAccessionToIdMap.clear();
         boolean useRatio = false;
@@ -793,18 +742,19 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
                 sortComparisonTableColumn = event.getPropertyId().toString();
             }
         });
+        this.groupsComparisonProteinsTable.addValueChangeListener(this);
         if (!localSelectedProtId.isEmpty()) {
             groupsComparisonProteinsTable.setValue(localSelectedProtId);
         } else {
             groupsComparisonProteinsTable.setValue(null);
         }
-        if (groupsComparisonProteinsTable.getItemIds().size() == 1) {
-            Object itemId = groupsComparisonProteinsTable.getItemIds().toArray()[0];
-            localSelectedProtId.add(itemId);
-            groupsComparisonProteinsTable.setValue(localSelectedProtId);
-
-        }
-
+//        if (groupsComparisonProteinsTable.getItemIds().size() == 1) {
+//            Object itemId = groupsComparisonProteinsTable.getItemIds().toArray()[0];
+//            localSelectedProtId.add(itemId);
+//            groupsComparisonProteinsTable.setValue(localSelectedProtId);
+//
+//        }
+//
         this.updateProtCountLabel(diseaseGroupsComparisonsProteinsMap.size());
     }
 
@@ -1084,58 +1034,61 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
 
     @Override
     public void valueChange(Property.ValueChangeEvent event) {
-        if (groupsComparisonProteinsTable != null && groupsComparisonProteinsTable.getValue() != null) {
-            proteinskeys.clear();
-            proteinskeys.addAll((Set) groupsComparisonProteinsTable.getValue());
-        } else {
-            proteinskeys.clear();
-        }
         if (!lastSelectedProts.isEmpty()) {
             for (CustomExternalLink uniprot : lastSelectedProts.values()) {
                 uniprot.rePaintLable("black");
             }
         }
-        if (!proteinskeys.isEmpty()) {
-            lastSelectedProts.clear();
-        }
-        for (int proteinskey : proteinskeys) {
-            final Item item = groupsComparisonProteinsTable.getItem(proteinskey);
-            CustomExternalLink lastSelectedProt = (CustomExternalLink) item.getItemProperty("Accession").getValue();
-            selectedProtId.add(lastSelectedProt);
-            Integer index = (Integer) item.getItemProperty("Index").getValue();
-            lastSelectedProt.rePaintLable("white");
-            lastSelectedProts.put(index, lastSelectedProt);
-        }
-        List<String> accessions = new ArrayList<String>();
-        for (int index : lastSelectedProts.keySet()) {
-            CustomExternalLink str = lastSelectedProts.get(index);
-            accessions.add(str.toString());
-        }
+        lastSelectedProts.clear();
+        if (groupsComparisonProteinsTable != null && (groupsComparisonProteinsTable.getValue() != null) && !((Set) groupsComparisonProteinsTable.getValue()).isEmpty()) {
+            proteinskeys.clear();
+            proteinskeys.addAll((Set) groupsComparisonProteinsTable.getValue());
+            for (int proteinskey : proteinskeys) {
+                final Item item = groupsComparisonProteinsTable.getItem(proteinskey);
+                CustomExternalLink lastSelectedProt = (CustomExternalLink) item.getItemProperty("Accession").getValue();
+                selectedProtId.add(lastSelectedProt);
+                Integer index = (Integer) item.getItemProperty("Index").getValue();
+                lastSelectedProt.rePaintLable("white");
+                lastSelectedProts.put(index, lastSelectedProt);
+            }
+            List<String> accessions = new ArrayList<String>();
+            for (int index : lastSelectedProts.keySet()) {
+                CustomExternalLink str = lastSelectedProts.get(index);
+                accessions.add(str.toString());
+            }
 
-        lastSelectedProteinsMap.clear();
-        for (String accession : accessions) {
-            for (int compIndex = 0; compIndex < quantDiseaseGroupsComparisonArr.length; compIndex++) {
-                QuantDiseaseGroupsComparison comp = quantDiseaseGroupsComparisonArr[compIndex];
-                Map<String, DiseaseGroupsComparisonsProteinLayout> protList = comp.getComparProtsMap();
-                for (DiseaseGroupsComparisonsProteinLayout prot : protList.values()) {
-                    if (prot.getProteinAccssionNumber().equalsIgnoreCase(accession)) {
-                        String key = ("--" + prot.getProteinAccssionNumber().toLowerCase().trim() + "," + prot.getProtName().trim()).trim();
-                        key = key + "," + uniprotProteinsMap.get(key);
-                        if (!lastSelectedProteinsMap.containsKey(key)) {
-                            lastSelectedProteinsMap.put(key, new DiseaseGroupsComparisonsProteinLayout[quantDiseaseGroupsComparisonArr.length]);
+            lastSelectedProteinsMap.clear();
+            for (String accession : accessions) {
+                for (int compIndex = 0; compIndex < quantDiseaseGroupsComparisonArr.length; compIndex++) {
+                    QuantDiseaseGroupsComparison comp = quantDiseaseGroupsComparisonArr[compIndex];
+                    Map<String, DiseaseGroupsComparisonsProteinLayout> protList = comp.getComparProtsMap();
+                    for (DiseaseGroupsComparisonsProteinLayout prot : protList.values()) {
+                        if (prot.getProteinAccssionNumber().equalsIgnoreCase(accession)) {
+                            String key = ("--" + prot.getProteinAccssionNumber().toLowerCase().trim() + "," + prot.getProtName().trim()).trim();
+                            key = key + "," + uniprotProteinsMap.get(key);
+                            if (!lastSelectedProteinsMap.containsKey(key)) {
+                                lastSelectedProteinsMap.put(key, new DiseaseGroupsComparisonsProteinLayout[quantDiseaseGroupsComparisonArr.length]);
+                            }
+                            DiseaseGroupsComparisonsProteinLayout[] tCompArr = lastSelectedProteinsMap.get(key);
+                            tCompArr[compIndex] = prot;
+                            lastSelectedProteinsMap.put(key, tCompArr);
                         }
-                        DiseaseGroupsComparisonsProteinLayout[] tCompArr = lastSelectedProteinsMap.get(key);
-                        tCompArr[compIndex] = prot;
-                        lastSelectedProteinsMap.put(key, tCompArr);
                     }
                 }
             }
+        } else {
+            System.out.println("");
+            proteinskeys.clear();
+            lastSelectedProts.clear();
+            selectedProtId.clear();
+            lastSelectedProteinsMap.clear();
         }
         if (externalSelection) {
             externalSelection = false;
         } else {
             selfselection = true;
             selectionManager.setQuantProteinsSelectionLayout(lastSelectedProteinsMap);
+            selectionManager.selectionQuantProteinsSelectionLayoutChanged();
 
         }
 

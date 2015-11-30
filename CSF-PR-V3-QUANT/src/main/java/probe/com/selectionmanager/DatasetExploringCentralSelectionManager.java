@@ -258,9 +258,13 @@ public class DatasetExploringCentralSelectionManager implements Serializable {
      * @param protSelectionMap
      */
     public void setQuantProteinsSelectionLayout(Map<String, DiseaseGroupsComparisonsProteinLayout[]> protSelectionMap) {
-        try {
+       
+            this.quantProteinsLayoutSelectionMap = protSelectionMap;         
+
+    }
+    public void selectionQuantProteinsSelectionLayoutChanged(){
+     try {
             VaadinSession.getCurrent().getLockInstance().lock();
-            this.quantProteinsLayoutSelectionMap = protSelectionMap;
             this.SelectionChanged("Quant_Proten_Selection");
 
         } catch (Exception exp) {
@@ -271,6 +275,7 @@ public class DatasetExploringCentralSelectionManager implements Serializable {
             VaadinSession.getCurrent().getLockInstance().unlock();
         }
 
+    
     }
 
     private Set<String> protSelectionSet;

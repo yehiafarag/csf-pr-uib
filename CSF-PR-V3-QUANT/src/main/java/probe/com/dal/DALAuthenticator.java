@@ -9,6 +9,9 @@ import probe.com.model.beans.User;
 /**
  *
  * @author Yehia Farag
+ *
+ * This class represents and abstraction for the data access authentication
+ * layer
  */
 public class DALAuthenticator implements Serializable {
 
@@ -19,7 +22,8 @@ public class DALAuthenticator implements Serializable {
     private final DataBase db;
 
     /**
-     * constructor 
+     * Initialize instance of DAL authenticator
+     *
      * @param url
      * @param dbName
      * @param driver
@@ -30,22 +34,22 @@ public class DALAuthenticator implements Serializable {
         db = new DataBase(url, dbName, driver, userName, password);
     }
 
-
     /**
-     * validate the login username 
+     * Validate the login username
+     *
      * @param email
      * @return
      */
-    
     public boolean validateUsername(String email) {
         boolean test = db.validateUsername(email);
         return test;
     }
 
     /**
+     * Get user password to compare and validate
      *
      * @param email
-     * @return
+     * @return user password
      * @throws SQLException
      * @throws InstantiationException
      * @throws IllegalAccessException
@@ -58,7 +62,7 @@ public class DALAuthenticator implements Serializable {
     }
 
     /**
-     * add new user (for future)
+     * Add new user (for future)
      *
      * @param username
      * @param password
@@ -73,7 +77,7 @@ public class DALAuthenticator implements Serializable {
     }
 
     /**
-     * update login password
+     * Update login password
      *
      * @param username username
      * @param oldpassword old password
@@ -93,9 +97,10 @@ public class DALAuthenticator implements Serializable {
     }
 
     /**
-     * get user information using his login email
-     * @param email
-     * @return
+     * Get user information using his login email
+     *
+     * @param email login email
+     * @return user object that contains user information
      */
     public User getUser(String email) {
         User user = db.getUser(email);
@@ -103,9 +108,9 @@ public class DALAuthenticator implements Serializable {
     }
 
     /**
-     * get available users registered in the system
+     * Get available users registered in the system
      *
-     * @return
+     * @return LIST OF USERES ID
      */
     public Map<Integer, String> getUsersList() {
 
@@ -113,7 +118,7 @@ public class DALAuthenticator implements Serializable {
     }
 
     /**
-     * remove registered users
+     * Remove registered users
      *
      * @param user
      * @return
@@ -123,7 +128,7 @@ public class DALAuthenticator implements Serializable {
     }
 
     /**
-     * remove identification dataset from the system
+     * Remove identification dataset from the system
      *
      * @param expId
      * @return

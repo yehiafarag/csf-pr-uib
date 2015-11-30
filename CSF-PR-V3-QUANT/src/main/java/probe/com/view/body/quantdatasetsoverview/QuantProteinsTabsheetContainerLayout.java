@@ -249,6 +249,7 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
                 }
 
                 datasetExploringCentralSelectionManager.setQuantProteinsSelectionLayout(new LinkedHashMap<String, DiseaseGroupsComparisonsProteinLayout[]>(protSelectionMap));
+                datasetExploringCentralSelectionManager.selectionQuantProteinsSelectionLayoutChanged();
             }
         });
         this.addComponent(proteinsTabsheet);
