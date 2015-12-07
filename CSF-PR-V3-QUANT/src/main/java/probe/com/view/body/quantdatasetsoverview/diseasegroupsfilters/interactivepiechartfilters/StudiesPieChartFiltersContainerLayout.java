@@ -26,7 +26,8 @@ import java.util.Set;
 import org.jfree.chart.JFreeChart;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.model.beans.quant.QuantDatasetObject;
-import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
+import probe.com.selectionmanager.QuantCentralManager;
+import probe.com.selectionmanager.StudiesFilterManager;
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.PopupInteractiveDSFiltersLayout;
 
 /**
@@ -42,10 +43,10 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
 
     /**
      *
-     * @param datasetExploringCentralSelectionManager
+     * @param Quant_Central_Manager
      * @param handler
      */
-    public StudiesPieChartFiltersContainerLayout(DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager, final CSFPRHandler handler) {
+    public StudiesPieChartFiltersContainerLayout(QuantCentralManager Quant_Central_Manager, final CSFPRHandler handler) {
 
         int layoutHeight = Page.getCurrent().getBrowserWindowHeight() - 200;
         int layoutWidth = Page.getCurrent().getBrowserWindowWidth() - 200;
@@ -53,10 +54,10 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
         this.setHeight(layoutHeight + "px");
         int filterWidth = layoutWidth / 3;
         this.setSpacing(true);
-        boolean[] activeFilters = datasetExploringCentralSelectionManager.getActiveFilters();
-        Map<Integer, QuantDatasetObject> quantDatasetArr = datasetExploringCentralSelectionManager.getFilteredDatasetsList();
+        boolean[] activeFilters = Quant_Central_Manager.getActiveFilters();
+        Map<Integer, QuantDatasetObject> quantDatasetArr = Quant_Central_Manager.getFilteredDatasetsList();
 
-        internalSelectionManager = new PieChartsSelectionManager(datasetExploringCentralSelectionManager);
+        internalSelectionManager = new PieChartsSelectionManager(Quant_Central_Manager);
         if (quantDatasetArr == null) {
             return;
         }
@@ -367,23 +368,22 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
                         break;
 
                 }
-                if (!valueSet.isEmpty()) {
-                    //do we need valueSet;;
-                    JfreeDivaPieChartFilter iFilter = new JfreeDivaPieChartFilter(filterId, x, internalSelectionManager, dsIndexesMap, filterWidth);
-                    chartSet.add(iFilter.getChart());
+//                if (!valueSet.isEmpty()) {
+                //do we need valueSet;;
+                JfreeDivaPieChartFilter iFilter = new JfreeDivaPieChartFilter(filterId, x, internalSelectionManager, dsIndexesMap, filterWidth);
+                chartSet.add(iFilter.getChart());
 //                    fullFilterList.put(filterId, valueSet);
-                    this.addComponent(iFilter, colCounter++, rowCounter);
-                    this.setComponentAlignment(iFilter, Alignment.MIDDLE_CENTER);
-                    if (colCounter == 3) {
-                        colCounter = 0;
-                        rowCounter++;
-                    }
+                this.addComponent(iFilter, colCounter++, rowCounter);
+                this.setComponentAlignment(iFilter, Alignment.MIDDLE_CENTER);
+                if (colCounter == 3) {
+                    colCounter = 0;
+                    rowCounter++;
                 }
-
             }
 
+//            }
         }
-        datasetExploringCentralSelectionManager.setStudiesOverviewPieChart(chartSet);
+        Quant_Central_Manager.setStudiesOverviewPieChart(chartSet);
         HorizontalLayout btnLayout = new HorizontalLayout();
         btnLayout.setHeight("23px");
         btnLayout.setWidthUndefined();
@@ -494,7 +494,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
      * @param selfSelection
      */
     public void updateSelectionManager(boolean selfSelection) {
-        internalSelectionManager.updateCentralSelectionManager(selfSelection);
+        internalSelectionManager.applyFilterSelectionToCentralManager(selfSelection);
 
     }
 

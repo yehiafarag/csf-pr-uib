@@ -14,7 +14,7 @@ import java.util.Set;
 import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.selectionmanager.CSFFilter;
 import probe.com.selectionmanager.CSFFilterSelection;
-import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
+import probe.com.selectionmanager.QuantCentralManager;
 
 /**
  *
@@ -38,9 +38,10 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
             }
             externalSelectionChanged = true;
             selectedDsIds.clear();
-//            
-
-            for (QuantDatasetObject qDs : centralSelectionManager.getFilteredQuantDatasetArr().values()) {
+            for (QuantDatasetObject qDs : Quant_Central_Manager.getFilteredQuantDatasetArr().values()) {
+                if (qDs == null) {
+                    continue;
+                }
                 selectedDsIds.add(qDs.getDsKey());
             }
 
@@ -56,20 +57,43 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
         }
 
     }
+    private boolean selfselection;
+
+    /**
+     *
+     * @param selfselection
+     */
+    public void applyFilterSelectionToCentralManager(boolean selfselection) {
+        this.selfselection = selfselection;
+        if (toResetCentral) {
+            toResetCentral = false;
+            selectedDsIds.clear();
+            resetToInitState();
+            unselectAll();
+            return;
+
+        }
+        int[] dsIds = new int[selectedDsIds.size()];
+        for (int i = 0; i < selectedDsIds.size(); i++) {
+            dsIds[i] = (Integer) selectedDsIds.toArray()[i];
+        }
+        Quant_Central_Manager.applyFilters(new CSFFilterSelection("Disease_Groups_Level", dsIds, Filter_ID, null));
+
+    }
 
     private final Set<JfreeDivaPieChartFilter> registeredFilters = new HashSet<JfreeDivaPieChartFilter>();
     private final String Filter_ID = "interactiveChartsFilter";
 
     private final Map<String, String> titleMap = new HashMap<String, String>();
-    private final DatasetExploringCentralSelectionManager centralSelectionManager;
+    private final QuantCentralManager Quant_Central_Manager;
 
     /**
      *
-     * @param centralSelectionManager
+     * @param Quant_Central_Manager
      */
-    public PieChartsSelectionManager(DatasetExploringCentralSelectionManager centralSelectionManager) {
-        centralSelectionManager.registerFilter(PieChartsSelectionManager.this);
-        this.centralSelectionManager = centralSelectionManager;
+    public PieChartsSelectionManager(QuantCentralManager Quant_Central_Manager) {
+        Quant_Central_Manager.registerFilterListener(PieChartsSelectionManager.this);
+        this.Quant_Central_Manager = Quant_Central_Manager;
         titleMap.put("diseaeGroups", "Disease Groups");
         titleMap.put("rawDataUrl", "Raw Data");
         titleMap.put("year", "Year");
@@ -87,7 +111,7 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
      *
      * @param filter
      */
-    public void registerFilter(JfreeDivaPieChartFilter filter) {
+    public void registerLocalPieChartFilter(JfreeDivaPieChartFilter filter) {
         this.registeredFilters.add(filter);
     }
 
@@ -106,7 +130,6 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
      */
     @Override
     public void removeFilterValue(String value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -130,12 +153,14 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
      * @param filterId
      */
     public void jfreeUpdateChartsFilters(String filterId) {
+        toResetCentral = false;
         this.updateDsIndexSelection();
         this.updatePieChartCharts(filterId);
 
     }
 
     private void updatePieChartCharts(String filterId) {
+
         for (JfreeDivaPieChartFilter ifilter : registeredFilters) {
             if (ifilter.getFilter_Id().equalsIgnoreCase(filterId)) {
                 continue;
@@ -158,12 +183,14 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
         }
 
     }
+    private boolean toResetCentral;
 
     /**
      *
      */
     public void resetToInitState() {
         selectedDsIds.clear();
+        toResetCentral = true;
         for (JfreeDivaPieChartFilter ifilter : registeredFilters) {
             ifilter.resetFilterToClearState();
         }
@@ -179,7 +206,7 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
         }
 
         Set<Integer> tempSelectedDsIds = new LinkedHashSet<Integer>();
-        for (QuantDatasetObject qDs : centralSelectionManager.getFilteredQuantDatasetArr().values()) {
+        for (QuantDatasetObject qDs : Quant_Central_Manager.getFilteredQuantDatasetArr().values()) {
             tempSelectedDsIds.add(qDs.getDsKey());
         }
         tempSelectedDsIds.removeAll(selectedDsIds);
@@ -190,22 +217,6 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
         }
 
         updatePieChartCharts("");
-    }
-
-    private boolean selfselection;
-
-    /**
-     *
-     * @param selfselection
-     */
-    public void updateCentralSelectionManager(boolean selfselection) {
-        this.selfselection = selfselection;
-        int[] dsIds = new int[selectedDsIds.size()];
-        for (int i = 0; i < selectedDsIds.size(); i++) {
-            dsIds[i] = (Integer) selectedDsIds.toArray()[i];
-        }
-        centralSelectionManager.setStudyLevelFilterSelection(new CSFFilterSelection("Disease_Groups_Level", dsIds, Filter_ID, null));
-
     }
 
     /**
@@ -241,7 +252,7 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
      */
     public void resetCentralSelectionManager() {
         selfselection = true;
-        centralSelectionManager.resetFilters();
+        Quant_Central_Manager.resetFiltersListener();
 
     }
 }

@@ -7,7 +7,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.themes.Reindeer;
 import java.util.Set;
-import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
+import probe.com.selectionmanager.QuantCentralManager;
 import probe.com.view.core.CustomExternalLink;
 
 /**
@@ -35,7 +35,7 @@ public class KMeansClusteringTable extends Table implements Property.ValueChange
     }
     private final Button.ClickListener btnClickListener;
 
-    public KMeansClusteringTable(final DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager,Set<String> protSelectionMap,int tableWidth,int tableHeight) {
+    public KMeansClusteringTable(final QuantCentralManager  Quant_Central_Manager,Set<String> protSelectionMap,int tableWidth,int tableHeight) {
 
         this.setSelectable(true);
         this.setColumnReorderingAllowed(true);
@@ -55,7 +55,7 @@ public class KMeansClusteringTable extends Table implements Property.ValueChange
                 String proteinAccsessionLabel = item.getItemProperty("Accession").getValue().toString();
                 String proteinNamenLabel = item.getItemProperty("Name").getValue().toString();
                 String key = ("--" + proteinAccsessionLabel.toLowerCase().trim() + "," + proteinNamenLabel.toLowerCase().trim()).toLowerCase().trim();
-                datasetExploringCentralSelectionManager.setSelectedProteinKey(key);
+                Quant_Central_Manager.setSelectedProteinKey(key);
                 event.getButton().getParent().getParent().getParent().getParent().getParent().setVisible(false);
  
             }

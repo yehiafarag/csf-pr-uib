@@ -7,8 +7,6 @@ package probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.studies;
 
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.Page;
-import com.vaadin.server.Resource;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.AbsoluteLayout;
@@ -27,7 +25,7 @@ import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.model.beans.quant.QuantPeptide;
 import probe.com.model.beans.quant.QuantProtein;
 import probe.com.model.util.vaadintoimageutil.peptideslayout.StudyInfoData;
-import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
+import probe.com.selectionmanager.QuantCentralManager;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.peptidescontainer.ComparisonDetailsBean;
 import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.peptidescontainer.StudyInformationPopupComponent;
@@ -54,7 +52,7 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
         return closeBtn;
     }
 
-    private final DatasetExploringCentralSelectionManager exploringFiltersManager;
+    private final QuantCentralManager Quant_Central_Manager;
     private final Map<String, PeptidesInformationOverviewLayout> peptidesInfoLayoutDSIndexMap = new HashMap<String, PeptidesInformationOverviewLayout>();
     private final Map<Integer, StudyPopupLayout> dsToStudyLayoutMap = new HashMap<Integer, StudyPopupLayout>();
 
@@ -64,11 +62,11 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
      *
      * @param cprot
      * @param width
-     * @param exploringFiltersManagerinst
+     * @param Quant_Central_Manager
      */
-    public PeptidesComparisonsSequenceLayout(final DiseaseGroupsComparisonsProteinLayout cprot, int width, DatasetExploringCentralSelectionManager exploringFiltersManagerinst) {
+    public PeptidesComparisonsSequenceLayout(QuantCentralManager Quant_Central_Manager, final DiseaseGroupsComparisonsProteinLayout cprot, int width) {
         this.studiesMap = new LinkedHashMap<String, StudyInfoData>();
-        this.exploringFiltersManager = exploringFiltersManagerinst;
+        this.Quant_Central_Manager = Quant_Central_Manager;
         this.setColumns(4);
         this.setRows(3);
         this.setWidthUndefined();
@@ -157,12 +155,7 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
             }
             iconTitle.setDescription(cprot.getProteinAccssionNumber() + " : #Patients (" + (quantProtein.getPatientsGroupIINumber() + quantProtein.getPatientsGroupINumber()) + ")  " + quantProtein.getStringFCValue() + " " + quantProtein.getStringPValue() + "");
 
-//            VerticalLayout spacer = new VerticalLayout();
-//            spacer.setHeight("35px");
-//            spacer.setWidth("50px");
-//            spacer.setStyleName(Reindeer.LAYOUT_WHITE);
             VerticalLayout labelContainer = new VerticalLayout();
-//            labelConta|iner.addComponent(spacer);
             labelContainer.addComponent(studyTitle);
 
             labelContainer.addComponent(iconTitle);
@@ -175,7 +168,7 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
             patientGroupsNumToDsIdMap.put((quantProtein.getPatientsGroupIINumber() + quantProtein.getPatientsGroupINumber()), pGr);
             QuantDatasetObject ds;
 
-            ds = exploringFiltersManager.getFullQuantDatasetMap().get(quantProtein.getDsKey());
+            ds = Quant_Central_Manager.getFullQuantDatasetMap().get(quantProtein.getDsKey());
 
             StudyPopupLayout study = new StudyPopupLayout(panelWidth, quantProtein, ds, cprot.getProteinAccssionNumber(), cprot.getUrl(), cprot.getProtName());
             Set<QuantDatasetObject> qdsSet = new HashSet<QuantDatasetObject>();
@@ -192,13 +185,7 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
                 Label noPeptidesInfoLabel = new Label("No Peptides Information Available ");
                 noPeptidesInfoLabel.setHeightUndefined();
                 noPeptidesInfoLabel.setStyleName("peptideslayoutlabel");
-//                VerticalLayout spacer2 = new VerticalLayout();
-//                spacer2.setHeight("35px");
-//                spacer2.setWidth("50px");
-//                spacer2.setStyleName(Reindeer.LAYOUT_WHITE);
-
                 VerticalLayout labelValueContainer = new VerticalLayout();
-//                labelValueContainer.addComponent(spacer2);
                 labelValueContainer.addComponent(noPeptidesInfoLabel);
                 labelValueContainer.addLayoutClickListener(studyListener);
                 labelValueContainer.setData(ds.getDsKey());
@@ -223,36 +210,6 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
         }
 
         comparisonTitle.setValue(cprot.getComparison().getComparisonHeader() + " (#Studies " + count + "/" + cprot.getComparison().getDatasetIndexes().length + ")");
-//        ProteinScatterPlotContainer = new AbsoluteLayout();
-//
-//        this.addComponent(ProteinScatterPlotContainer, 1, 1);
-//        ProteinScatterPlotContainer.setWidth(coverageWidth + "px");
-//        ProteinScatterPlotContainer.setHeight(150 + "px");
-//        teststyle = "_" + cprot.getProteinAccssionNumber().replace(" ", "_").replace(")", "_").replace("(", "_").toLowerCase() + "_" + cprot.getComparison().getComparisonHeader().replace(" ", "_").replace(")", "_").replace("(", "_").toLowerCase().replace("/", "_") + "_scatterplot";
-//        styles.add("." + teststyle + " {  background-image: url(" + defaultScatterPlottImgUrl + " );background-position:center; background-repeat: no-repeat; }");
-//        ProteinScatterPlotContainer.setStyleName(teststyle);
-//        ProteinScatterPlotContainer.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
-//            @Override
-//            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-//
-//                if (event.getClickedComponent() instanceof SquaredDot) {
-//                    SquaredDot dot = (SquaredDot) event.getClickedComponent();
-//                    int trend = (Integer) dot.getParam("trend");
-//                    int pGrNumber = (Integer) dot.getParam("pGrNumber");
-//                    exploringFiltersManager.setSelectedDataset(patientGroupsNumToDsIdMap.get(pGrNumber).getRegulatedList(trend));
-//                    int[] dssArr = new int[patientGroupsNumToDsIdMap.get(pGrNumber).getRegulatedList(trend).size()];
-//                    for (int x = 0; x < dssArr.length; x++) {
-//                        dssArr[x] = patientGroupsNumToDsIdMap.get(pGrNumber).getRegulatedList(trend).get(x);
-//                    }
-//                    exploringFiltersManager.setStudyLevelFilterSelection(new CSFFilterSelection("Study_Selection", dssArr, "scatter", null));//  
-//                    Set<QuantDatasetObject> dsObjects = new HashSet<QuantDatasetObject>();
-//                    for (int dsId : dssArr) {
-//                        dsObjects.add(exploringFiltersManager.getFullQuantDatasetMap().get(dsId));
-//                    }
-//                    studyPopupLayoutManager.updateSelectedProteinInformation(pGrNumber, trend, dsObjects, cprot);
-//                }
-//            }
-//        });
     }
 
     /**

@@ -23,7 +23,7 @@ import java.util.TreeSet;
 import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.selectionmanager.CSFFilter;
 import probe.com.selectionmanager.CSFFilterSelection;
-import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
+import probe.com.selectionmanager.QuantCentralManager;
 import probe.com.view.core.ListSelectDatasetExplorerFilter;
 import probe.com.view.core.DiseaseGroup;
 
@@ -36,13 +36,13 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
     private final ListSelectDatasetExplorerFilter patientGroupIFilter, patientGroupIIFilter;
     private String[] patGr1, patGr2;
     private DiseaseGroup[] patientsGroupArr;
-    private Set<String> diseaseGroupsSet;
-    private Button diseaseGroupsFilterBtn;
+    private final Set<String> diseaseGroupsSet;
+    private final Button diseaseGroupsFilterBtn;
     private final Window popupWindow;
     private int[] studiesIndexes;
     private final Set<String> selectedRows = new TreeSet<String>();
     private final Set<String> selectedColumns = new TreeSet<String>();
-    private final DatasetExploringCentralSelectionManager centralSelectionManager;
+    private final QuantCentralManager Quant_Central_Manager;
     private boolean selfselected = false;
     private Property.ValueChangeListener disGrIListener, disGrIIListener;
 
@@ -73,7 +73,7 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
             return;
         }
         if (type.equalsIgnoreCase("Disease_Groups_Level")) {
-            this.updatePatientGroups(centralSelectionManager.getFilteredDatasetsList());
+            this.updatePatientGroups(Quant_Central_Manager.getFilteredDatasetsList());
             if (patGr1 == null || patGr2 == null) {
                 System.out.println("error at 85 class " + this.getClass().getName() + "   ");
                 return;
@@ -104,7 +104,7 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
             }
             updateSelectionManager(null);
         } else if (type.equalsIgnoreCase("Reset_Disease_Groups_Level")) {
-            this.updatePatientGroups(centralSelectionManager.getFilteredDatasetsList());
+            this.updatePatientGroups(Quant_Central_Manager.getFullQuantDatasetMap());
             String[] pgArr = merge(patGr1, patGr2);
             selectedRows.clear();
             for (String str : pgArr) {
@@ -143,19 +143,19 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
      */
     @Override
     public void removeFilterValue(String value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
      *
-     * @param centralSelectionManager
+     * @param Quant_Central_Manager
      */
-    public DiseaseGroupsListFilter(final DatasetExploringCentralSelectionManager centralSelectionManager) {
-        this.centralSelectionManager = centralSelectionManager;
+    public DiseaseGroupsListFilter(final QuantCentralManager Quant_Central_Manager) {
+        this.Quant_Central_Manager = Quant_Central_Manager;
         this.setWidth("450px");
-        this.centralSelectionManager.registerFilter(DiseaseGroupsListFilter.this);
+        this.Quant_Central_Manager.registerFilterListener(DiseaseGroupsListFilter.this);
 
-        this.updatePatientGroups(centralSelectionManager.getFilteredDatasetsList());
+        this.updatePatientGroups(Quant_Central_Manager.getFilteredDatasetsList());
         String[] pgArr = merge(patGr1, patGr2);
         this.patientGroupIFilter = new ListSelectDatasetExplorerFilter(1, "Disease Group I", pgArr);
         initGroupsIFilter();
@@ -192,7 +192,6 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
 
         btnLayout.addComponent(applyFilters);
         applyFilters.addClickListener(new Button.ClickListener() {
-
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 popupWindow.close();
@@ -209,14 +208,16 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
         resetFiltersBtn.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                centralSelectionManager.resetFilters();
+                Quant_Central_Manager.resetFiltersListener();
             }
         });
 
         popupWindow = new Window() {
             @Override
             public void close() {
-                updateSelectionManager(studiesIndexes);
+                updateSelectionManager(studiesIndexes
+                );
+
                 popupWindow.setVisible(false);
 
             }
@@ -272,8 +273,6 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
             pg.setPatientsSubGroupI(subpgI);
             if (!subpgI.equalsIgnoreCase("") && !subpgI.equalsIgnoreCase("Not Available")) {
                 pgI = subpgI;
-            } else {
-//                subpgI = "";
             }
             label1 = pgI;
             pg.setPatientsGroupILabel(label1);
@@ -365,10 +364,9 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
     private void updateSelectionManager(int[] datasetIndexes) {
         selfselected = true;
         if (datasetIndexes != null) {
-            centralSelectionManager.setStudyLevelFilterSelection(new CSFFilterSelection("Disease_Groups_Level", datasetIndexes, "", new HashSet<String>()));
+            Quant_Central_Manager.applyFilters(new CSFFilterSelection("Disease_Groups_Level", datasetIndexes, "", new HashSet<String>()));
         }
-
-        centralSelectionManager.setHeatMapLevelSelection(selectedRows, selectedColumns, patientsGroupArr);
+        Quant_Central_Manager.setHeatMapLevelSelection(selectedRows, selectedColumns, patientsGroupArr);
     }
 
     private void initGroupsIIFilter() {
@@ -400,15 +398,13 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
                     }
 
                 }
-
                 Set<DiseaseGroup> p = filterPGR2(selectedRows, selectedColumns);
                 studiesIndexes = new int[p.size()];
                 int i = 0;
-                for (DiseaseGroup pg : p) {
+                for (DiseaseGroup pg : p) {                    
                     studiesIndexes[i] = pg.getOriginalDatasetIndex();
                     i++;
                 }
-//                updateSelectionManager(studiesIndexes);
             }
         };
         patientGroupIIFilter.addValueChangeListener(disGrIIListener);

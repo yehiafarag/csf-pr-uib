@@ -8,7 +8,7 @@ import com.vaadin.ui.themes.Reindeer;
 import java.util.Map;
 import java.util.Set;
 import probe.com.selectionmanager.CSFFilter;
-import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
+import probe.com.selectionmanager.StudiesSelectionManager;
 
 /**
  *
@@ -16,7 +16,7 @@ import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
  */
 public class MiniFilterLayout extends VerticalLayout implements CSFFilter{
 
-    private final DatasetExploringCentralSelectionManager Filter_Manager;
+    private final StudiesSelectionManager Filter_Manager;
     private final String filter_Id = "miniFilter";
     private final GridLayout filtersLayout;
 
@@ -24,7 +24,7 @@ public class MiniFilterLayout extends VerticalLayout implements CSFFilter{
      *
      * @param Filter_Manager
      */
-    public MiniFilterLayout(DatasetExploringCentralSelectionManager Filter_Manager){
+    public MiniFilterLayout(StudiesSelectionManager Filter_Manager){
    this.Filter_Manager = Filter_Manager;
    Filter_Manager.registerFilter(MiniFilterLayout.this);
    this.setWidth("100%");

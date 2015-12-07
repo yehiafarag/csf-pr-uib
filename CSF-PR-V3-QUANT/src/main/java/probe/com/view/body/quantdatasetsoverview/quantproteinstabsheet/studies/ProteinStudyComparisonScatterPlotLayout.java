@@ -55,7 +55,7 @@ import org.jfree.util.ShapeUtilities;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.selectionmanager.CSFFilterSelection;
-import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
+import probe.com.selectionmanager.QuantCentralManager;
 import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.peptidescontainer.ComparisonDetailsBean;
 import probe.com.view.core.jfreeutil.SquaredDot;
 
@@ -83,7 +83,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
 
     private String defaultScatterPlottImgUrl, heighlightedScatterPlottImgUrl;
     private final ChartRenderingInfo defaultScatterPlotRenderingInfo = new ChartRenderingInfo();
-    private final DatasetExploringCentralSelectionManager exploringFiltersManager;
+    private final QuantCentralManager Quant_Central_Manager;
     private final String teststyle;
     private final Page.Styles styles = Page.getCurrent().getStyles();
     private final DiseaseGroupsComparisonsProteinLayout comparisonProtein;
@@ -95,10 +95,10 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
      *
      * @param cp
      * @param width
-     * @param exploringFiltersManagerinst
+     * @param Quant_Central_Manager
      */
-    public ProteinStudyComparisonScatterPlotLayout(final DiseaseGroupsComparisonsProteinLayout cp, int width, DatasetExploringCentralSelectionManager exploringFiltersManagerinst) {
-        this.exploringFiltersManager = exploringFiltersManagerinst;
+    public ProteinStudyComparisonScatterPlotLayout(final QuantCentralManager Quant_Central_Manager,final DiseaseGroupsComparisonsProteinLayout cp, int width) {
+        this.Quant_Central_Manager = Quant_Central_Manager;
         this.setColumns(4);
         this.setRows(2);
         this.width = width;
@@ -144,16 +144,16 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
                     SquaredDot dot = (SquaredDot) event.getClickedComponent();
                     int trend = (Integer) dot.getParam("trend");
                     int pGrNumber = (Integer) dot.getParam("pGrNumber");
-                    exploringFiltersManager.setSelectedDataset(patientGroupsNumToDsIdMap.get(pGrNumber).getRegulatedList(trend));
+                    Quant_Central_Manager.setSelectedDataset(patientGroupsNumToDsIdMap.get(pGrNumber).getRegulatedList(trend));
                     int[] dssArr = new int[patientGroupsNumToDsIdMap.get(pGrNumber).getRegulatedList(trend).size()];
                     for (int x = 0; x < dssArr.length; x++) {
                         dssArr[x] = patientGroupsNumToDsIdMap.get(pGrNumber).getRegulatedList(trend).get(x);
                     }
-                    exploringFiltersManager.setStudyLevelFilterSelection(new CSFFilterSelection("Study_Selection", dssArr, "scatter", null));//  
+                    Quant_Central_Manager.setStudySelectionListenerLevel(new CSFFilterSelection("Study_Selection", dssArr, "scatter", null));//  
                     Set<QuantDatasetObject> dsObjects = new HashSet<QuantDatasetObject>();
                     for (int dsId : dssArr) {
 
-                        dsObjects.add(exploringFiltersManager.getFullQuantDatasetMap().get(dsId));
+                        dsObjects.add(Quant_Central_Manager.getFullQuantDatasetMap().get(dsId));
 
                     }
                     studyPopupLayoutManager.updateSelectedProteinInformation(pGrNumber, trend, dsObjects, cp);
@@ -498,9 +498,9 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
                 for (int dsId : dsList) {
                     QuantDatasetObject ds;
 
-                    sb.append("<h3>").append((exploringFiltersManager.getFullQuantDatasetMap().get(dsId)).getAuthor()).append(" (").append((exploringFiltersManager.getFullQuantDatasetMap().get(dsId)).getYear()).append(")<h3/>");
+                    sb.append("<h3>").append((Quant_Central_Manager.getFullQuantDatasetMap().get(dsId)).getAuthor()).append(" (").append((Quant_Central_Manager.getFullQuantDatasetMap().get(dsId)).getYear()).append(")<h3/>");
                     sb.append("<p></p>");
-                    ds = exploringFiltersManager.getFullQuantDatasetMap().get(dsId);
+                    ds = Quant_Central_Manager.getFullQuantDatasetMap().get(dsId);
 
                     dsKeyDatasetMap.put("-" + dsId + "-" + comparisonProtein.getProteinAccssionNumber() + "-", ds);
                 }

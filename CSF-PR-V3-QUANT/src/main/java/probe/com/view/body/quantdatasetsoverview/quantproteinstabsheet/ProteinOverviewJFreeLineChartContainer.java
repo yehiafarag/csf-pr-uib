@@ -60,9 +60,8 @@ import probe.com.handlers.CSFPRHandler;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.util.vaadintoimageutil.peptideslayout.ProteinInformationDataForExport;
-import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
+import probe.com.selectionmanager.QuantCentralManager;
 import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.kmeansclustering.KMeansClusteringPopupPanel;
-import probe.com.view.core.ComponentCapture;
 import probe.com.view.core.CustomExternalLink;
 import probe.com.view.core.InfoPopupBtn;
 import probe.com.view.core.exporter.ImageToExport;
@@ -91,8 +90,8 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
     private final AbsoluteLayout defaultLineChartContainer, orderedLineChartContainer;
     private final String teststyle;
     private final Page.Styles styles = Page.getCurrent().getStyles();
-    private final DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager;
-    private final CSFPRHandler mainHandler;
+    private final QuantCentralManager Quant_Central_Manager;
+    private final CSFPRHandler CSFPR_Handler;
     private final Shape notRShape = ShapeUtilities.createDiamond(6f);
     private final Shape emptyRShape = ShapeUtilities.createDiamond(6f);
     private final Shape downArr = ShapeUtilities.createDownTriangle(6f);
@@ -123,23 +122,25 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
     /**
      *
-     * @param datasetExploringCentralSelectionManager
+     * @param Quant_Central_Manager
+     * @param CSFPR_Handler
      * @param orgComparisonProteins
      * @param selectedComparisonList
      * @param widthValue
      * @param proteinName
      * @param proteinAccession
      * @param searchingMode
+     * @param proteinKey
      */
-    public ProteinOverviewJFreeLineChartContainer(DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager, final DiseaseGroupsComparisonsProteinLayout[] orgComparisonProteins, final Set<QuantDiseaseGroupsComparison> selectedComparisonList, int widthValue, final String proteinName, final String proteinAccession, boolean searchingMode, final String proteinKey, CSFPRHandler mainHandler) {
+    public ProteinOverviewJFreeLineChartContainer(QuantCentralManager Quant_Central_Manager, CSFPRHandler CSFPR_Handler, final DiseaseGroupsComparisonsProteinLayout[] orgComparisonProteins, final Set<QuantDiseaseGroupsComparison> selectedComparisonList, int widthValue, final String proteinName, final String proteinAccession, boolean searchingMode, final String proteinKey) {
         
         this.proteinName = proteinName;
         this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.setSpacing(false);
         this.setHeightUndefined();
         this.setWidth(widthValue + "px");
-        this.datasetExploringCentralSelectionManager = datasetExploringCentralSelectionManager;
-        this.mainHandler = mainHandler;
+        this.Quant_Central_Manager = Quant_Central_Manager;
+        this.CSFPR_Handler = CSFPR_Handler;
         final DiseaseGroupsComparisonsProteinLayout[] comparisonProteins = new DiseaseGroupsComparisonsProteinLayout[orgComparisonProteins.length];
         int count = 0;
         for (DiseaseGroupsComparisonsProteinLayout quantProt : orgComparisonProteins) {
@@ -403,7 +404,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         dsInfoPopupContainerLayout.setStyleName(Reindeer.LAYOUT_WHITE);
 
 //        init rightside components 
-        studiesScatterChartsLayout = new ProteinStudiesComparisonsContainerLayout(comparisonProteins, selectedComparisonList, datasetExploringCentralSelectionManager, width);
+        studiesScatterChartsLayout = new ProteinStudiesComparisonsContainerLayout(Quant_Central_Manager,comparisonProteins, selectedComparisonList,  width);
         rightSideLayout.addComponent(studiesScatterChartsLayout);
         defaultPeptidesExportInfoSet = studiesScatterChartsLayout.getDefaultPeptidesExportInfoSet();
         studiesScatterChartsLayout.setWidth(width * 2 + "px");
@@ -1002,8 +1003,8 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
     
     private void runKmeansClustering(String protKey, String proteinName, String proteinAccession, Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
         if (kMeansClusteringPanel == null) {
-            Map<String, DiseaseGroupsComparisonsProteinLayout[]> protSelectionMap = datasetExploringCentralSelectionManager.getQuantProteinsLayoutSelectionMap();
-            kMeansClusteringPanel = new KMeansClusteringPopupPanel(datasetExploringCentralSelectionManager, mainHandler, protKey, proteinName, proteinAccession, protSelectionMap, selectedComparisonList);
+            Map<String, DiseaseGroupsComparisonsProteinLayout[]> protSelectionMap = Quant_Central_Manager.getQuantProteinsLayoutSelectionMap();
+            kMeansClusteringPanel = new KMeansClusteringPopupPanel(Quant_Central_Manager, CSFPR_Handler, protKey, proteinName, proteinAccession, protSelectionMap, selectedComparisonList);
         }
         kMeansClusteringPanel.setVisible(true);
     }
@@ -1019,7 +1020,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                         
                         set.add(defaultChart);
                         set.addAll(studiesScatterChartsLayout.getScatterCharts());
-                        byte[] pdfFile = mainHandler.exportProteinsInfoCharts(set, "proteins_information_charts.pdf", proteinName,defaultPeptidesExportInfoSet);
+                        byte[] pdfFile = CSFPR_Handler.exportProteinsInfoCharts(set, "proteins_information_charts.pdf", proteinName,defaultPeptidesExportInfoSet);
                         return new ByteArrayInputStream(pdfFile);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -1030,7 +1031,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                     try {
                         set.add(orderedChart);
                         set.addAll(studiesScatterChartsLayout.getScatterCharts());
-                        byte[] pdfFile = mainHandler.exportProteinsInfoCharts(set, "proteins_information_charts.pdf", proteinName,orderedPeptidesExportInfoSet);
+                        byte[] pdfFile = CSFPR_Handler.exportProteinsInfoCharts(set, "proteins_information_charts.pdf", proteinName,orderedPeptidesExportInfoSet);
                         return new ByteArrayInputStream(pdfFile);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -1050,8 +1051,8 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
             public InputStream getStream() {
                 Map<String, Set<JFreeChart>> chartsMap = new LinkedHashMap<String, Set<JFreeChart>>();
                 Set<ProteinInformationDataForExport> peptidesExportInfoSet;
-                chartsMap.put("StudiesPieCharts", datasetExploringCentralSelectionManager.getStudiesOverviewPieChart());
-                chartsMap.put("proteinsOverviewBubbleChart", datasetExploringCentralSelectionManager.getProteinsOverviewBubbleChart());
+                chartsMap.put("StudiesPieCharts", Quant_Central_Manager.getStudiesOverviewPieChart());
+                chartsMap.put("proteinsOverviewBubbleChart", Quant_Central_Manager.getProteinsOverviewBubbleChart());
                 Set<JFreeChart> set = new LinkedHashSet<JFreeChart>();
                 if (orederingOptionGroup.getValue().toString().equalsIgnoreCase("Default order")) {
                     set.add(defaultChart);
@@ -1063,41 +1064,11 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                     peptidesExportInfoSet = orderedPeptidesExportInfoSet;
                 }
                 chartsMap.put("proteinInformationCharts", set);
-//                
-//                Window window = new Window();
-//                VerticalLayout vlo = new VerticalLayout();
-//                
-//                window.setWidth("100%");
-//                window.setHeight("100%");
-//                vlo.setWidth("100%");
-//                vlo.setHeight("100%");
-//                vlo.setStyleName(Reindeer.LAYOUT_WHITE);
-//                window.setContent(vlo);
-                ImageToExport img = null ;
-                for (ComponentCapture comp : datasetExploringCentralSelectionManager.getCaptureComponentMap().values()) {
-                    img= comp.getImageToExport();
-                }
+//              
                 
-                
-                byte[] pdfFile = mainHandler.exportfullReportAsZip(chartsMap, "full_Report.pdf", proteinName,peptidesExportInfoSet);
+                byte[] pdfFile = CSFPR_Handler.exportfullReportAsZip(chartsMap, "full_Report.pdf", proteinName,peptidesExportInfoSet);
                 return new ByteArrayInputStream(pdfFile);
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                        return null;
-//                    }
-//
-//                } else {
-//                    try {
-//                        set.add(orderedChart);
-//                        set.addAll(studiesScatterChartsLayout.getScatterCharts());
-//                        byte[] pdfFile = mainHandler.exportfullReportAsZip(set, "full_Reaport.pdf");
-//                        return new ByteArrayInputStream(pdfFile);
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                        return null;
-//                    }
-//
-//                }
+//               
 
             }
         }, "full_Report.pdf");

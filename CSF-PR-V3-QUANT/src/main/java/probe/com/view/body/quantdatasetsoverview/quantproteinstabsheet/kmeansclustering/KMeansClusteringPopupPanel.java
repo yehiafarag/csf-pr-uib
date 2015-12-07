@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Set;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
-import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
+import probe.com.selectionmanager.QuantCentralManager;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 
 /**
@@ -23,11 +23,11 @@ import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.Diseas
 public class KMeansClusteringPopupPanel extends Window {
 
     private final VerticalLayout mainBodyLayout;
-    private final CSFPRHandler mainHandler;
+    private final CSFPRHandler CSFPR_Handler;
 
-    public KMeansClusteringPopupPanel(DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager, CSFPRHandler mainHandler, String proteinKey, String proteinName, String proteinAccession, Map<String, DiseaseGroupsComparisonsProteinLayout[]> protSelectionMap, Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
+    public KMeansClusteringPopupPanel(QuantCentralManager Quant_Central_Manager, CSFPRHandler CSFPR_Handler, String proteinKey, String proteinName, String proteinAccession, Map<String, DiseaseGroupsComparisonsProteinLayout[]> protSelectionMap, Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
 
-        this.mainHandler = mainHandler;
+        this.CSFPR_Handler = CSFPR_Handler;
         int height = Page.getCurrent().getBrowserWindowHeight() - 200;
         int pageWidth = Page.getCurrent().getBrowserWindowWidth() - 200;
 
@@ -53,7 +53,7 @@ public class KMeansClusteringPopupPanel extends Window {
         mainBodyLayout.setMargin(true);
         mainBodyLayout.setHeightUndefined();
         mainBodyLayout.setStyleName(Reindeer.LAYOUT_WHITE);
-        ProteinKMeansClusterLayout proteinKMeansClusterLayout = this.initKMeansClusteringLayout(datasetExploringCentralSelectionManager, proteinKey, proteinName, proteinAccession, pageWidth, height, protSelectionMap, selectedComparisonList);
+        ProteinKMeansClusterLayout proteinKMeansClusterLayout = this.initKMeansClusteringLayout(Quant_Central_Manager, proteinKey, proteinName, proteinAccession, pageWidth, height, protSelectionMap, selectedComparisonList);
         mainBodyLayout.addComponent(proteinKMeansClusterLayout);
         mainBodyLayout.setComponentAlignment(proteinKMeansClusterLayout, Alignment.BOTTOM_CENTER);
         this.setContent(mainBodyLayout);
@@ -66,7 +66,7 @@ public class KMeansClusteringPopupPanel extends Window {
         this.setVisible(false);
     }
 
-    private ProteinKMeansClusterLayout initKMeansClusteringLayout(DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager, String proteinKey, String proteinName, String proteinAccession, int width, int height, Map<String, DiseaseGroupsComparisonsProteinLayout[]> protSelectionMap, Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
+    private ProteinKMeansClusterLayout initKMeansClusteringLayout(QuantCentralManager Quant_Central_Manager, String proteinKey, String proteinName, String proteinAccession, int width, int height, Map<String, DiseaseGroupsComparisonsProteinLayout[]> protSelectionMap, Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
         double[][] samples = new double[protSelectionMap.size()][selectedComparisonList.size()];
         String[] sampleIds = new String[protSelectionMap.size()];
         int x = 0;
@@ -88,11 +88,11 @@ public class KMeansClusteringPopupPanel extends Window {
             x++;
         }
         int iterationNumber = Math.min(100, samples.length);
-        ArrayList<String> proteinsKeysList = mainHandler.runKMeanClustering(samples, sampleIds, iterationNumber, proteinKey);
+        ArrayList<String> proteinsKeysList = CSFPR_Handler.runKMeanClustering(samples, sampleIds, iterationNumber, proteinKey);
         int protSize= proteinsKeysList.size();
         while (protSize < 2 && iterationNumber >1) {
             iterationNumber = iterationNumber - (iterationNumber / 2);
-            proteinsKeysList = mainHandler.runKMeanClustering(samples, sampleIds, iterationNumber, proteinKey);
+            proteinsKeysList = CSFPR_Handler.runKMeanClustering(samples, sampleIds, iterationNumber, proteinKey);
             protSize = proteinsKeysList.size();
         }
 
@@ -103,7 +103,7 @@ public class KMeansClusteringPopupPanel extends Window {
             }
 
         }
-        ProteinKMeansClusterLayout proteinKMeansClusterLayout = new ProteinKMeansClusterLayout(datasetExploringCentralSelectionManager, proteinKey, proteinName, proteinAccession, width, height, updatedProtSelectionMap, selectedComparisonList);
+        ProteinKMeansClusterLayout proteinKMeansClusterLayout = new ProteinKMeansClusterLayout(Quant_Central_Manager, proteinKey, proteinName, proteinAccession, width, height, updatedProtSelectionMap, selectedComparisonList);
         return proteinKMeansClusterLayout;
 
     }

@@ -1,22 +1,15 @@
 package probe.com.selectionmanager;
 
-import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
-import com.vaadin.ui.UI;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.jfree.chart.JFreeChart;
-import probe.com.model.beans.quant.QuantDatasetInitialInformationObject;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.beans.quant.QuantDatasetObject;
-import probe.com.view.core.ComponentCapture;
-import probe.com.view.core.DiseaseGroup;
 
 /**
  *
@@ -25,65 +18,16 @@ import probe.com.view.core.DiseaseGroup;
  * central selection manager for quant data that is responsible for quant data
  * layout interactivity
  */
-public class DatasetExploringCentralSelectionManager implements Serializable {
+public class StudiesSelectionManager implements Serializable {
 
-    private Map<Integer, QuantDatasetObject> fullQuantDatasetMap;
-    private Map<Integer, QuantDatasetObject> filteredQuantDatasetArr = new LinkedHashMap<Integer, QuantDatasetObject>();
     private final Set<CSFFilter> registeredFilterSet = new LinkedHashSet<CSFFilter>();
-    private final Map<String, boolean[]> activeFilterMap;
-    private boolean[] activeFilters;
-
-    public boolean[] getActiveHeader() {
-        return activeHeader;
-    }
-    private boolean[] activeHeader;
     private QuantDatasetObject[] selectedQuantDatasetIndexes;
     private Set<QuantDiseaseGroupsComparison> selectedDiseaseGroupsComparisonList;
     private Map<String, DiseaseGroupsComparisonsProteinLayout[]> quantProteinsLayoutSelectionMap;
     private String selectedProteinKey;
-    private Set<String> diseaseCategorySet;
 
-    private int totalDsNumber, currentDsNumber;
+    private List<Integer> selectedDataset = null;
 
-    /**
-     * get selected heat map rows
-     *
-     * @return set of heat map selected rows values
-     */
-    public Set<String> getSelectedHeatMapRows() {
-        return selectedHeatMapRows;
-    }
-
-    /**
-     * get selected heat map selected columns values
-     *
-     * @return set of heat map selected columns values
-     */
-    public Set<String> getSelectedHeatMapColumns() {
-        return selectedHeatMapColumns;
-    }
-
-    /**
-     * get elected Disease Group
-     *
-     * @return array of current selected Disease Group
-     */
-    public DiseaseGroup[] getDiseaseGroupsArr() {
-        return diseaseGroupsArr;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public Map<Integer, QuantDatasetObject> getFilteredQuantDatasetArr() {
-        return filteredQuantDatasetArr;
-    }
-
-    /**
-     *
-     * @return
-     */
     public List<Integer> getSelectedDataset() {
         return selectedDataset;
     }
@@ -95,55 +39,11 @@ public class DatasetExploringCentralSelectionManager implements Serializable {
     public void setSelectedDataset(List<Integer> selectedDataset) {
         this.selectedDataset = selectedDataset;
     }
-
-    public Set<String> getDiseaseCategorySet() {
-        return diseaseCategorySet;
-    }
-
-    private List<Integer> selectedDataset = null;
-    private final Map<String, QuantDatasetInitialInformationObject> quantDatasetListObject;
-
-    /**
+    /*
      *
-     * @param quantDatasetListObject
-     * @param activeFilterMap
      */
-    public DatasetExploringCentralSelectionManager(Map<String, QuantDatasetInitialInformationObject> quantDatasetListObject, Map<String, boolean[]> activeFilterMap) {
-        this.quantDatasetListObject = quantDatasetListObject;
-        String key = "Multiple Sclerosis";//quantDatasetListObject.keySet().iterator().next();
-      
-        this.totalDsNumber = 0;
-        for (String k : quantDatasetListObject.keySet()) {
-            totalDsNumber += quantDatasetListObject.get(k).getQuantDatasetsList().size();
 
-        }
-
-        this.fullQuantDatasetMap = quantDatasetListObject.get(key).getQuantDatasetsList();
-        this.currentDsNumber = fullQuantDatasetMap.size();
-        this.activeFilterMap = activeFilterMap;
-        this.activeFilters = activeFilterMap.get(key);
-        this.activeHeader = quantDatasetListObject.get(key).getActiveHeaders();
-        this.diseaseCategorySet = quantDatasetListObject.keySet();
-       
-
-    }
-
-    /**
-     * update the current filtered dataset indexes
-     *
-     * @param datasetIndexes
-     */
-    private void updateFilteredDatasetList(int[] datasetIndexes) {
-
-        if (datasetIndexes.length == 0) {
-            filteredQuantDatasetArr = fullQuantDatasetMap;
-            return;
-        }
-        filteredQuantDatasetArr.clear();
-        for (int i : datasetIndexes) {
-            filteredQuantDatasetArr.put(i, fullQuantDatasetMap.get(i));
-        }
-
+    public StudiesSelectionManager() {
     }
 
     /**
@@ -180,7 +80,6 @@ public class DatasetExploringCentralSelectionManager implements Serializable {
         try {
             filterSelection = selection;
             if (selection.getType().equalsIgnoreCase("Disease_Groups_Level")) {
-                updateFilteredDatasetList(selection.getDatasetIndexes());
                 this.SelectionChanged(selection.getType());
             } else {
                 this.SelectionChanged("Study_Selection");
@@ -189,24 +88,6 @@ public class DatasetExploringCentralSelectionManager implements Serializable {
         } finally {
 
         }
-
-    }
-
-    private Set<String> selectedHeatMapRows;
-    private Set<String> selectedHeatMapColumns;
-    private DiseaseGroup[] diseaseGroupsArr;
-
-    /**
-     *
-     * @param selectedRows
-     * @param selectedColumns
-     * @param diseaseGroupsArr
-     */
-    public void setHeatMapLevelSelection(Set<String> selectedRows, Set<String> selectedColumns, DiseaseGroup[] diseaseGroupsArr) {
-        this.diseaseGroupsArr = diseaseGroupsArr;
-        this.selectedHeatMapRows = selectedRows;
-        this.selectedHeatMapColumns = selectedColumns;
-        this.SelectionChanged("HeatMap_Update_level");
 
     }
 
@@ -258,24 +139,23 @@ public class DatasetExploringCentralSelectionManager implements Serializable {
      * @param protSelectionMap
      */
     public void setQuantProteinsSelectionLayout(Map<String, DiseaseGroupsComparisonsProteinLayout[]> protSelectionMap) {
-       
-            this.quantProteinsLayoutSelectionMap = protSelectionMap;         
+
+        this.quantProteinsLayoutSelectionMap = protSelectionMap;
 
     }
-    public void selectionQuantProteinsSelectionLayoutChanged(){
-     try {
+
+    public void selectionQuantProteinsSelectionLayoutChanged() {
+        try {
             VaadinSession.getCurrent().getLockInstance().lock();
             this.SelectionChanged("Quant_Proten_Selection");
 
         } catch (Exception exp) {
-            exp.printStackTrace();
             System.err.println("at error " + this.getClass().getName() + "  line 2261  " + exp.getLocalizedMessage());
 
         } finally {
             VaadinSession.getCurrent().getLockInstance().unlock();
         }
 
-    
     }
 
     private Set<String> protSelectionSet;
@@ -299,31 +179,12 @@ public class DatasetExploringCentralSelectionManager implements Serializable {
             this.SelectionChanged("Protens_Selection");
 
         } catch (Exception exp) {
-            exp.printStackTrace();
             System.err.println("at error " + this.getClass().getName() + "  line 291  " + exp.getLocalizedMessage());
 
         } finally {
             VaadinSession.getCurrent().getLockInstance().unlock();
         }
 
-    }
-
-    /**
-     * reset all disease groups filters
-     */
-    public void resetFilters() {
-        filteredQuantDatasetArr.clear();
-        this.SelectionChanged("Reset_Disease_Groups_Level");
-
-    }
-
-    /**
-     * get current active quant filters
-     *
-     * @return
-     */
-    public boolean[] getActiveFilters() {
-        return activeFilters;
     }
 
     /**
@@ -376,27 +237,6 @@ public class DatasetExploringCentralSelectionManager implements Serializable {
     }
 
     /**
-     * get the current filtered quant dataset list
-     *
-     * @return
-     */
-    public Map<Integer, QuantDatasetObject> getFilteredDatasetsList() {
-        if (filteredQuantDatasetArr == null || filteredQuantDatasetArr.isEmpty()) {
-            return fullQuantDatasetMap;
-        }
-        return filteredQuantDatasetArr;
-    }
-
-    /**
-     * get all quant dataset list available
-     *
-     * @return
-     */
-    public Map<Integer, QuantDatasetObject> getFullQuantDatasetMap() {
-        return fullQuantDatasetMap;
-    }
-
-    /**
      * get Selected disease groups comparison List
      *
      * @return
@@ -443,40 +283,7 @@ public class DatasetExploringCentralSelectionManager implements Serializable {
         this.proteinsOverviewBubbleChart.add(proteinsOverviewBubbleChart);
     }
 
-    public void exportFullReport() {
-
-    }
-
-    public void changeDiseaseCategory(String diseaseCategory) {
-        this.fullQuantDatasetMap = quantDatasetListObject.get(diseaseCategory).getQuantDatasetsList();
-        this.filteredQuantDatasetArr.clear();
-        this.diseaseCategorySet = quantDatasetListObject.get(diseaseCategory).getDiseaseCategories();
-        this.activeHeader = quantDatasetListObject.get(diseaseCategory).getActiveHeaders();
-        this.activeFilters = activeFilterMap.get(diseaseCategory);
-        this.currentDsNumber = fullQuantDatasetMap.size();
-//        this.SelectionChanged("Disease_Category_Selection");
-
-    }
-
-    private Map<String, ComponentCapture> captureComponentMap = new HashMap<String, ComponentCapture>();
-
-    public Map<String, ComponentCapture> getCaptureComponentMap() {
-        return captureComponentMap;
-    }
-
-    public void addCaptureComponent(String title, ComponentCapture captureComponent) {
-        if (captureComponentMap.containsKey(title)) {
-            captureComponentMap.remove(title);
-        }
-        this.captureComponentMap.put(title, captureComponent);
-    }
-
-    public int getTotalDsNumber() {
-        return totalDsNumber;
-    }
-
-    public int getCurrentDsNumber() {
-        return currentDsNumber;
-    }
+   
+   
 
 }

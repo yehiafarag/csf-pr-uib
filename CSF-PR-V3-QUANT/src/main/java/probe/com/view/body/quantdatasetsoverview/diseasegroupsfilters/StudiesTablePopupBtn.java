@@ -11,7 +11,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
-import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
+import probe.com.selectionmanager.QuantCentralManager;
 import probe.com.view.body.quantdatasetsoverview.QuantDatasetsfullStudiesTableLayout;
 
 /**
@@ -22,14 +22,14 @@ public class StudiesTablePopupBtn extends Button implements Button.ClickListener
 
     private final Window popupWindow;
 
-    public StudiesTablePopupBtn(DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager) {
+    public StudiesTablePopupBtn(QuantCentralManager Quant_Central_Manager) {
         super("Studies Table");
         this.setStyleName(Reindeer.BUTTON_LINK);
         this.setDescription("Show studies table");
         this.addClickListener(StudiesTablePopupBtn.this);
 
         VerticalLayout popupBody = new VerticalLayout();
-        QuantDatasetsfullStudiesTableLayout quantStudiesTable = new QuantDatasetsfullStudiesTableLayout(datasetExploringCentralSelectionManager);
+        QuantDatasetsfullStudiesTableLayout quantStudiesTable = new QuantDatasetsfullStudiesTableLayout(Quant_Central_Manager);
         popupBody.addComponent(quantStudiesTable);
         popupWindow = new Window() {
             @Override

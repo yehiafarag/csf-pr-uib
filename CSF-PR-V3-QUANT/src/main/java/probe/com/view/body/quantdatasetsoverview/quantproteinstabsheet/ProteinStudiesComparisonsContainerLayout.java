@@ -25,7 +25,7 @@ import org.jfree.chart.JFreeChart;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.util.vaadintoimageutil.peptideslayout.ProteinInformationDataForExport;
-import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
+import probe.com.selectionmanager.QuantCentralManager;
 import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.studies.PeptidesComparisonsSequenceLayout;
 import probe.com.view.core.InfoPopupBtn;
 
@@ -38,7 +38,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
     private final Map<QuantDiseaseGroupsComparison, ProteinStudyComparisonScatterPlotLayout> studyCompLayoutMap = new LinkedHashMap<QuantDiseaseGroupsComparison, ProteinStudyComparisonScatterPlotLayout>();
     private final Map<QuantDiseaseGroupsComparison, PeptidesComparisonsSequenceLayout> peptideCompLayoutMap = new LinkedHashMap<QuantDiseaseGroupsComparison, PeptidesComparisonsSequenceLayout>();
     private final GridLayout mainStudiesLayout, mainPeptidesLayout;
-    private final DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager;
+    private final QuantCentralManager Quant_Central_Manager;
     private final int width;
     private final DiseaseGroupsComparisonsProteinLayout[] diiseaseGroupsComparisonsProteinArr;
     private final OptionGroup studiesPeptidesSwich = new OptionGroup();
@@ -54,15 +54,15 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
      *
      * @param proteinsComparisonsArr
      * @param selectedComparisonList
-     * @param datasetExploringCentralSelectionManager
+     * @param Quant_Central_Manager
      * @param width
      */
-    public ProteinStudiesComparisonsContainerLayout(DiseaseGroupsComparisonsProteinLayout[] proteinsComparisonsArr, Set<QuantDiseaseGroupsComparison> selectedComparisonList, final DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager, int width) {
+    public ProteinStudiesComparisonsContainerLayout(final QuantCentralManager Quant_Central_Manager,DiseaseGroupsComparisonsProteinLayout[] proteinsComparisonsArr, Set<QuantDiseaseGroupsComparison> selectedComparisonList,  int width) {
         setStyleName(Reindeer.LAYOUT_WHITE);
         this.setWidth("100%");
         this.setHeightUndefined();
         this.setSpacing(true);
-        this.datasetExploringCentralSelectionManager = datasetExploringCentralSelectionManager;
+        this.Quant_Central_Manager = Quant_Central_Manager;
         studiesPeptidesSwich.setWidth("180px");
         studiesPeptidesSwich.setNullSelectionAllowed(false); // user can not 'unselect'
         studiesPeptidesSwich.setMultiSelect(false);
@@ -148,8 +148,6 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
         topPanelLayout.setComponentAlignment(info, Alignment.TOP_RIGHT);
          topPanelLayout.setExpandRatio(topLeftLayout, 30);
 
-//        topPanelLayout.addComponent(showSigneficantPeptidesOnly);
-//        topPanelLayout.setComponentAlignment(showSigneficantPeptidesOnly, Alignment.MIDDLE_RIGHT);
         mainStudiesLayout = new GridLayout(1, selectedComparisonList.size() + 1);
         this.addComponent(mainStudiesLayout);
         mainStudiesLayout.setWidthUndefined();
@@ -228,11 +226,9 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
             int rowIndex = 0;
             for (DiseaseGroupsComparisonsProteinLayout cprot : diiseaseGroupsComparisonsProteinArr) {
                 if (cprot == null || cprot.getSignificantTrindCategory() == -1) {
-//                    QuantDiseaseGroupsComparison gc = (QuantDiseaseGroupsComparison) selectedComparisonList.toArray()[rowIndex];
-//                    cprot = new DiseaseGroupsComparisonsProteinLayout(width, gc, -1);
                     continue;
                 }
-                ProteinStudyComparisonScatterPlotLayout protCompLayout = new ProteinStudyComparisonScatterPlotLayout(cprot, width, datasetExploringCentralSelectionManager);
+                ProteinStudyComparisonScatterPlotLayout protCompLayout = new ProteinStudyComparisonScatterPlotLayout(Quant_Central_Manager,cprot, width);
                 mainStudiesLayout.addComponent(protCompLayout, 0, rowIndex);
                 mainStudiesLayout.setComponentAlignment(protCompLayout, Alignment.MIDDLE_CENTER);
                 studyCompLayoutMap.put(cprot.getComparison(), protCompLayout);
@@ -244,9 +240,9 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
 
                     @Override
                     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-                        Set<QuantDiseaseGroupsComparison> selectedComparisonList = datasetExploringCentralSelectionManager.getSelectedDiseaseGroupsComparisonList();
+                        Set<QuantDiseaseGroupsComparison> selectedComparisonList = Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList();
                         selectedComparisonList.remove(localComparison);
-                        datasetExploringCentralSelectionManager.setDiseaseGroupsComparisonSelection(selectedComparisonList);
+                        Quant_Central_Manager.setDiseaseGroupsComparisonSelection(selectedComparisonList);
                     }
                 };
                 protCompLayout.getCloseBtn().addLayoutClickListener(closeListener);
@@ -263,12 +259,10 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
             int rowIndex = 0;
             for (DiseaseGroupsComparisonsProteinLayout cprot : diiseaseGroupsComparisonsProteinArr) {
                 if (cprot == null || cprot.getSignificantTrindCategory() == -1) {
-//                    QuantDiseaseGroupsComparison gc = (QuantDiseaseGroupsComparison) selectedComparisonList.toArray()[rowIndex];
-//                    cprot = new DiseaseGroupsComparisonsProteinLayout(width, gc, -1);
                     continue;
                 }
 
-                PeptidesComparisonsSequenceLayout protCompLayout = new PeptidesComparisonsSequenceLayout(cprot, width, datasetExploringCentralSelectionManager);
+                PeptidesComparisonsSequenceLayout protCompLayout = new PeptidesComparisonsSequenceLayout(Quant_Central_Manager,cprot, width);
                 mainPeptidesLayout.addComponent(protCompLayout, 0, rowIndex);
                 mainPeptidesLayout.setComponentAlignment(protCompLayout, Alignment.MIDDLE_CENTER);
                 peptideCompLayoutMap.put(cprot.getComparison(), protCompLayout);
@@ -280,9 +274,9 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
 
                     @Override
                     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-                        Set<QuantDiseaseGroupsComparison> selectedComparisonList = datasetExploringCentralSelectionManager.getSelectedDiseaseGroupsComparisonList();
+                        Set<QuantDiseaseGroupsComparison> selectedComparisonList = Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList();
                         selectedComparisonList.remove(localComparison);
-                        datasetExploringCentralSelectionManager.setDiseaseGroupsComparisonSelection(selectedComparisonList);
+                        Quant_Central_Manager.setDiseaseGroupsComparisonSelection(selectedComparisonList);
                     }
                 };
                 protCompLayout.getCloseBtn().addLayoutClickListener(closeListener);

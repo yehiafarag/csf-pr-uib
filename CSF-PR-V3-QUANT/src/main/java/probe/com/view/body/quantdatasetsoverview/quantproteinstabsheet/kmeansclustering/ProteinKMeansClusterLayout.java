@@ -10,7 +10,8 @@ import com.vaadin.ui.themes.Reindeer;
 import java.util.Map;
 import java.util.Set;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
-import probe.com.selectionmanager.DatasetExploringCentralSelectionManager;
+import probe.com.selectionmanager.QuantCentralManager;
+import probe.com.selectionmanager.StudiesSelectionManager;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 
 /**
@@ -27,7 +28,7 @@ public class ProteinKMeansClusterLayout extends VerticalLayout implements Proper
     private final int imgWidth;
     private final KMeansClusteringTable kMeansClusteringTable;
     
-    public ProteinKMeansClusterLayout(DatasetExploringCentralSelectionManager datasetExploringCentralSelectionManager,String proteinKey, String proteinName, String proteinAccession, int width, int height, Map<String, DiseaseGroupsComparisonsProteinLayout[]> protSelectionMap, Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
+    public ProteinKMeansClusterLayout(QuantCentralManager Quant_Central_Manager,String proteinKey, String proteinName, String proteinAccession, int width, int height, Map<String, DiseaseGroupsComparisonsProteinLayout[]> protSelectionMap, Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
         
         this.setSpacing(true);
         this.setMargin(new MarginInfo(false, false, false, false));
@@ -42,7 +43,7 @@ public class ProteinKMeansClusterLayout extends VerticalLayout implements Proper
         this.setComponentAlignment(kMeansComponentContainer,Alignment.MIDDLE_CENTER);
         
         int tableWidth = width * 1 / 3;
-        kMeansClusteringTable = new KMeansClusteringTable(datasetExploringCentralSelectionManager,protSelectionMap.keySet(), tableWidth, height);
+        kMeansClusteringTable = new KMeansClusteringTable(Quant_Central_Manager,protSelectionMap.keySet(), tableWidth, height);
         kMeansComponentContainer.addComponent(kMeansClusteringTable);
         kMeansClusteringTable.addValueChangeListener(ProteinKMeansClusterLayout.this);
         imgWidth = (width * 2 / 3);

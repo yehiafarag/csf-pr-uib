@@ -2093,35 +2093,39 @@ public class DataBase implements Serializable {
             for (String str : disCatList) {
                 String[] columnArr = new String[]{"`identified_proteins_number`", "`quantified_proteins_number`", "`analytical_method`", "`raw_data_available`", "`year`", "`type_of_study`", "`sample_type`", "`sample_matching`", "`technology`", "`analytical_approach`", "`enzyme`", "`shotgun_targeted`", "`quantification_basis`", "`quant_basis_comment`", "`patients_group_i_number`", "`patients_group_ii_number`", "`normalization_strategy`"};
                 boolean[] activeFilters = new boolean[columnArr.length];
-                for (int index = 0; index < columnArr.length; index++) {
-                    String selectPumed_id1 = "SELECT  `pumed_id`  FROM  `quant_dataset_table` WHERE `disease_category`=? GROUP BY  `pumed_id`, " + columnArr[index] + " ORDER BY  `pumed_id` ";
-                    if (conn == null || conn.isClosed()) {
-                        Class.forName(driver).newInstance();
-                        conn = DriverManager.getConnection(url + dbName, userName, password);
-                    }
-                    selectPumed_idStat = conn.prepareStatement(selectPumed_id1);
-                    selectPumed_idStat.setString(1, str);
-                    rs = selectPumed_idStat.executeQuery();
-                    int pumed_id_com_index = 0;
-                    while (rs.next()) {
-                        pumed_id_com_index++;
-                    }
-                    rs.close();
-                    if (pumed_id_index != pumed_id_com_index) {
-                        activeFilters[index] = true;
-                    }
-
-                }
-                activeFilters[0] = false;
-                activeFilters[1] = false;
-                activeFilters[2] = false;
-                activeFilters[3] = true;
+//                for (int index = 0; index < columnArr.length; index++) {
+//                    String selectPumed_id1 = "SELECT  `pumed_id`  FROM  `quant_dataset_table` WHERE `disease_category`=? GROUP BY  `pumed_id`, " + columnArr[index] + " ORDER BY  `pumed_id` ";
+//                    if (conn == null || conn.isClosed()) {
+//                        Class.forName(driver).newInstance();
+//                        conn = DriverManager.getConnection(url + dbName, userName, password);
+//                    }
+//                    selectPumed_idStat = conn.prepareStatement(selectPumed_id1);
+//                    selectPumed_idStat.setString(1, str);
+//                    rs = selectPumed_idStat.executeQuery();
+//                    int pumed_id_com_index = 0;
+//                    while (rs.next()) {
+//                        pumed_id_com_index++;
+//                    }
+//                    rs.close();
+//                    if (pumed_id_index != pumed_id_com_index) {
+//                        activeFilters[index] = true;
+//                    }
+//
+//                }
+//                activeFilters[0] = false;
+//                activeFilters[1] = false;
+//                activeFilters[2] = false;
+//                activeFilters[3] = true;
                 activeFilters[4] = true;
+                activeFilters[5] = true;
                 activeFilters[7] = true;
-                activeFilters[10] = false;
-                activeFilters[activeFilters.length - 2] = false;
-                activeFilters[activeFilters.length - 3] = false;
-                activeFilters[activeFilters.length - 4] = false;
+                activeFilters[8] = true;
+                activeFilters[9] = true;
+                activeFilters[11] = true;
+//                activeFilters[10] = false;
+//                activeFilters[activeFilters.length - 2] = false;
+//                activeFilters[activeFilters.length - 3] = false;
+//                activeFilters[activeFilters.length - 4] = false;
                 activePieChartQuantFiltersDiseaseCategoryMap.put(str, activeFilters);
             }
         } catch (ClassNotFoundException e) {

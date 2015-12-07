@@ -94,7 +94,7 @@ public class JfreeDivaPieChartFilter extends VerticalLayout implements LayoutEve
         inUseImgURL = defaultImgURL;
         redrawChart();
         this.addLayoutClickListener(JfreeDivaPieChartFilter.this);
-        Local_Filter_Manager.registerFilter(JfreeDivaPieChartFilter.this);
+        Local_Filter_Manager.registerLocalPieChartFilter(JfreeDivaPieChartFilter.this);
     }
     
     private void updateLabelsAndValues(Set<Integer> dsIndexes, boolean reset) {
@@ -183,8 +183,7 @@ public class JfreeDivaPieChartFilter extends VerticalLayout implements LayoutEve
     private PiePlot plot;
     private JFreeChart chart;
     
-    private String initPieChart(int width, int height) {
-        
+    private String initPieChart(int width, int height) {        
         DefaultPieDataset dataset = new DefaultPieDataset();
         for (int x = 0; x < labels.length; x++) {
             dataset.setValue(labels[x], new Double(values[x]));

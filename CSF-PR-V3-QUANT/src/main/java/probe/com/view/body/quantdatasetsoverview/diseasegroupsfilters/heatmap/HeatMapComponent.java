@@ -289,6 +289,7 @@ public class HeatMapComponent extends VerticalLayout {
     public void updateDsCellSelection(Set<QuantDiseaseGroupsComparison> selectedDsList) {
         if (selectedDsList.isEmpty()) {
             hideCompBtn.setEnabled(false);
+            
         } else {
             hideCompBtn.setEnabled(true);
         }
