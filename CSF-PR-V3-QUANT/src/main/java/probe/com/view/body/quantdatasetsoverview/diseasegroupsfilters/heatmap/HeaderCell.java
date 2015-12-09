@@ -63,8 +63,9 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
      * @param index
      * @param parentcom
      * @param heatmapCellWidth
+     * @param fullName
      */
-    public HeaderCell(boolean rowHeader, String value, int index, HeatMapComponent parentcom, int heatmapCellWidth) {
+    public HeaderCell(boolean rowHeader, String value, int index, HeatMapComponent parentcom, int heatmapCellWidth, String fullName) {
         this.parentcom = parentcom;
         valueLabel = new Label("<center>" + value + "</center>");
 //        super("<b>" + value + "</b>");
@@ -84,6 +85,11 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
         this.addComponent(valueLabel);
         this.setComponentAlignment(valueLabel, Alignment.BOTTOM_CENTER);
         this.addLayoutClickListener(HeaderCell.this);
+        if (fullName == null) {
+            fullName = value;
+        }
+
+        this.setDescription(fullName);
 
     }
 

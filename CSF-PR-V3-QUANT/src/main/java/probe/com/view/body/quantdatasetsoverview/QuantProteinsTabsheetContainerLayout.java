@@ -58,6 +58,16 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
      */
     @Override
     public void selectionChanged(String type) {
+//        if (type.equalsIgnoreCase("Comparison_Selection")) {
+//           Set<QuantDiseaseGroupsComparison> selectedComparisonList = Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList();
+//            System.out.println("at selectedComparisonList "+selectedComparisonList.size());
+//           if(selectedComparisonList.isEmpty()){
+//               this.getUI().scrollIntoView(this.getUI());
+//               redrawCharts();
+//           
+//           }
+//        
+//        }
         if (type.equalsIgnoreCase("Quant_Proten_Selection") && !selfSelection) {
 
             if (lastSelectedTab != null) {
@@ -178,8 +188,8 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
 
         this.Quant_Central_Manager = datasetExploringCentralSelectionManager;
         this.Quant_Central_Manager.registerStudySelectionListener(QuantProteinsTabsheetContainerLayout.this);
-        this.setHeight("100%");
-        this.setMargin(new MarginInfo(true, false, false, false));
+        this.setHeightUndefined();
+        this.setMargin(new MarginInfo(false, false, false, false));
         this.noProtLabel.setContentMode(ContentMode.HTML);
         noProtLabel.setWidth("400px");
         noProtLabel.setHeight("40px");

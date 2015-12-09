@@ -8,6 +8,7 @@ import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.VerticalLayout;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import probe.com.model.beans.quant.QuantPeptide;
+import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.TrendLegend;
 import probe.com.view.core.InformationField;
 import probe.com.view.core.jfreeutil.StackedBarPeptideComponent;
 
@@ -85,10 +87,17 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
 
             allPeptidesContainer.setHeightUndefined();
             significantPeptidesContainer.setHeightUndefined();
+            
+            HorizontalLayout topLayout = new HorizontalLayout();
+            topLayout.setWidth("100%");
+            this.addComponent(topLayout);
+            
+            TrendLegend legend = new TrendLegend("fullsequencelegend");
+//            topLayout.addComponent(legend);
 
             showSigneficantPeptidesOnly = new OptionGroup();
-            this.addComponent(showSigneficantPeptidesOnly);
-            this.setComponentAlignment(showSigneficantPeptidesOnly, Alignment.TOP_RIGHT);
+            topLayout.addComponent(showSigneficantPeptidesOnly);
+            topLayout.setComponentAlignment(showSigneficantPeptidesOnly, Alignment.TOP_RIGHT);
             showSigneficantPeptidesOnly.setWidth("135px");
             showSigneficantPeptidesOnly.setNullSelectionAllowed(true); // user can not 'unselect'
             showSigneficantPeptidesOnly.setMultiSelect(true);
@@ -98,10 +107,14 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
 
             showSigneficantPeptidesOnly.addStyleName("horizontal");
             showSigneficantPeptidesOnly.setVisible(false);
+            
+            
 
             this.addComponent(significantPeptidesContainer);
             this.addComponent(allPeptidesContainer);
 
+            this.addComponent(legend);
+            this.setComponentAlignment(legend, Alignment.MIDDLE_RIGHT);
             //init protein bar
             allPepProtSegBar = new AbsoluteLayout();
             allPepProtSegBar.setWidth(width + "px");
@@ -121,6 +134,8 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
                 allPepProtSegBar.setStyleName("selectablelightgraylayout");
                 allPeptidesContainer.setData(dsID);
                 sigProtSeqBar.setStyleName("selectablelightgraylayout");
+                legend.setVisible(false);
+                
             }
             //init barchart components
             final LinkedHashSet<StackedBarPeptideComponent> allPeptidesStackedBarComponentsMap = this.initAllBarChartComponents(false, width, sequence, quantPepSet, true, minMode);
@@ -156,6 +171,7 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
             this.addComponent(peptideForm);
             this.addComponent(noselectionLabel);
             showSigneficantPeptidesOnly.setVisible(true);
+            
         }
 
         showSigneficantPeptidesOnly.setItemEnabled("PTMs", false);

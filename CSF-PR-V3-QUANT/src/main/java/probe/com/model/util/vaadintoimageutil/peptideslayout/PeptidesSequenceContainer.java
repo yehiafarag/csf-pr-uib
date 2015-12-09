@@ -106,7 +106,7 @@ public class PeptidesSequenceContainer extends JPanel {
                 Logger.getLogger(PeptidesSequenceContainer.class.getName()).log(Level.SEVERE, null, ex);
             }
             if (info.getPeptidesInfoList() == null) {
-                JLabel noInfoLabel = initSubLabel("No Peptides Information Available", 200);
+                JLabel noInfoLabel = initSubLabel("No Peptide Information Available", 200);
                 noInfoLabel.setLocation(155, 10);
                 protSeqContainerLayout.add(noInfoLabel);
 

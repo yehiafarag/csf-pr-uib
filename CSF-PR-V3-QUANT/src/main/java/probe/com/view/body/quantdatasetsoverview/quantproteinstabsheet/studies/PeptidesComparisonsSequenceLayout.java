@@ -52,7 +52,6 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
         return closeBtn;
     }
 
-    private final QuantCentralManager Quant_Central_Manager;
     private final Map<String, PeptidesInformationOverviewLayout> peptidesInfoLayoutDSIndexMap = new HashMap<String, PeptidesInformationOverviewLayout>();
     private final Map<Integer, StudyPopupLayout> dsToStudyLayoutMap = new HashMap<Integer, StudyPopupLayout>();
 
@@ -66,7 +65,6 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
      */
     public PeptidesComparisonsSequenceLayout(QuantCentralManager Quant_Central_Manager, final DiseaseGroupsComparisonsProteinLayout cprot, int width) {
         this.studiesMap = new LinkedHashMap<String, StudyInfoData>();
-        this.Quant_Central_Manager = Quant_Central_Manager;
         this.setColumns(4);
         this.setRows(3);
         this.setWidthUndefined();
@@ -178,11 +176,11 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
 
             labelContainer.addLayoutClickListener(studyListener);
             labelContainer.setData(ds.getDsKey());
-            studyTitle.setValue("(" + (count + 1) + ")" + ds.getAuthor());
+            studyTitle.setValue("[" + (count + 1) + ")] " + ds.getAuthor());
             exportData.setTitle(ds.getAuthor());
 
             if (dsQuantPepMap.get(quantProtein.getDsKey()) == null) {
-                Label noPeptidesInfoLabel = new Label("No Peptides Information Available ");
+                Label noPeptidesInfoLabel = new Label("No Peptide Information Available ");
                 noPeptidesInfoLabel.setHeightUndefined();
                 noPeptidesInfoLabel.setStyleName("peptideslayoutlabel");
                 VerticalLayout labelValueContainer = new VerticalLayout();

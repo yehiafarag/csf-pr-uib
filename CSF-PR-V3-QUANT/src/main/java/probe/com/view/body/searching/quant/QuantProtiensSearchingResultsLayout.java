@@ -5,21 +5,21 @@
  */
 package probe.com.view.body.searching.quant;
 
+import com.ejt.vaadin.sizereporter.ComponentResizeEvent;
+import com.ejt.vaadin.sizereporter.ComponentResizeListener;
+import com.ejt.vaadin.sizereporter.SizeReporter;
 import com.vaadin.server.Page;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import java.util.List;
-import java.util.Map;
-import probe.com.selectionmanager.StudiesSelectionManager;
 import probe.com.handlers.CSFPRHandler;
-import probe.com.model.beans.quant.QuantDatasetInitialInformationObject;
 import probe.com.model.beans.quant.QuantProtein;
 import probe.com.selectionmanager.QuantCentralManager;
 import probe.com.view.body.quantdatasetsoverview.DiseaseGroupsFiltersContainer;
 import probe.com.view.body.quantdatasetsoverview.QuantProteinsComparisonsContainer;
 import probe.com.view.core.HideOnClickLayout;
-import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.interactivepiechartfilters.StudiesPieChartFiltersContainerLayout;
 import probe.com.view.body.quantdatasetsoverview.QuantProteinsTabsheetContainerLayout;
 
 /**
@@ -30,9 +30,6 @@ import probe.com.view.body.quantdatasetsoverview.QuantProteinsTabsheetContainerL
  */
 public class QuantProtiensSearchingResultsLayout extends VerticalLayout {
 
-    private final StudiesPieChartFiltersContainerLayout pieChartFiltersLayout;
-//     private final DatasetsExplorerTreeLayout studiesExplorerTreeLayout;
-//    private final FilterUtility filterUtility;
     private final QuantCentralManager Quant_Central_Manager;
     private final QuantProteinsTabsheetContainerLayout proteinsLayout;
     private final QuantProteinsComparisonsContainer quantProteinsComparisonsContainer;
@@ -44,22 +41,11 @@ public class QuantProtiensSearchingResultsLayout extends VerticalLayout {
      */
     public QuantProtiensSearchingResultsLayout(CSFPRHandler CSFPR_Handler, List<QuantProtein> searchQuantificationProtList) {
 
-//        filterUtility = new FilterUtility(CSFPR_Handler);
-        //get quant dataset arr
-//        Map<String, QuantDatasetInitialInformationObject> quantDatasetListObject = CSFPR_Handler.getQuantDatasetInitialInformationObject(searchQuantificationProtList);
-//        Map<Integer, QuantDatasetObject> quantDatasetArr = quantDatasetListObject.getQuantDatasetsList();
-
-//        boolean[] activeHeaders = quantDatasetListObject.getActiveHeaders();
-        //which fillters are exist
-//        Map<String, boolean[]> activeFiltersMap = CSFPR_Handler.getActivePieChartQuantFilters(searchQuantificationProtList);
-        //get active filters
-        Quant_Central_Manager = new QuantCentralManager(CSFPR_Handler);//,filterUtility.getFullFilterList()
+        Quant_Central_Manager = new QuantCentralManager(CSFPR_Handler,searchQuantificationProtList);//,filterUtility.getFullFilterList()
         this.setMargin(true);
         this.setSpacing(true);
         this.setWidth("100%");
         this.setHeightUndefined();
-        // init piecharts filter
-        pieChartFiltersLayout = new StudiesPieChartFiltersContainerLayout(Quant_Central_Manager, CSFPR_Handler);
 
         DiseaseGroupsFiltersContainer heatmapFilter = new DiseaseGroupsFiltersContainer(Quant_Central_Manager, CSFPR_Handler, searchQuantificationProtList);
         heatmapFilter.setWidth("100%");
@@ -86,5 +72,19 @@ public class QuantProtiensSearchingResultsLayout extends VerticalLayout {
         proteinsLevelLayout.setVisability(true);
 
         heatmapFilter.selectAllComparisons();
+       
+        SizeReporter sizeReporter = new SizeReporter(proteinsLevelLayout);
+        sizeReporter.addResizeListener(new ComponentResizeListener() {
+             private int resizedCounter = 0;
+             @Override
+            public void sizeChanged(ComponentResizeEvent event) {
+
+                if (resizedCounter == 3) {
+                    UI.getCurrent().setScrollTop(1000);
+                }
+
+                resizedCounter++;
+            }
+        });
     }
 }

@@ -60,6 +60,7 @@ import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.xy.DefaultXYZDataset;
 import org.jfree.text.TextUtilities;
 import org.jfree.ui.RectangleEdge;
+import org.jfree.ui.RectangleInsets;
 import org.jfree.ui.TextAnchor;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
@@ -90,13 +91,15 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
     private final Button resetBtn;
     private final Button exportPdfBtn;
     private final List<QuantProtein> searchQuantificationProtList;
+    private boolean isNewImge = true;
+    private byte imageData[];
+    private final String[] tooltipLabels = new String[]{"( Low <img src='VAADIN/themes/dario-theme/img/greendot.png' alt='Low'>" + " )", "( Low <img src='VAADIN/themes/dario-theme/img/lgreendot.png' alt='Low'>" + " )", "( Stable <img src='VAADIN/themes/dario-theme/img/bluedot.png' alt='Stable'>" + " )", " ( High <img src='VAADIN/themes/dario-theme/img/lreddot.png' alt='High'>" + " )", " ( High <img src='VAADIN/themes/dario-theme/img/reddot.png' alt='High'>" + " )"};
 
     public void updateSize(int updatedWidth) {
         defaultImgURL = saveToFile(chart, updatedWidth, height);
         this.setWidth(updatedWidth + "px");
         this.chartLayout.setWidth(updatedWidth + "px");
         width = updatedWidth;
-
         this.redrawChart();
 
     }
@@ -124,9 +127,10 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
         this.Quant_Central_Manager = Quant_Central_Manager;
         this.Quant_Central_Manager.registerStudySelectionListener(ComparisonsSelectionOverviewBubbleChart.this);
-        this.teststyle = "heatmapOverviewBubbleChart";
+
+        this.teststyle = "__"+System.currentTimeMillis()+"_heatmapOverviewBubbleChart";
         initialLayout = new VerticalLayout();
-        initialLayout.setWidth(width+"px");
+        initialLayout.setWidth(width + "px");
         initialLayout.setHeightUndefined();
 
         VerticalLayout spacer = new VerticalLayout();
@@ -252,8 +256,6 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         }, "bubblechart_comparisons_selection.pdf");
     }
 
-    private boolean isNewImge = true;
-
     private JFreeChart updateBubbleChartChart(Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
 
         tooltipsProtNumberMap.clear();
@@ -373,7 +375,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         int x = 0;
         int maxLength = -1;
         for (QuantDiseaseGroupsComparison comp : selectedComparisonList) {
-            xAxisLabels[x] = comp.getComparisonHeader() + " (" + comp.getDatasetIndexes().length + ")";
+            xAxisLabels[x] = comp.getComparisonHeader() + " (" + comp.getDatasetIndexes().length + ")    ";
             if (xAxisLabels[x].length() > maxLength) {
                 maxLength = xAxisLabels[x].length();
             }
@@ -407,9 +409,9 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                         String tickLabel;
                         NumberFormat formatter = getNumberFormatOverride();
                         if (formatter != null) {
-                            tickLabel = formatter.format(currentTickValue);
+                            tickLabel = formatter.format(currentTickValue)+"  ";
                         } else {
-                            tickLabel = valueToString(currentTickValue);
+                            tickLabel = valueToString(currentTickValue)+"  ";
                         }
                         // avoid to draw overlapping tick labels
                         Rectangle2D bounds = TextUtilities.getTextBounds(tickLabel, g2,
@@ -463,6 +465,8 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
 //        }
         xAxis.setTickLabelFont(font);
+        xAxis.setTickLabelInsets(new RectangleInsets(2, 20, 2, 20));
+     
         xAxis.setGridBandsVisible(false);
         xAxis.setAxisLinePaint(Color.LIGHT_GRAY);
         int scale = XYBubbleRenderer.SCALE_ON_RANGE_AXIS;
@@ -527,8 +531,6 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         return generatedChart;
 
     }
-    private byte imageData[];
-    private final String[] tooltipLabels = new String[]{"( Low <img src='VAADIN/themes/dario-theme/img/greendot.png' alt='Low'>" + " )", "( Low <img src='VAADIN/themes/dario-theme/img/lgreendot.png' alt='Low'>" + " )", "( Stable <img src='VAADIN/themes/dario-theme/img/bluedot.png' alt='Stable'>" + " )", " ( High <img src='VAADIN/themes/dario-theme/img/lreddot.png' alt='High'>" + " )", " ( High <img src='VAADIN/themes/dario-theme/img/reddot.png' alt='High'>" + " )"};
 
     private String saveToFile(final JFreeChart chart, final double width, final double height) {
         isNewImge = true;
@@ -598,6 +600,9 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                     }
                     square.setWidth(finalWidth + "px");
                     square.setHeight(finalHeight + "px");
+                    if (selectedComparisonList == null || selectedComparisonList.isEmpty()) {
+                        return "";
+                    }
 
                     String header = ((QuantDiseaseGroupsComparison) selectedComparisonList.toArray()[catEnt.getSeriesIndex()]).getComparisonHeader();
                     int itemNumber = (int) ((XYItemEntity) entity).getDataset().getYValue(((XYItemEntity) entity).getSeriesIndex(), ((XYItemEntity) entity).getItem());

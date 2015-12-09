@@ -398,5 +398,13 @@ public class DataAccess implements Serializable {
         return this.db.getResourceOverviewInformation();
 
     }
+    /**
+     * Get map for full disease name
+     *
+     * @return map of the short and long diseases names
+     */
+    public Map<String, String> getDiseaseFullNameMap() {
+        return db.getDiseaseFullNameMap();
+    }
 
 }

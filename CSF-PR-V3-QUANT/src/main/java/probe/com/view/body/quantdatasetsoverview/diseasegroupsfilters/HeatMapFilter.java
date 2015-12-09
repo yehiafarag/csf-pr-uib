@@ -6,6 +6,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.beans.quant.QuantDSIndexes;
@@ -61,6 +62,7 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
     private boolean selfselected = false;
     private final QuantCentralManager Quant_Central_Manager;
     private final int heatmapW;
+    private final Map<String,String> diseaseFullNameMap;
 
     /**
      *
@@ -70,8 +72,9 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
      * @param colheaders
      * @param patientsGroupArr
      * @param heatmapCellWidth
+     * @param diseaseFullNameMap
      */
-    public HeatMapFilter(final QuantCentralManager Quant_Central_Manager, int heatmapW, Set<String> rowheaders, Set<String> colheaders, DiseaseGroup[] patientsGroupArr, int heatmapCellWidth) {
+    public HeatMapFilter(final QuantCentralManager Quant_Central_Manager, int heatmapW, Set<String> rowheaders, Set<String> colheaders, DiseaseGroup[] patientsGroupArr, int heatmapCellWidth,Map<String,String> diseaseFullNameMap) {
 
         this.setWidth(heatmapW + "px");
         this.heatmapW = heatmapW;
@@ -89,9 +92,10 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
         this.addComponent(heatMap);
         this.setComponentAlignment(heatMap, Alignment.TOP_LEFT);
         this.calcHeatMapMatrix(rowheaders, colheaders, patientsGroupArr);
-        heatMap.updateHeatMap(rowheaders, colheaders, values, maxDatasetNumber);
+        heatMap.updateHeatMap(rowheaders, colheaders, values, maxDatasetNumber,diseaseFullNameMap);
         Quant_Central_Manager.registerFilterListener(HeatMapFilter.this);
         Quant_Central_Manager.registerStudySelectionListener(HeatMapFilter.this);
+        this.diseaseFullNameMap=diseaseFullNameMap;
     }
 
     /**
@@ -103,7 +107,7 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
     private void updateHeatmap(Set<String> rowheaders, Set<String> colheaders, DiseaseGroup[] patientsGroupArr) {
 
         this.calcHeatMapMatrix(rowheaders, colheaders, patientsGroupArr);
-        heatMap.updateHeatMap(rowheaders, colheaders, values, maxDatasetNumber);
+        heatMap.updateHeatMap(rowheaders, colheaders, values, maxDatasetNumber,diseaseFullNameMap);
         rowheaders.addAll(colheaders);
 
     }
@@ -152,7 +156,7 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
      * @param selectedColumns
      */
     public void updateHeatmap(Set<String> selectedRows, Set<String> selectedColumns) {
-        heatMap.updateHeatMap(selectedRows, selectedColumns, values, maxDatasetNumber);
+        heatMap.updateHeatMap(selectedRows, selectedColumns, values, maxDatasetNumber,diseaseFullNameMap);
     }
 
     /**

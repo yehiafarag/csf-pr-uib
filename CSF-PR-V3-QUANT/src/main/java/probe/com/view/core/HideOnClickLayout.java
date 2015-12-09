@@ -26,15 +26,16 @@ public class HideOnClickLayout extends VerticalLayout implements Serializable, L
     private final ShowLabel show;
     private final Layout fullBodyLayout;
     private final VerticalLayout miniBodyLayout;
-    private final InfoPopupBtn info; 
+    private final InfoPopupBtn info;
 
     /**
      *
      * @param title
      * @param fullBodyLayout
      * @param miniBodyLayout
+     * @param infoText
      */
-    public HideOnClickLayout(String title, Layout fullBodyLayout, VerticalLayout miniBodyLayout,String infoText) {
+    public HideOnClickLayout(String title, Layout fullBodyLayout, VerticalLayout miniBodyLayout, String infoText) {
         this.setMargin(new MarginInfo(false, false, false, false));
         this.setWidth("100%");
         this.fullBodyLayout = fullBodyLayout;
@@ -43,7 +44,7 @@ public class HideOnClickLayout extends VerticalLayout implements Serializable, L
 
         titleLayout = new HorizontalLayout();
         titleLayout.setHeight("30px");
-        titleLayout.setWidthUndefined();
+        titleLayout.setWidth("100%");
         titleLayout.setSpacing(true);
         HorizontalLayout titleHeaderLayout = new HorizontalLayout();
         titleHeaderLayout.setWidthUndefined();
@@ -57,7 +58,6 @@ public class HideOnClickLayout extends VerticalLayout implements Serializable, L
         titleLabel = new Label(title);
         titleLabel.setContentMode(ContentMode.HTML);
 
-        titleLabel.setStyleName("filterShowLabel");
         titleLabel.setHeight("20px");
 
         titleHeaderLayout.addComponent(titleLabel);
@@ -68,15 +68,22 @@ public class HideOnClickLayout extends VerticalLayout implements Serializable, L
         titleHeaderContainer.setWidthUndefined();
 
         titleLayout.addComponent(titleHeaderContainer);
-        
-         info = new InfoPopupBtn(infoText);
-          titleLayout.addComponent(info);
+
+        info = new InfoPopupBtn(infoText);
+        if (infoText != null && !infoText.trim().equalsIgnoreCase("")) {
+            titleHeaderLayout.addComponent(info);
+            titleLabel.setStyleName("filterShowLabel");
+        } else {
+            titleLabel.setStyleName("normalheader");
+        }
         this.addComponent(titleLayout);
         this.addComponent(this.fullBodyLayout);
         this.setComponentAlignment(this.fullBodyLayout, Alignment.MIDDLE_CENTER);
         if (miniBodyLayout != null) {
             titleLayout.addComponent(this.miniBodyLayout);
-            titleLayout.setComponentAlignment(this.miniBodyLayout, Alignment.MIDDLE_CENTER);
+            titleLayout.setComponentAlignment(this.miniBodyLayout, Alignment.BOTTOM_LEFT);
+            titleLayout.setExpandRatio(this.miniBodyLayout, 5);
+            titleLayout.setExpandRatio(titleHeaderContainer, 1);
             miniBodyLayout.addLayoutClickListener(HideOnClickLayout.this);
         }
     }
@@ -87,8 +94,9 @@ public class HideOnClickLayout extends VerticalLayout implements Serializable, L
      * @param fullBodyLayout
      * @param miniBodyLayout
      * @param align
+     * @param infoText
      */
-    public HideOnClickLayout(String title, Layout fullBodyLayout, VerticalLayout miniBodyLayout, Alignment align,String infoText) {
+    public HideOnClickLayout(String title, Layout fullBodyLayout, VerticalLayout miniBodyLayout, Alignment align, String infoText) {
         this.setMargin(new MarginInfo(false, false, false, false));
         this.setWidth("100%");
         this.fullBodyLayout = fullBodyLayout;
@@ -97,37 +105,56 @@ public class HideOnClickLayout extends VerticalLayout implements Serializable, L
 
         titleLayout = new HorizontalLayout();
         titleLayout.setHeight("30px");
-        titleLayout.setSpacing(true);
+        titleLayout.setSpacing(true);       
+        
+         HorizontalLayout titleHeaderLayout = new HorizontalLayout();
+        titleHeaderLayout.setWidthUndefined();
+        titleHeaderLayout.setSpacing(true);
+
         show = new ShowLabel();
         show.setHeight("20px");
-        titleLayout.addComponent(show);
-        titleLayout.setComponentAlignment(show, Alignment.BOTTOM_LEFT);
+        titleHeaderLayout.addComponent(show);
+        titleHeaderLayout.setComponentAlignment(show, Alignment.BOTTOM_LEFT);
 
         titleLabel = new Label(title);
         titleLabel.setContentMode(ContentMode.HTML);
 
-        titleLabel.setStyleName("filterShowLabel");
-        titleLabel.setHeight("22px");
-        titleLayout.addComponent(titleLabel);
-        titleLayout.setComponentAlignment(titleLabel, Alignment.TOP_RIGHT);
-        titleLayout.addLayoutClickListener(HideOnClickLayout.this);
-         info = new InfoPopupBtn(infoText);
-          titleLayout.addComponent(info);
-        titleLayout.setComponentAlignment(info, Alignment.TOP_RIGHT);
-        
+        titleLabel.setHeight("20px");
+
+        titleHeaderLayout.addComponent(titleLabel);
+        titleHeaderLayout.setComponentAlignment(titleLabel, Alignment.TOP_LEFT);
+        titleHeaderLayout.addLayoutClickListener(HideOnClickLayout.this);
+
+        VerticalLayout titleHeaderContainer = new VerticalLayout(titleHeaderLayout);
+        titleHeaderContainer.setWidthUndefined();
+
+        titleLayout.addComponent(titleHeaderContainer);
+
+        info = new InfoPopupBtn(infoText);
+        if (infoText != null && !infoText.trim().equalsIgnoreCase("")) {
+            titleLayout.addComponent(info);
+            titleLabel.setStyleName("filterShowLabel");
+        } else {
+            titleLabel.setStyleName("normalheader");
+        }
         this.addComponent(titleLayout);
         this.addComponent(this.fullBodyLayout);
         this.setComponentAlignment(this.fullBodyLayout, align);
         if (miniBodyLayout != null) {
             titleLayout.addComponent(this.miniBodyLayout);
+            titleLayout.setComponentAlignment(this.miniBodyLayout, Alignment.BOTTOM_LEFT);
+            titleLayout.setExpandRatio(this.miniBodyLayout, 5);
+            titleLayout.setExpandRatio(titleHeaderContainer, 1);
             miniBodyLayout.addLayoutClickListener(HideOnClickLayout.this);
         }
+     
     }
 
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-        if(event.getClickedComponent() instanceof  InfoPopupBtn)
+        if (event.getClickedComponent() instanceof InfoPopupBtn) {
             return;
+        }
         if (fullBodyLayout.isVisible()) {
             this.hideLayout();
 

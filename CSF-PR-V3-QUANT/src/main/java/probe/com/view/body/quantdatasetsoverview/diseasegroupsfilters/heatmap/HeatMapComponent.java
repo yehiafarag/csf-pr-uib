@@ -120,11 +120,11 @@ public class HeatMapComponent extends VerticalLayout {
      * @param values
      * @param maxDatasetValue
      */
-    public void updateHeatMap(Set<String> rowsLbels, Set<String> columnsLbels, QuantDSIndexes[][] values, int maxDatasetValue) {
+    public void updateHeatMap(Set<String> rowsLbels, Set<String> columnsLbels, QuantDSIndexes[][] values, int maxDatasetValue,Map<String,String> diseaseFullNameMap) {
         if (rowsLbels.isEmpty() || columnsLbels.isEmpty()) {
             return;
         }
-        updateHeatMapLayout(values, rowsLbels, columnsLbels, maxDatasetValue);
+        updateHeatMapLayout(values, rowsLbels, columnsLbels, maxDatasetValue,diseaseFullNameMap);
 
     }
 
@@ -442,7 +442,7 @@ public class HeatMapComponent extends VerticalLayout {
         return availableComparisonsList;
     }
 
-    private void updateHeatMapLayout(QuantDSIndexes[][] values, Set<String> rowheaders, Set<String> colheaders, int maxDatasetValue) {
+    private void updateHeatMapLayout(QuantDSIndexes[][] values, Set<String> rowheaders, Set<String> colheaders, int maxDatasetValue,Map<String,String> diseaseFullNameMap) {
         HeatmapColorGenerator hmColorGen = new HeatmapColorGenerator(maxDatasetValue, 0);
         availableComparisonsList.clear();
         columnHeader.removeAllComponents();
@@ -473,7 +473,7 @@ public class HeatMapComponent extends VerticalLayout {
             if (la.equalsIgnoreCase("")) {
                 la = "Not Available";
             }
-            HeaderCell headerCell = new HeaderCell(false, la, i, HeatMapComponent.this, heatmapCellWidth);
+            HeaderCell headerCell = new HeaderCell(false, la, i, HeatMapComponent.this, heatmapCellWidth,diseaseFullNameMap.get(la));
             columnHeader.addComponent(headerCell, i, 0);
             columnHeader.setComponentAlignment(headerCell, Alignment.MIDDLE_CENTER);
             columnCells[i] = headerCell;
@@ -488,7 +488,7 @@ public class HeatMapComponent extends VerticalLayout {
             if (la.equalsIgnoreCase("")) {
                 la = "Not Available";
             }
-            HeaderCell headerCell = new HeaderCell(true, la, i, HeatMapComponent.this, heatmapCellWidth);
+            HeaderCell headerCell = new HeaderCell(true, la, i, HeatMapComponent.this, heatmapCellWidth,diseaseFullNameMap.get(la));
             rowHeader.addComponent(headerCell, 0, i);
             rowHeader.setComponentAlignment(headerCell, Alignment.MIDDLE_CENTER);
             rowCells[i] = headerCell;

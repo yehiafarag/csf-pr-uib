@@ -5,9 +5,7 @@
  */
 package probe.com.selectionmanager;
 
-import com.vaadin.server.VaadinSession;
 import java.io.Serializable;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,6 +13,7 @@ import org.jfree.chart.JFreeChart;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
+import probe.com.model.beans.quant.QuantProtein;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import probe.com.view.core.DiseaseGroup;
 
@@ -31,6 +30,11 @@ public class QuantCentralManager implements Serializable {
 
     public QuantCentralManager(CSFPRHandler CSFPR_Handler) {
         Studies_Filter_Manager = new StudiesFilterManager(CSFPR_Handler.getQuantDatasetInitialInformationObject(), CSFPR_Handler.getActivePieChartQuantFilters());//,filterUtility.getFullFilterList()
+        Studies_Selection_Manager = new StudiesSelectionManager();
+    }
+    
+    public QuantCentralManager(CSFPRHandler CSFPR_Handler,List<QuantProtein> searchQuantificationProtList) {
+        Studies_Filter_Manager = new StudiesFilterManager(CSFPR_Handler.getQuantDatasetInitialInformationObject(searchQuantificationProtList), CSFPR_Handler.getActivePieChartQuantFilters(searchQuantificationProtList));//,filterUtility.getFullFilterList()
         Studies_Selection_Manager = new StudiesSelectionManager();
     }
 

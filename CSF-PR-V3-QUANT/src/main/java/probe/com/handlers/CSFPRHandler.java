@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -38,6 +39,7 @@ public class CSFPRHandler implements Serializable {
     private static final long serialVersionUID = 1L;
     private final CoreLogic logicLayer;
     private final AuthenticatorHandler authenticatorHandler;
+    private final Map<String,String>diseaseFullNameMap;
 
     /**
      * create the main handler for all users requests
@@ -52,6 +54,8 @@ public class CSFPRHandler implements Serializable {
     public CSFPRHandler(String url, String dbName, String driver, String userName, String password, String filesURL) {
         logicLayer = new CoreLogic(url, dbName, driver, userName, password, filesURL);
         authenticatorHandler = new AuthenticatorHandler(url, dbName, driver, userName, password);
+        this.diseaseFullNameMap = logicLayer.getDiseaseFullNameMap();
+        
     }
 
     /**
@@ -147,6 +151,10 @@ public class CSFPRHandler implements Serializable {
     public IdentificationDatasetBean getDataset(int identificationDatasetId) {
         IdentificationDatasetBean idDataset = logicLayer.getDataset(identificationDatasetId);
         return idDataset;
+    }
+
+    public Map<String, String> getDiseaseFullNameMap() {
+        return diseaseFullNameMap;
     }
 
     /**
@@ -542,5 +550,7 @@ public class CSFPRHandler implements Serializable {
         return this.logicLayer.getResourceOverviewInformation();
 
     }
+    
+    
 
 }

@@ -12,11 +12,9 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import java.util.List;
-import probe.com.selectionmanager.StudiesSelectionManager;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.model.beans.quant.QuantProtein;
 import probe.com.selectionmanager.QuantCentralManager;
-import probe.com.selectionmanager.StudiesFilterManager;
 import probe.com.view.body.quantdatasetsoverview.DiseaseGroupsFiltersContainer;
 import probe.com.view.body.quantdatasetsoverview.QuantProteinsComparisonsContainer;
 import probe.com.view.core.HideOnClickLayout;
@@ -78,12 +76,13 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
         comparisonsTableContainer.setVisability(true);
 
         proteinsLayout = new QuantProteinsTabsheetContainerLayout(Quant_Central_Manager, searchingMode, CSFPR_Handler);
-        HideOnClickLayout proteinsLevelLayout = new HideOnClickLayout("Proteins Information", proteinsLayout, null, infoText) {
+        HideOnClickLayout proteinsLevelLayout = new HideOnClickLayout("Proteins Information", proteinsLayout, null,Alignment.TOP_LEFT, infoText) {
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
                 super.layoutClick(event);
             }
         };
+        proteinsLevelLayout.setVisability(true);
         this.addComponent(proteinsLevelLayout);
         SizeReporter sizeReporter = new SizeReporter(proteinsLevelLayout);
         sizeReporter.addResizeListener(new ComponentResizeListener() {
@@ -97,14 +96,8 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
                 resizedCounter++;
             }
         });
-        proteinsLevelLayout.setVisability(false);
+//        proteinsLevelLayout.setVisability(false);
 
-//        QuantDatasetsfullStudiesTableLayout quantStudiesTable = new QuantDatasetsfullStudiesTableLayout(studiesSelectionManager);
-//        if (searchingMode) {
-//        } else {
-//            this.addComponent(quantStudiesTable);
-//            quantStudiesTable.setWidth(layoutWidth+"px");
-//        }
     }
 
 }

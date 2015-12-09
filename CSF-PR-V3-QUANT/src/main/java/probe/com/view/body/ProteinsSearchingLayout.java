@@ -46,11 +46,11 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
 
     /**
      *
-     * @param handler
+     * @param CSFPR_Handler
      * @param mainTabSheet
      */
-    public ProteinsSearchingLayout(final CSFPRHandler handler, final TabSheet mainTabSheet) {
-        this.handler = handler;
+    public ProteinsSearchingLayout(final CSFPRHandler CSFPR_Handler, final TabSheet mainTabSheet) {
+        this.handler = CSFPR_Handler;
         this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.setSpacing(true);
        
@@ -63,7 +63,7 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
                 }
                 String protName = ((HorizontalLayout) event.getClickedComponent().getParent()).getData().toString();
                 if (protName.equalsIgnoreCase("Load All")) {
-                    IdDataSearchingTabLayout idDatasearchingLayout = new IdDataSearchingTabLayout(searchIdentificationProtList, handler);
+                    IdDataSearchingTabLayout idDatasearchingLayout = new IdDataSearchingTabLayout(searchIdentificationProtList, CSFPR_Handler);
 
                     Tab tab = mainTabSheet.addTab(idDatasearchingLayout, "All Proteins Identification Data Results", null);
                     tab.setClosable(true);
@@ -77,7 +77,7 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
                             subSearchIdentificationProtList.put(key, idProtBean);
                         }
                     }
-                    IdDataSearchingTabLayout idDatasearchingLayout = new IdDataSearchingTabLayout(subSearchIdentificationProtList, handler);
+                    IdDataSearchingTabLayout idDatasearchingLayout = new IdDataSearchingTabLayout(subSearchIdentificationProtList, CSFPR_Handler);
                     Tab tab = mainTabSheet.addTab(idDatasearchingLayout, protName, null);
                     tab.setClosable(true);
                     mainTabSheet.setSelectedTab(tab);
@@ -96,7 +96,7 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
                 }
                 String protName = ((HorizontalLayout) event.getClickedComponent().getParent()).getData().toString();
                 if (protName.equalsIgnoreCase("Load All")) {
-                    QuantDataSearchingTabLayout quantDatasearchingLayout = new QuantDataSearchingTabLayout(searchQuantificationProtList, handler);
+                    QuantDataSearchingTabLayout quantDatasearchingLayout = new QuantDataSearchingTabLayout(searchQuantificationProtList, CSFPR_Handler);
 
                     Tab tab = mainTabSheet.addTab(quantDatasearchingLayout, "All Proteins Quantitative Data Results", null);
                     tab.setClosable(true);
@@ -109,7 +109,7 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
                             subSearchQuantitativeProtList.add(quantProt);
                         }
                     }
-                    QuantDataSearchingTabLayout quantDatasearchingLayout = new QuantDataSearchingTabLayout(subSearchQuantitativeProtList, handler);
+                    QuantDataSearchingTabLayout quantDatasearchingLayout = new QuantDataSearchingTabLayout(subSearchQuantitativeProtList, CSFPR_Handler);
                     Tab tab = mainTabSheet.addTab(quantDatasearchingLayout, protName, null);
                     tab.setClosable(true);
                     mainTabSheet.setSelectedTab(tab);

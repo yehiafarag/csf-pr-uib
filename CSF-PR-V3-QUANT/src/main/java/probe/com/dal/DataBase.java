@@ -134,7 +134,7 @@ public class DataBase implements Serializable {
                 dataset.setFractionsNumber(fractionsNumber);
                 String uploadedBy = rs.getString("uploaded_by");
                 dataset.setUploadedByName(uploadedBy);
-                String name = rs.getString("name");
+                String name = updateStringFormat(rs.getString("name"));
                 dataset.setName(name);
                 String species = rs.getString("species");
                 dataset.setSpecies(species);
@@ -3076,7 +3076,7 @@ public class DataBase implements Serializable {
 //            PreparedStatement selectIdProteinsNumberStat = conn.prepareStatement(selectIdProteinsNumber);
 //
 //             rs = selectIdProteinsNumberStat.executeQuery();
-            int numProteins = 0;
+            int numProteins;
 //
 //            while (rs.next()) {
 //                numProteins += rs.getInt("Rows");
@@ -3089,7 +3089,7 @@ public class DataBase implements Serializable {
 //            PreparedStatement selectIdPeptidesNumberStat = conn.prepareStatement(selectIdPeptidesNumber);
 //
 //             rs = selectIdPeptidesNumberStat.executeQuery();
-            int numPeptides = 0;
+            int numPeptides;
 //
 //            while (rs.next()) {
 //                numPeptides += rs.getInt("Rows");
@@ -3141,12 +3141,61 @@ public class DataBase implements Serializable {
             infoBean.setNumberOfQuantPeptides(numPeptides);
             rs.close();
 
-        } catch (Exception exp) {
-            exp.printStackTrace();
+        } catch (SQLException e) {
+            System.err.println("at error " + this.getClass().getName() + "  line 3143  " + e.getLocalizedMessage());
+        } catch (ClassNotFoundException e) {
+            System.err.println("at error " + this.getClass().getName() + "  line 3143  " + e.getLocalizedMessage());
+        } catch (InstantiationException e) {
+            System.err.println("at error " + this.getClass().getName() + "  line 3143  " + e.getLocalizedMessage());
+        } catch (IllegalAccessException e) {
+            System.err.println("at error " + this.getClass().getName() + "  line 3143  " + e.getLocalizedMessage());
         }
 
         return infoBean;
 
     }
 
+    /**
+     * Get map for full disease name
+     *
+     * @return map of the short and long diseases names
+     */
+    public Map<String, String> getDiseaseFullNameMap() {
+        Map diseaseFullNameMap = new HashMap<String, String>();
+        String selectAllDiseFullName = "SELECT * FROM  `defin_disease_groups` ";
+        try {
+            if (conn == null || conn.isClosed()) {
+                Class.forName(driver).newInstance();
+                conn = DriverManager.getConnection(url + dbName, userName, password);
+            }
+            PreparedStatement selectProStat = conn.prepareStatement(selectAllDiseFullName);
+
+            ResultSet rs = selectProStat.executeQuery();
+            System.gc();
+            while (rs.next()) {
+                diseaseFullNameMap.put(rs.getString("min").trim(), rs.getString("full").trim());
+            }
+        } catch (SQLException e) {
+            System.err.println("at error " + this.getClass().getName() + "  line 3167  " + e.getLocalizedMessage());
+        } catch (ClassNotFoundException e) {
+            System.err.println("at error " + this.getClass().getName() + "  line 3167  " + e.getLocalizedMessage());
+        } catch (InstantiationException e) {
+            System.err.println("at error " + this.getClass().getName() + "  line 3167  " + e.getLocalizedMessage());
+        } catch (IllegalAccessException e) {
+            System.err.println("at error " + this.getClass().getName() + "  line 3167  " + e.getLocalizedMessage());
+        }
+
+        return diseaseFullNameMap;
+    }
+
+    private String updateStringFormat(String str) {
+        str = str.toLowerCase();
+        if (str.contains("csf ")) {
+            str = str.replace("csf", "CSF");
+        }
+        str = str.replaceFirst(str.substring(0, 1), str.substring(0, 1).toUpperCase());
+
+        return str;
+
+    }
 }

@@ -20,10 +20,10 @@ public class QuantDataSearchingTabLayout extends VerticalLayout implements Seria
     /**
      *
      * @param searchQuantificationProtList
-     * @param handler
+     * @param CSFPR_Handler
      */
-    public QuantDataSearchingTabLayout(List<QuantProtein> searchQuantificationProtList, CSFPRHandler handler) {      
-        QuantProtiensSearchingResultsLayout datasetOverviewTabLayout = new QuantProtiensSearchingResultsLayout(handler, searchQuantificationProtList);
+    public QuantDataSearchingTabLayout(List<QuantProtein> searchQuantificationProtList, CSFPRHandler CSFPR_Handler) {      
+        QuantProtiensSearchingResultsLayout datasetOverviewTabLayout = new QuantProtiensSearchingResultsLayout(CSFPR_Handler, searchQuantificationProtList);
          this.setMargin(true);
         this.setWidth("100%");
         this.addComponent(datasetOverviewTabLayout);

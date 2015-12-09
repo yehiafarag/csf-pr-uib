@@ -1322,27 +1322,13 @@ public class CoreLogic implements Serializable {
             fullComparisonToProtMap.put(compKey, comparisonProtMap);
 
         }
-//         for (String qpeptideAccession : fullComparisonPeptideMap.keySet()) {
-////            String compKey = dsIndexToComparisonsMap.get(qprot.getDsKey()).getComparisonHeader();
-////            if (!fullComparisonToProtMap.containsKey(compKey)) {
-////                Set<QuantProtein> comparisonProtMap = new HashSet<QuantProtein>();
-////                fullComparisonToProtMap.put(compKey, comparisonProtMap);
-////
-////            }
-////            Set<QuantProtein> comparisonProtMap = fullComparisonToProtMap.get(compKey);
-////            comparisonProtMap.add(qprot);
-////            fullComparisonToProtMap.put(compKey, comparisonProtMap);
-//
-//        }
 
         for (QuantDiseaseGroupsComparison comparison : selectedComparisonList) {
-            Set<QuantProtein> comparisonProtMap = fullComparisonToProtMap.get(comparison.getComparisonHeader());
-
-//            Object[] iArr = new Object[comparison.getDatasetIndexes().length];
-//            for (int x = 0; x < iArr.length; x++) {
-//                iArr[x] = comparison.getDatasetIndexes()[x];
-//            }
-//            Map<String, Set<QuantPeptide>> comparisonPeptideMap = (da.getQuantificationPeptides(iArr));
+           Set<QuantProtein> comparisonProtMap = fullComparisonToProtMap.get(comparison.getComparisonHeader());
+            if (comparisonProtMap == null) {
+                continue;
+            }
+            
             Map<String, DiseaseGroupsComparisonsProteinLayout> comparProtList = new HashMap<String, DiseaseGroupsComparisonsProteinLayout>();
             String pGrI = comparison.getComparisonHeader().split("vs")[0].trim();
             String pGrII = comparison.getComparisonHeader().split("vs")[1].trim();
@@ -1549,4 +1535,12 @@ public class CoreLogic implements Serializable {
 
     }
 
+    /**
+     * Get map for full disease name
+     *
+     * @return map of the short and long diseases names
+     */
+    public Map<String, String> getDiseaseFullNameMap() {
+        return da.getDiseaseFullNameMap();
+    }
 }

@@ -1,6 +1,7 @@
 
 package probe.com.view.body.identificationdatasetsoverview;
 
+import com.vaadin.server.Page;
 import probe.com.view.core.exporter.ExporterBtnsGenerator;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -70,7 +71,7 @@ public class IdentificationDatasetInformationLayout extends VerticalLayout imple
         HorizontalLayout miniPepNumberLayout = this.generateMiniLabel("Peptides Number:", "" + handler.getDataset(datasetId).getPeptidesNumber());
         miniPepNumberLayout.setDescription("Number of validated peptides");
         miniLabelsGroupIILayout.addComponent(miniPepNumberLayout);
-        miniLabelsGroupIILayout.addComponent(this.generateMiniLabel("Fraction Numbers:", "" + handler.getDataset(datasetId).getFractionsNumber()));
+        miniLabelsGroupIILayout.addComponent(this.generateMiniLabel("Gel Fraction Numbers:", "" + handler.getDataset(datasetId).getFractionsNumber()));
 
         HorizontalLayout topLabelsGroupILayout = new HorizontalLayout();
         topLabelsGroupILayout.setSpacing(true);
@@ -152,7 +153,7 @@ public class IdentificationDatasetInformationLayout extends VerticalLayout imple
 
             bottomLabelsGroupIIILayout.addComponent(this.generateLabel("Publication Link:", "<a href='" + href + "'  target='_blank'>Click to Visit</a>"));
         }
-        bottomLabelsGroupIIILayout.addComponent(this.generateLabel("Fraction Numbers:", "" + handler.getDataset(datasetId).getFractionsNumber()));
+        bottomLabelsGroupIIILayout.addComponent(this.generateLabel("Gel Fraction Numbers:", "" + handler.getDataset(datasetId).getFractionsNumber()));
 
         if (mainTabSheet != null) {
             Button loadDatasetBtn = new Button("Load Dataset");
@@ -209,6 +210,8 @@ public class IdentificationDatasetInformationLayout extends VerticalLayout imple
             value = "<textarea readonly>" + value + "</textarea>";
 
         }
+        int w =Page.getCurrent().getWebBrowser().getScreenWidth()-(Page.getCurrent().getWebBrowser().getScreenWidth()/4);
+        Page.getCurrent().getStyles().add(".datasetInfoValues textArea{ width:"+ (w)+"px;}");
 
         Label valueLabel = new Label(value);
 
