@@ -39,7 +39,7 @@ public class QuantDataHandler {
         qa9.setYear(2010);
         qa9.setFilesNumber(10);
         qa9.setAnalyticalMethod("Disease Group I");
-        qa9.setAuthor("Ottervald, Jan, et al");
+        qa9.setAuthor("Ottervald, Jan, et al.");
         authormap.put("20093204", qa9);
 
         QuantDatasetObject qa1 = new QuantDatasetObject();
@@ -67,7 +67,7 @@ public class QuantDataHandler {
         qa4.setYear(2012);
         qa4.setFilesNumber(14);
         qa4.setAnalyticalMethod("Disease Group I");
-        qa4.setAuthor("Jia, Yan et al.");
+        qa4.setAuthor("Jia, Yan, et al.");
         authormap.put("22846148", qa4);
 
         QuantDatasetObject qa5 = new QuantDatasetObject();
@@ -123,7 +123,7 @@ public class QuantDataHandler {
         qa15.setYear(2015);
         qa15.setFilesNumber(10);
         qa15.setAnalyticalMethod("Disease Group I");
-        qa15.setAuthor("Astrid et al.");
+        qa15.setAuthor("Astrid, et al.");
         authormap.put("99999999", qa15);
 
         QuantDatasetObject qa16 = new QuantDatasetObject();
@@ -168,9 +168,8 @@ public class QuantDataHandler {
             int row = 1;
             while ((seqline = sequanceBufRdr.readLine()) != null && !seqline.trim().equalsIgnoreCase("") && row < 1000000000) {
 
-               
-                if ((seqline.startsWith(">sp|") || seqline.startsWith(">tr|"))) {                 
-                    if (quantProt.getUniprotAccession() != null) {                       
+                if ((seqline.startsWith(">sp|") || seqline.startsWith(">tr|"))) {
+                    if (quantProt.getUniprotAccession() != null) {
                         if (!proteinAccSequanceMap.containsKey(quantProt.getUniprotAccession().trim().toLowerCase())) {
                             proteinAccSequanceMap.put(quantProt.getUniprotAccession().trim().toLowerCase(), quantProt);
                         }
@@ -180,7 +179,7 @@ public class QuantDataHandler {
                     quantProt.setUniprotAccession(seqArr[1].replace(" ", "").trim());
                     String secSide = seqArr[2].split("OS=")[0].trim();
                     String protName = secSide.replace(secSide.split(" ")[0], "") + " (" + secSide.split(" ")[0] + ")";
-                    quantProt.setUniprotProteinName(protName.trim());                  
+                    quantProt.setUniprotProteinName(protName.trim());
 
                 } else {
                     quantProt.setSequance(quantProt.getSequance() + seqline);
@@ -246,7 +245,7 @@ public class QuantDataHandler {
                     }
 
                     qProt.setUniprotAccession(updatedRowArr[index++].trim());
-                }             
+                }
 
                 if (proteinAccSequanceMap.containsKey(qProt.getUniprotAccession().toLowerCase())) {
 

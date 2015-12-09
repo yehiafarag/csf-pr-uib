@@ -53,7 +53,7 @@ public class DB implements Serializable {
         this.password = password;
     }
 
-    public synchronized boolean createTables() throws SQLException//create CSF the database tables if not exist
+    public  boolean createTables() throws SQLException//create CSF the database tables if not exist
     {
         try {
             try {
@@ -99,10 +99,40 @@ public class DB implements Serializable {
             }
             try {
                 Statement st = conn.createStatement();
-                String dropStat = "DROP TABLE IF EXISTS `quant_dataset_table`;";
+                String dropStat = "DROP TABLE IF EXISTS `defin_disease_groups`";
                 st.executeUpdate(dropStat);
 
-                String statment = "CREATE TABLE IF NOT EXISTS `quant_dataset_table` (\n"
+                String statment = "CREATE TABLE IF NOT EXISTS `defin_disease_groups` (\n"
+                        + "  `min` varchar(100) NOT NULL default ' ',\n"
+                        + "  `full` varchar(500) NOT NULL default ' ',\n"
+                        + "  PRIMARY KEY  (`min`)\n"
+                        + ") ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+                st.executeUpdate(statment);
+
+                st = conn.createStatement();
+                String insertStat = "INSERT INTO `defin_disease_groups` (`min`, `full`) VALUES \n"
+                        + "(' MS', ' Multiple sclerosis'),\n"
+                        + "(' CIS', ' Clinically isolated syndrome'),\n"
+                        + "(' OND', ' Other neurological disorders'),\n"
+                        + "(' ONID', ' Other inflammatory neurological disorders'),\n"
+                        + "(' RRMS', ' Relapsing remitting multiple sclerosis'),\n"
+                        + "(' SPMS', ' Secondary progressive multiple sclerosis'),\n"
+                        + "(' PMS', 'progressive multiple sclerosis'),\n"
+                        + "(' CIS-MS', ' Clinically isolated syndrome, with conversion to multiple sclerosis'),\n"
+                        + "('CIS-CIS', 'Clinically isolated syndrome, without conversion to multiple sclerosis'),\n"
+                        + "(' CIS-MS/CIS', ' Clinically isolated syndrome, with and without conversion to multiple sclerosis'),\n"
+                        + "(' AD', 'Alzheimer''s disease'),\n"
+                        + "(' MCI', ' Mild cognitive impairment'),\n"
+                        + "(' RRMS a/ Natalizumab', ' Relapsing remitting multiple sclerosis after natalizumab'),\n"
+                        + "(' SPMS a/Lamotrigine', ' Secondary progressive multiple sclerosis after lamotrigine'),\n"
+                        + "(' OIND + OND ', ' Other inflammatory neurological disorders + Other neurological disorders');";
+                st.executeUpdate(insertStat);
+
+                st = conn.createStatement();
+                dropStat = "DROP TABLE IF EXISTS `quant_dataset_table`;";
+                st.executeUpdate(dropStat);
+
+                statment = "CREATE TABLE IF NOT EXISTS `quant_dataset_table` (\n"
                         + "  `study_key` varchar(100) NOT NULL default 'Not Available',\n"
                         + "  `pumed_id` varchar(30) NOT NULL default 'Not Available',\n"
                         + "  `files_num` int(255) NOT NULL default '-1',\n"
@@ -726,7 +756,7 @@ public class DB implements Serializable {
         return id;
     }
 
-    public synchronized int insertProteinExper(int expId, ProteinBean pb, String key) {
+    public  int insertProteinExper(int expId, ProteinBean pb, String key) {
 
         try {
             if (conn == null || conn.isClosed()) {
@@ -787,7 +817,7 @@ public class DB implements Serializable {
         }
     }
 
-    public synchronized boolean updatePeptideFile(ExperimentBean exp) {
+    public  boolean updatePeptideFile(ExperimentBean exp) {
         try {
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
@@ -830,7 +860,7 @@ public class DB implements Serializable {
         return true;
     }
 
-    public synchronized int insertPeptide(int pepId, PeptideBean pepb, int expId, Connection conn) {
+    public  int insertPeptide(int pepId, PeptideBean pepb, int expId, Connection conn) {
         String insertPeptide = "INSERT INTO  `" + dbName + "`.`proteins_peptides_table` (`protein` ,`other_protein(s)` ,`peptide_protein(s)` ,`other_protein_description(s)` ,`peptide_proteins_description(s)` ,`aa_before` ,`sequence` ,"
                 + "`aa_after` ,`peptide_start` ,`peptide_end` ,`variable_modification` ,`location_confidence` ,`precursor_charge(s)` ,`number_of_validated_spectra` ,`score` ,`confidence` ,`peptide_id`,`fixed_modification`,`protein_inference`,`sequence_tagged`,`enzymatic`,`validated`,`starred`,`glycopattern_position(s)`,`deamidation_and_glycopattern`,`likelyNotGlycosite`,`exp_id` )VALUES ("
                 + "?,?,?,?,?,?,?,?,?,?,? , ? , ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
@@ -980,7 +1010,7 @@ public class DB implements Serializable {
         return test;
     }
 
-    public synchronized boolean insertFractions(ExperimentBean exp) {
+    public  boolean insertFractions(ExperimentBean exp) {
         try {
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
@@ -1019,7 +1049,7 @@ public class DB implements Serializable {
         return true;
     }
 
-    private synchronized int insertProteinFract(int fractId, ProteinBean fpb) {
+    private  int insertProteinFract(int fractId, ProteinBean fpb) {
         int test = -1;
         try {
             if (conn == null || conn.isClosed()) {
@@ -1669,7 +1699,7 @@ public class DB implements Serializable {
             }
             String[] executeCmd = new String[]{sqlMysqlPath, "--user=" + userName, "--password=" + password, dbName, "-e", "source " + sqlFileUrl};//  C:\\AppServ\\MySQL\\bin\\mysql
 
-            System.out.println(" sqlMysqlPath  "+sqlMysqlPath+"  sqlFileUrl  "+sqlFileUrl);
+            System.out.println(" sqlMysqlPath  " + sqlMysqlPath + "  sqlFileUrl  " + sqlFileUrl);
             Process runtimeProcess;
             runtimeProcess = Runtime.getRuntime().exec(executeCmd);
             int processComplete = runtimeProcess.waitFor();
@@ -1729,7 +1759,7 @@ public class DB implements Serializable {
             int counter = 0;
             for (QuantProtein qprot : qProtList) {
                 insertQProtStat = conn.prepareStatement(insertQProt, Statement.RETURN_GENERATED_KEYS);
-                insertQProtStat.setString(1, updateStringFormat(qprot.getAuthor()));
+                insertQProtStat.setString(1, qprot.getAuthor());
                 insertQProtStat.setInt(2, qprot.getYear());
                 insertQProtStat.setString(3, qprot.getPumedID());
                 insertQProtStat.setString(4, qprot.getStudyKey());

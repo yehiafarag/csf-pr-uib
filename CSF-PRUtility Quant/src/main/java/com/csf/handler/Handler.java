@@ -113,7 +113,6 @@ public class Handler {
 ////        System.out.println("final peptideProtein list updated (should be smaller)  " + qProtList.size() + "  prer " + peptidesList.size());
 //        return true;
 //    }
-
     private List<QuantProtein> handelQuantPeptides(List<QuantProtein> fullQuantProtList, Map<String, Integer> peptideKeyToProteinIndexMap, Map<Integer, Integer> protKeyToDsIndexMap) {
 //        Map<String, QuantPeptide> peptides = new HashMap<String, QuantPeptide>();
         List<QuantProtein> peptidesList = new ArrayList<QuantProtein>();
@@ -226,7 +225,7 @@ public class Handler {
                 if (!ds.getAuthor().equalsIgnoreCase(qp.getAuthor())) {
                     continue;
                 }
-                 if (!ds.getDiseaseCategory().equalsIgnoreCase(qp.getDiseaseCategory())) {
+                if (!ds.getDiseaseCategory().equalsIgnoreCase(qp.getDiseaseCategory())) {
                     continue;
                 }
 
@@ -372,7 +371,6 @@ public class Handler {
         }
 
     }
-
 
     public void correctProtInfo() {
         dal.correctProtInfo();
