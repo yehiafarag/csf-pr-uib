@@ -10,11 +10,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -24,7 +20,6 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
-import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import org.apache.commons.io.IOUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -38,7 +33,6 @@ import org.jfree.chart.title.TextTitle;
 import probe.com.model.beans.identification.IdentificationPeptideBean;
 import probe.com.model.util.vaadintoimageutil.peptideslayout.PeptidesSequenceContainer;
 import probe.com.model.util.vaadintoimageutil.peptideslayout.ProteinInformationDataForExport;
-import probe.com.view.core.exporter.ImageToExport;
 
 /**
  *
@@ -156,7 +150,7 @@ public class FileExporter implements Serializable {
      * @param path for the file csf-pr file system
      */
     public void expotIdentificationPeptidesToXLS(Map<Integer, IdentificationPeptideBean> allPeptides, String datasetName, String dataType, String path) {
-        File xlsText = new File(path, "CSF-PR - " + datasetName + " - All - " + dataType + " - Peptides.xls");// "CSF-PR - " + datasetName + " - All - " + dataType + "- Peptides" + ".csv");
+        File xlsText = new File(path, "CSF-PR-" + datasetName + "-All-" + dataType + "-Peptides.xls");// "CSF-PR - " + datasetName + " - All - " + dataType + "- Peptides" + ".csv");
 
         try {
             if (xlsText.exists()) {
@@ -165,7 +159,7 @@ public class FileExporter implements Serializable {
 
             FileOutputStream fileOut = new FileOutputStream(xlsText);
             HSSFWorkbook workbook = new HSSFWorkbook();
-            HSSFSheet worksheet = workbook.createSheet("POI Worksheet");
+            HSSFSheet worksheet = workbook.createSheet();
             //title
             String title = "CSF-PR / " + datasetName + " / " + dataType + " Peptides";
             HSSFRow titleRow = worksheet.createRow(0);
@@ -185,9 +179,21 @@ public class FileExporter implements Serializable {
             //data
 
             index = 0;
+            int counter = 0;
             for (IdentificationPeptideBean pb : allPeptides.values()) {
-                HSSFRow peptideRow = worksheet.createRow(index + 2);
-                HSSFCell cell0 = peptideRow.createCell(0);
+                if (index > 65533) {
+                    worksheet = workbook.createSheet();
+                     index = 0;
+                     HSSFRow headerRow2 = worksheet.createRow(0);
+                    for (String str : headerArr) {
+                        HSSFCell cell = headerRow2.createCell(index);
+                        cell.setCellValue(str);
+                        index++;
+                    }
+                    index = -1;
+                }
+                HSSFRow peptideRow = worksheet.createRow((int) index + 2);
+                HSSFCell cell0 = peptideRow.createCell(counter++);
                 cell0.setCellValue(index);
                 HSSFCell cell1 = peptideRow.createCell(1);
                 cell1.setCellValue(pb.getProteinInference());
@@ -245,9 +251,10 @@ public class FileExporter implements Serializable {
             }
 
             workbook.write(fileOut);
-            fileOut.flush();
+//            fileOut.flush();
             fileOut.close();
         } catch (Exception exp) {
+            exp.printStackTrace();
             System.err.println(exp.getMessage());
         }
 
@@ -328,16 +335,16 @@ public class FileExporter implements Serializable {
                 }
 
             }
-             g2d.dispose();
+            g2d.dispose();
             contentByte.addTemplate(template, 0, 0);
-            
+
             /// peptides sequences
 //            document.setPageSize(PageSize.A4.rotate());
             template = contentByte.createTemplate(width, height);
             g2d = template.createGraphics(width, height, new DefaultFontMapper());
             document.newPage();
             g2d.translate(32, 0);
-            
+
             JLabel peptidesOverviewHeaderLabel = new JLabel();
             peptidesOverviewHeaderLabel.setBackground(new java.awt.Color(255, 255, 255));
             peptidesOverviewHeaderLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -346,12 +353,12 @@ public class FileExporter implements Serializable {
             peptidesOverviewHeaderLabel.setFont(new Font("Verdana", Font.PLAIN, 14));
             peptidesOverviewHeaderLabel.paint(g2d);
             g2d.translate(0, 37);
-            int availableSpace = height - 10-37;
+            int availableSpace = height - 10 - 37;
 
             for (ProteinInformationDataForExport peptidesInfo : peptidesSet) {
 
                 PeptidesSequenceContainer peptidesSequenceContainer = new PeptidesSequenceContainer(peptidesInfo, csfFolder.getParent());
-                starty = peptidesSequenceContainer.getCurrentHeight()+10;
+                starty = peptidesSequenceContainer.getCurrentHeight() + 10;
                 if (starty <= availableSpace) {
                     peptidesSequenceContainer.paint(g2d);
                     g2d.translate(0, starty);
@@ -537,7 +544,7 @@ public class FileExporter implements Serializable {
     public byte[] exportfullReportAsZip(Map<String, Set<JFreeChart>> chartsMap, String fileName, String url, String title, Set<ProteinInformationDataForExport> peptidesSet) {
         int width = 595;
         int height = 842;
-        int startx ;
+        int startx;
         int starty = 0;
 
         try {
@@ -710,7 +717,7 @@ public class FileExporter implements Serializable {
             g2d = template.createGraphics(width, height, new DefaultFontMapper());
             document.newPage();
             g2d.translate(32, 0);
-            
+
             JLabel peptidesOverviewHeaderLabel = new JLabel();
             peptidesOverviewHeaderLabel.setBackground(new java.awt.Color(255, 255, 255));
             peptidesOverviewHeaderLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -719,12 +726,12 @@ public class FileExporter implements Serializable {
             peptidesOverviewHeaderLabel.setFont(new Font("Verdana", Font.PLAIN, 14));
             peptidesOverviewHeaderLabel.paint(g2d);
             g2d.translate(0, 37);
-            int availableSpace = height - 10-37;
+            int availableSpace = height - 10 - 37;
 
             for (ProteinInformationDataForExport peptidesInfo : peptidesSet) {
 
                 PeptidesSequenceContainer peptidesSequenceContainer = new PeptidesSequenceContainer(peptidesInfo, csfFolder.getParent());
-                starty = peptidesSequenceContainer.getCurrentHeight()+10;
+                starty = peptidesSequenceContainer.getCurrentHeight() + 10;
                 if (starty <= availableSpace) {
                     peptidesSequenceContainer.paint(g2d);
                     g2d.translate(0, starty);

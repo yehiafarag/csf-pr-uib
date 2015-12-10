@@ -2,9 +2,11 @@ package probe.com.view.core.exporter;
 
 import com.vaadin.addon.tableexport.CsvExport;
 import com.vaadin.addon.tableexport.ExcelExport;
+import com.vaadin.server.FileDownloader;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.Page;
 import com.vaadin.server.Resource;
+import com.vaadin.server.StreamResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.PopupView;
@@ -12,9 +14,13 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 import java.io.Serializable;
 import com.vaadin.ui.themes.Reindeer;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.commons.io.IOUtils;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.model.beans.identification.IdentificationDatasetBean;
 import probe.com.model.beans.identification.IdentificationDatasetDetailsBean;
@@ -87,7 +93,6 @@ public class ExporterBtnsGenerator implements Serializable {
             @Override
             public void buttonClick(Button.ClickEvent event) {
 
-               
                 String exportGroupValue = protExportLayout.getExportGroupValue();
                 String typeGroupValue = protExportLayout.getTypeGroupValue();
                 if (handler.checkFileAvailable("CSF-PR - " + datasetName + " - " + typeGroupValue + " - Proteins." + exportGroupValue)) {
@@ -95,8 +100,8 @@ public class ExporterBtnsGenerator implements Serializable {
                     Resource res = new FileResource(new File(fileURL));
                     Page.getCurrent().open(res, null, false);
                     return;
-                } 
-                
+                }
+
                 final Map<String, IdentificationProteinBean> proteinsList = handler.getIdentificationProteinsList(datasetId);
                 final int fractionNumber = handler.getDataset(datasetId).getFractionsNumber();
                 IdentificationProteinsTableComponent protTable;
@@ -135,7 +140,7 @@ public class ExporterBtnsGenerator implements Serializable {
      * @return
      */
     public VerticalLayout exportDatasetPeptides(final int datasetId, boolean linkBtn, String btnName) {
-        final String datasetName = handler.getDataset(datasetId).getName();
+        final String datasetName = handler.getDataset(datasetId).getName().replace(" ", "-");
 
         String tupdatedExpName = datasetName;
         if (datasetName != null) {
@@ -164,66 +169,105 @@ public class ExporterBtnsGenerator implements Serializable {
             }
         });
 
-        peptidesExportLayout.addClickListener(new Button.ClickListener() {
 
+//        peptidesExportLayout.addClickListener(new Button.ClickListener() {
+//
+//            @Override
+//            public void buttonClick(Button.ClickEvent event) {
+//                String exportGroupValue = peptidesExportLayout.getExportGroupValue();
+//                String typeGroupValue = peptidesExportLayout.getTypeGroupValue();
+//
+//                if (handler.checkFileAvailable("CSF-PR-" + datasetName + "-All-" + typeGroupValue + "-Peptides." + exportGroupValue)) {                   
+//                    String fileURL = handler.getFileUrl("CSF-PR-" + datasetName + "-All-" + typeGroupValue + "-Peptides." + exportGroupValue);
+//                    FileResource res = new FileResource(new File(fileURL));
+//                    Page.getCurrent().open(res, null, true);
+//                    return;
+//                }
+//
+//                if (typeGroupValue.equalsIgnoreCase("Validated Only")) {
+//                    handler.exportIdentificationPeptidesToFile(datasetId, true, datasetName, typeGroupValue, exportGroupValue);
+//                } else if (typeGroupValue.equalsIgnoreCase("All")) {
+//                    handler.exportIdentificationPeptidesToFile(datasetId, false, datasetName, typeGroupValue, exportGroupValue);
+//                }
+//                if (handler.checkFileAvailable("CSF-PR-" + datasetName + "-All-" + typeGroupValue + "-Peptides." + exportGroupValue)) {
+//                    String fileURL = handler.getFileUrl("CSF-PR-" + datasetName + "-All-" + typeGroupValue + "-Peptides." + exportGroupValue);
+//                    Resource res = new FileResource(new File(fileURL));
+//                    Page.getCurrent().open(res, null, false);
+//                    return;
+//                }
+//
+//                Map<Integer, IdentificationPeptideBean> peptidesList;
+//                if (typeGroupValue.equalsIgnoreCase("Validated Only")) {
+//                    peptidesList = handler.getIdentificationPeptidesList(datasetId, true);
+//                } else {
+//                    peptidesList = handler.getIdentificationPeptidesList(datasetId, false);
+//                }
+//
+//                IdentificationPeptideTable pepTable = new IdentificationPeptideTable(peptidesList, null, true, null);
+//                pepTable.setVisible(false);
+//                buttonBody.addComponent(pepTable);
+//                if (exportGroupValue.equalsIgnoreCase("csv")) {
+//                    csvExport = new CsvExport(pepTable, "CSF-PR  " + updatedDatasetName + "   All Peptides");
+//                    csvExport.setReportTitle("CSF-PR / " + datasetName + " / All Peptides");
+//                    csvExport.setExportFileName("CSF-PR-" + datasetName + "-All-" + typeGroupValue + "-Peptides." + "csv");
+//                    csvExport.setMimeType(CsvExport.CSV_MIME_TYPE);
+//                    csvExport.setDisplayTotals(false);
+//                    csvExport.export();
+//
+//                } else {
+//                    excelExport = new ExcelExport(pepTable, "CSF-PR   " + updatedDatasetName + "   All Peptides");
+//                    excelExport.setReportTitle("CSF-PR / " + datasetName + " / All Peptides");
+//                    excelExport.setExportFileName("CSF-PR-" + datasetName + "-All-" + typeGroupValue + "-Peptides." + "xls");
+//                    excelExport.setMimeType(ExcelExport.EXCEL_MIME_TYPE);
+//                    excelExport.setDisplayTotals(false);
+//                    excelExport.export();
+//                }
+//
+//            }
+//        });
+        
+        
+        
+        StreamResource myResource = new StreamResource(new StreamResource.StreamSource() {
             @Override
-            public void buttonClick(Button.ClickEvent event) {
-                String exportGroupValue = peptidesExportLayout.getExportGroupValue();
-                String typeGroupValue = peptidesExportLayout.getTypeGroupValue();
+            @SuppressWarnings("CallToPrintStackTrace")
+            public InputStream getStream() {
+                try {
+                       byte fileData[] = null;
+                    String exportGroupValue = peptidesExportLayout.getExportGroupValue();
+                    String typeGroupValue = peptidesExportLayout.getTypeGroupValue();
 
-                if (handler.checkFileAvailable("CSF-PR - " + datasetName + " - All - " + typeGroupValue + " - Peptides." + exportGroupValue)) {
-                    String fileURL = handler.getFileUrl("CSF-PR - " + datasetName + " - All - " + typeGroupValue + " - Peptides." + exportGroupValue);
-                    FileResource res = new FileResource(new File(fileURL));
-                    Page.getCurrent().open(res, null, true);
-                    return;
-                }
+                    if (handler.checkFileAvailable("CSF-PR-" + datasetName + "-All-" + typeGroupValue + "-Peptides." + exportGroupValue)) {
+                        String fileURL = handler.getFileUrl("CSF-PR-" + datasetName + "-All-" + typeGroupValue + "-Peptides." + exportGroupValue);
+                         
+                        fileData = IOUtils.toByteArray(new FileInputStream(new File(fileURL)));
+                    }
 
-                if (typeGroupValue.equalsIgnoreCase("Validated Only")) {
-                    handler.exportIdentificationPeptidesToFile(datasetId, true, datasetName, typeGroupValue, exportGroupValue);
-                } else if (typeGroupValue.equalsIgnoreCase("All")) {
-                    handler.exportIdentificationPeptidesToFile(datasetId, false, datasetName, typeGroupValue, exportGroupValue);
-                }
-                if (handler.checkFileAvailable("CSF-PR - " + datasetName + " - All - " + typeGroupValue + " - Peptides." + exportGroupValue)) {
-                    String fileURL = handler.getFileUrl("CSF-PR - " + datasetName + " - All - " + typeGroupValue + " - Peptides." + exportGroupValue);
-                    Resource res = new FileResource(new File(fileURL));
-                    Page.getCurrent().open(res, null, false);
-                    return;
-                }
-
-                Map<Integer, IdentificationPeptideBean> peptidesList;
-                if (typeGroupValue.equalsIgnoreCase("Validated Only")) {
-                    peptidesList = handler.getIdentificationPeptidesList(datasetId, true);
-                } else {
-                    peptidesList = handler.getIdentificationPeptidesList(datasetId, false);
-                }
-
-                IdentificationPeptideTable pepTable = new IdentificationPeptideTable(peptidesList, null, true, null);
-                pepTable.setVisible(false);
-                buttonBody.addComponent(pepTable);
-                if (exportGroupValue.equalsIgnoreCase("csv")) {
-                    csvExport = new CsvExport(pepTable, "CSF-PR  " + updatedDatasetName + "   All Peptides");
-                    csvExport.setReportTitle("CSF-PR / " + datasetName + " / All Peptides");
-                    csvExport.setExportFileName("CSF-PR - " + datasetName + " - All - " + typeGroupValue + " - Peptides." + "csv");
-                    csvExport.setMimeType(CsvExport.CSV_MIME_TYPE);
-                    csvExport.setDisplayTotals(false);
-                    csvExport.export();
-
-                } else {
-                    excelExport = new ExcelExport(pepTable, "CSF-PR   " + updatedDatasetName + "   All Peptides");
-                    excelExport.setReportTitle("CSF-PR / " + datasetName + " / All Peptides");
-                    excelExport.setExportFileName("CSF-PR - " + datasetName + " - All - " + typeGroupValue + " - Peptides." + "xls");
-                    excelExport.setMimeType(ExcelExport.EXCEL_MIME_TYPE);
-                    excelExport.setDisplayTotals(false);
-                    excelExport.export();
+                    if (typeGroupValue.equalsIgnoreCase("Validated Only")) {
+                        handler.exportIdentificationPeptidesToFile(datasetId, true, datasetName, typeGroupValue, exportGroupValue);
+                    } else if (typeGroupValue.equalsIgnoreCase("All")) {
+                        handler.exportIdentificationPeptidesToFile(datasetId, false, datasetName, typeGroupValue, exportGroupValue);
+                    }
+                    if (handler.checkFileAvailable("CSF-PR-" + datasetName + "-All-" + typeGroupValue + "-Peptides." + exportGroupValue)) {
+                        String fileURL = handler.getFileUrl("CSF-PR-" + datasetName + "-All-" + typeGroupValue + "-Peptides." + exportGroupValue);
+                        fileData = IOUtils.toByteArray(new FileInputStream(new File(fileURL)));
+                       
+                    }
+                    return new ByteArrayInputStream(fileData);
+                } catch (Exception e) {
+//                    e.printStackTrace();
+                    return null;
                 }
 
             }
-        });
-
+        }, "CSF-PR-" + datasetName + "-All-" + peptidesExportLayout.getTypeGroupValue() + "-Peptides." + "xls");
+        FileDownloader fileDownloader = new FileDownloader(myResource);
+        fileDownloader.extend(peptidesExportLayout);
         return buttonBody;
 
     }
 
+  
     /**
      *
      * @param accession

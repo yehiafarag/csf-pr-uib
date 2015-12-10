@@ -171,7 +171,7 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
         idProteinsDataLayout.setSpacing(true);
         idProteinsDataLayout.setWidthUndefined();
        
-        idProteinsDataLayoutContainer = new HideOnClickLayout("Proteins Identification Data", idProteinsDataLayout, null, Alignment.MIDDLE_LEFT,infoText);
+        idProteinsDataLayoutContainer = new HideOnClickLayout("Proteins Identification Data", idProteinsDataLayout, null, Alignment.MIDDLE_LEFT,null);
         searchingResultsLayout.addComponent(idProteinsDataLayoutContainer);
         idProteinsDataLayoutContainer.setVisability(true);
         idProteinsDataLayoutContainer.setVisible(false);
@@ -186,7 +186,7 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
         quantProteinsDataLayout = new VerticalLayout();
         quantProteinsDataLayout.setSpacing(true);
         quantProteinsDataLayout.setWidthUndefined();
-        quantProteinsDataLayoutContainer = new HideOnClickLayout("Proteins Quantitative Data", quantProteinsDataLayout, null, Alignment.MIDDLE_LEFT,infoText);
+        quantProteinsDataLayoutContainer = new HideOnClickLayout("Proteins Quantitative Data", quantProteinsDataLayout, null, Alignment.MIDDLE_LEFT,null);
         searchingResultsLayout.addComponent(quantProteinsDataLayoutContainer);
         quantProteinsDataLayoutContainer.setVisability(true);
         quantProteinsDataLayoutContainer.setVisible(false);
@@ -265,10 +265,10 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
             idResultsOverview.setVisible(false);
             return;
         }
-        idResultsOverview.setCaption("Proteins Identification Data ( #Protein Groups " + idHitsList.size() + " | #Hits " + totalProtNum + " )");
+        idResultsOverview.setCaption("Proteins Identification Data ( #Proteins " + idHitsList.size() + " | #Datasets " + totalProtNum + " )");
         idResultsOverview.setVisible(true);
         idProteinsDataLayout.removeAllComponents();
-        idProteinsDataLayoutContainer.updateTitleLabel("Proteins Identification Data ( #Protein Groups " + idHitsList.size() + " | #Hits " + totalProtNum + " )");
+        idProteinsDataLayoutContainer.updateTitleLabel("Proteins Identification Data ( #Proteins " + idHitsList.size() + " | #Datasets " + totalProtNum + " )");
         idProteinsDataLayoutContainer.setVisible(true);
         idProteinsDataLayout.setVisible(true);
         if (idHitsList.size() > 1) {
@@ -360,10 +360,10 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
             quantResultsOverview.setVisible(false);
             return;
         }
-        quantResultsOverview.setCaption("Proteins Quantitative Data ( #Protein Groups " + quantHitsList.size() + " | #Hits " + totalProtNum + " )");
+        quantResultsOverview.setCaption("Proteins Quantitative Data ( #Proteins " + quantHitsList.size() + " | #Datasets " + totalProtNum + " )");
         quantResultsOverview.setVisible(true);
         quantProteinsDataLayout.removeAllComponents();
-        quantProteinsDataLayoutContainer.updateTitleLabel("Proteins Quantitative Data ( #Protein Groups " + quantHitsList.size() + " | #Hits " + totalProtNum + " )");
+        quantProteinsDataLayoutContainer.updateTitleLabel("Proteins Quantitative Data ( #Proteins " + quantHitsList.size() + " | #Studies " + totalProtNum + " )");
         quantProteinsDataLayoutContainer.setVisible(true);
         quantProteinsDataLayout.setVisible(true);
         if (quantHitsList.size() > 1) {

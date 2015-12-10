@@ -96,6 +96,9 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
     private final String[] tooltipLabels = new String[]{"( Low <img src='VAADIN/themes/dario-theme/img/greendot.png' alt='Low'>" + " )", "( Low <img src='VAADIN/themes/dario-theme/img/lgreendot.png' alt='Low'>" + " )", "( Stable <img src='VAADIN/themes/dario-theme/img/bluedot.png' alt='Stable'>" + " )", " ( High <img src='VAADIN/themes/dario-theme/img/lreddot.png' alt='High'>" + " )", " ( High <img src='VAADIN/themes/dario-theme/img/reddot.png' alt='High'>" + " )"};
 
     public void updateSize(int updatedWidth) {
+        if (chart == null) {
+            return;
+        }
         defaultImgURL = saveToFile(chart, updatedWidth, height);
         this.setWidth(updatedWidth + "px");
         this.chartLayout.setWidth(updatedWidth + "px");
@@ -128,7 +131,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         this.Quant_Central_Manager = Quant_Central_Manager;
         this.Quant_Central_Manager.registerStudySelectionListener(ComparisonsSelectionOverviewBubbleChart.this);
 
-        this.teststyle = "__"+System.currentTimeMillis()+"_heatmapOverviewBubbleChart";
+        this.teststyle = "__" + System.currentTimeMillis() + "_heatmapOverviewBubbleChart";
         initialLayout = new VerticalLayout();
         initialLayout.setWidth(width + "px");
         initialLayout.setHeightUndefined();
@@ -211,7 +214,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
         btnContainerLayout.addComponent(exportPdfBtn);
 
-        InfoPopupBtn info = new InfoPopupBtn("add text");
+        InfoPopupBtn info = new InfoPopupBtn("The bubble chart give an overview for the proteins existed in the selected comparisons.<br/>The diameter of the bubble represents the number of the proteins in the selected comparison and the color represents the trend<br/>");
         info.setWidth("20px");
         info.setHeight("20px");
         btnContainerLayout.addComponent(info);
@@ -409,9 +412,9 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                         String tickLabel;
                         NumberFormat formatter = getNumberFormatOverride();
                         if (formatter != null) {
-                            tickLabel = formatter.format(currentTickValue)+"  ";
+                            tickLabel = formatter.format(currentTickValue) + "  ";
                         } else {
-                            tickLabel = valueToString(currentTickValue)+"  ";
+                            tickLabel = valueToString(currentTickValue) + "  ";
                         }
                         // avoid to draw overlapping tick labels
                         Rectangle2D bounds = TextUtilities.getTextBounds(tickLabel, g2,
@@ -466,7 +469,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 //        }
         xAxis.setTickLabelFont(font);
         xAxis.setTickLabelInsets(new RectangleInsets(2, 20, 2, 20));
-     
+
         xAxis.setGridBandsVisible(false);
         xAxis.setAxisLinePaint(Color.LIGHT_GRAY);
         int scale = XYBubbleRenderer.SCALE_ON_RANGE_AXIS;
