@@ -72,8 +72,12 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
                 } else {
                     Map<Integer, IdentificationProteinBean> subSearchIdentificationProtList = new HashMap<Integer, IdentificationProteinBean>();
                     for (int key : searchIdentificationProtList.keySet()) {
+                        
                         IdentificationProteinBean idProtBean = searchIdentificationProtList.get(key);
+                        System.out.println("at id key is "+idProtBean.getDescription());
+                        System.out.println("at prot name is "+protName);
                         if (idProtBean.getDescription().equalsIgnoreCase(protName)) {
+                            
                             subSearchIdentificationProtList.put(key, idProtBean);
                         }
                     }

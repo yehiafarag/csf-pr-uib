@@ -525,7 +525,7 @@ public class DataBase implements Serializable {
                 temPb.setChromosomeNumber(rs.getString("chromosome_number"));
 
                 temPb.setValidated(Boolean.valueOf(rs.getString("valid")));
-                temPb.setDescription(rs.getString("description"));
+                temPb.setDescription(rs.getString("description").trim());
                 if (temPb.getOtherProteins() == null || temPb.getOtherProteins().equals("")) {
                     proteinDatasetList.put(temPb.getAccession(), temPb);
                 } else {
@@ -1163,7 +1163,7 @@ public class DataBase implements Serializable {
                 IdentificationProteinBean temPb = new IdentificationProteinBean();
                 temPb.setDatasetId(rs.getInt("exp_id"));
                 temPb.setAccession(rs.getString("prot_accession"));
-                temPb.setDescription(rs.getString("description"));
+                temPb.setDescription(rs.getString("description").trim());
                 temPb.setOtherProteins(rs.getString("other_protein(s)"));
                 temPb.setProteinInferenceClass(rs.getString("protein_inference_class"));
                 temPb.setSequenceCoverage(rs.getDouble("sequence_coverage(%)"));
