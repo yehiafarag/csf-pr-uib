@@ -875,25 +875,25 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
                 }
 
-                if (paramName.equalsIgnoreCase("GroupsComparison")) {
-                    MouseEvents.MouseOverListener mouseOverListener = new MouseEvents.MouseOverListener() {
-                        private final QuantDiseaseGroupsComparison gc = inUseComparisonProteins[((XYItemEntity) entity).getItem()].getComparison();
-
-                        @Override
-                        public void mouseOver() {
-                            studiesScatterChartsLayout.highlightComparison(gc, false);
-                        }
-                    };
-                    MouseEvents.MouseOutListener mouseOutListener = new MouseEvents.MouseOutListener() {
-                        @Override
-                        public void mouseOut() {
-                            studiesScatterChartsLayout.highlightComparison(null, false);
-                        }
-                    };
-                    final MouseEvents mouseEvents = MouseEvents.enableFor(square);
-                    mouseEvents.addMouseOutListener(mouseOutListener);
-                    mouseEvents.addMouseOverListener(mouseOverListener);
-                }
+//                if (paramName.equalsIgnoreCase("GroupsComparison")) {
+//                    MouseEvents.MouseOverListener mouseOverListener = new MouseEvents.MouseOverListener() {
+//                        private final QuantDiseaseGroupsComparison gc = inUseComparisonProteins[((XYItemEntity) entity).getItem()].getComparison();
+//
+//                        @Override
+//                        public void mouseOver() {
+//                            studiesScatterChartsLayout.highlightComparison(gc, false);
+//                        }
+//                    };
+//                    MouseEvents.MouseOutListener mouseOutListener = new MouseEvents.MouseOutListener() {
+//                        @Override
+//                        public void mouseOut() {
+//                            studiesScatterChartsLayout.highlightComparison(null, false);
+//                        }
+//                    };
+//                    final MouseEvents mouseEvents = MouseEvents.enableFor(square);
+//                    mouseEvents.addMouseOutListener(mouseOutListener);
+//                    mouseEvents.addMouseOverListener(mouseOverListener);
+//                }
             }
         }
         return imgUrl;

@@ -32,8 +32,8 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
         return value;
     }
     private final HeatMapComponent parent;
-    private final MouseEvents.MouseOverListener mouseOverListener;
-    private final MouseEvents.MouseOutListener mouseOutListener;
+//    private final MouseEvents.MouseOverListener mouseOverListener;
+//    private final MouseEvents.MouseOutListener mouseOutListener;
     private String strValue;
     private String pointer;
     private String defaultStyle = "initheatmapcoloredcell";
@@ -78,35 +78,35 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
         comparison.setComparisonHeader(groupCompTitle);
         comparison.setRgbStringColor(color);
         comparison.setDatasetIndexes(dsIndexes);
-        mouseOverListener = new MouseEvents.MouseOverListener() {
-
-            @Override
-            public void mouseOver() {
-
-                parent.highlightHeaders(colLabelIndex, rowLabelIndex);
-//                setValue("<div style='background-color: " + heighlightColor + " ;height:50px;width:50px; cursor:" + pointer + "; '><b>" + strValue + "</b></div>");
-
-            }
-        };
-
-        mouseOutListener = new MouseEvents.MouseOutListener() {
-
-            @Override
-            public void mouseOut() {
-                if (selected) {
-                    return;
-                }
-                parent.resetHeadersStyle(colLabelIndex, rowLabelIndex);
-//                setValue("<div style='background-color:" + color + ";height:50px;width:50px; cursor:" + pointer + "; '><b>" + strValue + "</b></div>");
-            }
-        };
+//        mouseOverListener = new MouseEvents.MouseOverListener() {
+//
+//            @Override
+//            public void mouseOver() {
+//
+//                parent.highlightHeaders(colLabelIndex, rowLabelIndex);
+////                setValue("<div style='background-color: " + heighlightColor + " ;height:50px;width:50px; cursor:" + pointer + "; '><b>" + strValue + "</b></div>");
+//
+//            }
+//        };
+//
+//        mouseOutListener = new MouseEvents.MouseOutListener() {
+//
+//            @Override
+//            public void mouseOut() {
+//                if (selected) {
+//                    return;
+//                }
+//                parent.resetHeadersStyle(colLabelIndex, rowLabelIndex);
+////                setValue("<div style='background-color:" + color + ";height:50px;width:50px; cursor:" + pointer + "; '><b>" + strValue + "</b></div>");
+//            }
+//        };
 
         if (value != 0) {
             strValue = ((int) value) + "";
             pointer = "pointer";
-            final MouseEvents mouseEvents = MouseEvents.enableFor(valueLabel);
-            mouseEvents.addMouseOutListener(mouseOutListener);
-            mouseEvents.addMouseOverListener(mouseOverListener);
+//            final MouseEvents mouseEvents = MouseEvents.enableFor(valueLabel);
+//            mouseEvents.addMouseOutListener(mouseOutListener);
+//            mouseEvents.addMouseOverListener(mouseOverListener);
             this.addLayoutClickListener(HeatmapCell.this);
 
         }
@@ -116,7 +116,7 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
         this.addComponent(valueLabel);
         this.setComponentAlignment(valueLabel, Alignment.MIDDLE_CENTER);
         if (value > 0) {
-            this.setDescription("<h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + strValue + " available " + (value == 1 ? "study" : "studies") + " </h3>");
+            this.setDescription("<h3>"+groupCompTitle+"</h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + strValue + " available " + (value == 1 ? "study" : "studies") + " </h3>");
         }
 
     }
