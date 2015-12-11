@@ -1,7 +1,6 @@
 package probe.com.view.body;
 
 import com.vaadin.event.LayoutEvents;
-import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -15,8 +14,10 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -53,7 +54,7 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
         this.handler = CSFPR_Handler;
         this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.setSpacing(true);
-       
+
         searchingUnitLayout = new SearchingUnitLayout(ProteinsSearchingLayout.this);
         idLayoutListener = new LayoutEvents.LayoutClickListener() {
             @Override
@@ -72,12 +73,10 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
                 } else {
                     Map<Integer, IdentificationProteinBean> subSearchIdentificationProtList = new HashMap<Integer, IdentificationProteinBean>();
                     for (int key : searchIdentificationProtList.keySet()) {
-                        
+
                         IdentificationProteinBean idProtBean = searchIdentificationProtList.get(key);
-                        System.out.println("at id key is "+idProtBean.getDescription());
-                        System.out.println("at prot name is "+protName);
                         if (idProtBean.getDescription().equalsIgnoreCase(protName)) {
-                            
+
                             subSearchIdentificationProtList.put(key, idProtBean);
                         }
                     }
@@ -122,9 +121,9 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
             }
 
         };
- String infoText="Select an experiment in the roll down menu on top to view all proteins identified in the selected experiment. Select a protein to see below all Peptides identified for the protein, and if the experiment was based on SDS-PAGE, the protein’s distribution in the gel is displayed under Fractions. To show information about the experiment, press Dataset Information.  Use the search box to navigate in the experiment selected.</p><p  style='font-family:verdana;color:black;margin-left:20px;margin-right:20px;'>Under Fractions, bar charts show the distribution of the selected protein across the fractions cut from the gel. Three charts show number of peptides, number of spectra and average precursor intensity. The fraction number represents the gel pieces cut from top to bottom. Protein standards <font color='#CDE1FF'>(light blue bars)</font> indicate the molecular weight range of each fraction. <font color='#79AFFF'>Darker blue bars</font> mark between which two standards the protein's theoretical mass suggests the protein should be found.";
+        String infoText = "Type in search keywords (one per line) and choose the search type. All experiments containing protein(s) where the keyword is found are listed. View the information about each protein from each experiment separately by selecting them from the list.";
 
-        HideOnClickLayout searchingLayoutContainer = new HideOnClickLayout("Searching Filters", searchingUnitLayout, null,infoText);
+        HideOnClickLayout searchingLayoutContainer = new HideOnClickLayout("Searching Filters", searchingUnitLayout, null, infoText);
         this.addComponent(searchingLayoutContainer);
         searchingLayoutContainer.setVisability(true);
 
@@ -174,8 +173,8 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
         idProteinsDataLayout = new VerticalLayout();
         idProteinsDataLayout.setSpacing(true);
         idProteinsDataLayout.setWidthUndefined();
-       
-        idProteinsDataLayoutContainer = new HideOnClickLayout("Proteins Identification Data", idProteinsDataLayout, null, Alignment.MIDDLE_LEFT,null);
+
+        idProteinsDataLayoutContainer = new HideOnClickLayout("Proteins Identification Data", idProteinsDataLayout, null, Alignment.MIDDLE_LEFT, null);
         searchingResultsLayout.addComponent(idProteinsDataLayoutContainer);
         idProteinsDataLayoutContainer.setVisability(true);
         idProteinsDataLayoutContainer.setVisible(false);
@@ -190,18 +189,16 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
         quantProteinsDataLayout = new VerticalLayout();
         quantProteinsDataLayout.setSpacing(true);
         quantProteinsDataLayout.setWidthUndefined();
-        quantProteinsDataLayoutContainer = new HideOnClickLayout("Proteins Quantitative Data", quantProteinsDataLayout, null, Alignment.MIDDLE_LEFT,null);
+        quantProteinsDataLayoutContainer = new HideOnClickLayout("Proteins Quantitative Data", quantProteinsDataLayout, null, Alignment.MIDDLE_LEFT, null);
         searchingResultsLayout.addComponent(quantProteinsDataLayoutContainer);
         quantProteinsDataLayoutContainer.setVisability(true);
         quantProteinsDataLayoutContainer.setVisible(false);
-        
-        
-         String requestSearching = VaadinService.getCurrentRequest().getPathInfo();
+
+        String requestSearching = VaadinService.getCurrentRequest().getPathInfo();
         if (!requestSearching.trim().endsWith("/")) {
             requestSearching = requestSearching.replace("/", "");
             searchingUnitLayout.searchingProcess(requestSearching);
-        } 
-
+        }
 
     }
     private Map<Integer, IdentificationProteinBean> searchIdentificationProtList;
@@ -225,10 +222,17 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
             String idNotFound;
             String defaultText = query.getSearchKeyWords();
             defaultText = defaultText.replace(",", "\n").replace(" ", "").trim();
+            Set<String> filterKeywordSet = new LinkedHashSet<String>();
+            filterKeywordSet.addAll(Arrays.asList(defaultText.split("\n")));
+            defaultText = "";
+            for (String str : filterKeywordSet) {
+                defaultText += str;
+            }
             searchingUnitLayout.setSearchingFieldValue(defaultText);
+            query.setSearchKeyWords(defaultText);
             searchIdentificationProtList = handler.searchIdentificationProtein(query);
             idNotFound = handler.filterIdSearchingKeywords(searchIdentificationProtList, query.getSearchKeyWords(), query.getSearchBy());
-            Map<String, Integer> idHitsList = handler.getIdHitsList(searchIdentificationProtList, query.getSearchBy(),query.getSearchKeyWords());
+            Map<String, Integer> idHitsList = handler.getIdHitsList(searchIdentificationProtList, query.getSearchBy(), query.getSearchKeyWords());
             initProteinsIdDataLayout(idHitsList, query.getSearchBy(), searchIdentificationProtList.size(), query.getSearchKeyWords());
 
             //searching quant data
@@ -269,10 +273,10 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
             idResultsOverview.setVisible(false);
             return;
         }
-        idResultsOverview.setCaption("Proteins Identification Data ( #Proteins " + idHitsList.size() + " | #Datasets " + totalProtNum + " )");
+        idResultsOverview.setCaption("Proteins Identification Data ( #Protein Groups " + idHitsList.size() + " | #Datasets " + totalProtNum + " )");
         idResultsOverview.setVisible(true);
         idProteinsDataLayout.removeAllComponents();
-        idProteinsDataLayoutContainer.updateTitleLabel("Proteins Identification Data ( #Proteins " + idHitsList.size() + " | #Datasets " + totalProtNum + " )");
+        idProteinsDataLayoutContainer.updateTitleLabel("Proteins Identification Data ( #Protein Groups " + idHitsList.size() + " | #Datasets " + totalProtNum + " )");
         idProteinsDataLayoutContainer.setVisible(true);
         idProteinsDataLayout.setVisible(true);
         if (idHitsList.size() > 1) {
@@ -364,7 +368,7 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
             quantResultsOverview.setVisible(false);
             return;
         }
-        quantResultsOverview.setCaption("Proteins Quantitative Data ( #Proteins " + quantHitsList.size() + " | #Datasets " + totalProtNum + " )");
+        quantResultsOverview.setCaption("Proteins Quantitative Data ( #Protein Groups " + quantHitsList.size() + " | #Datasets " + totalProtNum + " )");
         quantResultsOverview.setVisible(true);
         quantProteinsDataLayout.removeAllComponents();
         quantProteinsDataLayoutContainer.updateTitleLabel("Proteins Quantitative Data ( #Proteins " + quantHitsList.size() + " | #Studies " + totalProtNum + " )");

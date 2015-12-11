@@ -2937,7 +2937,7 @@ public class DataBase implements Serializable {
         String selectPro;
         //main filters  
         if (query.getSearchKeyWords() != null && !query.getSearchKeyWords().equalsIgnoreCase("")) {
-            String[] queryWordsArr = query.getSearchKeyWords().split(" ");
+            String[] queryWordsArr = query.getSearchKeyWords().split("\n");
             HashSet<String> searchSet = new HashSet<String>();
             for (String str : queryWordsArr) {
                 if (str.trim().equalsIgnoreCase("")) {
@@ -2991,31 +2991,51 @@ public class DataBase implements Serializable {
             List<QuantProtein> quantProtResultList = fillQuantProtData(rs);
             System.gc();
 
-            Set<Integer> datasetsIds = new HashSet<Integer>();
+            Set<Integer> quantDatasetIds = new HashSet<Integer>();
             for (QuantProtein quantProt : quantProtResultList) {
 
-                datasetsIds.add(quantProt.getDsKey());
+                quantDatasetIds.add(quantProt.getDsKey());
             }
-            String selectDsGroupNum = "SELECT `patients_group_i_number` , `patients_group_ii_number` FROM `quant_dataset_table` Where  `index`=?;";
-            PreparedStatement selectselectDsGroupNumStat = conn.prepareStatement(selectDsGroupNum);
-            Map<Integer, int[]> dsDGrNumMap = new HashMap<Integer, int[]>();
-            for (int i : datasetsIds) {
-                selectselectDsGroupNumStat.setInt(1, i);
-                ResultSet dsIdRs = selectselectDsGroupNumStat.executeQuery();
+            sb = new StringBuilder();
+             for (Object index : quantDatasetIds) {
+                sb.append("  `index` = ").append(index);
+                sb.append(" OR ");
 
-                while (dsIdRs.next()) {
-                    int[] grNumArr = new int[]{dsIdRs.getInt("patients_group_i_number"), dsIdRs.getInt("patients_group_ii_number")};
-                    dsDGrNumMap.put(i, grNumArr);
-                }
-                dsIdRs.close();
             }
+            String stat = sb.toString().substring(0, sb.length() - 4);
+            System.out.println("stat is "+stat);
+            String selectDsGroupNum = "SELECT `index` ,`patients_group_i_number` , `patients_group_ii_number`,`patient_group_i`,`patient_group_ii`,`patient_sub_group_i`,`patient_sub_group_ii` FROM `quant_dataset_table` Where  "+stat+";"; //"SELECT `patients_group_i_number` , `patients_group_ii_number`,`patient_group_i`,`patient_group_ii`,`patient_sub_group_i`,`patient_sub_group_ii`,`index` FROM `quant_dataset_table` WHERE  " + stat + " ;";
+
+            PreparedStatement selectselectDsGroupNumStat = conn.prepareStatement(selectDsGroupNum);
+            rs = selectselectDsGroupNumStat.executeQuery();
+            Map<Integer, Object[]> datasetIdDesGrs = new HashMap<Integer, Object[]>();
+            while (rs.next()) {
+                datasetIdDesGrs.put(rs.getInt("index"), new Object[]{rs.getInt("patients_group_i_number"), rs.getInt("patients_group_ii_number"), rs.getString("patient_group_i").trim(), rs.getString("patient_group_ii").trim(), rs.getString("patient_sub_group_i").trim(), rs.getString("patient_sub_group_ii").trim()});
+            }
+            rs.close();
+
+//            Map<Integer, int[]> dsDGrNumMap = new HashMap<Integer, int[]>();
+//            for (int i : datasetsIds) {
+//                selectselectDsGroupNumStat.setInt(1, i);
+//                ResultSet dsIdRs = selectselectDsGroupNumStat.executeQuery();
+//
+//                while (dsIdRs.next()) {
+//                    int[] grNumArr = new int[]{dsIdRs.getInt("patients_group_i_number"), dsIdRs.getInt("patients_group_ii_number")};
+//                    dsDGrNumMap.put(i, grNumArr);
+//                }
+//                dsIdRs.close();
+//            }
             List<QuantProtein> updatedQuantProtResultList = new ArrayList<QuantProtein>();
             for (QuantProtein quantProt : quantProtResultList) {
 
-                if (dsDGrNumMap.containsKey(quantProt.getDsKey())) {
-                    int[] grNumArr = dsDGrNumMap.get(quantProt.getDsKey());
-                    quantProt.setPatientsGroupINumber(grNumArr[0]);
-                    quantProt.setPatientsGroupIINumber(grNumArr[1]);
+                if (datasetIdDesGrs.containsKey(quantProt.getDsKey())) {
+                    Object[] grNumArr = datasetIdDesGrs.get(quantProt.getDsKey());
+                    quantProt.setPatientsGroupINumber((Integer)grNumArr[0]);
+                    quantProt.setPatientsGroupIINumber((Integer)grNumArr[1]);
+                    quantProt.setPatientGroupI((String)grNumArr[2]);
+                    quantProt.setPatientGroupII((String)grNumArr[3]);
+                    quantProt.setPatientSubGroupI((String)grNumArr[4]);
+                    quantProt.setPatientSubGroupII((String)grNumArr[5]);
                     updatedQuantProtResultList.add(quantProt);
                 }
             }
@@ -3033,6 +3053,7 @@ public class DataBase implements Serializable {
 
             return null;
         } catch (SQLException e) {
+            e.printStackTrace();
             System.err.println("at error line 3665 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
 
             return null;

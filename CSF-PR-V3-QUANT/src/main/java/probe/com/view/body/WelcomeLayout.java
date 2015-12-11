@@ -149,7 +149,7 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
 //        sub1IdStatValue.setContentMode(ContentMode.HTML);
 //        subIdStatLayout.addComponent(sub1IdStatValue,1,0);
 //        subIdStatLayout.setComponentAlignment(sub1IdStatValue, Alignment.MIDDLE_RIGHT);
-        Label sub2IdStatLabel = new Label("<h3>Datasets Number</h3>");
+        Label sub2IdStatLabel = new Label("<h3>#Datasets</h3>");
         sub2IdStatLabel.setContentMode(ContentMode.HTML);
         subIdStatLayout.addComponent(sub2IdStatLabel, 0, 1);
         subIdStatLayout.setColumnExpandRatio(0, 2);
@@ -160,7 +160,7 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         subIdStatLayout.addComponent(sub2IdStatValue, 1, 1);
         subIdStatLayout.setComponentAlignment(sub2IdStatValue, Alignment.MIDDLE_RIGHT);
 
-        Label sub3IdStatLabel = new Label("<h3>Proteins Number</h3>");
+        Label sub3IdStatLabel = new Label("<h3>#Proteins</h3>");
         sub3IdStatLabel.setContentMode(ContentMode.HTML);
         subIdStatLayout.addComponent(sub3IdStatLabel, 0, 2);
 
@@ -169,7 +169,7 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         subIdStatLayout.addComponent(sub3IdStatValue, 1, 2);
         subIdStatLayout.setComponentAlignment(sub3IdStatValue, Alignment.MIDDLE_RIGHT);
 
-        Label sub4IdStatLabel = new Label("<h3>Peptides Number</h3>");
+        Label sub4IdStatLabel = new Label("<h3>#Peptides</h3>");
         sub4IdStatLabel.setContentMode(ContentMode.HTML);
         subIdStatLayout.addComponent(sub4IdStatLabel, 0, 3);
 
@@ -186,7 +186,7 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         subQuantStatLayout.setWidth("100%");
         leftLayout.addComponent(subQuantStatLayout);
 
-        Label sub1quantStatLabel = new Label("<h3>Publications Number</h3>");
+        Label sub1quantStatLabel = new Label("<h3>#Publications</h3>");
         sub1quantStatLabel.setContentMode(ContentMode.HTML);
         subQuantStatLayout.addComponent(sub1quantStatLabel, 0, 0);
 
@@ -195,7 +195,7 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         subQuantStatLayout.addComponent(sub1QuantStatValue, 1, 0);
         subQuantStatLayout.setComponentAlignment(sub1QuantStatValue, Alignment.MIDDLE_RIGHT);
 
-        Label sub2quantStatLabel = new Label("<h3>Studies Number</h3>");
+        Label sub2quantStatLabel = new Label("<h3>#Studies</h3>");
         sub2quantStatLabel.setContentMode(ContentMode.HTML);
         subQuantStatLayout.addComponent(sub2quantStatLabel, 0, 1);
 
@@ -204,7 +204,7 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         subQuantStatLayout.addComponent(sub2QuantStatValue, 1, 1);
         subQuantStatLayout.setComponentAlignment(sub2QuantStatValue, Alignment.MIDDLE_RIGHT);
 
-        Label sub3quantStatLabel = new Label("<h3>Proteins Number</h3>");
+        Label sub3quantStatLabel = new Label("<h3>#Proteins</h3>");
         sub3quantStatLabel.setContentMode(ContentMode.HTML);
         subQuantStatLayout.addComponent(sub3quantStatLabel, 0, 2);
 
@@ -213,7 +213,7 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         subQuantStatLayout.addComponent(sub3QuantStatValue, 1, 2);
         subQuantStatLayout.setComponentAlignment(sub3QuantStatValue, Alignment.MIDDLE_RIGHT);
 
-        Label sub4quantStatLabel = new Label("<h3>Peptides Number</h3>");
+        Label sub4quantStatLabel = new Label("<h3>#Peptides</h3>");
         sub4quantStatLabel.setContentMode(ContentMode.HTML);
         subQuantStatLayout.addComponent(sub4quantStatLabel, 0, 3);
 

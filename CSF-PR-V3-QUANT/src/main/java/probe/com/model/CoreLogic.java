@@ -1324,11 +1324,11 @@ public class CoreLogic implements Serializable {
         }
 
         for (QuantDiseaseGroupsComparison comparison : selectedComparisonList) {
-           Set<QuantProtein> comparisonProtMap = fullComparisonToProtMap.get(comparison.getComparisonHeader());
+            Set<QuantProtein> comparisonProtMap = fullComparisonToProtMap.get(comparison.getComparisonHeader());
             if (comparisonProtMap == null) {
                 continue;
             }
-            
+
             Map<String, DiseaseGroupsComparisonsProteinLayout> comparProtList = new HashMap<String, DiseaseGroupsComparisonsProteinLayout>();
             String pGrI = comparison.getComparisonHeader().split("vs")[0].trim();
             String pGrII = comparison.getComparisonHeader().split("vs")[1].trim();
@@ -1366,6 +1366,8 @@ public class CoreLogic implements Serializable {
                     }
 
                 } else {
+                    System.out.println("at invert is true");
+                    System.out.println("at "+(pGrI)+" .equalsIgnoreCase "+(quant.getPatientGroupI())+" || "+(pGrI)+" .equalsIgnoreCase "+(quant.getPatientSubGroupI())+" &&"+ (pGrII)+" .equalsIgnoreCase "+(quant.getPatientGroupII())+" || " + (pGrII)+" .equalsIgnoreCase "+(quant.getPatientSubGroupII()));
                     inverted = true;
 
                     if (quant.getStringFCValue().equalsIgnoreCase("Decreased") || quant.getStringFCValue().equalsIgnoreCase("Decrease")) {

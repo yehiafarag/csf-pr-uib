@@ -424,15 +424,17 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
 //            }
 //        });
 //        
-        VerticalLayout unselectAllBtn = new VerticalLayout();
-        unselectAllBtn.setStyleName("unselectallbtn");
+        Button unselectAllBtn = new Button("Clear");
+        unselectAllBtn.setPrimaryStyleName("resetbtn");
+          unselectAllBtn.setWidth("50px");
+        unselectAllBtn.setHeight("24px");
         btnLayout.addComponent(unselectAllBtn);
         btnLayout.setComponentAlignment(unselectAllBtn, Alignment.TOP_LEFT);
-        unselectAllBtn.setDescription("Unselect All Filters");
-        unselectAllBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+        unselectAllBtn.setDescription("Clear All Selections");
+        unselectAllBtn.addClickListener(new Button.ClickListener() {
 
             @Override
-            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+            public void buttonClick(Button.ClickEvent event) {
                 internalSelectionManager.unselectAll();
             }
         });
