@@ -673,7 +673,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                 btnsLayout.setVisible(true);
                 chartLayout.setVisible(true);
                 chart = this.updateBubbleChartChart(selectedComparisonList);
-                defaultImgURL = saveToFile(chart, width, height);;
+                defaultImgURL = saveToFile(chart, width, height);
             }
             this.redrawChart();
 

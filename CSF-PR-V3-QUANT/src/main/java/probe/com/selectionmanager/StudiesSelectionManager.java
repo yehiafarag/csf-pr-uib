@@ -26,19 +26,19 @@ public class StudiesSelectionManager implements Serializable {
     private Map<String, DiseaseGroupsComparisonsProteinLayout[]> quantProteinsLayoutSelectionMap;
     private String selectedProteinKey;
 
-    private List<Integer> selectedDataset = null;
+//    private List<Integer> selectedDataset = null;
 
-    public List<Integer> getSelectedDataset() {
-        return selectedDataset;
-    }
-
-    /**
-     *
-     * @param selectedDataset
-     */
-    public void setSelectedDataset(List<Integer> selectedDataset) {
-        this.selectedDataset = selectedDataset;
-    }
+//    public List<Integer> getSelectedDataset() {
+//        return selectedDataset;
+//    }
+//
+//    /**
+//     *
+//     * @param selectedDataset
+//     */
+//    public void setSelectedDataset(List<Integer> selectedDataset) {
+//        this.selectedDataset = selectedDataset;
+//    }
     /*
      *
      */

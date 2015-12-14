@@ -1132,6 +1132,28 @@ resetlabelbtn p{
     border: 1px solid black;    
     cursor:pointer;
 }
+.graystackedlayout div{
+    background: #737373;
+    border: 1px solid black;    
+    cursor:pointer;
+}
+.selectedgraystackedlayout div{
+    background: #737373;
+    border: 2px solid black;    
+    cursor:pointer;
+    opacity: 1;
+}
+.unselectedgraystackedlayout div{
+    background: #737373;
+    border: 1px solid black;    
+    cursor:pointer;
+    opacity: 0.3;
+}
+.unselectedgraystackedlayout div:hover{
+    border:2px solid gray;
+    opacity: 1;
+
+}
 .midredstackedlayout div{
     background: #FF7F7F;
     border: 1px solid black;     
@@ -1245,6 +1267,9 @@ resetlabelbtn p{
 
 .greenlayout div{
     background: #009900;
+}
+.darkgray div{
+    background: #737373;
 }
 .lightbluelayout div{
     background: rgb(1, 141, 244);
@@ -1821,4 +1846,8 @@ margin-top:-13px;
 .capturedwindow .hmcolumnlabel{
     
     margin-top: 152px;
+}
+.pointer div{
+    cursor: pointer;
+    
 }

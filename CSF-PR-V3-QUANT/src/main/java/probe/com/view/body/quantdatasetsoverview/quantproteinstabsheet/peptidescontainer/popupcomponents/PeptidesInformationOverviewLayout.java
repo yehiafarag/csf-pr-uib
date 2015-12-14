@@ -357,8 +357,13 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
                 if (count) {
                     this.totalPeptidesNumber++;
                 }
+                if(quantPeptide.getString_p_value().equalsIgnoreCase("Not_Provided" )){
+                  peptideStackedBarComponent.setSignificant(false);
+                  peptideStackedBarComponent.setDefaultStyleShowAllMode("graystackedlayout");
+                
+                }
 
-                if (quantPeptide.getString_p_value().equalsIgnoreCase("Significant")) {
+                else if (quantPeptide.getString_p_value().equalsIgnoreCase("Significant")) {
                     peptideStackedBarComponent.setSignificant(true);
                     if (quantPeptide.getString_fc_value().equalsIgnoreCase("Increased") || quantPeptide.getString_fc_value().equalsIgnoreCase("Increase") || quantPeptide.getString_fc_value().equalsIgnoreCase("Up")) {
                         peptideStackedBarComponent.setDefaultStyleShowAllMode("redstackedlayout");

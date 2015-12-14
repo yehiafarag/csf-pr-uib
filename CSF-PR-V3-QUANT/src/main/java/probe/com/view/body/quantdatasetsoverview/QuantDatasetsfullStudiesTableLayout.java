@@ -22,11 +22,10 @@ import probe.com.view.core.CustomExternalLink;
  *
  * quant dataset combined table layout
  */
-public class QuantDatasetsfullStudiesTableLayout extends VerticalLayout implements CSFFilter, Property.ValueChangeListener {
+public class QuantDatasetsfullStudiesTableLayout extends Table implements CSFFilter, Property.ValueChangeListener {
 
     private final QuantCentralManager Quant_Central_Manager;
     private final String filter_id = "datasetsTable";
-    private final Table datasetsTable;
     private CustomExternalLink pumedLabel;
     private int pumedkey;
 //    private final CSFTable tableLayout;
@@ -45,46 +44,13 @@ public class QuantDatasetsfullStudiesTableLayout extends VerticalLayout implemen
 
         this.Quant_Central_Manager = Quant_Central_Manager;
         Quant_Central_Manager.registerFilterListener(QuantDatasetsfullStudiesTableLayout.this);
-        this.datasetsTable = new Table();
         this.totalStudiesNumber = Quant_Central_Manager.getFilteredDatasetsList().size();
 
         this.setStyleName(Reindeer.LAYOUT_WHITE);
-        HorizontalLayout rightBottomLayout = new HorizontalLayout();
-        Button exportTableBtn = new Button("");
-        exportTableBtn.setHeight("24px");
-        exportTableBtn.setWidth("24px");
-        exportTableBtn.setPrimaryStyleName("exportxslbtn");
-        rightBottomLayout.addComponent(exportTableBtn);
-        rightBottomLayout.setComponentAlignment(exportTableBtn, Alignment.BOTTOM_RIGHT);
-//        rightBottomLayout.setMargin(new MarginInfo(true, false, false, false));
-        exportTableBtn.setDescription("Export table data");
-
-        rightBottomLayout.setHeight("30px");
-        rightBottomLayout.setStyleName(Reindeer.LAYOUT_WHITE);
-        exportTableBtn.addClickListener(new Button.ClickListener() {
-
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                ExcelExport csvExport = new ExcelExport(datasetsTable, "CSF-PR  Quant Studies Information");
-                csvExport.setReportTitle("CSF-PR / Quant Studies Information ");
-                csvExport.setExportFileName("CSF-PR - Quant Studies Information" + ".xls");
-                csvExport.setMimeType(ExcelExport.EXCEL_MIME_TYPE);
-                csvExport.setDisplayTotals(false);
-                csvExport.export();
-
-            }
-        });
-//        tableLayout = new CSFTable(datasetsTable, "Studies Table", totalStudiesNumber + "/" + totalStudiesNumber, null, null, rightBottomLayout);
         initCombinedQuantDatasetTable(Quant_Central_Manager.getActiveHeader());
-        datasetsTable.setHeight("420px");
-        this.addComponent(datasetsTable);
+        this.setHeight("420px");
         this.setWidth("100%");
-        this.addComponent(rightBottomLayout);
-        this.setComponentAlignment(rightBottomLayout, Alignment.BOTTOM_RIGHT);
         this.updateCombinedQuantDatasetTableRecords(Quant_Central_Manager.getFilteredDatasetsList());
-//        tableLayout.setShowTable(true);
-
-//        tableLayout.setShowTable(false);
     }
 
     /**
@@ -93,92 +59,93 @@ public class QuantDatasetsfullStudiesTableLayout extends VerticalLayout implemen
      * @param activeColumnHeaders the visualized columns in the table
      */
     private void initCombinedQuantDatasetTable(boolean[] activeColumnHeaders) {
-        datasetsTable.setSelectable(true);
-        datasetsTable.setLocale(Locale.UK);
-        datasetsTable.setColumnReorderingAllowed(true);
-        datasetsTable.setColumnCollapsingAllowed(true);
-        datasetsTable.setDragMode(Table.TableDragMode.NONE);
-        datasetsTable.setMultiSelect(false);//        
-        datasetsTable.setImmediate(true); // react at once when something is selected
-        datasetsTable.setWidth("100%");
-        datasetsTable.addContainerProperty("Index", Integer.class, null, "", null, Table.Align.RIGHT);
-        datasetsTable.addContainerProperty("Author", String.class, null);
-        datasetsTable.setColumnCollapsed("Author", false);
-        datasetsTable.addContainerProperty("Year", String.class, null, "Year", null, Table.Align.RIGHT);
-        datasetsTable.setColumnCollapsed("Year", false);
-        datasetsTable.addContainerProperty("#Identified Proteins", Integer.class, null, "#Identified Proteins", null, Table.Align.RIGHT);
-        datasetsTable.setColumnCollapsed("#Identified Proteins", !activeColumnHeaders[2]);
-        datasetsTable.addContainerProperty("#Quantified Proteins ", Integer.class, null, "#Quantified Proteins", null, Table.Align.RIGHT);
-        datasetsTable.setColumnCollapsed("#Quantified Proteins", !activeColumnHeaders[3]);
+        this.setSelectable(true);
+        this.setLocale(Locale.UK);
+        this.setVisible(false);
+        this.setColumnReorderingAllowed(true);
+        this.setColumnCollapsingAllowed(true);
+        this.setDragMode(Table.TableDragMode.NONE);
+        this.setMultiSelect(false);//        
+        this.setImmediate(true); // react at once when something is selected
+        this.setWidth("100%");
+        this.addContainerProperty("Index", Integer.class, null, "", null, Table.Align.RIGHT);
+        this.addContainerProperty("Author", String.class, null);
+        this.setColumnCollapsed("Author", false);
+        this.addContainerProperty("Year", String.class, null, "Year", null, Table.Align.RIGHT);
+        this.setColumnCollapsed("Year", false);
+        this.addContainerProperty("#Identified Proteins", Integer.class, null, "#Identified Proteins", null, Table.Align.RIGHT);
+        this.setColumnCollapsed("#Identified Proteins", !activeColumnHeaders[2]);
+        this.addContainerProperty("#Quantified Proteins ", Integer.class, null, "#Quantified Proteins", null, Table.Align.RIGHT);
+        this.setColumnCollapsed("#Quantified Proteins", !activeColumnHeaders[3]);
 
-        datasetsTable.addContainerProperty("Analytical Method", String.class, null);
-        datasetsTable.setColumnCollapsed("Analytical Method", !activeColumnHeaders[4]);
+        this.addContainerProperty("Analytical Method", String.class, null);
+        this.setColumnCollapsed("Analytical Method", !activeColumnHeaders[4]);
 
-        datasetsTable.addContainerProperty("Raw Data", String.class, null);
-        datasetsTable.setColumnCollapsed("Raw Data", !activeColumnHeaders[5]);
-        datasetsTable.addContainerProperty("#Files", Integer.class, null, "#Files", null, Table.Align.RIGHT);
-        datasetsTable.setColumnCollapsed("#Files", !activeColumnHeaders[6]);
-        datasetsTable.addContainerProperty("typeOfStudy", String.class, null, "Study Type", null, Table.Align.LEFT);
-        datasetsTable.setColumnCollapsed("typeOfStudy", !activeColumnHeaders[7]);
+        this.addContainerProperty("Raw Data", String.class, null);
+        this.setColumnCollapsed("Raw Data", !activeColumnHeaders[5]);
+        this.addContainerProperty("#Files", Integer.class, null, "#Files", null, Table.Align.RIGHT);
+        this.setColumnCollapsed("#Files", !activeColumnHeaders[6]);
+        this.addContainerProperty("typeOfStudy", String.class, null, "Study Type", null, Table.Align.LEFT);
+        this.setColumnCollapsed("typeOfStudy", !activeColumnHeaders[7]);
 
-        datasetsTable.addContainerProperty("sampleType", String.class, null, "Sample Type", null, Table.Align.LEFT);
-        datasetsTable.setColumnCollapsed("sampleType", !activeColumnHeaders[8]);
+        this.addContainerProperty("sampleType", String.class, null, "Sample Type", null, Table.Align.LEFT);
+        this.setColumnCollapsed("sampleType", !activeColumnHeaders[8]);
 
-        datasetsTable.addContainerProperty("sampleMatching", String.class, null, "Sample Matching", null, Table.Align.LEFT);
-        datasetsTable.setColumnCollapsed("sampleMatching", !activeColumnHeaders[9]);
+        this.addContainerProperty("sampleMatching", String.class, null, "Sample Matching", null, Table.Align.LEFT);
+        this.setColumnCollapsed("sampleMatching", !activeColumnHeaders[9]);
 
-        datasetsTable.addContainerProperty("shotgunTargeted", String.class, null, "Shotgun/Targeted", null, Table.Align.LEFT);
-        datasetsTable.setColumnCollapsed("shotgunTargeted", !activeColumnHeaders[10]);
+        this.addContainerProperty("shotgunTargeted", String.class, null, "Shotgun/Targeted", null, Table.Align.LEFT);
+        this.setColumnCollapsed("shotgunTargeted", !activeColumnHeaders[10]);
 
-        datasetsTable.addContainerProperty("technology", String.class, null, "Technology", null, Table.Align.LEFT);
-        datasetsTable.setColumnCollapsed("technology", !activeColumnHeaders[11]);
+        this.addContainerProperty("technology", String.class, null, "Technology", null, Table.Align.LEFT);
+        this.setColumnCollapsed("technology", !activeColumnHeaders[11]);
 
-        datasetsTable.addContainerProperty("analyticalApproach", String.class, null, "Analytical Approach", null, Table.Align.LEFT);
-        datasetsTable.setColumnCollapsed("analyticalApproach", !activeColumnHeaders[12]);
+        this.addContainerProperty("analyticalApproach", String.class, null, "Analytical Approach", null, Table.Align.LEFT);
+        this.setColumnCollapsed("analyticalApproach", !activeColumnHeaders[12]);
 
-        datasetsTable.addContainerProperty("enzyme", String.class, null, "Enzyme", null, Table.Align.LEFT);
-        datasetsTable.setColumnCollapsed("enzyme", !activeColumnHeaders[13]);
+        this.addContainerProperty("enzyme", String.class, null, "Enzyme", null, Table.Align.LEFT);
+        this.setColumnCollapsed("enzyme", !activeColumnHeaders[13]);
 
-        datasetsTable.addContainerProperty("quantificationBasis", String.class, null, "Quant Basis", null, Table.Align.LEFT);
-        datasetsTable.setColumnCollapsed("quantificationBasis", !activeColumnHeaders[14]);
+        this.addContainerProperty("quantificationBasis", String.class, null, "Quant Basis", null, Table.Align.LEFT);
+        this.setColumnCollapsed("quantificationBasis", !activeColumnHeaders[14]);
 
-        datasetsTable.addContainerProperty("quantBasisComment", String.class, null, "Quant Basis Comment", null, Table.Align.LEFT);
-        datasetsTable.setColumnCollapsed("quantBasisComment", !activeColumnHeaders[15]);
+        this.addContainerProperty("quantBasisComment", String.class, null, "Quant Basis Comment", null, Table.Align.LEFT);
+        this.setColumnCollapsed("quantBasisComment", !activeColumnHeaders[15]);
 
-        datasetsTable.addContainerProperty("normalization_strategy", String.class, null, "Normalization Strategy", null, Table.Align.LEFT);
-        datasetsTable.setColumnCollapsed("normalization_strategy", !activeColumnHeaders[16]);
+        this.addContainerProperty("normalization_strategy", String.class, null, "Normalization Strategy", null, Table.Align.LEFT);
+        this.setColumnCollapsed("normalization_strategy", !activeColumnHeaders[16]);
 
-        datasetsTable.addContainerProperty("PumedID", CustomExternalLink.class, null);
-        datasetsTable.setColumnCollapsed("PumedID", !activeColumnHeaders[17]);
+        this.addContainerProperty("PumedID", CustomExternalLink.class, null);
+        this.setColumnCollapsed("PumedID", !activeColumnHeaders[17]);
 
-        datasetsTable.addContainerProperty("patientsGroup1", String.class, null, "Patients Gr.I", null, Table.Align.RIGHT);
-        datasetsTable.setColumnCollapsed("patientsGroup1", !activeColumnHeaders[18]);
+        this.addContainerProperty("patientsGroup1", String.class, null, "Patients Gr.I", null, Table.Align.RIGHT);
+        this.setColumnCollapsed("patientsGroup1", !activeColumnHeaders[18]);
 
-        datasetsTable.addContainerProperty("patientsGroup1Number", Integer.class, null, "#Patients Gr.I", null, Table.Align.RIGHT);
-        datasetsTable.setColumnCollapsed("patientsGroup1Number", !activeColumnHeaders[19]);
+        this.addContainerProperty("patientsGroup1Number", Integer.class, null, "#Patients Gr.I", null, Table.Align.RIGHT);
+        this.setColumnCollapsed("patientsGroup1Number", !activeColumnHeaders[19]);
 
-        datasetsTable.addContainerProperty("patientsGroup1Comm", String.class, null, "Patients Gr.I Comm", null, Table.Align.LEFT);
-        datasetsTable.setColumnCollapsed("patientsGroup1Comm", !activeColumnHeaders[20]);
+        this.addContainerProperty("patientsGroup1Comm", String.class, null, "Patients Gr.I Comm", null, Table.Align.LEFT);
+        this.setColumnCollapsed("patientsGroup1Comm", !activeColumnHeaders[20]);
 
-        datasetsTable.addContainerProperty("patientsSubGroup1", String.class, null, "Patients Sub-Gr.I", null, Table.Align.RIGHT);
-        datasetsTable.setColumnCollapsed("patientsSubGroup1", !activeColumnHeaders[21]);
+        this.addContainerProperty("patientsSubGroup1", String.class, null, "Patients Sub-Gr.I", null, Table.Align.RIGHT);
+        this.setColumnCollapsed("patientsSubGroup1", !activeColumnHeaders[21]);
 
-        datasetsTable.addContainerProperty("patientsGroup2", String.class, null, "Patients Gr.II", null, Table.Align.RIGHT);
-        datasetsTable.setColumnCollapsed("patientsGroup2", !activeColumnHeaders[22]);
+        this.addContainerProperty("patientsGroup2", String.class, null, "Patients Gr.II", null, Table.Align.RIGHT);
+        this.setColumnCollapsed("patientsGroup2", !activeColumnHeaders[22]);
 
-        datasetsTable.addContainerProperty("patientsGroup2Number", Integer.class, null, "#Patients Gr.II", null, Table.Align.RIGHT);
-        datasetsTable.setColumnCollapsed("patientsGroup2Number", !activeColumnHeaders[23]);
+        this.addContainerProperty("patientsGroup2Number", Integer.class, null, "#Patients Gr.II", null, Table.Align.RIGHT);
+        this.setColumnCollapsed("patientsGroup2Number", !activeColumnHeaders[23]);
 
-        datasetsTable.addContainerProperty("patientsGroup2Comm", String.class, null, "Patients Gr.II Comm", null, Table.Align.LEFT);
-        datasetsTable.setColumnCollapsed("patientsGroup2Comm", !activeColumnHeaders[24]);
+        this.addContainerProperty("patientsGroup2Comm", String.class, null, "Patients Gr.II Comm", null, Table.Align.LEFT);
+        this.setColumnCollapsed("patientsGroup2Comm", !activeColumnHeaders[24]);
 
-        datasetsTable.addContainerProperty("patientsSubGroup2", String.class, null, "Patients Sub-Gr.II", null, Table.Align.RIGHT);
-        datasetsTable.setColumnCollapsed("patientsSubGroup2", !activeColumnHeaders[25]);
+        this.addContainerProperty("patientsSubGroup2", String.class, null, "Patients Sub-Gr.II", null, Table.Align.RIGHT);
+        this.setColumnCollapsed("patientsSubGroup2", !activeColumnHeaders[25]);
 
-        datasetsTable.addContainerProperty("additionalComments", String.class, null, "Comments", null, Table.Align.RIGHT);
-        datasetsTable.setColumnCollapsed("additionalComments", !activeColumnHeaders[26]);
+        this.addContainerProperty("additionalComments", String.class, null, "Comments", null, Table.Align.RIGHT);
+        this.setColumnCollapsed("additionalComments", !activeColumnHeaders[26]);
 
-        datasetsTable.addValueChangeListener(this);
+        this.addValueChangeListener(this);
 
         selectionChanged("Disease_Groups_Level");
 
@@ -192,9 +159,9 @@ public class QuantDatasetsfullStudiesTableLayout extends VerticalLayout implemen
      */
     private void updateCombinedQuantDatasetTableRecords(Map<Integer, QuantDatasetObject> updatedStudiesList) {
         dsIndexes = new int[updatedStudiesList.size()];
-        datasetsTable.removeAllItems();
+        this.removeAllItems();
         if (this.getParent() != null) {
-            this.getParent().getParent().setCaption("&nbsp;&nbsp;Studies Table ( " + updatedStudiesList.size() + " )");
+//            this.getParent().getParent().setCaption("&nbsp;&nbsp;Studies Table ( " + updatedStudiesList.size() + " )");
         }
         int index = 0;
 
@@ -229,18 +196,18 @@ public class QuantDatasetsfullStudiesTableLayout extends VerticalLayout implemen
             }
 
             CustomExternalLink pumedID = new CustomExternalLink(pb.getPumedID(), "http://www.ncbi.nlm.nih.gov/pubmed/" + pb.getPumedID());
-            datasetsTable.addItem(new Object[]{index, pb.getAuthor(), pb.getYear() + "", idNumber, quantProtNum, pb.getAnalyticalMethod(), rawDatalink, pb.getFilesNumber(), pb.getTypeOfStudy(), pb.getSampleType(), pb.getSampleMatching(), pb.getShotgunTargeted(), pb.getTechnology(), pb.getAnalyticalApproach(), pb.getEnzyme(), pb.getQuantificationBasis(), pb.getQuantBasisComment(), pb.getNormalizationStrategy(), pumedID, pb.getPatientsGroup1(), patGr1Num, pb.getPatientsGroup1Comm(), pb.getPatientsSubGroup1(), pb.getPatientsGroup2(), patGr2Num, pb.getPatientsGroup2Comm(), pb.getPatientsSubGroup2(), pb.getAdditionalcomments()}, index);
+            this.addItem(new Object[]{index, pb.getAuthor(), pb.getYear() + "", idNumber, quantProtNum, pb.getAnalyticalMethod(), rawDatalink, pb.getFilesNumber(), pb.getTypeOfStudy(), pb.getSampleType(), pb.getSampleMatching(), pb.getShotgunTargeted(), pb.getTechnology(), pb.getAnalyticalApproach(), pb.getEnzyme(), pb.getQuantificationBasis(), pb.getQuantBasisComment(), pb.getNormalizationStrategy(), pumedID, pb.getPatientsGroup1(), patGr1Num, pb.getPatientsGroup1Comm(), pb.getPatientsSubGroup1(), pb.getPatientsGroup2(), patGr2Num, pb.getPatientsGroup2Comm(), pb.getPatientsSubGroup2(), pb.getAdditionalcomments()}, index);
             dsIndexes[index] = pb.getDsKey();
             index++;
         }
-        datasetsTable.sort(new Object[]{"Year"}, new boolean[]{false});
+        this.sort(new Object[]{"Year"}, new boolean[]{false});
 
     }
 
     @Override
     public void valueChange(Property.ValueChangeEvent event) {
-        if (datasetsTable.getValue() != null) {
-            pumedkey = (Integer) datasetsTable.getValue();
+        if (this.getValue() != null) {
+            pumedkey = (Integer) this.getValue();
         } else {
             if (pumedLabel != null) {
                 pumedLabel.rePaintLable("black");
@@ -256,7 +223,7 @@ public class QuantDatasetsfullStudiesTableLayout extends VerticalLayout implemen
 //            rawDataLabel.rePaintLable("black");
 //
 //        }
-        final Item item = datasetsTable.getItem(pumedkey);
+        final Item item = this.getItem(pumedkey);
         pumedLabel = (CustomExternalLink) item.getItemProperty("PumedID").getValue();
 //        rawDataLabel = (CustomExternalLink) item.getItemProperty("Raw Data").getValue();
         pumedLabel.rePaintLable("white");

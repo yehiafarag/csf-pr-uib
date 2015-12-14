@@ -1,7 +1,6 @@
 package probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.studies;
 
 import com.vaadin.event.LayoutEvents;
-import com.vaadin.server.Page;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.GridLayout;
@@ -28,7 +27,6 @@ import probe.com.view.core.HideOnClickLayout;
  */
 public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
-    private final Map<VerticalLayout, VerticalLayout> tabLayoutMap = new HashMap<VerticalLayout, VerticalLayout>();
     private final VerticalLayout bottomLayout, peptidesInformationContainer, proteinsInformationContainer, datasetsInformationContainer;
     private final GridLayout topLayout;
     private final HideOnClickLayout peptideProteinInfoHideShow;
@@ -195,7 +193,6 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
     }
 
     public void setInformationData(Set<QuantDatasetObject> dsObjects, DiseaseGroupsComparisonsProteinLayout cp) {
-        tabLayoutMap.clear();
         topLayout.removeAllComponents();
 
         int colcounter = 0;

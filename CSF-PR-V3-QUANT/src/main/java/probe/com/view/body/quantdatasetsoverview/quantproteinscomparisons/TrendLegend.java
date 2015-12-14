@@ -13,6 +13,7 @@ import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.Reindeer;
 
 /**
  *
@@ -22,10 +23,10 @@ public class TrendLegend extends GridLayout {
 
     public TrendLegend(String type) {
         if (type.equalsIgnoreCase("table")) {
-            String[] labels = new String[]{"High", "Stable", "Low"};
-            String[] styleName = new String[]{"redlayout", "lightbluelayout", "greenlayout"};
+            String[] labels = new String[]{"High", "Stable", "Low","Not provided"};
+            String[] styleName = new String[]{"redlayout", "lightbluelayout", "greenlayout","darkgray"};
             this.setSpacing(true);
-            this.setColumns(3);
+            this.setColumns(4);
             this.setRows(1);
             this.setMargin(new MarginInfo(false, true, false, false));
             for (int i = 0; i < styleName.length; i++) {
@@ -52,11 +53,11 @@ public class TrendLegend extends GridLayout {
             }
 
         }else {
-            String[] labels = new String[]{"High", "High,not sign.", "Stable", "Low,not sign.", "Low"};
-            String[] styleName = new String[]{"redlayout", "notsigredstackedlayout", "lightbluelayout", "notsiggreenstackedlayout", "greenlayout"};
+            String[] labels = new String[]{"High", "High,not sign.", "Stable", "Low,not sign.", "Low","Not provided"};
+            String[] styleName = new String[]{"redlayout", "notsigredstackedlayout", "lightbluelayout", "notsiggreenstackedlayout", "greenlayout","darkgray"};
             this.setSpacing(true);
             this.setRows(1);
-            this.setColumns(5);
+            this.setColumns(6);
             this.setMargin(new MarginInfo(false, false, false, false));
           
             for (int i = 0; i < styleName.length; i++) {

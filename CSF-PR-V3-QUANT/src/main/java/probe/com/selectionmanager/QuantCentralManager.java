@@ -37,6 +37,9 @@ public class QuantCentralManager implements Serializable {
         Studies_Filter_Manager = new StudiesFilterManager(CSFPR_Handler.getQuantDatasetInitialInformationObject(searchQuantificationProtList), CSFPR_Handler.getActivePieChartQuantFilters(searchQuantificationProtList));//,filterUtility.getFullFilterList()
         Studies_Selection_Manager = new StudiesSelectionManager();
     }
+      public void setNoSerum(boolean noSerum) {
+      Studies_Filter_Manager.setNoSerum(noSerum);
+    }
 
     /**
      * get all quant dataset list available
@@ -65,17 +68,17 @@ public class QuantCentralManager implements Serializable {
         Studies_Selection_Manager.registerFilter(iFilter);
     }
 
-    public List<Integer> getSelectedDataset() {
-        return Studies_Selection_Manager.getSelectedDataset();
-    }
-
-    /**
-     *
-     * @param selectedDataset
-     */
-    public void setSelectedDataset(List<Integer> selectedDataset) {
-        this.Studies_Selection_Manager.setSelectedDataset(selectedDataset);
-    }
+//    public List<Integer> getSelectedDataset() {
+//        return Studies_Selection_Manager.getSelectedDataset();
+//    }
+//
+//    /**
+//     *
+//     * @param selectedDataset
+//     */
+//    public void setSelectedDataset(List<Integer> selectedDataset) {
+//        this.Studies_Selection_Manager.setSelectedDataset(selectedDataset);
+//    }
 
     /**
      *

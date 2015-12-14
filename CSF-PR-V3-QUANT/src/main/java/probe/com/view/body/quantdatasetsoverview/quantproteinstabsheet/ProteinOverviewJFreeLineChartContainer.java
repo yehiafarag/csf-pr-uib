@@ -56,7 +56,6 @@ import org.jfree.ui.RectangleEdge;
 import org.jfree.ui.RectangleInsets;
 import org.jfree.ui.TextAnchor;
 import org.jfree.util.ShapeUtilities;
-import org.vaadin.marcus.MouseEvents;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
@@ -851,8 +850,9 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                     square.setDescription(gc.getComparisonHeader());
                 } else {
                     gc = inUseComparisonProteins[((XYItemEntity) entity).getItem()].getComparison();
-                    trend = inUseComparisonProteins[((XYItemEntity) entity).getItem()].getSignificantTrindCategory();
-                    square.setDescription(gc.getComparisonHeader() + tooltipLabels[trend]);
+                    DiseaseGroupsComparisonsProteinLayout protLayout = inUseComparisonProteins[((XYItemEntity) entity).getItem()];
+                    trend = protLayout.getSignificantTrindCategory();
+                    square.setDescription("<h2>"+gc.getComparisonHeader()+""+ tooltipLabels[trend]+""+"</h2>"+"<h3>" +protLayout.toString()+"</h3>");
                 }
 
                 square.setParam(paramName, gc);

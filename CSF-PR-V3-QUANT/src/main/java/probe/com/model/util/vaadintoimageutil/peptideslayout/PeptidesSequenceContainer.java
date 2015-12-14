@@ -47,6 +47,7 @@ public class PeptidesSequenceContainer extends JPanel {
         peptidesColorMap.put("lightbluestackedlayout", new Color(1, 141, 244));
         peptidesColorMap.put("midgreenstackedlayout", Color.decode("#D0F5A9"));
         peptidesColorMap.put("greenstackedlayout", Color.decode("#009900"));
+         peptidesColorMap.put("graystackedlayout", Color.decode("#737373"));
         this.setBackground(Color.WHITE);
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
 

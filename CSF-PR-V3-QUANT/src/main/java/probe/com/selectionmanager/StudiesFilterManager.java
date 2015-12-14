@@ -5,7 +5,9 @@
  */
 package probe.com.selectionmanager;
 
+import com.google.gwt.dom.client.Style;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -26,17 +28,35 @@ public class StudiesFilterManager implements Serializable {
     private boolean[] activeHeader;
     private final Map<String, QuantDatasetInitialInformationObject> quantDatasetListObject;
     private int totalDsNumber, currentDsNumber;
+    private Map<Integer, QuantDatasetObject> inUsefullQuantDatasetMap;
+    private Map<Integer, QuantDatasetObject> noSerumQuantDatasetMap;
     private Map<Integer, QuantDatasetObject> fullQuantDatasetMap;
     private final Map<String, boolean[]> activeFilterMap;
     private boolean[] activeFilters;
     private Map<Integer, QuantDatasetObject> filteredQuantDatasetArr = new LinkedHashMap<Integer, QuantDatasetObject>();
     private Set<String> diseaseCategorySet;
-    private final LinkedHashMap<String,CSFFilter> registeredFilterSet = new LinkedHashMap<String,CSFFilter>();
+    private final LinkedHashMap<String, CSFFilter> registeredFilterSet = new LinkedHashMap<String, CSFFilter>();
 
     private CSFFilterSelection filterSelection;
     private Set<String> selectedHeatMapRows;
     private Set<String> selectedHeatMapColumns;
     private DiseaseGroup[] diseaseGroupsArr;
+
+    public boolean isNoSerum() {
+        return noSerum;
+    }
+
+    public void setNoSerum(boolean noSerum) {
+        this.noSerum = noSerum;
+        if (noSerum) {
+            inUsefullQuantDatasetMap = noSerumQuantDatasetMap;
+        } else {
+            inUsefullQuantDatasetMap = fullQuantDatasetMap;
+        }
+         this.currentDsNumber = inUsefullQuantDatasetMap.size();
+        resetFilters();
+    }
+    private boolean noSerum;
 
     private Set<JFreeChart> studiesOverviewPieChart = new LinkedHashSet<JFreeChart>();
 
@@ -52,7 +72,16 @@ public class StudiesFilterManager implements Serializable {
         }
 
         this.fullQuantDatasetMap = quantDatasetListObject.get(key).getQuantDatasetsList();
-        this.currentDsNumber = fullQuantDatasetMap.size();
+        noSerumQuantDatasetMap = new HashMap<Integer, QuantDatasetObject>();
+        for (int intKey : fullQuantDatasetMap.keySet()) {
+            if (!fullQuantDatasetMap.get(intKey).getSampleType().equalsIgnoreCase("Serum")) {
+                noSerumQuantDatasetMap.put(intKey, fullQuantDatasetMap.get(intKey));
+
+            }
+
+        }
+        inUsefullQuantDatasetMap = noSerumQuantDatasetMap;
+        this.currentDsNumber = inUsefullQuantDatasetMap.size();
         this.activeFilterMap = activeFilterMap;
         this.activeFilters = activeFilterMap.get(key);
         this.activeHeader = quantDatasetListObject.get(key).getActiveHeaders();
@@ -71,12 +100,12 @@ public class StudiesFilterManager implements Serializable {
     private void updateFilteredDatasetList(int[] datasetIndexes) {
 
         if (datasetIndexes.length == 0) {
-            filteredQuantDatasetArr = fullQuantDatasetMap;
+            filteredQuantDatasetArr = inUsefullQuantDatasetMap;
             return;
         }
         filteredQuantDatasetArr.clear();
         for (int i : datasetIndexes) {
-            filteredQuantDatasetArr.put(i, fullQuantDatasetMap.get(i));
+            filteredQuantDatasetArr.put(i, inUsefullQuantDatasetMap.get(i));
         }
 
     }
@@ -100,9 +129,9 @@ public class StudiesFilterManager implements Serializable {
     public void applyFilters(CSFFilterSelection selection) {
 
         filterSelection = selection;
-        if (selection.getType().equalsIgnoreCase("Disease_Groups_Level")) {           
-            
-            updateFilteredDatasetList(selection.getDatasetIndexes());            
+        if (selection.getType().equalsIgnoreCase("Disease_Groups_Level")) {
+
+            updateFilteredDatasetList(selection.getDatasetIndexes());
             this.SelectionChanged(selection.getType());
         }
 
@@ -151,7 +180,7 @@ public class StudiesFilterManager implements Serializable {
      */
     public Map<Integer, QuantDatasetObject> getFilteredDatasetsList() {
         if (filteredQuantDatasetArr == null || filteredQuantDatasetArr.isEmpty()) {
-            return fullQuantDatasetMap;
+            return inUsefullQuantDatasetMap;
         }
         return filteredQuantDatasetArr;
     }
@@ -162,16 +191,16 @@ public class StudiesFilterManager implements Serializable {
      * @return
      */
     public Map<Integer, QuantDatasetObject> getFullQuantDatasetMap() {
-        return fullQuantDatasetMap;
+        return inUsefullQuantDatasetMap;
     }
 
     public void changeDiseaseCategory(String diseaseCategory) {
-        this.fullQuantDatasetMap = quantDatasetListObject.get(diseaseCategory).getQuantDatasetsList();
+        this.inUsefullQuantDatasetMap = quantDatasetListObject.get(diseaseCategory).getQuantDatasetsList();
         this.filteredQuantDatasetArr.clear();
         this.diseaseCategorySet = quantDatasetListObject.get(diseaseCategory).getDiseaseCategories();
         this.activeHeader = quantDatasetListObject.get(diseaseCategory).getActiveHeaders();
         this.activeFilters = activeFilterMap.get(diseaseCategory);
-        this.currentDsNumber = fullQuantDatasetMap.size();
+        this.currentDsNumber = inUsefullQuantDatasetMap.size();
 //        this.SelectionChanged("Disease_Category_Selection");
 
     }
@@ -190,7 +219,7 @@ public class StudiesFilterManager implements Serializable {
      * @param iFilter instance of CSFFilter
      */
     public void registerFilter(final CSFFilter iFilter) {
-        registeredFilterSet.put(iFilter.getFilterId(),iFilter);
+        registeredFilterSet.put(iFilter.getFilterId(), iFilter);
     }
 
     /**

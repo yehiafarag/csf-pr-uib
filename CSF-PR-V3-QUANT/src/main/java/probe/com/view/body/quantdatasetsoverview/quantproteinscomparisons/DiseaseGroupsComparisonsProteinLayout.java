@@ -167,6 +167,7 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
     private void initLabelLayout() {
         this.setWidth("100%");
         this.setHeight("20px");
+        this.setStyleName("pointer");
         this.setSpacing(false);
         this.setMargin(false);
 
@@ -516,14 +517,8 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
 
     @Override
     public String toString() {
-        return "Low: " + downSignificant +" ( "+ df.format(((double) downSignificant / (double) total) * 100.0)+ "% )  /  Stable : " + notRegSignificant + " /  High: " + upSignificant+" ( "+ df.format(((double) upSignificant / (double) total) * 100.0)+ "% )";
-//        if (cellValue > 0) {
-//            return "High (" + cellValue + ")";
-//        } else if (cellValue == 0) {
-//            return "Stable (" + cellValue + ")";
-//        } else {
-//            return "Low (" + cellValue + ")";
-//        }
+        return ("Low: " + downSignificant +(downSignificant==1? " study" : " studies")+ "  -  Stable : " + notRegSignificant+(notRegSignificant==1? " study" : " studies") + " -  High: " + upSignificant +(upSignificant==1? " study" : " studies"));//"Low: " + downSignificant +" ( "+ df.format(((double) downSignificant / (double) total) * 100.0)+ "% )  /  Stable : " + notRegSignificant + " /  High: " + upSignificant+" ( "+ df.format(((double) upSignificant / (double) total) * 100.0)+ "% )";
+
     }
 
     /**

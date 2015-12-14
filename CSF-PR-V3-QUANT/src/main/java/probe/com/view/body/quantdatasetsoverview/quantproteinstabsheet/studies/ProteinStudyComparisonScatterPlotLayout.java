@@ -145,7 +145,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
                     SquaredDot dot = (SquaredDot) event.getClickedComponent();
                     int trend = (Integer) dot.getParam("trend");
                     int pGrNumber = (Integer) dot.getParam("pGrNumber");
-                    Quant_Central_Manager.setSelectedDataset(patientGroupsNumToDsIdMap.get(pGrNumber).getRegulatedList(trend));
+//                    Quant_Central_Manager.setSelectedDataset(patientGroupsNumToDsIdMap.get(pGrNumber).getRegulatedList(trend));
                     int[] dssArr = new int[patientGroupsNumToDsIdMap.get(pGrNumber).getRegulatedList(trend).size()];
                     for (int x = 0; x < dssArr.length; x++) {
                         dssArr[x] = patientGroupsNumToDsIdMap.get(pGrNumber).getRegulatedList(trend).get(x);

@@ -2,6 +2,7 @@
 package probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.peptidescontainer.popupcomponents;
 
 import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
@@ -27,6 +28,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         datasetInfoForm = initQuantDatasetInformationLayout(width);
         datasetInfoForm.setVisible(false);
         this.addComponent(datasetInfoForm);
+        this.setComponentAlignment(datasetInfoForm, Alignment.MIDDLE_CENTER);
 
     }
 

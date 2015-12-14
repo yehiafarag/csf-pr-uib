@@ -886,8 +886,8 @@ public class CoreLogic implements Serializable {
 //            Map<String, Set<QuantPeptide>> comparisonPeptideMap = (da.getQuantificationPeptides(iArr));
 //
 //            Map<String, DiseaseGroupsComparisonsProteinLayout> comparProtList = new HashMap<String, DiseaseGroupsComparisonsProteinLayout>();
-//            String pGrI = comparison.getComparisonHeader().split("vs")[0].trim();
-//            String pGrII = comparison.getComparisonHeader().split("vs")[1].trim();
+//            String pGrI = comparison.getComparisonHeader().split("/")[0].trim();
+//            String pGrII = comparison.getComparisonHeader().split("/")[1].trim();
 //
 //            for (QuantProtein quant : comparisonProtMap) {
 //                boolean inverted = false;
@@ -1113,8 +1113,8 @@ public class CoreLogic implements Serializable {
 //                Map<String, DiseaseGroupsComparisonsProteinLayout> comparProtList = new HashMap<String, DiseaseGroupsComparisonsProteinLayout>();
 //                comparison.setComparProtsMap(comparProtList);
 //            }
-//            String pGrI = comparison.getComparisonHeader().split("vs")[0].trim();
-//            String pGrII = comparison.getComparisonHeader().split("vs")[1].trim();
+//            String pGrI = comparison.getComparisonHeader().split("/")[0].trim();
+//            String pGrII = comparison.getComparisonHeader().split("/")[1].trim();
 //
 //            boolean inverted = false;
 //            String protAcc = quantProtein.getUniprotAccession();
@@ -1330,8 +1330,8 @@ public class CoreLogic implements Serializable {
             }
 
             Map<String, DiseaseGroupsComparisonsProteinLayout> comparProtList = new HashMap<String, DiseaseGroupsComparisonsProteinLayout>();
-            String pGrI = comparison.getComparisonHeader().split("vs")[0].trim();
-            String pGrII = comparison.getComparisonHeader().split("vs")[1].trim();
+            String pGrI = comparison.getComparisonHeader().split(" / ")[0].trim();
+            String pGrII = comparison.getComparisonHeader().split(" / ")[1].trim();
 
             for (QuantProtein quant : comparisonProtMap) {
                 boolean inverted = false;

@@ -1,5 +1,6 @@
 package probe.com.view.body.quantdatasetsoverview;
 
+import com.vaadin.addon.tableexport.ExcelExport;
 import com.vaadin.data.Property;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.Page;
@@ -11,6 +12,7 @@ import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.NativeSelect;
+import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
@@ -26,7 +28,7 @@ import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.DiseaseGro
 
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.HeatMapFilter;
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.ComparisonsSelectionOverviewBubbleChart;
-import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.StudiesTablePopupBtn;
+import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.StudiesInformationPopupBtn;
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.interactivepiechartfilters.StudiesPieChartFiltersContainerLayout;
 
 /**
@@ -77,6 +79,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
 
         StudiesPieChartFiltersContainerLayout pieChartFiltersLayout = new StudiesPieChartFiltersContainerLayout(Quant_Central_Manager, CSFPR_Handler);
         pieChartFiltersBtnLayout = new VerticalLayout();
+        pieChartFiltersBtnLayout.setHeight("24px");
         pieChartFiltersBtnLayout.addComponent(pieChartFiltersLayout.getPieChartFiltersBtn());
 
         diseaseGroupsListFilter = new DiseaseGroupsListFilter(Quant_Central_Manager);
@@ -162,7 +165,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         this.resizeLayout(diseaseGroupsSet.size());
 
         int heatmapH = heatmapW + 20;
-        diseaseGroupsHeatmapFilter = new HeatMapFilter(Quant_Central_Manager, heatmapW, diseaseGroupsSet, diseaseGroupsSet, diseaseGroupsListFilter.getPatientsGroupArr(), heatmapCellWidth,CSFPR_Handler.getDiseaseFullNameMap());
+        diseaseGroupsHeatmapFilter = new HeatMapFilter(Quant_Central_Manager, heatmapW, diseaseGroupsSet, diseaseGroupsSet, diseaseGroupsListFilter.getPatientsGroupArr(), heatmapCellWidth, CSFPR_Handler.getDiseaseFullNameMap());
         diseaseGroupsHeatmapFilter.setHeight(Math.max(heatmapH, 720) + "px");
         diseaseGroupsHeatmapFilter.setSingleSelection(false);
         middleLayout.addComponent(diseaseGroupsHeatmapFilter);
@@ -220,15 +223,60 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
             }
 
         });
+        final OptionGroup noSerumOption = new OptionGroup();
+        leftBottomBtnLayout.addComponent(noSerumOption);
+         leftBottomBtnLayout.setComponentAlignment(noSerumOption, Alignment.MIDDLE_LEFT);
+        noSerumOption.setWidth("80px");
+        noSerumOption.setHeight("24px");
+        noSerumOption.setNullSelectionAllowed(true); // user can not 'unselect'
+        noSerumOption.setMultiSelect(true);
+
+        noSerumOption.addItem("Serum Studies");
+        noSerumOption.addStyleName("horizontal");
+        noSerumOption.addValueChangeListener(new Property.ValueChangeListener() {
+
+            @Override
+            public void valueChange(Property.ValueChangeEvent event) {
+                Quant_Central_Manager.setNoSerum(!noSerumOption.getValue().toString().equalsIgnoreCase("[Serum Studies]"));
+                counterLabel.setValue("( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )");
+
+            }
+
+        });
 
         rightBottomBtnLayout = new HorizontalLayout();
         rightBottomBtnLayout.setHeightUndefined();
         rightBottomBtnLayout.setWidthUndefined();
         rightBottomBtnLayout.setSpacing(true);
 
-        StudiesTablePopupBtn showStudiesBtn = new StudiesTablePopupBtn(Quant_Central_Manager);
+        StudiesInformationPopupBtn showStudiesBtn = new StudiesInformationPopupBtn(Quant_Central_Manager);
         rightBottomBtnLayout.addComponent(showStudiesBtn);
         rightBottomBtnLayout.setComponentAlignment(showStudiesBtn, Alignment.MIDDLE_LEFT);
+
+        Button exportTableBtn = new Button("");
+        exportTableBtn.setHeight("24px");
+        exportTableBtn.setWidth("24px");
+        exportTableBtn.setPrimaryStyleName("exportxslbtn");
+        rightBottomBtnLayout.addComponent(exportTableBtn);
+        rightBottomBtnLayout.setComponentAlignment(exportTableBtn, Alignment.BOTTOM_RIGHT);
+//        rightBottomLayout.setMargin(new MarginInfo(true, false, false, false));
+        exportTableBtn.setDescription("Export all studies data");
+        final QuantDatasetsfullStudiesTableLayout quantStudiesTable = new QuantDatasetsfullStudiesTableLayout(Quant_Central_Manager);
+        rightBottomBtnLayout.addComponent(quantStudiesTable);
+
+        exportTableBtn.addClickListener(new Button.ClickListener() {
+
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                ExcelExport csvExport = new ExcelExport(quantStudiesTable, "CSF-PR  Quant Studies Information");
+                csvExport.setReportTitle("CSF-PR / Quant Studies Information ");
+                csvExport.setExportFileName("CSF-PR - Quant Studies Information" + ".xls");
+                csvExport.setMimeType(ExcelExport.EXCEL_MIME_TYPE);
+                csvExport.setDisplayTotals(false);
+                csvExport.export();
+
+            }
+        });
 
         VerticalLayout selectAllBtn = new VerticalLayout();
         selectAllBtn.setStyleName("selectallbtn");

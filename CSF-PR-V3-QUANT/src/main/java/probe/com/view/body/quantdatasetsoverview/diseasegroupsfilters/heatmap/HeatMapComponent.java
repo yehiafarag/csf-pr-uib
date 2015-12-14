@@ -160,8 +160,8 @@ public class HeatMapComponent extends VerticalLayout {
         this.selectedDsList.add(comparison);
         this.selectedCells.add(cell);
         String kI = cell.getComparison().getComparisonHeader();
-        String[] k1Arr = kI.split(" vs ");
-        String kII = k1Arr[1] + " vs " + k1Arr[0];
+        String[] k1Arr = kI.split(" / ");
+        String kII = k1Arr[1] + " / " + k1Arr[0];
         HeatmapCell equalCall = comparisonsCellsMap.get(kII);
         equalCall.select();
 //        this.selectedDsList.add(equalCall.getComparison());
@@ -212,9 +212,9 @@ public class HeatMapComponent extends VerticalLayout {
 
                     for (QuantDiseaseGroupsComparison qdComp : header.getIncludedComparisons()) {
                         String kI = qdComp.getComparisonHeader();
-                        if (!kI.startsWith(selectedheader.replace("<center>", "").replace("</center>", "").trim() + " vs ")) {
-                            String[] k1Arr = kI.split(" vs ");
-                            String kII = k1Arr[1] + " vs " + k1Arr[0];
+                        if (!kI.startsWith(selectedheader.replace("<center>", "").replace("</center>", "").trim() + " / ")) {
+                            String[] k1Arr = kI.split(" / ");
+                            String kII = k1Arr[1] + " / " + k1Arr[0];
                             System.out.println("before " + qdComp.getComparisonHeader());
                             qdComp.setComparisonHeader(kII);
                             System.out.println("after " + qdComp.getComparisonHeader());
@@ -241,9 +241,9 @@ public class HeatMapComponent extends VerticalLayout {
                     selectedCells.addAll(header.getIncludedCells());
                     for (QuantDiseaseGroupsComparison qdComp : header.getIncludedComparisons()) {
                         String kI = qdComp.getComparisonHeader();
-                        if (!kI.startsWith(selectedheader.replace("<center>", "").replace("</center>", "").trim() + " vs ")) {
-                            String[] k1Arr = kI.split(" vs ");
-                            String kII = k1Arr[1] + " vs " + k1Arr[0];
+                        if (!kI.startsWith(selectedheader.replace("<center>", "").replace("</center>", "").trim() + " / ")) {
+                            String[] k1Arr = kI.split(" / ");
+                            String kII = k1Arr[1] + " / " + k1Arr[0];
                             qdComp.setComparisonHeader(kII);
 
                         }
@@ -269,10 +269,10 @@ public class HeatMapComponent extends VerticalLayout {
 //        Set<QuantDiseaseGroupsComparison> tempSelectedDsList = new HashSet<QuantDiseaseGroupsComparison>();
 //        for (QuantDiseaseGroupsComparison gr : selectedDsList) {
 //            String kI = gr.getComparisonHeader();
-//            String[] k1Arr = kI.split(" vs ");
+//            String[] k1Arr = kI.split("/");
 //            if (! k1Arr[0].contains(selectedheader)) {
 //
-//                gr.setComparisonHeader(k1Arr[1] + " vs " + k1Arr[0]);
+//                gr.setComparisonHeader(k1Arr[1] + "/" + k1Arr[0]);
 //            }
 //            tempSelectedDsList.add(gr);
 //
@@ -308,8 +308,8 @@ public class HeatMapComponent extends VerticalLayout {
         localSelectedCells.addAll(this.selectedCells);
         for (QuantDiseaseGroupsComparison gr : this.selectedDsList) {
             String kI = gr.getComparisonHeader();
-            String[] k1Arr = kI.split(" vs ");
-            String kII = k1Arr[1] + " vs " + k1Arr[0];
+            String[] k1Arr = kI.split(" / ");
+            String kII = k1Arr[1] + " / " + k1Arr[0];
             Set<String> keymap = new HashSet<String>();
             keymap.add(kI);
             keymap.add(kII);
@@ -317,8 +317,8 @@ public class HeatMapComponent extends VerticalLayout {
 
                 for (HeatmapCell cell : selectedCells) {
                     String kI2 = cell.getComparison().getComparisonHeader();
-                    String[] kI2Arr = kI2.split(" vs ");
-                    String kII2 = kI2Arr[1] + " vs " + kI2Arr[0];
+                    String[] kI2Arr = kI2.split(" / ");
+                    String kII2 = kI2Arr[1] + " / " + kI2Arr[0];
                     if (keymap.contains(kI2) && keymap.contains(kII2)) {
                         cell.unselect();
                         localSelectedCells.remove(cell);
@@ -358,8 +358,8 @@ public class HeatMapComponent extends VerticalLayout {
         this.selectedDsList.remove(comparison);
         this.selectedCells.remove(cell);
         String kI = cell.getComparison().getComparisonHeader();
-        String[] k1Arr = kI.split(" vs ");
-        String kII = k1Arr[1] + " vs " + k1Arr[0];
+        String[] k1Arr = kI.split(" / ");
+        String kII = k1Arr[1] + " / " + k1Arr[0];
         HeatmapCell equalCall = comparisonsCellsMap.get(kII);
         equalCall.unselect();
         this.selectedDsList.remove(equalCall.getComparison());
@@ -422,8 +422,8 @@ public class HeatMapComponent extends VerticalLayout {
         Map<String, QuantDiseaseGroupsComparison> filteredComp = new LinkedHashMap<String, QuantDiseaseGroupsComparison>();
         for (QuantDiseaseGroupsComparison comp : selectedDsList) {
             String kI = comp.getComparisonHeader();
-            String[] k1Arr = kI.split(" vs ");
-            String kII = k1Arr[1] + " vs " + k1Arr[0];
+            String[] k1Arr = kI.split(" / ");
+            String kII = k1Arr[1] + " / " + k1Arr[0];
             if (filteredComp.containsKey(kI) || filteredComp.containsKey(kII)) {
                 continue;
             }
@@ -496,7 +496,7 @@ public class HeatMapComponent extends VerticalLayout {
 
         for (int x = 0; x < values.length; x++) {
             for (int y = 0; y < values[x].length; y++) {
-                String headerTitle = rowheaders.toArray()[x].toString() + " vs " + colheaders.toArray()[y].toString();
+                String headerTitle = rowheaders.toArray()[x].toString() + " / " + colheaders.toArray()[y].toString();
                 double value = values[x][y].getValue();
                 String color = "#EFF2FB";
                 if (!rowheaders.toArray()[x].toString().equalsIgnoreCase(colheaders.toArray()[y].toString())) {
@@ -509,7 +509,7 @@ public class HeatMapComponent extends VerticalLayout {
                 if (cell.getComparison().getDatasetIndexes().length > 0) {
                     columnCells[y].addComparison(cell.getComparison(), cell);
                     rowCells[x].addComparison(cell.getComparison(), cell);
-                    if (!cell.getComparison().getComparisonHeader().trim().equalsIgnoreCase("vs")) {
+                    if (!cell.getComparison().getComparisonHeader().trim().equalsIgnoreCase("/")) {
                         availableComparisonsList.add(cell.getComparison());
                     }
                 }
@@ -520,8 +520,8 @@ public class HeatMapComponent extends VerticalLayout {
         Set<String> keymap = new HashSet<String>();
         for (QuantDiseaseGroupsComparison gr : this.availableComparisonsList) {
             String kI = gr.getComparisonHeader();
-            String[] k1Arr = kI.split(" vs ");
-            String kII = k1Arr[1] + " vs " + k1Arr[0];
+            String[] k1Arr = kI.split(" / ");
+            String kII = k1Arr[1] + " / " + k1Arr[0];
             keymap.add(kI);
             keymap.add(kII);
 
@@ -599,7 +599,7 @@ public class HeatMapComponent extends VerticalLayout {
 //        }
 
         for (HeatmapCell cell : comparisonsCellsMap.values()) {
-            if (cell.getValue() != 0 && !cell.getComparison().getComparisonHeader().trim().equalsIgnoreCase("vs") && availableComparisonsList.contains(cell.getComparison())) {
+            if (cell.getValue() != 0 && !cell.getComparison().getComparisonHeader().trim().equalsIgnoreCase("/") && availableComparisonsList.contains(cell.getComparison())) {
                 cell.select();
                 selectedCells.add(cell);
             }
