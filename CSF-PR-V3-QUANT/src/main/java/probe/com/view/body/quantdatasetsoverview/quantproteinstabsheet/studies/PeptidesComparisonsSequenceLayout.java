@@ -195,7 +195,7 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
                 continue;
             }
 
-            String key = "-" + quantProtein.getDsKey() + "-" + cprot.getProteinAccssionNumber() + "-";
+            String key = "_-_" + quantProtein.getDsKey() + "_-_" + cprot.getProteinAccssionNumber() + "_-_";
             PeptidesInformationOverviewLayout peptideInfoLayout = new PeptidesInformationOverviewLayout(cprot.getSequence(), dsQuantPepMap.get(quantProtein.getDsKey()), coverageWidth, true, studyListener, ds.getDsKey());
             exportData.setPeptidesInfoList(peptideInfoLayout.getStackedPeptides());
             exportData.setLevelsNumber(peptideInfoLayout.getLevel());

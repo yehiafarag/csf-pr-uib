@@ -1340,6 +1340,7 @@ public class CoreLogic implements Serializable {
                     protAcc = quant.getPublicationAccNumber();
 
                 }
+
                 if (!comparProtList.containsKey(protAcc)) {
                     DiseaseGroupsComparisonsProteinLayout comProt = new DiseaseGroupsComparisonsProteinLayout(comparison.getDatasetIndexes().length, comparison, quant.getProtKey());
                     comProt.setQuantPeptidesList(new HashSet<QuantPeptide>());
@@ -1362,14 +1363,10 @@ public class CoreLogic implements Serializable {
                         comProt.addNotProvided((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
                     } else if (quant.getStringFCValue().equalsIgnoreCase("Not Regulated")) {
                         comProt.addNotProvided((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
-//                        comProt.addNotReg((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
                     }
 
                 } else {
-                    System.out.println("at invert is true");
-                    System.out.println("at "+(pGrI)+" .equalsIgnoreCase "+(quant.getPatientGroupI())+" || "+(pGrI)+" .equalsIgnoreCase "+(quant.getPatientSubGroupI())+" &&"+ (pGrII)+" .equalsIgnoreCase "+(quant.getPatientGroupII())+" || " + (pGrII)+" .equalsIgnoreCase "+(quant.getPatientSubGroupII()));
                     inverted = true;
-
                     if (quant.getStringFCValue().equalsIgnoreCase("Decreased") || quant.getStringFCValue().equalsIgnoreCase("Decrease")) {
                         comProt.addUp((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
                     } else if (quant.getStringFCValue().equalsIgnoreCase("Increased") || quant.getStringFCValue().equalsIgnoreCase("Increase")) {
@@ -1378,7 +1375,6 @@ public class CoreLogic implements Serializable {
                         comProt.addNotProvided((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
                     } else if (quant.getStringFCValue().equalsIgnoreCase("Not Regulated")) {
                         comProt.addNotProvided((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
-//                        comProt.addNotReg((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
                     }
 
                 }
@@ -1442,7 +1438,7 @@ public class CoreLogic implements Serializable {
                 }
 
                 Map<String, QuantProtein> dsQuantProteinsMap = comProt.getDsQuantProteinsMap();
-                if (!dsQuantProteinsMap.containsKey("-" + quant.getDsKey() + "-" + comProt.getProteinAccssionNumber() + "-")) {
+                if (!dsQuantProteinsMap.containsKey("_-_" + quant.getDsKey() + "_-_" + comProt.getProteinAccssionNumber() + "_-_")) {
                     if (inverted) {
                         if (quant.getStringFCValue().equalsIgnoreCase("Increased") || quant.getStringFCValue().equalsIgnoreCase("Increase")) {
 
@@ -1471,20 +1467,65 @@ public class CoreLogic implements Serializable {
                         quant.setPatientsGroupINumber(pGrINum);
 
                     }
-//                    if (searchQuantificationProtList != null) {
-//                        dsQuantProteinsMap.put("-" + (quant.getDsKey() - 1) + "-" + comProt.getProteinAccssionNumber() + "-", quant);
-//                    } else {
-                    dsQuantProteinsMap.put("-" + quant.getDsKey() + "-" + comProt.getProteinAccssionNumber() + "-", quant);
+                    dsQuantProteinsMap.put("_-_" + quant.getDsKey() + "_-_" + comProt.getProteinAccssionNumber() + "_-_", quant);
 //                    }
                 } else {
-                    System.out.println("at major error in data dublicated keys " + ("-" + quant.getDsKey() + "-" + comProt.getProteinAccssionNumber() + "-"));
-//                    dsQuantProteinsMap.remove("-" + quant.getDsKey() + "-" + comProt.getProteinAccssionNumber() + "-");
+
+                    
+                    
+                    /////for iso testing remove as soon as possible 
+                    System.out.println("at major error in data dublicated keys " + ("_-_" + quant.getDsKey() + "_-_" + comProt.getProteinAccssionNumber() + "_-_"));
                     continue;
+//                    comProt.setProteinAccssionNumber(comProt.getProteinAccssionNumber() + "-2");
+//                    comProt.setKey(comProt.getKey() + 1000);
+//                    quant.setUniprotAccession(comProt.getProteinAccssionNumber());
+//                    protAcc = protAcc + "-2";
+//                    quant.setProtKey(quant.getProtKey() + 1000);
+//                    
+//                    if (!comparProtList.containsKey(protAcc)) {
+//                        comProt = new DiseaseGroupsComparisonsProteinLayout(comparison.getDatasetIndexes().length, comparison, quant.getProtKey());
+//                        comProt.setQuantPeptidesList(new HashSet<QuantPeptide>());
+//                        comparProtList.put(protAcc, comProt);
+//                    }
+//
+////                   
+//                    if (inverted) {
+//                        if (quant.getStringFCValue().equalsIgnoreCase("Increased") || quant.getStringFCValue().equalsIgnoreCase("Increase")) {
+//
+//                            quant.setStringFCValue("Decreased");
+//
+//                        } else if (quant.getStringFCValue().equalsIgnoreCase("Decreased") || quant.getStringFCValue().equalsIgnoreCase("Decrease")) {
+//                            quant.setStringFCValue("Increased");
+//
+//                        }
+//                        if (quant.getFcPatientGroupIonPatientGroupII() != -1000000000.0) {
+//                            quant.setFcPatientGroupIonPatientGroupII(1.0 / quant.getFcPatientGroupIonPatientGroupII() * -1);
+//                        }
+//                        String pgI = quant.getPatientGroupII();
+//                        String pSubGI = quant.getPatientSubGroupII();
+//                        String pGrIComm = quant.getPatientGrIIComment();
+//                        int pGrINum = quant.getPatientsGroupIINumber();
+//
+//                        quant.setPatientGroupII(quant.getPatientGroupI());
+//                        quant.setPatientGrIIComment(quant.getPatientGrIComment());
+//                        quant.setPatientSubGroupII(quant.getPatientSubGroupI());
+//                        quant.setPatientsGroupIINumber(quant.getPatientsGroupINumber());
+//
+//                        quant.setPatientGroupI(pgI);
+//                        quant.setPatientGrIComment(pSubGI);
+//                        quant.setPatientSubGroupI(pGrIComm);
+//                        quant.setPatientsGroupINumber(pGrINum);
+//
+//                    }
+//                    dsQuantProteinsMap.put("_-_" + quant.getDsKey() + "_-_" + comProt.getProteinAccssionNumber() + "_-_", quant);
+//                    System.out.println("at ------------------- " + dsQuantProteinsMap.get("_-_" + quant.getDsKey() + "_-_" + comProt.getProteinAccssionNumber() + "_-_").getUniprotAccession());
+////                    System.out.println("---------------------- " + dsQuantProteinsMap.get("_-_" + quant.getDsKey() + "_-_" + comProt.getProteinAccssionNumber().replace("-2", "") + "_-_").getUniprotAccession());
+//                    System.out.println(comparProtList.containsKey(protAcc) + "---------------------- --------------------------------------------------------------");
+
                 }
 
                 comProt.setDsQuantProteinsMap(dsQuantProteinsMap);
                 comProt.setQuantPeptidesList(quantPeptidesList);
-
                 comparProtList.put(protAcc, comProt);
 
             }

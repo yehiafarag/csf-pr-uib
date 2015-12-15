@@ -109,9 +109,9 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
         topLayout.setSpacing(true);
 
         this.datasetQuantProteinsMap = new LinkedHashMap<String, QuantProtein>();
-        datasetQuantProteinsMap.put("-" + datasetQuantProtein.getDsKey() + "-" + accession + "-", datasetQuantProtein);
+        datasetQuantProteinsMap.put("_-_" + datasetQuantProtein.getDsKey() + "_-_" + accession + "_-_", datasetQuantProtein);
         this.datasetIdDsObjectProteinsMap = new HashMap<String, QuantDatasetObject>();
-        datasetIdDsObjectProteinsMap.put("-" + datasetQuantProtein.getDsKey() + "-" + accession + "-", qds);
+        datasetIdDsObjectProteinsMap.put("_-_" + datasetQuantProtein.getDsKey() + "_-_" + accession + "_-_", qds);
 
         bottomLayout = new VerticalLayout();
         bottomLayout.setSpacing(true);
@@ -154,7 +154,7 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
         btn.addComponent(btnLabel);
         btn.setComponentAlignment(btnLabel, Alignment.MIDDLE_CENTER);
         btn.setStyleName("tabbtn");
-        btn.setData("-" + dsKey + "-" + protAccession + "-");
+        btn.setData("_-_" + dsKey + "_-_" + protAccession + "_-_");
 
         return btn;
     }
@@ -232,7 +232,7 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
         }
 
         for (int dsID : dsQuantPepMap.keySet()) {
-            String key = "-" + dsID + "-" + cp.getProteinAccssionNumber() + "-";
+            String key = "_-_" + dsID + "_-_" + cp.getProteinAccssionNumber() + "_-_";
             PeptidesInformationOverviewLayout peptideInfoLayout = new PeptidesInformationOverviewLayout(cp.getSequence(), dsQuantPepMap.get(dsID), subWidth, false, null, 0);
             peptidesInfoLayoutDSIndexMap.put(key, peptideInfoLayout);
         }

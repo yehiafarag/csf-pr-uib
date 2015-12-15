@@ -160,9 +160,9 @@ public class QuantDatasetsfullStudiesTableLayout extends Table implements CSFFil
     private void updateCombinedQuantDatasetTableRecords(Map<Integer, QuantDatasetObject> updatedStudiesList) {
         dsIndexes = new int[updatedStudiesList.size()];
         this.removeAllItems();
-        if (this.getParent() != null) {
-//            this.getParent().getParent().setCaption("&nbsp;&nbsp;Studies Table ( " + updatedStudiesList.size() + " )");
-        }
+//        if (this.getParent() != null) {
+////            this.getParent().getParent().setCaption("&nbsp;&nbsp;Studies Table ( " + updatedStudiesList.size() + " )");
+//        }
         int index = 0;
 
         for (QuantDatasetObject pb : updatedStudiesList.values()) {

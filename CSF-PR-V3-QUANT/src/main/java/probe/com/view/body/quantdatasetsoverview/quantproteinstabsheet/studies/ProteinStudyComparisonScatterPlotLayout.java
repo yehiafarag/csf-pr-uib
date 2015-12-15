@@ -503,7 +503,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
                     sb.append("<p></p>");
                     ds = Quant_Central_Manager.getFullQuantDatasetMap().get(dsId);
 
-                    dsKeyDatasetMap.put("-" + dsId + "-" + comparisonProtein.getProteinAccssionNumber() + "-", ds);
+                    dsKeyDatasetMap.put("_-_" + dsId + "_-_" + comparisonProtein.getProteinAccssionNumber() + "_-_", ds);
                 }
                 String tooltip = sb.toString().substring(0, sb.toString().length() - 7);
                 SquaredDot square = new SquaredDot("squared");

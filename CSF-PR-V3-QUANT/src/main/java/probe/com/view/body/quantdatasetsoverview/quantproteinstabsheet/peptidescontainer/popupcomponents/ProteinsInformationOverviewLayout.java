@@ -63,10 +63,10 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
         pValue = new InformationField("p-value");
         proteinsFormLayout.addComponent(pValue, 0, 1);
 
-        pvalueSignificanceThreshold = new InformationField("p-value Sig-Threshold");
+        pvalueSignificanceThreshold = new InformationField("p-value Threshold");
         proteinsFormLayout.addComponent(pvalueSignificanceThreshold, 1, 1);
 
-        pValueComm = new InformationField("p-value Comments");
+        pValueComm = new InformationField("Statistical Comments");
         proteinsFormLayout.addComponent(pValueComm, 2, 1);
 
         quantPeptidesNumber = new InformationField("#Quant Peptides");
@@ -104,16 +104,19 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
 
         pValueComm.setValue(quantProtein.getPvalueComment(), null);
 
-        String foldChane;
+        String strFoldChange;
         if (quantProtein.getStringFCValue() != null && !quantProtein.getStringFCValue().equalsIgnoreCase("") && !quantProtein.getStringFCValue().equalsIgnoreCase("Not Available")) {
-            foldChane = quantProtein.getStringFCValue() + " ";
+            strFoldChange = quantProtein.getStringFCValue() + " ";
+            if (strFoldChange.trim().equalsIgnoreCase("Not regulated")) {
+                strFoldChange = "No Change ";
+            }
         } else {
-            foldChane = "          ";
+            strFoldChange = "          ";
         }
         if (quantProtein.getFcPatientGroupIonPatientGroupII() != -1000000000) {
-            foldChane += "(" + df.format(quantProtein.getFcPatientGroupIonPatientGroupII()) + ")";
+            strFoldChange += "(" + df.format(quantProtein.getFcPatientGroupIonPatientGroupII()) + ")";
         }
-        foldChange.setValue(foldChane, null);
+        foldChange.setValue(strFoldChange, null);
         String rocv;
         if (quantProtein.getRocAuc() != -1000000000) {
             rocv = df.format(quantProtein.getRocAuc()) + "";

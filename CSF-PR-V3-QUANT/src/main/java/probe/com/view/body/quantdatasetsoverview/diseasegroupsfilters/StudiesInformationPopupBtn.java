@@ -25,7 +25,6 @@ import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.selectionmanager.CSFFilter;
 import probe.com.selectionmanager.QuantCentralManager;
-import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.peptidescontainer.popupcomponents.DatasetInformationOverviewLayout;
 
 /**
@@ -280,9 +279,7 @@ public class StudiesInformationPopupBtn extends Button implements Button.ClickLi
         private void updateDatasetInfoLayout(int dsKey) {
             datasetsInformationContainer.removeAllComponents();
             for (int key : datasetInfoLayoutDSIndexMap.keySet()) {
-                System.out.println("key is "+ key+"  dskey "+dsKey+ "  "+ (key==dsKey));
                 if (key == (dsKey)) {
-                    System.out.println(" ----------------- "+datasetInfoLayoutDSIndexMap.get(key));
                     datasetsInformationContainer.addComponent(datasetInfoLayoutDSIndexMap.get(key));
                     datasetsInformationContainer.setComponentAlignment(datasetInfoLayoutDSIndexMap.get(key), Alignment.BOTTOM_RIGHT);
                     break;

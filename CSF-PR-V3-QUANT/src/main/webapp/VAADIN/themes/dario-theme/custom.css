@@ -1484,6 +1484,26 @@ resetlabelbtn p{
     background-color: lightgray;
 
 }
+
+.reordergroupsbtn{
+    clear: both;
+    width: 24px;
+    height: 24px;
+    border-radius: 5px;
+    border:  1px solid lightgray;
+    background-color:  whitesmoke;
+    background-image: url(img/drag_reorder1.png);
+    background-size:contain;
+    background-position:center;
+    background-repeat: no-repeat;
+    cursor:pointer;
+
+}
+.reordergroupsbtn:hover{
+    background-color: lightgray;
+
+}
+
 .unselectallbtn{
     clear: both;
     width: 24px;
@@ -1849,5 +1869,29 @@ margin-top:-13px;
 }
 .pointer div{
     cursor: pointer;
+    
+}
+.rowItem{
+    border: 1px solid lightgray;
+    background: whitesmoke;
+    border-radius:5px;
+    
+}
+.rowItem:hover{
+    background: lightgray;
+    border: 1px solid lightgray;
+    border-radius:5px;
+    
+}
+.rowItem div{
+    padding-left:  10px;
+     font-family: Verdana;
+    font-size: 13px;
+    font-stretch: normal;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: bolder;
+    color: gray;
+    
     
 }

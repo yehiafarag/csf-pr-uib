@@ -28,6 +28,7 @@ import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.DiseaseGro
 
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.HeatMapFilter;
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.ComparisonsSelectionOverviewBubbleChart;
+import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.PopupReorderGroupsLayout;
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.StudiesInformationPopupBtn;
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.interactivepiechartfilters.StudiesPieChartFiltersContainerLayout;
 
@@ -225,7 +226,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         });
         final OptionGroup noSerumOption = new OptionGroup();
         leftBottomBtnLayout.addComponent(noSerumOption);
-         leftBottomBtnLayout.setComponentAlignment(noSerumOption, Alignment.MIDDLE_LEFT);
+        leftBottomBtnLayout.setComponentAlignment(noSerumOption, Alignment.MIDDLE_LEFT);
         noSerumOption.setWidth("80px");
         noSerumOption.setHeight("24px");
         noSerumOption.setNullSelectionAllowed(true); // user can not 'unselect'
@@ -303,6 +304,11 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
                 diseaseGroupsHeatmapFilter.unselectAll();
             }
         });
+
+        PopupReorderGroupsLayout reorderGroups = new PopupReorderGroupsLayout(Quant_Central_Manager);
+         rightBottomBtnLayout.addComponent(reorderGroups);
+        rightBottomBtnLayout.setComponentAlignment(reorderGroups, Alignment.TOP_LEFT);
+        
 
         final VerticalLayout selectMultiBtn = new VerticalLayout();
         selectMultiBtn.setStyleName("selectmultiselectedbtn");

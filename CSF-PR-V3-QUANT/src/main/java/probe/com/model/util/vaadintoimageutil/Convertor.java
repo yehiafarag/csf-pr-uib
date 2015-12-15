@@ -93,7 +93,6 @@ public class Convertor implements Serializable {
             }
         }
         if (parentComponent.getClass().getName().equalsIgnoreCase(Vertical_Layout)) {
-            System.out.println("componentType " + parentComponent.getClass().getName() + "   -" + parentComponent.getStyleName() + "-");
             JPanel comp = convertVerticalLayout((VerticalLayout) parentComponent);
             if (!vaadinLevelMap.containsKey(postion)) {
                 HashSet<Layout> set = new HashSet<Layout>();
