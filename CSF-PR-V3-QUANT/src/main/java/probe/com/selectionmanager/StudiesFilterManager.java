@@ -53,7 +53,7 @@ public class StudiesFilterManager implements Serializable {
         } else {
             inUsefullQuantDatasetMap = fullQuantDatasetMap;
         }
-         this.currentDsNumber = inUsefullQuantDatasetMap.size();
+        this.currentDsNumber = inUsefullQuantDatasetMap.size();
         resetFilters();
     }
     private boolean noSerum;
@@ -269,6 +269,25 @@ public class StudiesFilterManager implements Serializable {
 
     public void setStudiesOverviewPieChart(Set<JFreeChart> studiesOverviewPieChart) {
         this.studiesOverviewPieChart = studiesOverviewPieChart;
+    }
+
+    /**
+     * set selected heat map selected Rows values
+     *
+     * @param selectedHeatMapRows set of heat map selected rows values
+     *
+     */
+    public void setSelectedHeatMapRows(Set<String> selectedHeatMapRows) {
+        this.selectedHeatMapRows = selectedHeatMapRows;
+    }
+
+    /**
+     * set selected heat map selected columns values
+     *
+     * @param selectedHeatMapColumns set of heat map selected columns values
+     */
+    public void setSelectedHeatMapColumns(Set<String> selectedHeatMapColumns) {
+        this.selectedHeatMapColumns = selectedHeatMapColumns;
     }
 
 }

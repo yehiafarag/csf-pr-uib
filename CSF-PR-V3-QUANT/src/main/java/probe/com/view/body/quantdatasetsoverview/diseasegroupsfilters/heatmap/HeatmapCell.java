@@ -62,7 +62,7 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
      * @param groupCompTitle
      * @param heatmapCellWidth
      */
-    public HeatmapCell(double value, final String color, int[] dsIndexes, final int rowLabelIndex, final int colLabelIndex, VerticalLayout tooltipLayout, HeatMapComponent parentcom, String groupCompTitle, int heatmapCellWidth) {
+    public HeatmapCell(double value, final String color, int[] dsIndexes, final int rowLabelIndex, final int colLabelIndex, VerticalLayout tooltipLayout, HeatMapComponent parentcom, String groupCompTitle, int heatmapCellWidth, int publicationsNumber) {
 
         this.colLabelIndex = colLabelIndex;
         this.rowLabelIndex = rowLabelIndex;
@@ -116,7 +116,8 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
         this.addComponent(valueLabel);
         this.setComponentAlignment(valueLabel, Alignment.MIDDLE_CENTER);
         if (value > 0) {
-            this.setDescription("<h3>"+groupCompTitle+"</h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + strValue + " available " + (value == 1 ? "study" : "studies") + " </h3>");
+            
+            this.setDescription("<h3>"+groupCompTitle+"</h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + strValue + (value == 1 ? " study" : " studies") + " </h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + publicationsNumber + (publicationsNumber == 1 ? " publication" : " publications") + " </h3>");
         }
 
     }

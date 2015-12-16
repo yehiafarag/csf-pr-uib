@@ -398,7 +398,7 @@
     clear: both;
     font-family:Verdana; 
     font-size: 12px;
-   
+
     height: 50px;
     overflow-x: hidden;
     overflow-y: scroll;
@@ -1133,18 +1133,18 @@ resetlabelbtn p{
     cursor:pointer;
 }
 .graystackedlayout div{
-    background: #737373;
+    background: #b5babb;
     border: 1px solid black;    
     cursor:pointer;
 }
 .selectedgraystackedlayout div{
-    background: #737373;
+    background: #b5babb;
     border: 2px solid black;    
     cursor:pointer;
     opacity: 1;
 }
 .unselectedgraystackedlayout div{
-    background: #737373;
+    background: #b5babb;
     border: 1px solid black;    
     cursor:pointer;
     opacity: 0.3;
@@ -1269,7 +1269,7 @@ resetlabelbtn p{
     background: #009900;
 }
 .darkgray div{
-    background: #737373;
+    background: #b5babb;
 }
 .lightbluelayout div{
     background: rgb(1, 141, 244);
@@ -1493,7 +1493,7 @@ resetlabelbtn p{
     border:  1px solid lightgray;
     background-color:  whitesmoke;
     background-image: url(img/drag_reorder1.png);
-    background-size:contain;
+    background-size:15px;
     background-position:center;
     background-repeat: no-repeat;
     cursor:pointer;
@@ -1859,39 +1859,116 @@ resetlabelbtn p{
 
 .capturedwindow .v-window-outerheader {
 
-margin-top:-13px;
+    margin-top:-13px;
     top:0px;
     height:0px;
 }
 .capturedwindow .hmcolumnlabel{
-    
+
     margin-top: 152px;
 }
 .pointer div{
     cursor: pointer;
-    
+
 }
 .rowItem{
     border: 1px solid lightgray;
     background: whitesmoke;
     border-radius:5px;
-    
+
 }
 .rowItem:hover{
     background: lightgray;
     border: 1px solid lightgray;
     border-radius:5px;
-    
+
 }
 .rowItem div{
     padding-left:  10px;
-     font-family: Verdana;
+    font-family: Verdana;
     font-size: 13px;
     font-stretch: normal;
     font-style: normal;
     font-variant: normal;
     font-weight: bolder;
     color: gray;
-    
-    
+    cursor: -webkit-grab; cursor: -moz-grab;
+
+
 }
+.countcontainer{
+
+   
+
+}
+.countItem{
+    border: 1px solid lightgray;
+    background: whitesmoke;
+    border-radius:5px;
+    margin-top:4px;
+    
+
+}
+
+.countItem div{
+    font-family: Verdana;
+    font-size: 13px;
+    font-stretch: normal;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: bolder;
+    color: gray;
+    text-align:center;
+
+
+}
+.draganddropspacer{
+    width: 5px;
+    background: lightblue;
+
+}
+ .v-ddwrapper-over, .v-app .v-ddwrapper-over-top, .v-ddwrapper-over-top .v-ddwrapper-over-top, .v-app .v-ddwrapper-over-bottom, .v-ddwrapper-over-bottom{
+    height:40px !important;
+    background:white;
+    border:none;
+	
+}
+.v-drag-element div{
+
+    background:black !important; 
+    opacity:1 !important;
+    border-radius:5px;
+    cursor: -webkit-grabbing;
+    cursor: -moz-grabbing;
+}
+.no-horizontal-drag-hints{
+
+    overflow-y:auto;    
+    overflow-x:hidden;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+ 
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius:2px;
+}
+ 
+::-webkit-scrollbar-thumb {
+   background-color: darkgrey; 
+  border: 1px solid slategrey;
+   border-radius:2px;
+
+}
+.v-select-optiongroup-sortablelayoutselect .v-select-option {
+    margin-top:4px;
+    height:20px;
+    margin-left:-28px;
+}
+.v-select-optiongroup-sortablelayoutselect .v-select-option input{
+    margin-top:4px;
+}
+
+

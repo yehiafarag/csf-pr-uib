@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.beans.quant.QuantDSIndexes;
+import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.selectionmanager.CSFFilter;
 import probe.com.selectionmanager.QuantCentralManager;
 import probe.com.view.core.DiseaseGroup;
@@ -92,7 +93,8 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
         this.addComponent(heatMap);
         this.setComponentAlignment(heatMap, Alignment.TOP_LEFT);
         this.calcHeatMapMatrix(rowheaders, colheaders, patientsGroupArr);
-        heatMap.updateHeatMap(rowheaders, colheaders, values, maxDatasetNumber,diseaseFullNameMap);
+          Map<Integer, QuantDatasetObject> fullDsMap = Quant_Central_Manager.getFullQuantDatasetMap();
+        heatMap.updateHeatMap(rowheaders, colheaders, values, maxDatasetNumber,diseaseFullNameMap,fullDsMap);
         Quant_Central_Manager.registerFilterListener(HeatMapFilter.this);
         Quant_Central_Manager.registerStudySelectionListener(HeatMapFilter.this);
         this.diseaseFullNameMap=diseaseFullNameMap;
@@ -107,7 +109,8 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
     private void updateHeatmap(Set<String> rowheaders, Set<String> colheaders, DiseaseGroup[] patientsGroupArr) {
 
         this.calcHeatMapMatrix(rowheaders, colheaders, patientsGroupArr);
-        heatMap.updateHeatMap(rowheaders, colheaders, values, maxDatasetNumber,diseaseFullNameMap);
+          Map<Integer, QuantDatasetObject> fullDsMap = Quant_Central_Manager.getFullQuantDatasetMap();
+        heatMap.updateHeatMap(rowheaders, colheaders, values, maxDatasetNumber,diseaseFullNameMap,fullDsMap);
         rowheaders.addAll(colheaders);
 
     }
@@ -156,7 +159,8 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
      * @param selectedColumns
      */
     public void updateHeatmap(Set<String> selectedRows, Set<String> selectedColumns) {
-        heatMap.updateHeatMap(selectedRows, selectedColumns, values, maxDatasetNumber,diseaseFullNameMap);
+        Map<Integer, QuantDatasetObject> fullDsMap = Quant_Central_Manager.getFullQuantDatasetMap();
+        heatMap.updateHeatMap(selectedRows, selectedColumns, values, maxDatasetNumber,diseaseFullNameMap,fullDsMap);
     }
 
     /**

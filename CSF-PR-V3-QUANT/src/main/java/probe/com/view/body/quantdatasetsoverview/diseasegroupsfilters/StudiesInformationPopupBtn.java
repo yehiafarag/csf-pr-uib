@@ -39,7 +39,7 @@ public class StudiesInformationPopupBtn extends Button implements Button.ClickLi
     private final Map<Integer, DatasetInformationOverviewLayout> datasetInfoLayoutDSIndexMap = new HashMap<Integer, DatasetInformationOverviewLayout>();
 
     public StudiesInformationPopupBtn(QuantCentralManager Quant_Central_Manager) {
-        super("Studies Information");
+        super("Study Information");
         this.Quant_Central_Manager = Quant_Central_Manager;
         this.setStyleName(Reindeer.BUTTON_LINK);
         this.setDescription("Show studies Information");
@@ -96,7 +96,7 @@ public class StudiesInformationPopupBtn extends Button implements Button.ClickLi
             }
         }
 
-        popupWindow.setCaption("&nbsp;&nbsp;Studies Information ( " + selectedDsNumber + " )");
+        popupWindow.setCaption("&nbsp;&nbsp;Study Information (" + selectedDsNumber + ")");
         studiesPopupLayout.setInformationData(dsObjects);
 
         UI.getCurrent().addWindow(popupWindow);
@@ -150,7 +150,7 @@ public class StudiesInformationPopupBtn extends Button implements Button.ClickLi
 
                 }
             }
-            popupWindow.setCaption("&nbsp;&nbsp;Studies Information ( " + selectedDsNumber + " )");
+            popupWindow.setCaption("&nbsp;&nbsp;Study Information (" + selectedDsNumber + ")");
             studiesPopupLayout.setInformationData(dsObjects);
 
         }

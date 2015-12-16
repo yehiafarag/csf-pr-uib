@@ -6,14 +6,11 @@
 package probe.com.view.core;
 
 import com.vaadin.data.Property;
-import com.vaadin.event.LayoutEvents;
-import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.ListSelect;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.Reindeer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;

@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.beans.quant.QuantDSIndexes;
+import probe.com.model.beans.quant.QuantDatasetObject;
 
 /**
  *
@@ -119,12 +120,14 @@ public class HeatMapComponent extends VerticalLayout {
      * @param columnsLbels
      * @param values
      * @param maxDatasetValue
+     * @param diseaseFullNameMap
+     * @param fullDsMap
      */
-    public void updateHeatMap(Set<String> rowsLbels, Set<String> columnsLbels, QuantDSIndexes[][] values, int maxDatasetValue,Map<String,String> diseaseFullNameMap) {
+    public void updateHeatMap(Set<String> rowsLbels, Set<String> columnsLbels, QuantDSIndexes[][] values, int maxDatasetValue,Map<String,String> diseaseFullNameMap, Map<Integer, QuantDatasetObject> fullDsMap) {
         if (rowsLbels.isEmpty() || columnsLbels.isEmpty()) {
             return;
         }
-        updateHeatMapLayout(values, rowsLbels, columnsLbels, maxDatasetValue,diseaseFullNameMap);
+        updateHeatMapLayout(values, rowsLbels, columnsLbels, maxDatasetValue,diseaseFullNameMap,fullDsMap);
 
     }
 
@@ -442,7 +445,7 @@ public class HeatMapComponent extends VerticalLayout {
         return availableComparisonsList;
     }
 
-    private void updateHeatMapLayout(QuantDSIndexes[][] values, Set<String> rowheaders, Set<String> colheaders, int maxDatasetValue,Map<String,String> diseaseFullNameMap) {
+    private void updateHeatMapLayout(QuantDSIndexes[][] values, Set<String> rowheaders, Set<String> colheaders, int maxDatasetValue,Map<String,String> diseaseFullNameMap, Map<Integer, QuantDatasetObject> fullDsMap) {
         HeatmapColorGenerator hmColorGen = new HeatmapColorGenerator(maxDatasetValue, 0);
         availableComparisonsList.clear();
         columnHeader.removeAllComponents();
@@ -503,7 +506,14 @@ public class HeatMapComponent extends VerticalLayout {
                     color = hmColorGen.getColor((float) value);
                 }
 
-                HeatmapCell cell = new HeatmapCell(value, color, values[x][y].getIndexes(), x, y, null, HeatMapComponent.this, headerTitle, heatmapCellWidth);
+                int[] dsIndexes= values[x][y].getIndexes();
+                Set<String>pubCounter = new HashSet<String>();
+                for(int i:dsIndexes){
+                    QuantDatasetObject ds = fullDsMap.get(i);
+                    pubCounter.add(ds.getPumedID());
+                
+                }
+                HeatmapCell cell = new HeatmapCell(value, color,dsIndexes , x, y, null, HeatMapComponent.this, headerTitle, heatmapCellWidth,pubCounter.size());
                 comparisonsCellsMap.put(headerTitle, cell);
                 heatmapBody.addComponent(cell, y, x);
                 if (cell.getComparison().getDatasetIndexes().length > 0) {

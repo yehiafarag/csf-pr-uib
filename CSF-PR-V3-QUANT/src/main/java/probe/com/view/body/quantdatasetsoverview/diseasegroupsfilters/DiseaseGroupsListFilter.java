@@ -17,6 +17,7 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -45,6 +46,7 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
     private final QuantCentralManager Quant_Central_Manager;
     private boolean selfselected = false;
     private Property.ValueChangeListener disGrIListener, disGrIIListener;
+    private boolean updateManager = false;
 
     /**
      *
@@ -162,7 +164,7 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
 
         this.patientGroupIIFilter = new ListSelectDatasetExplorerFilter(2, "Disease Group II", pgArr);
         initGroupsIIFilter();
-        diseaseGroupsSet = new TreeSet<String>(Arrays.asList(pgArr));
+        diseaseGroupsSet = new LinkedHashSet<String>(Arrays.asList(pgArr));
 
         this.addComponent(patientGroupIIFilter);
 
@@ -215,8 +217,9 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
         popupWindow = new Window() {
             @Override
             public void close() {
-                updateSelectionManager(studiesIndexes
-                );
+                if (updateManager) {
+                    updateSelectionManager(studiesIndexes);
+                }
 
                 popupWindow.setVisible(false);
 
@@ -244,6 +247,8 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
         this.setHeightUndefined();
         filtersConatinerLayout.addComponent(DiseaseGroupsListFilter.this);
         filtersConatinerLayout.setComponentAlignment(DiseaseGroupsListFilter.this, Alignment.BOTTOM_CENTER);
+        Quant_Central_Manager.setSelectedHeatMapRows(selectedRows);
+        Quant_Central_Manager.setSelectedHeatMapColumns(selectedColumns);
 
     }
 
@@ -317,6 +322,14 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
 
     }
 
+    private void updateSelectionManager(int[] datasetIndexes) {
+        selfselected = true;
+        if (datasetIndexes != null) {
+            Quant_Central_Manager.applyFilters(new CSFFilterSelection("Disease_Groups_Level", datasetIndexes, "", new HashSet<String>()));
+        }
+        Quant_Central_Manager.setHeatMapLevelSelection(selectedRows, selectedColumns, patientsGroupArr);
+    }
+
     private void initGroupsIFilter() {
         patientGroupIFilter.getList().setHeight("150px");
         patientGroupIFilter.getList().setWidth("380px");
@@ -336,10 +349,13 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
                 }
                 if (selectedRows.isEmpty()) {
                     enable = false;
+                    updateManager = false;
                     for (Object id : patientGroupIFilter.getList().getItemIds().toArray()) {
                         selectedRows.add(id.toString());
                     }
 
+                } else {
+                    updateManager = true;
                 }
                 selectedColumns.clear();
                 Set<DiseaseGroup> p = filterPatGroup2List(selectedRows);
@@ -358,15 +374,10 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
             }
         };
         patientGroupIFilter.addValueChangeListener(disGrIListener);
-
-    }
-
-    private void updateSelectionManager(int[] datasetIndexes) {
-        selfselected = true;
-        if (datasetIndexes != null) {
-            Quant_Central_Manager.applyFilters(new CSFFilterSelection("Disease_Groups_Level", datasetIndexes, "", new HashSet<String>()));
+        for (Object id : patientGroupIFilter.getList().getItemIds().toArray()) {
+            selectedRows.add(id.toString());
         }
-        Quant_Central_Manager.setHeatMapLevelSelection(selectedRows, selectedColumns, patientsGroupArr);
+
     }
 
     private void initGroupsIIFilter() {
@@ -401,13 +412,16 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
                 Set<DiseaseGroup> p = filterPGR2(selectedRows, selectedColumns);
                 studiesIndexes = new int[p.size()];
                 int i = 0;
-                for (DiseaseGroup pg : p) {                    
+                for (DiseaseGroup pg : p) {
                     studiesIndexes[i] = pg.getOriginalDatasetIndex();
                     i++;
                 }
             }
         };
         patientGroupIIFilter.addValueChangeListener(disGrIIListener);
+        for (Object id : patientGroupIIFilter.getList().getItemIds().toArray()) {
+            selectedColumns.add(id.toString());
+        }
     }
 
     private Set<DiseaseGroup> filterPatGroup2List(Set<String> sel1) {

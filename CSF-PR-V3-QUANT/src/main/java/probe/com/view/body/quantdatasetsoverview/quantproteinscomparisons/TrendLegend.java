@@ -23,8 +23,8 @@ public class TrendLegend extends GridLayout {
 
     public TrendLegend(String type) {
         if (type.equalsIgnoreCase("table")) {
-            String[] labels = new String[]{"High", "Stable", "Low","Not provided"};
-            String[] styleName = new String[]{"redlayout", "lightbluelayout", "greenlayout","darkgray"};
+            String[] labels = new String[]{"High", "Stable", "Low","Not Available"};
+            String[] styleName = new String[]{"redlayout", "lightbluelayout", "greenlayout","empty"};
             this.setSpacing(true);
             this.setColumns(4);
             this.setRows(1);
@@ -53,7 +53,7 @@ public class TrendLegend extends GridLayout {
             }
 
         }else {
-            String[] labels = new String[]{"High", "High,not sign.", "Stable", "Low,not sign.", "Low","Not provided"};
+            String[] labels = new String[]{"High", "High,not sign.", "Stable", "Low,not sign.", "Low","Not Provided"};
             String[] styleName = new String[]{"redlayout", "notsigredstackedlayout", "lightbluelayout", "notsiggreenstackedlayout", "greenlayout","darkgray"};
             this.setSpacing(true);
             this.setRows(1);

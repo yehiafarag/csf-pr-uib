@@ -232,6 +232,25 @@ public class QuantCentralManager implements Serializable {
       public boolean[] getActiveHeader() {
         return Studies_Filter_Manager.getActiveHeader();
     }
+      
+       /**
+     * set selected heat map selected Rows values
+     *
+     * @param selectedHeatMapRows set of heat map selected rows values
+     *
+     */
+    public void setSelectedHeatMapRows(Set<String> selectedHeatMapRows) {
+       Studies_Filter_Manager.setSelectedHeatMapRows(selectedHeatMapRows);
+    }
+
+    /**
+     * set selected heat map selected columns values
+     *
+     * @param selectedHeatMapColumns set of heat map selected columns values
+     */
+    public void setSelectedHeatMapColumns(Set<String> selectedHeatMapColumns) {
+        Studies_Filter_Manager.setSelectedHeatMapColumns(selectedHeatMapColumns);
+    }
 
     
 

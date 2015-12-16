@@ -51,7 +51,7 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         mainBody.setStyleName("bottomborder");
 
         VerticalLayout leftLayout = new VerticalLayout();
-        leftLayout.setWidth("300px");
+        leftLayout.setWidth("220px");
         leftLayout.setHeightUndefined();
         leftLayout.setMargin(true);
         leftLayout.setStyleName("framelayout");
@@ -60,7 +60,7 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         mainBody.addComponent(leftLayout);
         mainBody.setComponentAlignment(leftLayout, Alignment.TOP_LEFT);
 
-        int layoutWidth = (fullWidth - 300);
+        int layoutWidth = (fullWidth - 220);
         HorizontalLayout rightPanel = new HorizontalLayout();
         rightPanel.setWidth(layoutWidth + "px");
         mainBody.addComponent(rightPanel);
@@ -128,7 +128,7 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         // the stat layout
         OverviewInfoBean infoBean = handler.getResourceOverviewInformation();
 
-        Label statLabel = new Label("<h1>Resource  Status</h1>");
+        Label statLabel = new Label("<center><h1>Resource  Status</h1></center>");
         statLabel.setContentMode(ContentMode.HTML);
         statLabel.setWidth("100%");
         statLabel.setHeight("50px");
