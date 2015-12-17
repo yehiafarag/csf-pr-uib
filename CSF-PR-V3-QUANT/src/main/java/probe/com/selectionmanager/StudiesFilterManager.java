@@ -5,8 +5,9 @@
  */
 package probe.com.selectionmanager;
 
-import com.google.gwt.dom.client.Style;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -38,12 +39,20 @@ public class StudiesFilterManager implements Serializable {
     private final LinkedHashMap<String, CSFFilter> registeredFilterSet = new LinkedHashMap<String, CSFFilter>();
 
     private CSFFilterSelection filterSelection;
-    private Set<String> selectedHeatMapRows;
-    private Set<String> selectedHeatMapColumns;
+//    private LinkedHashSet<String> selectedHeatMapRows;
+//    private LinkedHashSet<String> selectedHeatMapColumns;
     private DiseaseGroup[] diseaseGroupsArr;
+    private final LinkedHashSet<String> selectedHeatMapRows = new LinkedHashSet<String>();
+    private final LinkedHashSet<String> selectedHeatMapColumns = new LinkedHashSet<String>();
+    private String[] diseaseGroupsI, diseaseGroupsII;
+    private DiseaseGroup[] diseaseGroupsArray;
 
     public boolean isNoSerum() {
         return noSerum;
+    }
+
+    public DiseaseGroup[] getDiseaseGroupsArray() {
+        return diseaseGroupsArray;
     }
 
     public void setNoSerum(boolean noSerum) {
@@ -86,6 +95,112 @@ public class StudiesFilterManager implements Serializable {
         this.activeFilters = activeFilterMap.get(key);
         this.activeHeader = quantDatasetListObject.get(key).getActiveHeaders();
         this.diseaseCategorySet = quantDatasetListObject.keySet();
+        this.updateRowsAndColumns("Reset_Disease_Groups_Level");
+    }
+
+    private void updateRowsAndColumns(String type) {
+        if (type.equalsIgnoreCase("Disease_Groups_Level")) {
+            this.updatePatientGroups(getFilteredDatasetsList());
+            if (diseaseGroupsI == null || diseaseGroupsII == null) {
+                System.out.println("error at 85 class " + this.getClass().getName() + "   ");
+                return;
+            }
+            String[] pgArr = merge(diseaseGroupsI, diseaseGroupsII);
+
+            selectedHeatMapRows.clear();
+            for (String str : pgArr) {
+                if (!str.equalsIgnoreCase("")) {
+                    selectedHeatMapRows.add(str);
+                }
+            }
+            selectedHeatMapColumns.clear();
+            for (String str : pgArr) {
+                if (!str.equalsIgnoreCase("")) {
+                    selectedHeatMapColumns.add(str);
+                }
+            }
+
+        } else if (type.equalsIgnoreCase("Reset_Disease_Groups_Level")) {
+            this.updatePatientGroups(getFullQuantDatasetMap());
+            String[] pgArr = merge(diseaseGroupsI, diseaseGroupsII);
+            Arrays.sort(pgArr);
+            selectedHeatMapRows.clear();
+            for (String str : pgArr) {
+                if (!str.equalsIgnoreCase("")) {
+                    selectedHeatMapRows.add(str);
+                }
+            }
+
+            selectedHeatMapColumns.clear();
+            selectedHeatMapColumns.addAll(selectedHeatMapRows);
+
+        }
+
+    }
+
+    private void updatePatientGroups(Map<Integer, QuantDatasetObject> quantDSArr) {
+
+        diseaseGroupsI = new String[quantDSArr.size()];
+        diseaseGroupsII = new String[quantDSArr.size()];
+        diseaseGroupsArray = new DiseaseGroup[quantDSArr.size()];
+        int i = 0;
+        for (QuantDatasetObject ds : quantDSArr.values()) {
+            if (ds == null) {
+                continue;
+            }
+            DiseaseGroup pg = new DiseaseGroup();
+            String pgI = ds.getPatientsGroup1();
+            pg.setPatientsGroupI(pgI);
+            String label1;
+            if (pgI.equalsIgnoreCase("Not Available") || pgI.equalsIgnoreCase("control")) {
+                pgI = "";
+            }
+            String subpgI = ds.getPatientsSubGroup1();
+            pg.setPatientsSubGroupI(subpgI);
+            if (!subpgI.equalsIgnoreCase("") && !subpgI.equalsIgnoreCase("Not Available")) {
+                pgI = subpgI;
+            }
+            label1 = pgI;
+            pg.setPatientsGroupILabel(label1);
+
+            String pgII = ds.getPatientsGroup2();
+            pg.setPatientsGroupII(pgII);
+            String label2;
+            if (pgII.equalsIgnoreCase("Not Available") || pgII.equalsIgnoreCase("control")) {
+                pgII = "";
+            }
+            String subpgII = ds.getPatientsSubGroup2();
+            pg.setPatientsSubGroupII(subpgII);
+            if (!subpgII.equalsIgnoreCase("") && !subpgII.equalsIgnoreCase("Not Available")) {
+                pgII = subpgII;
+            }
+            label2 = pgII;
+            pg.setPatientsGroupIILabel(label2);
+            diseaseGroupsArray[i] = pg;
+            diseaseGroupsI[i] = label1;
+            diseaseGroupsII[i] = label2;
+            pg.setQuantDatasetIndex(i);
+            pg.setOriginalDatasetIndex(ds.getDsKey());
+            i++;
+        }
+
+    }
+
+    private String[] merge(String[] arr1, String[] arr2) {
+        String[] newArr = new String[arr1.length + arr2.length];
+        int i = 0;
+        for (String str : arr1) {
+            newArr[i] = str;
+            i++;
+        }
+        for (String str : arr2) {
+            newArr[i] = str;
+            i++;
+        }
+
+        Arrays.sort(newArr);
+        return newArr;
+
     }
 
     public boolean[] getActiveHeader() {
@@ -167,6 +282,7 @@ public class StudiesFilterManager implements Serializable {
      * update all registered filters
      */
     private void SelectionChanged(String type) {
+        this.updateRowsAndColumns(type);
         for (CSFFilter filter : registeredFilterSet.values()) {
             filter.selectionChanged(type);
         }
@@ -228,10 +344,12 @@ public class StudiesFilterManager implements Serializable {
      * @param selectedColumns
      * @param diseaseGroupsArr
      */
-    public void setHeatMapLevelSelection(Set<String> selectedRows, Set<String> selectedColumns, DiseaseGroup[] diseaseGroupsArr) {
+    public void setHeatMapLevelSelection(LinkedHashSet<String> selectedRows, LinkedHashSet<String> selectedColumns, DiseaseGroup[] diseaseGroupsArr) {
         this.diseaseGroupsArr = diseaseGroupsArr;
-        this.selectedHeatMapRows = selectedRows;
-        this.selectedHeatMapColumns = selectedColumns;
+        this.selectedHeatMapRows.clear();
+        this.selectedHeatMapRows.addAll(selectedRows);
+        this.selectedHeatMapColumns.clear();
+        this.selectedHeatMapColumns.addAll(selectedColumns);
         this.SelectionChanged("HeatMap_Update_level");
 
     }
@@ -241,7 +359,7 @@ public class StudiesFilterManager implements Serializable {
      *
      * @return set of heat map selected rows values
      */
-    public Set<String> getSelectedHeatMapRows() {
+    public LinkedHashSet<String> getSelectedHeatMapRows() {
         return selectedHeatMapRows;
     }
 
@@ -250,7 +368,7 @@ public class StudiesFilterManager implements Serializable {
      *
      * @return set of heat map selected columns values
      */
-    public Set<String> getSelectedHeatMapColumns() {
+    public LinkedHashSet<String> getSelectedHeatMapColumns() {
         return selectedHeatMapColumns;
     }
 
@@ -277,8 +395,9 @@ public class StudiesFilterManager implements Serializable {
      * @param selectedHeatMapRows set of heat map selected rows values
      *
      */
-    public void setSelectedHeatMapRows(Set<String> selectedHeatMapRows) {
-        this.selectedHeatMapRows = selectedHeatMapRows;
+    public void setSelectedHeatMapRows(LinkedHashSet<String> selectedHeatMapRows) {
+       this.selectedHeatMapRows.clear();
+        this.selectedHeatMapRows .addAll(selectedHeatMapRows);
     }
 
     /**
@@ -286,8 +405,9 @@ public class StudiesFilterManager implements Serializable {
      *
      * @param selectedHeatMapColumns set of heat map selected columns values
      */
-    public void setSelectedHeatMapColumns(Set<String> selectedHeatMapColumns) {
-        this.selectedHeatMapColumns = selectedHeatMapColumns;
+    public void setSelectedHeatMapColumns(LinkedHashSet<String> selectedHeatMapColumns) {
+       this.selectedHeatMapColumns.clear();
+        this.selectedHeatMapColumns .addAll(selectedHeatMapColumns);
     }
 
 }

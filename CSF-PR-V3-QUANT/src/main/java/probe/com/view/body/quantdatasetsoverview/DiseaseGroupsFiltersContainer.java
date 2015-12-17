@@ -85,7 +85,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
 
         diseaseGroupsListFilter = new DiseaseGroupsListFilter(Quant_Central_Manager);
 
-        Set<String> diseaseGroupsSet = diseaseGroupsListFilter.getDiseaseGroupsSet();
+        LinkedHashSet<String> diseaseGroupsSet =Quant_Central_Manager.getSelectedHeatMapRows(); //diseaseGroupsListFilter.getDiseaseGroupsSet();
 //        heatmapW = Math.max((156 + (heatmapCellWidth * diseaseGroupsSet.size())), 700);
 
         final HorizontalLayout topLayout = new HorizontalLayout();
@@ -166,7 +166,9 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         this.resizeLayout(diseaseGroupsSet.size());
 
         int heatmapH = heatmapW + 20;
-        diseaseGroupsHeatmapFilter = new HeatMapFilter(Quant_Central_Manager, heatmapW, diseaseGroupsSet, diseaseGroupsSet, diseaseGroupsListFilter.getPatientsGroupArr(), heatmapCellWidth, CSFPR_Handler.getDiseaseFullNameMap());
+        
+//        System.out.println("at error "+diseaseGroupsSet.size()+"    "+ Quant_Central_Manager.getDiseaseGroupsArr().length+ );
+        diseaseGroupsHeatmapFilter = new HeatMapFilter(Quant_Central_Manager, heatmapW, diseaseGroupsSet, diseaseGroupsSet, Quant_Central_Manager.getDiseaseGroupsArray(), heatmapCellWidth, CSFPR_Handler.getDiseaseFullNameMap());
         diseaseGroupsHeatmapFilter.setHeight(Math.max(heatmapH, 720) + "px");
         diseaseGroupsHeatmapFilter.setSingleSelection(false);
         middleLayout.addComponent(diseaseGroupsHeatmapFilter);

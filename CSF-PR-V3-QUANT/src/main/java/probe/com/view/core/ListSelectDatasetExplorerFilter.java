@@ -42,7 +42,7 @@ public class ListSelectDatasetExplorerFilter extends VerticalLayout implements B
      * @param defaultLabel
      * @param pgArr
      */
-    public ListSelectDatasetExplorerFilter(int filterId, String defaultLabel, String[] pgArr) {
+    public ListSelectDatasetExplorerFilter(int filterId, String defaultLabel, Set<String>pgArr) {
         this.setSizeUndefined();
         this.filterId = filterId;
 

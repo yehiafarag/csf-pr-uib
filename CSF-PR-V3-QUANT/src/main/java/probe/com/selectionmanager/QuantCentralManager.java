@@ -6,9 +6,12 @@
 package probe.com.selectionmanager;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import org.jfree.chart.JFreeChart;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.model.beans.quant.QuantDatasetObject;
@@ -31,14 +34,16 @@ public class QuantCentralManager implements Serializable {
     public QuantCentralManager(CSFPRHandler CSFPR_Handler) {
         Studies_Filter_Manager = new StudiesFilterManager(CSFPR_Handler.getQuantDatasetInitialInformationObject(), CSFPR_Handler.getActivePieChartQuantFilters());//,filterUtility.getFullFilterList()
         Studies_Selection_Manager = new StudiesSelectionManager();
+
     }
-    
-    public QuantCentralManager(CSFPRHandler CSFPR_Handler,List<QuantProtein> searchQuantificationProtList) {
+
+    public QuantCentralManager(CSFPRHandler CSFPR_Handler, List<QuantProtein> searchQuantificationProtList) {
         Studies_Filter_Manager = new StudiesFilterManager(CSFPR_Handler.getQuantDatasetInitialInformationObject(searchQuantificationProtList), CSFPR_Handler.getActivePieChartQuantFilters(searchQuantificationProtList));//,filterUtility.getFullFilterList()
         Studies_Selection_Manager = new StudiesSelectionManager();
     }
-      public void setNoSerum(boolean noSerum) {
-      Studies_Filter_Manager.setNoSerum(noSerum);
+
+    public void setNoSerum(boolean noSerum) {
+        Studies_Filter_Manager.setNoSerum(noSerum);
     }
 
     /**
@@ -79,7 +84,6 @@ public class QuantCentralManager implements Serializable {
 //    public void setSelectedDataset(List<Integer> selectedDataset) {
 //        this.Studies_Selection_Manager.setSelectedDataset(selectedDataset);
 //    }
-
     /**
      *
      * @return
@@ -228,19 +232,19 @@ public class QuantCentralManager implements Serializable {
     public void setStudiesOverviewPieChart(Set<JFreeChart> studiesOverviewPieChart) {
         Studies_Filter_Manager.setStudiesOverviewPieChart(studiesOverviewPieChart);
     }
-    
-      public boolean[] getActiveHeader() {
+
+    public boolean[] getActiveHeader() {
         return Studies_Filter_Manager.getActiveHeader();
     }
-      
-       /**
+
+    /**
      * set selected heat map selected Rows values
      *
      * @param selectedHeatMapRows set of heat map selected rows values
      *
      */
-    public void setSelectedHeatMapRows(Set<String> selectedHeatMapRows) {
-       Studies_Filter_Manager.setSelectedHeatMapRows(selectedHeatMapRows);
+    public void setSelectedHeatMapRows(LinkedHashSet<String> selectedHeatMapRows) {
+        Studies_Filter_Manager.setSelectedHeatMapRows(selectedHeatMapRows);
     }
 
     /**
@@ -248,11 +252,9 @@ public class QuantCentralManager implements Serializable {
      *
      * @param selectedHeatMapColumns set of heat map selected columns values
      */
-    public void setSelectedHeatMapColumns(Set<String> selectedHeatMapColumns) {
+    public void setSelectedHeatMapColumns(LinkedHashSet<String> selectedHeatMapColumns) {
         Studies_Filter_Manager.setSelectedHeatMapColumns(selectedHeatMapColumns);
     }
-
-    
 
     /**
      *
@@ -271,7 +273,7 @@ public class QuantCentralManager implements Serializable {
      * @param selection
      */
     public void applyFilters(CSFFilterSelection selection) {
-      Studies_Filter_Manager.applyFilters(selection);
+        Studies_Filter_Manager.applyFilters(selection);
 
     }
 
@@ -287,8 +289,7 @@ public class QuantCentralManager implements Serializable {
      * reset all disease groups filters
      */
     public void resetFiltersListener() {
-      Studies_Filter_Manager.resetFilters();
-     
+        Studies_Filter_Manager.resetFilters();
 
     }
 
@@ -301,13 +302,10 @@ public class QuantCentralManager implements Serializable {
         return Studies_Filter_Manager.getActiveFilters();
     }
 
-   
     public Map<Integer, QuantDatasetObject> getFilteredDatasetsList() {
-     
+
         return Studies_Filter_Manager.getFilteredDatasetsList();
     }
-
-  
 
     public void changeDiseaseCategory(String diseaseCategory) {
         Studies_Filter_Manager.changeDiseaseCategory(diseaseCategory);
@@ -322,15 +320,14 @@ public class QuantCentralManager implements Serializable {
         return Studies_Filter_Manager.getCurrentDsNumber();
     }
 
-    
     /**
      *
      * @param selectedRows
      * @param selectedColumns
      * @param diseaseGroupsArr
      */
-    public void setHeatMapLevelSelection(Set<String> selectedRows, Set<String> selectedColumns, DiseaseGroup[] diseaseGroupsArr) {
-       Studies_Filter_Manager.setHeatMapLevelSelection(selectedRows, selectedColumns, diseaseGroupsArr);
+    public void setHeatMapLevelSelection(LinkedHashSet<String> selectedRows, LinkedHashSet<String> selectedColumns, DiseaseGroup[] diseaseGroupsArr) {
+        Studies_Filter_Manager.setHeatMapLevelSelection(selectedRows, selectedColumns, diseaseGroupsArr);
 
     }
 
@@ -339,8 +336,12 @@ public class QuantCentralManager implements Serializable {
      *
      * @return set of heat map selected rows values
      */
-    public Set<String> getSelectedHeatMapRows() {
+    public LinkedHashSet<String> getSelectedHeatMapRows() {
         return Studies_Filter_Manager.getSelectedHeatMapRows();
+    }
+
+    public DiseaseGroup[] getDiseaseGroupsArray() {
+        return Studies_Filter_Manager.getDiseaseGroupsArray();
     }
 
     /**
@@ -348,7 +349,7 @@ public class QuantCentralManager implements Serializable {
      *
      * @return set of heat map selected columns values
      */
-    public Set<String> getSelectedHeatMapColumns() {
+    public LinkedHashSet<String> getSelectedHeatMapColumns() {
         return Studies_Filter_Manager.getSelectedHeatMapColumns();
     }
 
@@ -360,7 +361,5 @@ public class QuantCentralManager implements Serializable {
     public DiseaseGroup[] getDiseaseGroupsArr() {
         return Studies_Filter_Manager.getDiseaseGroupsArr();
     }
-
-   
 
 }

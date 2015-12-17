@@ -41,8 +41,8 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
     private final Button diseaseGroupsFilterBtn;
     private final Window popupWindow;
     private int[] studiesIndexes;
-    private final Set<String> selectedRows = new TreeSet<String>();
-    private final Set<String> selectedColumns = new TreeSet<String>();
+    private final LinkedHashSet<String> selectedRows = new LinkedHashSet<String>();
+    private final LinkedHashSet<String> selectedColumns = new LinkedHashSet<String>();
     private final QuantCentralManager Quant_Central_Manager;
     private boolean selfselected = false;
     private Property.ValueChangeListener disGrIListener, disGrIIListener;
@@ -157,15 +157,16 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
         this.setWidth("450px");
         this.Quant_Central_Manager.registerFilterListener(DiseaseGroupsListFilter.this);
 
-        this.updatePatientGroups(Quant_Central_Manager.getFilteredDatasetsList());
-        String[] pgArr = merge(patGr1, patGr2);
-        this.patientGroupIFilter = new ListSelectDatasetExplorerFilter(1, "Disease Group I", pgArr);
+//        this.updatePatientGroups(Quant_Central_Manager.getFilteredDatasetsList());
+//        String[] pgArr = merge(patGr1, patGr2);
+        this.patientGroupIFilter = new ListSelectDatasetExplorerFilter(1, "Disease Group I", Quant_Central_Manager.getSelectedHeatMapRows());
         initGroupsIFilter();
 
-        this.patientGroupIIFilter = new ListSelectDatasetExplorerFilter(2, "Disease Group II", pgArr);
+        this.patientGroupIIFilter = new ListSelectDatasetExplorerFilter(2, "Disease Group II", Quant_Central_Manager.getSelectedHeatMapColumns());
         initGroupsIIFilter();
-        diseaseGroupsSet = new LinkedHashSet<String>(Arrays.asList(pgArr));
-
+        diseaseGroupsSet = new LinkedHashSet<String>();
+        diseaseGroupsSet.addAll(Quant_Central_Manager.getSelectedHeatMapRows());
+        
         this.addComponent(patientGroupIIFilter);
 
         diseaseGroupsFilterBtn = new Button("Disease Groups");
@@ -247,8 +248,8 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
         this.setHeightUndefined();
         filtersConatinerLayout.addComponent(DiseaseGroupsListFilter.this);
         filtersConatinerLayout.setComponentAlignment(DiseaseGroupsListFilter.this, Alignment.BOTTOM_CENTER);
-        Quant_Central_Manager.setSelectedHeatMapRows(selectedRows);
-        Quant_Central_Manager.setSelectedHeatMapColumns(selectedColumns);
+//        Quant_Central_Manager.setSelectedHeatMapRows(selectedRows);
+//        Quant_Central_Manager.setSelectedHeatMapColumns(selectedColumns);
 
     }
 

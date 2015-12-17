@@ -1970,5 +1970,43 @@ resetlabelbtn p{
 .v-select-optiongroup-sortablelayoutselect .v-select-option input{
     margin-top:4px;
 }
+.toggleright{
+    background-image: url(img/lefton.png);
+      background-repeat:no-repeat;
+      background-position:28px 0px;;
+      background-size:20px 11px;
+      background-color:whitesmoke;
+      border: 2px solid gray;
+      border-radius:10px;
+      margin-top:0px;
+      cursor:pointer;
+}
+.toggleleft{
+   
+      background-image: url(img/lefton.png);
+      background-repeat:no-repeat;
+      background-position:-1px 0px;;
+      background-size:20px 11px;
+      background-color:whitesmoke;
+      border: 2px solid gray;
+      border-radius:10px;
+      margin-top:0px;
+       cursor:default !important;
+
+    
+}
+.v-verticallayout.v-layout.v-vertical.v-disabled.v-widget.rowItem.v-verticallayout-rowItem.v-has-width {
+
+   opacity:1;
+}
+.v-verticallayout.v-layout.v-vertical.v-disabled.v-widget.rowItem.v-verticallayout-rowItem.v-has-width div{
+
+   cursor:default !important;
+}
+.v-disabled.no-horizontal-drag-hints {
+ opacity:1 !important;
+  cursor:default !important;
+
+}
 
 
