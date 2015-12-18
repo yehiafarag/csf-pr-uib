@@ -40,6 +40,7 @@ public class PopupReorderGroupsLayout extends VerticalLayout implements LayoutEv
     private final SortableLayoutContainer sortableDiseaseGroupI, sortableDiseaseGroupII;
     private LinkedHashSet<String> rowHeaders, colHeaders;
     private DiseaseGroup[] patientsGroupArr;
+    private LinkedHashSet<Integer> studiesIndexes;
 
     public PopupReorderGroupsLayout(QuantCentralManager Quant_Central_Manager) {
         this.setStyleName("reordergroupsbtn");
@@ -51,7 +52,7 @@ public class PopupReorderGroupsLayout extends VerticalLayout implements LayoutEv
         popupWindow = new Window() {
             @Override
             public void close() {
-                
+
                 popupWindow.setVisible(false);
             }
         };
@@ -68,6 +69,7 @@ public class PopupReorderGroupsLayout extends VerticalLayout implements LayoutEv
         }
 
         popupBodyLayout.setWidth((w - 50) + "px");
+        popupBodyLayout.setStyleName(Reindeer.LAYOUT_WHITE);
         popupBodyLayout.setHeightUndefined();//(h - 50) + "px");
         popupWindow.setWindowMode(WindowMode.NORMAL);
         popupWindow.setWidth(w + "px");
@@ -84,68 +86,6 @@ public class PopupReorderGroupsLayout extends VerticalLayout implements LayoutEv
         UI.getCurrent().addWindow(popupWindow);
         popupWindow.center();
         int subH = (h - 150);
-         colHeaders = Quant_Central_Manager.getSelectedHeatMapRows();
-        rowHeaders = Quant_Central_Manager.getSelectedHeatMapRows();
-
-        Map<Integer, QuantDatasetObject> quantDSArr = Quant_Central_Manager.getFilteredDatasetsList();
-        patientsGroupArr = new DiseaseGroup[quantDSArr.size()];
-        int i = 0;
-        for (QuantDatasetObject ds : quantDSArr.values()) {
-            if (ds == null) {
-                continue;
-            }
-            DiseaseGroup pg = new DiseaseGroup();
-            String pgI = ds.getPatientsGroup1();
-            pg.setPatientsGroupI(pgI);
-            String label1;
-            if (pgI.equalsIgnoreCase("Not Available") || pgI.equalsIgnoreCase("control")) {
-                pgI = "";
-            }
-            String subpgI = ds.getPatientsSubGroup1();
-            pg.setPatientsSubGroupI(subpgI);
-            if (!subpgI.equalsIgnoreCase("") && !subpgI.equalsIgnoreCase("Not Available")) {
-                pgI = subpgI;
-            }
-            label1 = pgI;
-            pg.setPatientsGroupILabel(label1);
-
-            String pgII = ds.getPatientsGroup2();
-            pg.setPatientsGroupII(pgII);
-            String label2;
-            if (pgII.equalsIgnoreCase("Not Available") || pgII.equalsIgnoreCase("control")) {
-                pgII = "";
-            }
-            String subpgII = ds.getPatientsSubGroup2();
-            pg.setPatientsSubGroupII(subpgII);
-            if (!subpgII.equalsIgnoreCase("") && !subpgII.equalsIgnoreCase("Not Available")) {
-                pgII = subpgII;
-            }
-            label2 = pgII;
-            pg.setPatientsGroupIILabel(label2);
-            patientsGroupArr[i] = pg;
-            pg.setQuantDatasetIndex(i);
-            pg.setOriginalDatasetIndex(ds.getDsKey());
-            i++;
-        }
-
-      
-        
-        this.sortableDiseaseGroupI = new SortableLayoutContainer((w - 50), subH, " Disease Group A",rowHeaders);
-        this.sortableDiseaseGroupII = new SortableLayoutContainer((w - 50), subH, " Disease Group B",colHeaders);
-        this.initPopupBody((w - 50));
-
-    }
-
-    private void updateSelectionManager(int[] datasetIndexes) {
-
-        if (datasetIndexes != null) {
-            Quant_Central_Manager.applyFilters(new CSFFilterSelection("Disease_Groups_Level", datasetIndexes, "", new HashSet<String>()));
-        }
-        Quant_Central_Manager.setHeatMapLevelSelection(rowHeaders, colHeaders, patientsGroupArr);
-    }
-
-    @Override
-    public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         colHeaders = Quant_Central_Manager.getSelectedHeatMapRows();
         rowHeaders = Quant_Central_Manager.getSelectedHeatMapRows();
 
@@ -190,8 +130,75 @@ public class PopupReorderGroupsLayout extends VerticalLayout implements LayoutEv
             i++;
         }
 
-//        sortableDiseaseGroupI.updateLists(rowHeaders);
-//        sortableDiseaseGroupII.initLists(colHeaders);
+        this.sortableDiseaseGroupI = new SortableLayoutContainer((w - 50), subH, " Disease Group A", rowHeaders);
+        this.sortableDiseaseGroupII = new SortableLayoutContainer((w - 50), subH, " Disease Group B", colHeaders);
+        this.initPopupBody((w - 50));
+
+    }
+
+    private void updateSelectionManager(LinkedHashSet<Integer> datasetIndexes) {
+
+        if (datasetIndexes != null) {
+
+            int[] indexes = new int[datasetIndexes.size()];
+            int i = 0;
+            for (int id : datasetIndexes) {
+                indexes[i] = id;
+                i++;
+            }
+            Quant_Central_Manager.applyFilters(new CSFFilterSelection("Disease_Groups_Level", indexes, "", new HashSet<String>()));
+        }
+        Quant_Central_Manager.setHeatMapLevelSelection(rowHeaders, colHeaders, patientsGroupArr);
+    }
+
+    @Override
+    public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+        colHeaders = Quant_Central_Manager.getSelectedHeatMapRows();
+        rowHeaders = Quant_Central_Manager.getSelectedHeatMapRows();
+        patientsGroupArr = Quant_Central_Manager.getDiseaseGroupsArray();
+
+//        Map<Integer, QuantDatasetObject> quantDSArr = Quant_Central_Manager.getFilteredDatasetsList();
+//        patientsGroupArr = new DiseaseGroup[quantDSArr.size()];
+//        int i = 0;
+//        for (QuantDatasetObject ds : quantDSArr.values()) {
+//            if (ds == null) {
+//                continue;
+//            }
+//            DiseaseGroup pg = new DiseaseGroup();
+//            String pgI = ds.getPatientsGroup1();
+//            pg.setPatientsGroupI(pgI);
+//            String label1;
+//            if (pgI.equalsIgnoreCase("Not Available") || pgI.equalsIgnoreCase("control")) {
+//                pgI = "";
+//            }
+//            String subpgI = ds.getPatientsSubGroup1();
+//            pg.setPatientsSubGroupI(subpgI);
+//            if (!subpgI.equalsIgnoreCase("") && !subpgI.equalsIgnoreCase("Not Available")) {
+//                pgI = subpgI;
+//            }
+//            label1 = pgI;
+//            pg.setPatientsGroupILabel(label1);
+//
+//            String pgII = ds.getPatientsGroup2();
+//            pg.setPatientsGroupII(pgII);
+//            String label2;
+//            if (pgII.equalsIgnoreCase("Not Available") || pgII.equalsIgnoreCase("control")) {
+//                pgII = "";
+//            }
+//            String subpgII = ds.getPatientsSubGroup2();
+//            pg.setPatientsSubGroupII(subpgII);
+//            if (!subpgII.equalsIgnoreCase("") && !subpgII.equalsIgnoreCase("Not Available")) {
+//                pgII = subpgII;
+//            }
+//            label2 = pgII;
+//            pg.setPatientsGroupIILabel(label2);
+//            patientsGroupArr[i] = pg;
+//            pg.setQuantDatasetIndex(i);
+//            pg.setOriginalDatasetIndex(ds.getDsKey());
+//            i++;
+//        }
+        sortableDiseaseGroupI.updateLists(rowHeaders);
+
         popupWindow.setVisible(true);
     }
 
@@ -202,13 +209,13 @@ public class PopupReorderGroupsLayout extends VerticalLayout implements LayoutEv
         mainContainer.setWidth(w + "px");
 
         mainContainer.setHeightUndefined();
-        mainContainer.setMargin(new MarginInfo(true, true, true, true));
+        mainContainer.setMargin(new MarginInfo(true, false, false, false));
 
         mainContainer.addComponent(sortableDiseaseGroupI);
         mainContainer.setComponentAlignment(sortableDiseaseGroupI, Alignment.TOP_LEFT);
 
         mainContainer.addComponent(sortableDiseaseGroupII);
-        mainContainer.setComponentAlignment(sortableDiseaseGroupII, Alignment.TOP_LEFT);
+        mainContainer.setComponentAlignment(sortableDiseaseGroupII, Alignment.TOP_RIGHT);
 
         Property.ValueChangeListener selectionChangeListenet = new Property.ValueChangeListener() {
 
@@ -224,6 +231,7 @@ public class PopupReorderGroupsLayout extends VerticalLayout implements LayoutEv
                 }
 
                 Set<String> updatedGroupIISet = filterPatGroup2List(sortableDiseaseGroupI.getSelectionSet());
+
                 sortableDiseaseGroupII.initLists(updatedGroupIISet);
 
             }
@@ -238,9 +246,11 @@ public class PopupReorderGroupsLayout extends VerticalLayout implements LayoutEv
         bottomLayout.setMargin(new MarginInfo(true, false, false, false));
 
         popupBodyLayout.addComponent(bottomLayout);
-        ToggleBtn sortSelectToggleBtn = new ToggleBtn("Sort Groups ", "Select Groups ", "*(Sort – Drag & drop)", "*(Select to filter heatmap)");
+        int width = w - 200;
+        ToggleBtn sortSelectToggleBtn = new ToggleBtn("Sort Groups ", "Select Groups ", "*Sort – Drag & drop", "*Select to filter studies", width);
         bottomLayout.addComponent(sortSelectToggleBtn);//commentLabel
-        bottomLayout.setComponentAlignment(sortSelectToggleBtn, Alignment.TOP_LEFT);//commentLabel
+        bottomLayout.setComponentAlignment(sortSelectToggleBtn, Alignment.MIDDLE_LEFT);//commentLabel
+        bottomLayout.setExpandRatio(sortSelectToggleBtn, w);
         HorizontalLayout btnLayout = new HorizontalLayout();
         btnLayout.setSpacing(true);
         LayoutEvents.LayoutClickListener toggleListener = new LayoutEvents.LayoutClickListener() {
@@ -269,6 +279,7 @@ public class PopupReorderGroupsLayout extends VerticalLayout implements LayoutEv
         btnLayout.setWidthUndefined();
         bottomLayout.addComponent(btnLayout);
         bottomLayout.setComponentAlignment(btnLayout, Alignment.TOP_RIGHT);
+        bottomLayout.setExpandRatio(btnLayout, 250);
         Button applyFilters = new Button("Apply");
         applyFilters.setDescription("Apply the updates");
         applyFilters.setPrimaryStyleName("resetbtn");
@@ -279,11 +290,10 @@ public class PopupReorderGroupsLayout extends VerticalLayout implements LayoutEv
         applyFilters.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                rowHeaders =sortableDiseaseGroupI.getSortedSet();
-                colHeaders =sortableDiseaseGroupII.getSortedSet();
-                
-                
-                updateSelectionManager(null);
+                rowHeaders = sortableDiseaseGroupI.getSortedSet();
+                colHeaders = sortableDiseaseGroupII.getSortedSet();
+
+                updateSelectionManager(studiesIndexes);
                 popupWindow.close();
             }
         });
@@ -324,16 +334,16 @@ public class PopupReorderGroupsLayout extends VerticalLayout implements LayoutEv
 
     private Set<String> filterPatGroup2List(Set<String> sel1) {
         Set<String> labels = new LinkedHashSet<String>();
-
+        studiesIndexes = new LinkedHashSet<Integer>();
         for (DiseaseGroup pg : patientsGroupArr) {
             for (String label : sel1) {
                 if (pg.checkLabel(label)) {
                     labels.add(pg.getValLabel(label));
+                    studiesIndexes.add(pg.getOriginalDatasetIndex());
                 }
             }
         }
 
-//        patientGroupIIFilter.updateList(labels);
         return labels;
     }
 

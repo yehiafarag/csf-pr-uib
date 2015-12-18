@@ -33,9 +33,14 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
             return;
         }
         if (type.equalsIgnoreCase("HeatMap_Update_level")) {
-            this.updateHeatmap(Quant_Central_Manager.getSelectedHeatMapRows(), Quant_Central_Manager.getSelectedHeatMapColumns(), Quant_Central_Manager.getDiseaseGroupsArr());
+            this.updateHeatmap(Quant_Central_Manager.getSelectedHeatMapRows(), Quant_Central_Manager.getSelectedHeatMapColumns(), Quant_Central_Manager.getDiseaseGroupsArray());
         } else if (type.equalsIgnoreCase("Comparison_Selection")) {
             this.updateCellSelection(Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList());
+
+        }
+        else if (type.equalsIgnoreCase("Reset_Disease_Groups_Level")) {
+            this.updateHeatmap(Quant_Central_Manager.getSelectedHeatMapRows(), Quant_Central_Manager.getSelectedHeatMapColumns(), Quant_Central_Manager.getDiseaseGroupsArray());
+            unselectAll();
 
         }
     }

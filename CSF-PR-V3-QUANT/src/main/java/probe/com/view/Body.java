@@ -1,5 +1,6 @@
 package probe.com.view;
 
+import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
 import probe.com.view.body.AdminLayout;
@@ -62,7 +63,12 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
 //      Tab 2 content quant dataset overview
         datasetsOverviewLayout = new VerticalLayout();
         datasetsOverviewLayout.setMargin(true);
+        
+        int height = Page.getCurrent().getBrowserWindowHeight()-100;
+//        int width = Page.getCurrent().getBrowserWindowWidth()-15;
+        datasetsOverviewLayout.setHeight(height+"px");
         datasetsOverviewLayout.setWidth("100%");
+        datasetsOverviewLayout.setPrimaryStyleName("scrollable");
         mainTabSheet.addTab(datasetsOverviewLayout, "Quantitative Datasets Overview");
 
 //      Tab 3 content       identificationDatasetsLayout    

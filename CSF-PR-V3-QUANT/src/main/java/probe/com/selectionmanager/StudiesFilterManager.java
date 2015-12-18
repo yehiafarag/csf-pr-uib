@@ -41,7 +41,7 @@ public class StudiesFilterManager implements Serializable {
     private CSFFilterSelection filterSelection;
 //    private LinkedHashSet<String> selectedHeatMapRows;
 //    private LinkedHashSet<String> selectedHeatMapColumns;
-    private DiseaseGroup[] diseaseGroupsArr;
+//    private DiseaseGroup[] diseaseGroupsArr;
     private final LinkedHashSet<String> selectedHeatMapRows = new LinkedHashSet<String>();
     private final LinkedHashSet<String> selectedHeatMapColumns = new LinkedHashSet<String>();
     private String[] diseaseGroupsI, diseaseGroupsII;
@@ -265,6 +265,17 @@ public class StudiesFilterManager implements Serializable {
      */
     public void resetFilters() {
         filteredQuantDatasetArr.clear();
+        this.updatePatientGroups(getFullQuantDatasetMap());
+        String[] pgArr = merge(diseaseGroupsI, diseaseGroupsII);
+        selectedHeatMapRows.clear();
+        for (String str : pgArr) {
+            if (!str.equalsIgnoreCase("")) {
+                selectedHeatMapRows.add(str);
+            }
+        }
+        selectedHeatMapColumns.clear();
+        selectedHeatMapColumns.addAll(selectedHeatMapRows);
+
         this.SelectionChanged("Reset_Disease_Groups_Level");
 
     }
@@ -345,7 +356,7 @@ public class StudiesFilterManager implements Serializable {
      * @param diseaseGroupsArr
      */
     public void setHeatMapLevelSelection(LinkedHashSet<String> selectedRows, LinkedHashSet<String> selectedColumns, DiseaseGroup[] diseaseGroupsArr) {
-        this.diseaseGroupsArr = diseaseGroupsArr;
+        this.diseaseGroupsArray = diseaseGroupsArr;
         this.selectedHeatMapRows.clear();
         this.selectedHeatMapRows.addAll(selectedRows);
         this.selectedHeatMapColumns.clear();
@@ -377,9 +388,9 @@ public class StudiesFilterManager implements Serializable {
      *
      * @return array of current selected Disease Group
      */
-    public DiseaseGroup[] getDiseaseGroupsArr() {
-        return diseaseGroupsArr;
-    }
+//    public DiseaseGroup[] getDiseaseGroupsArr() {
+//        return diseaseGroupsArr;
+//    }
 
     public Set<JFreeChart> getStudiesOverviewPieChart() {
         return studiesOverviewPieChart;
@@ -396,8 +407,8 @@ public class StudiesFilterManager implements Serializable {
      *
      */
     public void setSelectedHeatMapRows(LinkedHashSet<String> selectedHeatMapRows) {
-       this.selectedHeatMapRows.clear();
-        this.selectedHeatMapRows .addAll(selectedHeatMapRows);
+        this.selectedHeatMapRows.clear();
+        this.selectedHeatMapRows.addAll(selectedHeatMapRows);
     }
 
     /**
@@ -406,8 +417,8 @@ public class StudiesFilterManager implements Serializable {
      * @param selectedHeatMapColumns set of heat map selected columns values
      */
     public void setSelectedHeatMapColumns(LinkedHashSet<String> selectedHeatMapColumns) {
-       this.selectedHeatMapColumns.clear();
-        this.selectedHeatMapColumns .addAll(selectedHeatMapColumns);
+        this.selectedHeatMapColumns.clear();
+        this.selectedHeatMapColumns.addAll(selectedHeatMapColumns);
     }
 
 }

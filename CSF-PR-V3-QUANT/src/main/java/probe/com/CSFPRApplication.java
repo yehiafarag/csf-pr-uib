@@ -23,6 +23,7 @@ public class CSFPRApplication extends VerticalLayout implements Serializable {
      * @param csfprHandler
      */
     public CSFPRApplication(CSFPRHandler csfprHandler) {
+       
         this.csfprHandler = csfprHandler;
         buildMainLayout();
 

@@ -324,11 +324,11 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
     }
 
     private void updateSelectionManager(int[] datasetIndexes) {
-        selfselected = true;
-        if (datasetIndexes != null) {
-            Quant_Central_Manager.applyFilters(new CSFFilterSelection("Disease_Groups_Level", datasetIndexes, "", new HashSet<String>()));
-        }
-        Quant_Central_Manager.setHeatMapLevelSelection(selectedRows, selectedColumns, patientsGroupArr);
+//        selfselected = true;
+//        if (datasetIndexes != null) {
+//            Quant_Central_Manager.applyFilters(new CSFFilterSelection("Disease_Groups_Level", datasetIndexes, "", new HashSet<String>()));
+//        }
+//        Quant_Central_Manager.setHeatMapLevelSelection(selectedRows, selectedColumns, patientsGroupArr);
     }
 
     private void initGroupsIFilter() {

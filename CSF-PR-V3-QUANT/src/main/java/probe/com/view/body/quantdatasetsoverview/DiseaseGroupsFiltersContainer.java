@@ -365,7 +365,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
 
         diseaseGroupsHeatmapFilter.addHideHeatmapBtnListener(hideShowCompTableListener);
         Quant_Central_Manager.registerStudySelectionListener(DiseaseGroupsFiltersContainer.this);
-
+         Quant_Central_Manager.registerFilterListener(DiseaseGroupsFiltersContainer.this);
     }
 
     /**
@@ -397,6 +397,15 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
                 UI.getCurrent().setScrollTop(10);
 
             }
+        }
+        else if(type.equalsIgnoreCase("HeatMap_Update_level")){
+            System.out.println("select all is invoked");
+            selectAllComparisons();
+        
+        }
+         else if(type.equalsIgnoreCase("Reset_Disease_Groups_Level")){
+//            diseaseGroupsHeatmapFilter
+        
         }
     }
 

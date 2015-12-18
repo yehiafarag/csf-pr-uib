@@ -7,6 +7,7 @@ import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.JavaScript;
 import com.vaadin.ui.JavaScriptFunction;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import elemental.json.JsonArray;
 import java.io.File;
@@ -27,6 +28,7 @@ public class AppController extends UI {
 
     private String dbURL, dbName, dbDriver, dbUserName, dbPassword, filesURL;
     private CSFPRHandler handler;
+    private CSFPRApplication application;
 
     /**
      * initialize the application context parameters
@@ -48,9 +50,10 @@ public class AppController extends UI {
         //init application  handler)
         handler = new CSFPRHandler(dbURL, dbName, dbDriver, dbUserName, dbPassword, filesURL);
         //init main layout
-        CSFPRApplication application = new CSFPRApplication(handler);
+        application = new CSFPRApplication(handler);
         this.getPage().setTitle("CSF Proteome Resource (CSF-PR)");
         setContent(application);
+        this.setPrimaryStyleName("hidescroll");;
         this.addDetachListener(new DetachListener() {
             @Override
             public void detach(DetachEvent event) {
@@ -80,8 +83,31 @@ public class AppController extends UI {
             }, (5 * 60 * 1000 * 60));
             //maximum session time out is 5 hours
         }
+        Page.getCurrent().addBrowserWindowResizeListener(new Page.BrowserWindowResizeListener() {
+
+            @Override
+            public void browserWindowResized(Page.BrowserWindowResizeEvent event) {
+                if (checkSize) {
+                    Page.getCurrent().reload();
+                }
+                checkSize = false;
+                checkWindowSize();
+            }
+        });
+        
+        checkWindowSize();
 
     }
+
+    private void checkWindowSize() {
+
+        if (Page.getCurrent().getBrowserWindowWidth() < 368 || Page.getCurrent().getBrowserWindowHeight() < 403) {
+            Notification.show("Opps.. Screen size is too small to use the system", Notification.Type.ERROR_MESSAGE);
+            application.setVisible(false);
+            checkSize = true;
+        }
+    }
+    private boolean checkSize;
 
     /**
      * delete users files and perform clean over

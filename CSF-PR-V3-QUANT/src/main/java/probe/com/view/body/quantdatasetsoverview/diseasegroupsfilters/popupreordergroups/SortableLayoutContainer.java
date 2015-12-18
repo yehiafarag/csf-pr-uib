@@ -18,6 +18,7 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.dd.VerticalDropLocation;
 import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.DragAndDropWrapper;
@@ -38,25 +39,26 @@ import java.util.Set;
 
 /**
  *
- * @author yfa041
+ * @author Yehia Farag
  */
 public class SortableLayoutContainer extends VerticalLayout {
 
-    private final SortableLayout sortableDiseaseGroup;
-    private final VerticalLayout counterLayout;
+    private final SortableLayout sortableDiseaseGroupLayout;
+    private final VerticalLayout counterLayout,counterLayoutContainer;
     private final VerticalLayout checkboxLayout;
     private final int itemWidth;
     private final String strTitle;
     private final OptionGroup diseaseGroupSelectOption;
-//    private final OptionGroup selectAllOption;
+    private final Button clearBtn;
     private final Map<String, Boolean> groupSelectionMap;
     private final Set<String> selectionSet;
     private boolean autoClear;//, autoselectall;
     private boolean singleSelected = false;
     private Set selectAllSet = new HashSet();
 
-    public SortableLayoutContainer(int w, int subH, String strTitle, Set<String> labels) {
+    public SortableLayoutContainer(int w, int subH, final String strTitle, Set<String> labels) {
 
+        this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.setSpacing(true);
         this.strTitle = strTitle;
         this.groupSelectionMap = new HashMap<String, Boolean>();
@@ -66,44 +68,58 @@ public class SortableLayoutContainer extends VerticalLayout {
         titileI.setStyleName("custLabel");
         headerLayoutI.addComponent(titileI);
         this.addComponent(headerLayoutI);
-        int width = (w / 2) - 70;
-        int height = subH - 20;
-        headerLayoutI.setWidth((width + 30) + "px");
+        int contWidth =((w) / 2)-30;
+        int width = contWidth - 26;
+        this.setWidth(contWidth+"px");
+        int height = subH ;
+        headerLayoutI.setWidth((width + 26) + "px");
 
-//        selectAllOption = new OptionGroup();
-//        selectAllOption.addItem("all");
-//        selectAllOption.select("all");
-//        selectAllOption.setItemCaption("all", "");
-//        headerLayoutI.addComponent(selectAllOption);
-//        headerLayoutI.setComponentAlignment(selectAllOption, Alignment.TOP_RIGHT);
-//        selectAllOption.setNullSelectionAllowed(true); // user can not 'unselect'
-//        selectAllOption.setMultiSelect(true);
-//        selectAllOption.addStyleName("sortablelayoutselect");
+        clearBtn = new Button("Clear");
+        clearBtn.setStyleName(Reindeer.BUTTON_LINK);
+        clearBtn.setWidth("40px");
+        clearBtn.setHeight("18px");
+        headerLayoutI.addComponent(clearBtn);
+        headerLayoutI.setComponentAlignment(clearBtn, Alignment.TOP_RIGHT);
+        clearBtn.addClickListener(new Button.ClickListener() {
+
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+//                autoClear = true;
+                singleSelected = false;
+                diseaseGroupSelectOption.setValue(null);
+
+            }
+        });
 
         HorizontalLayout bodyLayout = new HorizontalLayout();
         this.addComponent(bodyLayout);
 
+        counterLayoutContainer = new VerticalLayout();
         counterLayout = new VerticalLayout();
         counterLayout.setWidth("30px");
         counterLayout.setSpacing(false);
         counterLayout.setStyleName("countcontainer");
-        counterLayout.setMargin(new MarginInfo(false, true, false, false));
-        bodyLayout.addComponent(counterLayout);
+//        counterLayout.setMargin(new MarginInfo(false, true, false, false));
+        counterLayoutContainer.addComponent(counterLayout);
+        bodyLayout.addComponent(counterLayoutContainer);
 
-        sortableDiseaseGroup = new SortableLayout();
-        sortableDiseaseGroup.setWidth(width + "px");
-        sortableDiseaseGroup.setData(strTitle);
-        sortableDiseaseGroup.setHeight(height + "px");
+        sortableDiseaseGroupLayout = new SortableLayout();
+        sortableDiseaseGroupLayout.setWidth(width + "px");
+        sortableDiseaseGroupLayout.setData(strTitle);
+        sortableDiseaseGroupLayout.setHeight(height + "px");
+        counterLayoutContainer.setHeight(height + "px");
+        
         bodyLayout.setStyleName(Reindeer.LAYOUT_WHITE);
-        sortableDiseaseGroup.addStyleName("no-horizontal-drag-hints");
-        bodyLayout.addComponent(sortableDiseaseGroup);
+        sortableDiseaseGroupLayout.addStyleName("no-horizontal-drag-hints");
+        bodyLayout.addComponent(sortableDiseaseGroupLayout);
 
         checkboxLayout = new VerticalLayout();
         checkboxLayout.setWidth("20px");
         checkboxLayout.setSpacing(false);
         checkboxLayout.setEnabled(false);
-//        selectAllOption.setEnabled(false);
-        checkboxLayout.setStyleName("countcontainer");
+        checkboxLayout.setHeight(height + "px");
+        clearBtn.setEnabled(false);
+//        checkboxLayout.setStyleName("countcontainer");
         checkboxLayout.setMargin(new MarginInfo(false, true, false, false));
         bodyLayout.addComponent(checkboxLayout);
         diseaseGroupSelectOption = new OptionGroup();
@@ -126,46 +142,23 @@ public class SortableLayoutContainer extends VerticalLayout {
                 }
                 getSelectionSet().clear();
                 singleSelected = false;
+                int counter = 0;
                 for (Object key : ((Set) diseaseGroupSelectOption.getValue())) {
                     if (((Integer) key) >= groupsIds.size()) {
                         continue;
                     }
                     groupSelectionMap.put(groupsIds.get((Integer) key), Boolean.TRUE);
                     singleSelected = true;
+                    counter++;
                     getSelectionSet().add(groupsIds.get((Integer) key));
                 }
-                if (!singleSelected) {
-                    autoClear = true;
-                    diseaseGroupSelectOption.setValue(selectAllSet);
-//                    autoselectall = true;
-//                    selectAllOption.select("all");
-
-                } 
-//                else {
-//                    autoselectall = true;
-//                    selectAllOption.unselect("all");
-//                }
+                if (counter == groupsIds.size()) {
+                    singleSelected = false;
+                }
 
             }
 
         });
-//        selectAllOption.addValueChangeListener(new Property.ValueChangeListener() {
-//
-//            @Override
-//            public void valueChange(Property.ValueChangeEvent event) {
-////               
-//                System.out.println("at event " + event.getProperty().toString()+"   "+ autoselectall);
-//                if (autoselectall) {
-//                    autoselectall = false;
-//                    return;
-//                }
-//
-////                autoselectall = true;
-//                selectAllOption.select("all");
-//                diseaseGroupSelectOption.setValue(null);
-//
-//            }
-//        });
 
         itemWidth = width - 10;
         initLists(labels);
@@ -181,7 +174,7 @@ public class SortableLayoutContainer extends VerticalLayout {
     }
 
     public final void initLists(Set<String> labels) {
-        sortableDiseaseGroup.removeAllComponents();
+        sortableDiseaseGroupLayout.removeAllComponents();
         counterLayout.removeAllComponents();
         diseaseGroupSelectOption.removeAllItems();
         selectAllSet.clear();
@@ -194,7 +187,7 @@ public class SortableLayoutContainer extends VerticalLayout {
             Label label = new Label(counter + 1 + "");
             container.addComponent(label);
             this.counterLayout.addComponent(container);
-            sortableDiseaseGroup.addComponent(component, strTitle);
+            sortableDiseaseGroupLayout.addComponent(component, strTitle);
             diseaseGroupSelectOption.addItem(counter);
             diseaseGroupSelectOption.setItemCaption(counter, "");
             autoClear = true;
@@ -210,33 +203,20 @@ public class SortableLayoutContainer extends VerticalLayout {
 
         autoClear = true;
         diseaseGroupSelectOption.setValue(null);
+
         Set updatedSelectionSet = new HashSet();
-        for (int i = 0; i < groupsIds.size(); i++) {
+        if (labels.isEmpty() || (labels.size() == groupsIds.size())) {
+            updatedSelectionSet.addAll(selectAllSet);
+        } else {
+            for (int i = 0; i < groupsIds.size(); i++) {
 
-            if (labels.contains(groupsIds.get(i)) && groupSelectionMap.get(groupsIds.get(i))) {
-                updatedSelectionSet.add(i);
+                if (labels.contains(groupsIds.get(i)) && groupSelectionMap.get(groupsIds.get(i))) {
+                    updatedSelectionSet.add(i);
+                }
+
             }
-
         }
         diseaseGroupSelectOption.setValue(updatedSelectionSet);
-//        sortableDiseaseGroup.removeAllComponents();
-//        counterLayout.removeAllComponents();
-//        diseaseGroupSelectOption.removeAllItems();    
-//
-//        int counter = 0;
-//        for (final VerticalLayout component : createComponents(labels)) {
-//            VerticalLayout container = new VerticalLayout();
-//            container.setWidth(30 + "px");
-//            container.setHeight("20px");
-//            container.setStyleName("countItem");
-//            Label label = new Label(counter + 1 + "");
-//            container.addComponent(label);
-//            this.counterLayout.addComponent(container);
-//            sortableDiseaseGroup.addComponent(component, strTitle);
-//            diseaseGroupSelectOption.addItem(counter);
-//            diseaseGroupSelectOption.setItemCaption(counter, "");
-//            counter++;
-//        }
 
     }
 
@@ -255,12 +235,12 @@ public class SortableLayoutContainer extends VerticalLayout {
     public void setLayoutMode(String mode) {
         if (mode.equalsIgnoreCase("select")) {
             checkboxLayout.setEnabled(true);
-//            selectAllOption.setEnabled(true);
-            sortableDiseaseGroup.setEnabled(false);
+            clearBtn.setEnabled(true);
+            sortableDiseaseGroupLayout.setEnabled(false);
         } else {
             checkboxLayout.setEnabled(false);
-//            selectAllOption.setEnabled(false);
-            sortableDiseaseGroup.setEnabled(true);
+            clearBtn.setEnabled(false);
+            sortableDiseaseGroupLayout.setEnabled(true);
         }
 
     }
@@ -268,6 +248,7 @@ public class SortableLayoutContainer extends VerticalLayout {
     public void setEnableSelection(boolean enable) {
 
         checkboxLayout.setEnabled(enable);
+        clearBtn.setEnabled(enable);
 
     }
     private final LinkedList<String> groupsIds = new LinkedList<String>();

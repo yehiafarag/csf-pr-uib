@@ -27,7 +27,6 @@ public class StudiesSelectionManager implements Serializable {
     private String selectedProteinKey;
 
 //    private List<Integer> selectedDataset = null;
-
 //    public List<Integer> getSelectedDataset() {
 //        return selectedDataset;
 //    }
@@ -42,7 +41,6 @@ public class StudiesSelectionManager implements Serializable {
     /*
      *
      */
-
     public StudiesSelectionManager() {
     }
 
@@ -62,6 +60,8 @@ public class StudiesSelectionManager implements Serializable {
         this.selectedDiseaseGroupsComparisonList = selectedComparisonList;
 
     }
+
+  
 
     /**
      *
@@ -282,8 +282,5 @@ public class StudiesSelectionManager implements Serializable {
         this.proteinsOverviewBubbleChart.clear();
         this.proteinsOverviewBubbleChart.add(proteinsOverviewBubbleChart);
     }
-
-   
-   
 
 }

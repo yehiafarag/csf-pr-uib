@@ -37,6 +37,13 @@
 .spacer v-verticallayout v-layout v-vertical v-widget spacer v-verticallayout-spacer v-has-width v-has-height{
     /*background: #4d749f;*/
 }
+.hidescroll{
+    overflow:hidden;
+
+}
+.scrollable {
+    overflow: auto !important;
+}
 .v-tabsheet-tabitem-selected {
     border: none;
     margin: 0;
@@ -1897,16 +1904,14 @@ resetlabelbtn p{
 
 }
 .countcontainer{
-
-   
-
 }
+
 .countItem{
     border: 1px solid lightgray;
     background: whitesmoke;
     border-radius:5px;
     margin-top:4px;
-    
+
 
 }
 
@@ -1927,11 +1932,11 @@ resetlabelbtn p{
     background: lightblue;
 
 }
- .v-ddwrapper-over, .v-app .v-ddwrapper-over-top, .v-ddwrapper-over-top .v-ddwrapper-over-top, .v-app .v-ddwrapper-over-bottom, .v-ddwrapper-over-bottom{
+.v-ddwrapper-over, .v-app .v-ddwrapper-over-top, .v-ddwrapper-over-top .v-ddwrapper-over-top, .v-app .v-ddwrapper-over-bottom, .v-ddwrapper-over-bottom{
     height:40px !important;
     background:white;
     border:none;
-	
+
 }
 .v-drag-element div{
 
@@ -1949,17 +1954,18 @@ resetlabelbtn p{
 
 ::-webkit-scrollbar {
     width: 12px;
+    height: 12px;
 }
- 
+
 ::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
     border-radius:2px;
 }
- 
+
 ::-webkit-scrollbar-thumb {
-   background-color: darkgrey; 
-  border: 1px solid slategrey;
-   border-radius:2px;
+    background-color: darkgrey; 
+    border: 1px solid slategrey;
+    border-radius:2px;
 
 }
 .v-select-optiongroup-sortablelayoutselect .v-select-option {
@@ -1972,41 +1978,42 @@ resetlabelbtn p{
 }
 .toggleright{
     background-image: url(img/lefton.png);
-      background-repeat:no-repeat;
-      background-position:28px 0px;;
-      background-size:20px 11px;
-      background-color:whitesmoke;
-      border: 2px solid gray;
-      border-radius:10px;
-      margin-top:0px;
-      cursor:pointer;
+    background-repeat:no-repeat;
+    background-position:28px 0px;;
+    background-size:20px 11px;
+    background-color:whitesmoke;
+    border: 2px solid gray;
+    border-radius:10px;
+    margin-top:0px;
+    cursor:pointer;
 }
 .toggleleft{
-   
-      background-image: url(img/lefton.png);
-      background-repeat:no-repeat;
-      background-position:-1px 0px;;
-      background-size:20px 11px;
-      background-color:whitesmoke;
-      border: 2px solid gray;
-      border-radius:10px;
-      margin-top:0px;
-       cursor:default !important;
 
-    
+    background-image: url(img/lefton.png);
+    background-repeat:no-repeat;
+    background-position:-1px 0px;;
+    background-size:20px 11px;
+    background-color:whitesmoke;
+    border: 2px solid gray;
+    border-radius:10px;
+    margin-top:0px;
+    cursor:pointer !important;
+
+
 }
+
+
 .v-verticallayout.v-layout.v-vertical.v-disabled.v-widget.rowItem.v-verticallayout-rowItem.v-has-width {
 
-   opacity:1;
+    opacity:1;
 }
 .v-verticallayout.v-layout.v-vertical.v-disabled.v-widget.rowItem.v-verticallayout-rowItem.v-has-width div{
 
-   cursor:default !important;
+    cursor:default !important;
 }
 .v-disabled.no-horizontal-drag-hints {
- opacity:1 !important;
-  cursor:default !important;
+    opacity:1 !important;
+    cursor:default !important;
 
 }
-
 

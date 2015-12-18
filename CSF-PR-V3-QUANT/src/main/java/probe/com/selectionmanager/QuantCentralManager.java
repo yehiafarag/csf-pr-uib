@@ -340,6 +340,11 @@ public class QuantCentralManager implements Serializable {
         return Studies_Filter_Manager.getSelectedHeatMapRows();
     }
 
+     /**
+     * get elected Disease Group
+     *
+     * @return array of current selected Disease Group
+     */
     public DiseaseGroup[] getDiseaseGroupsArray() {
         return Studies_Filter_Manager.getDiseaseGroupsArray();
     }
@@ -353,13 +358,9 @@ public class QuantCentralManager implements Serializable {
         return Studies_Filter_Manager.getSelectedHeatMapColumns();
     }
 
-    /**
-     * get elected Disease Group
-     *
-     * @return array of current selected Disease Group
-     */
-    public DiseaseGroup[] getDiseaseGroupsArr() {
-        return Studies_Filter_Manager.getDiseaseGroupsArr();
-    }
+   
+//    public DiseaseGroup[] getDiseaseGroupsArr() {
+//        return Studies_Filter_Manager.getDiseaseGroupsArr();
+//    }
 
 }

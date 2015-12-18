@@ -9,6 +9,7 @@ import com.vaadin.event.LayoutEvents;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 
 /**
@@ -19,13 +20,15 @@ public class ToggleBtn extends HorizontalLayout {
 
     private final HorizontalLayout toggleSwichButton;
 
-    public ToggleBtn(String strBtn1Label, String strBtn2Label, String btn1Comment, String btn2Comment) {
+    public ToggleBtn(String strBtn1Label, String strBtn2Label, String btn1Comment, String btn2Comment, int width) {
 
         final Label btn1CommentLabel = new Label(btn1Comment);
         btn1CommentLabel.setStyleName(Reindeer.LABEL_SMALL);
+        btn1CommentLabel.setWidth("120px");
         final Label btn2CommentLabel = new Label(btn2Comment);
         btn2CommentLabel.setStyleName(Reindeer.LABEL_SMALL);
         btn2CommentLabel.setVisible(false);
+         btn2CommentLabel.setWidth("120px");
 
         this.setSpacing(true);
         Label btn1Label = new Label(strBtn1Label);
@@ -51,14 +54,21 @@ public class ToggleBtn extends HorizontalLayout {
                 }
             }
         });
-        this.addComponent(btn1Label);
-        this.addComponent(toggleSwichButton);
-        this.addComponent(btn2Label);
 
         this.addComponent(btn1CommentLabel);//commentLabel
         this.setComponentAlignment(btn1CommentLabel, Alignment.TOP_LEFT);//commentLabel
         this.addComponent(btn2CommentLabel);//commentLabel
         this.setComponentAlignment(btn2CommentLabel, Alignment.TOP_LEFT);//commentLabel
+        VerticalLayout spacer = new VerticalLayout();
+        width = Math.max((width- 120-75-75-55),1);
+        spacer.setHeight("15px");
+        spacer.setWidth(width+"px");
+        spacer.setStyleName(Reindeer.LAYOUT_WHITE);
+        this.addComponent(spacer);
+        this.addComponent(btn1Label);
+        this.addComponent(toggleSwichButton);
+        this.addComponent(btn2Label);
+
     }
 
     @Override
