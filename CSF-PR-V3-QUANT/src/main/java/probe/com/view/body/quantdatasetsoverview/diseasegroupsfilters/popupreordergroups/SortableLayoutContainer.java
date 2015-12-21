@@ -25,6 +25,7 @@ import com.vaadin.ui.DragAndDropWrapper;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.OptionGroup;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ import java.util.Set;
 public class SortableLayoutContainer extends VerticalLayout {
 
     private final SortableLayout sortableDiseaseGroupLayout;
-    private final VerticalLayout counterLayout,counterLayoutContainer;
+    private final VerticalLayout counterLayout, counterLayoutContainer;
     private final VerticalLayout checkboxLayout;
     private final int itemWidth;
     private final String strTitle;
@@ -68,16 +69,17 @@ public class SortableLayoutContainer extends VerticalLayout {
         titileI.setStyleName("custLabel");
         headerLayoutI.addComponent(titileI);
         this.addComponent(headerLayoutI);
-        int contWidth =((w) / 2)-30;
-        int width = contWidth - 26;
-        this.setWidth(contWidth+"px");
-        int height = subH ;
-        headerLayoutI.setWidth((width + 26) + "px");
+        int containerWidth = ((w) / 2) - 30;
+
+        this.setWidth(containerWidth + "px");
+        int height = subH - 15;
+        headerLayoutI.setWidth(containerWidth + "px");
 
         clearBtn = new Button("Clear");
         clearBtn.setStyleName(Reindeer.BUTTON_LINK);
         clearBtn.setWidth("40px");
         clearBtn.setHeight("18px");
+        clearBtn.setEnabled(false);
         headerLayoutI.addComponent(clearBtn);
         headerLayoutI.setComponentAlignment(clearBtn, Alignment.TOP_RIGHT);
         clearBtn.addClickListener(new Button.ClickListener() {
@@ -91,41 +93,47 @@ public class SortableLayoutContainer extends VerticalLayout {
             }
         });
 
+        Panel bodyPanel = new Panel();
         HorizontalLayout bodyLayout = new HorizontalLayout();
-        this.addComponent(bodyLayout);
+        bodyLayout.setStyleName(Reindeer.LAYOUT_WHITE);
+        bodyPanel.setContent(bodyLayout);
+        this.addComponent(bodyPanel);
+        bodyPanel.setHeight(subH + "px");
+        bodyPanel.setWidth((containerWidth) + "px");
 
         counterLayoutContainer = new VerticalLayout();
+        bodyLayout.addComponent(counterLayoutContainer);
+        counterLayoutContainer.setHeight(height + "px");
+        counterLayoutContainer.setWidth("30px");
+        counterLayoutContainer.setStyleName(Reindeer.LAYOUT_WHITE);
+        
         counterLayout = new VerticalLayout();
+        counterLayoutContainer.addComponent(counterLayout);
         counterLayout.setWidth("30px");
         counterLayout.setSpacing(false);
         counterLayout.setStyleName("countcontainer");
-//        counterLayout.setMargin(new MarginInfo(false, true, false, false));
-        counterLayoutContainer.addComponent(counterLayout);
-        bodyLayout.addComponent(counterLayoutContainer);
 
+        int sortableItremWidth = containerWidth - 26-6;
         sortableDiseaseGroupLayout = new SortableLayout();
-        sortableDiseaseGroupLayout.setWidth(width + "px");
-        sortableDiseaseGroupLayout.setData(strTitle);
-        sortableDiseaseGroupLayout.setHeight(height + "px");
-        counterLayoutContainer.setHeight(height + "px");
-        
-        bodyLayout.setStyleName(Reindeer.LAYOUT_WHITE);
-        sortableDiseaseGroupLayout.addStyleName("no-horizontal-drag-hints");
         bodyLayout.addComponent(sortableDiseaseGroupLayout);
+        sortableDiseaseGroupLayout.setWidth(sortableItremWidth + "px");
+        sortableDiseaseGroupLayout.setHeight(height + "px");
+        sortableDiseaseGroupLayout.setData(strTitle);
+        sortableDiseaseGroupLayout.addStyleName("no-horizontal-drag-hints");
+       
 
         checkboxLayout = new VerticalLayout();
-        checkboxLayout.setWidth("20px");
+        bodyLayout.addComponent(checkboxLayout);
         checkboxLayout.setSpacing(false);
         checkboxLayout.setEnabled(false);
         checkboxLayout.setHeight(height + "px");
-        clearBtn.setEnabled(false);
-//        checkboxLayout.setStyleName("countcontainer");
-        checkboxLayout.setMargin(new MarginInfo(false, true, false, false));
-        bodyLayout.addComponent(checkboxLayout);
+        checkboxLayout.setStyleName("countcontainer");
+        checkboxLayout.setMargin(new MarginInfo(false, false, false, false));
+
         diseaseGroupSelectOption = new OptionGroup();
         checkboxLayout.addComponent(diseaseGroupSelectOption);
         checkboxLayout.setComponentAlignment(diseaseGroupSelectOption, Alignment.TOP_LEFT);
-        diseaseGroupSelectOption.setWidth("20px");
+//        diseaseGroupSelectOption.setWidth("20px");
         diseaseGroupSelectOption.setNullSelectionAllowed(true); // user can not 'unselect'
         diseaseGroupSelectOption.setMultiSelect(true);
         diseaseGroupSelectOption.addStyleName("sortablelayoutselect");
@@ -160,7 +168,7 @@ public class SortableLayoutContainer extends VerticalLayout {
 
         });
 
-        itemWidth = width - 10;
+        itemWidth = sortableItremWidth - 10;
         initLists(labels);
     }
 
@@ -262,6 +270,7 @@ public class SortableLayoutContainer extends VerticalLayout {
             container.setWidth(itemWidth + "px");
             container.setHeight("30px");
             container.setStyleName("rowItem");
+            container.setDescription(strLabel);
             Label label = new Label(strLabel);
             container.addComponent(label);
             componentsList.add(container);

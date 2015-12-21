@@ -1864,16 +1864,6 @@ resetlabelbtn p{
 
 }
 
-.capturedwindow .v-window-outerheader {
-
-    margin-top:-13px;
-    top:0px;
-    height:0px;
-}
-.capturedwindow .hmcolumnlabel{
-
-    margin-top: 152px;
-}
 .pointer div{
     cursor: pointer;
 
@@ -2015,5 +2005,8 @@ resetlabelbtn p{
     opacity:1 !important;
     cursor:default !important;
 
+}
+.v-panel-content, .white .v-panel-content {
+    border:none !important;
 }
 
