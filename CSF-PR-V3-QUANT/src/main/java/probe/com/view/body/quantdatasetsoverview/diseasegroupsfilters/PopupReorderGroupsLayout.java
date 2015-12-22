@@ -59,7 +59,7 @@ public class PopupReorderGroupsLayout extends VerticalLayout implements LayoutEv
         popupWindow.setContent(windowLayout);
         windowLayout.addComponent(popupBodyLayout);
         windowLayout.setComponentAlignment(popupBodyLayout, Alignment.MIDDLE_CENTER);
-        int h = 500;
+        int h = 600;
         int w = 700;
         if (Page.getCurrent().getBrowserWindowHeight() < 700) {
             h = Page.getCurrent().getBrowserWindowHeight();
