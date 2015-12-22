@@ -53,12 +53,12 @@ public class Handler {
         return test;
     }
 
-    public void exportDataBase(String mysqldumpUrl, String sqlFileUrl) {
-        dal.exportDataBase(mysqldumpUrl, sqlFileUrl);
+    public boolean exportDataBase(String mysqldumpUrl, String sqlFileUrl) {
+        return dal.exportDataBase(mysqldumpUrl, sqlFileUrl);
     }
 
-    public boolean restoreDB(String source, String mysqlPath) {
-        return dal.restoreDB(source, mysqlPath);
+    public boolean restoreDB(String sqlFileUrl, String mysqldumpUrl) {
+        return dal.restoreDB(sqlFileUrl, mysqldumpUrl);
     }
 
     public boolean handelQuantPubData(String quantDataFilePath, String sequanceFilePath) {

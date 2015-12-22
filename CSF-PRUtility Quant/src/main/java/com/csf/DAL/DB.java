@@ -53,7 +53,7 @@ public class DB implements Serializable {
         this.password = password;
     }
 
-    public  boolean createTables() throws SQLException//create CSF the database tables if not exist
+    public boolean createTables() throws SQLException//create CSF the database tables if not exist
     {
         try {
             try {
@@ -132,6 +132,7 @@ public class DB implements Serializable {
                 dropStat = "DROP TABLE IF EXISTS `quant_dataset_table`;";
                 st.executeUpdate(dropStat);
 
+                st = conn.createStatement();
                 statment = "CREATE TABLE IF NOT EXISTS `quant_dataset_table` (\n"
                         + "  `study_key` varchar(100) NOT NULL default 'Not Available',\n"
                         + "  `pumed_id` varchar(30) NOT NULL default 'Not Available',\n"
@@ -166,8 +167,10 @@ public class DB implements Serializable {
                         + ") ENGINE=MyISAM DEFAULT CHARSET=utf8;";
                 st.executeUpdate(statment);
 
+                st = conn.createStatement();
                 dropStat = "DROP TABLE IF EXISTS `quant_full_table`;";
                 st.executeUpdate(dropStat);
+                st = conn.createStatement();
                 statment = "CREATE TABLE IF NOT EXISTS `quant_full_table` (\n"
                         + "  `author` varchar(500) NOT NULL,\n"
                         + "  `year` int(255) NOT NULL,\n"
@@ -223,6 +226,7 @@ public class DB implements Serializable {
                         + ") ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
                 st.executeUpdate(statment);
+                st = conn.createStatement();
 
                 statment = "CREATE TABLE IF NOT EXISTS `experiments_table` ( "
                         + "  `exp_id` int(11) NOT NULL auto_increment, "
@@ -248,6 +252,7 @@ public class DB implements Serializable {
                         + ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;  ";
                 st.executeUpdate(statment);
 
+                st = conn.createStatement();
                 statment = "CREATE TABLE IF NOT EXISTS `experiment_fractions_table` ( "
                         + "  `exp_id` int(11) NOT NULL, "
                         + "  `fraction_id` int(11) NOT NULL auto_increment, "
@@ -259,13 +264,14 @@ public class DB implements Serializable {
                         + ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
                 st.executeUpdate(statment);
 
+                st = conn.createStatement();
                 statment = "CREATE TABLE IF NOT EXISTS `experiment_peptides_proteins_table` ( "
                         + "  `exp_id` varchar(50) NOT NULL, "
                         + "  `peptide_id` int(50) NOT NULL, "
                         + "  `protein` varchar(1000) NOT NULL "
                         + ") ENGINE=MyISAM DEFAULT CHARSET=utf8; ";
                 st.executeUpdate(statment);
-
+                st = conn.createStatement();
                 statment = "CREATE TABLE IF NOT EXISTS `experiment_peptides_table` ( "
                         + "  `exp_id` int(11) NOT NULL default '0', "
                         + "  `pep_id` int(11) NOT NULL auto_increment, "
@@ -274,6 +280,7 @@ public class DB implements Serializable {
                         + ") ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ; ";
                 st.executeUpdate(statment);
 
+                st = conn.createStatement();
                 statment
                         = "CREATE TABLE IF NOT EXISTS `experiment_protein_table` ( "
                         + "  `exp_id` int(11) NOT NULL, "
@@ -310,7 +317,7 @@ public class DB implements Serializable {
                         + "  KEY `prot_key` (`prot_key`(333)) "
                         + ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
                 st.executeUpdate(statment);
-
+                st = conn.createStatement();
                 statment
                         = "CREATE TABLE IF NOT EXISTS `fractions_table` ( "
                         + "  `fraction_id` int(11) NOT NULL, "
@@ -327,7 +334,7 @@ public class DB implements Serializable {
                         + "  KEY `fraction_id` (`fraction_id`)  "
                         + ") ENGINE=MyISAM DEFAULT CHARSET=utf8; ";
                 st.executeUpdate(statment);
-
+                st = conn.createStatement();
                 statment
                         = "CREATE TABLE IF NOT EXISTS `proteins_peptides_table` ( "
                         + "  `protein` varchar(70) default NULL, "
@@ -360,7 +367,7 @@ public class DB implements Serializable {
                         + "  KEY `peptide_id` (`peptide_id`) "
                         + ") ENGINE=MyISAM DEFAULT CHARSET=utf8; ";
                 st.executeUpdate(statment);
-
+                st = conn.createStatement();
                 dropStat = "DROP TABLE IF EXISTS `quantitative_peptides_table`;";
                 st.executeUpdate(dropStat);
                 statment = "CREATE TABLE IF NOT EXISTS `quantitative_peptides_table` (\n"
@@ -385,7 +392,7 @@ public class DB implements Serializable {
                         + "  PRIMARY KEY  (`index`)\n"
                         + ") ENGINE=MyISAM  DEFAULT CHARSET=utf8; ";
                 st.executeUpdate(statment);
-
+                st = conn.createStatement();
                 dropStat = "DROP TABLE IF EXISTS `quantitative_proteins_table`;";
                 st.executeUpdate(dropStat);
                 statment = "CREATE TABLE IF NOT EXISTS `quantitative_proteins_table` (\n"
@@ -410,7 +417,7 @@ public class DB implements Serializable {
                         + "  PRIMARY KEY  (`index`)\n"
                         + ") ENGINE=MyISAM  DEFAULT CHARSET=utf8; ";
                 st.executeUpdate(statment);
-
+                st = conn.createStatement();
                 statment = "CREATE TABLE IF NOT EXISTS `standard_plot_proteins` ( "
                         + "  `exp_id` int(11) NOT NULL, "
                         + "  `mw_(kDa)` double NOT NULL, "
@@ -420,7 +427,7 @@ public class DB implements Serializable {
                         + "  `color` varchar(30) NOT NULL "
                         + ") ENGINE=MyISAM DEFAULT CHARSET=utf8; ";
                 st.executeUpdate(statment);
-
+                st = conn.createStatement();
                 statment = "CREATE TABLE IF NOT EXISTS `users_table` ( "
                         + "  `id` int(20) NOT NULL auto_increment, "
                         + "  `password` varchar(100) NOT NULL, "
@@ -756,7 +763,7 @@ public class DB implements Serializable {
         return id;
     }
 
-    public  int insertProteinExper(int expId, ProteinBean pb, String key) {
+    public int insertProteinExper(int expId, ProteinBean pb, String key) {
 
         try {
             if (conn == null || conn.isClosed()) {
@@ -817,7 +824,7 @@ public class DB implements Serializable {
         }
     }
 
-    public  boolean updatePeptideFile(ExperimentBean exp) {
+    public boolean updatePeptideFile(ExperimentBean exp) {
         try {
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
@@ -860,7 +867,7 @@ public class DB implements Serializable {
         return true;
     }
 
-    public  int insertPeptide(int pepId, PeptideBean pepb, int expId, Connection conn) {
+    public int insertPeptide(int pepId, PeptideBean pepb, int expId, Connection conn) {
         String insertPeptide = "INSERT INTO  `" + dbName + "`.`proteins_peptides_table` (`protein` ,`other_protein(s)` ,`peptide_protein(s)` ,`other_protein_description(s)` ,`peptide_proteins_description(s)` ,`aa_before` ,`sequence` ,"
                 + "`aa_after` ,`peptide_start` ,`peptide_end` ,`variable_modification` ,`location_confidence` ,`precursor_charge(s)` ,`number_of_validated_spectra` ,`score` ,`confidence` ,`peptide_id`,`fixed_modification`,`protein_inference`,`sequence_tagged`,`enzymatic`,`validated`,`starred`,`glycopattern_position(s)`,`deamidation_and_glycopattern`,`likelyNotGlycosite`,`exp_id` )VALUES ("
                 + "?,?,?,?,?,?,?,?,?,?,? , ? , ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
@@ -1010,7 +1017,7 @@ public class DB implements Serializable {
         return test;
     }
 
-    public  boolean insertFractions(ExperimentBean exp) {
+    public boolean insertFractions(ExperimentBean exp) {
         try {
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
@@ -1049,7 +1056,7 @@ public class DB implements Serializable {
         return true;
     }
 
-    private  int insertProteinFract(int fractId, ProteinBean fpb) {
+    private int insertProteinFract(int fractId, ProteinBean fpb) {
         int test = -1;
         try {
             if (conn == null || conn.isClosed()) {
@@ -1111,7 +1118,7 @@ public class DB implements Serializable {
         return true;
     }
 
-    public void exportDataBase(String mysqldumpUrl, String sqlFileUrl) {
+    public boolean exportDataBase(String mysqldumpUrl, String sqlFileUrl) {
 
         try {
 //            String executeCmd = "C:\\\\AppServ\\\\MySQL\\\\bin\\\\mysqldump.exe  -u " + userName + " -p" + password + " " + dbName + " -r  C:\\CSF_Files\\backup-quant.sql";//C:\\AppServ\\MySQL\\bin\\mysqldump.exe           ///usr/bin/mysqldump
@@ -1123,16 +1130,19 @@ public class DB implements Serializable {
             if (processComplete == 0) {
 
                 System.out.println("Backup taken successfully ");
+                return true;
 
             } else {
 
                 System.out.println("Could not take mysql backup");
+                return false;
 
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+        } catch (InterruptedException e) {
         }
+        return false;
 
     }
 
@@ -1687,19 +1697,17 @@ public class DB implements Serializable {
 
     }
 
-    public boolean restoreDB(String sqlFileUrl, String sqlMysqlPath) {
+    public boolean restoreDB(String sqlFileUrl, String mysqldumpUrl) {
         //create if not exist
 
-//        String cleanStatment = "TRUNCATE `quant_dataset_table`;TRUNCATE `quant_full_table`;TRUNCATE `experiments_table`;TRUNCATE `experiment_fractions_table`;TRUNCATE `experiment_peptides_proteins_table`; TRUNCATE `experiment_peptides_table`; TRUNCATE `experiment_protein_table`;TRUNCATE `fractions_table`;TRUNCATE `quantitative_peptides_table`;TRUNCATE `quantitative_proteins_table`;TRUNCATE `quant_dataset_table`;TRUNCATE `proteins_peptides_table`;TRUNCATE `standard_plot_proteins`;TRUNCATE `users_table`;TRUNCATE `quant_prot_table`";
-//        String[] tabls = cleanStatment.split(";");
         try {
+            createTables();
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
-            String[] executeCmd = new String[]{sqlMysqlPath, "--user=" + userName, "--password=" + password, dbName, "-e", "source " + sqlFileUrl};//  C:\\AppServ\\MySQL\\bin\\mysql
-
-            System.out.println(" sqlMysqlPath  " + sqlMysqlPath + "  sqlFileUrl  " + sqlFileUrl);
+            String[] executeCmd = new String[]{mysqldumpUrl, "--user=" + userName, "--password=" + password, dbName, "-e", "source " + sqlFileUrl};//  C:\\AppServ\\MySQL\\bin\\mysql
+            System.out.println(" sqlMysqlPath  " + mysqldumpUrl + "  sqlFileUrl  " + sqlFileUrl);
             Process runtimeProcess;
             runtimeProcess = Runtime.getRuntime().exec(executeCmd);
             int processComplete = runtimeProcess.waitFor();
@@ -1720,6 +1728,7 @@ public class DB implements Serializable {
         } catch (IllegalAccessException e) {
             System.out.println(e);
         } catch (IOException e) {
+            e.printStackTrace();
             System.out.println(e);
         } catch (InterruptedException e) {
             System.out.println(e);

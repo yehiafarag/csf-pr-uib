@@ -145,7 +145,30 @@ public class QuantDataHandler {
         qa18.setFilesNumber(10);
         qa18.setAnalyticalMethod("Disease Group I");
         qa18.setAuthor("Schutzer, Steven E., et al.");
-        authormap.put("24039694", qa16);
+        authormap.put("24039694", qa18);
+        
+        
+        QuantDatasetObject qa19 = new QuantDatasetObject();
+        qa19.setYear(2015);
+        qa19.setFilesNumber(10);
+        qa19.setAnalyticalMethod("Disease Group I");
+        qa19.setAuthor("Shi, Min, et al.");
+        authormap.put("25556233", qa19);
+        
+        QuantDatasetObject qa20 = new QuantDatasetObject();
+        qa20.setYear(2015);
+        qa20.setFilesNumber(10);
+        qa20.setAnalyticalMethod("Disease Group I");
+        qa20.setAuthor("Borràs, Eva, et al.");
+        authormap.put("26552840", qa20);
+        
+        QuantDatasetObject qa21 = new QuantDatasetObject();
+        qa21.setYear(2015);
+        qa21.setFilesNumber(10);
+        qa21.setAnalyticalMethod("Disease Group I");
+        qa21.setAuthor("Spellman, Daniel S., et al.");
+        authormap.put("25676562", qa21);
+        
     }
 
     @SuppressWarnings("CallToPrintStackTrace")
@@ -562,7 +585,16 @@ public class QuantDataHandler {
                     qProt.setDiseaseCategory(" ");
                     index++;
                 } else {
-                    qProt.setDiseaseCategory(updatedRowArr[index++]);
+                    String diseaseCat = updatedRowArr[index++];
+                    if (diseaseCat.trim().equalsIgnoreCase("MS")) {
+                        diseaseCat = "Multiple Sclerosis";
+                    } else if (diseaseCat.trim().equalsIgnoreCase("AD")) {
+                        diseaseCat = "Alzheimer";
+                    }else if (diseaseCat.trim().equalsIgnoreCase("PD")) {
+                        diseaseCat = "Parkinson";
+                    }
+
+                    qProt.setDiseaseCategory(diseaseCat);
                 }
 
 //                if (qProt.isPeptideProtein()) {

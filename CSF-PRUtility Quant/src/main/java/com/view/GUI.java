@@ -10,7 +10,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
 import java.sql.SQLException;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.SwingWorker;
@@ -22,22 +21,32 @@ import javax.swing.SwingWorker;
 public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
 
     private ExperimentBean exp;
-    private final String database_name = "quantdataupdated_09_11";
-    private final String executeCmd;
+    private final String database_name = "quantdataupdated_test_22_12";
+//    private final String executeCmd;
     private final String backupFileUrl = "D:\\backups\\sqlQuant18-8\\backup-quant-6-11.sql"; // "/home/probe/user/CSF-PR-FILES/backup.sql";             //"D:\\backups\\sqlQuant18-8\\backup-quant.sql";                        //   
     private String processUrl = "C:\\AppServ\\MySQL\\bin\\mysqldump.exe"; ///usr/bin/mysqldump";
+    private String mySqlDBPath = "C:\\AppServ\\MySQL\\bin\\mysql.exe";
 
-    //         "C:\\AppServ\\MySQL\\bin\\mysqldump.exe";//"C:\\AppServ\\MySQL\\bin\\mysqldump.exe"           ///usr/bin/mysqldump   C:\\AppServ\\MySQL\\bin\\mysql.exe
+    //         "C:\\AppServ\\MySQL\\bin\\mysqldump.exe";//"C:\\AppServ\\MySQL\\bin\\mysqldump.exe"           ///usr/bin/mysqldump   
 
     /* Creates new form GUI */
     public GUI() {
         initComponents();
+        jProgressBar1.setMaximum(100);
+        System.out.println("System.getProperty(\"os.name\") " + System.getProperty("os.name"));
+        if (System.getProperty("os.name").contains("Windows")) {
+            processUrl = "C:\\AppServ\\MySQL\\bin\\mysqldump.exe";
+            mySqlDBPath = "C:\\AppServ\\MySQL\\bin\\mysql.exe";
+
+        } else {
+            processUrl = "/usr/bin/mysqldump";
+            mySqlDBPath = "/usr/bin/mysql";
+        }
 
         this.setActivateIdentification(true);
         jRadioButton1.setSelected(true);
         restoreDbBtn.setEnabled(false);
         backupDbBtn.setEnabled(false);
-        jButton1.setText("Select CPS File");
 
         jLabel13.setText("");
         jLabel13.setFont(new Font("Serif", Font.BOLD, 12));
@@ -99,33 +108,28 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
         jTextField6.setText("");
         jTextField6.setToolTipText("Publication Link");
 
-//        jTextField7.setText("Admin");
-//        jTextField7.setToolTipText("Uploaded By");
         jButton1.setText("Choose");
         idProcessBtn.setText("Process");
         jButton3.setText("Choose");
         jButton7.setText("Choose");
         jTextField14.setText("");
         this.setTitle("CSF-PR File Reader");
-        String password = "";
-        for (char c : jPasswordField1.getPassword()) {
-            password += c;
-        }
 
-        executeCmd = processUrl + "  -u " + jTextField1.getText() + " -p" + password + " " + jTextField13.getText() + " -r  " + backupFileUrl;
+        mysqldumpText.setText(processUrl);
 
         jRadioButton2.setSelected(true);
         jRadioButton3.setSelected(false);
         restoreDbBtn.setEnabled(true);
         backupDbBtn.setEnabled(false);
-        mysqldumpText.setText(processUrl);
+
         backupDBPanel.setVisible(false);
         restoreDbPanel.setVisible(true);
         quantPanel.getProcessBtn().addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                idProcessBtnActionPerformed(evt);
+                quantProcessBtnActionPerformed();
             }
         });
+        mysqlresText.setText(mySqlDBPath);
 
     }
     /* This method is called from within the constructor to
@@ -392,9 +396,9 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(idPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(idPanelLayout.createSequentialGroup()
-                                        .addComponent(jTextField4)
+                                .addGroup(idPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, idPanelLayout.createSequentialGroup()
+                                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, idPanelLayout.createSequentialGroup()
@@ -837,7 +841,7 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
             .addComponent(dbPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addContainerGap()
                 .addComponent(jRadioButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jRadioButton4)
@@ -944,6 +948,114 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
     private File resourcefolder;
 
     @SuppressWarnings("SleepWhileInLoop")
+    private void quantProcessBtnActionPerformed() {
+
+        String errorMessage = "Not .txt file";
+        String errorMessage1 = "Not .csv file";
+        jTextField3.setForeground(Color.black);
+        jTextField4.setForeground(Color.black);
+        if (quantPanel.getjTextField4().getText() != null) {
+
+            if (quantPanel.getjTextField4().getText().equalsIgnoreCase("") || !quantPanel.getjTextField4().getText().endsWith(".txt")) {
+                quantPanel.getjTextField4().setText(errorMessage);
+                quantPanel.getjTextField4().setForeground(Color.red);
+                return;
+
+            }
+
+        } else if (quantPanel.getQuantCsvTextField().getText() != null && quantPanel.getQuantCsvTextField().getText() == null) {
+            if (quantPanel.getQuantCsvTextField().getText() == null || quantPanel.getQuantCsvTextField().getText().equalsIgnoreCase("") || !quantPanel.getQuantCsvTextField().getText().endsWith(".csv")) {
+                quantPanel.getQuantCsvTextField().setText(errorMessage1);
+                quantPanel.getQuantCsvTextField().setForeground(Color.red);
+                return;
+
+            }
+            quantPanel.getQuantCsvTextField().setText(errorMessage);
+            quantPanel.getQuantCsvTextField().setForeground(Color.red);
+
+        }
+
+        try {
+            new Thread() {
+                @Override
+                public void run() {
+                    jProgressBar1.setIndeterminate(true);
+                    jProgressBar1.setVisible(true);
+                    jLabel13.setText("Reading and storing quant data");
+                    revalidate();
+                    repaint();
+                }
+            }.start();
+            new Thread("DisplayThread") {
+                @Override
+                public void run() {
+                    jProgressBar1.setMaximum(100);
+
+                    RunWorkerQuantProcess t = new RunWorkerQuantProcess();
+                    t.execute();
+                    while (!t.isDone()) {
+                        try {
+                            Thread.sleep(50);
+                        } catch (Exception e) {
+                            //e.printStackTrace();
+                        }
+                    }
+                    jProgressBar1.setValue(0);
+                    jProgressBar1.setVisible(false);
+                }
+            }.start();
+
+        } catch (Exception e) {
+            //   e.printStackTrace();
+        }
+
+//        try {
+//            new Thread() {
+//                @Override
+//                public void run() {
+//                    jProgressBar1.setIndeterminate(true);
+//
+//                }
+//            }.start();
+//            Thread t = new Thread("DisplayThread") {
+//                @Override
+//                @SuppressWarnings("CallToPrintStackTrace")
+//                public void run() {
+//                    jLabel13.setText("reading and storing data");
+//                    jProgressBar1.setVisible(true);
+//                    jProgressBar1.setMaximum(100);
+//                    if (exphandeler == null) {
+//                        try {
+//                            String password = "";
+//                            for (char c : jPasswordField1.getPassword()) {
+//                                password += c;
+//                            }
+//                            exphandeler = new Handler("jdbc:mysql://" + jTextField13.getText() + ":3306/", database_name, "com.mysql.jdbc.Driver", jTextField1.getText(), password);
+//                        } catch (SQLException sqlE) {
+//                            sqlE.printStackTrace();
+//                        }
+//                    }
+//                    boolean processing = exphandeler.handelQuantPubData(quantPanel.getQuantCsvTextField().getText(), quantPanel.getjTextField4().getText());
+//                    if (processing) {
+//                        jLabel13.setText("done");
+//                    } else {
+//                        jLabel13.setText("error in storing data check the input file");
+//                    }
+//                }
+//            };
+//            t.start();
+//            while (t.isAlive()) {
+//                Thread.sleep(100);
+//            }
+//            jProgressBar1.setVisible(false);
+
+//        } catch (Exception e) {
+//            System.err.println("error: " + e.getLocalizedMessage());
+//        }
+
+    }
+
+    @SuppressWarnings("SleepWhileInLoop")
     private void idProcessBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idProcessBtnActionPerformed
         if (correct) {
             if (exphandeler == null) {
@@ -962,77 +1074,77 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
         }
         if (!jRadioButton1.isSelected()) // quant data processing
         {
-
-            String errorMessage = "Not .txt file";
-            String errorMessage1 = "Not .csv file";
-            jTextField3.setForeground(Color.black);
-            jTextField4.setForeground(Color.black);
-
-            if (quantPanel.getjTextField4().getText() != null) {
-
-                if (quantPanel.getjTextField4().getText().equalsIgnoreCase("") || !quantPanel.getjTextField4().getText().endsWith(".txt")) {
-                    quantPanel.getjTextField4().setText(errorMessage);
-                    quantPanel.getjTextField4().setForeground(Color.red);
-                    return;
-
-                }
-
-            } else if (quantPanel.getjTextField5().getText() != null && quantPanel.getjTextField5().getText() == null) {
-                if (quantPanel.getjTextField5().getText() == null || quantPanel.getjTextField5().getText().equalsIgnoreCase("") || !quantPanel.getjTextField5().getText().endsWith(".csv")) {
-                    quantPanel.getjTextField5().setText(errorMessage1);
-                    quantPanel.getjTextField5().setForeground(Color.red);
-                    return;
-
-                }
-
-                quantPanel.getjTextField5().setText(errorMessage);
-                quantPanel.getjTextField5().setForeground(Color.red);
-
-            }
-
-            try {
-                new Thread() {
-                    @Override
-                    public void run() {
-                        jProgressBar1.setIndeterminate(true);
-
-                    }
-                }.start();
-                Thread t = new Thread("DisplayThread") {
-                    @Override
-                    @SuppressWarnings("CallToPrintStackTrace")
-                    public void run() {
-                        jLabel13.setText("reading and storing data");
-                        jProgressBar1.setVisible(true);
-                        jProgressBar1.setMaximum(100);
-                        if (exphandeler == null) {
-                            try {
-                                String password = "";
-                                for (char c : jPasswordField1.getPassword()) {
-                                    password += c;
-                                }
-                                exphandeler = new Handler("jdbc:mysql://" + jTextField13.getText() + ":3306/", database_name, "com.mysql.jdbc.Driver", jTextField1.getText(), password);
-                            } catch (SQLException sqlE) {
-                                sqlE.printStackTrace();
-                            }
-                        }
-                        boolean processing = exphandeler.handelQuantPubData(quantPanel.getjTextField5().getText(), quantPanel.getjTextField4().getText());
-                        if (processing) {
-                            jLabel13.setText("done");
-                        } else {
-                            jLabel13.setText("error in storing data check the input file");
-                        }
-                    }
-                };
-                t.start();
-                while (t.isAlive()) {
-                    Thread.sleep(100);
-                }
-                jProgressBar1.setVisible(false);
-
-            } catch (Exception e) {
-                System.err.println("error: " + e.getLocalizedMessage());
-            }
+//
+//            String errorMessage = "Not .txt file";
+//            String errorMessage1 = "Not .csv file";
+//            jTextField3.setForeground(Color.black);
+//            jTextField4.setForeground(Color.black);
+//
+//            if (quantPanel.getjTextField4().getText() != null) {
+//
+//                if (quantPanel.getjTextField4().getText().equalsIgnoreCase("") || !quantPanel.getjTextField4().getText().endsWith(".txt")) {
+//                    quantPanel.getjTextField4().setText(errorMessage);
+//                    quantPanel.getjTextField4().setForeground(Color.red);
+//                    return;
+//
+//                }
+//
+//            } else if (quantPanel.getQuantCsvTextField().getText() != null && quantPanel.getQuantCsvTextField().getText() == null) {
+//                if (quantPanel.getQuantCsvTextField().getText() == null || quantPanel.getQuantCsvTextField().getText().equalsIgnoreCase("") || !quantPanel.getQuantCsvTextField().getText().endsWith(".csv")) {
+//                    quantPanel.getQuantCsvTextField().setText(errorMessage1);
+//                    quantPanel.getQuantCsvTextField().setForeground(Color.red);
+//                    return;
+//
+//                }
+//
+//                quantPanel.getQuantCsvTextField().setText(errorMessage);
+//                quantPanel.getQuantCsvTextField().setForeground(Color.red);
+//
+//            }
+//
+//            try {
+//                new Thread() {
+//                    @Override
+//                    public void run() {
+//                        jProgressBar1.setIndeterminate(true);
+//
+//                    }
+//                }.start();
+//                Thread t = new Thread("DisplayThread") {
+//                    @Override
+//                    @SuppressWarnings("CallToPrintStackTrace")
+//                    public void run() {
+//                        jLabel13.setText("reading and storing data");
+//                        jProgressBar1.setVisible(true);
+//                        jProgressBar1.setMaximum(100);
+//                        if (exphandeler == null) {
+//                            try {
+//                                String password = "";
+//                                for (char c : jPasswordField1.getPassword()) {
+//                                    password += c;
+//                                }
+//                                exphandeler = new Handler("jdbc:mysql://" + jTextField13.getText() + ":3306/", database_name, "com.mysql.jdbc.Driver", jTextField1.getText(), password);
+//                            } catch (SQLException sqlE) {
+//                                sqlE.printStackTrace();
+//                            }
+//                        }
+//                        boolean processing = exphandeler.handelQuantPubData(quantPanel.getQuantCsvTextField().getText(), quantPanel.getjTextField4().getText());
+//                        if (processing) {
+//                            jLabel13.setText("done");
+//                        } else {
+//                            jLabel13.setText("error in storing data check the input file");
+//                        }
+//                    }
+//                };
+//                t.start();
+//                while (t.isAlive()) {
+//                    Thread.sleep(100);
+//                }
+//                jProgressBar1.setVisible(false);
+//
+//            } catch (Exception e) {
+//                System.err.println("error: " + e.getLocalizedMessage());
+//            }
 
         } else {
             boolean test = this.valiField();
@@ -1069,7 +1181,7 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                                 System.out.println("this file is not exist");
                             }
                             PSFileImporter fileImporter = new PSFileImporter(jProgressBar1);
-                            RunWorker t = new RunWorker(fileImporter, cpsFile, res);
+                            RunWorkerIDReader t = new RunWorkerIDReader(fileImporter, cpsFile, res);
                             t.execute();
                             while (!t.isDone()) {
                                 try {
@@ -1171,92 +1283,182 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
 
     private void backupDbBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backupDbBtnActionPerformed
         // EXPORT CSF-PR DATABASE
-        if (exphandeler == null) {
-            try {
-                String password = "";
-                for (char c : jPasswordField1.getPassword()) {
-                    password += c;
+        try {
+            new Thread() {
+                @Override
+                public void run() {
+                    jProgressBar1.setIndeterminate(true);
+                    jProgressBar1.setVisible(true);
+                    jLabel13.setText("Backing up ( " + database_name + " ) database\"database ...please wait");
+                    revalidate();
+                    repaint();
                 }
-                exphandeler = new Handler("jdbc:mysql://" + jTextField13.getText() + ":3306/", database_name, "com.mysql.jdbc.Driver", jTextField1.getText(), password);
-            } catch (SQLException sqlE) {
-                System.out.println("at error SQL Exception line 879 " + this.getClass().getName() + "  " + sqlE.getMessage());
-            }
+            }.start();
+            new Thread("DisplayThread") {
+                @Override
+                @SuppressWarnings("SleepWhileInLoop")
+                public void run() {
+                    jProgressBar1.setMaximum(100);
+
+                    RunWorkerBackupDB t = new RunWorkerBackupDB();
+                    t.execute();
+                    while (!t.isDone()) {
+                        try {
+                            Thread.sleep(50);
+                        } catch (Exception e) {
+                            //e.printStackTrace();
+                        }
+                    }
+                    jProgressBar1.setValue(0);
+                    jProgressBar1.setVisible(false);
+                }
+            }.start();
+
+        } catch (Exception e) {
+            //   e.printStackTrace();
         }
 
-        processUrl = mysqldumpText.getText().trim();
-        if (processUrl == null || processUrl.trim().equalsIgnoreCase("") || sqlFileText.getText() == null || sqlFileText.getText().trim().equalsIgnoreCase("")) {
-            jLabel13.setText("Error please check input data");
-            return;
-        }
-        jLabel13.setText("Start backup process for (  " + database_name + " ) database");
-        jProgressBar1.setIndeterminate(true);
-        jProgressBar1.setVisible(true);
-        exphandeler.exportDataBase(processUrl, sqlFileText.getText());
-        jLabel13.setText("Done");
-        jProgressBar1.setVisible(false);
+//        if (exphandeler == null) {
+//            try {
+//                String password = "";
+//                for (char c : jPasswordField1.getPassword()) {
+//                    password += c;
+//                }
+//                exphandeler = new Handler("jdbc:mysql://" + jTextField13.getText() + ":3306/", database_name, "com.mysql.jdbc.Driver", jTextField1.getText(), password);
+//            } catch (SQLException sqlE) {
+//                System.out.println("at error SQL Exception line 879 " + this.getClass().getName() + "  " + sqlE.getMessage());
+//            }
+//        }
+//
+//        processUrl = mysqldumpText.getText().trim();
+//        if (processUrl == null || processUrl.trim().equalsIgnoreCase("") || sqlFileText.getText() == null || sqlFileText.getText().trim().equalsIgnoreCase("")) {
+//            jLabel13.setText("Error please check input data");
+//            return;
+//        }
+//        Thread t = new Thread(new Runnable() {
+//
+//            public void run() {
+//                jLabel13.setText("Start backup process for (  " + database_name + " ) database");
+//                jProgressBar1.setIndeterminate(true);
+//                jProgressBar1.setVisible(true);
+//            }
+//        });
+//        t.start();
+//        try {
+//            t.join();
+//        } catch (InterruptedException ex) {
+//            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//
+//        exphandeler.exportDataBase(processUrl, sqlFileText.getText());
+//        jLabel13.setText("Done");
+//        jProgressBar1.setVisible(false);
     }//GEN-LAST:event_backupDbBtnActionPerformed
 
     @SuppressWarnings("SleepWhileInLoop")
     private void restoreDbBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restoreDbBtnActionPerformed
-        // TODO add your handling code here:
-        if (exphandeler == null) {
-            try {
-                String password = "";
-                for (char c : jPasswordField1.getPassword()) {
-                    password += c;
+//      
+
+        try {
+            new Thread() {
+                @Override
+                public void run() {
+                    jProgressBar1.setIndeterminate(true);
+                    jProgressBar1.setVisible(true);
+                    jLabel13.setText("Restoring database...please wait");
+                    revalidate();
+                    repaint();
                 }
-                exphandeler = new Handler("jdbc:mysql://" + jTextField13.getText() + ":3306/", database_name, "com.mysql.jdbc.Driver", jTextField1.getText(), password);
-            } catch (SQLException sqlE) {
-                System.out.println("at error SQL Exception line 896 " + this.getClass().getName() + "  " + sqlE.getMessage());
-            }
-        }
-        final String resource = mysqlresText.getText();
-        final String mysqlPath = mysqlFileRestText.getText();
-        if (resource == null || resource.equalsIgnoreCase("") || mysqlPath == null || mysqlPath.equalsIgnoreCase("")) {
-            System.err.println("select file");
-
-        } else {
-            try {
-
-                new Thread() {
-                    @Override
-                    public void run() {
-                        jProgressBar1.setIndeterminate(true);
-                        jProgressBar1.setVisible(true);
-                        jLabel13.setText("Start restoring database");
-                    }
-                }.start();
-                Thread t = new Thread("DisplayThread") {
-
-                    public boolean success;
-
-                    @Override
-                    public void run() {
-
-                        jProgressBar1.setMaximum(100);
-                        success = exphandeler.restoreDB(resource, mysqlPath);//"C:\\Users\\y-mok_000\\Google Drive\\csf-pr-backup\\backup.sql");
-                        if (!success) {
-                            jProgressBar1.setVisible(false);
-                            jLabel13.setText("Faild to restore the DB");
-
+            }.start();
+            new Thread("DisplayThread") {
+                @Override
+                public void run() {
+                    jProgressBar1.setMaximum(100);
+                    RunWorkerRestoreDB t = new RunWorkerRestoreDB();
+                    t.execute();
+                    while (!t.isDone()) {
+                        try {
+                            Thread.sleep(50);
+                        } catch (Exception e) {
+                            //e.printStackTrace();
                         }
-
                     }
-                };
-                t.start();
-                while (t.isAlive()) {
-                    Thread.sleep(100);
+                    jProgressBar1.setValue(0);
+                    jProgressBar1.setVisible(false);
                 }
-                if (!jLabel13.getText().equalsIgnoreCase("Faild to restore the DB")) {
-                    jLabel13.setText("Done");
-                }
-                jProgressBar1.setVisible(false);
+            }.start();
 
-            } catch (Exception e) {
-                //   e.printStackTrace();
-            }
-
+        } catch (Exception e) {
+            //   e.printStackTrace();
         }
+
+// TODO add your handling code here:
+//        if (exphandeler == null) {
+//            try {
+//                String password = "";
+//                for (char c : jPasswordField1.getPassword()) {
+//                    password += c;
+//                }
+//                exphandeler = new Handler("jdbc:mysql://" + jTextField13.getText() + ":3306/", database_name, "com.mysql.jdbc.Driver", jTextField1.getText(), password);
+//            } catch (SQLException sqlE) {
+//                System.out.println("at error SQL Exception line 896 " + this.getClass().getName() + "  " + sqlE.getMessage());
+//            }
+//        }
+//        final String mysqldumpUrl = mysqlresText.getText();
+//        final String sqlFileUrl = mysqlFileRestText.getText();
+//        if (mysqldumpUrl == null || mysqldumpUrl.equalsIgnoreCase("") || sqlFileUrl == null || sqlFileUrl.equalsIgnoreCase("")) {
+//            System.err.println("select file");
+//
+//        } else {
+//            try {
+//
+//                new Thread(new Runnable() {
+//
+//                    public void run() {
+//                        jProgressBar1.setIndeterminate(true);
+//                        jProgressBar1.setVisible(true);
+//                        jLabel13.setText("Start restoring database");
+//                        revalidate();
+//                        repaint();
+//
+//                    }
+//                }).start();
+//
+//                Thread t1 = new Thread("DisplayThread") {
+//
+//                    public boolean success;
+//
+//                    @Override
+//                    public void run() {
+//                        revalidate();
+//                        repaint();
+//
+//                        success = exphandeler.restoreDB(sqlFileUrl, mysqldumpUrl);//"C:\\Users\\y-mok_000\\Google Drive\\csf-pr-backup\\backup.sql");
+//                        if (!success) {
+//                            jProgressBar1.setVisible(false);
+//                            jLabel13.setText("Faild to restore the DB");
+//
+//                        }
+//
+//                    }
+//                };
+//                javax.swing.SwingUtilities.invokeLater(t1);
+//                System.out.println("t1 will start now   " + "  " + jLabel13.getText());
+//
+////                t1.start();
+//                while (t1.isAlive()) {
+//                    Thread.sleep(100);
+//                }
+//                if (!jLabel13.getText().equalsIgnoreCase("Faild to restore the DB")) {
+//                    jLabel13.setText("Done");
+//                }
+//                jProgressBar1.setVisible(false);
+//
+//            } catch (Exception e) {
+//                //   e.printStackTrace();
+//            }
+//
+//        }
     }//GEN-LAST:event_restoreDbBtnActionPerformed
 
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
@@ -1304,12 +1506,13 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
 //        backupDbBtn.setEnabled(true);
 //        jButton1.setEnabled(true);
 //        jTextField3.setEnabled(true);
-        jTextField3.setText(backupFileUrl);
-        jTextField4.setEnabled(true);
-        jTextField4.setText("///usr/bin/mysql ");
-        jButton3.setText("MySQL service path ");
-        jButton3.setEnabled(false);
-        jButton1.setText("Select SQL File");
+        sqlFileText.setText(backupFileUrl);
+        mysqlFileRestText.setText(backupFileUrl);
+//        jTextField4.setEnabled(true);
+//        jTextField4.setText("///usr/bin/mysql ");
+//        jButton3.setText("MySQL service path ");
+//        jButton3.setEnabled(false);
+//        jButton1.setText("Select SQL File");
     }//GEN-LAST:event_jRadioButton5ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
@@ -1400,7 +1603,14 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        // TODO add your handling code here:
+        JFileChooser chooser = new JFileChooser();
+
+        int option = chooser.showOpenDialog(this); // parentComponent must a component like JFrame, JDialog...
+        if (option == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = chooser.getSelectedFile();
+            String path = selectedFile.getAbsolutePath();
+            mysqlresText.setText(path);
+        }
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void mysqlFileRestTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mysqlFileRestTextActionPerformed
@@ -1438,14 +1648,21 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
         }
         //</editor-fold>
 
+
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 GUI gui = new GUI();
                 gui.setVisible(true);
             }
         });
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            @Override
+//            public void run() {
+//                GUI gui = new GUI();
+//                gui.setVisible(true);
+//            }
+//        });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel backupDBPanel;
@@ -1750,13 +1967,13 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
 
     }
 
-    class RunWorker extends SwingWorker<Boolean, Boolean> {
+    class RunWorkerIDReader extends SwingWorker<Boolean, Boolean> {
 
         private final PSFileImporter fileImporter;
         private final File cpsFile;
         private final String resFold;
 
-        public RunWorker(PSFileImporter fileImporter, File cpsFile, String resFold) {
+        public RunWorkerIDReader(PSFileImporter fileImporter, File cpsFile, String resFold) {
             this.fileImporter = fileImporter;
             this.cpsFile = cpsFile;
             this.resFold = resFold;
@@ -1807,4 +2024,154 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
             return test;
         }
     }
+
+    class RunWorkerRestoreDB extends SwingWorker<Boolean, Boolean> {
+
+        public RunWorkerRestoreDB() {
+
+        }
+        private boolean success;
+
+        @Override
+        protected Boolean doInBackground() throws Exception {
+            // TODO add your handling code here:
+            if (exphandeler == null) {
+                try {
+                    String password = "";
+                    for (char c : jPasswordField1.getPassword()) {
+                        password += c;
+                    }
+                    exphandeler = new Handler("jdbc:mysql://" + jTextField13.getText() + ":3306/", database_name, "com.mysql.jdbc.Driver", jTextField1.getText(), password);
+                } catch (SQLException sqlE) {
+                    System.out.println("at error SQL Exception line 896 " + this.getClass().getName() + "  " + sqlE.getMessage());
+                }
+            }
+            final String mysqldumpUrl = mysqlresText.getText();
+            final String sqlFileUrl = mysqlFileRestText.getText();
+            if (mysqldumpUrl == null || mysqldumpUrl.equalsIgnoreCase("") || sqlFileUrl == null || sqlFileUrl.equalsIgnoreCase("")) {
+                System.err.println("select file");
+
+            } else {
+                try {
+
+                    restoreDbBtn.setEnabled(false);
+                    success = exphandeler.restoreDB(sqlFileUrl, mysqldumpUrl);//"C:\\Users\\y-mok_000\\Google Drive\\csf-pr-backup\\backup.sql");
+                    if (!success) {
+                        jProgressBar1.setVisible(false);
+                        jLabel13.setText("Faild to restore the DB");
+
+                    }
+                    if (!jLabel13.getText().equalsIgnoreCase("Faild to restore the DB")) {
+                        jLabel13.setText("Done");
+                    }
+                    jProgressBar1.setVisible(false);
+                    restoreDbBtn.setEnabled(true);
+
+                } catch (Exception e) {
+                    //   e.printStackTrace();
+                }
+
+            }
+
+            return success;
+        }
+    }
+
+    class RunWorkerBackupDB extends SwingWorker<Boolean, Boolean> {
+
+        public RunWorkerBackupDB() {
+
+        }
+        private boolean success;
+
+        @Override
+        protected Boolean doInBackground() throws Exception {
+            // TODO add your handling code here:
+            if (exphandeler == null) {
+                try {
+                    String password = "";
+                    for (char c : jPasswordField1.getPassword()) {
+                        password += c;
+                    }
+                    exphandeler = new Handler("jdbc:mysql://" + jTextField13.getText() + ":3306/", database_name, "com.mysql.jdbc.Driver", jTextField1.getText(), password);
+                } catch (SQLException sqlE) {
+                    System.out.println("at error SQL Exception line 896 " + this.getClass().getName() + "  " + sqlE.getMessage());
+                }
+            }
+            processUrl = mysqldumpText.getText().trim();
+            if (processUrl == null || processUrl.trim().equalsIgnoreCase("") || sqlFileText.getText() == null || sqlFileText.getText().trim().equalsIgnoreCase("")) {
+                jLabel13.setText("Error please check input data");
+                return false;
+            } else {
+                try {
+
+                    backupDbBtn.setEnabled(false);
+                    success = exphandeler.exportDataBase(processUrl, sqlFileText.getText());
+
+                    if (!success) {
+                        jProgressBar1.setVisible(false);
+                        jLabel13.setText("Faild to backup the DB");
+
+                    }
+                    if (!jLabel13.getText().equalsIgnoreCase("Faild to restore the DB")) {
+                        jLabel13.setText("Back up compleate...Done");
+                    }
+                    jProgressBar1.setVisible(false);
+                    backupDbBtn.setEnabled(true);
+
+                } catch (Exception e) {
+                }
+
+            }
+
+            return success;
+        }
+    }
+
+    class RunWorkerQuantProcess extends SwingWorker<Boolean, Boolean> {
+
+        public RunWorkerQuantProcess() {
+
+        }
+        private boolean success;
+
+        @Override
+        protected Boolean doInBackground() throws Exception {
+            // TODO add your handling code here:
+            if (exphandeler == null) {
+                try {
+                    String password = "";
+                    for (char c : jPasswordField1.getPassword()) {
+                        password += c;
+                    }
+                    exphandeler = new Handler("jdbc:mysql://" + jTextField13.getText() + ":3306/", database_name, "com.mysql.jdbc.Driver", jTextField1.getText(), password);
+                } catch (SQLException sqlE) {
+                    System.out.println("at error SQL Exception line 896 " + this.getClass().getName() + "  " + sqlE.getMessage());
+                }
+            }
+
+            success = exphandeler.handelQuantPubData(quantPanel.getQuantCsvTextField().getText(), quantPanel.getjTextField4().getText());
+
+            try {
+
+                quantPanel.getProcessBtn().setEnabled(false);
+
+                if (!success) {
+                    jProgressBar1.setVisible(false);
+                    jLabel13.setText("Error in data storing ... check the input file");
+
+                }
+                if (!jLabel13.getText().equalsIgnoreCase("Error in data storing ... check the input file")) {
+                    jLabel13.setText("Done :-D ");
+                }
+                jProgressBar1.setVisible(false);
+                quantPanel.getProcessBtn().setEnabled(true);
+
+            } catch (Exception e) {
+            }
+
+            return success;
+        }
+    }
+
 }

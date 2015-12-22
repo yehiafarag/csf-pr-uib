@@ -56,15 +56,15 @@ public class DAL {
 
     }
 
-    public void exportDataBase(String mysqldumpUrl, String sqlFileUrl) {
-        database.exportDataBase(mysqldumpUrl, sqlFileUrl);
+    public boolean  exportDataBase(String mysqldumpUrl, String sqlFileUrl) {
+       return  database.exportDataBase(mysqldumpUrl, sqlFileUrl);
 //        database.getIdentificationProteinsList();
 //        database.updateIdentificationProteinsList(sqlFileUrl);
 
     }
 
-    public boolean restoreDB(String source,String mysqlPath) {
-        return database.restoreDB(source,mysqlPath);
+    public boolean restoreDB(String sqlFileUrl, String mysqldumpUrl) {
+        return database.restoreDB( sqlFileUrl,  mysqldumpUrl);
     }
 
     ///quant data store 
