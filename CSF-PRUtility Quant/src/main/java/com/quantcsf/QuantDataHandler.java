@@ -407,7 +407,7 @@ public class QuantDataHandler {
                 }
 //
                 if (updatedRowArr[index] == null || updatedRowArr[index].trim().equalsIgnoreCase("")) {
-                    qProt.setPatientSubGroupI(" ");
+                    qProt.setPatientSubGroupI( qProt.getPatientGroupI());
                     index++;
                 } else {
                     qProt.setPatientSubGroupI(updatedRowArr[index++]);
@@ -434,7 +434,7 @@ public class QuantDataHandler {
                 }
 
                 if (updatedRowArr[index] == null || updatedRowArr[index].trim().equalsIgnoreCase("")) {
-                    qProt.setPatientSubGroupII(" ");
+                    qProt.setPatientSubGroupII(qProt.getPatientGroupII());
                     index++;
                 } else {
                     qProt.setPatientSubGroupII(updatedRowArr[index++]);
@@ -463,21 +463,10 @@ public class QuantDataHandler {
 
                 if (!updatedRowArr[index].trim().equalsIgnoreCase("")) {
                     try {
-                        qProt.setFcPatientGroupIonPatientGroupII(Double.valueOf(updatedRowArr[index].replace(",", ".")));
-//                        if (qProt.getFcPatientGroupIonPatientGroupII() > 0) {
-//                            qProt.setStringFCValue("Increased");
-//                        } else {
-//                            qProt.setStringFCValue("Decreased");
-//                        }
+                        qProt.setFcPatientGroupIonPatientGroupII(Double.valueOf(updatedRowArr[index].replace(",", ".").replace("?", "-")));
                     } catch (NumberFormatException exp) {
-
                         qProt.setFcPatientGroupIonPatientGroupII(-1000000000.0);
                         qProt.setStringFCValue(updatedRowArr[index]);
-//                        if (!updatedRowArr[index].trim().isEmpty()) {
-//                            qProt.setStringFCValue(updatedRowArr[index].trim());
-//                        } else {
-//                            qProt.setStringFCValue("Not Provided");
-//                        }
                     }
                 } else {
                     qProt.setFcPatientGroupIonPatientGroupII(-1000000000.0);
@@ -487,7 +476,7 @@ public class QuantDataHandler {
 
                 if (!updatedRowArr[index].trim().equalsIgnoreCase("")) {
                     try {
-                        qProt.setLogFC(Double.valueOf(updatedRowArr[index].replace(",", ".")));
+                        qProt.setLogFC(Double.valueOf(updatedRowArr[index].replace(",", ".").replace("?", "-")));
                         if (qProt.getLogFC() > 0) {
                             qProt.setStringFCValue("Increased");
                         } else {
@@ -499,14 +488,14 @@ public class QuantDataHandler {
                             qProt.setStringFCValue(updatedRowArr[index].trim());
 
                         } else {
-                            qProt.setStringFCValue("Not Regulated");
+                            qProt.setStringFCValue("No change");
                         }
                     } finally {
                         index++;
                     }
                 } else {
                     qProt.setLogFC(-1000000000.0);
-                    qProt.setStringFCValue("Not Regulated");
+                    qProt.setStringFCValue("No change");
                     index++;
 
                 }
@@ -523,7 +512,7 @@ public class QuantDataHandler {
                 }
 
                 if (!updatedRowArr[index].trim().equalsIgnoreCase("")) {
-                    qProt.setRocAuc(Double.valueOf(updatedRowArr[index].replace(",", ".")));
+                    qProt.setRocAuc(Double.valueOf(updatedRowArr[index].replace(",", ".").replace("?", "-")));
                     index++;
                 } else {
                     qProt.setRocAuc(-1000000000.0);
@@ -623,6 +612,8 @@ public class QuantDataHandler {
         } catch (NumberFormatException ex) {
             ex.printStackTrace();
             System.out.println("error in " + ex);
+        }catch(Exception e){
+            e.printStackTrace();
         }
 
         return QuantProtList;
@@ -662,7 +653,7 @@ public class QuantDataHandler {
 //    }
     private QuantProtein definePValue(QuantProtein prot, String pValue, String significanceThreshold, String pvalueComment) {
         try {
-            pValue = pValue.replace(",", ".");
+            pValue = pValue.replace(",", ".").replace("?", "-");
             String operator;
 
             double signThresholdValue = -1;
@@ -683,15 +674,15 @@ public class QuantDataHandler {
                 }
 
             } else if (significanceThreshold.contains("<=")) {
-                significanceThreshold = significanceThreshold.replace(",", ".");
+                significanceThreshold = significanceThreshold.replace(",", ".").replace("?", "-");
                 signThresholdValue = Double.valueOf(significanceThreshold.replace("<=", ",").replace("ÿ", "").replace("Ê", "").split(",")[1].replace(" ", "").trim());
                 operator = "<=";
             } else if (significanceThreshold.contains("<")) {
-                significanceThreshold = significanceThreshold.replace(",", ".");
+                significanceThreshold = significanceThreshold.replace(",", ".").replace("?", "-");
                 signThresholdValue = Double.valueOf(significanceThreshold.split("<")[1].trim());
                 operator = "<";
             } else {
-                significanceThreshold = significanceThreshold.replace(",", ".");
+                significanceThreshold = significanceThreshold.replace(",", ".").replace("?", "-");
                 signThresholdValue = Double.valueOf(significanceThreshold.trim());
                 operator = "<";
 
