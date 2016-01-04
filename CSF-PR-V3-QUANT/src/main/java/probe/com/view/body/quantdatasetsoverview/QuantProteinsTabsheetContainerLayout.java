@@ -141,7 +141,7 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
             if (tab != null) {
                 Integer index = (Integer) ((HorizontalLayout) tab.getComponent()).getData();
                 proteinsTabsheet.setSelectedTab(index);
-                proteinsTabsheet.focus();
+                this.getUI().scrollIntoView(proteinsTabsheet);
 
             } else {
 

@@ -11,7 +11,11 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Runo;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.view.body.ProteinsSearchingLayout;
 
@@ -49,6 +53,15 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
         mainTabSheet.setWidth("100%");
         adminIcon = this.initAdminIcoBtn();
         initBodyLayout(handler);
+        
+        
+//        ProcessBuilder pb = new ProcessBuilder("C:\\Program Files\\Java\\jdk1.8.0_45\\bin\\java.exe", "-jar", "CSFPR.Utility-0.2.jar");
+//        pb.directory(new File("D:\\csf-pr-runing"));
+//        try {
+//            Process p = pb.start();
+//        } catch (IOException ex) {
+//            System.out.println("error "+ex.getMessage());
+//        }
     }
 
     /**
@@ -63,10 +76,10 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
 //      Tab 2 content quant dataset overview
         datasetsOverviewLayout = new VerticalLayout();
         datasetsOverviewLayout.setMargin(true);
-        
-        int height = Page.getCurrent().getBrowserWindowHeight()-100;
+
+        int height = Page.getCurrent().getBrowserWindowHeight() - 100;
 //        int width = Page.getCurrent().getBrowserWindowWidth()-15;
-        datasetsOverviewLayout.setHeight(height+"px");
+        datasetsOverviewLayout.setHeight(height + "px");
         datasetsOverviewLayout.setWidth("100%");
         datasetsOverviewLayout.setPrimaryStyleName("scrollable");
         mainTabSheet.addTab(datasetsOverviewLayout, "Quantitative Datasets Overview");

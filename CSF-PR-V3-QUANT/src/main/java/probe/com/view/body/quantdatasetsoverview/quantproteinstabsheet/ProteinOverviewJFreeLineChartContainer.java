@@ -329,7 +329,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         orderedLineChartContainer.setWidth((width - 100) + "px");
         orderedLineChartContainer.setHeight(height + "px");
 
-        teststyle = proteinName.replace(" ", "_").replace(")", "_").replace("(", "_").replace(";", "_").toLowerCase().replace("#", "_").replace("?", "_").replace("[", "").replace("]", "").replace("/", "_").replace(":", "_").replace("'", "_") + "linechart";
+        teststyle = proteinName.replace(" ", "_").replace(")", "_").replace("(", "_").replace(";", "_").toLowerCase().replace("#", "_").replace("?", "_").replace("[", "").replace("]", "").replace("/", "_").replace(":", "_").replace("'", "_").replace(".","_") + "linechart";
         styles.add("." + teststyle + " {  background-image: url(" + defaultLineChartImgUrl + " );background-position:center; background-repeat: no-repeat; }");
         defaultLineChartContainer.setStyleName(teststyle);
         orderedLineChartContainer.setVisible(false);

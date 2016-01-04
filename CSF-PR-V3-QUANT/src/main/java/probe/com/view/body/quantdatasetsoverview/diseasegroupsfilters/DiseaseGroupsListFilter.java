@@ -155,7 +155,7 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
     public DiseaseGroupsListFilter(final QuantCentralManager Quant_Central_Manager) {
         this.Quant_Central_Manager = Quant_Central_Manager;
         this.setWidth("450px");
-        this.Quant_Central_Manager.registerFilterListener(DiseaseGroupsListFilter.this);
+//        this.Quant_Central_Manager.registerFilterListener(DiseaseGroupsListFilter.this);
 
 //        this.updatePatientGroups(Quant_Central_Manager.getFilteredDatasetsList());
 //        String[] pgArr = merge(patGr1, patGr2);

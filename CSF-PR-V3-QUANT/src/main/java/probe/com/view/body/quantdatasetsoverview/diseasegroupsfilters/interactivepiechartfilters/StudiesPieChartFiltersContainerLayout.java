@@ -5,7 +5,6 @@
  */
 package probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.interactivepiechartfilters;
 
-import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.FileDownloader;
 import com.vaadin.server.Page;
 import com.vaadin.server.StreamResource;
@@ -13,7 +12,6 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -27,7 +25,6 @@ import org.jfree.chart.JFreeChart;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.selectionmanager.QuantCentralManager;
-import probe.com.selectionmanager.StudiesFilterManager;
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.PopupInteractiveDSFiltersLayout;
 
 /**
@@ -70,7 +67,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
             String filterId = "";
             if (activeFilters[x]) {
                 Map<String, List<Integer>> dsIndexesMap = new HashMap<String, List<Integer>>();
-                List<Object> valueSet = new ArrayList<Object>();
+//                List<Object> valueSet = new ArrayList<Object>();
                 switch (x) {
                     case 0:
 //                        filterId = "identifiedProteinsNumber";
@@ -142,7 +139,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
                             list.add(pb.getDsKey());
                             dsIndexesMap.put(pb.getYear() + "", list);
                             int value = pb.getYear();
-                            valueSet.add(value);
+//                            valueSet.add(value);
                         }
                         break;
                     case 5:
@@ -163,7 +160,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
                             list.add(pb.getDsKey());
                             dsIndexesMap.put(pb.getTypeOfStudy(), list);
                             String value = pb.getTypeOfStudy();
-                            valueSet.add(value);
+//                            valueSet.add(value);
                         }
                         break;
                     case 6:
@@ -184,7 +181,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
                             list.add(pb.getDsKey());
                             dsIndexesMap.put(pb.getSampleType(), list);
                             String value = pb.getSampleType();
-                            valueSet.add(value);
+//                            valueSet.add(value);
                         }
                         break;
                     case 7:
@@ -206,7 +203,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
                             dsIndexesMap.put(pb.getSampleMatching(), list);
 
                             String value = pb.getSampleMatching();
-                            valueSet.add(value);
+//                            valueSet.add(value);
                         }
                         break;
                     case 8:
@@ -227,7 +224,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
                             List<Integer> list = dsIndexesMap.get(value);
                             list.add(pb.getDsKey());
                             dsIndexesMap.put(value, list);
-                            valueSet.add(value);
+//                            valueSet.add(value);
                         }
                         break;
                     case 9:
@@ -250,7 +247,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
                             List<Integer> list = dsIndexesMap.get(pb.getAnalyticalApproach());
                             list.add(pb.getDsKey());
                             dsIndexesMap.put(value, list);
-                            valueSet.add(value);
+//                            valueSet.add(value);
                         }
                         break;
                     case 10:
@@ -272,7 +269,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
                             List<Integer> list = dsIndexesMap.get(value);
                             list.add(pb.getDsKey());
                             dsIndexesMap.put(value, list);
-                            valueSet.add(value);
+//                            valueSet.add(value);
                         }
                         break;
                     case 11:
@@ -294,7 +291,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
                             List<Integer> list = dsIndexesMap.get(value);
                             list.add(pb.getDsKey());
                             dsIndexesMap.put(value, list);
-                            valueSet.add(value);
+//                            valueSet.add(value);
                         }
                         break;
 
@@ -339,7 +336,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
                             List<Integer> list = dsIndexesMap.get(value);
                             list.add(pb.getDsKey());
                             dsIndexesMap.put(value, list);
-                            valueSet.add(value);
+//                            valueSet.add(value);
                         }
                         break;
                     case 14:
@@ -426,7 +423,7 @@ public class StudiesPieChartFiltersContainerLayout extends GridLayout {
 //        
         Button unselectAllBtn = new Button("Clear");
         unselectAllBtn.setPrimaryStyleName("resetbtn");
-          unselectAllBtn.setWidth("50px");
+        unselectAllBtn.setWidth("50px");
         unselectAllBtn.setHeight("24px");
         btnLayout.addComponent(unselectAllBtn);
         btnLayout.setComponentAlignment(unselectAllBtn, Alignment.TOP_LEFT);

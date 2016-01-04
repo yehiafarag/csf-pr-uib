@@ -134,7 +134,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         ProteinScatterPlotContainer.setHeight(150 + "px");
 
         String styleString = "_" + cp.getProteinAccssionNumber()+"_" + cp.getComparison().getComparisonHeader();
-        teststyle = styleString.replace(" ", "_").replace("+", "_").replace(")", "_").replace("(", "_").toLowerCase().replace(" ", "_").replace(")", "_").replace("(", "_").toLowerCase().replace("+", "_").replace("/", "_") + "_scatterplot";
+        teststyle = styleString.replace(" ", "_").replace("+", "_").replace(")", "_").replace("(", "_").toLowerCase().replace(" ", "_").replace(")", "_").replace("(", "_").toLowerCase().replace("+", "_").replace("/", "_").replace(".","_") + "_scatterplot";
         styles.add("." + teststyle + " {  background-image: url(" + defaultScatterPlottImgUrl + " );background-position:center; background-repeat: no-repeat; }");
         ProteinScatterPlotContainer.setStyleName(teststyle);
         ProteinScatterPlotContainer.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
@@ -301,6 +301,8 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         dataset.addSeries(downSerII);
         dataset.addSeries(notSerII);
         dataset.addSeries(upSerII);
+//        if((downSerII.getItemCount()+notSerII.getItemCount()+upSerII.getItemCount()+downSer.getItemCount()+notSer.getItemCount()+upSer.getItemCount())==0)
+//            return;
 //        dataset.addSeries(plusSeries);
         final String[] labels = new String[]{" ", ("Low (" + cp.getSignificantDown() + ")"), " ", ("Stable (" + cp.getNotProvided() + ")"), " ", ("High (" + cp.getSignificantUp() + ")"), ""};
         final Color[] labelsColor = new Color[]{Color.LIGHT_GRAY, new Color(80, 183, 71), Color.LIGHT_GRAY, new Color(1, 141, 244), Color.LIGHT_GRAY, Color.RED, Color.LIGHT_GRAY};

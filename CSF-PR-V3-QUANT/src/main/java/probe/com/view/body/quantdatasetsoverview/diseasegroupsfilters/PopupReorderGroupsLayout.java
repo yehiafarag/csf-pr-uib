@@ -12,6 +12,7 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.window.WindowMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -22,6 +23,7 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import probe.com.model.beans.quant.QuantDatasetObject;
+import probe.com.selectionmanager.CSFFilter;
 import probe.com.selectionmanager.CSFFilterSelection;
 import probe.com.selectionmanager.QuantCentralManager;
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.popupreordergroups.SortableLayoutContainer;
@@ -32,7 +34,7 @@ import probe.com.view.core.ToggleBtn;
  *
  * @author Yehia Farag
  */
-public class PopupReorderGroupsLayout extends VerticalLayout implements LayoutEvents.LayoutClickListener {
+public class PopupReorderGroupsLayout extends Button implements CSFFilter, ClickListener {
 
     private final Window popupWindow;
     private final QuantCentralManager Quant_Central_Manager;
@@ -42,11 +44,37 @@ public class PopupReorderGroupsLayout extends VerticalLayout implements LayoutEv
     private DiseaseGroup[] patientsGroupArr;
     private LinkedHashSet<Integer> studiesIndexes;
 
+    @Override
+    public void selectionChanged(String type) {
+        if(type.equalsIgnoreCase("Pie_Chart_Selection")){
+        rowHeaders = Quant_Central_Manager.getSelectedHeatMapRows();
+         sortableDiseaseGroupI.initLists(rowHeaders);    
+        }
+        else if(type.equalsIgnoreCase("Reset_Disease_Groups_Level")){
+        rowHeaders = Quant_Central_Manager.getSelectedHeatMapRows();
+        sortableDiseaseGroupI.initLists(rowHeaders);
+        
+        
+        }
+    }
+
+    @Override
+    public String getFilterId() {
+
+        return this.getClass().getName();
+    }
+
+    @Override
+    public void removeFilterValue(String value) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public PopupReorderGroupsLayout(QuantCentralManager Quant_Central_Manager) {
-        this.setStyleName("reordergroupsbtn");
-        this.setDescription("Reorder All Disease Groups Comparisons");
+        super("Sort and Select");
+        this.setStyleName(Reindeer.BUTTON_LINK);
+        this.setDescription("Reorder And Select Disease Groups");
         this.Quant_Central_Manager = Quant_Central_Manager;
-        this.addLayoutClickListener(PopupReorderGroupsLayout.this);
+        this.addClickListener(PopupReorderGroupsLayout.this);
         this.popupBodyLayout = new VerticalLayout();
         VerticalLayout windowLayout = new VerticalLayout();
         popupWindow = new Window() {
@@ -133,6 +161,7 @@ public class PopupReorderGroupsLayout extends VerticalLayout implements LayoutEv
         this.sortableDiseaseGroupI = new SortableLayoutContainer((w - 50), subH, " Disease Group A", rowHeaders);
         this.sortableDiseaseGroupII = new SortableLayoutContainer((w - 50), subH, " Disease Group B", colHeaders);
         this.initPopupBody((w - 50));
+        this.Quant_Central_Manager.registerFilterListener(PopupReorderGroupsLayout.this);
 
     }
 
@@ -146,13 +175,15 @@ public class PopupReorderGroupsLayout extends VerticalLayout implements LayoutEv
                 indexes[i] = id;
                 i++;
             }
-            Quant_Central_Manager.applyFilters(new CSFFilterSelection("Disease_Groups_Level", indexes, "", new HashSet<String>()));
+            Quant_Central_Manager.applyFilters(new CSFFilterSelection("Reorder_Selection", indexes, "", new HashSet<String>()));
         }
         Quant_Central_Manager.setHeatMapLevelSelection(rowHeaders, colHeaders, patientsGroupArr);
     }
 
+    
+
     @Override
-    public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+    public void buttonClick(ClickEvent event) {
         colHeaders = Quant_Central_Manager.getSelectedHeatMapRows();
         rowHeaders = Quant_Central_Manager.getSelectedHeatMapRows();
         patientsGroupArr = Quant_Central_Manager.getDiseaseGroupsArray();

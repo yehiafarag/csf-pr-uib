@@ -1,5 +1,8 @@
 package probe.com.view.body.quantdatasetsoverview;
 
+import com.ejt.vaadin.sizereporter.ComponentResizeEvent;
+import com.ejt.vaadin.sizereporter.ComponentResizeListener;
+import com.ejt.vaadin.sizereporter.SizeReporter;
 import com.vaadin.addon.tableexport.CsvExport;
 import com.vaadin.addon.tableexport.ExcelExport;
 import com.vaadin.data.Item;
@@ -19,6 +22,7 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.util.ArrayList;
@@ -132,6 +136,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
         }
 
     }
+    private int resizedCounter = 0;
 
     /**
      *
@@ -147,6 +152,17 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
         this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.setMargin(false);
         this.setSpacing(true);
+        SizeReporter sizeReporter = new SizeReporter(this);
+        sizeReporter.addResizeListener(new ComponentResizeListener() {
+            @Override
+            public void sizeChanged(ComponentResizeEvent event) {
+                if (resizedCounter == 1) {
+                    UI.getCurrent().scrollIntoView(QuantProteinsComparisonsContainer.this);
+                }
+
+                resizedCounter++;
+            }
+        });
 
         this.noProtLabel.setContentMode(ContentMode.HTML);
         noProtLabel.setWidth("400px");
@@ -682,16 +698,15 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
                 isoProtKey = (accession.split("-")[0]);
             } else {
                 isoProtKey = accession;
-
             }
             if (!isoProtMap.containsKey(isoProtKey)) {
-                
+
                 isoProtMap.put(isoProtKey, new LinkedHashSet<Integer>());
-            } 
+            }
             Set<Integer> set = isoProtMap.get(isoProtKey);
-            set.add(0);
             set.add((Integer) itemId);
             isoProtMap.put(isoProtKey, set);
+
         }
         if (groupsComparisonProteinsTable.getItemIds().size() == 1) {
             Object itemId = groupsComparisonProteinsTable.getItemIds().toArray()[0];
@@ -710,7 +725,6 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
      * @return list of found quant proteins
      */
     private void filterTable(Set<String> accessions, QuantDiseaseGroupsComparison[] comparisonProteinsArray, String sortCompColumnName, boolean hideUnique) {
-
         unSelectAll();
         isoProtMap.clear();
         lastSelectedAccessionToIdMap.clear();
@@ -805,8 +819,8 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
         Set<Object> localSelectedProtId = new HashSet<Object>();
 
         groupsComparisonProteinsTable.addValueChangeListener(QuantProteinsComparisonsContainer.this);
-        
-         for (Object itemId : groupsComparisonProteinsTable.getItemIds()) {
+
+        for (Object itemId : groupsComparisonProteinsTable.getItemIds()) {
 
             final Item item = groupsComparisonProteinsTable.getItem(itemId);
             String accession = item.getItemProperty("Accession").getValue().toString();
@@ -818,15 +832,15 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
 
             }
             if (!isoProtMap.containsKey(isoProtKey)) {
-                
+
                 isoProtMap.put(isoProtKey, new LinkedHashSet<Integer>());
-            } 
+            }
             Set<Integer> set = isoProtMap.get(isoProtKey);
             set.add(0);
             set.add((Integer) itemId);
             isoProtMap.put(isoProtKey, set);
         }
-         if (groupsComparisonProteinsTable.getItemIds().size() == 1) {
+        if (groupsComparisonProteinsTable.getItemIds().size() == 1) {
             Object itemId = groupsComparisonProteinsTable.getItemIds().toArray()[0];
             localSelectedProtId.add(itemId);
             groupsComparisonProteinsTable.setValue(localSelectedProtId);
@@ -939,6 +953,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
      * un select all data in the visualized quant comparison table
      */
     private void unSelectAll() {
+        lastSelectedProteinsMap.clear();
         groupsComparisonProteinsTable.setValue(null);
     }
     private final LinkedHashMap<String, DiseaseGroupsComparisonsProteinLayout[]> lastSelectedProteinsMap = new LinkedHashMap<String, DiseaseGroupsComparisonsProteinLayout[]>();
@@ -947,7 +962,6 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
 
     @Override
     public void valueChange(Property.ValueChangeEvent event) {
-
         if (!lastSelectedProts.isEmpty()) {
             for (CustomExternalLink uniprot : lastSelectedProts.values()) {
                 uniprot.rePaintLable("black");
@@ -960,10 +974,6 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
             for (Object i : ((Set) groupsComparisonProteinsTable.getValue())) {
 
                 final Item item = groupsComparisonProteinsTable.getItem(i);
-//                if (item == null) {
-//                    continue;
-//                }
-                System.out.println("at i " + i + "   item  " + item);
                 String acc = item.getItemProperty("Accession").getValue().toString();
                 if (acc.contains("-")) {
                     acc = acc.split("-")[0];
@@ -972,7 +982,6 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
                 proteinskeys.addAll(isoProtMap.get(acc));
             }
             groupsComparisonProteinsTable.setValue(proteinskeys);
-            System.out.println("update the table");
             proteinskeys.addAll((Set) groupsComparisonProteinsTable.getValue());
             for (int proteinskey : proteinskeys) {
                 final Item item = groupsComparisonProteinsTable.getItem(proteinskey);

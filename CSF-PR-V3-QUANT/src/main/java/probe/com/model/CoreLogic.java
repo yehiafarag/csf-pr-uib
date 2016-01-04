@@ -1361,7 +1361,7 @@ public class CoreLogic implements Serializable {
                         comProt.addUp((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
                     } else if (quant.getStringFCValue().equalsIgnoreCase("Not Provided")) {
                         comProt.addNotProvided((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
-                    } else if (quant.getStringFCValue().equalsIgnoreCase("Not Regulated")) {
+                    } else if (quant.getStringFCValue().equalsIgnoreCase("No change")) {
                         comProt.addNotProvided((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
                     }
 
@@ -1373,7 +1373,7 @@ public class CoreLogic implements Serializable {
                         comProt.addDown((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
                     } else if (quant.getStringFCValue().equalsIgnoreCase("Not Provided")) {
                         comProt.addNotProvided((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
-                    } else if (quant.getStringFCValue().equalsIgnoreCase("Not Regulated")) {
+                    } else if (quant.getStringFCValue().equalsIgnoreCase("No change")) {
                         comProt.addNotProvided((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
                     }
 

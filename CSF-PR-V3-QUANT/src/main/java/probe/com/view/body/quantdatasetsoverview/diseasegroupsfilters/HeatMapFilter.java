@@ -32,7 +32,7 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
             selfselected = false;
             return;
         }
-        if (type.equalsIgnoreCase("HeatMap_Update_level")) {
+        if (type.equalsIgnoreCase("HeatMap_Update_level")|| type.equalsIgnoreCase("Pie_Chart_Selection")) {
             this.updateHeatmap(Quant_Central_Manager.getSelectedHeatMapRows(), Quant_Central_Manager.getSelectedHeatMapColumns(), Quant_Central_Manager.getDiseaseGroupsArray());
         } else if (type.equalsIgnoreCase("Comparison_Selection")) {
             this.updateCellSelection(Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList());
@@ -117,7 +117,7 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
         this.calcHeatMapMatrix(rowheaders, colheaders, patientsGroupArr);
         Map<Integer, QuantDatasetObject> fullDsMap = Quant_Central_Manager.getFullQuantDatasetMap();
         heatMap.updateHeatMap(rowheaders, colheaders, values, maxDatasetNumber, diseaseFullNameMap, fullDsMap);
-        rowheaders.addAll(colheaders);
+//        rowheaders.addAll(colheaders);
 
     }
 

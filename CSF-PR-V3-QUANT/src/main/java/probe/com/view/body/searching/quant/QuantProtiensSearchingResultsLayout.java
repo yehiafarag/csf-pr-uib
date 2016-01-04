@@ -80,6 +80,7 @@ public class QuantProtiensSearchingResultsLayout extends VerticalLayout {
             public void sizeChanged(ComponentResizeEvent event) {
 
                 if (resizedCounter == 3) {
+                    System.out.println("at -------------------- scroolll to top 500 ");
                     UI.getCurrent().setScrollTop(1000);
                 }
 

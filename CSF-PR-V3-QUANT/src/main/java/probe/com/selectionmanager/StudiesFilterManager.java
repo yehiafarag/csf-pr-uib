@@ -7,8 +7,8 @@ package probe.com.selectionmanager;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -45,14 +45,21 @@ public class StudiesFilterManager implements Serializable {
     private final LinkedHashSet<String> selectedHeatMapRows = new LinkedHashSet<String>();
     private final LinkedHashSet<String> selectedHeatMapColumns = new LinkedHashSet<String>();
     private String[] diseaseGroupsI, diseaseGroupsII;
-    private DiseaseGroup[] diseaseGroupsArray;
+    private final Map<Integer, DiseaseGroup> fullDiseaseGroupMap;
+    private final Map<Integer, DiseaseGroup> selectedDiseaseGroupMap;
 
     public boolean isNoSerum() {
         return noSerum;
     }
 
     public DiseaseGroup[] getDiseaseGroupsArray() {
-        return diseaseGroupsArray;
+        DiseaseGroup[] diseaseGroupArr = new DiseaseGroup[selectedDiseaseGroupMap.size()];
+        int indexer = 0;
+        for (DiseaseGroup dg : selectedDiseaseGroupMap.values()) {
+            
+            diseaseGroupArr[indexer++] = dg;
+        }
+        return diseaseGroupArr;
     }
 
     public void setNoSerum(boolean noSerum) {
@@ -71,6 +78,9 @@ public class StudiesFilterManager implements Serializable {
 
     public StudiesFilterManager(Map<String, QuantDatasetInitialInformationObject> quantDatasetListObject, Map<String, boolean[]> activeFilterMap) {
 
+        this.fullDiseaseGroupMap = new LinkedHashMap<Integer, DiseaseGroup>();
+        this.selectedDiseaseGroupMap = new LinkedHashMap<Integer, DiseaseGroup>();
+        
         this.quantDatasetListObject = quantDatasetListObject;
         String key = "Multiple Sclerosis";//quantDatasetListObject.keySet().iterator().next();
 
@@ -142,7 +152,7 @@ public class StudiesFilterManager implements Serializable {
 
         diseaseGroupsI = new String[quantDSArr.size()];
         diseaseGroupsII = new String[quantDSArr.size()];
-        diseaseGroupsArray = new DiseaseGroup[quantDSArr.size()];
+        fullDiseaseGroupMap.clear();
         int i = 0;
         for (QuantDatasetObject ds : quantDSArr.values()) {
             if (ds == null) {
@@ -176,13 +186,17 @@ public class StudiesFilterManager implements Serializable {
             }
             label2 = pgII;
             pg.setPatientsGroupIILabel(label2);
-            diseaseGroupsArray[i] = pg;
+            fullDiseaseGroupMap.put(ds.getDsKey(), pg);
+           
+//            fullDiseaseGroupMap[i] = pg;
             diseaseGroupsI[i] = label1;
             diseaseGroupsII[i] = label2;
-            pg.setQuantDatasetIndex(i);
-            pg.setOriginalDatasetIndex(ds.getDsKey());
+            pg.setQuantDatasetIndex(ds.getDsKey());
+            pg.setOriginalDatasetIndex(ds.getDsKey()); 
             i++;
         }
+        selectedDiseaseGroupMap.clear();
+        selectedDiseaseGroupMap.putAll(fullDiseaseGroupMap);
 
     }
 
@@ -219,9 +233,45 @@ public class StudiesFilterManager implements Serializable {
             return;
         }
         filteredQuantDatasetArr.clear();
+        Set<String> tColLab = new HashSet<String>();
+        Set<String> tRowLab = new HashSet<String>();
+        selectedDiseaseGroupMap.clear();
+        
         for (int i : datasetIndexes) {
-            filteredQuantDatasetArr.put(i, inUsefullQuantDatasetMap.get(i));
+            
+            QuantDatasetObject quantDS = inUsefullQuantDatasetMap.get(i);
+            filteredQuantDatasetArr.put(i, quantDS);
+            
+            if (fullDiseaseGroupMap.containsKey(i)) {
+                DiseaseGroup dg = fullDiseaseGroupMap.get(i);
+                tColLab.add(dg.getPatientsSubGroupI());
+                tColLab.add(dg.getPatientsSubGroupII());
+                tRowLab.add(dg.getPatientsSubGroupI());
+                tRowLab.add(dg.getPatientsSubGroupII());
+                selectedDiseaseGroupMap.put(i, dg);
+            }
+
         }
+        LinkedHashSet<String> tSelectedColLab = new LinkedHashSet<String>();
+        LinkedHashSet<String> tSelectedRowLab = new LinkedHashSet<String>();
+        for (String str : selectedHeatMapRows) {
+            if (tRowLab.contains(str)) {
+                tSelectedRowLab.add(str);
+            }
+
+        }
+        for (String str : selectedHeatMapColumns) {
+            if ( tColLab.contains(str)) {
+                tSelectedColLab.add(str);
+            }
+
+        }
+       
+        selectedHeatMapColumns.clear();
+        selectedHeatMapColumns.addAll(tSelectedColLab);
+        selectedHeatMapRows.clear();
+        selectedHeatMapRows.addAll(tSelectedRowLab);
+        System.out.println("at selected rows are "+ selectedHeatMapRows);
 
     }
 
@@ -244,13 +294,13 @@ public class StudiesFilterManager implements Serializable {
     public void applyFilters(CSFFilterSelection selection) {
 
         filterSelection = selection;
-        if (selection.getType().equalsIgnoreCase("Disease_Groups_Level")) {
-
+//        if (selection.getType().equalsIgnoreCase("HeatMap_Update_level")) {
             updateFilteredDatasetList(selection.getDatasetIndexes());
             this.SelectionChanged(selection.getType());
-        }
+//        }
 
     }
+     
 
     /**
      *
@@ -356,7 +406,12 @@ public class StudiesFilterManager implements Serializable {
      * @param diseaseGroupsArr
      */
     public void setHeatMapLevelSelection(LinkedHashSet<String> selectedRows, LinkedHashSet<String> selectedColumns, DiseaseGroup[] diseaseGroupsArr) {
-        this.diseaseGroupsArray = diseaseGroupsArr;
+//        this.fullDiseaseGroupMap = diseaseGroupsArr;
+        fullDiseaseGroupMap.clear();
+//        int indexer = 0;
+        for (DiseaseGroup dg : diseaseGroupsArr) {
+            fullDiseaseGroupMap.put(dg.getQuantDatasetIndex(), dg);
+        }
         this.selectedHeatMapRows.clear();
         this.selectedHeatMapRows.addAll(selectedRows);
         this.selectedHeatMapColumns.clear();
@@ -391,7 +446,6 @@ public class StudiesFilterManager implements Serializable {
 //    public DiseaseGroup[] getDiseaseGroupsArr() {
 //        return diseaseGroupsArr;
 //    }
-
     public Set<JFreeChart> getStudiesOverviewPieChart() {
         return studiesOverviewPieChart;
     }

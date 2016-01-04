@@ -276,6 +276,7 @@ public class QuantCentralManager implements Serializable {
         Studies_Filter_Manager.applyFilters(selection);
 
     }
+    
 
     /**
      *

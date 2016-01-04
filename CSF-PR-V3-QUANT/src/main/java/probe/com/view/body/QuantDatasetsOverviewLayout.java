@@ -31,7 +31,7 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
 //    private final StudiesSelectionManager Studies_Selection_Manager;
     private final QuantCentralManager Quant_Central_Manager;
     private final QuantProteinsTabsheetContainerLayout proteinsLayout;
-    private int resizedCounter = 0;
+    
 
     /**
      *
@@ -84,18 +84,7 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
         };
         proteinsLevelLayout.setVisability(true);
         this.addComponent(proteinsLevelLayout);
-        SizeReporter sizeReporter = new SizeReporter(proteinsLevelLayout);
-        sizeReporter.addResizeListener(new ComponentResizeListener() {
-            @Override
-            public void sizeChanged(ComponentResizeEvent event) {
-
-                if (resizedCounter == 3) {
-                    UI.getCurrent().setScrollTop(1000);
-                }
-
-                resizedCounter++;
-            }
-        });
+      
 //        proteinsLevelLayout.setVisability(false);
 
     }

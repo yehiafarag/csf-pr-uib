@@ -31,11 +31,11 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
     @Override
     public void selectionChanged(String type) {
 
-        if (type.equalsIgnoreCase("Disease_Groups_Level")) {
-            if (selfselection) {
-                selfselection = false;
-                return;
-            }
+        if (type.equalsIgnoreCase("Reorder_Selection")) {
+//            if (selfselection) {
+//                selfselection = false;
+//                return;
+//            }
             externalSelectionChanged = true;
             selectedDsIds.clear();
             for (QuantDatasetObject qDs : Quant_Central_Manager.getFilteredQuantDatasetArr().values()) {
@@ -55,6 +55,7 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
             unselectAll();
 
         }
+        
 
     }
     private boolean selfselection;
@@ -77,7 +78,8 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
         for (int i = 0; i < selectedDsIds.size(); i++) {
             dsIds[i] = (Integer) selectedDsIds.toArray()[i];
         }
-        Quant_Central_Manager.applyFilters(new CSFFilterSelection("Disease_Groups_Level", dsIds, Filter_ID, null));
+        System.out.println("at Filter_ID "+ selectedDsIds);
+        Quant_Central_Manager.applyFilters(new CSFFilterSelection("Pie_Chart_Selection", dsIds, Filter_ID, null));
 
     }
 
@@ -173,8 +175,17 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
      *
      */
     public void resetPieChartCharts() {
+//        selectedDsIds.clear();
+//            for (QuantDatasetObject qDs : Quant_Central_Manager.getFilteredQuantDatasetArr().values()) {
+//                if (qDs == null) {
+//                    continue;
+//                }
+//                selectedDsIds.add(qDs.getDsKey());
+//            }
+//            System.out.println("at externalSelectionChanged "+externalSelectionChanged);
 
         if (externalSelectionChanged) {
+             
             externalSelectionChanged = false;
             for (JfreeDivaPieChartFilter ifilter : registeredFilters) {
                 ifilter.resetFilterWithUpdatedFilters(selectedDsIds, true);
