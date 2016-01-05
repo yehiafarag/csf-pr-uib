@@ -268,11 +268,12 @@
     color:#666;    
 }
 .valuelabel span{
-    font-family: Verdana;    
+    font-family: Verdana;
     font-size:11px;
     /*    text-transform: inherit;*/
     text-decoration: none;
-    color:gray;    
+    width: 100%;
+    color:gray;
 }
 .redvaluelabel span{
     font-size:11px;
@@ -297,11 +298,14 @@
 }
 .valuelabel textArea{
     font-size:12px;
-    font-family: Verdana;    
+    font-family: Verdana;
     background-color:  white;
     border:none;
-    color:gray;    
+    color:gray;
     resize: none;
+    width: 100%;
+    height: 30px;
+    height:30px;
     /*text-transform: uppercase;*/
 }
 .valuelink  textArea{
@@ -2010,3 +2014,22 @@ resetlabelbtn p{
     border:none !important;
 }
 
+.v-link.v-widget.valuelabel.v-link-valuelabel{
+
+    width:100%;
+}
+.v-popupview-popup.v-popupview-popup-tippopup{
+    background:whitesmoke;
+    border:1px solid gray;
+    border-radius:5px;    
+    padding: 20px !important;
+    margin-top:-60px !important;
+
+
+}
+.v-popupview-popup.v-popupview-popup-tippopup font{
+    height:20px;
+    font-size:13px;
+    font-weight:bold;
+
+}

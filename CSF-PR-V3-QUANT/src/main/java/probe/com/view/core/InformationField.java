@@ -40,14 +40,15 @@ public class InformationField extends VerticalLayout {
 
     /**
      *
-     * @param stringValue
+     * @param object 
      * @param urlAddress
      */
     public void setValue(Object object, String urlAddress) {
         if (object instanceof Number) {
-            valueLabel.setCaption("<p style='text-align: right ;width: 100px;  float: right; line-height: 1px;'>"+object+"</p>");
+            valueLabel.setCaption("<p style='text-align: right ;width: 100px;   line-height: 1px;'>"+object+"</p>");
             valueLabel.setCaptionAsHtml(true);
             valueLabel.setStyleName("valuelabel");
+//            valueLabel.setWidth("100%");
             
         } else {
             String stringValue = object.toString();
@@ -78,7 +79,7 @@ public class InformationField extends VerticalLayout {
             }
 
             if (stringValue.toCharArray().length > 25) {
-                valueLabel.setCaption("<textarea rows='3' cols='25' readonly>" + stringValue + "</textarea>");
+                valueLabel.setCaption("<textarea rows='3'  readonly>" + stringValue + "</textarea>");
                 valueLabel.setCaptionAsHtml(true);
 //            this.setHeight("100px");
             } else {

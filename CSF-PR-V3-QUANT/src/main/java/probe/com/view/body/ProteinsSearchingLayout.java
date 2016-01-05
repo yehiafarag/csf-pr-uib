@@ -16,7 +16,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +27,7 @@ import probe.com.model.beans.quant.QuantProtein;
 import probe.com.view.body.searching.SearchingUnitLayout;
 import probe.com.view.body.searching.id.IdDataSearchingTabLayout;
 import probe.com.view.body.searching.quant.QuantDataSearchingTabLayout;
+import probe.com.view.core.CustomErrorLabel;
 import probe.com.view.core.HideOnClickLayout;
 
 /**
@@ -44,6 +44,7 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
     private final LayoutEvents.LayoutClickListener idLayoutListener, quantLayoutListener;
     private List<QuantProtein> searchQuantificationProtList;
     private final Button quantResultsOverview, idResultsOverview;
+    private final CustomErrorLabel idSearchingErrorLabel, quantSearchingErrorLabel;
 
     /**
      *
@@ -137,10 +138,13 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
         searchingResultsTitle.setContentMode(ContentMode.HTML);
         searchingResultsOverview.addComponent(searchingResultsTitle);
 
+        HorizontalLayout idResultsOverviewContainer = new HorizontalLayout();
+        idResultsOverviewContainer.setSpacing(true);
         idResultsOverview = new Button();
         idResultsOverview.setStyleName(Reindeer.BUTTON_LINK);
         idResultsOverview.setHeight("20px");
-        searchingResultsOverview.addComponent(idResultsOverview);
+        idResultsOverviewContainer.addComponent(idResultsOverview);
+        searchingResultsOverview.addComponent(idResultsOverviewContainer);
 
         idResultsOverview.addClickListener(new Button.ClickListener() {
 
@@ -150,11 +154,16 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
                 idProteinsDataLayoutContainer.setVisability(true);
             }
         });
+        idSearchingErrorLabel = new CustomErrorLabel();
+        idResultsOverviewContainer.addComponent(idSearchingErrorLabel);
 
+        HorizontalLayout quantResultsOverviewContainer = new HorizontalLayout();
+        quantResultsOverviewContainer.setSpacing(true);
         quantResultsOverview = new Button();
         quantResultsOverview.setStyleName(Reindeer.BUTTON_LINK);
         quantResultsOverview.setHeight("20px");
-        searchingResultsOverview.addComponent(quantResultsOverview);
+        searchingResultsOverview.addComponent(quantResultsOverviewContainer);
+        quantResultsOverviewContainer.addComponent(quantResultsOverview);
 
         quantResultsOverview.addClickListener(new Button.ClickListener() {
 
@@ -164,6 +173,8 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
                 idProteinsDataLayoutContainer.setVisability(false);
             }
         });
+        quantSearchingErrorLabel = new CustomErrorLabel();
+        quantResultsOverviewContainer.addComponent(quantSearchingErrorLabel);
 
         VerticalLayout searchingResultsLayout = new VerticalLayout();
         searchingResultsLayout.setMargin(new MarginInfo(true, false, false, false));
@@ -221,12 +232,13 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
             //searching id data
             String idNotFound;
             String defaultText = query.getSearchKeyWords();
+
             defaultText = defaultText.replace(",", "\n").replace(" ", "").trim();
             Set<String> filterKeywordSet = new LinkedHashSet<String>();
             filterKeywordSet.addAll(Arrays.asList(defaultText.split("\n")));
             defaultText = "";
             for (String str : filterKeywordSet) {
-                defaultText += str;
+                defaultText += str + "\n";
             }
             searchingUnitLayout.setSearchingFieldValue(defaultText);
             query.setSearchKeyWords(defaultText);
@@ -235,6 +247,7 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
             Map<String, Integer> idHitsList = handler.getIdHitsList(searchIdentificationProtList, query.getSearchBy(), query.getSearchKeyWords());
             initProteinsIdDataLayout(idHitsList, query.getSearchBy(), searchIdentificationProtList.size(), query.getSearchKeyWords());
 
+            idSearchingErrorLabel.updateErrot(idNotFound);
             //searching quant data
             query.setSearchDataType("Quantification Data");
 
@@ -244,16 +257,17 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
             if (quantHitsList != null && searchQuantificationProtList != null) {
                 initProteinsQuantDataLayout(quantHitsList, query.getSearchBy(), searchQuantificationProtList.size(), query.getSearchKeyWords());
             }
-            //not found error message
-            String notFound = idNotFound.toUpperCase() + "," + quantNotFound.toUpperCase();
-            Set<String> notFoundSet = new HashSet<String>();
-            for (String str : notFound.split(",")) {
-                if (idNotFound.toUpperCase().contains(str.trim()) && quantNotFound.toUpperCase().contains(str.trim())) {
-                    notFoundSet.add(str);
-                }
-            }
+            quantSearchingErrorLabel.updateErrot(quantNotFound);
 
-            initializeNotFoundMessage(notFoundSet.toString().replace("[", "").replace("]", ""));
+            //not found error message
+//            String notFound = idNotFound.toUpperCase() + "," + quantNotFound.toUpperCase();
+//            Set<String> notFoundSet = new HashSet<String>();
+//            for (String str : notFound.split(",")) {
+//                if (idNotFound.toUpperCase().contains(str.trim()) && quantNotFound.toUpperCase().contains(str.trim())) {
+//                    notFoundSet.add(str);
+//                }
+//            }
+//            initializeNotFoundMessage(notFoundSet.toString().replace("[", "").replace("]", ""));
         }
     }
 
@@ -270,7 +284,8 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
         if (idHitsList == null || idHitsList.isEmpty()) {
             idProteinsDataLayout.setVisible(false);
             idProteinsDataLayoutContainer.setVisible(false);
-            idResultsOverview.setVisible(false);
+//            idResultsOverview.setVisible(false);
+            idResultsOverview.setCaption("Proteins Identification Data");
             return;
         }
         idResultsOverview.setCaption("Proteins Identification Data ( #Protein Groups " + idHitsList.size() + " | #Datasets " + totalProtNum + " )");
@@ -365,7 +380,8 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
         if (quantHitsList == null || quantHitsList.isEmpty()) {
             quantProteinsDataLayout.setVisible(false);
             quantProteinsDataLayoutContainer.setVisible(false);
-            quantResultsOverview.setVisible(false);
+//            quantResultsOverview.setVisible(false);
+            quantResultsOverview.setCaption("Proteins Quantitative Data ");
             return;
         }
         quantResultsOverview.setCaption("Proteins Quantitative Data ( #Protein Groups " + quantHitsList.size() + " | #Datasets " + totalProtNum + " )");
@@ -446,15 +462,14 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
         }
     }
 
-    /**
-     * no searching results found
-     *
-     * @param notFound
-     */
-    private void initializeNotFoundMessage(String notFound) {
-        searchingUnitLayout.updateErrorLabelIIValue(notFound);
-    }
-
+//    /**
+//     * no searching results found
+//     *
+//     * @param notFound
+//     */
+//    private void initializeNotFoundMessage(String notFound) {
+//        searchingUnitLayout.updateErrorLabelIIValue(notFound);
+//    }
     private HorizontalLayout generateLabel(String type, String acc, String otherProt, String name, String peptidesSeq, int number) {
         HorizontalLayout labelLayout = new HorizontalLayout();
         labelLayout.setData(name);

@@ -1,5 +1,8 @@
 package probe.com.view.body.quantdatasetsoverview;
 
+import com.ejt.vaadin.sizereporter.ComponentResizeEvent;
+import com.ejt.vaadin.sizereporter.ComponentResizeListener;
+import com.ejt.vaadin.sizereporter.SizeReporter;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.Page;
@@ -11,6 +14,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TabSheet.Tab;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.util.HashMap;
@@ -146,14 +150,9 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
             } else {
 
             }
-
         } else {
-//            redrawCharts();
             selfSelection = false;
         }
-
-//        for(int x=0;x<proteinsTabsheet.getComponentCount();x++){
-//        }
     }
 
     /**
@@ -195,6 +194,18 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
         noProtLabel.setHeight("40px");
         this.addComponent(noProtLabel);
         this.setComponentAlignment(noProtLabel, Alignment.TOP_LEFT);
+        final SizeReporter sizeReporter = new SizeReporter(QuantProteinsTabsheetContainerLayout.this);
+         sizeReporter.addResizeListener(new ComponentResizeListener() {
+             int resizedCounter;
+            @Override
+            public void sizeChanged(ComponentResizeEvent event) {
+                if (resizedCounter == 2) {
+                    UI.getCurrent().scrollIntoView(QuantProteinsTabsheetContainerLayout.this);
+                    sizeReporter.removeResizeListener(this);
+                }
+                resizedCounter++;
+            }
+        });
 
 //        proteinsTabsheet = new TabSheet() {
 //

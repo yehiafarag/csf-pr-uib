@@ -576,10 +576,10 @@ public class CoreLogic implements Serializable {
         tUsedKeys.addAll(usedKeys);
         for (QuantProtein pb : quantProteinstList) {
             if (searchBy.equals("Protein Accession")) {
-                if (usedKeys.contains(pb.getUniprotAccession())) {
-                    usedKeys.remove(pb.getUniprotAccession());
-                } else if (usedKeys.contains(pb.getPublicationAccNumber())) {
-                    usedKeys.remove(pb.getPublicationAccNumber());
+                if (usedKeys.contains(pb.getUniprotAccession().toUpperCase())) {
+                    usedKeys.remove(pb.getUniprotAccession().toUpperCase());
+                } else if (usedKeys.contains(pb.getPublicationAccNumber().toUpperCase())) {
+                    usedKeys.remove(pb.getPublicationAccNumber().toUpperCase());
                 }
 
                 if (usedKeys.isEmpty()) {
@@ -587,10 +587,10 @@ public class CoreLogic implements Serializable {
                 }
             } else if (searchBy.equals("Protein Name")) {
                 for (String key : tUsedKeys) {
-                    if (pb.getUniprotProteinName().contains(key.toUpperCase())) {
-                        usedKeys.remove(key);
-                    } else if (pb.getPublicationProteinName().contains(key.toUpperCase())) {
-                        usedKeys.remove(key);
+                    if (pb.getUniprotProteinName().toUpperCase().contains(key.toUpperCase())) {
+                        usedKeys.remove(key.toUpperCase());
+                    } else if (pb.getPublicationProteinName().toUpperCase().contains(key.toUpperCase())) {
+                        usedKeys.remove(key.toUpperCase());
                     }
                     if (usedKeys.isEmpty()) {
                         return "";
@@ -709,15 +709,15 @@ public class CoreLogic implements Serializable {
         tUsedKeys.addAll(usedKeys);
         for (IdentificationProteinBean pb : identificationProteinsList.values()) {
             if (searchBy.equals("Protein Accession")) {
-                if (usedKeys.contains(pb.getAccession())) {
-                    usedKeys.remove(pb.getAccession());
+                if (usedKeys.contains(pb.getAccession().toUpperCase())) {
+                    usedKeys.remove(pb.getAccession().toUpperCase());
                 }
                 if (usedKeys.isEmpty()) {
                     return "";
                 }
             } else if (searchBy.equals("Protein Name")) {
                 for (String key : tUsedKeys) {
-                    if (pb.getDescription().contains(key.toUpperCase())) {
+                    if (pb.getDescription().toUpperCase().contains(key.toUpperCase())) {
                         usedKeys.remove(key);
                     }
                     if (usedKeys.isEmpty()) {
@@ -1278,6 +1278,7 @@ public class CoreLogic implements Serializable {
 
         Set<QuantDiseaseGroupsComparison> updatedSelectedComparisonList = new LinkedHashSet<QuantDiseaseGroupsComparison>();
         Set<QuantProtein> fullComparisonProtMap = new HashSet<QuantProtein>();
+        Set<String> cleaningList = new HashSet<String>();
 //        Map<QuantDiseaseGroupsComparison, Set<QuantProtein>> comparisonsToProtMap = new HashMap<QuantDiseaseGroupsComparison, Set<QuantProtein>>();
         Map<Integer, QuantDiseaseGroupsComparison> dsIndexToComparisonsMap = new HashMap<Integer, QuantDiseaseGroupsComparison>();
 
@@ -1472,6 +1473,7 @@ public class CoreLogic implements Serializable {
                 } else {
 
                     
+                    cleaningList.add(protAcc);
                     
                     /////for iso testing remove as soon as possible 
                     System.out.println("at major error in data dublicated keys " + ("_-_" + quant.getDsKey() + "_-_" + comProt.getProteinAccssionNumber() + "_-_"));
@@ -1540,6 +1542,20 @@ public class CoreLogic implements Serializable {
 
             comparison.setComparProtsMap(sortedcomparProtList);
             updatedSelectedComparisonList.add(comparison);
+
+        }
+         Set<QuantDiseaseGroupsComparison> updatedFilteredSelectedComparisonList = new LinkedHashSet<QuantDiseaseGroupsComparison>();
+        
+        for (QuantDiseaseGroupsComparison comparison : updatedSelectedComparisonList) {
+            for(String key2:comparison.getComparProtsMap().keySet())
+            {
+                
+            
+            }
+                
+                for (String key : cleaningList) {
+//                System.out.println("at removed key is "+ key+"   "+  comparison.getComparProtsMap().remove(key));
+            }
 
         }
         return updatedSelectedComparisonList;

@@ -271,7 +271,6 @@ public class StudiesFilterManager implements Serializable {
         selectedHeatMapColumns.addAll(tSelectedColLab);
         selectedHeatMapRows.clear();
         selectedHeatMapRows.addAll(tSelectedRowLab);
-        System.out.println("at selected rows are "+ selectedHeatMapRows);
 
     }
 

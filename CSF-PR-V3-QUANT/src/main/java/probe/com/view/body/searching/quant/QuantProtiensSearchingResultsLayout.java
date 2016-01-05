@@ -21,6 +21,7 @@ import probe.com.view.body.quantdatasetsoverview.DiseaseGroupsFiltersContainer;
 import probe.com.view.body.quantdatasetsoverview.QuantProteinsComparisonsContainer;
 import probe.com.view.core.HideOnClickLayout;
 import probe.com.view.body.quantdatasetsoverview.QuantProteinsTabsheetContainerLayout;
+import probe.com.view.core.Tips;
 
 /**
  * This is the studies layout include publication heatmapFiltere and publication
@@ -73,19 +74,20 @@ public class QuantProtiensSearchingResultsLayout extends VerticalLayout {
 
         heatmapFilter.selectAllComparisons();
        
-        SizeReporter sizeReporter = new SizeReporter(proteinsLevelLayout);
+        final SizeReporter sizeReporter = new SizeReporter(proteinsLevelLayout);
         sizeReporter.addResizeListener(new ComponentResizeListener() {
              private int resizedCounter = 0;
              @Override
             public void sizeChanged(ComponentResizeEvent event) {
-
                 if (resizedCounter == 3) {
-                    System.out.println("at -------------------- scroolll to top 500 ");
-                    UI.getCurrent().setScrollTop(1000);
+                    
+                    UI.getCurrent().scrollIntoView(QuantProtiensSearchingResultsLayout.this);
+                    sizeReporter.removeResizeListener(this);
                 }
-
                 resizedCounter++;
             }
         });
+        heatmapFilter.popupSortAndSelectPanel();
     }
+    
 }

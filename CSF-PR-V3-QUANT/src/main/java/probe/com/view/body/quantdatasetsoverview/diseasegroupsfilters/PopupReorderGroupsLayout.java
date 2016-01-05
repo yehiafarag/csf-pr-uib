@@ -28,6 +28,7 @@ import probe.com.selectionmanager.CSFFilterSelection;
 import probe.com.selectionmanager.QuantCentralManager;
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.popupreordergroups.SortableLayoutContainer;
 import probe.com.view.core.DiseaseGroup;
+import probe.com.view.core.Tips;
 import probe.com.view.core.ToggleBtn;
 
 /**
@@ -43,6 +44,7 @@ public class PopupReorderGroupsLayout extends Button implements CSFFilter, Click
     private LinkedHashSet<String> rowHeaders, colHeaders;
     private DiseaseGroup[] patientsGroupArr;
     private LinkedHashSet<Integer> studiesIndexes;
+   
 
     @Override
     public void selectionChanged(String type) {
@@ -71,6 +73,7 @@ public class PopupReorderGroupsLayout extends Button implements CSFFilter, Click
 
     public PopupReorderGroupsLayout(QuantCentralManager Quant_Central_Manager) {
         super("Sort and Select");
+       
         this.setStyleName(Reindeer.BUTTON_LINK);
         this.setDescription("Reorder And Select Disease Groups");
         this.Quant_Central_Manager = Quant_Central_Manager;
@@ -162,6 +165,7 @@ public class PopupReorderGroupsLayout extends Button implements CSFFilter, Click
         this.sortableDiseaseGroupII = new SortableLayoutContainer((w - 50), subH, " Disease Group B", colHeaders);
         this.initPopupBody((w - 50));
         this.Quant_Central_Manager.registerFilterListener(PopupReorderGroupsLayout.this);
+        
 
     }
 
@@ -180,6 +184,7 @@ public class PopupReorderGroupsLayout extends Button implements CSFFilter, Click
         Quant_Central_Manager.setHeatMapLevelSelection(rowHeaders, colHeaders, patientsGroupArr);
     }
 
+   
     
 
     @Override

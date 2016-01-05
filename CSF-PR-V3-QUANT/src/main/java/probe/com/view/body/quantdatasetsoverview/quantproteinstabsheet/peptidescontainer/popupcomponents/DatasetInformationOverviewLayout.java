@@ -135,8 +135,8 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         technology.setValue(dataset.getTechnology(), null);
 
         quantificationBasis.setValue(dataset.getQuantificationBasis(), null);
-        patientsGroup1Number.setValue(dataset.getPatientsGroup1Number() + "", null);
-        patientsGroup2Number.setValue(dataset.getPatientsGroup2Number() + "", null);
+        patientsGroup1Number.setValue(dataset.getPatientsGroup1Number() , null);
+        patientsGroup2Number.setValue(dataset.getPatientsGroup2Number() , null);
         patientsGroup1.setValue(dataset.getPatientsGroup1() + "", null);
         patientsGroup2.setValue(dataset.getPatientsGroup2() + "", null);
 

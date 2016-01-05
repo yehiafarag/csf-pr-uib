@@ -13,18 +13,30 @@ import java.io.Serializable;
  *
  * @author Yehia Farag
  */
-public class CustomErrorLabel extends VerticalLayout implements Serializable{
+public class CustomErrorLabel extends VerticalLayout implements Serializable {
+    
+    private final Label errorLabel = new Label();
+    
+    public CustomErrorLabel() {
+        errorLabel.setContentMode(ContentMode.HTML);
+        this.addComponent(errorLabel);
+    }
 
     /**
      *
      * @param protName
      */
-    public void updateErrot(String protName)
-    {
-        this.removeAllComponents();
-        Label  errorLabel = new Label("<h4 Style='color:red;'>No results found for ( " + protName + " ) </h4>");
-        errorLabel.setContentMode(ContentMode.HTML);
-        this.addComponent(errorLabel);
-    
+    public void updateErrot(String protName) {
+      
+        if (protName != null && !protName.trim().equalsIgnoreCase("")) {
+            errorLabel.setValue("<font Style='color:red; '>No results found for ( " + protName + " ) </font>");
+            errorLabel.setVisible(true);
+            
+        } else {
+            errorLabel.setValue("");
+            errorLabel.setVisible(false);
+        }
+        
+        
     }
 }

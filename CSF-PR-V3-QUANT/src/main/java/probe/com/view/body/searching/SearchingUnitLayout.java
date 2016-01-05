@@ -25,9 +25,9 @@ public class SearchingUnitLayout extends HorizontalLayout implements Serializabl
 
     private final SearchingAreaFilter searchingAreaFilter;
     private final SearchingFiltersControl filtersController;
-    private String defaultText = "Please use one key-word per line and choose the search options";
-    private Label errorLabelI;
-    private CustomErrorLabel errorLabelII;
+    private final String defaultText = "Please use one key-word per line and choose the search options";
+    private final Label errorLabelI;
+    private final CustomErrorLabel errorLabelII;
 
     /**
      *

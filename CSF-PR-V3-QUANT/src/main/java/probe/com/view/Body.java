@@ -87,20 +87,26 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
 //      Tab 3 content       identificationDatasetsLayout    
         identificationDatasetsLayout = new VerticalLayout();
         identificationDatasetsLayout.setMargin(true);
-        identificationDatasetsLayout.setHeight("100%");
+//        identificationDatasetsLayout.setHeight("100%");
+         identificationDatasetsLayout.setHeight(height + "px");
+//        identificationDatasetsLayout.setPrimaryStyleName("scrollable");
         mainTabSheet.addTab(this.identificationDatasetsLayout, "Identification Datasets Overview");
 
 //      Tab 4 content  searching proteins tab 
         searchTabLayout = new VerticalLayout();
         searchTabLayout.setMargin(true);
+//        searchTabLayout.setPrimaryStyleName("scrollable");
         ProteinsSearchingLayout searchingLayout = new ProteinsSearchingLayout(handler, mainTabSheet);
         this.searchTabLayout.addComponent(searchingLayout);
+         searchTabLayout.setHeight(height + "px");
         TabSheet.Tab serchingTab = mainTabSheet.addTab(this.searchTabLayout, "Search");
 
 //      Tab 5content hidden tab (login form)
         adminLayout = new VerticalLayout();
         adminLayout.setMargin(true);
         adminLayout.setHeight("100%");
+        adminLayout.setHeight(height + "px");
+//        adminLayout.setPrimaryStyleName("scrollable");
         adminLayout.addComponent(new AdminLayout(handler));
         adminTab = mainTabSheet.addTab(adminLayout, "Dataset Editor (Require Sign In)", null);
 

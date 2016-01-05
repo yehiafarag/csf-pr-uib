@@ -46,6 +46,7 @@ public class IdentificationDatasetInformationLayout extends VerticalLayout imple
         miniLayout.setSpacing(true);
         miniLayout.setMargin(false);
         miniLayout.setWidth("100%");
+        
         HorizontalLayout miniLabelsGroupILayout = new HorizontalLayout();
         miniLabelsGroupILayout.setSpacing(true);
         miniLabelsGroupILayout.setMargin(new MarginInfo(false, false, false, false));

@@ -5,6 +5,7 @@
  */
 package probe.com.view.body.searching.quant;
 
+import com.vaadin.server.Page;
 import com.vaadin.ui.VerticalLayout;
 import java.io.Serializable;
 import java.util.List;
@@ -26,6 +27,8 @@ public class QuantDataSearchingTabLayout extends VerticalLayout implements Seria
         QuantProtiensSearchingResultsLayout datasetOverviewTabLayout = new QuantProtiensSearchingResultsLayout(CSFPR_Handler, searchQuantificationProtList);
          this.setMargin(true);
         this.setWidth("100%");
+        int height = Page.getCurrent().getBrowserWindowHeight() - 100;
+        this.setHeight(height + "px");
         this.addComponent(datasetOverviewTabLayout);
 
     }

@@ -152,12 +152,13 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
         this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.setMargin(false);
         this.setSpacing(true);
-        SizeReporter sizeReporter = new SizeReporter(this);
+        final SizeReporter sizeReporter = new SizeReporter(this);
         sizeReporter.addResizeListener(new ComponentResizeListener() {
             @Override
             public void sizeChanged(ComponentResizeEvent event) {
                 if (resizedCounter == 1) {
                     UI.getCurrent().scrollIntoView(QuantProteinsComparisonsContainer.this);
+                    sizeReporter.removeResizeListener(this);
                 }
 
                 resizedCounter++;

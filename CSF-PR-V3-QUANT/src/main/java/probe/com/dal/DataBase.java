@@ -2995,6 +2995,10 @@ public class DataBase implements Serializable {
             for (QuantProtein quantProt : quantProtResultList) {
 
                 quantDatasetIds.add(quantProt.getDsKey());
+            } 
+            if(quantDatasetIds.isEmpty()){
+                return new ArrayList<QuantProtein>();
+            
             }
             sb = new StringBuilder();
              for (Object index : quantDatasetIds) {
@@ -3002,8 +3006,8 @@ public class DataBase implements Serializable {
                 sb.append(" OR ");
 
             }
+           
             String stat = sb.toString().substring(0, sb.length() - 4);
-            System.out.println("stat is "+stat);
             String selectDsGroupNum = "SELECT `index` ,`patients_group_i_number` , `patients_group_ii_number`,`patient_group_i`,`patient_group_ii`,`patient_sub_group_i`,`patient_sub_group_ii` FROM `quant_dataset_table` Where  "+stat+";"; //"SELECT `patients_group_i_number` , `patients_group_ii_number`,`patient_group_i`,`patient_group_ii`,`patient_sub_group_i`,`patient_sub_group_ii`,`index` FROM `quant_dataset_table` WHERE  " + stat + " ;";
 
             PreparedStatement selectselectDsGroupNumStat = conn.prepareStatement(selectDsGroupNum);
