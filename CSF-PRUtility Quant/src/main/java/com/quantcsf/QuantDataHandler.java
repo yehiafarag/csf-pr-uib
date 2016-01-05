@@ -228,7 +228,7 @@ public class QuantDataHandler {
             }
             System.out.println("------------------------------");
 
-            int index = 1;
+            int index;
             row = 1;
             String line;
             while ((line = bufRdr.readLine()) != null && row < 1000000000) {

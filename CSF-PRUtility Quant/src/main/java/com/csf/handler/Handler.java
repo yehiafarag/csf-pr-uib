@@ -10,6 +10,7 @@ import com.quantcsf.QuantDataHandler;
 import com.quantcsf.beans.QuantDatasetObject;
 import com.quantcsf.beans.QuantPeptide;
 import com.quantcsf.beans.QuantProtein;
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,19 +66,22 @@ public class Handler {
 
         //1.read file
         List<QuantProtein> qProtList = qDataHandler.readCSVQuantFile(quantDataFilePath, sequanceFilePath);
+        //filter the quant proteins list 
+        List<QuantProtein> filteredQuantProteinsList = filterQuantProteins(qProtList);
+
 //        2.store full data
-        dal.storeCombinedQuantProtTable(qProtList);
+        dal.storeCombinedQuantProtTable(filteredQuantProteinsList);
 //        3.update dataset table
         dal.storeQuantDatasets();
         //handel quant peptideProtein     
         Set<QuantDatasetObject> datasetsList = dal.getQuantDatasetListObject();
-        List<QuantProtein> updatedQuantProtList = this.handleQuantData(datasetsList, qProtList);
+        List<QuantProtein> updatedQuantProtList = this.handleQuantData(datasetsList, filteredQuantProteinsList);
 //        //store quant protiens
         Object[] maps = dal.storeQuantitiveProteins(updatedQuantProtList);
         Map<String, Integer> peptideKeyToProteinIndexMap = (Map<String, Integer>) maps[0];
         Map<Integer, Integer> protKeyToDsIndexMap = (Map<Integer, Integer>) maps[1];
 
-        List<QuantProtein> peptidesList = handelQuantPeptides(qProtList, peptideKeyToProteinIndexMap, protKeyToDsIndexMap);
+        List<QuantProtein> peptidesList = handelQuantPeptides(filteredQuantProteinsList, peptideKeyToProteinIndexMap, protKeyToDsIndexMap);
         //store quant peptides
         dal.storeQuantitivePeptides(peptidesList);
 
@@ -95,24 +99,56 @@ public class Handler {
 ////        dal.storeQuantDatasets();
 ////        //handel quant peptideProtein     
 ////        Set<QuantDatasetObject> datasetsList = dal.getQuantDatasetListObject();
-////        qProtList = this.handleQuantData(datasetsList,qProtList);
+////        filteredQuantProteinsList = this.handleQuantData(datasetsList,filteredQuantProteinsList);
 ////        int protIndex = dal.getCurrentProtIndex();
-////        List<QuantPeptide> peptidesList = handelQuantPeptides(qProtList,protIndex);        
+////        List<QuantPeptide> peptidesList = handelQuantPeptides(filteredQuantProteinsList,protIndex);        
 ////        
 ////        //foldchange
 ////        
-////        defineProtFoldChange(qProtList, peptidesList);
+////        defineProtFoldChange(filteredQuantProteinsList, peptidesList);
 ////        
 ////        
 ////        //store quant protiens
-////        dal.storeQuantitiveProteins(qProtList);
+////        dal.storeQuantitiveProteins(filteredQuantProteinsList);
 ////        
 ////        //store quant peptides
 ////        dal.storeQuantitivePeptides(peptidesList);
 ////        
-////        System.out.println("final peptideProtein list updated (should be smaller)  " + qProtList.size() + "  prer " + peptidesList.size());
+////        System.out.println("final peptideProtein list updated (should be smaller)  " + filteredQuantProteinsList.size() + "  prer " + peptidesList.size());
 //        return true;
 //    }
+    private List<QuantProtein> filterQuantProteins(List<QuantProtein> qProtList) {
+        Map<String, QuantProtein> updatedFilteredProteinsList = new HashMap<String, QuantProtein>();
+        List<QuantProtein> updatedFilteredList = new ArrayList<QuantProtein>();
+        Set<String> cleaningSet = new HashSet<String>();
+        for (QuantProtein quantProt : qProtList) {
+            if (quantProt.isPeptideProtein()) {
+                continue;
+            }
+            String key = quantProt.getPumedID() + "_" + quantProt.getStudyKey() + "_" + quantProt.getQuantifiedProteinsNumber() + "_" + quantProt.getUniprotAccession() + "_" + quantProt.getPublicationAccNumber() + "_" + quantProt.getPublicationProteinName() + "_" + quantProt.getRawDataAvailable() + "_" + quantProt.getTypeOfStudy() + "_" + quantProt.getSampleType() + "_" + quantProt.getPatientsGroupINumber() + "_" + quantProt.getPatientsGroupIINumber() + "_" + quantProt.getPatientGrIComment() + "_" + quantProt.getPatientGrIIComment() + "_" + quantProt.getPatientGroupI() + "_" + quantProt.getPatientGroupII() + "_" + quantProt.getPatientSubGroupI() + "_" + quantProt.getPatientSubGroupII() + "_" + quantProt.getNormalizationStrategy() + "_" + quantProt.getTechnology() + "_" + quantProt.getAnalyticalApproach() + "_" + quantProt.getAnalyticalMethod() + "_" + quantProt.getShotgunOrTargetedQquant() + "_" + quantProt.getEnzyme() + "_" + quantProt.getQuantBasisComment() + "_" + quantProt.getQuantificationBasis() + "_" + quantProt.getAdditionalComments() + "_" + quantProt.getDiseaseCategory();
+            if (!updatedFilteredProteinsList.containsKey(key) && !cleaningSet.contains(key)) {
+                updatedFilteredProteinsList.put(key, quantProt);
+
+            } else {
+                updatedFilteredProteinsList.remove(key);
+                cleaningSet.add(key);
+
+            }
+
+        }
+        for (QuantProtein quantProt : qProtList) {
+            if (quantProt.isPeptideProtein()) {
+                String key = quantProt.getPumedID() + "_" + quantProt.getStudyKey() + "_" + quantProt.getQuantifiedProteinsNumber() + "_" + quantProt.getUniprotAccession() + "_" + quantProt.getPublicationAccNumber() + "_" + quantProt.getPublicationProteinName() + "_" + quantProt.getRawDataAvailable() + "_" + quantProt.getTypeOfStudy() + "_" + quantProt.getSampleType() + "_" + quantProt.getPatientsGroupINumber() + "_" + quantProt.getPatientsGroupIINumber() + "_" + quantProt.getPatientGrIComment() + "_" + quantProt.getPatientGrIIComment() + "_" + quantProt.getPatientGroupI() + "_" + quantProt.getPatientGroupII() + "_" + quantProt.getPatientSubGroupI() + "_" + quantProt.getPatientSubGroupII() + "_" + quantProt.getNormalizationStrategy() + "_" + quantProt.getTechnology() + "_" + quantProt.getAnalyticalApproach() + "_" + quantProt.getAnalyticalMethod() + "_" + quantProt.getShotgunOrTargetedQquant() + "_" + quantProt.getEnzyme() + "_" + quantProt.getQuantBasisComment() + "_" + quantProt.getQuantificationBasis() + "_" + quantProt.getAdditionalComments() + "_" + quantProt.getDiseaseCategory();
+                if (updatedFilteredProteinsList.containsKey(key)) {
+                    updatedFilteredList.add(quantProt);
+
+                }
+            }
+        }
+        updatedFilteredList.addAll(updatedFilteredProteinsList.values());
+        return updatedFilteredList;
+    }
+
     private List<QuantProtein> handelQuantPeptides(List<QuantProtein> fullQuantProtList, Map<String, Integer> peptideKeyToProteinIndexMap, Map<Integer, Integer> protKeyToDsIndexMap) {
 //        Map<String, QuantPeptide> peptides = new HashMap<String, QuantPeptide>();
         List<QuantProtein> peptidesList = new ArrayList<QuantProtein>();
