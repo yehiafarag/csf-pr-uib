@@ -40,7 +40,7 @@ import probe.com.view.core.HideOnClickLayout;
  */
 public class IdentificationDatasetLayout extends VerticalLayout implements Serializable, Property.ValueChangeListener {
 
-    private final CSFPRHandler handler;
+    private final CSFPRHandler CSFPR_Handler;
     private final int datasetId;
     private final VerticalLayout container, fractionsLayout, peptidesLayout;
     private IdentificationProteinsTableLayout protTableLayout;
@@ -52,13 +52,13 @@ public class IdentificationDatasetLayout extends VerticalLayout implements Seria
 
     /**
      *
-     * @param handler
+     * @param CSFPR_Handler
      * @param datasetId
      */
-    public IdentificationDatasetLayout(CSFPRHandler handler, int datasetId) {
+    public IdentificationDatasetLayout(CSFPRHandler CSFPR_Handler, int datasetId) {
         this.setSizeFull();
         setMargin(true);
-        this.handler = handler;
+        this.CSFPR_Handler = CSFPR_Handler;
         this.setWidth("100%");
         int height = Page.getCurrent().getBrowserWindowHeight() - 100;
         this.setHeight(height + "px");
@@ -85,14 +85,14 @@ public class IdentificationDatasetLayout extends VerticalLayout implements Seria
         //init dataset Details
         String infoText = "<p style='font-family:verdana;color:black;margin-left:20px;margin-right:20px;'>Select an experiment in the roll down menu on top to view all proteins identified in the selected experiment. Select a protein to see below all Peptides identified for the protein, and if the experiment was based on SDS-PAGE, the protein’s distribution in the gel is displayed under Fractions. To show information about the experiment, press Dataset Information.  Use the search box to navigate in the experiment selected.</p><p  style='font-family:verdana;color:black;margin-left:20px;margin-right:20px;'>Under Fractions, bar charts show the distribution of the selected protein across the fractions cut from the gel. Three charts show number of peptides, number of spectra and average precursor intensity. The fraction number represents the gel pieces cut from top to bottom. Protein standards <font color='#CDE1FF'>(light blue bars)</font> indicate the molecular weight range of each fraction. <font color='#79AFFF'>Darker blue bars</font> mark between which two standards the protein's theoretical mass suggests the protein should be found.";
 
-        IdentificationDatasetInformationLayout datasetInfoLayout = new IdentificationDatasetInformationLayout(handler, datasetId, null);
-        HideOnClickLayout dsLayout = new HideOnClickLayout(handler.getDataset(datasetId).getName(), datasetInfoLayout, null, infoText);
+        IdentificationDatasetInformationLayout datasetInfoLayout = new IdentificationDatasetInformationLayout(CSFPR_Handler, datasetId, null);
+        HideOnClickLayout dsLayout = new HideOnClickLayout(CSFPR_Handler.getDataset(datasetId).getName(), datasetInfoLayout, null, infoText,CSFPR_Handler.getTipsGenerator().generateTipsBtn());
         dsLayout.setMargin(new MarginInfo(false, false, false, false));
         container.addComponent(dsLayout);
         //get proteins List
-        proteinsList = handler.getIdentificationProteinsList(datasetId);
+        proteinsList = CSFPR_Handler.getIdentificationProteinsList(datasetId);
 
-        protTableLayout = new IdentificationProteinsTableLayout(proteinsList, handler.getDataset(datasetId).getFractionsNumber(), handler.getDataset(datasetId).getNumberValidProt(), handler.getDataset(datasetId).getProteinsNumber());
+        protTableLayout = new IdentificationProteinsTableLayout(proteinsList, CSFPR_Handler.getDataset(datasetId).getFractionsNumber(), CSFPR_Handler.getDataset(datasetId).getNumberValidProt(), CSFPR_Handler.getDataset(datasetId).getProteinsNumber());
         container.addComponent(protTableLayout);
         container.setComponentAlignment(protTableLayout, Alignment.TOP_LEFT);
         protTableLayout.getProteinTableComponent().addValueChangeListener(IdentificationDatasetLayout.this);
@@ -102,7 +102,7 @@ public class IdentificationDatasetLayout extends VerticalLayout implements Seria
         container.addComponent(fractionsLayout);
         peptidesLayout.setWidth("100%");
         container.addComponent(peptidesLayout);
-        selectionIndexes = handler.calculateIdentificationProteinsTableSearchIndexesSet(protTableLayout.getProteinTableComponent().getProtToIndexSearchingMap(), protTableLayout.getProteinTableComponent().getTableSearchMapIndex(), protTableLayout.getSearchField().getValue().toUpperCase().trim());
+        selectionIndexes = CSFPR_Handler.calculateIdentificationProteinsTableSearchIndexesSet(protTableLayout.getProteinTableComponent().getProtToIndexSearchingMap(), protTableLayout.getProteinTableComponent().getTableSearchMapIndex(), protTableLayout.getSearchField().getValue().toUpperCase().trim());
         protTableLayout.getProteinTableComponent().setCurrentPageFirstItemId(protTableLayout.getProteinTableComponent().getFirstIndex());
         protTableLayout.getProteinTableComponent().select(protTableLayout.getProteinTableComponent().getFirstIndex());
         protTableLayout.getProteinTableComponent().commit();
@@ -111,7 +111,7 @@ public class IdentificationDatasetLayout extends VerticalLayout implements Seria
         searchButtonTextField.addClickListener(new ActionButtonTextField.ClickListener() {
             @Override
             public void buttonClick(ActionButtonTextField.ClickEvent clickEvent) {
-                selectionIndexes = handler.calculateIdentificationProteinsTableSearchIndexesSet(protTableLayout.getProteinTableComponent().getProtToIndexSearchingMap(), protTableLayout.getProteinTableComponent().getTableSearchMapIndex(), protTableLayout.getSearchField().getValue().toUpperCase().trim());
+                selectionIndexes = CSFPR_Handler.calculateIdentificationProteinsTableSearchIndexesSet(protTableLayout.getProteinTableComponent().getProtToIndexSearchingMap(), protTableLayout.getProteinTableComponent().getTableSearchMapIndex(), protTableLayout.getSearchField().getValue().toUpperCase().trim());
                 if (!selectionIndexes.isEmpty()) {
                     if (selectionIndexes.size() > 1) {
                         protTableLayout.getNextSearch().setEnabled(true);
@@ -189,38 +189,38 @@ public class IdentificationDatasetLayout extends VerticalLayout implements Seria
         final String accession = item.getItemProperty("Accession").getValue().toString();
         final String otherAccession = (String) item.getItemProperty("Other Protein(s)").getValue();
 
-        ExporterBtnsGenerator dataExporter = new ExporterBtnsGenerator(handler);
+        ExporterBtnsGenerator dataExporter = new ExporterBtnsGenerator(CSFPR_Handler);
 
         VerticalLayout allPeptidesProteinsExportLayout = dataExporter.exportAllAvailablePeptidesForProtein(accession, otherAccession, desc, true, "Export Peptides from All Datasets for ( " + accession + " )");
         allPeptidesProteinsExportLayout.setDescription("Export CSF-PR Peptides for ( " + accession + " ) from All Datasets");
 
         VerticalLayout datasetProteinsExportLayout = dataExporter.exportDatasetProteins(datasetId, true, "Export All Proteins from Selected Dataset");
-        datasetProteinsExportLayout.setDescription("Export All Proteins from ( " + handler.getDataset(datasetId).getName() + " ) Dataset");
+        datasetProteinsExportLayout.setDescription("Export All Proteins from ( " + CSFPR_Handler.getDataset(datasetId).getName() + " ) Dataset");
 
         protTableLayout.setExpBtnProtAllPepTable(allPeptidesProteinsExportLayout, datasetProteinsExportLayout);
 
         if (proteinskey >= 0) {
-            Map<Integer, IdentificationPeptideBean> peptideProteintList = handler.getIdentificationProteinPeptidesList(datasetId, accession, otherAccession);
+            Map<Integer, IdentificationPeptideBean> peptideProteintList = CSFPR_Handler.getIdentificationProteinPeptidesList(datasetId, accession, otherAccession);
 
             if (!peptideProteintList.isEmpty()) {
-                int validPep = handler.countValidatedPeptidesNumber(peptideProteintList);
+                int validPep = CSFPR_Handler.countValidatedPeptidesNumber(peptideProteintList);
                 if (peptideTableLayout != null) {
                     peptidesLayout.removeComponent(peptideTableLayout);
                 }
-                peptideTableLayout = new IdentificationPeptidesTableLayout(validPep, peptideProteintList.size(), desc, peptideProteintList, accession, handler.getDataset(datasetId).getName());
+                peptideTableLayout = new IdentificationPeptidesTableLayout(validPep, peptideProteintList.size(), desc, peptideProteintList, accession, CSFPR_Handler.getDataset(datasetId).getName());
 
                 peptideTableLayout.setHeight("" + protTableLayout.getHeight());
                 peptidesLayout.setHeight("" + protTableLayout.getHeight());
                 peptidesLayout.addComponent(peptideTableLayout);
 
                 VerticalLayout proteinPeptidesExportLayout = dataExporter.exportPeptidesForProtein(datasetId, accession, otherAccession, desc, peptideProteintList, true, "Export Peptides from Selected Dataset for ( " + accession + " )");
-                proteinPeptidesExportLayout.setDescription("Export Peptides from ( " + handler.getDataset(datasetId).getName() + " ) Dataset for ( " + accession + " )");
+                proteinPeptidesExportLayout.setDescription("Export Peptides from ( " + CSFPR_Handler.getDataset(datasetId).getName() + " ) Dataset for ( " + accession + " )");
                 peptideTableLayout.setExportingBtnForIdentificationPeptidesTable(proteinPeptidesExportLayout);
 
             }
-            List<StandardIdentificationFractionPlotProteinBean> standerdProtList = handler.getStandardIdentificationFractionProteinsList(datasetId);
+            List<StandardIdentificationFractionPlotProteinBean> standerdProtList = CSFPR_Handler.getStandardIdentificationFractionProteinsList(datasetId);
 
-            int fractionsNumber = handler.getDataset(datasetId).getFractionsNumber();
+            int fractionsNumber = CSFPR_Handler.getDataset(datasetId).getFractionsNumber();
 
             if (fractionsNumber == 0 || datasetId == 0 || standerdProtList == null || standerdProtList.isEmpty()) {
                 fractionsLayout.removeAllComponents();
@@ -234,7 +234,7 @@ public class IdentificationDatasetLayout extends VerticalLayout implements Seria
                 }
             } else {
 
-                Map<Integer, IdentificationProteinBean> fractionsList = handler.getIdentificationProteinsGelFractionsList(datasetId, accession, otherAccession);
+                Map<Integer, IdentificationProteinBean> fractionsList = CSFPR_Handler.getIdentificationProteinsGelFractionsList(datasetId, accession, otherAccession);
 
                 if (fractionsList != null && !fractionsList.isEmpty()) {
                     double mw = 0.0;
@@ -248,7 +248,7 @@ public class IdentificationDatasetLayout extends VerticalLayout implements Seria
                         }
                         mw = Double.valueOf(str);
                     }
-                    IdentificationGelFractionsLayout gelFractionLayout = new IdentificationGelFractionsLayout(handler, accession, mw, fractionsList, standerdProtList, handler.getDataset(datasetId).getName());
+                    IdentificationGelFractionsLayout gelFractionLayout = new IdentificationGelFractionsLayout(CSFPR_Handler, accession, mw, fractionsList, standerdProtList, CSFPR_Handler.getDataset(datasetId).getName());
                     gelFractionLayout.setMargin(new MarginInfo(false, false, false, true));
                     fractionsLayout.addComponent(gelFractionLayout);
 

@@ -72,17 +72,17 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
         datasetsInformationContainer = this.initInformationContainer(width);
         String infoText = "Select an experiment in the roll down menu on top to view all proteins identified in the selected experiment. Select a protein to see below all Peptides identified for the protein, and if the experiment was based on SDS-PAGE, the protein’s distribution in the gel is displayed under Fractions. To show information about the experiment, press Dataset Information.  Use the search box to navigate in the experiment selected.</p><p  style='font-family:verdana;color:black;margin-left:20px;margin-right:20px;'>Under Fractions, bar charts show the distribution of the selected protein across the fractions cut from the gel. Three charts show number of peptides, number of spectra and average precursor intensity. The fraction number represents the gel pieces cut from top to bottom. Protein standards <font color='#CDE1FF'>(light blue bars)</font> indicate the molecular weight range of each fraction. <font color='#79AFFF'>Darker blue bars</font> mark between which two standards the protein's theoretical mass suggests the protein should be found.";
 
-        peptideProteinInfoHideShow = new HideOnClickLayout("Peptides Information", peptidesInformationContainer, null, Alignment.TOP_CENTER, infoText);
+        peptideProteinInfoHideShow = new HideOnClickLayout("Peptides Information", peptidesInformationContainer, null, Alignment.TOP_CENTER, infoText,null);
         peptideProteinInfoHideShow.setHeightUndefined();
         bottomLayout.addComponent(peptideProteinInfoHideShow);
         peptideProteinInfoHideShow.setVisability(true);
 
-        HideOnClickLayout proteinInfoHideShow = new HideOnClickLayout("Proteins Information", proteinsInformationContainer, null, Alignment.TOP_CENTER, infoText);
+        HideOnClickLayout proteinInfoHideShow = new HideOnClickLayout("Proteins Information", proteinsInformationContainer, null, Alignment.TOP_CENTER, infoText,null);
         proteinInfoHideShow.setHeightUndefined();
         bottomLayout.addComponent(proteinInfoHideShow);
         proteinInfoHideShow.setVisability(true);
 
-        HideOnClickLayout datasetInfoLayout = new HideOnClickLayout("Dataset Information", datasetsInformationContainer, null, infoText);
+        HideOnClickLayout datasetInfoLayout = new HideOnClickLayout("Dataset Information", datasetsInformationContainer, null, infoText,null);
         datasetInfoLayout.setMargin(new MarginInfo(false, false, false, false));
         bottomLayout.addComponent(datasetInfoLayout);
         datasetInfoLayout.setVisability(false);
@@ -127,17 +127,17 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
         datasetsInformationContainer = this.initInformationContainer(width);
         String infoText = "Select an experiment in the roll down menu on top to view all proteins identified in the selected experiment. Select a protein to see below all Peptides identified for the protein, and if the experiment was based on SDS-PAGE, the protein’s distribution in the gel is displayed under Fractions. To show information about the experiment, press Dataset Information.  Use the search box to navigate in the experiment selected.</p><p  style='font-family:verdana;color:black;margin-left:20px;margin-right:20px;'>Under Fractions, bar charts show the distribution of the selected protein across the fractions cut from the gel. Three charts show number of peptides, number of spectra and average precursor intensity. The fraction number represents the gel pieces cut from top to bottom. Protein standards <font color='#CDE1FF'>(light blue bars)</font> indicate the molecular weight range of each fraction. <font color='#79AFFF'>Darker blue bars</font> mark between which two standards the protein's theoretical mass suggests the protein should be found.";
 
-        peptideProteinInfoHideShow = new HideOnClickLayout("Peptides Information", peptidesInformationContainer, null, Alignment.TOP_CENTER, infoText);
+        peptideProteinInfoHideShow = new HideOnClickLayout("Peptides Information", peptidesInformationContainer, null, Alignment.TOP_CENTER, infoText,null);
         peptideProteinInfoHideShow.setHeightUndefined();
         bottomLayout.addComponent(peptideProteinInfoHideShow);
         peptideProteinInfoHideShow.setVisability(true);
 
-        HideOnClickLayout proteinInfoHideShow = new HideOnClickLayout("Proteins Information", proteinsInformationContainer, null, Alignment.TOP_CENTER, infoText);
+        HideOnClickLayout proteinInfoHideShow = new HideOnClickLayout("Proteins Information", proteinsInformationContainer, null, Alignment.TOP_CENTER, infoText,null);
         proteinInfoHideShow.setHeightUndefined();
         bottomLayout.addComponent(proteinInfoHideShow);
         proteinInfoHideShow.setVisability(true);
 
-        HideOnClickLayout datasetInfoLayout = new HideOnClickLayout("Dataset Information", datasetsInformationContainer, null, infoText);
+        HideOnClickLayout datasetInfoLayout = new HideOnClickLayout("Dataset Information", datasetsInformationContainer, null, infoText,null);
         datasetInfoLayout.setMargin(new MarginInfo(false, false, false, false));
         bottomLayout.addComponent(datasetInfoLayout);
         datasetInfoLayout.setVisability(false);

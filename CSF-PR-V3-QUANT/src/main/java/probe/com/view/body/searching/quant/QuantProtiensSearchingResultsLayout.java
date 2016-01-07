@@ -21,7 +21,6 @@ import probe.com.view.body.quantdatasetsoverview.DiseaseGroupsFiltersContainer;
 import probe.com.view.body.quantdatasetsoverview.QuantProteinsComparisonsContainer;
 import probe.com.view.core.HideOnClickLayout;
 import probe.com.view.body.quantdatasetsoverview.QuantProteinsTabsheetContainerLayout;
-import probe.com.view.core.Tips;
 
 /**
  * This is the studies layout include publication heatmapFiltere and publication
@@ -42,7 +41,7 @@ public class QuantProtiensSearchingResultsLayout extends VerticalLayout {
      */
     public QuantProtiensSearchingResultsLayout(CSFPRHandler CSFPR_Handler, List<QuantProtein> searchQuantificationProtList) {
 
-        Quant_Central_Manager = new QuantCentralManager(CSFPR_Handler,searchQuantificationProtList);//,filterUtility.getFullFilterList()
+        Quant_Central_Manager = new QuantCentralManager(CSFPR_Handler, searchQuantificationProtList);//,filterUtility.getFullFilterList()
         this.setMargin(true);
         this.setSpacing(true);
         this.setWidth("100%");
@@ -53,13 +52,13 @@ public class QuantProtiensSearchingResultsLayout extends VerticalLayout {
         heatmapFilter.setMargin(new MarginInfo(false, false, true, false));
         String infoText = "Select an experiment in the roll down menu on top to view all proteins identified in the selected experiment. Select a protein to see below all Peptides identified for the protein, and if the experiment was based on SDS-PAGE, the protein’s distribution in the gel is displayed under Fractions. To show information about the experiment, press Dataset Information.  Use the search box to navigate in the experiment selected.</p><p  style='font-family:verdana;color:black;margin-left:20px;margin-right:20px;'>Under Fractions, bar charts show the distribution of the selected protein across the fractions cut from the gel. Three charts show number of peptides, number of spectra and average precursor intensity. The fraction number represents the gel pieces cut from top to bottom. Protein standards <font color='#CDE1FF'>(light blue bars)</font> indicate the molecular weight range of each fraction. <font color='#79AFFF'>Darker blue bars</font> mark between which two standards the protein's theoretical mass suggests the protein should be found.";
 
-        HideOnClickLayout DatasetFilteringContainer = new HideOnClickLayout("Datasets", heatmapFilter, null, infoText);
+        HideOnClickLayout DatasetFilteringContainer = new HideOnClickLayout("Datasets", heatmapFilter, null, infoText, CSFPR_Handler.getTipsGenerator().generateTipsBtn());
         this.addComponent(DatasetFilteringContainer);
         DatasetFilteringContainer.setVisability(true);
 
         quantProteinsComparisonsContainer = new QuantProteinsComparisonsContainer(Quant_Central_Manager, CSFPR_Handler, searchQuantificationProtList);
 
-        HideOnClickLayout comparisonsTableContainer = new HideOnClickLayout("Proteins", quantProteinsComparisonsContainer, null, Alignment.TOP_LEFT, infoText);
+        HideOnClickLayout comparisonsTableContainer = new HideOnClickLayout("Proteins", quantProteinsComparisonsContainer, null, Alignment.TOP_LEFT, infoText, null);
         int pageWidth = Page.getCurrent().getWebBrowser().getScreenWidth();
         int layoutWidth = (pageWidth - 70);
         quantProteinsComparisonsContainer.setLayoutWidth(layoutWidth);
@@ -67,27 +66,29 @@ public class QuantProtiensSearchingResultsLayout extends VerticalLayout {
         comparisonsTableContainer.setVisability(true);
 
         proteinsLayout = new QuantProteinsTabsheetContainerLayout(Quant_Central_Manager, true, CSFPR_Handler);
-        HideOnClickLayout proteinsLevelLayout = new HideOnClickLayout("Proteins Information", proteinsLayout, null, infoText);
+        HideOnClickLayout proteinsLevelLayout = new HideOnClickLayout("Proteins Information", proteinsLayout, null, infoText, null);
 
         this.addComponent(proteinsLevelLayout);
         proteinsLevelLayout.setVisability(true);
 
         heatmapFilter.selectAllComparisons();
-       
+
         final SizeReporter sizeReporter = new SizeReporter(proteinsLevelLayout);
         sizeReporter.addResizeListener(new ComponentResizeListener() {
-             private int resizedCounter = 0;
-             @Override
+            private int resizedCounter = 0;
+
+            @Override
             public void sizeChanged(ComponentResizeEvent event) {
                 if (resizedCounter == 3) {
-                    
+
                     UI.getCurrent().scrollIntoView(QuantProtiensSearchingResultsLayout.this);
                     sizeReporter.removeResizeListener(this);
                 }
                 resizedCounter++;
             }
         });
-        heatmapFilter.popupSortAndSelectPanel();
+        CSFPR_Handler.getTipsGenerator().showTips();
+//        heatmapFilter.popupSortAndSelectPanel();
     }
-    
+
 }

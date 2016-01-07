@@ -11,11 +11,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Runo;
-import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.view.body.ProteinsSearchingLayout;
 
@@ -72,6 +68,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
         welcomeLayout = new WelcomeLayout(adminIcon, handler);
         welcomeLayout.setWidth("100%");
         homeTab = mainTabSheet.addTab(welcomeLayout, "Home", null);
+        
 
 //      Tab 2 content quant dataset overview
         datasetsOverviewLayout = new VerticalLayout();

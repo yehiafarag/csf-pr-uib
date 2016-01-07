@@ -98,7 +98,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
      * @param width
      * @param Quant_Central_Manager
      */
-    public ProteinStudyComparisonScatterPlotLayout(final QuantCentralManager Quant_Central_Manager,final DiseaseGroupsComparisonsProteinLayout cp, int width) {
+    public ProteinStudyComparisonScatterPlotLayout(final QuantCentralManager Quant_Central_Manager, final DiseaseGroupsComparisonsProteinLayout cp, int width) {
         this.Quant_Central_Manager = Quant_Central_Manager;
         this.setColumns(4);
         this.setRows(2);
@@ -133,8 +133,8 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         ProteinScatterPlotContainer.setWidth(imgWidth + "px");
         ProteinScatterPlotContainer.setHeight(150 + "px");
 
-        String styleString = "_" + cp.getProteinAccssionNumber()+"_" + cp.getComparison().getComparisonHeader();
-        teststyle = styleString.replace(" ", "_").replace("+", "_").replace(")", "_").replace("(", "_").toLowerCase().replace(" ", "_").replace(")", "_").replace("(", "_").toLowerCase().replace("+", "_").replace("/", "_").replace(".","_") + "_scatterplot";
+        String styleString = "_" + cp.getProteinAccssionNumber() + "_" + cp.getComparison().getComparisonHeader();
+        teststyle = styleString.replace(" ", "_").replace("+", "_").replace(")", "_").replace("(", "_").toLowerCase().replace(" ", "_").replace(")", "_").replace("(", "_").toLowerCase().replace("+", "_").replace("/", "_").replace(".", "_") + "_scatterplot";
         styles.add("." + teststyle + " {  background-image: url(" + defaultScatterPlottImgUrl + " );background-position:center; background-repeat: no-repeat; }");
         ProteinScatterPlotContainer.setStyleName(teststyle);
         ProteinScatterPlotContainer.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
@@ -203,10 +203,14 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         patientGroupsNumToDsIdMap.clear();
 
         final Map<Integer, int[]> paTGrNumbtrendMap = new HashMap<Integer, int[]>();
+        double maxPatNumber = -1.0;
         for (String protTrend : cp.getPatientsNumToTrindMap().keySet()) {
             List<Integer> patNums = cp.getPatientsNumToTrindMap().get(protTrend);
             int coun = 0;
             for (int i : patNums) {
+                if (i > maxPatNumber) {
+                    maxPatNumber = i;
+                }
                 if (!patientGroupsNumToDsIdMap.containsKey(i)) {
                     ComparisonDetailsBean pGr = new ComparisonDetailsBean();
                     patientGroupsNumToDsIdMap.put(i, pGr);
@@ -373,8 +377,8 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         va.setAutoRange(false);
         va.setMinorTickCount(0);
         va.setVisible(true);
-
-        plot.getRangeAxis().setRange(0, 100);
+        maxPatNumber = Math.ceil(maxPatNumber / 100.0)*100;
+        plot.getRangeAxis().setRange(0, maxPatNumber);
         NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
         rangeAxis.setTickUnit(new NumberTickUnit(10));
         rangeAxis.setLabel(xTile);

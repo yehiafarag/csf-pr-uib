@@ -63,7 +63,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
     private final HorizontalLayout bottomRightLayout;
     private final HorizontalLayout rightBottomBtnLayout;
     private final PopupReorderGroupsLayout reorderGroups;
-     private final Tips tips ;
+ 
     
 
     /**
@@ -81,7 +81,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         this.setMargin(false);
         this.setRows(4);
         this.Quant_Central_Manager = Quant_Central_Manager; 
-        this.tips = new Tips("Remeber you can sort and select the disease groups using Sort and Select feature");
+      
 
         StudiesPieChartFiltersContainerLayout pieChartFiltersLayout = new StudiesPieChartFiltersContainerLayout(Quant_Central_Manager, CSFPR_Handler);
         pieChartFiltersBtnLayout = new VerticalLayout();
@@ -217,8 +217,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         reorderGroups = new PopupReorderGroupsLayout(Quant_Central_Manager);
         leftBottomBtnLayout.addComponent(reorderGroups);
         leftBottomBtnLayout.setComponentAlignment(reorderGroups, Alignment.TOP_LEFT);
-         leftBottomBtnLayout.addComponent(tips);
-        leftBottomBtnLayout.setComponentAlignment(tips, Alignment.TOP_LEFT);
+         
 
         Button clearFilterBtn = new Button("Reset");
         clearFilterBtn.setHeight("24px");
@@ -270,7 +269,6 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         exportTableBtn.setPrimaryStyleName("exportxslbtn");
         rightBottomBtnLayout.addComponent(exportTableBtn);
         rightBottomBtnLayout.setComponentAlignment(exportTableBtn, Alignment.BOTTOM_RIGHT);
-//        rightBottomLayout.setMargin(new MarginInfo(true, false, false, false));
         exportTableBtn.setDescription("Export all studies data");
         final QuantDatasetsfullStudiesTableLayout quantStudiesTable = new QuantDatasetsfullStudiesTableLayout(Quant_Central_Manager);
         rightBottomBtnLayout.addComponent(quantStudiesTable);
@@ -316,9 +314,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
             }
         });
 
-//        PopupReorderGroupsLayout reorderGroups = new PopupReorderGroupsLayout(Quant_Central_Manager);
-//         rightBottomBtnLayout.addComponent(reorderGroups);
-//        rightBottomBtnLayout.setComponentAlignment(reorderGroups, Alignment.TOP_LEFT);
+
         final VerticalLayout selectMultiBtn = new VerticalLayout();
         selectMultiBtn.setStyleName("selectmultiselectedbtn");
         rightBottomBtnLayout.addComponent(selectMultiBtn);
@@ -369,6 +365,10 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
                 }
             }
         };
+        int y = Page.getCurrent().getBrowserWindowHeight() - Math.max(heatmapH, 720)-200 ;
+         Tips tips = CSFPR_Handler.getTipsGenerator().generateTip("Remeber you can sort and select the disease groups using <u>Sort and Select</u> feature",180,y);
+        leftBottomBtnLayout.addComponent(tips);
+        leftBottomBtnLayout.setComponentAlignment(tips, Alignment.TOP_LEFT);
 
         diseaseGroupsHeatmapFilter.addHideHeatmapBtnListener(hideShowCompTableListener);
         Quant_Central_Manager.registerStudySelectionListener(DiseaseGroupsFiltersContainer.this);
@@ -449,8 +449,8 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         }
 
     }
-    public void popupSortAndSelectPanel(){  
-        tips.showTip();
-    }
+//    public void popupSortAndSelectPanel(){  
+//        tips.showTip();
+//    }
 
 }

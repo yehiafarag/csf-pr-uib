@@ -18,6 +18,7 @@ import com.vaadin.ui.VerticalLayout;
 import java.io.Serializable;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.model.beans.OverviewInfoBean;
+import probe.com.view.core.Timer;
 
 /**
  *
@@ -155,7 +156,7 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         subIdStatLayout.setColumnExpandRatio(0, 2);
         subIdStatLayout.setColumnExpandRatio(1,1);
 
-        Label sub2IdStatValue = new Label("<h3 style='text-align: right;'>" + infoBean.getNumberOfIdStudies() + "</h3>");
+        Label sub2IdStatValue = new Label("<h4 style='text-align: right;'>" + infoBean.getNumberOfIdStudies() + "</h4>");
         sub2IdStatValue.setContentMode(ContentMode.HTML);
         subIdStatLayout.addComponent(sub2IdStatValue, 1, 1);
         subIdStatLayout.setComponentAlignment(sub2IdStatValue, Alignment.MIDDLE_RIGHT);
@@ -164,7 +165,7 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         sub3IdStatLabel.setContentMode(ContentMode.HTML);
         subIdStatLayout.addComponent(sub3IdStatLabel, 0, 2);
 
-        Label sub3IdStatValue = new Label("<h3 style='text-align: right;'>" + infoBean.getNumberOfIdProteins() + "</h3>");
+        Label sub3IdStatValue = new Label("<h4 style='text-align: right;'>" + infoBean.getNumberOfIdProteins() + "</h4>");
         sub3IdStatValue.setContentMode(ContentMode.HTML);
         subIdStatLayout.addComponent(sub3IdStatValue, 1, 2);
         subIdStatLayout.setComponentAlignment(sub3IdStatValue, Alignment.MIDDLE_RIGHT);
@@ -173,7 +174,7 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         sub4IdStatLabel.setContentMode(ContentMode.HTML);
         subIdStatLayout.addComponent(sub4IdStatLabel, 0, 3);
 
-        Label sub4IdStatValue = new Label("<h3 style='text-align: right;'>" + infoBean.getNumberOfIdPeptides() + "</h3>");
+        Label sub4IdStatValue = new Label("<h4 style='text-align: right;'>" + infoBean.getNumberOfIdPeptides() + "</h4>");
         sub4IdStatValue.setContentMode(ContentMode.HTML);
         subIdStatLayout.addComponent(sub4IdStatValue, 1, 3);
         subIdStatLayout.setComponentAlignment(sub4IdStatValue, Alignment.MIDDLE_RIGHT);
@@ -190,7 +191,7 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         sub1quantStatLabel.setContentMode(ContentMode.HTML);
         subQuantStatLayout.addComponent(sub1quantStatLabel, 0, 0);
 
-        Label sub1QuantStatValue = new Label("<h3 style='text-align: right;' >" + infoBean.getNumberOfQuantPublication() + "</h3>");
+        Label sub1QuantStatValue = new Label("<h4 style='text-align: right;' >" + infoBean.getNumberOfQuantPublication() + "</h4>");
         sub1QuantStatValue.setContentMode(ContentMode.HTML);
         subQuantStatLayout.addComponent(sub1QuantStatValue, 1, 0);
         subQuantStatLayout.setComponentAlignment(sub1QuantStatValue, Alignment.MIDDLE_RIGHT);
@@ -199,7 +200,7 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         sub2quantStatLabel.setContentMode(ContentMode.HTML);
         subQuantStatLayout.addComponent(sub2quantStatLabel, 0, 1);
 
-        Label sub2QuantStatValue = new Label("<h3 style='text-align: right;'>" + infoBean.getNumberOfQuantStudies() + "</h3>");
+        Label sub2QuantStatValue = new Label("<h4 style='text-align: right;'>" + infoBean.getNumberOfQuantStudies() + "</h4>");
         sub2QuantStatValue.setContentMode(ContentMode.HTML);
         subQuantStatLayout.addComponent(sub2QuantStatValue, 1, 1);
         subQuantStatLayout.setComponentAlignment(sub2QuantStatValue, Alignment.MIDDLE_RIGHT);
@@ -208,7 +209,7 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         sub3quantStatLabel.setContentMode(ContentMode.HTML);
         subQuantStatLayout.addComponent(sub3quantStatLabel, 0, 2);
 
-        Label sub3QuantStatValue = new Label("<h3 style='text-align: right;'>" + infoBean.getNumberOfQuantProteins() + "</h3>");
+        Label sub3QuantStatValue = new Label("<h4 style='text-align: right;'>" + infoBean.getNumberOfQuantProteins() + "</h4>");
         sub3QuantStatValue.setContentMode(ContentMode.HTML);
         subQuantStatLayout.addComponent(sub3QuantStatValue, 1, 2);
         subQuantStatLayout.setComponentAlignment(sub3QuantStatValue, Alignment.MIDDLE_RIGHT);
@@ -217,14 +218,17 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         sub4quantStatLabel.setContentMode(ContentMode.HTML);
         subQuantStatLayout.addComponent(sub4quantStatLabel, 0, 3);
 
-        Label sub4QuantStatValue = new Label("<h3 style='text-align: right;'>" + infoBean.getNumberOfQuantPeptides() + "</h3>");
+        Label sub4QuantStatValue = new Label("<h4 style='text-align: right;'>" + infoBean.getNumberOfQuantPeptides() + "</h4>");
         sub4QuantStatValue.setContentMode(ContentMode.HTML);
         subQuantStatLayout.addComponent(sub4QuantStatValue, 1, 3);
         subQuantStatLayout.setComponentAlignment(sub4QuantStatValue, Alignment.MIDDLE_RIGHT);
         
          subQuantStatLayout.setColumnExpandRatio(0, 2);
-        subQuantStatLayout.setColumnExpandRatio(1,1);
+         subQuantStatLayout.setColumnExpandRatio(1,1);
 
+          
+        Timer timer = new Timer();
+        bottomLayout.addComponent(timer);
 //        
 //        VerticalLayout idStatLayout = new VerticalLayout();
 //        leftLayout.addComponent(idStatLayout);

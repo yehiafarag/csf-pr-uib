@@ -62,7 +62,7 @@ public class IdentificationDatasetsLayout extends VerticalLayout implements Seri
     private HideOnClickLayout initIdentificationDatasetRowLayout(int dsId, IdentificationDatasetDetailsBean identificationDataset, TabSheet mainTabSheet) {
          
         IdentificationDatasetInformationLayout IdentificationDatasetInfoLayout = new IdentificationDatasetInformationLayout(csfprHandler, dsId, mainTabSheet);
-        HideOnClickLayout dsLayout = new HideOnClickLayout(identificationDataset.getName(), IdentificationDatasetInfoLayout, IdentificationDatasetInfoLayout.getMiniLayout(),"");
+        HideOnClickLayout dsLayout = new HideOnClickLayout(identificationDataset.getName(), IdentificationDatasetInfoLayout, IdentificationDatasetInfoLayout.getMiniLayout(),"",null);
         dsLayout.setMargin(new MarginInfo(false, false, true, false));
         return dsLayout;
     }

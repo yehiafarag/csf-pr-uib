@@ -24,6 +24,7 @@ import probe.com.model.beans.quant.QuantProtein;
 import probe.com.model.beans.identification.StandardIdentificationFractionPlotProteinBean;
 import probe.com.model.beans.quant.QuantDatasetInitialInformationObject;
 import probe.com.model.util.vaadintoimageutil.peptideslayout.ProteinInformationDataForExport;
+import probe.com.view.core.TipGenerator;
 
 /**
  * @author Yehia Farag
@@ -39,6 +40,11 @@ public class CSFPRHandler implements Serializable {
     private final CoreLogic logicLayer;
     private final AuthenticatorHandler authenticatorHandler;
     private final Map<String,String>diseaseFullNameMap;
+
+    public TipGenerator getTipsGenerator() {
+        return tipsGenerator;
+    }
+    private final TipGenerator tipsGenerator = new TipGenerator();
 
     /**
      * create the main handler for all users requests

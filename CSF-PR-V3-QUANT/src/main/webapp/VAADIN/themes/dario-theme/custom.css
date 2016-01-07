@@ -1790,11 +1790,17 @@ resetlabelbtn p{
     border:none;
     margin-left:20px !important;
 
+
 }
 .framelayout h3{
     font-size: 12px;
     border:none;
-    margin-left:40px !important;
+    margin-left:40px !important; 
+    font-weight:normal;
+}
+.framelayout h4{
+    font-size: 12px;
+    border:none;
     font-weight:normal;
 }
 .bottomborder{
@@ -2019,17 +2025,65 @@ resetlabelbtn p{
     width:100%;
 }
 .v-popupview-popup.v-popupview-popup-tippopup{
-    background:whitesmoke;
+    background:#ffff99;
+
     border:1px solid gray;
     border-radius:5px;    
     padding: 20px !important;
     margin-top:-60px !important;
-
+    margin-left: 20px !important;
 
 }
 .v-popupview-popup.v-popupview-popup-tippopup font{
     height:20px;
-    font-size:13px;
-    font-weight:bold;
+    font-size:1px;
 
+    -webkit-transition-delay:10s !important; /* Safari */
+    transition-delay:10s !important;
+    transition-timing-function:ease-in-out !important;
+    -webkit-transition-property: font-size !important; /* Safari */
+    transition-property: font-size !important; 
+    font-size:13px;
+
+
+}
+
+.tipbtn{
+
+    clear: both;
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    background-image:  url(img/tip.png);
+    background-position:center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor:pointer;
+    border: none;
+}
+
+
+.tippopup{
+    background: url(img/tipbubble.png) no-repeat !important; 
+    background-size:100% 100%  !important;  
+   
+    height:50px;
+    color:black;    
+    padding-left:10px !important;
+    padding-top:10px !important;
+    opacity: 1;
+    font-size:13px !important;
+     padding-right: 20px !important;
+
+    
+}
+.tippopup b{
+ padding: 20px !important;
+font-size:18px !important;
+font-weight:bold !important;
+
+}
+.tippopup{
+    margin-left:180px !important;
+    margin-bottom:200px !important;
 }

@@ -124,7 +124,7 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
         };
         String infoText = "Type in search keywords (one per line) and choose the search type. All experiments containing protein(s) where the keyword is found are listed. View the information about each protein from each experiment separately by selecting them from the list.";
 
-        HideOnClickLayout searchingLayoutContainer = new HideOnClickLayout("Searching Filters", searchingUnitLayout, null, infoText);
+        HideOnClickLayout searchingLayoutContainer = new HideOnClickLayout("Searching Filters", searchingUnitLayout, null, infoText,CSFPR_Handler.getTipsGenerator().generateTipsBtn());
         this.addComponent(searchingLayoutContainer);
         searchingLayoutContainer.setVisability(true);
 
@@ -185,7 +185,7 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
         idProteinsDataLayout.setSpacing(true);
         idProteinsDataLayout.setWidthUndefined();
 
-        idProteinsDataLayoutContainer = new HideOnClickLayout("Proteins Identification Data", idProteinsDataLayout, null, Alignment.MIDDLE_LEFT, null);
+        idProteinsDataLayoutContainer = new HideOnClickLayout("Proteins Identification Data", idProteinsDataLayout, null, Alignment.MIDDLE_LEFT, null,null);
         searchingResultsLayout.addComponent(idProteinsDataLayoutContainer);
         idProteinsDataLayoutContainer.setVisability(true);
         idProteinsDataLayoutContainer.setVisible(false);
@@ -200,7 +200,7 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
         quantProteinsDataLayout = new VerticalLayout();
         quantProteinsDataLayout.setSpacing(true);
         quantProteinsDataLayout.setWidthUndefined();
-        quantProteinsDataLayoutContainer = new HideOnClickLayout("Proteins Quantitative Data", quantProteinsDataLayout, null, Alignment.MIDDLE_LEFT, null);
+        quantProteinsDataLayoutContainer = new HideOnClickLayout("Proteins Quantitative Data", quantProteinsDataLayout, null, Alignment.MIDDLE_LEFT, null,null);
         searchingResultsLayout.addComponent(quantProteinsDataLayoutContainer);
         quantProteinsDataLayoutContainer.setVisability(true);
         quantProteinsDataLayoutContainer.setVisible(false);
