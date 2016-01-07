@@ -10,7 +10,8 @@ import com.quantcsf.QuantDataHandler;
 import com.quantcsf.beans.QuantDatasetObject;
 import com.quantcsf.beans.QuantPeptide;
 import com.quantcsf.beans.QuantProtein;
-import com.sun.javafx.scene.control.skin.VirtualFlow;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +19,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 /*
  * @author Yehia Farag
  */
@@ -71,19 +76,23 @@ public class Handler {
 
 //        2.store full data
         dal.storeCombinedQuantProtTable(filteredQuantProteinsList);
+        System.out.println("done with full table");
 //        3.update dataset table
         dal.storeQuantDatasets();
+        System.out.println("done with ds table");
         //handel quant peptideProtein     
         Set<QuantDatasetObject> datasetsList = dal.getQuantDatasetListObject();
         List<QuantProtein> updatedQuantProtList = this.handleQuantData(datasetsList, filteredQuantProteinsList);
 //        //store quant protiens
         Object[] maps = dal.storeQuantitiveProteins(updatedQuantProtList);
+        System.out.println("done with protein table");
         Map<String, Integer> peptideKeyToProteinIndexMap = (Map<String, Integer>) maps[0];
         Map<Integer, Integer> protKeyToDsIndexMap = (Map<Integer, Integer>) maps[1];
 
         List<QuantProtein> peptidesList = handelQuantPeptides(filteredQuantProteinsList, peptideKeyToProteinIndexMap, protKeyToDsIndexMap);
         //store quant peptides
         dal.storeQuantitivePeptides(peptidesList);
+        System.out.println("done with peptides table");
 
         return true;
     }
@@ -119,33 +128,152 @@ public class Handler {
 //    }
     private List<QuantProtein> filterQuantProteins(List<QuantProtein> qProtList) {
         Map<String, QuantProtein> updatedFilteredProteinsList = new HashMap<String, QuantProtein>();
+        Map<String, QuantProtein> updatedFullFilteredProteinsList = new HashMap<String, QuantProtein>();
         List<QuantProtein> updatedFilteredList = new ArrayList<QuantProtein>();
         Set<String> cleaningSet = new HashSet<String>();
+        List<QuantProtein> astridList = new ArrayList<QuantProtein>();
         for (QuantProtein quantProt : qProtList) {
             if (quantProt.isPeptideProtein()) {
                 continue;
             }
             String key = quantProt.getPumedID() + "_" + quantProt.getStudyKey() + "_" + quantProt.getQuantifiedProteinsNumber() + "_" + quantProt.getUniprotAccession() + "_" + quantProt.getPublicationAccNumber() + "_" + quantProt.getPublicationProteinName() + "_" + quantProt.getRawDataAvailable() + "_" + quantProt.getTypeOfStudy() + "_" + quantProt.getSampleType() + "_" + quantProt.getPatientsGroupINumber() + "_" + quantProt.getPatientsGroupIINumber() + "_" + quantProt.getPatientGrIComment() + "_" + quantProt.getPatientGrIIComment() + "_" + quantProt.getPatientGroupI() + "_" + quantProt.getPatientGroupII() + "_" + quantProt.getPatientSubGroupI() + "_" + quantProt.getPatientSubGroupII() + "_" + quantProt.getNormalizationStrategy() + "_" + quantProt.getTechnology() + "_" + quantProt.getAnalyticalApproach() + "_" + quantProt.getAnalyticalMethod() + "_" + quantProt.getShotgunOrTargetedQquant() + "_" + quantProt.getEnzyme() + "_" + quantProt.getQuantificationBasis() + "_" + quantProt.getDiseaseCategory();
+            String key2 = quantProt.getPumedID() + "_" + quantProt.getStudyKey() + "_" + quantProt.getQuantifiedProteinsNumber() + "_" + quantProt.getUniprotAccession() + "_" + quantProt.getPublicationAccNumber() + "_" + quantProt.getPublicationProteinName() + "_" + quantProt.getRawDataAvailable() + "_" + quantProt.getTypeOfStudy() + "_" + quantProt.getSampleType() + "_" + quantProt.getPatientsGroupINumber() + "_" + quantProt.getPatientsGroupIINumber() + "_" + quantProt.getPatientGrIComment() + "_" + quantProt.getPatientGrIIComment() + "_" + quantProt.getPatientGroupI() + "_" + quantProt.getPatientGroupII() + "_" + quantProt.getPatientSubGroupI() + "_" + quantProt.getPatientSubGroupII() + "_" + quantProt.getNormalizationStrategy() + "_" + quantProt.getTechnology() + "_" + quantProt.getAnalyticalApproach() + "_" + quantProt.getAnalyticalMethod() + "_" + quantProt.getShotgunOrTargetedQquant() + "_" + quantProt.getEnzyme() + "_" + quantProt.getDiseaseCategory();
+
             if (!updatedFilteredProteinsList.containsKey(key) && !cleaningSet.contains(key)) {
                 updatedFilteredProteinsList.put(key, quantProt);
+                updatedFullFilteredProteinsList.put(key2, quantProt);
 
             } else {
+                astridList.add(quantProt);
                 updatedFilteredProteinsList.remove(key);
+                updatedFullFilteredProteinsList.remove(key2);
+
                 cleaningSet.add(key);
 
             }
 
         }
+
         for (QuantProtein quantProt : qProtList) {
             if (quantProt.isPeptideProtein()) {
-                String key = quantProt.getPumedID() + "_" + quantProt.getStudyKey() + "_" + quantProt.getQuantifiedProteinsNumber() + "_" + quantProt.getUniprotAccession() + "_" + quantProt.getPublicationAccNumber() + "_" + quantProt.getPublicationProteinName() + "_" + quantProt.getRawDataAvailable() + "_" + quantProt.getTypeOfStudy() + "_" + quantProt.getSampleType() + "_" + quantProt.getPatientsGroupINumber() + "_" + quantProt.getPatientsGroupIINumber() + "_" + quantProt.getPatientGrIComment() + "_" + quantProt.getPatientGrIIComment() + "_" + quantProt.getPatientGroupI() + "_" + quantProt.getPatientGroupII() + "_" + quantProt.getPatientSubGroupI() + "_" + quantProt.getPatientSubGroupII() + "_" + quantProt.getNormalizationStrategy() + "_" + quantProt.getTechnology() + "_" + quantProt.getAnalyticalApproach() + "_" + quantProt.getAnalyticalMethod() + "_" + quantProt.getShotgunOrTargetedQquant() + "_" + quantProt.getEnzyme() + "_" + quantProt.getQuantificationBasis() + "_" + quantProt.getDiseaseCategory();
-                if (updatedFilteredProteinsList.containsKey(key)) {
+                String key = quantProt.getPumedID() + "_" + quantProt.getStudyKey() + "_" + quantProt.getQuantifiedProteinsNumber() + "_" + quantProt.getUniprotAccession() + "_" + quantProt.getPublicationAccNumber() + "_" + quantProt.getPublicationProteinName() + "_" + quantProt.getRawDataAvailable() + "_" + quantProt.getTypeOfStudy() + "_" + quantProt.getSampleType() + "_" + quantProt.getPatientsGroupINumber() + "_" + quantProt.getPatientsGroupIINumber() + "_" + quantProt.getPatientGrIComment() + "_" + quantProt.getPatientGrIIComment() + "_" + quantProt.getPatientGroupI() + "_" + quantProt.getPatientGroupII() + "_" + quantProt.getPatientSubGroupI() + "_" + quantProt.getPatientSubGroupII() + "_" + quantProt.getNormalizationStrategy() + "_" + quantProt.getTechnology() + "_" + quantProt.getAnalyticalApproach() + "_" + quantProt.getAnalyticalMethod() + "_" + quantProt.getShotgunOrTargetedQquant() + "_" + quantProt.getEnzyme() + "_" + quantProt.getDiseaseCategory();
+                if (updatedFullFilteredProteinsList.containsKey(key)) {                   
                     updatedFilteredList.add(quantProt);
+
+                } else {
+                    astridList.add(quantProt);
 
                 }
             }
         }
         updatedFilteredList.addAll(updatedFilteredProteinsList.values());
+        System.out.println("the diffrent in size is " + (qProtList.size() - updatedFilteredList.size()));
+        File xlsText = new File("D:\\", "CSF-PR-V2 - Ignored Proteins List.xls");// "CSF-PR - " + datasetName + " - All - " + dataType + "- Peptides" + ".csv");
+
+        try {
+            xlsText.createNewFile();
+
+            FileOutputStream fileOut = new FileOutputStream(xlsText);
+            HSSFWorkbook workbook = new HSSFWorkbook();
+            HSSFSheet worksheet = workbook.createSheet();
+            //title
+            String title = "CSF-PR-V2 - Ignored Proteins List";
+            HSSFRow titleRow = worksheet.createRow(0);
+            HSSFCell cellA1 = titleRow.createCell(0);
+            cellA1.setCellValue(title);
+            //header
+            String header = " PumedID,Study key,# Quantified proteins,acc nu. uniprot/Nextprot,Protein name from uniprot,acc number from publication,Protein name from publication,Protein or Peptide";
+            String[] headerArr = header.split(",");
+            HSSFRow headerRow = worksheet.createRow(1);
+            int index = 0;
+            for (String str : headerArr) {
+                HSSFCell cell = headerRow.createCell(index);
+                cell.setCellValue(str);
+                index++;
+
+            }
+            //data
+
+            index = 0;
+            int counter = 0;
+            for (QuantProtein quantProt : astridList) {
+                if (index > 65533) {
+                    worksheet = workbook.createSheet();
+                    index = 0;
+                    HSSFRow headerRow2 = worksheet.createRow(0);
+                    for (String str : headerArr) {
+                        HSSFCell cell = headerRow2.createCell(index);
+                        cell.setCellValue(str);
+                        index++;
+                    }
+                    index = -1;
+                }
+                HSSFRow peptideRow = worksheet.createRow((int) index + 2);
+                HSSFCell cell0 = peptideRow.createCell(counter++);
+                cell0.setCellValue(index);
+                HSSFCell cell1 = peptideRow.createCell(1);
+                cell1.setCellValue(quantProt.getPumedID());
+                HSSFCell cell2 = peptideRow.createCell(2);
+                cell2.setCellValue(quantProt.getStudyKey());
+                HSSFCell cell3 = peptideRow.createCell(3);
+                cell3.setCellValue(quantProt.getQuantifiedProteinsNumber());
+                HSSFCell cell4 = peptideRow.createCell(4);
+                cell4.setCellValue(quantProt.getUniprotAccession());
+                HSSFCell cell5 = peptideRow.createCell(5);
+                cell5.setCellValue(quantProt.getUniprotProteinName());
+                HSSFCell cell6 = peptideRow.createCell(6);
+                cell6.setCellValue(quantProt.getPublicationAccNumber());
+                HSSFCell cell7 = peptideRow.createCell(7);
+                cell7.setCellValue(quantProt.getPublicationProteinName());
+                HSSFCell cell8 = peptideRow.createCell(8);
+                cell8.setCellValue(quantProt.isPeptideProtein());
+//                HSSFCell cell9 = peptideRow.createCell(9);
+//                cell9.setCellValue(pb.getNumberOfValidatedSpectra());
+//                HSSFCell cell10 = peptideRow.createCell(10);
+//                cell10.setCellValue(pb.getOtherProteins().replaceAll(",", ";"));
+//                HSSFCell cell11 = peptideRow.createCell(11);
+//                cell11.setCellValue(pb.getOtherProteinDescriptions().replaceAll(",", ";"));
+//                HSSFCell cell12 = peptideRow.createCell(12);
+//                cell12.setCellValue(pb.getVariableModification().replaceAll(",", ";"));
+//                HSSFCell cell13 = peptideRow.createCell(13);
+//                cell13.setCellValue(pb.getLocationConfidence().replaceAll(",", ";"));
+//                HSSFCell cell14 = peptideRow.createCell(14);
+//                cell14.setCellValue(pb.getPrecursorCharges().replaceAll(",", ";"));
+//                HSSFCell cell15 = peptideRow.createCell(15);
+//                cell15.setCellValue(pb.isEnzymatic());
+//                HSSFCell cell16 = peptideRow.createCell(16);
+//                cell16.setCellValue(pb.getSequenceTagged());
+//                HSSFCell cell17 = peptideRow.createCell(17);
+//                cell17.setCellValue(pb.isDeamidationAndGlycopattern());
+//                HSSFCell cell18 = peptideRow.createCell(18);
+//                if (pb.getGlycopatternPositions() != null) {
+//                    cell18.setCellValue(pb.getGlycopatternPositions());
+//                } else {
+//                    cell18.setCellValue("");
+//                }
+//                int x = (int) pb.getConfidence();
+//                HSSFCell cell19 = peptideRow.createCell(19);
+//                cell19.setCellValue(x);
+//
+//                HSSFCell cell20 = peptideRow.createCell(20);
+//
+//                if (pb.getValidated() == 1.0) {
+//                    cell20.setCellValue("TRUE");
+//                } else {
+//                    cell20.setCellValue("FALSE");
+//                }
+                index++;
+
+            }
+
+            workbook.write(fileOut);
+//            fileOut.flush();
+            fileOut.close();
+        } catch (Exception exp) {
+            exp.printStackTrace();
+            System.err.println(exp.getMessage());
+        }
+
         return updatedFilteredList;
     }
 
@@ -324,9 +452,9 @@ public class Handler {
                     continue;
                 }
 
-                if (!ds.getQuantBasisComment().equalsIgnoreCase(qp.getQuantBasisComment())) {
-                    continue;
-                }
+//                if (!ds.getQuantBasisComment().equalsIgnoreCase(qp.getQuantBasisComment())) {
+//                    continue;
+//                }
                 if (!ds.getPatientsGroup1().equalsIgnoreCase(qp.getPatientGroupI())) {
 
                     continue;

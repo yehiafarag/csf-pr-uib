@@ -1915,8 +1915,8 @@ public class DB implements Serializable {
 
     public void storeQuantDatasets() {
 
-        String selectPro = "SELECT DISTINCT  `author` ,`disease_category` ,`year` ,`pumed_id` , `study_key`, `quantified_proteins_number` , `identified_proteins_number` ,`raw_data_available` ,  `type_of_study` ,  `sample_type` ,  `sample_matching` ,  `normalization_strategy` ,  `technology` ,  `analytical_approach`  ,  `analytical_method`,  `enzyme` ,  `shotgun_targeted` ,  `quantification_basis` ,  `quant_basis_comment`  ,  `patients_group_i_number` ,  `patients_group_ii_number` ,  `patient_group_i` ,  `patient_gr_i_comment` ,  `patient_sub_group_i` ,  `patient_group_ii` ,  `patient_sub_group_ii` , `patient_gr_ii_comment` \n"
-                + "FROM  `quant_full_table` ";
+        String selectPro = "SELECT DISTINCT  `author` ,`disease_category` ,`year` ,`pumed_id` , `study_key`, `quantified_proteins_number` , `identified_proteins_number` ,`raw_data_available` ,  `type_of_study` ,  `sample_type` ,  `sample_matching` ,  `normalization_strategy` ,  `technology` ,  `analytical_approach`  ,  `analytical_method`,  `enzyme` ,  `shotgun_targeted` ,  `quantification_basis` ,   `patients_group_i_number` ,  `patients_group_ii_number` ,  `patient_group_i` ,  `patient_gr_i_comment` ,  `patient_sub_group_i` ,  `patient_group_ii` ,  `patient_sub_group_ii` , `patient_gr_ii_comment` \n"
+                + "FROM  `quant_full_table` WHERE `peptide_prot` = 'false';" ;
 
         PreparedStatement selectProStat;
 //        List<QuantProtein> quantProtResultList = null;
@@ -1946,7 +1946,6 @@ public class DB implements Serializable {
                 pb.setEnzyme(rs.getString("enzyme"));
                 pb.setShotgunTargeted(rs.getString("shotgun_targeted"));
                 pb.setQuantificationBasis(rs.getString("quantification_basis"));
-                pb.setQuantBasisComment(rs.getString("quant_basis_comment"));
                 pb.setPatientsGroup1Number(rs.getInt("patients_group_i_number"));
                 pb.setPatientsGroup2Number(rs.getInt("patients_group_ii_number"));
                 pb.setIdentifiedProteinsNumber(rs.getInt("identified_proteins_number"));
@@ -1978,10 +1977,9 @@ public class DB implements Serializable {
                     + "`enzyme` ,\n"
                     + "`shotgun_targeted` ,\n"
                     + "`quantification_basis` ,\n"
-                    + "`quant_basis_comment` ,\n"
                     + "`patients_group_i_number` ,\n"
                     + "`patients_group_ii_number` ,  `normalization_strategy`"
-                    + ",`patient_group_i`,`patient_gr_i_comment`,`patient_sub_group_i`,`patient_group_ii`,`patient_gr_ii_comment`,`patient_sub_group_ii`,`study_key`,`analytical_method`,`index`,`disease_category`)VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                    + ",`patient_group_i`,`patient_gr_i_comment`,`patient_sub_group_i`,`patient_group_ii`,`patient_gr_ii_comment`,`patient_sub_group_ii`,`study_key`,`analytical_method`,`index`,`disease_category`)VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
             PreparedStatement insertPbublicationStat;
 
@@ -2011,29 +2009,26 @@ public class DB implements Serializable {
                 insertPbublicationStat.setString(13, pb.getShotgunTargeted());
 
                 insertPbublicationStat.setString(14, pb.getQuantificationBasis());
-                if (pb.getQuantBasisComment() == null) {
-                    pb.setQuantBasisComment("Not Available");
-                }
-                insertPbublicationStat.setString(15, pb.getQuantBasisComment());
-                insertPbublicationStat.setInt(16, pb.getPatientsGroup1Number());
-                insertPbublicationStat.setInt(17, pb.getPatientsGroup2Number());
-                insertPbublicationStat.setString(18, pb.getNormalizationStrategy());
+                
+                insertPbublicationStat.setInt(15, pb.getPatientsGroup1Number());
+                insertPbublicationStat.setInt(16, pb.getPatientsGroup2Number());
+                insertPbublicationStat.setString(17, pb.getNormalizationStrategy());
 
-                insertPbublicationStat.setString(19, pb.getPatientsGroup1());
+                insertPbublicationStat.setString(18, pb.getPatientsGroup1());
 
-                insertPbublicationStat.setString(20, pb.getPatientsGroup1Comm());
+                insertPbublicationStat.setString(19, pb.getPatientsGroup1Comm());
 
-                insertPbublicationStat.setString(21, pb.getPatientsSubGroup1());
+                insertPbublicationStat.setString(20, pb.getPatientsSubGroup1());
 
-                insertPbublicationStat.setString(22, pb.getPatientsGroup2());
+                insertPbublicationStat.setString(21, pb.getPatientsGroup2());
 
-                insertPbublicationStat.setString(23, pb.getPatientsGroup2Comm());
+                insertPbublicationStat.setString(22, pb.getPatientsGroup2Comm());
 
-                insertPbublicationStat.setString(24, pb.getPatientsSubGroup2());
-                insertPbublicationStat.setString(25, pb.getStudyKey());
-                insertPbublicationStat.setString(26, pb.getAnalyticalMethod());
-                insertPbublicationStat.setInt(27, counter++);
-                insertPbublicationStat.setString(28, pb.getDiseaseCategory());
+                insertPbublicationStat.setString(23, pb.getPatientsSubGroup2());
+                insertPbublicationStat.setString(24, pb.getStudyKey());
+                insertPbublicationStat.setString(25, pb.getAnalyticalMethod());
+                insertPbublicationStat.setInt(26, counter++);
+                insertPbublicationStat.setString(27, pb.getDiseaseCategory());
                 insertPbublicationStat.executeUpdate();
                 insertPbublicationStat.clearParameters();
                 insertPbublicationStat.close();
@@ -2053,6 +2048,9 @@ public class DB implements Serializable {
 
         } catch (SQLException e) {
             System.err.println("at error" + e.getLocalizedMessage());
+        }
+        catch(Exception e){
+            e.printStackTrace();
         }
 
     }
