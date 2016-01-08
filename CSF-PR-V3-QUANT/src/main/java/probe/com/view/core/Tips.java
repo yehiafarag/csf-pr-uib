@@ -34,13 +34,18 @@ public class Tips extends VerticalLayout {
         notification.setPosition(Position.BOTTOM_LEFT);
 
     }
+    private boolean force = true;
 
     protected void showTip() {
-        if (this.isConnectorEnabled()) {
+        System.out.println("at show tip");
+        if (this.isConnectorEnabled() || force) {
+            force = false;
             notification.setDelayMsec(0);
             notification.show(Page.getCurrent());
-            notification.setDelayMsec(20000);
-            UI.getCurrent().scrollIntoView(this);
+            notification.setDelayMsec(15000);
+            if (this.isConnectorEnabled()) {
+                UI.getCurrent().scrollIntoView(this);
+            }
         }
     }
 

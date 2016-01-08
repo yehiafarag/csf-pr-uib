@@ -87,7 +87,8 @@ public class QuantProtiensSearchingResultsLayout extends VerticalLayout {
                 resizedCounter++;
             }
         });
-        CSFPR_Handler.getTipsGenerator().showTips();
+         CSFPR_Handler.getTipsGenerator().showTips();
+       
 //        heatmapFilter.popupSortAndSelectPanel();
     }
 

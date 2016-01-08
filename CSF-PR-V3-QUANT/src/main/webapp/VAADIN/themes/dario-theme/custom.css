@@ -2066,24 +2066,91 @@ resetlabelbtn p{
 .tippopup{
     background: url(img/tipbubble.png) no-repeat !important; 
     background-size:100% 100%  !important;  
-   
+
     height:50px;
     color:black;    
     padding-left:10px !important;
     padding-top:10px !important;
     opacity: 1;
     font-size:13px !important;
-     padding-right: 20px !important;
+    padding-right: 20px !important;
 
-    
+
 }
 .tippopup b{
- padding: 20px !important;
-font-size:18px !important;
-font-weight:bold !important;
+    padding: 20px !important;
+    font-size:18px !important;
+    font-weight:bold !important;
 
 }
 .tippopup{
     margin-left:180px !important;
     margin-bottom:200px !important;
+}
+
+.v-caption-diseasegrouplist{
+    font-size:12px ;
+    font-family:Verdana;
+    font-weight:bold;
+    margin-bottom:5px;
+    padding-left:3px;
+
+}
+.diseasegrouplist .v-select-select{
+    border-radius:5px;
+    font-family:Verdana;
+
+}
+.diseasegrouplist button{
+
+    border-radius:5px;
+    font-weight:bold;
+    height:24px;
+
+}
+.diseasegroupselectionresult div{
+    font-size:12px !important;
+    font-family:Verdana;
+    font-weight:bold;
+
+
+
+}
+.v-filterselect-button{
+    cursor:pointer;
+}
+.v-filterselect {
+    /* border-radius: 4px !important; */
+    /* white-space: nowrap; */
+}
+
+.diseasegrouplist .v-filterselect-button{
+    cursor: pointer;
+    top: 0px !important;
+    right: 0px !important;
+    bottom: 0px !important;
+    height:22px !important;
+    border: 1px solid lightgray !important;
+    color: #a3a3a3;
+    border-radius:0px 4px 4px 0px !important;
+    background-color: whitesmoke !important;
+    background-image:  url(img/downarrlight.png)  !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+}
+.diseasegrouplist .v-filterselect-button:hover{
+    background-image:  url(img/downarrdark.png)  !important;
+    
+}
+.diseasegrouplist .v-filterselect-input {
+ border: 1px solid lightgray !important;
+ border-radius:4px 0px 0px 4px !important;
+ background:white !important;
+ padding-left:5px !important;
+    
+
+}
+.v-filterselect-diseasegrouplist{
+ border: none !important;
+ background:none;
 }

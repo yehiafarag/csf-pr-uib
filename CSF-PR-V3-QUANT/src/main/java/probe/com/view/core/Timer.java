@@ -6,11 +6,6 @@
 package probe.com.view.core;
 
 import com.nextfour.datetimelabel.DateTimeLabel;
-import com.nextfour.datetimelabel.client.datetimelabel.DateTimeLabelState;
-import com.vaadin.data.Property;
-import com.vaadin.server.Resource;
-import com.vaadin.shared.communication.ServerRpc;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
 /**

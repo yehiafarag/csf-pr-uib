@@ -14,6 +14,7 @@ import com.vaadin.ui.themes.Runo;
 import java.io.Serializable;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.view.body.ProteinsSearchingLayout;
+import probe.com.view.body.QuantCompareDataLayout;
 
 /**
  *
@@ -26,7 +27,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
     private final Button adminIcon;
     private TabSheet.Tab homeTab, adminTab;//tabs for Experiments Editor,Proteins, Search
     private final TabSheet mainTabSheet;//tab sheet for first menu (Experiments Editor,Proteins, Search)
-    private VerticalLayout searchTabLayout, adminLayout, identificationDatasetsLayout, datasetsOverviewLayout;
+    private VerticalLayout searchTabLayout, adminLayout, identificationDatasetsLayout, datasetsOverviewLayout, compareLayout;
     private WelcomeLayout welcomeLayout;
     private QuantDatasetsOverviewLayout datasetOverviewTabLayout;
     private final CSFPRHandler handler;
@@ -42,15 +43,13 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
     public Body(CSFPRHandler handler) {
         this.setWidth("100%");
         this.handler = handler;
-
         mainTabSheet = new TabSheet();
         this.addComponent(mainTabSheet);
         mainTabSheet.setHeight("100%");
         mainTabSheet.setWidth("100%");
         adminIcon = this.initAdminIcoBtn();
         initBodyLayout(handler);
-        
-        
+
 //        ProcessBuilder pb = new ProcessBuilder("C:\\Program Files\\Java\\jdk1.8.0_45\\bin\\java.exe", "-jar", "CSFPR.Utility-0.2.jar");
 //        pb.directory(new File("D:\\csf-pr-runing"));
 //        try {
@@ -63,12 +62,11 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
     /**
      * initialize body components layout
      */
-    private void initBodyLayout(CSFPRHandler handler) {
+    private void initBodyLayout(CSFPRHandler CSFPR_Handler) {
 //      Tab 1 content home page 
-        welcomeLayout = new WelcomeLayout(adminIcon, handler);
+        welcomeLayout = new WelcomeLayout(adminIcon, CSFPR_Handler);
         welcomeLayout.setWidth("100%");
         homeTab = mainTabSheet.addTab(welcomeLayout, "Home", null);
-        
 
 //      Tab 2 content quant dataset overview
         datasetsOverviewLayout = new VerticalLayout();
@@ -85,7 +83,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
         identificationDatasetsLayout = new VerticalLayout();
         identificationDatasetsLayout.setMargin(true);
 //        identificationDatasetsLayout.setHeight("100%");
-         identificationDatasetsLayout.setHeight(height + "px");
+        identificationDatasetsLayout.setHeight(height + "px");
 //        identificationDatasetsLayout.setPrimaryStyleName("scrollable");
         mainTabSheet.addTab(this.identificationDatasetsLayout, "Identification Datasets Overview");
 
@@ -93,10 +91,25 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
         searchTabLayout = new VerticalLayout();
         searchTabLayout.setMargin(true);
 //        searchTabLayout.setPrimaryStyleName("scrollable");
-        ProteinsSearchingLayout searchingLayout = new ProteinsSearchingLayout(handler, mainTabSheet);
+        
+        
+        
+        ProteinsSearchingLayout searchingLayout = new ProteinsSearchingLayout(CSFPR_Handler, mainTabSheet);
         this.searchTabLayout.addComponent(searchingLayout);
-         searchTabLayout.setHeight(height + "px");
+        searchTabLayout.setHeight(height + "px");
         TabSheet.Tab serchingTab = mainTabSheet.addTab(this.searchTabLayout, "Search");
+
+        
+        compareLayout = new VerticalLayout();
+        compareLayout.setMargin(true);
+        compareLayout.setHeight(height + "px");
+        compareLayout.setWidth("100%");
+        compareLayout.setPrimaryStyleName("scrollable");
+        mainTabSheet.addTab(compareLayout, "Compare Own Data");
+        
+        
+        QuantCompareDataLayout quantCompareDataLayout = new QuantCompareDataLayout(CSFPR_Handler);
+        compareLayout.addComponent(quantCompareDataLayout);
 
 //      Tab 5content hidden tab (login form)
         adminLayout = new VerticalLayout();
@@ -104,7 +117,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
         adminLayout.setHeight("100%");
         adminLayout.setHeight(height + "px");
 //        adminLayout.setPrimaryStyleName("scrollable");
-        adminLayout.addComponent(new AdminLayout(handler));
+        adminLayout.addComponent(new AdminLayout(CSFPR_Handler));
         adminTab = mainTabSheet.addTab(adminLayout, "Dataset Editor (Require Sign In)", null);
 
         mainTabSheet.addSelectedTabChangeListener(this);
