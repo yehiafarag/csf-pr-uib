@@ -6,6 +6,7 @@
 package probe.com.view.body;
 
 import com.vaadin.data.Property;
+import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.Page;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -22,13 +23,16 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import probe.com.dal.Query;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.model.beans.quant.QuantDatasetInitialInformationObject;
 import probe.com.model.beans.quant.QuantDatasetObject;
-import probe.com.view.core.HideOnClickLayout;
+import probe.com.model.beans.quant.QuantProtein;
+import probe.com.view.body.quantcompare.QuantCompareDataViewLayout;
 
 /**
  *
@@ -40,13 +44,39 @@ import probe.com.view.core.HideOnClickLayout;
 public class QuantCompareDataLayout extends VerticalLayout implements Button.ClickListener {
 
     private final CSFPRHandler CSFPR_Handler;
-    private final HideOnClickLayout selectDiseaseGroupsContainer, proteinsDataCaptureLayout;
+    private final VerticalLayout selectDiseaseGroupsContainer, proteinsDataCaptureLayout;
     private final ComboBox diseaseGroupsListA = new ComboBox("Disease Groups A");
     private final ComboBox diseaseGroupsListB = new ComboBox("Disease Groups B");
     private final Set<String> diseaseGroupNames;
     private final TextArea highTextArea = new TextArea();
     private final TextArea lowTextArea = new TextArea();
     private final TextArea stableTextArea = new TextArea();
+    private Button nextBtn;
+    private final String highAcc = "P00450\n"
+            + "P02774\n"
+            + "P02647\n"
+            + "P36222\n"
+            + "P00747\n"
+            + "P04004\n"
+            + "P06727\n"
+            + "P01876\n"
+            + "P01834\n"
+            + "P01871\n"
+            + "P01842\n"
+            + "P01011\n"
+            + "P27169\n"
+            + "P08185\n"
+            + "P00738\n"
+            + "P05546\n"
+            + "P08697";
+
+    private final String stableAcc = "";
+    private final String lowAcc = "O75326\n"
+            + "Q96KN2\n"
+            + "Q96GW7\n"
+            + "P13521\n"
+            + "P07602\n"
+            + "P04216";
 
     public QuantCompareDataLayout(CSFPRHandler CSFPR_Handler) {
         this.setWidth("100%");
@@ -64,52 +94,55 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
             }
 
         }
+        int width = 400;
+        if (Page.getCurrent().getBrowserWindowWidth() < 800) {
+            width = Page.getCurrent().getBrowserWindowWidth() / 2;
+        }
 
         //select or enter new disease groups layout 
-        selectDiseaseGroupsContainer = initSelectEnterDatasetDiseaseGroups();
-        selectDiseaseGroupsContainer.setVisability(true);
+        selectDiseaseGroupsContainer = initSelectEnterDatasetDiseaseGroups(width);
+//        selectDiseaseGroupsContainer.setVisability(true);
         selectDiseaseGroupsContainer.setReadOnly(true);
         this.addComponent(selectDiseaseGroupsContainer);
 
-        proteinsDataCaptureLayout = initProteinsDataCapture();
+        proteinsDataCaptureLayout = initProteinsDataCapture(width);
         proteinsDataCaptureLayout.setEnabled(false);
         this.addComponent(proteinsDataCaptureLayout);
         this.resetLists();
 
     }
 
-    private HideOnClickLayout initSelectEnterDatasetDiseaseGroups() {
+    private VerticalLayout initSelectEnterDatasetDiseaseGroups(int width) {
         VerticalLayout selectDiseaseGroupsMainLayout = new VerticalLayout();
-        VerticalLayout miniSelectDiseaseGroupsLayout = new VerticalLayout();
-        miniSelectDiseaseGroupsLayout.setStyleName("diseasegroupselectionresult");
-        final Label miniselectionResultsLabel = new Label();
-        miniSelectDiseaseGroupsLayout.addComponent(miniselectionResultsLabel);
-        miniselectionResultsLabel.setValue("     (Group A / Group B)");
+        selectDiseaseGroupsMainLayout.setSpacing(true);
+        selectDiseaseGroupsMainLayout.setMargin(true);
+//        VerticalLayout miniSelectDiseaseGroupsLayout = new VerticalLayout();
+//        miniSelectDiseaseGroupsLayout.setStyleName("diseasegroupselectionresult");
+
+        Label titleLabel = new Label("1. Select/Enter Dataset Disease Groups");
+        titleLabel.setContentMode(ContentMode.HTML);
+        titleLabel.setStyleName("normalheader");
+        titleLabel.setHeight("20px");
+        selectDiseaseGroupsMainLayout.addComponent(titleLabel);
+        selectDiseaseGroupsMainLayout.setComponentAlignment(titleLabel, Alignment.TOP_LEFT);
 
         HorizontalLayout selectionResultsContainer = new HorizontalLayout();
         selectionResultsContainer.setStyleName("diseasegroupselectionresult");
-        selectDiseaseGroupsMainLayout.setSpacing(true);
-        selectDiseaseGroupsMainLayout.setMargin(true);
 
-        int width = 400;
-        if (Page.getCurrent().getBrowserWindowWidth() < 800) {
-            width = Page.getCurrent().getBrowserWindowWidth() / 2;
-        }
         String containerWidth = ((width * 2) + 10) + "px";
         selectionResultsContainer.setWidth(containerWidth);
         selectDiseaseGroupsMainLayout.setWidth(containerWidth);
 
         final Label selectionResultsLabel = new Label();
         selectionResultsContainer.addComponent(selectionResultsLabel);
-        selectionResultsLabel.setValue("Group A / Group B");
+        selectionResultsLabel.setValue("Selection:   Group A / Group B");
 
         Property.ValueChangeListener diseaseGroupsListListener = new Property.ValueChangeListener() {
 
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
                 if (diseaseGroupsListA.getValue() != null && diseaseGroupsListB.getValue() != null) {
-                    selectionResultsLabel.setValue(diseaseGroupsListA.getValue().toString() + " / " + diseaseGroupsListB.getValue().toString());
-                    miniselectionResultsLabel.setValue("     (" + diseaseGroupsListA.getValue().toString() + " / " + diseaseGroupsListB.getValue().toString() + ")");
+                    selectionResultsLabel.setValue("Selection:   " + diseaseGroupsListA.getValue().toString() + " / " + diseaseGroupsListB.getValue().toString());
                 }
             }
         };
@@ -118,21 +151,16 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
         selectDiseaseGroupsMainLayout.addComponent(diseaseGroupsListsContainer);
         diseaseGroupsListsContainer.setWidth(containerWidth);
 
-//        diseaseGroupsListA.setRows(20);
         diseaseGroupsListA.setStyleName("diseasegrouplist");
         diseaseGroupsListA.setNullSelectionAllowed(false);
-
         diseaseGroupsListA.setImmediate(true);
-//        diseaseGroupsListA.setMultiSelect(false);
         diseaseGroupsListA.setNewItemsAllowed(true);
         diseaseGroupsListA.setWidth(width, Unit.PIXELS);
 
-//        diseaseGroupsListB.setRows(20);
         diseaseGroupsListB.setStyleName("diseasegrouplist");
         diseaseGroupsListB.setNullSelectionAllowed(false);
 
         diseaseGroupsListB.setImmediate(true);
-//        diseaseGroupsListB.setMultiSelect(false);
         diseaseGroupsListB.setNewItemsAllowed(true);
         diseaseGroupsListB.setWidth(width, Unit.PIXELS);
 
@@ -145,7 +173,7 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
         diseaseGroupsListA.addValueChangeListener(diseaseGroupsListListener);
         diseaseGroupsListB.addValueChangeListener(diseaseGroupsListListener);
 
-        Button nextBtn = new Button("Next >>");
+        nextBtn = new Button("Next >>");
         nextBtn.setStyleName(Reindeer.BUTTON_SMALL);
         selectionResultsContainer.addComponent(nextBtn);
         nextBtn.setId("diseaseGroupSelectionBtn");
@@ -166,38 +194,64 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
             @Override
             public void addNewItem(String newItemCaption) {
                 diseaseGroupsListB.addItem(newItemCaption);
-                 diseaseGroupsListB.select(newItemCaption);
+                diseaseGroupsListB.select(newItemCaption);
             }
         });
 
-        return new HideOnClickLayout("Select/Enter Dataset Disease Groups", selectDiseaseGroupsMainLayout, miniSelectDiseaseGroupsLayout, Alignment.TOP_LEFT, null, null);
+        return selectDiseaseGroupsMainLayout;//new HideOnClickLayout("Select/Enter Dataset Disease Groups", proteinsDataCapturingMainLayout, miniSelectDiseaseGroupsLayout, Alignment.TOP_LEFT, null, null);
 
     }
 
-    private HideOnClickLayout initProteinsDataCapture() {
-        VerticalLayout selectDiseaseGroupsMainLayout = new VerticalLayout();
-        selectDiseaseGroupsMainLayout.setWidth("600px");
+    private VerticalLayout initProteinsDataCapture(int width) {
+        VerticalLayout proteinsDataCapturingMainLayout = new VerticalLayout();
+        proteinsDataCapturingMainLayout.setSpacing(true);
+        proteinsDataCapturingMainLayout.setMargin(true);
+        String containerWidth = ((width * 2) + 10) + "px";
+        proteinsDataCapturingMainLayout.setWidth(containerWidth);
+        proteinsDataCapturingMainLayout.setSpacing(true);
+
+        Label titleLabel = new Label("2. Insert Uniprot Proteins Accessions");
+        titleLabel.setContentMode(ContentMode.HTML);
+        titleLabel.setStyleName("normalheader");
+        titleLabel.setHeight("20px");
+        proteinsDataCapturingMainLayout.addComponent(titleLabel);
+        proteinsDataCapturingMainLayout.setComponentAlignment(titleLabel, Alignment.TOP_LEFT);
+
         GridLayout insertProteinsLayout = new GridLayout(3, 3);
-        selectDiseaseGroupsMainLayout.addComponent(insertProteinsLayout);
+        proteinsDataCapturingMainLayout.addComponent(insertProteinsLayout);
         insertProteinsLayout.setSpacing(true);
         insertProteinsLayout.setMargin(new MarginInfo(false, false, false, true));
-        insertProteinsLayout.setWidth(600 + "px");
+        insertProteinsLayout.setWidth(containerWidth);
 
+        HorizontalLayout hlo1 = new HorizontalLayout();
+        hlo1.setWidth("100%");
+        hlo1.setMargin(new MarginInfo(false, true, false, true));
         Label highLabel = new Label("<font color='#cc0000'>High</font>");
         highLabel.setWidth("40px");
         highLabel.setContentMode(ContentMode.HTML);
+        hlo1.addComponent(highLabel);
+
+        HorizontalLayout hlo2 = new HorizontalLayout();
+        hlo2.setWidth("100%");
+        hlo2.setMargin(new MarginInfo(false, true, false, true));
         Label stableLabel = new Label("<font color='#018df4'>Stable</font>");
         stableLabel.setWidth("50px");
         stableLabel.setContentMode(ContentMode.HTML);
+        hlo2.addComponent(stableLabel);
+
+        HorizontalLayout hlo3 = new HorizontalLayout();
+        hlo3.setWidth("100%");
+        hlo3.setMargin(new MarginInfo(false, true, false, true));
         Label lowLabel = new Label("<font color='#009900'>Low</font>");
         lowLabel.setWidth("40px");
         lowLabel.setContentMode(ContentMode.HTML);
-        insertProteinsLayout.addComponent(highLabel, 0, 0);
-        insertProteinsLayout.setComponentAlignment(highLabel, Alignment.MIDDLE_CENTER);
-        insertProteinsLayout.addComponent(stableLabel, 1, 0);
-        insertProteinsLayout.setComponentAlignment(stableLabel, Alignment.MIDDLE_CENTER);
-        insertProteinsLayout.addComponent(lowLabel, 2, 0);
-        insertProteinsLayout.setComponentAlignment(lowLabel, Alignment.MIDDLE_CENTER);
+        hlo3.addComponent(lowLabel);
+        insertProteinsLayout.addComponent(hlo1, 0, 0);
+        insertProteinsLayout.setComponentAlignment(hlo1, Alignment.MIDDLE_CENTER);
+        insertProteinsLayout.addComponent(hlo2, 1, 0);
+        insertProteinsLayout.setComponentAlignment(hlo2, Alignment.MIDDLE_CENTER);
+        insertProteinsLayout.addComponent(hlo3, 2, 0);
+        insertProteinsLayout.setComponentAlignment(hlo3, Alignment.MIDDLE_CENTER);
 
         highTextArea.setWidth("100%");
         highTextArea.setHeight("200px");
@@ -214,49 +268,62 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
         insertProteinsLayout.addComponent(lowTextArea, 2, 1);
         insertProteinsLayout.setComponentAlignment(lowTextArea, Alignment.MIDDLE_CENTER);
 
-        final Button clear1 = new Button("Clear");
-        clear1.setStyleName(Reindeer.BUTTON_SMALL);
-        insertProteinsLayout.addComponent(clear1, 0, 2);
-        insertProteinsLayout.setComponentAlignment(clear1, Alignment.MIDDLE_LEFT);
-        clear1.addClickListener(new Button.ClickListener() {
+        VerticalLayout clear1 = new VerticalLayout();
+        hlo1.addComponent(clear1);
+        clear1.setDescription("Clear field");
+        clear1.setStyleName("clearfieldbtn");
+        clear1.setWidth("20px");
+        clear1.setHeight("20px");
+//        insertProteinsLayout.addComponent(clear1, 0, 2);
+        hlo1.setComponentAlignment(clear1, Alignment.MIDDLE_RIGHT);
+        clear1.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
             @Override
-            public void buttonClick(Button.ClickEvent event) {
+            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
                 highTextArea.clear();
             }
         });
 
-        final Button clear2 = new Button("Clear");
-        clear2.setStyleName(Reindeer.BUTTON_SMALL);
-        insertProteinsLayout.addComponent(clear2, 1, 2);
-        insertProteinsLayout.setComponentAlignment(clear2, Alignment.MIDDLE_LEFT);
-        clear2.addClickListener(new Button.ClickListener() {
+        VerticalLayout clear2 = new VerticalLayout();
+        hlo2.addComponent(clear2);
+        clear2.setDescription("Clear field");
+        clear2.setStyleName("clearfieldbtn");
+        clear2.setWidth("20px");
+        clear2.setHeight("20px");
+
+        clear2.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
             @Override
-            public void buttonClick(Button.ClickEvent event) {
+            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
                 stableTextArea.clear();
             }
         });
+//        insertProteinsLayout.addComponent(clear2, 1, 2);
+        hlo2.setComponentAlignment(clear2, Alignment.MIDDLE_RIGHT);
 
-        final Button clear3 = new Button("Clear");
-        clear3.setStyleName(Reindeer.BUTTON_SMALL);
-        insertProteinsLayout.addComponent(clear3, 2, 2);
-        insertProteinsLayout.setComponentAlignment(clear3, Alignment.MIDDLE_LEFT);
-        clear3.addClickListener(new Button.ClickListener() {
+        VerticalLayout clear3 = new VerticalLayout();
+        hlo3.addComponent(clear3);
+        clear3.setDescription("Clear field");
+        clear3.setStyleName("clearfieldbtn");
+        clear3.setWidth("20px");
+        clear3.setHeight("20px");
+
+        clear3.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
             @Override
-            public void buttonClick(Button.ClickEvent event) {
+            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
                 lowTextArea.clear();
             }
         });
+        hlo3.setComponentAlignment(clear3, Alignment.MIDDLE_RIGHT);
         Label errorLabel = new Label();
-        selectDiseaseGroupsMainLayout.addComponent(errorLabel);
+        proteinsDataCapturingMainLayout.addComponent(errorLabel);
         HorizontalLayout btnsLayout = new HorizontalLayout();
         btnsLayout.setSpacing(true);
         btnsLayout.setMargin(new MarginInfo(true, false, false, false));
 
-        selectDiseaseGroupsMainLayout.addComponent(btnsLayout);
-        selectDiseaseGroupsMainLayout.setComponentAlignment(btnsLayout, Alignment.MIDDLE_RIGHT);
+        proteinsDataCapturingMainLayout.addComponent(btnsLayout);
+        proteinsDataCapturingMainLayout.setComponentAlignment(btnsLayout, Alignment.MIDDLE_RIGHT);
 
         Button resetBtn = new Button("Reset");
         resetBtn.setStyleName(Reindeer.BUTTON_SMALL);
@@ -270,7 +337,7 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
         compareBtn.setId("compareBtn");
         compareBtn.addClickListener(this);
 
-        return new HideOnClickLayout("Insert Uniprot Proteins Accessions", selectDiseaseGroupsMainLayout, null, Alignment.TOP_LEFT, null, null);
+        return proteinsDataCapturingMainLayout;
     }
 
     private void resetLists() {
@@ -282,29 +349,40 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
             diseaseGroupsListB.addItem(str);
             diseaseGroupsListA.addItem(str);
         }
-        diseaseGroupsListA.select("Group A");
-        diseaseGroupsListB.select("Group B");
+//        diseaseGroupsListA.select("Group A");
+//        diseaseGroupsListB.select("Group B");
+
+        diseaseGroupsListB.select("CIS-CIS");
+        diseaseGroupsListA.select("CIS-MS");
 
     }
 
     @Override
     public void buttonClick(Button.ClickEvent event) {
         if (event.getButton().getId().equalsIgnoreCase("diseaseGroupSelectionBtn")) {
-            selectDiseaseGroupsContainer.setVisability(false);
+            diseaseGroupsListB.setEnabled(false);
+            diseaseGroupsListA.setEnabled(false);
+            event.getButton().setEnabled(false);
             proteinsDataCaptureLayout.setEnabled(true);
-            proteinsDataCaptureLayout.setVisability(true);
-
         } else if (event.getButton().getId().equalsIgnoreCase("resetBtn")) {
-            selectDiseaseGroupsContainer.setVisability(true);
+            nextBtn.setEnabled(true);
+            diseaseGroupsListB.setEnabled(true);
+            diseaseGroupsListA.setEnabled(true);
             proteinsDataCaptureLayout.setEnabled(false);
-            proteinsDataCaptureLayout.setVisability(false);
-            highTextArea.clear();
-            lowTextArea.clear();
-            stableTextArea.clear();
+//            highTextArea.clear();
+//            lowTextArea.clear();
+//            stableTextArea.clear();
+            highTextArea.setValue(highAcc);
+            lowTextArea.setValue(lowAcc);
+            stableTextArea.setValue(stableAcc);
             this.resetLists();
             UI.getCurrent().setScrollTop(0);
-
         } else if (event.getButton().getId().equalsIgnoreCase("compareBtn")) {
+            event.getButton().setEnabled(false);
+            highTextArea.setEnabled(false);
+            lowTextArea.setEnabled(false);
+            stableTextArea.setEnabled(false);
+
             startComparingProcess();
         }
 
@@ -331,11 +409,22 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
         totalSet.addAll(highSet);
         totalSet.addAll(stableSet);
 
-        if (totalSet.size() != (lowSet.size() + stableSet.size() + highSet.size())) {
-            System.out.println("at -************* doublication happend");
-
-        }
+        
+        Query query = new Query();
+        query.setSearchBy("Protein Accession");
+        query.setSearchDataType("Quantification Data");
+        query.setSearchKeyWords(totalSet.toString().replace("[", "").replace("]", "").replace(" ", "").replace(",", "\n"));
+        List<QuantProtein> searchQuantificationProtList = CSFPR_Handler.searchQuantificationProtein(query);
+        
+        String quantNotFound = CSFPR_Handler.filterQuantSearchingKeywords(searchQuantificationProtList, query.getSearchKeyWords(), query.getSearchBy());
+        QuantCompareDataViewLayout quantCompareDataViewLayout = new QuantCompareDataViewLayout(CSFPR_Handler,searchQuantificationProtList );
+        this.addComponent(quantCompareDataViewLayout);
+        System.out.println("at ------------------ not found are "+quantNotFound);
+        
+        
 
     }
+
+    
 
 }

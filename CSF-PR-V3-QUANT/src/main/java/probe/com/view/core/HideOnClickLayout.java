@@ -122,6 +122,7 @@ public class HideOnClickLayout extends VerticalLayout implements Serializable, L
         titleHeaderLayout.addComponent(show);
         titleHeaderLayout.setComponentAlignment(show, Alignment.BOTTOM_LEFT);
         
+        
         titleLabel = new Label(title);
         titleLabel.setContentMode(ContentMode.HTML);
         

@@ -7,11 +7,16 @@ package probe.com.view.core;
 
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.Page;
+import com.vaadin.shared.communication.SharedState;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.declarative.DesignContext;
 import java.io.Serializable;
+import java.util.EventObject;
 import java.util.HashSet;
 import java.util.Set;
+import org.jsoup.nodes.Element;
 
 /**
  *
