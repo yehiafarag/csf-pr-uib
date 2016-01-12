@@ -2927,9 +2927,10 @@ public class DataBase implements Serializable {
      * Search for quant proteins by keywords
      *
      * @param query query object that has all query information
+     * @param toCompare
      * @return Quant Proteins Searching List
      */
-    public List<QuantProtein> searchQuantificationProteins(Query query) {
+    public List<QuantProtein> searchQuantificationProteins(Query query, boolean toCompare) {
 
         StringBuilder sb = new StringBuilder();
         QueryConstractorHandler qhandler = new QueryConstractorHandler();
@@ -2951,9 +2952,15 @@ public class DataBase implements Serializable {
                     if (x > 0) {
                         sb.append(" OR ");
                     }
-                    sb.append("`uniprot_accession` = ? OR `publication_acc_number` = ?");
-                    qhandler.addQueryParam("String", str);
-                    qhandler.addQueryParam("String", str);
+                    if (toCompare) {
+                        sb.append("`uniprot_accession` = ?");
+                        qhandler.addQueryParam("String", str);
+                    } else {
+                        sb.append("`uniprot_accession` = ? OR `publication_acc_number` = ?");
+                        qhandler.addQueryParam("String", str);
+                        qhandler.addQueryParam("String", str);
+                    }
+
                     x++;
                 }
             } else if (query.getSearchBy().equalsIgnoreCase("Protein Name")) {
@@ -2995,20 +3002,20 @@ public class DataBase implements Serializable {
             for (QuantProtein quantProt : quantProtResultList) {
 
                 quantDatasetIds.add(quantProt.getDsKey());
-            } 
-            if(quantDatasetIds.isEmpty()){
+            }
+            if (quantDatasetIds.isEmpty()) {
                 return new ArrayList<QuantProtein>();
-            
+
             }
             sb = new StringBuilder();
-             for (Object index : quantDatasetIds) {
+            for (Object index : quantDatasetIds) {
                 sb.append("  `index` = ").append(index);
                 sb.append(" OR ");
 
             }
-           
+
             String stat = sb.toString().substring(0, sb.length() - 4);
-            String selectDsGroupNum = "SELECT `index` ,`patients_group_i_number` , `patients_group_ii_number`,`patient_group_i`,`patient_group_ii`,`patient_sub_group_i`,`patient_sub_group_ii` FROM `quant_dataset_table` Where  "+stat+";"; //"SELECT `patients_group_i_number` , `patients_group_ii_number`,`patient_group_i`,`patient_group_ii`,`patient_sub_group_i`,`patient_sub_group_ii`,`index` FROM `quant_dataset_table` WHERE  " + stat + " ;";
+            String selectDsGroupNum = "SELECT `index` ,`patients_group_i_number` , `patients_group_ii_number`,`patient_group_i`,`patient_group_ii`,`patient_sub_group_i`,`patient_sub_group_ii` FROM `quant_dataset_table` Where  " + stat + ";"; //"SELECT `patients_group_i_number` , `patients_group_ii_number`,`patient_group_i`,`patient_group_ii`,`patient_sub_group_i`,`patient_sub_group_ii`,`index` FROM `quant_dataset_table` WHERE  " + stat + " ;";
 
             PreparedStatement selectselectDsGroupNumStat = conn.prepareStatement(selectDsGroupNum);
             rs = selectselectDsGroupNumStat.executeQuery();
@@ -3034,12 +3041,12 @@ public class DataBase implements Serializable {
 
                 if (datasetIdDesGrs.containsKey(quantProt.getDsKey())) {
                     Object[] grNumArr = datasetIdDesGrs.get(quantProt.getDsKey());
-                    quantProt.setPatientsGroupINumber((Integer)grNumArr[0]);
-                    quantProt.setPatientsGroupIINumber((Integer)grNumArr[1]);
-                    quantProt.setPatientGroupI((String)grNumArr[2]);
-                    quantProt.setPatientGroupII((String)grNumArr[3]);
-                    quantProt.setPatientSubGroupI((String)grNumArr[4]);
-                    quantProt.setPatientSubGroupII((String)grNumArr[5]);
+                    quantProt.setPatientsGroupINumber((Integer) grNumArr[0]);
+                    quantProt.setPatientsGroupIINumber((Integer) grNumArr[1]);
+                    quantProt.setPatientGroupI((String) grNumArr[2]);
+                    quantProt.setPatientGroupII((String) grNumArr[3]);
+                    quantProt.setPatientSubGroupI((String) grNumArr[4]);
+                    quantProt.setPatientSubGroupII((String) grNumArr[5]);
                     updatedQuantProtResultList.add(quantProt);
                 }
             }

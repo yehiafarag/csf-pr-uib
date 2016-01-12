@@ -251,7 +251,7 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
             //searching quant data
             query.setSearchDataType("Quantification Data");
 
-            searchQuantificationProtList = handler.searchQuantificationProtein(query);
+            searchQuantificationProtList = handler.searchQuantificationProtein(query,false);
             String quantNotFound = handler.filterQuantSearchingKeywords(searchQuantificationProtList, query.getSearchKeyWords(), query.getSearchBy());
             Map<String, Integer> quantHitsList = handler.getQuantHitsList(searchQuantificationProtList, query.getSearchBy());
             if (quantHitsList != null && searchQuantificationProtList != null) {

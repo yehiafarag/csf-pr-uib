@@ -437,10 +437,11 @@ public class CSFPRHandler implements Serializable {
      * search for quantification proteins
      *
      * @param query query object that has all query information
+     * @param toCompare
      * @return quant proteins list
      */
-    public List<QuantProtein> searchQuantificationProtein(Query query) {
-        return logicLayer.searchQuantificationProteins(query);
+    public List<QuantProtein> searchQuantificationProtein(Query query, boolean toCompare) {
+        return logicLayer.searchQuantificationProteins(query,toCompare);
 
     }
 
@@ -537,7 +538,10 @@ public class CSFPRHandler implements Serializable {
         return logicLayer.getComparisonProtList(selectedComparisonList, searchQuantificationProtList);
 
     }
-
+  public QuantDiseaseGroupsComparison initUserCustomizedComparison(String diseaseGroupI, String diseaseGroupII, Set<String> highAcc, Set<String> stableAcc, Set<String> lowAcc) {
+      return logicLayer.initUserCustomizedComparison(diseaseGroupI, diseaseGroupII, highAcc, stableAcc, lowAcc);
+  
+  }
     /**
      * k-means clustering for protein
      *

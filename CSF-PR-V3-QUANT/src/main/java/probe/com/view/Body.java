@@ -77,7 +77,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
         datasetsOverviewLayout.setHeight(height + "px");
         datasetsOverviewLayout.setWidth("100%");
         datasetsOverviewLayout.setPrimaryStyleName("scrollable");
-        mainTabSheet.addTab(datasetsOverviewLayout, "Quantitative Datasets Overview");
+        mainTabSheet.addTab(datasetsOverviewLayout, "Quantitative Studies");
 
 //      Tab 3 content       identificationDatasetsLayout    
         identificationDatasetsLayout = new VerticalLayout();
@@ -85,7 +85,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
 //        identificationDatasetsLayout.setHeight("100%");
         identificationDatasetsLayout.setHeight(height + "px");
 //        identificationDatasetsLayout.setPrimaryStyleName("scrollable");
-        mainTabSheet.addTab(this.identificationDatasetsLayout, "Identification Datasets Overview");
+        mainTabSheet.addTab(this.identificationDatasetsLayout, "Identification Datasets");
 
 //      Tab 4 content  searching proteins tab 
         searchTabLayout = new VerticalLayout();
@@ -105,7 +105,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
         compareLayout.setHeight(height + "px");
         compareLayout.setWidth("100%");
         compareLayout.setPrimaryStyleName("scrollable");
-        mainTabSheet.addTab(compareLayout, "Compare Own Data");
+        mainTabSheet.addTab(compareLayout, "Compare");
         
         
         QuantCompareDataLayout quantCompareDataLayout = new QuantCompareDataLayout(CSFPR_Handler);
@@ -143,14 +143,14 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
             adminTab.setVisible(false);
         } else if (c.equals("Search")) {
             adminTab.setVisible(false);
-        } else if (c.equals("Quantitative Datasets Overview")) {
+        } else if (c.equals("Quantitative Studies")) {
             adminTab.setVisible(false);
             if (datasetOverviewTabLayout == null && handler != null) {
                 datasetOverviewTabLayout = new QuantDatasetsOverviewLayout(handler, false, null);
                 datasetsOverviewLayout.addComponent(datasetOverviewTabLayout);
             }
 
-        } else if (c.equals("Identification Datasets Overview")) {
+        } else if (c.equals("Identification Datasets")) {
             adminTab.setVisible(false);
             if (identificationDatasetsTabLayout == null) {
                 identificationDatasetsTabLayout = new IdentificationDatasetsLayout(handler, mainTabSheet);

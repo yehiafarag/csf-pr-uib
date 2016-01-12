@@ -22,6 +22,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -31,8 +32,10 @@ import probe.com.dal.Query;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.model.beans.quant.QuantDatasetInitialInformationObject;
 import probe.com.model.beans.quant.QuantDatasetObject;
+import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.beans.quant.QuantProtein;
 import probe.com.view.body.quantcompare.QuantCompareDataViewLayout;
+import probe.com.view.core.HideOnClickLayout;
 
 /**
  *
@@ -51,7 +54,14 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
     private final TextArea highTextArea = new TextArea();
     private final TextArea lowTextArea = new TextArea();
     private final TextArea stableTextArea = new TextArea();
+    private Button compareBtn;
     private Button nextBtn;
+    private final VerticalLayout errorLayout = new VerticalLayout();
+    private final Button notFoundErrorBtn;
+    private final TextArea errorTextArea = new TextArea();
+    private final VerticalLayout resultsLayout = new VerticalLayout();
+    private final Label miniselectionResultsLabel;
+    private final HideOnClickLayout userDataLayoutContainer;
     private final String highAcc = "P00450\n"
             + "P02774\n"
             + "P02647\n"
@@ -99,25 +109,58 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
             width = Page.getCurrent().getBrowserWindowWidth() / 2;
         }
 
+        VerticalLayout userDataLayout = new VerticalLayout();
+        userDataLayout.setSpacing(true);
+
+        VerticalLayout miniSelectDiseaseGroupsLayout = new VerticalLayout();
+        miniSelectDiseaseGroupsLayout.setStyleName("diseasegroupselectionresult");
+        miniselectionResultsLabel = new Label();
+        miniSelectDiseaseGroupsLayout.addComponent(miniselectionResultsLabel);
+
+        userDataLayoutContainer = new HideOnClickLayout("User Data", userDataLayout, miniSelectDiseaseGroupsLayout, "info data", null);
+        userDataLayoutContainer.setMargin(new MarginInfo(false, false, false, true));
+        userDataLayoutContainer.setVisability(true);
+        this.addComponent(userDataLayoutContainer);
+
+        HorizontalLayout topUserDataLayout = new HorizontalLayout();
+        userDataLayout.addComponent(topUserDataLayout);
         //select or enter new disease groups layout 
         selectDiseaseGroupsContainer = initSelectEnterDatasetDiseaseGroups(width);
 //        selectDiseaseGroupsContainer.setVisability(true);
         selectDiseaseGroupsContainer.setReadOnly(true);
-        this.addComponent(selectDiseaseGroupsContainer);
+        topUserDataLayout.addComponent(selectDiseaseGroupsContainer);
+        topUserDataLayout.addComponent(errorLayout);
 
         proteinsDataCaptureLayout = initProteinsDataCapture(width);
         proteinsDataCaptureLayout.setEnabled(false);
-        this.addComponent(proteinsDataCaptureLayout);
+        userDataLayout.addComponent(proteinsDataCaptureLayout);
         this.resetLists();
+        errorLayout.setStyleName("compareerror");
+        errorLayout.setWidth("200px");
+        errorLayout.setHeight("20px");
+        errorLayout.setSpacing(true);
+        errorLayout.setMargin(new MarginInfo(false, false, false, true));
+
+        notFoundErrorBtn = new Button();
+        notFoundErrorBtn.setStyleName(Reindeer.BUTTON_LINK);
+        errorLayout.addComponent(notFoundErrorBtn);
+
+        errorLayout.addComponent(errorTextArea);
+        errorTextArea.setWidth("302px");
+        errorTextArea.setHeight("200px");
+        errorTextArea.setReadOnly(true);
+
+        notFoundErrorBtn.addClickListener(QuantCompareDataLayout.this);
+        notFoundErrorBtn.setId("notfounderrorbtn");
+
+        this.addComponent(resultsLayout);
 
     }
 
     private VerticalLayout initSelectEnterDatasetDiseaseGroups(int width) {
         VerticalLayout selectDiseaseGroupsMainLayout = new VerticalLayout();
+        selectDiseaseGroupsMainLayout.setMargin(new MarginInfo(true, false, false, true));
         selectDiseaseGroupsMainLayout.setSpacing(true);
-        selectDiseaseGroupsMainLayout.setMargin(true);
-//        VerticalLayout miniSelectDiseaseGroupsLayout = new VerticalLayout();
-//        miniSelectDiseaseGroupsLayout.setStyleName("diseasegroupselectionresult");
 
         Label titleLabel = new Label("1. Select/Enter Dataset Disease Groups");
         titleLabel.setContentMode(ContentMode.HTML);
@@ -143,6 +186,7 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
             public void valueChange(Property.ValueChangeEvent event) {
                 if (diseaseGroupsListA.getValue() != null && diseaseGroupsListB.getValue() != null) {
                     selectionResultsLabel.setValue("Selection:   " + diseaseGroupsListA.getValue().toString() + " / " + diseaseGroupsListB.getValue().toString());
+                    miniselectionResultsLabel.setValue("     (" + diseaseGroupsListA.getValue().toString() + " / " + diseaseGroupsListB.getValue().toString() + ")");
                 }
             }
         };
@@ -331,7 +375,7 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
         resetBtn.setId("resetBtn");
         resetBtn.addClickListener(this);
 
-        Button compareBtn = new Button("Compare");
+        compareBtn = new Button("Compare");
         compareBtn.setStyleName(Reindeer.BUTTON_SMALL);
         btnsLayout.addComponent(compareBtn);
         compareBtn.setId("compareBtn");
@@ -360,15 +404,26 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
     @Override
     public void buttonClick(Button.ClickEvent event) {
         if (event.getButton().getId().equalsIgnoreCase("diseaseGroupSelectionBtn")) {
+            resultsLayout.removeAllComponents();
             diseaseGroupsListB.setEnabled(false);
             diseaseGroupsListA.setEnabled(false);
             event.getButton().setEnabled(false);
             proteinsDataCaptureLayout.setEnabled(true);
+            compareBtn.setEnabled(true);
+            highTextArea.setValue(highAcc);
+            lowTextArea.setValue(lowAcc);
+            stableTextArea.setValue(stableAcc);
         } else if (event.getButton().getId().equalsIgnoreCase("resetBtn")) {
             nextBtn.setEnabled(true);
             diseaseGroupsListB.setEnabled(true);
             diseaseGroupsListA.setEnabled(true);
             proteinsDataCaptureLayout.setEnabled(false);
+            notFoundErrorBtn.setCaption("");
+            notFoundErrorBtn.setVisible(false);
+            resultsLayout.removeAllComponents();
+            errorTextArea.setReadOnly(false);
+            errorTextArea.clear();
+            errorTextArea.setReadOnly(true);
 //            highTextArea.clear();
 //            lowTextArea.clear();
 //            stableTextArea.clear();
@@ -384,47 +439,65 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
             stableTextArea.setEnabled(false);
 
             startComparingProcess();
+        } else if (event.getButton().getId().equalsIgnoreCase("notfounderrorbtn")) {
+            System.out.println("download not found list");
         }
 
     }
 
     private void startComparingProcess() {
+        resultsLayout.removeAllComponents();
+        errorTextArea.setReadOnly(false);
+        errorTextArea.clear();
+        errorTextArea.setReadOnly(true);
         String highAccessions = highTextArea.getValue();
-        String[] highAccssionArr = highAccessions.replaceAll("\n", ",").replace("\t", ",").replace(";", ",").replace(" ", "").split(",");
         Set<String> highSet = new LinkedHashSet<String>();
-        highSet.addAll(Arrays.asList(highAccssionArr));
+        if (highAccessions != null && !highAccessions.trim().equalsIgnoreCase("")) {
+            String[] highAccssionArr = highAccessions.replace("\n", ",").replace("\t", ",").replace(";", ",").replace(" ", "").split(",");
+            highSet.addAll(Arrays.asList(highAccssionArr));
+        }
 
         String stableAccessions = stableTextArea.getValue();
-        String[] stableAccssionArr = stableAccessions.replaceAll("\n", ",").replace("\t", ",").replace(";", ",").replace(" ", "").split(",");
         Set<String> stableSet = new LinkedHashSet<String>();
-        stableSet.addAll(Arrays.asList(stableAccssionArr));
+        if (stableAccessions != null && !stableAccessions.trim().equalsIgnoreCase("")) {
+            String[] stableAccssionArr = stableAccessions.replace("\n", ",").replace("\t", ",").replace(";", ",").replace(" ", "").split(",");
+            stableSet.addAll(Arrays.asList(stableAccssionArr));
+        }
 
         String lowAccessions = lowTextArea.getValue();
-        String[] lowAccssionArr = lowAccessions.replaceAll("\n", ",").replace("\t", ",").replace(";", ",").replace(" ", "").split(",");
         Set<String> lowSet = new LinkedHashSet<String>();
-        lowSet.addAll(Arrays.asList(lowAccssionArr));
+        if (lowAccessions != null && !lowAccessions.trim().equalsIgnoreCase("")) {
+            String[] lowAccssionArr = lowAccessions.replace("\n", ",").replace("\t", ",").replace(";", ",").replace(" ", "").split(",");
+            lowSet.addAll(Arrays.asList(lowAccssionArr));
+        }
 
         Set<String> totalSet = new LinkedHashSet<String>();
         totalSet.addAll(lowSet);
         totalSet.addAll(highSet);
         totalSet.addAll(stableSet);
 
-        
         Query query = new Query();
         query.setSearchBy("Protein Accession");
         query.setSearchDataType("Quantification Data");
         query.setSearchKeyWords(totalSet.toString().replace("[", "").replace("]", "").replace(" ", "").replace(",", "\n"));
-        List<QuantProtein> searchQuantificationProtList = CSFPR_Handler.searchQuantificationProtein(query);
-        
+        List<QuantProtein> searchQuantificationProtList = CSFPR_Handler.searchQuantificationProtein(query, true);
+
         String quantNotFound = CSFPR_Handler.filterQuantSearchingKeywords(searchQuantificationProtList, query.getSearchKeyWords(), query.getSearchBy());
-        QuantCompareDataViewLayout quantCompareDataViewLayout = new QuantCompareDataViewLayout(CSFPR_Handler,searchQuantificationProtList );
-        this.addComponent(quantCompareDataViewLayout);
-        System.out.println("at ------------------ not found are "+quantNotFound);
+        notFoundErrorBtn.setCaption("#Missing Records - " + quantNotFound.replace(" ", "").split(",").length );
+        notFoundErrorBtn.setVisible(true);
+        errorTextArea.setReadOnly(false);
+        errorTextArea.setValue(quantNotFound.replace(",", "\n"));
+        errorTextArea.setReadOnly(true);
+
+        QuantDiseaseGroupsComparison userCustomizedComparison = CSFPR_Handler.initUserCustomizedComparison(diseaseGroupsListA.getValue().toString().trim(), diseaseGroupsListB.getValue().toString().trim(), highSet, stableSet, lowSet);
+
         
+        QuantCompareDataViewLayout quantCompareDataViewLayout = new QuantCompareDataViewLayout(CSFPR_Handler, searchQuantificationProtList, userCustomizedComparison);
+        resultsLayout.addComponent(quantCompareDataViewLayout);
+        
+        userDataLayoutContainer.setVisability(false);
         
 
     }
-
-    
 
 }

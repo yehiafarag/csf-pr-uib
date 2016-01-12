@@ -5,16 +5,13 @@
  */
 package probe.com.view.body.quantcompare;
 
-import com.ejt.vaadin.sizereporter.ComponentResizeEvent;
-import com.ejt.vaadin.sizereporter.ComponentResizeListener;
-import com.ejt.vaadin.sizereporter.SizeReporter;
 import com.vaadin.server.Page;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import java.util.List;
 import probe.com.handlers.CSFPRHandler;
+import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.beans.quant.QuantProtein;
 import probe.com.selectionmanager.QuantCentralManager;
 import probe.com.view.body.quantdatasetsoverview.DiseaseGroupsFiltersContainer;
@@ -23,7 +20,7 @@ import probe.com.view.core.HideOnClickLayout;
 
 /**
  *
- * @author yfa041
+ * @author YEhia Farag
  */
 public class QuantCompareDataViewLayout extends VerticalLayout {
 
@@ -35,8 +32,9 @@ public class QuantCompareDataViewLayout extends VerticalLayout {
      *
      * @param CSFPR_Handler
      * @param searchQuantificationProtList
+     * @param userCustomizedComparison
      */
-    public QuantCompareDataViewLayout(CSFPRHandler CSFPR_Handler, List<QuantProtein> searchQuantificationProtList) {
+    public QuantCompareDataViewLayout(CSFPRHandler CSFPR_Handler, List<QuantProtein> searchQuantificationProtList,QuantDiseaseGroupsComparison userCustomizedComparison) {
 
         Quant_Central_Manager = new QuantCentralManager(CSFPR_Handler, searchQuantificationProtList);//,filterUtility.getFullFilterList()
         this.setMargin(true);
@@ -53,7 +51,7 @@ public class QuantCompareDataViewLayout extends VerticalLayout {
         this.addComponent(DatasetFilteringContainer);
         DatasetFilteringContainer.setVisability(true);
 
-        quantProteinsComparisonsContainer = new QuantProteinsComparisonsContainer(Quant_Central_Manager, CSFPR_Handler, searchQuantificationProtList);
+        quantProteinsComparisonsContainer = new QuantProteinsComparisonsContainer(Quant_Central_Manager, CSFPR_Handler, searchQuantificationProtList,userCustomizedComparison);
 
         HideOnClickLayout comparisonsTableContainer = new HideOnClickLayout("Proteins", quantProteinsComparisonsContainer, null, Alignment.TOP_LEFT, infoText, null);
         int pageWidth = Page.getCurrent().getWebBrowser().getScreenWidth();
@@ -67,26 +65,9 @@ public class QuantCompareDataViewLayout extends VerticalLayout {
 
         this.addComponent(proteinsLevelLayout);
         proteinsLevelLayout.setVisability(true);
-
         heatmapFilter.selectAllComparisons();
 
-        final SizeReporter sizeReporter = new SizeReporter(proteinsLevelLayout);
-        sizeReporter.addResizeListener(new ComponentResizeListener() {
-            private int resizedCounter = 0;
-
-            @Override
-            public void sizeChanged(ComponentResizeEvent event) {
-                if (resizedCounter == 3) {
-
-                    UI.getCurrent().scrollIntoView(QuantCompareDataViewLayout.this);
-                    sizeReporter.removeResizeListener(this);
-                }
-                resizedCounter++;
-            }
-        });
-         CSFPR_Handler.getTipsGenerator().showTips();
        
-//        heatmapFilter.popupSortAndSelectPanel();
     }
 
 }

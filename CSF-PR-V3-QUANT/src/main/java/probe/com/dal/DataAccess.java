@@ -160,11 +160,12 @@ public class DataAccess implements Serializable {
      * Search for proteins by accession keywords
      *
      * @param query query words
+     * @param toCompare
      * @return dataset Proteins Searching List
      */
-    public List<QuantProtein> searchQuantificationProteins(Query query) {
+    public List<QuantProtein> searchQuantificationProteins(Query query, boolean toCompare) {
 
-        List<QuantProtein> datasetProteinsSearchingList = db.searchQuantificationProteins(query);
+        List<QuantProtein> datasetProteinsSearchingList = db.searchQuantificationProteins(query,toCompare);
 
         return datasetProteinsSearchingList;
     }
