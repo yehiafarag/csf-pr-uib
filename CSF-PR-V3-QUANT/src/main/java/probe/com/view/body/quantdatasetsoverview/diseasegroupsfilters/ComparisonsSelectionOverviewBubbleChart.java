@@ -82,7 +82,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
     private final ChartRenderingInfo chartRenderingInfo = new ChartRenderingInfo();
     private final QuantCentralManager Quant_Central_Manager;
     private int width;
-    private final int height;
+    private int height;
     private final CSFPRHandler handler;
     private final VerticalLayout initialLayout;
     private JFreeChart chart;
@@ -95,14 +95,17 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
     private byte imageData[];
     private final String[] tooltipLabels = new String[]{"( Low <img src='VAADIN/themes/dario-theme/img/greendot.png' alt='Low'>" + " )", "( Low <img src='VAADIN/themes/dario-theme/img/lgreendot.png' alt='Low'>" + " )", "( Stable <img src='VAADIN/themes/dario-theme/img/bluedot.png' alt='Stable'>" + " )", " ( High <img src='VAADIN/themes/dario-theme/img/lreddot.png' alt='High'>" + " )", " ( High <img src='VAADIN/themes/dario-theme/img/reddot.png' alt='High'>" + " )"};
 
-    public void updateSize(int updatedWidth) {
+    public void updateSize(int updatedWidth, int height) {
+        width = updatedWidth;
+        this.setWidth(updatedWidth + "px");
+        this.chartLayout.setWidth(updatedWidth + "px");
+        initialLayout.setWidth(updatedWidth + "px");
+        this.chartLayout.setHeight(height + "px");
         if (chart == null) {
             return;
         }
         defaultImgURL = saveToFile(chart, updatedWidth, height);
-        this.setWidth(updatedWidth + "px");
-        this.chartLayout.setWidth(updatedWidth + "px");
-        width = updatedWidth;
+
         this.redrawChart();
 
     }

@@ -35,6 +35,7 @@ import probe.com.model.util.KMeansClustering;
 
 import org.jfree.chart.JFreeChart;
 import probe.com.model.beans.OverviewInfoBean;
+import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.model.util.vaadintoimageutil.peptideslayout.ProteinInformationDataForExport;
 //import org.apache.batik.svggen.SVGGraphics2D;
 //import org.apache.batik.dom.svg.SVGDOMImplementation;
@@ -510,7 +511,54 @@ public class CoreLogic implements Serializable {
      * @return QuantDatasetInitialInformationObject
      */
     public Map<String, QuantDatasetInitialInformationObject> getQuantDatasetInitialInformationObject() {
-        return da.getQuantDatasetInitialInformationObject();
+        Map<String, QuantDatasetInitialInformationObject> quantStudyInitInfoMap = da.getQuantDatasetInitialInformationObject();
+
+        boolean[] activeHeaders = new boolean[27];
+        Set<String> diseaseCategories = new LinkedHashSet<String>();
+        QuantDatasetInitialInformationObject allDatasetObject = new QuantDatasetInitialInformationObject();
+        Map<Integer, QuantDatasetObject> updatedQuantDatasetObjectMap = new LinkedHashMap<Integer, QuantDatasetObject>();
+
+        for (String disease_category : quantStudyInitInfoMap.keySet()) {
+            QuantDatasetInitialInformationObject datasetObject = quantStudyInitInfoMap.get(disease_category);
+            boolean[] dataactiveHeader = datasetObject.getActiveHeaders();
+            int counter = 0;
+            for (boolean active : dataactiveHeader) {
+                if (!activeHeaders[counter] && active) {
+                    activeHeaders[counter] = true;
+                }
+                counter++;
+            }
+            updatedQuantDatasetObjectMap.putAll(datasetObject.getQuantDatasetsList());
+            diseaseCategories.addAll(datasetObject.getDiseaseCategories());
+
+//            activeHeaders = datasetObject.getActiveHeaders();
+//            updatedQuantDatasetObjectMap = datasetObject.getQuantDatasetsList();
+//            diseaseCategories = datasetObject.getDiseaseCategories();
+//
+//            QuantDatasetObject ds = new QuantDatasetObject();
+//            String author = rs.getString("author");
+//            if (!activeHeaders[0] && author != null && !author.equalsIgnoreCase("Not Available")) {
+//                activeHeaders[0] = true;
+//            }
+//            ds.setAuthor(author);
+//            ds.setPatientsSubGroup2(patient_sub_group_ii);
+//            ds.setAdditionalcomments("Not Available");
+//            ds.setDiseaseCategory(rs.getString("disease_category"));
+//            diseaseCategories.add(ds.getDiseaseCategory());
+//            activeHeaders[26] = false;
+//            
+//            datasetObject.setQuantDatasetsList(updatedQuantDatasetObjectMap);
+//            datasetObject.setActiveHeaders(activeHeaders);
+//            datasetObject.setDiseaseCategories(diseaseCategories);
+//            
+//        }
+        }
+        allDatasetObject.setQuantDatasetsList(updatedQuantDatasetObjectMap);
+        allDatasetObject.setActiveHeaders(activeHeaders);
+        allDatasetObject.setDiseaseCategories(diseaseCategories);
+        quantStudyInitInfoMap.put("All", allDatasetObject);
+
+        return quantStudyInitInfoMap;
 
     }
 
@@ -523,7 +571,53 @@ public class CoreLogic implements Serializable {
      * @return QuantDatasetInitialInformationObject
      */
     public Map<String, QuantDatasetInitialInformationObject> getQuantDatasetInitialInformationObject(List<QuantProtein> searchQuantificationProtList) {
-        return da.getQuantDatasetInitialInformationObject(searchQuantificationProtList);
+         Map<String, QuantDatasetInitialInformationObject> quantStudyInitInfoMap = da.getQuantDatasetInitialInformationObject(searchQuantificationProtList);
+
+        boolean[] activeHeaders = new boolean[27];
+        Set<String> diseaseCategories = new LinkedHashSet<String>();
+        QuantDatasetInitialInformationObject allDatasetObject = new QuantDatasetInitialInformationObject();
+        Map<Integer, QuantDatasetObject> updatedQuantDatasetObjectMap = new LinkedHashMap<Integer, QuantDatasetObject>();
+
+        for (String disease_category : quantStudyInitInfoMap.keySet()) {
+            QuantDatasetInitialInformationObject datasetObject = quantStudyInitInfoMap.get(disease_category);
+            boolean[] dataactiveHeader = datasetObject.getActiveHeaders();
+            int counter = 0;
+            for (boolean active : dataactiveHeader) {
+                if (!activeHeaders[counter] && active) {
+                    activeHeaders[counter] = true;
+                }
+                counter++;
+            }
+            updatedQuantDatasetObjectMap.putAll(datasetObject.getQuantDatasetsList());
+            diseaseCategories.addAll(datasetObject.getDiseaseCategories());
+
+//            activeHeaders = datasetObject.getActiveHeaders();
+//            updatedQuantDatasetObjectMap = datasetObject.getQuantDatasetsList();
+//            diseaseCategories = datasetObject.getDiseaseCategories();
+//
+//            QuantDatasetObject ds = new QuantDatasetObject();
+//            String author = rs.getString("author");
+//            if (!activeHeaders[0] && author != null && !author.equalsIgnoreCase("Not Available")) {
+//                activeHeaders[0] = true;
+//            }
+//            ds.setAuthor(author);
+//            ds.setPatientsSubGroup2(patient_sub_group_ii);
+//            ds.setAdditionalcomments("Not Available");
+//            ds.setDiseaseCategory(rs.getString("disease_category"));
+//            diseaseCategories.add(ds.getDiseaseCategory());
+//            activeHeaders[26] = false;
+//            
+//            datasetObject.setQuantDatasetsList(updatedQuantDatasetObjectMap);
+//            datasetObject.setActiveHeaders(activeHeaders);
+//            datasetObject.setDiseaseCategories(diseaseCategories);
+//            
+//        }
+        }
+        allDatasetObject.setQuantDatasetsList(updatedQuantDatasetObjectMap);
+        allDatasetObject.setActiveHeaders(activeHeaders);
+        allDatasetObject.setDiseaseCategories(diseaseCategories);
+        quantStudyInitInfoMap.put("All", allDatasetObject);
+        return quantStudyInitInfoMap;
 
     }
 
@@ -843,7 +937,7 @@ public class CoreLogic implements Serializable {
     public List<QuantProtein> searchQuantificationProteins(Query query, boolean toCompare) {
 
         if (query.getSearchDataType().equals("Quantification Data")) {
-            List<QuantProtein> datasetQuantificationProteinsSearchList = da.searchQuantificationProteins(query,toCompare);
+            List<QuantProtein> datasetQuantificationProteinsSearchList = da.searchQuantificationProteins(query, toCompare);
             return datasetQuantificationProteinsSearchList;
         }
         return null;

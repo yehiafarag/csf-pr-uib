@@ -1985,7 +1985,7 @@ public class DataBase implements Serializable {
                 if (!activeHeaders[18] && patient_group_i != null && !patient_group_i.equalsIgnoreCase("Not Available")) {
                     activeHeaders[18] = true;
                 }
-                ds.setPatientsGroup1(patient_group_i);
+                ds.setPatientsGroup1(patient_group_i+"\n"+disease_category);
 
                 int patients_group_i_number = rs.getInt("patients_group_i_number");
                 if (!activeHeaders[19] && patients_group_i_number != -1) {
@@ -2003,13 +2003,13 @@ public class DataBase implements Serializable {
                 if (!activeHeaders[21] && patient_sub_group_i != null && !patient_sub_group_i.equalsIgnoreCase("Not Available")) {
                     activeHeaders[21] = true;
                 }
-                ds.setPatientsSubGroup1(patient_sub_group_i);
+                ds.setPatientsSubGroup1(patient_sub_group_i+"\n"+disease_category);
 
                 String patient_group_ii = rs.getString("patient_group_ii");
                 if (!activeHeaders[22] && patient_group_ii != null && !patient_group_ii.equalsIgnoreCase("Not Available")) {
                     activeHeaders[22] = true;
                 }
-                ds.setPatientsGroup2(patient_group_ii);
+                ds.setPatientsGroup2(patient_group_ii+"\n"+disease_category);
 
                 int patients_group_ii_number = rs.getInt("patients_group_ii_number");
                 if (!activeHeaders[23] && patients_group_ii_number != -1) {
@@ -2027,7 +2027,7 @@ public class DataBase implements Serializable {
                 if (!activeHeaders[25] && patient_sub_group_ii != null && !patient_sub_group_ii.equalsIgnoreCase("Not Available")) {
                     activeHeaders[25] = true;
                 }
-                ds.setPatientsSubGroup2(patient_sub_group_ii);
+                ds.setPatientsSubGroup2(patient_sub_group_ii+"\n"+disease_category);
                 ds.setAdditionalcomments("Not Available");
                 ds.setDiseaseCategory(rs.getString("disease_category"));
                 diseaseCategories.add(ds.getDiseaseCategory());
@@ -2089,10 +2089,10 @@ public class DataBase implements Serializable {
             }
             rs.close();
             /// check the colums one by one 
-
+            boolean[] activeFilters = new boolean[]{false,false,false,false,true,true,false,true,true,true,false,true,false,false,false,false,false,false};
             for (String str : disCatList) {
-                String[] columnArr = new String[]{"`identified_proteins_number`", "`quantified_proteins_number`", "`analytical_method`", "`raw_data_available`", "`year`", "`type_of_study`", "`sample_type`", "`sample_matching`", "`technology`", "`analytical_approach`", "`enzyme`", "`shotgun_targeted`", "`quantification_basis`", "`quant_basis_comment`", "`patients_group_i_number`", "`patients_group_ii_number`", "`normalization_strategy`"};
-                boolean[] activeFilters = new boolean[columnArr.length];
+//                String[] columnArr = new String[]{"`identified_proteins_number`", "`quantified_proteins_number`", "`analytical_method`", "`raw_data_available`", "`year`", "`type_of_study`", "`sample_type`", "`sample_matching`", "`technology`", "`analytical_approach`", "`enzyme`", "`shotgun_targeted`", "`quantification_basis`", "`quant_basis_comment`", "`patients_group_i_number`", "`patients_group_ii_number`", "`normalization_strategy`"};
+
 //                for (int index = 0; index < columnArr.length; index++) {
 //                    String selectPumed_id1 = "SELECT  `pumed_id`  FROM  `quant_dataset_table` WHERE `disease_category`=? GROUP BY  `pumed_id`, " + columnArr[index] + " ORDER BY  `pumed_id` ";
 //                    if (conn == null || conn.isClosed()) {
@@ -2115,19 +2115,21 @@ public class DataBase implements Serializable {
 //                activeFilters[0] = false;
 //                activeFilters[1] = false;
 //                activeFilters[2] = false;
-//                activeFilters[3] = true;
-                activeFilters[4] = true;
-                activeFilters[5] = true;
-                activeFilters[7] = true;
-                activeFilters[8] = true;
-                activeFilters[9] = true;
-                activeFilters[11] = true;
+////                activeFilters[3] = true;
+//                activeFilters[4] = true;
+//                activeFilters[5] = true;
+//                activeFilters[7] = true;
+//                activeFilters[8] = true;
+//                activeFilters[9] = true;
+//                activeFilters[11] = true;
 //                activeFilters[10] = false;
 //                activeFilters[activeFilters.length - 2] = false;
 //                activeFilters[activeFilters.length - 3] = false;
 //                activeFilters[activeFilters.length - 4] = false;
                 activePieChartQuantFiltersDiseaseCategoryMap.put(str, activeFilters);
             }
+             activePieChartQuantFiltersDiseaseCategoryMap.put("All", activeFilters);
+
         } catch (ClassNotFoundException e) {
             System.err.println("at error line 2912 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
         } catch (IllegalAccessException e) {
@@ -2142,6 +2144,97 @@ public class DataBase implements Serializable {
         return activePieChartQuantFiltersDiseaseCategoryMap;
 
     }
+    /**
+     * Get active quantification pie charts filters within quant searching
+     * proteins results (to hide them if they are empty)
+     *
+     * @param searchQuantificationProtList
+     * @return boolean array for the active and not active pie chart filters
+     * indexes
+     */
+    public Map<String, boolean[]> getActivePieChartQuantFilters(List<QuantProtein> searchQuantificationProtList) {
+
+        Map<String, boolean[]> activePieChartQuantFiltersDiseaseCategoryMap = new LinkedHashMap<String, boolean[]>();
+        List<String> disCatList = new LinkedList<String>();
+        try {
+
+            Set<Integer> QuantDatasetIds = new HashSet<Integer>();
+            for (QuantProtein quantProt : searchQuantificationProtList) {
+                QuantDatasetIds.add(quantProt.getDsKey());
+            }
+            StringBuilder sb = new StringBuilder();
+
+            for (int index : QuantDatasetIds) {
+                sb.append("  `index` = ").append(index);
+                sb.append(" OR ");
+
+            }
+            String stat = sb.toString().substring(0, sb.length() - 4);
+            PreparedStatement selectPumed_idStat;
+            String selectPumed_id = "SELECT  `pumed_id` ,  `disease_category` FROM  `quant_dataset_table` GROUP BY  `pumed_id` ,  `disease_category` ORDER BY  `pumed_id` ";
+            if (conn == null || conn.isClosed()) {
+                Class.forName(driver).newInstance();
+                conn = DriverManager.getConnection(url + dbName, userName, password);
+            }
+            selectPumed_idStat = conn.prepareStatement(selectPumed_id);
+            ResultSet rs = selectPumed_idStat.executeQuery();
+            int pumed_id_index = 0;
+            while (rs.next()) {
+                disCatList.add(pumed_id_index, rs.getString("disease_category"));
+                pumed_id_index++;
+            }
+            rs.close();
+            /// check the colums one by one 
+
+            boolean[] activeFilters = new boolean[]{false,false,false,false,true,true,false,true,true,true,false,true,false,false,false,false,false,false};
+            for (String str : disCatList) {
+                 activePieChartQuantFiltersDiseaseCategoryMap.put(str, activeFilters);
+//                String[] columnArr = new String[]{"`identified_proteins_number`", "`quantified_proteins_number`", "`analytical_method`", "`raw_data_available`", "`year`", "`type_of_study`", "`sample_type`", "`sample_matching`", "`technology`", "`analytical_approach`", "`enzyme`", "`shotgun_targeted`", "`quantification_basis`", "`quant_basis_comment`", "`patients_group_i_number`", "`patients_group_ii_number`", "`normalization_strategy`"};
+////                boolean[] activeFilters = new boolean[columnArr.length];
+//                for (int index = 0; index < columnArr.length; index++) {
+//                    String selectPumed_id1 = "SELECT  `pumed_id`  FROM  `quant_dataset_table` WHERE " + stat + " AND `disease_category`=? GROUP BY  `pumed_id`, " + columnArr[index] + " ORDER BY  `pumed_id` ";
+//                    if (conn == null || conn.isClosed()) {
+//                        Class.forName(driver).newInstance();
+//                        conn = DriverManager.getConnection(url + dbName, userName, password);
+//                    }
+//                    selectPumed_idStat = conn.prepareStatement(selectPumed_id1);
+//                    selectPumed_idStat.setString(1, str);
+//                    rs = selectPumed_idStat.executeQuery();
+//                    int pumed_id_com_index = 0;
+//                    while (rs.next()) {
+//                        pumed_id_com_index++;
+//                    }
+//                    rs.close();
+//                    if (pumed_id_index != pumed_id_com_index) {
+//                        activeFilters[index] = true;
+//                    }
+//
+//                }
+//                activeFilters[0] = false;
+//                activeFilters[1] = false;
+//                activeFilters[2] = false;
+//                activeFilters[3] = true;
+//                activeFilters[4] = true;
+//                activeFilters[7] = false;
+//                activeFilters[activeFilters.length - 2] = false;
+//                activeFilters[activeFilters.length - 3] = false;
+//                activeFilters[activeFilters.length - 4] = false;
+//                activePieChartQuantFiltersDiseaseCategoryMap.put(str, activeFilters);
+            }
+            activePieChartQuantFiltersDiseaseCategoryMap.put("All", activeFilters);
+        } catch (ClassNotFoundException e) {
+            System.err.println("at error line 2912 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
+        } catch (IllegalAccessException e) {
+            System.err.println("at error line 2915 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
+        } catch (InstantiationException e) {
+            System.err.println("at error line 2918 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
+        } catch (SQLException e) {
+            System.err.println("at error line 2921 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
+        }
+        System.gc();
+        return activePieChartQuantFiltersDiseaseCategoryMap;
+    }
+
 
     /**
      * Get available quantification datasets initial information object within
@@ -2308,7 +2401,7 @@ public class DataBase implements Serializable {
                 if (!activeHeaders[18] && patient_group_i != null && !patient_group_i.equalsIgnoreCase("Not Available")) {
                     activeHeaders[18] = true;
                 }
-                ds.setPatientsGroup1(patient_group_i);
+                ds.setPatientsGroup1(patient_group_i+"\n"+disease_category);
 
                 int patients_group_i_number = rs.getInt("patients_group_i_number");
                 if (!activeHeaders[19] && patients_group_i_number != -1) {
@@ -2326,13 +2419,13 @@ public class DataBase implements Serializable {
                 if (!activeHeaders[21] && patient_sub_group_i != null && !patient_sub_group_i.equalsIgnoreCase("Not Available")) {
                     activeHeaders[21] = true;
                 }
-                ds.setPatientsSubGroup1(patient_sub_group_i);
+                ds.setPatientsSubGroup1(patient_sub_group_i+"\n"+disease_category);
 
                 String patient_group_ii = rs.getString("patient_group_ii");
                 if (!activeHeaders[22] && patient_group_ii != null && !patient_group_ii.equalsIgnoreCase("Not Available")) {
                     activeHeaders[22] = true;
                 }
-                ds.setPatientsGroup2(patient_group_ii);
+                ds.setPatientsGroup2(patient_group_ii+"\n"+disease_category);
 
                 int patients_group_ii_number = rs.getInt("patients_group_ii_number");
                 if (!activeHeaders[23] && patients_group_ii_number != -1) {
@@ -2350,7 +2443,7 @@ public class DataBase implements Serializable {
                 if (!activeHeaders[25] && patient_sub_group_ii != null && !patient_sub_group_ii.equalsIgnoreCase("Not Available")) {
                     activeHeaders[25] = true;
                 }
-                ds.setPatientsSubGroup2(patient_sub_group_ii);
+                ds.setPatientsSubGroup2(patient_sub_group_ii+"\n"+disease_category);
                 ds.setAdditionalcomments("Not Available");
                 ds.setDiseaseCategory(rs.getString("disease_category"));
                 diseaseCategories.add(ds.getDiseaseCategory());
@@ -2382,94 +2475,7 @@ public class DataBase implements Serializable {
         return null;
     }
 
-    /**
-     * Get active quantification pie charts filters within quant searching
-     * proteins results (to hide them if they are empty)
-     *
-     * @param searchQuantificationProtList
-     * @return boolean array for the active and not active pie chart filters
-     * indexes
-     */
-    public Map<String, boolean[]> getActivePieChartQuantFilters(List<QuantProtein> searchQuantificationProtList) {
-
-        Map<String, boolean[]> activePieChartQuantFiltersDiseaseCategoryMap = new LinkedHashMap<String, boolean[]>();
-        List<String> disCatList = new LinkedList<String>();
-        try {
-
-            Set<Integer> QuantDatasetIds = new HashSet<Integer>();
-            for (QuantProtein quantProt : searchQuantificationProtList) {
-                QuantDatasetIds.add(quantProt.getDsKey());
-            }
-            StringBuilder sb = new StringBuilder();
-
-            for (int index : QuantDatasetIds) {
-                sb.append("  `index` = ").append(index);
-                sb.append(" OR ");
-
-            }
-            String stat = sb.toString().substring(0, sb.length() - 4);
-            PreparedStatement selectPumed_idStat;
-            String selectPumed_id = "SELECT  `pumed_id` ,  `disease_category` FROM  `quant_dataset_table` GROUP BY  `pumed_id` ,  `disease_category` ORDER BY  `pumed_id` ";
-            if (conn == null || conn.isClosed()) {
-                Class.forName(driver).newInstance();
-                conn = DriverManager.getConnection(url + dbName, userName, password);
-            }
-            selectPumed_idStat = conn.prepareStatement(selectPumed_id);
-            ResultSet rs = selectPumed_idStat.executeQuery();
-            int pumed_id_index = 0;
-            while (rs.next()) {
-                disCatList.add(pumed_id_index, rs.getString("disease_category"));
-                pumed_id_index++;
-            }
-            rs.close();
-            /// check the colums one by one 
-
-            for (String str : disCatList) {
-                String[] columnArr = new String[]{"`identified_proteins_number`", "`quantified_proteins_number`", "`analytical_method`", "`raw_data_available`", "`year`", "`type_of_study`", "`sample_type`", "`sample_matching`", "`technology`", "`analytical_approach`", "`enzyme`", "`shotgun_targeted`", "`quantification_basis`", "`quant_basis_comment`", "`patients_group_i_number`", "`patients_group_ii_number`", "`normalization_strategy`"};
-                boolean[] activeFilters = new boolean[columnArr.length];
-                for (int index = 0; index < columnArr.length; index++) {
-                    String selectPumed_id1 = "SELECT  `pumed_id`  FROM  `quant_dataset_table` WHERE " + stat + " AND `disease_category`=? GROUP BY  `pumed_id`, " + columnArr[index] + " ORDER BY  `pumed_id` ";
-                    if (conn == null || conn.isClosed()) {
-                        Class.forName(driver).newInstance();
-                        conn = DriverManager.getConnection(url + dbName, userName, password);
-                    }
-                    selectPumed_idStat = conn.prepareStatement(selectPumed_id1);
-                    selectPumed_idStat.setString(1, str);
-                    rs = selectPumed_idStat.executeQuery();
-                    int pumed_id_com_index = 0;
-                    while (rs.next()) {
-                        pumed_id_com_index++;
-                    }
-                    rs.close();
-                    if (pumed_id_index != pumed_id_com_index) {
-                        activeFilters[index] = true;
-                    }
-
-                }
-                activeFilters[0] = false;
-                activeFilters[1] = false;
-                activeFilters[2] = false;
-                activeFilters[3] = true;
-                activeFilters[4] = true;
-                activeFilters[7] = false;
-                activeFilters[activeFilters.length - 2] = false;
-                activeFilters[activeFilters.length - 3] = false;
-                activeFilters[activeFilters.length - 4] = false;
-                activePieChartQuantFiltersDiseaseCategoryMap.put(str, activeFilters);
-            }
-        } catch (ClassNotFoundException e) {
-            System.err.println("at error line 2912 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-        } catch (IllegalAccessException e) {
-            System.err.println("at error line 2915 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-        } catch (InstantiationException e) {
-            System.err.println("at error line 2918 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-        } catch (SQLException e) {
-            System.err.println("at error line 2921 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
-        }
-        System.gc();
-        return activePieChartQuantFiltersDiseaseCategoryMap;
-    }
-
+    
     /**
      * Store quant proteins list to database
      *

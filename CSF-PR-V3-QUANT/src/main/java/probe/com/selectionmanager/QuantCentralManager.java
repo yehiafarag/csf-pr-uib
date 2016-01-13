@@ -312,6 +312,9 @@ public class QuantCentralManager implements Serializable {
         Studies_Filter_Manager.changeDiseaseCategory(diseaseCategory);
 
     }
+      public String getInUseDiseaseName() {
+        return  Studies_Filter_Manager.getInUseDiseaseName();
+    }
 
     public int getTotalDsNumber() {
         return Studies_Filter_Manager.getTotalDsNumber();

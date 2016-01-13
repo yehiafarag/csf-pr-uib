@@ -396,8 +396,8 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
 //        diseaseGroupsListA.select("Group A");
 //        diseaseGroupsListB.select("Group B");
 
-        diseaseGroupsListB.select("CIS-CIS");
-        diseaseGroupsListA.select("CIS-MS");
+        diseaseGroupsListB.select("CIS-CIS\nMultiple Sclerosis");
+        diseaseGroupsListA.select("CIS-MS\nMultiple Sclerosis");
 
     }
 

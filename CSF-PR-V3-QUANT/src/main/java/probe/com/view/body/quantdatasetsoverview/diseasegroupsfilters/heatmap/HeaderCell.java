@@ -49,32 +49,39 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
      * @return
      */
     public String getValueLabel() {
-        return valueLabel.getValue();
+        return title;
     }
     private boolean selected = false;
     private final Set<QuantDiseaseGroupsComparison> includedComparisons = new LinkedHashSet<QuantDiseaseGroupsComparison>();
     private final List<HeatmapCell> includedCells = new ArrayList<HeatmapCell>();
     private final HeatMapComponent parentcom;
+    private final String title;
+    private final String allStyle;
 
     /**
      *
      * @param rowHeader
-     * @param value
+     * @param title
      * @param index
      * @param parentcom
      * @param heatmapCellWidth
+     * @param all
      * @param fullName
      */
-    public HeaderCell(boolean rowHeader, String value, int index, HeatMapComponent parentcom, int heatmapCellWidth, String fullName) {
+    public HeaderCell(boolean rowHeader, String title, int index, HeatMapComponent parentcom, int heatmapCellWidth, String fullName, boolean all) {
         this.parentcom = parentcom;
-        valueLabel = new Label("<center>" + value + "</center>");
-//        super("<b>" + value + "</b>");
-        valueLabel.setWidth("150px");
-        valueLabel.setHeight((heatmapCellWidth - 10) + "px");
-        this.setWidth("150px");
-        this.setHeight(heatmapCellWidth + "px");
-        this.valueLabel.setContentMode(ContentMode.HTML);
-        this.index = index;
+        valueLabel = new Label();
+        this.title = title;
+
+        if (all) {
+            allStyle =title.split("\n")[1].toLowerCase().replace(" ","") ;
+            valueLabel.setValue("<center><font>" + title.split("\n")[0] + "</font></br><font size='1' color='#003e99'>(" + title.split("\n")[1] + ")</font></center>");
+
+        } else {
+            allStyle = "";
+            valueLabel.setValue("<center><font>" + title.split("\n")[0] + "</font></center>");
+
+        }
         if (rowHeader) {
             this.cellStyleName = "hmrowlabel";
             this.setStyleName("hmrowlabel");
@@ -82,14 +89,22 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
             this.cellStyleName = "hmcolumnlabel";
             this.setStyleName("hmcolumnlabel");
         }
+//        super("<b>" + title + "</b>");
+        valueLabel.setWidth("150px");
+        valueLabel.setHeight((heatmapCellWidth - 10) + "px");
+        this.setWidth("150px");
+        this.setHeight(heatmapCellWidth + "px");
+        this.valueLabel.setContentMode(ContentMode.HTML);
+        this.index = index;
+
         this.addComponent(valueLabel);
         this.setComponentAlignment(valueLabel, Alignment.BOTTOM_CENTER);
         this.addLayoutClickListener(HeaderCell.this);
         if (fullName == null) {
-            fullName = value;
+            fullName = title;
         }
 
-        this.setDescription(fullName);
+        this.setDescription(fullName.replace("\n","-"));
 
     }
 
@@ -106,7 +121,7 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
      *
      */
     public void resetCellStyle() {
-        this.setStyleName(cellStyleName + selectStyle);
+        this.setStyleName(allStyle + cellStyleName + selectStyle);
 
     }
 
@@ -124,7 +139,7 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
      */
     public void unSelectCellStyle() {
         selectStyle = "";
-        this.setStyleName(cellStyleName);
+        this.setStyleName(allStyle+cellStyleName);
 
     }
 
@@ -133,12 +148,12 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
         if (selected) {
             selected = false;
 //            unSelectCellStyle();
-            parentcom.removeRowSelectedDs(valueLabel.getValue());
+            parentcom.removeRowSelectedDs(title);
 
         } else {
             selected = true;
 //            selectCellStyle();
-            parentcom.addRowSelectedDs(valueLabel.getValue());
+            parentcom.addRowSelectedDs(title);
         }
     }
 

@@ -122,12 +122,13 @@ public class HeatMapComponent extends VerticalLayout {
      * @param maxDatasetValue
      * @param diseaseFullNameMap
      * @param fullDsMap
+     * @param all
      */
-    public void updateHeatMap(Set<String> rowsLbels, Set<String> columnsLbels, QuantDSIndexes[][] values, int maxDatasetValue,Map<String,String> diseaseFullNameMap, Map<Integer, QuantDatasetObject> fullDsMap) {
+    public void updateHeatMap(Set<String> rowsLbels, Set<String> columnsLbels, QuantDSIndexes[][] values, int maxDatasetValue,Map<String,String> diseaseFullNameMap, Map<Integer, QuantDatasetObject> fullDsMap,boolean all) {
         if (rowsLbels.isEmpty() || columnsLbels.isEmpty()) {
             return;
         }
-        updateHeatMapLayout(values, rowsLbels, columnsLbels, maxDatasetValue,diseaseFullNameMap,fullDsMap);
+        updateHeatMapLayout(values,rowsLbels, columnsLbels, maxDatasetValue,diseaseFullNameMap,fullDsMap,all);
 
     }
 
@@ -445,7 +446,7 @@ public class HeatMapComponent extends VerticalLayout {
         return availableComparisonsList;
     }
 
-    private void updateHeatMapLayout(QuantDSIndexes[][] values, Set<String> rowheaders, Set<String> colheaders, int maxDatasetValue,Map<String,String> diseaseFullNameMap, Map<Integer, QuantDatasetObject> fullDsMap) {
+    private void updateHeatMapLayout(QuantDSIndexes[][] values, Set<String> rowheaders, Set<String> colheaders, int maxDatasetValue,Map<String,String> diseaseFullNameMap, Map<Integer, QuantDatasetObject> fullDsMap,boolean all) {
         HeatmapColorGenerator hmColorGen = new HeatmapColorGenerator(maxDatasetValue, 0);
         availableComparisonsList.clear();
         columnHeader.removeAllComponents();
@@ -472,11 +473,11 @@ public class HeatMapComponent extends VerticalLayout {
 
 //init col headers
         for (int i = 0; i < colheaders.size(); i++) {
-            String la = colheaders.toArray()[i].toString();
-            if (la.equalsIgnoreCase("")) {
-                la = "Not Available";
+            String title = colheaders.toArray()[i].toString();
+            if (title.equalsIgnoreCase("")) {
+                title = "Not Available";
             }
-            HeaderCell headerCell = new HeaderCell(false, la, i, HeatMapComponent.this, heatmapCellWidth,diseaseFullNameMap.get(la));
+            HeaderCell headerCell = new HeaderCell(false, title, i, HeatMapComponent.this, heatmapCellWidth,diseaseFullNameMap.get(title), all);
             columnHeader.addComponent(headerCell, i, 0);
             columnHeader.setComponentAlignment(headerCell, Alignment.MIDDLE_CENTER);
             columnCells[i] = headerCell;
@@ -491,7 +492,7 @@ public class HeatMapComponent extends VerticalLayout {
             if (la.equalsIgnoreCase("")) {
                 la = "Not Available";
             }
-            HeaderCell headerCell = new HeaderCell(true, la, i, HeatMapComponent.this, heatmapCellWidth,diseaseFullNameMap.get(la));
+            HeaderCell headerCell = new HeaderCell(true, la, i, HeatMapComponent.this, heatmapCellWidth,diseaseFullNameMap.get(la),all);
             rowHeader.addComponent(headerCell, 0, i);
             rowHeader.setComponentAlignment(headerCell, Alignment.MIDDLE_CENTER);
             rowCells[i] = headerCell;
