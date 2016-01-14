@@ -51,6 +51,7 @@ import org.jfree.chart.axis.SymbolAxis;
 import org.jfree.chart.axis.Tick;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.block.BlockBorder;
+import org.jfree.chart.entity.AxisEntity;
 import org.jfree.chart.entity.ChartEntity;
 import org.jfree.chart.entity.XYItemEntity;
 import org.jfree.chart.plot.XYPlot;
@@ -381,7 +382,10 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         int x = 0;
         int maxLength = -1;
         for (QuantDiseaseGroupsComparison comp : selectedComparisonList) {
-            xAxisLabels[x] = comp.getComparisonHeader() + " (" + comp.getDatasetIndexes().length + ")    ";
+            String header = comp.getComparisonHeader();
+            String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + " ( " + header.split(" / ")[1].split("\n")[1] + " )";
+
+            xAxisLabels[x] = updatedHeader + " (" + comp.getDatasetIndexes().length + ")    ";
             if (xAxisLabels[x].length() > maxLength) {
                 maxLength = xAxisLabels[x].length();
             }
@@ -392,10 +396,12 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         final boolean finalNum;
         finalNum = maxLength > 30 && selectedComparisonList.size() > 4;
         xAxis = new SymbolAxis(null, xAxisLabels) {
+                   
             private final boolean localfinal = finalNum;
 
             @Override
             protected List refreshTicksHorizontal(Graphics2D g2, Rectangle2D dataArea, RectangleEdge edge) {
+              
                 if (localfinal) {
                     setVerticalTickLabels(localfinal);
                     return super.refreshTicksHorizontal(g2, dataArea, edge);
@@ -403,6 +409,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                 List ticks = new java.util.ArrayList();
                 Font tickLabelFont = getTickLabelFont();
                 g2.setFont(tickLabelFont);
+                System.out.println(" color "+g2.getBackground());
                 double size = getTickUnit().getSize();
                 int count = calculateVisibleTickCount();
                 double lowestTickValue = calculateLowestVisibleTickValue();
@@ -462,6 +469,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                         }
                         Tick tick = new NumberTick(new Double(currentTickValue),
                                 tickLabel, anchor, rotationAnchor, angle);
+                      
                         ticks.add(tick);
                     }
                 }
@@ -494,6 +502,11 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
                 return c;
             }
+
+           
+
+            
+            
 
         };
 
@@ -540,12 +553,14 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
     private String saveToFile(final JFreeChart chart, final double width, final double height) {
         isNewImge = true;
-
+ int location =-1;
+ boolean first = true;
         Set<SquaredDot> set = new TreeSet<SquaredDot>();
         try {
 
             imageData = ChartUtilities.encodeAsPNG(chart.createBufferedImage((int) width, (int) height, chartRenderingInfo));
             chartLayout.removeAllComponents();
+           
             for (int i = 0; i < chartRenderingInfo.getEntityCollection().getEntityCount(); i++) {
                 ChartEntity entity = chartRenderingInfo.getEntityCollection().getEntity(i);
                 if (entity instanceof XYItemEntity) {
@@ -575,6 +590,8 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                         }
 
                     }
+                    location=Integer.valueOf(coords[0]);
+                    System.out.println("at coords are "+catEnt.getShapeCoords());
                     int sqheight = (largeY - smallY);
                     if (sqheight < 2) {
                         continue;
@@ -611,18 +628,42 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                     }
 
                     String header = ((QuantDiseaseGroupsComparison) selectedComparisonList.toArray()[catEnt.getSeriesIndex()]).getComparisonHeader();
+                    String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + " ( " + header.split(" / ")[1].split("\n")[1] + " )";
                     int itemNumber = (int) ((XYItemEntity) entity).getDataset().getYValue(((XYItemEntity) entity).getSeriesIndex(), ((XYItemEntity) entity).getItem());
 
-                    square.setDescription(header + "    <br/>#Proteins " + (int) tooltipsProtNumberMap.get(header)[itemNumber] + tooltipLabels[itemNumber]);
+                    square.setDescription(updatedHeader + "    <br/>#Proteins " + (int) tooltipsProtNumberMap.get(header)[itemNumber] + tooltipLabels[itemNumber]);
                     square.setParam("seriesIndex", ((XYItemEntity) entity).getSeriesIndex());
                     square.setParam("categIndex", (double) itemNumber);
 //                    System.out.println("at top is "+smallY+"   ");
-                    if (smallY < 0) {
-//                       square.setHeight((finalHeight-smallY) + "px");
-//                       smallY=0;
-                    }
+//                    if (smallY < 0) {
+////                       square.setHeight((finalHeight-smallY) + "px");
+////                       smallY=0;
+//                    }
                     square.setParam("position", "left: " + smallX + "px; top: " + (smallY) + "px;");
                     set.add(square);
+                }else if(entity instanceof AxisEntity  ){
+                    AxisEntity ai = (AxisEntity)entity; 
+                   if(first)
+                   {
+                       first=false;
+                       
+                   }
+                   else{
+                       continue;
+                   }
+                    
+                    String[] coords = ai.getShapeCoords().split(",");
+                    VerticalLayout vlo = new VerticalLayout();
+                    vlo.setStyleName("frame");
+                    int w = Integer.valueOf(coords[1])-10;
+                     int h = Integer.valueOf(coords[3]) - Integer.valueOf(coords[1]) ;
+                    vlo.setWidth(10+"px");
+                    vlo.setHeight(10+"px");
+                
+                    System.out.println("coords is "+ai.getShapeCoords());
+                    chartLayout.addComponent(vlo, "left: " + 439 + "px; top: " + w + "px;");
+                    
+                    System.out.println("ChartEntity "+ai.getArea());
                 }
             }
             for (SquaredDot square : set) {
@@ -630,9 +671,6 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
             }
             String base64 = Base64.encodeBase64String(imageData);
             base64 = "data:image/png;base64," + base64;
-
-//         exportPdfBtn.setValue("<a href='" + base64 + "'style='color: rgb(27, 105, 159);font-family: Verdana,;font-size: 12px;font-stretch: normal;font-style: normal;font-variant: normal;font-weight: normal;height: auto;line-height: normal;text-align: left;text-decoration: underline;text-shadow: none;'target='_blank' download> Export</a>");
-//         exportPdfBtn.setImmediate(true);
             return base64;
         } catch (IOException e) {
             System.err.println("at error " + e.getMessage());
@@ -662,7 +700,6 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                     selectedComparisonList = handler.getComparisonProtList(selectedComparisonList, searchQuantificationProtList);
                     break;
                 }
-
             }
             if (selectedComparisonList.isEmpty()) {
                 initialLayout.setVisible(true);
@@ -711,9 +748,6 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         }
         double logValue = (linearValue * upperLimit / (double) max) + lowerLimit;
         return logValue;
-
-//        float inverseNaturalLogBase = 1.0f / (float) Math.log(2.0f);
-//        return (float) Math.log(linearValue) * inverseNaturalLogBase/10.0f;
     }
 
     private SquaredDot lastselectedComponent;

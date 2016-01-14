@@ -329,7 +329,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         orderedLineChartContainer.setWidth((width - 100) + "px");
         orderedLineChartContainer.setHeight(height + "px");
 
-        teststyle = proteinName.replace(" ", "_").replace(")", "_").replace("(", "_").replace(";", "_").toLowerCase().replace("#", "_").replace("?", "_").replace("[", "").replace("]", "").replace("/", "_").replace(":", "_").replace("'", "_").replace(".","_") + "linechart";
+        teststyle = proteinName.replace(" ", "_").replace(")", "_").replace("(", "_").replace(";", "_").toLowerCase().replace("#", "_").replace("?", "_").replace("[", "").replace("]", "").replace("/", "_").replace(":", "_").replace("'", "_").replace(".", "_") + "linechart";
         styles.add("." + teststyle + " {  background-image: url(" + defaultLineChartImgUrl + " );background-position:center; background-repeat: no-repeat; }");
         defaultLineChartContainer.setStyleName(teststyle);
         orderedLineChartContainer.setVisible(false);
@@ -602,7 +602,10 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
         int x = 0;
         for (QuantDiseaseGroupsComparison comp : selectedComparisonList) {
-            xAxisLabels[x] = comp.getComparisonHeader();
+            String groupCompTitle = comp.getComparisonHeader();
+            String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0] + " ( " + groupCompTitle.split(" / ")[1].split("\n")[1] + " )";
+
+            xAxisLabels[x] = updatedHeader;
             if (xAxisLabels[x].length() > maxLength) {
                 maxLength = xAxisLabels[x].length();
             }
@@ -801,8 +804,6 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
             }
 
         };
-        
-       
 
         xyplot.setRangeTickBandPaint(Color.WHITE);
         JFreeChart jFreeChart = new JFreeChart(null, new Font("Verdana", Font.PLAIN, 18), xyplot, true);
@@ -842,17 +843,24 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                 square.setHeight(17 + "px");
                 QuantDiseaseGroupsComparison gc;
                 String paramName = "GroupsComparison";
+
                 if (inUseComparisonProteins[((XYItemEntity) entity).getItem()] == null || inUseComparisonProteins[((XYItemEntity) entity).getItem()].getSignificantTrindCategory() == -1) {
                     gc = new QuantDiseaseGroupsComparison();
                     gc.setComparisonHeader("No data available");
                     paramName = "Empty value";
                     trend = 2;
-                    square.setDescription(gc.getComparisonHeader());
+                    String groupCompTitle = gc.getComparisonHeader();
+                    String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0] + " ( " + groupCompTitle.split(" / ")[1].split("\n")[1] + " )";
+
+                    square.setDescription(updatedHeader);
                 } else {
                     gc = inUseComparisonProteins[((XYItemEntity) entity).getItem()].getComparison();
                     DiseaseGroupsComparisonsProteinLayout protLayout = inUseComparisonProteins[((XYItemEntity) entity).getItem()];
                     trend = protLayout.getSignificantTrindCategory();
-                    square.setDescription("<h2>"+gc.getComparisonHeader()+""+ tooltipLabels[trend]+""+"</h2>"+"<h3>" +protLayout.toString()+"</h3>");
+                     String groupCompTitle = gc.getComparisonHeader();
+                    String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0] + " ( " + groupCompTitle.split(" / ")[1].split("\n")[1] + " )";
+
+                    square.setDescription("<h2>" + updatedHeader + "" + tooltipLabels[trend] + "" + "</h2>" + "<h3>" + protLayout.toString() + "</h3>");
                 }
 
                 square.setParam(paramName, gc);

@@ -116,8 +116,9 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
         this.addComponent(valueLabel);
         this.setComponentAlignment(valueLabel, Alignment.MIDDLE_CENTER);
         if (value > 0) {
-            
-            this.setDescription("<h3>"+groupCompTitle+"</h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + strValue + (value == 1 ? " study" : " studies") + " </h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + publicationsNumber + (publicationsNumber == 1 ? " publication" : " publications") + " </h3>");
+        String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0] + " ( " + groupCompTitle.split(" / ")[1].split("\n")[1] + " )";
+
+            this.setDescription("<h3>"+updatedHeader+"</h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + strValue + (value == 1 ? " study" : " studies") + " </h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + publicationsNumber + (publicationsNumber == 1 ? " publication" : " publications") + " </h3>");
         }
 
     }

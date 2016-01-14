@@ -42,7 +42,7 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
     }
 
     private final GridLayout proteinsForm;
-    private InformationField accsession, name, quantPeptidesNumber, idPeptidesNumber, pValue, pValueComm, foldChange, roc, additionalComments, pvalueSignificanceThreshold;
+    private InformationField quantBasisComment,accsession, name, quantPeptidesNumber, idPeptidesNumber, pValue, pValueComm, foldChange, roc, additionalComments, pvalueSignificanceThreshold;
 
     private GridLayout initProteinsForm(int width) {
         GridLayout proteinsFormLayout = new GridLayout(4, 5);
@@ -77,6 +77,10 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
 
         additionalComments = new InformationField("Additional Comments");
         proteinsFormLayout.addComponent(additionalComments, 1, 2);
+        
+         quantBasisComment = new InformationField("Quantification Basis Comment");
+        proteinsFormLayout.addComponent(quantBasisComment, 2, 2);
+        
 
         return proteinsFormLayout;
     }
@@ -130,6 +134,7 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
         if (quantPepNumber > 0) {
             quantPeptidesNumber.setValue(quantPepNumber, null);
         }
+         quantBasisComment.setValue(quantProtein.getQuantBasisComment() + "", null);
 
         this.proteinsForm.setVisible(true);
     }

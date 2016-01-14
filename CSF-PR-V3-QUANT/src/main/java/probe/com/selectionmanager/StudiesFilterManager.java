@@ -240,7 +240,6 @@ public class StudiesFilterManager implements Serializable {
             for (String fullName : set) {
                 sortedArr[index] = fullName;
                 index++;
-                System.out.println("at sorted arr " + fullName);
 
             }
         }

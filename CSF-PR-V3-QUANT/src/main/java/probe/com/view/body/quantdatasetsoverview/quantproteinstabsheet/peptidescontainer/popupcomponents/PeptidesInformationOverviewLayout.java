@@ -229,7 +229,7 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
     }
     private GridLayout peptideForm;
     private StackedBarPeptideComponent lastselectedPeptideComp;
-    private InformationField pepSequence, peptideModification, modificationComment, pValue, pValueComm, foldChange, roc, additionalComments, pvalueSignificanceThreshold, sequenceAnnotated, peptideCharge;
+    private InformationField quantBasisComment, pepSequence, peptideModification, modificationComment, pValue, pValueComm, foldChange, roc, additionalComments, pvalueSignificanceThreshold, sequenceAnnotated, peptideCharge;
 
     private GridLayout initPeptidesForm(int width) {
         GridLayout peptideFormLayout = new GridLayout(4, 5);
@@ -267,6 +267,11 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
 
         additionalComments = new InformationField("Additional Comments");
         peptideFormLayout.addComponent(additionalComments, 2, 2);
+        
+         quantBasisComment = new InformationField("Quantification Basis Comment");
+        peptideFormLayout.addComponent(quantBasisComment, 3, 2);
+        
+       
 
         return peptideFormLayout;
     }
@@ -323,6 +328,8 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
             peptideChargeValue = "";
         }
         this.peptideCharge.setValue(peptideChargeValue, null);
+        
+         quantBasisComment.setValue(peptide.getQuantBasisComment() + "", null);
 
     }
 

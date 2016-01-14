@@ -112,7 +112,10 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         topLayout.setStyleName(Reindeer.LAYOUT_WHITE);
         int numb = cp.getSignificantDown() + cp.getNotProvided() + cp.getNotReg() + cp.getSignificantUp();
 
-        comparisonTitle = new Label(cp.getComparison().getComparisonHeader() + " (#Studies " + numb + "/" + cp.getComparison().getDatasetIndexes().length + ")");
+        String groupCompTitle = cp.getComparison().getComparisonHeader();
+        String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0] + " ( " + groupCompTitle.split(" / ")[1].split("\n")[1] + " )";
+
+        comparisonTitle = new Label(updatedHeader + " (#Studies " + numb + "/" + cp.getComparison().getDatasetIndexes().length + ")");
         comparisonTitle.setContentMode(ContentMode.HTML);
         comparisonTitle.setStyleName("custChartLabelHeader");
         comparisonTitle.setWidth((width - 70) + "px");
@@ -134,7 +137,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         ProteinScatterPlotContainer.setHeight(150 + "px");
 
         String styleString = "_" + cp.getProteinAccssionNumber() + "_" + cp.getComparison().getComparisonHeader();
-        teststyle = styleString.replace(" ", "_").replace("+", "_").replace(")", "_").replace("(", "_").toLowerCase().replace(" ", "_").replace(")", "_").replace("(", "_").toLowerCase().replace("+", "_").replace("/", "_").replace(".", "_") + "_scatterplot";
+        teststyle = styleString.replace(" ", "_").replace("+", "_").replace(")", "_").replace("(", "_").toLowerCase().replace(" ", "_").replace("\n", "_").replace(")", "_").replace("(", "_").toLowerCase().replace("+", "_").replace("/", "_").replace(".", "_") + "_scatterplot";
         styles.add("." + teststyle + " {  background-image: url(" + defaultScatterPlottImgUrl + " );background-position:center; background-repeat: no-repeat; }");
         ProteinScatterPlotContainer.setStyleName(teststyle);
         ProteinScatterPlotContainer.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
@@ -377,7 +380,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         va.setAutoRange(false);
         va.setMinorTickCount(0);
         va.setVisible(true);
-        maxPatNumber = Math.ceil(maxPatNumber / 100.0)*100;
+        maxPatNumber = Math.ceil(maxPatNumber / 100.0) * 100;
         plot.getRangeAxis().setRange(0, maxPatNumber);
         NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
         rangeAxis.setTickUnit(new NumberTickUnit(10));

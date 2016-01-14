@@ -594,6 +594,9 @@
     cursor: pointer; 
 
 }
+.hmcolumnlabel_selected font{
+    color: white !important; 
+}
 .hmcolumnlabel_selected div{
     font-size:14px;
     line-height:100%;
@@ -682,6 +685,9 @@
     cursor: pointer;  
 
 
+}
+.hmrowlabel_selected font{
+    color: white !important; 
 }
 .hmrowlabel_selected div{
     font-size:14px;
@@ -2239,7 +2245,7 @@ resetlabelbtn p{
 
 .usercustdatatitle {
 
-    background:#F8BDBD;
+    background: #F8D5BD;
     border:1px solid #45AEEA;
 
 }
@@ -2247,7 +2253,7 @@ resetlabelbtn p{
     color:black !important;
 }
 
-.alzheimerhmcolumnlabel {
+.alzheimerdiseasehmcolumnlabel {
     border: 1px solid #F6F0F0;
     margin-top: 148px;
     text-align: center;
@@ -2276,19 +2282,19 @@ resetlabelbtn p{
     color: #000000;
     cursor: pointer;
 }
-.alzheimerhmcolumnlabel:hover{
+.alzheimerdiseasehmcolumnlabel:hover{
     border: 1px solid #4d749f; 
 
 }
 
-.alzheimerhmcolumnlabel div{
+.alzheimerdiseasehmcolumnlabel div{
     font-size:14px;
     line-height:100%;
     cursor: pointer;    
 }
 
 
-.alzheimerhmrowlabel {
+.alzheimerdiseasehmrowlabel {
     border: 1px solid #F6F0F0;
     text-align: center;
     line-height: 45px;
@@ -2298,11 +2304,11 @@ resetlabelbtn p{
     
 
 }
-.alzheimerhmrowlabel:hover{
+.alzheimerdiseasehmrowlabel:hover{
     border: 1px solid #4d749f; 
 
 }
-.alzheimerhmrowlabel div{
+.alzheimerdiseasehmrowlabel div{
     font-size:14px;
     line-height:100%;
     cursor: pointer;    
@@ -2372,7 +2378,7 @@ resetlabelbtn p{
 
 
 
-.parkinsonhmcolumnlabel {
+.parkinsondiseasehmcolumnlabel {
     border: 1px solid #F6F0F0;
     margin-top: 148px;
     text-align: center;
@@ -2401,19 +2407,19 @@ resetlabelbtn p{
     color: #000000;
     cursor: pointer;
 }
-.parkinsonhmcolumnlabel:hover{
+.parkinsondiseasehmcolumnlabel:hover{
     border: 1px solid #4d749f; 
 
 }
 
-.parkinsonhmcolumnlabel div{
+.parkinsondiseasehmcolumnlabel div{
     font-size:14px;
     line-height:100%;
     cursor: pointer;    
 }
 
 
-.parkinsonhmrowlabel {
+.parkinsondiseasehmrowlabel {
     border: 1px solid #F6F0F0;
     text-align: center;
     line-height: 45px;
@@ -2422,12 +2428,14 @@ resetlabelbtn p{
     cursor: pointer;  
 
 }
-.parkinsonhmrowlabel:hover{
+.parkinsondiseasehmrowlabel:hover{
     border: 1px solid #4d749f; 
 
 }
-.parkinsonhmrowlabel div{
+.parkinsondiseasehmrowlabel div{
     font-size:14px;
     line-height:100%;
     cursor: pointer;    
+}.frame{
+    background: #ee5311;
 }

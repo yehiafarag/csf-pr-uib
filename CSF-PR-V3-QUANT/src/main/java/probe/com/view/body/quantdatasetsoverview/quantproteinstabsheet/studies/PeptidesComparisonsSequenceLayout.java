@@ -112,7 +112,10 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
         int count = 0;
 
         int panelWidth = Page.getCurrent().getBrowserWindowWidth() - width - 100;
-        final StudyInformationPopupComponent studyInformationPopupPanel = new StudyInformationPopupComponent(panelWidth, cprot.getProtName(), cprot.getUrl(), cprot.getComparison().getComparisonHeader());
+        String groupCompTitle = cprot.getComparison().getComparisonHeader();
+        String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0] + " ( " + groupCompTitle.split(" / ")[1].split("\n")[1] + " )";
+
+        final StudyInformationPopupComponent studyInformationPopupPanel = new StudyInformationPopupComponent(panelWidth, cprot.getProtName(), cprot.getUrl(), updatedHeader);
         studyInformationPopupPanel.setVisible(false);
 
         LayoutEvents.LayoutClickListener studyListener = new LayoutEvents.LayoutClickListener() {
@@ -207,7 +210,7 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
 
         }
 
-        comparisonTitle.setValue(cprot.getComparison().getComparisonHeader() + " (#Studies " + count + "/" + cprot.getComparison().getDatasetIndexes().length + ")");
+        comparisonTitle.setValue(updatedHeader + " (#Studies " + count + "/" + cprot.getComparison().getDatasetIndexes().length + ")");
     }
 
     /**

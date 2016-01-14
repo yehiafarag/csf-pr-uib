@@ -2627,6 +2627,7 @@ public class DataBase implements Serializable {
                 quantProt.setQuantifiedPeptidesNumber(rs1.getInt("quantified_peptides_number"));
                 quantProt.setIdentifiedProteinsNum(rs1.getInt("identified_peptides_number"));
                 quantProt.setStringFCValue(rs1.getString("fold_change"));
+                quantProt.setQuantBasisComment(rs1.getString("quant_bases_comments"));
                 quantProtList.add(quantProt);
             }
             rs1.close();
@@ -2671,12 +2672,12 @@ public class DataBase implements Serializable {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
-            String selectDsGroupNum = "SELECT `patients_group_i_number` , `patients_group_ii_number`,`patient_group_i`,`patient_group_ii`,`patient_sub_group_i`,`patient_sub_group_ii`,`index` FROM `quant_dataset_table` WHERE  " + stat + " ;";
+            String selectDsGroupNum = "SELECT `disease_category` ,`patients_group_i_number` , `patients_group_ii_number`,`patient_group_i`,`patient_group_ii`,`patient_sub_group_i`,`patient_sub_group_ii`,`index` FROM `quant_dataset_table` WHERE  " + stat + " ;";
             PreparedStatement selectselectDsGroupNumStat = conn.prepareStatement(selectDsGroupNum);
             ResultSet rs = selectselectDsGroupNumStat.executeQuery();
             Map<Integer, Object[]> datasetIdDesGrs = new HashMap<Integer, Object[]>();
             while (rs.next()) {
-                datasetIdDesGrs.put(rs.getInt("index"), new Object[]{rs.getInt("patients_group_i_number"), rs.getInt("patients_group_ii_number"), rs.getString("patient_group_i").trim(), rs.getString("patient_group_ii").trim(), rs.getString("patient_sub_group_i").trim(), rs.getString("patient_sub_group_ii").trim()});
+                datasetIdDesGrs.put(rs.getInt("index"), new Object[]{rs.getInt("patients_group_i_number"), rs.getInt("patients_group_ii_number"), rs.getString("patient_group_i").trim(), rs.getString("patient_group_ii").trim(), rs.getString("patient_sub_group_i").trim(), rs.getString("patient_sub_group_ii").trim(),rs.getString("disease_category")});
             }
             rs.close();
             sb = new StringBuilder();
@@ -2708,6 +2709,7 @@ public class DataBase implements Serializable {
                 quantProt.setPvalueComment(rs1.getString("p_value_comments"));
                 quantProt.setPvalueSignificanceThreshold(rs1.getString("pvalue_significance_threshold"));
                 quantProt.setAdditionalComments(rs1.getString("additional_comments"));
+                quantProt.setQuantBasisComment(rs1.getString("quant_bases_comments"));
                 quantProtList.add(quantProt);
 
             }
@@ -2716,10 +2718,10 @@ public class DataBase implements Serializable {
             for (QuantProtein qp : quantProtList) {
                 qp.setPatientsGroupIINumber((Integer) datasetIdDesGrs.get(qp.getDsKey())[1]);
                 qp.setPatientsGroupINumber((Integer) datasetIdDesGrs.get(qp.getDsKey())[0]);
-                qp.setPatientGroupI(datasetIdDesGrs.get(qp.getDsKey())[2].toString());
-                qp.setPatientGroupII(datasetIdDesGrs.get(qp.getDsKey())[3].toString());
-                qp.setPatientSubGroupI(datasetIdDesGrs.get(qp.getDsKey())[4].toString());
-                qp.setPatientSubGroupII(datasetIdDesGrs.get(qp.getDsKey())[5].toString());
+                qp.setPatientGroupI(datasetIdDesGrs.get(qp.getDsKey())[2].toString()+"\n"+datasetIdDesGrs.get(qp.getDsKey())[6].toString());
+                qp.setPatientGroupII(datasetIdDesGrs.get(qp.getDsKey())[3].toString()+"\n"+datasetIdDesGrs.get(qp.getDsKey())[6].toString());
+                qp.setPatientSubGroupI(datasetIdDesGrs.get(qp.getDsKey())[4].toString()+"\n"+datasetIdDesGrs.get(qp.getDsKey())[6].toString());
+                qp.setPatientSubGroupII(datasetIdDesGrs.get(qp.getDsKey())[5].toString()+"\n"+datasetIdDesGrs.get(qp.getDsKey())[6].toString());
                 tquantProtList.add(qp);
 
             }
@@ -2853,6 +2855,7 @@ public class DataBase implements Serializable {
                 quantPeptide.setPvalueSignificanceThreshold(rs1.getString("pvalue_significance_threshold"));
                 quantPeptide.setPeptideCharge(rs1.getInt("peptide_charge"));
                 quantPeptide.setAdditionalComments(rs1.getString("additional_comments"));
+                quantPeptide.setQuantBasisComment(rs1.getString("quant_bases_comments"));
                 quantPeptidetList.add(quantPeptide);
             }
             rs1.close();
@@ -2919,6 +2922,7 @@ public class DataBase implements Serializable {
                 quantProt.setPvalueComment(resultSet.getString("p_value_comments"));
                 quantProt.setPvalueSignificanceThreshold(resultSet.getString("pvalue_significance_threshold"));
                 quantProt.setAdditionalComments(resultSet.getString("additional_comments"));
+                quantProt.setQuantBasisComment(resultSet.getString("quant_bases_comments"));
                 quantProtResultList.add(quantProt);
 
             }

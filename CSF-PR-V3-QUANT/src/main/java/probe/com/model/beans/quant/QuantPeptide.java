@@ -8,6 +8,7 @@ package probe.com.model.beans.quant;
 import java.io.Serializable;
 
 /**
+ * 
  *
  * @author Yehia Farag
  */
@@ -23,11 +24,21 @@ public class QuantPeptide implements Serializable {
     private String string_p_value;
     private String peptideModification;
     private String modification_comment;
+    private String quantBasisComment;
+
+    public String getQuantBasisComment() {
+        return quantBasisComment;
+    }
+
+    public void setQuantBasisComment(String quantBasisComment) {
+        this.quantBasisComment = quantBasisComment;
+    }
 
     public String getSequenceAnnotated() {
         return sequenceAnnotated;
     }
-
+    
+   
     public void setSequenceAnnotated(String sequenceAnnotated) {
         this.sequenceAnnotated = sequenceAnnotated;
     }
