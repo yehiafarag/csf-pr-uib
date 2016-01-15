@@ -521,7 +521,7 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(50, 50, 50)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -950,13 +950,13 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
     @SuppressWarnings("SleepWhileInLoop")
     private void quantProcessBtnActionPerformed() {
 
-        String errorMessage = "Not .txt file";
+        String errorMessage = "Not .fasta file";
         String errorMessage1 = "Not .csv file";
         jTextField3.setForeground(Color.black);
         jTextField4.setForeground(Color.black);
         if (quantPanel.getjTextField4().getText() != null) {
 
-            if (quantPanel.getjTextField4().getText().equalsIgnoreCase("") || !quantPanel.getjTextField4().getText().endsWith(".txt")) {
+            if (quantPanel.getjTextField4().getText().equalsIgnoreCase("") || !quantPanel.getjTextField4().getText().endsWith(".fasta")) {
                 quantPanel.getjTextField4().setText(errorMessage);
                 quantPanel.getjTextField4().setForeground(Color.red);
                 return;
@@ -2150,7 +2150,7 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                 }
             }
 
-            success = exphandeler.handelQuantPubData(quantPanel.getQuantCsvTextField().getText(), quantPanel.getjTextField4().getText());
+            success = exphandeler.handelQuantPubData(quantPanel.getQuantCsvTextField().getText(), quantPanel.getjTextField4().getText(),quantPanel.getUnreviewedFilePath());
 
             try {
 

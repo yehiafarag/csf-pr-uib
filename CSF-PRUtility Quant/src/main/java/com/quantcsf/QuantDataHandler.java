@@ -146,39 +146,65 @@ public class QuantDataHandler {
         qa18.setAnalyticalMethod("Disease Group I");
         qa18.setAuthor("Schutzer, Steven E., et al.");
         authormap.put("24039694", qa18);
-        
-        
+
         QuantDatasetObject qa19 = new QuantDatasetObject();
         qa19.setYear(2015);
         qa19.setFilesNumber(10);
         qa19.setAnalyticalMethod("Disease Group I");
         qa19.setAuthor("Shi, Min, et al.");
         authormap.put("25556233", qa19);
-        
+
         QuantDatasetObject qa20 = new QuantDatasetObject();
         qa20.setYear(2015);
         qa20.setFilesNumber(10);
         qa20.setAnalyticalMethod("Disease Group I");
         qa20.setAuthor("Borràs, Eva, et al.");
         authormap.put("26552840", qa20);
-        
+
         QuantDatasetObject qa21 = new QuantDatasetObject();
         qa21.setYear(2015);
         qa21.setFilesNumber(10);
         qa21.setAnalyticalMethod("Disease Group I");
         qa21.setAuthor("Spellman, Daniel S., et al.");
         authormap.put("25676562", qa21);
-        
+
+        QuantDatasetObject qa22 = new QuantDatasetObject();
+        qa22.setYear(2015);
+        qa22.setFilesNumber(10);
+        qa22.setAnalyticalMethod("Disease Group I");
+        qa22.setAuthor("JAO2015");
+        authormap.put("JAO2015", qa22);
+
+        QuantDatasetObject qa23 = new QuantDatasetObject();
+        qa23.setYear(2012);
+        qa23.setFilesNumber(10);
+        qa23.setAnalyticalMethod("Disease Group I");
+        qa23.setAuthor("Lehnert, Stefan, et al.");
+        authormap.put("22327139", qa23);
+
+        QuantDatasetObject qa24 = new QuantDatasetObject();
+        qa24.setYear(2015);
+        qa24.setFilesNumber(10);
+        qa24.setAnalyticalMethod("Disease Group I");
+        qa24.setAuthor("Collins, Mahlon A., et al.");
+        authormap.put("26401960", qa24);
+
+        QuantDatasetObject qa25 = new QuantDatasetObject();
+        qa25.setYear(2013);
+        qa25.setFilesNumber(10);
+        qa25.setAnalyticalMethod("Disease Group I");
+        qa25.setAuthor("Varghese, Anu Mary, et al.");
+        authormap.put("24295388", qa25);
+
     }
 
     @SuppressWarnings("CallToPrintStackTrace")
-    public List<QuantProtein> readCSVQuantFile(String path, String sequanceFilePath) {
+    public List<QuantProtein> readCSVQuantFile(String path, String sequanceFilePath, String unreviewFilePath) {
 
         File sequanceFile = new File(sequanceFilePath);
 
         File dataFile = new File(path);
         List<QuantProtein> QuantProtList = new ArrayList<QuantProtein>();
-        boolean belongtoPreviuosLine = false;
         QuantProtein quantProt = new QuantProtein();
         try {
 
@@ -215,6 +241,38 @@ public class QuantDataHandler {
             }
 
             sequanceBufRdr.close();
+
+            FileReader unreviewFileReader = new FileReader(unreviewFilePath);
+            BufferedReader unreviewFileBufRdr = new BufferedReader(unreviewFileReader);
+
+            Map<String, QuantProtein> unrevProteinAccMap = new HashMap<String, QuantProtein>();
+            row = 1;
+            while ((seqline = unreviewFileBufRdr.readLine()) != null && !seqline.trim().equalsIgnoreCase("") && row < 1000000000) {
+
+                if ((seqline.startsWith(">sp|") || seqline.startsWith(">tr|"))) {
+                    if (quantProt.getUniprotAccession() != null) {
+                        if (!unrevProteinAccMap.containsKey(quantProt.getUniprotAccession().trim().toLowerCase())) {
+                            unrevProteinAccMap.put(quantProt.getUniprotAccession().trim().toLowerCase(), quantProt);
+                        }
+                    }
+                    quantProt = new QuantProtein();
+                    String[] seqArr = seqline.replace("|", "----").split("----");
+                    quantProt.setUniprotAccession(seqArr[1].replace(" ", "").trim());
+                    String secSide = seqArr[2].split("OS=")[0].trim();
+                    String protName = secSide.replace(secSide.split(" ")[0], "") + " (" + secSide.split(" ")[0] + ")";
+                    quantProt.setUniprotProteinName(protName.trim());
+
+                } else {
+                    quantProt.setSequance(quantProt.getSequance() + seqline);
+
+                }
+//                
+            }
+            if (!unrevProteinAccMap.containsKey(quantProt.getUniprotAccession().trim().toLowerCase())) {
+                unrevProteinAccMap.put(quantProt.getUniprotAccession().trim().toLowerCase(), quantProt);
+            }
+
+            unreviewFileBufRdr.close();
 
             FileReader fr = new FileReader(dataFile);
             BufferedReader bufRdr = new BufferedReader(fr);
@@ -263,9 +321,9 @@ public class QuantDataHandler {
                     qProt.setUniprotAccession(" ");
                     index++;
                 } else {
-                    if (updatedRowArr[index].contains("(Unreviewed)")) {
-                        continue;
-                    }
+//                    if (updatedRowArr[index].contains("(Unreviewed)")) {
+//                        continue;
+//                    }
 
                     qProt.setUniprotAccession(updatedRowArr[index++].trim());
                 }
@@ -274,6 +332,9 @@ public class QuantDataHandler {
 
                     qProt.setSequance(proteinAccSequanceMap.get(qProt.getUniprotAccession().toLowerCase()).getSequance());
                     qProt.setUniprotProteinName(proteinAccSequanceMap.get(qProt.getUniprotAccession().toLowerCase()).getUniprotProteinName());
+                } else if (unrevProteinAccMap.containsKey(qProt.getUniprotAccession().toLowerCase())) {
+                    qProt.setSequance(unrevProteinAccMap.get(qProt.getUniprotAccession().toLowerCase()).getSequance());
+                    qProt.setUniprotProteinName(unrevProteinAccMap.get(qProt.getUniprotAccession().toLowerCase()).getUniprotProteinName());
                 } else {
                     qProt.setSequance(" ");
                     qProt.setUniprotProteinName(" ");
@@ -403,14 +464,32 @@ public class QuantDataHandler {
                     qProt.setPatientGroupI(" ");
                     index++;
                 } else {
-                    qProt.setPatientGroupI(updatedRowArr[index++]);
+                    String dieseaseGroup = updatedRowArr[index++];
+                    if (dieseaseGroup.trim().equalsIgnoreCase("AD")) {
+                        dieseaseGroup = "Alzheimer's";
+                    } else if (dieseaseGroup.trim().equalsIgnoreCase("PD") || dieseaseGroup.trim().equalsIgnoreCase("Parkinson")) {
+                        dieseaseGroup = "Parkinson's";
+                    } else if (dieseaseGroup.trim().equalsIgnoreCase("ALS")) {
+//                        dieseaseGroup = "Amyotrophic Lateral Sclerosis";
+                    }
+
+                    qProt.setPatientGroupI(dieseaseGroup);
                 }
 //
                 if (updatedRowArr[index] == null || updatedRowArr[index].trim().equalsIgnoreCase("")) {
-                    qProt.setPatientSubGroupI( qProt.getPatientGroupI());
+                    qProt.setPatientSubGroupI(qProt.getPatientGroupI());
                     index++;
                 } else {
-                    qProt.setPatientSubGroupI(updatedRowArr[index++]);
+                    String dieseaseSubGroup = updatedRowArr[index++];
+                    if (dieseaseSubGroup.trim().equalsIgnoreCase("AD")) {
+                        dieseaseSubGroup = "Alzheimer's";
+                    } else if (dieseaseSubGroup.trim().equalsIgnoreCase("PD") || dieseaseSubGroup.trim().equalsIgnoreCase("Parkinson")) {
+                        dieseaseSubGroup = "Parkinson's";
+                    } else if (dieseaseSubGroup.trim().equalsIgnoreCase("ALS")) {
+//                        dieseaseSubGroup = "Amyotrophic Lateral Sclerosis";
+                    }
+
+                    qProt.setPatientSubGroupI(dieseaseSubGroup);
                 }
 
                 if (updatedRowArr[index] == null || updatedRowArr[index].trim().equalsIgnoreCase("")) {
@@ -430,14 +509,32 @@ public class QuantDataHandler {
                     qProt.setPatientGroupII(" ");
                     index++;
                 } else {
-                    qProt.setPatientGroupII(updatedRowArr[index++].replace("Controls", "CONTROL"));
+                    String dieseaseGroup = updatedRowArr[index++];
+                    if (dieseaseGroup.trim().equalsIgnoreCase("AD")) {
+                        dieseaseGroup = "Alzheimer's";
+                    } else if (dieseaseGroup.trim().equalsIgnoreCase("PD") || dieseaseGroup.trim().equalsIgnoreCase("Parkinson")) {
+                        dieseaseGroup = "Parkinson's";
+                    } else if (dieseaseGroup.trim().equalsIgnoreCase("ALS")) {
+//                        dieseaseGroup = "Amyotrophic Lateral Sclerosis";
+                    }
+
+                    qProt.setPatientGroupII(dieseaseGroup.replace("Controls", "Control"));
                 }
 
                 if (updatedRowArr[index] == null || updatedRowArr[index].trim().equalsIgnoreCase("")) {
                     qProt.setPatientSubGroupII(qProt.getPatientGroupII());
                     index++;
                 } else {
-                    qProt.setPatientSubGroupII(updatedRowArr[index++]);
+                    String dieseaseSubGroup = updatedRowArr[index++];
+                    if (dieseaseSubGroup.trim().equalsIgnoreCase("AD")) {
+                        dieseaseSubGroup = "Alzheimer's";
+                    } else if (dieseaseSubGroup.trim().equalsIgnoreCase("PD") || dieseaseSubGroup.trim().equalsIgnoreCase("Parkinson")) {
+                        dieseaseSubGroup = "Parkinson's";
+                    } else if (dieseaseSubGroup.trim().equalsIgnoreCase("ALS")) {
+//                        dieseaseSubGroup = "Amyotrophic Lateral Sclerosis";
+                    }
+
+                    qProt.setPatientSubGroupII(dieseaseSubGroup);
                 }
 
                 if (updatedRowArr[index] == null || updatedRowArr[index].trim().equalsIgnoreCase("")) {
@@ -578,9 +675,12 @@ public class QuantDataHandler {
                     if (diseaseCat.trim().equalsIgnoreCase("MS")) {
                         diseaseCat = "Multiple Sclerosis";
                     } else if (diseaseCat.trim().equalsIgnoreCase("AD")) {
-                        diseaseCat = "Alzheimer";
-                    }else if (diseaseCat.trim().equalsIgnoreCase("PD")) {
-                        diseaseCat = "Parkinson";
+                        diseaseCat = "Alzheimer's";
+                    } else if (diseaseCat.trim().equalsIgnoreCase("PD") || diseaseCat.trim().equalsIgnoreCase("Parkinson")) {
+                        diseaseCat = "Parkinson's";
+                    }
+                    else if (diseaseCat.trim().equalsIgnoreCase("ALS")) {
+                        diseaseCat = "Amyotrophic Lateral Sclerosis";
                     }
 
                     qProt.setDiseaseCategory(diseaseCat);
@@ -606,13 +706,26 @@ public class QuantDataHandler {
                 row++;
             } //    
             bufRdr.close();
+
+            List<QuantProtein> updatedQuantProtList = new ArrayList<QuantProtein>();
+            for (QuantProtein quantProtein : QuantProtList) {
+                if (unrevProteinAccMap.containsKey(quantProtein.getUniprotAccession().toLowerCase())) {
+                    quantProtein.setUniprotAccession(quantProtein.getUniprotAccession() + "(unreviewed)");
+
+                }
+                updatedQuantProtList.add(quantProtein);
+
+            }
+            QuantProtList.clear();
+            QuantProtList.addAll(updatedQuantProtList);
+
         } catch (IOException ex) {
             ex.printStackTrace();
             System.out.println("ssleeping error " + ex.getMessage());
         } catch (NumberFormatException ex) {
             ex.printStackTrace();
             System.out.println("error in " + ex);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

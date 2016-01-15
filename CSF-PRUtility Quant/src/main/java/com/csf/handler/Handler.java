@@ -67,10 +67,10 @@ public class Handler {
         return dal.restoreDB(sqlFileUrl, mysqldumpUrl);
     }
 
-    public boolean handelQuantPubData(String quantDataFilePath, String sequanceFilePath) {
+    public boolean handelQuantPubData(String quantDataFilePath, String sequanceFilePath, String unreviewFilePath) {
 
         //1.read file
-        List<QuantProtein> qProtList = qDataHandler.readCSVQuantFile(quantDataFilePath, sequanceFilePath);
+        List<QuantProtein> qProtList = qDataHandler.readCSVQuantFile(quantDataFilePath, sequanceFilePath,unreviewFilePath);
         //filter the quant proteins list 
         List<QuantProtein> filteredQuantProteinsList = filterQuantProteins(qProtList);
 
@@ -182,7 +182,7 @@ public class Handler {
             HSSFCell cellA1 = titleRow.createCell(0);
             cellA1.setCellValue(title);
             //header
-            String header = " PumedID,Study key,# Quantified proteins,acc nu. uniprot/Nextprot,Protein name from uniprot,acc number from publication,Protein name from publication,Protein or Peptide";
+            String header = "index, PumedID,Study key,# Quantified proteins,acc nu. uniprot/Nextprot,Protein name from uniprot,acc number from publication,Protein name from publication,Protein or Peptide";
             String[] headerArr = header.split(",");
             HSSFRow headerRow = worksheet.createRow(1);
             int index = 0;
