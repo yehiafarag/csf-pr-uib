@@ -2253,7 +2253,7 @@ resetlabelbtn p{
     color:black !important;
 }
 
-.alzheimerdiseasehmcolumnlabel {
+.alzheimerhmcolumnlabel {
     border: 1px solid #F6F0F0;
     margin-top: 148px;
     text-align: center;
@@ -2282,19 +2282,19 @@ resetlabelbtn p{
     color: #000000;
     cursor: pointer;
 }
-.alzheimerdiseasehmcolumnlabel:hover{
+.alzheimerhmcolumnlabel:hover{
     border: 1px solid #4d749f; 
 
 }
 
-.alzheimerdiseasehmcolumnlabel div{
+.alzheimerhmcolumnlabel div{
     font-size:14px;
     line-height:100%;
     cursor: pointer;    
 }
 
 
-.alzheimerdiseasehmrowlabel {
+.alzheimerhmrowlabel {
     border: 1px solid #F6F0F0;
     text-align: center;
     line-height: 45px;
@@ -2304,11 +2304,11 @@ resetlabelbtn p{
     
 
 }
-.alzheimerdiseasehmrowlabel:hover{
+.alzheimerhmrowlabel:hover{
     border: 1px solid #4d749f; 
 
 }
-.alzheimerdiseasehmrowlabel div{
+.alzheimerhmrowlabel div{
     font-size:14px;
     line-height:100%;
     cursor: pointer;    
@@ -2378,7 +2378,7 @@ resetlabelbtn p{
 
 
 
-.parkinsondiseasehmcolumnlabel {
+.parkinsonhmcolumnlabel {
     border: 1px solid #F6F0F0;
     margin-top: 148px;
     text-align: center;
@@ -2407,19 +2407,19 @@ resetlabelbtn p{
     color: #000000;
     cursor: pointer;
 }
-.parkinsondiseasehmcolumnlabel:hover{
+.parkinsonhmcolumnlabel:hover{
     border: 1px solid #4d749f; 
 
 }
 
-.parkinsondiseasehmcolumnlabel div{
+.parkinsonhmcolumnlabel div{
     font-size:14px;
     line-height:100%;
     cursor: pointer;    
 }
 
 
-.parkinsondiseasehmrowlabel {
+.parkinsonhmrowlabel {
     border: 1px solid #F6F0F0;
     text-align: center;
     line-height: 45px;
@@ -2428,14 +2428,75 @@ resetlabelbtn p{
     cursor: pointer;  
 
 }
-.parkinsondiseasehmrowlabel:hover{
+.parkinsonhmrowlabel:hover{
     border: 1px solid #4d749f; 
 
 }
-.parkinsondiseasehmrowlabel div{
+.parkinsonhmrowlabel div{
     font-size:14px;
     line-height:100%;
     cursor: pointer;    
 }.frame{
     background: #ee5311;
+}
+
+.amyotrophiclateralsclerosishmcolumnlabel {
+    border: 1px solid #F6F0F0;
+    margin-top: 148px;
+    text-align: center;
+    line-height: 45px;
+
+    -ms-transform:rotate(270deg); /* IE 9 */
+    -moz-transform:rotate(270deg); /* Firefox */
+    -webkit-transform:rotate(270deg); /* Safari and Chrome */
+    -o-transform:rotate(270deg); /* Opera */
+    transform: rotate(270deg);
+
+
+
+    -ms-transform-origin: 0% 0%; /* IE 9 */
+    -moz-transform-origin: 0% 0%; /* Firefox */
+    -webkit-transform-origin: 0% 0%; /* Safari and Chrome */
+    -o-transform-origin: 0% 0%; /* Opera */
+    transform-origin: 0% 0%;
+
+    filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083);  /* IE6,IE7 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)"; /* IE8 */
+
+
+    position: absolute;
+    background-color: #ffb4af;
+    color: #000000;
+    cursor: pointer;
+}
+.amyotrophiclateralsclerosishmcolumnlabel:hover{
+    border: 1px solid #4d749f; 
+
+}
+
+.amyotrophiclateralsclerosishmcolumnlabel div{
+    font-size:14px;
+    line-height:100%;
+    cursor: pointer;    
+}
+
+
+.amyotrophiclateralsclerosishmrowlabel {
+    border: 1px solid #F6F0F0;
+    text-align: center;
+    line-height: 45px;
+    background-color:    #ffb4af;
+    color: #000000; 
+    cursor: pointer;  
+    
+
+}
+.amyotrophiclateralsclerosishmrowlabel:hover{
+    border: 1px solid #4d749f; 
+
+}
+.amyotrophiclateralsclerosishmrowlabel div{
+    font-size:14px;
+    line-height:100%;
+    cursor: pointer;    
 }
