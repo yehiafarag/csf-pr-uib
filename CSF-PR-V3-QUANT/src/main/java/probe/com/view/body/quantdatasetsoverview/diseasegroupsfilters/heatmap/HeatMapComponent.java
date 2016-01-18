@@ -6,6 +6,7 @@
 package probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.heatmap;
 
 import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
@@ -13,6 +14,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -45,6 +47,11 @@ public class HeatMapComponent extends VerticalLayout {
     private boolean selfSelection = false;
     private final int heatmapCellWidth;
 
+    private final VerticalLayout diseaseGroupsRowsLabels;
+    private final HorizontalLayout diseaseGroupsColumnsLabels;
+
+    private final Map<String, String> diseaseStyleMap = new HashMap<String, String>();
+
     /**
      *
      * @return
@@ -61,20 +68,40 @@ public class HeatMapComponent extends VerticalLayout {
      * @param heatmapCellWidth
      */
     public HeatMapComponent(int heatmapCellWidth) {
+
+        diseaseStyleMap.put("Multiple Sclerosis", "msLabel");
+        diseaseStyleMap.put("Parkinson's", "pdLabel");
+        diseaseStyleMap.put("Alzheimer's", "adLabel");
+        diseaseStyleMap.put("Amyotrophic Lateral Sclerosis", "alsLabel");
+
         this.setMargin(false);
         this.setSpacing(true);
         this.setWidth("100%");
         this.heatmapCellWidth = heatmapCellWidth;
 
+        VerticalLayout columnContainer = new VerticalLayout();
+        columnContainer.setWidth("100%");
+        columnContainer.setSpacing(true);
+
+        diseaseGroupsColumnsLabels = new HorizontalLayout();
+        diseaseGroupsColumnsLabels.setWidth("10px");
+        diseaseGroupsColumnsLabels.setHeight("20px");
+        diseaseGroupsColumnsLabels.setStyleName(Reindeer.LAYOUT_BLUE);
+        columnContainer.addComponent(diseaseGroupsColumnsLabels);
+
         this.columnHeader = new GridLayout();
+        columnContainer.addComponent(columnHeader);
+        columnContainer.setComponentAlignment(columnHeader, Alignment.TOP_LEFT);
         this.rowHeader = new GridLayout();
         this.heatmapBody = new GridLayout();
 
         topLayout = new HorizontalLayout();
-        topLayout.setHeight("150px");
+        topLayout.setHeight("175px");
+        topLayout.setSpacing(false);
         VerticalLayout spacer = new VerticalLayout();
-        spacer.setWidth("150px");
-        spacer.setHeight("150px");
+        spacer.setWidth("176px");
+        spacer.setHeight("175px");
+
         spacer.setStyleName(Reindeer.LAYOUT_WHITE);
 
         hideCompBtn = new VerticalLayout();
@@ -90,12 +117,19 @@ public class HeatMapComponent extends VerticalLayout {
         hideCompBtn.setEnabled(false);
 
         topLayout.addComponent(spacer);
+        topLayout.setComponentAlignment(spacer, Alignment.BOTTOM_LEFT);
         topLayout.setSpacing(true);
-        topLayout.addComponent(columnHeader);
-        topLayout.setComponentAlignment(columnHeader, Alignment.TOP_LEFT);
+        topLayout.addComponent(columnContainer);
+        topLayout.setComponentAlignment(columnContainer, Alignment.TOP_LEFT);
         this.addComponent(topLayout);
 
         bottomLayout = new HorizontalLayout();
+        diseaseGroupsRowsLabels = new VerticalLayout();
+        diseaseGroupsRowsLabels.setHeight("10px");
+        diseaseGroupsRowsLabels.setWidth("20px");
+        diseaseGroupsRowsLabels.setStyleName(Reindeer.LAYOUT_BLUE);
+        bottomLayout.addComponent(diseaseGroupsRowsLabels);
+
         rowHeader.setWidth("150px");
         rowHeader.setHeight("100%");
         bottomLayout.addComponent(rowHeader);
@@ -122,13 +156,12 @@ public class HeatMapComponent extends VerticalLayout {
      * @param maxDatasetValue
      * @param diseaseFullNameMap
      * @param fullDsMap
-     * @param all
      */
-    public void updateHeatMap(Set<String> rowsLbels, Set<String> columnsLbels, QuantDSIndexes[][] values, int maxDatasetValue,Map<String,String> diseaseFullNameMap, Map<Integer, QuantDatasetObject> fullDsMap,boolean all) {
+    public void updateHeatMap(Set<String> rowsLbels, Set<String> columnsLbels, QuantDSIndexes[][] values, int maxDatasetValue, Map<String, String> diseaseFullNameMap, Map<Integer, QuantDatasetObject> fullDsMap) {
         if (rowsLbels.isEmpty() || columnsLbels.isEmpty()) {
             return;
         }
-        updateHeatMapLayout(values,rowsLbels, columnsLbels, maxDatasetValue,diseaseFullNameMap,fullDsMap,all);
+        updateHeatMapLayout(values, rowsLbels, columnsLbels, maxDatasetValue, diseaseFullNameMap, fullDsMap);
 
     }
 
@@ -293,7 +326,7 @@ public class HeatMapComponent extends VerticalLayout {
     public void updateDsCellSelection(Set<QuantDiseaseGroupsComparison> selectedDsList) {
         if (selectedDsList.isEmpty()) {
             hideCompBtn.setEnabled(false);
-            
+
         } else {
             hideCompBtn.setEnabled(true);
         }
@@ -446,7 +479,141 @@ public class HeatMapComponent extends VerticalLayout {
         return availableComparisonsList;
     }
 
-    private void updateHeatMapLayout(QuantDSIndexes[][] values, Set<String> rowheaders, Set<String> colheaders, int maxDatasetValue,Map<String,String> diseaseFullNameMap, Map<Integer, QuantDatasetObject> fullDsMap,boolean all) {
+    private VerticalLayout initDiseaseGroupLabel(String dName, int itemsNumb, boolean show, boolean row) {
+        VerticalLayout diseaseLabelContainer = new VerticalLayout();
+
+        if (show) {
+            Label label = new Label("<center><font size='2' color='#ffffff'>" + dName + "</font></center>");
+            label.setContentMode(ContentMode.HTML);
+
+            if (row) {
+                diseaseLabelContainer.setHeight((itemsNumb * heatmapCellWidth) + "px");
+                diseaseLabelContainer.setWidth("20px");
+                VerticalLayout rotateContainer = new VerticalLayout();
+
+                rotateContainer.setWidth((itemsNumb * heatmapCellWidth) + "px");
+                rotateContainer.setHeight("20px");
+                diseaseLabelContainer.addComponent(rotateContainer);
+
+                rotateContainer.setStyleName("row_" + diseaseStyleMap.get(dName));
+                rotateContainer.addComponent(label);
+            } else {
+                diseaseLabelContainer.addComponent(label);
+                diseaseLabelContainer.setWidth((itemsNumb * heatmapCellWidth) + "px");
+                diseaseLabelContainer.setHeight("20px");
+                diseaseLabelContainer.setStyleName(diseaseStyleMap.get(dName));
+            }
+        } else {
+
+            if (row) {
+                diseaseLabelContainer.setHeight((itemsNumb * heatmapCellWidth) + "px");
+                diseaseLabelContainer.setWidth("20px");
+
+            } else {
+                diseaseLabelContainer.setWidth((itemsNumb * heatmapCellWidth) + "px");
+                diseaseLabelContainer.setHeight("20px");
+
+            }
+            diseaseLabelContainer.setStyleName(Reindeer.LAYOUT_WHITE);
+
+        }
+
+        return diseaseLabelContainer;
+
+    }
+
+    private void updateDiseaseHeadersLabel(Set<String> rowheaders, Set<String> colheaders) {
+
+        this.diseaseGroupsRowsLabels.removeAllComponents();
+        this.diseaseGroupsColumnsLabels.removeAllComponents();
+        Map<String, TreeSet<Integer>> diseaseRowsMap = new LinkedHashMap<String, TreeSet<Integer>>();
+        int index = 0;
+        for (String header : rowheaders) {
+            String dName = header.split("\n")[1];
+            if (!diseaseRowsMap.containsKey(dName)) {
+                diseaseRowsMap.put(dName, new TreeSet<Integer>());
+            }
+            TreeSet<Integer> rowIndex = diseaseRowsMap.get(dName);
+            rowIndex.add(index);
+            diseaseRowsMap.put(dName, rowIndex);
+            index++;
+
+        }
+        Map<String, Integer> diseaseRowsSize = new LinkedHashMap<String, Integer>();
+        for (String dName : diseaseRowsMap.keySet()) {
+            TreeSet<Integer> rowIndex = diseaseRowsMap.get(dName);
+            int y = rowIndex.first();
+            int counter = 0;
+            for (int x : rowIndex) {
+                if (x == y) {
+                    y++;
+                    counter++;
+                } else {
+                    counter = 0;
+                    break;
+
+                }
+
+            }
+            diseaseRowsSize.put(dName, counter);
+
+        }
+        System.out.println("at diseaseRowsSize " + diseaseRowsSize);
+
+        Map<String, TreeSet<Integer>> diseaseColumnMap = new LinkedHashMap<String, TreeSet<Integer>>();
+        index = 0;
+        for (String header : colheaders) {
+            String dName = header.split("\n")[1];
+            if (!diseaseColumnMap.containsKey(dName)) {
+                diseaseColumnMap.put(dName, new TreeSet<Integer>());
+            }
+            TreeSet<Integer> colIndex = diseaseColumnMap.get(dName);
+            colIndex.add(index);
+            diseaseColumnMap.put(dName, colIndex);
+            index++;
+
+        }
+        Map<String, Integer> diseaseColumnSize = new LinkedHashMap<String, Integer>();
+        for (String dName : diseaseColumnMap.keySet()) {
+            TreeSet<Integer> rowIndex = diseaseColumnMap.get(dName);
+            int y = rowIndex.first();
+            int counter = 0;
+            for (int x : rowIndex) {
+                if (x == y) {
+                    y++;
+                    counter++;
+                } else {
+                    counter = 0;
+                    break;
+
+                }
+
+            }
+            diseaseColumnSize.put(dName, counter);
+
+        }
+        diseaseGroupsColumnsLabels.setWidthUndefined();
+
+        for (String dName : diseaseColumnMap.keySet()) {
+             int itemNumb = diseaseColumnMap.get(dName).last()-diseaseColumnMap.get(dName).first()+1;
+             System.out.println("at item numb is  "+diseaseColumnMap.get(dName).size()+"   "+itemNumb);
+            VerticalLayout diseaseLableContainer = initDiseaseGroupLabel(dName,itemNumb, (diseaseColumnSize.get(dName) > 0), false);
+            diseaseGroupsColumnsLabels.addComponent(diseaseLableContainer);
+        }
+        diseaseGroupsRowsLabels.setHeightUndefined();
+
+        for (String dName : diseaseRowsMap.keySet()) {
+            int itemNumb = diseaseRowsMap.get(dName).last()-diseaseRowsMap.get(dName).first()+1;
+            VerticalLayout diseaseLableContainer = initDiseaseGroupLabel(dName, itemNumb, (diseaseRowsSize.get(dName) > 0), true);
+            diseaseGroupsRowsLabels.addComponent(diseaseLableContainer);
+        }
+
+    }
+
+    private void updateHeatMapLayout(QuantDSIndexes[][] values, Set<String> rowheaders, Set<String> colheaders, int maxDatasetValue, Map<String, String> diseaseFullNameMap, Map<Integer, QuantDatasetObject> fullDsMap) {
+
+        updateDiseaseHeadersLabel(rowheaders, colheaders);
+
         HeatmapColorGenerator hmColorGen = new HeatmapColorGenerator(maxDatasetValue, 0);
         availableComparisonsList.clear();
         columnHeader.removeAllComponents();
@@ -477,7 +644,7 @@ public class HeatMapComponent extends VerticalLayout {
             if (title.equalsIgnoreCase("")) {
                 title = "Not Available";
             }
-            HeaderCell headerCell = new HeaderCell(false, title, i, HeatMapComponent.this, heatmapCellWidth,diseaseFullNameMap.get(title), all);
+            HeaderCell headerCell = new HeaderCell(false, title, i, HeatMapComponent.this, heatmapCellWidth, diseaseFullNameMap.get(title));
             columnHeader.addComponent(headerCell, i, 0);
             columnHeader.setComponentAlignment(headerCell, Alignment.MIDDLE_CENTER);
             columnCells[i] = headerCell;
@@ -492,7 +659,7 @@ public class HeatMapComponent extends VerticalLayout {
             if (la.equalsIgnoreCase("")) {
                 la = "Not Available";
             }
-            HeaderCell headerCell = new HeaderCell(true, la, i, HeatMapComponent.this, heatmapCellWidth,diseaseFullNameMap.get(la),all);
+            HeaderCell headerCell = new HeaderCell(true, la, i, HeatMapComponent.this, heatmapCellWidth, diseaseFullNameMap.get(la));
             rowHeader.addComponent(headerCell, 0, i);
             rowHeader.setComponentAlignment(headerCell, Alignment.MIDDLE_CENTER);
             rowCells[i] = headerCell;
@@ -507,14 +674,14 @@ public class HeatMapComponent extends VerticalLayout {
                     color = hmColorGen.getColor((float) value);
                 }
 
-                int[] dsIndexes= values[x][y].getIndexes();
-                Set<String>pubCounter = new HashSet<String>();
-                for(int i:dsIndexes){
+                int[] dsIndexes = values[x][y].getIndexes();
+                Set<String> pubCounter = new HashSet<String>();
+                for (int i : dsIndexes) {
                     QuantDatasetObject ds = fullDsMap.get(i);
                     pubCounter.add(ds.getPumedID());
-                
+
                 }
-                HeatmapCell cell = new HeatmapCell(value, color,dsIndexes , x, y, null, HeatMapComponent.this, headerTitle, heatmapCellWidth,pubCounter.size());
+                HeatmapCell cell = new HeatmapCell(value, color, dsIndexes, x, y, null, HeatMapComponent.this, headerTitle, heatmapCellWidth, pubCounter.size());
                 comparisonsCellsMap.put(headerTitle, cell);
                 heatmapBody.addComponent(cell, y, x);
                 if (cell.getComparison().getDatasetIndexes().length > 0) {

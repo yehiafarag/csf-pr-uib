@@ -65,33 +65,35 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
      * @param index
      * @param parentcom
      * @param heatmapCellWidth
-     * @param all
      * @param fullName
      */
-    public HeaderCell(boolean rowHeader, String title, int index, HeatMapComponent parentcom, int heatmapCellWidth, String fullName, boolean all) {
+    public HeaderCell(boolean rowHeader, String title, int index, HeatMapComponent parentcom, int heatmapCellWidth, String fullName) {
         this.parentcom = parentcom;
         valueLabel = new Label();
         this.title = title;
 
-        if (all) {
-            allStyle =title.split("\n")[1].toLowerCase().replace(" ","").replace("'","") ;
-            valueLabel.setValue("<center><font>" + title.split("\n")[0] + "</font></br><font size='1' color='#003e99'>(" + title.split("\n")[1] + ")</font></center>");
+//        if (all) {
+            allStyle =title.split("\n")[1].toLowerCase().replace(" ","").replace("'s","") ;
+//            valueLabel.setValue("<center><font>" + title.split("\n")[0] + "</font></br><font size='1' color='#003e99'>(" + title.split("\n")[1] + ")</font></center>");
 
-        } else {
-            allStyle = "";
+//        }
+//    else {
+//            allStyle = "";
             valueLabel.setValue("<center><font>" + title.split("\n")[0] + "</font></center>");
 
-        }
+//        }
         if (rowHeader) {
             this.cellStyleName = "hmrowlabel";
-            this.setStyleName("hmrowlabel");
+//            this.setStyleName("hmrowlabel");
         } else {
             this.cellStyleName = "hmcolumnlabel";
-            this.setStyleName("hmcolumnlabel");
+//            this.setStyleName("hmcolumnlabel");
         }
+        valueLabel.setStyleName(allStyle+cellStyleName);
 //        super("<b>" + title + "</b>");
-        valueLabel.setWidth("150px");
-        valueLabel.setHeight((heatmapCellWidth - 10) + "px");
+        valueLabel.setWidth("146px");
+        valueLabel.setHeight((heatmapCellWidth-4) + "px");
+        this.setStyleName(cellStyleName);
         this.setWidth("150px");
         this.setHeight(heatmapCellWidth + "px");
         this.valueLabel.setContentMode(ContentMode.HTML);
@@ -113,7 +115,7 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
      */
     public void heighlightCellStyle() {
 
-        this.setStyleName(cellStyleName + selectStyle + "_heighlightcell");
+        valueLabel.setStyleName(cellStyleName + selectStyle + "_heighlightcell");
 
     }
 
@@ -121,7 +123,7 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
      *
      */
     public void resetCellStyle() {
-        this.setStyleName(allStyle + cellStyleName + selectStyle);
+        this.setStyleName(cellStyleName + selectStyle);
 
     }
 
@@ -139,7 +141,7 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
      */
     public void unSelectCellStyle() {
         selectStyle = "";
-        this.setStyleName(allStyle+cellStyleName);
+        this.setStyleName(cellStyleName);
 
     }
 

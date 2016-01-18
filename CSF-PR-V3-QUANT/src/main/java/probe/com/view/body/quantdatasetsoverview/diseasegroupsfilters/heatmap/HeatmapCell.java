@@ -112,7 +112,7 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
         }
         valueLabel.setContentMode(ContentMode.HTML);
         valueLabel.setPrimaryStyleName(defaultStyle);
-        valueLabel.setValue("<div  align='center' style='background-color:" + color + "; background-position: center;height:" + (heatmapCellWidth - 4) + "px;width:" + (heatmapCellWidth - 4) + "px; cursor:" + pointer + "; '>" + strValue + "</div>");
+        valueLabel.setValue("<center><div  style='background-color:" + color + "; background-position: center;height:" + (heatmapCellWidth - 4) + "px;width:" + (heatmapCellWidth - 4) + "px; cursor:" + pointer + "; '>" + strValue + "</div><center>");
         this.addComponent(valueLabel);
         this.setComponentAlignment(valueLabel, Alignment.MIDDLE_CENTER);
         if (value > 0) {

@@ -53,7 +53,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
     private float heatmapRatio;
     private int pageWidth;
     private final VerticalLayout pieChartFiltersBtnLayout;
-    private final int heatmapCellWidth = 45;
+    private final int heatmapCellWidth = 30;
     private final HorizontalLayout topLeftLayout;
     private final HorizontalLayout topRightLayout;
     private final QuantCentralManager Quant_Central_Manager;
@@ -116,7 +116,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         int i = 0;
         for (String disease : diseaseSet) {
             diseaseTypeSelectionList.addItem(disease);
-            diseaseTypeSelectionList.setItemCaption(disease, (disease+ (disease.equalsIgnoreCase("All")?"Diseases":" Disease")));
+            diseaseTypeSelectionList.setItemCaption(disease, (disease));
 
         }
 

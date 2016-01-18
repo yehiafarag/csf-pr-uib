@@ -523,19 +523,14 @@
 
 }
 .hmcolumnlabel {
-    border: 1px solid #F6F0F0;
+    border: 2px solid #F6F0F0;
     margin-top: 148px;
     text-align: center;
-    line-height: 45px;
-
     -ms-transform:rotate(270deg); /* IE 9 */
     -moz-transform:rotate(270deg); /* Firefox */
     -webkit-transform:rotate(270deg); /* Safari and Chrome */
     -o-transform:rotate(270deg); /* Opera */
     transform: rotate(270deg);
-
-
-
     -ms-transform-origin: 0% 0%; /* IE 9 */
     -moz-transform-origin: 0% 0%; /* Firefox */
     -webkit-transform-origin: 0% 0%; /* Safari and Chrome */
@@ -552,20 +547,22 @@
     cursor: pointer;
 }
 .hmcolumnlabel:hover{
-    border: 1px solid #4d749f; 
+    border: 2px solid #ff99cc ; 
 
 }
+
 .hmcolumnlabel_heighlightcell {
     border: 1px solid #fc690a;
     margin-top: 148px;
     text-align: center;
     font-size:14px;
-    line-height: 45px;
     -ms-transform:rotate(270deg); /* IE 9*/ 
     -moz-transform:rotate(270deg);  /*Firefox */
     -webkit-transform:rotate(270deg); /* Safari and Chrome */
     -o-transform:rotate(270deg); /* Opera */
     transform-origin: 0%  0%;    
+    filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083);  /* IE6,IE7 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)"; /* IE8 */
     position: absolute;
     /*background-color: #006699;*/
     /*    color: white;*/
@@ -578,28 +575,23 @@
     cursor: pointer;    
 }
 .hmcolumnlabel_selected {
-    border: 1px solid  #4d749f;
-    font-size:14px;
+    border: 2px solid  orange;
+
     margin-top: 148px;
-    text-align: center;
-    line-height: 45px;
     -ms-transform:rotate(270deg); /* IE 9 */
     -moz-transform:rotate(270deg); /* Firefox */
     -webkit-transform:rotate(270deg); /* Safari and Chrome */
     -o-transform:rotate(270deg); /* Opera */
     transform-origin: 0%  0%;    
+    filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083);  /* IE6,IE7 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)"; /* IE8 */
     position: absolute;
-    background-color: #4d749f;
-    color: white;
+    background-color: orange;
     cursor: pointer; 
 
 }
-.hmcolumnlabel_selected font{
-    color: white !important; 
-}
 .hmcolumnlabel_selected div{
     font-size:14px;
-    line-height:100%;
     cursor: pointer;    
 }
 .hmcolumnlabel_selected_heighlightcell div{
@@ -613,7 +605,6 @@
 .hmrowlabel_selected_heighlightcell div{
 
     font-size:14px;
-    line-height:100%;
     cursor: pointer;    
 
 
@@ -621,7 +612,6 @@
 .hmrowlabel_heighlightcell div{
 
     font-size:14px;
-    line-height:100%;
     cursor: pointer;    
 
 
@@ -629,76 +619,62 @@
 .hmcolumnlabel_heighlightcell div{
 
     font-size:14px;
-    line-height:100%;
     cursor: pointer;    
 
 
 }
 .hmcolumnlabel_selected_heighlightcell {
-    border: 1px solid #fc690a;
-    margin-top: 148px;
-    text-align: center;
-    line-height: 45px;
+    border: 2px solid  orange;
 
-    font-size:14px;
-    -ms-transform:rotate(270deg); /* IE 9*/ 
-    -moz-transform:rotate(270deg);  /*Firefox */
+    margin-top: 148px;
+    -ms-transform:rotate(270deg); /* IE 9 */
+    -moz-transform:rotate(270deg); /* Firefox */
     -webkit-transform:rotate(270deg); /* Safari and Chrome */
     -o-transform:rotate(270deg); /* Opera */
     transform-origin: 0%  0%;    
     position: absolute;
-    background-color: #4d749f;
-    color: white;
+    background-color: orange;
     cursor: pointer; 
 
 }
 .hmrowlabel {
-    border: 1px solid #F6F0F0;
+    border: 2px solid #F6F0F0;
     text-align: center;
-    line-height: 45px;
     background-color:    #ffffff;
     color: #000000; 
     cursor: pointer;  
 
 }
+
 .hmrowlabel:hover{
-    border: 1px solid #4d749f; 
+    border: 2px solid #ff99cc; 
 
 }
 .hmrowlabel div{
     font-size:14px;
-    line-height:100%;
     cursor: pointer;    
 }
 .hmrowlabel_heighlightcell {
     border: 1px solid #fc690a;
     text-align: center;
     font-size:14px;
-    line-height: 45px; 
 }
 .hmrowlabel_selected {
-    border: 1px solid  #4d749f;
+    border: 2px solid  orange;
     text-align: center;
-    line-height: 45px;
-    background-color: #4d749f;
+    background-color: orange;
     color: white;
     cursor: pointer;  
 
 
 }
-.hmrowlabel_selected font{
-    color: white !important; 
-}
 .hmrowlabel_selected div{
     font-size:14px;
-    line-height:100%;
     cursor: pointer;    
 }
 .col {
     border: 1px solid #fc690a;
     text-align: center;
-    line-height: 45px;
-
     font-size:14px;
     background-color: #4d749f;
     color: white;
@@ -710,21 +686,21 @@
 }
 .initheatmapcoloredcell{
     border: 2px solid #EFF2FB;   
-    height:45px;
-    width:45px; 
+    height:30px;
+    width:30px; 
     text-align:center;
     color: #e0e0e0 ;
-    line-height: 43px;
+    line-height: 28px;
     font-size:14px;
 
 }
 .heatmapcoloredcell{
     border: 2px solid #EFF2FB;   
-    height:45px; 
-    width:45px; 
+    height:30px; 
+    width:30px;
     text-align:center;
     color: #e0e0e0 ;
-    line-height: 43px;
+    line-height: 28px;
     font-size:14px;
     opacity: 0.4;
 
@@ -738,12 +714,12 @@
     background-color: #FF8000;
     opacity: 1;
     border-radius: 3px;
-    height:45px;
-    width:45px; 
+    height:30px;
+    width:30px; 
     text-align:center;
     color: #ffffff ;
     font-size: 20px;
-    line-height: 43px;    
+    line-height: 28px;    
 
 }
 .filterlabelbtn{
@@ -2254,206 +2230,131 @@ resetlabelbtn p{
 }
 
 .alzheimerhmcolumnlabel {
-    border: 1px solid #F6F0F0;
-    margin-top: 148px;
+    margin-right: 148px;
     text-align: center;
-    line-height: 45px;
-
-    -ms-transform:rotate(270deg); /* IE 9 */
-    -moz-transform:rotate(270deg); /* Firefox */
-    -webkit-transform:rotate(270deg); /* Safari and Chrome */
-    -o-transform:rotate(270deg); /* Opera */
-    transform: rotate(270deg);
-
-
-
-    -ms-transform-origin: 0% 0%; /* IE 9 */
-    -moz-transform-origin: 0% 0%; /* Firefox */
-    -webkit-transform-origin: 0% 0%; /* Safari and Chrome */
-    -o-transform-origin: 0% 0%; /* Opera */
-    transform-origin: 0% 0%;
-
-    filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083);  /* IE6,IE7 */
-    -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)"; /* IE8 */
-
-
-    position: absolute;
-    background-color: #ffb4af;
-    color: #000000;
+    line-height: 25px !important;   
+    background-color: #809160;
+    color: #ffffff;
     cursor: pointer;
 }
-.alzheimerhmcolumnlabel:hover{
-    border: 1px solid #4d749f; 
-
-}
-
-.alzheimerhmcolumnlabel div{
-    font-size:14px;
-    line-height:100%;
-    cursor: pointer;    
-}
-
 
 .alzheimerhmrowlabel {
-    border: 1px solid #F6F0F0;
     text-align: center;
-    line-height: 45px;
-    background-color:    #ffb4af;
-    color: #000000; 
+    line-height: 25px !important;  
+    background-color: #809160;
+    color: #ffffff;
     cursor: pointer;  
-    
+
 
 }
-.alzheimerhmrowlabel:hover{
-    border: 1px solid #4d749f; 
-
-}
-.alzheimerhmrowlabel div{
-    font-size:14px;
-    line-height:100%;
-    cursor: pointer;    
-}
-
-
 
 .multiplesclerosishmcolumnlabel {
-    border: 1px solid #F6F0F0;
-    margin-top: 148px;
+    margin-right: 148px;
     text-align: center;
-    line-height: 45px;
-
-    -ms-transform:rotate(270deg); /* IE 9 */
-    -moz-transform:rotate(270deg); /* Firefox */
-    -webkit-transform:rotate(270deg); /* Safari and Chrome */
-    -o-transform:rotate(270deg); /* Opera */
-    transform: rotate(270deg);
-
-
-
-    -ms-transform-origin: 0% 0%; /* IE 9 */
-    -moz-transform-origin: 0% 0%; /* Firefox */
-    -webkit-transform-origin: 0% 0%; /* Safari and Chrome */
-    -o-transform-origin: 0% 0%; /* Opera */
-    transform-origin: 0% 0%;
-
-    filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083);  /* IE6,IE7 */
-    -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)"; /* IE8 */
-
-
-    position: absolute;
-    background-color: #ffffff;
-    color: #000000;
+    line-height: 25px !important;  
+    background-color: #684EBE;
+    color: #ffffff;
     cursor: pointer;
-}
-.multiplesclerosishmcolumnlabel:hover{
-    border: 1px solid #4d749f; 
-
-}
-
-.multiplesclerosishmcolumnlabel div{
-    font-size:14px;
-    line-height:100%;
-    cursor: pointer;    
 }
 
 
 .multiplesclerosishmrowlabel {
-    border: 1px solid #F6F0F0;
     text-align: center;
-    line-height: 45px;
-    background-color:    #ffffff;
-    color: #000000; 
+    line-height: 25px !important;  
+    background-color:    #684EBE;
+    color: #ffffff; 
     cursor: pointer;  
 
 }
-.multiplesclerosishmrowlabel:hover{
-    border: 1px solid #4d749f; 
 
-}
-.multiplesclerosishmrowlabel div{
-    font-size:14px;
-    line-height:100%;
-    cursor: pointer;    
-}
 
 
 
 .parkinsonhmcolumnlabel {
-    border: 1px solid #F6F0F0;
-    margin-top: 148px;
+    margin-right: 148px;
     text-align: center;
-    line-height: 45px;
-
-    -ms-transform:rotate(270deg); /* IE 9 */
-    -moz-transform:rotate(270deg); /* Firefox */
-    -webkit-transform:rotate(270deg); /* Safari and Chrome */
-    -o-transform:rotate(270deg); /* Opera */
-    transform: rotate(270deg);
-
-
-
-    -ms-transform-origin: 0% 0%; /* IE 9 */
-    -moz-transform-origin: 0% 0%; /* Firefox */
-    -webkit-transform-origin: 0% 0%; /* Safari and Chrome */
-    -o-transform-origin: 0% 0%; /* Opera */
-    transform-origin: 0% 0%;
-
-    filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083);  /* IE6,IE7 */
-    -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)"; /* IE8 */
-
-
-    position: absolute;
-    background-color: lightblue;
-    color: #000000;
+    line-height: 25px !important;   
+    background-color: #74716E;
+    color: #ffffff;
     cursor: pointer;
 }
-.parkinsonhmcolumnlabel:hover{
-    border: 1px solid #4d749f; 
 
-}
-
-.parkinsonhmcolumnlabel div{
-    font-size:14px;
-    line-height:100%;
-    cursor: pointer;    
-}
 
 
 .parkinsonhmrowlabel {
-    border: 1px solid #F6F0F0;
     text-align: center;
-    line-height: 45px;
-    background-color:    lightblue;
-    color: #000000; 
+    line-height: 25px !important;  
+    background-color: #74716E;
+    color: #ffffff;
     cursor: pointer;  
 
 }
-.parkinsonhmrowlabel:hover{
-    border: 1px solid #4d749f; 
 
-}
-.parkinsonhmrowlabel div{
-    font-size:14px;
-    line-height:100%;
-    cursor: pointer;    
-}.frame{
+
+.frame{
     background: #ee5311;
 }
 
 .amyotrophiclateralsclerosishmcolumnlabel {
-    border: 1px solid #F6F0F0;
-    margin-top: 148px;
+    margin-right: 148px;
     text-align: center;
-    line-height: 45px;
+    line-height: 25px !important;   
+    background-color: #7D0725;
+    color: #ffffff;
+    cursor: pointer;
+}
 
+
+.amyotrophiclateralsclerosishmrowlabel {
+    text-align: center;
+    line-height: 25px !important;  
+    background-color: #7D0725;
+    color: #ffffff;
+    cursor: pointer;  
+
+
+}
+.msLabel{
+    
+    border-bottom: 2px solid #F6F0F0;
+     border-right: 2px solid #F6F0F0;
+      border-left: 2px solid #F6F0F0;
+    background-color:    #684EBE;
+
+}
+.pdLabel{
+    border-bottom: 2px solid #F6F0F0;
+     border-right: 2px solid #F6F0F0;
+      border-left: 2px solid #F6F0F0;
+    background-color: #74716E;}
+.adLabel{
+    
+    border-bottom: 2px solid #F6F0F0;
+     border-right: 2px solid #F6F0F0;
+      border-left: 2px solid #F6F0F0;
+    background-color: #809160;
+
+}
+.alsLabel{
+    
+    border-bottom: 2px solid #F6F0F0;
+     border-right: 2px solid #F6F0F0;
+      border-left: 2px solid #F6F0F0;
+    background-color: #7D0725;
+
+}
+.row_msLabel{
+    
+    border-bottom: 2px solid #F6F0F0;
+     border-right: 2px solid #F6F0F0;
+      border-left: 2px solid #F6F0F0;
+    background-color:    #684EBE;
+    top: 100%;
     -ms-transform:rotate(270deg); /* IE 9 */
     -moz-transform:rotate(270deg); /* Firefox */
     -webkit-transform:rotate(270deg); /* Safari and Chrome */
     -o-transform:rotate(270deg); /* Opera */
     transform: rotate(270deg);
-
-
-
     -ms-transform-origin: 0% 0%; /* IE 9 */
     -moz-transform-origin: 0% 0%; /* Firefox */
     -webkit-transform-origin: 0% 0%; /* Safari and Chrome */
@@ -2462,41 +2363,95 @@ resetlabelbtn p{
 
     filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083);  /* IE6,IE7 */
     -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)"; /* IE8 */
-
-
     position: absolute;
-    background-color: #ffb4af;
-    color: #000000;
-    cursor: pointer;
-}
-.amyotrophiclateralsclerosishmcolumnlabel:hover{
-    border: 1px solid #4d749f; 
 
 }
-
-.amyotrophiclateralsclerosishmcolumnlabel div{
-    font-size:14px;
-    line-height:100%;
-    cursor: pointer;    
-}
-
-
-.amyotrophiclateralsclerosishmrowlabel {
-    border: 1px solid #F6F0F0;
-    text-align: center;
-    line-height: 45px;
-    background-color:    #ffb4af;
-    color: #000000; 
-    cursor: pointer;  
+.row_pdLabel{ 
     
+    border-bottom: 2px solid #F6F0F0;
+     border-right: 2px solid #F6F0F0;
+      border-left: 2px solid #F6F0F0;
+    background-color: #74716E;
+  top: 100%;
+    -ms-transform:rotate(270deg); /* IE 9 */
+    -moz-transform:rotate(270deg); /* Firefox */
+    -webkit-transform:rotate(270deg); /* Safari and Chrome */
+    -o-transform:rotate(270deg); /* Opera */
+    transform: rotate(270deg);
+    -ms-transform-origin: 0% 0%; /* IE 9 */
+    -moz-transform-origin: 0% 0%; /* Firefox */
+    -webkit-transform-origin: 0% 0%; /* Safari and Chrome */
+    -o-transform-origin: 0% 0%; /* Opera */
+    transform-origin: 0% 0%;
+
+    filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083);  /* IE6,IE7 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)"; /* IE8 */
+    position: absolute;}
+.row_adLabel{
+    
+    border-bottom: 2px solid #F6F0F0;
+     border-right: 2px solid #F6F0F0;
+      border-left: 2px solid #F6F0F0;
+    background-color: #809160;
+      top: 100%;
+    -ms-transform:rotate(270deg); /* IE 9 */
+    -moz-transform:rotate(270deg); /* Firefox */
+    -webkit-transform:rotate(270deg); /* Safari and Chrome */
+    -o-transform:rotate(270deg); /* Opera */
+    transform: rotate(270deg);
+    -ms-transform-origin: 0% 0%; /* IE 9 */
+    -moz-transform-origin: 0% 0%; /* Firefox */
+    -webkit-transform-origin: 0% 0%; /* Safari and Chrome */
+    -o-transform-origin: 0% 0%; /* Opera */
+    transform-origin: 0% 0%;
+
+    filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083);  /* IE6,IE7 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)"; /* IE8 */
+    position: absolute;
 
 }
-.amyotrophiclateralsclerosishmrowlabel:hover{
-    border: 1px solid #4d749f; 
+.row_alsLabel{
+    
+    border-bottom: 2px solid #F6F0F0;
+     border-right: 2px solid #F6F0F0;
+      border-left: 2px solid #F6F0F0;
+    background-color: #7D0725;
+      top: 100%;
+    -ms-transform:rotate(270deg); /* IE 9 */
+    -moz-transform:rotate(270deg); /* Firefox */
+    -webkit-transform:rotate(270deg); /* Safari and Chrome */
+    -o-transform:rotate(270deg); /* Opera */
+    transform: rotate(270deg);
+    -ms-transform-origin: 0% 0%; /* IE 9 */
+    -moz-transform-origin: 0% 0%; /* Firefox */
+    -webkit-transform-origin: 0% 0%; /* Safari and Chrome */
+    -o-transform-origin: 0% 0%; /* Opera */
+    transform-origin: 0% 0%;
+
+    filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083);  /* IE6,IE7 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)"; /* IE8 */
+    position: absolute;
 
 }
-.amyotrophiclateralsclerosishmrowlabel div{
-    font-size:14px;
-    line-height:100%;
-    cursor: pointer;    
+
+.row_empty{
+    border-bottom: 2px solid #F6F0F0;
+     border-right: 2px solid #F6F0F0;
+      border-left: 2px solid #F6F0F0;
+      top: 100%;
+    -ms-transform:rotate(270deg); /* IE 9 */
+    -moz-transform:rotate(270deg); /* Firefox */
+    -webkit-transform:rotate(270deg); /* Safari and Chrome */
+    -o-transform:rotate(270deg); /* Opera */
+    transform: rotate(270deg);
+    -ms-transform-origin: 0% 0%; /* IE 9 */
+    -moz-transform-origin: 0% 0%; /* Firefox */
+    -webkit-transform-origin: 0% 0%; /* Safari and Chrome */
+    -o-transform-origin: 0% 0%; /* Opera */
+    transform-origin: 0% 0%;
+
+    filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083);  /* IE6,IE7 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)"; /* IE8 */
+    position: absolute;
+
 }

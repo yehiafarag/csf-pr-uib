@@ -1072,8 +1072,7 @@ public class CoreLogic implements Serializable {
           
 
             for (QuantProtein quant : comparisonProtMap) {  
-                System.out.println("at "+comparison.getComparisonHeader());
-                System.out.println("at --------------"+ quant.getPatientSubGroupI());
+               
                 boolean inverted = false;
                 String protAcc = quant.getUniprotAccession();
                 if (protAcc.equalsIgnoreCase("") || protAcc.equalsIgnoreCase("Not Available") || protAcc.equalsIgnoreCase("Entry Deleted") || protAcc.equalsIgnoreCase("Entry Demerged") || protAcc.equalsIgnoreCase("NOT RETRIEVED") || protAcc.equalsIgnoreCase("DELETED")) {

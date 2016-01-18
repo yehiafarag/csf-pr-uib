@@ -396,12 +396,12 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         final boolean finalNum;
         finalNum = maxLength > 30 && selectedComparisonList.size() > 4;
         xAxis = new SymbolAxis(null, xAxisLabels) {
-                   
+
             private final boolean localfinal = finalNum;
 
             @Override
             protected List refreshTicksHorizontal(Graphics2D g2, Rectangle2D dataArea, RectangleEdge edge) {
-              
+
                 if (localfinal) {
                     setVerticalTickLabels(localfinal);
                     return super.refreshTicksHorizontal(g2, dataArea, edge);
@@ -409,7 +409,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                 List ticks = new java.util.ArrayList();
                 Font tickLabelFont = getTickLabelFont();
                 g2.setFont(tickLabelFont);
-                System.out.println(" color "+g2.getBackground());
+                System.out.println(" color " + g2.getBackground());
                 double size = getTickUnit().getSize();
                 int count = calculateVisibleTickCount();
                 double lowestTickValue = calculateLowestVisibleTickValue();
@@ -469,7 +469,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                         }
                         Tick tick = new NumberTick(new Double(currentTickValue),
                                 tickLabel, anchor, rotationAnchor, angle);
-                      
+
                         ticks.add(tick);
                     }
                 }
@@ -502,11 +502,6 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
                 return c;
             }
-
-           
-
-            
-            
 
         };
 
@@ -553,14 +548,17 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
     private String saveToFile(final JFreeChart chart, final double width, final double height) {
         isNewImge = true;
- int location =-1;
- boolean first = true;
+        int location = -1;
+        boolean first = true;
         Set<SquaredDot> set = new TreeSet<SquaredDot>();
         try {
+            if (width < 1 || height < 1) {
+                return "";
+            }
 
             imageData = ChartUtilities.encodeAsPNG(chart.createBufferedImage((int) width, (int) height, chartRenderingInfo));
             chartLayout.removeAllComponents();
-           
+
             for (int i = 0; i < chartRenderingInfo.getEntityCollection().getEntityCount(); i++) {
                 ChartEntity entity = chartRenderingInfo.getEntityCollection().getEntity(i);
                 if (entity instanceof XYItemEntity) {
@@ -590,8 +588,8 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                         }
 
                     }
-                    location=Integer.valueOf(coords[0]);
-                    System.out.println("at coords are "+catEnt.getShapeCoords());
+                    location = Integer.valueOf(coords[0]);
+//                    System.out.println("at coords are " + catEnt.getShapeCoords());
                     int sqheight = (largeY - smallY);
                     if (sqheight < 2) {
                         continue;
@@ -641,29 +639,27 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 //                    }
                     square.setParam("position", "left: " + smallX + "px; top: " + (smallY) + "px;");
                     set.add(square);
-                }else if(entity instanceof AxisEntity  ){
-                    AxisEntity ai = (AxisEntity)entity; 
-                   if(first)
-                   {
-                       first=false;
-                       
-                   }
-                   else{
-                       continue;
-                   }
-                    
-                    String[] coords = ai.getShapeCoords().split(",");
-                    VerticalLayout vlo = new VerticalLayout();
-                    vlo.setStyleName("frame");
-                    int w = Integer.valueOf(coords[1])-10;
-                     int h = Integer.valueOf(coords[3]) - Integer.valueOf(coords[1]) ;
-                    vlo.setWidth(10+"px");
-                    vlo.setHeight(10+"px");
-                
-                    System.out.println("coords is "+ai.getShapeCoords());
-                    chartLayout.addComponent(vlo, "left: " + 439 + "px; top: " + w + "px;");
-                    
-                    System.out.println("ChartEntity "+ai.getArea());
+                } else if (entity instanceof AxisEntity) {
+//                    AxisEntity ai = (AxisEntity) entity;
+//                    if (first) {
+//                        first = false;
+//
+//                    } else {
+//                        continue;
+//                    }
+//
+//                    String[] coords = ai.getShapeCoords().split(",");
+//                    VerticalLayout vlo = new VerticalLayout();
+//                    vlo.setStyleName("frame");
+//                    int w = Integer.valueOf(coords[1]) - 10;
+//                    int h = Integer.valueOf(coords[3]) - Integer.valueOf(coords[1]);
+//                    vlo.setWidth(10 + "px");
+//                    vlo.setHeight(10 + "px");
+//
+//                    System.out.println("coords is " + ai.getShapeCoords());
+//                    chartLayout.addComponent(vlo, "left: " + 439 + "px; top: " + w + "px;");
+//
+//                    System.out.println("ChartEntity " + ai.getArea());
                 }
             }
             for (SquaredDot square : set) {
