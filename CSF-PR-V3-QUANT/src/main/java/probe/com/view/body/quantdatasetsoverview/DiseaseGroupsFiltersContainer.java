@@ -54,6 +54,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
     private int pageWidth;
     private final VerticalLayout pieChartFiltersBtnLayout;
     private final int heatmapCellWidth = 30;
+    private final int heatmapHeaderCellWidth= 135;
     private final HorizontalLayout topLeftLayout;
     private final HorizontalLayout topRightLayout;
     private final QuantCentralManager Quant_Central_Manager;
@@ -166,12 +167,12 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         this.setComponentAlignment(middleLayout, Alignment.TOP_LEFT);
         this.resizeLayout(diseaseGroupsSet.size());
 
-        int heatmapH = heatmapW + 20;
+        int heatmapH = heatmapW + 10;
         standeredChartHeight = heatmapH;
 
 //        System.out.println("at error "+diseaseGroupsSet.size()+"    "+ Quant_Central_Manager.getDiseaseGroupsArr().length+ );
-        diseaseGroupsHeatmapFilter = new HeatMapFilter(Quant_Central_Manager, heatmapW, diseaseGroupsSet, diseaseGroupsSet, Quant_Central_Manager.getDiseaseGroupsArray(), heatmapCellWidth, CSFPR_Handler.getDiseaseFullNameMap());
-        diseaseGroupsHeatmapFilter.setHeight(Math.max(heatmapH, 720) + "px");
+        diseaseGroupsHeatmapFilter = new HeatMapFilter(Quant_Central_Manager, heatmapW, diseaseGroupsSet, diseaseGroupsSet, Quant_Central_Manager.getDiseaseGroupsArray(), heatmapCellWidth,heatmapHeaderCellWidth, CSFPR_Handler.getDiseaseFullNameMap());
+        diseaseGroupsHeatmapFilter.setHeight(Math.max(heatmapH, 700) + "px");
         diseaseGroupsHeatmapFilter.setSingleSelection(false);
         middleLayout.addComponent(diseaseGroupsHeatmapFilter);
         middleLayout.setComponentAlignment(diseaseGroupsHeatmapFilter, Alignment.TOP_LEFT);
@@ -361,7 +362,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
                 }
             }
         };
-        int y = Page.getCurrent().getBrowserWindowHeight() - Math.max(heatmapH, 720) - 200;
+        int y = Page.getCurrent().getBrowserWindowHeight() - Math.max(heatmapH, 700) - 200;
         Tips tips = CSFPR_Handler.getTipsGenerator().generateTip("Remeber you can sort and select the disease groups using <u>Sort and Select</u> feature", 180, y);
         leftBottomBtnLayout.addComponent(tips);
         leftBottomBtnLayout.setComponentAlignment(tips, Alignment.TOP_LEFT);
@@ -430,7 +431,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
     }
 
     private void resizeLayout(int diseaseGroupsSize) {
-        heatmapW = Math.max((156 + (heatmapCellWidth * diseaseGroupsSize)), 700);
+        heatmapW = Math.max((heatmapHeaderCellWidth + 20 + 12 +(heatmapCellWidth * diseaseGroupsSize)), 700);
         topLeftLayout.setWidth((heatmapW) + "px");
         topRightLayout.setWidth((pageWidth - heatmapW - 70) + "px");
         initLayoutWidth = (pageWidth - heatmapW - 300);

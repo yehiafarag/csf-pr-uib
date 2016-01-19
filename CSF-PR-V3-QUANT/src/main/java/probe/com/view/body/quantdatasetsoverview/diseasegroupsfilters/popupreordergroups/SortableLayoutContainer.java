@@ -37,6 +37,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import probe.com.view.core.ReorderDiseaseGroupLabel;
 
 /**
  *
@@ -56,8 +57,15 @@ public class SortableLayoutContainer extends VerticalLayout {
     private boolean autoClear;//, autoselectall;
     private boolean singleSelected = false;
     private Set selectAllSet = new HashSet();
+    private final Map<String, String> diseaseStyleMap = new HashMap<String, String>();
 
+    
+       
     public SortableLayoutContainer(int w, int subH, final String strTitle, Set<String> labels) {
+        diseaseStyleMap.put("Parkinson's", "pdLabel");
+        diseaseStyleMap.put("Alzheimer's", "adLabel");
+        diseaseStyleMap.put("Amyotrophic Lateral Sclerosis", "alsLabel");
+        diseaseStyleMap.put ("Multiple Sclerosis", "msLabel");
 
         this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.setSpacing(true);
@@ -69,7 +77,7 @@ public class SortableLayoutContainer extends VerticalLayout {
         titileI.setStyleName("custLabel");
         headerLayoutI.addComponent(titileI);
         this.addComponent(headerLayoutI);
-        int containerWidth = ((w) / 2) - 30;
+        int containerWidth = ((w) / 2) - 20;
 
         this.setWidth(containerWidth + "px");
         int height = subH - 15;
@@ -106,24 +114,24 @@ public class SortableLayoutContainer extends VerticalLayout {
         counterLayoutContainer.setHeight(height + "px");
         counterLayoutContainer.setWidth("30px");
         counterLayoutContainer.setStyleName(Reindeer.LAYOUT_WHITE);
-        
+
         counterLayout = new VerticalLayout();
         counterLayoutContainer.addComponent(counterLayout);
         counterLayout.setWidth("30px");
         counterLayout.setSpacing(false);
         counterLayout.setStyleName("countcontainer");
 
-        int sortableItremWidth = containerWidth - 26-6;
+        int sortableItremWidth = containerWidth - 26 - 6 - 15;
         sortableDiseaseGroupLayout = new SortableLayout();
         bodyLayout.addComponent(sortableDiseaseGroupLayout);
         sortableDiseaseGroupLayout.setWidth(sortableItremWidth + "px");
-        sortableDiseaseGroupLayout.setHeight(height + "px");
+
         sortableDiseaseGroupLayout.setData(strTitle);
         sortableDiseaseGroupLayout.addStyleName("no-horizontal-drag-hints");
-       
 
         checkboxLayout = new VerticalLayout();
         bodyLayout.addComponent(checkboxLayout);
+
         checkboxLayout.setSpacing(false);
         checkboxLayout.setEnabled(false);
         checkboxLayout.setHeight(height + "px");
@@ -266,13 +274,7 @@ public class SortableLayoutContainer extends VerticalLayout {
         groupsIds.clear();
         groupSelectionMap.clear();
         for (String strLabel : datasource) {
-            VerticalLayout container = new VerticalLayout();
-            container.setWidth(itemWidth + "px");
-            container.setHeight("30px");
-            container.setStyleName("rowItem");
-            container.setDescription(strLabel);
-            Label label = new Label(strLabel);
-            container.addComponent(label);
+            ReorderDiseaseGroupLabel container = new ReorderDiseaseGroupLabel(itemWidth, strLabel,diseaseStyleMap.get(strLabel.split("\n")[1]));
             componentsList.add(container);
             groupSelectionMap.put(strLabel, Boolean.FALSE);
             groupsIds.add(strLabel);
@@ -304,7 +306,7 @@ public class SortableLayoutContainer extends VerticalLayout {
                     dropHandler);
             wrapper.setSizeUndefined();
             component.setHeight("100%");
-            wrapper.setHeight("100%");
+            wrapper.setHeight("90%");
             wrapper.setData(data);
             layout.addComponent(wrapper);
 

@@ -95,7 +95,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
     private boolean isNewImge = true;
     private byte imageData[];
     private final String[] tooltipLabels = new String[]{"( Low <img src='VAADIN/themes/dario-theme/img/greendot.png' alt='Low'>" + " )", "( Low <img src='VAADIN/themes/dario-theme/img/lgreendot.png' alt='Low'>" + " )", "( Stable <img src='VAADIN/themes/dario-theme/img/bluedot.png' alt='Stable'>" + " )", " ( High <img src='VAADIN/themes/dario-theme/img/lreddot.png' alt='High'>" + " )", " ( High <img src='VAADIN/themes/dario-theme/img/reddot.png' alt='High'>" + " )"};
-
+private final Map<String, Color> diseaseColorMap = new HashMap<String, Color>();
     public void updateSize(int updatedWidth, int height) {
         width = updatedWidth;
         this.setWidth(updatedWidth + "px");
@@ -119,6 +119,12 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
     public ComparisonsSelectionOverviewBubbleChart(final QuantCentralManager Quant_Central_Manager, final CSFPRHandler handler, int chartWidth, int chartHeight, Set<QuantDiseaseGroupsComparison> selectedComparisonList, List<QuantProtein> searchQuantificationProtList) {
         this.searchQuantificationProtList = searchQuantificationProtList;
+        diseaseColorMap.put("Multiple Sclerosis",new Color(75, 120, 101));
+        diseaseColorMap.put("Alzheimer's",new Color(128, 145, 96));
+        diseaseColorMap.put("Parkinson's",new Color(116, 113, 110));
+        diseaseColorMap.put("Amyotrophic Lateral Sclerosis",new Color(125, 7, 37));
+        
+        
         this.width = chartWidth;
         this.height = chartHeight;
         this.handler = handler;
@@ -381,21 +387,48 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         String[] xAxisLabels = new String[selectedComparisonList.size()];
         int x = 0;
         int maxLength = -1;
+          //init labels color
+        
+          final Color[] diseaseGroupslabelsColor = new Color[selectedComparisonList.size()];
+        
         for (QuantDiseaseGroupsComparison comp : selectedComparisonList) {
             String header = comp.getComparisonHeader();
-            String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + " ( " + header.split(" / ")[1].split("\n")[1] + " )";
+            String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + "";
 
             xAxisLabels[x] = updatedHeader + " (" + comp.getDatasetIndexes().length + ")    ";
             if (xAxisLabels[x].length() > maxLength) {
                 maxLength = xAxisLabels[x].length();
             }
+            diseaseGroupslabelsColor[x]= diseaseColorMap.get(header.split(" / ")[0].split("\n")[1]);
             x++;
 
         }
         SymbolAxis xAxis;
         final boolean finalNum;
         finalNum = maxLength > 30 && selectedComparisonList.size() > 4;
+        
+      
+        
         xAxis = new SymbolAxis(null, xAxisLabels) {
+            
+            
+            
+            
+            
+              int x = 0;
+
+              @Override
+            public Paint getTickLabelPaint() {
+                if (x >= diseaseGroupslabelsColor.length) {
+                    x = 0;
+                }
+                return diseaseGroupslabelsColor[x++];
+            }
+            
+            
+            
+            
+            
 
             private final boolean localfinal = finalNum;
 
@@ -409,7 +442,6 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                 List ticks = new java.util.ArrayList();
                 Font tickLabelFont = getTickLabelFont();
                 g2.setFont(tickLabelFont);
-                System.out.println(" color " + g2.getBackground());
                 double size = getTickUnit().getSize();
                 int count = calculateVisibleTickCount();
                 double lowestTickValue = calculateLowestVisibleTickValue();
@@ -689,6 +721,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
     public void selectionChanged(String type) {
         if (type.equalsIgnoreCase("Comparison_Selection")) {
             selectedComparisonList = this.Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList();
+            
 
             Iterator<QuantDiseaseGroupsComparison> itr = selectedComparisonList.iterator();
             while (itr.hasNext()) {

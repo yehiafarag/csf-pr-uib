@@ -524,23 +524,20 @@
 }
 .hmcolumnlabel {
     border: 2px solid #F6F0F0;
-    margin-top: 148px;
+    margin-top: 133px;
     text-align: center;
-    -ms-transform:rotate(270deg); /* IE 9 */
-    -moz-transform:rotate(270deg); /* Firefox */
-    -webkit-transform:rotate(270deg); /* Safari and Chrome */
-    -o-transform:rotate(270deg); /* Opera */
+    -ms-transform:rotate(270deg);/* IE 9 */
+    -moz-transform:rotate(270deg);/* Firefox */
+    -webkit-transform:rotate(270deg);/* Safari and Chrome */
+    -o-transform:rotate(270deg);/* Opera */
     transform: rotate(270deg);
-    -ms-transform-origin: 0% 0%; /* IE 9 */
-    -moz-transform-origin: 0% 0%; /* Firefox */
-    -webkit-transform-origin: 0% 0%; /* Safari and Chrome */
-    -o-transform-origin: 0% 0%; /* Opera */
+    -ms-transform-origin: 0% 0%;/* IE 9 */
+    -moz-transform-origin: 0% 0%;/* Firefox */
+    -webkit-transform-origin: 0% 0%;/* Safari and Chrome */
+    -o-transform-origin: 0% 0%;/* Opera */
     transform-origin: 0% 0%;
-
-    filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083);  /* IE6,IE7 */
-    -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)"; /* IE8 */
-
-
+    filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083);/* IE6,IE7 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)";/* IE8 */
     position: absolute;
     background-color: #ffffff;
     color: #000000;
@@ -570,14 +567,14 @@
 
 }
 .hmcolumnlabel div{
-    font-size:14px;
+    font-size:12px;
     line-height:100%;
     cursor: pointer;    
 }
 .hmcolumnlabel_selected {
     border: 2px solid  orange;
 
-    margin-top: 148px;
+    margin-top: 130px;
     -ms-transform:rotate(270deg); /* IE 9 */
     -moz-transform:rotate(270deg); /* Firefox */
     -webkit-transform:rotate(270deg); /* Safari and Chrome */
@@ -591,12 +588,12 @@
 
 }
 .hmcolumnlabel_selected div{
-    font-size:14px;
+    font-size:13px;
     cursor: pointer;    
 }
 .hmcolumnlabel_selected_heighlightcell div{
 
-    font-size:14px;
+    font-size:13px;
     line-height:100%;
     cursor: pointer;    
 
@@ -604,21 +601,21 @@
 }
 .hmrowlabel_selected_heighlightcell div{
 
-    font-size:14px;
+    font-size:13px;
     cursor: pointer;    
 
 
 }
 .hmrowlabel_heighlightcell div{
 
-    font-size:14px;
+    font-size:12px;
     cursor: pointer;    
 
 
 }
 .hmcolumnlabel_heighlightcell div{
 
-    font-size:14px;
+    font-size:12px;
     cursor: pointer;    
 
 
@@ -651,13 +648,13 @@
 
 }
 .hmrowlabel div{
-    font-size:14px;
+    font-size:12px;
     cursor: pointer;    
 }
 .hmrowlabel_heighlightcell {
     border: 1px solid #fc690a;
     text-align: center;
-    font-size:14px;
+    font-size:12px;
 }
 .hmrowlabel_selected {
     border: 2px solid  orange;
@@ -669,7 +666,7 @@
 
 }
 .hmrowlabel_selected div{
-    font-size:14px;
+    font-size:13px;
     cursor: pointer;    
 }
 .col {
@@ -782,6 +779,7 @@ resetlabelbtn p{
 }
 .matrixbtn{
     background-color:  #ffffff;
+    border: 2px solid white;   
     background-image: url(img/hideshow.png);
     background-repeat: no-repeat;
     background-position:center;
@@ -2252,7 +2250,7 @@ resetlabelbtn p{
     margin-right: 148px;
     text-align: center;
     line-height: 25px !important;  
-    background-color: #684EBE;
+    background-color: #4b7865;
     color: #ffffff;
     cursor: pointer;
 }
@@ -2261,7 +2259,7 @@ resetlabelbtn p{
 .multiplesclerosishmrowlabel {
     text-align: center;
     line-height: 25px !important;  
-    background-color:    #684EBE;
+    background-color:    #4b7865;
     color: #ffffff; 
     cursor: pointer;  
 
@@ -2315,40 +2313,40 @@ resetlabelbtn p{
 
 }
 .msLabel{
-    
+
     border-bottom: 2px solid #F6F0F0;
-     border-right: 2px solid #F6F0F0;
-      border-left: 2px solid #F6F0F0;
-    background-color:    #684EBE;
+    border-right: 2px solid #F6F0F0;
+    border-left: 2px solid #F6F0F0;
+    background-color:    #4b7865;
 
 }
 .pdLabel{
     border-bottom: 2px solid #F6F0F0;
-     border-right: 2px solid #F6F0F0;
-      border-left: 2px solid #F6F0F0;
+    border-right: 2px solid #F6F0F0;
+    border-left: 2px solid #F6F0F0;
     background-color: #74716E;}
 .adLabel{
-    
+
     border-bottom: 2px solid #F6F0F0;
-     border-right: 2px solid #F6F0F0;
-      border-left: 2px solid #F6F0F0;
+    border-right: 2px solid #F6F0F0;
+    border-left: 2px solid #F6F0F0;
     background-color: #809160;
 
 }
 .alsLabel{
-    
+
     border-bottom: 2px solid #F6F0F0;
-     border-right: 2px solid #F6F0F0;
-      border-left: 2px solid #F6F0F0;
+    border-right: 2px solid #F6F0F0;
+    border-left: 2px solid #F6F0F0;
     background-color: #7D0725;
 
 }
 .row_msLabel{
-    
+
     border-bottom: 2px solid #F6F0F0;
-     border-right: 2px solid #F6F0F0;
-      border-left: 2px solid #F6F0F0;
-    background-color:    #684EBE;
+    border-right: 2px solid #F6F0F0;
+    border-left: 2px solid #F6F0F0;
+    background-color:    #4b7865;
     top: 100%;
     -ms-transform:rotate(270deg); /* IE 9 */
     -moz-transform:rotate(270deg); /* Firefox */
@@ -2367,12 +2365,12 @@ resetlabelbtn p{
 
 }
 .row_pdLabel{ 
-    
+
     border-bottom: 2px solid #F6F0F0;
-     border-right: 2px solid #F6F0F0;
-      border-left: 2px solid #F6F0F0;
+    border-right: 2px solid #F6F0F0;
+    border-left: 2px solid #F6F0F0;
     background-color: #74716E;
-  top: 100%;
+    top: 100%;
     -ms-transform:rotate(270deg); /* IE 9 */
     -moz-transform:rotate(270deg); /* Firefox */
     -webkit-transform:rotate(270deg); /* Safari and Chrome */
@@ -2388,12 +2386,12 @@ resetlabelbtn p{
     -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)"; /* IE8 */
     position: absolute;}
 .row_adLabel{
-    
+
     border-bottom: 2px solid #F6F0F0;
-     border-right: 2px solid #F6F0F0;
-      border-left: 2px solid #F6F0F0;
+    border-right: 2px solid #F6F0F0;
+    border-left: 2px solid #F6F0F0;
     background-color: #809160;
-      top: 100%;
+    top: 100%;
     -ms-transform:rotate(270deg); /* IE 9 */
     -moz-transform:rotate(270deg); /* Firefox */
     -webkit-transform:rotate(270deg); /* Safari and Chrome */
@@ -2411,12 +2409,12 @@ resetlabelbtn p{
 
 }
 .row_alsLabel{
-    
+
     border-bottom: 2px solid #F6F0F0;
-     border-right: 2px solid #F6F0F0;
-      border-left: 2px solid #F6F0F0;
+    border-right: 2px solid #F6F0F0;
+    border-left: 2px solid #F6F0F0;
     background-color: #7D0725;
-      top: 100%;
+    top: 100%;
     -ms-transform:rotate(270deg); /* IE 9 */
     -moz-transform:rotate(270deg); /* Firefox */
     -webkit-transform:rotate(270deg); /* Safari and Chrome */
@@ -2436,9 +2434,9 @@ resetlabelbtn p{
 
 .row_empty{
     border-bottom: 2px solid #F6F0F0;
-     border-right: 2px solid #F6F0F0;
-      border-left: 2px solid #F6F0F0;
-      top: 100%;
+    border-right: 2px solid #F6F0F0;
+    border-left: 2px solid #F6F0F0;
+    top: 100%;
     -ms-transform:rotate(270deg); /* IE 9 */
     -moz-transform:rotate(270deg); /* Firefox */
     -webkit-transform:rotate(270deg); /* Safari and Chrome */
@@ -2453,5 +2451,33 @@ resetlabelbtn p{
     filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083);  /* IE6,IE7 */
     -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)"; /* IE8 */
     position: absolute;
+
+}
+.hmbackground{
+    background: black;
+
+}
+
+.rowItem_msLabel{
+
+   
+    color: #ffffff;
+    background-color:    #4b7865;
+
+}
+.rowItem_pdLabel{
+    
+    color: #ffffff;
+    background-color: #74716E;}
+.rowItem_adLabel{
+
+    
+    color: #ffffff;
+    background-color: #809160;
+
+}
+.rowItem_alsLabel{
+    color: #ffffff;
+    background-color: #7D0725;
 
 }

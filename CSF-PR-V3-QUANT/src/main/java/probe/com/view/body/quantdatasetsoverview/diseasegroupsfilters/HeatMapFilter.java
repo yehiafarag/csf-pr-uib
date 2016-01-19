@@ -79,9 +79,10 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
      * @param colheaders
      * @param patientsGroupArr
      * @param heatmapCellWidth
+     * @param heatmapHeaderCellWidth
      * @param diseaseFullNameMap
      */
-    public HeatMapFilter(final QuantCentralManager Quant_Central_Manager, int heatmapW, LinkedHashSet<String> rowheaders, LinkedHashSet<String> colheaders, DiseaseGroup[] patientsGroupArr, int heatmapCellWidth, Map<String, String> diseaseFullNameMap) {
+    public HeatMapFilter(final QuantCentralManager Quant_Central_Manager, int heatmapW, LinkedHashSet<String> rowheaders, LinkedHashSet<String> colheaders, DiseaseGroup[] patientsGroupArr, int heatmapCellWidth,int heatmapHeaderCellWidth, Map<String, String> diseaseFullNameMap) {
 
         this.setWidth(heatmapW + "px");
         this.heatmapW = heatmapW;
@@ -89,7 +90,7 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
         this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.Quant_Central_Manager = Quant_Central_Manager;
 
-        heatMap = new HeatMapComponent(heatmapCellWidth) {
+        heatMap = new HeatMapComponent(heatmapCellWidth,heatmapHeaderCellWidth) {
             @Override
             public void updateSelectionManager(Set<QuantDiseaseGroupsComparison> selectedDsList) {
 
@@ -233,6 +234,7 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
             this.setHeight("100%");
 
         } else {
+            
             this.setWidthUndefined();
             this.setHeightUndefined();
         }
