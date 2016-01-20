@@ -880,12 +880,14 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
     private HorizontalLayout generateColumnHeaderLayout(final QuantDiseaseGroupsComparison comparison, int width) {
 
         HorizontalLayout titleLayout = new HorizontalLayout();
+//        titleLayout.setStyleName("msLabel");
         titleLayout.setWidth(width + "px");
         titleLayout.setHeight("20px");
-         String header = comparison.getComparisonHeader();
-        String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + " ( " + header.split(" / ")[1].split("\n")[1] + " )";
-
-        Label label = new Label(updatedHeader);
+        String header = comparison.getComparisonHeader();
+        String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0];// " ( " + header.split(" / ")[1].split("\n")[1] + " )";
+        String diseaseColor = this.Quant_Central_Manager.getDiseaseHashedColor(header.split(" / ")[1].split("\n")[1]);
+//        diseaseColor="#ffffff";
+        Label label = new Label("<font color='" + diseaseColor + "' style='font-weight: bold;'>" + updatedHeader + "</font>");
         label.setStyleName("comparisonHeaders");
         label.setWidth("90%");
         label.setContentMode(ContentMode.HTML);

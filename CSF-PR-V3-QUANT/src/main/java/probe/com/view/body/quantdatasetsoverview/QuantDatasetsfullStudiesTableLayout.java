@@ -196,7 +196,7 @@ public class QuantDatasetsfullStudiesTableLayout extends Table implements CSFFil
             }
 
             CustomExternalLink pumedID = new CustomExternalLink(pb.getPumedID(), "http://www.ncbi.nlm.nih.gov/pubmed/" + pb.getPumedID());
-            this.addItem(new Object[]{index, pb.getAuthor(), pb.getYear() + "", idNumber, quantProtNum, pb.getAnalyticalMethod(), rawDatalink, pb.getFilesNumber(), pb.getTypeOfStudy(), pb.getSampleType(), pb.getSampleMatching(), pb.getShotgunTargeted(), pb.getTechnology(), pb.getAnalyticalApproach(), pb.getEnzyme(), pb.getQuantificationBasis(), pb.getQuantBasisComment(), pb.getNormalizationStrategy(), pumedID, pb.getPatientsGroup1(), patGr1Num, pb.getPatientsGroup1Comm(), pb.getPatientsSubGroup1(), pb.getPatientsGroup2(), patGr2Num, pb.getPatientsGroup2Comm(), pb.getPatientsSubGroup2(), pb.getAdditionalcomments()}, index);
+            this.addItem(new Object[]{index, pb.getAuthor(), pb.getYear() + "", idNumber, quantProtNum, pb.getAnalyticalMethod(), rawDatalink, pb.getFilesNumber(), pb.getTypeOfStudy(), pb.getSampleType(), pb.getSampleMatching(), pb.getShotgunTargeted(), pb.getTechnology(), pb.getAnalyticalApproach(), pb.getEnzyme(), pb.getQuantificationBasis(), pb.getQuantBasisComment(), pb.getNormalizationStrategy(), pumedID, pb.getPatientsGroup1().split("\n")[0], patGr1Num, pb.getPatientsGroup1Comm(), pb.getPatientsSubGroup1().split("\n")[0], pb.getPatientsGroup2().split("\n")[0], patGr2Num, pb.getPatientsGroup2Comm(), pb.getPatientsSubGroup2().split("\n")[0], pb.getAdditionalcomments()}, index);
             dsIndexes[index] = pb.getDsKey();
             index++;
         }

@@ -113,9 +113,10 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         int numb = cp.getSignificantDown() + cp.getNotProvided() + cp.getNotReg() + cp.getSignificantUp();
 
         String groupCompTitle = cp.getComparison().getComparisonHeader();
-        String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0] + " ( " + groupCompTitle.split(" / ")[1].split("\n")[1] + " )";
-
-        comparisonTitle = new Label(updatedHeader + " (#Studies " + numb + "/" + cp.getComparison().getDatasetIndexes().length + ")");
+        String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0];// + " ( " + groupCompTitle.split(" / ")[1].split("\n")[1] + " )";
+        
+        String rgbColor = Quant_Central_Manager.getDiseaseHashedColor(groupCompTitle.split(" / ")[1].split("\n")[1]);
+        comparisonTitle = new Label("<font color='"+rgbColor+"' style='font-weight: bold;'>"+updatedHeader + " (#Studies " + numb + "/" + cp.getComparison().getDatasetIndexes().length + ")</font>");
         comparisonTitle.setContentMode(ContentMode.HTML);
         comparisonTitle.setStyleName("custChartLabelHeader");
         comparisonTitle.setWidth((width - 70) + "px");
@@ -137,7 +138,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         ProteinScatterPlotContainer.setHeight(150 + "px");
 
         String styleString = "_" + cp.getProteinAccssionNumber() + "_" + cp.getComparison().getComparisonHeader();
-        teststyle = styleString.replace(" ", "_").replace("+", "_").replace(")", "_").replace("(", "_").toLowerCase().replace(" ", "_").replace("\n", "_").replace(")", "_").replace("(", "_").toLowerCase().replace("+", "_").replace("/", "_").replace(".", "_") + "_scatterplot";
+        teststyle = styleString.replace(" ", "_").replace("+", "_").replace(")", "_").replace("(", "_").toLowerCase().replace(" ", "_").replace("\n", "_").replace(")", "_").replace("(", "_").toLowerCase().replace("+", "_").replace("/", "_").replace(".", "_").replace("'s","_") + "_scatterplot";
         styles.add("." + teststyle + " {  background-image: url(" + defaultScatterPlottImgUrl + " );background-position:center; background-repeat: no-repeat; }");
         ProteinScatterPlotContainer.setStyleName(teststyle);
         ProteinScatterPlotContainer.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
@@ -166,6 +167,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         });
 
     }
+  
 
     public PeptidesStackedBarChartsControler getStudyPopupLayoutManager() {
         return studyPopupLayoutManager;
@@ -584,7 +586,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
     public void redrawChart() {
         if (defaultScatterPlottImgUrl == null) {
             this.generateScatterplotchart(comparisonProtein, imgWidth, 150);
-            studyPopupLayoutManager = new PeptidesStackedBarChartsControler(width, patientGroupsNumToDsIdMap, comparisonProtein.getProteinAccssionNumber(), comparisonProtein.getProtName(), comparisonProtein.getUrl(), comparisonProtein.getComparison().getComparisonHeader(), comparisonProtein.getDsQuantProteinsMap(), dsKeyDatasetMap);
+            studyPopupLayoutManager = new PeptidesStackedBarChartsControler(width, patientGroupsNumToDsIdMap, comparisonProtein.getProteinAccssionNumber(), comparisonProtein.getProtName(), comparisonProtein.getUrl(), comparisonProtein.getComparison().getComparisonHeader(), comparisonProtein.getDsQuantProteinsMap(), dsKeyDatasetMap,Quant_Central_Manager.getDiseaseHashedColorMap());
         }
         styles.add("." + teststyle + " {  background-image: url(" + defaultScatterPlottImgUrl + " );background-position:center; background-repeat: no-repeat; }");
 

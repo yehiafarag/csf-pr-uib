@@ -13,7 +13,6 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.OptionGroup;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.util.LinkedHashSet;
@@ -24,7 +23,6 @@ import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.beans.quant.QuantProtein;
 import probe.com.selectionmanager.CSFFilter;
 import probe.com.selectionmanager.QuantCentralManager;
-import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.DiseaseGroupsListFilter;
 
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.HeatMapFilter;
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.ComparisonsSelectionOverviewBubbleChart;
@@ -54,7 +52,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
     private int pageWidth;
     private final VerticalLayout pieChartFiltersBtnLayout;
     private final int heatmapCellWidth = 30;
-    private final int heatmapHeaderCellWidth= 135;
+    private final int heatmapHeaderCellWidth = 135;
     private final HorizontalLayout topLeftLayout;
     private final HorizontalLayout topRightLayout;
     private final QuantCentralManager Quant_Central_Manager;
@@ -171,7 +169,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         standeredChartHeight = heatmapH;
 
 //        System.out.println("at error "+diseaseGroupsSet.size()+"    "+ Quant_Central_Manager.getDiseaseGroupsArr().length+ );
-        diseaseGroupsHeatmapFilter = new HeatMapFilter(Quant_Central_Manager, heatmapW, diseaseGroupsSet, diseaseGroupsSet, Quant_Central_Manager.getDiseaseGroupsArray(), heatmapCellWidth,heatmapHeaderCellWidth, CSFPR_Handler.getDiseaseFullNameMap());
+        diseaseGroupsHeatmapFilter = new HeatMapFilter(Quant_Central_Manager, heatmapW, diseaseGroupsSet, diseaseGroupsSet, Quant_Central_Manager.getDiseaseGroupsArray(), heatmapCellWidth, heatmapHeaderCellWidth, CSFPR_Handler.getDiseaseFullNameMap());
         diseaseGroupsHeatmapFilter.setHeight(Math.max(heatmapH, 700) + "px");
         diseaseGroupsHeatmapFilter.setSingleSelection(false);
         middleLayout.addComponent(diseaseGroupsHeatmapFilter);
@@ -387,9 +385,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
      */
     @Override
     public void selectionChanged(String type) {
-        if (type.equalsIgnoreCase("Comparison_Selection")) {
-
-            if (Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList().isEmpty()) {
+        if ((type.equalsIgnoreCase("Comparison_Selection")&&Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList().isEmpty())|| type.equalsIgnoreCase("Reset_Disease_Groups_Level")|| type.equalsIgnoreCase("Pie_Chart_Selection")) {
                 selectionOverviewBubbleChart.updateSize(initLayoutWidth, Math.min(heatmapW + 20, standeredChartHeight));
                 btnsLayout.setVisible(true);
                 diseaseCategorySelectLayout.setVisible(true);
@@ -402,13 +398,10 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
 //                resizeLayout(diseaseGroupsListFilter.getDiseaseGroupsSet().size());
 //                UI.getCurrent().setScrollTop(10);
             }
-        } else if (type.equalsIgnoreCase("HeatMap_Update_level")) {
+       else if (type.equalsIgnoreCase("HeatMap_Update_level")) {
             selectAllComparisons();
 
-        } else if (type.equalsIgnoreCase("Reset_Disease_Groups_Level")) {
-//            diseaseGroupsHeatmapFilter
-
-        }
+        } 
     }
 
     /**
@@ -431,7 +424,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
     }
 
     private void resizeLayout(int diseaseGroupsSize) {
-        heatmapW = Math.max((heatmapHeaderCellWidth + 20 + 12 +(heatmapCellWidth * diseaseGroupsSize)), 700);
+        heatmapW = Math.max((heatmapHeaderCellWidth + 20 + 12 + (heatmapCellWidth * diseaseGroupsSize)), 700);
         topLeftLayout.setWidth((heatmapW) + "px");
         topRightLayout.setWidth((pageWidth - heatmapW - 70) + "px");
         initLayoutWidth = (pageWidth - heatmapW - 300);

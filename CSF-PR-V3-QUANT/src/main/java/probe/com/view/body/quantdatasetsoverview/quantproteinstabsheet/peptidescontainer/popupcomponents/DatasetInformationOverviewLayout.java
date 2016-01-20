@@ -5,6 +5,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
+import java.util.Map;
 import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.view.core.InformationField;
 
@@ -13,11 +14,14 @@ import probe.com.view.core.InformationField;
  * @author Yehia Farag
  */
 public class DatasetInformationOverviewLayout extends VerticalLayout {
+    private final Map<String,String> diseaseHashedColorMap;
 
     /**
      * @param width
+     * @param diseaseHashedColorMap
      */
-    public DatasetInformationOverviewLayout(int width) {
+    public DatasetInformationOverviewLayout(int width,Map<String,String> diseaseHashedColorMap) {
+        this.diseaseHashedColorMap=diseaseHashedColorMap;
         this.setWidth(width + "px");
         this.setHeightUndefined();
         this.setSpacing(true);
@@ -31,7 +35,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
     }
 
     private final GridLayout datasetInfoForm;
-    private InformationField pumedId, rawData, analyticalMethod, typeOfStudy, shotgunTargeted, enzyme, sampleType, technology, quantificationBasis, patientsGroup1Number, patientsGroup2Number, patientsGroup1, patientsGroup2, patientssubGroup1, patientsCommGroup1, patientssubGroup2, patientsCommGroup2, identifiedProteinsNumber, quantifiedProteinsNumber, sampleMatching,  analyticalApproach, normalization_strategy;
+    private InformationField diseaseCategory,pumedId, rawData, analyticalMethod, typeOfStudy, shotgunTargeted, enzyme, sampleType, technology, quantificationBasis, patientsGroup1Number, patientsGroup2Number, patientsGroup1, patientsGroup2, patientssubGroup1, patientsCommGroup1, patientssubGroup2, patientsCommGroup2, identifiedProteinsNumber, quantifiedProteinsNumber, sampleMatching,  analyticalApproach, normalization_strategy;
 
     private GridLayout initQuantDatasetInformationLayout(int width) {
 
@@ -109,6 +113,9 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
 
         normalization_strategy = new InformationField("Normalization Strategy");
         datasetInfoFormLayout.addComponent(normalization_strategy, 1, 5);
+        
+        diseaseCategory = new InformationField("disease Category");
+        datasetInfoFormLayout.addComponent(diseaseCategory, 2, 5);
 
         return datasetInfoFormLayout;
     }
@@ -134,8 +141,8 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         quantificationBasis.setValue(dataset.getQuantificationBasis(), null);
         patientsGroup1Number.setValue(dataset.getPatientsGroup1Number(), null);
         patientsGroup2Number.setValue(dataset.getPatientsGroup2Number(), null);
-        patientsGroup1.setValue(dataset.getPatientsGroup1() + "", null);
-        patientsGroup2.setValue(dataset.getPatientsGroup2() + "", null);
+        patientsGroup1.setValue(dataset.getPatientsGroup1().split("\n")[0], null);
+        patientsGroup2.setValue(dataset.getPatientsGroup2().split("\n")[0] + "", null);
 
         patientssubGroup1.setValue(dataset.getPatientsSubGroup1().split("\n")[0], null);
         patientsCommGroup1.setValue(dataset.getPatientsGroup1Comm(), null);
@@ -150,6 +157,9 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
 //        quantBasisComment.setValue(dataset.getQuantBasisComment() + "", null);
         analyticalApproach.setValue(dataset.getAnalyticalApproach() + "", null);
         normalization_strategy.setValue(dataset.getNormalizationStrategy(), null);
+        
+        String diseaseColor = this.diseaseHashedColorMap.get(dataset.getPatientsGroup1().split("\n")[1]);
+        diseaseCategory.setValue("<font color='"+diseaseColor+"' style='font-weight: bold;'>"+dataset.getPatientsGroup1().split("\n")[1]+"</font>", null);
 
         this.datasetInfoForm.setVisible(true);
     }

@@ -508,7 +508,7 @@ public class HeatMapComponent extends VerticalLayout {
     private VerticalLayout initDiseaseGroupLabel(String dName, int itemsNumb, boolean row) {
         VerticalLayout diseaseLabelContainer = new VerticalLayout();
 
-        Label label = new Label("<center><font size='2' color='#ffffff'>" + dName + "</font></center>");
+        Label label = new Label("<center><font  color='#ffffff'>" + dName + "</font></center>");
         label.setContentMode(ContentMode.HTML);
 
         if (row) {
@@ -528,6 +528,7 @@ public class HeatMapComponent extends VerticalLayout {
             diseaseLabelContainer.setHeight("20px");
             diseaseLabelContainer.setStyleName(diseaseStyleMap.get(dName));
         }
+        diseaseLabelContainer.setDescription(dName+" Disease");
 
         return diseaseLabelContainer;
 

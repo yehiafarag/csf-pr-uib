@@ -2202,19 +2202,27 @@ resetlabelbtn p{
 
 }
 .customizedproteinsLayout .redlayout div{
-    background-image:  url(img/redbg.png) !important;
-    background-size:contain;
+    background-image:  url(img/high_up.png) !important;
+    background-color:rgba(255, 255, 255, .0);
+    background-repeat: no-repeat;
+    background-size:13px;
+    background-position: center;
 
 }
 .customizedproteinsLayout .bluelayout div{
-    background-image:  url(img/bluebg.png) !important;
-    background-size:contain;
+    background-image:  url(img/stable_blue.png) !important;
+    background-color:rgba(255, 255, 255, .0);
+    background-repeat: no-repeat;
+    background-size:13px;
+    background-position: center;
 
 }
 .customizedproteinsLayout .greenlayout div{
-    background-image:  url(img/greenbg.png) !important;
-    background-size:contain;
-
+     background-image:  url(img/low_down.png) !important;
+    background-color:rgba(255, 255, 255, .0);
+    background-repeat: no-repeat;
+    background-size:13px;
+    background-position: center;
 }
 
 .usercustdatatitle {

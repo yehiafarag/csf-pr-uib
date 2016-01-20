@@ -59,11 +59,11 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
 
     /**
      *
-     * @param cprot
+     * @param cp
      * @param width
      * @param Quant_Central_Manager
      */
-    public PeptidesComparisonsSequenceLayout(QuantCentralManager Quant_Central_Manager, final DiseaseGroupsComparisonsProteinLayout cprot, int width) {
+    public PeptidesComparisonsSequenceLayout(QuantCentralManager Quant_Central_Manager, final DiseaseGroupsComparisonsProteinLayout cp, int width) {
         this.studiesMap = new LinkedHashMap<String, StudyInfoData>();
         this.setColumns(4);
         this.setRows(3);
@@ -84,7 +84,7 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
         this.addComponent(closeBtn, 2, 0);
         this.setComponentAlignment(closeBtn, Alignment.TOP_RIGHT);
 
-        GridLayout proteinSequenceComparisonsContainer = new GridLayout(2, cprot.getComparison().getDatasetIndexes().length);
+        GridLayout proteinSequenceComparisonsContainer = new GridLayout(2, cp.getComparison().getDatasetIndexes().length);
         this.addComponent(proteinSequenceComparisonsContainer, 1, 1);
         coverageWidth = (width - 100 - 180);
         VerticalLayout bottomSpacer = new VerticalLayout();
@@ -99,7 +99,7 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
         proteinSequenceComparisonsContainer.setSpacing(true);
 
         Map<Integer, Set<QuantPeptide>> dsQuantPepMap = new HashMap<Integer, Set<QuantPeptide>>();
-        for (QuantPeptide quantPep : cprot.getQuantPeptidesList()) {
+        for (QuantPeptide quantPep : cp.getQuantPeptidesList()) {
             if (!dsQuantPepMap.containsKey(quantPep.getDsKey())) {
                 Set<QuantPeptide> subList = new HashSet<QuantPeptide>();
                 dsQuantPepMap.put(quantPep.getDsKey(), subList);
@@ -109,13 +109,13 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
             dsQuantPepMap.put(quantPep.getDsKey(), subList);
         }
 
-        int count = 0;
+        int numb = 0;
 
         int panelWidth = Page.getCurrent().getBrowserWindowWidth() - width - 100;
-        String groupCompTitle = cprot.getComparison().getComparisonHeader();
-        String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0] + " ( " + groupCompTitle.split(" / ")[1].split("\n")[1] + " )";
+        String groupCompTitle = cp.getComparison().getComparisonHeader();
+        String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0] ;//+ " ( " + groupCompTitle.split(" / ")[1].split("\n")[1] + " )";
 
-        final StudyInformationPopupComponent studyInformationPopupPanel = new StudyInformationPopupComponent(panelWidth, cprot.getProtName(), cprot.getUrl(), updatedHeader);
+        final StudyInformationPopupComponent studyInformationPopupPanel = new StudyInformationPopupComponent(panelWidth, cp.getProtName(), cp.getUrl(), updatedHeader);
         studyInformationPopupPanel.setVisible(false);
 
         LayoutEvents.LayoutClickListener studyListener = new LayoutEvents.LayoutClickListener() {
@@ -131,11 +131,11 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
                 studyInformationPopupPanel.updateContent(dsToStudyLayoutMap.get(dsId));
             }
         };
-        TreeSet<QuantProtein> orderSet = new TreeSet<QuantProtein>(cprot.getDsQuantProteinsMap().values());
+        TreeSet<QuantProtein> orderSet = new TreeSet<QuantProtein>(cp.getDsQuantProteinsMap().values());
         for (QuantProtein quantProtein : orderSet) {
             StudyInfoData exportData = new StudyInfoData();
             exportData.setCoverageWidth(coverageWidth);
-            Label studyTitle = new Label();//"Study " + (count + 1));
+            Label studyTitle = new Label();//"Study " + (numb + 1));
             studyTitle.setStyleName("peptideslayoutlabel");
             studyTitle.setHeightUndefined();
             studyTitle.setWidth("200px");
@@ -154,14 +154,14 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
                 exportData.setTrend(1);
                 iconTitle.setStyleName("uparricon");
             }
-            iconTitle.setDescription(cprot.getProteinAccssionNumber() + " : #Patients (" + (quantProtein.getPatientsGroupIINumber() + quantProtein.getPatientsGroupINumber()) + ")  " + quantProtein.getStringFCValue() + " " + quantProtein.getStringPValue() + "");
+            iconTitle.setDescription(cp.getProteinAccssionNumber() + " : #Patients (" + (quantProtein.getPatientsGroupIINumber() + quantProtein.getPatientsGroupINumber()) + ")  " + quantProtein.getStringFCValue() + " " + quantProtein.getStringPValue() + "");
 
             VerticalLayout labelContainer = new VerticalLayout();
             labelContainer.addComponent(studyTitle);
 
             labelContainer.addComponent(iconTitle);
 
-            proteinSequenceComparisonsContainer.addComponent(labelContainer, 0, count);
+            proteinSequenceComparisonsContainer.addComponent(labelContainer, 0, numb);
             proteinSequenceComparisonsContainer.setComponentAlignment(labelContainer, Alignment.TOP_CENTER);
 
             Map<Integer, ComparisonDetailsBean> patientGroupsNumToDsIdMap = new HashMap<Integer, ComparisonDetailsBean>();
@@ -171,15 +171,15 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
 
             ds = Quant_Central_Manager.getFullQuantDatasetMap().get(quantProtein.getDsKey());
 
-            StudyPopupLayout study = new StudyPopupLayout(panelWidth, quantProtein, ds, cprot.getProteinAccssionNumber(), cprot.getUrl(), cprot.getProtName());
+            StudyPopupLayout study = new StudyPopupLayout(panelWidth, quantProtein, ds, cp.getProteinAccssionNumber(), cp.getUrl(), cp.getProtName(),Quant_Central_Manager.getDiseaseHashedColorMap());
             Set<QuantDatasetObject> qdsSet = new HashSet<QuantDatasetObject>();
             qdsSet.add(ds);
-            study.setInformationData(qdsSet, cprot);
+            study.setInformationData(qdsSet, cp);
             dsToStudyLayoutMap.put(ds.getDsKey(), study);
 
             labelContainer.addLayoutClickListener(studyListener);
             labelContainer.setData(ds.getDsKey());
-            studyTitle.setValue("[" + (count + 1) + ")] " + ds.getAuthor());
+            studyTitle.setValue("[" + (numb + 1) + ")] " + ds.getAuthor());
             exportData.setTitle(ds.getAuthor());
 
             if (dsQuantPepMap.get(quantProtein.getDsKey()) == null) {
@@ -191,26 +191,27 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
                 labelValueContainer.addLayoutClickListener(studyListener);
                 labelValueContainer.setData(ds.getDsKey());
 
-                proteinSequenceComparisonsContainer.addComponent(labelValueContainer, 1, count);
+                proteinSequenceComparisonsContainer.addComponent(labelValueContainer, 1, numb);
                 proteinSequenceComparisonsContainer.setComponentAlignment(labelValueContainer, Alignment.TOP_CENTER);
-                count++;
-                studiesMap.put((count + 1) + ds.getAuthor(), exportData);
+                numb++;
+                studiesMap.put((numb + 1) + ds.getAuthor(), exportData);
                 continue;
             }
 
-            String key = "_-_" + quantProtein.getDsKey() + "_-_" + cprot.getProteinAccssionNumber() + "_-_";
-            PeptidesInformationOverviewLayout peptideInfoLayout = new PeptidesInformationOverviewLayout(cprot.getSequence(), dsQuantPepMap.get(quantProtein.getDsKey()), coverageWidth, true, studyListener, ds.getDsKey());
+            String key = "_-_" + quantProtein.getDsKey() + "_-_" + cp.getProteinAccssionNumber() + "_-_";
+            PeptidesInformationOverviewLayout peptideInfoLayout = new PeptidesInformationOverviewLayout(cp.getSequence(), dsQuantPepMap.get(quantProtein.getDsKey()), coverageWidth, true, studyListener, ds.getDsKey());
             exportData.setPeptidesInfoList(peptideInfoLayout.getStackedPeptides());
             exportData.setLevelsNumber(peptideInfoLayout.getLevel());
             hasPTM = peptideInfoLayout.isHasPTM();
             peptidesInfoLayoutDSIndexMap.put(key, peptideInfoLayout);
-            proteinSequenceComparisonsContainer.addComponent(peptideInfoLayout, 1, count);
-            count++;
-            studiesMap.put((count + 1) + ds.getAuthor(), exportData);
+            proteinSequenceComparisonsContainer.addComponent(peptideInfoLayout, 1, numb);
+            numb++;
+            studiesMap.put((numb + 1) + ds.getAuthor(), exportData);
 
         }
+        String rgbColor = Quant_Central_Manager.getDiseaseHashedColor(groupCompTitle.split(" / ")[1].split("\n")[1]);
+        comparisonTitle.setValue("<font color='"+rgbColor+"' style='font-weight: bold;'>"+updatedHeader + " (#Studies " + numb + "/" + cp.getComparison().getDatasetIndexes().length + ")</font>");
 
-        comparisonTitle.setValue(updatedHeader + " (#Studies " + count + "/" + cprot.getComparison().getDatasetIndexes().length + ")");
     }
 
     /**

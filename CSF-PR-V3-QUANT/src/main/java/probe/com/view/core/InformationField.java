@@ -31,6 +31,9 @@ public class InformationField extends VerticalLayout {
 
         valueLabel.setStyleName("valuelabel");
         valueLabel.setTargetName("_blank");
+        valueLabel.setCaptionAsHtml(true);
+     
+        
 
 //        valueLabel.setContentMode(ContentMode.HTML);
         this.addComponent(valueLabel);
@@ -77,8 +80,10 @@ public class InformationField extends VerticalLayout {
                 return;
 
             }
-
-            if (stringValue.toCharArray().length > 25) {
+            if (stringValue.contains("</font>")) {
+                 valueLabel.setCaption(stringValue);
+            }
+            else if (stringValue.toCharArray().length > 25) {
                 valueLabel.setCaption("<textarea rows='3'  readonly>" + stringValue + "</textarea>");
                 valueLabel.setCaptionAsHtml(true);
 //            this.setHeight("100px");

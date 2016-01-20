@@ -74,7 +74,7 @@ public class StudiesInformationPopupBtn extends Button implements Button.ClickLi
             for (QuantDiseaseGroupsComparison comp : compSet) {
                 selectedDsNumber += comp.getDatasetIndexes().length;
                 for (int dsId : comp.getDatasetIndexes()) {
-                    DatasetInformationOverviewLayout datasetInfoLayout = new DatasetInformationOverviewLayout((Page.getCurrent().getBrowserWindowWidth() * 90 / 100));
+                    DatasetInformationOverviewLayout datasetInfoLayout = new DatasetInformationOverviewLayout((Page.getCurrent().getBrowserWindowWidth() * 90 / 100),Quant_Central_Manager.getDiseaseHashedColorMap());
                     datasetInfoLayout.updateDatasetForm(Quant_Central_Manager.getFullQuantDatasetMap().get(dsId));
                     datasetInfoLayout.setWidth("100%");
                     datasetInfoLayoutDSIndexMap.put(dsId, datasetInfoLayout);
@@ -87,7 +87,7 @@ public class StudiesInformationPopupBtn extends Button implements Button.ClickLi
             selectedDsNumber = Quant_Central_Manager.getFilteredDatasetsList().size();
             Map<Integer, QuantDatasetObject> fullDsMap = Quant_Central_Manager.getFilteredDatasetsList();
             for (QuantDatasetObject quantDs : fullDsMap.values()) {
-                DatasetInformationOverviewLayout datasetInfoLayout = new DatasetInformationOverviewLayout((Page.getCurrent().getBrowserWindowWidth() * 90 / 100));
+                DatasetInformationOverviewLayout datasetInfoLayout = new DatasetInformationOverviewLayout((Page.getCurrent().getBrowserWindowWidth() * 90 / 100),Quant_Central_Manager.getDiseaseHashedColorMap());
                 datasetInfoLayout.updateDatasetForm(quantDs);
                 datasetInfoLayout.setWidth("100%");
                 datasetInfoLayoutDSIndexMap.put(quantDs.getDsKey(), datasetInfoLayout);
@@ -129,7 +129,7 @@ public class StudiesInformationPopupBtn extends Button implements Button.ClickLi
 
                     selectedDsNumber += comp.getDatasetIndexes().length;
                     for (int dsId : comp.getDatasetIndexes()) {
-                        DatasetInformationOverviewLayout datasetInfoLayout = new DatasetInformationOverviewLayout((Page.getCurrent().getBrowserWindowWidth() * 90 / 100));
+                        DatasetInformationOverviewLayout datasetInfoLayout = new DatasetInformationOverviewLayout((Page.getCurrent().getBrowserWindowWidth() * 90 / 100),Quant_Central_Manager.getDiseaseHashedColorMap());
                         datasetInfoLayout.updateDatasetForm(Quant_Central_Manager.getFullQuantDatasetMap().get(dsId));
                         datasetInfoLayout.setWidth("100%");
                         datasetInfoLayoutDSIndexMap.put(dsId, datasetInfoLayout);
@@ -142,7 +142,7 @@ public class StudiesInformationPopupBtn extends Button implements Button.ClickLi
                 selectedDsNumber = Quant_Central_Manager.getFilteredDatasetsList().size();
                 Map<Integer, QuantDatasetObject> fullDsMap = Quant_Central_Manager.getFilteredDatasetsList();
                 for (QuantDatasetObject quantDs : fullDsMap.values()) {
-                    DatasetInformationOverviewLayout datasetInfoLayout = new DatasetInformationOverviewLayout((Page.getCurrent().getBrowserWindowWidth() * 90 / 100));
+                    DatasetInformationOverviewLayout datasetInfoLayout = new DatasetInformationOverviewLayout((Page.getCurrent().getBrowserWindowWidth() * 90 / 100),Quant_Central_Manager.getDiseaseHashedColorMap());
                     datasetInfoLayout.updateDatasetForm(quantDs);
                     datasetInfoLayout.setWidth("100%");
                     datasetInfoLayoutDSIndexMap.put(quantDs.getDsKey(), datasetInfoLayout);

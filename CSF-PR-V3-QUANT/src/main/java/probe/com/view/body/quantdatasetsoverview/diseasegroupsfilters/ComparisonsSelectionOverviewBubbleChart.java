@@ -95,7 +95,8 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
     private boolean isNewImge = true;
     private byte imageData[];
     private final String[] tooltipLabels = new String[]{"( Low <img src='VAADIN/themes/dario-theme/img/greendot.png' alt='Low'>" + " )", "( Low <img src='VAADIN/themes/dario-theme/img/lgreendot.png' alt='Low'>" + " )", "( Stable <img src='VAADIN/themes/dario-theme/img/bluedot.png' alt='Stable'>" + " )", " ( High <img src='VAADIN/themes/dario-theme/img/lreddot.png' alt='High'>" + " )", " ( High <img src='VAADIN/themes/dario-theme/img/reddot.png' alt='High'>" + " )"};
-private final Map<String, Color> diseaseColorMap = new HashMap<String, Color>();
+    private final Map<String, Color> diseaseColorMap = new HashMap<String, Color>();
+
     public void updateSize(int updatedWidth, int height) {
         width = updatedWidth;
         this.setWidth(updatedWidth + "px");
@@ -119,12 +120,14 @@ private final Map<String, Color> diseaseColorMap = new HashMap<String, Color>();
 
     public ComparisonsSelectionOverviewBubbleChart(final QuantCentralManager Quant_Central_Manager, final CSFPRHandler handler, int chartWidth, int chartHeight, Set<QuantDiseaseGroupsComparison> selectedComparisonList, List<QuantProtein> searchQuantificationProtList) {
         this.searchQuantificationProtList = searchQuantificationProtList;
-        diseaseColorMap.put("Multiple Sclerosis",new Color(75, 120, 101));
-        diseaseColorMap.put("Alzheimer's",new Color(128, 145, 96));
-        diseaseColorMap.put("Parkinson's",new Color(116, 113, 110));
-        diseaseColorMap.put("Amyotrophic Lateral Sclerosis",new Color(125, 7, 37));
-        
-        
+        Map<String, String> diseaseHashedColorMap = Quant_Central_Manager.getDiseaseHashedColorMap();
+        for (String str : diseaseHashedColorMap.keySet()) {
+            diseaseColorMap.put(str, Color.decode(diseaseHashedColorMap.get(str)));
+        }
+//        diseaseColorMap.put("Alzheimer's", new Color(128, 145, 96));
+//        diseaseColorMap.put("Parkinson's", new Color(116, 113, 110));
+//        diseaseColorMap.put("Amyotrophic Lateral Sclerosis", new Color(125, 7, 37));
+
         this.width = chartWidth;
         this.height = chartHeight;
         this.handler = handler;
@@ -368,7 +371,7 @@ private final Map<String, Color> diseaseColorMap = new HashMap<String, Color>();
         }
 
         final Color[] labelsColor = new Color[]{new Color(80, 183, 71), Color.LIGHT_GRAY, new Color(1, 141, 244), Color.LIGHT_GRAY, new Color(204, 0, 0)};
-        Font font = new Font("Verdana", Font.PLAIN, 14);
+        Font font = new Font("Verdana", Font.BOLD, 13);
         SymbolAxis yAxis = new SymbolAxis(null, new String[]{"Low", " ", "Stable", " ", "High"}) {
             int x = 0;
 
@@ -387,10 +390,10 @@ private final Map<String, Color> diseaseColorMap = new HashMap<String, Color>();
         String[] xAxisLabels = new String[selectedComparisonList.size()];
         int x = 0;
         int maxLength = -1;
-          //init labels color
-        
-          final Color[] diseaseGroupslabelsColor = new Color[selectedComparisonList.size()];
-        
+        //init labels color
+
+        final Color[] diseaseGroupslabelsColor = new Color[selectedComparisonList.size()];
+
         for (QuantDiseaseGroupsComparison comp : selectedComparisonList) {
             String header = comp.getComparisonHeader();
             String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + "";
@@ -399,36 +402,25 @@ private final Map<String, Color> diseaseColorMap = new HashMap<String, Color>();
             if (xAxisLabels[x].length() > maxLength) {
                 maxLength = xAxisLabels[x].length();
             }
-            diseaseGroupslabelsColor[x]= diseaseColorMap.get(header.split(" / ")[0].split("\n")[1]);
+            diseaseGroupslabelsColor[x] = diseaseColorMap.get(header.split(" / ")[0].split("\n")[1]);
             x++;
 
         }
         SymbolAxis xAxis;
         final boolean finalNum;
         finalNum = maxLength > 30 && selectedComparisonList.size() > 4;
-        
-      
-        
-        xAxis = new SymbolAxis(null, xAxisLabels) {
-            
-            
-            
-            
-            
-              int x = 0;
 
-              @Override
+        xAxis = new SymbolAxis(null, xAxisLabels) {
+
+            int x = 0;
+
+            @Override
             public Paint getTickLabelPaint() {
                 if (x >= diseaseGroupslabelsColor.length) {
                     x = 0;
                 }
                 return diseaseGroupslabelsColor[x++];
             }
-            
-            
-            
-            
-            
 
             private final boolean localfinal = finalNum;
 
@@ -662,8 +654,17 @@ private final Map<String, Color> diseaseColorMap = new HashMap<String, Color>();
                     int itemNumber = (int) ((XYItemEntity) entity).getDataset().getYValue(((XYItemEntity) entity).getSeriesIndex(), ((XYItemEntity) entity).getItem());
 
                     square.setDescription(updatedHeader + "    <br/>#Proteins " + (int) tooltipsProtNumberMap.get(header)[itemNumber] + tooltipLabels[itemNumber]);
-                    square.setParam("seriesIndex", ((XYItemEntity) entity).getSeriesIndex());
-                    square.setParam("categIndex", (double) itemNumber);
+                    double categIndex = (double) itemNumber;
+                    int seriesIndex = ((XYItemEntity) entity).getSeriesIndex();
+                    square.setParam("seriesIndex", seriesIndex);
+                    square.setParam("categIndex", categIndex);
+
+                    if (lastselectedComponent != null && categIndex == (Double) lastselectedComponent.getParam("categIndex") && seriesIndex == (Integer) lastselectedComponent.getParam("seriesIndex")) {
+                        square.select();
+                        lastselectedComponent = square;
+
+                    }
+
 //                    System.out.println("at top is "+smallY+"   ");
 //                    if (smallY < 0) {
 ////                       square.setHeight((finalHeight-smallY) + "px");
@@ -721,7 +722,6 @@ private final Map<String, Color> diseaseColorMap = new HashMap<String, Color>();
     public void selectionChanged(String type) {
         if (type.equalsIgnoreCase("Comparison_Selection")) {
             selectedComparisonList = this.Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList();
-            
 
             Iterator<QuantDiseaseGroupsComparison> itr = selectedComparisonList.iterator();
             while (itr.hasNext()) {
@@ -815,6 +815,7 @@ private final Map<String, Color> diseaseColorMap = new HashMap<String, Color>();
                 SquaredDot tsquare = (SquaredDot) itr.next();
                 tsquare.unselect();
             }
+
             square.select();
             lastselectedComponent = square;
 

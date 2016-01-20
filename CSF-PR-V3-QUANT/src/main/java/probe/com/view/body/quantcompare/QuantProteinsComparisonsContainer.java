@@ -706,7 +706,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
             index++;
         }
         String header = userCustomizedComparison.getComparisonHeader();
-        String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + " ( " + header.split(" / ")[1].split("\n")[1] + " )";
+        String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0];// + " ( " + header.split(" / ")[1].split("\n")[1] + " )";
 
         userCustColumnTitleLayout.setDescription("<h3>" + updatedHeader + "</h3><center><h4>(" + groupsComparisonProteinsTable.size() + ((groupsComparisonProteinsTable.size() == 1) ? " Protein / " : " Proteins / ") + userCustomizedComparison.getDatasetIndexes().length + ((userCustomizedComparison.getDatasetIndexes().length == 1) ? " Study)" : " Studies)</h4></center>"));
 
@@ -939,9 +939,9 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
         titleLayout.setWidth(width + "px");
         titleLayout.setHeight("20px");
         String header = comparison.getComparisonHeader();
-        String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + " ( " + header.split(" / ")[1].split("\n")[1] + " )";
+        String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] ;// " ( " + header.split(" / ")[1].split("\n")[1] + " )";
 
-        Label label = new Label(updatedHeader);
+       Label label = new Label();
         label.setStyleName("comparisonHeaders");
         label.setContentMode(ContentMode.HTML);
         label.setWidth("90%");
@@ -953,6 +953,11 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
         if (comparison.getDatasetIndexes()[0] == -1) {
             closeCompariosonBtn.setEnabled(false);
             titleLayout.setStyleName("usercustdatatitle");
+            label.setValue(updatedHeader);
+        }else{   
+            String diseaseColor = this.Quant_Central_Manager.getDiseaseHashedColor(header.split(" / ")[1].split("\n")[1]);
+       
+            label.setValue("<font color='"+diseaseColor+"' style='font-weight: bold;'>"+updatedHeader+"</font>");
         }
 
         closeCompariosonBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {

@@ -5,8 +5,10 @@
  */
 package probe.com.selectionmanager;
 
+import java.awt.Color;
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -30,14 +32,29 @@ public class QuantCentralManager implements Serializable {
 
     private final StudiesFilterManager Studies_Filter_Manager;
     private final StudiesSelectionManager Studies_Selection_Manager;
+    
+     private final Map<String, String> diseaseHashedColorMap = new HashMap<String, String>();
+    
+    
+      public String getDiseaseHashedColor(String diseaseName){
+          return diseaseHashedColorMap.get(diseaseName);
+    }
 
     public QuantCentralManager(CSFPRHandler CSFPR_Handler) {
+        diseaseHashedColorMap.put("Multiple Sclerosis","#4b7865");
+        diseaseHashedColorMap.put("Alzheimer's","#809160");
+        diseaseHashedColorMap.put("Parkinson's","#74716E");
+        diseaseHashedColorMap.put("Amyotrophic Lateral Sclerosis","#7D0725");
         Studies_Filter_Manager = new StudiesFilterManager(CSFPR_Handler.getQuantDatasetInitialInformationObject(), CSFPR_Handler.getActivePieChartQuantFilters());//,filterUtility.getFullFilterList()
         Studies_Selection_Manager = new StudiesSelectionManager();
 
     }
 
     public QuantCentralManager(CSFPRHandler CSFPR_Handler, List<QuantProtein> searchQuantificationProtList) {
+       diseaseHashedColorMap.put("Multiple Sclerosis","#4b7865");
+        diseaseHashedColorMap.put("Alzheimer's","#809160");
+        diseaseHashedColorMap.put("Parkinson's","#74716E");
+        diseaseHashedColorMap.put("Amyotrophic Lateral Sclerosis","#7D0725");
         Studies_Filter_Manager = new StudiesFilterManager(CSFPR_Handler.getQuantDatasetInitialInformationObject(searchQuantificationProtList), CSFPR_Handler.getActivePieChartQuantFilters(searchQuantificationProtList));//,filterUtility.getFullFilterList()
         Studies_Selection_Manager = new StudiesSelectionManager();
     }
@@ -198,6 +215,11 @@ public class QuantCentralManager implements Serializable {
     public Set<QuantDiseaseGroupsComparison> getSelectedDiseaseGroupsComparisonList() {
         return Studies_Selection_Manager.getSelectedDiseaseGroupsComparisonList();
     }
+
+    public Map<String, String> getDiseaseHashedColorMap() {
+        return diseaseHashedColorMap;
+    }
+    
 
     /**
      * get Selected proteinKey

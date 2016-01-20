@@ -218,10 +218,9 @@ public class StudiesFilterManager implements Serializable {
         }
 
         Arrays.sort(newArr);
-    
 
         Map<String, ArrayList<String>> sortOnGroupMap = new LinkedHashMap<String, ArrayList<String>>();
-        for (int x=newArr.length-1;x>=0;x--) {
+        for (int x = newArr.length - 1; x >= 0; x--) {
             String s = newArr[x];
             String diseaseCat = s.split("\n")[1];
             if (!sortOnGroupMap.containsKey(diseaseCat)) {
@@ -235,7 +234,7 @@ public class StudiesFilterManager implements Serializable {
         String[] sortedArr = new String[newArr.length];
         int index = 0;
         for (String diseaseCat : sortOnGroupMap.keySet()) {
-             ArrayList<String> set = sortOnGroupMap.get(diseaseCat);
+            ArrayList<String> set = sortOnGroupMap.get(diseaseCat);
             Collections.sort(set);
             for (String fullName : set) {
                 sortedArr[index] = fullName;
@@ -262,7 +261,8 @@ public class StudiesFilterManager implements Serializable {
         if (datasetIndexes.length == 0) {
             filteredQuantDatasetArr = inUsefullQuantDatasetMap;
             return;
-        }
+        } 
+        resetHeatmapRowsAndColumn();
         filteredQuantDatasetArr.clear();
         Set<String> tColLab = new HashSet<String>();
         Set<String> tRowLab = new HashSet<String>();
@@ -283,11 +283,13 @@ public class StudiesFilterManager implements Serializable {
             }
 
         }
+       
         LinkedHashSet<String> tSelectedColLab = new LinkedHashSet<String>();
         LinkedHashSet<String> tSelectedRowLab = new LinkedHashSet<String>();
         for (String str : selectedHeatMapRows) {
             if (tRowLab.contains(str)) {
                 tSelectedRowLab.add(str);
+               
             }
 
         }
@@ -322,9 +324,7 @@ public class StudiesFilterManager implements Serializable {
      * @param selection
      */
     public void applyFilters(CSFFilterSelection selection) {
-
-        filterSelection = selection;
-//        if (selection.getType().equalsIgnoreCase("HeatMap_Update_level")) {
+        filterSelection = selection; 
         updateFilteredDatasetList(selection.getDatasetIndexes());
         this.SelectionChanged(selection.getType());
 //        }
@@ -345,6 +345,13 @@ public class StudiesFilterManager implements Serializable {
     public void resetFilters() {
         filteredQuantDatasetArr.clear();
         this.updateDiseaseGroups(getFullQuantDatasetMap());
+        resetHeatmapRowsAndColumn();
+        this.SelectionChanged("Reset_Disease_Groups_Level");
+
+    }
+
+    private void resetHeatmapRowsAndColumn() {
+       
         String[] pgArr = merge(diseaseGroupsI, diseaseGroupsII);
         selectedHeatMapRows.clear();
         for (String str : pgArr) {
@@ -354,9 +361,6 @@ public class StudiesFilterManager implements Serializable {
         }
         selectedHeatMapColumns.clear();
         selectedHeatMapColumns.addAll(selectedHeatMapRows);
-
-        this.SelectionChanged("Reset_Disease_Groups_Level");
-
     }
 
     /**

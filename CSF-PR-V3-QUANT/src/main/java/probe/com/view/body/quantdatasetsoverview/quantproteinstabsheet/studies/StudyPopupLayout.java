@@ -37,9 +37,10 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
     private final Map<String, QuantProtein> datasetQuantProteinsMap;
     private final Map<String, QuantDatasetObject> datasetIdDsObjectProteinsMap;
     private final String accession, url, name;
+     private final Map<String,String> diseaseHashedColorMap;
 
-    public StudyPopupLayout(int width, Map<String, QuantProtein> datasetQuantProteinsMap, Map<String, QuantDatasetObject> datasetIdDsObjectProteinsMap, String accession, String url, String name) {
-
+    public StudyPopupLayout(int width, Map<String, QuantProtein> datasetQuantProteinsMap, Map<String, QuantDatasetObject> datasetIdDsObjectProteinsMap, String accession, String url, String name,Map<String,String> diseaseHashedColorMap) {
+        this.diseaseHashedColorMap=diseaseHashedColorMap;
         this.accession = accession;
         this.url = url;
         this.name = name;
@@ -90,8 +91,9 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
 
     }
 
-    public StudyPopupLayout(int width, QuantProtein datasetQuantProtein, QuantDatasetObject qds, String accession, String url, String name) {
+    public StudyPopupLayout(int width, QuantProtein datasetQuantProtein, QuantDatasetObject qds, String accession, String url, String name, Map<String,String> diseaseHashedColorMap) {
 
+        this.diseaseHashedColorMap=diseaseHashedColorMap;
         this.accession = accession;
         this.url = url;
         this.name = name;
@@ -238,7 +240,7 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
         }
         for (String key : cp.getDsQuantProteinsMap().keySet()) {
             ProteinsInformationOverviewLayout proteinInfoLayout = new ProteinsInformationOverviewLayout(subWidth);
-            DatasetInformationOverviewLayout datasetInfoLayout = new DatasetInformationOverviewLayout(subWidth);
+            DatasetInformationOverviewLayout datasetInfoLayout = new DatasetInformationOverviewLayout(subWidth,diseaseHashedColorMap);
             proteinInfoLayoutDSIndexMap.put(key, proteinInfoLayout);
             datasetInfoLayoutDSIndexMap.put(key, datasetInfoLayout);
         }

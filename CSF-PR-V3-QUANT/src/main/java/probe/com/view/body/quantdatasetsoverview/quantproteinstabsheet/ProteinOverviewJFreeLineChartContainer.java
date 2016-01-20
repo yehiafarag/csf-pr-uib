@@ -28,6 +28,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.NumberFormat;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -95,6 +96,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
     private final Shape emptyRShape = ShapeUtilities.createDiamond(6f);
     private final Shape downArr = ShapeUtilities.createDownTriangle(6f);
     private final Shape upArr = ShapeUtilities.createUpTriangle(6f);
+    private final Map<String, Color> diseaseColorMap = new HashMap<String, Color>();
 
     /**
      *
@@ -132,6 +134,10 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
      * @param proteinKey
      */
     public ProteinOverviewJFreeLineChartContainer(QuantCentralManager Quant_Central_Manager, CSFPRHandler CSFPR_Handler, final DiseaseGroupsComparisonsProteinLayout[] orgComparisonProteins, final Set<QuantDiseaseGroupsComparison> selectedComparisonList, int widthValue, final String proteinName, final String proteinAccession, boolean searchingMode, final String proteinKey) {
+        Map<String, String> diseaseHashedColorMap = Quant_Central_Manager.getDiseaseHashedColorMap();
+        for (String str : diseaseHashedColorMap.keySet()) {
+            diseaseColorMap.put(str, Color.decode(diseaseHashedColorMap.get(str)));
+        }
 
         this.proteinName = proteinName;
         this.setStyleName(Reindeer.LAYOUT_WHITE);
@@ -595,7 +601,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         dataset.addSeries("empty", emptyValues);
 
         String[] xAxisLabels = new String[selectedComparisonList.size()];
-
+        final Color[] diseaseGroupslabelsColor = new Color[selectedComparisonList.size()];
         int maxLength = -1;
 
         final boolean finalNum;
@@ -603,19 +609,31 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         int x = 0;
         for (QuantDiseaseGroupsComparison comp : selectedComparisonList) {
             String groupCompTitle = comp.getComparisonHeader();
-            String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0] + " ( " + groupCompTitle.split(" / ")[1].split("\n")[1] + " )";
+            String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0];//+ " ( " + groupCompTitle.split(" / ")[1].split("\n")[1] + " )";
 
             xAxisLabels[x] = updatedHeader;
             if (xAxisLabels[x].length() > maxLength) {
                 maxLength = xAxisLabels[x].length();
             }
+            diseaseGroupslabelsColor[x] = diseaseColorMap.get(groupCompTitle.split(" / ")[0].split("\n")[1]);
             x++;
 
         }
         finalNum = maxLength > 30 && selectedComparisonList.size() > 4;
-        Font font = new Font("Verdana", Font.PLAIN, 14);
+        Font font = new Font("Verdana", Font.BOLD, 13);
 
         SymbolAxis xAxis = new SymbolAxis(null, xAxisLabels) {
+            int x = 0;
+
+            @Override
+            public Paint getTickLabelPaint() {
+                if (x >= diseaseGroupslabelsColor.length) {
+                    x = 0;
+                }
+                return diseaseGroupslabelsColor[x++];
+            }
+//            
+
             private final boolean localfinal = finalNum;
 
             @Override
@@ -850,14 +868,12 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                     paramName = "Empty value";
                     trend = 2;
                     String groupCompTitle = gc.getComparisonHeader();
-                    String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0] + " ( " + groupCompTitle.split(" / ")[1].split("\n")[1] + " )";
-
-                    square.setDescription(updatedHeader);
+                    square.setDescription(groupCompTitle);
                 } else {
                     gc = inUseComparisonProteins[((XYItemEntity) entity).getItem()].getComparison();
                     DiseaseGroupsComparisonsProteinLayout protLayout = inUseComparisonProteins[((XYItemEntity) entity).getItem()];
                     trend = protLayout.getSignificantTrindCategory();
-                     String groupCompTitle = gc.getComparisonHeader();
+                    String groupCompTitle = gc.getComparisonHeader();
                     String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0] + " ( " + groupCompTitle.split(" / ")[1].split("\n")[1] + " )";
 
                     square.setDescription("<h2>" + updatedHeader + "" + tooltipLabels[trend] + "" + "</h2>" + "<h3>" + protLayout.toString() + "</h3>");

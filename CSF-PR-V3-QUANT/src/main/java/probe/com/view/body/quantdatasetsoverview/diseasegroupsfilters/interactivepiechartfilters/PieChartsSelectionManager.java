@@ -55,7 +55,6 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
             unselectAll();
 
         }
-        
 
     }
     private boolean selfselection;
@@ -74,11 +73,18 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
             return;
 
         }
-        int[] dsIds = new int[selectedDsIds.size()];
-        for (int i = 0; i < selectedDsIds.size(); i++) {
-            dsIds[i] = (Integer) selectedDsIds.toArray()[i];
+        Set<Integer>finalFilterValue = new LinkedHashSet<Integer>();
+         for (JfreeDivaPieChartFilter ifilter : registeredFilters) {
+            finalFilterValue.addAll(ifilter.getFinalFilterValue());
+            break;
+            
         }
-        System.out.println("at Filter_ID "+ selectedDsIds);
+
+        int[] dsIds = new int[finalFilterValue.size()];
+        for (int i = 0; i < finalFilterValue.size(); i++) {
+            dsIds[i] = (Integer) finalFilterValue.toArray()[i];
+        }
+       
         Quant_Central_Manager.applyFilters(new CSFFilterSelection("Pie_Chart_Selection", dsIds, Filter_ID, null));
 
     }
@@ -149,6 +155,7 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
     }
 
     private final Set<Integer> selectedDsIds = new LinkedHashSet<Integer>();
+    private final Set<Integer> unselectedDsIds = new LinkedHashSet<Integer>();
 
     /**
      *
@@ -185,7 +192,7 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
 //            System.out.println("at externalSelectionChanged "+externalSelectionChanged);
 
         if (externalSelectionChanged) {
-             
+
             externalSelectionChanged = false;
             for (JfreeDivaPieChartFilter ifilter : registeredFilters) {
                 ifilter.resetFilterWithUpdatedFilters(selectedDsIds, true);
@@ -221,6 +228,7 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
             tempSelectedDsIds.add(qDs.getDsKey());
         }
         tempSelectedDsIds.removeAll(selectedDsIds);
+        unselectedDsIds.addAll(selectedDsIds);
         if (tempSelectedDsIds.isEmpty()) {
             selectedDsIds.clear();
         } else {
@@ -234,7 +242,9 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
      *
      */
     public void updateDsIndexSelection() {
+        unselectedDsIds.addAll(selectedDsIds);
         selectedDsIds.clear();
+
         Set<JfreeDivaPieChartFilter> activeFilterSet = new HashSet<JfreeDivaPieChartFilter>();
         Set<Integer> activeSelectedDsIds = new LinkedHashSet<Integer>();
         for (JfreeDivaPieChartFilter ifilter : registeredFilters) {
@@ -244,12 +254,14 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
             }
         }
         selectedDsIds.addAll(activeSelectedDsIds);
+        unselectedDsIds.removeAll(activeSelectedDsIds);
         for (int dsId : activeSelectedDsIds) {
             boolean check;
             for (JfreeDivaPieChartFilter iFilter : activeFilterSet) {
                 check = iFilter.getSelectedDsIds().contains(dsId);
                 if (!check) {
                     selectedDsIds.remove(dsId);
+                    unselectedDsIds.add(dsId);
                     break;
                 }
             }

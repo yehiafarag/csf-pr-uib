@@ -36,7 +36,7 @@ public class PeptidesStackedBarChartsControler {
      * @param datasetQuantProteinsMap
      * @param datasetIdDsObjectProteinsMap
      */
-    public PeptidesStackedBarChartsControler(int width, Map<Integer, ComparisonDetailsBean> patientGroupsNumToDsIdMap, String protAccsession, String protName, String url, String comparisonHeader, Map<String, QuantProtein> datasetQuantProteinsMap, Map<String, QuantDatasetObject> datasetIdDsObjectProteinsMap) {
+    public PeptidesStackedBarChartsControler(int width, Map<Integer, ComparisonDetailsBean> patientGroupsNumToDsIdMap, String protAccsession, String protName, String url, String comparisonHeader, Map<String, QuantProtein> datasetQuantProteinsMap, Map<String, QuantDatasetObject> datasetIdDsObjectProteinsMap,Map<String,String> diseaseHashedColorMap) {
 
         int panelWidth = Page.getCurrent().getBrowserWindowWidth() - width - 100;
 
@@ -46,7 +46,7 @@ public class PeptidesStackedBarChartsControler {
         for (int pateintGrNum : patientGroupsNumToDsIdMap.keySet()) {
             while (counter < 3) {
                 if (!patientGroupsNumToDsIdMap.get(pateintGrNum).getRegulatedList(counter).isEmpty()) {
-                    StudyPopupLayout studyLayout = new StudyPopupLayout(panelWidth, datasetQuantProteinsMap, datasetIdDsObjectProteinsMap, protAccsession, url, protName);
+                    StudyPopupLayout studyLayout = new StudyPopupLayout(panelWidth, datasetQuantProteinsMap, datasetIdDsObjectProteinsMap, protAccsession, url, protName,diseaseHashedColorMap);
                     studyPopupLayoutDSIndexMap.put("_-_" + pateintGrNum + "_-_" + counter + "_-_", studyLayout);
                 }
                 counter++;

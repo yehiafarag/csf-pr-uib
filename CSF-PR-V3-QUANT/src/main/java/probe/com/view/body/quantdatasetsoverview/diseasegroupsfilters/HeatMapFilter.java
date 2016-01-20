@@ -32,13 +32,13 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
             selfselected = false;
             return;
         }
-        if (type.equalsIgnoreCase("HeatMap_Update_level")|| type.equalsIgnoreCase("Pie_Chart_Selection")) {
+        if (type.equalsIgnoreCase("HeatMap_Update_level") || type.equalsIgnoreCase("Pie_Chart_Selection")) {
             this.updateHeatmap(Quant_Central_Manager.getSelectedHeatMapRows(), Quant_Central_Manager.getSelectedHeatMapColumns(), Quant_Central_Manager.getDiseaseGroupsArray());
+            unselectAll();
         } else if (type.equalsIgnoreCase("Comparison_Selection")) {
             this.updateCellSelection(Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList());
 
-        }
-        else if (type.equalsIgnoreCase("Reset_Disease_Groups_Level")) {
+        } else if (type.equalsIgnoreCase("Reset_Disease_Groups_Level")) {
             this.updateHeatmap(Quant_Central_Manager.getSelectedHeatMapRows(), Quant_Central_Manager.getSelectedHeatMapColumns(), Quant_Central_Manager.getDiseaseGroupsArray());
             unselectAll();
 
@@ -82,7 +82,7 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
      * @param heatmapHeaderCellWidth
      * @param diseaseFullNameMap
      */
-    public HeatMapFilter(final QuantCentralManager Quant_Central_Manager, int heatmapW, LinkedHashSet<String> rowheaders, LinkedHashSet<String> colheaders, DiseaseGroup[] patientsGroupArr, int heatmapCellWidth,int heatmapHeaderCellWidth, Map<String, String> diseaseFullNameMap) {
+    public HeatMapFilter(final QuantCentralManager Quant_Central_Manager, int heatmapW, LinkedHashSet<String> rowheaders, LinkedHashSet<String> colheaders, DiseaseGroup[] patientsGroupArr, int heatmapCellWidth, int heatmapHeaderCellWidth, Map<String, String> diseaseFullNameMap) {
 
         this.setWidth(heatmapW + "px");
         this.heatmapW = heatmapW;
@@ -90,7 +90,7 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
         this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.Quant_Central_Manager = Quant_Central_Manager;
 
-        heatMap = new HeatMapComponent(heatmapCellWidth,heatmapHeaderCellWidth) {
+        heatMap = new HeatMapComponent(heatmapCellWidth, heatmapHeaderCellWidth) {
             @Override
             public void updateSelectionManager(Set<QuantDiseaseGroupsComparison> selectedDsList) {
 
@@ -169,7 +169,6 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
 //        Map<Integer, QuantDatasetObject> fullDsMap = Quant_Central_Manager.getFullQuantDatasetMap();
 //        heatMap.updateHeatMap(selectedRows, selectedColumns, values, maxDatasetNumber, diseaseFullNameMap, fullDsMap);
 //    }
-
     /**
      *
      * @param singleSelection
@@ -234,7 +233,7 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
             this.setHeight("100%");
 
         } else {
-            
+
             this.setWidthUndefined();
             this.setHeightUndefined();
         }
