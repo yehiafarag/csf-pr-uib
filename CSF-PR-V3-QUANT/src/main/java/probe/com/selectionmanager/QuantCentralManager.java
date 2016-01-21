@@ -41,8 +41,8 @@ public class QuantCentralManager implements Serializable {
     }
 
     public QuantCentralManager(CSFPRHandler CSFPR_Handler) {
-        diseaseHashedColorMap.put("Multiple Sclerosis","#4b7865");
-        diseaseHashedColorMap.put("Alzheimer's","#809160");
+        diseaseHashedColorMap.put("Multiple Sclerosis","#7D0725");
+        diseaseHashedColorMap.put("Alzheimer's","#4b7865");
         diseaseHashedColorMap.put("Parkinson's","#74716E");
         diseaseHashedColorMap.put("Amyotrophic Lateral Sclerosis","#7D0725");
         Studies_Filter_Manager = new StudiesFilterManager(CSFPR_Handler.getQuantDatasetInitialInformationObject(), CSFPR_Handler.getActivePieChartQuantFilters());//,filterUtility.getFullFilterList()
@@ -51,10 +51,10 @@ public class QuantCentralManager implements Serializable {
     }
 
     public QuantCentralManager(CSFPRHandler CSFPR_Handler, List<QuantProtein> searchQuantificationProtList) {
-       diseaseHashedColorMap.put("Multiple Sclerosis","#4b7865");
-        diseaseHashedColorMap.put("Alzheimer's","#809160");
+       diseaseHashedColorMap.put("Multiple Sclerosis","#7D0725");
+        diseaseHashedColorMap.put("Alzheimer's","#4b7865");
         diseaseHashedColorMap.put("Parkinson's","#74716E");
-        diseaseHashedColorMap.put("Amyotrophic Lateral Sclerosis","#7D0725");
+        diseaseHashedColorMap.put("Amyotrophic Lateral Sclerosis","#4b7865");
         Studies_Filter_Manager = new StudiesFilterManager(CSFPR_Handler.getQuantDatasetInitialInformationObject(searchQuantificationProtList), CSFPR_Handler.getActivePieChartQuantFilters(searchQuantificationProtList));//,filterUtility.getFullFilterList()
         Studies_Selection_Manager = new StudiesSelectionManager();
     }

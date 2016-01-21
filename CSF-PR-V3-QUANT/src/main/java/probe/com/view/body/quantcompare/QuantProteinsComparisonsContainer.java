@@ -897,7 +897,6 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
                 isoProtMap.put(isoProtKey, new LinkedHashSet<Integer>());
             }
             Set<Integer> set = isoProtMap.get(isoProtKey);
-            set.add(0);
             set.add((Integer) itemId);
             isoProtMap.put(isoProtKey, set);
         }

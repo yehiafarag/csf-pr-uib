@@ -2205,7 +2205,7 @@ resetlabelbtn p{
     background-image:  url(img/high_up.png) !important;
     background-color:rgba(255, 255, 255, .0);
     background-repeat: no-repeat;
-    background-size:13px;
+    background-size:11px;
     background-position: center;
 
 }
@@ -2213,7 +2213,7 @@ resetlabelbtn p{
     background-image:  url(img/stable_blue.png) !important;
     background-color:rgba(255, 255, 255, .0);
     background-repeat: no-repeat;
-    background-size:13px;
+    background-size:11px;
     background-position: center;
 
 }
@@ -2221,7 +2221,7 @@ resetlabelbtn p{
      background-image:  url(img/low_down.png) !important;
     background-color:rgba(255, 255, 255, .0);
     background-repeat: no-repeat;
-    background-size:13px;
+    background-size:11px;
     background-position: center;
 }
 
@@ -2239,7 +2239,7 @@ resetlabelbtn p{
     margin-right: 148px;
     text-align: center;
     line-height: 25px !important;   
-    background-color: #809160;
+    background-color: #4b7865;
     color: #ffffff;
     cursor: pointer;
 }
@@ -2247,7 +2247,7 @@ resetlabelbtn p{
 .alzheimerhmrowlabel {
     text-align: center;
     line-height: 25px !important;  
-    background-color: #809160;
+    background-color: #4b7865;
     color: #ffffff;
     cursor: pointer;  
 
@@ -2258,7 +2258,7 @@ resetlabelbtn p{
     margin-right: 148px;
     text-align: center;
     line-height: 25px !important;  
-    background-color: #4b7865;
+    background-color: #7D0725;
     color: #ffffff;
     cursor: pointer;
 }
@@ -2267,7 +2267,7 @@ resetlabelbtn p{
 .multiplesclerosishmrowlabel {
     text-align: center;
     line-height: 25px !important;  
-    background-color:    #4b7865;
+    background-color:    #7D0725;
     color: #ffffff; 
     cursor: pointer;  
 
@@ -2325,7 +2325,7 @@ resetlabelbtn p{
     border-bottom: 2px solid #F6F0F0;
     border-right: 2px solid #F6F0F0;
     border-left: 2px solid #F6F0F0;
-    background-color:    #4b7865;
+    background-color:    #7D0725;
 
 }
 .pdLabel{
@@ -2338,7 +2338,7 @@ resetlabelbtn p{
     border-bottom: 2px solid #F6F0F0;
     border-right: 2px solid #F6F0F0;
     border-left: 2px solid #F6F0F0;
-    background-color: #809160;
+    background-color: #4b7865;
 
 }
 .alsLabel{
@@ -2354,7 +2354,7 @@ resetlabelbtn p{
     border-bottom: 2px solid #F6F0F0;
     border-right: 2px solid #F6F0F0;
     border-left: 2px solid #F6F0F0;
-    background-color:    #4b7865;
+    background-color:    #7D0725;
     top: 100%;
     -ms-transform:rotate(270deg); /* IE 9 */
     -moz-transform:rotate(270deg); /* Firefox */
@@ -2398,7 +2398,7 @@ resetlabelbtn p{
     border-bottom: 2px solid #F6F0F0;
     border-right: 2px solid #F6F0F0;
     border-left: 2px solid #F6F0F0;
-    background-color: #809160;
+    background-color: #4b7865;
     top: 100%;
     -ms-transform:rotate(270deg); /* IE 9 */
     -moz-transform:rotate(270deg); /* Firefox */
@@ -2462,7 +2462,7 @@ resetlabelbtn p{
 
 }
 .hmbackground{
-    background: black;
+    background: lightgray;
 
 }
 
@@ -2470,7 +2470,7 @@ resetlabelbtn p{
 
    
     color: #ffffff;
-    background-color:    #4b7865;
+    background-color:    #7D0725;
 
 }
 .rowItem_pdLabel{
@@ -2481,7 +2481,7 @@ resetlabelbtn p{
 
     
     color: #ffffff;
-    background-color: #809160;
+    background-color: #4b7865;
 
 }
 .rowItem_alsLabel{
