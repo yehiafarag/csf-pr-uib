@@ -56,15 +56,15 @@ public class DAL {
 
     }
 
-    public boolean  exportDataBase(String mysqldumpUrl, String sqlFileUrl) {
-       return  database.exportDataBase(mysqldumpUrl, sqlFileUrl);
+    public boolean exportDataBase(String mysqldumpUrl, String sqlFileUrl) {
+        return database.exportDataBase(mysqldumpUrl, sqlFileUrl);
 //        database.getIdentificationProteinsList();
 //        database.updateIdentificationProteinsList(sqlFileUrl);
 
     }
 
     public boolean restoreDB(String sqlFileUrl, String mysqldumpUrl) {
-        return database.restoreDB( sqlFileUrl,  mysqldumpUrl);
+        return database.restoreDB(sqlFileUrl, mysqldumpUrl);
     }
 
     ///quant data store 
@@ -74,7 +74,6 @@ public class DAL {
     }
 
     //quant data store 
-
     public boolean updateProtSequances(Map<String, String> protSeqMap) {
         return database.updateProtSequances(protSeqMap);
     }
@@ -102,4 +101,11 @@ public class DAL {
     public void correctProtInfo() {
         database.correctProtInfo();
     }
+
+    public boolean updateDiseaseGroupsFullName(Map<String, String> diseaseGroupsNamingMap) {
+      return database.updateDiseaseGroupsFullName(diseaseGroupsNamingMap);
+
+    }
+
+
 }

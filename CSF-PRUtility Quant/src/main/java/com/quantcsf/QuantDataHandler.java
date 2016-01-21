@@ -195,6 +195,13 @@ public class QuantDataHandler {
         qa25.setAnalyticalMethod("Disease Group I");
         qa25.setAuthor("Varghese, Anu Mary, et al.");
         authormap.put("24295388", qa25);
+        
+         QuantDatasetObject qa26 = new QuantDatasetObject();
+        qa26.setYear(2015);
+        qa26.setFilesNumber(10);
+        qa26.setAnalyticalMethod("Disease Group I");
+        qa26.setAuthor("Heywood, Wendy E., et al.");
+        authormap.put("26627638", qa26);
 
     }
 
@@ -765,9 +772,11 @@ public class QuantDataHandler {
 //        return prot;
 //    }
     private QuantProtein definePValue(QuantProtein prot, String pValue, String significanceThreshold, String pvalueComment) {
-        try {
+            String operator="op";
+            try {
             pValue = pValue.replace(",", ".").replace("?", "-");
-            String operator;
+       
+        
 
             double signThresholdValue = -1;
             if (significanceThreshold == null || significanceThreshold.trim().equalsIgnoreCase("")) {
@@ -800,6 +809,7 @@ public class QuantDataHandler {
                 operator = "<";
 
             }
+            
 
             if (pValue.contains(">")) {
                 prot.setStringPValue("Not Significant");
@@ -835,7 +845,7 @@ public class QuantDataHandler {
                     prot.setStringPValue("Significant");
                     prot.setpValue(Double.valueOf(pValue.trim()));
                     prot.setSignificanceThreshold(significanceThreshold);
-                } else if (Double.valueOf(pValue.trim()) > signThresholdValue) {
+                } else if (Double.valueOf(pValue.trim()) >= signThresholdValue) {
                     prot.setStringPValue("Not Significant");
                     prot.setpValue(Double.valueOf(pValue.trim()));
                     prot.setSignificanceThreshold(significanceThreshold);
@@ -850,6 +860,8 @@ public class QuantDataHandler {
         }
         prot.setPvalueComment(pvalueComment);
 
+//        if(prot.getStringPValue()== null || prot.getStringPValue().trim().equalsIgnoreCase(""))
+//        System.out.println("operator "+operator+"  "+significanceThreshold+"    "+pValue + "    String p Value "+prot.getUniprotAccession()+"  "+"  "+ prot.getStudyKey()+"   "+ prot.getPatientSubGroupI());
         return prot;
     }
 
@@ -888,5 +900,71 @@ public class QuantDataHandler {
         System.out.println("size " + protSeqMap.size());
         return protSeqMap;
     }
+    
+    
+    
+    
+      public  Map<String, String> readDiseaseGroupsFullNameFile(String filePath) {
+        Map<String, String> diseaseGroupsNamingMap = new HashMap<String, String>();
+        
+        
+        File dataFile = new File(filePath);
+      
+        try {
+
+            FileReader fr = new FileReader(dataFile);
+            BufferedReader bufRdr = new BufferedReader(fr);
+           bufRdr.readLine();
+            String line;
+            while ((line = bufRdr.readLine()) != null) {
+                
+                String[] lineArr = line.split("\t");
+                if (lineArr.length > 1) {
+                    diseaseGroupsNamingMap.put(lineArr[0], lineArr[1]);
+                 
+                } else {
+                    diseaseGroupsNamingMap.put(lineArr[0], lineArr[0]);
+
+                }
+
+            }
+        } catch (Exception exp) {
+
+            exp.printStackTrace();
+        }
+        
+        return diseaseGroupsNamingMap;
+    }
+          
+//       StringBuilder valuesBuilder = new StringBuilder();
+//       for(String key:diseaseGroupsNamingMap.keySet()){
+//       valuesBuilder.append("('").append(key).append("','").append(diseaseGroupsNamingMap.get(key)).append("'),");
+//       
+//       }
+//       String valueStr = valuesBuilder.toString().substring(0, valuesBuilder.length()-2);
+//        System.out.println("valueStr "+valueStr);
+//       
+//    String insertStat = "INSERT INTO `defin_disease_groups` (`min`, `full`) VALUES "+valueStr;
+//    
+////    
+//     + "(' MS', ' Multiple sclerosis'),\n"
+//                        + "(' CIS', ' Clinically isolated syndrome'),\n"
+//                        + "(' OND', ' Other neurological disorders'),\n"
+//                        + "(' ONID', ' Other inflammatory neurological disorders'),\n"
+//                        + "(' RRMS', ' Relapsing remitting multiple sclerosis'),\n"
+//                        + "(' SPMS', ' Secondary progressive multiple sclerosis'),\n"
+//                        + "(' PMS', 'progressive multiple sclerosis'),\n"
+//                        + "(' CIS-MS', ' Clinically isolated syndrome, with conversion to multiple sclerosis'),\n"
+//                        + "('CIS-CIS', 'Clinically isolated syndrome, without conversion to multiple sclerosis'),\n"
+//                        + "(' CIS-MS/CIS', ' Clinically isolated syndrome, with and without conversion to multiple sclerosis'),\n"
+//                        + "(' AD', 'Alzheimer''s disease'),\n"
+//                        + "(' MCI', ' Mild cognitive impairment'),\n"
+//                        + "(' RRMS a/ Natalizumab', ' Relapsing remitting multiple sclerosis after natalizumab'),\n"
+//                        + "(' SPMS a/Lamotrigine', ' Secondary progressive multiple sclerosis after lamotrigine'),\n"
+//                        + "(' OIND + OND ', ' Other inflammatory neurological disorders + Other neurological disorders');";
+//    
+//    
+//            
+//            }
 
 }

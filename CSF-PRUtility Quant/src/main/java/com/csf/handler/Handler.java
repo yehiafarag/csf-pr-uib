@@ -70,7 +70,7 @@ public class Handler {
     public boolean handelQuantPubData(String quantDataFilePath, String sequanceFilePath, String unreviewFilePath) {
 
         //1.read file
-        List<QuantProtein> qProtList = qDataHandler.readCSVQuantFile(quantDataFilePath, sequanceFilePath,unreviewFilePath);
+        List<QuantProtein> qProtList = qDataHandler.readCSVQuantFile(quantDataFilePath, sequanceFilePath, unreviewFilePath);
         //filter the quant proteins list 
         List<QuantProtein> filteredQuantProteinsList = filterQuantProteins(qProtList);
 
@@ -157,7 +157,7 @@ public class Handler {
         for (QuantProtein quantProt : qProtList) {
             if (quantProt.isPeptideProtein()) {
                 String key = quantProt.getPumedID() + "_" + quantProt.getStudyKey() + "_" + quantProt.getQuantifiedProteinsNumber() + "_" + quantProt.getUniprotAccession() + "_" + quantProt.getPublicationAccNumber() + "_" + quantProt.getPublicationProteinName() + "_" + quantProt.getRawDataAvailable() + "_" + quantProt.getTypeOfStudy() + "_" + quantProt.getSampleType() + "_" + quantProt.getPatientsGroupINumber() + "_" + quantProt.getPatientsGroupIINumber() + "_" + quantProt.getPatientGrIComment() + "_" + quantProt.getPatientGrIIComment() + "_" + quantProt.getPatientGroupI() + "_" + quantProt.getPatientGroupII() + "_" + quantProt.getPatientSubGroupI() + "_" + quantProt.getPatientSubGroupII() + "_" + quantProt.getNormalizationStrategy() + "_" + quantProt.getTechnology() + "_" + quantProt.getAnalyticalApproach() + "_" + quantProt.getAnalyticalMethod() + "_" + quantProt.getShotgunOrTargetedQquant() + "_" + quantProt.getEnzyme() + "_" + quantProt.getDiseaseCategory();
-                if (updatedFullFilteredProteinsList.containsKey(key)) {                   
+                if (updatedFullFilteredProteinsList.containsKey(key)) {
                     updatedFilteredList.add(quantProt);
 
                 } else {
@@ -540,4 +540,14 @@ public class Handler {
         dal.correctProtInfo();
 
     }
+
+    public boolean updateDiseaseGroupsFullName(String diseaseGroupsNamingFilePath) {
+        Map<String, String> diseaseGroupsNamingMap = qDataHandler.readDiseaseGroupsFullNameFile(diseaseGroupsNamingFilePath);
+        if (diseaseGroupsNamingMap.isEmpty()) {
+            return false;
+        }
+
+        return dal.updateDiseaseGroupsFullName(diseaseGroupsNamingMap);
+    }
+
 }

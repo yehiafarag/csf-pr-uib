@@ -99,8 +99,6 @@ public class DB implements Serializable {
             }
             try {
                 Statement st = conn.createStatement();
-                String dropStat = "DROP TABLE IF EXISTS `defin_disease_groups`";
-                st.executeUpdate(dropStat);
 
                 String statment = "CREATE TABLE IF NOT EXISTS `defin_disease_groups` (\n"
                         + "  `min` varchar(100) NOT NULL default ' ',\n"
@@ -109,27 +107,27 @@ public class DB implements Serializable {
                         + ") ENGINE=MyISAM DEFAULT CHARSET=utf8;";
                 st.executeUpdate(statment);
 
-                st = conn.createStatement();
-                String insertStat = "INSERT INTO `defin_disease_groups` (`min`, `full`) VALUES \n"
-                        + "(' MS', ' Multiple sclerosis'),\n"
-                        + "(' CIS', ' Clinically isolated syndrome'),\n"
-                        + "(' OND', ' Other neurological disorders'),\n"
-                        + "(' ONID', ' Other inflammatory neurological disorders'),\n"
-                        + "(' RRMS', ' Relapsing remitting multiple sclerosis'),\n"
-                        + "(' SPMS', ' Secondary progressive multiple sclerosis'),\n"
-                        + "(' PMS', 'progressive multiple sclerosis'),\n"
-                        + "(' CIS-MS', ' Clinically isolated syndrome, with conversion to multiple sclerosis'),\n"
-                        + "('CIS-CIS', 'Clinically isolated syndrome, without conversion to multiple sclerosis'),\n"
-                        + "(' CIS-MS/CIS', ' Clinically isolated syndrome, with and without conversion to multiple sclerosis'),\n"
-                        + "(' AD', 'Alzheimer''s disease'),\n"
-                        + "(' MCI', ' Mild cognitive impairment'),\n"
-                        + "(' RRMS a/ Natalizumab', ' Relapsing remitting multiple sclerosis after natalizumab'),\n"
-                        + "(' SPMS a/Lamotrigine', ' Secondary progressive multiple sclerosis after lamotrigine'),\n"
-                        + "(' OIND + OND ', ' Other inflammatory neurological disorders + Other neurological disorders');";
-                st.executeUpdate(insertStat);
+//                st = conn.createStatement();
+//                String insertStat = "INSERT INTO `defin_disease_groups` (`min`, `full`) VALUES \n"
+//                        + "(' MS', ' Multiple sclerosis'),\n"
+//                        + "(' CIS', ' Clinically isolated syndrome'),\n"
+//                        + "(' OND', ' Other neurological disorders'),\n"
+//                        + "(' ONID', ' Other inflammatory neurological disorders'),\n"
+//                        + "(' RRMS', ' Relapsing remitting multiple sclerosis'),\n"
+//                        + "(' SPMS', ' Secondary progressive multiple sclerosis'),\n"
+//                        + "(' PMS', 'progressive multiple sclerosis'),\n"
+//                        + "(' CIS-MS', ' Clinically isolated syndrome, with conversion to multiple sclerosis'),\n"
+//                        + "('CIS-CIS', 'Clinically isolated syndrome, without conversion to multiple sclerosis'),\n"
+//                        + "(' CIS-MS/CIS', ' Clinically isolated syndrome, with and without conversion to multiple sclerosis'),\n"
+//                        + "(' AD', 'Alzheimer''s disease'),\n"
+//                        + "(' MCI', ' Mild cognitive impairment'),\n"
+//                        + "(' RRMS a/ Natalizumab', ' Relapsing remitting multiple sclerosis after natalizumab'),\n"
+//                        + "(' SPMS a/Lamotrigine', ' Secondary progressive multiple sclerosis after lamotrigine'),\n"
+//                        + "(' OIND + OND ', ' Other inflammatory neurological disorders + Other neurological disorders');";
+//                st.executeUpdate(insertStat);
 
                 st = conn.createStatement();
-                dropStat = "DROP TABLE IF EXISTS `quant_dataset_table`;";
+                String dropStat = "DROP TABLE IF EXISTS `quant_dataset_table`;";
                 st.executeUpdate(dropStat);
 
                 st = conn.createStatement();
@@ -2732,6 +2730,56 @@ public class DB implements Serializable {
             System.err.println("at error line 1340 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
         }
         System.gc();
+    }
+
+    public boolean updateDiseaseGroupsFullName(Map<String, String> diseaseGroupsNamingMap) {
+
+        StringBuilder valuesBuilder = new StringBuilder();
+        for (String key : diseaseGroupsNamingMap.keySet()) {
+            valuesBuilder.append("(").append("?").append(",").append("?").append("),");
+
+        }
+        String valueStr = valuesBuilder.toString().substring(0, valuesBuilder.length() - 1) + ";";
+
+        String insertStat = "INSERT INTO `defin_disease_groups` (`min`, `full`) VALUES " + valueStr;
+        try {
+            PreparedStatement insertFullDiseaseNameStat;
+            if (conn == null || conn.isClosed()) {
+                Class.forName(driver).newInstance();
+                conn = DriverManager.getConnection(url + dbName, userName, password);
+            }
+            String dropStat = "TRUNCATE TABLE  `defin_disease_groups`";
+            Statement st = conn.createStatement();
+            st.executeUpdate(dropStat);
+            st.close();
+
+            insertFullDiseaseNameStat = conn.prepareStatement(insertStat, Statement.RETURN_GENERATED_KEYS);
+            int counter = 1;
+            for (String key : diseaseGroupsNamingMap.keySet()) {
+                insertFullDiseaseNameStat.setString(counter++, key);
+                insertFullDiseaseNameStat.setString(counter++, diseaseGroupsNamingMap.get(key));
+
+            }
+            ResultSet rs = insertFullDiseaseNameStat.getGeneratedKeys();
+            rs.close();
+
+        } catch (ClassNotFoundException e) {
+            System.err.println("at error" + e.getLocalizedMessage());
+
+        } catch (IllegalAccessException e) {
+            System.err.println("at error" + e.getLocalizedMessage());
+
+        } catch (InstantiationException e) {
+            System.err.println("at error" + e.getLocalizedMessage());
+
+        } catch (SQLException e) {
+            System.err.println("at error" + e.getLocalizedMessage());
+
+        }
+        System.out.println("done storing pep");
+        System.gc();
+
+        return true;
     }
 
 }
