@@ -32,35 +32,46 @@ public class QuantCentralManager implements Serializable {
 
     private final StudiesFilterManager Studies_Filter_Manager;
     private final StudiesSelectionManager Studies_Selection_Manager;
-    
-     private final Map<String, String> diseaseHashedColorMap = new HashMap<String, String>();
-    
-    
-      public String getDiseaseHashedColor(String diseaseName){
-          return diseaseHashedColorMap.get(diseaseName);
+
+    private final Map<String, String> diseaseHashedColorMap = new HashMap<String, String>();
+
+    public String getDiseaseHashedColor(String diseaseName) {
+        return diseaseHashedColorMap.get(diseaseName);
     }
 
     public QuantCentralManager(CSFPRHandler CSFPR_Handler) {
-        diseaseHashedColorMap.put("Multiple Sclerosis","#7D0725");
-        diseaseHashedColorMap.put("Alzheimer's","#4b7865");
-        diseaseHashedColorMap.put("Parkinson's","#74716E");
-        diseaseHashedColorMap.put("Amyotrophic Lateral Sclerosis","#7D0725");
+        diseaseHashedColorMap.put("Multiple Sclerosis", "#7D0725");
+        diseaseHashedColorMap.put("Alzheimer's", "#4b7865");
+        diseaseHashedColorMap.put("Parkinson's", "#74716E");
+        diseaseHashedColorMap.put("Amyotrophic Lateral Sclerosis", "#7D0725");
         Studies_Filter_Manager = new StudiesFilterManager(CSFPR_Handler.getQuantDatasetInitialInformationObject(), CSFPR_Handler.getActivePieChartQuantFilters());//,filterUtility.getFullFilterList()
         Studies_Selection_Manager = new StudiesSelectionManager();
 
     }
 
     public QuantCentralManager(CSFPRHandler CSFPR_Handler, List<QuantProtein> searchQuantificationProtList) {
-       diseaseHashedColorMap.put("Multiple Sclerosis","#7D0725");
-        diseaseHashedColorMap.put("Alzheimer's","#4b7865");
-        diseaseHashedColorMap.put("Parkinson's","#74716E");
-        diseaseHashedColorMap.put("Amyotrophic Lateral Sclerosis","#4b7865");
+        diseaseHashedColorMap.put("Multiple Sclerosis", "#7D0725");
+        diseaseHashedColorMap.put("Alzheimer's", "#4b7865");
+        diseaseHashedColorMap.put("Parkinson's", "#74716E");
+        diseaseHashedColorMap.put("Amyotrophic Lateral Sclerosis", "#4b7865");
         Studies_Filter_Manager = new StudiesFilterManager(CSFPR_Handler.getQuantDatasetInitialInformationObject(searchQuantificationProtList), CSFPR_Handler.getActivePieChartQuantFilters(searchQuantificationProtList));//,filterUtility.getFullFilterList()
+        Studies_Selection_Manager = new StudiesSelectionManager();
+    }
+
+    public QuantCentralManager(CSFPRHandler CSFPR_Handler, List<QuantProtein> searchQuantificationProtList, QuantDiseaseGroupsComparison userCustomizedComparison) {
+        diseaseHashedColorMap.put("Multiple Sclerosis", "#7D0725");
+        diseaseHashedColorMap.put("Alzheimer's", "#4b7865");
+        diseaseHashedColorMap.put("Parkinson's", "#74716E");
+        diseaseHashedColorMap.put("Amyotrophic Lateral Sclerosis", "#4b7865");
+        
+        
+        Studies_Filter_Manager = new StudiesFilterManager(CSFPR_Handler.getQuantDatasetInitialInformationObject(searchQuantificationProtList), CSFPR_Handler.getActivePieChartQuantFilters(searchQuantificationProtList),userCustomizedComparison);//,filterUtility.getFullFilterList()
         Studies_Selection_Manager = new StudiesSelectionManager();
     }
 
     public void setNoSerum(boolean noSerum) {
         Studies_Filter_Manager.setNoSerum(noSerum);
+        Studies_Filter_Manager.resetFilters();
     }
 
     /**
@@ -219,7 +230,6 @@ public class QuantCentralManager implements Serializable {
     public Map<String, String> getDiseaseHashedColorMap() {
         return diseaseHashedColorMap;
     }
-    
 
     /**
      * get Selected proteinKey
@@ -298,7 +308,6 @@ public class QuantCentralManager implements Serializable {
         Studies_Filter_Manager.applyFilters(selection);
 
     }
-    
 
     /**
      *
@@ -334,8 +343,9 @@ public class QuantCentralManager implements Serializable {
         Studies_Filter_Manager.changeDiseaseCategory(diseaseCategory);
 
     }
-      public String getInUseDiseaseName() {
-        return  Studies_Filter_Manager.getInUseDiseaseName();
+
+    public String getInUseDiseaseName() {
+        return Studies_Filter_Manager.getInUseDiseaseName();
     }
 
     public int getTotalDsNumber() {
@@ -366,7 +376,7 @@ public class QuantCentralManager implements Serializable {
         return Studies_Filter_Manager.getSelectedHeatMapRows();
     }
 
-     /**
+    /**
      * get elected Disease Group
      *
      * @return array of current selected Disease Group
@@ -384,9 +394,7 @@ public class QuantCentralManager implements Serializable {
         return Studies_Filter_Manager.getSelectedHeatMapColumns();
     }
 
-   
 //    public DiseaseGroup[] getDiseaseGroupsArr() {
 //        return Studies_Filter_Manager.getDiseaseGroupsArr();
 //    }
-
 }

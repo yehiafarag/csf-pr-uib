@@ -11,9 +11,8 @@ import com.vaadin.ui.VerticalLayout;
  * @author Yehia Farag
  */
 public class CustomExternalLink extends VerticalLayout implements Serializable, Comparable<Object> {
-    
+
     private String link;
-    private String url;
     private Label label;
     /**
      *
@@ -26,32 +25,35 @@ public class CustomExternalLink extends VerticalLayout implements Serializable, 
      */
     public CustomExternalLink(String link, String url) {
         this.link = link;
-        this.url = url;
+        if (url != null) {
+            url = url.replace("(UNREVIEWED)", "");
+        }
+
         label = new Label();
         if (url != null) {
-            label.setValue("<a href='" + url + "' target='_blank'>" + link + "</a>");
+            label.setValue("<a href='" + url + "' target='_blank'>" + link.replace("(UNREVIEWED)", "<font style='color:#1D9DFF ;font-weight: bold;  font-style:italic;  text-decoration:none  !important;'>*</font>") + "</a>");
             label.setContentMode(ContentMode.HTML);
         } else {
             label.setValue(link);
         }
-        
+
         label.setStyleName("externalLinkTableLabel");
         this.addComponent(label);
-        
+
     }
-    
+
     @Override
     public String toString() {
         return link;
     }
-    
+
     @Override
     public int compareTo(Object myLink) {
-        
+
         String compareLink = ((CustomExternalLink) myLink).getLink();
         //ascending order
         return (this.link.compareTo(compareLink));
-        
+
     }
 
     /**
@@ -66,7 +68,7 @@ public class CustomExternalLink extends VerticalLayout implements Serializable, 
      *
      * @param color
      */
-    public synchronized void rePaintLable(final String color) {
+    public  void rePaintLable(final String color) {
         if (color.equalsIgnoreCase("black")) {
             label.setStyleName("externalLinkTableLabel");
         } else {

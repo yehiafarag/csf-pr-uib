@@ -1985,7 +1985,7 @@ public class DataBase implements Serializable {
                 if (!activeHeaders[18] && patient_group_i != null && !patient_group_i.equalsIgnoreCase("Not Available")) {
                     activeHeaders[18] = true;
                 }
-                ds.setPatientsGroup1(patient_group_i+"\n"+disease_category);
+                ds.setPatientsGroup1(patient_group_i + "\n" + disease_category);
 
                 int patients_group_i_number = rs.getInt("patients_group_i_number");
                 if (!activeHeaders[19] && patients_group_i_number != -1) {
@@ -2003,13 +2003,13 @@ public class DataBase implements Serializable {
                 if (!activeHeaders[21] && patient_sub_group_i != null && !patient_sub_group_i.equalsIgnoreCase("Not Available")) {
                     activeHeaders[21] = true;
                 }
-                ds.setPatientsSubGroup1(patient_sub_group_i+"\n"+disease_category);
+                ds.setPatientsSubGroup1(patient_sub_group_i + "\n" + disease_category);
 
                 String patient_group_ii = rs.getString("patient_group_ii");
                 if (!activeHeaders[22] && patient_group_ii != null && !patient_group_ii.equalsIgnoreCase("Not Available")) {
                     activeHeaders[22] = true;
                 }
-                ds.setPatientsGroup2(patient_group_ii+"\n"+disease_category);
+                ds.setPatientsGroup2(patient_group_ii + "\n" + disease_category);
 
                 int patients_group_ii_number = rs.getInt("patients_group_ii_number");
                 if (!activeHeaders[23] && patients_group_ii_number != -1) {
@@ -2027,7 +2027,7 @@ public class DataBase implements Serializable {
                 if (!activeHeaders[25] && patient_sub_group_ii != null && !patient_sub_group_ii.equalsIgnoreCase("Not Available")) {
                     activeHeaders[25] = true;
                 }
-                ds.setPatientsSubGroup2(patient_sub_group_ii+"\n"+disease_category);
+                ds.setPatientsSubGroup2(patient_sub_group_ii + "\n" + disease_category);
                 ds.setAdditionalcomments("Not Available");
                 ds.setDiseaseCategory(rs.getString("disease_category"));
                 diseaseCategories.add(ds.getDiseaseCategory());
@@ -2089,7 +2089,7 @@ public class DataBase implements Serializable {
             }
             rs.close();
             /// check the colums one by one 
-            boolean[] activeFilters = new boolean[]{false,false,false,false,true,true,false,true,true,true,false,true,false,false,false,false,false,false};
+            boolean[] activeFilters = new boolean[]{false, false, false, false, true, true, false, true, true, true, false, true, false, false, false, false, false, false};
             for (String str : disCatList) {
 //                String[] columnArr = new String[]{"`identified_proteins_number`", "`quantified_proteins_number`", "`analytical_method`", "`raw_data_available`", "`year`", "`type_of_study`", "`sample_type`", "`sample_matching`", "`technology`", "`analytical_approach`", "`enzyme`", "`shotgun_targeted`", "`quantification_basis`", "`quant_basis_comment`", "`patients_group_i_number`", "`patients_group_ii_number`", "`normalization_strategy`"};
 
@@ -2128,7 +2128,7 @@ public class DataBase implements Serializable {
 //                activeFilters[activeFilters.length - 4] = false;
                 activePieChartQuantFiltersDiseaseCategoryMap.put(str, activeFilters);
             }
-             activePieChartQuantFiltersDiseaseCategoryMap.put("All", activeFilters);
+            activePieChartQuantFiltersDiseaseCategoryMap.put("All", activeFilters);
 
         } catch (ClassNotFoundException e) {
             System.err.println("at error line 2912 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
@@ -2144,6 +2144,7 @@ public class DataBase implements Serializable {
         return activePieChartQuantFiltersDiseaseCategoryMap;
 
     }
+
     /**
      * Get active quantification pie charts filters within quant searching
      * proteins results (to hide them if they are empty)
@@ -2169,7 +2170,8 @@ public class DataBase implements Serializable {
                 sb.append(" OR ");
 
             }
-            String stat = sb.toString().substring(0, sb.length() - 4);
+            
+//            String stat = sb.toString().substring(0, sb.length() - 4);
             PreparedStatement selectPumed_idStat;
             String selectPumed_id = "SELECT  `pumed_id` ,  `disease_category` FROM  `quant_dataset_table` GROUP BY  `pumed_id` ,  `disease_category` ORDER BY  `pumed_id` ";
             if (conn == null || conn.isClosed()) {
@@ -2186,9 +2188,9 @@ public class DataBase implements Serializable {
             rs.close();
             /// check the colums one by one 
 
-            boolean[] activeFilters = new boolean[]{false,false,false,false,true,true,false,true,true,true,false,true,false,false,false,false,false,false};
+            boolean[] activeFilters = new boolean[]{false, false, false, false, true, true, false, true, true, true, false, true, false, false, false, false, false, false};
             for (String str : disCatList) {
-                 activePieChartQuantFiltersDiseaseCategoryMap.put(str, activeFilters);
+                activePieChartQuantFiltersDiseaseCategoryMap.put(str, activeFilters);
 //                String[] columnArr = new String[]{"`identified_proteins_number`", "`quantified_proteins_number`", "`analytical_method`", "`raw_data_available`", "`year`", "`type_of_study`", "`sample_type`", "`sample_matching`", "`technology`", "`analytical_approach`", "`enzyme`", "`shotgun_targeted`", "`quantification_basis`", "`quant_basis_comment`", "`patients_group_i_number`", "`patients_group_ii_number`", "`normalization_strategy`"};
 ////                boolean[] activeFilters = new boolean[columnArr.length];
 //                for (int index = 0; index < columnArr.length; index++) {
@@ -2235,7 +2237,6 @@ public class DataBase implements Serializable {
         return activePieChartQuantFiltersDiseaseCategoryMap;
     }
 
-
     /**
      * Get available quantification datasets initial information object within
      * quant searching proteins results that contains the available datasets
@@ -2257,7 +2258,12 @@ public class DataBase implements Serializable {
             sb.append(" OR ");
 
         }
-        String stat = sb.toString().substring(0, sb.length() - 4);
+        String stat;
+        if (sb.length() > 4) {
+            stat = sb.toString().substring(0, sb.length() - 4);
+        } else {
+            return diseaseCategoriesMap;
+        }
 
         try {
             PreparedStatement selectStudiesStat;
@@ -2401,7 +2407,7 @@ public class DataBase implements Serializable {
                 if (!activeHeaders[18] && patient_group_i != null && !patient_group_i.equalsIgnoreCase("Not Available")) {
                     activeHeaders[18] = true;
                 }
-                ds.setPatientsGroup1(patient_group_i+"\n"+disease_category);
+                ds.setPatientsGroup1(patient_group_i + "\n" + disease_category);
 
                 int patients_group_i_number = rs.getInt("patients_group_i_number");
                 if (!activeHeaders[19] && patients_group_i_number != -1) {
@@ -2419,13 +2425,13 @@ public class DataBase implements Serializable {
                 if (!activeHeaders[21] && patient_sub_group_i != null && !patient_sub_group_i.equalsIgnoreCase("Not Available")) {
                     activeHeaders[21] = true;
                 }
-                ds.setPatientsSubGroup1(patient_sub_group_i+"\n"+disease_category);
+                ds.setPatientsSubGroup1(patient_sub_group_i + "\n" + disease_category);
 
                 String patient_group_ii = rs.getString("patient_group_ii");
                 if (!activeHeaders[22] && patient_group_ii != null && !patient_group_ii.equalsIgnoreCase("Not Available")) {
                     activeHeaders[22] = true;
                 }
-                ds.setPatientsGroup2(patient_group_ii+"\n"+disease_category);
+                ds.setPatientsGroup2(patient_group_ii + "\n" + disease_category);
 
                 int patients_group_ii_number = rs.getInt("patients_group_ii_number");
                 if (!activeHeaders[23] && patients_group_ii_number != -1) {
@@ -2443,7 +2449,7 @@ public class DataBase implements Serializable {
                 if (!activeHeaders[25] && patient_sub_group_ii != null && !patient_sub_group_ii.equalsIgnoreCase("Not Available")) {
                     activeHeaders[25] = true;
                 }
-                ds.setPatientsSubGroup2(patient_sub_group_ii+"\n"+disease_category);
+                ds.setPatientsSubGroup2(patient_sub_group_ii + "\n" + disease_category);
                 ds.setAdditionalcomments("Not Available");
                 ds.setDiseaseCategory(rs.getString("disease_category"));
                 diseaseCategories.add(ds.getDiseaseCategory());
@@ -2475,7 +2481,6 @@ public class DataBase implements Serializable {
         return null;
     }
 
-    
     /**
      * Store quant proteins list to database
      *
@@ -2677,7 +2682,7 @@ public class DataBase implements Serializable {
             ResultSet rs = selectselectDsGroupNumStat.executeQuery();
             Map<Integer, Object[]> datasetIdDesGrs = new HashMap<Integer, Object[]>();
             while (rs.next()) {
-                datasetIdDesGrs.put(rs.getInt("index"), new Object[]{rs.getInt("patients_group_i_number"), rs.getInt("patients_group_ii_number"), rs.getString("patient_group_i").trim(), rs.getString("patient_group_ii").trim(), rs.getString("patient_sub_group_i").trim(), rs.getString("patient_sub_group_ii").trim(),rs.getString("disease_category")});
+                datasetIdDesGrs.put(rs.getInt("index"), new Object[]{rs.getInt("patients_group_i_number"), rs.getInt("patients_group_ii_number"), rs.getString("patient_group_i").trim(), rs.getString("patient_group_ii").trim(), rs.getString("patient_sub_group_i").trim(), rs.getString("patient_sub_group_ii").trim(), rs.getString("disease_category")});
             }
             rs.close();
             sb = new StringBuilder();
@@ -2718,10 +2723,10 @@ public class DataBase implements Serializable {
             for (QuantProtein qp : quantProtList) {
                 qp.setPatientsGroupIINumber((Integer) datasetIdDesGrs.get(qp.getDsKey())[1]);
                 qp.setPatientsGroupINumber((Integer) datasetIdDesGrs.get(qp.getDsKey())[0]);
-                qp.setPatientGroupI(datasetIdDesGrs.get(qp.getDsKey())[2].toString()+"\n"+datasetIdDesGrs.get(qp.getDsKey())[6].toString());
-                qp.setPatientGroupII(datasetIdDesGrs.get(qp.getDsKey())[3].toString()+"\n"+datasetIdDesGrs.get(qp.getDsKey())[6].toString());
-                qp.setPatientSubGroupI(datasetIdDesGrs.get(qp.getDsKey())[4].toString()+"\n"+datasetIdDesGrs.get(qp.getDsKey())[6].toString());
-                qp.setPatientSubGroupII(datasetIdDesGrs.get(qp.getDsKey())[5].toString()+"\n"+datasetIdDesGrs.get(qp.getDsKey())[6].toString());
+                qp.setPatientGroupI(datasetIdDesGrs.get(qp.getDsKey())[2].toString() + "\n" + datasetIdDesGrs.get(qp.getDsKey())[6].toString());
+                qp.setPatientGroupII(datasetIdDesGrs.get(qp.getDsKey())[3].toString() + "\n" + datasetIdDesGrs.get(qp.getDsKey())[6].toString());
+                qp.setPatientSubGroupI(datasetIdDesGrs.get(qp.getDsKey())[4].toString() + "\n" + datasetIdDesGrs.get(qp.getDsKey())[6].toString());
+                qp.setPatientSubGroupII(datasetIdDesGrs.get(qp.getDsKey())[5].toString() + "\n" + datasetIdDesGrs.get(qp.getDsKey())[6].toString());
                 tquantProtList.add(qp);
 
             }

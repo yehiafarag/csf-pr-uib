@@ -18,6 +18,8 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
     private int[] datasetIndexes;
     private Map<String, DiseaseGroupsComparisonsProteinLayout> comparProtsMap;
     private String rgbStringColor;
+    private boolean useCustomRowHeaderToSort;
+    private boolean useCustomColumnHeaderToSort;
 
     public String getRgbStringColor() {
         return rgbStringColor;
@@ -86,6 +88,23 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
     public String toString(){
     
         return comparisonHeader+" -- "+ comparProtsMap.size();
+    }
+
+    
+    public boolean isUseCustomRowHeaderToSort() {
+        return useCustomRowHeaderToSort;
+    }
+
+    public void setUseCustomRowHeaderToSort(boolean useCustomRowHeaderToSort) {
+        this.useCustomRowHeaderToSort = useCustomRowHeaderToSort;
+    }
+
+    public boolean isUseCustomColumnHeaderToSort() {
+        return useCustomColumnHeaderToSort;
+    }
+
+    public void setUseCustomColumnHeaderToSort(boolean useCustomColumnHeaderToSort) {
+        this.useCustomColumnHeaderToSort = useCustomColumnHeaderToSort;
     }
    
     

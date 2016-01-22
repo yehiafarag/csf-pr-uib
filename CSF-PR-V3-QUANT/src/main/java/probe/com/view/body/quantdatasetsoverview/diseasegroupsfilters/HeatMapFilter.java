@@ -39,8 +39,9 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
             this.updateCellSelection(Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList());
 
         } else if (type.equalsIgnoreCase("Reset_Disease_Groups_Level")) {
-            this.updateHeatmap(Quant_Central_Manager.getSelectedHeatMapRows(), Quant_Central_Manager.getSelectedHeatMapColumns(), Quant_Central_Manager.getDiseaseGroupsArray());
-            unselectAll();
+             unselectAll();
+             this.updateHeatmap(Quant_Central_Manager.getSelectedHeatMapRows(), Quant_Central_Manager.getSelectedHeatMapColumns(), Quant_Central_Manager.getDiseaseGroupsArray());
+           
 
         }
     }
@@ -124,6 +125,7 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
 
     private void calcHeatMapMatrix(LinkedHashSet<String> rowheaders, LinkedHashSet<String> colheaders, DiseaseGroup[] patientsGroupArr) {
         maxDatasetNumber = -1;
+       
         values = new QuantDSIndexes[rowheaders.size()][colheaders.size()];
         for (int x = 0; x < rowheaders.size(); x++) {
             for (int y = 0; y < colheaders.size(); y++) {

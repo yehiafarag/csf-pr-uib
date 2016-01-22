@@ -371,7 +371,8 @@ public class HeatMapComponent extends VerticalLayout {
             Set<String> keymap = new HashSet<String>();
             keymap.add(kI);
             keymap.add(kII);
-            if (!selectedDsList.contains(gr) && !selectedDsList.contains(comparisonsCellsMap.get(kII).getComparison())) {
+            
+            if (!selectedDsList.contains(gr) && (comparisonsCellsMap.get(kII)!=null && !selectedDsList.contains(comparisonsCellsMap.get(kII).getComparison()))) {
 
                 for (HeatmapCell cell : selectedCells) {
                     String kI2 = cell.getComparison().getComparisonHeader();
@@ -840,7 +841,7 @@ public class HeatMapComponent extends VerticalLayout {
         }
         updateDsCellSelection(new HashSet<QuantDiseaseGroupsComparison>());
         selectedDsList.clear();
-        selectedDsList.addAll(new HashSet<QuantDiseaseGroupsComparison>());
+//        selectedDsList.addAll(new HashSet<QuantDiseaseGroupsComparison>());
         updateSelectionManagerIndexes();
 
     }

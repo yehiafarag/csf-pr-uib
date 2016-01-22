@@ -30,7 +30,6 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
      */
     @Override
     public void selectionChanged(String type) {
-
         if (type.equalsIgnoreCase("Reorder_Selection")) {
 //            if (selfselection) {
 //                selfselection = false;
@@ -46,14 +45,14 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
             }
 
         } else if (type.equalsIgnoreCase("Reset_Disease_Groups_Level")) {
-            if (selfselection) {
-                selfselection = false;
-                return;
-            }
-            selectedDsIds.clear();
-            resetToInitState();
-            unselectAll();
-
+//            if (selfselection) {
+//                selfselection = false;
+//                return;
+//            }
+//            externalSelectionChanged = true;
+//            selectedDsIds.clear();
+//            resetToInitState();
+//            unselectAll();
         }
 
     }
@@ -73,18 +72,18 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
             return;
 
         }
-        Set<Integer>finalFilterValue = new LinkedHashSet<Integer>();
-         for (JfreeDivaPieChartFilter ifilter : registeredFilters) {
+        Set<Integer> finalFilterValue = new LinkedHashSet<Integer>();
+        for (JfreeDivaPieChartFilter ifilter : registeredFilters) {
             finalFilterValue.addAll(ifilter.getFinalFilterValue());
             break;
-            
+
         }
 
         int[] dsIds = new int[finalFilterValue.size()];
         for (int i = 0; i < finalFilterValue.size(); i++) {
             dsIds[i] = (Integer) finalFilterValue.toArray()[i];
         }
-       
+
         Quant_Central_Manager.applyFilters(new CSFFilterSelection("Pie_Chart_Selection", dsIds, Filter_ID, null));
 
     }
@@ -201,6 +200,35 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
         }
 
     }
+
+    public void resetPieChartChartsValues() {
+
+        Set<Integer> tempSelectedDsIds = new LinkedHashSet<Integer>();
+        for (QuantDatasetObject qDs : Quant_Central_Manager.getFilteredQuantDatasetArr().values()) {
+            tempSelectedDsIds.add(qDs.getDsKey());
+        }
+        if (externalSelectionChanged) {
+
+            externalSelectionChanged = false;
+            for (JfreeDivaPieChartFilter ifilter : registeredFilters) {
+                ifilter.resetFilterWithUpdatedFilters(tempSelectedDsIds, true);
+            }
+
+        }
+
+    }
+
+//    /**
+//     *
+//     */
+//    public void resetToInitState() {
+//        selectedDsIds.clear();
+//        toResetCentral = true;
+//        for (JfreeDivaPieChartFilter ifilter : registeredFilters) {
+//            ifilter.selectionChanged();
+//        }
+//
+//    }
     private boolean toResetCentral;
 
     /**
@@ -219,6 +247,7 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
      *
      */
     public void unselectAll() {
+
         for (JfreeDivaPieChartFilter ifilter : registeredFilters) {
             ifilter.unselectFilter();
         }
@@ -234,7 +263,6 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
         } else {
             selectedDsIds.addAll(tempSelectedDsIds);
         }
-
         updatePieChartCharts("");
     }
 

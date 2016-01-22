@@ -47,7 +47,7 @@ public class QuantProtiensSearchingResultsLayout extends VerticalLayout {
         this.setWidth("100%");
         this.setHeightUndefined();
 
-        DiseaseGroupsFiltersContainer heatmapFilter = new DiseaseGroupsFiltersContainer(Quant_Central_Manager, CSFPR_Handler, searchQuantificationProtList);
+        DiseaseGroupsFiltersContainer heatmapFilter = new DiseaseGroupsFiltersContainer(Quant_Central_Manager, CSFPR_Handler, searchQuantificationProtList,null);
         heatmapFilter.setWidth("100%");
         heatmapFilter.setMargin(new MarginInfo(false, false, true, false));
         String infoText = "Select an experiment in the roll down menu on top to view all proteins identified in the selected experiment. Select a protein to see below all Peptides identified for the protein, and if the experiment was based on SDS-PAGE, the protein’s distribution in the gel is displayed under Fractions. To show information about the experiment, press Dataset Information.  Use the search box to navigate in the experiment selected.</p><p  style='font-family:verdana;color:black;margin-left:20px;margin-right:20px;'>Under Fractions, bar charts show the distribution of the selected protein across the fractions cut from the gel. Three charts show number of peptides, number of spectra and average precursor intensity. The fraction number represents the gel pieces cut from top to bottom. Protein standards <font color='#CDE1FF'>(light blue bars)</font> indicate the molecular weight range of each fraction. <font color='#79AFFF'>Darker blue bars</font> mark between which two standards the protein's theoretical mass suggests the protein should be found.";

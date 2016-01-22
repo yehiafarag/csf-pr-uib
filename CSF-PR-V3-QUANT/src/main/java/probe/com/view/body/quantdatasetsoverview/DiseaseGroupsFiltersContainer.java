@@ -63,14 +63,16 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
     private final HorizontalLayout diseaseCategorySelectLayout;
     private final HorizontalLayout rightBottomBtnLayout;
     private final PopupReorderGroupsLayout reorderGroups;
+    private final Label counterLabel;
 
     /**
      *
      * @param Quant_Central_Manager
      * @param CSFPR_Handler
      * @param searchQuantificationProtList
+     * @param userCustomizedComparison
      */
-    public DiseaseGroupsFiltersContainer(final QuantCentralManager Quant_Central_Manager, final CSFPRHandler CSFPR_Handler, List<QuantProtein> searchQuantificationProtList) {
+    public DiseaseGroupsFiltersContainer(final QuantCentralManager Quant_Central_Manager, final CSFPRHandler CSFPR_Handler, List<QuantProtein> searchQuantificationProtList, QuantDiseaseGroupsComparison userCustomizedComparison) {
         pageWidth = Page.getCurrent().getWebBrowser().getScreenWidth();
         this.setWidth(pageWidth + "px");
         this.setHeightUndefined();
@@ -86,7 +88,8 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         pieChartFiltersBtnLayout.addComponent(pieChartFiltersLayout.getPieChartFiltersBtn());
 
 //        diseaseGroupsListFilter = new DiseaseGroupsListFilter(Quant_Central_Manager);
-        final LinkedHashSet<String> diseaseGroupsSet = Quant_Central_Manager.getSelectedHeatMapRows(); //diseaseGroupsListFilter.getDiseaseGroupsSet();
+        final LinkedHashSet<String> diseaseGroupsRowSet = Quant_Central_Manager.getSelectedHeatMapRows(); //diseaseGroupsListFilter.getDiseaseGroupsSet();
+        final LinkedHashSet<String> diseaseGroupsColSet = Quant_Central_Manager.getSelectedHeatMapColumns(); //diseaseGroupsListFilter.getDiseaseGroupsSet();
 //        heatmapW = Math.max((156 + (heatmapCellWidth * diseaseGroupsSet.size())), 700);
 
         final HorizontalLayout topLayout = new HorizontalLayout();
@@ -131,7 +134,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         diseaseCategorySelectLayout.addComponent(title);
 
         diseaseCategorySelectLayout.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
-        final Label counterLabel = new Label("( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )");
+        counterLabel = new Label("( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )");
         diseaseTypeSelectionList.setWidth("200px");
         diseaseTypeSelectionList.setNullSelectionAllowed(false);
         diseaseTypeSelectionList.setValue("Multiple Sclerosis");
@@ -163,13 +166,13 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
 
         this.addComponent(middleLayout, 0, 1);
         this.setComponentAlignment(middleLayout, Alignment.TOP_LEFT);
-        this.resizeLayout(diseaseGroupsSet.size());
+        this.resizeLayout(Math.max(diseaseGroupsColSet.size(),diseaseGroupsRowSet.size()));
 
         int heatmapH = heatmapW + 10;
         standeredChartHeight = heatmapH;
 
 //        System.out.println("at error "+diseaseGroupsSet.size()+"    "+ Quant_Central_Manager.getDiseaseGroupsArr().length+ );
-        diseaseGroupsHeatmapFilter = new HeatMapFilter(Quant_Central_Manager, heatmapW, diseaseGroupsSet, diseaseGroupsSet, Quant_Central_Manager.getDiseaseGroupsArray(), heatmapCellWidth, heatmapHeaderCellWidth, CSFPR_Handler.getDiseaseFullNameMap());
+        diseaseGroupsHeatmapFilter = new HeatMapFilter(Quant_Central_Manager, heatmapW, diseaseGroupsRowSet, diseaseGroupsColSet, Quant_Central_Manager.getDiseaseGroupsArray(), heatmapCellWidth, heatmapHeaderCellWidth, CSFPR_Handler.getDiseaseFullNameMap());
         diseaseGroupsHeatmapFilter.setHeight(Math.max(heatmapH, 700) + "px");
         diseaseGroupsHeatmapFilter.setSingleSelection(false);
         middleLayout.addComponent(diseaseGroupsHeatmapFilter);
@@ -244,6 +247,10 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
                 Quant_Central_Manager.setNoSerum(!noSerumOption.getValue().toString().equalsIgnoreCase("[Serum Studies]"));
+                Quant_Central_Manager.resetFiltersListener();
+                pieChartFiltersBtnLayout.removeAllComponents();
+                StudiesPieChartFiltersContainerLayout pieChartFiltersLayout = new StudiesPieChartFiltersContainerLayout(Quant_Central_Manager, CSFPR_Handler);
+                pieChartFiltersBtnLayout.addComponent(pieChartFiltersLayout.getPieChartFiltersBtn());
                 counterLabel.setValue("( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )");
 
             }
@@ -306,7 +313,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
                 diseaseGroupsHeatmapFilter.unselectAll();
-                resizeLayout(diseaseGroupsSet.size());
+//                resizeLayout(diseaseGroupsSet.size());
             }
         });
 
@@ -368,6 +375,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         diseaseGroupsHeatmapFilter.addHideHeatmapBtnListener(hideShowCompTableListener);
         Quant_Central_Manager.registerStudySelectionListener(DiseaseGroupsFiltersContainer.this);
         Quant_Central_Manager.registerFilterListener(DiseaseGroupsFiltersContainer.this);
+        diseaseGroupsHeatmapFilter.unselectAll();
     }
 
     /**
@@ -385,23 +393,23 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
      */
     @Override
     public void selectionChanged(String type) {
-        if ((type.equalsIgnoreCase("Comparison_Selection")&&Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList().isEmpty())|| type.equalsIgnoreCase("Reset_Disease_Groups_Level")|| type.equalsIgnoreCase("Pie_Chart_Selection")) {
-                selectionOverviewBubbleChart.updateSize(initLayoutWidth, Math.min(heatmapW + 20, standeredChartHeight));
-                btnsLayout.setVisible(true);
-                diseaseCategorySelectLayout.setVisible(true);
-                rightBottomBtnLayout.setVisible(true);
-                middleLayout.setExpandRatio(diseaseGroupsHeatmapFilter, heatmapW - 70);
-                middleLayout.setExpandRatio(selectionOverviewBubbleChart, initLayoutWidth + 70);
-                middleLayout.setWidth(layoutWidth + "px");
-                resizeLayout(Quant_Central_Manager.getSelectedHeatMapRows().size());
+        if ((type.equalsIgnoreCase("Comparison_Selection") && Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList().isEmpty()) || type.equalsIgnoreCase("Reset_Disease_Groups_Level") || type.equalsIgnoreCase("Pie_Chart_Selection")) {
+            selectionOverviewBubbleChart.updateSize(initLayoutWidth, Math.min(heatmapW + 20, standeredChartHeight));
+            btnsLayout.setVisible(true);
+            diseaseCategorySelectLayout.setVisible(true);
+            rightBottomBtnLayout.setVisible(true);
+            middleLayout.setExpandRatio(diseaseGroupsHeatmapFilter, heatmapW - 70);
+            middleLayout.setExpandRatio(selectionOverviewBubbleChart, initLayoutWidth + 70);
+            middleLayout.setWidth(layoutWidth + "px");
+            resizeLayout(Quant_Central_Manager.getSelectedHeatMapRows().size());
 
 //                resizeLayout(diseaseGroupsListFilter.getDiseaseGroupsSet().size());
 //                UI.getCurrent().setScrollTop(10);
-            }
-       else if (type.equalsIgnoreCase("HeatMap_Update_level")) {
+        } else if (type.equalsIgnoreCase("HeatMap_Update_level")) {
             selectAllComparisons();
 
-        } 
+        }
+        counterLabel.setValue("( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )");
     }
 
     /**

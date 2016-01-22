@@ -19,6 +19,7 @@ import java.util.TreeSet;
 import org.jfree.chart.JFreeChart;
 import probe.com.model.beans.quant.QuantDatasetInitialInformationObject;
 import probe.com.model.beans.quant.QuantDatasetObject;
+import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.view.core.DiseaseGroup;
 
 /**
@@ -34,6 +35,7 @@ public class StudiesFilterManager implements Serializable {
     private int totalDsNumber, currentDsNumber;
     private Map<Integer, QuantDatasetObject> inUsefullQuantDatasetMap;
     private Map<Integer, QuantDatasetObject> noSerumQuantDatasetMap;
+    private Map<String, Map<Integer, QuantDatasetObject>> noSerumDiseaseCategory;
     private Map<Integer, QuantDatasetObject> fullQuantDatasetMap;
     private final Map<String, boolean[]> activeFilterMap;
     private boolean[] activeFilters;
@@ -62,6 +64,7 @@ public class StudiesFilterManager implements Serializable {
 
             diseaseGroupArr[indexer++] = dg;
         }
+        currentDsNumber = diseaseGroupArr.length;
         return diseaseGroupArr;
     }
 
@@ -69,11 +72,27 @@ public class StudiesFilterManager implements Serializable {
         this.noSerum = noSerum;
         if (noSerum) {
             inUsefullQuantDatasetMap = noSerumQuantDatasetMap;
+
         } else {
             inUsefullQuantDatasetMap = fullQuantDatasetMap;
         }
         this.currentDsNumber = inUsefullQuantDatasetMap.size();
-        resetFilters();
+        this.updateFilteredList();
+
+    }
+
+    private void updateFilteredList() {
+        Map<Integer, QuantDatasetObject> updatedFilteredQuantDatasetArr = new LinkedHashMap<Integer, QuantDatasetObject>();
+
+        for (int i : filteredQuantDatasetArr.keySet()) {
+            if (inUsefullQuantDatasetMap.containsKey(i)) {
+                updatedFilteredQuantDatasetArr.put(i, filteredQuantDatasetArr.get(i));
+            }
+
+        }
+        filteredQuantDatasetArr.clear();
+        filteredQuantDatasetArr.putAll(updatedFilteredQuantDatasetArr);
+
     }
     private boolean noSerum;
 
@@ -83,7 +102,6 @@ public class StudiesFilterManager implements Serializable {
 
         this.fullDiseaseGroupMap = new LinkedHashMap<Integer, DiseaseGroup>();
         this.selectedDiseaseGroupMap = new LinkedHashMap<Integer, DiseaseGroup>();
-
         this.quantDatasetListObject = quantDatasetListObject;
         String key = "Multiple Sclerosis";//quantDatasetListObject.keySet().iterator().next();
 
@@ -92,24 +110,87 @@ public class StudiesFilterManager implements Serializable {
 //            totalDsNumber += quantDatasetListObject.get(k).getQuantDatasetsList().size();
 //
 //        }
-        inUseDiseaseName = key;
 
-        this.fullQuantDatasetMap = quantDatasetListObject.get(key).getQuantDatasetsList();
-        noSerumQuantDatasetMap = new HashMap<Integer, QuantDatasetObject>();
-        for (int intKey : fullQuantDatasetMap.keySet()) {
-            if (!fullQuantDatasetMap.get(intKey).getSampleType().equalsIgnoreCase("Serum")) {
-                noSerumQuantDatasetMap.put(intKey, fullQuantDatasetMap.get(intKey));
+        noSerumDiseaseCategory = new HashMap<String, Map<Integer, QuantDatasetObject>>();
+        for (String diseaseCat : quantDatasetListObject.keySet()) {
+            noSerumQuantDatasetMap = new HashMap<Integer, QuantDatasetObject>();
+            this.fullQuantDatasetMap = quantDatasetListObject.get(diseaseCat).getQuantDatasetsList();
+            for (int intKey : fullQuantDatasetMap.keySet()) {
+
+                if (!fullQuantDatasetMap.get(intKey).getSampleType().equalsIgnoreCase("Serum")) {
+                    noSerumQuantDatasetMap.put(intKey, fullQuantDatasetMap.get(intKey));
+
+                }
 
             }
+            noSerumDiseaseCategory.put(diseaseCat, noSerumQuantDatasetMap);
 
         }
-        inUsefullQuantDatasetMap = noSerumQuantDatasetMap;
+        inUseDiseaseName = key;
+        noSerum = true;
+
+        this.fullQuantDatasetMap = quantDatasetListObject.get(key).getQuantDatasetsList();
+        this.noSerumQuantDatasetMap = noSerumDiseaseCategory.get(key);
+        this.inUsefullQuantDatasetMap = this.noSerumQuantDatasetMap;
         this.currentDsNumber = inUsefullQuantDatasetMap.size();
         this.activeFilterMap = activeFilterMap;
         this.activeFilters = activeFilterMap.get(key);
         this.activeHeader = quantDatasetListObject.get(key).getActiveHeaders();
         this.diseaseCategorySet = quantDatasetListObject.keySet();
+
         this.updateRowsAndColumns("Reset_Disease_Groups_Level");
+    }
+    private String userDiseaseGroupA = "VeryHårdToExistByChanceøæå", userDiseaseGroupB = "VeryHårdToExistByChanceøæå";
+
+    public StudiesFilterManager(Map<String, QuantDatasetInitialInformationObject> quantDatasetListObject, Map<String, boolean[]> activeFilterMap, QuantDiseaseGroupsComparison userCustomizedComparison) {
+
+        this.fullDiseaseGroupMap = new LinkedHashMap<Integer, DiseaseGroup>();
+        this.selectedDiseaseGroupMap = new LinkedHashMap<Integer, DiseaseGroup>();
+        this.quantDatasetListObject = quantDatasetListObject;
+
+        String key = "Multiple Sclerosis";//quantDatasetListObject.keySet().iterator().next();
+
+        this.totalDsNumber = quantDatasetListObject.get("All").getQuantDatasetsList().size();
+//        for (String k : quantDatasetListObject.keySet()) {
+//            totalDsNumber += quantDatasetListObject.get(k).getQuantDatasetsList().size();
+//
+//        }
+
+        noSerumDiseaseCategory = new HashMap<String, Map<Integer, QuantDatasetObject>>();
+        for (String diseaseCat : quantDatasetListObject.keySet()) {
+            noSerumQuantDatasetMap = new HashMap<Integer, QuantDatasetObject>();
+            this.fullQuantDatasetMap = quantDatasetListObject.get(diseaseCat).getQuantDatasetsList();
+            for (int intKey : fullQuantDatasetMap.keySet()) {
+
+                if (!fullQuantDatasetMap.get(intKey).getSampleType().equalsIgnoreCase("Serum")) {
+                    noSerumQuantDatasetMap.put(intKey, fullQuantDatasetMap.get(intKey));
+
+                }
+
+            }
+            noSerumDiseaseCategory.put(diseaseCat, noSerumQuantDatasetMap);
+
+        }
+        inUseDiseaseName = key;
+        noSerum = true;
+
+        this.fullQuantDatasetMap = quantDatasetListObject.get(key).getQuantDatasetsList();
+        this.noSerumQuantDatasetMap = noSerumDiseaseCategory.get(key);
+        this.inUsefullQuantDatasetMap = this.noSerumQuantDatasetMap;
+        this.currentDsNumber = inUsefullQuantDatasetMap.size();
+        this.activeFilterMap = activeFilterMap;
+        this.activeFilters = activeFilterMap.get(key);
+        this.activeHeader = quantDatasetListObject.get(key).getActiveHeaders();
+        this.diseaseCategorySet = quantDatasetListObject.keySet();
+        if (userCustomizedComparison.isUseCustomRowHeaderToSort()) {
+            userDiseaseGroupA = userCustomizedComparison.getComparisonHeader().split(" / ")[0].replace("User Data - ", "").trim();
+        }
+        if (userCustomizedComparison.isUseCustomColumnHeaderToSort()) {
+            userDiseaseGroupB = userCustomizedComparison.getComparisonHeader().split(" / ")[1];
+        }
+
+        this.updateRowsAndColumns("Reset_Disease_Groups_Level");
+
     }
 
     private void updateRowsAndColumns(String type) {
@@ -123,13 +204,13 @@ public class StudiesFilterManager implements Serializable {
 
             selectedHeatMapRows.clear();
             for (String str : pgArr) {
-                if (!str.equalsIgnoreCase("")) {
+                if (!str.equalsIgnoreCase("") && !str.contains(userDiseaseGroupB)) {
                     selectedHeatMapRows.add(str);
                 }
             }
             selectedHeatMapColumns.clear();
             for (String str : pgArr) {
-                if (!str.equalsIgnoreCase("")) {
+                if (!str.equalsIgnoreCase("") && !str.contains(userDiseaseGroupA)) {
                     selectedHeatMapColumns.add(str);
                 }
             }
@@ -140,14 +221,19 @@ public class StudiesFilterManager implements Serializable {
 //            Arrays.sort(pgArr);
             selectedHeatMapRows.clear();
             for (String str : pgArr) {
-                if (!str.equalsIgnoreCase("")) {
+                if (!str.equalsIgnoreCase("") && !str.contains(userDiseaseGroupB)) {
                     selectedHeatMapRows.add(str);
                 }
             }
-
             selectedHeatMapColumns.clear();
-            selectedHeatMapColumns.addAll(selectedHeatMapRows);
+            for (String str : pgArr) {
+                if (!str.equalsIgnoreCase("") && !str.contains(userDiseaseGroupA)) {
+                    selectedHeatMapColumns.add(str);
+                }
+            }
 
+//            selectedHeatMapColumns.clear();
+//            selectedHeatMapColumns.addAll(selectedHeatMapRows);
         }
 
     }
@@ -261,7 +347,7 @@ public class StudiesFilterManager implements Serializable {
         if (datasetIndexes.length == 0) {
             filteredQuantDatasetArr = inUsefullQuantDatasetMap;
             return;
-        } 
+        }
         resetHeatmapRowsAndColumn();
         filteredQuantDatasetArr.clear();
         Set<String> tColLab = new HashSet<String>();
@@ -283,18 +369,19 @@ public class StudiesFilterManager implements Serializable {
             }
 
         }
-       
+
         LinkedHashSet<String> tSelectedColLab = new LinkedHashSet<String>();
         LinkedHashSet<String> tSelectedRowLab = new LinkedHashSet<String>();
         for (String str : selectedHeatMapRows) {
-            if (tRowLab.contains(str)) {
+            if (tRowLab.contains(str) && !str.contains(userDiseaseGroupB)) {
                 tSelectedRowLab.add(str);
-               
+
             }
 
         }
+
         for (String str : selectedHeatMapColumns) {
-            if (tColLab.contains(str)) {
+            if (tColLab.contains(str) && !str.contains(userDiseaseGroupA)) {
                 tSelectedColLab.add(str);
             }
 
@@ -324,7 +411,7 @@ public class StudiesFilterManager implements Serializable {
      * @param selection
      */
     public void applyFilters(CSFFilterSelection selection) {
-        filterSelection = selection; 
+        filterSelection = selection;
         updateFilteredDatasetList(selection.getDatasetIndexes());
         this.SelectionChanged(selection.getType());
 //        }
@@ -351,7 +438,7 @@ public class StudiesFilterManager implements Serializable {
     }
 
     private void resetHeatmapRowsAndColumn() {
-       
+
         String[] pgArr = merge(diseaseGroupsI, diseaseGroupsII);
         selectedHeatMapRows.clear();
         for (String str : pgArr) {
@@ -361,6 +448,7 @@ public class StudiesFilterManager implements Serializable {
         }
         selectedHeatMapColumns.clear();
         selectedHeatMapColumns.addAll(selectedHeatMapRows);
+
     }
 
     /**
@@ -411,13 +499,15 @@ public class StudiesFilterManager implements Serializable {
     }
 
     public void changeDiseaseCategory(String diseaseCategory) {
-        this.inUsefullQuantDatasetMap = quantDatasetListObject.get(diseaseCategory).getQuantDatasetsList();
+        this.fullQuantDatasetMap = quantDatasetListObject.get(diseaseCategory).getQuantDatasetsList();
         this.filteredQuantDatasetArr.clear();
         this.diseaseCategorySet = quantDatasetListObject.get(diseaseCategory).getDiseaseCategories();
         this.activeHeader = quantDatasetListObject.get(diseaseCategory).getActiveHeaders();
         this.activeFilters = activeFilterMap.get(diseaseCategory);
         this.currentDsNumber = inUsefullQuantDatasetMap.size();
         inUseDiseaseName = diseaseCategory;
+        this.noSerumQuantDatasetMap = noSerumDiseaseCategory.get(diseaseCategory);
+        setNoSerum(noSerum);
 //        this.SelectionChanged("Disease_Category_Selection");
 
     }
@@ -456,6 +546,7 @@ public class StudiesFilterManager implements Serializable {
         this.selectedHeatMapRows.addAll(selectedRows);
         this.selectedHeatMapColumns.clear();
         this.selectedHeatMapColumns.addAll(selectedColumns);
+        this.currentDsNumber = fullDiseaseGroupMap.size();
         this.SelectionChanged("HeatMap_Update_level");
 
     }
