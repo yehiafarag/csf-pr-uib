@@ -398,6 +398,7 @@
     text-align: center;
     color:black;
     line-height:22px;
+    padding-left:7px !important;
 
 }
 .datasetInfoValues{
@@ -2215,7 +2216,7 @@ resetlabelbtn p{
     background-position: center;
 
 }
-.customizedproteinsLayout .bluelayout div{
+.customizedproteinsLayout .lightbluelayout div{
     background-image:  url(img/stable_blue.png) !important;
     background-color:rgba(255, 255, 255, .0);
     background-repeat: no-repeat;
@@ -2240,7 +2241,11 @@ resetlabelbtn p{
 .usercustdatatitle .comparisonHeaders {
     color:black !important;
 }
-
+.comparisonHeaders .closebtn{
+    background: blue;
+    
+    
+}
 .alzheimerhmcolumnlabel {
     margin-right: 148px;
     text-align: center;

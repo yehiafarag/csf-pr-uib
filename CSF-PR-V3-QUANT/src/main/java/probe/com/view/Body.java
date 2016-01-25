@@ -3,6 +3,7 @@ package probe.com.view;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
+import com.vaadin.ui.Alignment;
 import probe.com.view.body.AdminLayout;
 import probe.com.view.body.IdentificationDatasetsLayout;
 import probe.com.view.body.WelcomeLayout;
@@ -110,6 +111,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
         
         QuantCompareDataLayout quantCompareDataLayout = new QuantCompareDataLayout(CSFPR_Handler);
         compareLayout.addComponent(quantCompareDataLayout);
+        compareLayout.setComponentAlignment(quantCompareDataLayout, Alignment.TOP_CENTER);
 
 //      Tab 5content hidden tab (login form)
         adminLayout = new VerticalLayout();

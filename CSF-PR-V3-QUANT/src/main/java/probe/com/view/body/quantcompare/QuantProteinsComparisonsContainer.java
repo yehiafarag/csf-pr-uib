@@ -685,6 +685,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
             tableRow[i++] = protName;
             userCustomizedComparison.getComparProtsMap().get(acc.toString()).updateWidth(columnWidth);
             userCustomizedComparison.getComparProtsMap().get(acc.toString()).setCustomizedUserData(true);
+
             tableRow[i++] = userCustomizedComparison.getComparProtsMap().get(acc.toString());
 
             for (QuantDiseaseGroupsComparison cg : quantDiseaseGroupsComparisonArr) {
@@ -719,10 +720,15 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
         for (Object id : this.groupsComparisonProteinsTable.getItemIds()) {
             Item item = this.groupsComparisonProteinsTable.getItem(id);
             item.getItemProperty("Index").setValue(indexing);
+            DiseaseGroupsComparisonsProteinLayout protCompLayout = (DiseaseGroupsComparisonsProteinLayout) item.getItemProperty(userCustomizedComparison.getComparisonHeader()).getValue();
+            if (protCompLayout != null) {
+                protCompLayout.setTableItemId(id);
+                protCompLayout.addLayoutClickListener(QuantProteinsComparisonsContainer.this);
+            }
 
             for (QuantDiseaseGroupsComparison cg : quantDiseaseGroupsComparisonArr) {
 
-                DiseaseGroupsComparisonsProteinLayout protCompLayout = (DiseaseGroupsComparisonsProteinLayout) item.getItemProperty(cg.getComparisonHeader()).getValue();
+                 protCompLayout = (DiseaseGroupsComparisonsProteinLayout) item.getItemProperty(cg.getComparisonHeader()).getValue();
                 if (protCompLayout != null) {
                     protCompLayout.setTableItemId(id);
                     protCompLayout.addLayoutClickListener(QuantProteinsComparisonsContainer.this);
@@ -938,9 +944,9 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
         titleLayout.setWidth(width + "px");
         titleLayout.setHeight("20px");
         String header = comparison.getComparisonHeader();
-        String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] ;// " ( " + header.split(" / ")[1].split("\n")[1] + " )";
+        String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0];// " ( " + header.split(" / ")[1].split("\n")[1] + " )";
 
-       Label label = new Label();
+        Label label = new Label();
         label.setStyleName("comparisonHeaders");
         label.setContentMode(ContentMode.HTML);
         label.setWidth("90%");
@@ -953,10 +959,10 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
             closeCompariosonBtn.setEnabled(false);
             titleLayout.setStyleName("usercustdatatitle");
             label.setValue(updatedHeader);
-        }else{   
+        } else {
             String diseaseColor = this.Quant_Central_Manager.getDiseaseHashedColor(header.split(" / ")[1].split("\n")[1]);
-       
-            label.setValue("<font color='"+diseaseColor+"' style='font-weight: bold;'>"+updatedHeader+"</font>");
+
+            label.setValue("<font color='" + diseaseColor + "' style='font-weight: bold;'>" + updatedHeader + "</font>");
         }
 
         closeCompariosonBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {

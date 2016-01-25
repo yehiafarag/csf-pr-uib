@@ -54,6 +54,8 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
     private final Map<Integer, ProteinOverviewJFreeLineChartContainer> tabLayoutIndexMap = new HashMap<Integer, ProteinOverviewJFreeLineChartContainer>();
 
     private boolean externalSelection = false;
+    private Map<String, Integer> customizedTrendMap;
+    private final boolean showCustTrend;
 
     /**
      * central selection manager event
@@ -106,7 +108,12 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
             for (final String key : protSelectionMap.keySet()) {
                 String protAcc = key.replace("--", "").trim().split(",")[0];
                 String protName = key.replace("--", "").trim().split(",")[1];
-                HorizontalLayout vlo = generateProtTab(key, protName, protAcc, protSelectionMap.get(key), selectedComparisonList);
+                HorizontalLayout vlo;
+                if (showCustTrend) {
+                    vlo = generateProtTab(key, protName, protAcc, protSelectionMap.get(key), selectedComparisonList,customizedTrendMap.get(protAcc));
+                } else {
+                    vlo = generateProtTab(key, protName, protAcc, protSelectionMap.get(key), selectedComparisonList);
+                }
                 final Tab t1;
                 t1 = proteinsTabsheet.addTab(vlo);
 
@@ -182,6 +189,7 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
      * @param mainHandler
      */
     public QuantProteinsTabsheetContainerLayout(final QuantCentralManager datasetExploringCentralSelectionManager, boolean searchingMode, CSFPRHandler mainHandler) {
+        this.showCustTrend = false;
         this.searchingMode = searchingMode;
         this.CSFPR_Handler = mainHandler;
 
@@ -195,8 +203,85 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
         this.addComponent(noProtLabel);
         this.setComponentAlignment(noProtLabel, Alignment.TOP_LEFT);
         final SizeReporter sizeReporter = new SizeReporter(QuantProteinsTabsheetContainerLayout.this);
-         sizeReporter.addResizeListener(new ComponentResizeListener() {
-             int resizedCounter;
+        sizeReporter.addResizeListener(new ComponentResizeListener() {
+            int resizedCounter;
+
+            @Override
+            public void sizeChanged(ComponentResizeEvent event) {
+                if (resizedCounter == 2) {
+                    UI.getCurrent().scrollIntoView(QuantProteinsTabsheetContainerLayout.this);
+                    sizeReporter.removeResizeListener(this);
+                }
+                resizedCounter++;
+            }
+        });
+
+//        proteinsTabsheet = new TabSheet() {
+//
+//        };
+//        proteinsTabsheet.setCaptionAsHtml(true);
+//        proteinsTabsheet.setHeightUndefined();
+//        proteinsTabsheet.setStyleName(Reindeer.TABSHEET_MINIMAL);
+//        proteinsTabsheet.setVisible(false);
+//        proteinsTabsheet.addStyleName("hideoverflow");
+//        proteinsTabsheet.addSelectedTabChangeListener(QuantProteinsTabsheetContainerLayout.this);
+//        proteinsTabsheet.setCloseHandler(new TabSheet.CloseHandler() {
+//            @Override
+//            public void onTabClose(TabSheet tabsheet, Component tabContent) {
+//                protSelectionMap.remove(protSelectionTabMap.get(tabContent));
+//                if (protSelectionMap.isEmpty()) {
+//                    proteinsTabsheet.setVisible(false);
+//                }
+//
+//                Quant_Central_Manager.setQuantProteinsSelectionLayout(new LinkedHashMap<String, DiseaseGroupsComparisonsProteinLayout[]>(protSelectionMap));
+//            }
+//        });
+//        this.addComponent(proteinsTabsheet);
+//        this.initTabsheet();
+        this.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+            private int layoutCounter = 30;
+
+            @Override
+            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+                if (event.getClickedComponent() == null || event.getClickedComponent().getPrimaryStyleName() == null) {
+                    return;
+                }
+                int targetedLocation = Page.getCurrent().getBrowserWindowWidth() - event.getClientX();
+                if (layoutCounter < protSelectionMap.size() && event.getClickedComponent().getPrimaryStyleName().trim().equalsIgnoreCase("v-tabsheet") && (targetedLocation > 55 && targetedLocation < 101) && (event.getRelativeY() > 44 && event.getRelativeY() < 60)) {
+                    tabIndexMap.get(layoutCounter).setIcon(new ExternalResource(tabLayoutIndexMap.get(layoutCounter++).getThumbChart()));
+
+                }
+            }
+        });
+    }
+
+//    private int custTrend;
+    /**
+     *
+     * @param datasetExploringCentralSelectionManager
+     * @param searchingMode
+     * @param mainHandler
+     * @param customizedTrendMap
+     */
+    public QuantProteinsTabsheetContainerLayout(final QuantCentralManager datasetExploringCentralSelectionManager, boolean searchingMode, CSFPRHandler mainHandler, Map<String, Integer> customizedTrendMap) {
+        this.showCustTrend = true;
+        this.customizedTrendMap = customizedTrendMap;
+        this.searchingMode = searchingMode;
+        this.CSFPR_Handler = mainHandler;
+
+        this.Quant_Central_Manager = datasetExploringCentralSelectionManager;
+        this.Quant_Central_Manager.registerStudySelectionListener(QuantProteinsTabsheetContainerLayout.this);
+        this.setHeightUndefined();
+        this.setMargin(new MarginInfo(false, false, false, false));
+        this.noProtLabel.setContentMode(ContentMode.HTML);
+        noProtLabel.setWidth("400px");
+        noProtLabel.setHeight("40px");
+        this.addComponent(noProtLabel);
+        this.setComponentAlignment(noProtLabel, Alignment.TOP_LEFT);
+        final SizeReporter sizeReporter = new SizeReporter(QuantProteinsTabsheetContainerLayout.this);
+        sizeReporter.addResizeListener(new ComponentResizeListener() {
+            int resizedCounter;
+
             @Override
             public void sizeChanged(ComponentResizeEvent event) {
                 if (resizedCounter == 2) {
@@ -296,7 +381,32 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
         bodyLayout.setMargin(true);
         bodyLayout.setHeightUndefined();
         bodyLayout.setStyleName(Reindeer.LAYOUT_WHITE);
-        ProteinOverviewJFreeLineChartContainer overallPlotLayout = new ProteinOverviewJFreeLineChartContainer(Quant_Central_Manager,CSFPR_Handler, diseaseGroupsComparisonsProteinArray, selectedDiseaseGroupsComparisonsList, (pageWidth), quantProteinName, quantProteinAccession, searchingMode, proteinKey);
+        ProteinOverviewJFreeLineChartContainer overallPlotLayout = new ProteinOverviewJFreeLineChartContainer(Quant_Central_Manager, CSFPR_Handler, diseaseGroupsComparisonsProteinArray, selectedDiseaseGroupsComparisonsList, (pageWidth), quantProteinName, quantProteinAccession, searchingMode, proteinKey);
+        bodyLayout.addComponent(overallPlotLayout);
+        bodyLayout.setComponentAlignment(overallPlotLayout, Alignment.TOP_CENTER);
+        return bodyLayout;
+
+    }
+
+    /**
+     * initialize and generate quant proteins tab
+     *
+     * @param quantProteinName protein name
+     * @param quantProteinAccession
+     * @param diseaseGroupsComparisonsProteinArray
+     * @param selectedDiseaseGroupsComparisonsList disease groups comparisons
+     * list in case of searching mode
+     */
+    private HorizontalLayout generateProtTab(String proteinKey, String quantProteinName, String quantProteinAccession, DiseaseGroupsComparisonsProteinLayout[] diseaseGroupsComparisonsProteinArray, Set<QuantDiseaseGroupsComparison> selectedDiseaseGroupsComparisonsList, int custTrend) {
+        HorizontalLayout bodyLayout = new HorizontalLayout();
+        Page page = Page.getCurrent();
+        int pageWidth = page.getBrowserWindowWidth();
+        bodyLayout.setWidthUndefined();
+        bodyLayout.setSpacing(true);
+        bodyLayout.setMargin(true);
+        bodyLayout.setHeightUndefined();
+        bodyLayout.setStyleName(Reindeer.LAYOUT_WHITE);        
+        ProteinOverviewJFreeLineChartContainer overallPlotLayout = new ProteinOverviewJFreeLineChartContainer(Quant_Central_Manager, CSFPR_Handler, diseaseGroupsComparisonsProteinArray, selectedDiseaseGroupsComparisonsList, (pageWidth), quantProteinName, quantProteinAccession, searchingMode, proteinKey, custTrend);
         bodyLayout.addComponent(overallPlotLayout);
         bodyLayout.setComponentAlignment(overallPlotLayout, Alignment.TOP_CENTER);
         return bodyLayout;

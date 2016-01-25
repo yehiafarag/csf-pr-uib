@@ -9,7 +9,9 @@ import com.vaadin.server.Page;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.VerticalLayout;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.beans.quant.QuantProtein;
@@ -62,8 +64,13 @@ public class QuantCompareDataViewLayout extends VerticalLayout {
         quantProteinsComparisonsContainer.setLayoutWidth(layoutWidth);
         this.addComponent(comparisonsTableContainer);
         comparisonsTableContainer.setVisability(true);
+        
+        Map<String, Integer> customizedTrendMap = new HashMap<String, Integer>();
+        for(String accession: userCustomizedComparison.getComparProtsMap().keySet())        {
+            customizedTrendMap.put(accession.toLowerCase(), userCustomizedComparison.getComparProtsMap().get(accession).getSignificantTrindCategory());            
+        }
 
-        proteinsLayout = new QuantProteinsTabsheetContainerLayout(Quant_Central_Manager, true, CSFPR_Handler);
+        proteinsLayout = new QuantProteinsTabsheetContainerLayout(Quant_Central_Manager, true, CSFPR_Handler,customizedTrendMap);
         HideOnClickLayout proteinsLevelLayout = new HideOnClickLayout("Proteins Information", proteinsLayout, null, infoText, null);
 
         this.addComponent(proteinsLevelLayout);

@@ -959,7 +959,7 @@ public class CoreLogic implements Serializable {
     public QuantDiseaseGroupsComparison initUserCustomizedComparison(String diseaseGroupI, String diseaseGroupII, Set<String> highAcc, Set<String> stableAcc, Set<String> lowAcc) {
         QuantDiseaseGroupsComparison comparison = new QuantDiseaseGroupsComparison();
         comparison.setDatasetIndexes(new int[]{-1});
-        comparison.setComparisonHeader("User Data - " + diseaseGroupI.trim() + " / " + diseaseGroupII.trim());
+        comparison.setComparisonHeader("User Data - " + diseaseGroupI.trim() + " / " + diseaseGroupII.trim()+ "\n ");
         Map<String, DiseaseGroupsComparisonsProteinLayout> comparProtList = new LinkedHashMap<String, DiseaseGroupsComparisonsProteinLayout>();
         int index = -1;
         for (String str : highAcc) {
@@ -971,7 +971,7 @@ public class CoreLogic implements Serializable {
         }
         for (String str : stableAcc) {
             DiseaseGroupsComparisonsProteinLayout comProt = new DiseaseGroupsComparisonsProteinLayout(1, comparison, index--);
-            comProt.addNotReg(-1, -1);
+            comProt.addNotProvided(-1, -1);
             comProt.setProteinAccssionNumber(str);
             comProt.updateLabelLayout();
             comparProtList.put(str, comProt);

@@ -166,7 +166,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
 
         this.addComponent(middleLayout, 0, 1);
         this.setComponentAlignment(middleLayout, Alignment.TOP_LEFT);
-        this.resizeLayout(Math.max(diseaseGroupsColSet.size(),diseaseGroupsRowSet.size()));
+        this.resizeLayout(Math.max(diseaseGroupsColSet.size(), diseaseGroupsRowSet.size()));
 
         int heatmapH = heatmapW + 10;
         standeredChartHeight = heatmapH;
@@ -178,7 +178,12 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         middleLayout.addComponent(diseaseGroupsHeatmapFilter);
         middleLayout.setComponentAlignment(diseaseGroupsHeatmapFilter, Alignment.TOP_LEFT);
 
-        selectionOverviewBubbleChart = new ComparisonsSelectionOverviewBubbleChart(Quant_Central_Manager, CSFPR_Handler, initLayoutWidth, standeredChartHeight, new LinkedHashSet<QuantDiseaseGroupsComparison>(), searchQuantificationProtList);
+        if (userCustomizedComparison != null) {
+            selectionOverviewBubbleChart = new ComparisonsSelectionOverviewBubbleChart(Quant_Central_Manager, CSFPR_Handler, initLayoutWidth, standeredChartHeight, new LinkedHashSet<QuantDiseaseGroupsComparison>(), searchQuantificationProtList, userCustomizedComparison);
+        } else {
+            selectionOverviewBubbleChart = new ComparisonsSelectionOverviewBubbleChart(Quant_Central_Manager, CSFPR_Handler, initLayoutWidth, standeredChartHeight, new LinkedHashSet<QuantDiseaseGroupsComparison>(), searchQuantificationProtList);
+        }
+
         middleLayout.addComponent(selectionOverviewBubbleChart);
         middleLayout.setComponentAlignment(selectionOverviewBubbleChart, Alignment.TOP_LEFT);
 

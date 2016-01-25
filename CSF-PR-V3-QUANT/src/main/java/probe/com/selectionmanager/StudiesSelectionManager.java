@@ -150,6 +150,7 @@ public class StudiesSelectionManager implements Serializable {
             this.SelectionChanged("Quant_Proten_Selection");
 
         } catch (Exception exp) {
+            exp.printStackTrace();
             System.err.println("at error " + this.getClass().getName() + "  line 2261  " + exp.getLocalizedMessage());
 
         } finally {
