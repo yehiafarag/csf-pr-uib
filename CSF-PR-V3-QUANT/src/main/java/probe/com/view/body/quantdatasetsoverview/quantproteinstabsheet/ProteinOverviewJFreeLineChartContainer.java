@@ -24,6 +24,8 @@ import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -43,7 +45,6 @@ import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.LegendItem;
 import org.jfree.chart.LegendItemCollection;
-import org.jfree.chart.axis.AxisState;
 import org.jfree.chart.axis.NumberTick;
 import org.jfree.chart.axis.SymbolAxis;
 import org.jfree.chart.axis.Tick;
@@ -51,7 +52,6 @@ import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.entity.ChartEntity;
 import org.jfree.chart.entity.XYItemEntity;
-import org.jfree.chart.plot.PlotRenderingInfo;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.chart.title.LegendTitle;
@@ -100,7 +100,9 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
     private final Shape emptyRShape = ShapeUtilities.createDiamond(6f);
     private final Shape downArr = ShapeUtilities.createDownTriangle(6f);
     private final Shape upArr = ShapeUtilities.createUpTriangle(6f);
+    private final Shape square = ShapeUtilities.rotateShape(ShapeUtilities.createDiamond(8f),0.8f,0f,0f );
     private final Map<String, Color> diseaseColorMap = new HashMap<String, Color>();
+    private final Color[] customizedUserDataColor = new Color[]{Color.decode("#e5ffe5"), Color.WHITE, Color.decode("#e6f4ff"), Color.WHITE, Color.decode("#ffe5e5")};
 
     /**
      *
@@ -430,7 +432,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         dsInfoPopupContainerLayout.setStyleName(Reindeer.LAYOUT_WHITE);
 
 //        init rightside components 
-        studiesScatterChartsLayout = new ProteinStudiesComparisonsContainerLayout(Quant_Central_Manager, comparisonProteins, selectedComparisonList, width);
+        studiesScatterChartsLayout = new ProteinStudiesComparisonsContainerLayout(Quant_Central_Manager, comparisonProteins, selectedComparisonList, width, custTrend);
         rightSideLayout.addComponent(studiesScatterChartsLayout);
         defaultPeptidesExportInfoSet = studiesScatterChartsLayout.getDefaultPeptidesExportInfoSet();
         studiesScatterChartsLayout.setWidth(width * 2 + "px");
@@ -746,7 +748,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         dsInfoPopupContainerLayout.setStyleName(Reindeer.LAYOUT_WHITE);
 
 //        init rightside components 
-        studiesScatterChartsLayout = new ProteinStudiesComparisonsContainerLayout(Quant_Central_Manager, comparisonProteins, selectedComparisonList, width);
+        studiesScatterChartsLayout = new ProteinStudiesComparisonsContainerLayout(Quant_Central_Manager, comparisonProteins, selectedComparisonList, width, custTrend);
         rightSideLayout.addComponent(studiesScatterChartsLayout);
         defaultPeptidesExportInfoSet = studiesScatterChartsLayout.getDefaultPeptidesExportInfoSet();
         studiesScatterChartsLayout.setWidth(width * 2 + "px");
@@ -1054,11 +1056,10 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                         udatedTicksList.add(tick);
                     }
                 }
-                   int factor = (int)((plotArea.getHeight()/5)*0.25);
+                int factor = (int) ((plotArea.getHeight() / 5) * 0.25);
 
                 Rectangle2D up = new Rectangle((int) drawArea.getX(), (int) drawArea.getY() - factor, (int) drawArea.getWidth(), (int) drawArea.getHeight());
                 Rectangle2D pa = new Rectangle((int) plotArea.getX(), (int) plotArea.getY() - factor, (int) plotArea.getWidth(), (int) plotArea.getHeight());
-
 
                 super.drawGridBandsVertical(g2, up, pa, firstGridBandIsDark, udatedTicksList); //To change body of generated methods, choose Tools | Templates.
             }
@@ -1118,6 +1119,11 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
             @Override
             public void drawRangeTickBands(Graphics2D g2, Rectangle2D dataArea, List ticks) {
 
+                if (custTrend == -1) {
+                    super.drawRangeTickBands(g2, dataArea, ticks);
+                    return;
+
+                }
                 List udatedTicksList = new ArrayList();
                 for (Object tick : ticks) {
                     if (tick.toString().equalsIgnoreCase(tickLabels[custTrend])) {
@@ -1125,17 +1131,15 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                     }
                 }
                 Rectangle2D up;
-                int factor = (int)((dataArea.getHeight()/5)*0.25);
+                int factor = (int) ((dataArea.getHeight() / 5) * 0.25);
                 if (custTrend == 4) {
                     up = new Rectangle((int) dataArea.getX(), (int) dataArea.getY() + factor, (int) dataArea.getWidth(), (int) dataArea.getHeight());
 
-                }
-                else  if (custTrend == 2) {
-                    up = new Rectangle((int) dataArea.getX(), (int) dataArea.getY()- factor, (int) dataArea.getWidth(), (int) dataArea.getHeight());
+                } else if (custTrend == 2) {
+                    up = new Rectangle((int) dataArea.getX(), (int) dataArea.getY() - factor, (int) dataArea.getWidth(), (int) dataArea.getHeight());
 
-                }
-                else{
-                up = new Rectangle((int) dataArea.getX(), (int) dataArea.getY()-factor , (int) dataArea.getWidth(), (int) dataArea.getHeight());
+                } else {
+                    up = new Rectangle((int) dataArea.getX(), (int) dataArea.getY() - factor, (int) dataArea.getWidth(), (int) dataArea.getHeight());
                 }
 
                 super.drawRangeTickBands(g2, up, udatedTicksList); //To change body of generated methods, choose Tools | Templates.
@@ -1167,7 +1171,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
             private final Font font = new Font("Verdana", Font.PLAIN, 11);
             private final String[] labels = new String[]{"Low 100%", "Low <100% ", "Stable", "No Data", " High <100%", "High 100%"};
-            private final Shape[] shapes = new Shape[]{downArr, downArr, notRShape, emptyRShape, upArr, upArr};
+            private final Shape[] shapes = new Shape[]{downArr, downArr, notRShape, emptyRShape, upArr, upArr, square};
 
             @Override
             public LegendItemCollection getLegendItems() {
@@ -1190,6 +1194,16 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                     legendItemCollection.add(item);
 
                 }
+                if (custTrend != -1) {
+                    LegendItem item = new LegendItem("User Data", "", "", "", shapes[shapes.length - 1], customizedUserDataColor[custTrend]) {
+                        @Override
+                        public boolean isShapeOutlineVisible() {
+                            return true; //To change body of generated methods, choose Tools | Templates.
+                        }
+                    };
+                    legendItemCollection.add(item);
+
+                }
 
                 return legendItemCollection;//To change body of generated methods, choose Tools | Templates.
             }
@@ -1198,17 +1212,18 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         if (custTrend != -1) {
             yAxis.setGridBandsVisible(true);
             if (custTrend == 4) {
-                yAxis.setGridBandPaint(Color.white);
-                xyplot.setRangeTickBandPaint(Color.decode("#ffe5e5"));
+                yAxis.setGridBandPaint(Color.WHITE);
+                xyplot.setRangeTickBandPaint(customizedUserDataColor[4]);
             } else if (custTrend == 0) {
-                yAxis.setGridBandPaint(Color.decode("#e5ffe5"));
-                xyplot.setRangeTickBandPaint(Color.white);
-            }
-             else if (custTrend == 2) {
-                yAxis.setGridBandPaint(Color.decode("#e6f4ff"));
-                xyplot.setRangeTickBandPaint(Color.white);
+                yAxis.setGridBandPaint(customizedUserDataColor[0]);
+                xyplot.setRangeTickBandPaint(Color.WHITE);
+            } else if (custTrend == 2) {
+                yAxis.setGridBandPaint(customizedUserDataColor[2]);
+                xyplot.setRangeTickBandPaint(Color.WHITE);
             }
 
+        } else {
+            yAxis.setGridBandsVisible(false);
         }
 
 //        xyplot.setRangeTickBandPaint(Color.WHITE);

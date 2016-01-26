@@ -26,6 +26,7 @@ import probe.com.selectionmanager.QuantCentralManager;
 
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.HeatMapFilter;
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.ComparisonsSelectionOverviewBubbleChart;
+import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.PopupRecombineDiseaseGroups;
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.PopupReorderGroupsLayout;
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.StudiesInformationPopupBtn;
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.interactivepiechartfilters.StudiesPieChartFiltersContainerLayout;
@@ -222,6 +223,11 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         reorderGroups = new PopupReorderGroupsLayout(Quant_Central_Manager);
         leftBottomBtnLayout.addComponent(reorderGroups);
         leftBottomBtnLayout.setComponentAlignment(reorderGroups, Alignment.TOP_LEFT);
+        
+        
+        PopupRecombineDiseaseGroups  recombineGroups = new PopupRecombineDiseaseGroups(Quant_Central_Manager);
+        leftBottomBtnLayout.addComponent(recombineGroups);
+        leftBottomBtnLayout.setComponentAlignment(recombineGroups, Alignment.TOP_LEFT);
 
         Button clearFilterBtn = new Button("Reset");
         clearFilterBtn.setHeight("24px");

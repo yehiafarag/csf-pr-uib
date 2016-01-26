@@ -46,6 +46,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
     private final OptionGroup showSigneficantPeptidesOnly;
     private final Set<ProteinInformationDataForExport> defaultPeptidesExportInfoSet, orderedPeptidesExportInfoSet;
     private final Map<String, ProteinInformationDataForExport> proteinInformationDataForExportMap;
+    private final int  custTrend;
     private final TrendLegend legend ;
     public Set<ProteinInformationDataForExport> getOrderedPeptidesExportInfoSet() {
         return orderedPeptidesExportInfoSet;
@@ -58,7 +59,8 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
      * @param Quant_Central_Manager
      * @param width
      */
-    public ProteinStudiesComparisonsContainerLayout(final QuantCentralManager Quant_Central_Manager, DiseaseGroupsComparisonsProteinLayout[] proteinsComparisonsArr, Set<QuantDiseaseGroupsComparison> selectedComparisonList, int width) {
+    public ProteinStudiesComparisonsContainerLayout(final QuantCentralManager Quant_Central_Manager, DiseaseGroupsComparisonsProteinLayout[] proteinsComparisonsArr, Set<QuantDiseaseGroupsComparison> selectedComparisonList, int width,int custTrend) {
+        this.custTrend= custTrend;
         setStyleName(Reindeer.LAYOUT_WHITE);
         this.setWidth("100%");
         this.setHeightUndefined();
@@ -241,7 +243,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
                 if (cprot == null || cprot.getSignificantTrindCategory() == -1) {
                     continue;
                 }
-                ProteinStudyComparisonScatterPlotLayout protCompLayout = new ProteinStudyComparisonScatterPlotLayout(Quant_Central_Manager, cprot, width);
+                ProteinStudyComparisonScatterPlotLayout protCompLayout = new ProteinStudyComparisonScatterPlotLayout(Quant_Central_Manager, cprot, width,custTrend);
                 mainStudiesLayout.addComponent(protCompLayout, 0, rowIndex);
                 mainStudiesLayout.setComponentAlignment(protCompLayout, Alignment.MIDDLE_CENTER);
                 studyCompLayoutMap.put(cprot.getComparison(), protCompLayout);

@@ -13,9 +13,9 @@ import com.vaadin.ui.VerticalLayout;
  *
  * @author yfa041
  */
-public class ReorderDiseaseGroupLabel extends VerticalLayout{
+public class DiseaseGroupLabel extends VerticalLayout{
 
-    public ReorderDiseaseGroupLabel(int itemWidth, String strLabel,String styleName) {
+    public DiseaseGroupLabel(int itemWidth, String strLabel,String styleName) {
       
             this.setWidth(itemWidth + "px");
             this.setHeight("30px");

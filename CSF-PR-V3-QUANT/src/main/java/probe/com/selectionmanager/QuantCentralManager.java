@@ -34,10 +34,13 @@ public class QuantCentralManager implements Serializable {
     private final StudiesSelectionManager Studies_Selection_Manager;
 
     private final Map<String, String> diseaseHashedColorMap = new HashMap<String, String>();
-
+    
     public String getDiseaseHashedColor(String diseaseName) {
         return diseaseHashedColorMap.get(diseaseName);
     }
+
+  private final Map<String, String> default_DiseaseCat_DiseaseGroupMap;
+   
 
     public QuantCentralManager(CSFPRHandler CSFPR_Handler) {
         diseaseHashedColorMap.put("Multiple Sclerosis", "#7D0725");
@@ -45,7 +48,10 @@ public class QuantCentralManager implements Serializable {
         diseaseHashedColorMap.put("Parkinson's", "#74716E");
         diseaseHashedColorMap.put("Amyotrophic Lateral Sclerosis", "#7D0725");
         diseaseHashedColorMap.put("UserData", "#8210B0");
-        Studies_Filter_Manager = new StudiesFilterManager(CSFPR_Handler.getQuantDatasetInitialInformationObject(), CSFPR_Handler.getActivePieChartQuantFilters());//,filterUtility.getFullFilterList()
+        
+        default_DiseaseCat_DiseaseGroupMap= CSFPR_Handler.getDefault_DiseaseCat_DiseaseGroupMap();
+      
+        Studies_Filter_Manager = new StudiesFilterManager(CSFPR_Handler.getQuantDatasetInitialInformationObject(), CSFPR_Handler.getActivePieChartQuantFilters(),CSFPR_Handler.getDefault_DiseaseCat_DiseaseGroupMap());//,filterUtility.getFullFilterList()
         Studies_Selection_Manager = new StudiesSelectionManager();
 
     }
@@ -56,7 +62,11 @@ public class QuantCentralManager implements Serializable {
         diseaseHashedColorMap.put("Parkinson's", "#74716E");
         diseaseHashedColorMap.put("Amyotrophic Lateral Sclerosis", "#4b7865");
         diseaseHashedColorMap.put("UserData", "#8210B0");
-        Studies_Filter_Manager = new StudiesFilterManager(CSFPR_Handler.getQuantDatasetInitialInformationObject(searchQuantificationProtList), CSFPR_Handler.getActivePieChartQuantFilters(searchQuantificationProtList));//,filterUtility.getFullFilterList()
+       
+        
+        default_DiseaseCat_DiseaseGroupMap= CSFPR_Handler.getDefault_DiseaseCat_DiseaseGroupMap();
+
+        Studies_Filter_Manager = new StudiesFilterManager(CSFPR_Handler.getQuantDatasetInitialInformationObject(searchQuantificationProtList), CSFPR_Handler.getActivePieChartQuantFilters(searchQuantificationProtList),CSFPR_Handler.getDefault_DiseaseCat_DiseaseGroupMap());//,filterUtility.getFullFilterList()
         Studies_Selection_Manager = new StudiesSelectionManager();
     }
 
@@ -66,9 +76,10 @@ public class QuantCentralManager implements Serializable {
         diseaseHashedColorMap.put("Parkinson's", "#74716E");
         diseaseHashedColorMap.put("Amyotrophic Lateral Sclerosis", "#4b7865");
         diseaseHashedColorMap.put("UserData", "#8210B0");
-        
-        
-        Studies_Filter_Manager = new StudiesFilterManager(CSFPR_Handler.getQuantDatasetInitialInformationObject(searchQuantificationProtList), CSFPR_Handler.getActivePieChartQuantFilters(searchQuantificationProtList),userCustomizedComparison);//,filterUtility.getFullFilterList()
+       
+        default_DiseaseCat_DiseaseGroupMap= CSFPR_Handler.getDefault_DiseaseCat_DiseaseGroupMap();
+
+        Studies_Filter_Manager = new StudiesFilterManager(CSFPR_Handler.getQuantDatasetInitialInformationObject(searchQuantificationProtList), CSFPR_Handler.getActivePieChartQuantFilters(searchQuantificationProtList), userCustomizedComparison,CSFPR_Handler.getDefault_DiseaseCat_DiseaseGroupMap());//,filterUtility.getFullFilterList()
         Studies_Selection_Manager = new StudiesSelectionManager();
     }
 
@@ -84,6 +95,10 @@ public class QuantCentralManager implements Serializable {
      */
     public Map<Integer, QuantDatasetObject> getFullQuantDatasetMap() {
         return Studies_Filter_Manager.getFullQuantDatasetMap();
+    }
+
+    public Map<String, String> getDefault_DiseaseCat_DiseaseGroupMap() {
+        return default_DiseaseCat_DiseaseGroupMap;
     }
 
     /**
@@ -345,6 +360,10 @@ public class QuantCentralManager implements Serializable {
     public void changeDiseaseCategory(String diseaseCategory) {
         Studies_Filter_Manager.changeDiseaseCategory(diseaseCategory);
 
+    }
+
+    public void updateDiseaseGroupsNames(Map<String, String> updatedGroupsNamesMap) {
+        Studies_Filter_Manager.updateDiseaseGroupsNames(updatedGroupsNamesMap);
     }
 
     public String getInUseDiseaseName() {

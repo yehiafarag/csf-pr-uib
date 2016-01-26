@@ -429,6 +429,7 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
             ProteinOverviewJFreeLineChartContainer overallPlotLayout = (ProteinOverviewJFreeLineChartContainer) selectedTab.getComponent(0);
             overallPlotLayout.redrawCharts();
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("error at line 300 " + this.getClass().getName() + "  " + e.getMessage());
         }
     }

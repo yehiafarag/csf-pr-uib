@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -39,7 +40,57 @@ public class CSFPRHandler implements Serializable {
     private static final long serialVersionUID = 1L;
     private final CoreLogic logicLayer;
     private final AuthenticatorHandler authenticatorHandler;
-    private final Map<String,String>diseaseFullNameMap;
+    private final Map<String, String> diseaseFullNameMap;
+    private final Map<String, String> default_DiseaseCat_DiseaseGroupMap;
+    private final Map<String, QuantDatasetInitialInformationObject> quantDatasetInitialInformationObject;
+    String suggestNames = "Alzheimer's\n"
+            + "CIS\n"
+            + "CIS-CIS\n"
+            + "CIS-MS\n"
+            + "Healthy\n"
+            + "Healthy\n"
+            + "MCI\n"
+            + "MCI-MCI\n"
+            + "MCI-Alzheimer's\n"
+            + "MS treated\n"
+            + "MS treated\n"
+            + "Neurological\n"
+            + "Neurological\n"
+            + "Neurological\n"
+            + "Neurological\n"
+            + "Neurological\n"
+            + "Non Alzheimer's\n"
+            + "Non Demented\n"
+            + "Non Neurodeg.\n"
+            + "Parkinson's\n"
+            + "PDD\n"
+            + "Progressive MS\n"
+            + "Progressive MS\n"
+            + "RRMS";
+    String oreginalNames = "Alzheimer's\n"
+            + "CIS-MS(CIS)\n"
+            + "CIS-CIS\n"
+            + "CIS-MS\n"
+            + "Aged healthy\n"
+            + "Healthy controls\n"
+            + "MCI\n"
+            + "MCI nonprogressors\n"
+            + "MCI progressors\n"
+            + "RRMS Nataliz.\n"
+            + "SPMS Lamotri.\n"
+            + "Non MS\n"
+            + "OIND\n"
+            + "OIND + OND\n"
+            + "OND\n"
+            + "Sympt. controls\n"
+            + "Aged controls\n"
+            + "NDC\n"
+            + "Non-neurodeg.\n"
+            + "Parkinson's\n"
+            + "PDD\n"
+            + "PMS\n"
+            + "SPMS\n"
+            + "RRMS";
 
     public TipGenerator getTipsGenerator() {
         return tipsGenerator;
@@ -60,7 +111,17 @@ public class CSFPRHandler implements Serializable {
         logicLayer = new CoreLogic(url, dbName, driver, userName, password, filesURL);
         authenticatorHandler = new AuthenticatorHandler(url, dbName, driver, userName, password);
         this.diseaseFullNameMap = logicLayer.getDiseaseFullNameMap();
-        
+        this.quantDatasetInitialInformationObject = logicLayer.getQuantDatasetInitialInformationObject();
+//        default_DiseaseCat_DiseaseGroupMap = new LinkedHashMap<String, String>();
+//        for (String str : quantDatasetInitialInformationObject.keySet()) {
+//            if (str.equalsIgnoreCase("All")) {
+//                continue;
+//            }
+//            for (int i = 0; i < oreginalNames.split("\n").length; i++) {
+//                default_DiseaseCat_DiseaseGroupMap.put(suggestNames.split("\n")[i] + "_" + str, oreginalNames.split("\n")[i] + "_" + str);
+//            }
+//        }
+
     }
 
     /**
@@ -78,7 +139,8 @@ public class CSFPRHandler implements Serializable {
      *
      * @param file the dataset file
      * @param MIMEType the file type (txt or xls)
-     * @param idDataset identification dataset bean (in case of update existing dataset)
+     * @param idDataset identification dataset bean (in case of update existing
+     * dataset)
      * @return test boolean
      * @exception IOException
      * @exception SQLException
@@ -441,7 +503,7 @@ public class CSFPRHandler implements Serializable {
      * @return quant proteins list
      */
     public List<QuantProtein> searchQuantificationProtein(Query query, boolean toCompare) {
-        return logicLayer.searchQuantificationProteins(query,toCompare);
+        return logicLayer.searchQuantificationProteins(query, toCompare);
 
     }
 
@@ -453,7 +515,7 @@ public class CSFPRHandler implements Serializable {
      * @return QuantDatasetInitialInformationObject
      */
     public Map<String, QuantDatasetInitialInformationObject> getQuantDatasetInitialInformationObject() {
-        return logicLayer.getQuantDatasetInitialInformationObject();
+        return quantDatasetInitialInformationObject;
 
     }
 
@@ -535,13 +597,16 @@ public class CSFPRHandler implements Serializable {
      * @return updated Selected Comparison set
      */
     public Set<QuantDiseaseGroupsComparison> getComparisonProtList(Set<QuantDiseaseGroupsComparison> selectedComparisonList, List<QuantProtein> searchQuantificationProtList) {
+
         return logicLayer.getComparisonProtList(selectedComparisonList, searchQuantificationProtList);
 
     }
-  public QuantDiseaseGroupsComparison initUserCustomizedComparison(String diseaseGroupI, String diseaseGroupII, Set<String> highAcc, Set<String> stableAcc, Set<String> lowAcc) {
-      return logicLayer.initUserCustomizedComparison(diseaseGroupI, diseaseGroupII, highAcc, stableAcc, lowAcc);
-  
-  }
+
+    public QuantDiseaseGroupsComparison initUserCustomizedComparison(String diseaseGroupI, String diseaseGroupII, Set<String> highAcc, Set<String> stableAcc, Set<String> lowAcc) {
+        return logicLayer.initUserCustomizedComparison(diseaseGroupI, diseaseGroupII, highAcc, stableAcc, lowAcc);
+
+    }
+
     /**
      * k-means clustering for protein
      *
@@ -559,7 +624,9 @@ public class CSFPRHandler implements Serializable {
         return this.logicLayer.getResourceOverviewInformation();
 
     }
-    
-    
+
+    public Map<String, String> getDefault_DiseaseCat_DiseaseGroupMap() {
+        return default_DiseaseCat_DiseaseGroupMap;
+    }
 
 }

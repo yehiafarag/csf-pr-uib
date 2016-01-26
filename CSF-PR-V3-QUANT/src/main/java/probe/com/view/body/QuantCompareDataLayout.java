@@ -99,8 +99,8 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
         for (String diseaseCategory : quantDatasetInitialInformationObjectMap.keySet()) {
             QuantDatasetInitialInformationObject quantDatasetInitialInformationObject = quantDatasetInitialInformationObjectMap.get(diseaseCategory);
             for (QuantDatasetObject qdsObject : quantDatasetInitialInformationObject.getQuantDatasetsList().values()) {
-                diseaseGroupNames.add(qdsObject.getPatientsSubGroup1().split("\n")[0]);
-                diseaseGroupNames.add(qdsObject.getPatientsSubGroup2().split("\n")[0]);
+                diseaseGroupNames.add(qdsObject.getPatientsSubGroup1().split("\n")[0].trim());
+                diseaseGroupNames.add(qdsObject.getPatientsSubGroup2().split("\n")[0].trim());
             }
 
         }
@@ -192,12 +192,12 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
                 if (diseaseGroupsListA.getValue() != null && diseaseGroupsListB.getValue() != null) {
                     selectionResultsLabel.setValue("Selection:   " + diseaseGroupsListA.getValue().toString() + " / " + diseaseGroupsListB.getValue().toString());
                     miniselectionResultsLabel.setValue("     (" + diseaseGroupsListA.getValue().toString() + " / " + diseaseGroupsListB.getValue().toString() + ")");
-                    useRowSorter = diseaseGroupNames.contains(diseaseGroupsListA.getValue().toString());
-                    useColumnSorter = diseaseGroupNames.contains(diseaseGroupsListB.getValue().toString());
-                    if (diseaseGroupsListA.getValue().toString().equalsIgnoreCase(diseaseGroupsListB.getValue().toString())) {
+                    useRowSorter = diseaseGroupNames.contains(diseaseGroupsListA.getValue().toString().trim());
+                    useColumnSorter = diseaseGroupNames.contains(diseaseGroupsListB.getValue().toString().trim());
+                    if (diseaseGroupsListA.getValue().toString().trim().equalsIgnoreCase(diseaseGroupsListB.getValue().toString().trim())) {
                         useRowSorter = useColumnSorter = false;
                     }
-                    reset();
+//                    reset();
 
                 }
             }

@@ -43,6 +43,8 @@ public class StudiesFilterManager implements Serializable {
     private Set<String> diseaseCategorySet;
     private final LinkedHashMap<String, CSFFilter> registeredFilterSet = new LinkedHashMap<String, CSFFilter>();
 
+    private final Map<String, String> default_DiseaseCat_DiseaseGroupMap;
+
     private CSFFilterSelection filterSelection;
 //    private LinkedHashSet<String> selectedHeatMapRows;
 //    private LinkedHashSet<String> selectedHeatMapColumns;
@@ -98,7 +100,9 @@ public class StudiesFilterManager implements Serializable {
 
     private Set<JFreeChart> studiesOverviewPieChart = new LinkedHashSet<JFreeChart>();
 
-    public StudiesFilterManager(Map<String, QuantDatasetInitialInformationObject> quantDatasetListObject, Map<String, boolean[]> activeFilterMap) {
+    public StudiesFilterManager(Map<String, QuantDatasetInitialInformationObject> quantDatasetListObject, Map<String, boolean[]> activeFilterMap, Map<String, String> default_DiseaseCat_DiseaseGroupMap) {
+
+        this.default_DiseaseCat_DiseaseGroupMap = default_DiseaseCat_DiseaseGroupMap;
 
         this.fullDiseaseGroupMap = new LinkedHashMap<Integer, DiseaseGroup>();
         this.selectedDiseaseGroupMap = new LinkedHashMap<Integer, DiseaseGroup>();
@@ -142,8 +146,9 @@ public class StudiesFilterManager implements Serializable {
     }
     private String userDiseaseGroupA = "VeryHårdToExistByChanceøæå", userDiseaseGroupB = "VeryHårdToExistByChanceøæå";
 
-    public StudiesFilterManager(Map<String, QuantDatasetInitialInformationObject> quantDatasetListObject, Map<String, boolean[]> activeFilterMap, QuantDiseaseGroupsComparison userCustomizedComparison) {
+    public StudiesFilterManager(Map<String, QuantDatasetInitialInformationObject> quantDatasetListObject, Map<String, boolean[]> activeFilterMap, QuantDiseaseGroupsComparison userCustomizedComparison, Map<String, String> default_DiseaseCat_DiseaseGroupMap) {
 
+        this.default_DiseaseCat_DiseaseGroupMap = default_DiseaseCat_DiseaseGroupMap;
         this.fullDiseaseGroupMap = new LinkedHashMap<Integer, DiseaseGroup>();
         this.selectedDiseaseGroupMap = new LinkedHashMap<Integer, DiseaseGroup>();
         this.quantDatasetListObject = quantDatasetListObject;
@@ -186,7 +191,7 @@ public class StudiesFilterManager implements Serializable {
             userDiseaseGroupA = userCustomizedComparison.getComparisonHeader().split(" / ")[0].replace("User Data - ", "").trim();
         }
         if (userCustomizedComparison.isUseCustomColumnHeaderToSort()) {
-            userDiseaseGroupB = userCustomizedComparison.getComparisonHeader().split(" / ")[1];
+            userDiseaseGroupB = userCustomizedComparison.getComparisonHeader().split(" / ")[1].replace("\n", "").trim();
         }
 
         this.updateRowsAndColumns("Reset_Disease_Groups_Level");
@@ -509,6 +514,10 @@ public class StudiesFilterManager implements Serializable {
         this.noSerumQuantDatasetMap = noSerumDiseaseCategory.get(diseaseCategory);
         setNoSerum(noSerum);
 //        this.SelectionChanged("Disease_Category_Selection");
+
+    }
+
+    public void updateDiseaseGroupsNames(Map<String, String> updatedGroupsNamesMap) {
 
     }
 

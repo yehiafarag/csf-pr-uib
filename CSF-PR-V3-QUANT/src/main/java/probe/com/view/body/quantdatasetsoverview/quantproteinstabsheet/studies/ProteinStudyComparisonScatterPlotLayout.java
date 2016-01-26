@@ -20,9 +20,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Paint;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -72,7 +74,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
     private final int imgWidth;
     private final Map<String, QuantDatasetObject> dsKeyDatasetMap = new HashMap<String, QuantDatasetObject>();
 
-    ;
+    
 
     /**
      *
@@ -91,6 +93,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
     private PeptidesStackedBarChartsControler studyPopupLayoutManager;
     private final int width;
     private JFreeChart scatterPlot;
+    private int custTrend = -1;
 
     /**
      *
@@ -98,7 +101,8 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
      * @param width
      * @param Quant_Central_Manager
      */
-    public ProteinStudyComparisonScatterPlotLayout(final QuantCentralManager Quant_Central_Manager, final DiseaseGroupsComparisonsProteinLayout cp, int width) {
+    public ProteinStudyComparisonScatterPlotLayout(final QuantCentralManager Quant_Central_Manager, final DiseaseGroupsComparisonsProteinLayout cp, int width,int custTrend) {
+        this.custTrend=custTrend;
         this.Quant_Central_Manager = Quant_Central_Manager;
         this.setColumns(4);
         this.setRows(2);
@@ -316,6 +320,27 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         final String[] labels = new String[]{" ", ("Low (" + cp.getSignificantDown() + ")"), " ", ("Stable (" + cp.getNotProvided() + ")"), " ", ("High (" + cp.getSignificantUp() + ")"), ""};
         final Color[] labelsColor = new Color[]{Color.LIGHT_GRAY, new Color(80, 183, 71), Color.LIGHT_GRAY, new Color(1, 141, 244), Color.LIGHT_GRAY, Color.RED, Color.LIGHT_GRAY};
         final SymbolAxis domainAxis = new SymbolAxis("X", labels) {
+            
+                @Override
+            protected void drawGridBandsVertical(Graphics2D g2, Rectangle2D drawArea, Rectangle2D plotArea, boolean firstGridBandIsDark, List ticks) {
+                List udatedTicksList = new ArrayList();
+                
+                 
+                for (Object tick : ticks) {
+                    if (tick.toString().equalsIgnoreCase(labels[custTrend+1])) {
+                        udatedTicksList.add(tick);
+                    }
+                }   
+//                System.out.println("at ticks is "+ticks);
+//                 System.out.println("at udatedTicksList is "+udatedTicksList);
+//                int factor = (int) ((plotArea.getHeight() / 5) * 0.25);
+//
+//                Rectangle2D up = new Rectangle((int) drawArea.getX(), (int) drawArea.getY() - factor, (int) drawArea.getWidth(), (int) drawArea.getHeight());
+//                Rectangle2D pa = new Rectangle((int) plotArea.getX(), (int) plotArea.getY() - factor, (int) plotArea.getWidth(), (int) plotArea.getHeight());
+
+                super.drawGridBandsVertical(g2, drawArea, plotArea, firstGridBandIsDark, udatedTicksList); //To change body of generated methods, choose Tools | Templates.
+            }
+            
             int x = 0;
 
             @Override
@@ -332,7 +357,9 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         domainAxis.setTickLabelFont(f);
         domainAxis.setAutoRange(false);
         domainAxis.setLabel(null);
-        domainAxis.setGridBandsVisible(false);
+          
+        
+//        domainAxis.setGridBandsVisible(false);
         String xTile = "#Patients";
 
         JFreeChart jFreeChart = ChartFactory.createScatterPlot(null,
@@ -345,7 +372,38 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
                 false // URLs?
         );
         XYPlot plot1 = (XYPlot) jFreeChart.getPlot();
-        XYPlot plot = new XYPlot(dataset, plot1.getDomainAxis(), plot1.getRangeAxis(), plot1.getRenderer()) {
+        XYPlot xyplot = new XYPlot(dataset, plot1.getDomainAxis(), plot1.getRangeAxis(), plot1.getRenderer()) {
+            
+            @Override
+            public void drawDomainTickBands(Graphics2D g2, Rectangle2D dataArea, List ticks) {
+
+                if(custTrend == -1){
+                   super.drawDomainTickBands(g2, dataArea, ticks);
+                   return;
+                
+                }
+                List udatedTicksList = new ArrayList();
+                for (Object tick : ticks) {
+                    if (tick.toString().equalsIgnoreCase(labels[custTrend+1])) {
+                        udatedTicksList.add(tick);
+                    }
+                }
+                Rectangle2D up;
+                int factor = (int) ((dataArea.getHeight() / 5) * 0.5);
+                if (custTrend == 4) {
+                    up = new Rectangle((int) dataArea.getX(), (int) dataArea.getY() + factor, (int) dataArea.getWidth(), (int) dataArea.getHeight());
+
+                } else if (custTrend == 2) {
+                    up = new Rectangle((int) dataArea.getX(), (int) dataArea.getY() - factor, (int) dataArea.getWidth(), (int) dataArea.getHeight());
+
+                } else {
+                    up = new Rectangle((int) dataArea.getX(), (int) dataArea.getY() - factor, (int) dataArea.getWidth(), (int) dataArea.getHeight());
+                }
+
+                super.drawDomainTickBands(g2, up, udatedTicksList); //To change body of generated methods, choose Tools | Templates.
+            }
+            
+            
             @Override
             protected void drawDomainGridlines(Graphics2D g2, Rectangle2D dataArea, List ticks) {
                 super.drawDomainGridlines(g2, dataArea, ticks); //To change body of generated methods, choose Tools | Templates.
@@ -366,32 +424,49 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
                 }
             }
         };
-        plot.setOrientation(PlotOrientation.HORIZONTAL);
-        JFreeChart tempScatterPlot = new JFreeChart(plot);
+         if (custTrend != -1) {
+            domainAxis.setGridBandsVisible(true);
+            if (custTrend == 4) {
+                domainAxis.setGridBandPaint(Color.decode("#ffe5e5"));
+                xyplot.setDomainTickBandPaint(Color.decode("#ffe5e5"));
+                domainAxis.setGridBandAlternatePaint(Color.decode("#ffe5e5"));
+            } else if (custTrend == 0) {
+                domainAxis.setGridBandPaint(Color.decode("#e5ffe5"));
+                xyplot.setDomainTickBandPaint(Color.white);
+            } else if (custTrend == 2) {
+                domainAxis.setGridBandPaint(Color.decode("#e6f4ff"));
+                xyplot.setDomainTickBandPaint(Color.white);
+            }
+
+        } else {
+            domainAxis.setGridBandsVisible(false);
+        }
+        xyplot.setOrientation(PlotOrientation.HORIZONTAL);
+        JFreeChart tempScatterPlot = new JFreeChart(xyplot);
         tempScatterPlot.setBackgroundPaint(Color.WHITE);
         tempScatterPlot.getLegend().setVisible(false);
         Color c = new Color(242, 242, 242);
-        plot.setDomainAxis(domainAxis);
-        plot.setDomainGridlinePaint(Color.GRAY);
-        plot.setDomainGridlinesVisible(true);
-        plot.setRangeGridlinesVisible(true);
-        plot.setRangeGridlinePaint(Color.GRAY);
-        plot.setOutlinePaint(Color.GRAY);
-        XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
-        ValueAxis va = plot.getDomainAxis();
+        xyplot.setDomainAxis(domainAxis);
+        xyplot.setDomainGridlinePaint(Color.GRAY);
+        xyplot.setDomainGridlinesVisible(true);
+        xyplot.setRangeGridlinesVisible(true);
+        xyplot.setRangeGridlinePaint(Color.GRAY);
+        xyplot.setOutlinePaint(Color.GRAY);
+        XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) xyplot.getRenderer();
+        ValueAxis va = xyplot.getDomainAxis();
         va.setAutoRange(false);
         va.setMinorTickCount(0);
         va.setVisible(true);
         maxPatNumber = Math.ceil(maxPatNumber / 100.0) * 100;
-        plot.getRangeAxis().setRange(0, maxPatNumber);
-        NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+        xyplot.getRangeAxis().setRange(0, maxPatNumber);
+        NumberAxis rangeAxis = (NumberAxis) xyplot.getRangeAxis();
         rangeAxis.setTickUnit(new NumberTickUnit(10));
         rangeAxis.setLabel(xTile);
         rangeAxis.setLabelFont(f);
         rangeAxis.setLabelPaint(Color.GRAY);
 
         va.setRange(0, 6);
-        plot.setBackgroundPaint(Color.WHITE);
+        xyplot.setBackgroundPaint(Color.WHITE);
         renderer.setUseOutlinePaint(true);
 
         Color c0 = new Color(80, 183, 71);
@@ -463,18 +538,18 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
 
         tempScatterPlot.setBorderVisible(false);
 
-        plot.setSeriesRenderingOrder(SeriesRenderingOrder.REVERSE);
+        xyplot.setSeriesRenderingOrder(SeriesRenderingOrder.REVERSE);
 
-        plot.setBackgroundPaint(c);
+        xyplot.setBackgroundPaint(c);
 
         heighlightedScatterPlottImgUrl = saveToFile(tempScatterPlot, w, h, defaultScatterPlotRenderingInfo);
 
-        plot.setBackgroundPaint(Color.WHITE);
+        xyplot.setBackgroundPaint(Color.WHITE);
         defaultScatterPlottImgUrl = saveToFile(tempScatterPlot, w, h, defaultScatterPlotRenderingInfo);
 
         TextTitle title = new TextTitle(comparisonTitle.getValue(), f);
 
-        scatterPlot = new JFreeChart(plot);
+        scatterPlot = new JFreeChart(xyplot);
         scatterPlot.setTitle(title);
 
         scatterPlot.setBorderVisible(false);

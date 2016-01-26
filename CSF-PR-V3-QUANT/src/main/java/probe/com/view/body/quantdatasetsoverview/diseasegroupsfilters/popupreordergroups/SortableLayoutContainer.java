@@ -37,7 +37,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import probe.com.view.core.ReorderDiseaseGroupLabel;
+import probe.com.view.core.DiseaseGroupLabel;
 
 /**
  *
@@ -274,7 +274,7 @@ public class SortableLayoutContainer extends VerticalLayout {
         groupsIds.clear();
         groupSelectionMap.clear();
         for (String strLabel : datasource) {
-            ReorderDiseaseGroupLabel container = new ReorderDiseaseGroupLabel(itemWidth, strLabel,diseaseStyleMap.get(strLabel.split("\n")[1]));
+            DiseaseGroupLabel container = new DiseaseGroupLabel(itemWidth, strLabel,diseaseStyleMap.get(strLabel.split("\n")[1]));
             componentsList.add(container);
             groupSelectionMap.put(strLabel, Boolean.FALSE);
             groupsIds.add(strLabel);
