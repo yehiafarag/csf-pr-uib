@@ -2170,7 +2170,7 @@ public class DataBase implements Serializable {
                 sb.append(" OR ");
 
             }
-            
+
 //            String stat = sb.toString().substring(0, sb.length() - 4);
             PreparedStatement selectPumed_idStat;
             String selectPumed_id = "SELECT  `pumed_id` ,  `disease_category` FROM  `quant_dataset_table` GROUP BY  `pumed_id` ,  `disease_category` ORDER BY  `pumed_id` ";
@@ -3244,5 +3244,52 @@ public class DataBase implements Serializable {
 
         return str;
 
+    }
+
+    /**
+     * Get set of disease groups names for special disease category
+     *
+     * @param diseaseCat
+     * @return map of the short and long diseases names
+     */
+    public Set<String> getDiseaseGroupNameMap(String diseaseCat) {
+        Set<String> diseaseNames = new HashSet<String>();
+          String selectPatient_sub_group_i = "SELECT `patient_sub_group_i` FROM `quant_dataset_table`  where `disease_category` = ? GROUP BY `patient_sub_group_i` ORDER BY `patient_sub_group_i` ";
+       
+        String selectPatient_sub_group_ii = "SELECT `patient_sub_group_ii` FROM `quant_dataset_table`  where `disease_category` = ? GROUP BY `patient_sub_group_ii` ORDER BY `patient_sub_group_ii` ";
+        try {
+            if (conn == null || conn.isClosed()) {
+                Class.forName(driver).newInstance();
+                conn = DriverManager.getConnection(url + dbName, userName, password);
+            }
+            PreparedStatement selectProStat = conn.prepareStatement(selectPatient_sub_group_i);
+            selectProStat.setString(1, diseaseCat);
+            ResultSet rs = selectProStat.executeQuery();
+            System.gc();
+            while (rs.next()) {
+                diseaseNames.add(rs.getString("patient_sub_group_i").trim());
+            }
+            rs.close();
+            
+            
+            selectProStat = conn.prepareStatement(selectPatient_sub_group_ii);
+            selectProStat.setString(1, diseaseCat);
+            rs = selectProStat.executeQuery();
+            System.gc();
+            while (rs.next()) {
+                diseaseNames.add(rs.getString("patient_sub_group_ii").trim());
+            }
+            
+        } catch (SQLException e) {
+            System.err.println("at error " + this.getClass().getName() + "  line 3167  " + e.getLocalizedMessage());
+        } catch (ClassNotFoundException e) {
+            System.err.println("at error " + this.getClass().getName() + "  line 3167  " + e.getLocalizedMessage());
+        } catch (InstantiationException e) {
+            System.err.println("at error " + this.getClass().getName() + "  line 3167  " + e.getLocalizedMessage());
+        } catch (IllegalAccessException e) {
+            System.err.println("at error " + this.getClass().getName() + "  line 3167  " + e.getLocalizedMessage());
+        }
+
+        return diseaseNames;
     }
 }

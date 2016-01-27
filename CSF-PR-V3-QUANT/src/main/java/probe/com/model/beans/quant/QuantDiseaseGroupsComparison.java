@@ -7,7 +7,9 @@ package probe.com.model.beans.quant;
 
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import java.io.Serializable;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -37,7 +39,7 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
     public String getComparisonHeader() {
         return comparisonHeader;
     }
-
+   
     /**
      *
      * @param comparisonHeader
@@ -106,6 +108,6 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
     public void setUseCustomColumnHeaderToSort(boolean useCustomColumnHeaderToSort) {
         this.useCustomColumnHeaderToSort = useCustomColumnHeaderToSort;
     }
-   
+
     
 }

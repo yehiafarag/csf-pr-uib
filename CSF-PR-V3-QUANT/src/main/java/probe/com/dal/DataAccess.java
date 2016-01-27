@@ -408,4 +408,15 @@ public class DataAccess implements Serializable {
         return db.getDiseaseFullNameMap();
     }
 
+     /**
+     * Get set of disease groups names for special disease category
+     *
+     * @param diseaseCat
+     * @return map of the short and long diseases names
+     */
+    public Set<String> getDiseaseGroupNameMap(String diseaseCat) {
+        return db.getDiseaseGroupNameMap(diseaseCat);
+        
+    }
+    
 }

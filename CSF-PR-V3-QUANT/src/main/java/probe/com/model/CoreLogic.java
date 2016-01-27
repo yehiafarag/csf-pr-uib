@@ -995,10 +995,11 @@ public class CoreLogic implements Serializable {
      *
      * @param selectedComparisonList selected groups comparison list
      * @param searchQuantificationProtList searching results (null allowed here)
+     * @param diseaseGroupsHeaderToOregenalDiseaseGroupsNames
      *
      * @return updated Selected Comparison List
      */
-    public Set<QuantDiseaseGroupsComparison> getComparisonProtList(Set<QuantDiseaseGroupsComparison> selectedComparisonList, List<QuantProtein> searchQuantificationProtList) {
+    public Set<QuantDiseaseGroupsComparison> getComparisonProtList(Set<QuantDiseaseGroupsComparison> selectedComparisonList, List<QuantProtein> searchQuantificationProtList,Map<String, Set<String>> diseaseGroupsHeaderToOregenalDiseaseGroupsNames) {
 
         Set<QuantDiseaseGroupsComparison> updatedSelectedComparisonList = new LinkedHashSet<QuantDiseaseGroupsComparison>();
         Set<QuantProtein> fullComparisonProtMap = new HashSet<QuantProtein>();
@@ -1066,8 +1067,10 @@ public class CoreLogic implements Serializable {
 //            
 //            }else{
              pGrI = comparison.getComparisonHeader().split(" / ")[0].trim();
+             Set<String> pGrISet=diseaseGroupsHeaderToOregenalDiseaseGroupsNames.get(pGrI);
              pGrII = comparison.getComparisonHeader().split(" / ")[1].trim(); 
-//            }
+               Set<String> pGrIISet=diseaseGroupsHeaderToOregenalDiseaseGroupsNames.get(pGrII);
+            //            }
              
           
 
@@ -1093,7 +1096,7 @@ public class CoreLogic implements Serializable {
                     significantPValue = false;
 
                 }
-                if ((pGrI.equalsIgnoreCase(quant.getPatientGroupI()) || pGrI.equalsIgnoreCase(quant.getPatientSubGroupI())) && (pGrII.equalsIgnoreCase(quant.getPatientGroupII()) || pGrII.equalsIgnoreCase(quant.getPatientSubGroupII()))) {
+                if ((pGrISet.contains(quant.getPatientGroupI()) || pGrISet.contains(quant.getPatientSubGroupI())) && (pGrIISet.contains(quant.getPatientGroupII()) || pGrIISet.contains(quant.getPatientSubGroupII()))) {
                     if (quant.getStringFCValue().equalsIgnoreCase("Decreased") || quant.getStringFCValue().equalsIgnoreCase("Decrease")) {
                         comProt.addDown((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
                     } else if (quant.getStringFCValue().equalsIgnoreCase("Increased") || quant.getStringFCValue().equalsIgnoreCase("Increase")) {
@@ -1160,7 +1163,7 @@ public class CoreLogic implements Serializable {
 
                                 }
                                 if (quantPeptide.getFc_value() != -1000000000.0) {
-                                    quantPeptide.setFc_value((1.0 / quantPeptide.getFc_value()) * -1);
+                                    quantPeptide.setFc_value(quantPeptide.getFc_value() * -1.0);//((1.0 / quantPeptide.getFc_value()) * -1);
                                 }
 
                                 updatedQuantPeptidesList.add(quantPeptide);
@@ -1188,7 +1191,7 @@ public class CoreLogic implements Serializable {
 
                         }
                         if (quant.getFcPatientGroupIonPatientGroupII() != -1000000000.0) {
-                            quant.setFcPatientGroupIonPatientGroupII(1.0 / quant.getFcPatientGroupIonPatientGroupII() * -1);
+                            quant.setFcPatientGroupIonPatientGroupII( quant.getFcPatientGroupIonPatientGroupII() * -1.0);
                         }
                         String pgI = quant.getPatientGroupII();
                         String pSubGI = quant.getPatientSubGroupII();
@@ -1325,5 +1328,17 @@ public class CoreLogic implements Serializable {
      */
     public Map<String, String> getDiseaseFullNameMap() {
         return da.getDiseaseFullNameMap();
+    }
+    
+    
+     /**
+     * Get set of disease groups names for special disease category
+     *
+     * @param diseaseCat
+     * @return map of the short and long diseases names
+     */
+    public Set<String> getDiseaseGroupNameMap(String diseaseCat) {
+        return da.getDiseaseGroupNameMap(diseaseCat);
+        
     }
 }

@@ -43,7 +43,8 @@ public class StudiesFilterManager implements Serializable {
     private Set<String> diseaseCategorySet;
     private final LinkedHashMap<String, CSFFilter> registeredFilterSet = new LinkedHashMap<String, CSFFilter>();
 
-    private final Map<String, String> default_DiseaseCat_DiseaseGroupMap;
+    private final Map<String, Map<String, String>> default_DiseaseCat_DiseaseGroupMap;
+    private final Map<String, Map<String, String>> inuse_DiseaseCat_DiseaseGroupMap;
 
     private CSFFilterSelection filterSelection;
 //    private LinkedHashSet<String> selectedHeatMapRows;
@@ -54,6 +55,7 @@ public class StudiesFilterManager implements Serializable {
     private String[] diseaseGroupsI, diseaseGroupsII;
     private final Map<Integer, DiseaseGroup> fullDiseaseGroupMap;
     private final Map<Integer, DiseaseGroup> selectedDiseaseGroupMap;
+    private final Map<String, Set<String>> diseaseGroupsHeaderToOregenalDiseaseGroupsNames = new LinkedHashMap<String, Set<String>>();
 
     public boolean isNoSerum() {
         return noSerum;
@@ -100,7 +102,7 @@ public class StudiesFilterManager implements Serializable {
 
     private Set<JFreeChart> studiesOverviewPieChart = new LinkedHashSet<JFreeChart>();
 
-    public StudiesFilterManager(Map<String, QuantDatasetInitialInformationObject> quantDatasetListObject, Map<String, boolean[]> activeFilterMap, Map<String, String> default_DiseaseCat_DiseaseGroupMap) {
+    public StudiesFilterManager(Map<String, QuantDatasetInitialInformationObject> quantDatasetListObject, Map<String, boolean[]> activeFilterMap, Map<String, Map<String, String>> default_DiseaseCat_DiseaseGroupMap) {
 
         this.default_DiseaseCat_DiseaseGroupMap = default_DiseaseCat_DiseaseGroupMap;
 
@@ -142,24 +144,20 @@ public class StudiesFilterManager implements Serializable {
         this.activeHeader = quantDatasetListObject.get(key).getActiveHeaders();
         this.diseaseCategorySet = quantDatasetListObject.keySet();
 
+        inuse_DiseaseCat_DiseaseGroupMap = new LinkedHashMap<String, Map<String, String>>(default_DiseaseCat_DiseaseGroupMap);
+
         this.updateRowsAndColumns("Reset_Disease_Groups_Level");
     }
     private String userDiseaseGroupA = "VeryHårdToExistByChanceøæå", userDiseaseGroupB = "VeryHårdToExistByChanceøæå";
 
-    public StudiesFilterManager(Map<String, QuantDatasetInitialInformationObject> quantDatasetListObject, Map<String, boolean[]> activeFilterMap, QuantDiseaseGroupsComparison userCustomizedComparison, Map<String, String> default_DiseaseCat_DiseaseGroupMap) {
+    public StudiesFilterManager(Map<String, QuantDatasetInitialInformationObject> quantDatasetListObject, Map<String, boolean[]> activeFilterMap, QuantDiseaseGroupsComparison userCustomizedComparison, Map<String, Map<String, String>> default_DiseaseCat_DiseaseGroupMap) {
 
         this.default_DiseaseCat_DiseaseGroupMap = default_DiseaseCat_DiseaseGroupMap;
         this.fullDiseaseGroupMap = new LinkedHashMap<Integer, DiseaseGroup>();
         this.selectedDiseaseGroupMap = new LinkedHashMap<Integer, DiseaseGroup>();
         this.quantDatasetListObject = quantDatasetListObject;
-
         String key = "Multiple Sclerosis";//quantDatasetListObject.keySet().iterator().next();
-
         this.totalDsNumber = quantDatasetListObject.get("All").getQuantDatasetsList().size();
-//        for (String k : quantDatasetListObject.keySet()) {
-//            totalDsNumber += quantDatasetListObject.get(k).getQuantDatasetsList().size();
-//
-//        }
 
         noSerumDiseaseCategory = new HashMap<String, Map<Integer, QuantDatasetObject>>();
         for (String diseaseCat : quantDatasetListObject.keySet()) {
@@ -194,6 +192,7 @@ public class StudiesFilterManager implements Serializable {
             userDiseaseGroupB = userCustomizedComparison.getComparisonHeader().split(" / ")[1].replace("\n", "").trim();
         }
 
+        inuse_DiseaseCat_DiseaseGroupMap = new LinkedHashMap<String, Map<String, String>>(default_DiseaseCat_DiseaseGroupMap);
         this.updateRowsAndColumns("Reset_Disease_Groups_Level");
 
     }
@@ -248,46 +247,78 @@ public class StudiesFilterManager implements Serializable {
         diseaseGroupsI = new String[quantDSArr.size()];
         diseaseGroupsII = new String[quantDSArr.size()];
         fullDiseaseGroupMap.clear();
+        diseaseGroupsHeaderToOregenalDiseaseGroupsNames.clear();
         int i = 0;
         for (QuantDatasetObject ds : quantDSArr.values()) {
             if (ds == null) {
                 continue;
             }
-            DiseaseGroup pg = new DiseaseGroup();
+
+            Map<String, String> inuseRegroupName = inuse_DiseaseCat_DiseaseGroupMap.get(ds.getDiseaseCategory());
+            DiseaseGroup diseaseGroup = new DiseaseGroup();
             String pgI = ds.getPatientsGroup1();
-            pg.setPatientsGroupI(pgI);
+            diseaseGroup.setPatientsGroupI(pgI);
+
             String label1;
             if (pgI.equalsIgnoreCase("Not Available") || pgI.equalsIgnoreCase("control")) {
                 pgI = "";
             }
-            String subpgI = ds.getPatientsSubGroup1();
-            pg.setPatientsSubGroupI(subpgI);
+            if (inuseRegroupName.get(ds.getPatientsSubGroup1().split("\n")[0].trim()) == null) {
+                inuseRegroupName.put(ds.getPatientsSubGroup1().split("\n")[0].trim(), ds.getPatientsSubGroup1().split("\n")[0].trim());
+
+            }
+            diseaseGroup.setOriginalDiseaseSubGroupI(ds.getPatientsSubGroup1());
+            String subpgI = ds.getPatientsSubGroup1().replace(ds.getPatientsSubGroup1().split("\n")[0], inuseRegroupName.get(ds.getPatientsSubGroup1().split("\n")[0].trim()));//+"\n"+ds.getPatientsSubGroup1().split("\n")[1].trim();
+            diseaseGroup.setPatientsSubGroupI(subpgI);
             if (!subpgI.equalsIgnoreCase("") && !subpgI.equalsIgnoreCase("Not Available")) {
                 pgI = subpgI;
             }
             label1 = pgI;
-            pg.setPatientsGroupILabel(label1);
+            diseaseGroup.setPatientsGroupILabel(label1);
 
             String pgII = ds.getPatientsGroup2();
-            pg.setPatientsGroupII(pgII);
+            diseaseGroup.setPatientsGroupII(pgII);
             String label2;
             if (pgII.equalsIgnoreCase("Not Available") || pgII.equalsIgnoreCase("control")) {
                 pgII = "";
             }
-            String subpgII = ds.getPatientsSubGroup2();
-            pg.setPatientsSubGroupII(subpgII);
+
+            if (inuseRegroupName.get(ds.getPatientsSubGroup2().split("\n")[0].trim()) == null) {
+                System.out.println("at ds.getPatientsSubGroup2() " + ds.getPatientsSubGroup2().split("\n")[0].trim() + "" + inuseRegroupName + "  ");
+                inuseRegroupName.put(ds.getPatientsSubGroup2().split("\n")[0].trim(), ds.getPatientsSubGroup2().split("\n")[0].trim());
+
+            }
+            diseaseGroup.setOriginalDiseaseSubGroupII(ds.getPatientsSubGroup2());
+            String subpgII = ds.getPatientsSubGroup2().replace(ds.getPatientsSubGroup2().split("\n")[0], inuseRegroupName.get(ds.getPatientsSubGroup2().split("\n")[0].trim()));
+            diseaseGroup.setPatientsSubGroupII(subpgII);
             if (!subpgII.equalsIgnoreCase("") && !subpgII.equalsIgnoreCase("Not Available")) {
                 pgII = subpgII;
             }
             label2 = pgII;
-            pg.setPatientsGroupIILabel(label2);
-            fullDiseaseGroupMap.put(ds.getDsKey(), pg);
-
-//            fullDiseaseGroupMap[i] = pg;
+            diseaseGroup.setPatientsGroupIILabel(label2);
+            fullDiseaseGroupMap.put(ds.getDsKey(), diseaseGroup);
+            if(!diseaseGroupsHeaderToOregenalDiseaseGroupsNames.containsKey(diseaseGroup.getPatientsSubGroupI())) //            fullDiseaseGroupMap[i] = diseaseGroup;
+            {
+               diseaseGroupsHeaderToOregenalDiseaseGroupsNames.put(diseaseGroup.getPatientsSubGroupI(), new LinkedHashSet<String>());
+              
+            }  
+             if(!diseaseGroupsHeaderToOregenalDiseaseGroupsNames.containsKey(diseaseGroup.getPatientsSubGroupII())) //            fullDiseaseGroupMap[i] = diseaseGroup;
+            {
+               diseaseGroupsHeaderToOregenalDiseaseGroupsNames.put(diseaseGroup.getPatientsSubGroupII(), new LinkedHashSet<String>());
+              
+            }  
+             Set<String> groupsNamesSet = diseaseGroupsHeaderToOregenalDiseaseGroupsNames.get(diseaseGroup.getPatientsSubGroupI());
+             groupsNamesSet.add(ds.getPatientsSubGroup1());
+             diseaseGroupsHeaderToOregenalDiseaseGroupsNames.put(diseaseGroup.getPatientsSubGroupI(), groupsNamesSet);
+             groupsNamesSet = diseaseGroupsHeaderToOregenalDiseaseGroupsNames.get(diseaseGroup.getPatientsSubGroupII());
+             groupsNamesSet.add(ds.getPatientsSubGroup2());
+             diseaseGroupsHeaderToOregenalDiseaseGroupsNames.put(diseaseGroup.getPatientsSubGroupII(), groupsNamesSet);
+             
+            
             diseaseGroupsI[i] = label1;
             diseaseGroupsII[i] = label2;
-            pg.setQuantDatasetIndex(ds.getDsKey());
-            pg.setOriginalDatasetIndex(ds.getDsKey());
+            diseaseGroup.setQuantDatasetIndex(ds.getDsKey());
+            diseaseGroup.setOriginalDatasetIndex(ds.getDsKey());
             i++;
         }
         selectedDiseaseGroupMap.clear();
@@ -338,8 +369,16 @@ public class StudiesFilterManager implements Serializable {
 
     }
 
+    public Map<String, Set<String>> getDiseaseGroupsHeaderToOregenalDiseaseGroupsNames() {
+        return diseaseGroupsHeaderToOregenalDiseaseGroupsNames;
+    }
+
     public boolean[] getActiveHeader() {
         return activeHeader;
+    }
+
+    public Map<String, Map<String, String>> getDefault_DiseaseCat_DiseaseGroupMap() {
+        return inuse_DiseaseCat_DiseaseGroupMap;
     }
 
     /**
@@ -517,7 +556,12 @@ public class StudiesFilterManager implements Serializable {
 
     }
 
-    public void updateDiseaseGroupsNames(Map<String, String> updatedGroupsNamesMap) {
+    public void updateDiseaseGroupsNames(Map<String, Map<String, String>> updatedGroupsNamesMap) {
+        inuse_DiseaseCat_DiseaseGroupMap.clear();
+        inuse_DiseaseCat_DiseaseGroupMap.putAll(updatedGroupsNamesMap);
+        this.updateRowsAndColumns("Reset_Disease_Groups_Level");
+        System.out.println("update updateDiseaseGroupsNames");
+        this.resetFilters();
 
     }
 

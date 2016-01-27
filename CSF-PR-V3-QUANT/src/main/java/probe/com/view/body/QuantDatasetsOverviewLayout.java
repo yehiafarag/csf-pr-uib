@@ -7,6 +7,9 @@ import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.Reindeer;
+import eu.dusse.vaadin.waypoints.InviewExtension;
+import eu.dusse.vaadin.waypoints.InviewExtensionImpl;
 import java.util.List;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.model.beans.quant.QuantProtein;
@@ -27,7 +30,6 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
 //    private final StudiesSelectionManager Studies_Selection_Manager;
     private final QuantCentralManager Quant_Central_Manager;
     private final QuantProteinsTabsheetContainerLayout proteinsLayout;
-    
 
     /**
      *
@@ -52,18 +54,21 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
         }
         // init piecharts filter
 //        studiesSelectionManager.changeDiseaseCategory("Multiple Sclerosis");
-        DiseaseGroupsFiltersContainer heatmapFilter = new DiseaseGroupsFiltersContainer(Quant_Central_Manager, CSFPR_Handler, searchQuantificationProtList,null);
+        DiseaseGroupsFiltersContainer heatmapFilter = new DiseaseGroupsFiltersContainer(Quant_Central_Manager, CSFPR_Handler, searchQuantificationProtList, null);
         heatmapFilter.setWidth("100%");
         heatmapFilter.setMargin(new MarginInfo(false, false, true, false));
         String infoText = "Select a disease category (Multiple Sclerosis, Alzheimer, etc)<img src='VAADIN/themes/dario-theme/img/1.png' he alt='disease category' Align='center'> in the roll down menu on top to view all available  patients group comparisons on the interactive heat-map <img src='VAADIN/themes/dario-theme/img/2.png' alt='heat-map'  Align='center'> that belong to the selected disease . Select single or multiple comparisons from the heatmap to show the overall proteins information on the bubble chart and proteins information table.</br>Users can use more filters by clicking on the diffrent available filters <img src='VAADIN/themes/dario-theme/img/4.png' alt='filter'  Align='center'> ";
 
-        HideOnClickLayout comparisonLevelLayout = new HideOnClickLayout("Studies", heatmapFilter, null, infoText,CSFPR_Handler.getTipsGenerator().generateTipsBtn());
+      
+
+        HideOnClickLayout comparisonLevelLayout = new HideOnClickLayout("Studies", heatmapFilter, null, infoText, CSFPR_Handler.getTipsGenerator().generateTipsBtn());
+
         this.addComponent(comparisonLevelLayout);
         comparisonLevelLayout.setVisability(true);
 
         QuantProteinsComparisonsContainer quantProteinsComparisonsContainer = new QuantProteinsComparisonsContainer(Quant_Central_Manager, CSFPR_Handler, null);
 
-        HideOnClickLayout comparisonsTableContainer = new HideOnClickLayout("Proteins", quantProteinsComparisonsContainer, null, Alignment.TOP_LEFT, infoText,null);
+        HideOnClickLayout comparisonsTableContainer = new HideOnClickLayout("Proteins", quantProteinsComparisonsContainer, null, Alignment.TOP_LEFT, infoText, null);
 
         int pageWidth = Page.getCurrent().getWebBrowser().getScreenWidth();
         int layoutWidth = (pageWidth - 70);
@@ -72,7 +77,7 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
         comparisonsTableContainer.setVisability(true);
 
         proteinsLayout = new QuantProteinsTabsheetContainerLayout(Quant_Central_Manager, searchingMode, CSFPR_Handler);
-        HideOnClickLayout proteinsLevelLayout = new HideOnClickLayout("Proteins Information", proteinsLayout, null,Alignment.TOP_LEFT, infoText,null) {
+        HideOnClickLayout proteinsLevelLayout = new HideOnClickLayout("Proteins Information", proteinsLayout, null, Alignment.TOP_LEFT, infoText, null) {
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
                 super.layoutClick(event);
@@ -80,9 +85,8 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
         };
         proteinsLevelLayout.setVisability(true);
         this.addComponent(proteinsLevelLayout);
-      
-//        proteinsLevelLayout.setVisability(false);
 
+//        proteinsLevelLayout.setVisability(false);
     }
 
 }

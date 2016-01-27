@@ -11,7 +11,10 @@ import probe.com.view.body.QuantDatasetsOverviewLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.themes.Runo;
+import eu.dusse.vaadin.waypoints.InviewExtension;
+import eu.dusse.vaadin.waypoints.InviewExtensionImpl;
 import java.io.Serializable;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.view.body.ProteinsSearchingLayout;
@@ -92,23 +95,19 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
         searchTabLayout = new VerticalLayout();
         searchTabLayout.setMargin(true);
 //        searchTabLayout.setPrimaryStyleName("scrollable");
-        
-        
-        
+
         ProteinsSearchingLayout searchingLayout = new ProteinsSearchingLayout(CSFPR_Handler, mainTabSheet);
         this.searchTabLayout.addComponent(searchingLayout);
         searchTabLayout.setHeight(height + "px");
         TabSheet.Tab serchingTab = mainTabSheet.addTab(this.searchTabLayout, "Search");
 
-        
         compareLayout = new VerticalLayout();
         compareLayout.setMargin(true);
         compareLayout.setHeight(height + "px");
         compareLayout.setWidth("100%");
         compareLayout.setPrimaryStyleName("scrollable");
         mainTabSheet.addTab(compareLayout, "Compare");
-        
-        
+
         QuantCompareDataLayout quantCompareDataLayout = new QuantCompareDataLayout(CSFPR_Handler);
         compareLayout.addComponent(quantCompareDataLayout);
         compareLayout.setComponentAlignment(quantCompareDataLayout, Alignment.TOP_CENTER);
@@ -148,8 +147,40 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
         } else if (c.equals("Quantitative Studies")) {
             adminTab.setVisible(false);
             if (datasetOverviewTabLayout == null && handler != null) {
+              
+
+                  
                 datasetOverviewTabLayout = new QuantDatasetsOverviewLayout(handler, false, null);
                 datasetsOverviewLayout.addComponent(datasetOverviewTabLayout);
+
+                boolean horizontal = false;
+                InviewExtension extension = new InviewExtensionImpl(datasetOverviewTabLayout, datasetsOverviewLayout, horizontal);
+                extension.addEnterListener(new InviewExtension.EnterListener() {
+                    @Override
+                    public void onEnter(InviewExtension.EnterEvent event) {
+                        System.out.println("at scroll in " + event.getDirection().getDirection());
+                        // is fired when You scroll into 'yourComponent'
+                    }
+                    
+                });  
+                 extension.addExitListener(new InviewExtension.ExitListener() {
+
+                    @Override
+                    public void onExit(InviewExtension.ExitEvent event) {
+                         System.out.println("at scroll out  " + event.getDirection().getDirection());
+                    }
+                });
+                extension.addEnteredListener(new InviewExtension.EnteredListener() {
+
+                    @Override
+                    public void onEntered(InviewExtension.EnteredEvent event) {
+                         System.out.println("at scroll through  " + event.toString());
+                    }
+                });
+                
+                
+           
+
             }
 
         } else if (c.equals("Identification Datasets")) {

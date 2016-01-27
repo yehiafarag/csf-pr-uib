@@ -24,6 +24,7 @@ import probe.com.model.beans.identification.IdentificationProteinBean;
 import probe.com.model.beans.quant.QuantProtein;
 import probe.com.model.beans.identification.StandardIdentificationFractionPlotProteinBean;
 import probe.com.model.beans.quant.QuantDatasetInitialInformationObject;
+import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.model.util.vaadintoimageutil.peptideslayout.ProteinInformationDataForExport;
 import probe.com.view.core.TipGenerator;
 
@@ -41,7 +42,7 @@ public class CSFPRHandler implements Serializable {
     private final CoreLogic logicLayer;
     private final AuthenticatorHandler authenticatorHandler;
     private final Map<String, String> diseaseFullNameMap;
-    private final Map<String, String> default_DiseaseCat_DiseaseGroupMap;
+    private final Map<String, Map<String, String>> default_DiseaseCat_DiseaseGroupMap;
     private final Map<String, QuantDatasetInitialInformationObject> quantDatasetInitialInformationObject;
     String suggestNames = "Alzheimer's\n"
             + "CIS\n"
@@ -112,15 +113,22 @@ public class CSFPRHandler implements Serializable {
         authenticatorHandler = new AuthenticatorHandler(url, dbName, driver, userName, password);
         this.diseaseFullNameMap = logicLayer.getDiseaseFullNameMap();
         this.quantDatasetInitialInformationObject = logicLayer.getQuantDatasetInitialInformationObject();
-//        default_DiseaseCat_DiseaseGroupMap = new LinkedHashMap<String, String>();
-//        for (String str : quantDatasetInitialInformationObject.keySet()) {
-//            if (str.equalsIgnoreCase("All")) {
-//                continue;
-//            }
-//            for (int i = 0; i < oreginalNames.split("\n").length; i++) {
-//                default_DiseaseCat_DiseaseGroupMap.put(suggestNames.split("\n")[i] + "_" + str, oreginalNames.split("\n")[i] + "_" + str);
-//            }
-//        }
+        default_DiseaseCat_DiseaseGroupMap = new LinkedHashMap<String, Map<String, String>>();
+        for (String str : quantDatasetInitialInformationObject.keySet()) {
+            if (str.equalsIgnoreCase("All")) {
+                continue;
+            }
+            Set<String> diseaseGroupsName = logicLayer.getDiseaseGroupNameMap(str);
+
+            Map<String, String> diseaseGroupMap = new LinkedHashMap<String, String>();
+            for (int i = 0; i < oreginalNames.split("\n").length; i++) {
+                if (!diseaseGroupsName.contains(oreginalNames.split("\n")[i])) {
+                    continue;
+                }
+                diseaseGroupMap.put(oreginalNames.split("\n")[i], suggestNames.split("\n")[i]);
+            }
+            default_DiseaseCat_DiseaseGroupMap.put(str, diseaseGroupMap);
+        }
 
     }
 
@@ -596,9 +604,9 @@ public class CSFPRHandler implements Serializable {
      *
      * @return updated Selected Comparison set
      */
-    public Set<QuantDiseaseGroupsComparison> getComparisonProtList(Set<QuantDiseaseGroupsComparison> selectedComparisonList, List<QuantProtein> searchQuantificationProtList) {
+    public Set<QuantDiseaseGroupsComparison> getComparisonProtList(Set<QuantDiseaseGroupsComparison> selectedComparisonList, List<QuantProtein> searchQuantificationProtList, Map<String, Set<String>> diseaseGroupsHeaderToOregenalDiseaseGroupsNames) {
 
-        return logicLayer.getComparisonProtList(selectedComparisonList, searchQuantificationProtList);
+        return logicLayer.getComparisonProtList(selectedComparisonList, searchQuantificationProtList, diseaseGroupsHeaderToOregenalDiseaseGroupsNames);
 
     }
 
@@ -625,7 +633,7 @@ public class CSFPRHandler implements Serializable {
 
     }
 
-    public Map<String, String> getDefault_DiseaseCat_DiseaseGroupMap() {
+    public Map<String, Map<String, String>> getDefault_DiseaseCat_DiseaseGroupMap() {
         return default_DiseaseCat_DiseaseGroupMap;
     }
 

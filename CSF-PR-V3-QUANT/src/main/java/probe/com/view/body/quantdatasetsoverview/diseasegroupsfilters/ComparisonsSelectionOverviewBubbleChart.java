@@ -84,7 +84,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
     private final QuantCentralManager Quant_Central_Manager;
     private int width;
     private int height;
-    private final CSFPRHandler handler;
+    private final CSFPRHandler CSFPR_Handler;
     private final VerticalLayout initialLayout;
     private JFreeChart chart;
     private final AbsoluteLayout chartLayout = new AbsoluteLayout();
@@ -119,7 +119,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
     private final Map<String, double[]> tooltipsProtNumberMap = new HashMap<String, double[]>();
 
-    public ComparisonsSelectionOverviewBubbleChart(final QuantCentralManager Quant_Central_Manager, final CSFPRHandler handler, int chartWidth, int chartHeight, Set<QuantDiseaseGroupsComparison> selectedComparisonList, List<QuantProtein> searchQuantificationProtList) {
+    public ComparisonsSelectionOverviewBubbleChart(final QuantCentralManager Quant_Central_Manager, final CSFPRHandler CSFPR_Handler, int chartWidth, int chartHeight, Set<QuantDiseaseGroupsComparison> selectedComparisonList, List<QuantProtein> searchQuantificationProtList) {
 
         userDataCounter = 0;
         this.searchQuantificationProtList = searchQuantificationProtList;
@@ -133,7 +133,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
         this.width = chartWidth;
         this.height = chartHeight;
-        this.handler = handler;
+        this.CSFPR_Handler = CSFPR_Handler;
         this.setWidth(width + "px");
         this.setHeightUndefined();
 
@@ -260,7 +260,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
     private final int userDataCounter;
 
-    public ComparisonsSelectionOverviewBubbleChart(final QuantCentralManager Quant_Central_Manager, final CSFPRHandler handler, int chartWidth, int chartHeight, Set<QuantDiseaseGroupsComparison> selectedComparisonList, List<QuantProtein> searchQuantificationProtList, QuantDiseaseGroupsComparison userCustomizedComparison) {
+    public ComparisonsSelectionOverviewBubbleChart(final QuantCentralManager Quant_Central_Manager, final CSFPRHandler CSFPR_Handler, int chartWidth, int chartHeight, Set<QuantDiseaseGroupsComparison> selectedComparisonList, List<QuantProtein> searchQuantificationProtList, QuantDiseaseGroupsComparison userCustomizedComparison) {
         this.userCustomizedComparison = userCustomizedComparison;
         userDataCounter = 1;
         this.searchQuantificationProtList = searchQuantificationProtList;
@@ -274,7 +274,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
         this.width = chartWidth;
         this.height = chartHeight;
-        this.handler = handler;
+        this.CSFPR_Handler = CSFPR_Handler;
         this.setWidth(width + "px");
         this.setHeightUndefined();
 
@@ -405,7 +405,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
             @SuppressWarnings("CallToPrintStackTrace")
             public InputStream getStream() {
                 try {
-                    byte[] pdfFile = handler.exportBubbleChartAsPdf(chart, "bubblechart_comparisons_selection.pdf", "Proteins Overview");
+                    byte[] pdfFile = CSFPR_Handler.exportBubbleChartAsPdf(chart, "bubblechart_comparisons_selection.pdf", "Proteins Overview");
                     return new ByteArrayInputStream(pdfFile);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -1230,15 +1230,9 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
     @Override
     public void selectionChanged(String type) {
         if (type.equalsIgnoreCase("Comparison_Selection")) {
-            selectedComparisonList = this.Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList();
-
-            Iterator<QuantDiseaseGroupsComparison> itr = selectedComparisonList.iterator();
-            while (itr.hasNext()) {
-                if (itr.next().getComparProtsMap() == null) {
-                    selectedComparisonList = handler.getComparisonProtList(selectedComparisonList, searchQuantificationProtList);
-                    break;
-                }
-            }
+//            selectedComparisonList = this.Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList();
+            selectedComparisonList = this.Quant_Central_Manager.getUpdatedSelectedDiseaseGroupsComparisonListProteins(searchQuantificationProtList);
+            
             if (selectedComparisonList.isEmpty()) {
                 initialLayout.setVisible(true);
                 chartLayout.removeAllComponents();

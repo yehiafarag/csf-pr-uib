@@ -13,12 +13,29 @@ public class DiseaseGroup {
 
     private String patientsGroupI;
     private String patientsGroupII;
-    private int quantDatasetIndex,originalDatasetIndex;
+    private int quantDatasetIndex, originalDatasetIndex;
 
     private String patientsSubGroupI, patientsSubGroupII;
 
     private String patientsGroupILabel;
     private String patientsGroupIILabel;
+    private String originalDiseaseSubGroupI, originalDiseaseSubGroupII;
+
+    public String getOriginalDiseaseSubGroupI() {
+        return originalDiseaseSubGroupI;
+    }
+
+    public void setOriginalDiseaseSubGroupI(String originalDiseaseSubGroupI) {
+        this.originalDiseaseSubGroupI = originalDiseaseSubGroupI;
+    }
+
+    public String getOriginalDiseaseSubGroupII() {
+        return originalDiseaseSubGroupII;
+    }
+
+    public void setOriginalDiseaseSubGroupII(String originalDiseaseSubGroupII) {
+        this.originalDiseaseSubGroupII = originalDiseaseSubGroupII;
+    }
 
     /**
      *

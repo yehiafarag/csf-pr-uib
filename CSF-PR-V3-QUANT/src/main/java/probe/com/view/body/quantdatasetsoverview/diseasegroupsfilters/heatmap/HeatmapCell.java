@@ -10,7 +10,7 @@ import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
-import org.vaadin.marcus.MouseEvents;
+import java.util.Set;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 
 /**
@@ -61,6 +61,7 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
      * @param parentcom
      * @param groupCompTitle
      * @param heatmapCellWidth
+     * @param publicationsNumber
      */
     public HeatmapCell(double value, final String color, int[] dsIndexes, final int rowLabelIndex, final int colLabelIndex, VerticalLayout tooltipLayout, HeatMapComponent parentcom, String groupCompTitle, int heatmapCellWidth, int publicationsNumber) {
 
@@ -78,6 +79,7 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
         comparison.setComparisonHeader(groupCompTitle);
         comparison.setRgbStringColor(color);
         comparison.setDatasetIndexes(dsIndexes);
+
 //        mouseOverListener = new MouseEvents.MouseOverListener() {
 //
 //            @Override
@@ -100,22 +102,33 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
 ////                setValue("<div style='background-color:" + color + ";height:50px;width:50px; cursor:" + pointer + "; '><b>" + strValue + "</b></div>");
 //            }
 //        };
+        if (color.equalsIgnoreCase("#EFF2FB") && value != 0) {
+            strValue = ((int) value) + "";
+            String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0] + " ( " + groupCompTitle.split(" / ")[1].split("\n")[1] + " )";
+            valueLabel.setValue("<center><div  style='background-color:" + color + "; background-position: center;height:" + (heatmapCellWidth - 4) + "px;width:" + (heatmapCellWidth - 4) + "px; cursor:" + pointer + "; '> <font Color='#4d749f'>" + strValue + "*</font></div><center>");
 
-        if (value != 0) {
+            this.setDescription("<h3>Same type comparison ( " + updatedHeader + " )</h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + strValue + (value == 1 ? " study" : " studies") + " </h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + publicationsNumber + (publicationsNumber == 1 ? " publication" : " publications") + " </h3>");
+            comparison.setComparisonHeader(" / ");
+        
+        } else if (value != 0) {
             strValue = ((int) value) + "";
             pointer = "pointer";
 //            final MouseEvents mouseEvents = MouseEvents.enableFor(valueLabel);
 //            mouseEvents.addMouseOutListener(mouseOutListener);
 //            mouseEvents.addMouseOverListener(mouseOverListener);
             this.addLayoutClickListener(HeatmapCell.this);
+            valueLabel.setValue("<center><div  style='background-color:" + color + "; background-position: center;height:" + (heatmapCellWidth - 4) + "px;width:" + (heatmapCellWidth - 4) + "px; cursor:" + pointer + "; '>" + strValue + "</div><center>");
 
+        }else{
+         valueLabel.setValue("<center><div  style='background-color:" + color + "; background-position: center;height:" + (heatmapCellWidth - 4) + "px;width:" + (heatmapCellWidth - 4) + "px; cursor:" + pointer + "; '> " + strValue + "</div><center>");
+
+        
         }
         valueLabel.setContentMode(ContentMode.HTML);
         valueLabel.setPrimaryStyleName(defaultStyle);
-        valueLabel.setValue("<center><div  style='background-color:" + color + "; background-position: center;height:" + (heatmapCellWidth - 4) + "px;width:" + (heatmapCellWidth - 4) + "px; cursor:" + pointer + "; '>" + strValue + "</div><center>");
         this.addComponent(valueLabel);
         this.setComponentAlignment(valueLabel, Alignment.MIDDLE_CENTER);
-        if (value > 0) {
+        if (value > 0 && !color.equalsIgnoreCase("#EFF2FB")) {
             String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0] + " ( " + groupCompTitle.split(" / ")[1].split("\n")[1] + " )";
 
             this.setDescription("<h3>" + updatedHeader + "</h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + strValue + (value == 1 ? " study" : " studies") + " </h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + publicationsNumber + (publicationsNumber == 1 ? " publication" : " publications") + " </h3>");

@@ -73,4 +73,6 @@
     <inherits name="org.vaadin.addons.screenshot.WidgetSet" />
 
     <inherits name="com.nextfour.datetimelabel.DatetimelabelWidgetset" />
+
+    <inherits name="eu.dusse.vaadin.waypoints.WidgetSet" />
 </module>
