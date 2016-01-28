@@ -57,6 +57,7 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
     private final HeatMapComponent parentcom;
     private final String title;
     private final String allStyle;
+    private final String fullName;
 
     /**
      *
@@ -104,10 +105,12 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
         this.setComponentAlignment(valueLabel, Alignment.BOTTOM_CENTER);
         this.addLayoutClickListener(HeaderCell.this);
         if (fullName == null) {
-            fullName = title;
+            this.fullName = title;
+        } else {
+            this.fullName = fullName;
         }
 
-        this.setDescription(fullName.replace("\n", "-"));
+        this.setDescription(title.split("\n")[0]);
 
     }
 
@@ -160,6 +163,8 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
         }
     }
 
+    private boolean combinedHeader = false;
+
     /**
      *
      * @param groupComp
@@ -167,6 +172,11 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
      */
     public void addComparison(QuantDiseaseGroupsComparison groupComp, HeatmapCell cell) {
         this.includedComparisons.add(groupComp);
+        if (!combinedHeader && cell.isCombinedHeader()) {
+            combinedHeader = true;
+            valueLabel.setValue("<center><font>" + title.split("\n")[0] + "*</font></center>");
+            this.setDescription(title.split("\n")[0] + " (" + "Combined group)");
+        }
         this.includedCells.add(cell);
     }
 

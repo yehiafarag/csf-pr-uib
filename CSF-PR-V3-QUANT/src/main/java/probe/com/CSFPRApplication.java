@@ -19,16 +19,16 @@ import probe.com.view.HeaderLayout;
 public class CSFPRApplication extends VerticalLayout implements Serializable {
 
     private static final long serialVersionUID = 1490961570483515444L;
-    private final CSFPRHandler csfprHandler;
+    private final CSFPRHandler CSFPR_Handler;
 
     /**
      * Initialize the main view layout
      *
-     * @param csfprHandler
+     * @param CSFPR_Handler 
      */
-    public CSFPRApplication(CSFPRHandler csfprHandler) {
+    public CSFPRApplication(CSFPRHandler CSFPR_Handler) {
 
-        this.csfprHandler = csfprHandler;
+        this.CSFPR_Handler = CSFPR_Handler;
         buildMainLayout();
 
     }
@@ -42,9 +42,9 @@ public class CSFPRApplication extends VerticalLayout implements Serializable {
         //header part
         HeaderLayout header = new HeaderLayout();
         this.addComponent(header);
-
+        CSFPR_Handler.setHeader(header);
         //body
-        final Body body = new Body(csfprHandler);
+        final Body body = new Body(CSFPR_Handler);
         this.addComponent(body);
 
     }

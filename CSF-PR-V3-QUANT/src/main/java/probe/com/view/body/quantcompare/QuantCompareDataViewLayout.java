@@ -36,18 +36,16 @@ public class QuantCompareDataViewLayout extends VerticalLayout {
      * @param searchQuantificationProtList
      * @param userCustomizedComparison
      */
-    public QuantCompareDataViewLayout(CSFPRHandler CSFPR_Handler, List<QuantProtein> searchQuantificationProtList,QuantDiseaseGroupsComparison userCustomizedComparison) {
+    public QuantCompareDataViewLayout(CSFPRHandler CSFPR_Handler, List<QuantProtein> searchQuantificationProtList, QuantDiseaseGroupsComparison userCustomizedComparison) {
 
-        Quant_Central_Manager = new QuantCentralManager(CSFPR_Handler, searchQuantificationProtList,userCustomizedComparison);//,filterUtility.getFullFilterList()
+        Quant_Central_Manager = new QuantCentralManager(CSFPR_Handler, searchQuantificationProtList, userCustomizedComparison);//,filterUtility.getFullFilterList()
         this.setMargin(true);
         this.setSpacing(true);
         this.setWidth("100%");
         this.setHeightUndefined();
-        
-        //order based on user groups
-        
 
-        DiseaseGroupsFiltersContainer heatmapFilter = new DiseaseGroupsFiltersContainer(Quant_Central_Manager, CSFPR_Handler, searchQuantificationProtList,userCustomizedComparison);
+        //order based on user groups
+        DiseaseGroupsFiltersContainer heatmapFilter = new DiseaseGroupsFiltersContainer(Quant_Central_Manager, CSFPR_Handler, searchQuantificationProtList, userCustomizedComparison);
         heatmapFilter.setWidth("100%");
         heatmapFilter.setMargin(new MarginInfo(false, false, true, false));
         String infoText = "Select an experiment in the roll down menu on top to view all proteins identified in the selected experiment. Select a protein to see below all Peptides identified for the protein, and if the experiment was based on SDS-PAGE, the protein’s distribution in the gel is displayed under Fractions. To show information about the experiment, press Dataset Information.  Use the search box to navigate in the experiment selected.</p><p  style='font-family:verdana;color:black;margin-left:20px;margin-right:20px;'>Under Fractions, bar charts show the distribution of the selected protein across the fractions cut from the gel. Three charts show number of peptides, number of spectra and average precursor intensity. The fraction number represents the gel pieces cut from top to bottom. Protein standards <font color='#CDE1FF'>(light blue bars)</font> indicate the molecular weight range of each fraction. <font color='#79AFFF'>Darker blue bars</font> mark between which two standards the protein's theoretical mass suggests the protein should be found.";
@@ -56,7 +54,7 @@ public class QuantCompareDataViewLayout extends VerticalLayout {
         this.addComponent(DatasetFilteringContainer);
         DatasetFilteringContainer.setVisability(true);
 
-        quantProteinsComparisonsContainer = new QuantProteinsComparisonsContainer(Quant_Central_Manager, CSFPR_Handler, searchQuantificationProtList,userCustomizedComparison);
+        quantProteinsComparisonsContainer = new QuantProteinsComparisonsContainer(Quant_Central_Manager, CSFPR_Handler, searchQuantificationProtList, userCustomizedComparison);
 
         HideOnClickLayout comparisonsTableContainer = new HideOnClickLayout("Proteins", quantProteinsComparisonsContainer, null, Alignment.TOP_LEFT, infoText, null);
         int pageWidth = Page.getCurrent().getWebBrowser().getScreenWidth();
@@ -64,20 +62,19 @@ public class QuantCompareDataViewLayout extends VerticalLayout {
         quantProteinsComparisonsContainer.setLayoutWidth(layoutWidth);
         this.addComponent(comparisonsTableContainer);
         comparisonsTableContainer.setVisability(true);
-        
+
         Map<String, Integer> customizedTrendMap = new HashMap<String, Integer>();
-        for(String accession: userCustomizedComparison.getComparProtsMap().keySet())        {
-            customizedTrendMap.put(accession.toLowerCase(), userCustomizedComparison.getComparProtsMap().get(accession).getSignificantTrindCategory());            
+        for (String accession : userCustomizedComparison.getComparProtsMap().keySet()) {
+            customizedTrendMap.put(accession.toLowerCase(), userCustomizedComparison.getComparProtsMap().get(accession).getSignificantTrindCategory());
         }
 
-        proteinsLayout = new QuantProteinsTabsheetContainerLayout(Quant_Central_Manager, true, CSFPR_Handler,customizedTrendMap);
+        proteinsLayout = new QuantProteinsTabsheetContainerLayout(Quant_Central_Manager, true, CSFPR_Handler, customizedTrendMap);
         HideOnClickLayout proteinsLevelLayout = new HideOnClickLayout("Proteins Information", proteinsLayout, null, infoText, null);
 
         this.addComponent(proteinsLevelLayout);
         proteinsLevelLayout.setVisability(true);
         heatmapFilter.selectAllComparisons();
 
-       
     }
 
 }

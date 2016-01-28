@@ -26,6 +26,7 @@ import probe.com.model.beans.identification.StandardIdentificationFractionPlotPr
 import probe.com.model.beans.quant.QuantDatasetInitialInformationObject;
 import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.model.util.vaadintoimageutil.peptideslayout.ProteinInformationDataForExport;
+import probe.com.view.HeaderLayout;
 import probe.com.view.core.TipGenerator;
 
 /**
@@ -635,6 +636,21 @@ public class CSFPRHandler implements Serializable {
 
     public Map<String, Map<String, String>> getDefault_DiseaseCat_DiseaseGroupMap() {
         return default_DiseaseCat_DiseaseGroupMap;
+    }
+   
+    private HeaderLayout header;
+    public void controlHeaderHeights(int height){
+        header.setHeight(height+"px");
+    
+    
+    }
+
+    public float getHeaderHeight() {
+        return header.getHeaderHeight();
+    }
+
+    public void setHeader(HeaderLayout header) {
+        this.header = header;
     }
 
 }

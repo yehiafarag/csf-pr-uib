@@ -93,4 +93,8 @@ public class HeaderLayout extends VerticalLayout {
         header.setComponentAlignment(logoLayout, Alignment.MIDDLE_RIGHT);
 
     }
+    
+    public float getHeaderHeight(){
+        return this.header.getHeight();
+    }
 }

@@ -710,7 +710,9 @@ public class CoreLogic implements Serializable {
      */
     public Map<String, Integer> getQuantHitsList(List<QuantProtein> quantProteinsList, String searchBy) {
         Map<String, Integer> quantHitsList = new HashMap<String, Integer>();
+        
         if (quantProteinsList == null || quantProteinsList.isEmpty()) {
+           
             return quantHitsList;
         }
         String key;

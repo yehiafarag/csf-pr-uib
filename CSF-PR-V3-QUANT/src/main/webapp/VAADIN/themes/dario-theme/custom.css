@@ -48,7 +48,10 @@
     border: none;
     margin: 0;
     padding: 0;
-    color: #ee5311;
+    font-size:14px;
+    font-weight:bold;
+    color: #4d749f ;
+    text-shadow: 1px 1px #ffffff ;
     alignment-adjust:middle;
 }
 .v-tabsheet-tabitem-selected {
@@ -56,19 +59,20 @@
     margin: 0;
     padding: 0;
     cursor: default;
-    color: #ee5311;
     alignment-adjust:middle
 }
 .v-tabsheet-tabitem:hover {
-    color: #ee5311;;
+    color: #4d749f ;
 }
 .v-tabsheet-tabitem-selected:hover {
-    color: #ee5311;
+    color: #4d749f;
 }
-.v-tabsheet-tabs .v-tabsheet-tabitemcell-selected .v-captiontext{
+.v-caption.v-caption-closable{
 
-    font-size:14px;
-    text-shadow:none;
+    font-size:13px !important;
+    font-weight:normal;
+
+
 }
 /* Lay the options horizontally */
 .v-select-optiongroup-horizontal .v-select-option {
@@ -1520,7 +1524,7 @@ resetlabelbtn p{
     border:  1px solid lightgray;
     border-radius: 5px;
     background-color:  whitesmoke;
-    background-image: url(img/selectmulti.gif);
+    background-image: url(img/selectmulti_1.png);
     background-position:center;
     background-repeat: no-repeat;
     cursor:pointer;
@@ -1725,19 +1729,20 @@ resetlabelbtn p{
 
 
 .infoicon{
-    clear: both;
-    width: 20px;
-    height: 20px;
-    border-radius: 5px;
-    background-image:  url(https://maxcdn.icons8.com/iOS7/PNG/25/Security/question_shield-25.png);
+   clear: both;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid lightgray;
+    background-image:  url(img/help.png);
     background-position:center;
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: 12px;
     cursor:pointer;
 
 }
 .infoicon:hover{
-    background-image:  url(https://maxcdn.icons8.com/windows8/PNG/26/Security/question_shield-26.png);
+    border: 1px solid black;
 
 }
 .infoicon:focus {
@@ -2037,13 +2042,11 @@ resetlabelbtn p{
 .tipbtn{
 
     clear: both;
-    width: 20px;
-    height: 20px;
     border-radius: 5px;
     background-image: url(img/tip.png);
     background-position:center;
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: 16px;
     cursor:pointer;
     border: none;
 }
@@ -2098,7 +2101,7 @@ resetlabelbtn p{
 
 }
 .diseasegroupselectionresult div{
-        font-size:12px !important;
+    font-size:12px !important;
     font-family:Verdana;
     font-weight:bold;
     color:gray;
@@ -2225,7 +2228,7 @@ resetlabelbtn p{
 
 }
 .customizedproteinsLayout .greenlayout div{
-     background-image:  url(img/low_down.png) !important;
+    background-image:  url(img/low_down.png) !important;
     background-color:rgba(255, 255, 255, .0);
     background-repeat: no-repeat;
     background-size:11px;
@@ -2243,8 +2246,8 @@ resetlabelbtn p{
 }
 .comparisonHeaders .closebtn{
     background: blue;
-    
-    
+
+
 }
 .alzheimerhmcolumnlabel {
     margin-right: 148px;
@@ -2479,18 +2482,18 @@ resetlabelbtn p{
 
 .rowItem_msLabel{
 
-   
+
     color: #ffffff;
     background-color:    #7D0725;
 
 }
 .rowItem_pdLabel{
-    
+
     color: #ffffff;
     background-color: #74716E;}
 .rowItem_adLabel{
 
-    
+
     color: #ffffff;
     background-color: #4b7865;
 

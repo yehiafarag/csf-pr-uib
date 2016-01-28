@@ -91,7 +91,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
 //        diseaseGroupsListFilter = new DiseaseGroupsListFilter(Quant_Central_Manager);
         final LinkedHashSet<String> diseaseGroupsRowSet = Quant_Central_Manager.getSelectedHeatMapRows(); //diseaseGroupsListFilter.getDiseaseGroupsSet();
         final LinkedHashSet<String> diseaseGroupsColSet = Quant_Central_Manager.getSelectedHeatMapColumns(); //diseaseGroupsListFilter.getDiseaseGroupsSet();
-//        heatmapW = Math.max((156 + (heatmapCellWidth * diseaseGroupsSet.size())), 700);
+//        heatmapW = Math.max((156 + (heatmapCellWidth * diseaseGroupsSet.size())), 710);
 
         final HorizontalLayout topLayout = new HorizontalLayout();
         topLayout.setWidthUndefined();
@@ -169,12 +169,12 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         this.setComponentAlignment(middleLayout, Alignment.TOP_LEFT);
         this.resizeLayout(Math.max(diseaseGroupsColSet.size(), diseaseGroupsRowSet.size()));
 
-        int heatmapH = heatmapW + 10;
+        int heatmapH = Math.max((heatmapHeaderCellWidth + 20 + 12 + (heatmapCellWidth * Math.max(diseaseGroupsColSet.size(), diseaseGroupsRowSet.size()))), 500) + 20;
         standeredChartHeight = heatmapH;
 
 //        System.out.println("at error "+diseaseGroupsSet.size()+"    "+ Quant_Central_Manager.getDiseaseGroupsArr().length+ );
         diseaseGroupsHeatmapFilter = new HeatMapFilter(Quant_Central_Manager, heatmapW, diseaseGroupsRowSet, diseaseGroupsColSet, Quant_Central_Manager.getDiseaseGroupsArray(), heatmapCellWidth, heatmapHeaderCellWidth, CSFPR_Handler.getDiseaseFullNameMap());
-        diseaseGroupsHeatmapFilter.setHeight(Math.max(heatmapH, 700) + "px");
+        diseaseGroupsHeatmapFilter.setHeight(Math.max(heatmapH, 500) + "px");
         diseaseGroupsHeatmapFilter.setSingleSelection(false);
         middleLayout.addComponent(diseaseGroupsHeatmapFilter);
         middleLayout.setComponentAlignment(diseaseGroupsHeatmapFilter, Alignment.TOP_LEFT);
@@ -351,6 +351,8 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
 
         btnsLayout.addComponent(rightBottomBtnLayout);
         btnsLayout.setComponentAlignment(rightBottomBtnLayout, Alignment.TOP_RIGHT);
+        btnsLayout.setExpandRatio(leftBottomBtnLayout, 2);
+        btnsLayout.setExpandRatio(rightBottomBtnLayout, 1);
 
         this.addComponent(btnsLayout, 0, 2);
 
@@ -378,7 +380,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
                 }
             }
         };
-        int y = Page.getCurrent().getBrowserWindowHeight() - Math.max(heatmapH, 700) - 200;
+        int y = Page.getCurrent().getBrowserWindowHeight() - Math.max(heatmapH, 710) - 200;
         Tips tips = CSFPR_Handler.getTipsGenerator().generateTip("Remeber you can sort and select the disease groups using <u>Sort and Select</u> feature", 180, y);
         leftBottomBtnLayout.addComponent(tips);
         leftBottomBtnLayout.setComponentAlignment(tips, Alignment.TOP_LEFT);
@@ -443,13 +445,13 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
     }
 
     private void resizeLayout(int diseaseGroupsSize) {
-        heatmapW = Math.max((heatmapHeaderCellWidth + 20 + 12 + (heatmapCellWidth * diseaseGroupsSize)), 700);
+        heatmapW = Math.max((heatmapHeaderCellWidth + 20 + 12 + (heatmapCellWidth * diseaseGroupsSize)), 710);
         topLeftLayout.setWidth((heatmapW) + "px");
         topRightLayout.setWidth((pageWidth - heatmapW - 70) + "px");
         initLayoutWidth = (pageWidth - heatmapW - 300);
         heatmapRatio = (float) heatmapW / (float) (pageWidth + 70);
         initialLayoutRatio = (float) (initLayoutWidth) / (float) (pageWidth - 70);
-        int heatmapH = heatmapW + 20;
+        int heatmapH = Math.max((heatmapHeaderCellWidth + 20 + 12 + (heatmapCellWidth * diseaseGroupsSize)), 500) + 20;
         if (diseaseGroupsHeatmapFilter != null) {
             diseaseGroupsHeatmapFilter.setWidth(heatmapW + "px");
             diseaseGroupsHeatmapFilter.setHeight(heatmapH + "px");

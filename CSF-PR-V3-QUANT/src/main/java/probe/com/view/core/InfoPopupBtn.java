@@ -46,8 +46,8 @@ public class InfoPopupBtn extends VerticalLayout implements LayoutEvents.LayoutC
         topLayout.setComponentAlignment(closeBtn, Alignment.TOP_RIGHT);
         popupLayout = new PopupView("", popupBodyLayout);
         this.setStyleName("infoicon");
-        this.setWidth("20px");
-        this.setHeight("20px");
+        this.setWidth("16px");
+        this.setHeight("16px");
         this.setDescription("Information");
         this.addLayoutClickListener(InfoPopupBtn.this);
         this.addComponent(popupLayout);
