@@ -320,7 +320,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         defaultLineChartContainer = new AbsoluteLayout();
         orderedLineChartContainer = new AbsoluteLayout();
 
-        Label overviewLabel = new Label("<p style='margin-left :60px'>Overall Protein trend</p> ");
+        Label overviewLabel = new Label("<p style='margin-left :60px'>Overall Protein Trend</p> ");
         overviewLabel.setContentMode(ContentMode.HTML);
         linechartContainerLayout.addComponent(overviewLabel);
         overviewLabel.setStyleName("subtitle");
@@ -353,7 +353,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                     QuantDiseaseGroupsComparison gc = (QuantDiseaseGroupsComparison) ((SquaredDot) c).getParam("GroupsComparison");
                     studiesScatterChartsLayout.highlightComparison(gc, true);
                 } else {
-                    studiesScatterChartsLayout.highlightComparison(null, false);
+//                    studiesScatterChartsLayout.highlightComparison(null, false);
                 }
 
             }

@@ -1464,21 +1464,9 @@ resetlabelbtn p{
     padding-left: 20px;
 
 }
-.selectallbtn{
-    clear: both;
-    width: 24px;
-    height: 24px;
-    border-radius: 5px;
-    border:  1px solid lightgray;
-    background-color:  whitesmoke;
-    background-image: url(img/selectall.gif);
-    background-position:center;
-    background-repeat: no-repeat;
-    cursor:pointer;
 
-}
 .selectallbtn:hover{
-    background-color: lightgray;
+    background-image: url(img/selectall_selected_1.png);
 
 }
 
@@ -1500,56 +1488,53 @@ resetlabelbtn p{
     background-color: lightgray;
 
 }
+.selectallbtn{
+    clear: both;
+    width: 23px;
+    height: 23px;
+    background-image: url(img/selectall_1.png);
+    background-position:center;
+    background-repeat: no-repeat;
+    cursor:pointer;
+
+}
 
 .unselectallbtn{
     clear: both;
-    width: 24px;
-    height: 24px;
-    border:  1px solid lightgray;
-    border-radius: 5px;
-    background-color:  whitesmoke;
-    background-image: url(img/unselectall.gif);
+    width: 23px;
+    height: 23px;
+    background-image: url(img/unselectall.png);
     background-position:center;
     background-repeat: no-repeat;
     cursor:pointer;
 }
 .unselectallbtn:hover{
-    background-color: lightgray;
+    background-image: url(img/unselectall_selected.png);
 
 }
 .selectmultibtn{
     clear: both;
-    width: 24px;
-    height: 24px;
-    border:  1px solid lightgray;
-    border-radius: 5px;
-    background-color:  whitesmoke;
+    width: 23px;
+    height: 23px;
     background-image: url(img/selectmulti_1.png);
     background-position:center;
     background-repeat: no-repeat;
     cursor:pointer;
 }
 .selectmultibtn:hover{
-    background-color: lightgray;
-
+    background-image: url(img/selectmulti_selected_1.png);
 }
 .selectmultiselectedbtn{
     clear: both;
-    width: 24px;
-    height: 24px;
-    border:  1px solid lightgray;
-    border-radius: 5px;
-    background-color:  lightgray;
-    background-image: url(img/selectmultiselected.png);
+    width: 23px;
+    height: 23px;
+    background-image: url(img/selectmulti_selected_1.png);
     background-position:center;
     background-repeat: no-repeat;
     cursor:pointer;
 
 }
-.selectmultiselectedbtn:hover{
-    background-color: lightgray;
 
-}
 .exportpdfbtn{
     clear: both;
     width: 20px;
@@ -1595,8 +1580,8 @@ resetlabelbtn p{
 }
 .exportxslbtn{
     clear: both;
-    width: 20px;
-    height: 20px;
+    width: 23px;
+    height: 23px;
     border-radius: 5px;
     border:  1px solid lightgray;
     background-color:  whitesmoke;
@@ -1729,7 +1714,7 @@ resetlabelbtn p{
 
 
 .infoicon{
-   clear: both;
+    clear: both;
     width: 16px;
     height: 16px;
     border-radius: 50%;
@@ -2159,15 +2144,15 @@ resetlabelbtn p{
     clear: both;
     width: 20px;
     height: 20px;
-    background-image: url(data:image/png;base64,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);
-    background-position:center;
+    background-image: url("img/clear.png");
+        background-position:center;
     background-repeat: no-repeat;
-    background-size: 15px;
+    background-size: contain;
     cursor:pointer;
 }
 .clearfieldbtn:hover{
-    background-image: url(data:image/png;base64,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);
-
+     background-image: url("img/clear_hover.png");
+   
 }
 .compareerror{
     margin-top:70px;
@@ -2511,4 +2496,23 @@ resetlabelbtn p{
 .externalLinkTableLabel font{
     /* text-decoration:none !important; */
     color:red;
+}
+img {
+    -webkit-user-select: none !important;
+    -khtml-user-select: none  !important;
+    -moz-user-select: none !important;
+    -o-user-select: none !important;
+    user-select: none !important;
+}
+.searchbtn{
+
+    clear: both;
+    width: 110px;
+    height: 32px;
+    background-image:  url(img/searchBtn.png);
+    background-position:center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor:pointer;
+
 }

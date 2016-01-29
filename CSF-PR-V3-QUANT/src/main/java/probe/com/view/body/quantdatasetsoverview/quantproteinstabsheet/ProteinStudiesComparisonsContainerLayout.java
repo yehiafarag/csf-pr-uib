@@ -216,10 +216,10 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
      */
     public void highlightComparison(QuantDiseaseGroupsComparison groupComp, boolean clicked) {
         if (lastHeighlitedStudyLayout != null) {
-            lastHeighlitedStudyLayout.highlight(false, clicked);
+            lastHeighlitedStudyLayout.highlight(false, false);
         }
         if (lastHeighlitedPeptideLayout != null) {
-            lastHeighlitedPeptideLayout.highlight(false, clicked);
+            lastHeighlitedPeptideLayout.highlight(false, false);
         }
         ProteinStudyComparisonScatterPlotLayout studyLayout = studyCompLayoutMap.get(groupComp);
         PeptidesComparisonsSequenceLayout peptideLayout = peptideCompLayoutMap.get(groupComp);

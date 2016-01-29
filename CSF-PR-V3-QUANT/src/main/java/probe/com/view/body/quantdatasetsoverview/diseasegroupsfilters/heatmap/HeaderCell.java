@@ -177,7 +177,9 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
             valueLabel.setValue("<center><font>" + title.split("\n")[0] + "*</font></center>");
             this.setDescription(title.split("\n")[0] + " (" + "Combined group)");
         }
-        this.includedCells.add(cell);
+        if (!cell.isCombinedHeader()) {
+            this.includedCells.add(cell);
+        }
     }
 
 }

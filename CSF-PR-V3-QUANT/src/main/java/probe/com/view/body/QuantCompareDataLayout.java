@@ -329,8 +329,8 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
         hlo1.addComponent(clear1);
         clear1.setDescription("Clear field");
         clear1.setStyleName("clearfieldbtn");
-        clear1.setWidth("20px");
-        clear1.setHeight("20px");
+        clear1.setWidth("25px");
+        clear1.setHeight("25px");
 //        insertProteinsLayout.addComponent(clear1, 0, 2);
         hlo1.setComponentAlignment(clear1, Alignment.MIDDLE_RIGHT);
         clear1.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
@@ -345,8 +345,8 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
         hlo2.addComponent(clear2);
         clear2.setDescription("Clear field");
         clear2.setStyleName("clearfieldbtn");
-        clear2.setWidth("20px");
-        clear2.setHeight("20px");
+        clear2.setWidth("25px");
+        clear2.setHeight("25px");
 
         clear2.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
@@ -362,8 +362,8 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
         hlo3.addComponent(clear3);
         clear3.setDescription("Clear field");
         clear3.setStyleName("clearfieldbtn");
-        clear3.setWidth("20px");
-        clear3.setHeight("20px");
+        clear3.setWidth("25px");
+        clear3.setHeight("25px");
 
         clear3.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 

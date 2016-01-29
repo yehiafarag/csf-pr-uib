@@ -143,6 +143,12 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         btnsLayout.setWidth(100 + "%");
         btnsLayout.setHeight(20 + "px");
         btnsLayout.setSpacing(true);
+         
+        Label overviewLabel = new Label("<p style='margin-left :80px'>Overall Studies Proteins Trend</p> ");
+        overviewLabel.setContentMode(ContentMode.HTML);
+        btnsLayout.addComponent(overviewLabel);
+        overviewLabel.setStyleName("subtitle");
+        overviewLabel.setWidth("300px");
 
         this.Quant_Central_Manager = Quant_Central_Manager;
         this.Quant_Central_Manager.registerStudySelectionListener(ComparisonsSelectionOverviewBubbleChart.this);
@@ -151,9 +157,11 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         initialLayout = new VerticalLayout();
         initialLayout.setWidth(width + "px");
         initialLayout.setHeightUndefined();
+        
+        
 
         VerticalLayout spacer = new VerticalLayout();
-        spacer.setHeight("250px");
+        spacer.setHeight("100px");
         spacer.setWidth("100%");
         spacer.setStyleName(Reindeer.LAYOUT_WHITE);
         initialLayout.addComponent(spacer);
@@ -292,6 +300,12 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         initialLayout = new VerticalLayout();
         initialLayout.setWidth(width + "px");
         initialLayout.setHeightUndefined();
+        
+           Label overviewLabel = new Label("<p style='margin-left :80px'>Overall Studies Proteins Trend</p> ");
+        overviewLabel.setContentMode(ContentMode.HTML);
+        btnsLayout.addComponent(overviewLabel);
+        overviewLabel.setStyleName("subtitle");
+        overviewLabel.setWidth("300px");
 
         VerticalLayout spacer = new VerticalLayout();
         spacer.setHeight("250px");

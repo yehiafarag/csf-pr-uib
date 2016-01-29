@@ -52,7 +52,6 @@ import org.jfree.chart.title.TextTitle;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import org.jfree.ui.RectangleInsets;
 import org.jfree.ui.TextAnchor;
 import org.jfree.util.ShapeUtilities;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
@@ -639,11 +638,11 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
             styles.add("." + teststyle + " {  background-image: url(" + heighlightedScatterPlottImgUrl + " );background-position:center; background-repeat: no-repeat; }");
 
         } else if (!heighlight) {
-            if (!isclicked) {
+//            if (!isclicked) {
                 styles.add("." + teststyle + " {  background-image: url(" + defaultScatterPlottImgUrl + " );background-position:center; background-repeat: no-repeat; }");
-            } else {
-                isclicked = false;
-            }
+//            } else {
+//                isclicked = false;
+//            }
         }
         if (clicked) {
             isclicked = true;

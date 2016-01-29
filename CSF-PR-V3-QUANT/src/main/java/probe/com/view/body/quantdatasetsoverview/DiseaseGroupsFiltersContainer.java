@@ -278,8 +278,8 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         rightBottomBtnLayout.setComponentAlignment(showStudiesBtn, Alignment.MIDDLE_LEFT);
 
         Button exportTableBtn = new Button("");
-        exportTableBtn.setHeight("24px");
-        exportTableBtn.setWidth("24px");
+        exportTableBtn.setHeight("23px");
+        exportTableBtn.setWidth("23px");
         exportTableBtn.setPrimaryStyleName("exportxslbtn");
         rightBottomBtnLayout.addComponent(exportTableBtn);
         rightBottomBtnLayout.setComponentAlignment(exportTableBtn, Alignment.BOTTOM_RIGHT);

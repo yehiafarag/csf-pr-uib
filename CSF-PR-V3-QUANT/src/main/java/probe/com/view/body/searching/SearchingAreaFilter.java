@@ -1,6 +1,7 @@
 package probe.com.view.body.searching;
 
 import com.vaadin.event.FieldEvents;
+import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -20,7 +21,8 @@ public class SearchingAreaFilter extends VerticalLayout implements Serializable 
     private final TextAreaFilter searchFieldFilter;
     private final OptionGroupFilter searchbyGroup;
     private final SearchingFiltersControl searchingFiltersControl;
-    private final Button searchingBtn = new Button("");
+    private final VerticalLayout searchingBtn = new VerticalLayout();
+    private final Button searchingWorkingBtn = new Button();
 
     /**
      *
@@ -96,10 +98,24 @@ public class SearchingAreaFilter extends VerticalLayout implements Serializable 
             }
         });
 
-        searchingBtn.setStyleName(Reindeer.BUTTON_LINK);
-        searchingBtn.setIcon(new ThemeResource("img/searchBtn.png"));
+        searchingBtn.setStyleName("searchbtn");
+        searchingBtn.setWidth("100px");
+        searchingBtn.setHeight("32px");
+//        searchingBtn.setIcon(new ThemeResource("img/searchBtn.png"));
         searchbyLayout.addComponent(searchingBtn);
         searchbyLayout.setComponentAlignment(searchingBtn, Alignment.MIDDLE_CENTER);
+        searchbyLayout.addComponent(searchingWorkingBtn);
+        searchbyLayout.setComponentAlignment(searchingWorkingBtn, Alignment.MIDDLE_CENTER);
+        searchingWorkingBtn.setVisible(false);
+
+        searchingBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+
+            @Override
+            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+                searchingWorkingBtn.click();
+            }
+        });
+
     }
 
     /**
@@ -114,45 +130,46 @@ public class SearchingAreaFilter extends VerticalLayout implements Serializable 
      * @param searchingBtnClickListener
      */
     public void addSearchingClickListener(Button.ClickListener searchingBtnClickListener) {
-        searchingBtn.addClickListener(searchingBtnClickListener);
+        searchingWorkingBtn.addClickListener(searchingBtnClickListener);
     }
 
     /**
      *
      * @return
      */
-    public String getSearchingKeyWords(){
+    public String getSearchingKeyWords() {
         return searchFieldFilter.getValue();
-    
+
     }
 
     /**
      *
      * @return
      */
-    public String getSearchingByValue(){
-        return (String)searchbyGroup.getOptionGroup().getValue();
+    public String getSearchingByValue() {
+        return (String) searchbyGroup.getOptionGroup().getValue();
     }
-    
+
     /**
      *
      * @param value
      */
-    public void setSearchingFieldValue(String value){
-    
-    searchFieldFilter.setValue(value);
+    public void setSearchingFieldValue(String value) {
+
+        searchFieldFilter.setValue(value);
     }
-     /**
+
+    /**
      *
      * @param value
      */
-    public void setSearchingByValue(String value){
-    
-     searchbyGroup.getOptionGroup().setValue(value);
+    public void setSearchingByValue(String value) {
+
+        searchbyGroup.getOptionGroup().setValue(value);
     }
-    
-    public void startSearching(){
-    searchingBtn.click();
+
+    public void startSearching() {
+        searchingWorkingBtn.click();
     }
 
 }
