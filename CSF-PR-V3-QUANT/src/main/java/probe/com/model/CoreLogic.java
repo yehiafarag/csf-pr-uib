@@ -973,7 +973,7 @@ public class CoreLogic implements Serializable {
         }
         for (String str : stableAcc) {
             DiseaseGroupsComparisonsProteinLayout comProt = new DiseaseGroupsComparisonsProteinLayout(1, comparison, index--);
-            comProt.addNotProvided(-1, -1);
+            comProt.addStable(-1, -1);
             comProt.setProteinAccssionNumber(str);
             comProt.updateLabelLayout();
             comparProtList.put(str, comProt);
@@ -1104,9 +1104,9 @@ public class CoreLogic implements Serializable {
                     } else if (quant.getStringFCValue().equalsIgnoreCase("Increased") || quant.getStringFCValue().equalsIgnoreCase("Increase")) {
                         comProt.addUp((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
                     } else if (quant.getStringFCValue().equalsIgnoreCase("Not Provided")) {
-                        comProt.addNotProvided((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
+                        comProt.addNoValueProvided((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
                     } else if (quant.getStringFCValue().equalsIgnoreCase("No change")) {
-                        comProt.addNotProvided((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
+                        comProt.addStable((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
                     }
 
                 } else {
@@ -1116,9 +1116,9 @@ public class CoreLogic implements Serializable {
                     } else if (quant.getStringFCValue().equalsIgnoreCase("Increased") || quant.getStringFCValue().equalsIgnoreCase("Increase")) {
                         comProt.addDown((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
                     } else if (quant.getStringFCValue().equalsIgnoreCase("Not Provided")) {
-                        comProt.addNotProvided((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
+                        comProt.addNoValueProvided((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
                     } else if (quant.getStringFCValue().equalsIgnoreCase("No change")) {
-                        comProt.addNotProvided((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
+                        comProt.addStable((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
                     }
 
                 }

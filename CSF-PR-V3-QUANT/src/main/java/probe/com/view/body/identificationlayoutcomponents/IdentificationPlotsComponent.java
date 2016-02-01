@@ -42,6 +42,8 @@ import probe.com.model.beans.identification.StandardIdentificationFractionPlotPr
  */
 public class IdentificationPlotsComponent extends VerticalLayout implements Serializable {
 
+    private DCharts chart;
+
     /**
      *
      * @param lable
@@ -49,7 +51,6 @@ public class IdentificationPlotsComponent extends VerticalLayout implements Seri
      * @param standProtList
      * @param molecularWeight
      */
-    @SuppressWarnings("BoxingBoxedValue")
     public IdentificationPlotsComponent(String lable, Map<Integer, IdentificationProteinBean> protienFractionList, Map<String, List<StandardIdentificationFractionPlotProteinBean>> standProtList, double molecularWeight) {
         if (!protienFractionList.isEmpty()) {
 
@@ -103,7 +104,7 @@ public class IdentificationPlotsComponent extends VerticalLayout implements Seri
 
                 for (int index : protienFractionList.keySet()) {
                     IdentificationProteinBean pb = protienFractionList.get(index);
-                    initRealValue[x] = (double) pb.getNumberOfPeptidePerFraction();
+                    initRealValue[x] = Double.valueOf(pb.getNumberOfPeptidePerFraction());
                     strArr[x] = f + "";
                     for (StandardIdentificationFractionPlotProteinBean spb : standardValuesList.keySet()) {
                         if (spb.getLowerFraction() == f) {
@@ -234,7 +235,7 @@ public class IdentificationPlotsComponent extends VerticalLayout implements Seri
 
             Object[] realValue = new Double[(initRealValue.length)];
             System.arraycopy(initRealValue, 0, realValue, 0, realValue.length);
-            realValue[0] = Double.valueOf(initRealValue[0]);
+            realValue[0] = initRealValue[0];
 
             DataSeries dataSeries = new DataSeries();
             dataSeries.add(realValue);
@@ -248,7 +249,7 @@ public class IdentificationPlotsComponent extends VerticalLayout implements Seri
                 Double[] initValues = standardValuesList.get(spb);
                 Object[] values = new Double[(initValues.length)];
                 System.arraycopy(initValues, 0, values, 0, values.length);
-                values[0] = Double.valueOf(initValues[0]);
+                values[0] = initValues[0];
                 dataSeries.add(values);
                 colours[z] = spb.getColor();
                 String lab;
@@ -320,13 +321,16 @@ public class IdentificationPlotsComponent extends VerticalLayout implements Seri
                     .setStackSeries(true)
                     .setGrid(grid);
 
-            DCharts chart = new DCharts().setDataSeries(dataSeries).setOptions(options).show();
+            chart = new DCharts().setDataSeries(dataSeries).setOptions(options).show();
             chart.setWidth("100%");
             chart.setHeight("120px");
             chart.setMarginRight(10);
             this.setWidth("100%");
             this.addComponent(chart);
             this.setComponentAlignment(chart, Alignment.MIDDLE_RIGHT);
+
         }
     }
+
+ 
 }

@@ -148,6 +148,7 @@ public class IdentificationDatasetUpdatingDetailsFormLayout extends VerticalLayo
         descriptionField.setWidth("350px");
         descriptionField.setMaxLength(950);
         descriptionField.setEnabled(false);
+       
 
         publicationLinkField = new TextField("Publication Link:");
         publicationLinkField.setStyleName(Reindeer.TEXTFIELD_SMALL);

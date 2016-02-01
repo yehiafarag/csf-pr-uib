@@ -20,25 +20,25 @@ import probe.com.view.core.HideOnClickLayout;
  */
 public class IdentificationDatasetsLayout extends VerticalLayout implements Serializable {
 
-    private final CSFPRHandler csfprHandler;
+    private final CSFPRHandler CSFPR_Handler;
 
     /**
      *
-     * @param csfprHandler
+     * @param CSFPR_Handler
      * @param mainTabSheet
      */
-    public IdentificationDatasetsLayout(CSFPRHandler csfprHandler, TabSheet mainTabSheet) {
-        this.csfprHandler = csfprHandler;
+    public IdentificationDatasetsLayout(CSFPRHandler CSFPR_Handler, TabSheet mainTabSheet) {
+        this.CSFPR_Handler = CSFPR_Handler;
         this.setSpacing(true);
         this.setMargin(true);
 
         //no id data available
-        if (csfprHandler.getIdentificationDatasetList() == null || csfprHandler.getIdentificationDatasetList().isEmpty()) {
+        if (CSFPR_Handler.getIdentificationDatasetList() == null || CSFPR_Handler.getIdentificationDatasetList().isEmpty()) {
             Label noExpLable = new Label("<h4 style='font-family:verdana;color:black;font-weight:bold;'>Sorry No Dataset Availabe Now !</h4>");
             noExpLable.setContentMode(ContentMode.HTML);
             this.addComponent(noExpLable);
         } else {
-            Map<Integer, IdentificationDatasetDetailsBean> dsList = csfprHandler.getIdentificationDatasetDetailsList();
+            Map<Integer, IdentificationDatasetDetailsBean> dsList = CSFPR_Handler.getIdentificationDatasetDetailsList();
             for (int x : dsList.keySet()) {
                 HideOnClickLayout dslayout = initIdentificationDatasetRowLayout(x, dsList.get(x), mainTabSheet);
                 this.addComponent(dslayout);
@@ -61,7 +61,7 @@ public class IdentificationDatasetsLayout extends VerticalLayout implements Seri
      */
     private HideOnClickLayout initIdentificationDatasetRowLayout(int dsId, IdentificationDatasetDetailsBean identificationDataset, TabSheet mainTabSheet) {
          
-        IdentificationDatasetInformationLayout IdentificationDatasetInfoLayout = new IdentificationDatasetInformationLayout(csfprHandler, dsId, mainTabSheet);
+        IdentificationDatasetInformationLayout IdentificationDatasetInfoLayout = new IdentificationDatasetInformationLayout(CSFPR_Handler, dsId, mainTabSheet);
         HideOnClickLayout dsLayout = new HideOnClickLayout(identificationDataset.getName(), IdentificationDatasetInfoLayout, IdentificationDatasetInfoLayout.getMiniLayout(),"",null);
         dsLayout.setMargin(new MarginInfo(false, false, true, false));
         return dsLayout;

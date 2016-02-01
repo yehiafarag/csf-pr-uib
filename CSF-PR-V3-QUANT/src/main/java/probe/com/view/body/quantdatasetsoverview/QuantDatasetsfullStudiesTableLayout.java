@@ -75,7 +75,7 @@ public class QuantDatasetsfullStudiesTableLayout extends Table implements CSFFil
         this.setColumnCollapsed("Year", false);
         this.addContainerProperty("#Identified Proteins", Integer.class, null, "#Identified Proteins", null, Table.Align.RIGHT);
         this.setColumnCollapsed("#Identified Proteins", !activeColumnHeaders[2]);
-        this.addContainerProperty("#Quantified Proteins ", Integer.class, null, "#Quantified Proteins", null, Table.Align.RIGHT);
+        this.addContainerProperty("#Quantified Proteins", Integer.class, null, "#Quantified Proteins", null, Table.Align.RIGHT);
         this.setColumnCollapsed("#Quantified Proteins", !activeColumnHeaders[3]);
 
         this.addContainerProperty("Analytical Method", String.class, null);

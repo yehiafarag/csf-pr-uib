@@ -234,6 +234,7 @@ public class IdentificationDatasetLayout extends VerticalLayout implements Seria
                 }
             } else {
 
+                fractionsLayout.removeAllComponents();
                 Map<Integer, IdentificationProteinBean> fractionsList = CSFPR_Handler.getIdentificationProteinsGelFractionsList(datasetId, accession, otherAccession);
 
                 if (fractionsList != null && !fractionsList.isEmpty()) {

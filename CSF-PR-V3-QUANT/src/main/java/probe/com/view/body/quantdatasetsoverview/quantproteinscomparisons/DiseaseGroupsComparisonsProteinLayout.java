@@ -28,26 +28,26 @@ import probe.com.model.beans.quant.QuantProtein;
  * @author Yehia Farag
  */
 public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout implements Serializable, Comparable<DiseaseGroupsComparisonsProteinLayout> {
-    
+
     private String proteinAccssionNumber;
     private String protName;
     private final int uniqueId;
-    
+
     public String getUrl() {
         return url;
     }
-    
+
     public void setUrl(String url) {
         this.url = url;
     }
     private String url;
-    
+
     private int significantTrindCategory;
-    
+
     public Object getTableItemId() {
         return tableItemId;
     }
-    
+
     public void setTableItemId(Object tableItemId) {
         this.tableItemId = tableItemId;
     }
@@ -73,11 +73,11 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
     private final Map<String, List<Integer>> patientsNumToTrindMap = new HashMap<String, List<Integer>>();
     private final Map<String, List<Integer>> patientsNumToDSIDMap = new HashMap<String, List<Integer>>();
     private Map<String, QuantProtein> dsQuantProteinsMap = new HashMap<String, QuantProtein>();
-    
+
     public Map<String, QuantProtein> getDsQuantProteinsMap() {
         return dsQuantProteinsMap;
     }
-    
+
     public void setDsQuantProteinsMap(Map<String, QuantProtein> dsQuantProteinsMap) {
         this.dsQuantProteinsMap = dsQuantProteinsMap;
     }
@@ -97,7 +97,7 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
     public QuantDiseaseGroupsComparison getComparison() {
         return comparison;
     }
-    
+
     private final QuantDiseaseGroupsComparison comparison;
 
     /**
@@ -117,8 +117,9 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
     }
     private Integer upSignificant = 0;
     private Integer downSignificant = 0;
-    private int notRegSignificant = 0;
-    private int notProvided = 0;
+    private int stableSignificant = 0;
+    private int noValueprovided = 0;
+    private int stable = 0;
     private double penalty = 0.0;
     private String key;
     private Label upLabel;
@@ -140,71 +141,76 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
         otherSymbols.setGroupingSeparator('.');
         df = new DecimalFormat("#.#", otherSymbols);
-//        this.upReg=upReg;
         this.total = total;
         upLayout = new VerticalLayout();
         downLayout = new VerticalLayout();
-        notRegLayout = new VerticalLayout();
-        notProvidedLayout = new VerticalLayout();
+        emptyLayout = new VerticalLayout();
+        stableLayout = new VerticalLayout();
+        noValueProvidedLayout = new VerticalLayout();
         patientsNumToTrindMap.put("up", new ArrayList<Integer>());
-        patientsNumToTrindMap.put("notReg", new ArrayList<Integer>());
+        patientsNumToTrindMap.put("stable", new ArrayList<Integer>());
         patientsNumToTrindMap.put("down", new ArrayList<Integer>());
         patientsNumToDSIDMap.put("up", new ArrayList<Integer>());
-        patientsNumToDSIDMap.put("notReg", new ArrayList<Integer>());
-        patientsNumToDSIDMap.put("down", new ArrayList<Integer>());        
-        
+        patientsNumToDSIDMap.put("stable", new ArrayList<Integer>());
+        patientsNumToDSIDMap.put("down", new ArrayList<Integer>());
+        patientsNumToTrindMap.put("noValueProvided", new ArrayList<Integer>());
+        patientsNumToDSIDMap.put("noValueProvided", new ArrayList<Integer>());
+
         initLabelLayout();
     }
-    
+
     public void setSignificantTrindCategory(int significantTrindCategory) {
         this.significantTrindCategory = significantTrindCategory;
     }
-    
-    final VerticalLayout upLayout, downLayout, notRegLayout, notProvidedLayout;
-    
+
+    final VerticalLayout upLayout, downLayout, emptyLayout, stableLayout, noValueProvidedLayout;
+
     private void initLabelLayout() {
         this.setWidth("100%");
         this.setHeight("20px");
         this.setStyleName("pointer");
         this.setSpacing(false);
         this.setMargin(false);
-        
+
         downLabel = new Label();
         downLabel.setWidth("50px");
         downLabel.setHeight("15px");
         downLabel.setContentMode(ContentMode.HTML);
         this.addComponent(downLabel);
         this.setComponentAlignment(downLabel, Alignment.TOP_RIGHT);
-        
+
         downLayout.setHeight("15px");
         downLayout.setStyleName("greenlayout");
         this.addComponent(downLayout);
         this.setComponentAlignment(downLayout, Alignment.MIDDLE_CENTER);
 
-        //        notProvidedLayout.setWidth("100%");
-        notProvidedLayout.setHeight("15px");
-        notProvidedLayout.setStyleName("lightbluelayout");
-        this.addComponent(notProvidedLayout);
-        this.setComponentAlignment(notProvidedLayout, Alignment.MIDDLE_CENTER);
-//
-        notRegLayout.setHeight("15px");
-        notRegLayout.setStyleName("empty");//"empty"
-        this.addComponent(notRegLayout);
-        this.setComponentAlignment(notRegLayout, Alignment.MIDDLE_CENTER);
-        
+        //        stableLayout.setWidth("100%");
+        stableLayout.setHeight("15px");
+        stableLayout.setStyleName("lightbluelayout");
+        this.addComponent(stableLayout);
+        this.setComponentAlignment(stableLayout, Alignment.MIDDLE_CENTER);
+        noValueProvidedLayout.setHeight("15px");
+        noValueProvidedLayout.setStyleName("novaluelayout");//"empty"
+        this.addComponent(noValueProvidedLayout);
+        this.setComponentAlignment(noValueProvidedLayout, Alignment.MIDDLE_CENTER);
+        emptyLayout.setHeight("15px");
+        emptyLayout.setStyleName("empty");//"empty"
+        this.addComponent(emptyLayout);
+        this.setComponentAlignment(emptyLayout, Alignment.MIDDLE_CENTER);
+
         upLayout.setHeight("15px");
         upLayout.setStyleName("redlayout");
         this.addComponent(upLayout);
         this.setComponentAlignment(upLayout, Alignment.MIDDLE_CENTER);
         upLayout.setCaptionAsHtml(true);
-        
+
         upLabel = new Label();
         upLabel.setContentMode(ContentMode.HTML);
         upLabel.setWidth("50px");
         upLabel.setHeight("15px");
         this.addComponent(upLabel);
         this.setComponentAlignment(upLabel, Alignment.TOP_LEFT);
-        
+
     }
 
     /**
@@ -260,32 +266,25 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
      *
      * @param patientsNumber
      * @param dsID
+     * @param significant
      */
     public void addUp(int patientsNumber, int dsID, boolean significant) {
-        
+
         if (significant) {
             trendValue += (double) 1;
             this.upSignificant += 1;
             List<Integer> upList = this.patientsNumToTrindMap.get("up");
             upList.add(patientsNumber);
             this.patientsNumToTrindMap.put("up", upList);
-            
+
             List<Integer> upDsList = this.patientsNumToDSIDMap.get("up");
             upDsList.add(dsID);
             this.patientsNumToDSIDMap.put("up", upDsList);
-            
+
         } else {
-            addNotProvided(patientsNumber, dsID);
-//            this.upNotSignificant = this.upNotSignificant + 1;
-//            List<Integer> upList = this.patientsNumToTrindMap.get("upNotSig");
-//            upList.add(patientsNumber);
-//            this.patientsNumToTrindMap.put("upNotSig", upList);
-//
-//            List<Integer> upDsList = this.patientsNumToDSIDMap.get("upNotSig");
-//            upDsList.add(dsID);
-//            this.patientsNumToDSIDMap.put("upNotSig", upDsList);
+            addStable(patientsNumber, dsID);
         }
-        
+
     }
 
     /**
@@ -296,36 +295,32 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
         return downSignificant;
     }
 
+    public int getNoValueprovided() {
+        return noValueprovided;
+    }
+
     /**
      *
-     * @param down
      * @param patientsNumber
      * @param dsID
+     * @param significant
      */
     public void addDown(int patientsNumber, int dsID, boolean significant) {
-        
+
         if (significant) {
             trendValue -= (double) 1;
             this.downSignificant += 1;
             List<Integer> downList = this.patientsNumToTrindMap.get("down");
             downList.add(patientsNumber);
             this.patientsNumToTrindMap.put("down", downList);
-            
+
             List<Integer> downDsList = this.patientsNumToDSIDMap.get("down");
             downDsList.add(dsID);
             this.patientsNumToDSIDMap.put("down", downDsList);
-            
+
         } else {
-            
-            addNotProvided(patientsNumber, dsID);
-//            this.downNotSignificant = this.downNotSignificant + 1;
-//            List<Integer> upList = this.patientsNumToTrindMap.get("downNotSig");
-//            upList.add(patientsNumber);
-//            this.patientsNumToTrindMap.put("downNotSig", upList);
-//
-//            List<Integer> list = this.patientsNumToDSIDMap.get("downNotSig");
-//           list.add(dsID);
-//            this.patientsNumToDSIDMap.put("downNotSig", list);
+
+            addStable(patientsNumber, dsID);
         }
     }
 
@@ -333,71 +328,44 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
      *
      * @return
      */
-    public int getNotReg() {
-        return notRegSignificant;
+    public int getStable() {
+        return stable;
     }
 
     /**
      *
-     * @param notReg
-     * @param patientsNumber
-     * @param dsID
-     */
-    public void addNotReg(int patientsNumber, int dsID) {
-
-//        if (significant) {
-        penalty += 0.5;
-        this.notRegSignificant += 1;
-        List<Integer> notRegList = this.patientsNumToTrindMap.get("notReg");
-        notRegList.add(patientsNumber);
-        this.patientsNumToTrindMap.put("notReg", notRegList);
-        
-        List<Integer> notRegDsList = this.patientsNumToDSIDMap.get("notReg");
-        notRegDsList.add(dsID);
-        this.patientsNumToDSIDMap.put("notReg", notRegDsList);
-
-//        } 
-//        else {
-//
-//            this.notRegNotSignificant = this.notRegNotSignificant + 1;
-//            List<Integer> list = this.patientsNumToTrindMap.get("notRegNotSig");
-//            list.add(patientsNumber);
-//            this.patientsNumToTrindMap.put("notRegNotSig", list);
-//
-//            List<Integer> list2 = this.patientsNumToDSIDMap.get("notRegNotSig");
-//           list2.add(dsID);
-//            this.patientsNumToDSIDMap.put("notRegNotSig", list2);
-//        }
-    }
-
-    /**
-     *
-     * @return
-     */
-    public int getNotProvided() {
-//        trendValue-=0.5;
-        return notProvided;
-    }
-
-    /**
-     *
-     * @param notProvided
      * @param patNumber
      * @param dsID
      */
-    public void addNotProvided(int patNumber, int dsID) {
-//        trendValue-=0.5;
+    public void addStable(int patNumber, int dsID) {
         penalty += 0.5;
-        this.notProvided += 1;
-        List<Integer> notRegList = this.patientsNumToTrindMap.get("notReg");
+        this.stable += 1;
+        List<Integer> notRegList = this.patientsNumToTrindMap.get("stable");
         notRegList.add(patNumber);
-        this.patientsNumToTrindMap.put("notReg", notRegList);
-        
-        List<Integer> notRegDsList = this.patientsNumToDSIDMap.get("notReg");
+        this.patientsNumToTrindMap.put("stable", notRegList);
+        List<Integer> notRegDsList = this.patientsNumToDSIDMap.get("stable");
         notRegDsList.add(dsID);
-        this.patientsNumToDSIDMap.put("notReg", notRegDsList);
+        this.patientsNumToDSIDMap.put("stable", notRegDsList);
     }
-    
+
+    /**
+     *
+     * @param patientsNumber
+     * @param dsID
+     */
+    public void addNoValueProvided(int patientsNumber, int dsID) {
+
+        this.noValueprovided += 1;
+        List<Integer> noValueProvidedList = this.patientsNumToTrindMap.get("noValueProvided");
+        noValueProvidedList.add(patientsNumber);
+        this.patientsNumToTrindMap.put("noValueProvided", noValueProvidedList);
+
+        List<Integer> noValueProvidedDsList = this.patientsNumToDSIDMap.get("noValueProvided");
+        noValueProvidedDsList.add(dsID);
+        this.patientsNumToDSIDMap.put("noValueProvided", noValueProvidedDsList);
+
+    }
+
     @Override
     public int compareTo(DiseaseGroupsComparisonsProteinLayout t) {
         Double v1 = null;
@@ -425,7 +393,7 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
             v2 = Math.min(v2, 0) + ((double) (t.upSignificant - t.downSignificant) / 10.0);
         }
         return (v1).compareTo(v2);
-        
+
     }
     private String fullDownLabelValue = "";
     private String fullUpLabelValue = "";
@@ -439,37 +407,13 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
             return;
         }
         int dcounter = 0;
-//        this.setExpandRatio(downLabel, ((float) 1.5 / total));
-//        this.setExpandRatio(upLabel, ((float) 1.5 / total));
-        
         int subTotal = this.total;
         fullDownLabelValue = "<font style='float: right;'><strong> " + df.format(((double) downSignificant / (double) subTotal) * 100.0) + "% &#8595; </strong>&nbsp;</font>";
         downLabel.setValue(fullDownLabelValue);
         fullUpLabelValue = "<font style='float: left;'><strong>&nbsp;&#8593; " + df.format(((double) upSignificant / (double) subTotal) * 100.0) + "%</strong></font>";
         upLabel.setValue(fullUpLabelValue);
-//        if (((float) upSignificant / subTotal) <= 0.0) {
-//            upLayout.setVisible(false);
-//        } 
-//        else {
-//            dcounter += upSignificant;
-//            this.setExpandRatio(upLayout, ((float) upSignificant / subTotal));
-//        }
-//        if (((float) notProvided / subTotal) <= 0.0) {
-//            notProvidedLayout.setVisible(false);
-//        } 
-//        else {
-//            dcounter += notProvided;
-//            this.setExpandRatio(notProvidedLayout, ((float) notProvided / subTotal));
-//        }
-//        if (((float) downSignificant / subTotal) <= 0.0) {
-//            downLayout.setVisible(false);
-//        } 
-//        else {
-//            dcounter += downSignificant;
-//            this.setExpandRatio(downLayout, ((float) downSignificant / subTotal));
-//        }
 
-        Double v1 = null;
+        Double v1;
         if (upSignificant.intValue() == downSignificant.intValue()) {
             v1 = trendValue;
         } else if (trendValue > 0) {
@@ -485,12 +429,12 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
             cellValue = Math.min(v1, 1);
         } else if (v1 < 0) {
             cellValue = Math.max(v1, -1);
-        }        
-        this.setExpandRatio(notRegLayout, ((float) (subTotal - dcounter) / subTotal));
+        }
+        this.setExpandRatio(emptyLayout, ((float) (subTotal - dcounter) / subTotal));
         String overall;
         if (cellValue > 0) {
             overall = "High (" + cellValue + ")";
-            if (notProvided > 0 || notRegSignificant > 0 || downSignificant > 0) {
+            if (stable > 0 || stableSignificant > 0 || downSignificant > 0) {
                 significantTrindCategory = 3;
             } else {
                 significantTrindCategory = 4;
@@ -500,19 +444,19 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
             significantTrindCategory = 2;
         } else {
             overall = "Low (" + cellValue + ")";
-            if (notProvided > 0 || notRegSignificant > 0 || upSignificant > 0) {
+            if (stable > 0 || stableSignificant > 0 || upSignificant > 0) {
                 significantTrindCategory = 1;
             } else {
                 significantTrindCategory = 0;
             }
         }
-        this.setDescription("Low: " + downSignificant + "  /  Stable : " + notRegSignificant + " /  High: " + upSignificant + " Overall Trend " + overall);
-        
+        this.setDescription("Low: " + downSignificant + "  /  Stable : " + stable + " /  High: " + upSignificant + " Overall Trend " + overall);
+
     }
-    
+
     @Override
     public String toString() {
-        return ("Low: " + downSignificant + (downSignificant == 1 ? " study" : " studies") + "  -  Stable : " + notRegSignificant + (notRegSignificant == 1 ? " study" : " studies") + " -  High: " + upSignificant + (upSignificant == 1 ? " study" : " studies"));//"Low: " + downSignificant +" ( "+ df.format(((double) downSignificant / (double) total) * 100.0)+ "% )  /  Stable : " + notRegSignificant + " /  High: " + upSignificant+" ( "+ df.format(((double) upSignificant / (double) total) * 100.0)+ "% )";
+        return ("Low: " + downSignificant + (downSignificant == 1 ? " study" : " studies") + "  -  Stable : " + stable + (stable == 1 ? " study" : " studies") + " -  High: " + upSignificant + (upSignificant == 1 ? " study" : " studies"));//"Low: " + downSignificant +" ( "+ df.format(((double) downSignificant / (double) total) * 100.0)+ "% )  /  Stable : " + stableSignificant + " /  High: " + upSignificant+" ( "+ df.format(((double) upSignificant / (double) total) * 100.0)+ "% )";
 
     }
 
@@ -526,26 +470,28 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
         if (x == 0) {
             return patientsNumToDSIDMap.get("up").get(y);
         } else if (x == 1) {
-            return patientsNumToDSIDMap.get("notReg").get(y);
+            return patientsNumToDSIDMap.get("stable").get(y);
         } else if (x == 2) {
             return patientsNumToDSIDMap.get("down").get(y);
         } else {
             return -1;
         }
-        
+
     }
-    
+
     public List<Integer> getRegulationDsList(int regulation) {
         if (regulation == 2) {
             return patientsNumToDSIDMap.get("up");
         } else if (regulation == 1) {
-            return patientsNumToDSIDMap.get("notReg");
+            return patientsNumToDSIDMap.get("stable");
         } else if (regulation == 0) {
             return patientsNumToDSIDMap.get("down");
+        } else if (regulation == 3) {
+            return patientsNumToDSIDMap.get("noValueProvided");
         } else {
             return null;
         }
-        
+
     }
 
     /**
@@ -607,7 +553,7 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
         } else {
             downLabel.setVisible(false);
             upLabel.setVisible(false);
-            
+
         }
         if (((float) upSignificant / subTotal) <= 0.0) {
             upLayout.setVisible(false);
@@ -615,12 +561,18 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
             float upWidth = ((float) upSignificant / (float) subTotal) * freeArea;
             upLayout.setWidth(upWidth + "px");
         }
-        if (((float) notProvided / subTotal) <= 0.0) {
-            notProvidedLayout.setVisible(false);
+        if (((float) noValueprovided / subTotal) <= 0.0) {
+            noValueProvidedLayout.setVisible(false);
         } else {
-            float notProvidedWidth = ((float) notProvided / (float) subTotal) * freeArea;
-            notProvidedLayout.setWidth(notProvidedWidth + "px");
-            
+            float noValueProvidedWidth = ((float) noValueprovided / (float) subTotal) * freeArea;
+            noValueProvidedLayout.setWidth(noValueProvidedWidth + "px");
+        }
+        if (((float) stable / subTotal) <= 0.0) {
+            stableLayout.setVisible(false);
+        } else {
+            float notProvidedWidth = ((float) stable / (float) subTotal) * freeArea;
+            stableLayout.setWidth(notProvidedWidth + "px");
+
         }
         if (((float) downSignificant / subTotal) <= 0.0) {
             downLayout.setVisible(false);
@@ -628,16 +580,16 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
             float downWidth = ((float) downSignificant / (float) subTotal) * freeArea;
             downLayout.setWidth(downWidth + "px");
         }
-        
+
     }
-    
+
     public void setCustomizedUserData(boolean isCustomized) {
         if (isCustomized) {
             this.setStyleName("customizedproteinsLayout");
         } else {
             this.setStyleName("pointer");
         }
-        
+
     }
-    
+
 }

@@ -418,7 +418,7 @@
 
     height: 50px;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
 
     border: none;
     resize: none;
@@ -1260,6 +1260,9 @@ resetlabelbtn p{
 .unselectedmidredstackedlayout div:hover{
     border:2px solid gray;
     opacity: 1;
+}
+.novaluelayout div{
+    background:  #ff7500;
 }
 
 .greenlayout div{
@@ -2257,7 +2260,7 @@ resetlabelbtn p{
     margin-right: 148px;
     text-align: center;
     line-height: 25px !important;  
-    background-color: #7D0725;
+    background-color:  #B06363;
     color: #ffffff;
     cursor: pointer;
 }
@@ -2266,7 +2269,7 @@ resetlabelbtn p{
 .multiplesclerosishmrowlabel {
     text-align: center;
     line-height: 25px !important;  
-    background-color:    #7D0725;
+    background-color:     #B06363;
     color: #ffffff; 
     cursor: pointer;  
 
@@ -2304,7 +2307,7 @@ resetlabelbtn p{
     margin-right: 148px;
     text-align: center;
     line-height: 25px !important;   
-    background-color: #7D0725;
+    background-color:  #B06363;
     color: #ffffff;
     cursor: pointer;
 }
@@ -2313,7 +2316,7 @@ resetlabelbtn p{
 .amyotrophiclateralsclerosishmrowlabel {
     text-align: center;
     line-height: 25px !important;  
-    background-color: #7D0725;
+    background-color:  #B06363;
     color: #ffffff;
     cursor: pointer;  
 
@@ -2324,7 +2327,7 @@ resetlabelbtn p{
     border-bottom: 2px solid #F6F0F0;
     border-right: 2px solid #F6F0F0;
     border-left: 2px solid #F6F0F0;
-    background-color:    #7D0725;
+    background-color:  #B06363;
 
 }
 .pdLabel{
@@ -2345,7 +2348,7 @@ resetlabelbtn p{
     border-bottom: 2px solid #F6F0F0;
     border-right: 2px solid #F6F0F0;
     border-left: 2px solid #F6F0F0;
-    background-color: #7D0725;
+    background-color:  #B06363;
 
 }
 .row_msLabel{
@@ -2353,7 +2356,7 @@ resetlabelbtn p{
     border-bottom: 2px solid #F6F0F0;
     border-right: 2px solid #F6F0F0;
     border-left: 2px solid #F6F0F0;
-    background-color:    #7D0725;
+    background-color:     #B06363;
     top: 100%;
     -ms-transform:rotate(270deg); /* IE 9 */
     -moz-transform:rotate(270deg); /* Firefox */
@@ -2420,7 +2423,7 @@ resetlabelbtn p{
     border-bottom: 2px solid #F6F0F0;
     border-right: 2px solid #F6F0F0;
     border-left: 2px solid #F6F0F0;
-    background-color: #7D0725;
+    background-color:  #B06363;
     top: 100%;
     -ms-transform:rotate(270deg); /* IE 9 */
     -moz-transform:rotate(270deg); /* Firefox */
@@ -2469,7 +2472,7 @@ resetlabelbtn p{
 
 
     color: #ffffff;
-    background-color:    #7D0725;
+    background-color:     #B06363;
 
 }
 .rowItem_pdLabel{
@@ -2485,7 +2488,7 @@ resetlabelbtn p{
 }
 .rowItem_alsLabel{
     color: #ffffff;
-    background-color: #7D0725;
+    background-color: #B06363;
 
 }
 .externalLinkTableLabel sup{

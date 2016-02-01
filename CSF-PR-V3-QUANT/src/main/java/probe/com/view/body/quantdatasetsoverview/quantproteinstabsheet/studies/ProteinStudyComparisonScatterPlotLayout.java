@@ -113,7 +113,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         topLayout.setWidthUndefined();
         topLayout.setHeight("20px");
         topLayout.setStyleName(Reindeer.LAYOUT_WHITE);
-        int numb = cp.getSignificantDown() + cp.getNotProvided() + cp.getNotReg() + cp.getSignificantUp();
+        int numb = cp.getSignificantDown() + cp.getStable() + cp.getSignificantUp();
 
         String groupCompTitle = cp.getComparison().getComparisonHeader();
         String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0];// + " ( " + groupCompTitle.split(" / ")[1].split("\n")[1] + " )";
@@ -316,7 +316,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
 //        if((downSerII.getItemCount()+notSerII.getItemCount()+upSerII.getItemCount()+downSer.getItemCount()+notSer.getItemCount()+upSer.getItemCount())==0)
 //            return;
 //        dataset.addSeries(plusSeries);
-        final String[] labels = new String[]{" ", ("Low (" + cp.getSignificantDown() + ")"), " ", ("Stable (" + cp.getNotProvided() + ")"), " ", ("High (" + cp.getSignificantUp() + ")"), ""};
+        final String[] labels = new String[]{" ", ("Low (" + cp.getSignificantDown() + ")"), " ", ("Stable (" + cp.getStable()+ ")"), " ", ("High (" + cp.getSignificantUp() + ")"), ""};
         final Color[] labelsColor = new Color[]{Color.LIGHT_GRAY, new Color(80, 183, 71), Color.LIGHT_GRAY, new Color(1, 141, 244), Color.LIGHT_GRAY, Color.RED, Color.LIGHT_GRAY};
         final SymbolAxis domainAxis = new SymbolAxis("X", labels) {
             
