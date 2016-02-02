@@ -73,8 +73,6 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
     private final int imgWidth;
     private final Map<String, QuantDatasetObject> dsKeyDatasetMap = new HashMap<String, QuantDatasetObject>();
 
-    
-
     /**
      *
      * @return
@@ -100,8 +98,8 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
      * @param width
      * @param Quant_Central_Manager
      */
-    public ProteinStudyComparisonScatterPlotLayout(final QuantCentralManager Quant_Central_Manager, final DiseaseGroupsComparisonsProteinLayout cp, int width,int custTrend) {
-        this.custTrend=custTrend;
+    public ProteinStudyComparisonScatterPlotLayout(final QuantCentralManager Quant_Central_Manager, final DiseaseGroupsComparisonsProteinLayout cp, int width, int custTrend) {
+        this.custTrend = custTrend;
         this.Quant_Central_Manager = Quant_Central_Manager;
         this.setColumns(4);
         this.setRows(2);
@@ -117,9 +115,9 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
 
         String groupCompTitle = cp.getComparison().getComparisonHeader();
         String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0];// + " ( " + groupCompTitle.split(" / ")[1].split("\n")[1] + " )";
-        
+
         String rgbColor = Quant_Central_Manager.getDiseaseHashedColor(groupCompTitle.split(" / ")[1].split("\n")[1]);
-        comparisonTitle = new Label("<font color='"+rgbColor+"' style='font-weight: bold;'>"+updatedHeader + " (#Studies " + numb + "/" + cp.getComparison().getDatasetIndexes().length + ")</font>");
+        comparisonTitle = new Label("<font color='" + rgbColor + "' style='font-weight: bold;'>" + updatedHeader + " (#Studies " + numb + "/" + cp.getComparison().getDatasetIndexes().length + ")</font>");
         comparisonTitle.setContentMode(ContentMode.HTML);
         comparisonTitle.setStyleName("custChartLabelHeader");
         comparisonTitle.setWidth((width - 70) + "px");
@@ -141,7 +139,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         ProteinScatterPlotContainer.setHeight(150 + "px");
 
         String styleString = "_" + cp.getProteinAccssionNumber() + "_" + cp.getComparison().getComparisonHeader();
-        teststyle = styleString.replace(" ", "_").replace("+", "_").replace(")", "_").replace("(", "_").toLowerCase().replace(" ", "_").replace("\n", "_").replace(")", "_").replace("(", "_").toLowerCase().replace("+", "_").replace("/", "_").replace(".", "_").replace("'s","_") + "_scatterplot";
+        teststyle = styleString.replace(" ", "_").replace("+", "_").replace(")", "_").replace("(", "_").toLowerCase().replace(" ", "_").replace("\n", "_").replace(")", "_").replace("(", "_").toLowerCase().replace("+", "_").replace("/", "_").replace(".", "_").replace("'s", "_") + "_scatterplot";
         styles.add("." + teststyle + " {  background-image: url(" + defaultScatterPlottImgUrl + " );background-position:center; background-repeat: no-repeat; }");
         ProteinScatterPlotContainer.setStyleName(teststyle);
         ProteinScatterPlotContainer.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
@@ -170,7 +168,6 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         });
 
     }
-  
 
     public PeptidesStackedBarChartsControler getStudyPopupLayoutManager() {
         return studyPopupLayoutManager;
@@ -196,17 +193,21 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
 
         final XYSeriesCollection dataset = new XYSeriesCollection();
         XYSeries downSer = new XYSeries(0);
-        XYSeries notSer = new XYSeries(1);
+        XYSeries stableSer = new XYSeries(1);
         XYSeries upSer = new XYSeries(2);
 
-        XYSeries downSerII = new XYSeries(3);
-        XYSeries notSerII = new XYSeries(4);
-        XYSeries upSerII = new XYSeries(5);
+        XYSeries novalueProvidedSer = new XYSeries(3);
+
+        XYSeries downSerII = new XYSeries(4);
+        XYSeries stableSerII = new XYSeries(5);
+        XYSeries upSerII = new XYSeries(6);
+        XYSeries novalueProvidedSerII = new XYSeries(7);
 
 //        XYSeries plusSeries = new XYSeries(6);
         double downCounter = 1;
-        double notCounter = 3;
+        double stableCounter = 3;
         double upCounter = 5;
+        double novalueProvidedCounter = 3;
 
         patientGroupsNumToDsIdMap.clear();
 
@@ -225,13 +226,17 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
 
                 }
                 if (!paTGrNumbtrendMap.containsKey(i)) {
-                    int[] values = new int[3];
+                    int[] values = new int[4];
                     paTGrNumbtrendMap.put(i, values);
                 }
 
                 int[] values = paTGrNumbtrendMap.get(i);
                 ComparisonDetailsBean pGr = patientGroupsNumToDsIdMap.get(i);
-                if (protTrend.equalsIgnoreCase("up")) {
+                if (protTrend.equalsIgnoreCase("noValueProvided")) {
+                    values[3] = values[3] + 1;
+                    pGr.addNovalueProvided(cp.getDSID(3, coun));
+
+                } else if (protTrend.equalsIgnoreCase("up")) {
                     values[2] = values[2] + 1;
 
                     pGr.addUpRegulated(cp.getDSID(0, coun));
@@ -255,81 +260,55 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
             if ((values[2] > 1)) {
                 upSer.add(upCounter, i);
                 upSerII.add(upCounter, i);
-//                plusSeries.add(upCounter, i);
-//                upSer.add(upCounter, ((double) i + 0.45));
-//                upSer.add(upCounter, (double) i + 0.85);
-
-            } //            else if ((values[2] > 2)) {
-            //                upSer.add(upCounter, i);
-            ////                 upSer.add(upCounter, (double) i + 0.45);
-            //                upSerII.add(upCounter, i);
-            //                plusSeries.add(upCounter, i);
-            //
-            ////                plusSeries.add(upCounter,  (double) i + 0.85);
-            //            }
-            else if ((values[2] == 1)) {
+            } else if ((values[2] == 1)) {
                 upSer.add(upCounter, i);
             }
             if ((values[1] == 1)) {
-//                notSer.add(notCounter, ((double) i + 0.45));
-                notSer.add(notCounter, i);
-//                notSer.add(notCounter, (double) i + 0.85);
-//                plusSeries.add(notCounter,  (double) i + 0.45);
+                stableSer.add(stableCounter, i);
             } else if ((values[1] > 1)) {
-                notSer.add(notCounter, i);
-                notSerII.add(notCounter, i);
-//                plusSeries.add(notCounter, (double) i);
+                stableSer.add(stableCounter, i);
+                stableSerII.add(stableCounter, i);
             }
-//            else if ((values[1] > 2)) {
-////                 downSer.add(downCounter, ((double) i + 0.45));
-//                notSer.add(notCounter, i);
-//                notSer.add(notCounter, i);
-////                downSer.add(downCounter, (double) i + 0.85);
-//                plusSeries.add(notCounter, (double) i);
-//            }
+
             if ((values[0] > 1)) {
-//                downSer.add(downCounter, ((double) i + 0.45));
                 downSer.add(downCounter, i);
                 downSerII.add(downCounter, i);
-
-//                downSer.add(downCounter, (double) i + 0.85);
-//                plusSeries.add(downCounter, (double) i);
-            } //            else if ((values[0] == 2)) {
-            ////                 downSer.add(downCounter, ((double) i + 0.45));
-            //                downSer.add(downCounter, i);
-            //                downSerII.add(downCounter, i);
-            ////                downSer.add(downCounter, (double) i + 0.85);
-            ////                plusSeries.add(downCounter,  (double) i + 0.45);
-            //            } 
-            else if ((values[0] == 1)) {
+            } else if ((values[0] == 1)) {
                 downSer.add(downCounter, i);
+            }
+            if ((values[3] == 1)) {
+                novalueProvidedSer.add(novalueProvidedCounter, i);
+            } else if ((values[3] > 1)) {
+                novalueProvidedSer.add(stableCounter, i);
+                novalueProvidedSerII.add(stableCounter, i);
             }
 
         }
 
         dataset.addSeries(downSer);
-        dataset.addSeries(notSer);
+        dataset.addSeries(stableSer);
         dataset.addSeries(upSer);
+        dataset.addSeries(novalueProvidedSer);
         dataset.addSeries(downSerII);
-        dataset.addSeries(notSerII);
+        dataset.addSeries(stableSerII);
         dataset.addSeries(upSerII);
-//        if((downSerII.getItemCount()+notSerII.getItemCount()+upSerII.getItemCount()+downSer.getItemCount()+notSer.getItemCount()+upSer.getItemCount())==0)
+        dataset.addSeries(novalueProvidedSerII);
+//        if((downSerII.getItemCount()+stableSerII.getItemCount()+upSerII.getItemCount()+downSer.getItemCount()+stableSer.getItemCount()+upSer.getItemCount())==0)
 //            return;
 //        dataset.addSeries(plusSeries);
-        final String[] labels = new String[]{" ", ("Low (" + cp.getSignificantDown() + ")"), " ", ("Stable (" + cp.getStable()+ ")"), " ", ("High (" + cp.getSignificantUp() + ")"), ""};
+        final String[] labels = new String[]{" ", ("Low (" + cp.getSignificantDown() + ")"), " ", ("Stable (" + cp.getStable() + ")"), " ", ("High (" + cp.getSignificantUp() + ")"), ""};
         final Color[] labelsColor = new Color[]{Color.LIGHT_GRAY, new Color(80, 183, 71), Color.LIGHT_GRAY, new Color(1, 141, 244), Color.LIGHT_GRAY, Color.RED, Color.LIGHT_GRAY};
         final SymbolAxis domainAxis = new SymbolAxis("X", labels) {
-            
-                @Override
+
+            @Override
             protected void drawGridBandsVertical(Graphics2D g2, Rectangle2D drawArea, Rectangle2D plotArea, boolean firstGridBandIsDark, List ticks) {
                 List udatedTicksList = new ArrayList();
-                
-                 
+
                 for (Object tick : ticks) {
-                    if (tick.toString().equalsIgnoreCase(labels[custTrend+1])) {
+                    if (tick.toString().equalsIgnoreCase(labels[custTrend + 1])) {
                         udatedTicksList.add(tick);
                     }
-                }   
+                }
 //                System.out.println("at ticks is "+ticks);
 //                 System.out.println("at udatedTicksList is "+udatedTicksList);
 //                int factor = (int) ((plotArea.getHeight() / 5) * 0.25);
@@ -339,7 +318,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
 
                 super.drawGridBandsVertical(g2, drawArea, plotArea, firstGridBandIsDark, udatedTicksList); //To change body of generated methods, choose Tools | Templates.
             }
-            
+
             int x = 0;
 
             @Override
@@ -356,8 +335,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         domainAxis.setTickLabelFont(f);
         domainAxis.setAutoRange(false);
         domainAxis.setLabel(null);
-          
-        
+
 //        domainAxis.setGridBandsVisible(false);
         String xTile = "#Patients";
 
@@ -372,18 +350,18 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         );
         XYPlot plot1 = (XYPlot) jFreeChart.getPlot();
         XYPlot xyplot = new XYPlot(dataset, plot1.getDomainAxis(), plot1.getRangeAxis(), plot1.getRenderer()) {
-            
+
             @Override
             public void drawDomainTickBands(Graphics2D g2, Rectangle2D dataArea, List ticks) {
 
-                if(custTrend == -1){
-                   super.drawDomainTickBands(g2, dataArea, ticks);
-                   return;
-                
+                if (custTrend == -1) {
+                    super.drawDomainTickBands(g2, dataArea, ticks);
+                    return;
+
                 }
                 List udatedTicksList = new ArrayList();
                 for (Object tick : ticks) {
-                    if (tick.toString().equalsIgnoreCase(labels[custTrend+1])) {
+                    if (tick.toString().equalsIgnoreCase(labels[custTrend + 1])) {
                         udatedTicksList.add(tick);
                     }
                 }
@@ -401,8 +379,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
 
                 super.drawDomainTickBands(g2, up, udatedTicksList); //To change body of generated methods, choose Tools | Templates.
             }
-            
-            
+
             @Override
             protected void drawDomainGridlines(Graphics2D g2, Rectangle2D dataArea, List ticks) {
                 super.drawDomainGridlines(g2, dataArea, ticks); //To change body of generated methods, choose Tools | Templates.
@@ -423,7 +400,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
                 }
             }
         };
-         if (custTrend != -1) {
+        if (custTrend != -1) {
             domainAxis.setGridBandsVisible(true);
             if (custTrend == 4) {
                 domainAxis.setGridBandPaint(Color.decode("#ffe5e5"));
@@ -480,14 +457,20 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         renderer.setSeriesPaint(2, c2);
         renderer.setSeriesOutlinePaint(2, Color.WHITE);
 
-        renderer.setSeriesPaint(3, new Color(150, 212, 145));
-        renderer.setSeriesOutlinePaint(3, new Color(150, 212, 145));
+        renderer.setSeriesPaint(3, new Color(255, 165, 0));
+        renderer.setSeriesOutlinePaint(3, Color.WHITE);
 
-        renderer.setSeriesPaint(4, new Color(103, 187, 248));
-        renderer.setSeriesOutlinePaint(4, new Color(103, 187, 248));
+        renderer.setSeriesPaint(4, new Color(150, 212, 145));
+        renderer.setSeriesOutlinePaint(4, new Color(150, 212, 145));
 
-        renderer.setSeriesPaint(5, new Color(224, 102, 102));
-        renderer.setSeriesOutlinePaint(5, new Color(224, 102, 102));
+        renderer.setSeriesPaint(5, new Color(103, 187, 248));
+        renderer.setSeriesOutlinePaint(5, new Color(103, 187, 248));
+
+        renderer.setSeriesPaint(6, new Color(224, 102, 102));
+        renderer.setSeriesOutlinePaint(6, new Color(224, 102, 102));
+
+        renderer.setSeriesPaint(7, new Color(255, 165, 0));
+        renderer.setSeriesOutlinePaint(7, new Color(255, 165, 0));
 
 //        renderer.setSeriesPaint(6, Color.BLACK);
 //        renderer.setSeriesOutlinePaint(6, Color.BLACK);
@@ -504,34 +487,44 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         renderer.setSeriesShape(1, notRShape);
         renderer.setSeriesShape(2, upArr);
 
-        renderer.setSeriesShape(3, downArrII);
-        renderer.setSeriesShape(4, notRShapeII);
-        renderer.setSeriesShape(5, upArrII);
+        renderer.setSeriesShape(3, notRShape);
+
+        renderer.setSeriesShape(4, downArrII);
+        renderer.setSeriesShape(5, notRShapeII);
+        renderer.setSeriesShape(6, upArrII);
+
+        renderer.setSeriesShape(7, notRShapeII);
 //       renderer.setSeriesShape(6, plus);
 
         renderer.setBaseItemLabelsVisible(true);
         renderer.setBaseItemLabelGenerator(new SymbolicXYItemLabelGenerator() {
-            private final int[] indexer = new int[]{0, 0, 0, 1, 0, 2};
+            private final int[] indexer = new int[]{0, 1, 2, 3, 0, 1, 2, 3};
 
             @Override
             public String generateLabel(XYDataset dataset, int series, int category) {
-                if (series > 2) {
+                if (series > 3) {
                     int patNumber = (int) dataset.getYValue(series, category);
-                    int trend = (int) dataset.getXValue(series, category);
-                    return "\t   " + paTGrNumbtrendMap.get(patNumber)[indexer[trend]];
+//                    int trend = (int) dataset.getXValue(series, category);
+                    if (series == 7 || series == 5) {
+                        return "\t  " + paTGrNumbtrendMap.get(patNumber)[indexer[series]];
+                    } else {
+                        return "\t   " + paTGrNumbtrendMap.get(patNumber)[indexer[series]];
+                    }
 
                 }
 
-                return super.generateLabel(dataset, series, category); //To change body of generated methods, choose Tools | Templates.
+                return ""; //To change body of generated methods, choose Tools | Templates.
             }
 
         });
         ItemLabelPosition position = new ItemLabelPosition(
                 ItemLabelAnchor.OUTSIDE12, TextAnchor.BASELINE_LEFT,
                 TextAnchor.TOP_LEFT, 0.0);
-        renderer.setSeriesPositiveItemLabelPosition(3, position);
+
         renderer.setSeriesPositiveItemLabelPosition(4, position);
         renderer.setSeriesPositiveItemLabelPosition(5, position);
+        renderer.setSeriesPositiveItemLabelPosition(6, position);
+        renderer.setSeriesPositiveItemLabelPosition(7, position);
 
         renderer.setBaseItemLabelFont(f);
 
@@ -639,7 +632,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
 
         } else if (!heighlight) {
 //            if (!isclicked) {
-                styles.add("." + teststyle + " {  background-image: url(" + defaultScatterPlottImgUrl + " );background-position:center; background-repeat: no-repeat; }");
+            styles.add("." + teststyle + " {  background-image: url(" + defaultScatterPlottImgUrl + " );background-position:center; background-repeat: no-repeat; }");
 //            } else {
 //                isclicked = false;
 //            }
@@ -660,7 +653,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
     public void redrawChart() {
         if (defaultScatterPlottImgUrl == null) {
             this.generateScatterplotchart(comparisonProtein, imgWidth, 150);
-            studyPopupLayoutManager = new PeptidesStackedBarChartsControler(width, patientGroupsNumToDsIdMap, comparisonProtein.getProteinAccssionNumber(), comparisonProtein.getProtName(), comparisonProtein.getUrl(), comparisonProtein.getComparison().getComparisonHeader(), comparisonProtein.getDsQuantProteinsMap(), dsKeyDatasetMap,Quant_Central_Manager.getDiseaseHashedColorMap());
+            studyPopupLayoutManager = new PeptidesStackedBarChartsControler(width, patientGroupsNumToDsIdMap, comparisonProtein.getProteinAccssionNumber(), comparisonProtein.getProtName(), comparisonProtein.getUrl(), comparisonProtein.getComparison().getComparisonHeader(), comparisonProtein.getDsQuantProteinsMap(), dsKeyDatasetMap, Quant_Central_Manager.getDiseaseHashedColorMap());
         }
         styles.add("." + teststyle + " {  background-image: url(" + defaultScatterPlottImgUrl + " );background-position:center; background-repeat: no-repeat; }");
 

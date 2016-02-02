@@ -46,7 +46,7 @@ public class QuantCentralManager implements Serializable {
 
     public QuantCentralManager(CSFPRHandler CSFPR_Handler) {
         this.CSFPR_Handler = CSFPR_Handler;
-        diseaseHashedColorMap.put("Multiple Sclerosis", "#B06363");
+        diseaseHashedColorMap.put("Multiple Sclerosis", "#A52A2A");
         diseaseHashedColorMap.put("Alzheimer's", "#4b7865");
         diseaseHashedColorMap.put("Parkinson's", "#74716E");
         diseaseHashedColorMap.put("Amyotrophic Lateral Sclerosis", "#7D0725");
@@ -61,7 +61,7 @@ public class QuantCentralManager implements Serializable {
 
     public QuantCentralManager(CSFPRHandler CSFPR_Handler, List<QuantProtein> searchQuantificationProtList) {
         this.CSFPR_Handler = CSFPR_Handler;
-        diseaseHashedColorMap.put("Multiple Sclerosis", "#B06363");
+        diseaseHashedColorMap.put("Multiple Sclerosis", "#A52A2A");
         diseaseHashedColorMap.put("Alzheimer's", "#4b7865");
         diseaseHashedColorMap.put("Parkinson's", "#74716E");
         diseaseHashedColorMap.put("Amyotrophic Lateral Sclerosis", "#4b7865");
@@ -76,7 +76,7 @@ public class QuantCentralManager implements Serializable {
 
     public QuantCentralManager(CSFPRHandler CSFPR_Handler, List<QuantProtein> searchQuantificationProtList, QuantDiseaseGroupsComparison userCustomizedComparison) {
         this.CSFPR_Handler = CSFPR_Handler;
-        diseaseHashedColorMap.put("Multiple Sclerosis", "#B06363");
+        diseaseHashedColorMap.put("Multiple Sclerosis", "#A52A2A");
         diseaseHashedColorMap.put("Alzheimer's", "#4b7865");
         diseaseHashedColorMap.put("Parkinson's", "#74716E");
         diseaseHashedColorMap.put("Amyotrophic Lateral Sclerosis", "#4b7865");

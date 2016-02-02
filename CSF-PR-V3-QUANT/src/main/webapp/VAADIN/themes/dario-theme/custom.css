@@ -1262,7 +1262,7 @@ resetlabelbtn p{
     opacity: 1;
 }
 .novaluelayout div{
-    background:  #ff7500;
+    background:  orange;
 }
 
 .greenlayout div{
@@ -2148,14 +2148,14 @@ resetlabelbtn p{
     width: 20px;
     height: 20px;
     background-image: url("img/clear.png");
-        background-position:center;
+    background-position:center;
     background-repeat: no-repeat;
     background-size: contain;
     cursor:pointer;
 }
 .clearfieldbtn:hover{
-     background-image: url("img/clear_hover.png");
-   
+    background-image: url("img/clear_hover.png");
+
 }
 .compareerror{
     margin-top:70px;
@@ -2260,7 +2260,7 @@ resetlabelbtn p{
     margin-right: 148px;
     text-align: center;
     line-height: 25px !important;  
-    background-color:  #B06363;
+    background-color:  #A52A2A;
     color: #ffffff;
     cursor: pointer;
 }
@@ -2269,7 +2269,7 @@ resetlabelbtn p{
 .multiplesclerosishmrowlabel {
     text-align: center;
     line-height: 25px !important;  
-    background-color:     #B06363;
+    background-color:     #A52A2A;
     color: #ffffff; 
     cursor: pointer;  
 
@@ -2307,7 +2307,7 @@ resetlabelbtn p{
     margin-right: 148px;
     text-align: center;
     line-height: 25px !important;   
-    background-color:  #B06363;
+    background-color:  #A52A2A;
     color: #ffffff;
     cursor: pointer;
 }
@@ -2327,7 +2327,7 @@ resetlabelbtn p{
     border-bottom: 2px solid #F6F0F0;
     border-right: 2px solid #F6F0F0;
     border-left: 2px solid #F6F0F0;
-    background-color:  #B06363;
+    background-color: #A52A2A;
 
 }
 .pdLabel{
@@ -2356,7 +2356,7 @@ resetlabelbtn p{
     border-bottom: 2px solid #F6F0F0;
     border-right: 2px solid #F6F0F0;
     border-left: 2px solid #F6F0F0;
-    background-color:     #B06363;
+    background-color:     #A52A2A;
     top: 100%;
     -ms-transform:rotate(270deg); /* IE 9 */
     -moz-transform:rotate(270deg); /* Firefox */
@@ -2423,7 +2423,7 @@ resetlabelbtn p{
     border-bottom: 2px solid #F6F0F0;
     border-right: 2px solid #F6F0F0;
     border-left: 2px solid #F6F0F0;
-    background-color:  #B06363;
+    background-color:  #A52A2A;
     top: 100%;
     -ms-transform:rotate(270deg); /* IE 9 */
     -moz-transform:rotate(270deg); /* Firefox */
@@ -2472,7 +2472,7 @@ resetlabelbtn p{
 
 
     color: #ffffff;
-    background-color:     #B06363;
+    background-color:     #A52A2A;
 
 }
 .rowItem_pdLabel{
@@ -2488,7 +2488,7 @@ resetlabelbtn p{
 }
 .rowItem_alsLabel{
     color: #ffffff;
-    background-color: #B06363;
+    background-color: #A52A2A;
 
 }
 .externalLinkTableLabel sup{

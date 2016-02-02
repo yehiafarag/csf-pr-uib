@@ -97,6 +97,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
     private final String[] tooltipLabels = new String[]{"( Low <img src='VAADIN/themes/dario-theme/img/greendot.png' alt='Low'>" + " )", "( Low <img src='VAADIN/themes/dario-theme/img/lgreendot.png' alt='Low'>" + " )", "( Stable <img src='VAADIN/themes/dario-theme/img/bluedot.png' alt='Stable'>" + " )", " ( High <img src='VAADIN/themes/dario-theme/img/lreddot.png' alt='High'>" + " )", " ( High <img src='VAADIN/themes/dario-theme/img/reddot.png' alt='High'>" + " )"};
     private final Map<String, Color> diseaseColorMap = new HashMap<String, Color>();
     private QuantDiseaseGroupsComparison userCustomizedComparison;
+    private Color stableColor;
 
     public void updateSize(int updatedWidth, int height) {
         width = updatedWidth;
@@ -143,7 +144,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         btnsLayout.setWidth(100 + "%");
         btnsLayout.setHeight(20 + "px");
         btnsLayout.setSpacing(true);
-         
+
         Label overviewLabel = new Label("<p style='margin-left :80px'>Overall Studies Proteins Trend</p> ");
         overviewLabel.setContentMode(ContentMode.HTML);
         btnsLayout.addComponent(overviewLabel);
@@ -157,8 +158,6 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         initialLayout = new VerticalLayout();
         initialLayout.setWidth(width + "px");
         initialLayout.setHeightUndefined();
-        
-        
 
         VerticalLayout spacer = new VerticalLayout();
         spacer.setHeight("100px");
@@ -300,8 +299,8 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         initialLayout = new VerticalLayout();
         initialLayout.setWidth(width + "px");
         initialLayout.setHeightUndefined();
-        
-           Label overviewLabel = new Label("<p style='margin-left :80px'>Overall Studies Proteins Trend</p> ");
+
+        Label overviewLabel = new Label("<p style='margin-left :80px'>Overall Studies Proteins Trend</p> ");
         overviewLabel.setContentMode(ContentMode.HTML);
         btnsLayout.addComponent(overviewLabel);
         overviewLabel.setStyleName("subtitle");
@@ -449,7 +448,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                         continue;
                     }
 
-                    if (qp.getSignificantTrindCategory() == 2) {
+                    if (qp.getSignificantTrindCategory() == 2 || qp.getSignificantTrindCategory() == 5) {
                         continue;
                     }
 
@@ -472,11 +471,11 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         }
 
         final Map<Integer, Color[]> seriousColorMap = new HashMap<Integer, Color[]>();
-        Color[] dataColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0)};
+        Color[] dataColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), stableColor, new Color(255, 51, 51), new Color(204, 0, 0)};
 
         for (QuantDiseaseGroupsComparison qc : selectedComparisonList) {
 
-            double[] tempWidthValue = new double[5];
+            double[] tempWidthValue = new double[6];
             if (qc.getComparProtsMap() == null) {
                 continue;
             }
@@ -484,12 +483,27 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
             for (String key : qc.getComparProtsMap().keySet()) {
                 qc.getComparProtsMap().get(key).updateLabelLayout();
 
-                if (significantOnly && qc.getComparProtsMap().get(key).getSignificantTrindCategory() == 2) {
-                    tempWidthValue[qc.getComparProtsMap().get(key).getSignificantTrindCategory()] = 0;
+                if (significantOnly && (qc.getComparProtsMap().get(key).getSignificantTrindCategory() == 2 || qc.getComparProtsMap().get(key).getSignificantTrindCategory() == 5)) {
+                    tempWidthValue[2] = 0;
+                    tempWidthValue[5] = 0;
                 } else {
                     tempWidthValue[qc.getComparProtsMap().get(key).getSignificantTrindCategory()] = tempWidthValue[qc.getComparProtsMap().get(key).getSignificantTrindCategory()] + 1;
                 }
             }
+            
+
+            if (tempWidthValue[2] > 0 && tempWidthValue[5] >= 0) {
+                stableColor = new Color(1, 141, 244);
+
+            } else {
+                stableColor = new Color(255, 165, 0);
+
+            }
+            
+            tempWidthValue[2] = tempWidthValue[2] + tempWidthValue[5];
+            tempWidthValue[5] = 0;
+            dataColor[2] = stableColor;
+
             int length = 0;
             if (upper < 10) {
                 upper = 10;
@@ -692,9 +706,9 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         };
 
         XYPlot xyplot = new XYPlot(defaultxyzdataset, xAxis, yAxis, xyitemrenderer) {
-            private final Color[] labelsColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0)};
+            private final Color[] labelsColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), stableColor, new Color(255, 51, 51), new Color(204, 0, 0), new Color(255, 165, 0)};
             private final Font font = new Font("Verdana", Font.PLAIN, 12);
-            private final String[] labels = new String[]{"Low 100%", "Low <100% ", "Stable", " High <100%", "High 100%"};
+            private final String[] labels = new String[]{"Low 100%", "Low <100% ", "Stable", " High <100%", "High 100%", "No Quant. Data"};
 
             @Override
             public LegendItemCollection getLegendItems() {
@@ -775,9 +789,9 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         }
 
         final Map<Integer, Color[]> seriousColorMap = new HashMap<Integer, Color[]>();
-        Color[] dataColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0)};
+        Color[] dataColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), stableColor, new Color(255, 51, 51), new Color(204, 0, 0)};
 
-        double[] tempWidthValue = new double[5];
+        double[] tempWidthValue = new double[6];
 
         for (String key : userCustomizedComparison.getComparProtsMap().keySet()) {
             userCustomizedComparison.getComparProtsMap().get(key).updateLabelLayout();
@@ -827,7 +841,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
         for (QuantDiseaseGroupsComparison qc : selectedComparisonList) {
 
-            tempWidthValue = new double[5];
+            tempWidthValue = new double[6];
             if (qc.getComparProtsMap() == null) {
                 continue;
             }
@@ -835,12 +849,22 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
             for (String key : qc.getComparProtsMap().keySet()) {
                 qc.getComparProtsMap().get(key).updateLabelLayout();
 
-                if (significantOnly && qc.getComparProtsMap().get(key).getSignificantTrindCategory() == 2) {
-                    tempWidthValue[qc.getComparProtsMap().get(key).getSignificantTrindCategory()] = 0;
+                if (significantOnly && (qc.getComparProtsMap().get(key).getSignificantTrindCategory() == 2 || qc.getComparProtsMap().get(key).getSignificantTrindCategory() == 5)) {
+                    tempWidthValue[2] = 0;
+                    tempWidthValue[5] = 0;
                 } else {
                     tempWidthValue[qc.getComparProtsMap().get(key).getSignificantTrindCategory()] = tempWidthValue[qc.getComparProtsMap().get(key).getSignificantTrindCategory()] + 1;
                 }
             }
+             if (tempWidthValue[2] > 0 && tempWidthValue[5] >= 0) {
+                stableColor = new Color(1, 141, 244);
+
+            } else {
+                stableColor = new Color(255, 165, 0);
+            }
+            tempWidthValue[2] = tempWidthValue[2] + tempWidthValue[5];
+            tempWidthValue[5] = 0;
+            dataColor[2] = stableColor;
             length = 0;
             if (upper < 10) {
                 upper = 10;
@@ -1051,9 +1075,9 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         };
 
         XYPlot xyplot = new XYPlot(defaultxyzdataset, xAxis, yAxis, xyitemrenderer) {
-            private final Color[] labelsColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0)};
+            private final Color[] labelsColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0), new Color(255, 165, 0)};
             private final Font font = new Font("Verdana", Font.PLAIN, 12);
-            private final String[] labels = new String[]{"Low 100%", "Low <100% ", "Stable", " High <100%", "High 100%"};
+            private final String[] labels = new String[]{"Low 100%", "Low <100% ", "Stable", " High <100%", "High 100%", "No Quant. Data"};
 
             @Override
             public LegendItemCollection getLegendItems() {
@@ -1061,7 +1085,6 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                 for (int i = 0; i < labelsColor.length; i++) {
                     LegendItem item = new LegendItem(labels[i], labelsColor[i]);
                     item.setLabelFont(font);
-
                     legendItemCollection.add(item);
 
                 }
@@ -1246,7 +1269,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         if (type.equalsIgnoreCase("Comparison_Selection")) {
 //            selectedComparisonList = this.Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList();
             selectedComparisonList = this.Quant_Central_Manager.getUpdatedSelectedDiseaseGroupsComparisonListProteins(searchQuantificationProtList);
-            
+
             if (selectedComparisonList.isEmpty()) {
                 initialLayout.setVisible(true);
                 chartLayout.removeAllComponents();

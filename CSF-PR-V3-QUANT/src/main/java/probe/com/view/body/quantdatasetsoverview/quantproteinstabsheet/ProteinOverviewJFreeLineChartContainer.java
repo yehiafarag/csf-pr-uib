@@ -100,7 +100,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
     private final Shape emptyRShape = ShapeUtilities.createDiamond(6f);
     private final Shape downArr = ShapeUtilities.createDownTriangle(6f);
     private final Shape upArr = ShapeUtilities.createUpTriangle(6f);
-    private final Shape square = ShapeUtilities.rotateShape(ShapeUtilities.createDiamond(8f),0.8f,0f,0f );
+    private final Shape square = ShapeUtilities.rotateShape(ShapeUtilities.createDiamond(8f), 0.8f, 0f, 0f);
     private final Map<String, Color> diseaseColorMap = new HashMap<String, Color>();
     private final Color[] customizedUserDataColor = new Color[]{Color.decode("#e5ffe5"), Color.WHITE, Color.decode("#e6f4ff"), Color.WHITE, Color.decode("#ffe5e5")};
 
@@ -764,6 +764,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
     private JFreeChart generateLineChart(DiseaseGroupsComparisonsProteinLayout[] comparisonProteins, Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
         int upcounter = 0;
+        int noValueprovidedcounter = 0;
         int midupcounter = 0;
         int notcounter = 0;
         int downcounter = 0;
@@ -790,6 +791,9 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                     break;
                 case 4:
                     upcounter++;
+                    break;
+                case 5:
+                    noValueprovidedcounter++;
                     break;
 
             }
@@ -818,6 +822,10 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         double[] xLineValues = new double[counter];
         double[] yLineValues = new double[counter];
 
+        double[][] noValueProvidedvalues = new double[2][noValueprovidedcounter];
+        double[] xNoValueProvided = new double[noValueprovidedcounter];
+        double[] yNoValueProvided = new double[noValueprovidedcounter];
+
         double[][] upvalues = new double[2][upcounter];
         double[] xUpValues = new double[upcounter];
         double[] yUpValues = new double[upcounter];
@@ -826,9 +834,9 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         double[] xMidUpValues = new double[midupcounter];
         double[] yMidUpValues = new double[midupcounter];
 
-        double[][] notvalues = new double[2][notcounter];
-        double[] xNotValues = new double[notcounter];
-        double[] yNotValues = new double[notcounter];
+        double[][] stablevalues = new double[2][notcounter];
+        double[] xStabletValues = new double[notcounter];
+        double[] yStableValues = new double[notcounter];
 
         double[][] downvalues = new double[2][downcounter];
         double[] xDownValues = new double[downcounter];
@@ -847,6 +855,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         int midupIndex = 0;
         int middownIndex = 0;
         int emptyIndex = 0;
+        int noValueProvidedIndex = 0;
 
         int compIndex = 0;
         int comparisonIndexer = 0;
@@ -860,7 +869,12 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                 emptyIndex++;
 //                continue;
             } //            else {
-            else if (cp.getSignificantTrindCategory() == 4) {
+            else if (cp.getSignificantTrindCategory() == 5) {
+                yLineValues[compIndex] = 2d;
+                xNoValueProvided[noValueProvidedIndex] = comparisonIndexer;
+                yNoValueProvided[noValueProvidedIndex] = 2d;
+                noValueProvidedIndex++;
+            } else if (cp.getSignificantTrindCategory() == 4) {
                 yLineValues[compIndex] = 4d;
                 xUpValues[upIndex] = comparisonIndexer;
                 yUpValues[upIndex] = 4d;
@@ -872,8 +886,8 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                 yLineValues[compIndex] = 3d;
             } else if (cp.getSignificantTrindCategory() == 2) {
                 yLineValues[compIndex] = 2d;
-                xNotValues[notIndex] = comparisonIndexer;
-                yNotValues[notIndex] = 2d;
+                xStabletValues[notIndex] = comparisonIndexer;
+                yStableValues[notIndex] = 2d;
                 notIndex++;
             } else if (cp.getSignificantTrindCategory() == 1) {
                 yLineValues[compIndex] = 1d;
@@ -901,8 +915,8 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         midupvalues[0] = xMidUpValues;
         midupvalues[1] = yMidUpValues;
 
-        notvalues[0] = xNotValues;
-        notvalues[1] = yNotValues;
+        stablevalues[0] = xStabletValues;
+        stablevalues[1] = yStableValues;
 
         middownvalues[0] = xMidDownValues;
         middownvalues[1] = yMidDownValues;
@@ -912,14 +926,19 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
         emptyValues[0] = xEmptyValues;
         emptyValues[1] = yEmptyValues;
+        
+        noValueProvidedvalues[0]=xNoValueProvided;
+        noValueProvidedvalues[1]=yNoValueProvided;
+        
 
         dataset.addSeries("line", linevalues);
         dataset.addSeries("up", upvalues);
         dataset.addSeries("midup", midupvalues);
-        dataset.addSeries("not", notvalues);
+        dataset.addSeries("stable", stablevalues);
         dataset.addSeries("middown", middownvalues);
         dataset.addSeries("down", downvalues);
         dataset.addSeries("empty", emptyValues);
+        dataset.addSeries("noValueProvided", noValueProvidedvalues);
 
         String[] xAxisLabels = new String[selectedComparisonList.size()];
         final Color[] diseaseGroupslabelsColor = new Color[selectedComparisonList.size()];
@@ -1074,7 +1093,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
         renderer.setSeriesPaint(0, Color.GRAY);
-        Color[] dataColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0)};
+        Color[] dataColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0),new Color(255, 165, 0)};
 
         renderer.setUseOutlinePaint(true);
         renderer.setSeriesPaint(1, dataColor[4]);
@@ -1094,7 +1113,11 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
         renderer.setSeriesPaint(6, Color.WHITE);
         renderer.setSeriesOutlinePaint(6, dataColor[2]);
+        
+        renderer.setSeriesPaint(7, dataColor[5]);
+        renderer.setSeriesOutlinePaint(7, dataColor[5]);
 
+        renderer.setSeriesShape(7, emptyRShape);
         renderer.setSeriesShape(6, emptyRShape);
         renderer.setSeriesShape(5, downArr);
         renderer.setSeriesShape(4, downArr);
@@ -1113,6 +1136,8 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         renderer.setSeriesLinesVisible(4, false);
         renderer.setSeriesLinesVisible(5, false);
         renderer.setSeriesLinesVisible(6, false);
+        renderer.setSeriesLinesVisible(7, false);
+        
 
         XYPlot xyplot = new XYPlot(dataset, xAxis, yAxis, renderer) {
 
@@ -1166,12 +1191,12 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                 }
             }
 
-            private final Color[] labelsColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), Color.WHITE, new Color(255, 51, 51), new Color(204, 0, 0)};
-            private final Color[] labelsOutColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0)};
+            private final Color[] labelsColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), Color.WHITE, new Color(255, 51, 51), new Color(204, 0, 0),new Color(255, 165, 0)};
+            private final Color[] labelsOutColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0),new Color(255, 165, 0)};
 
             private final Font font = new Font("Verdana", Font.PLAIN, 11);
-            private final String[] labels = new String[]{"Low 100%", "Low <100% ", "Stable", "No Data", " High <100%", "High 100%"};
-            private final Shape[] shapes = new Shape[]{downArr, downArr, notRShape, emptyRShape, upArr, upArr, square};
+            private final String[] labels = new String[]{"Low 100%", "Low <100% ", "Stable", "No Data", " High <100%", "High 100%","No Quant. Data"};
+            private final Shape[] shapes = new Shape[]{downArr, downArr, notRShape, emptyRShape, upArr, upArr,emptyRShape, square};
 
             @Override
             public LegendItemCollection getLegendItems() {
@@ -1278,6 +1303,9 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                     gc = inUseComparisonProteins[((XYItemEntity) entity).getItem()].getComparison();
                     DiseaseGroupsComparisonsProteinLayout protLayout = inUseComparisonProteins[((XYItemEntity) entity).getItem()];
                     trend = protLayout.getSignificantTrindCategory();
+                    if (trend == 5) {
+                        trend = 2;
+                    }
                     String groupCompTitle = gc.getComparisonHeader();
                     String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0] + " ( " + groupCompTitle.split(" / ")[1].split("\n")[1] + " )";
 
@@ -1370,6 +1398,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 //        
 //        renderer.setSeriesPaint(6, Color.WHITE);
 //        renderer.setSeriesOutlinePaint(6, dataColor[2]);
+            renderer.setSeriesShape(7, emptyRShape);
             renderer.setSeriesShape(6, emptyRShape);
             renderer.setSeriesShape(5, downArr);
             renderer.setSeriesShape(4, downArr);
@@ -1391,6 +1420,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
             final Shape sleftArr = ShapeUtilities.createDownTriangle(3f);
             final Shape srightArr = ShapeUtilities.createUpTriangle(3f);
 
+             renderer.setSeriesShape(7, semptyRShape);
             renderer.setSeriesShape(6, semptyRShape);
             renderer.setSeriesShape(5, sleftArr);
             renderer.setSeriesShape(4, sleftArr);
@@ -1447,7 +1477,6 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         }
 
         studiesScatterChartsLayout.redrawCharts();
-
     }
     private KMeansClusteringPopupPanel kMeansClusteringPanel;
 

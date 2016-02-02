@@ -17,6 +17,7 @@ public class ComparisonDetailsBean  {
     private final List<Integer> upRegulatedList;
     private final List<Integer> notRegulatedList;
     private final List<Integer> downRegulatedList;
+    private final List<Integer> noValueProvidedList;
     
     
 
@@ -24,6 +25,8 @@ public class ComparisonDetailsBean  {
         upRegulatedList = new ArrayList<Integer>();
         notRegulatedList = new ArrayList<Integer>();
         downRegulatedList = new ArrayList<Integer>();
+        
+        noValueProvidedList = new ArrayList<Integer>();
     }
 
    
@@ -33,6 +36,9 @@ public class ComparisonDetailsBean  {
             return upRegulatedList;
         if(regulationCategory == 1)
         return notRegulatedList;
+         if(regulationCategory == 3)
+        return noValueProvidedList;
+        
         else
             return downRegulatedList;
     }
@@ -49,6 +55,10 @@ public class ComparisonDetailsBean  {
 
     public void addDownRegulated(int down) {
         this.downRegulatedList.add(down);
+    }
+    
+     public void addNovalueProvided(int noValueProvided) {
+        this.noValueProvidedList.add(noValueProvided);
     }
 
 }
