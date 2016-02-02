@@ -195,8 +195,8 @@ public class QuantDataHandler {
         qa25.setAnalyticalMethod("Disease Group I");
         qa25.setAuthor("Varghese, Anu Mary, et al.");
         authormap.put("24295388", qa25);
-        
-         QuantDatasetObject qa26 = new QuantDatasetObject();
+
+        QuantDatasetObject qa26 = new QuantDatasetObject();
         qa26.setYear(2015);
         qa26.setFilesNumber(10);
         qa26.setAnalyticalMethod("Disease Group I");
@@ -574,7 +574,7 @@ public class QuantDataHandler {
                     }
                 } else {
                     qProt.setFcPatientGroupIonPatientGroupII(-1000000000.0);
-//                    qProt.setStringFCValue(updatedRowArr[index++]);
+                    qProt.setStringFCValue("not provided");
                 }
                 index++;
 
@@ -592,17 +592,22 @@ public class QuantDataHandler {
                             qProt.setStringFCValue(updatedRowArr[index].trim());
 
                         } else {
-                            qProt.setStringFCValue("No change");
+                            if (qProt.getStringFCValue() == null) {
+                                qProt.setStringFCValue("not provided");
+                            }
                         }
                     } finally {
                         index++;
                     }
                 } else {
                     qProt.setLogFC(-1000000000.0);
-                    qProt.setStringFCValue("No change");
+                    if (qProt.getStringFCValue() == null) {
+                        qProt.setStringFCValue("not provided");
+                    }
                     index++;
 
                 }
+               
                 //pvalue
                 if (!updatedRowArr[index].trim().trim().equalsIgnoreCase("")) {
                     qProt = definePValue(qProt, updatedRowArr[index++], updatedRowArr[index++], updatedRowArr[index++]);
@@ -685,8 +690,7 @@ public class QuantDataHandler {
                         diseaseCat = "Alzheimer's";
                     } else if (diseaseCat.trim().equalsIgnoreCase("PD") || diseaseCat.trim().equalsIgnoreCase("Parkinson")) {
                         diseaseCat = "Parkinson's";
-                    }
-                    else if (diseaseCat.trim().equalsIgnoreCase("ALS")) {
+                    } else if (diseaseCat.trim().equalsIgnoreCase("ALS")) {
                         diseaseCat = "Amyotrophic Lateral Sclerosis";
                     }
 
@@ -709,7 +713,10 @@ public class QuantDataHandler {
 
                 String pepKey = qProt.getPumedID() + "_" + qProt.getStudyKey() + "_" + qProt.getUniprotAccession() + "_" + qProt.getPublicationAccNumber() + "_" + qProt.getTypeOfStudy() + "_" + qProt.getSampleType() + "_" + qProt.getTechnology() + "_" + qProt.getAnalyticalApproach() + "_" + qProt.getAnalyticalMethod() + "_" + qProt.getPatientsGroupINumber() + "_" + qProt.getPatientsGroupIINumber() + "_" + qProt.getPatientSubGroupI() + "_" + qProt.getPatientSubGroupII() + "_" + qProt.getDiseaseCategory();
                 qProt.setQuantPeptideKey(pepKey);
-                QuantProtList.add(qProt);
+                QuantProtList.add(qProt); 
+                if (qProt.getStringFCValue().equalsIgnoreCase("not provided") && !qProt.isPeptideProtein()) {
+                    System.out.println("check fc should have 5 values " + qProt.getStudyKey()+"   "+qProt.getUniprotAccession());
+                }
                 row++;
             } //    
             bufRdr.close();
@@ -720,6 +727,9 @@ public class QuantDataHandler {
                     quantProtein.setUniprotAccession(quantProtein.getUniprotAccession() + "(unreviewed)");
 
                 }
+                
+                
+                
                 updatedQuantProtList.add(quantProtein);
 
             }
@@ -772,11 +782,9 @@ public class QuantDataHandler {
 //        return prot;
 //    }
     private QuantProtein definePValue(QuantProtein prot, String pValue, String significanceThreshold, String pvalueComment) {
-            String operator="op";
-            try {
+        String operator = "op";
+        try {
             pValue = pValue.replace(",", ".").replace("?", "-");
-       
-        
 
             double signThresholdValue = -1;
             if (significanceThreshold == null || significanceThreshold.trim().equalsIgnoreCase("")) {
@@ -809,7 +817,6 @@ public class QuantDataHandler {
                 operator = "<";
 
             }
-            
 
             if (pValue.contains(">")) {
                 prot.setStringPValue("Not Significant");
@@ -900,28 +907,24 @@ public class QuantDataHandler {
         System.out.println("size " + protSeqMap.size());
         return protSeqMap;
     }
-    
-    
-    
-    
-      public  Map<String, String> readDiseaseGroupsFullNameFile(String filePath) {
+
+    public Map<String, String> readDiseaseGroupsFullNameFile(String filePath) {
         Map<String, String> diseaseGroupsNamingMap = new HashMap<String, String>();
-        
-        
+
         File dataFile = new File(filePath);
-      
+
         try {
 
             FileReader fr = new FileReader(dataFile);
             BufferedReader bufRdr = new BufferedReader(fr);
-           bufRdr.readLine();
+            bufRdr.readLine();
             String line;
             while ((line = bufRdr.readLine()) != null) {
-                
+
                 String[] lineArr = line.split("\t");
                 if (lineArr.length > 1) {
                     diseaseGroupsNamingMap.put(lineArr[0], lineArr[1]);
-                 
+
                 } else {
                     diseaseGroupsNamingMap.put(lineArr[0], lineArr[0]);
 
@@ -932,10 +935,10 @@ public class QuantDataHandler {
 
             exp.printStackTrace();
         }
-        
+
         return diseaseGroupsNamingMap;
     }
-          
+
 //       StringBuilder valuesBuilder = new StringBuilder();
 //       for(String key:diseaseGroupsNamingMap.keySet()){
 //       valuesBuilder.append("('").append(key).append("','").append(diseaseGroupsNamingMap.get(key)).append("'),");
@@ -966,5 +969,4 @@ public class QuantDataHandler {
 //    
 //            
 //            }
-
 }
