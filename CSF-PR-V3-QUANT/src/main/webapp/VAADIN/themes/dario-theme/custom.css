@@ -1262,7 +1262,8 @@ resetlabelbtn p{
     opacity: 1;
 }
 .novaluelayout div{
-    background:  orange;
+    background: #b5babb;
+    border: 1px solid gray;
 }
 
 .greenlayout div{
@@ -2517,5 +2518,46 @@ img {
     background-repeat: no-repeat;
     background-size: contain;
     cursor:pointer;
+
+}
+.publicationstyle .v-label h4{
+
+    color:black;
+    font-size:15px;
+    line-height:0;
+    text-decoration:none !important;
+
+}
+.publicationstyle .v-label a{
+
+    text-decoration:none !important;
+    color:blue;
+
+}
+.publicationstyle .v-label h5{
+
+    color: #666;
+    font-size:12px;
+    line-height:0;
+    text-decoration:none !important;
+
+}
+
+.publicationstyle .v-label font{
+
+
+    font-size:12px;
+    line-height:0;
+    text-decoration:underline !important;
+
+}
+.publicationstyle .v-label textarea{
+
+    font-family:Verdana; 
+    overflow-x: hidden;
+    overflow-y: auto;
+    font-size:12px;
+     border: none;
+    resize: none;
 
 }

@@ -457,7 +457,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         renderer.setSeriesPaint(2, c2);
         renderer.setSeriesOutlinePaint(2, Color.WHITE);
 
-        renderer.setSeriesPaint(3, new Color(255, 165, 0));
+        renderer.setSeriesPaint(3, Color.decode("#b5babb"));
         renderer.setSeriesOutlinePaint(3, Color.WHITE);
 
         renderer.setSeriesPaint(4, new Color(150, 212, 145));
@@ -469,8 +469,8 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         renderer.setSeriesPaint(6, new Color(224, 102, 102));
         renderer.setSeriesOutlinePaint(6, new Color(224, 102, 102));
 
-        renderer.setSeriesPaint(7, new Color(255, 165, 0));
-        renderer.setSeriesOutlinePaint(7, new Color(255, 165, 0));
+        renderer.setSeriesPaint(7, Color.decode("#b5babb"));
+        renderer.setSeriesOutlinePaint(7, Color.GRAY);
 
 //        renderer.setSeriesPaint(6, Color.BLACK);
 //        renderer.setSeriesOutlinePaint(6, Color.BLACK);
@@ -558,7 +558,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
                 if (((XYItemEntity) entity).getDataset().getYValue(x, y) > (int) ((XYItemEntity) entity).getDataset().getYValue(x, y)) {
                     continue;
                 }
-                if (((XYItemEntity) entity).getSeriesIndex() > 2) {
+                if (((XYItemEntity) entity).getSeriesIndex() > 3) {
 
                     continue;
                 }

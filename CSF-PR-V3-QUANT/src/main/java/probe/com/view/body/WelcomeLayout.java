@@ -16,8 +16,11 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.VerticalLayout;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.model.beans.OverviewInfoBean;
+import probe.com.view.body.welcomelayout.PublicationsInformationWindow;
 import probe.com.view.core.Timer;
 
 /**
@@ -154,7 +157,7 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         sub2IdStatLabel.setContentMode(ContentMode.HTML);
         subIdStatLayout.addComponent(sub2IdStatLabel, 0, 1);
         subIdStatLayout.setColumnExpandRatio(0, 2);
-        subIdStatLayout.setColumnExpandRatio(1,1);
+        subIdStatLayout.setColumnExpandRatio(1, 1);
 
         Label sub2IdStatValue = new Label("<h4 style='text-align: right;'>" + infoBean.getNumberOfIdStudies() + "</h4>");
         sub2IdStatValue.setContentMode(ContentMode.HTML);
@@ -187,9 +190,19 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         subQuantStatLayout.setWidth("100%");
         leftLayout.addComponent(subQuantStatLayout);
 
-        Label sub1quantStatLabel = new Label("<h3>#Publications</h3>");
+        List<Object[]> publicationList = new ArrayList<Object[]>();
+
+        for (int i = 0; i < 18; i++) {
+            publicationList.add(new Object[]{});
+        }
+
+        PublicationsInformationWindow sub1quantStatLabelWrapper = new PublicationsInformationWindow(publicationList);
+        Label sub1quantStatLabel = new Label("<h3 style='text-decoration: underline;cursor: pointer;'>#Publications</h3>");
         sub1quantStatLabel.setContentMode(ContentMode.HTML);
-        subQuantStatLayout.addComponent(sub1quantStatLabel, 0, 0);
+        sub1quantStatLabelWrapper.addComponent(sub1quantStatLabel);
+        subQuantStatLayout.addComponent(sub1quantStatLabelWrapper, 0, 0);
+
+        sub1quantStatLabelWrapper.setDescription("Click to view publications information");
 
         Label sub1QuantStatValue = new Label("<h4 style='text-align: right;' >" + infoBean.getNumberOfQuantPublication() + "</h4>");
         sub1QuantStatValue.setContentMode(ContentMode.HTML);
@@ -222,11 +235,10 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         sub4QuantStatValue.setContentMode(ContentMode.HTML);
         subQuantStatLayout.addComponent(sub4QuantStatValue, 1, 3);
         subQuantStatLayout.setComponentAlignment(sub4QuantStatValue, Alignment.MIDDLE_RIGHT);
-        
-         subQuantStatLayout.setColumnExpandRatio(0, 2);
-         subQuantStatLayout.setColumnExpandRatio(1,1);
 
-          
+        subQuantStatLayout.setColumnExpandRatio(0, 2);
+        subQuantStatLayout.setColumnExpandRatio(1, 1);
+
         Timer timer = new Timer();
         bottomLayout.addComponent(timer);
 //        

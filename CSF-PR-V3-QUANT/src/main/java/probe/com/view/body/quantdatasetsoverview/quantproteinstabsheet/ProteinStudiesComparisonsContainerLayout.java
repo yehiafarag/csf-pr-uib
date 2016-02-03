@@ -58,6 +58,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
      * @param selectedComparisonList
      * @param Quant_Central_Manager
      * @param width
+     * @param custTrend
      */
     public ProteinStudiesComparisonsContainerLayout(final QuantCentralManager Quant_Central_Manager, DiseaseGroupsComparisonsProteinLayout[] proteinsComparisonsArr, Set<QuantDiseaseGroupsComparison> selectedComparisonList, int width,int custTrend) {
         this.custTrend= custTrend;

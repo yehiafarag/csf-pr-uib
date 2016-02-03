@@ -26,7 +26,6 @@ import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.Diseas
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.selectionmanager.CSFFilter;
 import probe.com.selectionmanager.QuantCentralManager;
-import probe.com.selectionmanager.StudiesSelectionManager;
 import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.ProteinOverviewJFreeLineChartContainer;
 import probe.com.view.core.HideOnClickLayout;
 
@@ -429,7 +428,6 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
             ProteinOverviewJFreeLineChartContainer overallPlotLayout = (ProteinOverviewJFreeLineChartContainer) selectedTab.getComponent(0);
             overallPlotLayout.redrawCharts();
         } catch (Exception e) {
-            e.printStackTrace();
             System.out.println("error at line 300 " + this.getClass().getName() + "  " + e.getMessage());
         }
     }

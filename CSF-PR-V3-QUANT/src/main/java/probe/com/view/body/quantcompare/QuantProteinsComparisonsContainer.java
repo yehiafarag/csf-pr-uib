@@ -97,7 +97,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
                 useRatio = true;
                 int persWidth = (int) (100.0 - (16.0 * 100.0 / (double) width));
                 columnLabelContainer.setWidth(persWidth + "%");
-                int contWid = (persWidth * (width - 360) / 100);
+                int contWid = (persWidth * (width - 380) / 100);
                 columnWidth = contWid / quantDiseaseGroupsComparisonArr.length;
 
             } else {
@@ -634,7 +634,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
             for (String key2 : protList.keySet()) {
                 DiseaseGroupsComparisonsProteinLayout prot = protList.get(key2);
                 boolean uniprotAvailable = true;
-                if (Quant_Central_Manager.isSignificantOnly() && prot.getSignificantTrindCategory() == 2) {
+                if (Quant_Central_Manager.isSignificantOnly() && (prot.getSignificantTrindCategory() == 2|| prot.getSignificantTrindCategory() == 5)) {
                     continue;
                 }
                 String protAcc = prot.getProteinAccssionNumber().toLowerCase().trim();
@@ -803,7 +803,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
                 if (!accessions.contains(prot.getProteinAccssionNumber())) {
                     continue;
                 }
-                if (Quant_Central_Manager.isSignificantOnly() && prot.getSignificantTrindCategory() == 2) {
+                if (Quant_Central_Manager.isSignificantOnly() && (prot.getSignificantTrindCategory() == 2|| prot.getSignificantTrindCategory() == 5)) {
                     continue;
                 }
                 String key = ("--" + prot.getProteinAccssionNumber().toLowerCase().trim() + "," + prot.getProtName().trim()).trim();

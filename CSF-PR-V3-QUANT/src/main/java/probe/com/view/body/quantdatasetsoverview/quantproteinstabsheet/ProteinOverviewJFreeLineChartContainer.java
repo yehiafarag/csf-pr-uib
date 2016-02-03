@@ -1093,7 +1093,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
         renderer.setSeriesPaint(0, Color.GRAY);
-        Color[] dataColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0),new Color(255, 165, 0)};
+        Color[] dataColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0),Color.decode("#b5babb")};
 
         renderer.setUseOutlinePaint(true);
         renderer.setSeriesPaint(1, dataColor[4]);
@@ -1115,7 +1115,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         renderer.setSeriesOutlinePaint(6, dataColor[2]);
         
         renderer.setSeriesPaint(7, dataColor[5]);
-        renderer.setSeriesOutlinePaint(7, dataColor[5]);
+        renderer.setSeriesOutlinePaint(7, Color.GRAY);
 
         renderer.setSeriesShape(7, emptyRShape);
         renderer.setSeriesShape(6, emptyRShape);
@@ -1191,11 +1191,11 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                 }
             }
 
-            private final Color[] labelsColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), Color.WHITE, new Color(255, 51, 51), new Color(204, 0, 0),new Color(255, 165, 0)};
-            private final Color[] labelsOutColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0),new Color(255, 165, 0)};
+            private final Color[] labelsColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), Color.WHITE, new Color(255, 51, 51), new Color(204, 0, 0),Color.decode("#b5babb")};
+            private final Color[] labelsOutColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0),Color.GRAY};
 
             private final Font font = new Font("Verdana", Font.PLAIN, 11);
-            private final String[] labels = new String[]{"Low 100%", "Low <100% ", "Stable", "No Data", " High <100%", "High 100%","No Quant. Data"};
+            private final String[] labels = new String[]{"Low 100%", "Low <100% ", "Stable", "No Data", " High <100%", "High 100%","No Quant. Info."};
             private final Shape[] shapes = new Shape[]{downArr, downArr, notRShape, emptyRShape, upArr, upArr,emptyRShape, square};
 
             @Override

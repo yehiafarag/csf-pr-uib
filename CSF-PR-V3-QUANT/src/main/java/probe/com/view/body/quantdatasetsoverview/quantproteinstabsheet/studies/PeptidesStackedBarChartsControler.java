@@ -44,7 +44,7 @@ public class PeptidesStackedBarChartsControler {
         studyInformationPopupPanel.setVisible(false);
         int counter = 0;
         for (int pateintGrNum : patientGroupsNumToDsIdMap.keySet()) {
-            while (counter < 3) {
+            while (counter < 4) {
                 if (!patientGroupsNumToDsIdMap.get(pateintGrNum).getRegulatedList(counter).isEmpty()) {
                     StudyPopupLayout studyLayout = new StudyPopupLayout(panelWidth, datasetQuantProteinsMap, datasetIdDsObjectProteinsMap, protAccsession, url, protName,diseaseHashedColorMap);
                     studyPopupLayoutDSIndexMap.put("_-_" + pateintGrNum + "_-_" + counter + "_-_", studyLayout);
@@ -68,6 +68,7 @@ public class PeptidesStackedBarChartsControler {
     public void updateSelectedProteinInformation(int pateintGrNum, int trend, Set<QuantDatasetObject> dsObjects, DiseaseGroupsComparisonsProteinLayout cp) {
 
         String pGrkey = "_-_" + pateintGrNum + "_-_" + trend + "_-_";
+        System.out.println("at studyPopupLayoutDSIndexMap.keySet() "+studyPopupLayoutDSIndexMap.keySet());
         for (String key : studyPopupLayoutDSIndexMap.keySet()) {
             if (key.contains(pGrkey)) {
                 StudyPopupLayout popupPanel = studyPopupLayoutDSIndexMap.get(key);

@@ -261,9 +261,8 @@ public class QuantCentralManager implements Serializable {
         Set<QuantDiseaseGroupsComparison> selectedComparisonList = Studies_Selection_Manager.getSelectedDiseaseGroupsComparisonList();
         Iterator<QuantDiseaseGroupsComparison> itr = selectedComparisonList.iterator();
         while (itr.hasNext()) {
-            if (itr.next().getComparProtsMap() == null) {
-
-                selectedComparisonList = CSFPR_Handler.getComparisonProtList(selectedComparisonList, searchQuantificationProtList, diseaseGroupsHeaderToOregenalDiseaseGroupsNames);
+            if (itr.next().getComparProtsMap() == null) {//               
+                    selectedComparisonList = CSFPR_Handler.getComparisonProtList(selectedComparisonList, searchQuantificationProtList, diseaseGroupsHeaderToOregenalDiseaseGroupsNames);
                 break;
             }
         }

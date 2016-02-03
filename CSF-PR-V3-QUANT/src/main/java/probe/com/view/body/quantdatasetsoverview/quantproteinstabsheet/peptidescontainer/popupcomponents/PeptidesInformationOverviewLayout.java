@@ -365,7 +365,7 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
                 if (count) {
                     this.totalPeptidesNumber++;
                 }
-                if (quantPeptide.getString_p_value().equalsIgnoreCase("Not_Provided")) {
+                if (quantPeptide.getString_p_value().trim().equalsIgnoreCase("")) {
                     peptideStackedBarComponent.setSignificant(false);
                     peptideStackedBarComponent.setDefaultStyleShowAllMode("graystackedlayout");
 

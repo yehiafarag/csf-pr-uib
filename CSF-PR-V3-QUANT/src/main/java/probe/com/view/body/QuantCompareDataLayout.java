@@ -267,7 +267,7 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
         proteinsDataCapturingMainLayout.setWidth(containerWidth);
         proteinsDataCapturingMainLayout.setSpacing(true);
 
-        Label titleLabel = new Label("2. Insert Uniprot Proteins Accessions");
+        Label titleLabel = new Label("2. Insert UniProt Proteins Accessions");
         titleLabel.setContentMode(ContentMode.HTML);
         titleLabel.setStyleName("normalheader");
         titleLabel.setHeight("20px");

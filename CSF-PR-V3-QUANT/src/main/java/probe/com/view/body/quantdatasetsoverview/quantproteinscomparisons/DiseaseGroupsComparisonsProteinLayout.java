@@ -536,12 +536,10 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
      * @param width
      */
     public void updateWidth(int width) {
+        width = width-20;
         this.setWidth(width + "px");
         float freeArea = width;
         int subTotal = this.total;
-//        float labelRatio= 80.0f/(float)width;
-//         this.setExpandRatio(downLabel, labelRatio);
-//        this.setExpandRatio(upLabel, labelRatio);
 
         if (width > 200) {
             downLabel.setWidth("80px");

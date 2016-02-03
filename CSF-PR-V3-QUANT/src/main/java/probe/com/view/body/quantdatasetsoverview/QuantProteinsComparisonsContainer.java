@@ -589,7 +589,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
             for (String key2 : protList.keySet()) {
                 DiseaseGroupsComparisonsProteinLayout prot = protList.get(key2);
                 boolean uniprotAvailable = true;
-                if (Quant_Central_Manager.isSignificantOnly() && prot.getSignificantTrindCategory() == 2) {
+                if (Quant_Central_Manager.isSignificantOnly() && (prot.getSignificantTrindCategory() == 2|| prot.getSignificantTrindCategory() == 5)) {
                     continue;
                 }
                 String protAcc = prot.getProteinAccssionNumber().toLowerCase().trim();
@@ -630,7 +630,6 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
                 protURL = null;
 
             }
-
             String protName = key.replace("--", "").trim().split(",")[1];
             CustomExternalLink acc = new CustomExternalLink(protAcc.toUpperCase(), protURL);
             acc.setDescription(tooltip);
@@ -666,7 +665,6 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
         for (Object id : this.groupsComparisonProteinsTable.getItemIds()) {
             Item item = this.groupsComparisonProteinsTable.getItem(id);
             item.getItemProperty("Index").setValue(indexing);
-
             for (QuantDiseaseGroupsComparison cg : quantDiseaseGroupsComparisonArr) {
 
                 DiseaseGroupsComparisonsProteinLayout protCompLayout = (DiseaseGroupsComparisonsProteinLayout) item.getItemProperty(cg.getComparisonHeader()).getValue();
@@ -744,7 +742,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
                 if (!accessions.contains(prot.getProteinAccssionNumber())) {
                     continue;
                 }
-                if (Quant_Central_Manager.isSignificantOnly() && prot.getSignificantTrindCategory() == 2) {
+                if (Quant_Central_Manager.isSignificantOnly() && (prot.getSignificantTrindCategory() == 2|| prot.getSignificantTrindCategory() == 5)) {
                     continue;
                 }
                 String key = ("--" + prot.getProteinAccssionNumber().toLowerCase().trim() + "," + prot.getProtName().trim()).trim();

@@ -51,7 +51,6 @@ import org.jfree.chart.axis.SymbolAxis;
 import org.jfree.chart.axis.Tick;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.block.BlockBorder;
-import org.jfree.chart.entity.AxisEntity;
 import org.jfree.chart.entity.ChartEntity;
 import org.jfree.chart.entity.XYItemEntity;
 import org.jfree.chart.plot.XYPlot;
@@ -83,7 +82,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
     private final ChartRenderingInfo chartRenderingInfo = new ChartRenderingInfo();
     private final QuantCentralManager Quant_Central_Manager;
     private int width;
-    private int height;
+    private final int height;
     private final CSFPRHandler CSFPR_Handler;
     private final VerticalLayout initialLayout;
     private JFreeChart chart;
@@ -496,7 +495,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                 stableColor = new Color(1, 141, 244);
 
             } else {
-                stableColor = new Color(255, 165, 0);
+                stableColor = Color.decode("#b5babb");
 
             }
             
@@ -706,9 +705,10 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         };
 
         XYPlot xyplot = new XYPlot(defaultxyzdataset, xAxis, yAxis, xyitemrenderer) {
-            private final Color[] labelsColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), stableColor, new Color(255, 51, 51), new Color(204, 0, 0), new Color(255, 165, 0)};
+            private final Color[] labelsColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132),new Color(1, 141, 244) , new Color(255, 51, 51), new Color(204, 0, 0),Color.decode("#b5babb")};
+            
             private final Font font = new Font("Verdana", Font.PLAIN, 12);
-            private final String[] labels = new String[]{"Low 100%", "Low <100% ", "Stable", " High <100%", "High 100%", "No Quant. Data"};
+            private final String[] labels = new String[]{"Low 100%", "Low <100% ", "Stable", " High <100%", "High 100%", "No Quant. Info."};
 
             @Override
             public LegendItemCollection getLegendItems() {
@@ -860,7 +860,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                 stableColor = new Color(1, 141, 244);
 
             } else {
-                stableColor = new Color(255, 165, 0);
+                stableColor = Color.decode("#b5babb");
             }
             tempWidthValue[2] = tempWidthValue[2] + tempWidthValue[5];
             tempWidthValue[5] = 0;
@@ -1075,9 +1075,10 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         };
 
         XYPlot xyplot = new XYPlot(defaultxyzdataset, xAxis, yAxis, xyitemrenderer) {
-            private final Color[] labelsColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0), new Color(255, 165, 0)};
+            private final Color[] labelsColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0), Color.decode("#b5babb")};
+            
             private final Font font = new Font("Verdana", Font.PLAIN, 12);
-            private final String[] labels = new String[]{"Low 100%", "Low <100% ", "Stable", " High <100%", "High 100%", "No Quant. Data"};
+            private final String[] labels = new String[]{"Low 100%", "Low <100% ", "Stable", " High <100%", "High 100%", "No Quant. Info."};
 
             @Override
             public LegendItemCollection getLegendItems() {
