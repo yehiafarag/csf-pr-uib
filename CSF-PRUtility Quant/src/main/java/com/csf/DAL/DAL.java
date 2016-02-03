@@ -103,9 +103,21 @@ public class DAL {
     }
 
     public boolean updateDiseaseGroupsFullName(Map<String, String> diseaseGroupsNamingMap) {
-      return database.updateDiseaseGroupsFullName(diseaseGroupsNamingMap);
+        return database.updateDiseaseGroupsFullName(diseaseGroupsNamingMap);
 
     }
 
+    public boolean insertPublication(String pubmedid, String author, String year, String title) {
+        return database.insertPublication(pubmedid, author, year, title);
+
+    }
+      public List<Object []> getPublications() {
+          return database.getPublications();
+      }
+      public void updateActivePublications(Map<String, Boolean> activePublications){
+      database.updateActivePublications(activePublications);
+      
+      
+      }
 
 }

@@ -8,6 +8,7 @@ import com.pepshaker.util.beans.ProteinBean;
 import com.quantcsf.beans.QuantDatasetObject;
 import com.quantcsf.beans.QuantPeptide;
 import com.quantcsf.beans.QuantProtein;
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -100,7 +101,17 @@ public class DB implements Serializable {
             try {
                 Statement st = conn.createStatement();
 
-                String statment = "CREATE TABLE IF NOT EXISTS `defin_disease_groups` (\n"
+                String statment = "CREATE TABLE IF NOT EXISTS `publication_table` (\n"
+                        + "  `pubmed_id` varchar(15) NOT NULL default 'Not Available',\n"
+                        + "  `author` varchar(1000) NOT NULL default 'Not Available',\n"
+                        + "  `year` varchar(1000) NOT NULL default 'Not Available',\n"
+                        + "  `title` varchar(1000) NOT NULL default 'Not Available',\n"
+                        + "  `active` varchar(5) NOT NULL default 'false',\n"
+                        + "  PRIMARY KEY  (`pubmed_id`)\n"
+                        + ") ENGINE=MyISAM";
+                st.executeUpdate(statment);
+
+                statment = "CREATE TABLE IF NOT EXISTS `defin_disease_groups` (\n"
                         + "  `min` varchar(100) NOT NULL default ' ',\n"
                         + "  `full` varchar(500) NOT NULL default ' ',\n"
                         + "  PRIMARY KEY  (`min`)\n"
@@ -125,7 +136,6 @@ public class DB implements Serializable {
 //                        + "(' SPMS a/Lamotrigine', ' Secondary progressive multiple sclerosis after lamotrigine'),\n"
 //                        + "(' OIND + OND ', ' Other inflammatory neurological disorders + Other neurological disorders');";
 //                st.executeUpdate(insertStat);
-
                 st = conn.createStatement();
                 String dropStat = "DROP TABLE IF EXISTS `quant_dataset_table`;";
                 st.executeUpdate(dropStat);
@@ -2782,4 +2792,117 @@ public class DB implements Serializable {
         return true;
     }
 
-}
+    public boolean insertPublication(String pubmedid, String author, String year, String title) {
+
+        String insertStat = "INSERT INTO  `publication_table` (`pubmed_id` ,`author` ,`year` ,`title`)VALUES (?,?,?,?);";
+        try {
+            if (conn == null || conn.isClosed()) {
+                Class.forName(driver).newInstance();
+                conn = DriverManager.getConnection(url + dbName, userName, password);
+            }
+            String dropStat = "DELETE FROM `publication_table` WHERE   `pubmed_id` =?";
+            PreparedStatement st = conn.prepareStatement(dropStat);
+            st.setString(1, pubmedid);
+            st.executeUpdate();
+            st.close();
+
+            st = conn.prepareStatement(insertStat);
+            st.setString(1, pubmedid);
+            st.setString(2, author);
+            st.setString(3, year);
+            st.setString(4, title);
+            int i = st.executeUpdate();
+            st.close();
+            if (i > 0) {
+                return true;
+            }
+        } catch (ClassNotFoundException e) {
+            System.err.println("at error" + e.getLocalizedMessage());
+
+        } catch (IllegalAccessException e) {
+            System.err.println("at error" + e.getLocalizedMessage());
+
+        } catch (InstantiationException e) {
+            System.err.println("at error" + e.getLocalizedMessage());
+
+        } catch (SQLException e) {
+            System.err.println("at error" + e.getLocalizedMessage());
+
+        }
+        System.gc();
+        return false;
+
+    }
+
+    public void updateActivePublications(Map<String, Boolean> activePublications) {
+
+        String statment = "UPDATE  `publication_table` SET  `active` = ?  WHERE  `publication_table`.`pubmed_id` = ? ;";
+        try {
+            if (conn == null || conn.isClosed()) {
+                Class.forName(driver).newInstance();
+                conn = DriverManager.getConnection(url + dbName, userName, password);
+            }
+
+            for (String pubmedId : activePublications.keySet()) {
+                PreparedStatement st = conn.prepareStatement(statment);
+                st.setString(1, pubmedId);
+                st.setString(2, activePublications.get(pubmedId).toString().toLowerCase());
+                st.executeUpdate();
+                st.close();
+            }
+        } catch (ClassNotFoundException e) {
+            System.err.println("at error" + e.getLocalizedMessage());
+
+        } catch (IllegalAccessException e) {
+            System.err.println("at error" + e.getLocalizedMessage());
+
+        } catch (InstantiationException e) {
+            System.err.println("at error" + e.getLocalizedMessage());
+
+        } catch (SQLException e) {
+            System.err.println("at error" + e.getLocalizedMessage());
+
+        }
+        System.gc();
+
+    }
+
+    public List<Object[]> getPublications() {
+
+        List<Object[]> publicationsData = new ArrayList<Object[]>();
+        String selectStat = "SELECT * FROM  `publication_table` ";
+        try {
+            if (conn == null || conn.isClosed()) {
+                Class.forName(driver).newInstance();
+                conn = DriverManager.getConnection(url + dbName, userName, password);
+            }
+
+            PreparedStatement st = conn.prepareStatement(selectStat);
+
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                publicationsData.add(new Object[]{rs.getString("pubmed_id"), rs.getString("author"), rs.getString("year"), rs.getString("title")});
+            }
+        } catch (ClassNotFoundException e) {
+            System.err.println("at error" + e.getLocalizedMessage());
+
+        } catch (IllegalAccessException e) {
+            System.err.println("at error" + e.getLocalizedMessage());
+
+        } catch (InstantiationException e) {
+            System.err.println("at error" + e.getLocalizedMessage());
+
+        } catch (SQLException e) {
+            System.err.println("at error" + e.getLocalizedMessage());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+            System.gc();
+            System.out.println("publicationsData "+publicationsData.size());
+            return publicationsData;
+
+        }
+
+    }

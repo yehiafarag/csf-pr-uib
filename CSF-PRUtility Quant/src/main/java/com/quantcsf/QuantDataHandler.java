@@ -18,191 +18,238 @@ import java.util.Map;
 public class QuantDataHandler {
 
     private final Map<String, QuantDatasetObject> authormap = new HashMap<String, QuantDatasetObject>();
+    private final Map<String, Boolean> activePublications = new HashMap<String, Boolean>();
 
     public QuantDataHandler() {
 
-        QuantDatasetObject qa7 = new QuantDatasetObject();
-        qa7.setYear(2011);
-        qa7.setFilesNumber(10);
-        qa7.setAnalyticalMethod("Disease Group I");
-        qa7.setAuthor("Li, Yun, et al.");
-        authormap.put("21445879", qa7);
+//        QuantDatasetObject qa7 = new QuantDatasetObject();
+//        qa7.setYear(2011);
+//        qa7.setFilesNumber(10);
+//        qa7.setAnalyticalMethod("Disease Group I");
+//        qa7.setAuthor("Li, Yun, et al.");
+//        authormap.put("21445879", qa7);
+//        
+//        //Differential expression of complement proteins in cerebrospinal fluid from active multiple sclerosis patients.
+//
+//
+//        QuantDatasetObject qa8 = new QuantDatasetObject();
+//        qa8.setYear(2014);
+//        qa8.setFilesNumber(10);
+//        qa8.setAnalyticalMethod("Disease Group I");
+//        qa8.setAuthor("Liguori, Maria, et al.");
+//        authormap.put("25098164", qa8);
+//        
+//        //Proteomic profiling in multiple sclerosis clinical courses reveals potential biomarkers of neurodegeneration.
+//
+//
+//        QuantDatasetObject qa9 = new QuantDatasetObject();
+//        qa9.setYear(2010);
+//        qa9.setFilesNumber(10);
+//        qa9.setAnalyticalMethod("Disease Group I");
+//        qa9.setAuthor("Ottervald, Jan, et al.");
+//        authormap.put("20093204", qa9);
+//        // Multiple sclerosis: Identification and clinical evaluation of novel CSF biomarkers.
+//        
+//
+//        QuantDatasetObject qa1 = new QuantDatasetObject();
+//        qa1.setYear(2010);
+//        qa1.setFilesNumber(10);
+//        qa1.setAnalyticalMethod("Disease Group I");
+//        qa1.setAuthor("Comabella, Manuel, et al.");
+//        authormap.put("20237129", qa1);
+//        //Cerebrospinal fluid chitinase 3-like 1 levels are associated with conversion to multiple sclerosis.
+//
+//        QuantDatasetObject qa2 = new QuantDatasetObject();
+//        qa2.setYear(2010);
+//        qa2.setAuthor("Harris, Violaine K., et al.");
+//        qa2.setFilesNumber(15);
+//        qa2.setAnalyticalMethod("Disease Group II");
+//        authormap.put("20600910", qa2);
+//        //Bri2-23 is a potential cerebrospinal fluid biomarker in multiple sclerosis.
+//        
+//        
+//
+//        QuantDatasetObject qa3 = new QuantDatasetObject();
+//        qa3.setYear(2012);
+//        qa3.setFilesNumber(13);
+//        qa3.setAnalyticalMethod("Disease Group II");
+//        qa3.setAuthor("Dhaunchak, Ajit Singh, et al.");
+//        authormap.put("22473675", qa3);
+//        //Implication of perturbed axoglial apparatus in early pediatric multiple sclerosis.
+//
+//
+//        QuantDatasetObject qa4 = new QuantDatasetObject();
+//        qa4.setYear(2012);
+//        qa4.setFilesNumber(14);
+//        qa4.setAnalyticalMethod("Disease Group I");
+//        qa4.setAuthor("Jia, Yan, et al.");
+//        authormap.put("22846148", qa4);
+//        //Development of protein biomarkers in cerebrospinal fluid for secondary progressive multiple sclerosis using selected reaction monitoring mass spectrometry (SRM-MS).
+//
+//        QuantDatasetObject qa5 = new QuantDatasetObject();
+//        qa5.setYear(2013);
+//        qa5.setFilesNumber(5);
+//        qa5.setAnalyticalMethod("Disease Group III");
+//        qa5.setAuthor("Kroksveen, Ann C., et al.");
+//        authormap.put("23059536", qa5);
+//        //Discovery and initial verification of differentially abundant proteins between multiple sclerosis patients and controls using iTRAQ and SID-SRM.
+//        
+//        
+//
+//        QuantDatasetObject qa6 = new QuantDatasetObject();
+//        qa6.setYear(2012);
+//        qa6.setFilesNumber(16);
+//        qa6.setAuthor("Kroksveen, Ann C., et al.");
+//        qa6.setAnalyticalMethod("Disease Group II");
+//        authormap.put("23278663", qa6);
+//        //Cerebrospinal fluid proteome comparison between multiple sclerosis patients and controls.
+//
+//        QuantDatasetObject qa11 = new QuantDatasetObject();
+//        qa11.setYear(2014);
+//        qa11.setFilesNumber(10);
+//        qa11.setAnalyticalMethod("Disease Group I");
+//        qa11.setAuthor("Cantó, Ester, et al.");
+//        authormap.put("25406498", qa11);
+//        //Validation of semaphorin 7A and ala-?-his-dipeptidase as biomarkers associated with the conversion from clinically isolated syndrome to multiple sclerosis.
+//
+//        QuantDatasetObject qa12 = new QuantDatasetObject();
+//        qa12.setYear(2015);
+//        qa12.setFilesNumber(10);
+//        qa12.setAnalyticalMethod("Disease Group I");
+//        qa12.setAuthor("Hinsinger, G., et al.");
+//        authormap.put("25698171", qa12);
+//        //Chitinase 3-like proteins as diagnostic and prognostic biomarkers of multiple sclerosis.
+//        
+//        
+//
+//        QuantDatasetObject qa13 = new QuantDatasetObject();
+//        qa13.setYear(2013);
+//        qa13.setFilesNumber(10);
+//        qa13.setAnalyticalMethod("Disease Group I");
+//        qa13.setAuthor("Stoop, Marcel P., et al");
+//        authormap.put("23339689", qa13);
+//
+//        //Effects of natalizumab treatment on the cerebrospinal fluid proteome of multiple sclerosis patients.
+//        
+//        
+////        QuantDatasetObject qa10 = new QuantDatasetObject();
+////        qa10.setYear(2012);
+////        qa10.setFilesNumber(10);
+////        qa10.setAnalyticalMethod("Disease Group I");
+////        qa10.setAuthor("Kroksveen, A. C., et al.");
+////        authormap.put("23278663", qa10);
+//
+//        QuantDatasetObject qa14 = new QuantDatasetObject();
+//        qa14.setYear(2015);
+//        qa14.setFilesNumber(10);
+//        qa14.setAnalyticalMethod("Disease Group I");
+//        qa14.setAuthor("Kroksveen, Ann C., et al.");
+//        authormap.put("26152395", qa14);
+//        //Quantitative proteomics suggests decrease in the secretogranin-1 cerebrospinal fluid levels during the disease course of multiple sclerosis.
+//
+////        QuantDatasetObject qa15 = new QuantDatasetObject();
+////        qa15.setYear(2015);
+////        qa15.setFilesNumber(10);
+////        qa15.setAnalyticalMethod("Disease Group I");
+////        qa15.setAuthor("Astrid, et al.");
+////        authormap.put("99999999", qa15);
+//
+//        QuantDatasetObject qa16 = new QuantDatasetObject();
+//        qa16.setYear(2014);
+//        qa16.setFilesNumber(10);
+//        qa16.setAnalyticalMethod("Disease Group I");
+//        qa16.setAuthor("Wildsmith, Kristin R., et al.");
+//        authormap.put("24902845", qa16);
+//        //Identification of longitudinally dynamic biomarkers in Alzheimer's disease cerebrospinal fluid by targeted proteomics.
+//
+//        QuantDatasetObject qa17 = new QuantDatasetObject();
+//        qa17.setYear(2015);
+//        qa17.setFilesNumber(10);
+//        qa17.setAnalyticalMethod("Disease Group I");
+//        qa17.setAuthor("Barucker, Christian, et al.");
+//        authormap.put("25318543", qa17);
+//        //Alzheimer amyloid peptide a?42 regulates gene expression of transcription and growth factors.
+//
+//        QuantDatasetObject qa18 = new QuantDatasetObject();
+//        qa18.setYear(2013);
+//        qa18.setFilesNumber(10);
+//        qa18.setAnalyticalMethod("Disease Group I");
+//        qa18.setAuthor("Schutzer, Steven E., et al.");
+//        authormap.put("24039694", qa18);
+//        //Gray matter is targeted in first-attack multiple sclerosis.
+//
+//        QuantDatasetObject qa19 = new QuantDatasetObject();
+//        qa19.setYear(2015);
+//        qa19.setFilesNumber(10);
+//        qa19.setAnalyticalMethod("Disease Group I");
+//        qa19.setAuthor("Shi, Min, et al.");
+//        authormap.put("25556233", qa19);
+//
+//        //Cerebrospinal fluid peptides as potential Parkinson disease biomarkers: a staged pipeline for discovery and validation.
+//        
+//        
+//        
+//        QuantDatasetObject qa20 = new QuantDatasetObject();
+//        qa20.setYear(2015);
+//        qa20.setFilesNumber(10);
+//        qa20.setAnalyticalMethod("Disease Group I");
+//        qa20.setAuthor("Borràs, Eva, et al.");
+//        authormap.put("26552840", qa20);
+//        //Protein-Based Classifier to Predict Conversion from Clinically Isolated Syndrome to Multiple Sclerosis.
+//
+//        QuantDatasetObject qa21 = new QuantDatasetObject();
+//        qa21.setYear(2015);
+//        qa21.setFilesNumber(10);
+//        qa21.setAnalyticalMethod("Disease Group I");
+//        qa21.setAuthor("Spellman, Daniel S., et al.");
+//        authormap.put("25676562", qa21);
+//        //Development and evaluation of a multiplexed mass spectrometry based assay for measuring candidate peptide biomarkers in Alzheimer's Disease Neuroimaging Initiative (ADNI) CSF
+//
+//        QuantDatasetObject qa22 = new QuantDatasetObject();
+//        qa22.setYear(2015);
+//        qa22.setFilesNumber(10);
+//        qa22.setAnalyticalMethod("Disease Group I");
+//        qa22.setAuthor("JAO2015");
+//        authormap.put("JAO2015", qa22);
+//
+//        QuantDatasetObject qa23 = new QuantDatasetObject();
+//        qa23.setYear(2012);
+//        qa23.setFilesNumber(10);
+//        qa23.setAnalyticalMethod("Disease Group I");
+//        qa23.setAuthor("Lehnert, Stefan, et al.");
+//        authormap.put("22327139", qa23);
+//        //iTRAQ and multiple reaction monitoring as proteomic tools for biomarker search in cerebrospinal fluid of patients with Parkinson's disease dementia.
+//        
+//        
+//
+//        QuantDatasetObject qa24 = new QuantDatasetObject();
+//        qa24.setYear(2015);
+//        qa24.setFilesNumber(10);
+//        qa24.setAnalyticalMethod("Disease Group I");
+//        qa24.setAuthor("Collins, Mahlon A., et al.");
+//        authormap.put("26401960", qa24);
+//        //Label-Free LC-MS/MS Proteomic Analysis of Cerebrospinal Fluid Identifies Protein/Pathway Alterations and Candidate Biomarkers for Amyotrophic Lateral Sclerosis.
+//
+//        QuantDatasetObject qa25 = new QuantDatasetObject();
+//        qa25.setYear(2013);
+//        qa25.setFilesNumber(10);
+//        qa25.setAnalyticalMethod("Disease Group I");
+//        qa25.setAuthor("Varghese, Anu Mary, et al.");
+//        authormap.put("24295388", qa25);
+//        //Chitotriosidase - a putative biomarker for sporadic amyotrophic lateral sclerosis.
+//        
+//        
+//        QuantDatasetObject qa26 = new QuantDatasetObject();
+//        qa26.setYear(2015);
+//        qa26.setFilesNumber(10);
+//        qa26.setAnalyticalMethod("Disease Group I");
+//        qa26.setAuthor("Heywood, Wendy E., et al.");
+//        authormap.put("26627638", qa26);
+//        //Identification of novel CSF biomarkers for neurodegeneration and their validation by a high-throughput multiplexed targeted proteomic assay.
+    }
 
-        QuantDatasetObject qa8 = new QuantDatasetObject();
-        qa8.setYear(2014);
-        qa8.setFilesNumber(10);
-        qa8.setAnalyticalMethod("Disease Group I");
-        qa8.setAuthor("Liguori, Maria, et al.");
-        authormap.put("25098164", qa8);
-
-        QuantDatasetObject qa9 = new QuantDatasetObject();
-        qa9.setYear(2010);
-        qa9.setFilesNumber(10);
-        qa9.setAnalyticalMethod("Disease Group I");
-        qa9.setAuthor("Ottervald, Jan, et al.");
-        authormap.put("20093204", qa9);
-
-        QuantDatasetObject qa1 = new QuantDatasetObject();
-        qa1.setYear(2010);
-        qa1.setFilesNumber(10);
-        qa1.setAnalyticalMethod("Disease Group I");
-        qa1.setAuthor("Comabella, Manuel, et al.");
-        authormap.put("20237129", qa1);
-
-        QuantDatasetObject qa2 = new QuantDatasetObject();
-        qa2.setYear(2010);
-        qa2.setAuthor("Harris, Violaine K., et al.");
-        qa2.setFilesNumber(15);
-        qa2.setAnalyticalMethod("Disease Group II");
-        authormap.put("20600910", qa2);
-
-        QuantDatasetObject qa3 = new QuantDatasetObject();
-        qa3.setYear(2012);
-        qa3.setFilesNumber(13);
-        qa3.setAnalyticalMethod("Disease Group II");
-        qa3.setAuthor("Dhaunchak, Ajit Singh, et al.");
-        authormap.put("22473675", qa3);
-
-        QuantDatasetObject qa4 = new QuantDatasetObject();
-        qa4.setYear(2012);
-        qa4.setFilesNumber(14);
-        qa4.setAnalyticalMethod("Disease Group I");
-        qa4.setAuthor("Jia, Yan, et al.");
-        authormap.put("22846148", qa4);
-
-        QuantDatasetObject qa5 = new QuantDatasetObject();
-        qa5.setYear(2013);
-        qa5.setFilesNumber(5);
-        qa5.setAnalyticalMethod("Disease Group III");
-        qa5.setAuthor("Kroksveen, Ann C., et al.");
-        authormap.put("23059536", qa5);
-
-        QuantDatasetObject qa6 = new QuantDatasetObject();
-        qa6.setYear(2012);
-        qa6.setFilesNumber(16);
-        qa6.setAuthor("Kroksveen, Ann C., et al.");
-        qa6.setAnalyticalMethod("Disease Group II");
-        authormap.put("23278663", qa6);
-
-        QuantDatasetObject qa11 = new QuantDatasetObject();
-        qa11.setYear(2014);
-        qa11.setFilesNumber(10);
-        qa11.setAnalyticalMethod("Disease Group I");
-        qa11.setAuthor("Cantó, Ester, et al.");
-        authormap.put("25406498", qa11);
-
-        QuantDatasetObject qa12 = new QuantDatasetObject();
-        qa12.setYear(2015);
-        qa12.setFilesNumber(10);
-        qa12.setAnalyticalMethod("Disease Group I");
-        qa12.setAuthor("Hinsinger, G., et al.");
-        authormap.put("25698171", qa12);
-
-        QuantDatasetObject qa13 = new QuantDatasetObject();
-        qa13.setYear(2013);
-        qa13.setFilesNumber(10);
-        qa13.setAnalyticalMethod("Disease Group I");
-        qa13.setAuthor("Stoop, Marcel P., et al");
-        authormap.put("23339689", qa13);
-
-        QuantDatasetObject qa10 = new QuantDatasetObject();
-        qa10.setYear(2012);
-        qa10.setFilesNumber(10);
-        qa10.setAnalyticalMethod("Disease Group I");
-        qa10.setAuthor("Kroksveen, A. C., et al.");
-        authormap.put("23278663", qa10);
-
-        QuantDatasetObject qa14 = new QuantDatasetObject();
-        qa14.setYear(2015);
-        qa14.setFilesNumber(10);
-        qa14.setAnalyticalMethod("Disease Group I");
-        qa14.setAuthor("Kroksveen, Ann C., et al.");
-        authormap.put("26152395", qa14);
-
-        QuantDatasetObject qa15 = new QuantDatasetObject();
-        qa15.setYear(2015);
-        qa15.setFilesNumber(10);
-        qa15.setAnalyticalMethod("Disease Group I");
-        qa15.setAuthor("Astrid, et al.");
-        authormap.put("99999999", qa15);
-
-        QuantDatasetObject qa16 = new QuantDatasetObject();
-        qa16.setYear(2014);
-        qa16.setFilesNumber(10);
-        qa16.setAnalyticalMethod("Disease Group I");
-        qa16.setAuthor("Wildsmith, Kristin R., et al.");
-        authormap.put("24902845", qa16);
-
-        QuantDatasetObject qa17 = new QuantDatasetObject();
-        qa17.setYear(2015);
-        qa17.setFilesNumber(10);
-        qa17.setAnalyticalMethod("Disease Group I");
-        qa17.setAuthor("Barucker, Christian, et al.");
-        authormap.put("25318543", qa17);
-
-        QuantDatasetObject qa18 = new QuantDatasetObject();
-        qa18.setYear(2013);
-        qa18.setFilesNumber(10);
-        qa18.setAnalyticalMethod("Disease Group I");
-        qa18.setAuthor("Schutzer, Steven E., et al.");
-        authormap.put("24039694", qa18);
-
-        QuantDatasetObject qa19 = new QuantDatasetObject();
-        qa19.setYear(2015);
-        qa19.setFilesNumber(10);
-        qa19.setAnalyticalMethod("Disease Group I");
-        qa19.setAuthor("Shi, Min, et al.");
-        authormap.put("25556233", qa19);
-
-        QuantDatasetObject qa20 = new QuantDatasetObject();
-        qa20.setYear(2015);
-        qa20.setFilesNumber(10);
-        qa20.setAnalyticalMethod("Disease Group I");
-        qa20.setAuthor("Borràs, Eva, et al.");
-        authormap.put("26552840", qa20);
-
-        QuantDatasetObject qa21 = new QuantDatasetObject();
-        qa21.setYear(2015);
-        qa21.setFilesNumber(10);
-        qa21.setAnalyticalMethod("Disease Group I");
-        qa21.setAuthor("Spellman, Daniel S., et al.");
-        authormap.put("25676562", qa21);
-
-        QuantDatasetObject qa22 = new QuantDatasetObject();
-        qa22.setYear(2015);
-        qa22.setFilesNumber(10);
-        qa22.setAnalyticalMethod("Disease Group I");
-        qa22.setAuthor("JAO2015");
-        authormap.put("JAO2015", qa22);
-
-        QuantDatasetObject qa23 = new QuantDatasetObject();
-        qa23.setYear(2012);
-        qa23.setFilesNumber(10);
-        qa23.setAnalyticalMethod("Disease Group I");
-        qa23.setAuthor("Lehnert, Stefan, et al.");
-        authormap.put("22327139", qa23);
-
-        QuantDatasetObject qa24 = new QuantDatasetObject();
-        qa24.setYear(2015);
-        qa24.setFilesNumber(10);
-        qa24.setAnalyticalMethod("Disease Group I");
-        qa24.setAuthor("Collins, Mahlon A., et al.");
-        authormap.put("26401960", qa24);
-
-        QuantDatasetObject qa25 = new QuantDatasetObject();
-        qa25.setYear(2013);
-        qa25.setFilesNumber(10);
-        qa25.setAnalyticalMethod("Disease Group I");
-        qa25.setAuthor("Varghese, Anu Mary, et al.");
-        authormap.put("24295388", qa25);
-
-        QuantDatasetObject qa26 = new QuantDatasetObject();
-        qa26.setYear(2015);
-        qa26.setFilesNumber(10);
-        qa26.setAnalyticalMethod("Disease Group I");
-        qa26.setAuthor("Heywood, Wendy E., et al.");
-        authormap.put("26627638", qa26);
-
+    public Map<String, Boolean> getActivePublications() {
+        return activePublications;
     }
 
     @SuppressWarnings("CallToPrintStackTrace")
@@ -238,8 +285,11 @@ public class QuantDataHandler {
                     quantProt.setUniprotProteinName(protName.trim());
 
                 } else {
-                    quantProt.setSequance(quantProt.getSequance() + seqline);
-
+                    if (quantProt.getSequance() != null) {
+                        quantProt.setSequance(quantProt.getSequance() + seqline);
+                    } else {
+                        quantProt.setSequance(seqline);
+                    }
                 }
 //                
             }
@@ -313,7 +363,9 @@ public class QuantDataHandler {
                 qProt.setStudyKey(updatedRowArr[index++].trim().toUpperCase());
                 if (!authormap.containsKey(qProt.getPumedID())) {
                     System.out.println("at error " + qProt.getPumedID());
+                    return null;
                 }
+                activePublications.put(qProt.getPumedID(), Boolean.TRUE);
                 qProt.setAuthor(authormap.get(qProt.getPumedID()).getAuthor());
                 qProt.setYear(authormap.get(qProt.getPumedID()).getYear());
                 qProt.setFilesNum(authormap.get(qProt.getPumedID()).getFilesNumber());
@@ -607,7 +659,7 @@ public class QuantDataHandler {
                     index++;
 
                 }
-               
+
                 //pvalue
                 if (!updatedRowArr[index].trim().trim().equalsIgnoreCase("")) {
                     qProt = definePValue(qProt, updatedRowArr[index++], updatedRowArr[index++], updatedRowArr[index++]);
@@ -713,10 +765,8 @@ public class QuantDataHandler {
 
                 String pepKey = qProt.getPumedID() + "_" + qProt.getStudyKey() + "_" + qProt.getUniprotAccession() + "_" + qProt.getPublicationAccNumber() + "_" + qProt.getTypeOfStudy() + "_" + qProt.getSampleType() + "_" + qProt.getTechnology() + "_" + qProt.getAnalyticalApproach() + "_" + qProt.getAnalyticalMethod() + "_" + qProt.getPatientsGroupINumber() + "_" + qProt.getPatientsGroupIINumber() + "_" + qProt.getPatientSubGroupI() + "_" + qProt.getPatientSubGroupII() + "_" + qProt.getDiseaseCategory();
                 qProt.setQuantPeptideKey(pepKey);
-                QuantProtList.add(qProt); 
-                if (qProt.getStringFCValue().equalsIgnoreCase("not provided") && !qProt.isPeptideProtein()) {
-                    System.out.println("check fc should have 5 values " + qProt.getStudyKey()+"   "+qProt.getUniprotAccession());
-                }
+                QuantProtList.add(qProt);
+
                 row++;
             } //    
             bufRdr.close();
@@ -727,9 +777,7 @@ public class QuantDataHandler {
                     quantProtein.setUniprotAccession(quantProtein.getUniprotAccession() + "(unreviewed)");
 
                 }
-                
-                
-                
+
                 updatedQuantProtList.add(quantProtein);
 
             }
@@ -906,6 +954,22 @@ public class QuantDataHandler {
         }
         System.out.println("size " + protSeqMap.size());
         return protSeqMap;
+    }
+
+    public void updatePublicationMap(List<Object[]> pulicationsList) {
+        authormap.clear();
+        activePublications.clear();
+        for (Object[] publication : pulicationsList) {
+            QuantDatasetObject qa = new QuantDatasetObject();
+            qa.setYear((Integer.valueOf(publication[2].toString().trim())));
+            qa.setFilesNumber(10);
+            qa.setAnalyticalMethod("Disease Group I");
+            qa.setAuthor(publication[1].toString());
+            authormap.put(publication[0].toString(), qa);
+            activePublications.put(publication[0].toString(), Boolean.FALSE);
+
+        }
+
     }
 
     public Map<String, String> readDiseaseGroupsFullNameFile(String filePath) {

@@ -69,8 +69,10 @@ public class Handler {
 
     public boolean handelQuantPubData(String quantDataFilePath, String sequanceFilePath, String unreviewFilePath) {
 
+        qDataHandler.updatePublicationMap(getPublications());
         //1.read file
         List<QuantProtein> qProtList = qDataHandler.readCSVQuantFile(quantDataFilePath, sequanceFilePath, unreviewFilePath);
+        this.updateActivePublications(qDataHandler.getActivePublications());
         //filter the quant proteins list 
         List<QuantProtein> filteredQuantProteinsList = filterQuantProteins(qProtList);
 
@@ -139,6 +141,7 @@ public class Handler {
             String key = quantProt.getPumedID() + "_" + quantProt.getStudyKey() + "_" + quantProt.getQuantifiedProteinsNumber() + "_" + quantProt.getUniprotAccession() + "_" + quantProt.getPublicationAccNumber() + "_" + quantProt.getPublicationProteinName() + "_" + quantProt.getRawDataAvailable() + "_" + quantProt.getTypeOfStudy() + "_" + quantProt.getSampleType() + "_" + quantProt.getPatientsGroupINumber() + "_" + quantProt.getPatientsGroupIINumber() + "_" + quantProt.getPatientGrIComment() + "_" + quantProt.getPatientGrIIComment() + "_" + quantProt.getPatientGroupI() + "_" + quantProt.getPatientGroupII() + "_" + quantProt.getPatientSubGroupI() + "_" + quantProt.getPatientSubGroupII() + "_" + quantProt.getNormalizationStrategy() + "_" + quantProt.getTechnology() + "_" + quantProt.getAnalyticalApproach() + "_" + quantProt.getAnalyticalMethod() + "_" + quantProt.getShotgunOrTargetedQquant() + "_" + quantProt.getEnzyme() + "_" + quantProt.getQuantificationBasis() + "_" + quantProt.getDiseaseCategory();
             String key2 = quantProt.getPumedID() + "_" + quantProt.getStudyKey() + "_" + quantProt.getQuantifiedProteinsNumber() + "_" + quantProt.getUniprotAccession() + "_" + quantProt.getPublicationAccNumber() + "_" + quantProt.getPublicationProteinName() + "_" + quantProt.getRawDataAvailable() + "_" + quantProt.getTypeOfStudy() + "_" + quantProt.getSampleType() + "_" + quantProt.getPatientsGroupINumber() + "_" + quantProt.getPatientsGroupIINumber() + "_" + quantProt.getPatientGrIComment() + "_" + quantProt.getPatientGrIIComment() + "_" + quantProt.getPatientGroupI() + "_" + quantProt.getPatientGroupII() + "_" + quantProt.getPatientSubGroupI() + "_" + quantProt.getPatientSubGroupII() + "_" + quantProt.getNormalizationStrategy() + "_" + quantProt.getTechnology() + "_" + quantProt.getAnalyticalApproach() + "_" + quantProt.getAnalyticalMethod() + "_" + quantProt.getShotgunOrTargetedQquant() + "_" + quantProt.getEnzyme() + "_" + quantProt.getDiseaseCategory();
 
+            
             if (!updatedFilteredProteinsList.containsKey(key) && !cleaningSet.contains(key)) {
                 updatedFilteredProteinsList.put(key, quantProt);
                 updatedFullFilteredProteinsList.put(key2, quantProt);
@@ -161,6 +164,7 @@ public class Handler {
                     updatedFilteredList.add(quantProt);
 
                 } else {
+                    System.out.println("astrid file --- >>  "+key);
                     astridList.add(quantProt);
 
                 }
@@ -549,5 +553,19 @@ public class Handler {
 
         return dal.updateDiseaseGroupsFullName(diseaseGroupsNamingMap);
     }
+    
+     public boolean  insertPublication(String pubmedid, String author, String year, String title) {
+        return dal.insertPublication(pubmedid, author, year, title);
+
+    }
+      public List<Object []> getPublications() {
+          return dal.getPublications();
+      }
+      
+      private void updateActivePublications(Map<String, Boolean> activePublications){
+      
+      dal.updateActivePublications(activePublications);
+      
+      }
 
 }

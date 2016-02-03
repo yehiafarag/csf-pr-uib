@@ -49,7 +49,7 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
         jRadioButton1.setSelected(true);
         restoreDbBtn.setEnabled(false);
         backupDbBtn.setEnabled(false);
-        
+
         diseaseGroupsFullNameFileTextFieald.setText("");
 
         jLabel13.setText("");
@@ -134,6 +134,8 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
             }
         });
         mysqlresText.setText(mySqlDBPath);
+        
+        jLabel33.setForeground(Color.red);
 
     }
     /* This method is called from within the constructor to
@@ -230,6 +232,7 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
         jLabel29 = new javax.swing.JLabel();
         jTextField17 = new javax.swing.JTextField();
         jLabel28 = new javax.swing.JLabel();
+        jLabel33 = new javax.swing.JLabel();
         jPanel11 = new javax.swing.JPanel();
         diseaseGroupsFullNameFileTextFieald = new javax.swing.JTextField();
         jTextField19 = new javax.swing.JTextField();
@@ -814,6 +817,12 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
 
         jLabel27.setText("Year");
 
+        jTextField16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField16ActionPerformed(evt);
+            }
+        });
+
         jButton11.setText("Add");
         jButton11.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -823,7 +832,11 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
 
         jLabel29.setText("Title");
 
-        jTextField17.setText("jTextField17");
+        jTextField17.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField17ActionPerformed(evt);
+            }
+        });
 
         jLabel28.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         jLabel28.setText("Insert/Update  Publication");
@@ -833,18 +846,15 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel8Layout.createSequentialGroup()
                                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel27)
                                     .addComponent(jLabel26))
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addGap(36, 36, 36))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -855,12 +865,16 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                             .addComponent(jTextField17, javax.swing.GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE)
                             .addComponent(jTextField15, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jTextField7, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField16))))
+                            .addComponent(jTextField16)))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(jLabel28)
+                        .addGap(314, 314, 314))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(220, 220, 220)
+                        .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel28)
-                .addContainerGap(326, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -883,8 +897,10 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel29)
                     .addComponent(jTextField17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton11)
+                .addGap(28, 28, 28)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton11)
+                    .addComponent(jLabel33))
                 .addContainerGap())
         );
 
@@ -1258,7 +1274,7 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                         try {
                             Thread.sleep(50);
                         } catch (Exception e) {
-                            //e.printStackTrace();
+                            e.printStackTrace();
                         }
                     }
                     jProgressBar1.setValue(0);
@@ -1905,12 +1921,60 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField7ActionPerformed
 
+    private final String errorEmptyText = "You need to enter valid value";
     private void jTextField15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField15ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField15ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        // TODO add your handling code here:
+
+        jLabel33.setText("");
+        if (jTextField7.getText().isEmpty() || jTextField7.getText().trim().equalsIgnoreCase(errorEmptyText)) {
+            jTextField7.setText(errorEmptyText);
+            return;
+        }
+        if (jTextField15.getText().isEmpty() || jTextField15.getText().trim().equalsIgnoreCase(errorEmptyText)) {
+            jTextField15.setText(errorEmptyText);
+            return;
+        }
+        if (jTextField16.getText().isEmpty() || jTextField16.getText().trim().equalsIgnoreCase(errorEmptyText)) {
+            jTextField16.setText(errorEmptyText);
+            return;
+        }
+        try {
+            Integer.valueOf(jTextField16.getText().trim());
+
+        } catch (NumberFormatException nfe) {
+            jTextField16.setText(errorEmptyText);
+            return;
+        }
+        
+        if (jTextField17.getText().isEmpty() || jTextField17.getText().trim().equalsIgnoreCase(errorEmptyText)) {
+            jTextField17.setText(errorEmptyText);
+            return;
+        }
+         if (exphandeler == null) {
+            String password = "";
+            for (char c : jPasswordField1.getPassword()) {
+                password += c;
+            }
+            try {
+                exphandeler = new Handler("jdbc:mysql://" + jTextField13.getText() + ":3306/", database_name, "com.mysql.jdbc.Driver", jTextField1.getText(), password);
+            } catch (SQLException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+
+        boolean success  = exphandeler.insertPublication(jTextField7.getText().trim(), jTextField15.getText().trim(), jTextField16.getText().trim(), jTextField17.getText().trim());
+        if(success){
+        jTextField7.setText("");
+        jTextField15.setText("");
+        jTextField16.setText("");
+        jTextField17.setText("");
+         jLabel33.setText("done... :-) ");
+        }else
+        jLabel33.setText("Error..try again");
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
@@ -1932,8 +1996,9 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
         }
         if (diseaseGroupsFullNameFileTextFieald.getText() != null && !diseaseGroupsFullNameFileTextFieald.getText().trim().equalsIgnoreCase("")) {
             boolean test = exphandeler.updateDiseaseGroupsFullName(diseaseGroupsFullNameFileTextFieald.getText());
-            if(!test)
+            if (!test) {
                 jButton12ActionPerformed(evt);
+            }
         } else {
             jButton12ActionPerformed(evt);
         }
@@ -1962,6 +2027,14 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
             diseaseGroupsFullNameFileTextFieald.setText(path);
         }
     }//GEN-LAST:event_jButton12ActionPerformed
+
+    private void jTextField16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField16ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField16ActionPerformed
+
+    private void jTextField17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField17ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField17ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2059,6 +2132,7 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -2534,6 +2608,7 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                 quantPanel.getProcessBtn().setEnabled(true);
 
             } catch (Exception e) {
+                e.printStackTrace();
             }
 
             return success;
