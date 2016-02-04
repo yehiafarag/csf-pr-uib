@@ -1057,7 +1057,6 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
                 if (acc.contains("-")) {
                     acc = acc.split("-")[0];
                 }
-                System.out.println("isomap is " + isoProtMap.get(acc));
                 proteinskeys.addAll(isoProtMap.get(acc));
             }
             groupsComparisonProteinsTable.setValue(proteinskeys);

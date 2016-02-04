@@ -111,6 +111,10 @@ public class StudiesFilterManager implements Serializable {
         this.quantDatasetListObject = quantDatasetListObject;
         String key = "Multiple Sclerosis";//quantDatasetListObject.keySet().iterator().next();
 
+        if (!quantDatasetListObject.containsKey(key)) {
+            key = "All";
+        }
+
         this.totalDsNumber = quantDatasetListObject.get("All").getQuantDatasetsList().size();
 //        for (String k : quantDatasetListObject.keySet()) {
 //            totalDsNumber += quantDatasetListObject.get(k).getQuantDatasetsList().size();
@@ -134,7 +138,6 @@ public class StudiesFilterManager implements Serializable {
         }
         inUseDiseaseName = key;
         noSerum = true;
-
         this.fullQuantDatasetMap = quantDatasetListObject.get(key).getQuantDatasetsList();
         this.noSerumQuantDatasetMap = noSerumDiseaseCategory.get(key);
         this.inUsefullQuantDatasetMap = this.noSerumQuantDatasetMap;
@@ -297,24 +300,23 @@ public class StudiesFilterManager implements Serializable {
             label2 = pgII;
             diseaseGroup.setPatientsGroupIILabel(label2);
             fullDiseaseGroupMap.put(ds.getDsKey(), diseaseGroup);
-            if(!diseaseGroupsHeaderToOregenalDiseaseGroupsNames.containsKey(diseaseGroup.getPatientsSubGroupI())) //            fullDiseaseGroupMap[i] = diseaseGroup;
+            if (!diseaseGroupsHeaderToOregenalDiseaseGroupsNames.containsKey(diseaseGroup.getPatientsSubGroupI())) //            fullDiseaseGroupMap[i] = diseaseGroup;
             {
-               diseaseGroupsHeaderToOregenalDiseaseGroupsNames.put(diseaseGroup.getPatientsSubGroupI(), new LinkedHashSet<String>());
-              
-            }  
-             if(!diseaseGroupsHeaderToOregenalDiseaseGroupsNames.containsKey(diseaseGroup.getPatientsSubGroupII())) //            fullDiseaseGroupMap[i] = diseaseGroup;
+                diseaseGroupsHeaderToOregenalDiseaseGroupsNames.put(diseaseGroup.getPatientsSubGroupI(), new LinkedHashSet<String>());
+
+            }
+            if (!diseaseGroupsHeaderToOregenalDiseaseGroupsNames.containsKey(diseaseGroup.getPatientsSubGroupII())) //            fullDiseaseGroupMap[i] = diseaseGroup;
             {
-               diseaseGroupsHeaderToOregenalDiseaseGroupsNames.put(diseaseGroup.getPatientsSubGroupII(), new LinkedHashSet<String>());
-              
-            }  
-             Set<String> groupsNamesSet = diseaseGroupsHeaderToOregenalDiseaseGroupsNames.get(diseaseGroup.getPatientsSubGroupI());
-             groupsNamesSet.add(ds.getPatientsSubGroup1());
-             diseaseGroupsHeaderToOregenalDiseaseGroupsNames.put(diseaseGroup.getPatientsSubGroupI(), groupsNamesSet);
-             groupsNamesSet = diseaseGroupsHeaderToOregenalDiseaseGroupsNames.get(diseaseGroup.getPatientsSubGroupII());
-             groupsNamesSet.add(ds.getPatientsSubGroup2());
-             diseaseGroupsHeaderToOregenalDiseaseGroupsNames.put(diseaseGroup.getPatientsSubGroupII(), groupsNamesSet);
-             
-            
+                diseaseGroupsHeaderToOregenalDiseaseGroupsNames.put(diseaseGroup.getPatientsSubGroupII(), new LinkedHashSet<String>());
+
+            }
+            Set<String> groupsNamesSet = diseaseGroupsHeaderToOregenalDiseaseGroupsNames.get(diseaseGroup.getPatientsSubGroupI());
+            groupsNamesSet.add(ds.getPatientsSubGroup1());
+            diseaseGroupsHeaderToOregenalDiseaseGroupsNames.put(diseaseGroup.getPatientsSubGroupI(), groupsNamesSet);
+            groupsNamesSet = diseaseGroupsHeaderToOregenalDiseaseGroupsNames.get(diseaseGroup.getPatientsSubGroupII());
+            groupsNamesSet.add(ds.getPatientsSubGroup2());
+            diseaseGroupsHeaderToOregenalDiseaseGroupsNames.put(diseaseGroup.getPatientsSubGroupII(), groupsNamesSet);
+
             diseaseGroupsI[i] = label1;
             diseaseGroupsII[i] = label2;
             diseaseGroup.setQuantDatasetIndex(ds.getDsKey());

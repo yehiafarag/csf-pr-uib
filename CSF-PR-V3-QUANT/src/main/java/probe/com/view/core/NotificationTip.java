@@ -43,7 +43,6 @@ public class NotificationTip extends Notification {
     }
 
     public void hideNotficiation() {
-        System.out.println("delay is 0");
       notification.setDelayMsec(DELAY_NONE);
       notification.setStyleName("hideNotification");
        visible = true;

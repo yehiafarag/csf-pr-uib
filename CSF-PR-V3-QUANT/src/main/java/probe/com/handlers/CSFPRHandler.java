@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,7 @@ public class CSFPRHandler implements Serializable {
     private final Map<String, String> diseaseFullNameMap;
     private final Map<String, Map<String, String>> default_DiseaseCat_DiseaseGroupMap;
     private final Map<String, QuantDatasetInitialInformationObject> quantDatasetInitialInformationObject;
+    private final Map<String, String> diseaseHashedColorMap = new HashMap<String, String>();
     String suggestNames = "Alzheimer's\n"
             + "CIS\n"
             + "CIS-CIS\n"
@@ -130,6 +132,11 @@ public class CSFPRHandler implements Serializable {
             }
             default_DiseaseCat_DiseaseGroupMap.put(str, diseaseGroupMap);
         }
+         diseaseHashedColorMap.put("Multiple Sclerosis", "#A52A2A");
+        diseaseHashedColorMap.put("Alzheimer's", "#4b7865");
+        diseaseHashedColorMap.put("Parkinson's", "#74716E");
+        diseaseHashedColorMap.put("Amyotrophic Lateral Sclerosis", "#7D0725");
+        diseaseHashedColorMap.put("UserData", "#8210B0");
 
     }
 
@@ -637,12 +644,12 @@ public class CSFPRHandler implements Serializable {
     public Map<String, Map<String, String>> getDefault_DiseaseCat_DiseaseGroupMap() {
         return default_DiseaseCat_DiseaseGroupMap;
     }
-   
+
     private HeaderLayout header;
-    public void controlHeaderHeights(int height){
-        header.setHeight(height+"px");
-    
-    
+
+    public void controlHeaderHeights(int height) {
+        header.setHeight(height + "px");
+
     }
 
     public float getHeaderHeight() {
@@ -651,6 +658,21 @@ public class CSFPRHandler implements Serializable {
 
     public void setHeader(HeaderLayout header) {
         this.header = header;
+    }
+
+    public List<Object[]> getPublicationList() {       
+       
+         return this.logicLayer.getPublicationList();
+
+    }
+    
+    public  Set<QuantDatasetObject> getQuantDatasetList(){
+        return this.logicLayer.getQuantDatasetList();
+    
+    }
+
+    public Map<String, String> getDiseaseHashedColorMap() {
+        return diseaseHashedColorMap;
     }
 
 }

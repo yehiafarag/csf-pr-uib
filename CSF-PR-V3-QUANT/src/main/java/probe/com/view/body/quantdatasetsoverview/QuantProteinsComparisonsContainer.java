@@ -839,7 +839,6 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
                 isoProtMap.put(isoProtKey, new LinkedHashSet<Integer>());
             }
             Set<Integer> set = isoProtMap.get(isoProtKey);
-            set.add(0);
             set.add((Integer) itemId);
             isoProtMap.put(isoProtKey, set);
         }
@@ -986,7 +985,6 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
                 if (acc.contains("-")) {
                     acc = acc.split("-")[0];
                 }
-                System.out.println("isomap is " + isoProtMap.get(acc));
                 proteinskeys.addAll(isoProtMap.get(acc));
             }
             groupsComparisonProteinsTable.setValue(proteinskeys);

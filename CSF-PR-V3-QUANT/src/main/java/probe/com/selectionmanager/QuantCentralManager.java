@@ -34,8 +34,8 @@ public class QuantCentralManager implements Serializable {
     private final StudiesFilterManager Studies_Filter_Manager;
     private final StudiesSelectionManager Studies_Selection_Manager;
 
-    private final Map<String, String> diseaseHashedColorMap = new HashMap<String, String>();
     private final CSFPRHandler CSFPR_Handler;
+    private final Map<String, String> diseaseHashedColorMap;
 
     public String getDiseaseHashedColor(String diseaseName) {
         return diseaseHashedColorMap.get(diseaseName);
@@ -46,11 +46,8 @@ public class QuantCentralManager implements Serializable {
 
     public QuantCentralManager(CSFPRHandler CSFPR_Handler) {
         this.CSFPR_Handler = CSFPR_Handler;
-        diseaseHashedColorMap.put("Multiple Sclerosis", "#A52A2A");
-        diseaseHashedColorMap.put("Alzheimer's", "#4b7865");
-        diseaseHashedColorMap.put("Parkinson's", "#74716E");
-        diseaseHashedColorMap.put("Amyotrophic Lateral Sclerosis", "#7D0725");
-        diseaseHashedColorMap.put("UserData", "#8210B0");
+        this.diseaseHashedColorMap = CSFPR_Handler.getDiseaseHashedColorMap();
+       
 
         Studies_Filter_Manager = new StudiesFilterManager(CSFPR_Handler.getQuantDatasetInitialInformationObject(), CSFPR_Handler.getActivePieChartQuantFilters(), CSFPR_Handler.getDefault_DiseaseCat_DiseaseGroupMap());//,filterUtility.getFullFilterList()
         Studies_Selection_Manager = new StudiesSelectionManager();
@@ -61,11 +58,7 @@ public class QuantCentralManager implements Serializable {
 
     public QuantCentralManager(CSFPRHandler CSFPR_Handler, List<QuantProtein> searchQuantificationProtList) {
         this.CSFPR_Handler = CSFPR_Handler;
-        diseaseHashedColorMap.put("Multiple Sclerosis", "#A52A2A");
-        diseaseHashedColorMap.put("Alzheimer's", "#4b7865");
-        diseaseHashedColorMap.put("Parkinson's", "#74716E");
-        diseaseHashedColorMap.put("Amyotrophic Lateral Sclerosis", "#4b7865");
-        diseaseHashedColorMap.put("UserData", "#8210B0");
+        this.diseaseHashedColorMap = CSFPR_Handler.getDiseaseHashedColorMap();
 
         Studies_Filter_Manager = new StudiesFilterManager(CSFPR_Handler.getQuantDatasetInitialInformationObject(searchQuantificationProtList), CSFPR_Handler.getActivePieChartQuantFilters(searchQuantificationProtList), CSFPR_Handler.getDefault_DiseaseCat_DiseaseGroupMap());//,filterUtility.getFullFilterList()
         Studies_Selection_Manager = new StudiesSelectionManager();
@@ -76,11 +69,7 @@ public class QuantCentralManager implements Serializable {
 
     public QuantCentralManager(CSFPRHandler CSFPR_Handler, List<QuantProtein> searchQuantificationProtList, QuantDiseaseGroupsComparison userCustomizedComparison) {
         this.CSFPR_Handler = CSFPR_Handler;
-        diseaseHashedColorMap.put("Multiple Sclerosis", "#A52A2A");
-        diseaseHashedColorMap.put("Alzheimer's", "#4b7865");
-        diseaseHashedColorMap.put("Parkinson's", "#74716E");
-        diseaseHashedColorMap.put("Amyotrophic Lateral Sclerosis", "#4b7865");
-        diseaseHashedColorMap.put("UserData", "#8210B0");
+        this.diseaseHashedColorMap = CSFPR_Handler.getDiseaseHashedColorMap();
 
         Studies_Filter_Manager = new StudiesFilterManager(CSFPR_Handler.getQuantDatasetInitialInformationObject(searchQuantificationProtList), CSFPR_Handler.getActivePieChartQuantFilters(searchQuantificationProtList), userCustomizedComparison, CSFPR_Handler.getDefault_DiseaseCat_DiseaseGroupMap());//,filterUtility.getFullFilterList()
         Studies_Selection_Manager = new StudiesSelectionManager();

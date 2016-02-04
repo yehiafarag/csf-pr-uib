@@ -1,10 +1,12 @@
 package probe.com.dal;
 
+import com.vaadin.server.Page;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import probe.com.model.beans.OverviewInfoBean;
 
 import probe.com.model.beans.identification.IdentificationDatasetBean;
@@ -14,7 +16,10 @@ import probe.com.model.beans.identification.IdentificationProteinBean;
 import probe.com.model.beans.quant.QuantProtein;
 import probe.com.model.beans.identification.StandardIdentificationFractionPlotProteinBean;
 import probe.com.model.beans.quant.QuantDatasetInitialInformationObject;
+import probe.com.model.beans.quant.QuantDatasetObject;
+import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.beans.quant.QuantPeptide;
+import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.peptidescontainer.popupcomponents.DatasetInformationOverviewLayout;
 
 /**
  *
@@ -418,5 +423,14 @@ public class DataAccess implements Serializable {
         return db.getDiseaseGroupNameMap(diseaseCat);
         
     }
+     public List<Object[]> getPublicationList() {
+        
+        
+         return this.db.getPublicationList();
+
+    }
+    public  Set<QuantDatasetObject> getQuantDatasetList(){
+          return db.getQuantDatasetList();
     
+    }
 }

@@ -1,5 +1,6 @@
 package probe.com.dal;
 
+import com.vaadin.server.Page;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import probe.com.model.beans.OverviewInfoBean;
 
 import probe.com.model.beans.identification.IdentificationDatasetBean;
@@ -32,6 +34,8 @@ import probe.com.model.beans.identification.StandardIdentificationFractionPlotPr
 import probe.com.model.beans.quant.QuantDatasetInitialInformationObject;
 import probe.com.model.beans.quant.QuantPeptide;
 import probe.com.model.beans.User;
+import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
+import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.peptidescontainer.popupcomponents.DatasetInformationOverviewLayout;
 
 /**
  * @author Yehia Farag
@@ -2030,6 +2034,12 @@ public class DataBase implements Serializable {
                 ds.setPatientsSubGroup2(patient_sub_group_ii + "\n" + disease_category);
                 ds.setAdditionalcomments("Not Available");
                 ds.setDiseaseCategory(rs.getString("disease_category"));
+
+                ds.setTotalProtNum(rs.getInt("total_prot_num"));
+                ds.setUniqueProtNum(rs.getInt("uniq_prot_num"));
+                ds.setTotalPepNum(rs.getInt("total_pept_num"));
+                ds.setUniqePepNum(rs.getInt("uniq_pept_num"));
+
                 diseaseCategories.add(ds.getDiseaseCategory());
                 activeHeaders[26] = false;
                 updatedQuantDatasetObjectMap.put(ds.getDsKey(), ds);
@@ -2928,6 +2938,7 @@ public class DataBase implements Serializable {
                 quantProt.setPvalueSignificanceThreshold(resultSet.getString("pvalue_significance_threshold"));
                 quantProt.setAdditionalComments(resultSet.getString("additional_comments"));
                 quantProt.setQuantBasisComment(resultSet.getString("quant_bases_comments"));
+
                 quantProtResultList.add(quantProt);
 
             }
@@ -3254,8 +3265,8 @@ public class DataBase implements Serializable {
      */
     public Set<String> getDiseaseGroupNameMap(String diseaseCat) {
         Set<String> diseaseNames = new HashSet<String>();
-          String selectPatient_sub_group_i = "SELECT `patient_sub_group_i` FROM `quant_dataset_table`  where `disease_category` = ? GROUP BY `patient_sub_group_i` ORDER BY `patient_sub_group_i` ";
-       
+        String selectPatient_sub_group_i = "SELECT `patient_sub_group_i` FROM `quant_dataset_table`  where `disease_category` = ? GROUP BY `patient_sub_group_i` ORDER BY `patient_sub_group_i` ";
+
         String selectPatient_sub_group_ii = "SELECT `patient_sub_group_ii` FROM `quant_dataset_table`  where `disease_category` = ? GROUP BY `patient_sub_group_ii` ORDER BY `patient_sub_group_ii` ";
         try {
             if (conn == null || conn.isClosed()) {
@@ -3270,8 +3281,7 @@ public class DataBase implements Serializable {
                 diseaseNames.add(rs.getString("patient_sub_group_i").trim());
             }
             rs.close();
-            
-            
+
             selectProStat = conn.prepareStatement(selectPatient_sub_group_ii);
             selectProStat.setString(1, diseaseCat);
             rs = selectProStat.executeQuery();
@@ -3279,7 +3289,7 @@ public class DataBase implements Serializable {
             while (rs.next()) {
                 diseaseNames.add(rs.getString("patient_sub_group_ii").trim());
             }
-            
+
         } catch (SQLException e) {
             System.err.println("at error " + this.getClass().getName() + "  line 3167  " + e.getLocalizedMessage());
         } catch (ClassNotFoundException e) {
@@ -3292,4 +3302,58 @@ public class DataBase implements Serializable {
 
         return diseaseNames;
     }
+
+    public List<Object[]> getPublicationList() {
+
+        List<Object[]> publicationList = new ArrayList<Object[]>();
+        String selectStat = "SELECT * FROM  `publication_table` WHERE `active`='true' ORDER BY  `publication_table`.`year` DESC";
+        try {
+            if (conn == null || conn.isClosed()) {
+                Class.forName(driver).newInstance();
+                conn = DriverManager.getConnection(url + dbName, userName, password);
+            }
+
+            PreparedStatement st = conn.prepareStatement(selectStat);
+
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                publicationList.add(new Object[]{rs.getString("pubmed_id"), rs.getString("author"), rs.getString("year"), rs.getString("title"), rs.getInt("uniq_prot_num"), rs.getInt("total_prot_num"), rs.getInt("uniq_pept_num"), rs.getInt("total_pept_num")});
+            }
+        } catch (ClassNotFoundException e) {
+            System.err.println("at error" + e.getLocalizedMessage());
+
+        } catch (IllegalAccessException e) {
+            System.err.println("at error" + e.getLocalizedMessage());
+
+        } catch (InstantiationException e) {
+            System.err.println("at error" + e.getLocalizedMessage());
+
+        } catch (SQLException e) {
+            System.err.println("at error" + e.getLocalizedMessage());
+
+        } catch (Exception e) {
+            System.err.println("at error" + e.getLocalizedMessage());
+        }
+        System.gc();
+        return publicationList;
+
+    }
+
+    public Set<QuantDatasetObject> getQuantDatasetList() {
+        Set<QuantDatasetObject> dsObjects = new TreeSet<QuantDatasetObject>();
+
+         Map<String, QuantDatasetInitialInformationObject> diseaseCategoriesMap =getQuantDatasetInitialInformationObject();
+           for(QuantDatasetInitialInformationObject qi : diseaseCategoriesMap.values()){
+               dsObjects.addAll(qi.getQuantDatasetsList().values());
+              
+           
+           
+           }
+
+
+        return dsObjects;
+
+    }
+
 }

@@ -1,5 +1,6 @@
 package probe.com.model;
 
+import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +38,7 @@ import org.jfree.chart.JFreeChart;
 import probe.com.model.beans.OverviewInfoBean;
 import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.model.util.vaadintoimageutil.peptideslayout.ProteinInformationDataForExport;
+import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.peptidescontainer.popupcomponents.DatasetInformationOverviewLayout;
 //import org.apache.batik.svggen.SVGGraphics2D;
 //import org.apache.batik.dom.svg.SVGDOMImplementation;
 //import org.apache.batik.dom.svg12.SVG12DOMImplementation;
@@ -717,12 +719,29 @@ public class CoreLogic implements Serializable {
         }
         String key;
 
-        for (QuantProtein prot : quantProteinsList) {
+        for (QuantProtein quantProt : quantProteinsList) {
 
             if (searchBy.equalsIgnoreCase("Protein Accession")/* ||*/) {
-                key = prot.getUniprotAccession().trim() + "__" + prot.getUniprotProteinName().trim();
+                String uniprotAcc = quantProt.getUniprotAccession();
+                String protName;
+                String accession;
+                if (uniprotAcc.trim().equalsIgnoreCase("") || uniprotAcc.equalsIgnoreCase("Not Available") || uniprotAcc.equalsIgnoreCase("Entry Deleted") || uniprotAcc.equalsIgnoreCase("Entry Demerged") || uniprotAcc.equalsIgnoreCase("NOT RETRIEVED") || uniprotAcc.equalsIgnoreCase("DELETED")|| uniprotAcc.trim().equalsIgnoreCase("UNREVIEWED")) {
+                    protName = quantProt.getPublicationProteinName();
+                    accession = uniprotAcc+" ("+quantProt.getPublicationAccNumber()+")";
+
+                } else {
+                    protName = quantProt.getUniprotProteinName();
+                    accession = quantProt.getUniprotAccession();
+                }
+                if (protName.trim().equalsIgnoreCase("")) {
+                    protName = quantProt.getPublicationProteinName();
+                }
+                
+                
+                
+                key = accession.trim() + "__" + protName.trim();
             } else {
-                key = prot.getUniprotProteinName().trim();
+                key = quantProt.getUniprotProteinName().trim();
 
             }
 
@@ -1080,7 +1099,7 @@ public class CoreLogic implements Serializable {
                
                 boolean inverted = false;
                 String protAcc = quant.getUniprotAccession();
-                if (protAcc.equalsIgnoreCase("") || protAcc.equalsIgnoreCase("Not Available") || protAcc.equalsIgnoreCase("Entry Deleted") || protAcc.equalsIgnoreCase("Entry Demerged") || protAcc.equalsIgnoreCase("NOT RETRIEVED") || protAcc.equalsIgnoreCase("DELETED")) {
+                if (protAcc.equalsIgnoreCase("") || protAcc.equalsIgnoreCase("Not Available") || protAcc.equalsIgnoreCase("Entry Deleted") || protAcc.equalsIgnoreCase("Entry Demerged") || protAcc.equalsIgnoreCase("NOT RETRIEVED") || protAcc.equalsIgnoreCase("DELETED")|| protAcc.trim().equalsIgnoreCase("UNREVIEWED")) { 
                     protAcc = quant.getPublicationAccNumber();
 
                 }
@@ -1127,7 +1146,7 @@ public class CoreLogic implements Serializable {
                 String accession;
                 String url;
 
-                if (uniprotAcc.trim().equalsIgnoreCase("") || uniprotAcc.equalsIgnoreCase("Not Available") || uniprotAcc.equalsIgnoreCase("Entry Deleted") || uniprotAcc.equalsIgnoreCase("Entry Demerged") || uniprotAcc.equalsIgnoreCase("NOT RETRIEVED") || uniprotAcc.equalsIgnoreCase("DELETED")) {
+                if (uniprotAcc.trim().equalsIgnoreCase("") || uniprotAcc.equalsIgnoreCase("Not Available") || uniprotAcc.equalsIgnoreCase("Entry Deleted") || uniprotAcc.equalsIgnoreCase("Entry Demerged") || uniprotAcc.equalsIgnoreCase("NOT RETRIEVED") || uniprotAcc.equalsIgnoreCase("DELETED")|| uniprotAcc.trim().equalsIgnoreCase("UNREVIEWED")) {
                     protName = quant.getPublicationProteinName();
                     accession = quant.getPublicationAccNumber();
                     url = null;
@@ -1274,7 +1293,7 @@ public class CoreLogic implements Serializable {
 
             }
 
-            //init pep for prot
+            //init pep for quantProt
             //sort the protiens map
             Map<String, DiseaseGroupsComparisonsProteinLayout> sortedcomparProtList = new TreeMap<String, DiseaseGroupsComparisonsProteinLayout>(Collections.reverseOrder());
             for (String Key : comparProtList.keySet()) {
@@ -1342,5 +1361,16 @@ public class CoreLogic implements Serializable {
     public Set<String> getDiseaseGroupNameMap(String diseaseCat) {
         return da.getDiseaseGroupNameMap(diseaseCat);
         
+    }
+     public List<Object[]> getPublicationList() {       
+      
+         return this.da.getPublicationList();
+
+    }
+      public  Set<QuantDatasetObject> getQuantDatasetList(){
+           
+          
+        return da.getQuantDatasetList();
+    
     }
 }

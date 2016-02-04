@@ -38,7 +38,7 @@ public class QuantDatasetObject implements Serializable, Comparable {
     private final Map<String, Object> valuesMap = new HashMap<String, Object>();
     private String uniqueValues;
     private final String[] headers = new String[]{"Author", "Year", "#Identified Proteins", "#Quantified Proteins", "Disease Groups", "Raw Data", "#Files", "Study Type", "Sample Type", "Sample Matching", "Shotgun/Targeted", "Technology", "Analytical Approach", "Enzyme", "Quantification Basis", "Quantification Basis Comment","Normalization Strategy", "PumedID","Patients Gr.I", "#Patients Gr.I", "Patients Gr.I Comments", "Patients Sub-Gr.I", "Patients Gr.II","#Patients Gr.II", "Patients Gr.II Comments", "Patients Sub-Gr.II", "Additional Comments","Disease Category"};
-
+    private int totalProtNum,uniqueProtNum,totalPepNum,uniqePepNum;
   
     /**
      *
@@ -619,6 +619,38 @@ public class QuantDatasetObject implements Serializable, Comparable {
      */
     public void setY(int y) {
         this.y = y;
+    }
+
+    public int getTotalProtNum() {
+        return totalProtNum;
+    }
+
+    public void setTotalProtNum(int totalProtNum) {
+        this.totalProtNum = totalProtNum;
+    }
+
+    public int getUniqueProtNum() {
+        return uniqueProtNum;
+    }
+
+    public void setUniqueProtNum(int uniqueProtNum) {
+        this.uniqueProtNum = uniqueProtNum;
+    }
+
+    public int getTotalPepNum() {
+        return totalPepNum;
+    }
+
+    public void setTotalPepNum(int totalPepNum) {
+        this.totalPepNum = totalPepNum;
+    }
+
+    public int getUniqePepNum() {
+        return uniqePepNum;
+    }
+
+    public void setUniqePepNum(int uniqePepNum) {
+        this.uniqePepNum = uniqePepNum;
     }
 
 }

@@ -101,6 +101,7 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
                     return;
                 }
                 String protName = ((HorizontalLayout) event.getClickedComponent().getParent()).getData().toString();
+                
                 if (protName.equalsIgnoreCase("Load All")) {
                     QuantDataSearchingTabLayout quantDatasearchingLayout = new QuantDataSearchingTabLayout(searchQuantificationProtList, CSFPR_Handler);
 
@@ -111,15 +112,24 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
                 } else {
                     List<QuantProtein> subSearchQuantitativeProtList = new ArrayList<QuantProtein>();
                     for (QuantProtein quantProt : searchQuantificationProtList) {
-                        if (quantProt.getUniprotProteinName().trim().toLowerCase().equalsIgnoreCase(protName.trim().toLowerCase())) {
+                        String protAcc = quantProt.getUniprotAccession().trim();
+                        String uniProtName = quantProt.getUniprotProteinName().trim().toLowerCase();
+                        if (protAcc.equalsIgnoreCase("") || protAcc.equalsIgnoreCase("Not Available") || protAcc.equalsIgnoreCase("Entry Deleted") || protAcc.equalsIgnoreCase("Entry Demerged") || protAcc.equalsIgnoreCase("NOT RETRIEVED") || protAcc.equalsIgnoreCase("DELETED") || protAcc.trim().equalsIgnoreCase("UNREVIEWED")) {
+                            uniProtName = quantProt.getPublicationProteinName();
+
+                        }
+                        if (uniProtName.trim().toLowerCase().equalsIgnoreCase(protName.trim().toLowerCase())) {
                             subSearchQuantitativeProtList.add(quantProt);
                         }
-                    }
-                    QuantDataSearchingTabLayout quantDatasearchingLayout = new QuantDataSearchingTabLayout(subSearchQuantitativeProtList, CSFPR_Handler);
-                    Tab tab = mainTabSheet.addTab(quantDatasearchingLayout, protName, null);
-                    tab.setClosable(true);
-                    mainTabSheet.setSelectedTab(tab);
+                       
 
+
+                        QuantDataSearchingTabLayout quantDatasearchingLayout = new QuantDataSearchingTabLayout(subSearchQuantitativeProtList, CSFPR_Handler);
+                        Tab tab = mainTabSheet.addTab(quantDatasearchingLayout, protName, null);
+                        tab.setClosable(true);
+                        mainTabSheet.setSelectedTab(tab);
+
+                    }
                 }
             }
 
@@ -448,6 +458,7 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
                     }
                 }
             } else if (searchBy.equalsIgnoreCase("Protein Accession")) {
+
                 HorizontalLayout protLabelLayout = generateLabel(searchBy, key.split("__")[0], null, key.split("__")[1], null, quantHitsList.get(key));
                 protLabelLayout.addLayoutClickListener(quantLayoutListener);
                 for (String keyWord : layoutMap.keySet()) {

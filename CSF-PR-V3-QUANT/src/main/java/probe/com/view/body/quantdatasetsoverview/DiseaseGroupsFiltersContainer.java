@@ -138,7 +138,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         counterLabel = new Label("( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )");
         diseaseTypeSelectionList.setWidth("200px");
         diseaseTypeSelectionList.setNullSelectionAllowed(false);
-        diseaseTypeSelectionList.setValue("Multiple Sclerosis");
+        diseaseTypeSelectionList.setValue(Quant_Central_Manager.getInUseDiseaseName());
         diseaseTypeSelectionList.setImmediate(true);
         diseaseCategorySelectLayout.addComponent(diseaseTypeSelectionList);
         diseaseCategorySelectLayout.setComponentAlignment(diseaseTypeSelectionList, Alignment.TOP_LEFT);

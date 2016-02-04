@@ -35,7 +35,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
     }
 
     private final GridLayout datasetInfoForm;
-    private InformationField diseaseCategory,pumedId, rawData, analyticalMethod, typeOfStudy, shotgunTargeted, enzyme, sampleType, technology, quantificationBasis, patientsGroup1Number, patientsGroup2Number, patientsGroup1, patientsGroup2, patientssubGroup1, patientsCommGroup1, patientssubGroup2, patientsCommGroup2, identifiedProteinsNumber, quantifiedProteinsNumber, sampleMatching,  analyticalApproach, normalization_strategy;
+    private InformationField quantPeptidesNum,diseaseCategory,pumedId, rawData, analyticalMethod, typeOfStudy, shotgunTargeted, enzyme, sampleType, technology, quantificationBasis, patientsGroup1Number, patientsGroup2Number, patientsGroup1, patientsGroup2, patientssubGroup1, patientsCommGroup1, patientssubGroup2, patientsCommGroup2, identifiedProteinsNumber, quantifiedProteinsNumber, sampleMatching,  analyticalApproach, normalization_strategy;
 
     private GridLayout initQuantDatasetInformationLayout(int width) {
 
@@ -116,6 +116,9 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         
         diseaseCategory = new InformationField("disease Category");
         datasetInfoFormLayout.addComponent(diseaseCategory, 2, 5);
+        
+        quantPeptidesNum = new InformationField("# Quantified Peptides");
+        datasetInfoFormLayout.addComponent(quantPeptidesNum, 3, 5);
 
         return datasetInfoFormLayout;
     }
@@ -161,6 +164,9 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         String diseaseColor = this.diseaseHashedColorMap.get(dataset.getPatientsGroup1().split("\n")[1]);
         diseaseCategory.setValue("<font color='"+diseaseColor+"' style='font-weight: bold;'>"+dataset.getPatientsGroup1().split("\n")[1]+"</font>", null);
 
+        
+        quantPeptidesNum.setValue(""+dataset.getUniqePepNum()+"/"+dataset.getTotalPepNum()+"", null);
+        quantifiedProteinsNumber.setValue(""+dataset.getUniqueProtNum()+"/"+dataset.getTotalProtNum()+"", null);
         this.datasetInfoForm.setVisible(true);
     }
 

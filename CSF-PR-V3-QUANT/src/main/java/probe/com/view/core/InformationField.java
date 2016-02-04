@@ -47,13 +47,21 @@ public class InformationField extends VerticalLayout {
      * @param urlAddress
      */
     public void setValue(Object object, String urlAddress) {
+        
         if (object instanceof Number) {
             valueLabel.setCaption("<p style='text-align: right ;width: 100px;   line-height: 1px;'>"+object+"</p>");
             valueLabel.setCaptionAsHtml(true);
             valueLabel.setStyleName("valuelabel");
 //            valueLabel.setWidth("100%");
             
-        } else {
+        }else if(object.toString().contains("/")&& !object.toString().contains("</")&& !object.toString().contains("/MS")){
+          valueLabel.setCaption("<p style='text-align: right ;width:140px;   line-height: 1px;'>"+object+"</p>");
+            valueLabel.setCaptionAsHtml(true);
+            valueLabel.setStyleName("valuelabel");
+        
+        } 
+        
+        else {
             String stringValue = object.toString();
 
             if (stringValue == null || stringValue.trim().equalsIgnoreCase("") || stringValue.equalsIgnoreCase("-1")) {

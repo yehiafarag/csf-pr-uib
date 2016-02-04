@@ -17,10 +17,16 @@ import com.vaadin.ui.Link;
 import com.vaadin.ui.VerticalLayout;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.model.beans.OverviewInfoBean;
+import probe.com.model.beans.quant.QuantDatasetObject;
+import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.peptidescontainer.popupcomponents.DatasetInformationOverviewLayout;
 import probe.com.view.body.welcomelayout.PublicationsInformationWindow;
+import probe.com.view.body.welcomelayout.StudiesInformationWindow;
 import probe.com.view.core.Timer;
 
 /**
@@ -31,15 +37,16 @@ import probe.com.view.core.Timer;
  */
 public class WelcomeLayout extends VerticalLayout implements Serializable {
 
+    
     /**
      * initialize body layout
      *
      * @param adminIcon the access button for admin Layout
-     * @param handler
+     * @param CSFPR_Handler
      *
      *
      */
-    public WelcomeLayout(Button adminIcon, CSFPRHandler handler) {
+    public WelcomeLayout(Button adminIcon, CSFPRHandler CSFPR_Handler) {
 
         int fullWidth = Page.getCurrent().getBrowserWindowWidth();
         this.setWidth(fullWidth + "px");
@@ -130,7 +137,7 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         bottomLayout.setExpandRatio(adminIcon, 0.05f);
 
         // the stat layout
-        OverviewInfoBean infoBean = handler.getResourceOverviewInformation();
+        OverviewInfoBean infoBean = CSFPR_Handler.getResourceOverviewInformation();
 
         Label statLabel = new Label("<center><h1>Resource  Status</h1></center>");
         statLabel.setContentMode(ContentMode.HTML);
@@ -138,6 +145,95 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         statLabel.setHeight("50px");
         leftLayout.addComponent(statLabel);
 
+        
+
+        Label quantStatLabel = new Label("<h2>Quantitative  Data</h2>");
+        quantStatLabel.setContentMode(ContentMode.HTML);
+        leftLayout.addComponent(quantStatLabel);
+
+        GridLayout subQuantStatLayout = new GridLayout(2, 4);
+        subQuantStatLayout.setWidth("100%");
+        leftLayout.addComponent(subQuantStatLayout);
+
+        List<Object[]> publicationList = CSFPR_Handler.getPublicationList();
+
+        PublicationsInformationWindow sub1quantStatLabelWrapper = new PublicationsInformationWindow(publicationList);
+        Label sub1quantStatLabel = new Label("<h3 style='text-decoration: underline;cursor: pointer;'>#Publications</h3>");
+        sub1quantStatLabel.setContentMode(ContentMode.HTML);
+        sub1quantStatLabelWrapper.addComponent(sub1quantStatLabel);
+        subQuantStatLayout.addComponent(sub1quantStatLabelWrapper, 0, 0);
+
+        sub1quantStatLabelWrapper.setDescription("Click to view publications information");
+
+        Label sub1QuantStatValue = new Label("<h4 style='text-align: right;' >" + infoBean.getNumberOfQuantPublication() + "</h4>");
+        sub1QuantStatValue.setContentMode(ContentMode.HTML);
+        subQuantStatLayout.addComponent(sub1QuantStatValue, 1, 0);
+        subQuantStatLayout.setComponentAlignment(sub1QuantStatValue, Alignment.MIDDLE_RIGHT);
+
+        Set<QuantDatasetObject> dsObjects = CSFPR_Handler.getQuantDatasetList();
+       
+        StudiesInformationWindow sub2quantStatLabelWrapper = new StudiesInformationWindow(dsObjects,CSFPR_Handler.getDiseaseHashedColorMap());
+        subQuantStatLayout.addComponent(sub2quantStatLabelWrapper, 0, 1);
+        sub2quantStatLabelWrapper.setDescription("Click to view studies information");
+        
+        
+
+        Label sub2quantStatLabel = new Label("<h3 style='text-decoration: underline;cursor: pointer;'>#Studies</h3>");
+        sub2quantStatLabel.setContentMode(ContentMode.HTML);
+        sub2quantStatLabelWrapper.addComponent(sub2quantStatLabel);
+
+        Label sub2QuantStatValue = new Label("<h4 style='text-align: right;'>" + infoBean.getNumberOfQuantStudies() + "</h4>");
+        sub2QuantStatValue.setContentMode(ContentMode.HTML);
+        subQuantStatLayout.addComponent(sub2QuantStatValue, 1, 1);
+        subQuantStatLayout.setComponentAlignment(sub2QuantStatValue, Alignment.MIDDLE_RIGHT);
+
+        Label sub3quantStatLabel = new Label("<h3>#Proteins</h3>");
+        sub3quantStatLabel.setContentMode(ContentMode.HTML);
+        subQuantStatLayout.addComponent(sub3quantStatLabel, 0, 2);
+
+        Label sub3QuantStatValue = new Label("<h4 style='text-align: right;'>" + infoBean.getNumberOfQuantProteins() + "</h4>");
+        sub3QuantStatValue.setContentMode(ContentMode.HTML);
+        subQuantStatLayout.addComponent(sub3QuantStatValue, 1, 2);
+        subQuantStatLayout.setComponentAlignment(sub3QuantStatValue, Alignment.MIDDLE_RIGHT);
+
+        Label sub4quantStatLabel = new Label("<h3>#Peptides</h3>");
+        sub4quantStatLabel.setContentMode(ContentMode.HTML);
+        subQuantStatLayout.addComponent(sub4quantStatLabel, 0, 3);
+
+        Label sub4QuantStatValue = new Label("<h4 style='text-align: right;'>" + infoBean.getNumberOfQuantPeptides() + "</h4>");
+        sub4QuantStatValue.setContentMode(ContentMode.HTML);
+        subQuantStatLayout.addComponent(sub4QuantStatValue, 1, 3);
+        subQuantStatLayout.setComponentAlignment(sub4QuantStatValue, Alignment.MIDDLE_RIGHT);
+
+        subQuantStatLayout.setColumnExpandRatio(0, 2);
+        subQuantStatLayout.setColumnExpandRatio(1, 1);
+
+//        Timer timer = new Timer();
+//        bottomLayout.addComponent(timer);
+//        
+//        VerticalLayout idStatLayout = new VerticalLayout();
+//        leftLayout.addComponent(idStatLayout);
+//        leftLayout.setComponentAlignment(idStatLayout, Alignment.MIDDLE_CENTER);
+//        idStatLayout.setWidth("90%");
+//        idStatLayout.setHeight("450px");
+//        idStatLayout.setStyleName(Reindeer.LAYOUT_BLUE);
+//        
+//        Label idLabel = new Label("Protein identification data");
+//        idLabel.setStyleName(Reindeer.LABEL_H2);
+//        idStatLayout.addComponent(idLabel);
+//        
+//        
+//        
+//        
+//        
+//        
+//        VerticalLayout quantStatLayout = new VerticalLayout();
+//        leftLayout.addComponent(quantStatLayout);
+//        leftLayout.setComponentAlignment(quantStatLayout, Alignment.MIDDLE_CENTER);
+//        quantStatLayout.setWidth("90%");
+//        quantStatLayout.setHeight("450px");
+//        quantStatLayout.setStyleName(Reindeer.LAYOUT_BLUE);
+        
         Label idStatLabel = new Label("<h2>Identification Data</h2>");
         idStatLabel.setContentMode(ContentMode.HTML);
         leftLayout.addComponent(idStatLabel);
@@ -181,89 +277,6 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         sub4IdStatValue.setContentMode(ContentMode.HTML);
         subIdStatLayout.addComponent(sub4IdStatValue, 1, 3);
         subIdStatLayout.setComponentAlignment(sub4IdStatValue, Alignment.MIDDLE_RIGHT);
-
-        Label quantStatLabel = new Label("<h2>Quantitative  Data</h2>");
-        quantStatLabel.setContentMode(ContentMode.HTML);
-        leftLayout.addComponent(quantStatLabel);
-
-        GridLayout subQuantStatLayout = new GridLayout(2, 4);
-        subQuantStatLayout.setWidth("100%");
-        leftLayout.addComponent(subQuantStatLayout);
-
-        List<Object[]> publicationList = new ArrayList<Object[]>();
-
-        for (int i = 0; i < 18; i++) {
-            publicationList.add(new Object[]{});
-        }
-
-        PublicationsInformationWindow sub1quantStatLabelWrapper = new PublicationsInformationWindow(publicationList);
-        Label sub1quantStatLabel = new Label("<h3 style='text-decoration: underline;cursor: pointer;'>#Publications</h3>");
-        sub1quantStatLabel.setContentMode(ContentMode.HTML);
-        sub1quantStatLabelWrapper.addComponent(sub1quantStatLabel);
-        subQuantStatLayout.addComponent(sub1quantStatLabelWrapper, 0, 0);
-
-        sub1quantStatLabelWrapper.setDescription("Click to view publications information");
-
-        Label sub1QuantStatValue = new Label("<h4 style='text-align: right;' >" + infoBean.getNumberOfQuantPublication() + "</h4>");
-        sub1QuantStatValue.setContentMode(ContentMode.HTML);
-        subQuantStatLayout.addComponent(sub1QuantStatValue, 1, 0);
-        subQuantStatLayout.setComponentAlignment(sub1QuantStatValue, Alignment.MIDDLE_RIGHT);
-
-        Label sub2quantStatLabel = new Label("<h3>#Studies</h3>");
-        sub2quantStatLabel.setContentMode(ContentMode.HTML);
-        subQuantStatLayout.addComponent(sub2quantStatLabel, 0, 1);
-
-        Label sub2QuantStatValue = new Label("<h4 style='text-align: right;'>" + infoBean.getNumberOfQuantStudies() + "</h4>");
-        sub2QuantStatValue.setContentMode(ContentMode.HTML);
-        subQuantStatLayout.addComponent(sub2QuantStatValue, 1, 1);
-        subQuantStatLayout.setComponentAlignment(sub2QuantStatValue, Alignment.MIDDLE_RIGHT);
-
-        Label sub3quantStatLabel = new Label("<h3>#Proteins</h3>");
-        sub3quantStatLabel.setContentMode(ContentMode.HTML);
-        subQuantStatLayout.addComponent(sub3quantStatLabel, 0, 2);
-
-        Label sub3QuantStatValue = new Label("<h4 style='text-align: right;'>" + infoBean.getNumberOfQuantProteins() + "</h4>");
-        sub3QuantStatValue.setContentMode(ContentMode.HTML);
-        subQuantStatLayout.addComponent(sub3QuantStatValue, 1, 2);
-        subQuantStatLayout.setComponentAlignment(sub3QuantStatValue, Alignment.MIDDLE_RIGHT);
-
-        Label sub4quantStatLabel = new Label("<h3>#Peptides</h3>");
-        sub4quantStatLabel.setContentMode(ContentMode.HTML);
-        subQuantStatLayout.addComponent(sub4quantStatLabel, 0, 3);
-
-        Label sub4QuantStatValue = new Label("<h4 style='text-align: right;'>" + infoBean.getNumberOfQuantPeptides() + "</h4>");
-        sub4QuantStatValue.setContentMode(ContentMode.HTML);
-        subQuantStatLayout.addComponent(sub4QuantStatValue, 1, 3);
-        subQuantStatLayout.setComponentAlignment(sub4QuantStatValue, Alignment.MIDDLE_RIGHT);
-
-        subQuantStatLayout.setColumnExpandRatio(0, 2);
-        subQuantStatLayout.setColumnExpandRatio(1, 1);
-
-        Timer timer = new Timer();
-        bottomLayout.addComponent(timer);
-//        
-//        VerticalLayout idStatLayout = new VerticalLayout();
-//        leftLayout.addComponent(idStatLayout);
-//        leftLayout.setComponentAlignment(idStatLayout, Alignment.MIDDLE_CENTER);
-//        idStatLayout.setWidth("90%");
-//        idStatLayout.setHeight("450px");
-//        idStatLayout.setStyleName(Reindeer.LAYOUT_BLUE);
-//        
-//        Label idLabel = new Label("Protein identification data");
-//        idLabel.setStyleName(Reindeer.LABEL_H2);
-//        idStatLayout.addComponent(idLabel);
-//        
-//        
-//        
-//        
-//        
-//        
-//        VerticalLayout quantStatLayout = new VerticalLayout();
-//        leftLayout.addComponent(quantStatLayout);
-//        leftLayout.setComponentAlignment(quantStatLayout, Alignment.MIDDLE_CENTER);
-//        quantStatLayout.setWidth("90%");
-//        quantStatLayout.setHeight("450px");
-//        quantStatLayout.setStyleName(Reindeer.LAYOUT_BLUE);
 //        
     }
 }
