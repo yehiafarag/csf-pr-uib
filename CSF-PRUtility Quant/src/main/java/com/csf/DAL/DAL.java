@@ -114,8 +114,13 @@ public class DAL {
       public List<Object []> getPublications() {
           return database.getPublications();
       }
-      public void updateActivePublications(Map<String, Boolean> activePublications){
-      database.updateActivePublications(activePublications);
+      public void updateActivePublications(  Map<String, Object[]> publicationUpdatingMap){
+      database.updateActivePublications(publicationUpdatingMap);
+      
+      
+      }
+       public void updateQuantStudies(  Map<Integer, Object[]> publicationUpdatingMap){
+      database.updateQuantStudies(publicationUpdatingMap);
       
       
       }

@@ -8,7 +8,6 @@ import com.pepshaker.util.beans.ProteinBean;
 import com.quantcsf.beans.QuantDatasetObject;
 import com.quantcsf.beans.QuantPeptide;
 import com.quantcsf.beans.QuantProtein;
-import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -107,8 +106,12 @@ public class DB implements Serializable {
                         + "  `year` varchar(1000) NOT NULL default 'Not Available',\n"
                         + "  `title` varchar(1000) NOT NULL default 'Not Available',\n"
                         + "  `active` varchar(5) NOT NULL default 'false',\n"
+                        + "  `total_prot_num` int(255) NOT NULL default '0',\n"
+                        + "  `uniq_prot_num` int(255) NOT NULL default '0',\n"
+                        + "  `total_pept_num` int(255) NOT NULL default '0',\n"
+                        + "  `uniq_pept_num` int(255) NOT NULL default '0',\n"
                         + "  PRIMARY KEY  (`pubmed_id`)\n"
-                        + ") ENGINE=MyISAM";
+                        + ") ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
                 st.executeUpdate(statment);
 
                 statment = "CREATE TABLE IF NOT EXISTS `defin_disease_groups` (\n"
@@ -171,6 +174,10 @@ public class DB implements Serializable {
                         + "  `patient_gr_ii_comment` varchar(700) NOT NULL default 'Not Available',\n"
                         + "  `analytical_method` varchar(500) NOT NULL default 'Not Available',\n"
                         + "  `disease_category` varchar(200) NOT NULL default 'Not Available',\n"
+                        + "  `total_prot_num` int(255) NOT NULL default '0',\n"
+                        + "  `uniq_prot_num` int(255) NOT NULL default '0',\n"
+                        + "  `total_pept_num` int(255) NOT NULL default '0',\n"
+                        + "  `uniq_pept_num` int(255) NOT NULL default '0',\n"
                         + "  PRIMARY KEY  (`index`)\n"
                         + ") ENGINE=MyISAM DEFAULT CHARSET=utf8;";
                 st.executeUpdate(statment);
@@ -700,7 +707,6 @@ public class DB implements Serializable {
                 System.gc();
             } catch (SQLException s) {
                 System.err.println(s.getLocalizedMessage());
-                s.printStackTrace();
                 conn.close();
 
                 return false;
@@ -834,6 +840,7 @@ public class DB implements Serializable {
         }
     }
 
+    @SuppressWarnings("SleepWhileInLoop")
     public boolean updatePeptideFile(ExperimentBean exp) {
         try {
             if (conn == null || conn.isClosed()) {
@@ -877,6 +884,7 @@ public class DB implements Serializable {
         return true;
     }
 
+    @SuppressWarnings("null")
     public int insertPeptide(int pepId, PeptideBean pepb, int expId, Connection conn) {
         String insertPeptide = "INSERT INTO  `" + dbName + "`.`proteins_peptides_table` (`protein` ,`other_protein(s)` ,`peptide_protein(s)` ,`other_protein_description(s)` ,`peptide_proteins_description(s)` ,`aa_before` ,`sequence` ,"
                 + "`aa_after` ,`peptide_start` ,`peptide_end` ,`variable_modification` ,`location_confidence` ,`precursor_charge(s)` ,`number_of_validated_spectra` ,`score` ,`confidence` ,`peptide_id`,`fixed_modification`,`protein_inference`,`sequence_tagged`,`enzymatic`,`validated`,`starred`,`glycopattern_position(s)`,`deamidation_and_glycopattern`,`likelyNotGlycosite`,`exp_id` )VALUES ("
@@ -1020,7 +1028,13 @@ public class DB implements Serializable {
             insertExpProtPeptQStat.close();
 
 //            conn.close();
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            System.out.println(e.getLocalizedMessage());
+        } catch (ClassNotFoundException e) {
+            System.out.println(e.getLocalizedMessage());
+        } catch (InstantiationException e) {
+            System.out.println(e.getLocalizedMessage());
+        } catch (IllegalAccessException e) {
             System.out.println(e.getLocalizedMessage());
         }
 
@@ -1067,7 +1081,7 @@ public class DB implements Serializable {
     }
 
     private int insertProteinFract(int fractId, ProteinBean fpb) {
-        int test = -1;
+        int test;
         try {
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
@@ -1708,6 +1722,7 @@ public class DB implements Serializable {
 
     }
 
+    @SuppressWarnings("CallToPrintStackTrace")
     public boolean restoreDB(String sqlFileUrl, String mysqldumpUrl) {
         //create if not exist
 
@@ -1888,7 +1903,7 @@ public class DB implements Serializable {
     }
 
     //quant data store 
-    @SuppressWarnings("null")
+    @SuppressWarnings({"null", "CallToPrintStackTrace"})
     public boolean updateProtSequances(Map<String, String> protSeqMap) {
         String updateProtSeqStat = "UPDATE  `quantitative_proteins_table` SET  `sequance` =  ? WHERE  `quantitative_proteins_table`.`uniprot_accession` =?";
         PreparedStatement updateProtSeqStatment = null;
@@ -1924,6 +1939,7 @@ public class DB implements Serializable {
         return test;
     }
 
+    @SuppressWarnings("CallToPrintStackTrace")
     public void storeQuantDatasets() {
 
         String selectPro = "SELECT DISTINCT  `author` ,`disease_category` ,`year` ,`pumed_id` , `study_key`, `quantified_proteins_number` , `identified_proteins_number` ,`raw_data_available` ,  `type_of_study` ,  `sample_type` ,  `sample_matching` ,  `normalization_strategy` ,  `technology` ,  `analytical_approach`  ,  `analytical_method`,  `enzyme` ,  `shotgun_targeted` ,  `quantification_basis` ,   `patients_group_i_number` ,  `patients_group_ii_number` ,  `patient_group_i` ,  `patient_gr_i_comment` ,  `patient_sub_group_i` ,  `patient_group_ii` ,  `patient_sub_group_ii` , `patient_gr_ii_comment` \n"
@@ -2059,8 +2075,6 @@ public class DB implements Serializable {
 
         } catch (SQLException e) {
             System.err.println("at error" + e.getLocalizedMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
     }
@@ -2235,7 +2249,7 @@ public class DB implements Serializable {
                 + "LIMIT 0 , 1";
 
         try {
-            PreparedStatement selectCurrentQuantProtIndexStat = null;
+            PreparedStatement selectCurrentQuantProtIndexStat;
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
@@ -2482,7 +2496,7 @@ public class DB implements Serializable {
         String protStat = "UPDATE `quantitative_proteins_table` SET `fold_change` = ?   , `fc_value` = ? ,`roc_auc` = ? , `string_p_value` = ?,`p_value` = ?,`p_value_comments` = ?  WHERE `quantitative_proteins_table`.`index` = ? ;";
 
         try {
-            PreparedStatement selectCurrentQuantProtIndexStat = null;
+            PreparedStatement selectCurrentQuantProtIndexStat;
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
@@ -2503,7 +2517,7 @@ public class DB implements Serializable {
                 peptideMap.add(qpep);
             }
             rs.close();
-            PreparedStatement updateProtTableStat = null;
+            PreparedStatement updateProtTableStat;
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
@@ -2618,6 +2632,7 @@ public class DB implements Serializable {
         System.gc();
     }
 
+    @SuppressWarnings("null")
     public void updateIdentificationProteinsList(String fileUrl) {
         List<IdentificationProteinBean> proteinDatasetList = new ArrayList<IdentificationProteinBean>();
         try {
@@ -2834,19 +2849,25 @@ public class DB implements Serializable {
 
     }
 
-    public void updateActivePublications(Map<String, Boolean> activePublications) {
+    public void updateActivePublications(Map<String, Object[]> publicationUpdatingMap) {
 
-        String statment = "UPDATE  `publication_table` SET  `active` = ?  WHERE  `publication_table`.`pubmed_id` = ? ;";
+        String statment = "UPDATE  `publication_table` SET  `active` = ?,  `total_prot_num` = ? , `uniq_prot_num` = ? , `total_pept_num` = ? , `uniq_pept_num` = ? WHERE  `publication_table`.`pubmed_id` = ? ;";
         try {
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
 
-            for (String pubmedId : activePublications.keySet()) {
+            for (String pubmedId : publicationUpdatingMap.keySet()) {
+                Object[] publicationData = publicationUpdatingMap.get(pubmedId);
                 PreparedStatement st = conn.prepareStatement(statment);
-                st.setString(1, pubmedId);
-                st.setString(2, activePublications.get(pubmedId).toString().toLowerCase());
+                st.setString(1, publicationData[0].toString().toLowerCase());
+                st.setInt(2, (Integer) publicationData[1]);
+                st.setInt(3, (Integer) publicationData[2]);
+                st.setInt(4, (Integer) publicationData[3]);
+                st.setInt(5, (Integer) publicationData[4]);
+                st.setString(6, pubmedId);
+
                 st.executeUpdate();
                 st.close();
             }
@@ -2866,6 +2887,45 @@ public class DB implements Serializable {
         System.gc();
 
     }
+    
+     public void updateQuantStudies(Map<Integer, Object[]> styudyUpdatingMap) {
+
+        String statment = "UPDATE  `quant_dataset_table` SET    `total_prot_num` = ? , `uniq_prot_num` = ? , `total_pept_num` = ? , `uniq_pept_num` = ? WHERE  `quant_dataset_table`.`index` = ? ;";
+        try {
+            if (conn == null || conn.isClosed()) {
+                Class.forName(driver).newInstance();
+                conn = DriverManager.getConnection(url + dbName, userName, password);
+            }
+
+            for (int studyId : styudyUpdatingMap.keySet()) {
+                Object[] publicationData = styudyUpdatingMap.get(studyId);
+                PreparedStatement st = conn.prepareStatement(statment);
+                st.setInt(1, (Integer) publicationData[1]);
+                st.setInt(2, (Integer) publicationData[2]);
+                st.setInt(3, (Integer) publicationData[3]);
+                st.setInt(4, (Integer) publicationData[4]);
+                st.setInt(5, studyId);
+
+                st.executeUpdate();
+                st.close();
+            }
+        } catch (ClassNotFoundException e) {
+            System.err.println("at error" + e.getLocalizedMessage());
+
+        } catch (IllegalAccessException e) {
+            System.err.println("at error" + e.getLocalizedMessage());
+
+        } catch (InstantiationException e) {
+            System.err.println("at error" + e.getLocalizedMessage());
+
+        } catch (SQLException e) {
+            System.err.println("at error" + e.getLocalizedMessage());
+
+        }
+        System.gc();
+
+    }
+
 
     public List<Object[]> getPublications() {
 
@@ -2897,12 +2957,11 @@ public class DB implements Serializable {
             System.err.println("at error" + e.getLocalizedMessage());
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("at error" + e.getLocalizedMessage());
         }
-            System.gc();
-            System.out.println("publicationsData "+publicationsData.size());
-            return publicationsData;
-
-        }
+        System.gc();
+        return publicationsData;
 
     }
+
+}
