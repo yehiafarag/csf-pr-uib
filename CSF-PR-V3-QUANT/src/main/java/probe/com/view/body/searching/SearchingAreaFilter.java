@@ -2,12 +2,10 @@ package probe.com.view.body.searching;
 
 import com.vaadin.event.FieldEvents;
 import com.vaadin.event.LayoutEvents;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.Reindeer;
 import java.io.Serializable;
 import probe.com.view.core.OptionGroupFilter;
 import probe.com.view.core.TextAreaFilter;

@@ -12,6 +12,7 @@ import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.PopupView;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.util.Map;
@@ -156,6 +157,32 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
         btn.setComponentAlignment(btnLabel, Alignment.MIDDLE_CENTER);
         btn.setStyleName("tabbtn");
         btn.setData(dsKey);
+        
+        //add popup for testing 
+        
+//        VerticalLayout infoPopup = new VerticalLayout();
+//        infoPopup.setWidth("500px");
+//        infoPopup.setHeight("500px");
+//        infoPopup.setStyleName(Reindeer.LAYOUT_BLUE);
+//        final PopupView pupupTestinglayout = new PopupView(null, infoPopup);
+//        pupupTestinglayout.setWidth("2px");
+//        pupupTestinglayout.setHeight("2px");
+////        btn.addComponent(pupupTestinglayout);
+////        btn.setComponentAlignment(pupupTestinglayout, Alignment.BOTTOM_RIGHT);
+//        pupupTestinglayout.setVisible(true);
+//        pupupTestinglayout.setPopupVisible(false);
+//        
+//        btn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+//
+//            @Override
+//            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+//                pupupTestinglayout.setPopupVisible(true);
+//            }
+//        });
+//        pupupTestinglayout.setHideOnMouseOut(true);
+        
+        
+        
 
         return btn;
     }

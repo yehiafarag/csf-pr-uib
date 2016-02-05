@@ -9,6 +9,7 @@ import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.Page;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -27,7 +28,7 @@ public class HideOnClickLayout extends VerticalLayout implements Serializable, L
     private final HorizontalLayout titleLayout;
     private final ShowLabel show;
     private final Layout fullBodyLayout;
-    private final VerticalLayout miniBodyLayout;
+    private final AbstractOrderedLayout miniBodyLayout;
     private final InfoPopupBtn info;
 
     /**
@@ -37,7 +38,7 @@ public class HideOnClickLayout extends VerticalLayout implements Serializable, L
      * @param miniBodyLayout
      * @param infoText
      */
-    public HideOnClickLayout(String title, Layout fullBodyLayout, VerticalLayout miniBodyLayout, String infoText,VerticalLayout tipsIcon) {
+    public HideOnClickLayout(String title, Layout fullBodyLayout, AbstractOrderedLayout miniBodyLayout, String infoText,VerticalLayout tipsIcon) {
         this.setMargin(new MarginInfo(false, false, false, false));
         this.setWidth("100%");
         this.fullBodyLayout = fullBodyLayout;
@@ -102,7 +103,7 @@ public class HideOnClickLayout extends VerticalLayout implements Serializable, L
      * @param align
      * @param infoText
      */
-    public HideOnClickLayout(String title, Layout fullBodyLayout, VerticalLayout miniBodyLayout, Alignment align, String infoText,VerticalLayout tipsIcon) {
+    public HideOnClickLayout(String title, Layout fullBodyLayout, AbstractOrderedLayout miniBodyLayout, Alignment align, String infoText,VerticalLayout tipsIcon) {
         this.setMargin(new MarginInfo(false, false, false, false));
         this.setWidth("100%");
         this.fullBodyLayout = fullBodyLayout;

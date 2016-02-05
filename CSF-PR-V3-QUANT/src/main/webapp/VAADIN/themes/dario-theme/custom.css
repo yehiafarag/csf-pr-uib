@@ -2120,8 +2120,10 @@ resetlabelbtn p{
     font-family:Verdana;
     font-weight:bold;
     color:gray;
-    margin-left:-70px;
-    margin-top:-25px;
+   
+    margin-left:10px;
+    cursor: pointer;
+
 
 
 
@@ -2171,31 +2173,35 @@ resetlabelbtn p{
 }
 .clearfieldbtn{
 
+   
     clear: both;
-    width: 20px;
-    height: 20px;
-    background-image: url("img/clear.png");
+    background-image: url("img/eraser.png");
     background-position:center;
     background-repeat: no-repeat;
-    background-size: contain;
     cursor:pointer;
+    background-color: whitesmoke;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    background-size: 15px;
 }
 .clearfieldbtn:hover{
-    background-image: url("img/clear_hover.png");
+   background-color: lightgrey;
 
 }
-.compareerror{
-    margin-top:70px;
+.compareresults{
+    font-family:Verdana;
     margin-left:100px;
-    color:red ;
+    color:black ;
+    border-left:1px dotted lightgray !important;
+    margin-top:20px;
 
 
 }
-.compareerror .v-button-caption{
-    font-size:16px;
+.compareresults .v-button-caption{
+    font-size:12px;
     font-family:Verdana;
 }
-.compareerror  textArea{
+.compareresults  textArea{
     clear: both !important;
     font-family:Verdana; 
     margin-top:10px !important;
@@ -2210,7 +2216,7 @@ resetlabelbtn p{
 
 }
 
-.compareerror  textArea :focus{
+.compareresults  textArea :focus{
 
     outline:none;
     cursor:default;
@@ -2261,12 +2267,13 @@ resetlabelbtn p{
 
 .usercustdatatitle {
 
-    background: #F8D5BD;
-    border:1px solid #45AEEA;
+    color: #8210B0;
+    border:1px solid #8210B0;
 
 }
 .usercustdatatitle .comparisonHeaders {
-    color:black !important;
+    color:#8210B0 !important;
+    font-weight: bold;
 }
 .comparisonHeaders .closebtn{
     background: blue;
@@ -2555,34 +2562,29 @@ img {
     cursor:pointer;
 
 }
-.publicationstyle .v-label h4{
-font-family:Verdana; 
-    color:black;
-    font-size:15px;
-    line-height:0;
-    text-decoration:none !important;
 
-}
 .publicationstyle .v-label a{
-font-family:Verdana; 
+    font-family:Verdana; 
     text-decoration:none !important;
+    font-size:12px;
     color:blue;
+    line-height:100%;
 
 }
 .publicationstyle .v-label h5{
-font-family:Verdana; 
+    font-family:Verdana; 
     color: #666;
     font-size:12px;
-    line-height:0;
+    font-weight: normal;
+    line-height:100%;
     text-decoration:none !important;
 
 }
 
 .publicationstyle .v-label font{
 
-font-family:Verdana; 
+    font-family:Verdana; 
     font-size:12px;
-    line-height:0;
     text-decoration:underline !important;
 
 }
@@ -2592,10 +2594,13 @@ font-family:Verdana;
     overflow-x: hidden;
     overflow-y: auto;
     font-size:12px;
-     border: none;
+     color: #666;
+    font-weight: normal;
+    border: none;
     resize: none;
     cursor:default;
-    border-bottom: 1px lightgrey dashed;
+    margin-top:10px;
+    
 
 }
 .publicationstyle .v-label textarea:focus{
@@ -2605,20 +2610,19 @@ font-family:Verdana;
 
 }
 .publicationstyle .v-label center{
-
-font-family:Verdana; 
+    font-family:Verdana; 
     font-size:12px;
-    line-height:0;
     text-decoration:none !important;
     color:black;
+    text-align:right;
+    padding-right:30px;
 
 }
 .minipublicationstyle.v-verticallayout{
 
     font-family:Verdana; 
     color: #666;
-    font-size:12px;
-    margin-top : -10px !important;
-    text-align:right;
-    padding-right:10px;
+    text-align:left;
+
+    margin-top:12px;
 }

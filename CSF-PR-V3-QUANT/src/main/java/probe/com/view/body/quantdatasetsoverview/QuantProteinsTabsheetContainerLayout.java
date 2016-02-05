@@ -290,29 +290,6 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
                 resizedCounter++;
             }
         });
-
-//        proteinsTabsheet = new TabSheet() {
-//
-//        };
-//        proteinsTabsheet.setCaptionAsHtml(true);
-//        proteinsTabsheet.setHeightUndefined();
-//        proteinsTabsheet.setStyleName(Reindeer.TABSHEET_MINIMAL);
-//        proteinsTabsheet.setVisible(false);
-//        proteinsTabsheet.addStyleName("hideoverflow");
-//        proteinsTabsheet.addSelectedTabChangeListener(QuantProteinsTabsheetContainerLayout.this);
-//        proteinsTabsheet.setCloseHandler(new TabSheet.CloseHandler() {
-//            @Override
-//            public void onTabClose(TabSheet tabsheet, Component tabContent) {
-//                protSelectionMap.remove(protSelectionTabMap.get(tabContent));
-//                if (protSelectionMap.isEmpty()) {
-//                    proteinsTabsheet.setVisible(false);
-//                }
-//
-//                Quant_Central_Manager.setQuantProteinsSelectionLayout(new LinkedHashMap<String, DiseaseGroupsComparisonsProteinLayout[]>(protSelectionMap));
-//            }
-//        });
-//        this.addComponent(proteinsTabsheet);
-//        this.initTabsheet();
         this.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
             private int layoutCounter = 30;
 

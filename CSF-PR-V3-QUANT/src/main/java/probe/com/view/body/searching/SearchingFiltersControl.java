@@ -189,12 +189,11 @@ public class SearchingFiltersControl implements Serializable {
 //        }
 //
 //    }
-
     /**
      *
      * @return
      */
-        public HorizontalLayout getFullFilterLayout() {
+    public HorizontalLayout getFullFilterLayout() {
 //       return arrangeFullFiltersLayout();
         return mainFilterLayout;
     }
@@ -226,7 +225,7 @@ public class SearchingFiltersControl implements Serializable {
             return false;
         }
         String updatedSearchingKey = searchKeyWords.replace("\n", ",");
-        String ser="";
+        String ser = "";
 
         String[] keyWordArr = updatedSearchingKey.trim().split(",");
         for (String str : keyWordArr) {
@@ -234,7 +233,14 @@ public class SearchingFiltersControl implements Serializable {
                 continue;
             }
             if (str.trim().length() < 4) {
-                return false;
+                //return false;
+//                searchKeyWords = searchKeyWords.replace(str+"\n", "");
+                if (keyWordArr.length == 1) {
+                    return false;
+                }
+//                continue;
+                ser+=" -"+str.replace(" -","")+" -\n";
+                continue;
             }
             ser += str.trim() + "\n";
         }

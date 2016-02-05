@@ -61,7 +61,7 @@ public class StudiesInformationWindow extends VerticalLayout implements LayoutEv
         popupWindow.setDraggable(false);
         popupWindow.center();
 
-        popupWindow.setCaption("&nbsp;&nbsp;Publication Information");
+        popupWindow.setCaption("&nbsp;&nbsp;Studies Information");
 
         UI.getCurrent().addWindow(popupWindow);
         popupWindow.center();

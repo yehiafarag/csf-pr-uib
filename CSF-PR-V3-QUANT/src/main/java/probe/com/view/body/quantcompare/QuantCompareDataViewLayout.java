@@ -28,7 +28,7 @@ public class QuantCompareDataViewLayout extends VerticalLayout {
 
     private final QuantCentralManager Quant_Central_Manager;
     private final QuantProteinsTabsheetContainerLayout proteinsLayout;
-    private final QuantProteinsComparisonsContainer quantProteinsComparisonsContainer;
+    private final QuantUserDataProteinsComparisonsContainer quantProteinsComparisonsContainer;
 
     /**
      *
@@ -54,7 +54,7 @@ public class QuantCompareDataViewLayout extends VerticalLayout {
         this.addComponent(DatasetFilteringContainer);
         DatasetFilteringContainer.setVisability(true);
 
-        quantProteinsComparisonsContainer = new QuantProteinsComparisonsContainer(Quant_Central_Manager, CSFPR_Handler, searchQuantificationProtList, userCustomizedComparison);
+        quantProteinsComparisonsContainer = new QuantUserDataProteinsComparisonsContainer(Quant_Central_Manager, CSFPR_Handler, searchQuantificationProtList, userCustomizedComparison);
 
         HideOnClickLayout comparisonsTableContainer = new HideOnClickLayout("Proteins", quantProteinsComparisonsContainer, null, Alignment.TOP_LEFT, infoText, null);
         int pageWidth = Page.getCurrent().getWebBrowser().getScreenWidth();
