@@ -20,6 +20,7 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
 import java.util.List;
 import probe.com.view.core.HideOnClickLayout;
+import probe.com.view.core.PopupInfoBtn;
 
 /**
  *
@@ -33,14 +34,19 @@ public class PublicationsInformationWindow extends VerticalLayout implements Lay
 
         int height = Page.getCurrent().getBrowserWindowHeight() - 100;
         int width = Page.getCurrent().getBrowserWindowWidth() - 100;
-        int columnNum = width / 400;
-        width = columnNum * 410;
+        int columnNum = width / 250;
+        width = columnNum * 250;
+        VerticalLayout popupBodyWrapper = new VerticalLayout();
+        popupBodyWrapper.setWidth("100%");
+        popupBodyWrapper.setHeight("100%");
         VerticalLayout popupBody = new VerticalLayout();
         popupBody.setWidth((width) + "px");
         popupBody.setHeightUndefined();
         popupBody.setStyleName(Reindeer.LAYOUT_WHITE);
         popupBody.setMargin(true);
         popupBody.setSpacing(true);
+        popupBodyWrapper.addComponent(popupBody);
+        popupBodyWrapper.setComponentAlignment(popupBody, Alignment.TOP_CENTER);
 
         popupWindow = new Window() {
 
@@ -52,7 +58,7 @@ public class PublicationsInformationWindow extends VerticalLayout implements Lay
 
         };
 
-        popupWindow.setContent(popupBody);
+        popupWindow.setContent(popupBodyWrapper);
         popupWindow.setWindowMode(WindowMode.NORMAL);
 
         popupWindow.setWidth((width + 22) + "px");
@@ -95,12 +101,15 @@ public class PublicationsInformationWindow extends VerticalLayout implements Lay
         int col = 0;
 
         for (Object[] obj : publicationList) {
-            HideOnClickLayout publicationLayout = initPublicationLayout(obj);
-            publicationContainer.addComponent(publicationLayout, col++, row);
-            publicationContainer.setComponentAlignment(publicationLayout, Alignment.TOP_CENTER);
-            if (row == 0 && col == 1) {
-                publicationLayout.setVisability(true);
-            }
+            VerticalLayout publicationLayout = initPublicationLayout(obj);
+            String btnName = obj[1].toString() + " (" + obj[2].toString() + ")<br/><font size=1 >#Proteins: " + obj[4].toString() + "/" + obj[5].toString() + "    #peptides: " + obj[5].toString() + "/" + obj[7].toString() + "</font>";
+
+            PopupInfoBtn publicationBtn = new PopupInfoBtn(publicationLayout, btnName);
+            publicationContainer.addComponent(publicationBtn, col++, row);
+            publicationContainer.setComponentAlignment(publicationBtn, Alignment.TOP_CENTER);
+//            if (row == 0 && col == 1) {
+//                publicationLayout.setVisability(true);
+//            }
             if (col >= columnNum) {
                 row++;
 //                for(int i=col;i==0;i--)
@@ -112,15 +121,15 @@ public class PublicationsInformationWindow extends VerticalLayout implements Lay
 
             }
         }
-        height = Math.min((row * 240) + 70, height);
+//        height = Math.min((row * 240) + 70, height);
         popupWindow.setHeight((height) + "px");
 
     }
 
-    private HideOnClickLayout initPublicationLayout(Object[] publicationData) {
+    private VerticalLayout initPublicationLayout(Object[] publicationData) {
 
         VerticalLayout publicationlayout = new VerticalLayout();
-        publicationlayout.setWidthUndefined();
+        publicationlayout.setWidth("500px");
         publicationlayout.setHeightUndefined();
         publicationlayout.setSpacing(true);
         publicationlayout.setMargin(new MarginInfo(false, false, false, false));
@@ -157,21 +166,21 @@ public class PublicationsInformationWindow extends VerticalLayout implements Lay
         titleLabel.setContentMode(ContentMode.HTML);
         publicationlayout.addComponent(titleLabel);
 
-        VerticalLayout miniLayout = new VerticalLayout();
-        miniLayout.setWidth("100%");
-        Label miniInfoLabel = new Label("<h5>#Proteins: " + publicationData[4].toString() + "/" + publicationData[5].toString() + "  |  #Peptides: " + publicationData[6].toString() + "/" + publicationData[7].toString() + "</h5>");
-        miniInfoLabel.setContentMode(ContentMode.HTML);
-        miniInfoLabel.setWidth("100%");
-
-        miniLayout.addComponent(miniInfoLabel);
-        miniLayout.setComponentAlignment(miniInfoLabel, Alignment.TOP_RIGHT);
-        miniLayout.setStyleName("minipublicationstyle");
-        miniLayout.setMargin(false);
-        HideOnClickLayout hideOnClick = new HideOnClickLayout(publicationData[1].toString() + " (" + publicationData[2].toString() + ")", publicationlayout, miniLayout, null, null);
-        hideOnClick.setStyleName("underlineseparation");
-        hideOnClick.setWidth("400px");
-        hideOnClick.setMargin(true);
-        return hideOnClick;
+//        VerticalLayout miniLayout = new VerticalLayout();
+//        miniLayout.setWidth("100%");
+//        Label miniInfoLabel = new Label("<h5>#Proteins: " + publicationData[4].toString() + "/" + publicationData[5].toString() + "  |  #Peptides: " + publicationData[6].toString() + "/" + publicationData[7].toString() + "</h5>");
+//        miniInfoLabel.setContentMode(ContentMode.HTML);
+//        miniInfoLabel.setWidth("100%");
+//
+//        miniLayout.addComponent(miniInfoLabel);
+//        miniLayout.setComponentAlignment(miniInfoLabel, Alignment.TOP_RIGHT);
+//        miniLayout.setStyleName("minipublicationstyle");
+//        miniLayout.setMargin(false);
+//        HideOnClickLayout hideOnClick = new HideOnClickLayout(publicationData[1].toString() + " (" + publicationData[2].toString() + ")", publicationlayout, miniLayout, null, null);
+//        hideOnClick.setStyleName("underlineseparation");
+//        hideOnClick.setWidth("400px");
+//        hideOnClick.setMargin(true);
+        return publicationlayout;
 
     }
 

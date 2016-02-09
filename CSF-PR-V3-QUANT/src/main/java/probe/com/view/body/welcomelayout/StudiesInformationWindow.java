@@ -75,7 +75,7 @@ public class StudiesInformationWindow extends VerticalLayout implements LayoutEv
         for (QuantDatasetObject quantDs : dsObjects) {
                 DatasetInformationOverviewLayout datasetInfoLayout = new DatasetInformationOverviewLayout(width-40,diseaseHashedColorMap);
                 datasetInfoLayout.updateDatasetForm(quantDs);
-                datasetInfoLayout.setWidth(width-40+"px");
+//                datasetInfoLayout.setWidth(width-40+"px");
                 datasetInfoLayoutDSIndexMap.put(quantDs.getDsKey(), datasetInfoLayout);
 
             }

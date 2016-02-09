@@ -238,6 +238,7 @@ public class StudiesFilterManager implements Serializable {
                     selectedHeatMapColumns.add(str);
                 }
             }
+          
 
 //            selectedHeatMapColumns.clear();
 //            selectedHeatMapColumns.addAll(selectedHeatMapRows);
@@ -562,10 +563,12 @@ public class StudiesFilterManager implements Serializable {
         inuse_DiseaseCat_DiseaseGroupMap.clear();
         inuse_DiseaseCat_DiseaseGroupMap.putAll(updatedGroupsNamesMap);
         this.updateRowsAndColumns("Reset_Disease_Groups_Level");
-        System.out.println("update updateDiseaseGroupsNames");
+//          this.SelectionChanged("Reorder_Selection");
+//        System.out.println("update updateDiseaseGroupsNames");
         this.resetFilters();
 
     }
+   
 
     public int getTotalDsNumber() {
         return totalDsNumber;

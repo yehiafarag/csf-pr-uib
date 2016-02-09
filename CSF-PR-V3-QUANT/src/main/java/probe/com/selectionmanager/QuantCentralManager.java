@@ -404,6 +404,7 @@ public class QuantCentralManager implements Serializable {
 
     public void updateDiseaseGroupsNames(Map<String, Map<String, String>> updatedGroupsNamesMap) {
         Studies_Filter_Manager.updateDiseaseGroupsNames(updatedGroupsNamesMap);
+        
     }
 
     public String getInUseDiseaseName() {

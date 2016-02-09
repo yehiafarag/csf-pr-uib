@@ -5,14 +5,9 @@
  */
 package probe.com.view.core;
 
-import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.Page;
-import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.PopupView;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.util.Map;
@@ -24,12 +19,12 @@ import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.peptidesc
  *
  * @author yfa041
  */
-public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.LayoutClickListener {
+public class StudyPopupLayout extends VerticalLayout {
 
     private final GridLayout topLayout;
-    private final VerticalLayout bottomLayout;
-    private final VerticalLayout datasetsInformationContainer;
-    private VerticalLayout lastSelectedBtn;
+//    private final VerticalLayout bottomLayout;
+//    private final VerticalLayout datasetsInformationContainer;
+//    private VerticalLayout lastSelectedBtn;
     private Map<Integer, DatasetInformationOverviewLayout> datasetInfoLayoutDSIndexMap;
 
     public void setInformationData(Set<QuantDatasetObject> dsObjects) {
@@ -45,7 +40,9 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
         int colcounter = 0;
         int rowcounter = 0;
         for (QuantDatasetObject quantDS : dsObjects) {
-            VerticalLayout btn = this.generateBtn(quantDS.getDsKey(), quantDS.getAuthor() + " (" + quantDS.getYear() + ")<br/><font size=1 >#Proteins: "+quantDS.getTotalProtNum()+"    #peptides: "+quantDS.getTotalPepNum()+"</font>");
+//            VerticalLayout btn = this.generateBtn(quantDS.getDsKey(), quantDS.getAuthor() + " (" + quantDS.getYear() + ")<br/><font size=1 >#Proteins: "+quantDS.getTotalProtNum()+"    #peptides: "+quantDS.getTotalPepNum()+"</font>");
+            String btnName =  quantDS.getAuthor() + " (" + quantDS.getYear() + ")<br/><font size=1 >#Proteins: "+quantDS.getUniqueProtNum()+"/"+quantDS.getTotalProtNum()+"    #peptides: "+quantDS.getUniqePepNum()+"/"+quantDS.getTotalPepNum()+"</font>";
+            PopupInfoBtn btn = new PopupInfoBtn(datasetInfoLayoutDSIndexMap.get(quantDS.getDsKey()), btnName);
             topLayout.addComponent(btn, colcounter++, rowcounter);
             if (colcounter >= topLayout.getColumns()) {
                 colcounter = 0;
@@ -57,7 +54,7 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
 
 //            int subWidth = (int) ((float) bottomLayout.getWidth() - 30);
 //            this.initPopupLayoutLayout(cp, subWidth);
-        this.selectStudyBtn((VerticalLayout) topLayout.getComponent(0, 0));
+//        this.selectStudyBtn((VerticalLayout) topLayout.getComponent(0, 0));
 
     }
 
@@ -70,93 +67,92 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
         this.setMargin(false);
         this.setSpacing(true);
         int width = Page.getCurrent().getBrowserWindowWidth() * 90 / 100;
-
         int colNum = Math.max(1, width / 200);
-
         topLayout = new GridLayout();
         topLayout.setWidth("100%");
         topLayout.setColumns(colNum);
         topLayout.setStyleName(Reindeer.LAYOUT_WHITE);
-
         topLayout.setHeightUndefined();
         topLayout.setSpacing(true);
-
-        bottomLayout = new VerticalLayout();
-        bottomLayout.setSpacing(true);
         this.addComponent(topLayout);
-        bottomLayout.setMargin(new MarginInfo(true, false, false, false));
-        this.addComponent(bottomLayout);
-        this.setComponentAlignment(bottomLayout, Alignment.BOTTOM_CENTER);
-        bottomLayout.setWidth("100%");
-        bottomLayout.setHeight("500px");
+//        datasetsInformationContainer = this.initInformationContainer(width);
 
-        bottomLayout.setStyleName(Reindeer.LAYOUT_WHITE);
-        datasetsInformationContainer = this.initInformationContainer(width);
-        bottomLayout.addComponent(datasetsInformationContainer);
+//        bottomLayout = new VerticalLayout();
+//        bottomLayout.setSpacing(true);
+        
+//        bottomLayout.setMargin(new MarginInfo(true, false, false, false));
+//        this.addComponent(bottomLayout);
+//        this.setComponentAlignment(bottomLayout, Alignment.BOTTOM_CENTER);
+//        bottomLayout.setWidth("100%");
+//        bottomLayout.setHeight("500px");
 
-    }
-
-    private VerticalLayout initInformationContainer(int width) {
-        VerticalLayout generatedPeptidesInformationContainer = new VerticalLayout();
-        generatedPeptidesInformationContainer.setWidth(width - 10 + "px");
-        generatedPeptidesInformationContainer.setHeightUndefined();
-        return generatedPeptidesInformationContainer;
+//        bottomLayout.setStyleName(Reindeer.LAYOUT_WHITE);
+        
+//        bottomLayout.addComponent(datasetsInformationContainer);
 
     }
 
-    @Override
-    public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-        if (lastSelectedBtn != null) {
-            lastSelectedBtn.setStyleName("tabbtn");
-        }
-        VerticalLayout selectedBtn;
-        if (event.getClickedComponent() == null) {
-            selectedBtn = (VerticalLayout) event.getComponent();
+//    private VerticalLayout initInformationContainer(int width) {
+//        VerticalLayout generatedPeptidesInformationContainer = new VerticalLayout();
+//        generatedPeptidesInformationContainer.setWidth(width - 10 + "px");
+//        generatedPeptidesInformationContainer.setHeightUndefined();
+//        return generatedPeptidesInformationContainer;
+//
+//    }
 
-        } else if (event.getClickedComponent() instanceof Label) {
-            selectedBtn = (VerticalLayout) event.getClickedComponent().getParent();
-        } else {
-            selectedBtn = (VerticalLayout) event.getClickedComponent();
-        }
-        if (selectedBtn == lastSelectedBtn) {
-            bottomLayout.setVisible(false);
-            lastSelectedBtn = null;
-            return;
-        }
-        this.selectStudyBtn(selectedBtn);
-    }
+//    @Override
+//    public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+////        if (lastSelectedBtn != null) {
+////            lastSelectedBtn.setStyleName("tabbtn");
+////        }
+////        VerticalLayout selectedBtn;
+////        if (event.getClickedComponent() == null) {
+////            selectedBtn = (VerticalLayout) event.getComponent();
+////
+////        } else if (event.getClickedComponent() instanceof Label) {
+////            selectedBtn = (VerticalLayout) event.getClickedComponent().getParent();
+////        } else {
+////            selectedBtn = (VerticalLayout) event.getClickedComponent();
+////        }
+////        if (selectedBtn == lastSelectedBtn) {
+////            bottomLayout.setVisible(false);
+////            lastSelectedBtn = null;
+////            return;
+////        }
+////        this.selectStudyBtn(selectedBtn);
+//    }
 
-    private void selectStudyBtn(VerticalLayout selectedBtn) {
+//    private void selectStudyBtn(VerticalLayout selectedBtn) {
+//
+////        lastSelectedBtn = selectedBtn;
+////        lastSelectedBtn.setStyleName("selectedtabbtn");
+////        updateDatasetInfoLayout((Integer) lastSelectedBtn.getData());
+////        bottomLayout.setVisible(true);
+//
+//    }
 
-        lastSelectedBtn = selectedBtn;
-        lastSelectedBtn.setStyleName("selectedtabbtn");
-        updateDatasetInfoLayout((Integer) lastSelectedBtn.getData());
-        bottomLayout.setVisible(true);
+//    private void updateDatasetInfoLayout(int dsKey) {
+//        datasetsInformationContainer.removeAllComponents();
+//        for (int key : datasetInfoLayoutDSIndexMap.keySet()) {
+//            if (key == (dsKey)) {
+//                datasetsInformationContainer.addComponent(datasetInfoLayoutDSIndexMap.get(key));
+//                datasetsInformationContainer.setComponentAlignment(datasetInfoLayoutDSIndexMap.get(key), Alignment.BOTTOM_RIGHT);
+//                break;
+//            }
+//        }
+//    }
 
-    }
-
-    private void updateDatasetInfoLayout(int dsKey) {
-        datasetsInformationContainer.removeAllComponents();
-        for (int key : datasetInfoLayoutDSIndexMap.keySet()) {
-            if (key == (dsKey)) {
-                datasetsInformationContainer.addComponent(datasetInfoLayoutDSIndexMap.get(key));
-                datasetsInformationContainer.setComponentAlignment(datasetInfoLayoutDSIndexMap.get(key), Alignment.BOTTOM_RIGHT);
-                break;
-            }
-        }
-    }
-
-    private VerticalLayout generateBtn(int dsKey, String btnName) {
-        VerticalLayout btn = new VerticalLayout();
-        btn.addLayoutClickListener(this);
-        btn.setHeight("60px");
-        btn.setWidth("200px");
-        Label btnLabel = new Label(btnName);
-        btnLabel.setContentMode(ContentMode.HTML);
-        btn.addComponent(btnLabel);
-        btn.setComponentAlignment(btnLabel, Alignment.MIDDLE_CENTER);
-        btn.setStyleName("tabbtn");
-        btn.setData(dsKey);
+//    private VerticalLayout generateBtn(int dsKey, String btnName) {
+//        VerticalLayout btn = new VerticalLayout();
+////        btn.addLayoutClickListener(this);
+//        btn.setHeight("60px");
+//        btn.setWidth("200px");
+//        Label btnLabel = new Label(btnName);
+//        btnLabel.setContentMode(ContentMode.HTML);
+//        btn.addComponent(btnLabel);
+//        btn.setComponentAlignment(btnLabel, Alignment.MIDDLE_CENTER);
+//        btn.setStyleName("tabbtn");
+//        btn.setData(dsKey);
         
         //add popup for testing 
         
@@ -167,8 +163,8 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
 //        final PopupView pupupTestinglayout = new PopupView(null, infoPopup);
 //        pupupTestinglayout.setWidth("2px");
 //        pupupTestinglayout.setHeight("2px");
-////        btn.addComponent(pupupTestinglayout);
-////        btn.setComponentAlignment(pupupTestinglayout, Alignment.BOTTOM_RIGHT);
+//        btn.addComponent(pupupTestinglayout);
+//        btn.setComponentAlignment(pupupTestinglayout, Alignment.BOTTOM_RIGHT);
 //        pupupTestinglayout.setVisible(true);
 //        pupupTestinglayout.setPopupVisible(false);
 //        
@@ -184,8 +180,8 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
         
         
 
-        return btn;
-    }
+//        return btn;
+//    }
 
     public void updateDatasetInfoLayoutDSIndexMap(Map<Integer, DatasetInformationOverviewLayout> datasetInfoLayoutDSIndexMap) {
         this.datasetInfoLayoutDSIndexMap = datasetInfoLayoutDSIndexMap;

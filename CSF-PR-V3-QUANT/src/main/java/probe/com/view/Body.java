@@ -23,6 +23,7 @@ import java.io.Serializable;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.view.body.ProteinsSearchingLayout;
 import probe.com.view.body.QuantCompareDataLayout;
+import probe.com.view.core.chart4j.VennDiagramContainer;
 
 /**
  *
@@ -135,6 +136,16 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
             mainTabSheet.setSelectedTab(homeTab);
         }
         mainTabSheet.markAsDirty();
+        
+        
+        //        int width = Page.getCurrent().getBrowserWindowWidth()-15;
+        VerticalLayout test = new VerticalLayout();
+        test.setHeight(bodyHeight + "px");
+        test.setWidth("100%");
+        test.setPrimaryStyleName("scrollable");
+        VennDiagramContainer vennDiagram = new VennDiagramContainer();
+        test.addComponent(vennDiagram);
+        mainTabSheet.addTab(test, "Test");
 
     }
 

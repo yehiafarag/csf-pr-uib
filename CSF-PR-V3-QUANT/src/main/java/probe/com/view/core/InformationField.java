@@ -32,8 +32,6 @@ public class InformationField extends VerticalLayout {
         valueLabel.setStyleName("valuelabel");
         valueLabel.setTargetName("_blank");
         valueLabel.setCaptionAsHtml(true);
-     
-        
 
 //        valueLabel.setContentMode(ContentMode.HTML);
         this.addComponent(valueLabel);
@@ -43,25 +41,23 @@ public class InformationField extends VerticalLayout {
 
     /**
      *
-     * @param object 
+     * @param object
      * @param urlAddress
      */
     public void setValue(Object object, String urlAddress) {
-        
+
         if (object instanceof Number) {
-            valueLabel.setCaption("<p style='text-align: right ;width: 100px;   line-height: 1px;'>"+object+"</p>");
+            valueLabel.setCaption("<p style='text-align: right ;width: 100px;   line-height: 1px;'>" + object + "</p>");
             valueLabel.setCaptionAsHtml(true);
             valueLabel.setStyleName("valuelabel");
 //            valueLabel.setWidth("100%");
-            
-        }else if(object.toString().contains("/")&& !object.toString().contains("</")&& !object.toString().contains("/MS")){
-          valueLabel.setCaption("<p style='text-align: right ;width:140px;   line-height: 1px;'>"+object+"</p>");
+
+        } else if (object.toString().contains("/") && !object.toString().contains("</") && !object.toString().contains("/MS") && object.toString().toCharArray().length < 25) {
+            valueLabel.setCaption("<p style='text-align: right ;width:140px;   line-height: 1px;'>" + object + "</p>");
             valueLabel.setCaptionAsHtml(true);
             valueLabel.setStyleName("valuelabel");
-        
-        } 
-        
-        else {
+
+        } else {
             String stringValue = object.toString();
 
             if (stringValue == null || stringValue.trim().equalsIgnoreCase("") || stringValue.equalsIgnoreCase("-1")) {
@@ -89,9 +85,8 @@ public class InformationField extends VerticalLayout {
 
             }
             if (stringValue.contains("</font>")) {
-                 valueLabel.setCaption(stringValue);
-            }
-            else if (stringValue.toCharArray().length > 25) {
+                valueLabel.setCaption(stringValue);
+            } else if (stringValue.toCharArray().length > 25) {
                 valueLabel.setCaption("<textarea rows='3'  readonly>" + stringValue + "</textarea>");
                 valueLabel.setCaptionAsHtml(true);
 //            this.setHeight("100px");

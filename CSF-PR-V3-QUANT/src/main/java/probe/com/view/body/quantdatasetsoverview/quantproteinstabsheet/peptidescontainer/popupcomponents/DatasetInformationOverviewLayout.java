@@ -22,12 +22,12 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
      */
     public DatasetInformationOverviewLayout(int width,Map<String,String> diseaseHashedColorMap) {
         this.diseaseHashedColorMap=diseaseHashedColorMap;
-        this.setWidth(width + "px");
+        this.setWidth(850 + "px");
         this.setHeightUndefined();
         this.setSpacing(true);
         this.setMargin(new MarginInfo(false, false, false, false));
         this.setStyleName(Reindeer.LAYOUT_WHITE);
-        datasetInfoForm = initQuantDatasetInformationLayout(width);
+        datasetInfoForm = initQuantDatasetInformationLayout();
         datasetInfoForm.setVisible(false);
         this.addComponent(datasetInfoForm);
         this.setComponentAlignment(datasetInfoForm, Alignment.MIDDLE_CENTER);
@@ -37,8 +37,9 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
     private final GridLayout datasetInfoForm;
     private InformationField quantPeptidesNum,diseaseCategory,pumedId, rawData, analyticalMethod, typeOfStudy, shotgunTargeted, enzyme, sampleType, technology, quantificationBasis, patientsGroup1Number, patientsGroup2Number, patientsGroup1, patientsGroup2, patientssubGroup1, patientsCommGroup1, patientssubGroup2, patientsCommGroup2, identifiedProteinsNumber, quantifiedProteinsNumber, sampleMatching,  analyticalApproach, normalization_strategy;
 
-    private GridLayout initQuantDatasetInformationLayout(int width) {
+    private GridLayout initQuantDatasetInformationLayout() {
 
+        int width = 800;
         GridLayout datasetInfoFormLayout = new GridLayout(4, 7);
         datasetInfoFormLayout.setWidth(width + "px");
         datasetInfoFormLayout.setHeightUndefined();
