@@ -241,37 +241,35 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
         sequenceAnnotated = new InformationField("Sequence Annotated");
         peptideFormLayout.addComponent(sequenceAnnotated, 1, 0);
 
-        peptideCharge = new InformationField("Peptide Charge");
-        peptideFormLayout.addComponent(peptideCharge, 2, 0);
-
         peptideModification = new InformationField("Peptide Modification");
-        peptideFormLayout.addComponent(peptideModification, 3, 0);
+        peptideFormLayout.addComponent(peptideModification, 2, 0);
 
         modificationComment = new InformationField("Modification Comment");
-        peptideFormLayout.addComponent(modificationComment, 0, 1);
+        peptideFormLayout.addComponent(modificationComment, 3, 0);
 
         foldChange = new InformationField("Fold Change");
-        peptideFormLayout.addComponent(foldChange, 1, 1);
-
-        roc = new InformationField("ROC AUC");
-        peptideFormLayout.addComponent(roc, 2, 1);
+        peptideFormLayout.addComponent(foldChange, 0, 1);
 
         pValue = new InformationField("p-value");
-        peptideFormLayout.addComponent(pValue, 3, 1);
+        peptideFormLayout.addComponent(pValue, 1, 1);
 
         pvalueSignificanceThreshold = new InformationField("p-value Threshold");
-        peptideFormLayout.addComponent(pvalueSignificanceThreshold, 0, 2);
+        peptideFormLayout.addComponent(pvalueSignificanceThreshold, 2, 1);
 
         pValueComm = new InformationField("Statistical Comments");
-        peptideFormLayout.addComponent(pValueComm, 1, 2);
+        peptideFormLayout.addComponent(pValueComm, 3, 1);
+
+        quantBasisComment = new InformationField("Quantification Basis Comment");
+        peptideFormLayout.addComponent(quantBasisComment, 0, 2);
+
+        peptideCharge = new InformationField("Peptide Charge");
+        peptideFormLayout.addComponent(peptideCharge, 1, 2);
+
+        roc = new InformationField("ROC AUC");
+        peptideFormLayout.addComponent(roc, 2, 2);
 
         additionalComments = new InformationField("Additional Comments");
-        peptideFormLayout.addComponent(additionalComments, 2, 2);
-        
-         quantBasisComment = new InformationField("Quantification Basis Comment");
-        peptideFormLayout.addComponent(quantBasisComment, 3, 2);
-        
-       
+        peptideFormLayout.addComponent(additionalComments, 3, 2);
 
         return peptideFormLayout;
     }
@@ -328,8 +326,8 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
             peptideChargeValue = "";
         }
         this.peptideCharge.setValue(peptideChargeValue, null);
-        
-         quantBasisComment.setValue(peptide.getQuantBasisComment() + "", null);
+
+        quantBasisComment.setValue(peptide.getQuantBasisComment() + "", null);
 
     }
 

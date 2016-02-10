@@ -223,9 +223,8 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         reorderGroups = new PopupReorderGroupsLayout(Quant_Central_Manager);
         leftBottomBtnLayout.addComponent(reorderGroups);
         leftBottomBtnLayout.setComponentAlignment(reorderGroups, Alignment.TOP_LEFT);
-        
-        
-        PopupRecombineDiseaseGroups  recombineGroups = new PopupRecombineDiseaseGroups(Quant_Central_Manager);
+
+        PopupRecombineDiseaseGroups recombineGroups = new PopupRecombineDiseaseGroups(Quant_Central_Manager);
         leftBottomBtnLayout.addComponent(recombineGroups);
         leftBottomBtnLayout.setComponentAlignment(recombineGroups, Alignment.TOP_LEFT);
 
@@ -406,7 +405,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
      */
     @Override
     public void selectionChanged(String type) {
-        System.out.println("at type is "+type);
+        System.out.println("at type is " + type);
         if ((type.equalsIgnoreCase("Comparison_Selection") && Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList().isEmpty()) || type.equalsIgnoreCase("Reset_Disease_Groups_Level") || type.equalsIgnoreCase("Pie_Chart_Selection")) {
             selectionOverviewBubbleChart.updateSize(initLayoutWidth, Math.min(heatmapW + 20, standeredChartHeight));
             btnsLayout.setVisible(true);

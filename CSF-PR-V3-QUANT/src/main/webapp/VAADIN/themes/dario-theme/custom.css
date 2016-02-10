@@ -1459,7 +1459,7 @@ resetlabelbtn p{
 
 
 }
-.tabbtn :hover{ 
+.tabbtn:hover{ 
      border:1px solid #4d749f;
     border-radius:5px;
     background:#4d749f;
@@ -2658,11 +2658,23 @@ img {
 .pupupbody { 
     margin-top:2%;
     background-color:white !important;
-    border:1px solid black;
+    border:1px solid darkgray;
+    border-radius: 5px;
 
 }
 .pupupbody .comparisonHeaders {
     line-height:18px;
     padding-top:10px;
 }
+.closepanelbtn{
+    clear: both;
+    width: 16px;
+    height: 16px;
+    background-color:  whitesmoke;
+    background-image: url(img/remove-icon.png);
+    background-position:center;
+    background-repeat: no-repeat;
+    margin-right: 10px;
+    cursor:pointer;
 
+}

@@ -69,13 +69,13 @@ public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutC
         Label label = new Label("<b>"+header+"</b>");
         label.setStyleName("comparisonHeaders");
         label.setContentMode(ContentMode.HTML);
-        label.setWidth((popupLayout.getWidth()-10)+"px");
+        label.setWidth((popupLayout.getWidth()-17)+"px");
         titleLayout.addComponent(label);
 
         VerticalLayout closeBtn = new VerticalLayout();
-        closeBtn.setWidth("10px");
-        closeBtn.setHeight("10px");
-        closeBtn.setStyleName("closebtn");
+        closeBtn.setWidth("16px");
+        closeBtn.setHeight("16px");
+        closeBtn.setStyleName("closepanelbtn");
         closeBtn.addLayoutClickListener(this);
         titleLayout.addComponent(closeBtn);
         titleLayout.setComponentAlignment(closeBtn, Alignment.TOP_RIGHT);

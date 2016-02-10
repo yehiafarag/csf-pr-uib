@@ -53,34 +53,41 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
 
         name = new InformationField("Protein Name");
         proteinsFormLayout.addComponent(name, 1, 0);
+        
+         quantPeptidesNumber = new InformationField("#Quant Peptides");
+        proteinsFormLayout.addComponent(quantPeptidesNumber, 2, 0);
+        
+         idPeptidesNumber = new InformationField("#Identified Peptides");
+        proteinsFormLayout.addComponent(idPeptidesNumber, 3, 0);
 
         foldChange = new InformationField("Fold Change");
-        proteinsFormLayout.addComponent(foldChange, 2, 0);
-
-        roc = new InformationField("ROC AUC");
-        proteinsFormLayout.addComponent(roc, 3, 0);
-
-        pValue = new InformationField("p-value");
-        proteinsFormLayout.addComponent(pValue, 0, 1);
+        proteinsFormLayout.addComponent(foldChange, 0, 1);
+  pValue = new InformationField("p-value");
+        proteinsFormLayout.addComponent(pValue, 1, 1);
 
         pvalueSignificanceThreshold = new InformationField("p-value Threshold");
-        proteinsFormLayout.addComponent(pvalueSignificanceThreshold, 1, 1);
+        proteinsFormLayout.addComponent(pvalueSignificanceThreshold, 2, 1);
 
         pValueComm = new InformationField("Statistical Comments");
-        proteinsFormLayout.addComponent(pValueComm, 2, 1);
+        proteinsFormLayout.addComponent(pValueComm, 3, 1);
+        
+        
+        
+        roc = new InformationField("ROC AUC");
+        proteinsFormLayout.addComponent(roc, 0,2);
 
-        quantPeptidesNumber = new InformationField("#Quant Peptides");
-        proteinsFormLayout.addComponent(quantPeptidesNumber, 3, 1);
+      quantBasisComment = new InformationField("Quantification Basis Comment");
+        proteinsFormLayout.addComponent(quantBasisComment, 1, 2);
+        
 
-        idPeptidesNumber = new InformationField("#Identified Peptides");
-        proteinsFormLayout.addComponent(idPeptidesNumber, 0, 2);
+       
+
+       
 
         additionalComments = new InformationField("Additional Comments");
-        proteinsFormLayout.addComponent(additionalComments, 1, 2);
+        proteinsFormLayout.addComponent(additionalComments, 2, 2);
         
-         quantBasisComment = new InformationField("Quantification Basis Comment");
-        proteinsFormLayout.addComponent(quantBasisComment, 2, 2);
-        
+         
 
         return proteinsFormLayout;
     }

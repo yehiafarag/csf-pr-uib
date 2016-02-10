@@ -26,7 +26,7 @@ import probe.com.view.core.StudyPopupLayout;
 
 /**
  *
- * @author yfa041
+ * @author Yehia Farag
  */
 public class StudiesInformationPopupBtn extends Button implements Button.ClickListener, CSFFilter {
 
