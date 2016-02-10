@@ -91,7 +91,7 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
         this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.Quant_Central_Manager = Quant_Central_Manager;
 
-        heatMap = new HeatMapComponent(heatmapCellWidth, heatmapHeaderCellWidth) {
+        heatMap = new HeatMapComponent(heatmapCellWidth, heatmapHeaderCellWidth,Quant_Central_Manager.getDiseaseStyleMap()) {
             @Override
             public void updateSelectionManager(Set<QuantDiseaseGroupsComparison> selectedDsList) {
 

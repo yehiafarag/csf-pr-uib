@@ -163,7 +163,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         normalization_strategy.setValue(dataset.getNormalizationStrategy(), null);
         
         String diseaseColor = this.diseaseHashedColorMap.get(dataset.getPatientsGroup1().split("\n")[1]);
-        diseaseCategory.setValue("<font color='"+diseaseColor+"' style='font-weight: bold;'>"+dataset.getPatientsGroup1().split("\n")[1]+"</font>", null);
+        diseaseCategory.setValue("<font color='"+diseaseColor+"' style='font-weight: bold;'>"+dataset.getPatientsGroup1().split("\n")[1].replace("_", " ").replace("-", "'").replace("Disease", "")+"</font>", null);
 
         
         quantPeptidesNum.setValue(""+dataset.getUniqePepNum()+"/"+dataset.getTotalPepNum()+"", null);

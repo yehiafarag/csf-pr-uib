@@ -179,8 +179,8 @@ public class PopupReorderGroupsLayout extends Button implements CSFFilter, Click
         popupWindow.setHeight(h + "px");
         int subH = (h - 150);
 
-        this.sortableDiseaseGroupI = new SortableLayoutContainer((w - 50), subH, " Disease Group A", rowHeaders);
-        this.sortableDiseaseGroupII = new SortableLayoutContainer((w - 50), subH, " Disease Group B", colHeaders);
+        this.sortableDiseaseGroupI = new SortableLayoutContainer((w - 50), subH, " Disease Group A", rowHeaders,Quant_Central_Manager.getDiseaseStyleMap());
+        this.sortableDiseaseGroupII = new SortableLayoutContainer((w - 50), subH, " Disease Group B", colHeaders,Quant_Central_Manager.getDiseaseStyleMap());
         this.initPopupBody((w - 50));
 
     }

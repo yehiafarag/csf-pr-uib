@@ -57,15 +57,12 @@ public class SortableLayoutContainer extends VerticalLayout {
     private boolean autoClear;//, autoselectall;
     private boolean singleSelected = false;
     private Set selectAllSet = new HashSet();
-    private final Map<String, String> diseaseStyleMap = new HashMap<String, String>();
+    private final Map<String, String> diseaseStyleMap ;
 
     
        
-    public SortableLayoutContainer(int w, int subH, final String strTitle, Set<String> labels) {
-        diseaseStyleMap.put("Parkinson's", "pdLabel");
-        diseaseStyleMap.put("Alzheimer's", "adLabel");
-        diseaseStyleMap.put("Amyotrophic Lateral Sclerosis", "alsLabel");
-        diseaseStyleMap.put ("Multiple Sclerosis", "msLabel");
+    public SortableLayoutContainer(int w, int subH, final String strTitle, Set<String> labels,Map<String, String> diseaseStyleMap ) {
+        this.diseaseStyleMap=diseaseStyleMap;
 
         this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.setSpacing(true);

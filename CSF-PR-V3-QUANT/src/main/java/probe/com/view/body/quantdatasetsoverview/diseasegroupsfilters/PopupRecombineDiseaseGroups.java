@@ -42,13 +42,12 @@ public class PopupRecombineDiseaseGroups extends Button implements ClickListener
     private final VerticalLayout popupBodyLayout;
     private final Map<String, Map<String, String>> default_DiseaseCat_DiseaseGroupMap;
     private final NativeSelect diseaseTypeSelectionList;
+    private final Map<String, String> diseaseStyleMap;
 
     public PopupRecombineDiseaseGroups(QuantCentralManager Quant_Central_Manager) {
         super("Recombine Groups");
-        diseaseStyleMap.put("Parkinson's", "pdLabel");
-        diseaseStyleMap.put("Alzheimer's", "adLabel");
-        diseaseStyleMap.put("Amyotrophic Lateral Sclerosis", "alsLabel");
-        diseaseStyleMap.put("Multiple Sclerosis", "msLabel");
+        this.diseaseStyleMap = new HashMap<String, String>();
+        
 
         default_DiseaseCat_DiseaseGroupMap = new LinkedHashMap<String, Map<String, String>>(Quant_Central_Manager.getDefault_DiseaseCat_DiseaseGroupMap());
 
@@ -87,8 +86,6 @@ public class PopupRecombineDiseaseGroups extends Button implements ClickListener
         popupWindow.center();
 
     }
-
-    private final Map<String, String> diseaseStyleMap = new HashMap<String, String>();
 
     private void initPopupLayout() {
 
@@ -204,7 +201,6 @@ public class PopupRecombineDiseaseGroups extends Button implements ClickListener
         btnLayout.setMargin(true);
         btnLayout.setSpacing(true);
 
-       
         Button resetFiltersBtn = new Button("Reset");
         resetFiltersBtn.setPrimaryStyleName("resetbtn");
         btnLayout.addComponent(resetFiltersBtn);
@@ -217,8 +213,8 @@ public class PopupRecombineDiseaseGroups extends Button implements ClickListener
             public void buttonClick(Button.ClickEvent event) {
                 resetToDefault();
             }
-        }); 
-         Button resetToOriginalBtn = new Button("Publications Names");
+        });
+        Button resetToOriginalBtn = new Button("Publications Names");
         resetToOriginalBtn.setPrimaryStyleName("resetbtn");
         btnLayout.addComponent(resetToOriginalBtn);
         resetToOriginalBtn.setWidth("150px");
@@ -232,8 +228,6 @@ public class PopupRecombineDiseaseGroups extends Button implements ClickListener
             }
         });
 
-        
-        
         Button applyFilters = new Button("Update");
         applyFilters.setDescription("Update disease groups with the selected names");
         applyFilters.setPrimaryStyleName("resetbtn");
@@ -248,7 +242,6 @@ public class PopupRecombineDiseaseGroups extends Button implements ClickListener
 
             }
         });
-
 
         popupBodyLayout.addComponent(btnLayout);
         popupBodyLayout.setComponentAlignment(btnLayout, Alignment.MIDDLE_RIGHT);
@@ -389,38 +382,37 @@ public class PopupRecombineDiseaseGroups extends Button implements ClickListener
     private void updateGroups() {
         Map<String, Map<String, String>> updatedGroupsNamesMap = new HashMap<String, Map<String, String>>();
         for (String diseaseKey : diseaseGroupsSelectionListMap.keySet()) {
-             Map<String, ComboBox> diseaseGroupNameToListMap = diseaseGroupsSelectionListMap.get(diseaseKey);
-             Map<String, String> updatedDiseaseGroupsMappingName = new LinkedHashMap<String, String>();
-                for (String key : diseaseGroupNameToListMap.keySet()) {
-                    ComboBox list = diseaseGroupNameToListMap.get(key);
-                    updatedDiseaseGroupsMappingName.put(key, list.getValue().toString().trim());
-                    
-                }
-             updatedGroupsNamesMap.put(diseaseKey,updatedDiseaseGroupsMappingName );
+            Map<String, ComboBox> diseaseGroupNameToListMap = diseaseGroupsSelectionListMap.get(diseaseKey);
+            Map<String, String> updatedDiseaseGroupsMappingName = new LinkedHashMap<String, String>();
+            for (String key : diseaseGroupNameToListMap.keySet()) {
+                ComboBox list = diseaseGroupNameToListMap.get(key);
+                updatedDiseaseGroupsMappingName.put(key, list.getValue().toString().trim());
+
+            }
+            updatedGroupsNamesMap.put(diseaseKey, updatedDiseaseGroupsMappingName);
 
         }
-        
+
         Quant_Central_Manager.updateDiseaseGroupsNames(updatedGroupsNamesMap);
         popupWindow.close();
 
     }
-    
-    
+
     private void resetToPublicationsNames() {
         Map<String, Map<String, String>> updatedGroupsNamesMap = new HashMap<String, Map<String, String>>();
         for (String diseaseKey : diseaseGroupsSelectionListMap.keySet()) {
-             Map<String, ComboBox> diseaseGroupNameToListMap = diseaseGroupsSelectionListMap.get(diseaseKey);
-             Map<String, String> updatedDiseaseGroupsMappingName = new LinkedHashMap<String, String>();
-                for (String key : diseaseGroupNameToListMap.keySet()) {
-                    ComboBox list = diseaseGroupNameToListMap.get(key);
-                    list.addItem(key);
-                    updatedDiseaseGroupsMappingName.put(key, key);
-                    
-                }
-             updatedGroupsNamesMap.put(diseaseKey,updatedDiseaseGroupsMappingName );
+            Map<String, ComboBox> diseaseGroupNameToListMap = diseaseGroupsSelectionListMap.get(diseaseKey);
+            Map<String, String> updatedDiseaseGroupsMappingName = new LinkedHashMap<String, String>();
+            for (String key : diseaseGroupNameToListMap.keySet()) {
+                ComboBox list = diseaseGroupNameToListMap.get(key);
+                list.addItem(key);
+                updatedDiseaseGroupsMappingName.put(key, key);
+
+            }
+            updatedGroupsNamesMap.put(diseaseKey, updatedDiseaseGroupsMappingName);
 
         }
-        
+
         Quant_Central_Manager.updateDiseaseGroupsNames(updatedGroupsNamesMap);
         popupWindow.close();
 

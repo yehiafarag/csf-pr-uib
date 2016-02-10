@@ -406,6 +406,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
      */
     @Override
     public void selectionChanged(String type) {
+        System.out.println("at type is "+type);
         if ((type.equalsIgnoreCase("Comparison_Selection") && Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList().isEmpty()) || type.equalsIgnoreCase("Reset_Disease_Groups_Level") || type.equalsIgnoreCase("Pie_Chart_Selection")) {
             selectionOverviewBubbleChart.updateSize(initLayoutWidth, Math.min(heatmapW + 20, standeredChartHeight));
             btnsLayout.setVisible(true);
@@ -414,7 +415,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
             middleLayout.setExpandRatio(diseaseGroupsHeatmapFilter, heatmapW - 70);
             middleLayout.setExpandRatio(selectionOverviewBubbleChart, initLayoutWidth + 70);
             middleLayout.setWidth(layoutWidth + "px");
-            resizeLayout(Quant_Central_Manager.getSelectedHeatMapRows().size());
+            resizeLayout(Quant_Central_Manager.getSelectedHeatMapColumns().size());
 
 //                resizeLayout(diseaseGroupsListFilter.getDiseaseGroupsSet().size());
 //                UI.getCurrent().setScrollTop(10);

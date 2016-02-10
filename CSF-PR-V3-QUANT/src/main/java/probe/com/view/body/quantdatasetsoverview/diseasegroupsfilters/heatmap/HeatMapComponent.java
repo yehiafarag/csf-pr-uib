@@ -51,7 +51,7 @@ public class HeatMapComponent extends VerticalLayout {
     private final VerticalLayout diseaseGroupsRowsLabels;
     private final HorizontalLayout diseaseGroupsColumnsLabels;
 
-    private final Map<String, String> diseaseStyleMap = new HashMap<String, String>();
+    private final Map<String, String> diseaseStyleMap;
 
     /**
      *
@@ -69,13 +69,11 @@ public class HeatMapComponent extends VerticalLayout {
     /**
      * @param heatmapCellWidth
      * @param heatmapHeaderCellWidth
+     * @param diseaseStyleMap
      */
-    public HeatMapComponent(int heatmapCellWidth, int heatmapHeaderCellWidth) {
+    public HeatMapComponent(int heatmapCellWidth, int heatmapHeaderCellWidth,Map<String, String> diseaseStyleMap) {
 
-        diseaseStyleMap.put("Multiple Sclerosis", "msLabel");
-        diseaseStyleMap.put("Parkinson's", "pdLabel");
-        diseaseStyleMap.put("Alzheimer's", "adLabel");
-        diseaseStyleMap.put("Amyotrophic Lateral Sclerosis", "alsLabel");
+        this.diseaseStyleMap=diseaseStyleMap; 
 
         this.setMargin(false);
         this.setSpacing(true);
@@ -509,7 +507,7 @@ public class HeatMapComponent extends VerticalLayout {
     private VerticalLayout initDiseaseGroupLabel(String dName, int itemsNumb, boolean row) {
         VerticalLayout diseaseLabelContainer = new VerticalLayout();
 
-        Label label = new Label("<center><font  color='#ffffff'>" + dName + "</font></center>");
+        Label label = new Label("<center><font  color='#ffffff'>" + dName.replace("_", " ").replace("-", "'").replace("Disease", "") + "</font></center>");
         label.setContentMode(ContentMode.HTML);
 
         if (row) {
@@ -529,7 +527,7 @@ public class HeatMapComponent extends VerticalLayout {
             diseaseLabelContainer.setHeight("20px");
             diseaseLabelContainer.setStyleName(diseaseStyleMap.get(dName));
         }
-        diseaseLabelContainer.setDescription(dName+" Disease");
+        diseaseLabelContainer.setDescription(dName.replace("_", " ").replace("-", "'"));
 
         return diseaseLabelContainer;
 

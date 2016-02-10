@@ -36,6 +36,11 @@ public class QuantCentralManager implements Serializable {
 
     private final CSFPRHandler CSFPR_Handler;
     private final Map<String, String> diseaseHashedColorMap;
+     private final Map<String, String> diseaseStyleMap;
+
+    public Map<String, String> getDiseaseStyleMap() {
+        return diseaseStyleMap;
+    }
 
     public String getDiseaseHashedColor(String diseaseName) {
         return diseaseHashedColorMap.get(diseaseName);
@@ -53,6 +58,7 @@ public class QuantCentralManager implements Serializable {
         Studies_Selection_Manager = new StudiesSelectionManager();
         default_DiseaseCat_DiseaseGroupMap = Studies_Filter_Manager.getDefault_DiseaseCat_DiseaseGroupMap();
         diseaseGroupsHeaderToOregenalDiseaseGroupsNames = Studies_Filter_Manager.getDiseaseGroupsHeaderToOregenalDiseaseGroupsNames();
+        diseaseStyleMap = CSFPR_Handler.getDiseaseStyleMap();
 
     }
 
@@ -65,6 +71,7 @@ public class QuantCentralManager implements Serializable {
 
         default_DiseaseCat_DiseaseGroupMap = Studies_Filter_Manager.getDefault_DiseaseCat_DiseaseGroupMap();
         diseaseGroupsHeaderToOregenalDiseaseGroupsNames = Studies_Filter_Manager.getDiseaseGroupsHeaderToOregenalDiseaseGroupsNames();
+        diseaseStyleMap = CSFPR_Handler.getDiseaseStyleMap(); ;
     }
 
     public QuantCentralManager(CSFPRHandler CSFPR_Handler, List<QuantProtein> searchQuantificationProtList, QuantDiseaseGroupsComparison userCustomizedComparison) {
@@ -76,6 +83,7 @@ public class QuantCentralManager implements Serializable {
 
         default_DiseaseCat_DiseaseGroupMap = Studies_Filter_Manager.getDefault_DiseaseCat_DiseaseGroupMap();
         diseaseGroupsHeaderToOregenalDiseaseGroupsNames = Studies_Filter_Manager.getDiseaseGroupsHeaderToOregenalDiseaseGroupsNames();
+        diseaseStyleMap  = CSFPR_Handler.getDiseaseStyleMap();
     }
 
     public void setNoSerum(boolean noSerum) {

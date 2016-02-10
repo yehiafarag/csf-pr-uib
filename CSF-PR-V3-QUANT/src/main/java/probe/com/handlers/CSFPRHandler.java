@@ -47,7 +47,13 @@ public class CSFPRHandler implements Serializable {
     private final Map<String, Map<String, String>> default_DiseaseCat_DiseaseGroupMap;
     private final Map<String, QuantDatasetInitialInformationObject> quantDatasetInitialInformationObject;
     private final Map<String, String> diseaseHashedColorMap = new HashMap<String, String>();
-    String suggestNames = "Alzheimer's\n"
+    private final Map<String, String>diseaseStyleMap = new HashMap<String, String>();
+
+    public Map<String, String> getDiseaseStyleMap() {
+        return diseaseStyleMap;
+    }
+   
+    private final String suggestNames = "Alzheimer's\n"
             + "CIS\n"
             + "CIS-CIS\n"
             + "CIS-MS\n"
@@ -71,7 +77,7 @@ public class CSFPRHandler implements Serializable {
             + "Progressive MS\n"
             + "Progressive MS\n"
             + "RRMS";
-    String oreginalNames = "Alzheimer's\n"
+    private final String oreginalNames = "Alzheimer's\n"
             + "CIS-MS(CIS)\n"
             + "CIS-CIS\n"
             + "CIS-MS\n"
@@ -132,11 +138,15 @@ public class CSFPRHandler implements Serializable {
             }
             default_DiseaseCat_DiseaseGroupMap.put(str, diseaseGroupMap);
         }
-         diseaseHashedColorMap.put("Multiple Sclerosis", "#A52A2A");
-        diseaseHashedColorMap.put("Alzheimer's", "#4b7865");
-        diseaseHashedColorMap.put("Parkinson's", "#74716E");
-        diseaseHashedColorMap.put("Amyotrophic Lateral Sclerosis", "#7D0725");
+         diseaseHashedColorMap.put("Multiple_Sclerosis_Disease", "#A52A2A");
+        diseaseHashedColorMap.put("Alzheimer-s_Disease", "#4b7865");
+        diseaseHashedColorMap.put("Parkinson-s_Disease", "#74716E");
+        diseaseHashedColorMap.put("Amyotrophic_Lateral_Sclerosis_Disease", "#7D0725");
         diseaseHashedColorMap.put("UserData", "#8210B0");
+        diseaseStyleMap.put("Parkinson-s_Disease", "pdLabel");
+        diseaseStyleMap.put("Alzheimer-s_Disease", "adLabel");
+        diseaseStyleMap.put("Amyotrophic_Lateral_Sclerosis_Disease", "alsLabel");
+        diseaseStyleMap.put("Multiple_Sclerosis_Disease", "msLabel");
 
     }
 

@@ -75,7 +75,7 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
         this.title = title;
 
 //        if (all) {
-        allStyle = title.split("\n")[1].toLowerCase().replace(" ", "").replace("'s", "");
+        allStyle = title.split("\n")[1].toLowerCase().replace("-s", "").replace("_disease","").replace("_", "");
 //            valueLabel.setValue("<center><font>" + title.split("\n")[0] + "</font></br><font size='1' color='#003e99'>(" + title.split("\n")[1] + ")</font></center>");
 
 //        }
@@ -92,6 +92,7 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
 //            this.setStyleName("hmcolumnlabel");
         }
         valueLabel.setStyleName(allStyle + cellStyleName);
+        System.out.println("at style name "+ allStyle + cellStyleName);
 //        super("<b>" + title + "</b>");
         valueLabel.setWidth((heatmapHeaderCellWidth - 4) + "px");
         valueLabel.setHeight((heatmapCellWidth - 4) + "px");

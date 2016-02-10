@@ -1989,7 +1989,7 @@ public class DataBase implements Serializable {
                 if (!activeHeaders[18] && patient_group_i != null && !patient_group_i.equalsIgnoreCase("Not Available")) {
                     activeHeaders[18] = true;
                 }
-                ds.setPatientsGroup1(patient_group_i + "\n" + disease_category);
+                ds.setPatientsGroup1(patient_group_i + "\n" + disease_category.replace(" ","_").replace("'", "-")+"_Disease");
 
                 int patients_group_i_number = rs.getInt("patients_group_i_number");
                 if (!activeHeaders[19] && patients_group_i_number != -1) {
@@ -2007,13 +2007,13 @@ public class DataBase implements Serializable {
                 if (!activeHeaders[21] && patient_sub_group_i != null && !patient_sub_group_i.equalsIgnoreCase("Not Available")) {
                     activeHeaders[21] = true;
                 }
-                ds.setPatientsSubGroup1(patient_sub_group_i + "\n" + disease_category);
+                ds.setPatientsSubGroup1(patient_sub_group_i + "\n" + disease_category.replace(" ","_").replace("'", "-")+"_Disease");
 
                 String patient_group_ii = rs.getString("patient_group_ii");
                 if (!activeHeaders[22] && patient_group_ii != null && !patient_group_ii.equalsIgnoreCase("Not Available")) {
                     activeHeaders[22] = true;
                 }
-                ds.setPatientsGroup2(patient_group_ii + "\n" + disease_category);
+                ds.setPatientsGroup2(patient_group_ii + "\n" + disease_category.replace(" ","_").replace("'", "-")+"_Disease");
 
                 int patients_group_ii_number = rs.getInt("patients_group_ii_number");
                 if (!activeHeaders[23] && patients_group_ii_number != -1) {
@@ -2031,7 +2031,7 @@ public class DataBase implements Serializable {
                 if (!activeHeaders[25] && patient_sub_group_ii != null && !patient_sub_group_ii.equalsIgnoreCase("Not Available")) {
                     activeHeaders[25] = true;
                 }
-                ds.setPatientsSubGroup2(patient_sub_group_ii + "\n" + disease_category);
+                ds.setPatientsSubGroup2(patient_sub_group_ii + "\n" + disease_category.replace(" ","_").replace("'", "-")+"_Disease");
                 ds.setAdditionalcomments("Not Available");
                 ds.setDiseaseCategory(rs.getString("disease_category"));
 
@@ -2417,7 +2417,7 @@ public class DataBase implements Serializable {
                 if (!activeHeaders[18] && patient_group_i != null && !patient_group_i.equalsIgnoreCase("Not Available")) {
                     activeHeaders[18] = true;
                 }
-                ds.setPatientsGroup1(patient_group_i + "\n" + disease_category);
+                ds.setPatientsGroup1(patient_group_i + "\n" + disease_category.replace(" ","_").replace("'", "-")+"_Disease");
 
                 int patients_group_i_number = rs.getInt("patients_group_i_number");
                 if (!activeHeaders[19] && patients_group_i_number != -1) {
@@ -2435,13 +2435,13 @@ public class DataBase implements Serializable {
                 if (!activeHeaders[21] && patient_sub_group_i != null && !patient_sub_group_i.equalsIgnoreCase("Not Available")) {
                     activeHeaders[21] = true;
                 }
-                ds.setPatientsSubGroup1(patient_sub_group_i + "\n" + disease_category);
+                ds.setPatientsSubGroup1(patient_sub_group_i + "\n" + disease_category.replace(" ","_").replace("'", "-")+"_Disease");
 
                 String patient_group_ii = rs.getString("patient_group_ii");
                 if (!activeHeaders[22] && patient_group_ii != null && !patient_group_ii.equalsIgnoreCase("Not Available")) {
                     activeHeaders[22] = true;
                 }
-                ds.setPatientsGroup2(patient_group_ii + "\n" + disease_category);
+                ds.setPatientsGroup2(patient_group_ii + "\n" + disease_category.replace(" ","_").replace("'", "-")+"_Disease");
 
                 int patients_group_ii_number = rs.getInt("patients_group_ii_number");
                 if (!activeHeaders[23] && patients_group_ii_number != -1) {
@@ -2459,7 +2459,7 @@ public class DataBase implements Serializable {
                 if (!activeHeaders[25] && patient_sub_group_ii != null && !patient_sub_group_ii.equalsIgnoreCase("Not Available")) {
                     activeHeaders[25] = true;
                 }
-                ds.setPatientsSubGroup2(patient_sub_group_ii + "\n" + disease_category);
+                ds.setPatientsSubGroup2(patient_sub_group_ii + "\n" + disease_category.replace(" ","_").replace("'", "-")+"_Disease");
                 ds.setAdditionalcomments("Not Available");
                 ds.setDiseaseCategory(rs.getString("disease_category"));
                 diseaseCategories.add(ds.getDiseaseCategory());

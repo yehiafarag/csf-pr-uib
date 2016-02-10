@@ -159,6 +159,9 @@ public class StudiesFilterManager implements Serializable {
         this.fullDiseaseGroupMap = new LinkedHashMap<Integer, DiseaseGroup>();
         this.selectedDiseaseGroupMap = new LinkedHashMap<Integer, DiseaseGroup>();
         this.quantDatasetListObject = quantDatasetListObject;
+
+      
+
         String key = "Multiple Sclerosis";//quantDatasetListObject.keySet().iterator().next();
         this.totalDsNumber = quantDatasetListObject.get("All").getQuantDatasetsList().size();
 
@@ -238,7 +241,7 @@ public class StudiesFilterManager implements Serializable {
                     selectedHeatMapColumns.add(str);
                 }
             }
-          
+            System.out.println("at selectedHeatMapRows "+selectedHeatMapRows+"    selectedHeatMapColumns "+selectedHeatMapColumns);
 
 //            selectedHeatMapColumns.clear();
 //            selectedHeatMapColumns.addAll(selectedHeatMapRows);
@@ -568,7 +571,6 @@ public class StudiesFilterManager implements Serializable {
         this.resetFilters();
 
     }
-   
 
     public int getTotalDsNumber() {
         return totalDsNumber;
