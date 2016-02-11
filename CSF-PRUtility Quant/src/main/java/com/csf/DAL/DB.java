@@ -64,6 +64,7 @@ public class DB implements Serializable {
                 Statement statement = conn_i.createStatement();
                 String csfSQL = "CREATE DATABASE IF NOT exists  " + dbName;
                 statement.executeUpdate(csfSQL);
+                System.out.println("database created with name "+dbName);
 
                 //temp
 //               fg String sqoDataBase = "SHOW DATABASES ;";
@@ -140,10 +141,6 @@ public class DB implements Serializable {
 //                        + "(' OIND + OND ', ' Other inflammatory neurological disorders + Other neurological disorders');";
 //                st.executeUpdate(insertStat);
                 st = conn.createStatement();
-                String dropStat = "DROP TABLE IF EXISTS `quant_dataset_table`;";
-                st.executeUpdate(dropStat);
-
-                st = conn.createStatement();
                 statment = "CREATE TABLE IF NOT EXISTS `quant_dataset_table` (\n"
                         + "  `study_key` varchar(100) NOT NULL default 'Not Available',\n"
                         + "  `pumed_id` varchar(30) NOT NULL default 'Not Available',\n"
@@ -182,9 +179,6 @@ public class DB implements Serializable {
                         + ") ENGINE=MyISAM DEFAULT CHARSET=utf8;";
                 st.executeUpdate(statment);
 
-                st = conn.createStatement();
-                dropStat = "DROP TABLE IF EXISTS `quant_full_table`;";
-                st.executeUpdate(dropStat);
                 st = conn.createStatement();
                 statment = "CREATE TABLE IF NOT EXISTS `quant_full_table` (\n"
                         + "  `author` varchar(500) NOT NULL,\n"
@@ -382,9 +376,8 @@ public class DB implements Serializable {
                         + "  KEY `peptide_id` (`peptide_id`) "
                         + ") ENGINE=MyISAM DEFAULT CHARSET=utf8; ";
                 st.executeUpdate(statment);
+
                 st = conn.createStatement();
-                dropStat = "DROP TABLE IF EXISTS `quantitative_peptides_table`;";
-                st.executeUpdate(dropStat);
                 statment = "CREATE TABLE IF NOT EXISTS `quantitative_peptides_table` (\n"
                         + "  `index` int(255) NOT NULL default '0',\n"
                         + "  `prot_index` int(255) NOT NULL default '-1',\n"
@@ -408,9 +401,9 @@ public class DB implements Serializable {
                         + "  PRIMARY KEY  (`index`)\n"
                         + ") ENGINE=MyISAM  DEFAULT CHARSET=utf8; ";
                 st.executeUpdate(statment);
+
                 st = conn.createStatement();
-                dropStat = "DROP TABLE IF EXISTS `quantitative_proteins_table`;";
-                st.executeUpdate(dropStat);
+
                 statment = "CREATE TABLE IF NOT EXISTS `quantitative_proteins_table` (\n"
                         + "  `index` int(255) NOT NULL default '0',\n"
                         + "  `ds_ID` int(255) NOT NULL default '-1',\n"
@@ -1732,6 +1725,7 @@ public class DB implements Serializable {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
+
             String[] executeCmd = new String[]{mysqldumpUrl, "--user=" + userName, "--password=" + password, dbName, "-e", "source " + sqlFileUrl};//  C:\\AppServ\\MySQL\\bin\\mysql
             System.out.println(" sqlMysqlPath  " + mysqldumpUrl + "  sqlFileUrl  " + sqlFileUrl);
             Process runtimeProcess;
@@ -1767,11 +1761,7 @@ public class DB implements Serializable {
     @SuppressWarnings("CallToPrintStackTrace")
     public boolean storeCombinedQuantProtTable(List<QuantProtein> qProtList) {
         System.out.println("start store data");
-        try {
-            createTables();
-        } catch (SQLException ex) {
-            Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
         boolean success = true;
         String insertQProt = "INSERT INTO  `" + dbName + "`.`quant_full_table` (`author` ,`year` ,`pumed_id`,`study_key` ,`quantified_proteins_number`,`uniprot_accession` ,`uniprot_protein_name` ,`publication_acc_number` ,`publication_protein_name`,`peptide_prot` ,`raw_data_available` ,`peptideId_number`,`quantified_peptides_number`,`peptide_charge`"
                 + ",`peptide_sequance`,`sequence_annotated`,`peptide_modification`,`modification_comment`,`type_of_study` ,`sample_type`,"
@@ -1790,6 +1780,29 @@ public class DB implements Serializable {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
+
+            try {
+                Statement st = conn.createStatement();
+                String dropStat = "DROP TABLE IF EXISTS `quant_dataset_table`;";
+                st.executeUpdate(dropStat);
+                st = conn.createStatement();
+                dropStat = "DROP TABLE IF EXISTS `quant_full_table`;";
+                st.executeUpdate(dropStat);
+                st = conn.createStatement();
+                dropStat = "DROP TABLE IF EXISTS `quantitative_proteins_table`;";
+                st.executeUpdate(dropStat);
+                st = conn.createStatement();
+                dropStat = "DROP TABLE IF EXISTS `quantitative_peptides_table`;";
+                st.executeUpdate(dropStat);
+                createTables();
+            } catch (SQLException ex) {
+                Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (conn == null || conn.isClosed()) {
+                Class.forName(driver).newInstance();
+                conn = DriverManager.getConnection(url + dbName, userName, password);
+            }
+
 
             int counter = 0;
             for (QuantProtein qprot : qProtList) {
@@ -2785,8 +2798,7 @@ public class DB implements Serializable {
                 insertFullDiseaseNameStat.setString(counter++, diseaseGroupsNamingMap.get(key));
 
             }
-            ResultSet rs = insertFullDiseaseNameStat.getGeneratedKeys();
-            rs.close();
+            insertFullDiseaseNameStat.executeUpdate();
 
         } catch (ClassNotFoundException e) {
             System.err.println("at error" + e.getLocalizedMessage());
@@ -2887,8 +2899,8 @@ public class DB implements Serializable {
         System.gc();
 
     }
-    
-     public void updateQuantStudies(Map<Integer, Object[]> styudyUpdatingMap) {
+
+    public void updateQuantStudies(Map<Integer, Object[]> styudyUpdatingMap) {
 
         String statment = "UPDATE  `quant_dataset_table` SET    `total_prot_num` = ? , `uniq_prot_num` = ? , `total_pept_num` = ? , `uniq_pept_num` = ? WHERE  `quant_dataset_table`.`index` = ? ;";
         try {
@@ -2925,7 +2937,6 @@ public class DB implements Serializable {
         System.gc();
 
     }
-
 
     public List<Object[]> getPublications() {
 

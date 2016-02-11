@@ -23,7 +23,7 @@ import javax.swing.SwingWorker;
 public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
 
     private ExperimentBean exp;
-    private final String database_name = "quantdataupdated_test_01_02";
+    private  String database_name = "quantdataupdated_test_11_02_16";
 //    private final String executeCmd;
     private final String backupFileUrl = "D:\\backups\\backup_id_10-11-2015\\backup_10-11-2015_id.sql"; // "/home/probe/user/CSF-PR-FILES/backup.sql";             //"D:\\backups\\sqlQuant18-8\\backup-quant.sql";                        //   
     private String processUrl = "C:\\AppServ\\MySQL\\bin\\mysqldump.exe"; ///usr/bin/mysqldump";
@@ -134,8 +134,9 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
             }
         });
         mysqlresText.setText(mySqlDBPath);
-        
+
         jLabel33.setForeground(Color.red);
+        databaseNameField.setText(database_name);
 
     }
     /* This method is called from within the constructor to
@@ -195,6 +196,8 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
         jTextField13 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jPasswordField1 = new javax.swing.JPasswordField();
+        jLabel34 = new javax.swing.JLabel();
+        databaseNameField = new javax.swing.JTextField();
         dbPanel = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
         jRadioButton2 = new javax.swing.JRadioButton();
@@ -384,18 +387,18 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
         idPanelLayout.setHorizontalGroup(
             idPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(idPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(12, 12, 12)
                 .addGroup(idPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(idPanelLayout.createSequentialGroup()
                         .addGroup(idPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE))
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(idPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1)
-                            .addComponent(jTextField8)
-                            .addComponent(jTextField2)))
+                            .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jLabel15)
                     .addGroup(idPanelLayout.createSequentialGroup()
                         .addComponent(jLabel10)
@@ -404,7 +407,7 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                     .addGroup(idPanelLayout.createSequentialGroup()
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField5)))
+                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(27, 27, 27)
                 .addGroup(idPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(idPanelLayout.createSequentialGroup()
@@ -442,21 +445,21 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                         .addGroup(idPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(12, 12, 12))
         );
         idPanelLayout.setVerticalGroup(
             idPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(idPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(13, 13, 13)
                 .addComponent(jLabel15)
                 .addGap(18, 18, 18)
                 .addGroup(idPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTextField9)
                     .addGroup(idPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(6, 6, 6)
                         .addComponent(jLabel3))
                     .addGroup(idPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextField2)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel5)))
                 .addGap(18, 18, 18)
                 .addGroup(idPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -542,24 +545,36 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
             }
         });
 
+        jLabel34.setText("DB");
+
+        databaseNameField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                databaseNameFieldActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(50, 50, 50)
+                .addGap(12, 12, 12)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel34)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(databaseNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(78, 78, 78))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -570,7 +585,9 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                     .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
                     .addComponent(jPasswordField1)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel34)
+                    .addComponent(databaseNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -908,7 +925,11 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
 
         diseaseGroupsFullNameFileTextFieald.setText("jTextField18");
 
-        jTextField19.setText("jTextField19");
+        jTextField19.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField19ActionPerformed(evt);
+            }
+        });
 
         jButton12.setText("Choose");
         jButton12.addActionListener(new java.awt.event.ActionListener() {
@@ -924,9 +945,9 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
             }
         });
 
-        jLabel31.setText("Diseases Groups Full Name (.txt)");
+        jLabel31.setText("Diseases Groups Full Name (.csv)");
 
-        jLabel32.setText("Disease Groups Remapping file (.text)");
+        jLabel32.setText("Disease Groups Remapping file (.txt)");
 
         jLabel30.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         jLabel30.setText("Supplementary  Files");
@@ -998,18 +1019,14 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, 1119, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, 1119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(quantPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 16, Short.MAX_VALUE))))
+                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(quantPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(17, 17, 17))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1099,12 +1116,8 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(dbPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jRadioButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -1115,17 +1128,23 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(53, 53, 53)
-                                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(idProcessBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(idPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(10, 10, 10)
+                                .addComponent(dbPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(53, 53, 53)
+                                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(35, 35, 35)
+                                    .addComponent(idProcessBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(267, 267, 267))
                                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(12, 12, 12))))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(idPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1151,7 +1170,7 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                     .addComponent(idProcessBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(13, 13, 13))
         );
 
         pack();
@@ -1338,6 +1357,9 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                     String password = "";
                     for (char c : jPasswordField1.getPassword()) {
                         password += c;
+                    }
+                      if (databaseNameField.getText() != null && !databaseNameField.getText().trim().equalsIgnoreCase("")) {
+                        database_name = databaseNameField.getText().trim();
                     }
                     exphandeler = new Handler("jdbc:mysql://" + jTextField13.getText() + ":3306/", database_name, "com.mysql.jdbc.Driver", jTextField1.getText(), password);
                 } catch (SQLException sqlE) {
@@ -1564,6 +1586,10 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                 public void run() {
                     jProgressBar1.setIndeterminate(true);
                     jProgressBar1.setVisible(true);
+                    if (databaseNameField.getText() != null && !databaseNameField.getText().trim().equalsIgnoreCase("")) {
+                        database_name = databaseNameField.getText().trim();
+                    }
+
                     jLabel13.setText("Backing up ( " + database_name + " ) database\"database ...please wait");
                     revalidate();
                     repaint();
@@ -1948,16 +1974,19 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
             jTextField16.setText(errorEmptyText);
             return;
         }
-        
+
         if (jTextField17.getText().isEmpty() || jTextField17.getText().trim().equalsIgnoreCase(errorEmptyText)) {
             jTextField17.setText(errorEmptyText);
             return;
         }
-         if (exphandeler == null) {
+        if (exphandeler == null) {
             String password = "";
             for (char c : jPasswordField1.getPassword()) {
                 password += c;
             }
+              if (databaseNameField.getText() != null && !databaseNameField.getText().trim().equalsIgnoreCase("")) {
+                        database_name = databaseNameField.getText().trim();
+                    }
             try {
                 exphandeler = new Handler("jdbc:mysql://" + jTextField13.getText() + ":3306/", database_name, "com.mysql.jdbc.Driver", jTextField1.getText(), password);
             } catch (SQLException ex) {
@@ -1966,15 +1995,16 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
 
         }
 
-        boolean success  = exphandeler.insertPublication(jTextField7.getText().trim(), jTextField15.getText().trim(), jTextField16.getText().trim(), jTextField17.getText().trim());
-        if(success){
-        jTextField7.setText("");
-        jTextField15.setText("");
-        jTextField16.setText("");
-        jTextField17.setText("");
-         jLabel33.setText("done... :-) ");
-        }else
-        jLabel33.setText("Error..try again");
+        boolean success = exphandeler.insertPublication(jTextField7.getText().trim(), jTextField15.getText().trim(), jTextField16.getText().trim(), jTextField17.getText().trim());
+        if (success) {
+            jTextField7.setText("");
+            jTextField15.setText("");
+            jTextField16.setText("");
+            jTextField17.setText("");
+            jLabel33.setText("done... :-) ");
+        } else {
+            jLabel33.setText("Error..try again");
+        }
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
@@ -1987,6 +2017,9 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
             for (char c : jPasswordField1.getPassword()) {
                 password += c;
             }
+              if (databaseNameField.getText() != null && !databaseNameField.getText().trim().equalsIgnoreCase("")) {
+                        database_name = databaseNameField.getText().trim();
+                    }
             try {
                 exphandeler = new Handler("jdbc:mysql://" + jTextField13.getText() + ":3306/", database_name, "com.mysql.jdbc.Driver", jTextField1.getText(), password);
             } catch (SQLException ex) {
@@ -2005,17 +2038,17 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
     }//GEN-LAST:event_jButton13ActionPerformed
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
-        JFileChooser chooser = new JFileChooser("D:\\CSF-PR Quant data files\\21-01-2016");
+        JFileChooser chooser = new JFileChooser("D:\\CSF-PR Quant data files\\02-02-2016");
         FileFilter txtfilter = new FileFilter() {
             @Override
             public boolean accept(File myFile) {
-                return myFile.getName().toLowerCase().endsWith(".txt")
+                return myFile.getName().toLowerCase().endsWith(".csv")
                         || myFile.isDirectory();
             }
 
             @Override
             public String getDescription() {
-                return "Supported formats: text (.txt)";
+                return "Supported formats: csv (.csv)";
             }
         };
         chooser.addChoosableFileFilter(txtfilter);
@@ -2035,6 +2068,14 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
     private void jTextField17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField17ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField17ActionPerformed
+
+    private void jTextField19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField19ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField19ActionPerformed
+
+    private void databaseNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_databaseNameFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_databaseNameFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2086,6 +2127,7 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.ButtonGroup buttonGroup3;
     private javax.swing.ButtonGroup buttonGroup4;
+    private javax.swing.JTextField databaseNameField;
     private javax.swing.JPanel dbPanel;
     private javax.swing.JTextField diseaseGroupsFullNameFileTextFieald;
     private javax.swing.JPanel idPanel;
@@ -2133,6 +2175,7 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -2350,6 +2393,9 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                 for (char c : jPasswordField1.getPassword()) {
                     password += c;
                 }
+                  if (databaseNameField.getText() != null && !databaseNameField.getText().trim().equalsIgnoreCase("")) {
+                        database_name = databaseNameField.getText().trim();
+                    }
                 exphandeler = new Handler("jdbc:mysql://" + jTextField13.getText() + ":3306/", database_name, "com.mysql.jdbc.Driver", jTextField1.getText(), password);
             } catch (SQLException sqlE) {
                 valid = false;
@@ -2481,6 +2527,9 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                     for (char c : jPasswordField1.getPassword()) {
                         password += c;
                     }
+                      if (databaseNameField.getText() != null && !databaseNameField.getText().trim().equalsIgnoreCase("")) {
+                        database_name = databaseNameField.getText().trim();
+                    }
                     exphandeler = new Handler("jdbc:mysql://" + jTextField13.getText() + ":3306/", database_name, "com.mysql.jdbc.Driver", jTextField1.getText(), password);
                 } catch (SQLException sqlE) {
                     System.out.println("at error SQL Exception line 896 " + this.getClass().getName() + "  " + sqlE.getMessage());
@@ -2533,6 +2582,9 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                     for (char c : jPasswordField1.getPassword()) {
                         password += c;
                     }
+                      if (databaseNameField.getText() != null && !databaseNameField.getText().trim().equalsIgnoreCase("")) {
+                        database_name = databaseNameField.getText().trim();
+                    }
                     exphandeler = new Handler("jdbc:mysql://" + jTextField13.getText() + ":3306/", database_name, "com.mysql.jdbc.Driver", jTextField1.getText(), password);
                 } catch (SQLException sqlE) {
                     System.out.println("at error SQL Exception line 896 " + this.getClass().getName() + "  " + sqlE.getMessage());
@@ -2583,6 +2635,9 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                     String password = "";
                     for (char c : jPasswordField1.getPassword()) {
                         password += c;
+                    }
+                      if (databaseNameField.getText() != null && !databaseNameField.getText().trim().equalsIgnoreCase("")) {
+                        database_name = databaseNameField.getText().trim();
                     }
                     exphandeler = new Handler("jdbc:mysql://" + jTextField13.getText() + ":3306/", database_name, "com.mysql.jdbc.Driver", jTextField1.getText(), password);
                 } catch (SQLException sqlE) {

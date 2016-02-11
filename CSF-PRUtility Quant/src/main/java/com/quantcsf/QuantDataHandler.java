@@ -985,7 +985,7 @@ public class QuantDataHandler {
             String line;
             while ((line = bufRdr.readLine()) != null) {
 
-                String[] lineArr = line.split("\t");
+                String[] lineArr = line.split(";");
                 if (lineArr.length > 1) {
                     diseaseGroupsNamingMap.put(lineArr[0], lineArr[1]);
 
