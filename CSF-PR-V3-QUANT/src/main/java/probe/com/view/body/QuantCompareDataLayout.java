@@ -5,6 +5,7 @@
  */
 package probe.com.view.body;
 
+import com.google.gwt.user.client.Window;
 import com.vaadin.data.Property;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.Page;
@@ -586,6 +587,7 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
 
 //        userDataLayoutContainer.setVisability(false);
         UI.getCurrent().scrollIntoView(quantCompareDataViewLayout);
+        
 
     }
 

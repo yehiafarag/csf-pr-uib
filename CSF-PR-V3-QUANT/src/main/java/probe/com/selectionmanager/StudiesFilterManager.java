@@ -15,7 +15,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 import org.jfree.chart.JFreeChart;
 import probe.com.model.beans.quant.QuantDatasetInitialInformationObject;
 import probe.com.model.beans.quant.QuantDatasetObject;
@@ -241,7 +240,6 @@ public class StudiesFilterManager implements Serializable {
                     selectedHeatMapColumns.add(str);
                 }
             }
-            System.out.println("at selectedHeatMapRows "+selectedHeatMapRows+"    selectedHeatMapColumns "+selectedHeatMapColumns);
 
 //            selectedHeatMapColumns.clear();
 //            selectedHeatMapColumns.addAll(selectedHeatMapRows);

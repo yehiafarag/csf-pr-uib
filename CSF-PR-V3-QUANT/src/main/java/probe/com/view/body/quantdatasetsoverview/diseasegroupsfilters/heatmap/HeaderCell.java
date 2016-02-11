@@ -92,7 +92,6 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
 //            this.setStyleName("hmcolumnlabel");
         }
         valueLabel.setStyleName(allStyle + cellStyleName);
-        System.out.println("at style name "+ allStyle + cellStyleName);
 //        super("<b>" + title + "</b>");
         valueLabel.setWidth((heatmapHeaderCellWidth - 4) + "px");
         valueLabel.setHeight((heatmapCellWidth - 4) + "px");
@@ -106,12 +105,12 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
         this.setComponentAlignment(valueLabel, Alignment.BOTTOM_CENTER);
         this.addLayoutClickListener(HeaderCell.this);
         if (fullName == null) {
-            this.fullName = title;
+            this.fullName = title.split("\n")[0];
         } else {
             this.fullName = fullName;
         }
 
-        this.setDescription(title.split("\n")[0]);
+        this.setDescription(this.fullName.replace("_","").replace("-",","));
 
     }
 

@@ -140,6 +140,7 @@ public class StudiesSelectionManager implements Serializable {
      */
     public void setQuantProteinsSelectionLayout(Map<String, DiseaseGroupsComparisonsProteinLayout[]> protSelectionMap) {
 
+        System.out.println("at setQuantProteinsSelectionLayout "+protSelectionMap.keySet() );
         this.quantProteinsLayoutSelectionMap = protSelectionMap;
 
     }

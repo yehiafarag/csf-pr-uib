@@ -11,6 +11,7 @@ import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.OptionGroup;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.util.HashMap;
@@ -39,6 +40,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
     private final Map<QuantDiseaseGroupsComparison, ProteinStudyComparisonScatterPlotLayout> studyCompLayoutMap = new LinkedHashMap<QuantDiseaseGroupsComparison, ProteinStudyComparisonScatterPlotLayout>();
     private final Map<QuantDiseaseGroupsComparison, PeptidesComparisonsSequenceLayout> peptideCompLayoutMap = new LinkedHashMap<QuantDiseaseGroupsComparison, PeptidesComparisonsSequenceLayout>();
     private final GridLayout mainStudiesLayout, mainPeptidesLayout;
+    private final Panel studiesPanel,peptidesPanel;
     private final QuantCentralManager Quant_Central_Manager;
     private final int width;
     private final DiseaseGroupsComparisonsProteinLayout[] diiseaseGroupsComparisonsProteinArr;
@@ -79,14 +81,14 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
                 if (studiesPeptidesSwich.getValue().toString().equalsIgnoreCase("Studies")) {
-                    mainStudiesLayout.setVisible(true);
-                    mainPeptidesLayout.setVisible(false);
+                    studiesPanel.setVisible(true);
+                    peptidesPanel.setVisible(false);
                     showSigneficantPeptidesOnly.setVisible(false);
                     legend.setVisible(false);
                     
                 } else {
-                    mainStudiesLayout.setVisible(false);
-                    mainPeptidesLayout.setVisible(true);
+                    studiesPanel.setVisible(false);
+                    peptidesPanel.setVisible(true);
                     legend.setVisible(true);
                     showSigneficantPeptidesOnly.setVisible(true);
                 }
@@ -164,15 +166,21 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
         topRightLayout.addComponent(info);
         topRightLayout.setComponentAlignment(info, Alignment.TOP_RIGHT);
         
+          
         mainStudiesLayout = new GridLayout(1, selectedComparisonList.size() + 1);
-        this.addComponent(mainStudiesLayout);
+        studiesPanel = new Panel(mainStudiesLayout);
+        studiesPanel.setHeight("500px");
+        this.addComponent(studiesPanel);
         mainStudiesLayout.setWidthUndefined();
         mainStudiesLayout.setHeightUndefined();
         mainPeptidesLayout = new GridLayout(1, selectedComparisonList.size() + 1);
-        this.addComponent(mainPeptidesLayout);
+        peptidesPanel = new Panel(mainPeptidesLayout);
+        
+        this.addComponent(peptidesPanel);
+        peptidesPanel.setHeight("500px");
         mainPeptidesLayout.setWidthUndefined();
         mainPeptidesLayout.setHeightUndefined();
-        mainPeptidesLayout.setVisible(false);
+        peptidesPanel.setVisible(false);
         
         this.width = width;
         this.diiseaseGroupsComparisonsProteinArr = proteinsComparisonsArr;

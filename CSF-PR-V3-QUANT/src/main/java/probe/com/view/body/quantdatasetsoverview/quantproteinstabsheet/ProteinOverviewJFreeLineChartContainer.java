@@ -926,10 +926,9 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
         emptyValues[0] = xEmptyValues;
         emptyValues[1] = yEmptyValues;
-        
-        noValueProvidedvalues[0]=xNoValueProvided;
-        noValueProvidedvalues[1]=yNoValueProvided;
-        
+
+        noValueProvidedvalues[0] = xNoValueProvided;
+        noValueProvidedvalues[1] = yNoValueProvided;
 
         dataset.addSeries("line", linevalues);
         dataset.addSeries("up", upvalues);
@@ -1093,7 +1092,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
         renderer.setSeriesPaint(0, Color.GRAY);
-        Color[] dataColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0),Color.decode("#b5babb")};
+        Color[] dataColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0), Color.decode("#b5babb")};
 
         renderer.setUseOutlinePaint(true);
         renderer.setSeriesPaint(1, dataColor[4]);
@@ -1113,7 +1112,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
         renderer.setSeriesPaint(6, Color.WHITE);
         renderer.setSeriesOutlinePaint(6, dataColor[2]);
-        
+
         renderer.setSeriesPaint(7, dataColor[5]);
         renderer.setSeriesOutlinePaint(7, Color.GRAY);
 
@@ -1137,7 +1136,6 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         renderer.setSeriesLinesVisible(5, false);
         renderer.setSeriesLinesVisible(6, false);
         renderer.setSeriesLinesVisible(7, false);
-        
 
         XYPlot xyplot = new XYPlot(dataset, xAxis, yAxis, renderer) {
 
@@ -1191,12 +1189,12 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                 }
             }
 
-            private final Color[] labelsColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), Color.WHITE, new Color(255, 51, 51), new Color(204, 0, 0),Color.decode("#b5babb")};
-            private final Color[] labelsOutColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0),Color.GRAY};
+            private final Color[] labelsColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), Color.WHITE, new Color(255, 51, 51), new Color(204, 0, 0), Color.decode("#b5babb")};
+            private final Color[] labelsOutColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0), Color.GRAY};
 
             private final Font font = new Font("Verdana", Font.PLAIN, 11);
-            private final String[] labels = new String[]{"Low 100%", "Low <100% ", "Stable", "No Data", " High <100%", "High 100%","No Quant. Info."};
-            private final Shape[] shapes = new Shape[]{downArr, downArr, notRShape, emptyRShape, upArr, upArr,emptyRShape, square};
+            private final String[] labels = new String[]{"Low 100%", "Low <100% ", "Stable", "No Data", " High <100%", "High 100%", "No Quant. Info."};
+            private final Shape[] shapes = new Shape[]{downArr, downArr, notRShape, emptyRShape, upArr, upArr, emptyRShape, square};
 
             @Override
             public LegendItemCollection getLegendItems() {
@@ -1365,8 +1363,8 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
         plot.setDomainGridlinesVisible(isFullChart);
         plot.setRangeGridlinesVisible(isFullChart);
-        yAxis.setVisible(false);
-        xAxis.setVisible(false);
+        yAxis.setVisible(isFullChart);
+        xAxis.setVisible(isFullChart);
         plot.setOutlineVisible(isFullChart);
 
         XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
@@ -1420,7 +1418,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
             final Shape sleftArr = ShapeUtilities.createDownTriangle(3f);
             final Shape srightArr = ShapeUtilities.createUpTriangle(3f);
 
-             renderer.setSeriesShape(7, semptyRShape);
+            renderer.setSeriesShape(7, semptyRShape);
             renderer.setSeriesShape(6, semptyRShape);
             renderer.setSeriesShape(5, sleftArr);
             renderer.setSeriesShape(4, sleftArr);

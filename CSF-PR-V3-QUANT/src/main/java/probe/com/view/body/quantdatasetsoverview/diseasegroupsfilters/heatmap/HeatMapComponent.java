@@ -686,7 +686,7 @@ public class HeatMapComponent extends VerticalLayout {
             if (title.equalsIgnoreCase("")) {
                 title = "Not Available";
             }
-            HeaderCell headerCell = new HeaderCell(false, title, i, HeatMapComponent.this, heatmapCellWidth, heatmapHeaderCellWidth, diseaseFullNameMap.get(title));
+            HeaderCell headerCell = new HeaderCell(false, title, i, HeatMapComponent.this, heatmapCellWidth, heatmapHeaderCellWidth, diseaseFullNameMap.get(title.split("\n")[0]));
             columnHeader.addComponent(headerCell, i, 0);
             columnHeader.setComponentAlignment(headerCell, Alignment.MIDDLE_CENTER);
             columnCells[i] = headerCell;

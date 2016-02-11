@@ -30,6 +30,11 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
 //    private final StudiesSelectionManager Studies_Selection_Manager;
     private final QuantCentralManager Quant_Central_Manager;
     private final QuantProteinsTabsheetContainerLayout proteinsLayout;
+    private final VerticalLayout topLabelMarker;
+
+    public VerticalLayout getTopLabelMarker() {
+        return topLabelMarker;
+    }
 
     /**
      *
@@ -39,6 +44,15 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
      */
     public QuantDatasetsOverviewLayout(CSFPRHandler CSFPR_Handler, boolean searchingMode, List<QuantProtein> searchQuantificationProtList) {
 //        Studies_Selection_Manager = new StudiesSelectionManager();//,filterUtility.getFullFilterList()
+        
+        
+                topLabelMarker = new VerticalLayout();
+                this.addComponent(topLabelMarker);
+                this.setExpandRatio(topLabelMarker, 0.01f);
+                topLabelMarker.setHeight("10px");
+                topLabelMarker.setWidth("20px");
+                topLabelMarker.setStyleName(Reindeer.LAYOUT_BLUE);
+
 
         if (CSFPR_Handler.getQuantDatasetInitialInformationObject().isEmpty()) {
             Label noExpLable = new Label("<h4 style='font-family:verdana;color:black;font-weight:bold;'>Sorry No Dataset Availabe Now !</h4>");

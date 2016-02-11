@@ -22,7 +22,7 @@ public class DiseaseGroupLabel extends VerticalLayout{
             this.setStyleName("rowItem");
             this.addStyleName("rowItem_"+styleName);
             this.setDescription(strLabel);
-            Label label = new Label("<font color='#ffffff'>"+strLabel.split("\n")[0]+"</font>");
+            Label label = new Label("<font color='#ffffff'>"+strLabel.split(" - ")[0]+"</font>");
             label.setContentMode(ContentMode.HTML);
 //            label.setStyleName(styleName);
             this.addComponent(label);

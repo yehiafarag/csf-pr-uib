@@ -1,5 +1,8 @@
 package probe.com;
 
+import com.ejt.vaadin.sizereporter.ComponentResizeEvent;
+import com.ejt.vaadin.sizereporter.ComponentResizeListener;
+import com.ejt.vaadin.sizereporter.SizeReporter;
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
@@ -27,7 +30,7 @@ import probe.com.handlers.CSFPRHandler;
 public class AppController extends UI {
 
     private String dbURL, dbName, dbDriver, dbUserName, dbPassword, filesURL;
-    private CSFPRHandler handler;
+    private CSFPRHandler CSFPR_Handler;
     private CSFPRApplication application;
 
     /**
@@ -47,13 +50,31 @@ public class AppController extends UI {
         dbUserName = (scx.getInitParameter("userName"));
         dbPassword = (scx.getInitParameter("password"));
         filesURL = scx.getInitParameter("filesURL");
-        //init application  handler)
-        handler = new CSFPRHandler(dbURL, dbName, dbDriver, dbUserName, dbPassword, filesURL);
+        //init application  CSFPR_Handler)
+        CSFPR_Handler = new CSFPRHandler(dbURL, dbName, dbDriver, dbUserName, dbPassword, filesURL);
         //init main layout
-        application = new CSFPRApplication(handler);
+        application = new CSFPRApplication(CSFPR_Handler);
         this.getPage().setTitle("CSF Proteome Resource (CSF-PR)");
         setContent(application);
-        this.setPrimaryStyleName("hidescroll");;
+        
+        
+        
+//         final SizeReporter reporter = new SizeReporter(application);
+//                reporter.addResizeListener(new ComponentResizeListener() {
+//                    @Override
+//                    public void sizeChanged(ComponentResizeEvent event) {                       
+//                        System.out.println("at app size event "+event.getHeight());
+//                    }
+//                });
+//        
+        
+        
+        
+        
+        
+        
+        
+        
         this.addDetachListener(new DetachListener() {
             @Override
             public void detach(DetachEvent event) {

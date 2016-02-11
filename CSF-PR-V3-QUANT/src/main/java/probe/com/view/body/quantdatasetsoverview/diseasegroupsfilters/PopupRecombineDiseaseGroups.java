@@ -46,7 +46,7 @@ public class PopupRecombineDiseaseGroups extends Button implements ClickListener
 
     public PopupRecombineDiseaseGroups(QuantCentralManager Quant_Central_Manager) {
         super("Recombine Groups");
-        this.diseaseStyleMap = new HashMap<String, String>();
+        this.diseaseStyleMap = Quant_Central_Manager.getDiseaseStyleMap();
         
 
         default_DiseaseCat_DiseaseGroupMap = new LinkedHashMap<String, Map<String, String>>(Quant_Central_Manager.getDefault_DiseaseCat_DiseaseGroupMap());
@@ -304,7 +304,7 @@ public class PopupRecombineDiseaseGroups extends Button implements ClickListener
         rotateContainer.setHeight("20px");
         diseaseLabelContainer.addComponent(rotateContainer);
 
-        rotateContainer.setStyleName("row_" + diseaseStyleMap.get(diseaseCategory));
+        rotateContainer.setStyleName("row_" + diseaseStyleMap.get(diseaseCategory.replace(" ","_").replace("'", "-")+("_Disease")));
         rotateContainer.addComponent(label);
         HorizontalLayout layout = new HorizontalLayout();
         layout.setSpacing(true);
@@ -315,7 +315,8 @@ public class PopupRecombineDiseaseGroups extends Button implements ClickListener
     }
 
     private VerticalLayout generateLabel(String strLabel, String diseaseCategory) {
-        DiseaseGroupLabel container = new DiseaseGroupLabel(300, strLabel, diseaseStyleMap.get(diseaseCategory));
+        
+        DiseaseGroupLabel container = new DiseaseGroupLabel(300, strLabel, diseaseStyleMap.get(diseaseCategory.replace(" ","_").replace("'", "-")+("_Disease")));
         container.setHeight("24px");
         return container;
     }

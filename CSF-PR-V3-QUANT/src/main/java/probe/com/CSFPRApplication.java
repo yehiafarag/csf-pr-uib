@@ -2,6 +2,7 @@ package probe.com;
 
 import java.io.Serializable;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.Reindeer;
 import eu.dusse.vaadin.waypoints.InviewExtension;
 import eu.dusse.vaadin.waypoints.InviewExtension.EnterEvent;
 import eu.dusse.vaadin.waypoints.InviewExtension.EnterListener;
@@ -46,6 +47,12 @@ public class CSFPRApplication extends VerticalLayout implements Serializable {
         //body
         final Body body = new Body(CSFPR_Handler);
         this.addComponent(body);
+        
+        final VerticalLayout bottom = new VerticalLayout();
+        bottom.setWidth("100%");
+        bottom.setHeight("10px");
+        bottom.setStyleName(Reindeer.LAYOUT_WHITE);
+//        this.addComponent(bottom);
 
     }
 

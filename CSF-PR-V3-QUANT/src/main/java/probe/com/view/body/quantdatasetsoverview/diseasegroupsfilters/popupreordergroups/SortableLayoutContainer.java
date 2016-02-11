@@ -271,7 +271,7 @@ public class SortableLayoutContainer extends VerticalLayout {
         groupsIds.clear();
         groupSelectionMap.clear();
         for (String strLabel : datasource) {
-            DiseaseGroupLabel container = new DiseaseGroupLabel(itemWidth, strLabel,diseaseStyleMap.get(strLabel.split("\n")[1]));
+            DiseaseGroupLabel container = new DiseaseGroupLabel(itemWidth, strLabel.split("\n")[0]+" - "+ strLabel.split("\n")[1].replace("_Disease", "").replace("_"," ").replace("-","'"),diseaseStyleMap.get(strLabel.split("\n")[1]));
             componentsList.add(container);
             groupSelectionMap.put(strLabel, Boolean.FALSE);
             groupsIds.add(strLabel);

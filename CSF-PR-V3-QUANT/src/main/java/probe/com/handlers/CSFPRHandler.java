@@ -1,5 +1,6 @@
 package probe.com.handlers;
 
+import com.vaadin.ui.Panel;
 import java.sql.SQLException;
 
 import java.io.File;
@@ -47,12 +48,12 @@ public class CSFPRHandler implements Serializable {
     private final Map<String, Map<String, String>> default_DiseaseCat_DiseaseGroupMap;
     private final Map<String, QuantDatasetInitialInformationObject> quantDatasetInitialInformationObject;
     private final Map<String, String> diseaseHashedColorMap = new HashMap<String, String>();
-    private final Map<String, String>diseaseStyleMap = new HashMap<String, String>();
+    private final Map<String, String> diseaseStyleMap = new HashMap<String, String>();
 
     public Map<String, String> getDiseaseStyleMap() {
         return diseaseStyleMap;
     }
-   
+
     private final String suggestNames = "Alzheimer's\n"
             + "CIS\n"
             + "CIS-CIS\n"
@@ -138,7 +139,7 @@ public class CSFPRHandler implements Serializable {
             }
             default_DiseaseCat_DiseaseGroupMap.put(str, diseaseGroupMap);
         }
-         diseaseHashedColorMap.put("Multiple_Sclerosis_Disease", "#A52A2A");
+        diseaseHashedColorMap.put("Multiple_Sclerosis_Disease", "#A52A2A");
         diseaseHashedColorMap.put("Alzheimer-s_Disease", "#4b7865");
         diseaseHashedColorMap.put("Parkinson-s_Disease", "#74716E");
         diseaseHashedColorMap.put("Amyotrophic_Lateral_Sclerosis_Disease", "#7D0725");
@@ -670,19 +671,22 @@ public class CSFPRHandler implements Serializable {
         this.header = header;
     }
 
-    public List<Object[]> getPublicationList() {       
-       
-         return this.logicLayer.getPublicationList();
+    public List<Object[]> getPublicationList() {
+
+        return this.logicLayer.getPublicationList();
 
     }
-    
-    public  Set<QuantDatasetObject> getQuantDatasetList(){
+
+    public Set<QuantDatasetObject> getQuantDatasetList() {
         return this.logicLayer.getQuantDatasetList();
-    
+
     }
 
     public Map<String, String> getDiseaseHashedColorMap() {
         return diseaseHashedColorMap;
     }
+
+
+   
 
 }

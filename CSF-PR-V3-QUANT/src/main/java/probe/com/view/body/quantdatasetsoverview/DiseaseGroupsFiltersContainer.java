@@ -405,7 +405,6 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
      */
     @Override
     public void selectionChanged(String type) {
-        System.out.println("at type is " + type);
         if ((type.equalsIgnoreCase("Comparison_Selection") && Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList().isEmpty()) || type.equalsIgnoreCase("Reset_Disease_Groups_Level") || type.equalsIgnoreCase("Pie_Chart_Selection")) {
             selectionOverviewBubbleChart.updateSize(initLayoutWidth, Math.min(heatmapW + 20, standeredChartHeight));
             btnsLayout.setVisible(true);
