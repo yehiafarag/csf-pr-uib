@@ -34,9 +34,9 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
     private final Button adminIcon;
     private TabSheet.Tab homeTab, adminTab;//tabs for Experiments Editor,Proteins, Search
     private final TabSheet mainTabSheet;//tab sheet for first menu (Experiments Editor,Proteins, Search)
-    private VerticalLayout searchTabLayout, adminLayout, identificationDatasetsLayout, compareLayout;
+    private VerticalLayout adminLayout;
     private WelcomeLayout welcomeLayout;
-    private Panel quantDatasetsOverviewPanel;
+    private Panel quantDatasetsOverviewPanel, identificationDatasetsOverviewPanel, compareUserDataPanel, searchDataPanel;
     private QuantDatasetsOverviewLayout datasetOverviewTabLayout;
     private final CSFPRHandler CSFPR_Handler;
     private IdentificationDatasetsLayout identificationDatasetsTabLayout;
@@ -107,27 +107,28 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
 //        quantDatasetsOverviewPanel.setPrimaryStyleName("scrollable");
         mainTabSheet.addTab(quantDatasetsOverviewPanel, "Quantitative Studies");
 
-//      Tab 3 content       identificationDatasetsLayout    
-        identificationDatasetsLayout = new VerticalLayout();
-        identificationDatasetsLayout.setMargin(true);
-//        identificationDatasetsLayout.setHeight("100%");
-        identificationDatasetsLayout.setHeight(bodyHeight + "px");
-        identificationDatasetsLayout.setPrimaryStyleName("scrollable");
-        mainTabSheet.addTab(this.identificationDatasetsLayout, "Identification Datasets");
+//      Tab 3 content       identificationDatasetsOverviewPanel    
+        identificationDatasetsOverviewPanel = new Panel();
+//        identificationDatasetsOverviewPanel.setMargin(true);
+//        identificationDatasetsOverviewPanel.setHeight("100%");
+        identificationDatasetsOverviewPanel.setHeight(bodyHeight + "px");
+        identificationDatasetsOverviewPanel.setWidth("100%");
+//        identificationDatasetsOverviewPanel.setPrimaryStyleName("scrollable");
+        mainTabSheet.addTab(this.identificationDatasetsOverviewPanel, "Identification Datasets");
 
 //      Tab 4 content  searching proteins tab 
-        searchTabLayout = new VerticalLayout();
-        searchTabLayout.setMargin(true);
-        searchTabLayout.setHeight(bodyHeight + "px");
-        searchTabLayout.setPrimaryStyleName("scrollable");
-        TabSheet.Tab serchingTab = mainTabSheet.addTab(this.searchTabLayout, "Search");
+        searchDataPanel = new Panel();
+//        searchDataPanel.setMargin(true);
+        searchDataPanel.setHeight(bodyHeight + "px");
+//        searchDataPanel.setPrimaryStyleName("scrollable");
+        TabSheet.Tab serchingTab = mainTabSheet.addTab(this.searchDataPanel, "Search");
 
-        compareLayout = new VerticalLayout();
-        compareLayout.setMargin(true);
-        compareLayout.setHeight(bodyHeight + "px");
-        compareLayout.setWidth("100%");
-        compareLayout.setPrimaryStyleName("scrollable");
-        mainTabSheet.addTab(compareLayout, "Compare");
+        compareUserDataPanel = new Panel();
+//        compareUserDataPanel.setMargin(true);
+        compareUserDataPanel.setHeight(bodyHeight + "px");
+        compareUserDataPanel.setWidth("100%");
+//        compareUserDataPanel.setPrimaryStyleName("scrollable");
+        mainTabSheet.addTab(compareUserDataPanel, "Compare");
 
 //      Tab 5content hidden tab (login form)
         adminLayout = new VerticalLayout();
@@ -173,35 +174,38 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
         } else if (c.equals("Proteins")) {
             adminTab.setVisible(false);
         } else if (c.equals("Search")) {
+            CSFPR_Handler.controlHeaderHeights(0);
+            searchDataPanel.setHeight((bodyHeight + 60) + "px");
             adminTab.setVisible(false);
             if (searchingLayout == null && CSFPR_Handler != null) {
                 searchingLayout = new ProteinsSearchingLayout(CSFPR_Handler, mainTabSheet);
-                this.searchTabLayout.addComponent(searchingLayout);
+                this.searchDataPanel.setContent(searchingLayout);
                 searchingLayout.setHeightUndefined();
 
-                final SizeReporter reporter = new SizeReporter(searchTabLayout);
-                reporter.addResizeListener(new ComponentResizeListener() {
-                    @Override
-                    public void sizeChanged(ComponentResizeEvent event) {
-                        System.out.println("at size changed");
-                        sizeControl = event.getHeight();
-                        if ((sizeControl + 60) <= (pageHeight)) {
-                            return;
-                        }
-                        CSFPR_Handler.controlHeaderHeights(0);
-                        searchingLayout.setHeight((bodyHeight + 60) + "px");
-                    }
-                });
+//                final SizeReporter reporter = new SizeReporter(searchDataPanel);
+//                reporter.addResizeListener(new ComponentResizeListener() {
+//                    @Override
+//                    public void sizeChanged(ComponentResizeEvent event) {
+//                        System.out.println("at size changed");
+//                        sizeControl = event.getHeight();
+//                        if ((sizeControl + 60) <= (pageHeight)) {
+//                            return;
+//                        }
+//                        CSFPR_Handler.controlHeaderHeights(0);
+//                        searchingLayout.setHeight((bodyHeight + 60) + "px");
+//                    }
+//                });
                 boolean horizontal = false;
-                InviewExtension extension = new InviewExtensionImpl(searchTabLayout, searchingLayout, horizontal);
+                InviewExtension extension = new InviewExtensionImpl(searchingLayout.getTopLabelMarker(), quantDatasetsOverviewPanel, horizontal);
                 extension.addExitListener(new InviewExtension.ExitListener() {
                     @Override
                     public void onExit(InviewExtension.ExitEvent event) {
+//                        System.out.println("at on exeted and gone "+event.getDirection()+"----- "+quantDatasetsOverviewPanel.getScrollTop());
                         if ((sizeControl + 60) <= (pageHeight)) {
                             return;
                         }
                         CSFPR_Handler.controlHeaderHeights(0);
-                        searchingLayout.setHeight((bodyHeight + 60) + "px");
+                        searchDataPanel.setHeight((bodyHeight + 60) + "px");
                     }
                 });
                 extension.addEnteredListener(new InviewExtension.EnteredListener() {
@@ -209,38 +213,59 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
 
                     @Override
                     public void onEntered(InviewExtension.EnteredEvent event) {
+//                        System.out.println("at on entered --- already----- "+quantDatasetsOverviewPanel.getScrollTop());
                         if (init) {
                             init = false;
                             return;
                         }
                         CSFPR_Handler.controlHeaderHeights(60);
-                        searchingLayout.setHeight((bodyHeight) + "px");
+                        searchDataPanel.setHeight((bodyHeight) + "px");
+                    }
+                });
+                extension.addEnterListener(new InviewExtension.EnterListener() {
+
+                    @Override
+                    public void onEnter(InviewExtension.EnterEvent event) {
+                        CSFPR_Handler.controlHeaderHeights(60);
+                        searchDataPanel.setHeight((bodyHeight) + "px");
+//                        System.out.println("at on enter just ----- "+quantDatasetsOverviewPanel.getScrollTop());
+                    }
+                });
+                extension.addExitedListener(new InviewExtension.ExitedListener() {
+
+                    @Override
+                    public void onExited(InviewExtension.ExitedEvent event) {
+//                        System.out.println("at on exeted and gone----- "+quantDatasetsOverviewPanel.getScrollTop());
+                        CSFPR_Handler.controlHeaderHeights(0);
+                        searchDataPanel.setHeight((bodyHeight + 60) + "px");
                     }
                 });
             }
 
         } else if (c.equals("Quantitative Studies")) {
             adminTab.setVisible(false);
+            CSFPR_Handler.controlHeaderHeights(60);
+            quantDatasetsOverviewPanel.setHeight((bodyHeight) + "px");
             if (datasetOverviewTabLayout == null && CSFPR_Handler != null) {
 
                 datasetOverviewTabLayout = new QuantDatasetsOverviewLayout(CSFPR_Handler, false, null);
 
                 quantDatasetsOverviewPanel.setContent(datasetOverviewTabLayout);
 //                quantDatasetsOverviewPanel.setExpandRatio(datasetOverviewTabLayout, 0.99f);
-                final SizeReporter reporter = new SizeReporter(datasetOverviewTabLayout);
-                reporter.addResizeListener(new ComponentResizeListener() {
-                    @Override
-                    public void sizeChanged(ComponentResizeEvent event) {
-                        System.out.println("size changed");
-//                        sizeControl = event.getHeight();
-//                        if ((sizeControl + 60) <= (pageHeight)) {
-//                            return;
-//                        }
-//                        CSFPR_Handler.controlHeaderHeights(0);
-//                        quantDatasetsOverviewPanel.setHeight((bodyHeight + 60) + "px");
-//                        System.out.println("event " + event.getHeight());
-                    }
-                });
+//                final SizeReporter reporter = new SizeReporter(datasetOverviewTabLayout);
+//                reporter.addResizeListener(new ComponentResizeListener() {
+//                    @Override
+//                    public void sizeChanged(ComponentResizeEvent event) {
+////                        System.out.println("size changed");
+////                        sizeControl = event.getHeight();
+////                        if ((sizeControl + 60) <= (pageHeight)) {
+////                            return;
+////                        }
+////                        CSFPR_Handler.controlHeaderHeights(0);
+////                        quantDatasetsOverviewPanel.setHeight((bodyHeight + 60) + "px");
+////                        System.out.println("event " + event.getHeight());
+//                    }
+//                });
 
                 boolean horizontal = false;
                 InviewExtension extension = new InviewExtensionImpl(datasetOverviewTabLayout.getTopLabelMarker(), quantDatasetsOverviewPanel, horizontal);
@@ -292,32 +317,35 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
 
         } else if (c.equals("Identification Datasets")) {
             adminTab.setVisible(false);
+            CSFPR_Handler.controlHeaderHeights(60);
+            identificationDatasetsOverviewPanel.setHeight((bodyHeight) + "px");
             sizeControl = 0;
             if (identificationDatasetsTabLayout == null) {
                 identificationDatasetsTabLayout = new IdentificationDatasetsLayout(CSFPR_Handler, mainTabSheet);
-                identificationDatasetsLayout.addComponent(identificationDatasetsTabLayout);
-                final SizeReporter reporter = new SizeReporter(identificationDatasetsTabLayout);
-                reporter.addResizeListener(new ComponentResizeListener() {
-                    @Override
-                    public void sizeChanged(ComponentResizeEvent event) {
-                        sizeControl = event.getHeight();
-                        if ((sizeControl + 60) <= (pageHeight)) {
-                            return;
-                        }
-                        CSFPR_Handler.controlHeaderHeights(0);
-                        identificationDatasetsLayout.setHeight((bodyHeight + 60) + "px");
-                    }
-                });
+                identificationDatasetsOverviewPanel.setContent(identificationDatasetsTabLayout);
+//                final SizeReporter reporter = new SizeReporter(identificationDatasetsTabLayout);
+//                reporter.addResizeListener(new ComponentResizeListener() {
+//                    @Override
+//                    public void sizeChanged(ComponentResizeEvent event) {
+//                        sizeControl = event.getHeight();
+//                        if ((sizeControl + 60) <= (pageHeight)) {
+//                            return;
+//                        }
+//                        CSFPR_Handler.controlHeaderHeights(0);
+//                        identificationDatasetsOverviewPanel.setHeight((bodyHeight + 60) + "px");
+//                    }
+//                });
                 boolean horizontal = false;
-                InviewExtension extension = new InviewExtensionImpl(identificationDatasetsTabLayout, identificationDatasetsLayout, horizontal);
+                InviewExtension extension = new InviewExtensionImpl(identificationDatasetsTabLayout.getTopLabelMarker(), identificationDatasetsOverviewPanel, horizontal);
                 extension.addExitListener(new InviewExtension.ExitListener() {
                     @Override
                     public void onExit(InviewExtension.ExitEvent event) {
+//                        System.out.println("at on exeted and gone "+event.getDirection()+"----- "+quantDatasetsOverviewPanel.getScrollTop());
                         if ((sizeControl + 60) <= (pageHeight)) {
                             return;
                         }
                         CSFPR_Handler.controlHeaderHeights(0);
-                        identificationDatasetsLayout.setHeight((bodyHeight + 60) + "px");
+                        identificationDatasetsOverviewPanel.setHeight((bodyHeight + 60) + "px");
                     }
                 });
                 extension.addEnteredListener(new InviewExtension.EnteredListener() {
@@ -325,29 +353,31 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
 
                     @Override
                     public void onEntered(InviewExtension.EnteredEvent event) {
-
+//                        System.out.println("at on entered --- already----- "+quantDatasetsOverviewPanel.getScrollTop());
                         if (init) {
                             init = false;
                             return;
                         }
                         CSFPR_Handler.controlHeaderHeights(60);
-                        identificationDatasetsLayout.setHeight((bodyHeight) + "px");
+                        identificationDatasetsOverviewPanel.setHeight((bodyHeight) + "px");
                     }
                 });
                 extension.addEnterListener(new InviewExtension.EnterListener() {
 
                     @Override
                     public void onEnter(InviewExtension.EnterEvent event) {
-                        System.out.println("at on enter just");
-                        System.out.println("at on exeted and gone");
+                        CSFPR_Handler.controlHeaderHeights(60);
+                        identificationDatasetsOverviewPanel.setHeight((bodyHeight) + "px");
+//                        System.out.println("at on enter just ----- "+quantDatasetsOverviewPanel.getScrollTop());
                     }
                 });
                 extension.addExitedListener(new InviewExtension.ExitedListener() {
 
                     @Override
                     public void onExited(InviewExtension.ExitedEvent event) {
-                        System.out.println("at on exeted and gone");
-                        System.out.println("at on entered --- already");
+//                        System.out.println("at on exeted and gone----- "+quantDatasetsOverviewPanel.getScrollTop());
+                        CSFPR_Handler.controlHeaderHeights(0);
+                        identificationDatasetsOverviewPanel.setHeight((bodyHeight + 60) + "px");
                     }
                 });
 
@@ -355,36 +385,37 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
 
         } else if (c.equals("Compare")) {
             adminTab.setVisible(false);
+            CSFPR_Handler.controlHeaderHeights(60);
+            compareUserDataPanel.setHeight((bodyHeight) + "px");
 
             if (quantCompareDataTabLayout == null) {
                 quantCompareDataTabLayout = new QuantCompareDataLayout(CSFPR_Handler);
-                compareLayout.addComponent(quantCompareDataTabLayout);
-                compareLayout.setComponentAlignment(quantCompareDataTabLayout, Alignment.TOP_CENTER);
-
-                final SizeReporter reporter = new SizeReporter(quantCompareDataTabLayout);
-                reporter.addResizeListener(new ComponentResizeListener() {
-                    @Override
-                    public void sizeChanged(ComponentResizeEvent event) {
-                        sizeControl = event.getHeight();
-                        if ((sizeControl + 60) <= (pageHeight)) {
-                            return;
-                        }
-                        CSFPR_Handler.controlHeaderHeights(0);
-                        compareLayout.setHeight((bodyHeight + 60) + "px");
-                    }
-                });
+                compareUserDataPanel.setContent(quantCompareDataTabLayout);
+//                compareUserDataPanel.setComponentAlignment(quantCompareDataTabLayout, Alignment.TOP_CENTER);
+//
+//                final SizeReporter reporter = new SizeReporter(quantCompareDataTabLayout);
+//                reporter.addResizeListener(new ComponentResizeListener() {
+//                    @Override
+//                    public void sizeChanged(ComponentResizeEvent event) {
+//                        sizeControl = event.getHeight();
+//                        if ((sizeControl + 60) <= (pageHeight)) {
+//                            return;
+//                        }
+//                        CSFPR_Handler.controlHeaderHeights(0);
+//                        compareUserDataPanel.setHeight((bodyHeight + 60) + "px");
+//                    }
+//                });
                 boolean horizontal = false;
-                InviewExtension extension = new InviewExtensionImpl(quantCompareDataTabLayout, compareLayout, horizontal);
+                InviewExtension extension = new InviewExtensionImpl(identificationDatasetsTabLayout.getTopLabelMarker(), identificationDatasetsOverviewPanel, horizontal);
                 extension.addExitListener(new InviewExtension.ExitListener() {
-
                     @Override
                     public void onExit(InviewExtension.ExitEvent event) {
-                        System.out.println("at on exit");
+//                        System.out.println("at on exeted and gone "+event.getDirection()+"----- "+quantDatasetsOverviewPanel.getScrollTop());
                         if ((sizeControl + 60) <= (pageHeight)) {
                             return;
                         }
                         CSFPR_Handler.controlHeaderHeights(0);
-                        compareLayout.setHeight((bodyHeight + 60) + "px");
+                        compareUserDataPanel.setHeight((bodyHeight + 60) + "px");
                     }
                 });
                 extension.addEnteredListener(new InviewExtension.EnteredListener() {
@@ -392,13 +423,31 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
 
                     @Override
                     public void onEntered(InviewExtension.EnteredEvent event) {
-                        System.out.println("at on entered");
+//                        System.out.println("at on entered --- already----- "+quantDatasetsOverviewPanel.getScrollTop());
                         if (init) {
                             init = false;
                             return;
                         }
                         CSFPR_Handler.controlHeaderHeights(60);
-                        compareLayout.setHeight((bodyHeight) + "px");
+                        compareUserDataPanel.setHeight((bodyHeight) + "px");
+                    }
+                });
+                extension.addEnterListener(new InviewExtension.EnterListener() {
+
+                    @Override
+                    public void onEnter(InviewExtension.EnterEvent event) {
+                        CSFPR_Handler.controlHeaderHeights(60);
+                        compareUserDataPanel.setHeight((bodyHeight) + "px");
+//                        System.out.println("at on enter just ----- "+quantDatasetsOverviewPanel.getScrollTop());
+                    }
+                });
+                extension.addExitedListener(new InviewExtension.ExitedListener() {
+
+                    @Override
+                    public void onExited(InviewExtension.ExitedEvent event) {
+//                        System.out.println("at on exeted and gone----- "+quantDatasetsOverviewPanel.getScrollTop());
+                        CSFPR_Handler.controlHeaderHeights(0);
+                        compareUserDataPanel.setHeight((bodyHeight + 60) + "px");
                     }
                 });
 
@@ -406,8 +455,6 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
 
         }
     }
-
-   
 
     private Button initAdminIcoBtn() {
         Button b = new Button("(Admin Login)");

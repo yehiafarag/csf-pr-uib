@@ -1890,7 +1890,7 @@ resetlabelbtn p{
 }
 .lowerlink{
     background: url(img/Lbackground.png) no-repeat;
-    background-position:251px 04px;
+    background-position:211px -13px;
 
 }
 
@@ -2681,7 +2681,9 @@ img {
     cursor:pointer;
 
 }
-.topmarker{
-/*    
-    background: blue;*/
+.overlayout{
+    margin-left: -320px !important;
+    position:absolute;
+    margin-top:-15px;
+    clear:both;
 }

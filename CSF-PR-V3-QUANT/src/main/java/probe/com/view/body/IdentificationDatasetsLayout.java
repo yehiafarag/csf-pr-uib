@@ -5,6 +5,7 @@ import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.Reindeer;
 import java.io.Serializable;
 import java.util.Map;
 import probe.com.handlers.CSFPRHandler;
@@ -21,6 +22,11 @@ import probe.com.view.core.HideOnClickLayout;
 public class IdentificationDatasetsLayout extends VerticalLayout implements Serializable {
 
     private final CSFPRHandler CSFPR_Handler;
+    private final VerticalLayout topLabelMarker;
+
+    public VerticalLayout getTopLabelMarker() {
+        return topLabelMarker;
+    }
 
     /**
      *
@@ -29,6 +35,13 @@ public class IdentificationDatasetsLayout extends VerticalLayout implements Seri
      */
     public IdentificationDatasetsLayout(CSFPRHandler CSFPR_Handler, TabSheet mainTabSheet) {
         this.CSFPR_Handler = CSFPR_Handler;
+        topLabelMarker = new VerticalLayout();
+        this.addComponent(topLabelMarker);
+        this.setExpandRatio(topLabelMarker, 0.01f);
+        topLabelMarker.setHeight("10px");
+        topLabelMarker.setWidth("20px");
+        topLabelMarker.setStyleName(Reindeer.LAYOUT_WHITE);
+
         this.setSpacing(true);
         this.setMargin(true);
 
@@ -60,9 +73,9 @@ public class IdentificationDatasetsLayout extends VerticalLayout implements Seri
      * @param mainTabSheet
      */
     private HideOnClickLayout initIdentificationDatasetRowLayout(int dsId, IdentificationDatasetDetailsBean identificationDataset, TabSheet mainTabSheet) {
-         
+
         IdentificationDatasetInformationLayout IdentificationDatasetInfoLayout = new IdentificationDatasetInformationLayout(CSFPR_Handler, dsId, mainTabSheet);
-        HideOnClickLayout dsLayout = new HideOnClickLayout(identificationDataset.getName(), IdentificationDatasetInfoLayout, IdentificationDatasetInfoLayout.getMiniLayout(),"",null);
+        HideOnClickLayout dsLayout = new HideOnClickLayout(identificationDataset.getName(), IdentificationDatasetInfoLayout, IdentificationDatasetInfoLayout.getMiniLayout(), "", null);
         dsLayout.setMargin(new MarginInfo(false, false, true, false));
         return dsLayout;
     }

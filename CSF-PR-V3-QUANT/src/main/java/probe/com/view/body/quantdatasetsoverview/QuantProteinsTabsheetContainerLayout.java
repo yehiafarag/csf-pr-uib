@@ -56,6 +56,9 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
     private Map<String, Integer> customizedTrendMap;
     private final boolean showCustTrend;
 
+    private final int high = Page.getCurrent().getBrowserWindowHeight() - 150;
+    private final int pageWidth = Page.getCurrent().getBrowserWindowWidth();
+
     /**
      * central selection manager event
      *
@@ -63,7 +66,7 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
      */
     @Override
     public void selectionChanged(String type) {
-        System.out.println("at type here is "+type);
+        System.out.println("at type here is " + type);
 //        if (type.equalsIgnoreCase("Comparison_Selection")) {
 //           Set<QuantDiseaseGroupsComparison> selectedComparisonList = Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList();
 //            System.out.println("at selectedComparisonList "+selectedComparisonList.size());
@@ -110,7 +113,7 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
                 String protName = key.replace("--", "").trim().split(",")[1];
                 HorizontalLayout vlo;
                 if (showCustTrend) {
-                    vlo = generateProtTab(key, protName, protAcc, protSelectionMap.get(key), selectedComparisonList,customizedTrendMap.get(protAcc));
+                    vlo = generateProtTab(key, protName, protAcc, protSelectionMap.get(key), selectedComparisonList, customizedTrendMap.get(protAcc));
                 } else {
                     vlo = generateProtTab(key, protName, protAcc, protSelectionMap.get(key), selectedComparisonList);
                 }
@@ -216,28 +219,6 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
             }
         });
 
-//        proteinsTabsheet = new TabSheet() {
-//
-//        };
-//        proteinsTabsheet.setCaptionAsHtml(true);
-//        proteinsTabsheet.setHeightUndefined();
-//        proteinsTabsheet.setStyleName(Reindeer.TABSHEET_MINIMAL);
-//        proteinsTabsheet.setVisible(false);
-//        proteinsTabsheet.addStyleName("hideoverflow");
-//        proteinsTabsheet.addSelectedTabChangeListener(QuantProteinsTabsheetContainerLayout.this);
-//        proteinsTabsheet.setCloseHandler(new TabSheet.CloseHandler() {
-//            @Override
-//            public void onTabClose(TabSheet tabsheet, Component tabContent) {
-//                protSelectionMap.remove(protSelectionTabMap.get(tabContent));
-//                if (protSelectionMap.isEmpty()) {
-//                    proteinsTabsheet.setVisible(false);
-//                }
-//
-//                Quant_Central_Manager.setQuantProteinsSelectionLayout(new LinkedHashMap<String, DiseaseGroupsComparisonsProteinLayout[]>(protSelectionMap));
-//            }
-//        });
-//        this.addComponent(proteinsTabsheet);
-//        this.initTabsheet();
         this.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
             private int layoutCounter = 30;
 
@@ -255,7 +236,6 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
         });
     }
 
-//    private int custTrend;
     /**
      *
      * @param datasetExploringCentralSelectionManager
@@ -271,6 +251,7 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
 
         this.Quant_Central_Manager = datasetExploringCentralSelectionManager;
         this.Quant_Central_Manager.registerStudySelectionListener(QuantProteinsTabsheetContainerLayout.this);
+
         this.setHeightUndefined();
         this.setMargin(new MarginInfo(false, false, false, false));
         this.noProtLabel.setContentMode(ContentMode.HTML);
@@ -308,6 +289,8 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
         });
     }
 
+    private boolean init = true;
+
     private void initTabsheet() {
         if (proteinsTabsheet != null) {
             this.removeComponent(proteinsTabsheet);
@@ -321,7 +304,7 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
         proteinsTabsheet.setHeightUndefined();
         proteinsTabsheet.setStyleName(Reindeer.TABSHEET_MINIMAL);
         proteinsTabsheet.setVisible(false);
-        proteinsTabsheet.addStyleName("hideoverflow");
+//        proteinsTabsheet.addStyleName("hideoverflow");
         proteinsTabsheet.setImmediate(true);
         proteinsTabsheet.addSelectedTabChangeListener(QuantProteinsTabsheetContainerLayout.this);
         proteinsTabsheet.setCloseHandler(new TabSheet.CloseHandler() {
@@ -351,8 +334,7 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
      */
     private HorizontalLayout generateProtTab(String proteinKey, String quantProteinName, String quantProteinAccession, DiseaseGroupsComparisonsProteinLayout[] diseaseGroupsComparisonsProteinArray, Set<QuantDiseaseGroupsComparison> selectedDiseaseGroupsComparisonsList) {
         HorizontalLayout bodyLayout = new HorizontalLayout();
-        Page page = Page.getCurrent();
-        int pageWidth = page.getBrowserWindowWidth();
+
         bodyLayout.setWidthUndefined();
         bodyLayout.setSpacing(true);
         bodyLayout.setMargin(true);
@@ -375,14 +357,12 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
      * list in case of searching mode
      */
     private HorizontalLayout generateProtTab(String proteinKey, String quantProteinName, String quantProteinAccession, DiseaseGroupsComparisonsProteinLayout[] diseaseGroupsComparisonsProteinArray, Set<QuantDiseaseGroupsComparison> selectedDiseaseGroupsComparisonsList, int custTrend) {
-        HorizontalLayout bodyLayout = new HorizontalLayout();
-        Page page = Page.getCurrent();
-        int pageWidth = page.getBrowserWindowWidth();
+        HorizontalLayout bodyLayout = new HorizontalLayout();       
         bodyLayout.setWidthUndefined();
         bodyLayout.setSpacing(true);
         bodyLayout.setMargin(true);
         bodyLayout.setHeightUndefined();
-        bodyLayout.setStyleName(Reindeer.LAYOUT_WHITE);        
+        bodyLayout.setStyleName(Reindeer.LAYOUT_WHITE);
         ProteinOverviewJFreeLineChartContainer overallPlotLayout = new ProteinOverviewJFreeLineChartContainer(Quant_Central_Manager, CSFPR_Handler, diseaseGroupsComparisonsProteinArray, selectedDiseaseGroupsComparisonsList, (pageWidth), quantProteinName, quantProteinAccession, searchingMode, proteinKey, custTrend);
         bodyLayout.addComponent(overallPlotLayout);
         bodyLayout.setComponentAlignment(overallPlotLayout, Alignment.TOP_CENTER);
@@ -398,6 +378,7 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
             if (proteinsTabsheet == null || proteinsTabsheet.getSelectedTab() == null) {
                 ((HideOnClickLayout) this.getParent()).setVisability(false);
                 this.noProtLabel.setVisible(true);
+                this.setHeightUndefined();
                 return;
             }
             this.noProtLabel.setVisible(false);
@@ -405,6 +386,11 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
             HorizontalLayout selectedTab = (HorizontalLayout) proteinsTabsheet.getSelectedTab();
             ProteinOverviewJFreeLineChartContainer overallPlotLayout = (ProteinOverviewJFreeLineChartContainer) selectedTab.getComponent(0);
             overallPlotLayout.redrawCharts();
+            this.setHeight((overallPlotLayout.getChartHeight()+200) + "px");
+            if (init) {
+                init = false;
+                UI.getCurrent().scrollIntoView(QuantProteinsTabsheetContainerLayout.this);
+            }
         } catch (Exception e) {
             System.out.println("error at line 300 " + this.getClass().getName() + "  " + e.getMessage());
         }
@@ -431,9 +417,8 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
             lastSelectedTab = event.getTabSheet().getTab(event.getTabSheet().getSelectedTab());
         }
 //        CSFPR_Handler.enableScrollQuantOverviewScrollPanel();
-        
-//          UI.getCurrent().scrollIntoView(QuantProteinsTabsheetContainerLayout.this);
 
+//          UI.getCurrent().scrollIntoView(QuantProteinsTabsheetContainerLayout.this);
     }
 
 }

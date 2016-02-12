@@ -22,6 +22,7 @@ import com.vaadin.ui.themes.Reindeer;
 public class TrendLegend extends GridLayout {
 
     public TrendLegend(String type) {
+        this.setSpacing(true);
         if (type.equalsIgnoreCase("table")) {
             String[] labels = new String[]{"High", "Stable", "Low","No Quant. Info.","Not Available"};
             String[] styleName = new String[]{"redlayout", "lightbluelayout", "greenlayout","novaluelayout","empty"};
@@ -36,17 +37,22 @@ public class TrendLegend extends GridLayout {
 
             }
         }else if(type.equalsIgnoreCase("ministackedpeptidessequence")){
-            String[] labels = new String[]{"High,not sign.", "Low, not sign."};
-            String[] styleName = new String[]{ "notsigredstackedlayout",  "notsiggreenstackedlayout"};
+            String[] labels = new String[]{"High","High-not sign.", "Stable","Low", "Low-not sign.","No Quant. Info."};
+            String[] styleName = new String[]{ "redlayout","notsigredstackedlayout", "lightbluelayout","greenlayout",  "notsiggreenstackedlayout", "novaluelayout"};
             this.setSpacing(false);
             this.setRows(2);
-            this.setColumns(1);
+            this.setColumns(3);
             this.setMargin(new MarginInfo(false, false, false, false));
-            int rowCounter=0;
+           
             int colCounter = 0;
+            int rowCounter = 0;
             for (int i = 0; i < styleName.length; i++) {
                 HorizontalLayout item = generateItemLabel(labels[i], styleName[i]);
-                this.addComponent(item,colCounter,rowCounter++);
+                this.addComponent(item,colCounter++,rowCounter);
+                if(colCounter==3){
+                    colCounter=0;
+                    rowCounter++;
+                }
                 this.setComponentAlignment(item, Alignment.TOP_LEFT);
                
 

@@ -46,6 +46,11 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
     private List<QuantProtein> searchQuantificationProtList;
     private final Button quantResultsOverview, idResultsOverview;
     private final CustomErrorLabel idSearchingErrorLabel, quantSearchingErrorLabel;
+    private final VerticalLayout topLabelMarker;
+
+    public VerticalLayout getTopLabelMarker() {
+        return topLabelMarker;
+    }
 
     /**
      *
@@ -57,6 +62,12 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
         this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.setSpacing(true);
         this.setHeightUndefined();
+        topLabelMarker = new VerticalLayout();
+        this.addComponent(topLabelMarker);
+        this.setExpandRatio(topLabelMarker, 0.01f);
+        topLabelMarker.setHeight("10px");
+        topLabelMarker.setWidth("20px");
+        topLabelMarker.setStyleName(Reindeer.LAYOUT_WHITE);
 
         searchingUnitLayout = new SearchingUnitLayout(ProteinsSearchingLayout.this);
         idLayoutListener = new LayoutEvents.LayoutClickListener() {
@@ -101,7 +112,7 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
                     return;
                 }
                 String protName = ((HorizontalLayout) event.getClickedComponent().getParent()).getData().toString();
-                
+
                 if (protName.equalsIgnoreCase("Load All")) {
                     QuantDataSearchingTabLayout quantDatasearchingLayout = new QuantDataSearchingTabLayout(searchQuantificationProtList, CSFPR_Handler);
 
@@ -121,8 +132,6 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
                         if (uniProtName.trim().toLowerCase().equalsIgnoreCase(protName.trim().toLowerCase())) {
                             subSearchQuantitativeProtList.add(quantProt);
                         }
-                       
-
 
                         QuantDataSearchingTabLayout quantDatasearchingLayout = new QuantDataSearchingTabLayout(subSearchQuantitativeProtList, CSFPR_Handler);
                         Tab tab = mainTabSheet.addTab(quantDatasearchingLayout, protName, null);

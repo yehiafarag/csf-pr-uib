@@ -67,6 +67,13 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
     private final Label selectionResultsLabel;
     private final HideOnClickLayout userDataLayoutContainer;
     private final GridLayout resultContainer;
+    
+    private final VerticalLayout topLabelMarker;
+
+    public VerticalLayout getTopLabelMarker() {
+        return topLabelMarker;
+    }
+    
     private final String highAcc = "P00450\n"
             + "P02774\n"
             + "P02647\n"
@@ -98,6 +105,12 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
         this.setHeightUndefined();
         this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.setSpacing(true);
+        topLabelMarker = new VerticalLayout();
+        this.addComponent(topLabelMarker);
+        this.setExpandRatio(topLabelMarker, 0.01f);
+        topLabelMarker.setHeight("10px");
+        topLabelMarker.setWidth("20px");
+        topLabelMarker.setStyleName(Reindeer.LAYOUT_WHITE);
         this.CSFPR_Handler = CSFPR_Handler;
         Map<String, QuantDatasetInitialInformationObject> quantDatasetInitialInformationObjectMap = CSFPR_Handler.getQuantDatasetInitialInformationObject();
         diseaseGroupNames = new TreeSet<String>();
