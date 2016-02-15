@@ -533,27 +533,6 @@ public class CoreLogic implements Serializable {
             updatedQuantDatasetObjectMap.putAll(datasetObject.getQuantDatasetsList());
             diseaseCategories.addAll(datasetObject.getDiseaseCategories());
 
-//            activeHeaders = datasetObject.getActiveHeaders();
-//            updatedQuantDatasetObjectMap = datasetObject.getQuantDatasetsList();
-//            diseaseCategories = datasetObject.getDiseaseCategories();
-//
-//            QuantDatasetObject ds = new QuantDatasetObject();
-//            String author = rs.getString("author");
-//            if (!activeHeaders[0] && author != null && !author.equalsIgnoreCase("Not Available")) {
-//                activeHeaders[0] = true;
-//            }
-//            ds.setAuthor(author);
-//            ds.setPatientsSubGroup2(patient_sub_group_ii);
-//            ds.setAdditionalcomments("Not Available");
-//            ds.setDiseaseCategory(rs.getString("disease_category"));
-//            diseaseCategories.add(ds.getDiseaseCategory());
-//            activeHeaders[26] = false;
-//            
-//            datasetObject.setQuantDatasetsList(updatedQuantDatasetObjectMap);
-//            datasetObject.setActiveHeaders(activeHeaders);
-//            datasetObject.setDiseaseCategories(diseaseCategories);
-//            
-//        }
         }
         allDatasetObject.setQuantDatasetsList(updatedQuantDatasetObjectMap);
         allDatasetObject.setActiveHeaders(activeHeaders);
@@ -593,27 +572,6 @@ public class CoreLogic implements Serializable {
             updatedQuantDatasetObjectMap.putAll(datasetObject.getQuantDatasetsList());
             diseaseCategories.addAll(datasetObject.getDiseaseCategories());
 
-//            activeHeaders = datasetObject.getActiveHeaders();
-//            updatedQuantDatasetObjectMap = datasetObject.getQuantDatasetsList();
-//            diseaseCategories = datasetObject.getDiseaseCategories();
-//
-//            QuantDatasetObject ds = new QuantDatasetObject();
-//            String author = rs.getString("author");
-//            if (!activeHeaders[0] && author != null && !author.equalsIgnoreCase("Not Available")) {
-//                activeHeaders[0] = true;
-//            }
-//            ds.setAuthor(author);
-//            ds.setPatientsSubGroup2(patient_sub_group_ii);
-//            ds.setAdditionalcomments("Not Available");
-//            ds.setDiseaseCategory(rs.getString("disease_category"));
-//            diseaseCategories.add(ds.getDiseaseCategory());
-//            activeHeaders[26] = false;
-//            
-//            datasetObject.setQuantDatasetsList(updatedQuantDatasetObjectMap);
-//            datasetObject.setActiveHeaders(activeHeaders);
-//            datasetObject.setDiseaseCategories(diseaseCategories);
-//            
-//        }
         }
         allDatasetObject.setQuantDatasetsList(updatedQuantDatasetObjectMap);
         allDatasetObject.setActiveHeaders(activeHeaders);

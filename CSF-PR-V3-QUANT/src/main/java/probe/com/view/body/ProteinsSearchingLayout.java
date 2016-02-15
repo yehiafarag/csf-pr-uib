@@ -68,6 +68,7 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
         topLabelMarker.setHeight("10px");
         topLabelMarker.setWidth("20px");
         topLabelMarker.setStyleName(Reindeer.LAYOUT_WHITE);
+        this.setMargin(true);
 
         searchingUnitLayout = new SearchingUnitLayout(ProteinsSearchingLayout.this);
         idLayoutListener = new LayoutEvents.LayoutClickListener() {
@@ -112,6 +113,7 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
                     return;
                 }
                 String protName = ((HorizontalLayout) event.getClickedComponent().getParent()).getData().toString();
+//                System.out.println("protname is "+protName);
 
                 if (protName.equalsIgnoreCase("Load All")) {
                     QuantDataSearchingTabLayout quantDatasearchingLayout = new QuantDataSearchingTabLayout(searchQuantificationProtList, CSFPR_Handler);
@@ -132,13 +134,12 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
                         if (uniProtName.trim().toLowerCase().equalsIgnoreCase(protName.trim().toLowerCase())) {
                             subSearchQuantitativeProtList.add(quantProt);
                         }
-
-                        QuantDataSearchingTabLayout quantDatasearchingLayout = new QuantDataSearchingTabLayout(subSearchQuantitativeProtList, CSFPR_Handler);
-                        Tab tab = mainTabSheet.addTab(quantDatasearchingLayout, protName, null);
-                        tab.setClosable(true);
-                        mainTabSheet.setSelectedTab(tab);
-
                     }
+                    QuantDataSearchingTabLayout quantDatasearchingLayout = new QuantDataSearchingTabLayout(subSearchQuantitativeProtList, CSFPR_Handler);
+                    Tab tab = mainTabSheet.addTab(quantDatasearchingLayout, protName, null);
+                    tab.setClosable(true);
+                    mainTabSheet.setSelectedTab(tab);
+
                 }
             }
 
@@ -254,7 +255,7 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
             String idNotFound;
             String defaultText = query.getSearchKeyWords();
 
-            defaultText = defaultText.replace(",", "\n").replace(" ", "").trim();
+            defaultText = defaultText.replace(",", "\n").trim();
             Set<String> filterKeywordSet = new LinkedHashSet<String>();
             filterKeywordSet.addAll(Arrays.asList(defaultText.split("\n")));
             defaultText = "";

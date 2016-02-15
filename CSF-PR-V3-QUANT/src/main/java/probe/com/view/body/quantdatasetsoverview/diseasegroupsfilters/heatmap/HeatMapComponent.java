@@ -71,9 +71,9 @@ public class HeatMapComponent extends VerticalLayout {
      * @param heatmapHeaderCellWidth
      * @param diseaseStyleMap
      */
-    public HeatMapComponent(int heatmapCellWidth, int heatmapHeaderCellWidth,Map<String, String> diseaseStyleMap) {
+    public HeatMapComponent(int heatmapCellWidth, int heatmapHeaderCellWidth, Map<String, String> diseaseStyleMap) {
 
-        this.diseaseStyleMap=diseaseStyleMap; 
+        this.diseaseStyleMap = diseaseStyleMap;
 
         this.setMargin(false);
         this.setSpacing(true);
@@ -315,8 +315,7 @@ public class HeatMapComponent extends VerticalLayout {
                         }
 
                     }
-                    
-                    
+
                     break;
                 }
             }
@@ -354,7 +353,11 @@ public class HeatMapComponent extends VerticalLayout {
             selfSelection = false;
             return;
         }
+        if (columnCells == null) {
+            System.out.println("at header = null is null");
+        }
         for (HeaderCell header : columnCells) {
+
             header.unSelectCellStyle();
         }
         for (HeaderCell header : rowCells) {
@@ -369,8 +372,8 @@ public class HeatMapComponent extends VerticalLayout {
             Set<String> keymap = new HashSet<String>();
             keymap.add(kI);
             keymap.add(kII);
-            
-            if (!selectedDsList.contains(gr) && (comparisonsCellsMap.get(kII)!=null && !selectedDsList.contains(comparisonsCellsMap.get(kII).getComparison()))) {
+
+            if (!selectedDsList.contains(gr) && (comparisonsCellsMap.get(kII) != null && !selectedDsList.contains(comparisonsCellsMap.get(kII).getComparison()))) {
 
                 for (HeatmapCell cell : selectedCells) {
                     String kI2 = cell.getComparison().getComparisonHeader();

@@ -21,12 +21,7 @@ import probe.com.view.core.HideOnClickLayout;
  */
 public class IdentificationDatasetsLayout extends VerticalLayout implements Serializable {
 
-    private final CSFPRHandler CSFPR_Handler;
-    private final VerticalLayout topLabelMarker;
-
-    public VerticalLayout getTopLabelMarker() {
-        return topLabelMarker;
-    }
+    private final CSFPRHandler CSFPR_Handler;  
 
     /**
      *
@@ -34,13 +29,7 @@ public class IdentificationDatasetsLayout extends VerticalLayout implements Seri
      * @param mainTabSheet
      */
     public IdentificationDatasetsLayout(CSFPRHandler CSFPR_Handler, TabSheet mainTabSheet) {
-        this.CSFPR_Handler = CSFPR_Handler;
-        topLabelMarker = new VerticalLayout();
-        this.addComponent(topLabelMarker);
-        this.setExpandRatio(topLabelMarker, 0.01f);
-        topLabelMarker.setHeight("10px");
-        topLabelMarker.setWidth("20px");
-        topLabelMarker.setStyleName(Reindeer.LAYOUT_WHITE);
+        this.CSFPR_Handler = CSFPR_Handler;     
 
         this.setSpacing(true);
         this.setMargin(true);

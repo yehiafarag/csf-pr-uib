@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 import org.jfree.chart.JFreeChart;
 import probe.com.handlers.CSFPRHandler;
+import probe.com.model.beans.quant.QuantDatasetInitialInformationObject;
 import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.beans.quant.QuantProtein;
@@ -67,12 +68,17 @@ public class QuantCentralManager implements Serializable {
         this.CSFPR_Handler = CSFPR_Handler;
         this.diseaseHashedColorMap = CSFPR_Handler.getDiseaseHashedColorMap();
         diseaseFullNameMap = CSFPR_Handler.getDiseaseFullNameMap();
-        Studies_Filter_Manager = new StudiesFilterManager(CSFPR_Handler.getQuantDatasetInitialInformationObject(searchQuantificationProtList), CSFPR_Handler.getActivePieChartQuantFilters(searchQuantificationProtList), CSFPR_Handler.getDefault_DiseaseCat_DiseaseGroupMap());//,filterUtility.getFullFilterList()
+        
+        Map<String, QuantDatasetInitialInformationObject> quantDataInitInfo = CSFPR_Handler.getQuantDatasetInitialInformationObject(searchQuantificationProtList);
+       
+        Studies_Filter_Manager = new StudiesFilterManager(quantDataInitInfo, CSFPR_Handler.getActivePieChartQuantFilters(searchQuantificationProtList), CSFPR_Handler.getDefault_DiseaseCat_DiseaseGroupMap());//,filterUtility.getFullFilterList()
         Studies_Selection_Manager = new StudiesSelectionManager();
 
         default_DiseaseCat_DiseaseGroupMap = Studies_Filter_Manager.getDefault_DiseaseCat_DiseaseGroupMap();
         diseaseGroupsHeaderToOregenalDiseaseGroupsNames = Studies_Filter_Manager.getDiseaseGroupsHeaderToOregenalDiseaseGroupsNames();
-        diseaseStyleMap = CSFPR_Handler.getDiseaseStyleMap();;
+        diseaseStyleMap = CSFPR_Handler.getDiseaseStyleMap();
+        
+       
     }
 
     public QuantCentralManager(CSFPRHandler CSFPR_Handler, List<QuantProtein> searchQuantificationProtList, QuantDiseaseGroupsComparison userCustomizedComparison) {

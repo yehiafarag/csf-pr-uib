@@ -14,6 +14,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.Reindeer;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -50,12 +51,25 @@ public class IdentificationDatasetLayout extends VerticalLayout implements Seria
     private TreeMap<Integer, Object> selectionIndexes;
     private int nextIndex;
 
+    private final VerticalLayout topLabelMarker;
+
+    public VerticalLayout getTopLabelMarker() {
+        return topLabelMarker;
+    }
     /**
      *
      * @param CSFPR_Handler
      * @param datasetId
      */
     public IdentificationDatasetLayout(CSFPRHandler CSFPR_Handler, int datasetId) {
+        topLabelMarker = new VerticalLayout();
+        this.addComponent(topLabelMarker);
+        this.setExpandRatio(topLabelMarker, 0.01f);
+        topLabelMarker.setHeight("10px");
+        topLabelMarker.setWidth("20px");
+        topLabelMarker.setStyleName(Reindeer.LAYOUT_WHITE);
+        
+        
         this.setSizeFull();
         setMargin(true);
         this.CSFPR_Handler = CSFPR_Handler;
@@ -67,7 +81,7 @@ public class IdentificationDatasetLayout extends VerticalLayout implements Seria
         container.setHeightUndefined();
         container.setWidth("100%");
         this.addComponent(container);
-        
+         this.setExpandRatio(container, 0.99f);
         this.datasetId = datasetId;
         fractionsLayout = new VerticalLayout();
         peptidesLayout = new VerticalLayout();

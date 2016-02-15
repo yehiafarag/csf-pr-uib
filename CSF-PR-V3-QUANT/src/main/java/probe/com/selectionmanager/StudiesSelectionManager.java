@@ -140,7 +140,6 @@ public class StudiesSelectionManager implements Serializable {
      */
     public void setQuantProteinsSelectionLayout(Map<String, DiseaseGroupsComparisonsProteinLayout[]> protSelectionMap) {
 
-        System.out.println("at setQuantProteinsSelectionLayout "+protSelectionMap.keySet() );
         this.quantProteinsLayoutSelectionMap = protSelectionMap;
 
     }
@@ -226,6 +225,7 @@ public class StudiesSelectionManager implements Serializable {
      * information columns for each protein
      */
     public Map<String, DiseaseGroupsComparisonsProteinLayout[]> getQuantProteinsLayoutSelectionMap() {
+//        quantProteinsLayoutSelectionMap.clear();
         return quantProteinsLayoutSelectionMap;
     }
 

@@ -2284,8 +2284,7 @@ public class DataBase implements Serializable {
             }
             selectStudiesStat = conn.prepareStatement(selectStudies);
             ResultSet rs = selectStudiesStat.executeQuery();
-            while (rs.next()) {
-
+             while (rs.next()) {
                 String disease_category = rs.getString("disease_category");
                 if (!diseaseCategoriesMap.containsKey(disease_category)) {
                     boolean[] activeHeaders = new boolean[27];
@@ -2401,6 +2400,7 @@ public class DataBase implements Serializable {
 
                 int id = rs.getInt("index");
                 ds.setDsKey(id);
+
                 String normalization_strategy = rs.getString("normalization_strategy");
                 if (!activeHeaders[16] && normalization_strategy != null && !normalization_strategy.equalsIgnoreCase("Not Available")) {
                     activeHeaders[16] = true;
@@ -2462,6 +2462,12 @@ public class DataBase implements Serializable {
                 ds.setPatientsSubGroup2(patient_sub_group_ii + "\n" + disease_category.replace(" ","_").replace("'", "-")+"_Disease");
                 ds.setAdditionalcomments("Not Available");
                 ds.setDiseaseCategory(rs.getString("disease_category"));
+
+                ds.setTotalProtNum(rs.getInt("total_prot_num"));
+                ds.setUniqueProtNum(rs.getInt("uniq_prot_num"));
+                ds.setTotalPepNum(rs.getInt("total_pept_num"));
+                ds.setUniqePepNum(rs.getInt("uniq_pept_num"));
+
                 diseaseCategories.add(ds.getDiseaseCategory());
                 activeHeaders[26] = false;
                 updatedQuantDatasetObjectMap.put(ds.getDsKey(), ds);

@@ -104,21 +104,14 @@ public class StudiesFilterManager implements Serializable {
     public StudiesFilterManager(Map<String, QuantDatasetInitialInformationObject> quantDatasetListObject, Map<String, boolean[]> activeFilterMap, Map<String, Map<String, String>> default_DiseaseCat_DiseaseGroupMap) {
 
         this.default_DiseaseCat_DiseaseGroupMap = default_DiseaseCat_DiseaseGroupMap;
-
         this.fullDiseaseGroupMap = new LinkedHashMap<Integer, DiseaseGroup>();
         this.selectedDiseaseGroupMap = new LinkedHashMap<Integer, DiseaseGroup>();
         this.quantDatasetListObject = quantDatasetListObject;
+
+      
+
         String key = "Multiple Sclerosis";//quantDatasetListObject.keySet().iterator().next();
-
-        if (!quantDatasetListObject.containsKey(key)) {
-            key = "All";
-        }
-
         this.totalDsNumber = quantDatasetListObject.get("All").getQuantDatasetsList().size();
-//        for (String k : quantDatasetListObject.keySet()) {
-//            totalDsNumber += quantDatasetListObject.get(k).getQuantDatasetsList().size();
-//
-//        }
 
         noSerumDiseaseCategory = new HashMap<String, Map<Integer, QuantDatasetObject>>();
         for (String diseaseCat : quantDatasetListObject.keySet()) {
@@ -137,6 +130,7 @@ public class StudiesFilterManager implements Serializable {
         }
         inUseDiseaseName = key;
         noSerum = true;
+
         this.fullQuantDatasetMap = quantDatasetListObject.get(key).getQuantDatasetsList();
         this.noSerumQuantDatasetMap = noSerumDiseaseCategory.get(key);
         this.inUsefullQuantDatasetMap = this.noSerumQuantDatasetMap;
@@ -145,10 +139,11 @@ public class StudiesFilterManager implements Serializable {
         this.activeFilters = activeFilterMap.get(key);
         this.activeHeader = quantDatasetListObject.get(key).getActiveHeaders();
         this.diseaseCategorySet = quantDatasetListObject.keySet();
+      
 
         inuse_DiseaseCat_DiseaseGroupMap = new LinkedHashMap<String, Map<String, String>>(default_DiseaseCat_DiseaseGroupMap);
-
         this.updateRowsAndColumns("Reset_Disease_Groups_Level");
+
     }
     private String userDiseaseGroupA = "VeryHårdToExistByChanceøæå", userDiseaseGroupB = "VeryHårdToExistByChanceøæå";
 
