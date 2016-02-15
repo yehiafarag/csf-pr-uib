@@ -64,7 +64,7 @@ public class DB implements Serializable {
                 Statement statement = conn_i.createStatement();
                 String csfSQL = "CREATE DATABASE IF NOT exists  " + dbName;
                 statement.executeUpdate(csfSQL);
-                System.out.println("database created with name "+dbName);
+                System.out.println("database created with name " + dbName);
 
                 //temp
 //               fg String sqoDataBase = "SHOW DATABASES ;";
@@ -114,12 +114,45 @@ public class DB implements Serializable {
                         + "  PRIMARY KEY  (`pubmed_id`)\n"
                         + ") ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
                 st.executeUpdate(statment);
-
+//
+//                String inserStat = "INSERT INTO publication_table VALUES ('25098164', 'Liguori, Maria, et al.', '2014', 'Proteomic profiling in multiple sclerosis clinical courses reveals potential biomarkers of neurodegeneration.', 'false', 0, 0, 0, 0);\n"
+//                        + "INSERT INTO publication_table VALUES ('20093204', 'Ottervald, Jan, et al.', '2010', 'Multiple sclerosis: Identification and clinical evaluation of novel CSF biomarkers.', 'false', 0, 0, 0, 0);\n"
+//                        + "INSERT INTO publication_table VALUES ('20237129', 'Comabella, Manuel, et al.', '2010', 'Cerebrospinal fluid chitinase 3-like 1 levels are associated with conversion to multiple sclerosis.', 'true', 23, 0, 0, 0);\n"
+//                        + "INSERT INTO publication_table VALUES ('20600910', 'Harris, Violaine K., et al.', '2010', 'Bri2-23 is a potential cerebrospinal fluid biomarker in multiple sclerosis.', 'false', 0, 0, 0, 0);\n"
+//                        + "INSERT INTO publication_table VALUES ('22473675', 'Dhaunchak, Ajit Singh, et al.', '2012', 'Implication of perturbed axoglial apparatus in early pediatric multiple sclerosis.', 'false', 0, 0, 0, 0);\n"
+//                        + "INSERT INTO publication_table VALUES ('22846148', 'Jia, Yan, et al.', '2012', 'Development of protein biomarkers in cerebrospinal fluid for secondary progressive multiple sclerosis using selected reaction monitoring mass spectrometry (SRM-MS).', 'true', 26, 7, 26, 15);\n"
+//                        + "INSERT INTO publication_table VALUES ('23059536', 'Kroksveen, Ann C., et al.', '2013', 'Discovery and initial verification of differentially abundant proteins between multiple sclerosis patients and controls using iTRAQ and SID-SRM.', 'true', 816, 248, 23, 2);\n"
+//                        + "INSERT INTO publication_table VALUES ('23278663', 'Kroksveen, Ann C., et al.', '2012', 'Cerebrospinal fluid proteome comparison between multiple sclerosis patients and controls.', 'true', 77, 2, 0, 0);\n"
+//                        + "INSERT INTO publication_table VALUES ('25406498', 'Cantó, Ester, et al.', '2014', 'Validation of semaphorin 7A and ala-?-his-dipeptidase as biomarkers associated with the conversion from clinically isolated syndrome to multiple sclerosis.', 'true', 6, 0, 0, 0);\n"
+//                        + "INSERT INTO publication_table VALUES ('25698171', 'Hinsinger, G., et al.', '2015', 'Chitinase 3-like proteins as diagnostic and prognostic biomarkers of multiple sclerosis.', 'true', 526, 97, 0, 0);\n"
+//                        + "INSERT INTO publication_table VALUES ('23339689', 'Stoop, Marcel P., et al', '2013', 'Effects of natalizumab treatment on the cerebrospinal fluid proteome of multiple sclerosis patients.', 'true', 310, 17, 2971, 2708);\n"
+//                        + "INSERT INTO publication_table VALUES ('26152395', 'Kroksveen, Ann C., et al.', '2015', 'Quantitative proteomics suggests decrease in the secretogranin-1 cerebrospinal fluid levels during the disease course of multiple sclerosis.', 'true', 771, 340, 4, 1);\n"
+//                        + "INSERT INTO publication_table VALUES ('24902845', 'Wildsmith, Kristin R., et al.', '2014', 'Identification of longitudinally dynamic biomarkers in Alzheimer''s disease cerebrospinal fluid by targeted proteomics.', 'true', 28, 1, 31, 5);\n"
+//                        + "INSERT INTO publication_table VALUES ('25318543', 'Barucker, Christian, et al.', '2015', 'Alzheimer amyloid peptide a?42 regulates gene expression of transcription and growth factors.', 'true', 107, 18, 0, 0);\n"
+//                        + "INSERT INTO publication_table VALUES ('24039694', 'Schutzer, Steven E., et al.', '2013', 'Gray matter is targeted in first-attack multiple sclerosis.', 'true', 19, 0, 0, 0);\n"
+//                        + "INSERT INTO publication_table VALUES ('25556233', 'Shi, Min, et al.', '2015', 'Cerebrospinal fluid peptides as potential Parkinson disease biomarkers: a staged pipeline for discovery and validation.', 'true', 16, 0, 17, 7);\n"
+//                        + "INSERT INTO publication_table VALUES ('26552840', 'Borràs, Eva, et al.', '2015', 'Protein-Based Classifier to Predict Conversion from Clinically Isolated Syndrome to Multiple Sclerosis.', 'true', 22, 3, 32, 4);\n"
+//                        + "INSERT INTO publication_table VALUES ('25676562', 'Spellman, Daniel S., et al.', '2015', 'Development and evaluation of a multiplexed mass spectrometry based assay for measuring candidate peptide biomarkers in Alzheimer''s Disease Neuroimaging Initiative (ADNI) CSF', 'true', 35, 2, 53, 31);\n"
+//                        + "INSERT INTO publication_table VALUES ('22327139', 'Lehnert, Stefan, et al.', '2012', 'iTRAQ and multiple reaction monitoring as proteomic tools for biomarker search in cerebrospinal fluid of patients with Parkinson''s disease dementia.', 'true', 14, 4, 14, 13);\n"
+//                        + "INSERT INTO publication_table VALUES ('26401960', 'Collins, Mahlon A., et al.', '2015', 'Label-Free LC-MS/MS Proteomic Analysis of Cerebrospinal Fluid Identifies Protein/Pathway Alterations and Candidate Biomarkers for Amyotrophic Lateral Sclerosis.', 'false', 0, 0, 0, 0);\n"
+//                        + "INSERT INTO publication_table VALUES ('24295388', 'Varghese, Anu Mary, et al.', '2013', 'Chitotriosidase - a putative biomarker for sporadic amyotrophic lateral sclerosis.', 'false', 0, 0, 0, 0);\n"
+//                        + "INSERT INTO publication_table VALUES ('26627638', 'Heywood, Wendy E., et al.', '2015', 'Identification of novel CSF biomarkers for neurodegeneration and their validation by a high-throughput multiplexed targeted proteomic assay.', 'true', 25, 3, 31, 13);\n"
+//                        + "INSERT INTO publication_table VALUES ('JAO2015', 'JAO2015', '2015', 'JAO2015', 'true', 904, 276, 0, 0);\n"
+//                        + "INSERT INTO publication_table VALUES ('MCP2016', 'MCP2016', '2016', 'MCP2016', 'true', 748, 316, 1874, 1696);";
+//                st = conn.createStatement();
+//                for (String str : inserStat.split("\n")) {
+//
+//                    st.executeUpdate(str);
+//                    System.out.println("str is : "+str);
+//
+//                }
+                st = conn.createStatement();
                 statment = "CREATE TABLE IF NOT EXISTS `defin_disease_groups` (\n"
                         + "  `min` varchar(100) NOT NULL default ' ',\n"
                         + "  `full` varchar(500) NOT NULL default ' ',\n"
                         + "  PRIMARY KEY  (`min`)\n"
                         + ") ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+
                 st.executeUpdate(statment);
 
 //                st = conn.createStatement();
@@ -1802,7 +1835,6 @@ public class DB implements Serializable {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
-
 
             int counter = 0;
             for (QuantProtein qprot : qProtList) {
