@@ -41,7 +41,7 @@
     <context-param>
         <description>Database name csf_db_v2_1  dbtest, quantdataupdated_10_9</description>
         <param-name>dbName</param-name>
-        <param-value>quantdataupdated_test_11_02_16</param-value>
+        <param-value>all_of_all</param-value>
     </context-param>
     <context-param>
         <description>Database Driver</description>

@@ -203,7 +203,7 @@ public class HeatMapComponent extends VerticalLayout {
         String kII = k1Arr[1] + " / " + k1Arr[0];
         HeatmapCell equalCall = comparisonsCellsMap.get(kII);
         if (equalCall != null) {
-            equalCall.select();
+            equalCall.select(false);
         } else {
             System.out.println("at equal was null " + kII);
         }
@@ -236,7 +236,7 @@ public class HeatMapComponent extends VerticalLayout {
             for (HeaderCell header : columnCells) {
                 if (header.getValueLabel().equalsIgnoreCase(selectedheader)) {
                     for (HeatmapCell tcell : header.getIncludedCells()) {
-                        tcell.select();
+                        tcell.select(false);
                     }
                     header.selectCellStyle();
                     selectedCells.addAll(header.getIncludedCells());
@@ -248,7 +248,7 @@ public class HeatMapComponent extends VerticalLayout {
             for (HeaderCell header : rowCells) {
                 if (header.getValueLabel().equalsIgnoreCase(selectedheader)) {
                     for (HeatmapCell tcell : header.getIncludedCells()) {
-                        tcell.select();
+                        tcell.select(true);
                     }
                     header.selectCellStyle();
                     selectedCells.addAll(header.getIncludedCells());
@@ -276,7 +276,7 @@ public class HeatMapComponent extends VerticalLayout {
             for (HeaderCell header : columnCells) {
                 if (header.getValueLabel().equalsIgnoreCase(selectedheader)) {
                     for (HeatmapCell tcell : header.getIncludedCells()) {
-                        tcell.select();
+                        tcell.select(false);
                     }
                     header.selectCellStyle();
                     selectedCells.addAll(header.getIncludedCells());
@@ -299,7 +299,7 @@ public class HeatMapComponent extends VerticalLayout {
             for (HeaderCell header : rowCells) {
                 if (header.getValueLabel().equalsIgnoreCase(selectedheader)) {
                     for (HeatmapCell tcell : header.getIncludedCells()) {
-                        tcell.select();
+                        tcell.select(true);
                     }
                     header.selectCellStyle();
                     selectedCells.addAll(header.getIncludedCells());
@@ -822,7 +822,7 @@ public class HeatMapComponent extends VerticalLayout {
 
         for (HeatmapCell cell : comparisonsCellsMap.values()) {
             if (cell.getValue() != 0 && !cell.getComparison().getComparisonHeader().trim().equalsIgnoreCase("/") && availableComparisonsList.contains(cell.getComparison())) {
-                cell.select();
+                cell.select(true);
                 selectedCells.add(cell);
             }
         }

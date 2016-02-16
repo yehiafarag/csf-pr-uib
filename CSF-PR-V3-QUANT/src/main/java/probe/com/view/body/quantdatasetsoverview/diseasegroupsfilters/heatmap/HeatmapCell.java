@@ -39,7 +39,7 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
     private String defaultStyle = "initheatmapcoloredcell";
     private final Label valueLabel;
     private boolean selected = false;
-    private boolean combinedHeader=false;
+    private boolean combinedHeader = false;
 
     /**
      *
@@ -114,8 +114,8 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
 
             this.setDescription("<h3>Same type comparison ( " + updatedHeader + " )</h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + strValue + (value == 1 ? " study" : " studies") + " </h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + publicationsNumber + (publicationsNumber == 1 ? " publication" : " publications") + " </h3>");
             comparison.setComparisonHeader(" / ");
-            combinedHeader=true;
-        
+            combinedHeader = true;
+
         } else if (value != 0) {
             strValue = ((int) value) + "";
             pointer = "pointer";
@@ -125,10 +125,9 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
             this.addLayoutClickListener(HeatmapCell.this);
             valueLabel.setValue("<center><div  style='background-color:" + color + "; background-position: center;height:" + (heatmapCellWidth - 4) + "px;width:" + (heatmapCellWidth - 4) + "px; cursor:" + pointer + "; '>" + strValue + "</div><center>");
 
-        }else{
-         valueLabel.setValue("<center><div  style='background-color:" + color + "; background-position: center;height:" + (heatmapCellWidth - 4) + "px;width:" + (heatmapCellWidth - 4) + "px; cursor:" + pointer + "; '> " + strValue + "</div><center>");
+        } else {
+            valueLabel.setValue("<center><div  style='background-color:" + color + "; background-position: center;height:" + (heatmapCellWidth - 4) + "px;width:" + (heatmapCellWidth - 4) + "px; cursor:" + pointer + "; '> " + strValue + "</div><center>");
 
-        
         }
         valueLabel.setContentMode(ContentMode.HTML);
         valueLabel.setPrimaryStyleName(defaultStyle);
@@ -169,12 +168,17 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
 
     /**
      *
+     * @param groupA
      */
-    public void select() {
+    public void select(boolean groupA) {
 //        selected = false;
 //        parent.resetHeadersStyle(colLabelIndex, rowLabelIndex);
         defaultStyle = "selectedheatmapcoloredcell";
         valueLabel.setPrimaryStyleName(defaultStyle);
+        if (groupA) {
+        } else {
+
+        }
 
     }
 

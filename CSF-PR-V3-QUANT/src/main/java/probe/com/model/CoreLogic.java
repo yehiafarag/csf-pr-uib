@@ -552,7 +552,7 @@ public class CoreLogic implements Serializable {
      * @return QuantDatasetInitialInformationObject
      */
     public Map<String, QuantDatasetInitialInformationObject> getQuantDatasetInitialInformationObject(List<QuantProtein> searchQuantificationProtList) {
-         Map<String, QuantDatasetInitialInformationObject> quantStudyInitInfoMap = da.getQuantDatasetInitialInformationObject(searchQuantificationProtList);
+        Map<String, QuantDatasetInitialInformationObject> quantStudyInitInfoMap = da.getQuantDatasetInitialInformationObject(searchQuantificationProtList);
 
         boolean[] activeHeaders = new boolean[27];
         Set<String> diseaseCategories = new LinkedHashSet<String>();
@@ -670,9 +670,9 @@ public class CoreLogic implements Serializable {
      */
     public Map<String, Integer> getQuantHitsList(List<QuantProtein> quantProteinsList, String searchBy) {
         Map<String, Integer> quantHitsList = new HashMap<String, Integer>();
-        
+
         if (quantProteinsList == null || quantProteinsList.isEmpty()) {
-           
+
             return quantHitsList;
         }
         String key;
@@ -683,9 +683,9 @@ public class CoreLogic implements Serializable {
                 String uniprotAcc = quantProt.getUniprotAccession();
                 String protName;
                 String accession;
-                if (uniprotAcc.trim().equalsIgnoreCase("") || uniprotAcc.equalsIgnoreCase("Not Available") || uniprotAcc.equalsIgnoreCase("Entry Deleted") || uniprotAcc.equalsIgnoreCase("Entry Demerged") || uniprotAcc.equalsIgnoreCase("NOT RETRIEVED") || uniprotAcc.equalsIgnoreCase("DELETED")|| uniprotAcc.trim().equalsIgnoreCase("UNREVIEWED")) {
+                if (uniprotAcc.trim().equalsIgnoreCase("") || uniprotAcc.equalsIgnoreCase("Not Available") || uniprotAcc.equalsIgnoreCase("Entry Deleted") || uniprotAcc.equalsIgnoreCase("Entry Demerged") || uniprotAcc.equalsIgnoreCase("NOT RETRIEVED") || uniprotAcc.equalsIgnoreCase("DELETED") || uniprotAcc.trim().equalsIgnoreCase("UNREVIEWED")) {
                     protName = quantProt.getPublicationProteinName();
-                    accession = uniprotAcc+" ("+quantProt.getPublicationAccNumber()+")";
+                    accession = uniprotAcc + " (" + quantProt.getPublicationAccNumber() + ")";
 
                 } else {
                     protName = quantProt.getUniprotProteinName();
@@ -694,9 +694,7 @@ public class CoreLogic implements Serializable {
                 if (protName.trim().equalsIgnoreCase("")) {
                     protName = quantProt.getPublicationProteinName();
                 }
-                
-                
-                
+
                 key = accession.trim() + "__" + protName.trim();
             } else {
                 key = quantProt.getUniprotProteinName().trim();
@@ -938,7 +936,7 @@ public class CoreLogic implements Serializable {
     public QuantDiseaseGroupsComparison initUserCustomizedComparison(String diseaseGroupI, String diseaseGroupII, Set<String> highAcc, Set<String> stableAcc, Set<String> lowAcc) {
         QuantDiseaseGroupsComparison comparison = new QuantDiseaseGroupsComparison();
         comparison.setDatasetIndexes(new int[]{-1});
-        comparison.setComparisonHeader("User Data - " + diseaseGroupI.trim() + " / " + diseaseGroupII.trim()+ "\n ");
+        comparison.setComparisonHeader("User Data - " + diseaseGroupI.trim() + " / " + diseaseGroupII.trim() + "\n ");
         Map<String, DiseaseGroupsComparisonsProteinLayout> comparProtList = new LinkedHashMap<String, DiseaseGroupsComparisonsProteinLayout>();
         int index = -1;
         for (String str : highAcc) {
@@ -968,7 +966,6 @@ public class CoreLogic implements Serializable {
 
     }
 
-   
     /**
      * get quant proteins layout for comparison table
      *
@@ -978,7 +975,7 @@ public class CoreLogic implements Serializable {
      *
      * @return updated Selected Comparison List
      */
-    public Set<QuantDiseaseGroupsComparison> getComparisonProtList(Set<QuantDiseaseGroupsComparison> selectedComparisonList, List<QuantProtein> searchQuantificationProtList,Map<String, Set<String>> diseaseGroupsHeaderToOregenalDiseaseGroupsNames) {
+    public Set<QuantDiseaseGroupsComparison> getComparisonProtList(Set<QuantDiseaseGroupsComparison> selectedComparisonList, List<QuantProtein> searchQuantificationProtList, Map<String, Set<String>> diseaseGroupsHeaderToOregenalDiseaseGroupsNames) {
 
         Set<QuantDiseaseGroupsComparison> updatedSelectedComparisonList = new LinkedHashSet<QuantDiseaseGroupsComparison>();
         Set<QuantProtein> fullComparisonProtMap = new HashSet<QuantProtein>();
@@ -1035,29 +1032,22 @@ public class CoreLogic implements Serializable {
             }
 
             Map<String, DiseaseGroupsComparisonsProteinLayout> comparProtList = new HashMap<String, DiseaseGroupsComparisonsProteinLayout>();
-           
-            
-            
-            String pGrI ;
-            String pGrII ; 
-            
-//            if(comparison.getComparisonHeader().contains("\n")){
-//                
-//            
-//            }else{
-             pGrI = comparison.getComparisonHeader().split(" / ")[0].trim();
-             Set<String> pGrISet=diseaseGroupsHeaderToOregenalDiseaseGroupsNames.get(pGrI);
-             pGrII = comparison.getComparisonHeader().split(" / ")[1].trim(); 
-               Set<String> pGrIISet=diseaseGroupsHeaderToOregenalDiseaseGroupsNames.get(pGrII);
-            //            }
-             
-          
 
-            for (QuantProtein quant : comparisonProtMap) {  
-               
+            String pGrI;
+            String pGrII;
+
+            pGrI = comparison.getComparisonHeader().split(" / ")[0].trim();           
+            Set<String> pGrISet = diseaseGroupsHeaderToOregenalDiseaseGroupsNames.get(pGrI);
+
+            pGrII = comparison.getComparisonHeader().split(" / ")[1].trim();
+            Set<String> pGrIISet = diseaseGroupsHeaderToOregenalDiseaseGroupsNames.get(pGrII);
+
+           
+
+            for (QuantProtein quant : comparisonProtMap) {
                 boolean inverted = false;
                 String protAcc = quant.getUniprotAccession();
-                if (protAcc.equalsIgnoreCase("") || protAcc.equalsIgnoreCase("Not Available") || protAcc.equalsIgnoreCase("Entry Deleted") || protAcc.equalsIgnoreCase("Entry Demerged") || protAcc.equalsIgnoreCase("NOT RETRIEVED") || protAcc.equalsIgnoreCase("DELETED")|| protAcc.trim().equalsIgnoreCase("UNREVIEWED")) { 
+                if (protAcc.equalsIgnoreCase("") || protAcc.equalsIgnoreCase("Not Available") || protAcc.equalsIgnoreCase("Entry Deleted") || protAcc.equalsIgnoreCase("Entry Demerged") || protAcc.equalsIgnoreCase("NOT RETRIEVED") || protAcc.equalsIgnoreCase("DELETED") || protAcc.trim().equalsIgnoreCase("UNREVIEWED")) {
                     protAcc = quant.getPublicationAccNumber();
 
                 }
@@ -1075,6 +1065,9 @@ public class CoreLogic implements Serializable {
                     significantPValue = false;
 
                 }
+
+               //+ "\n" + disease_category.replace(" ","_").replace("'", "-")+"_Disease"
+
                 if ((pGrISet.contains(quant.getPatientGroupI()) || pGrISet.contains(quant.getPatientSubGroupI())) && (pGrIISet.contains(quant.getPatientGroupII()) || pGrIISet.contains(quant.getPatientSubGroupII()))) {
                     if (quant.getStringFCValue().equalsIgnoreCase("Decreased") || quant.getStringFCValue().equalsIgnoreCase("Decrease")) {
                         comProt.addDown((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
@@ -1087,7 +1080,8 @@ public class CoreLogic implements Serializable {
                     }
 
                 } else {
-                    inverted = true;
+                    inverted = true; 
+                   
                     if (quant.getStringFCValue().equalsIgnoreCase("Decreased") || quant.getStringFCValue().equalsIgnoreCase("Decrease")) {
                         comProt.addUp((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
                     } else if (quant.getStringFCValue().equalsIgnoreCase("Increased") || quant.getStringFCValue().equalsIgnoreCase("Increase")) {
@@ -1104,7 +1098,7 @@ public class CoreLogic implements Serializable {
                 String accession;
                 String url;
 
-                if (uniprotAcc.trim().equalsIgnoreCase("") || uniprotAcc.equalsIgnoreCase("Not Available") || uniprotAcc.equalsIgnoreCase("Entry Deleted") || uniprotAcc.equalsIgnoreCase("Entry Demerged") || uniprotAcc.equalsIgnoreCase("NOT RETRIEVED") || uniprotAcc.equalsIgnoreCase("DELETED")|| uniprotAcc.trim().equalsIgnoreCase("UNREVIEWED")) {
+                if (uniprotAcc.trim().equalsIgnoreCase("") || uniprotAcc.equalsIgnoreCase("Not Available") || uniprotAcc.equalsIgnoreCase("Entry Deleted") || uniprotAcc.equalsIgnoreCase("Entry Demerged") || uniprotAcc.equalsIgnoreCase("NOT RETRIEVED") || uniprotAcc.equalsIgnoreCase("DELETED") || uniprotAcc.trim().equalsIgnoreCase("UNREVIEWED")) {
                     protName = quant.getPublicationProteinName();
                     accession = quant.getPublicationAccNumber();
                     url = null;
@@ -1170,7 +1164,7 @@ public class CoreLogic implements Serializable {
 
                         }
                         if (quant.getFcPatientGroupIonPatientGroupII() != -1000000000.0) {
-                            quant.setFcPatientGroupIonPatientGroupII( quant.getFcPatientGroupIonPatientGroupII() * -1.0);
+                            quant.setFcPatientGroupIonPatientGroupII(quant.getFcPatientGroupIonPatientGroupII() * -1.0);
                         }
                         String pgI = quant.getPatientGroupII();
                         String pSubGI = quant.getPatientSubGroupII();
@@ -1308,9 +1302,8 @@ public class CoreLogic implements Serializable {
     public Map<String, String> getDiseaseFullNameMap() {
         return da.getDiseaseFullNameMap();
     }
-    
-    
-     /**
+
+    /**
      * Get set of disease groups names for special disease category
      *
      * @param diseaseCat
@@ -1318,17 +1311,18 @@ public class CoreLogic implements Serializable {
      */
     public Set<String> getDiseaseGroupNameMap(String diseaseCat) {
         return da.getDiseaseGroupNameMap(diseaseCat);
-        
-    }
-     public List<Object[]> getPublicationList() {       
-      
-         return this.da.getPublicationList();
 
     }
-      public  Set<QuantDatasetObject> getQuantDatasetList(){
-           
-          
+
+    public List<Object[]> getPublicationList() {
+
+        return this.da.getPublicationList();
+
+    }
+
+    public Set<QuantDatasetObject> getQuantDatasetList() {
+
         return da.getQuantDatasetList();
-    
+
     }
 }

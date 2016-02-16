@@ -754,6 +754,18 @@
     line-height: 28px;    
 
 }
+.selectedheatmapcoloredequalcell{
+ border: 2px solid #FF8000;
+    border-radius: 3px;
+    height:30px;
+    width:30px; 
+    text-align:center;
+    color: #e0e0e0 ;
+    line-height: 28px;
+    font-size:14px;
+    opacity: 0.7;   
+
+}
 .filterlabelbtn{
     width: 30px;
     height: 30px;

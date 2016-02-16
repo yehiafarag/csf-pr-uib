@@ -318,6 +318,7 @@ public class StudiesFilterManager implements Serializable {
             diseaseGroupsII[i] = label2;
             diseaseGroup.setQuantDatasetIndex(ds.getDsKey());
             diseaseGroup.setOriginalDatasetIndex(ds.getDsKey());
+            
             i++;
         }
         selectedDiseaseGroupMap.clear();
