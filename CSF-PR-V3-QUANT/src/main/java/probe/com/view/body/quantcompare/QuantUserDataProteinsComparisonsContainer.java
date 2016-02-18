@@ -84,7 +84,10 @@ public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout im
 
     private final LinkedHashMap<String, DiseaseGroupsComparisonsProteinLayout[]> lastSelectedProteinsMap = new LinkedHashMap<String, DiseaseGroupsComparisonsProteinLayout[]>();
     private final LinkedHashMap<String, Integer> lastSelectedAccessionToIdMap = new LinkedHashMap<String, Integer>();
-    private final Set<Object> selectedProtId = new HashSet<Object>();
+    private final Set<Object> selectedProtId;
+    
+    private final Map<String,Boolean>appliedHeaderFiltersMap = new HashMap<String, Boolean>();
+    private final Map<String,Item>fullAccessionTableItemMap = new HashMap<String, Item>();
 
     /**
      * update the layout width based on the available space (on hide/show
@@ -100,7 +103,7 @@ public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout im
         int columnWidth = 400;
         boolean useRatio = false;
         if (quantDiseaseGroupsComparisonArr.length > 1) {
-            if (((quantDiseaseGroupsComparisonArr.length+1) * 400) > (width - 360)) {
+            if (((quantDiseaseGroupsComparisonArr.length + 1) * 400) > (width - 360)) {
                 useRatio = true;
                 int persWidth = (int) (100.0 - (16.0 * 100.0 / (double) width));
                 columnLabelContainer.setWidth(persWidth + "%");
@@ -110,12 +113,12 @@ public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout im
 
             } else {
                 useRatio = false;
-                columnLabelContainer.setWidth(((quantDiseaseGroupsComparisonArr.length+1) * 400) + "px");
-                headerFilterContainer.setWidth(((quantDiseaseGroupsComparisonArr.length+1) * 400) + "px");
+                columnLabelContainer.setWidth(((quantDiseaseGroupsComparisonArr.length + 1) * 400) + "px");
+                headerFilterContainer.setWidth(((quantDiseaseGroupsComparisonArr.length + 1) * 400) + "px");
             }
         } else {//ok
-            columnLabelContainer.setWidth(((quantDiseaseGroupsComparisonArr.length+1) * 400) + "px");
-            headerFilterContainer.setWidth(((quantDiseaseGroupsComparisonArr.length+1) * 400) + "px");
+            columnLabelContainer.setWidth(((quantDiseaseGroupsComparisonArr.length + 1) * 400) + "px");
+            headerFilterContainer.setWidth(((quantDiseaseGroupsComparisonArr.length + 1) * 400) + "px");
         }
 
         topLayout.setExpandRatio(topRightContainer, ratio);
@@ -164,6 +167,7 @@ public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout im
      * @param userCustomizedComparison
      */
     public QuantUserDataProteinsComparisonsContainer(QuantCentralManager Quant_Central_Manager, final CSFPRHandler csfprHandler, List<QuantProtein> searchQuantificationProtList, QuantDiseaseGroupsComparison userCustomizedComparison) {
+        this.selectedProtId = new HashSet<Object>();
         this.Quant_Central_Manager = Quant_Central_Manager;
         Quant_Central_Manager.registerStudySelectionListener(QuantUserDataProteinsComparisonsContainer.this);
         this.userCustomizedComparison = userCustomizedComparison;
@@ -207,7 +211,7 @@ public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout im
         searchingFieldLayout.setColumnExpandRatio(1, 0.6f);
 
         headerFilterContainer = new HorizontalLayout();
-        headerFilterContainer.setHeight("30px");
+        headerFilterContainer.setHeight("20px");
         columnLabelContainer = new HorizontalLayout();
         columnLabelContainer.setHeight("30px");
 
@@ -220,6 +224,7 @@ public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout im
         columnLabelContainer.setWidth(persWidth + "%");
         columnLabelContainer.setStyleName(Reindeer.LAYOUT_WHITE);
         topLayout.addComponent(searchingFieldLayout);
+        topLayout.setComponentAlignment(searchingFieldLayout, Alignment.BOTTOM_LEFT);
 
         topLayout.addComponent(topRightContainer);
         HorizontalLayout searchFieldContainerLayout = new HorizontalLayout();
@@ -434,6 +439,7 @@ public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout im
 //        rightBottomLayout.setComponentAlignment(resetTableBtn, Alignment.TOP_LEFT);
         bottomLayout.setVisible(false);
         this.addComponent(bottomLayout);
+       
 
     }
 
@@ -565,6 +571,7 @@ public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout im
         isoProtMap.clear();
         accssionToItemIdMap.clear();
         quantAccessionMap.clear();
+        fullAccessionTableItemMap.clear();
 
         this.groupsComparisonProteinsTable.removeValueChangeListener(this);
         this.columnLabelContainer.removeAllComponents();
@@ -695,8 +702,9 @@ public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout im
                 }
                 i++;
             }
-            this.groupsComparisonProteinsTable.addItem(tableRow, index);
+//            this.groupsComparisonProteinsTable.addItem(tableRow, index);
             this.accssionToItemIdMap.put(tableRow[1].toString(), index);
+             this.fullAccessionTableItemMap.put(tableRow[1].toString(), groupsComparisonProteinsTable.getItem(index));
             index++;
         }
         String header = userCustomizedComparison.getComparisonHeader();

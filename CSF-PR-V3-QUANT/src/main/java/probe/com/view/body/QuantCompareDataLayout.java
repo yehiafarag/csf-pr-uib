@@ -476,12 +476,12 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
         if (event.getButton().getId().equalsIgnoreCase("resetBtn")) {
             this.reset();
             this.resetLists();
-
             UI.getCurrent().setScrollTop(0);
         } else if (event.getButton().getId().equalsIgnoreCase("compareBtn")) {
             if (diseaseGroupsListA.getValue() == null || diseaseGroupsListA.getValue().toString().trim().equalsIgnoreCase("")) {
                 diseaseGroupsListA.setRequired(true);
-                 Notification.show("Select or enter new disease group name first", Notification.Type.TRAY_NOTIFICATION);
+                Notification.show("WARNING ","Select or enter new disease group name first", Notification.Type.TRAY_NOTIFICATION);
+                
                 diseaseGroupsListA.focus();
                 return;
 
@@ -489,7 +489,7 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
             if (diseaseGroupsListB.getValue() == null || diseaseGroupsListB.getValue().toString().trim().equalsIgnoreCase("")) {
                 diseaseGroupsListB.setRequired(true);
                 diseaseGroupsListB.focus();
-                Notification.show("Select or enter new disease group name first", Notification.Type.TRAY_NOTIFICATION);
+                Notification.show("WARNING","Select or enter new disease group name first", Notification.Type.TRAY_NOTIFICATION);
                 return;
 
             }

@@ -189,13 +189,13 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         significantProteinsOnlyOption.setNullSelectionAllowed(true); // user can not 'unselect'
         significantProteinsOnlyOption.setMultiSelect(true);
 
-        significantProteinsOnlyOption.addItem("Significant");
+        significantProteinsOnlyOption.addItem("Hide Stable");
         significantProteinsOnlyOption.addStyleName("horizontal");
         significantProteinsOnlyOption.addValueChangeListener(new Property.ValueChangeListener() {
 
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
-                Quant_Central_Manager.updateSignificantOnlySelection(significantProteinsOnlyOption.getValue().toString().equalsIgnoreCase("[Significant]"));
+                Quant_Central_Manager.updateSignificantOnlySelection(significantProteinsOnlyOption.getValue().toString().equalsIgnoreCase("[Hide Stable]"));
 
             }
 
@@ -336,13 +336,13 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         significantProteinsOnlyOption.setNullSelectionAllowed(true); // user can not 'unselect'
         significantProteinsOnlyOption.setMultiSelect(true);
 
-        significantProteinsOnlyOption.addItem("Significant");
+        significantProteinsOnlyOption.addItem("Hide Stable");
         significantProteinsOnlyOption.addStyleName("horizontal");
         significantProteinsOnlyOption.addValueChangeListener(new Property.ValueChangeListener() {
 
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
-                Quant_Central_Manager.updateSignificantOnlySelection(significantProteinsOnlyOption.getValue().toString().equalsIgnoreCase("[Significant]"));
+                Quant_Central_Manager.updateSignificantOnlySelection(significantProteinsOnlyOption.getValue().toString().equalsIgnoreCase("[Hide Stable]"));
 
             }
 

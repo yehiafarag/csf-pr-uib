@@ -102,7 +102,7 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
             showSigneficantPeptidesOnly.setNullSelectionAllowed(true); // user can not 'unselect'
             showSigneficantPeptidesOnly.setMultiSelect(true);
 
-            showSigneficantPeptidesOnly.addItem("Significant");
+            showSigneficantPeptidesOnly.addItem("Hide Stable");
             showSigneficantPeptidesOnly.addItem("PTMs");
 
             showSigneficantPeptidesOnly.addStyleName("horizontal");
@@ -157,7 +157,7 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
 
                     }
                     lastselectedPeptideComp = null;
-                    showSignificantRegulationOnly(showSigneficantPeptidesOnly.getValue().toString().contains("Significant"));
+                    showSignificantRegulationOnly(showSigneficantPeptidesOnly.getValue().toString().contains("Hide Stable"));
                     showPtms(showSigneficantPeptidesOnly.getValue().toString().contains("PTMs"));
 
                 }

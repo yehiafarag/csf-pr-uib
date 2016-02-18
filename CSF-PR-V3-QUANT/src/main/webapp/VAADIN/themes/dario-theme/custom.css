@@ -755,7 +755,7 @@
 
 }
 .selectedheatmapcoloredequalcell{
- border: 2px solid #FF8000;
+    border: 2px solid #FF8000;
     border-radius: 3px;
     height:30px;
     width:30px; 
@@ -1802,7 +1802,7 @@ resetlabelbtn p{
     color:#4d749f;
     text-align:center;
     background:whitesmoke;
-    font-family:Verdana;
+    font-weight:bold;
 }
 .framelayout{
     border-right: 1px solid lightgray;
@@ -1860,7 +1860,14 @@ resetlabelbtn p{
     cursor:pointer;
 
 }
+.filtericon{
+    border-radius:4px !important;
 
+    background-image: url(img/filter_1.png);
+    background-size:12px;
+    background-repeat:no-repeat;
+    background-position:center;
+}
 .subtitle{
     clear: both;
     font-size: 16px;
@@ -2175,20 +2182,26 @@ resetlabelbtn p{
     right: 0px !important;
     bottom: 0px !important;
     height:22px !important;
-    border: 1px solid lightgray !important;
-    color: #a3a3a3;
+    border: 1px solid gray !important;
+    color: #000000;
     border-radius:0px 4px 4px 0px !important;
     background-color: whitesmoke !important;
-    background-image:  url(img/downarrlight.png)  !important;
+    background-image:  url(img/angle-double-down.png)  !important;
     background-repeat: no-repeat !important;
+    background-size: 15px 15px;
     background-position: center !important;
 }
+.diseasegrouplist .v-filterselect-input:hover {
+    border: 1px solid orange !important;
+}
+.diseasegrouplist .v-filterselect-input:focus {
+    border: 1px solid orange !important;
+}
 .diseasegrouplist .v-filterselect-button:hover{
-    background-image:  url(img/downarrdark.png)  !important;
-
+    background-color: lightgray !important;
 }
 .diseasegrouplist .v-filterselect-input {
-    border: 1px solid lightgray !important;
+    border: 1px solid gray !important;
     border-radius:4px 0px 0px 4px !important;
     background:white !important;
     padding-left:5px !important;
@@ -2660,15 +2673,7 @@ img {
 
 .v-popupview-popup{
 
-    width: 100%;  
-    height: 100% !important;   
-    margin: 0 ;  
-    background-position: 50%;  
-    background-repeat: no-repeat;  
-    background-attachment: fixed;  
-    background-color:  rgba(160, 160, 160, 0.8); 
-
-    position: fixed !important;
+   background-color:black;
 }
 .pupupbody { 
     margin-top:2%;

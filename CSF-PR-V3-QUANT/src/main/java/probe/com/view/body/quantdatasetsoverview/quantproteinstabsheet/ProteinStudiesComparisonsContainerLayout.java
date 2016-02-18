@@ -104,7 +104,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
         showSigneficantPeptidesOnly.setNullSelectionAllowed(true); // user can not 'unselect'
         showSigneficantPeptidesOnly.setMultiSelect(true);
 
-        showSigneficantPeptidesOnly.addItem("Significant");
+        showSigneficantPeptidesOnly.addItem("Hide Stable");
         showSigneficantPeptidesOnly.addItem("PTMs");
 
         showSigneficantPeptidesOnly.addStyleName("horizontal");
@@ -113,7 +113,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
         showSigneficantPeptidesOnly.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
-                showSignificantRegulationOnly(showSigneficantPeptidesOnly.getValue().toString().contains("Significant"));
+                showSignificantRegulationOnly(showSigneficantPeptidesOnly.getValue().toString().contains("Hide Stable"));
                 showPTM(showSigneficantPeptidesOnly.getValue().toString().contains("PTMs"));
             }
         });
