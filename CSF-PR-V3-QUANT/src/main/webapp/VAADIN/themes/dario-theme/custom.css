@@ -338,6 +338,31 @@
     cursor:default;
 
 }
+.selectedicon{
+    border-radius:4px !important; 
+    background-image: url(img/true_s.jpg);
+    background-size:12px;
+    background-repeat:no-repeat;
+    background-position:center;
+
+
+
+}
+.closewindowbtn{
+     background-image: url(img/close_1.png);
+    background-color:rgb(188, 211, 222) !important;
+    background-repeat:no-repeat;
+    cursor:pointer; background-image: url(img/close_1.png);
+    background-color:rgb(188, 211, 222) !important;
+    background-repeat:no-repeat;
+    cursor:pointer;
+}
+.hideoverflowlabel{
+        overflow: hidden;
+    font-size: 11px;
+    line-height: 13px;
+    color: #707070;    
+}
 
 .filterShowLabel{
     clear: both;
@@ -902,13 +927,10 @@ resetlabelbtn p{
 }
 .closebtn{
     clear: both;
-    width: 16px;
-    height: 16px;
     background-color:  whitesmoke;
     background-image: url(img/close_1.png);
     background-position:center;
     background-repeat: no-repeat;
-    margin-right: 10px;
     cursor:pointer;
 
 }
@@ -2673,7 +2695,7 @@ img {
 
 .v-popupview-popup{
 
-   background-color:black;
+    /*background-color:black;*/
 }
 .pupupbody { 
     margin-top:2%;
@@ -2703,4 +2725,22 @@ img {
     position:absolute;
     margin-top:-15px;
     clear:both;
+}
+.selectedfilter{
+     background-image: url(img/filter_1.png);
+    background-position:0px 0px;
+    background-size: 12px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    
+    
+    
+}
+.unselectedfilter{
+     background-image: url(img/filter.png);
+    background-position:0px 0px;
+    background-size: 12px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    
 }
