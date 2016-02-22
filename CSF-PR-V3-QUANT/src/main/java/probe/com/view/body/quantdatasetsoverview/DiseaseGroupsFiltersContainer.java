@@ -66,6 +66,8 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
     private final PopupReorderGroupsLayout reorderGroups;
     private final Label counterLabel;
 
+    private final VerticalLayout middleLeftLayout;
+
     /**
      *
      * @param Quant_Central_Manager
@@ -165,19 +167,22 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         middleLayout.setWidth(layoutWidth + "px");
         middleLayout.setHeightUndefined();
 
+        middleLeftLayout = new VerticalLayout();
+        middleLayout.addComponent(middleLeftLayout);
+
         this.addComponent(middleLayout, 0, 1);
         this.setComponentAlignment(middleLayout, Alignment.TOP_LEFT);
         this.resizeLayout(Math.max(diseaseGroupsColSet.size(), diseaseGroupsRowSet.size()));
 
         int heatmapH = Math.max((heatmapHeaderCellWidth + 20 + 12 + (heatmapCellWidth * Math.max(diseaseGroupsColSet.size(), diseaseGroupsRowSet.size()))), 500) + 20;
-        standeredChartHeight = heatmapH;
+        standeredChartHeight = Math.max(heatmapH + 34, 500);
 
 //        System.out.println("at error "+diseaseGroupsSet.size()+"    "+ Quant_Central_Manager.getDiseaseGroupsArr().length+ );
         diseaseGroupsHeatmapFilter = new HeatMapFilter(Quant_Central_Manager, heatmapW, diseaseGroupsRowSet, diseaseGroupsColSet, Quant_Central_Manager.getDiseaseGroupsArray(), heatmapCellWidth, heatmapHeaderCellWidth, CSFPR_Handler.getDiseaseFullNameMap());
-        diseaseGroupsHeatmapFilter.setHeight(Math.max(heatmapH, 500) + "px");
+        diseaseGroupsHeatmapFilter.setHeight(Math.max(heatmapH + 10, 500) + "px");
         diseaseGroupsHeatmapFilter.setSingleSelection(false);
-        middleLayout.addComponent(diseaseGroupsHeatmapFilter);
-        middleLayout.setComponentAlignment(diseaseGroupsHeatmapFilter, Alignment.TOP_LEFT);
+        middleLeftLayout.addComponent(diseaseGroupsHeatmapFilter);
+        middleLeftLayout.setComponentAlignment(diseaseGroupsHeatmapFilter, Alignment.TOP_LEFT);
 
         if (userCustomizedComparison != null) {
             selectionOverviewBubbleChart = new ComparisonsSelectionOverviewBubbleChart(Quant_Central_Manager, CSFPR_Handler, initLayoutWidth, standeredChartHeight, new LinkedHashSet<QuantDiseaseGroupsComparison>(), searchQuantificationProtList, userCustomizedComparison);
@@ -190,7 +195,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
 
         topRightLayout.addComponent(selectionOverviewBubbleChart.getBtnsLayout());
         topRightLayout.setComponentAlignment(selectionOverviewBubbleChart.getBtnsLayout(), Alignment.TOP_RIGHT);
-        middleLayout.setExpandRatio(diseaseGroupsHeatmapFilter, heatmapRatio);
+        middleLayout.setExpandRatio(middleLeftLayout, heatmapRatio);
         middleLayout.setExpandRatio(selectionOverviewBubbleChart, initialLayoutRatio);
 
         btnsLayout = new HorizontalLayout();
@@ -353,7 +358,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
         btnsLayout.setExpandRatio(leftBottomBtnLayout, 2);
         btnsLayout.setExpandRatio(rightBottomBtnLayout, 1);
 
-        this.addComponent(btnsLayout, 0, 2);
+        middleLeftLayout.addComponent(btnsLayout);
 
         LayoutEvents.LayoutClickListener hideShowCompTableListener = new LayoutEvents.LayoutClickListener() {
             @Override
@@ -366,12 +371,12 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
 //               
                 if (!btnsLayout.isVisible()) {
                     selectionOverviewBubbleChart.updateSize(pageWidth - 250, Math.min(heatmapW + 20, standeredChartHeight));
-                    middleLayout.setExpandRatio(diseaseGroupsHeatmapFilter, 250);
+                    middleLayout.setExpandRatio(middleLeftLayout, 250);
                     middleLayout.setExpandRatio(selectionOverviewBubbleChart, (pageWidth - 250));
                     middleLayout.setWidthUndefined();
                 } else {
                     selectionOverviewBubbleChart.updateSize(initLayoutWidth, Math.min(heatmapW + 20, standeredChartHeight));
-                    middleLayout.setExpandRatio(diseaseGroupsHeatmapFilter, heatmapW - 70);
+                    middleLayout.setExpandRatio(middleLeftLayout, heatmapW - 70);
                     middleLayout.setExpandRatio(selectionOverviewBubbleChart, initLayoutWidth + 70);
                     middleLayout.setWidth(layoutWidth + "px");
                     resizeLayout(Quant_Central_Manager.getSelectedHeatMapRows().size());
@@ -410,7 +415,7 @@ public class DiseaseGroupsFiltersContainer extends GridLayout implements CSFFilt
             btnsLayout.setVisible(true);
             diseaseCategorySelectLayout.setVisible(true);
             rightBottomBtnLayout.setVisible(true);
-            middleLayout.setExpandRatio(diseaseGroupsHeatmapFilter, heatmapW - 70);
+            middleLayout.setExpandRatio(middleLeftLayout, heatmapW - 70);
             middleLayout.setExpandRatio(selectionOverviewBubbleChart, initLayoutWidth + 70);
             middleLayout.setWidth(layoutWidth + "px");
             resizeLayout(Quant_Central_Manager.getSelectedHeatMapColumns().size());

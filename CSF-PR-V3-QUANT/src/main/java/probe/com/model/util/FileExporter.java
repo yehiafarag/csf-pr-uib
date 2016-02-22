@@ -430,7 +430,7 @@ public class FileExporter implements Serializable {
             JLabel headerLabel = new JLabel();
             headerLabel.setBackground(new java.awt.Color(255, 255, 255));
             headerLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-            headerLabel.setText("Studies Overview");
+            headerLabel.setText("Studies");
             headerLabel.setSize(width, 37);
             headerLabel.setFont(new Font("Verdana", Font.PLAIN, 12));
             headerLabel.paint(g2d);
@@ -582,7 +582,7 @@ public class FileExporter implements Serializable {
             JLabel studiesPieCharTheaderLabel = new JLabel();
             studiesPieCharTheaderLabel.setBackground(new java.awt.Color(255, 255, 255));
             studiesPieCharTheaderLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-            studiesPieCharTheaderLabel.setText("Studies Overview");
+            studiesPieCharTheaderLabel.setText("Studies");
             studiesPieCharTheaderLabel.setSize(width - 30, 37);
 
             studiesPieCharTheaderLabel.setFont(new Font("Verdana", Font.PLAIN, 12));

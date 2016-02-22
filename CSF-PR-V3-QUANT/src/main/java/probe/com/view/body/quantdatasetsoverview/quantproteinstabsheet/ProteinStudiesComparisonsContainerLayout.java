@@ -104,7 +104,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
         showSigneficantPeptidesOnly.setNullSelectionAllowed(true); // user can not 'unselect'
         showSigneficantPeptidesOnly.setMultiSelect(true);
 
-        showSigneficantPeptidesOnly.addItem("Hide Stable");
+        showSigneficantPeptidesOnly.addItem("Significant");
         showSigneficantPeptidesOnly.addItem("PTMs");
 
         showSigneficantPeptidesOnly.addStyleName("horizontal");
@@ -113,7 +113,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
         showSigneficantPeptidesOnly.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
-                showSignificantRegulationOnly(showSigneficantPeptidesOnly.getValue().toString().contains("Hide Stable"));
+                showSignificantRegulationOnly(showSigneficantPeptidesOnly.getValue().toString().contains("Significant"));
                 showPTM(showSigneficantPeptidesOnly.getValue().toString().contains("PTMs"));
             }
         });
@@ -211,7 +211,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
         studiesPanel.setStyleName(Reindeer.PANEL_LIGHT);
         studiesPanel.setHeight((height - 40) + "px");
 
-        studiesPeptidesTabsheet.addTab(studiesPanel, "Studies Overview");
+        studiesPeptidesTabsheet.addTab(studiesPanel, "Studies");
 //        this.addComponent(studiesPanel);
 
         mainPeptidesLayout = new GridLayout(1, selectedComparisonList.size() + 1);
@@ -223,7 +223,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
         peptidesPanel.setStyleName(Reindeer.PANEL_LIGHT);
         peptidesPanel.setHeight((height - 40) + "px");
 
-        studiesPeptidesTabsheet.addTab(peptidesPanel, "Peptides Overview");
+        studiesPeptidesTabsheet.addTab(peptidesPanel, "Peptides");
 
 //        this.addComponent(peptidesPanel);
 //        peptidesPanel.setWidthUndefined();
@@ -237,7 +237,7 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
             @Override
             public void selectedTabChange(TabSheet.SelectedTabChangeEvent event) {
                 String c = studiesPeptidesTabsheet.getTab(event.getTabSheet().getSelectedTab()).getCaption();
-                if (c.equalsIgnoreCase("Peptides Overview")) {
+                if (c.equalsIgnoreCase("Peptides")) {
                     legend.setVisible(true);
                 } else {
                     legend.setVisible(false);

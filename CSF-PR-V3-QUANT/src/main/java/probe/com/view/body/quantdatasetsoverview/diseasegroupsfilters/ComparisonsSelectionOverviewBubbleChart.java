@@ -144,7 +144,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         btnsLayout.setHeight(20 + "px");
         btnsLayout.setSpacing(true);
 
-        Label overviewLabel = new Label("<p style='margin-left :80px'>Overall Studies Proteins Trend</p> ");
+        Label overviewLabel = new Label("<p style='margin-left :80px'>Overview</p> ");
         overviewLabel.setContentMode(ContentMode.HTML);
         btnsLayout.addComponent(overviewLabel);
         overviewLabel.setStyleName("subtitle");
@@ -185,17 +185,18 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
         final OptionGroup significantProteinsOnlyOption = new OptionGroup();
         btnContainerLayout.addComponent(significantProteinsOnlyOption);
-        significantProteinsOnlyOption.setWidth("80px");
+        significantProteinsOnlyOption.setWidth("55px");
         significantProteinsOnlyOption.setNullSelectionAllowed(true); // user can not 'unselect'
         significantProteinsOnlyOption.setMultiSelect(true);
 
-        significantProteinsOnlyOption.addItem("Hide Stable");
+        significantProteinsOnlyOption.addItem("Stable");
+        significantProteinsOnlyOption.select("Stable");
         significantProteinsOnlyOption.addStyleName("horizontal");
         significantProteinsOnlyOption.addValueChangeListener(new Property.ValueChangeListener() {
 
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
-                Quant_Central_Manager.updateSignificantOnlySelection(significantProteinsOnlyOption.getValue().toString().equalsIgnoreCase("[Hide Stable]"));
+                   Quant_Central_Manager.updateSignificantOnlySelection(!significantProteinsOnlyOption.getValue().toString().equalsIgnoreCase("[Stable]"));
 
             }
 
@@ -299,7 +300,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         initialLayout.setWidth(width + "px");
         initialLayout.setHeightUndefined();
 
-        Label overviewLabel = new Label("<p style='margin-left :80px'>Overall Studies Proteins Trend</p> ");
+        Label overviewLabel = new Label("<p style='margin-left :80px'>Overview</p> ");
         overviewLabel.setContentMode(ContentMode.HTML);
         btnsLayout.addComponent(overviewLabel);
         overviewLabel.setStyleName("subtitle");
@@ -332,17 +333,17 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
         final OptionGroup significantProteinsOnlyOption = new OptionGroup();
         btnContainerLayout.addComponent(significantProteinsOnlyOption);
-        significantProteinsOnlyOption.setWidth("80px");
+        significantProteinsOnlyOption.setWidth("55px");
         significantProteinsOnlyOption.setNullSelectionAllowed(true); // user can not 'unselect'
         significantProteinsOnlyOption.setMultiSelect(true);
 
-        significantProteinsOnlyOption.addItem("Hide Stable");
+        significantProteinsOnlyOption.addItem("Stable");
         significantProteinsOnlyOption.addStyleName("horizontal");
         significantProteinsOnlyOption.addValueChangeListener(new Property.ValueChangeListener() {
 
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
-                Quant_Central_Manager.updateSignificantOnlySelection(significantProteinsOnlyOption.getValue().toString().equalsIgnoreCase("[Hide Stable]"));
+                Quant_Central_Manager.updateSignificantOnlySelection(!significantProteinsOnlyOption.getValue().toString().equalsIgnoreCase("[Stable]"));
 
             }
 
