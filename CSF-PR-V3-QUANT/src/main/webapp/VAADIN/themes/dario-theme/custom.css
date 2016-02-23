@@ -1744,6 +1744,7 @@ resetlabelbtn p{
     background-position:center;
     border: 1px solid black;
     border-radius: 50%;
+    overflow: visible !important;
 
 
 
@@ -2765,8 +2766,8 @@ img {
     background-image: url(img/c-terminal.png);
     background-position:left;
     background-repeat: no-repeat;;
-    
-    
+
+
 }
 
 .ntermlayout{
@@ -2775,4 +2776,41 @@ img {
     background-image: url(img/n-terminal.png);
     background-position: right;
     background-repeat: no-repeat;
+}
+
+.terminal{
+    clear: both;
+    border: 1px solid lightgray;
+    border-radius: 4px;
+    background-color: rgb(242,242,242);
+}
+.flipvertically{
+
+    -ms-transform:rotateX(180deg); /* IE 9 */
+    -moz-transform:rotateX(180deg); /* Firefox */
+    -webkit-transform:rotateX(180deg);/* Safari and Chrome */
+    -o-transform:rotateX(180deg); /* Opera */
+    transform: rotateX(180deg);
+    
+
+}
+.v-layout.v-widget.flipvertically.v-absolutelayout-flipvertically.v-has-width.v-has-height div{
+
+overflow:visible !important;
+
+}
+.vdarkgray{
+
+    background: #848484;
+    border: 1px solid #848484;
+
+}
+.v-absolutelayout-wrapper.v-absolutelayout-wrapper-flipvertically{
+    overflow:visible !important;
+
+}
+.v-absolutelayout-wrapper.v-absolutelayout-wrapper-ptmglycosylation {
+
+    overflow:visible!important;
+    z-index:2 !important;
 }

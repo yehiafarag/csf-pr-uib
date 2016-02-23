@@ -1,6 +1,5 @@
 package probe.com.model;
 
-import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +37,6 @@ import org.jfree.chart.JFreeChart;
 import probe.com.model.beans.OverviewInfoBean;
 import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.model.util.vaadintoimageutil.peptideslayout.ProteinInformationDataForExport;
-import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.peptidescontainer.popupcomponents.DatasetInformationOverviewLayout;
 //import org.apache.batik.svggen.SVGGraphics2D;
 //import org.apache.batik.dom.svg.SVGDOMImplementation;
 //import org.apache.batik.dom.svg12.SVG12DOMImplementation;
@@ -1068,6 +1066,17 @@ public class CoreLogic implements Serializable {
 
                //+ "\n" + disease_category.replace(" ","_").replace("'", "-")+"_Disease"
 
+//                System.out.println("at pGrISet "+pGrISet);
+//                 System.out.println("at quant.getPatientGroupI( "+quant.getPatientGroupI());
+//                  System.out.println("at quant.getPatientSubGroupI( "+quant.getPatientSubGroupI());
+//                  System.out.println("------------------------------------------------------------------------");
+//                   System.out.println("at pGrIISet "+pGrIISet);
+//                   System.out.println("at quant.getPatientGroupI( "+quant.getPatientGroupII());
+//                  System.out.println("at quant.getPatientSubGroupI( "+quant.getPatientSubGroupII());
+//                
+//                  System.out.println("------------------------------------------------------------------------");
+                  
+                  
                 if ((pGrISet.contains(quant.getPatientGroupI()) || pGrISet.contains(quant.getPatientSubGroupI())) && (pGrIISet.contains(quant.getPatientGroupII()) || pGrIISet.contains(quant.getPatientSubGroupII()))) {
                     if (quant.getStringFCValue().equalsIgnoreCase("Decreased") || quant.getStringFCValue().equalsIgnoreCase("Decrease")) {
                         comProt.addDown((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
@@ -1122,7 +1131,7 @@ public class CoreLogic implements Serializable {
                 for (String key : fullComparisonPeptideMap.keySet()) {
 
                     if (key.equalsIgnoreCase("_" + (quant.getProtKey()) + "__" + quant.getDsKey() + "__")) {
-
+//                        System.out.println("peptides list exist");
                         if (inverted) {
                             Set<QuantPeptide> updatedQuantPeptidesList = new HashSet<QuantPeptide>();
                             for (QuantPeptide quantPeptide : fullComparisonPeptideMap.get(key)) {

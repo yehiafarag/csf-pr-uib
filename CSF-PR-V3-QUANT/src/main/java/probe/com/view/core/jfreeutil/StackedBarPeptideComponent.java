@@ -200,7 +200,7 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
     }
 
     @Override
-    public int compareTo(StackedBarPeptideComponent o) {
+    public int compareTo(StackedBarPeptideComponent o) {      
         return widthArea.compareTo(o.widthArea);
     }
 
