@@ -84,10 +84,10 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
     private int width;
     private final int height;
     private final CSFPRHandler CSFPR_Handler;
-    private final VerticalLayout initialLayout;
+    private final VerticalLayout emptySelectionLayout;
     private JFreeChart chart;
     private final AbsoluteLayout chartLayout = new AbsoluteLayout();
-    private final HorizontalLayout btnsLayout = new HorizontalLayout();
+    private final HorizontalLayout topLayout = new HorizontalLayout();
     private final Button resetBtn;
     private final Button exportPdfBtn;
     private final List<QuantProtein> searchQuantificationProtList;
@@ -99,10 +99,12 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
     private Color stableColor;
 
     public void updateSize(int updatedWidth, int height) {
+        height=height-38;
+        System.out.println("hight is "+height);
         width = updatedWidth;
         this.setWidth(updatedWidth + "px");
         this.chartLayout.setWidth(updatedWidth + "px");
-        initialLayout.setWidth(updatedWidth + "px");
+        emptySelectionLayout.setWidth(updatedWidth + "px");
         this.chartLayout.setHeight(height + "px");
         if (chart == null) {
             return;
@@ -113,9 +115,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
     }
 
-    public HorizontalLayout getBtnsLayout() {
-        return btnsLayout;
-    }
+   
 
     private final Map<String, double[]> tooltipsProtNumberMap = new HashMap<String, double[]>();
 
@@ -126,62 +126,38 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         Map<String, String> diseaseHashedColorMap = Quant_Central_Manager.getDiseaseHashedColorMap();
         for (String str : diseaseHashedColorMap.keySet()) {
             diseaseColorMap.put(str, Color.decode(diseaseHashedColorMap.get(str)));
-        }
-//        diseaseColorMap.put("Alzheimer's", new Color(128, 145, 96));
-//        diseaseColorMap.put("Parkinson's", new Color(116, 113, 110));
-//        diseaseColorMap.put("Amyotrophic Lateral Sclerosis", new Color(125, 7, 37));
-
+        }        
         this.width = chartWidth;
-        this.height = chartHeight;
+        this.height = chartHeight-38;
         this.CSFPR_Handler = CSFPR_Handler;
         this.setWidth(width + "px");
-        this.setHeightUndefined();
+        this.setHeightUndefined(); 
+        this.Quant_Central_Manager = Quant_Central_Manager;
+        this.Quant_Central_Manager.registerStudySelectionListener(ComparisonsSelectionOverviewBubbleChart.this);
+        this.setSpacing(true);
 
-        chartLayout.setWidth(width + "px");
-        chartLayout.setHeight(height + "px");
+        //init toplayout
 
-        btnsLayout.setWidth(100 + "%");
-        btnsLayout.setHeight(20 + "px");
-        btnsLayout.setSpacing(true);
+        topLayout.setWidth(100 + "%");
+        topLayout.setHeight(40 + "px");
+        topLayout.setSpacing(true);
+        topLayout.setMargin(new MarginInfo(false, false, true, false));
+        this.addComponent(topLayout);
 
-        Label overviewLabel = new Label("<p style='margin-left :80px'>Overview</p> ");
+        Label overviewLabel = new Label("<p style='margin-left :50px; text-decoration:underline !important;'>Overview</p> ");
         overviewLabel.setContentMode(ContentMode.HTML);
-        btnsLayout.addComponent(overviewLabel);
+        topLayout.addComponent(overviewLabel);
         overviewLabel.setStyleName("subtitle");
         overviewLabel.setWidth("300px");
 
-        this.Quant_Central_Manager = Quant_Central_Manager;
-        this.Quant_Central_Manager.registerStudySelectionListener(ComparisonsSelectionOverviewBubbleChart.this);
-
-        this.teststyle = "__" + System.currentTimeMillis() + "_heatmapOverviewBubbleChart";
-        initialLayout = new VerticalLayout();
-        initialLayout.setWidth(width + "px");
-        initialLayout.setHeightUndefined();
-
-        VerticalLayout spacer = new VerticalLayout();
-        spacer.setHeight("100px");
-        spacer.setWidth("100%");
-        spacer.setStyleName(Reindeer.LAYOUT_WHITE);
-        initialLayout.addComponent(spacer);
-
-        Label startLabel = new Label("<center><h2 style='color:gray;'><b>Select comparison from the table</b></h2></center>");
-        startLabel.setContentMode(ContentMode.HTML);
-
-        initialLayout.addComponent(startLabel);
-        initialLayout.setComponentAlignment(startLabel, Alignment.MIDDLE_CENTER);
-
-        Image handleft = new Image();
-        handleft.setSource(new ThemeResource("img/handleft.png"));
-        initialLayout.addComponent(handleft);
-        initialLayout.setComponentAlignment(handleft, Alignment.MIDDLE_CENTER);
-
+        
         HorizontalLayout btnContainerLayout = new HorizontalLayout();
         btnContainerLayout.setSpacing(true);
         btnContainerLayout.setMargin(new MarginInfo(false, true, false, false));
         btnContainerLayout.setWidthUndefined();
         btnContainerLayout.setHeightUndefined();
-        btnsLayout.addComponent(btnContainerLayout);
-        btnsLayout.setComponentAlignment(btnContainerLayout, Alignment.TOP_RIGHT);
+        topLayout.addComponent(btnContainerLayout);
+        topLayout.setComponentAlignment(btnContainerLayout, Alignment.TOP_RIGHT);
 
         final OptionGroup significantProteinsOnlyOption = new OptionGroup();
         btnContainerLayout.addComponent(significantProteinsOnlyOption);
@@ -210,21 +186,6 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
         btnContainerLayout.addComponent(resetBtn);
 
-//        Button exportBtn = new Button("Save Chart Image");
-//        exportBtn.setDescription("Save the chart image as pdf");
-//        exportBtn.setStyleName(Reindeer.BUTTON_LINK);
-//        exportBtn.addClickListener(new Button.ClickListener() {
-//
-//            @Override
-//            public void buttonClick(Button.ClickEvent event) {
-////                exporter.writeChartToPDFFile(chart, 595, 842, "comparisons_overview.pdf");
-//                ExternalResource res =new ExternalResource(defaultImgURL, "image/png");
-//             LegacyWindow lw = new LegacyWindow();
-//             lw.open(res, "save image ",595,842,BorderStyle.MINIMAL);
-//                    
-//                     
-//            }
-//        });
         exportPdfBtn = new Button("");
         exportPdfBtn.setWidth("20px");
         exportPdfBtn.setHeight("20px");
@@ -241,17 +202,8 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         info.setWidth("20px");
         info.setHeight("20px");
         btnContainerLayout.addComponent(info);
-
-//        btnsLayout.setExpandRatio(exportPdfBtn, 50);
-//        btnsLayout.setComponentAlignment(exportPdfBtn, Alignment.MIDDLE_RIGHT);
-        this.btnsLayout.setVisible(false);
-        this.chartLayout.setVisible(false);
-        this.addComponent(initialLayout);
-
-        this.addComponent(chartLayout);
-//        this.addComponent(btnsLayout);
-
-        resetBtn.addClickListener(new Button.ClickListener() {
+        
+         resetBtn.addClickListener(new Button.ClickListener() {
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
@@ -261,6 +213,39 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
             }
         });
 
+        this.topLayout.setVisible(false);
+       
+
+        //init empty layout
+        emptySelectionLayout = new VerticalLayout(); 
+        this.addComponent(emptySelectionLayout);
+        emptySelectionLayout.setWidth(width + "px");
+        emptySelectionLayout.setHeightUndefined();
+
+        VerticalLayout spacer = new VerticalLayout();
+        spacer.setHeight("100px");
+        spacer.setWidth("100%");
+        spacer.setStyleName(Reindeer.LAYOUT_WHITE);
+        emptySelectionLayout.addComponent(spacer);
+
+        Label startLabel = new Label("<center><h2 style='color:gray;'><b>Select comparison from the table</b></h2></center>");
+        startLabel.setContentMode(ContentMode.HTML);
+
+        emptySelectionLayout.addComponent(startLabel);
+        emptySelectionLayout.setComponentAlignment(startLabel, Alignment.MIDDLE_CENTER);
+
+        Image handleft = new Image();
+        handleft.setSource(new ThemeResource("img/handleft.png"));
+        emptySelectionLayout.addComponent(handleft);
+        emptySelectionLayout.setComponentAlignment(handleft, Alignment.MIDDLE_CENTER);
+       
+        //init bubble chart
+        
+        this.teststyle = "__" + System.currentTimeMillis() + "_heatmapOverviewBubbleChart";
+        this.chartLayout.setVisible(false);       
+        this.addComponent(chartLayout);
+        chartLayout.setWidth(width + "px");
+        chartLayout.setHeight(height + "px");
         chartLayout.addLayoutClickListener(ComparisonsSelectionOverviewBubbleChart.this);
 
     }
@@ -274,62 +259,38 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         Map<String, String> diseaseHashedColorMap = Quant_Central_Manager.getDiseaseHashedColorMap();
         for (String str : diseaseHashedColorMap.keySet()) {
             diseaseColorMap.put(str, Color.decode(diseaseHashedColorMap.get(str)));
-        }
-//        diseaseColorMap.put("Alzheimer's", new Color(128, 145, 96));
-//        diseaseColorMap.put("Parkinson's", new Color(116, 113, 110));
-//        diseaseColorMap.put("Amyotrophic Lateral Sclerosis", new Color(125, 7, 37));
-
+        }        
         this.width = chartWidth;
-        this.height = chartHeight;
+        this.height = chartHeight-38;
         this.CSFPR_Handler = CSFPR_Handler;
         this.setWidth(width + "px");
-        this.setHeightUndefined();
-
-        chartLayout.setWidth(width + "px");
-        chartLayout.setHeight(height + "px");
-
-        btnsLayout.setWidth(100 + "%");
-        btnsLayout.setHeight(20 + "px");
-        btnsLayout.setSpacing(true);
-
+        this.setHeightUndefined(); 
         this.Quant_Central_Manager = Quant_Central_Manager;
         this.Quant_Central_Manager.registerStudySelectionListener(ComparisonsSelectionOverviewBubbleChart.this);
+        this.setSpacing(true);
 
-        this.teststyle = "__" + System.currentTimeMillis() + "_heatmapOverviewBubbleChart";
-        initialLayout = new VerticalLayout();
-        initialLayout.setWidth(width + "px");
-        initialLayout.setHeightUndefined();
+        //init toplayout
 
-        Label overviewLabel = new Label("<p style='margin-left :80px'>Overview</p> ");
+        topLayout.setWidth(100 + "%");
+        topLayout.setHeight(40 + "px");
+        topLayout.setSpacing(true);
+        topLayout.setMargin(new MarginInfo(false, false, true, false));
+        this.addComponent(topLayout);
+
+        Label overviewLabel = new Label("<p style='margin-left :50px; text-decoration:underline !important;'>Overview</p> ");
         overviewLabel.setContentMode(ContentMode.HTML);
-        btnsLayout.addComponent(overviewLabel);
+        topLayout.addComponent(overviewLabel);
         overviewLabel.setStyleName("subtitle");
         overviewLabel.setWidth("300px");
 
-        VerticalLayout spacer = new VerticalLayout();
-        spacer.setHeight("250px");
-        spacer.setWidth("100%");
-        spacer.setStyleName(Reindeer.LAYOUT_WHITE);
-        initialLayout.addComponent(spacer);
-
-        Label startLabel = new Label("<center><h2 style='color:gray;'><b>Select comparison from the table</b></h2></center>");
-        startLabel.setContentMode(ContentMode.HTML);
-
-        initialLayout.addComponent(startLabel);
-        initialLayout.setComponentAlignment(startLabel, Alignment.MIDDLE_CENTER);
-
-        Image handleft = new Image();
-        handleft.setSource(new ThemeResource("img/handleft.png"));
-        initialLayout.addComponent(handleft);
-        initialLayout.setComponentAlignment(handleft, Alignment.MIDDLE_CENTER);
-
+        
         HorizontalLayout btnContainerLayout = new HorizontalLayout();
         btnContainerLayout.setSpacing(true);
         btnContainerLayout.setMargin(new MarginInfo(false, true, false, false));
         btnContainerLayout.setWidthUndefined();
         btnContainerLayout.setHeightUndefined();
-        btnsLayout.addComponent(btnContainerLayout);
-        btnsLayout.setComponentAlignment(btnContainerLayout, Alignment.TOP_RIGHT);
+        topLayout.addComponent(btnContainerLayout);
+        topLayout.setComponentAlignment(btnContainerLayout, Alignment.TOP_RIGHT);
 
         final OptionGroup significantProteinsOnlyOption = new OptionGroup();
         btnContainerLayout.addComponent(significantProteinsOnlyOption);
@@ -338,12 +299,13 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         significantProteinsOnlyOption.setMultiSelect(true);
 
         significantProteinsOnlyOption.addItem("Stable");
+        significantProteinsOnlyOption.select("Stable");
         significantProteinsOnlyOption.addStyleName("horizontal");
         significantProteinsOnlyOption.addValueChangeListener(new Property.ValueChangeListener() {
 
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
-                Quant_Central_Manager.updateSignificantOnlySelection(!significantProteinsOnlyOption.getValue().toString().equalsIgnoreCase("[Stable]"));
+                   Quant_Central_Manager.updateSignificantOnlySelection(!significantProteinsOnlyOption.getValue().toString().equalsIgnoreCase("[Stable]"));
 
             }
 
@@ -357,21 +319,6 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
         btnContainerLayout.addComponent(resetBtn);
 
-//        Button exportBtn = new Button("Save Chart Image");
-//        exportBtn.setDescription("Save the chart image as pdf");
-//        exportBtn.setStyleName(Reindeer.BUTTON_LINK);
-//        exportBtn.addClickListener(new Button.ClickListener() {
-//
-//            @Override
-//            public void buttonClick(Button.ClickEvent event) {
-////                exporter.writeChartToPDFFile(chart, 595, 842, "comparisons_overview.pdf");
-//                ExternalResource res =new ExternalResource(defaultImgURL, "image/png");
-//             LegacyWindow lw = new LegacyWindow();
-//             lw.open(res, "save image ",595,842,BorderStyle.MINIMAL);
-//                    
-//                     
-//            }
-//        });
         exportPdfBtn = new Button("");
         exportPdfBtn.setWidth("20px");
         exportPdfBtn.setHeight("20px");
@@ -388,17 +335,8 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         info.setWidth("20px");
         info.setHeight("20px");
         btnContainerLayout.addComponent(info);
-
-//        btnsLayout.setExpandRatio(exportPdfBtn, 50);
-//        btnsLayout.setComponentAlignment(exportPdfBtn, Alignment.MIDDLE_RIGHT);
-        this.btnsLayout.setVisible(false);
-        this.chartLayout.setVisible(false);
-        this.addComponent(initialLayout);
-
-        this.addComponent(chartLayout);
-//        this.addComponent(btnsLayout);
-
-        resetBtn.addClickListener(new Button.ClickListener() {
+        
+         resetBtn.addClickListener(new Button.ClickListener() {
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
@@ -408,7 +346,43 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
             }
         });
 
+        this.topLayout.setVisible(false);
+        
+          //init empty layout
+        emptySelectionLayout = new VerticalLayout(); 
+        this.addComponent(emptySelectionLayout);
+        emptySelectionLayout.setWidth(width + "px");
+        emptySelectionLayout.setHeightUndefined();
+
+        VerticalLayout spacer = new VerticalLayout();
+        spacer.setHeight("100px");
+        spacer.setWidth("100%");
+        spacer.setStyleName(Reindeer.LAYOUT_WHITE);
+        emptySelectionLayout.addComponent(spacer);
+
+        Label startLabel = new Label("<center><h2 style='color:gray;'><b>Select comparison from the table</b></h2></center>");
+        startLabel.setContentMode(ContentMode.HTML);
+
+        emptySelectionLayout.addComponent(startLabel);
+        emptySelectionLayout.setComponentAlignment(startLabel, Alignment.MIDDLE_CENTER);
+
+        Image handleft = new Image();
+        handleft.setSource(new ThemeResource("img/handleft.png"));
+        emptySelectionLayout.addComponent(handleft);
+        emptySelectionLayout.setComponentAlignment(handleft, Alignment.MIDDLE_CENTER);
+       
+        //init bubble chart
+        
+        this.teststyle = "__" + System.currentTimeMillis() + "_heatmapOverviewBubbleChart";
+        this.chartLayout.setVisible(false);       
+        this.addComponent(chartLayout);
+        chartLayout.setWidth(width + "px");
+        chartLayout.setHeight(height + "px");
         chartLayout.addLayoutClickListener(ComparisonsSelectionOverviewBubbleChart.this);
+        
+        
+
+        
 
     }
 
@@ -733,14 +707,15 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         xyplot.setOutlineVisible(false);
         LegendTitle legend = generatedChart.getLegend();
         legend.setVisible(true);
-        legend.setMargin(20, 0, 20, 0);
+        legend.setMargin(20, 0, 0, 0);
 //        legend.setBorder(1, 1, 1, 1);
         legend.setFrame(new BlockBorder(1, 0, 1, 0, Color.LIGHT_GRAY));
 
 //        generatedChart.removeLegend();
         xyplot.setForegroundAlpha(0.65F);
         xyplot.setBackgroundPaint(Color.WHITE);
-        generatedChart.setBackgroundPaint(Color.WHITE);
+        generatedChart.setBackgroundPaint(Color.WHITE);        
+        generatedChart.setPadding(new RectangleInsets(0, 0, 0, 0));
         Quant_Central_Manager.setProteinsOverviewBubbleChart(generatedChart);
 //        exporter.writeChartToPDFFile(generatedChart, 595, 842, "bublechart.pdf");
         return generatedChart;
@@ -1100,9 +1075,11 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
         };
         xyplot.setOutlineVisible(false);
+        
         LegendTitle legend = generatedChart.getLegend();
         legend.setVisible(true);
-        legend.setMargin(20, 0, 20, 0);
+        legend.setMargin(20, 0, 0, 0);
+        
 //        legend.setBorder(1, 1, 1, 1);
         legend.setFrame(new BlockBorder(1, 0, 1, 0, Color.LIGHT_GRAY));
 
@@ -1110,6 +1087,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         xyplot.setForegroundAlpha(0.65F);
         xyplot.setBackgroundPaint(Color.WHITE);
         generatedChart.setBackgroundPaint(Color.WHITE);
+        generatedChart.setPadding(new RectangleInsets(0, 0, 0, 0));
         Quant_Central_Manager.setProteinsOverviewBubbleChart(generatedChart);
 //        exporter.writeChartToPDFFile(generatedChart, 595, 842, "bublechart.pdf");
         return generatedChart;
@@ -1273,15 +1251,15 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
             selectedComparisonList = this.Quant_Central_Manager.getUpdatedSelectedDiseaseGroupsComparisonListProteins(searchQuantificationProtList);
 
             if (selectedComparisonList.isEmpty()) {
-                initialLayout.setVisible(true);
+                emptySelectionLayout.setVisible(true);
                 chartLayout.removeAllComponents();
                 chartLayout.setVisible(false);
-                btnsLayout.setVisible(false);
-                this.addComponent(initialLayout);
+                topLayout.setVisible(false);
+                this.addComponent(emptySelectionLayout);
                 defaultImgURL = "";
             } else {
-                initialLayout.setVisible(false);
-                btnsLayout.setVisible(true);
+                emptySelectionLayout.setVisible(false);
+                topLayout.setVisible(true);
                 chartLayout.setVisible(true);
                 chart = this.updateBubbleChartChart(selectedComparisonList);
                 defaultImgURL = saveToFile(chart, width, height);

@@ -357,6 +357,45 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
         TrendLegend tableLegendLayout = new TrendLegend("table");
         rightBottomLayout.addComponent(tableLegendLayout);
         rightBottomLayout.setComponentAlignment(tableLegendLayout, Alignment.MIDDLE_CENTER);
+        
+        
+         Button exportTableBtn = new Button("");
+        exportTableBtn.setHeight("24px");
+        exportTableBtn.setWidth("24px");
+        exportTableBtn.setPrimaryStyleName("exportxslbtn");
+        rightBottomLayout.addComponent(exportTableBtn);
+        rightBottomLayout.setComponentAlignment(exportTableBtn, Alignment.TOP_RIGHT);
+        exportTableBtn.setDescription("Export table data");
+        rightBottomLayout.setHeight("100%");
+        rightBottomLayout.setStyleName(Reindeer.LAYOUT_WHITE);
+        exportTableBtn.addClickListener(new Button.ClickListener() {
+
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+
+                Map<String, String> idMap = new HashMap<String, String>();
+                for (QuantDiseaseGroupsComparison comp : quantDiseaseGroupsComparisonArr) {
+                    String preHeader = groupsComparisonProteinsTable.getColumnHeader(comp.getComparisonHeader());
+                    groupsComparisonProteinsTable.setColumnHeader(comp.getComparisonHeader(), comp.getComparisonHeader() + " " + preHeader);
+                    idMap.put(comp.getComparisonHeader(), preHeader);
+                }
+
+                ExcelExport csvExport = new ExcelExport(groupsComparisonProteinsTable, "CSF-PR  Quant Comparisons Proteins");
+                csvExport.setReportTitle("CSF-PR / Quant Comparisons / Proteins ");
+                csvExport.setExportFileName("CSF-PR - Quant Comparisons - Proteins" + ".xls");
+                csvExport.setMimeType(CsvExport.EXCEL_MIME_TYPE);
+                csvExport.setDisplayTotals(false);
+                csvExport.setExcelFormatOfProperty("Index", "#0;[Red] #0");
+                csvExport.export();
+
+                for (QuantDiseaseGroupsComparison comp : quantDiseaseGroupsComparisonArr) {
+                    String preHeader = idMap.get(comp.getComparisonHeader());
+                    groupsComparisonProteinsTable.setColumnHeader(comp.getComparisonHeader(), preHeader);
+                    idMap.put(comp.getComparisonHeader(), preHeader);
+                }
+
+            }
+        });
 
         VerticalLayout removeAllFiltersBtn = new VerticalLayout();
         removeAllFiltersBtn.setStyleName("clearfiltersbtn");
@@ -397,43 +436,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
             }
         });
 
-        Button exportTableBtn = new Button("");
-        exportTableBtn.setHeight("24px");
-        exportTableBtn.setWidth("24px");
-        exportTableBtn.setPrimaryStyleName("exportxslbtn");
-        rightBottomLayout.addComponent(exportTableBtn);
-        rightBottomLayout.setComponentAlignment(exportTableBtn, Alignment.TOP_RIGHT);
-        exportTableBtn.setDescription("Export table data");
-        rightBottomLayout.setHeight("100%");
-        rightBottomLayout.setStyleName(Reindeer.LAYOUT_WHITE);
-        exportTableBtn.addClickListener(new Button.ClickListener() {
-
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-
-                Map<String, String> idMap = new HashMap<String, String>();
-                for (QuantDiseaseGroupsComparison comp : quantDiseaseGroupsComparisonArr) {
-                    String preHeader = groupsComparisonProteinsTable.getColumnHeader(comp.getComparisonHeader());
-                    groupsComparisonProteinsTable.setColumnHeader(comp.getComparisonHeader(), comp.getComparisonHeader() + " " + preHeader);
-                    idMap.put(comp.getComparisonHeader(), preHeader);
-                }
-
-                ExcelExport csvExport = new ExcelExport(groupsComparisonProteinsTable, "CSF-PR  Quant Comparisons Proteins");
-                csvExport.setReportTitle("CSF-PR / Quant Comparisons / Proteins ");
-                csvExport.setExportFileName("CSF-PR - Quant Comparisons - Proteins" + ".xls");
-                csvExport.setMimeType(CsvExport.EXCEL_MIME_TYPE);
-                csvExport.setDisplayTotals(false);
-                csvExport.setExcelFormatOfProperty("Index", "#0;[Red] #0");
-                csvExport.export();
-
-                for (QuantDiseaseGroupsComparison comp : quantDiseaseGroupsComparisonArr) {
-                    String preHeader = idMap.get(comp.getComparisonHeader());
-                    groupsComparisonProteinsTable.setColumnHeader(comp.getComparisonHeader(), preHeader);
-                    idMap.put(comp.getComparisonHeader(), preHeader);
-                }
-
-            }
-        });
+       
 
         bottomLayout.setVisible(false);
         this.addComponent(bottomLayout);

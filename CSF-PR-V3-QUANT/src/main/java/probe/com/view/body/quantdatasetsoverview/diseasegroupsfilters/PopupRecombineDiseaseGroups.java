@@ -52,6 +52,7 @@ public class PopupRecombineDiseaseGroups extends Button implements ClickListener
         default_DiseaseCat_DiseaseGroupMap = new LinkedHashMap<String, Map<String, String>>(Quant_Central_Manager.getDefault_DiseaseCat_DiseaseGroupMap());
 
         this.setStyleName(Reindeer.BUTTON_LINK);
+        this.addStyleName("heatmapbtns");
         this.setDescription("Recombine Disease Groups");
         this.Quant_Central_Manager = Quant_Central_Manager;
         this.addClickListener(PopupRecombineDiseaseGroups.this);

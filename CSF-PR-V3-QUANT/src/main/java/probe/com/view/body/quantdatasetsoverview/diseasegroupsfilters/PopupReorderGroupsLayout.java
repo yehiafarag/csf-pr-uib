@@ -75,6 +75,7 @@ public class PopupReorderGroupsLayout extends Button implements CSFFilter, Click
         super("Sort and Select");
 
         this.setStyleName(Reindeer.BUTTON_LINK);
+        this.addStyleName("heatmapbtns");
         this.setDescription("Reorder And Select Disease Groups");
         this.Quant_Central_Manager = Quant_Central_Manager;
         this.addClickListener(PopupReorderGroupsLayout.this);

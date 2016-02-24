@@ -1417,7 +1417,8 @@ resetlabelbtn p{
     font-weight: normal;
     height: auto;
     text-align: left;
-    text-shadow: none;
+    text-shadow: none;    
+    margin-top:1px !important;
     vertical-align: baseline;
     white-space: nowrap;
     width: auto;
@@ -1611,16 +1612,21 @@ resetlabelbtn p{
     clear: both;
     width: 23px;
     height: 23px;
+    border:1px solid black;
+
     background-image: url(img/selectmulti_selected_1.png);
     background-position:center;
     background-repeat: no-repeat;
+    background-size:cover;
     cursor:pointer;
 
 }
 .selectmultiselectedbtn:hover{
     background-image: url(img/selectmulti_1.png);
+    border:none;
 
 }
+
 
 .exportpdfbtn{
     clear: both;
@@ -1666,20 +1672,12 @@ resetlabelbtn p{
     outline: none;
 }
 .exportxslbtn{
-    clear: both;
-    width: 23px;
-    height: 23px;
-    border-radius: 5px;
-    border:  1px solid lightgray;
-    background-color:  whitesmoke;
-    background-image: url(img/document-xsl.png);
-    background-position:center;
-    background-repeat: no-repeat;
+    background-image: url(img/document-xls.png);
     cursor:pointer;
-
-}
-.exportxslbtn:hover{
-    background-color: lightgray;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 
 }
 .exportxslbtn:focus {
@@ -2754,11 +2752,22 @@ img {
     clear: both;
     width: 23px;
     height: 23px;
-    background-size:20px;
+    background-color:whitesmoke;
+    border:1px solid lightgray;
+    border-radius:4px;
+    background-size:16px;
     background-image: url(img/clear-filter.png);
     background-position:center;
     background-repeat: no-repeat;
     cursor:pointer;
+}
+.clearfiltersbtn:hover{
+    background-color:lightgray;
+
+}
+.clearfiltersbtn:focus{
+    outline:none
+
 }
 .ctermlayout{
     clear: both;
@@ -2791,12 +2800,12 @@ img {
     -webkit-transform:rotateX(180deg);/* Safari and Chrome */
     -o-transform:rotateX(180deg); /* Opera */
     transform: rotateX(180deg);
-    
+
 
 }
 .v-layout.v-widget.flipvertically.v-absolutelayout-flipvertically.v-has-width.v-has-height div{
 
-overflow:visible !important;
+    overflow:visible !important;
 
 }
 .vdarkgray{
@@ -2813,4 +2822,34 @@ overflow:visible !important;
 
     overflow:visible!important;
     z-index:2 !important;
+}
+.heatmapbtns{
+    font-family: Verdana;
+    font-size: 12px;
+    font-stretch: normal;
+    font-style: normal;
+    font-variant: normal;
+
+}
+
+.heatmapbtns label{
+    font-family: Verdana !important;
+    font-size: 12px  !important;
+    font-stretch: normal  !important;
+    font-style: normal  !important;
+    font-variant: normal  !important;
+    line-height: 10px !important;
+    text-decoration:underline;
+    cursor: pointer;
+    -webkit-user-select: none;
+    color: rgb(27, 105, 159);
+
+}
+.v-select-optiongroup-heatmapbtns{
+
+    margin-top:-4px !important;
+}
+.heatmapbtns-long{
+    margin-top: 1px !important;
+
 }
