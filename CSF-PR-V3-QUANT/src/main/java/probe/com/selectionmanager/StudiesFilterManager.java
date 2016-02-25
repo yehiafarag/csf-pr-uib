@@ -108,8 +108,6 @@ public class StudiesFilterManager implements Serializable {
         this.selectedDiseaseGroupMap = new LinkedHashMap<Integer, DiseaseGroup>();
         this.quantDatasetListObject = quantDatasetListObject;
 
-      
-
         String key = "Multiple Sclerosis";//quantDatasetListObject.keySet().iterator().next();
         this.totalDsNumber = quantDatasetListObject.get("All").getQuantDatasetsList().size();
 
@@ -139,7 +137,6 @@ public class StudiesFilterManager implements Serializable {
         this.activeFilters = activeFilterMap.get(key);
         this.activeHeader = quantDatasetListObject.get(key).getActiveHeaders();
         this.diseaseCategorySet = quantDatasetListObject.keySet();
-      
 
         inuse_DiseaseCat_DiseaseGroupMap = new LinkedHashMap<String, Map<String, String>>(default_DiseaseCat_DiseaseGroupMap);
         this.updateRowsAndColumns("Reset_Disease_Groups_Level");
@@ -153,8 +150,6 @@ public class StudiesFilterManager implements Serializable {
         this.fullDiseaseGroupMap = new LinkedHashMap<Integer, DiseaseGroup>();
         this.selectedDiseaseGroupMap = new LinkedHashMap<Integer, DiseaseGroup>();
         this.quantDatasetListObject = quantDatasetListObject;
-
-      
 
         String key = "Multiple Sclerosis";//quantDatasetListObject.keySet().iterator().next();
         this.totalDsNumber = quantDatasetListObject.get("All").getQuantDatasetsList().size();
@@ -200,6 +195,7 @@ public class StudiesFilterManager implements Serializable {
     private void updateRowsAndColumns(String type) {
         if (type.equalsIgnoreCase("Disease_Groups_Level")) {
             this.updateDiseaseGroups(getFilteredDatasetsList());
+
             if (diseaseGroupsI == null || diseaseGroupsII == null) {
                 System.out.println("error at 85 class " + this.getClass().getName() + "   ");
                 return;
@@ -221,6 +217,7 @@ public class StudiesFilterManager implements Serializable {
 
         } else if (type.equalsIgnoreCase("Reset_Disease_Groups_Level")) {
             this.updateDiseaseGroups(getFullQuantDatasetMap());
+
             String[] pgArr = merge(diseaseGroupsI, diseaseGroupsII);
 //            Arrays.sort(pgArr);
             selectedHeatMapRows.clear();
@@ -318,7 +315,7 @@ public class StudiesFilterManager implements Serializable {
             diseaseGroupsII[i] = label2;
             diseaseGroup.setQuantDatasetIndex(ds.getDsKey());
             diseaseGroup.setOriginalDatasetIndex(ds.getDsKey());
-            
+
             i++;
         }
         selectedDiseaseGroupMap.clear();
@@ -457,9 +454,11 @@ public class StudiesFilterManager implements Serializable {
     public void applyFilters(CSFFilterSelection selection) {
         filterSelection = selection;
         updateFilteredDatasetList(selection.getDatasetIndexes());
+        this.updateDiseaseGroups(getFilteredDatasetsList());
+        this.updateDiseaseGroups(getFullQuantDatasetMap());
         this.SelectionChanged(selection.getType());
-//        }
 
+//        }
     }
 
     /**
@@ -601,6 +600,10 @@ public class StudiesFilterManager implements Serializable {
         this.selectedHeatMapColumns.clear();
         this.selectedHeatMapColumns.addAll(selectedColumns);
         this.currentDsNumber = fullDiseaseGroupMap.size();
+
+        this.updateDiseaseGroups(getFilteredDatasetsList());
+        this.updateDiseaseGroups(getFullQuantDatasetMap());
+
         this.SelectionChanged("HeatMap_Update_level");
 
     }

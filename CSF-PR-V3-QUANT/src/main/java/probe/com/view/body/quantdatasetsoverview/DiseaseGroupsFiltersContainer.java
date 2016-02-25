@@ -156,13 +156,41 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
         btnsLayout.setSpacing(true);
         this.leftContainerLayout.addComponent(btnsLayout);
 
+        HorizontalLayout updatedFiltersContainer = new HorizontalLayout();
+        updatedFiltersContainer.setStyleName("filtercontainer");
+        updatedFiltersContainer.setWidth("80px");
+        btnsLayout.addComponent(updatedFiltersContainer);
+        btnsLayout.setComponentAlignment(updatedFiltersContainer, Alignment.MIDDLE_LEFT);
+        btnsLayout.setExpandRatio(updatedFiltersContainer, 500f / leftPanelWidth);
+        btnsLayout.setStyleName(Reindeer.LAYOUT_WHITE);
+        
+
+        Label filterBtns = new Label("Filters");
+        filterBtns.setHeight("25px");
+        filterBtns.setDescription("Show filters");
+        filterBtns.setStyleName("showfilter");
+        filterBtns.setWidth("80px");
+        updatedFiltersContainer.addComponent(filterBtns);
+
+//        VerticalLayout angelRightLabel = new VerticalLayout();
+//        angelRightLabel.setHeight("25px");
+//        angelRightLabel.setDescription("Show filters");
+//        angelRightLabel.setStyleName("showfilter");
+//        angelRightLabel.setWidth("25px");
+//        updatedFiltersContainer.addComponent(angelRightLabel);
+//        
+        
+        
+        
+
         HorizontalLayout leftBottomBtnLayout = new HorizontalLayout();
         leftBottomBtnLayout.setWidthUndefined();
         leftBottomBtnLayout.setSpacing(true);
         leftBottomBtnLayout.setHeightUndefined();
-        btnsLayout.addComponent(leftBottomBtnLayout);
-        btnsLayout.setComponentAlignment(leftBottomBtnLayout, Alignment.MIDDLE_LEFT);
-        btnsLayout.setExpandRatio(leftBottomBtnLayout, 500f / leftPanelWidth);
+        
+//        btnsLayout.addComponent(leftBottomBtnLayout);
+//        btnsLayout.setComponentAlignment(leftBottomBtnLayout, Alignment.MIDDLE_LEFT);
+//        btnsLayout.setExpandRatio(leftBottomBtnLayout, 500f / leftPanelWidth);
         btnsLayout.setStyleName(Reindeer.LAYOUT_WHITE);
 
         Label filterTitle = new Label("Filters:");
@@ -180,19 +208,19 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
         leftBottomBtnLayout.setComponentAlignment(pieChartFiltersBtnWrapper, Alignment.MIDDLE_LEFT);
 
         reorderGroups = new PopupReorderGroupsLayout(Quant_Central_Manager);
-        leftBottomBtnLayout.addComponent(reorderGroups);
-        leftBottomBtnLayout.setComponentAlignment(reorderGroups, Alignment.TOP_LEFT);
+//        updatedFiltersContainer.addComponent(reorderGroups);
+//        updatedFiltersContainer.setComponentAlignment(reorderGroups, Alignment.TOP_LEFT);
 
         PopupRecombineDiseaseGroups recombineGroups = new PopupRecombineDiseaseGroups(Quant_Central_Manager);
-        leftBottomBtnLayout.addComponent(recombineGroups);
-        leftBottomBtnLayout.setComponentAlignment(recombineGroups, Alignment.TOP_LEFT);
+//        updatedFiltersContainer.addComponent(recombineGroups);
+//        updatedFiltersContainer.setComponentAlignment(recombineGroups, Alignment.TOP_LEFT);
 //
         Button clearFilterBtn = new Button("Reset");
         clearFilterBtn.setHeight("24px");
         clearFilterBtn.setStyleName(Reindeer.BUTTON_LINK);
         clearFilterBtn.addStyleName("heatmapbtns");
-        leftBottomBtnLayout.addComponent(clearFilterBtn);
-        leftBottomBtnLayout.setComponentAlignment(clearFilterBtn, Alignment.MIDDLE_LEFT);
+//        updatedFiltersContainer.addComponent(clearFilterBtn);
+//        updatedFiltersContainer.setComponentAlignment(clearFilterBtn, Alignment.MIDDLE_LEFT);
         clearFilterBtn.setDescription("Reset all applied filters");
 
         clearFilterBtn.addClickListener(new ClickListener() {
@@ -203,8 +231,8 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
 
         });
         final OptionGroup noSerumOption = new OptionGroup();
-        leftBottomBtnLayout.addComponent(noSerumOption);
-        leftBottomBtnLayout.setComponentAlignment(noSerumOption, Alignment.MIDDLE_LEFT);
+//        updatedFiltersContainer.addComponent(noSerumOption);
+//        updatedFiltersContainer.setComponentAlignment(noSerumOption, Alignment.MIDDLE_LEFT);
         noSerumOption.setWidth("80px");
         noSerumOption.setHeight("24px");
         noSerumOption.setNullSelectionAllowed(true); // user can not 'unselect'

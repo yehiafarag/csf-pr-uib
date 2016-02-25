@@ -357,7 +357,19 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
         TrendLegend tableLegendLayout = new TrendLegend("table");
         rightBottomLayout.addComponent(tableLegendLayout);
         rightBottomLayout.setComponentAlignment(tableLegendLayout, Alignment.MIDDLE_CENTER);
-        
+                 VerticalLayout removeAllFiltersBtn = new VerticalLayout();
+        removeAllFiltersBtn.setStyleName("clearfiltersbtn");
+        rightBottomLayout.addComponent(removeAllFiltersBtn);
+        rightBottomLayout.setComponentAlignment(removeAllFiltersBtn, Alignment.TOP_LEFT);
+        removeAllFiltersBtn.setDescription("Select all data");
+        removeAllFiltersBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+
+            @Override
+            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+                clearAllFilters();
+            }
+        });
+
         
          Button exportTableBtn = new Button("");
         exportTableBtn.setHeight("24px");
@@ -397,19 +409,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
             }
         });
 
-        VerticalLayout removeAllFiltersBtn = new VerticalLayout();
-        removeAllFiltersBtn.setStyleName("clearfiltersbtn");
-        rightBottomLayout.addComponent(removeAllFiltersBtn);
-        rightBottomLayout.setComponentAlignment(removeAllFiltersBtn, Alignment.TOP_LEFT);
-        removeAllFiltersBtn.setDescription("Select all data");
-        removeAllFiltersBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
-
-            @Override
-            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-                clearAllFilters();
-            }
-        });
-
+       
         VerticalLayout selectAllBtn = new VerticalLayout();
         selectAllBtn.setStyleName("selectallbtn");
         rightBottomLayout.addComponent(selectAllBtn);
@@ -422,6 +422,8 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
                 selectAll();
             }
         });
+        
+
 
         VerticalLayout unselectAllBtn = new VerticalLayout();
         unselectAllBtn.setStyleName("unselectallbtn");

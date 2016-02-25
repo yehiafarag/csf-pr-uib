@@ -100,7 +100,7 @@ public class PopupReorderGroupsLayout extends Button implements CSFFilter, Click
         popupWindow.setDraggable(false);
         popupWindow.setCaption("&nbsp;&nbsp;Disease Groups");
         popupWindow.setCaptionAsHtml(true);
-         popupBodyLayout.setStyleName(Reindeer.LAYOUT_WHITE);
+        popupBodyLayout.setStyleName(Reindeer.LAYOUT_WHITE);
         popupBodyLayout.setHeightUndefined();//(h - 50) + "px");
         popupWindow.setWindowMode(WindowMode.NORMAL);
 
@@ -109,8 +109,18 @@ public class PopupReorderGroupsLayout extends Button implements CSFFilter, Click
 
         colHeaders = Quant_Central_Manager.getSelectedHeatMapRows();
         rowHeaders = Quant_Central_Manager.getSelectedHeatMapRows();
+       
+        
+        
         Map<Integer, QuantDatasetObject> quantDSArr = Quant_Central_Manager.getFilteredDatasetsList();
+       
+        
+        
+        
+        
+       patientsGroupArr =  Quant_Central_Manager.getDiseaseGroupsArray();
         initPopupLayout(rowHeaders, colHeaders, quantDSArr);
+//        this.Quant_Central_Manager.setHeatMapLevelSelection(rowHeaders, colHeaders, patientsGroupArr);
         this.Quant_Central_Manager.registerFilterListener(PopupReorderGroupsLayout.this);
 
     }
@@ -167,21 +177,23 @@ public class PopupReorderGroupsLayout extends Button implements CSFFilter, Click
 
         int h = (Math.max(rowHeaders.size(), colHeaders.size()) * 27) + 150;
         int w = (maxLabelWidth * 10 * 2) + 72 + 50;
-        if (Page.getCurrent().getBrowserWindowHeight()-280 < h) {
-            h = Page.getCurrent().getBrowserWindowHeight()-280;
+        if (Page.getCurrent().getBrowserWindowHeight() - 280 < h) {
+            h = Page.getCurrent().getBrowserWindowHeight() - 280;
         }
         if (Page.getCurrent().getBrowserWindowWidth() < w) {
             w = Page.getCurrent().getBrowserWindowWidth();
         }
 
         popupBodyLayout.setWidth((w - 50) + "px");
-       
+
         popupWindow.setWidth(w + "px");
         popupWindow.setHeight(h + "px");
         int subH = (h - 150);
+        
+       patientsGroupArr =  Quant_Central_Manager.getDiseaseGroupsArray();
 
-        this.sortableDiseaseGroupI = new SortableLayoutContainer((w - 50), subH, " Disease Group A", rowHeaders,Quant_Central_Manager.getDiseaseStyleMap());
-        this.sortableDiseaseGroupII = new SortableLayoutContainer((w - 50), subH, " Disease Group B", colHeaders,Quant_Central_Manager.getDiseaseStyleMap());
+        this.sortableDiseaseGroupI = new SortableLayoutContainer((w - 50), subH, " Disease Group A", rowHeaders, Quant_Central_Manager.getDiseaseStyleMap());
+        this.sortableDiseaseGroupII = new SortableLayoutContainer((w - 50), subH, " Disease Group B", colHeaders, Quant_Central_Manager.getDiseaseStyleMap());
         this.initPopupBody((w - 50));
 
     }
@@ -198,12 +210,15 @@ public class PopupReorderGroupsLayout extends Button implements CSFFilter, Click
             }
             Quant_Central_Manager.applyFilters(new CSFFilterSelection("Reorder_Selection", indexes, "", new HashSet<String>()));
         }
+        
+////       patientsGroupArr =  Quant_Central_Manager.getDiseaseGroupsArray();
         Quant_Central_Manager.setHeatMapLevelSelection(rowHeaders, colHeaders, patientsGroupArr);
+
     }
 
     @Override
     public void buttonClick(ClickEvent event) {
-        colHeaders = Quant_Central_Manager.getSelectedHeatMapRows();
+        colHeaders = Quant_Central_Manager.getSelectedHeatMapColumns();
         rowHeaders = Quant_Central_Manager.getSelectedHeatMapRows();
         patientsGroupArr = Quant_Central_Manager.getDiseaseGroupsArray();
 //        Map<Integer, QuantDatasetObject> quantDSArr = Quant_Central_Manager.getFilteredDatasetsList();
@@ -250,6 +265,7 @@ public class PopupReorderGroupsLayout extends Button implements CSFFilter, Click
 //            i++;
 //        }
         sortableDiseaseGroupI.updateLists(rowHeaders);
+        sortableDiseaseGroupII.selectAndHideUnselected(colHeaders, true);
 
         popupWindow.setVisible(true);
         popupWindow.center();
@@ -278,14 +294,13 @@ public class PopupReorderGroupsLayout extends Button implements CSFFilter, Click
                 if (sortableDiseaseGroupI.isSingleSelected()) {
                     sortableDiseaseGroupII.setEnableSelection(true);
                 } else {
-                    sortableDiseaseGroupII.initLists(colHeaders);
-                    sortableDiseaseGroupII.setEnableSelection(false);
+                    sortableDiseaseGroupII.selectAndHideUnselected(null, false);
+//                    sortableDiseaseGroupII.setEnableSelection(false);
                     return;
                 }
 
                 Set<String> updatedGroupIISet = filterPatGroup2List(sortableDiseaseGroupI.getSelectionSet());
-
-                sortableDiseaseGroupII.initLists(updatedGroupIISet);
+                sortableDiseaseGroupII.selectAndHideUnselected(updatedGroupIISet, false);
 
             }
         };
@@ -345,7 +360,6 @@ public class PopupReorderGroupsLayout extends Button implements CSFFilter, Click
             public void buttonClick(Button.ClickEvent event) {
                 rowHeaders = sortableDiseaseGroupI.getSortedSet();
                 colHeaders = sortableDiseaseGroupII.getSortedSet();
-
                 updateSelectionManager(studiesIndexes);
                 popupWindow.close();
             }

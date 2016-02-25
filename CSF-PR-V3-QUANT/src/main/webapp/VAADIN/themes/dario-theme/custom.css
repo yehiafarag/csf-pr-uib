@@ -2853,3 +2853,63 @@ img {
     margin-top: 1px !important;
 
 }
+.disableLayout{
+    background: lightgray !important;
+
+}
+.showfilter{
+    line-height: 22px;
+    cursor: pointer; 
+    -webkit-user-select: none;
+    background-image: url(img/filters-128.png);
+    padding:0 25px;    
+    margin-right:-19px;
+    background-size:contain,12px;
+    background-repeat:no-repeat;
+    background-position:0 1px, 70px;
+    color: gray;
+    cursor: pointer; 
+    font-family: Verdana;
+    font-size: 15px;
+    font-stretch: normal;
+    font-style: normal;
+    font-variant: normal;
+    zoom: 1;
+    
+/*     -webkit-transition: background-image 2s;  For Safari 3.1 to 6.0 
+    transition: background-image 2s;*/
+    font-size:13px;
+
+    
+}
+.showfilter:hover{
+    color:  #707070;
+    background-image: url(img/filters-128.png),  url(img/angle-double-right.png);
+    width:auto !important;
+    
+}
+.filtercontainer{
+     line-height: 22px;
+     background-color:whitesmoke;
+    border:1px solid lightgray;
+    border-radius:4px;
+   -webkit-transition: width 2s; /* For Safari 3.1 to 6.0 */
+    transition: width 2s;    
+    
+    
+    
+}
+.filtercontainer:hover{
+     width:90px !important;
+     
+    
+}
+.angleright{
+    
+    
+    
+}
+.hidefilter{
+
+
+}
