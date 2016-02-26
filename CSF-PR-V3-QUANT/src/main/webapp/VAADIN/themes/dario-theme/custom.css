@@ -1400,34 +1400,30 @@ resetlabelbtn p{
     outline: none !important;
 
 }
-.studyexplorer div{
-    width: 45px;
-    line-height: 14px;
-    text-decoration:underline;
+.studyexplorer{
+    width: 40px !important;
+    height:28px !important;
     cursor: pointer;
     -webkit-user-select: none;
     color: rgb(27, 105, 159);
-    cursor: pointer;
-    display: inline;
-    font-family: Verdana;
-    font-size: 12px;
-    font-stretch: normal;
-    font-style: normal;
-    font-variant: normal;
-    font-weight: normal;
-    height: auto;
-    text-align: left;
-    text-shadow: none;    
-    margin-top:1px !important;
-    vertical-align: baseline;
-    white-space: nowrap;
-    width: auto;
-    zoom: 1;
-
+    border-radius:4px;
+    -webkit-transition: width 2s; /* For Safari 3.1 to 6.0 */
+    transition: width 2s;   
+    background-image: url(img/pie-chart.png);
+    background-size:20px;
+    background-repeat:no-repeat;
+    background-position:center;
+}
+.studyexplorer:hover{
+    border-right:1px solid lightgray;
+    border-left:1px solid lightgray;
+    background-color:whitesmoke;
 }
 .studyexplorer:focus{
+
     outline: none !important;
 }
+
 .filtercaption{
     /* width: 45px; */
 
@@ -1678,7 +1674,17 @@ resetlabelbtn p{
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+    background-repeat:no-repeat;
+     width:23px !important;
+    height:23px !important;
+    border:none;
 
+
+}
+.exportxslbtn:hover{
+    border: none !important;
+    background-color: white !important;
+    
 }
 .exportxslbtn:focus {
     outline: none;
@@ -2697,7 +2703,9 @@ img {
 }
 
 .v-popupview-popup{
-
+    border-radius:4px;
+    background-color:whitesmoke;
+    border:1px solid lightgray;
     /*background-color:black;*/
 }
 .pupupbody { 
@@ -2823,32 +2831,6 @@ img {
     overflow:visible!important;
     z-index:2 !important;
 }
-.heatmapbtns{
-    font-family: Verdana;
-    font-size: 12px;
-    font-stretch: normal;
-    font-style: normal;
-    font-variant: normal;
-
-}
-
-.heatmapbtns label{
-    font-family: Verdana !important;
-    font-size: 12px  !important;
-    font-stretch: normal  !important;
-    font-style: normal  !important;
-    font-variant: normal  !important;
-    line-height: 10px !important;
-    text-decoration:underline;
-    cursor: pointer;
-    -webkit-user-select: none;
-    color: rgb(27, 105, 159);
-
-}
-.v-select-optiongroup-heatmapbtns{
-
-    margin-top:-4px !important;
-}
 .heatmapbtns-long{
     margin-top: 1px !important;
 
@@ -2857,59 +2839,222 @@ img {
     background: lightgray !important;
 
 }
+
 .showfilter{
-    line-height: 22px;
+    line-height: 18px;
     cursor: pointer; 
     -webkit-user-select: none;
     background-image: url(img/filters-128.png);
-    padding:0 25px;    
-    margin-right:-19px;
-    background-size:contain,12px;
+    background-size:18px,12px;
     background-repeat:no-repeat;
-    background-position:0 1px, 70px;
-    color: gray;
+    background-position:2px 0px, 70px;
     cursor: pointer; 
     font-family: Verdana;
     font-size: 15px;
     font-stretch: normal;
     font-style: normal;
     font-variant: normal;
+    background-image: url(img/filters-128.png),  url(img/angle-double-right.png);
     zoom: 1;
-    
-/*     -webkit-transition: background-image 2s;  For Safari 3.1 to 6.0 
-    transition: background-image 2s;*/
     font-size:13px;
+    color:rgba(255, 255, 255, 0);
+    background-color:whitesmoke;
+    border:1px solid lightgray;
+    border-radius:4px;      
+    width:25px !important;
+     opacity:1;
+  transition:opacity 5s linear;
+  -webkit-transition: opacity 5s linear; /* For Safari 3.1 to 6.0 */
 
-    
 }
 .showfilter:hover{
-    color:  #707070;
-    background-image: url(img/filters-128.png),  url(img/angle-double-right.png);
-    width:auto !important;
-    
+    -webkit-transition: color 2s; /* For Safari 3.1 to 6.0 */
+    transition: color 2s; 
+    color:  #707070; 
+    padding:0 20px;  
+
+    width:90px !important;
+
+}
+.hidefilters{
+    opacity:0;
 }
 .filtercontainer{
-     line-height: 22px;
-     background-color:whitesmoke;
+    background-color:white;
     border:1px solid lightgray;
     border-radius:4px;
-   -webkit-transition: width 2s; /* For Safari 3.1 to 6.0 */
+    -webkit-transition: width 2s; /* For Safari 3.1 to 6.0 */
     transition: width 2s;    
-    
-    
-    
+    width:300px !important;
+    padding-left: 30px;
+    background-image: url(img/filters-128.png);
+    background-size:20px,12px;
+    background-repeat:no-repeat;
+    background-position:2px 4px, 70px;
+
 }
 .filtercontainer:hover{
-     width:90px !important;
-     
-    
+
+
 }
 .angleright{
-    
-    
-    
+
+
+
 }
 .hidefilter{
 
 
+}
+.sortandselect{
+
+   width: 40px !important;
+    height:28px !important;
+    cursor: pointer;
+    -webkit-user-select: none;
+    color: rgb(27, 105, 159);
+    border-radius:4px;
+    -webkit-transition: width 2s; /* For Safari 3.1 to 6.0 */
+    transition: width 2s;   
+    background-image: url(img/sort-select.png);
+    background-size:35px;
+    background-repeat:no-repeat;
+    background-position:center;
+     border-right:1px solid white;
+    border-left:1px solid white;
+}
+.sortandselect:hover{
+    border-right:1px solid lightgray;
+    border-left:1px solid lightgray;
+    background-color:whitesmoke;
+}
+.sortandselect:focus{
+
+    outline: none !important;
+}
+
+.merge{
+
+   width: 40px !important;
+    height:28px !important;
+    cursor: pointer;
+    -webkit-user-select: none;
+    color: rgb(27, 105, 159);
+    border-radius:4px;
+    -webkit-transition: width 2s; /* For Safari 3.1 to 6.0 */
+    transition: width 2s;   
+    background-image: url(img/merge.png);
+    background-size:25px;
+    background-repeat:no-repeat;
+    background-position:center;
+     border-right:1px solid white;
+    border-left:1px solid white;
+}
+.merge:hover{
+    border-right:1px solid lightgray;
+    border-left:1px solid lightgray;
+    background-color:whitesmoke;
+}
+.-merge:focus{
+
+    outline: none !important;
+}
+.heatmapbtns label{  
+    cursor: pointer; 
+    background-image: url(img/blood-drop.png);
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:2px 0px;
+    cursor: pointer; 
+    zoom: 1;
+    font-size:13px;
+    color:rgba(255, 255, 255, 0) !important;
+   
+    
+
+}
+.heatmapbtns:hover{  
+    
+   border-right:1px solid lightgray;
+    border-left:1px solid lightgray;
+    background-color:whitesmoke;
+    
+
+}
+.heatmapbtns{
+    font-family: Verdana;
+    font-size: 12px;
+    width:39px !important;
+    height:28px !important;
+  border-radius:4px;
+     border-right:1px solid white;
+    border-left:1px solid white;
+    background-color:rgba(255, 255, 255, 0);
+    padding-top: 4px; 
+
+}
+.v-checkbox.v-select-option{
+    background-color:rgba(255, 255, 255, 0);
+}
+
+
+.clearfilters{
+
+   width: 40px !important;
+    height:28px !important;
+    cursor: pointer;
+    -webkit-user-select: none;
+    color: rgb(27, 105, 159);
+    border-radius:4px;
+    -webkit-transition: width 2s; /* For Safari 3.1 to 6.0 */
+    transition: width 2s;   
+    background-image: url(img/filter_disables.png);
+    background-size:22px;
+    background-repeat:no-repeat;
+    background-position:center;
+     border-right:1px solid white;
+    border-left:1px solid white;
+}
+.clearfilters:hover{
+    border-right:1px solid lightgray;
+    border-left:1px solid lightgray;
+    background-color:whitesmoke;
+}
+.clearfilters:focus{
+
+    outline: none !important;
+}
+
+.hidefilterslayout{
+
+   width: 40px !important;
+    height:28px !important;
+    cursor: pointer;
+    -webkit-user-select: none;
+    color: rgb(27, 105, 159);
+    border-radius:4px;
+    -webkit-transition: width 2s; /* For Safari 3.1 to 6.0 */
+    transition: width 2s;   
+    background-image: url(img/angle-double-left.png);
+    background-size:12px;
+    background-repeat:no-repeat;
+    background-position:center;
+     border-right:1px solid white;
+    border-left:1px solid white;
+    border-right:1px solid lightgray;
+}
+.hidefilterslayout:hover{
+   
+    border-left:1px solid lightgray;
+    background-color:whitesmoke;
+}
+.hidefilterslayout:focus{
+
+    outline: none !important;
+}
+.filtercontainer2 {
+    overflow:hidden !important;
+      -webkit-transition: width 2s; /* For Safari 3.1 to 6.0 */
+    transition: width 2s; 
+    
 }

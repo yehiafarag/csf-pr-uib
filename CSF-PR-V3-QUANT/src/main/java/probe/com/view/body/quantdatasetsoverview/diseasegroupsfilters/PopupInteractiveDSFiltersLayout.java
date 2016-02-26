@@ -39,10 +39,10 @@ public class PopupInteractiveDSFiltersLayout extends VerticalLayout implements L
      */
     public PopupInteractiveDSFiltersLayout(final StudiesPieChartFiltersContainerLayout interactivePieChartFiltersContainerLayout) {
         VerticalLayout datasetExplorerFiltersIcon = new VerticalLayout();
-        datasetExplorerFiltersIcon.setWidth("45px");
-        datasetExplorerFiltersIcon.setHeight("24px");
-        Label btnTitle = new Label("Studies");
-        datasetExplorerFiltersIcon.addComponent(btnTitle);
+//        datasetExplorerFiltersIcon.setWidth("45px");
+//        datasetExplorerFiltersIcon.setHeight("24px");
+//        Label btnTitle = new Label("Studies");
+//        datasetExplorerFiltersIcon.addComponent(btnTitle);
         datasetExplorerFiltersIcon.setStyleName("studyexplorer");
         datasetExplorerFiltersIcon.setDescription("Datasets Expolorer Filters");
         this.addComponent(datasetExplorerFiltersIcon);

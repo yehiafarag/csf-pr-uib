@@ -35,7 +35,7 @@ import probe.com.view.core.ToggleBtn;
  *
  * @author Yehia Farag
  */
-public class PopupReorderGroupsLayout extends Button implements CSFFilter, ClickListener {
+public class PopupReorderGroupsLayout extends VerticalLayout implements CSFFilter, LayoutEvents.LayoutClickListener {
 
     private final Window popupWindow;
     private final QuantCentralManager Quant_Central_Manager;
@@ -72,13 +72,12 @@ public class PopupReorderGroupsLayout extends Button implements CSFFilter, Click
     }
 
     public PopupReorderGroupsLayout(QuantCentralManager Quant_Central_Manager) {
-        super("Sort and Select");
-
-        this.setStyleName(Reindeer.BUTTON_LINK);
-        this.addStyleName("heatmapbtns");
+     
+        
+        this.setStyleName("sortandselect");
         this.setDescription("Reorder And Select Disease Groups");
         this.Quant_Central_Manager = Quant_Central_Manager;
-        this.addClickListener(PopupReorderGroupsLayout.this);
+        this.addLayoutClickListener(PopupReorderGroupsLayout.this);
         this.popupBodyLayout = new VerticalLayout();
         VerticalLayout windowLayout = new VerticalLayout();
         popupWindow = new Window() {
@@ -216,9 +215,12 @@ public class PopupReorderGroupsLayout extends Button implements CSFFilter, Click
 
     }
 
+    
+
     @Override
-    public void buttonClick(ClickEvent event) {
-        colHeaders = Quant_Central_Manager.getSelectedHeatMapColumns();
+    public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+        System.out.println("at layout clicked ");
+           colHeaders = Quant_Central_Manager.getSelectedHeatMapColumns();
         rowHeaders = Quant_Central_Manager.getSelectedHeatMapRows();
         patientsGroupArr = Quant_Central_Manager.getDiseaseGroupsArray();
 //        Map<Integer, QuantDatasetObject> quantDSArr = Quant_Central_Manager.getFilteredDatasetsList();
@@ -271,6 +273,9 @@ public class PopupReorderGroupsLayout extends Button implements CSFFilter, Click
         popupWindow.center();
     }
 
+    
+    
+    
     private void initPopupBody(int w) {
         HorizontalLayout mainContainer = new HorizontalLayout();
         mainContainer.setStyleName(Reindeer.LAYOUT_WHITE);

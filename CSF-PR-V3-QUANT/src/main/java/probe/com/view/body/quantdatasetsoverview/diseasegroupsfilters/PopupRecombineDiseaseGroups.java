@@ -6,6 +6,7 @@
 package probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters;
 
 import com.vaadin.data.Property;
+import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.Page;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -35,7 +36,7 @@ import probe.com.view.core.DiseaseGroupLabel;
  *
  * @author Yehia Farag
  */
-public class PopupRecombineDiseaseGroups extends Button implements ClickListener {
+public class PopupRecombineDiseaseGroups extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
     private final Window popupWindow;
     private final QuantCentralManager Quant_Central_Manager;
@@ -45,17 +46,16 @@ public class PopupRecombineDiseaseGroups extends Button implements ClickListener
     private final Map<String, String> diseaseStyleMap;
 
     public PopupRecombineDiseaseGroups(QuantCentralManager Quant_Central_Manager) {
-        super("Recombine Groups");
+//        super(" ");
         this.diseaseStyleMap = Quant_Central_Manager.getDiseaseStyleMap();
         
 
         default_DiseaseCat_DiseaseGroupMap = new LinkedHashMap<String, Map<String, String>>(Quant_Central_Manager.getDefault_DiseaseCat_DiseaseGroupMap());
 
-        this.setStyleName(Reindeer.BUTTON_LINK);
-        this.addStyleName("heatmapbtns");
+        this.setStyleName("merge");
         this.setDescription("Recombine Disease Groups");
         this.Quant_Central_Manager = Quant_Central_Manager;
-        this.addClickListener(PopupRecombineDiseaseGroups.this);
+        this.addLayoutClickListener(PopupRecombineDiseaseGroups.this);
         this.popupBodyLayout = new VerticalLayout();
         VerticalLayout windowLayout = new VerticalLayout();
         popupWindow = new Window() {
@@ -351,9 +351,10 @@ public class PopupRecombineDiseaseGroups extends Button implements ClickListener
     }
 
     @Override
-    public void buttonClick(ClickEvent event) {
+    public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         popupWindow.setVisible(true);
     }
+
 
     private void resetToDefault() {
 
