@@ -46,7 +46,7 @@ public class PopupInteractiveDSFiltersLayout extends VerticalLayout implements L
         datasetExplorerFiltersIcon.setStyleName("studyexplorer");
         datasetExplorerFiltersIcon.setDescription("Datasets Expolorer Filters");
         this.addComponent(datasetExplorerFiltersIcon);
-        this.setComponentAlignment(datasetExplorerFiltersIcon, Alignment.BOTTOM_CENTER);
+        this.setComponentAlignment(datasetExplorerFiltersIcon, Alignment.BOTTOM_LEFT);
         datasetExplorerFiltersIcon.addLayoutClickListener(PopupInteractiveDSFiltersLayout.this);
         this.setHeightUndefined();
 

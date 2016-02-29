@@ -8,8 +8,6 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
-import eu.dusse.vaadin.waypoints.InviewExtension;
-import eu.dusse.vaadin.waypoints.InviewExtensionImpl;
 import java.util.List;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.model.beans.quant.QuantProtein;

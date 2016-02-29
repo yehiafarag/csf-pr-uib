@@ -8,13 +8,9 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.NativeSelect;
-import com.vaadin.ui.OptionGroup;
-import com.vaadin.ui.PopupView;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.util.LinkedHashSet;
@@ -32,7 +28,6 @@ import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.PopupRecom
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.PopupReorderGroupsLayout;
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.StudiesInformationPopupBtn;
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.interactivepiechartfilters.StudiesPieChartFiltersContainerLayout;
-import probe.com.view.core.Tips;
 
 /**
  * This class represents the top filters layout for exploring datasets tab the
@@ -48,7 +43,7 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
 
     private final HorizontalLayout btnsLayout;
 
-    private int leftPanelWidth;
+    private int leftPanelWidth, leftPanelHeight, heatmapH;
     private int rightPanelWidth;//, heatmapW;
     private float rightPanelExpandingRatio;
     private float leftPanelExpendingRatio;
@@ -58,9 +53,7 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
     private final int heatmapHeaderCellWidth = 135;
     private final QuantCentralManager Quant_Central_Manager;
     private final ComparisonsSelectionOverviewBubbleChart selectionOverviewBubbleChart;
-//    private final HorizontalLayout middleLayout;
-    private final int mainContainerWidth;
-    private final int standeredChartHeight;
+    private final int rightPanelHeight;
     private final HorizontalLayout diseaseCategorySelectLayout;
     private final HorizontalLayout rightBottomBtnLayout;
     private final PopupReorderGroupsLayout reorderGroups;
@@ -93,6 +86,7 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
 
         //init left panel 
         leftContainerLayout.setSpacing(true);
+        leftContainerLayout.setStyleName("slowresizelayout");
         Set<String> diseaseSet = Quant_Central_Manager.getDiseaseCategorySet();
         NativeSelect diseaseTypeSelectionList = new NativeSelect();
         diseaseTypeSelectionList.setDescription("Select disease category");
@@ -103,10 +97,15 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
 
         }
 
+        final VerticalLayout diseaseCategorySelectLayoutWrapper = new VerticalLayout();
+        diseaseCategorySelectLayoutWrapper.setWidth("100%");
+        diseaseCategorySelectLayoutWrapper.setHeight("23px");
+        diseaseCategorySelectLayoutWrapper.setStyleName(Reindeer.LAYOUT_WHITE);
         diseaseCategorySelectLayout = new HorizontalLayout();
+        diseaseCategorySelectLayoutWrapper.addComponent(diseaseCategorySelectLayout);
         diseaseCategorySelectLayout.setWidthUndefined();
         diseaseCategorySelectLayout.setSpacing(true);
-        diseaseCategorySelectLayout.setMargin(new MarginInfo(false, false, true, false));
+        diseaseCategorySelectLayout.setMargin(new MarginInfo(false, false, false, false));
 
         Label title = new Label("Disease Category");
         title.setStyleName(Reindeer.LABEL_SMALL);
@@ -138,109 +137,149 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
         diseaseCategorySelectLayout.addComponent(counterLabel);
         diseaseCategorySelectLayout.setComponentAlignment(counterLabel, Alignment.MIDDLE_CENTER);
 
-        leftContainerLayout.addComponent(diseaseCategorySelectLayout);
-        leftContainerLayout.setComponentAlignment(diseaseCategorySelectLayout, Alignment.TOP_LEFT);
-        
-        
+        leftContainerLayout.addComponent(diseaseCategorySelectLayoutWrapper);
+        leftContainerLayout.setComponentAlignment(diseaseCategorySelectLayoutWrapper, Alignment.TOP_LEFT);
+
         final HorizontalLayout filterLabelBtnWrpper = new HorizontalLayout();
         diseaseCategorySelectLayout.addComponent(filterLabelBtnWrpper);
         diseaseCategorySelectLayout.setComponentAlignment(filterLabelBtnWrpper, Alignment.MIDDLE_LEFT);
-        
 
         final Label filterLabelBtn = new Label("Filters");
         filterLabelBtn.setHeight("20px");
         filterLabelBtn.setWidth("20px");
         filterLabelBtn.setDescription("Show filters");
-        filterLabelBtn.setStyleName("showfilter");
-        filterLabelBtn.setContentMode(ContentMode.HTML);        
+        filterLabelBtn.setStyleName("showfilterbtnlabel");
+        filterLabelBtn.setContentMode(ContentMode.HTML);
         filterLabelBtnWrpper.addComponent(filterLabelBtn);
-        
+
         HorizontalLayout popupBtnsLayout = new HorizontalLayout();
-        popupBtnsLayout.setWidthUndefined();
+        popupBtnsLayout.setWidth("100%");
         popupBtnsLayout.setHeight("30px");
         popupBtnsLayout.setSpacing(true);
-        
         popupBtnsLayout.setStyleName("filtercontainer");
+
 //        final PopupView btnsPopup = new PopupView(null, popupBtnsLayout);
 //        btnsPopup.setHideOnMouseOut(false);
 //        updatedFiltersContainer.addComponent(btnsPopup);
-        
-        final VerticalLayout filtersContainerLayout =new VerticalLayout();
+        final VerticalLayout filtersContainerLayout = new VerticalLayout();
         filtersContainerLayout.addComponent(popupBtnsLayout);
-        filtersContainerLayout.setWidth("0px");
+        filtersContainerLayout.setHeight("0px");
         filtersContainerLayout.setStyleName("filtercontainer2");
 //        filtersContainerLayout.setVisible(false);
-         diseaseCategorySelectLayout.addComponent(filtersContainerLayout);
-        diseaseCategorySelectLayout.setComponentAlignment(filtersContainerLayout, Alignment.MIDDLE_LEFT);
-        
-        
-        
-        
+//        diseaseCategorySelectLayout.addComponent(filtersContainerLayout);
+//        diseaseCategorySelectLayout.setComponentAlignment(filtersContainerLayout, Alignment.MIDDLE_LEFT);
+
+        leftContainerLayout.addComponent(filtersContainerLayout);
+        leftContainerLayout.setComponentAlignment(filtersContainerLayout, Alignment.MIDDLE_LEFT);
+
+        filtersContainerLayout.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+
+            @Override
+            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+                if (event.getClickedComponent() == null || !event.getClickedComponent().getStyleName().equalsIgnoreCase("filtercontainer")) {
+                    return;
+                }
+
+                filtersContainerLayout.setHeight("0px");
+                filterLabelBtn.setDescription("Show filters");
+                filterLabelBtn.setStyleName("showfilterbtnlabel");
+//                filterLabelBtn.setStyleName("showfilter");
+            }
+        });
+
         filterLabelBtnWrpper.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-                filterLabelBtn.setStyleName("hidefilters");
-                filterLabelBtnWrpper.setWidth("0px");
-                filtersContainerLayout.setWidth("300px");
-                        
-                        
-                       
-                 
+//                filterLabelBtn.setStyleName("hidefilters");
+//                filterLabelBtnWrpper.setWidth("0px");
+                if (filterLabelBtn.getDescription().equalsIgnoreCase("Show filters")) {
+                    filtersContainerLayout.setHeight("30px");
+                    filterLabelBtn.setDescription("Hide filters");
+                    filterLabelBtn.setStyleName("hidefilterbtnlabel");
+                } else {
+                    filtersContainerLayout.setHeight("0px");
+                    filterLabelBtn.setDescription("Show filters");
+                    filterLabelBtn.setStyleName("showfilterbtnlabel");
+
+                }
+
 //                btnsPopup.setPopupVisible(true);
             }
         });
-        
-        
-         
-        
+
         StudiesPieChartFiltersContainerLayout pieChartFiltersLayout = new StudiesPieChartFiltersContainerLayout(Quant_Central_Manager, CSFPR_Handler);
         pieChartFiltersBtnWrapper = new VerticalLayout();
         pieChartFiltersBtnWrapper.addComponent(pieChartFiltersLayout.getPieChartFiltersBtn());
         popupBtnsLayout.addComponent(pieChartFiltersBtnWrapper);
-        popupBtnsLayout.setComponentAlignment(pieChartFiltersBtnWrapper, Alignment.MIDDLE_LEFT);
+        popupBtnsLayout.setComponentAlignment(pieChartFiltersBtnWrapper, Alignment.MIDDLE_RIGHT);
 
         reorderGroups = new PopupReorderGroupsLayout(Quant_Central_Manager);
         popupBtnsLayout.addComponent(reorderGroups);
-        popupBtnsLayout.setComponentAlignment(reorderGroups, Alignment.TOP_LEFT);
+        popupBtnsLayout.setComponentAlignment(reorderGroups, Alignment.TOP_RIGHT);
 
         PopupRecombineDiseaseGroups recombineGroups = new PopupRecombineDiseaseGroups(Quant_Central_Manager);
         popupBtnsLayout.addComponent(recombineGroups);
-        popupBtnsLayout.setComponentAlignment(recombineGroups, Alignment.TOP_LEFT);
-        
-        
-           final OptionGroup noSerumOption = new OptionGroup();
+        popupBtnsLayout.setComponentAlignment(recombineGroups, Alignment.TOP_RIGHT);
+
+//        final OptionGroup noSerumOption = new OptionGroup();
+//        noSerumOption.setDescription("Include serum studies");
+//        popupBtnsLayout.addComponent(noSerumOption);
+//        popupBtnsLayout.setComponentAlignment(noSerumOption, Alignment.MIDDLE_LEFT);
+//        noSerumOption.setWidth("25px");
+//        noSerumOption.setHeight("24px");
+//        noSerumOption.setNullSelectionAllowed(true); // user can not 'unselect'
+//        noSerumOption.setMultiSelect(true);
+//        noSerumOption.addItem("Serum Studies");
+//        noSerumOption.addStyleName("horizontal");
+//        noSerumOption.addStyleName("heatmapbtns");
+//        noSerumOption.setItemCaption("Serum Studies", "Se");
+//        noSerumOption.addValueChangeListener(new Property.ValueChangeListener() {
+//            @Override
+//            public void valueChange(Property.ValueChangeEvent event) {
+//                Quant_Central_Manager.setNoSerum(!noSerumOption.getValue().toString().equalsIgnoreCase("[Serum Studies]"));
+//                Quant_Central_Manager.resetFiltersListener();
+//                pieChartFiltersBtnWrapper.removeAllComponents();
+//                StudiesPieChartFiltersContainerLayout pieChartFiltersLayout = new StudiesPieChartFiltersContainerLayout(Quant_Central_Manager, CSFPR_Handler);
+//                pieChartFiltersBtnWrapper.addComponent(pieChartFiltersLayout.getPieChartFiltersBtn());
+//                counterLabel.setValue("( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )");
+//
+//            }
+//
+//        });
+        final VerticalLayout noSerumOption = new VerticalLayout();
         noSerumOption.setDescription("Include serum studies");
         popupBtnsLayout.addComponent(noSerumOption);
-        popupBtnsLayout.setComponentAlignment(noSerumOption, Alignment.MIDDLE_LEFT);
-        noSerumOption.setWidth("25px");
+        popupBtnsLayout.setComponentAlignment(noSerumOption, Alignment.MIDDLE_RIGHT);
+        noSerumOption.setWidth("40px");
         noSerumOption.setHeight("24px");
-        noSerumOption.setNullSelectionAllowed(true); // user can not 'unselect'
-        noSerumOption.setMultiSelect(true);
-        noSerumOption.addItem("Serum Studies");
-        noSerumOption.addStyleName("horizontal");
-        noSerumOption.addStyleName("heatmapbtns");
-        noSerumOption.setItemCaption("Serum Studies","Se");
-        noSerumOption.addValueChangeListener(new Property.ValueChangeListener() {
+        noSerumOption.setStyleName("enableserumunselected");
+
+        noSerumOption.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+
             @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                Quant_Central_Manager.setNoSerum(!noSerumOption.getValue().toString().equalsIgnoreCase("[Serum Studies]"));
+            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+                if (noSerumOption.getStyleName().equalsIgnoreCase("enableserumunselected")) {
+                    Quant_Central_Manager.setNoSerum(false);
+                    noSerumOption.setStyleName("enableserumselected");
+                } else {
+                    noSerumOption.setStyleName("enableserumunselected");
+                    Quant_Central_Manager.setNoSerum(true);
+                }
                 Quant_Central_Manager.resetFiltersListener();
                 pieChartFiltersBtnWrapper.removeAllComponents();
                 StudiesPieChartFiltersContainerLayout pieChartFiltersLayout = new StudiesPieChartFiltersContainerLayout(Quant_Central_Manager, CSFPR_Handler);
                 pieChartFiltersBtnWrapper.addComponent(pieChartFiltersLayout.getPieChartFiltersBtn());
                 counterLabel.setValue("( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )");
-
             }
-
         });
 
         VerticalLayout clearFilterBtn = new VerticalLayout();
         clearFilterBtn.setHeight("24px");
-        clearFilterBtn.setWidth("25px");
+        clearFilterBtn.setWidth("40px");
         clearFilterBtn.setStyleName("clearfilters");
         popupBtnsLayout.addComponent(clearFilterBtn);
-        popupBtnsLayout.setComponentAlignment(clearFilterBtn, Alignment.MIDDLE_LEFT);
+        popupBtnsLayout.setComponentAlignment(clearFilterBtn, Alignment.MIDDLE_RIGHT);
         clearFilterBtn.setDescription("Reset all applied filters");
 
         clearFilterBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
@@ -250,55 +289,35 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
                 Quant_Central_Manager.resetFiltersListener();
             }
         });
-        
-           VerticalLayout hideFiltersBtn = new VerticalLayout();
+
+        VerticalLayout hideFiltersBtn = new VerticalLayout();
         hideFiltersBtn.setHeight("24px");
-        hideFiltersBtn.setWidth("25px");
+        hideFiltersBtn.setWidth("40px");
         hideFiltersBtn.setStyleName("hidefilterslayout");
         popupBtnsLayout.addComponent(hideFiltersBtn);
-        popupBtnsLayout.setComponentAlignment(hideFiltersBtn, Alignment.MIDDLE_LEFT);
+        popupBtnsLayout.setComponentAlignment(hideFiltersBtn, Alignment.MIDDLE_RIGHT);
         hideFiltersBtn.setDescription("hide filters layout");
 
         hideFiltersBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
-
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-//               btnsPopup.setPopupVisible(false);
-                filtersContainerLayout.setWidth("0px");
-                 filterLabelBtn.setStyleName("showfilter");
+                filtersContainerLayout.setHeight("0px");
+                filterLabelBtn.setDescription("Show filters");
+                filterLabelBtn.setStyleName("showfilterbtnlabel");
+//                filterLabelBtn.setStyleName("showfilter");
             }
         });
-        
-        
-     
+
 //        
 //         int y = Page.getCurrent().getBrowserWindowHeight() - Math.max(heatmapH, 710) - 200;
 //        Tips tips = CSFPR_Handler.getTipsGenerator().generateTip("Remeber you can sort and select the disease groups using <u>Sort and Select</u> feature", 180, y);
 //        leftBottomBtnLayout.addComponent(tips);
 //        leftBottomBtnLayout.setComponentAlignment(tips, Alignment.TOP_LEFT);
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
         this.resizeLayout(Math.max(diseaseGroupsColSet.size(), diseaseGroupsRowSet.size()));
-
-        int heatmapH = Math.max((heatmapHeaderCellWidth + 20 + 12 + (heatmapCellWidth * Math.max(diseaseGroupsColSet.size(), diseaseGroupsRowSet.size()))), 500) + 20;
-        standeredChartHeight = Math.max(heatmapH + 68, 520);
+//        int heatmapH = Math.max((heatmapHeaderCellWidth + 20 + 12 + (heatmapCellWidth * Math.max(diseaseGroupsColSet.size(), diseaseGroupsRowSet.size()))), 500) + 20;
+        rightPanelHeight = leftPanelHeight;  //Math.max(heatmapH + 68, 520);
         heatmapFilterComponent = new HeatMapFilter(Quant_Central_Manager, leftPanelWidth, diseaseGroupsRowSet, diseaseGroupsColSet, Quant_Central_Manager.getDiseaseGroupsArray(), heatmapCellWidth, heatmapHeaderCellWidth, CSFPR_Handler.getDiseaseFullNameMap());
-        heatmapFilterComponent.setHeight(Math.max(heatmapH + 10, 500) + "px");
+        heatmapFilterComponent.setHeight(heatmapH + "px");
         heatmapFilterComponent.setSingleSelection(false);
         leftContainerLayout.addComponent(heatmapFilterComponent);
         leftContainerLayout.setComponentAlignment(heatmapFilterComponent, Alignment.TOP_LEFT);
@@ -310,8 +329,6 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
         btnsLayout.setSpacing(true);
         this.leftContainerLayout.addComponent(btnsLayout);
 
-        
-
 //        VerticalLayout angelRightLabel = new VerticalLayout();
 //        angelRightLabel.setHeight("25px");
 //        angelRightLabel.setDescription("Show filters");
@@ -319,13 +336,6 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
 //        angelRightLabel.setWidth("25px");
 //        updatedFiltersContainer.addComponent(angelRightLabel);
 //        
-        
-        
-        
-
-       
-        
-        
         btnsLayout.setStyleName(Reindeer.LAYOUT_WHITE);
 
         Label filterTitle = new Label("Filters:");
@@ -335,9 +345,6 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
         filterTitle.setWidth("50px");
 //        popupBtnsLayout.addComponent(filterTitle);
 
-      
-
-       
         rightBottomBtnLayout = new HorizontalLayout();
         rightBottomBtnLayout.setHeightUndefined();
         rightBottomBtnLayout.setWidthUndefined();
@@ -346,7 +353,6 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
         btnsLayout.setComponentAlignment(rightBottomBtnLayout, Alignment.TOP_RIGHT);
 
         StudiesInformationPopupBtn showStudiesBtn = new StudiesInformationPopupBtn(Quant_Central_Manager);
-        showStudiesBtn.addStyleName("heatmapbtns-long");
         rightBottomBtnLayout.addComponent(showStudiesBtn);
         rightBottomBtnLayout.setComponentAlignment(showStudiesBtn, Alignment.TOP_LEFT);
 
@@ -354,7 +360,7 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
         exportTableBtn.setHeight("23px");
         exportTableBtn.setWidth("23px");
         exportTableBtn.setPrimaryStyleName("exportxslbtn");
-        exportTableBtn.addStyleName("heatmapbtns");
+//        exportTableBtn.addStyleName("heatmapbtns");
         rightBottomBtnLayout.addComponent(exportTableBtn);
         rightBottomBtnLayout.setComponentAlignment(exportTableBtn, Alignment.BOTTOM_RIGHT);
         exportTableBtn.setDescription("Export all studies data");
@@ -398,7 +404,6 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
                 heatmapFilterComponent.unselectAll();
-//                resizeLayout(diseaseGroupsSet.size());
             }
         });
 
@@ -429,19 +434,21 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
                 heatmapFilterComponent.setVisible(!heatmapFilterComponent.isVisibleComponent());
                 rightBottomBtnLayout.setVisible(!rightBottomBtnLayout.isVisible());
                 btnsLayout.setVisible(!btnsLayout.isVisible());
-                diseaseCategorySelectLayout.setVisible(!diseaseCategorySelectLayout.isVisible());
-
-//               
+                filtersContainerLayout.setVisible(!filtersContainerLayout.isVisible());
+                diseaseCategorySelectLayout.setVisible(!diseaseCategorySelectLayout.isVisible());//               
                 if (!btnsLayout.isVisible()) {
-                    selectionOverviewBubbleChart.updateSize(pageWidth - 250, Math.min(leftPanelWidth, standeredChartHeight));
+                     diseaseCategorySelectLayoutWrapper.setHeight("25px");
+                    selectionOverviewBubbleChart.updateSize(pageWidth - 250,  rightPanelHeight);
+                    leftContainerLayout.setWidth((170) + "px");
+                    rightContainerLayout.setWidth((pageWidth - 170 - 70) + "px");
                     DiseaseGroupsFiltersContainer.this.setExpandRatio(leftContainerLayout, 170);
                     DiseaseGroupsFiltersContainer.this.setExpandRatio(rightContainerLayout, (pageWidth - 170));
-//                    middleLayout.setWidthUndefined();
+
                 } else {
-                    selectionOverviewBubbleChart.updateSize(rightPanelWidth, Math.min(leftPanelWidth + 20, standeredChartHeight));
+                     diseaseCategorySelectLayoutWrapper.setHeight("23px");
+                    selectionOverviewBubbleChart.updateSize(rightPanelWidth,  rightPanelHeight);
                     DiseaseGroupsFiltersContainer.this.setExpandRatio(leftContainerLayout, leftPanelWidth);
                     DiseaseGroupsFiltersContainer.this.setExpandRatio(rightContainerLayout, rightPanelWidth);
-//                    middleLayout.setWidth(layoutWidth + "px");
                     resizeLayout(Quant_Central_Manager.getSelectedHeatMapRows().size());
 
                 }
@@ -451,12 +458,14 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
         heatmapFilterComponent.addHideHeatmapBtnListener(hideShowCompTableListener);
 
         ///init right conatainer layout 
-        mainContainerWidth = (pageWidth - 70);
+//        mainContainerWidth = (pageWidth - 70);
+        rightContainerLayout.setStyleName("slowresizelayout");
         if (userCustomizedComparison != null) {
-            selectionOverviewBubbleChart = new ComparisonsSelectionOverviewBubbleChart(Quant_Central_Manager, CSFPR_Handler, rightPanelWidth, standeredChartHeight, new LinkedHashSet<QuantDiseaseGroupsComparison>(), searchQuantificationProtList, userCustomizedComparison);
+            selectionOverviewBubbleChart = new ComparisonsSelectionOverviewBubbleChart(Quant_Central_Manager, CSFPR_Handler, rightPanelWidth, rightPanelHeight, new LinkedHashSet<QuantDiseaseGroupsComparison>(), searchQuantificationProtList, userCustomizedComparison);
         } else {
-            selectionOverviewBubbleChart = new ComparisonsSelectionOverviewBubbleChart(Quant_Central_Manager, CSFPR_Handler, rightPanelWidth, standeredChartHeight, new LinkedHashSet<QuantDiseaseGroupsComparison>(), searchQuantificationProtList);
+            selectionOverviewBubbleChart = new ComparisonsSelectionOverviewBubbleChart(Quant_Central_Manager, CSFPR_Handler, rightPanelWidth, rightPanelHeight, new LinkedHashSet<QuantDiseaseGroupsComparison>(), searchQuantificationProtList);
         }
+//        selectionOverviewBubbleChart.addStyleName("slowresizelayout");
         rightContainerLayout.addComponent(selectionOverviewBubbleChart);
 
 //        final HorizontalLayout topLayout = new HorizontalLayout();
@@ -505,7 +514,7 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
             btnsLayout.setVisible(true);
             diseaseCategorySelectLayout.setVisible(true);
             rightBottomBtnLayout.setVisible(true);
-            selectionOverviewBubbleChart.updateSize(rightPanelWidth, Math.min(leftPanelWidth + 20, standeredChartHeight));
+            selectionOverviewBubbleChart.updateSize(rightPanelWidth, rightPanelHeight);
             DiseaseGroupsFiltersContainer.this.setExpandRatio(leftContainerLayout, leftPanelWidth);
             DiseaseGroupsFiltersContainer.this.setExpandRatio(rightContainerLayout, rightPanelWidth);
 //                    middleLayout.setWidth(layoutWidth + "px");
@@ -540,14 +549,15 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
     public void removeFilterValue(String value) {
     }
 
-    private void resizeLayout(int diseaseGroupsSize) {
-        leftPanelWidth = Math.max((heatmapHeaderCellWidth + 20 + 12 + (heatmapCellWidth * diseaseGroupsSize)), 710);
+    private void resizeLayout(int diseaseGroupsRowsNumber) {
+        leftPanelWidth = Math.max((heatmapHeaderCellWidth + 20 + 12 + (heatmapCellWidth * diseaseGroupsRowsNumber)), 450);
         leftContainerLayout.setWidth((leftPanelWidth) + "px");
         rightContainerLayout.setWidth((pageWidth - leftPanelWidth - 70) + "px");
         rightPanelWidth = (pageWidth - leftPanelWidth - 100);
         leftPanelExpendingRatio = (float) leftPanelWidth / (float) (pageWidth + 70);
         rightPanelExpandingRatio = Math.min((float) (rightPanelWidth) / (float) (pageWidth - 70), (0.9f - leftPanelExpendingRatio));
-        int heatmapH = Math.max((heatmapHeaderCellWidth + 20 + 12 + (heatmapCellWidth * diseaseGroupsSize)), 500) + 20;
+        heatmapH = Math.max(20 + heatmapHeaderCellWidth + 14 + (heatmapCellWidth * diseaseGroupsRowsNumber), 500);
+        leftPanelHeight = 50 + 7 + heatmapH + 7 + 25;        
         if (heatmapFilterComponent != null) {
             heatmapFilterComponent.setWidth(leftPanelWidth + "px");
             heatmapFilterComponent.setHeight(heatmapH + "px");
@@ -555,8 +565,5 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
         }
 
     }
-//    public void popupSortAndSelectPanel(){  
-//        tips.showTip();
-//    }
 
 }

@@ -36,9 +36,10 @@ public class StudiesInformationPopupBtn extends Button implements Button.ClickLi
     private final Map<Integer, DatasetInformationOverviewLayout> datasetInfoLayoutDSIndexMap = new HashMap<Integer, DatasetInformationOverviewLayout>();
 
     public StudiesInformationPopupBtn(QuantCentralManager Quant_Central_Manager) {
-        super("Study Information");
+//        super("Study Information");
         this.Quant_Central_Manager = Quant_Central_Manager;
         this.setStyleName(Reindeer.BUTTON_LINK);
+        this.addStyleName("studyinfo");
         this.setDescription("Show studies Information");
         this.addClickListener(StudiesInformationPopupBtn.this);
         int selectedDsNumber = 0;
