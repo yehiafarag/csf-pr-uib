@@ -365,12 +365,15 @@ public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout im
         rightBottomLayout.setComponentAlignment(tableLegendLayout, Alignment.MIDDLE_CENTER);
 
         
+    
+
+        
           
         VerticalLayout removeAllFiltersBtn = new VerticalLayout();
         removeAllFiltersBtn.setStyleName("clearfiltersbtn");
         rightBottomLayout.addComponent(removeAllFiltersBtn);
-        rightBottomLayout.setComponentAlignment(removeAllFiltersBtn, Alignment.TOP_LEFT);
-        removeAllFiltersBtn.setDescription("Select all data");
+        rightBottomLayout.setComponentAlignment(removeAllFiltersBtn, Alignment.MIDDLE_RIGHT);
+        removeAllFiltersBtn.setDescription("Reset all applied filters");
         removeAllFiltersBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
             @Override

@@ -86,7 +86,7 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
 
         //init left panel 
         leftContainerLayout.setSpacing(true);
-        leftContainerLayout.setStyleName("slowresizelayout");
+//        leftContainerLayout.setStyleName("slowresizelayout");
         Set<String> diseaseSet = Quant_Central_Manager.getDiseaseCategorySet();
         NativeSelect diseaseTypeSelectionList = new NativeSelect();
         diseaseTypeSelectionList.setDescription("Select disease category");

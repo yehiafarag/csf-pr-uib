@@ -58,6 +58,7 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.text.TextUtilities;
+import org.jfree.ui.HorizontalAlignment;
 import org.jfree.ui.RectangleEdge;
 import org.jfree.ui.RectangleInsets;
 import org.jfree.ui.TextAnchor;
@@ -1123,7 +1124,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
         renderer.setSeriesPaint(0, Color.GRAY);
-        Color[] dataColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0), Color.decode("#b5babb")};
+        Color[] dataColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(247, 119, 119), new Color(204, 0, 0), Color.decode("#b5babb"),new Color(204, 204, 204)};
 
         renderer.setUseOutlinePaint(true);
         renderer.setSeriesPaint(1, dataColor[4]);
@@ -1142,7 +1143,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         renderer.setSeriesOutlinePaint(5, dataColor[0]);
 
         renderer.setSeriesPaint(6, Color.WHITE);
-        renderer.setSeriesOutlinePaint(6, dataColor[2]);
+        renderer.setSeriesOutlinePaint(6, Color.GRAY);
 
         renderer.setSeriesPaint(7, dataColor[5]);
         renderer.setSeriesOutlinePaint(7, Color.GRAY);
@@ -1220,12 +1221,12 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                 }
             }
 
-            private final Color[] labelsColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), Color.WHITE, new Color(255, 51, 51), new Color(204, 0, 0), Color.decode("#b5babb")};
-            private final Color[] labelsOutColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0), Color.GRAY};
+            private final Color[] labelsColor =     new Color[]{new Color(204, 0, 0),new Color(247, 119, 119),   new Color(1, 141, 244), new Color(0, 229, 132), new Color(0, 153, 0),Color.decode("#b5babb"),  Color.WHITE};
+            private final Color[] labelsOutColor =  new Color[]{new Color(204, 0, 0),new Color(247, 119, 119),   new Color(1, 141, 244), new Color(0, 229, 132) ,new Color(0, 153, 0),  Color.GRAY,Color.GRAY ,  new Color(0, 229, 132)};
 
             private final Font font = new Font("Verdana", Font.PLAIN, 11);
-            private final String[] labels = new String[]{"Low 100%", "Low <100% ", "Stable", "No Data", " High <100%", "High 100%", "No Quant. Info."};
-            private final Shape[] shapes = new Shape[]{downArr, downArr, notRShape, emptyRShape, upArr, upArr, emptyRShape, square};
+            private final String[] labels = new String[]{"High  100%","High < 100%", "Stable", "Low < 100%", "Low  100%",  "No Quant. Info.", "No Data"};
+            private final Shape[] shapes = new Shape[]{upArr, upArr,notRShape,downArr, downArr,  emptyRShape,  emptyRShape, square};
 
             @Override
             public LegendItemCollection getLegendItems() {
@@ -1297,7 +1298,8 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         legend.setVisible(true);
         legend.setMargin(20, 0, 20, 0);
 //        legend.setBorder(1, 1, 1, 1);
-        legend.setFrame(new BlockBorder(1, 0, 1, 0, Color.LIGHT_GRAY));
+        legend.setFrame(new BlockBorder(0, 0, 0, 0, Color.LIGHT_GRAY));
+        legend.setHorizontalAlignment(HorizontalAlignment.RIGHT);
 
 //        JfreeExporter exporter = new JfreeExporter();
 //        exporter.writeChartToPDFFile(jFreeChart, 595, 842, "line" + teststyle + ".pdf");

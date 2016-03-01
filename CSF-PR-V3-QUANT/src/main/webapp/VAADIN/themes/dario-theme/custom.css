@@ -1083,7 +1083,7 @@ resetlabelbtn p{
 
 }
 
-.unselected_transparentcyclecomp{    
+/*.unselected_transparentcyclecomp{    
     background-color: #ffffff;
     opacity: 0.5;
     border-radius: 50%;
@@ -1100,7 +1100,47 @@ resetlabelbtn p{
     opacity: 0.4;
     border-radius: 50%;
     border:2px solid black;
+}*/
+/*.unselected_transparentcyclecomp{    
+    background-color:rgba(255, 255, 255, 0.8);    
+    border-radius: 50%;
+    border:2px solid lightgray;
 }
+.unselected_transparentcyclecomp:hover{
+    cursor: pointer;
+    background-color: #000000;
+    opacity: .1;
+    border-radius: 50%;
+
+}
+.selected_transparentcyclecomp{    
+border:3px solid #4d749f ;
+ border-radius: 50%;
+  
+}*/
+
+
+.unselected_transparentcyclecomp{    
+    background-color:rgba(255, 255, 255, 0.8);    
+    border-radius: 50%;
+}
+.unselected_transparentcyclecomp:hover{
+    cursor: pointer;
+    opacity: 0;
+    border-radius: 50%;
+
+}
+.selected_transparentcyclecomp{ 
+ border-radius: 50%;
+  
+}
+
+
+
+
+
+
+
 .selected_transparentcyclecomp:hover{
     cursor: pointer;
     opacity: .5;
@@ -1625,21 +1665,19 @@ resetlabelbtn p{
 
 
 .exportpdfbtn{
-    clear: both;
-    width: 20px;
-    height: 20px;
-    border-radius: 5px;
-    border:  1px solid lightgray;
-    background-color:  whitesmoke;
-    background-image: url(img/document-pdf.png);
-    background-position:center;
-    background-repeat: no-repeat;
+      background-image: url(img/pdf-text-o-2.png);
+   background-position:center !important;
+    background-repeat: no-repeat !important;
+    background-size: 17px  !important;
     cursor:pointer;
+   
+  
+    width:23px !important;
+    height:23px !important;
+    border:none;
 
 }
-.exportpdfbtn:hover{
-    background-color: lightgray;
-}
+
 .exportpdfbtn:focus {
     outline: none;
 }
@@ -1668,13 +1706,13 @@ resetlabelbtn p{
     outline: none;
 }
 .exportxslbtn{
-    background-image: url(img/document-xls-2.png);
+    background-image: url(img/xls-text-o-2.png);
+       background-position:center !important;
+    background-repeat: no-repeat !important;
+    background-size: 17px  !important;
     cursor:pointer;
-    -webkit-background-size: 20px;
-    -moz-background-size: 20px;
-    -o-background-size: 20px;
-    background-size: 20px;
-    background-repeat:no-repeat;
+   
+  
     width:23px !important;
     height:23px !important;
     border:none;
@@ -2764,7 +2802,7 @@ img {
     border:1px solid lightgray;
     border-radius:4px;
     background-size:16px;
-    background-image: url(img/clear-filter.png);
+    background-image: url(img/filter_disables.png);
     background-position:center;
     background-repeat: no-repeat;
     cursor:pointer;
@@ -2835,10 +2873,10 @@ img {
     clear: both;
     width: 23px !important;
     height: 23px !important;
-    background-image: url(img/file-text-o.png) !important;
+    background-image: url(img/file-text-o-2.png) !important;
     background-position:center !important;
     background-repeat: no-repeat !important;
-    background-size: 20px !important;
+    background-size: 17px  !important;
     cursor:pointer;
 
 
@@ -3177,4 +3215,72 @@ img {
     transition: width 1s; 
      
     
+}
+.legendred100 div{
+    background: rgb(204, 0, 0);    
+    
+}
+.legendredless100 div{
+     background: rgb(247, 119, 119);    
+}
+.legendblue div{
+    
+      background: rgb(1, 141, 244);    
+}
+.legendgreen100 div{
+    background: rgb(0, 229, 132);    
+    
+}
+.legendgreenless100 div{
+    
+    background: rgb(0, 153, 0);    
+    
+}
+.legendgray div{
+    
+    background: rgb(128, 128, 128);    
+}
+.leftspacer{
+    
+    
+    margin-left:56px;
+}
+.bottomspacer{
+    
+    
+}
+
+.stablebtn {
+    width:60px !important;
+    margin-right:20px;
+    background-color:rgb(1, 141, 244); 
+    color:white;
+    text-align:center; 
+    border-radius:4px;
+    border:1px solid black;
+    cursor:pointer; 
+      background-image: url(img/check-circle-o.png);
+    background-size:13px;
+    background-repeat:no-repeat;
+    border-radius:4px;
+   background-position:40px;
+}
+.stablebtn div{
+    width:60px !important;
+    text-align:center;
+    line-height:20px;
+    cursor:pointer;
+   
+   
+}
+.stablebtnselected{
+width:60px !important;
+    margin-right:20px;
+    background-color:rgb(1, 141, 244); 
+    color:white;
+    text-align:center; 
+    border-radius:4px;
+    border:1px solid black;
+    cursor:pointer;
+
 }

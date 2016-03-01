@@ -7,13 +7,11 @@ package probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons;
 
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
-import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.Reindeer;
 
 /**
  *
@@ -23,7 +21,22 @@ public class TrendLegend extends GridLayout {
 
     public TrendLegend(String type) {
         this.setSpacing(true);
-        if (type.equalsIgnoreCase("table")) {
+         if (type.equalsIgnoreCase("bubblechart")) {
+            String[] labels = new String[]{"High   100%","High < 100%", "Stable", "Low < 100%","Low   100%","No Quant. Info."};
+            String[] styleName = new String[]{"legendred100", "legendredless100", "legendblue","legendgreenless100","legendgreen100","legendgray"};
+            this.setSpacing(true);
+            this.setColumns(6);
+            this.setRows(1);
+            this.setMargin(new MarginInfo(false, true, false, false));
+            for (int i = 0; i < styleName.length; i++) {
+                HorizontalLayout item = generateItemLabel(labels[i], styleName[i]);
+                this.addComponent(item, i, 0);
+                this.setComponentAlignment(item, Alignment.MIDDLE_CENTER);
+
+            }
+        
+         }
+            else if (type.equalsIgnoreCase("table")) {
             String[] labels = new String[]{"High", "Stable", "Low","No Quant. Info.","Not Available"};
             String[] styleName = new String[]{"redlayout", "lightbluelayout", "greenlayout","novaluelayout","empty"};
             this.setSpacing(true);

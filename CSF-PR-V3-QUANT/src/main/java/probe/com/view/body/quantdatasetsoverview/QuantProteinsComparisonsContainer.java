@@ -357,11 +357,12 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
         TrendLegend tableLegendLayout = new TrendLegend("table");
         rightBottomLayout.addComponent(tableLegendLayout);
         rightBottomLayout.setComponentAlignment(tableLegendLayout, Alignment.MIDDLE_CENTER);
-                 VerticalLayout removeAllFiltersBtn = new VerticalLayout();
+        
+        VerticalLayout removeAllFiltersBtn = new VerticalLayout();
         removeAllFiltersBtn.setStyleName("clearfiltersbtn");
         rightBottomLayout.addComponent(removeAllFiltersBtn);
-        rightBottomLayout.setComponentAlignment(removeAllFiltersBtn, Alignment.TOP_LEFT);
-        removeAllFiltersBtn.setDescription("Select all data");
+        rightBottomLayout.setComponentAlignment(removeAllFiltersBtn, Alignment.MIDDLE_RIGHT);
+        removeAllFiltersBtn.setDescription("Reset all applied filters");
         removeAllFiltersBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
             @Override
@@ -370,8 +371,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
             }
         });
 
-        
-         Button exportTableBtn = new Button("");
+        Button exportTableBtn = new Button("");
         exportTableBtn.setHeight("24px");
         exportTableBtn.setWidth("24px");
         exportTableBtn.setPrimaryStyleName("exportxslbtn");
@@ -409,7 +409,6 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
             }
         });
 
-       
         VerticalLayout selectAllBtn = new VerticalLayout();
         selectAllBtn.setStyleName("selectallbtn");
         rightBottomLayout.addComponent(selectAllBtn);
@@ -422,8 +421,6 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
                 selectAll();
             }
         });
-        
-
 
         VerticalLayout unselectAllBtn = new VerticalLayout();
         unselectAllBtn.setStyleName("unselectallbtn");
@@ -437,8 +434,6 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
                 unSelectAll();
             }
         });
-
-       
 
         bottomLayout.setVisible(false);
         this.addComponent(bottomLayout);
@@ -537,7 +532,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
         } else if (selfselection) {
             selfselection = false;
         }
-         updateProtCountLabel(groupsComparisonProteinsTable.getItemIds().size());
+        updateProtCountLabel(groupsComparisonProteinsTable.getItemIds().size());
 
     }
 
@@ -1287,7 +1282,6 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
                 filterTableSelection(comparisonHeader, false);
                 headerFilterIconWrapper.setDescription("" + event.getProperty().getValue());
                 sortComparisonTableColumn = comparisonHeader;
-                
 
             }
         };
