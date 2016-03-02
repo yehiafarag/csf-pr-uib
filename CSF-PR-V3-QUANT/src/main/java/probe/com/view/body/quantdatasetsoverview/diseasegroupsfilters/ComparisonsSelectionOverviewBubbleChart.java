@@ -5,7 +5,6 @@
  */
 package probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters;
 
-import com.vaadin.data.Property;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.FileDownloader;
 import com.vaadin.server.Page;
@@ -21,7 +20,6 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.awt.Color;
@@ -40,6 +38,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.codec.binary.Base64;
 import org.jfree.chart.ChartRenderingInfo;
 import org.jfree.chart.ChartUtilities;
@@ -89,9 +89,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
     private JFreeChart chart;
     private final AbsoluteLayout chartLayout = new AbsoluteLayout();
     private final HorizontalLayout bottomLayout = new HorizontalLayout();
-//    private final TrendLegend legendLayout;
     private final HorizontalLayout topLayout = new HorizontalLayout();
-    private final Button resetBtn;
     private final Button exportPdfBtn;
     private final List<QuantProtein> searchQuantificationProtList;
     private boolean isNewImge = true;
@@ -100,8 +98,14 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
     private final Map<String, Color> diseaseColorMap = new HashMap<String, Color>();
     private QuantDiseaseGroupsComparison userCustomizedComparison;
     private Color stableColor;
+    private boolean activeMultiSelect = false;
 
     public void updateSize(int updatedWidth, int height) {
+        if (updatedWidth <810) {
+            this.setVisible(false);
+        } else {
+            this.setVisible(true);
+        }
         height = 500;
         width = updatedWidth;
         this.setWidth(updatedWidth + "px");
@@ -138,7 +142,6 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         this.setSpacing(true);
 
         //init toplayout
-        topLayout.setWidth(100 + "%");
         topLayout.setHeight(30 + "px");
         topLayout.setSpacing(true);
         topLayout.setMargin(new MarginInfo(false, false, true, false));
@@ -148,72 +151,124 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         overviewLabel.setContentMode(ContentMode.HTML);
         topLayout.addComponent(overviewLabel);
         overviewLabel.setStyleName("subtitle");
-        overviewLabel.setWidth("300px");
+        overviewLabel.setWidth("140px");
 
+        InfoPopupBtn info = new InfoPopupBtn("The bubble chart give an overview for the proteins existed in the selected comparisons.<br/>The diameter of the bubble represents the number of the proteins in the selected comparison and the color represents the trend<br/>");
+        info.setWidth("20px");
+        info.setHeight("20px");
+        topLayout.addComponent(info);
+        this.topLayout.setVisible(false);
+
+        //end of toplayout
+        //init chartlayout
+        this.teststyle = "__" + System.currentTimeMillis() + "_heatmapOverviewBubbleChart";
+        this.chartLayout.setVisible(false);
+        this.addComponent(chartLayout);
+        chartLayout.setWidth(width + "px");
+        chartLayout.setHeight(height + "px");
+        chartLayout.addLayoutClickListener(ComparisonsSelectionOverviewBubbleChart.this);
+
+        //end of chartlayout
+        //init bottomlayout 
+        bottomLayout.setWidth("100%");
+        this.addComponent(bottomLayout);
+        this.setComponentAlignment(bottomLayout, Alignment.BOTTOM_RIGHT);
+        bottomLayout.setVisible(false);
         HorizontalLayout btnContainerLayout = new HorizontalLayout();
         btnContainerLayout.setSpacing(true);
-        btnContainerLayout.setMargin(new MarginInfo(false, true, false, false));
+        btnContainerLayout.setMargin(new MarginInfo(false, false, false, false));
         btnContainerLayout.setWidthUndefined();
         btnContainerLayout.setHeightUndefined();
-//        topLayout.addComponent(btnContainerLayout);
-//        topLayout.setComponentAlignment(btnContainerLayout, Alignment.TOP_RIGHT);
-
-        final OptionGroup significantProteinsOnlyOption = new OptionGroup();
-        btnContainerLayout.addComponent(significantProteinsOnlyOption);
-        significantProteinsOnlyOption.setWidth("55px");
-        significantProteinsOnlyOption.setNullSelectionAllowed(true); // user can not 'unselect'
-        significantProteinsOnlyOption.setMultiSelect(true);
-
-        significantProteinsOnlyOption.addItem("Stable");
-        significantProteinsOnlyOption.select("Stable");
-        significantProteinsOnlyOption.addStyleName("horizontal");
-        significantProteinsOnlyOption.addValueChangeListener(new Property.ValueChangeListener() {
-
-            @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                Quant_Central_Manager.updateSignificantOnlySelection(!significantProteinsOnlyOption.getValue().toString().equalsIgnoreCase("[Stable]"));
-
-            }
-
-        });
-
-        resetBtn = new Button("Clear");
-        resetBtn.setDescription("Unselect all data");
-        resetBtn.setPrimaryStyleName("clearselectionbtn");
-        resetBtn.setWidth("50px");
-        resetBtn.setHeight("20px");
-
-        btnContainerLayout.addComponent(resetBtn);
+        btnContainerLayout.addStyleName("leftspacer");
+        bottomLayout.addComponent(btnContainerLayout);
+        bottomLayout.setComponentAlignment(btnContainerLayout, Alignment.TOP_LEFT);
 
         exportPdfBtn = new Button("");
         exportPdfBtn.setWidth("24px");
         exportPdfBtn.setHeight("24px");
         exportPdfBtn.setPrimaryStyleName("exportpdfbtn");
         exportPdfBtn.setDescription("Export chart image");
-
         StreamResource myResource = createResource();
         FileDownloader fileDownloader = new FileDownloader(myResource);
         fileDownloader.extend(exportPdfBtn);
-
         btnContainerLayout.addComponent(exportPdfBtn);
 
-        InfoPopupBtn info = new InfoPopupBtn("The bubble chart give an overview for the proteins existed in the selected comparisons.<br/>The diameter of the bubble represents the number of the proteins in the selected comparison and the color represents the trend<br/>");
-        info.setWidth("20px");
-        info.setHeight("20px");
-        btnContainerLayout.addComponent(info);
-
-        resetBtn.addClickListener(new Button.ClickListener() {
+        VerticalLayout unselectAllBtn = new VerticalLayout();
+        unselectAllBtn.setStyleName("unselectallbubblebtn");
+        btnContainerLayout.addComponent(unselectAllBtn);
+        btnContainerLayout.setComponentAlignment(unselectAllBtn, Alignment.TOP_LEFT);
+        unselectAllBtn.setDescription("Unselect All Disease Groups Comparisons");
+        unselectAllBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
             @Override
-            public void buttonClick(Button.ClickEvent event) {
+            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
                 Quant_Central_Manager.setQuantProteinsSelection(new HashSet<String>(), "");
                 resetChart();
 
             }
         });
 
-        this.topLayout.setVisible(false);
+        final VerticalLayout selectMultiBtn = new VerticalLayout();
+        selectMultiBtn.setStyleName("selectmultibubblebtn");
+        btnContainerLayout.addComponent(selectMultiBtn);
+        btnContainerLayout.setComponentAlignment(selectMultiBtn, Alignment.TOP_LEFT);
+        selectMultiBtn.setDescription("Multiple selection");
+        selectMultiBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
+            @Override
+            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+                if (selectMultiBtn.getStyleName().equalsIgnoreCase("selectmultiselectedbubblebtn")) {
+                    selectMultiBtn.setStyleName("selectmultibubblebtn");
+                    activeMultiSelect = false;
+
+                } else {
+                    selectMultiBtn.setStyleName("selectmultiselectedbubblebtn");
+                    activeMultiSelect = true;
+
+                }
+            }
+        });
+
+        VerticalLayout stableBtnWrapper = new VerticalLayout();
+        stableBtnWrapper.setWidth("64px");
+        HorizontalLayout stableBtn = new HorizontalLayout();
+        stableBtnWrapper.addComponent(stableBtn);
+        stableBtnWrapper.setComponentAlignment(stableBtn, Alignment.TOP_LEFT);
+        btnContainerLayout.addComponent(stableBtnWrapper);
+
+        final VerticalLayout appliedIcon = new VerticalLayout();
+        appliedIcon.setStyleName("appliedicon");
+        appliedIcon.setWidth("24px");
+        appliedIcon.setHeight("24px");
+        stableBtn.addComponent(appliedIcon);
+        stableBtn.setStyleName("stablebtn");
+        stableBtn.setHeight("24px");
+        Label stableLabel = new Label("Stable");
+        stableLabel.setWidth("44px");
+        stableBtn.addComponent(stableLabel);
+
+        stableBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+            @Override
+            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+                if (appliedIcon.getStyleName().equalsIgnoreCase("appliedicon")) {
+                    appliedIcon.setStyleName("unappliedicon");
+                    Quant_Central_Manager.updateSignificantOnlySelection(true);
+                } else {
+                    appliedIcon.setStyleName("appliedicon");
+                    Quant_Central_Manager.updateSignificantOnlySelection(false);
+                }
+            }
+        });
+
+        TrendLegend legendLayout = new TrendLegend("bubblechart");
+        legendLayout.setWidthUndefined();
+        legendLayout.setHeight("24px");
+        bottomLayout.addComponent(legendLayout);
+        bottomLayout.setComponentAlignment(legendLayout, Alignment.TOP_RIGHT);
+        bottomLayout.setExpandRatio(legendLayout, 600);
+        bottomLayout.setExpandRatio(btnContainerLayout, 210);
+
+        //end of btns layout
         //init empty layout
         emptySelectionLayout = new VerticalLayout();
         this.addComponent(emptySelectionLayout);
@@ -238,40 +293,6 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         emptySelectionLayout.setComponentAlignment(handleft, Alignment.MIDDLE_CENTER);
 
         //init bubble chart
-        this.teststyle = "__" + System.currentTimeMillis() + "_heatmapOverviewBubbleChart";
-        this.chartLayout.setVisible(false);
-        this.addComponent(chartLayout);
-        chartLayout.setWidth(width + "px");
-        chartLayout.setHeight(height + "px");
-        chartLayout.addLayoutClickListener(ComparisonsSelectionOverviewBubbleChart.this);
-//        chartLayout.addStyleName("slowresizelayout");
-        TrendLegend legendLayout = new TrendLegend("bubblechart");
-        legendLayout.setWidthUndefined();
-        legendLayout.setHeight("25px");
-//        legendLayout.setStyleName(Reindeer.LAYOUT_BLACK);
-        this.addComponent(bottomLayout);
-        
-        VerticalLayout stableBtn = new VerticalLayout();
-        stableBtn.setStyleName("stablebtn");
-        stableBtn.addStyleName("leftspacer");
-        stableBtn.setWidth("30px");
-        stableBtn.setHeight("20px");
-        Label stableLabel = new Label("Stable");
-        stableBtn.addComponent(stableLabel);
-        bottomLayout.addComponent(stableBtn);
-        bottomLayout.setComponentAlignment(stableBtn,Alignment.TOP_LEFT);
-        
-        
-        
-        
-        bottomLayout.addComponent(legendLayout);
-        bottomLayout.setComponentAlignment(legendLayout,Alignment.TOP_LEFT);
-
-        bottomLayout.addComponent(btnContainerLayout);
-        bottomLayout.setComponentAlignment(btnContainerLayout, Alignment.TOP_LEFT);
-        this.setComponentAlignment(bottomLayout, Alignment.BOTTOM_RIGHT);
-        bottomLayout.setVisible(false);
-
     }
 
     private final int userDataCounter;
@@ -294,82 +315,132 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         this.setSpacing(true);
 
         //init toplayout
-        topLayout.setWidth(100 + "%");
         topLayout.setHeight(30 + "px");
         topLayout.setSpacing(true);
         topLayout.setMargin(new MarginInfo(false, false, true, false));
         this.addComponent(topLayout);
 
-        Label overviewLabel = new Label("<p style='margin-left :50px; text-decoration:underline !important;'>Overview</p> ");
+        Label overviewLabel = new Label("<p style='margin-left :50px;'>Overview</p> ");
         overviewLabel.setContentMode(ContentMode.HTML);
         topLayout.addComponent(overviewLabel);
         overviewLabel.setStyleName("subtitle");
-        overviewLabel.setWidth("300px");
-
-        HorizontalLayout btnContainerLayout = new HorizontalLayout();
-        btnContainerLayout.setSpacing(true);
-        btnContainerLayout.setMargin(new MarginInfo(false, true, false, false));
-        btnContainerLayout.setWidthUndefined();
-        btnContainerLayout.setHeightUndefined();
-//        topLayout.addComponent(btnContainerLayout);
-//        topLayout.setComponentAlignment(btnContainerLayout, Alignment.TOP_RIGHT);
-
-        final OptionGroup significantProteinsOnlyOption = new OptionGroup();
-        btnContainerLayout.addComponent(significantProteinsOnlyOption);
-        significantProteinsOnlyOption.setWidth("55px");
-        significantProteinsOnlyOption.setNullSelectionAllowed(true); // user can not 'unselect'
-        significantProteinsOnlyOption.setMultiSelect(true);
-
-        significantProteinsOnlyOption.addItem("Stable");
-        significantProteinsOnlyOption.select("Stable");
-        significantProteinsOnlyOption.addStyleName("horizontal");
-        significantProteinsOnlyOption.addValueChangeListener(new Property.ValueChangeListener() {
-
-            @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                Quant_Central_Manager.updateSignificantOnlySelection(!significantProteinsOnlyOption.getValue().toString().equalsIgnoreCase("[Stable]"));
-
-            }
-
-        });
-
-        resetBtn = new Button("Clear");
-        resetBtn.setDescription("Unselect all data");
-        resetBtn.setPrimaryStyleName("clearselectionbtn");
-        resetBtn.setWidth("50px");
-        resetBtn.setHeight("20px");
-
-        btnContainerLayout.addComponent(resetBtn);
-
-        exportPdfBtn = new Button("");
-        exportPdfBtn.setWidth("20px");
-        exportPdfBtn.setHeight("20px");
-        exportPdfBtn.setPrimaryStyleName("exportpdfbtn");
-        exportPdfBtn.setDescription("Export chart image");
-
-        StreamResource myResource = createResource();
-        FileDownloader fileDownloader = new FileDownloader(myResource);
-        fileDownloader.extend(exportPdfBtn);
-
-        btnContainerLayout.addComponent(exportPdfBtn);
+        overviewLabel.setWidth("140px");
 
         InfoPopupBtn info = new InfoPopupBtn("The bubble chart give an overview for the proteins existed in the selected comparisons.<br/>The diameter of the bubble represents the number of the proteins in the selected comparison and the color represents the trend<br/>");
         info.setWidth("20px");
         info.setHeight("20px");
-        btnContainerLayout.addComponent(info);
+        topLayout.addComponent(info);
 
-        resetBtn.addClickListener(new Button.ClickListener() {
+        //end of toplayout
+        //init chartlayout
+        this.teststyle = "__" + System.currentTimeMillis() + "_heatmapOverviewBubbleChart";
+        this.chartLayout.setVisible(false);
+        this.addComponent(chartLayout);
+        chartLayout.setWidth(width + "px");
+        chartLayout.setHeight(height + "px");
+        chartLayout.addLayoutClickListener(ComparisonsSelectionOverviewBubbleChart.this);
+
+        //end of chartlayout
+        //init bottomlayout 
+        bottomLayout.setWidth("100%");
+        this.addComponent(bottomLayout);
+        this.setComponentAlignment(bottomLayout, Alignment.BOTTOM_RIGHT);
+        bottomLayout.setVisible(false);
+        HorizontalLayout btnContainerLayout = new HorizontalLayout();
+        btnContainerLayout.setSpacing(true);
+        btnContainerLayout.setMargin(new MarginInfo(false, false, false, false));
+        btnContainerLayout.setWidthUndefined();
+        btnContainerLayout.setHeightUndefined();
+        btnContainerLayout.addStyleName("leftspacer");
+        bottomLayout.addComponent(btnContainerLayout);
+        bottomLayout.setComponentAlignment(btnContainerLayout, Alignment.TOP_LEFT);
+
+        exportPdfBtn = new Button("");
+        exportPdfBtn.setWidth("24px");
+        exportPdfBtn.setHeight("24px");
+        exportPdfBtn.setPrimaryStyleName("exportpdfbtn");
+        exportPdfBtn.setDescription("Export chart image");
+        StreamResource myResource = createResource();
+        FileDownloader fileDownloader = new FileDownloader(myResource);
+        fileDownloader.extend(exportPdfBtn);
+        btnContainerLayout.addComponent(exportPdfBtn);
+
+        VerticalLayout unselectAllBtn = new VerticalLayout();
+        unselectAllBtn.setStyleName("unselectallbubblebtn");
+        btnContainerLayout.addComponent(unselectAllBtn);
+        btnContainerLayout.setComponentAlignment(unselectAllBtn, Alignment.TOP_LEFT);
+        unselectAllBtn.setDescription("Unselect All Disease Groups Comparisons");
+        unselectAllBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
             @Override
-            public void buttonClick(Button.ClickEvent event) {
+            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
                 Quant_Central_Manager.setQuantProteinsSelection(new HashSet<String>(), "");
                 resetChart();
 
             }
         });
 
-        this.topLayout.setVisible(false);
+        final VerticalLayout selectMultiBtn = new VerticalLayout();
+        selectMultiBtn.setStyleName("selectmultibubblebtn");
+        btnContainerLayout.addComponent(selectMultiBtn);
+        btnContainerLayout.setComponentAlignment(selectMultiBtn, Alignment.TOP_LEFT);
+        selectMultiBtn.setDescription("Multiple selection");
+        selectMultiBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
+            @Override
+            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+                if (selectMultiBtn.getStyleName().equalsIgnoreCase("selectmultiselectedbubblebtn")) {
+                    selectMultiBtn.setStyleName("selectmultibubblebtn");
+                    activeMultiSelect = false;
+
+                } else {
+                    selectMultiBtn.setStyleName("selectmultiselectedbubblebtn");
+                    activeMultiSelect = true;
+
+                }
+            }
+        });
+
+        VerticalLayout stableBtnWrapper = new VerticalLayout();
+        stableBtnWrapper.setWidth("64px");
+        HorizontalLayout stableBtn = new HorizontalLayout();
+        stableBtnWrapper.addComponent(stableBtn);
+        stableBtnWrapper.setComponentAlignment(stableBtn, Alignment.TOP_LEFT);
+        btnContainerLayout.addComponent(stableBtnWrapper);
+
+        final VerticalLayout appliedIcon = new VerticalLayout();
+        appliedIcon.setStyleName("appliedicon");
+        appliedIcon.setWidth("24px");
+        appliedIcon.setHeight("24px");
+        stableBtn.addComponent(appliedIcon);
+        stableBtn.setStyleName("stablebtn");
+        stableBtn.setHeight("24px");
+        Label stableLabel = new Label("Stable");
+        stableLabel.setWidth("44px");
+        stableBtn.addComponent(stableLabel);
+
+        stableBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+            @Override
+            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+                if (appliedIcon.getStyleName().equalsIgnoreCase("appliedicon")) {
+                    appliedIcon.setStyleName("unappliedicon");
+                    Quant_Central_Manager.updateSignificantOnlySelection(true);
+                } else {
+                    appliedIcon.setStyleName("appliedicon");
+                    Quant_Central_Manager.updateSignificantOnlySelection(false);
+                }
+            }
+        });
+
+        TrendLegend legendLayout = new TrendLegend("bubblechart");
+        legendLayout.setWidthUndefined();
+        legendLayout.setHeight("24px");
+        bottomLayout.addComponent(legendLayout);
+        bottomLayout.setComponentAlignment(legendLayout, Alignment.TOP_RIGHT);
+        bottomLayout.setExpandRatio(legendLayout, 600);
+        bottomLayout.setExpandRatio(btnContainerLayout, 210);
+
+        //end of btns layout
         //init empty layout
         emptySelectionLayout = new VerticalLayout();
         this.addComponent(emptySelectionLayout);
@@ -392,28 +463,6 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         handleft.setSource(new ThemeResource("img/handleft.png"));
         emptySelectionLayout.addComponent(handleft);
         emptySelectionLayout.setComponentAlignment(handleft, Alignment.MIDDLE_CENTER);
-
-        //init bubble chart
-        this.teststyle = "__" + System.currentTimeMillis() + "_heatmapOverviewBubbleChart";
-        this.chartLayout.setVisible(false);
-        this.addComponent(chartLayout);
-        chartLayout.setWidth(width + "px");
-        chartLayout.setHeight(height + "px");
-        chartLayout.addLayoutClickListener(ComparisonsSelectionOverviewBubbleChart.this);
-
-        TrendLegend legendLayout = new TrendLegend("bubblechart");
-        legendLayout.setWidthUndefined();
-        legendLayout.setHeight("25px");
-//        legendLayout.setStyleName(Reindeer.LAYOUT_BLACK);
-        bottomLayout.addComponent(legendLayout);
-        bottomLayout.setComponentAlignment(legendLayout,Alignment.MIDDLE_CENTER);
-        bottomLayout.setWidth("100%");
-
-        bottomLayout.addComponent(btnContainerLayout);
-        bottomLayout.setComponentAlignment(btnContainerLayout, Alignment.TOP_RIGHT);
-        this.addComponent(bottomLayout);
-        this.setComponentAlignment(bottomLayout, Alignment.BOTTOM_RIGHT);
-        bottomLayout.setVisible(false);
 
     }
 
@@ -1105,30 +1154,19 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
         };
         xyplot.setOutlineVisible(false);
-
-        LegendTitle legend = generatedChart.getLegend();
-        legend.setVisible(true);
-        legend.setMargin(20, 0, 0, 0);
-
-//        legend.setBorder(1, 1, 1, 1);
-        legend.setFrame(new BlockBorder(1, 0, 1, 0, Color.LIGHT_GRAY));
-
-//        generatedChart.removeLegend();
-//        xyplot.setForegroundAlpha(0.65F);
         xyplot.setBackgroundPaint(Color.WHITE);
         generatedChart.setBackgroundPaint(Color.WHITE);
         generatedChart.setPadding(new RectangleInsets(0, 0, 0, 0));
         Quant_Central_Manager.setProteinsOverviewBubbleChart(generatedChart);
-//        exporter.writeChartToPDFFile(generatedChart, 595, 842, "bublechart.pdf");
         return generatedChart;
 
     }
 
     private String saveToFile(final JFreeChart chart, final double width, final double height) {
         isNewImge = true;
-        int location = -1;
-        boolean first = true;
         Set<SquaredDot> set = new TreeSet<SquaredDot>();
+        Set<SquaredDot> updatedselectedComponents = new HashSet<SquaredDot>();
+
         try {
             if (width < 1 || height < 1) {
                 return "";
@@ -1166,8 +1204,6 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                         }
 
                     }
-                    location = Integer.valueOf(coords[0]);
-//                    System.out.println("at coords are " + catEnt.getShapeCoords());
                     int sqheight = (largeY - smallY);
                     if (sqheight < 2) {
                         continue;
@@ -1219,38 +1255,26 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                     square.setParam("seriesIndex", seriesIndex);
                     square.setParam("categIndex", categIndex);
 
-                    if (lastselectedComponent != null && categIndex == (Double) lastselectedComponent.getParam("categIndex") && seriesIndex == (Integer) lastselectedComponent.getParam("seriesIndex")) {
-                        square.select();
-                        lastselectedComponent = square;
+                    if (!lastselectedComponents.isEmpty()) {
+                        square.unselect();
+                        for (SquaredDot lastselectedComponent : lastselectedComponents) {
+                            if (lastselectedComponent != null && categIndex == (Double) lastselectedComponent.getParam("categIndex") && seriesIndex == (Integer) lastselectedComponent.getParam("seriesIndex")) {
+                                square.select();
+                                updatedselectedComponents.add(square);
+                                break;
+                            }
+                        }
 
                     }
 
                     square.setParam("position", "left: " + (smallX - 1) + "px; top: " + (smallY - 1) + "px;");
                     set.add(square);
                 }
-//                else if (entity instanceof AxisEntity) {
-////                    AxisEntity ai = (AxisEntity) entity;
-////                    if (first) {
-////                        first = false;
-////
-////                    } else {
-////                        continue;
-////                    }
-////
-////                    String[] coords = ai.getShapeCoords().split(",");
-////                    VerticalLayout vlo = new VerticalLayout();
-////                    vlo.setStyleName("frame");
-////                    int w = Integer.valueOf(coords[1]) - 10;
-////                    int h = Integer.valueOf(coords[3]) - Integer.valueOf(coords[1]);
-////                    vlo.setWidth(10 + "px");
-////                    vlo.setHeight(10 + "px");
-////
-////                    System.out.println("coords is " + ai.getShapeCoords());
-////                    chartLayout.addComponent(vlo, "left: " + 439 + "px; top: " + w + "px;");
-////
-////                    System.out.println("ChartEntity " + ai.getArea());
-//                }
+
             }
+            lastselectedComponents.clear();
+            lastselectedComponents.addAll(updatedselectedComponents);
+            System.out.println("at lastselected size " + lastselectedComponents.size());
             for (SquaredDot square : set) {
                 chartLayout.addComponent(square, square.getParam("position").toString());
             }
@@ -1270,6 +1294,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
         styles.add("." + teststyle + " { background-image: url(" + defaultImgURL + " );background-position:0px 0px; background-repeat: no-repeat; overflow:visible !important}");
         chartLayout.setStyleName(teststyle);
+
     }
 
     private Set<QuantDiseaseGroupsComparison> selectedComparisonList;
@@ -1332,53 +1357,23 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         return logValue;
     }
 
-    private SquaredDot lastselectedComponent;
+    private void resetSelection() {
+        Quant_Central_Manager.setQuantProteinsSelection(new HashSet<String>(), "");
+        resetChart();
+
+    }
+
+    private final Set<SquaredDot> lastselectedComponents = new HashSet<SquaredDot>();
 
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+
         if (event.getClickedComponent() == null) {
+            resetSelection();
             return;
         }
+
         if (event.getClickedComponent() instanceof SquaredDot) {
-            SquaredDot square = (SquaredDot) event.getClickedComponent();
-            if (square == lastselectedComponent) {
-                resetBtn.click();
-
-                return;
-
-            }
-
-            double trendIndex = (Double) ((SquaredDot) square).getParam("categIndex");
-            int seriousIndex = (Integer) ((SquaredDot) square).getParam("seriesIndex");
-            Set<String> selectionMap = new HashSet<String>();
-            QuantDiseaseGroupsComparison comparison;
-
-            if (userCustomizedComparison != null && seriousIndex == 0) {
-
-                comparison = userCustomizedComparison;
-                for (String key : comparison.getComparProtsMap().keySet()) {
-                    DiseaseGroupsComparisonsProteinLayout compProt = comparison.getComparProtsMap().get(key);
-                    if (compProt.getSignificantTrindCategory() == trendIndex) {
-                        selectionMap.add(key);
-
-                    }
-
-                }
-
-            } else {
-
-                comparison = (QuantDiseaseGroupsComparison) Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList().toArray()[seriousIndex - userDataCounter];
-                for (String key : comparison.getComparProtsMap().keySet()) {
-                    DiseaseGroupsComparisonsProteinLayout compProt = comparison.getComparProtsMap().get(key);
-                    if (compProt.getSignificantTrindCategory() == trendIndex) {
-                        selectionMap.add(key.split("_")[1]);
-
-                    }
-
-                }
-            }
-
-            Quant_Central_Manager.setQuantProteinsSelection(selectionMap, comparison.getComparisonHeader());
 
             Iterator<Component> itr = chartLayout.iterator();
             while (itr.hasNext()) {
@@ -1386,20 +1381,106 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                 tsquare.unselect();
             }
 
-            square.select();
-            lastselectedComponent = square;
+            SquaredDot square = (SquaredDot) event.getClickedComponent();
+            String selectedheader = "";
+
+            if (activeMultiSelect) {
+                if (lastselectedComponents.contains(square)) {
+                    lastselectedComponents.remove(square);
+                } else {
+                    lastselectedComponents.add(square);
+                }
+                if (lastselectedComponents.isEmpty()) {
+                    resetSelection();
+                    return;
+                }
+
+            } else {
+
+                if (lastselectedComponents.contains(square)) {
+                    resetSelection();
+                    return;
+                }
+                lastselectedComponents.clear();
+                lastselectedComponents.add(square);
+
+            }
+
+            Set<String> selectionMap = new HashSet<String>();
+            for (SquaredDot selectedCom : lastselectedComponents) {
+
+                selectedCom.select();
+                double trendIndex = (Double) selectedCom.getParam("categIndex");
+                int seriousIndex = (Integer) selectedCom.getParam("seriesIndex");
+                QuantDiseaseGroupsComparison comparison;
+                if (userCustomizedComparison != null && seriousIndex == 0) {
+                    comparison = userCustomizedComparison;
+                    for (String key : comparison.getComparProtsMap().keySet()) {
+                        DiseaseGroupsComparisonsProteinLayout compProt = comparison.getComparProtsMap().get(key);
+                        if (compProt.getSignificantTrindCategory() == trendIndex) {
+                            selectionMap.add(key);
+                        }
+                    }
+
+                } else {
+                    comparison = (QuantDiseaseGroupsComparison) Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList().toArray()[seriousIndex - userDataCounter];
+                    for (String key : comparison.getComparProtsMap().keySet()) {
+                        DiseaseGroupsComparisonsProteinLayout compProt = comparison.getComparProtsMap().get(key);
+                        if (compProt.getSignificantTrindCategory() == trendIndex) {
+                            selectionMap.add(key.split("_")[1]);
+
+                        }
+
+                    }
+                }
+                if (selectedCom == square) {
+                    selectedheader = comparison.getComparisonHeader();
+                }
+
+            }
+            Quant_Central_Manager.setQuantProteinsSelection(selectionMap, selectedheader);
+
+        } else {
+            resetSelection();
 
         }
     }
 
     private void resetChart() {
-        lastselectedComponent = null;
+        lastselectedComponents.clear();
         Iterator<Component> itr = chartLayout.iterator();
         while (itr.hasNext()) {
             SquaredDot tsquare = (SquaredDot) itr.next();
             tsquare.reset();
 
         }
+
+    }
+
+    public String getChartThumbImage() {
+        if (chart == null) {
+            return null;
+        }
+        XYPlot xyplot = chart.getXYPlot();
+        xyplot.getDomainAxis().setVisible(false);
+        xyplot.getRangeAxis().setVisible(false);
+        chart.setBorderVisible(true);
+        chart.setBorderPaint(Color.LIGHT_GRAY);
+        String base64 = "";
+        try {
+            base64 = Base64.encodeBase64String(ChartUtilities.encodeAsPNG(chart.createBufferedImage(100, 100)));
+        } catch (IOException ex) {
+            Logger.getLogger(ComparisonsSelectionOverviewBubbleChart.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        base64 = "data:image/png;base64," + base64;
+
+        chart.setBorderVisible(false);
+        xyplot.getDomainAxis().setVisible(true);
+        xyplot.getRangeAxis().setVisible(true);
+
+//        styles.add(".matrixbtn  { background-image: url(" + base64 + " )!important;}");
+        return base64;
 
     }
 

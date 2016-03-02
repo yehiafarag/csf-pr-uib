@@ -849,7 +849,7 @@ resetlabelbtn p{
     background-color: lightgray;
 
 }
-.matrixbtn{
+/*.matrixbtn{
     background-color:  #ffffff;
     border: 2px solid white;   
     background-image: url(img/hideshow.png);
@@ -871,6 +871,48 @@ resetlabelbtn p{
 
 
 }
+.matrixbtn:hover{
+    background-color:  #EFF2FB;
+    border: 2px solid #4d749f;   
+}*/
+
+
+.matrixbtn{
+    background-color:  #ffffff;
+    border: 2px solid white;   
+    background-repeat: no-repeat;
+    background-position:center;
+    background-size: 100px auto;
+    border-radius: 3px;
+    cursor:pointer;
+
+
+}
+.matrixbtn div{
+    text-align:center;
+    font-size:10px;
+    font-family:Verdana;
+    font-weight:bold;
+    cursor:pointer;
+    color: gray;
+
+
+}
+
+
+.matrixbtn img{
+    cursor:pointer;
+    width:auto !important;
+    padding-top:10px;
+
+
+}
+
+
+
+
+
+
 .matrixbtn:hover{
     background-color:  #EFF2FB;
     border: 2px solid #4d749f;   
@@ -3250,37 +3292,101 @@ img {
     
 }
 
+
+
 .stablebtn {
-    width:60px !important;
-    margin-right:20px;
-    background-color:rgb(1, 141, 244); 
-    color:white;
-    text-align:center; 
-    border-radius:4px;
-    border:1px solid black;
-    cursor:pointer; 
-      background-image: url(img/check-circle-o.png);
-    background-size:13px;
-    background-repeat:no-repeat;
-    border-radius:4px;
+    width:23px !important;    
+    text-align:center;    
+    cursor:pointer;       
    background-position:40px;
+   overflow:hidden !important;
+}
+.stablebtn:hover{
+     -webkit-transition: width 1s; /* For Safari 3.1 to 6.0 */
+    transition: width 1s; 
+  width:64px !important;
+
+
 }
 .stablebtn div{
-    width:60px !important;
     text-align:center;
-    line-height:20px;
+    line-height:23px;
+    font-weight:bold;
     cursor:pointer;
    
    
 }
 .stablebtnselected{
-width:60px !important;
-    margin-right:20px;
-    background-color:rgb(1, 141, 244); 
+width:64px !important;  
     color:white;
     text-align:center; 
     border-radius:4px;
     border:1px solid black;
     cursor:pointer;
+
+}
+.appliedicon{
+   background-image: url(img/check-blue.png);
+   border:1px solid lightgray;
+   background-position:center;
+   background-size:22px 22px;
+   background-color:white;
+   background-repeat:no-repeat;
+   border-radius:50px;
+}
+.unappliedicon{
+   background-image: url(img/minus-blue.png);
+   border:1px solid lightgray;
+
+     background-position:center;
+     background-size:22px 22px;
+   background-color:white;
+   background-repeat:no-repeat;
+   border-radius:50px;
+}
+
+
+
+.unselectallbubblebtn{
+    clear: both;
+    width: 23px;
+    height: 23px;
+    background-image: url(img/unselect_all_bubble.png);
+    background-position:center;
+    background-repeat: no-repeat;
+    cursor:pointer;
+}
+.unselectallbubblebtn:hover{
+    background-image: url(img/unselect_all_bubble_selected.png);
+
+}
+.selectmultibubblebtn{
+    clear: both;
+    width: 23px;
+    height: 23px;
+    background-image: url(img/select_multi_bubble.png);
+    background-position:center;
+    background-repeat: no-repeat;
+    cursor:pointer;
+}
+.selectmultibubblebtn:hover{
+    background-image: url(img/select_multi_bubble_selected.png);
+}
+.selectmultiselectedbubblebtn{
+    clear: both;
+    width: 23px;
+    height: 23px;
+    border:1px solid black;
+
+    background-image: url(img/select_multi_bubble_selected.png);
+    background-position:center;
+    background-repeat: no-repeat;
+    background-size:cover;
+    cursor:pointer;
+
+}
+.selectmultiselectedbubblebtn:hover{
+    background-image: url(img/select_multi_bubble.png);
+    border:none;
 
 }

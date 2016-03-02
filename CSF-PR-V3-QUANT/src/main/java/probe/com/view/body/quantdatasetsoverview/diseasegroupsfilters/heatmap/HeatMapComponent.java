@@ -5,11 +5,14 @@
  */
 package probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.heatmap;
 
+import com.vaadin.server.ExternalResource;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
@@ -65,6 +68,9 @@ public class HeatMapComponent extends VerticalLayout {
     private final HorizontalLayout topLayout;
     private final HorizontalLayout bottomLayout;
     private final VerticalLayout columnContainer;
+    private final Image icon;
+    private final Label hideShowBtnLabel;
+    private final ThemeResource defaultResource;
 
     /**
      * @param heatmapCellWidth
@@ -107,13 +113,25 @@ public class HeatMapComponent extends VerticalLayout {
         spacer.setStyleName(Reindeer.LAYOUT_WHITE);
 
         hideCompBtn = new VerticalLayout();
-        hideCompBtn.setWidth((heatmapHeaderCellWidth) + "px");
-        hideCompBtn.setHeight((heatmapHeaderCellWidth) + "px");
-        hideCompBtn.setDescription("Hide Comparisons Table");
+        hideCompBtn.setSpacing(true);
+        hideCompBtn.setWidth((heatmapHeaderCellWidth + 25) + "px");
+//        hideCompBtn.setHeight((heatmapHeaderCellWidth) + "px");
         hideCompBtn.setStyleName("matrixbtn");
-        Label l = new Label("Hide Comparisons");
-        hideCompBtn.addComponent(l);
-        hideCompBtn.setComponentAlignment(l, Alignment.BOTTOM_CENTER);
+
+        icon = new Image();
+        defaultResource = new ThemeResource("img/hideshow.png");
+
+        icon.setSource(defaultResource);
+        hideCompBtn.setDescription("Hide Comparisons Table");
+        hideCompBtn.addComponent(icon);
+        hideCompBtn.setComponentAlignment(icon, Alignment.MIDDLE_CENTER);
+        icon.setHeight((heatmapHeaderCellWidth - 20 + 10) + "px");
+
+        hideShowBtnLabel = new Label("Hide Comparisons");
+        hideShowBtnLabel.setHeight((20) + "px");
+        hideCompBtn.addComponent(hideShowBtnLabel);
+        hideCompBtn.setComponentAlignment(hideShowBtnLabel, Alignment.BOTTOM_CENTER);
+
         spacer.addComponent(hideCompBtn);
         spacer.setComponentAlignment(hideCompBtn, Alignment.MIDDLE_CENTER);
         hideCompBtn.setEnabled(false);
@@ -344,6 +362,8 @@ public class HeatMapComponent extends VerticalLayout {
     public void updateDsCellSelection(Set<QuantDiseaseGroupsComparison> selectedDsList) {
         if (selectedDsList.isEmpty()) {
             hideCompBtn.setEnabled(false);
+            icon.setSource(defaultResource);
+            hideShowBtnLabel.setValue("Hide Comparisons");
 
         } else {
             hideCompBtn.setEnabled(true);
@@ -837,6 +857,8 @@ public class HeatMapComponent extends VerticalLayout {
      */
     public void unselectAll() {
         selectedCells.clear();
+        updateHideShowThumbImg(null);
+        updateShowHideBtnLabel(false);
         for (HeatmapCell cell : comparisonsCellsMap.values()) {
             cell.initStyle();
         }
@@ -861,6 +883,24 @@ public class HeatMapComponent extends VerticalLayout {
             this.setWidth("100%");
         } else {
             this.setWidthUndefined();
+        }
+
+    }
+
+    public void updateHideShowThumbImg(String imgUrl) {
+        if (imgUrl == null) {
+            icon.setSource(defaultResource);
+            return;
+        }
+        icon.setSource(new ExternalResource(imgUrl));
+    }
+
+    public void updateShowHideBtnLabel(boolean show) {
+
+        if (show) {
+            hideShowBtnLabel.setValue("Hide Comparisons");
+        } else {
+            hideShowBtnLabel.setValue("Show Comparisons");
         }
 
     }
