@@ -65,7 +65,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
     private final Button resetTableBtn;
     private final Label protCounterLabel;
     private int width = 0;
-    private final OptionGroup hideUniqueProteinsOption;
+//    private final OptionGroup hideUniqueProteinsOption;
     private final VerticalLayout tableLayout;
     private String sortComparisonTableColumn;
     private final Set<QuantDiseaseGroupsComparison> diseaseGroupsComparisonsMap = new HashSet<QuantDiseaseGroupsComparison>();
@@ -313,40 +313,40 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
         bottomLayout.setHeight("100%");
         bottomLayout.setStyleName(Reindeer.LAYOUT_WHITE);
 
-        hideUniqueProteinsOption = new OptionGroup();
-        bottomLayout.addComponent(hideUniqueProteinsOption);
-        bottomLayout.setComponentAlignment(hideUniqueProteinsOption, Alignment.TOP_LEFT);
-        hideUniqueProteinsOption.setWidth("150px");
-        hideUniqueProteinsOption.setNullSelectionAllowed(true); // user can not 'unselect'
-        hideUniqueProteinsOption.setMultiSelect(true);
-
-        hideUniqueProteinsOption.addItem("Available in all comparisons only");
-        hideUniqueProteinsOption.addStyleName("horizontal");
-        hideUniqueProteinsOption.addValueChangeListener(new Property.ValueChangeListener() {
-            private final Set<String> protAccssions = new HashSet<String>();
-            private final HashMap<Object, Item> tableItems = new HashMap<Object, Item>();
-
-            @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                if (hideUniqueProteinsOption.getValue().toString().equalsIgnoreCase("[Available in all comparisons only]")) {
-                    protAccssions.clear();
-                    tableItems.clear();
-                    HashSet<Object> itemIds = new HashSet<Object>(groupsComparisonProteinsTable.getItemIds());
-                    for (Object id : itemIds) {
-                        Item item = groupsComparisonProteinsTable.getItem(id);
-                        tableItems.put(id, item);
-                        protAccssions.add(item.getItemProperty("Accession").toString());
-
-                    }
-                    filterTable(protAccssions, quantDiseaseGroupsComparisonArr, sortComparisonTableColumn, true);
-
-                } else {
-
-                    filterTable(protAccssions, quantDiseaseGroupsComparisonArr, sortComparisonTableColumn, false);
-                }
-                updateProtCountLabel(groupsComparisonProteinsTable.getItemIds().size());
-            }
-        });
+//        hideUniqueProteinsOption = new OptionGroup();
+//        bottomLayout.addComponent(hideUniqueProteinsOption);
+//        bottomLayout.setComponentAlignment(hideUniqueProteinsOption, Alignment.TOP_LEFT);
+//        hideUniqueProteinsOption.setWidth("150px");
+//        hideUniqueProteinsOption.setNullSelectionAllowed(true); // user can not 'unselect'
+//        hideUniqueProteinsOption.setMultiSelect(true);
+//
+//        hideUniqueProteinsOption.addItem("Available in all comparisons only");
+//        hideUniqueProteinsOption.addStyleName("horizontal");
+//        hideUniqueProteinsOption.addValueChangeListener(new Property.ValueChangeListener() {
+//            private final Set<String> protAccssions = new HashSet<String>();
+//            private final HashMap<Object, Item> tableItems = new HashMap<Object, Item>();
+//
+//            @Override
+//            public void valueChange(Property.ValueChangeEvent event) {
+//                if (hideUniqueProteinsOption.getValue().toString().equalsIgnoreCase("[Available in all comparisons only]")) {
+//                    protAccssions.clear();
+//                    tableItems.clear();
+//                    HashSet<Object> itemIds = new HashSet<Object>(groupsComparisonProteinsTable.getItemIds());
+//                    for (Object id : itemIds) {
+//                        Item item = groupsComparisonProteinsTable.getItem(id);
+//                        tableItems.put(id, item);
+//                        protAccssions.add(item.getItemProperty("Accession").toString());
+//
+//                    }
+//                    filterTable(protAccssions, quantDiseaseGroupsComparisonArr, sortComparisonTableColumn, true);
+//
+//                } else {
+//
+//                    filterTable(protAccssions, quantDiseaseGroupsComparisonArr, sortComparisonTableColumn, false);
+//                }
+//                updateProtCountLabel(groupsComparisonProteinsTable.getItemIds().size());
+//            }
+//        });
 
         HorizontalLayout rightBottomLayout = new HorizontalLayout();
         rightBottomLayout.setWidthUndefined();
@@ -442,7 +442,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
 
     private void searchForProtiens(String keyword) {
 
-        hideUniqueProteinsOption.unselect("Available in all comparisons only");
+//        hideUniqueProteinsOption.unselect("Available in all comparisons only");
         Set<String> subAccList = getSearchingProteinsList(keyword);
 
         if (subAccList.isEmpty()) {
@@ -465,7 +465,7 @@ public class QuantProteinsComparisonsContainer extends VerticalLayout implements
 
         if (type.equalsIgnoreCase("Comparison_Selection")) {
 
-            hideUniqueProteinsOption.unselect("Available in all comparisons only");
+//            hideUniqueProteinsOption.unselect("Available in all comparisons only");
             Set<String> selectedQuantAccessionsSet;
             Set<QuantDiseaseGroupsComparison> selectedComparisonList = Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList();
             QuantDiseaseGroupsComparison[] tempDiseaseGroupsComparisonsArray = new QuantDiseaseGroupsComparison[selectedComparisonList.size()];

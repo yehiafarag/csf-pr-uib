@@ -1708,16 +1708,13 @@ border:3px solid #4d749f ;
 
 .exportpdfbtn{
       background-image: url(img/pdf-text-o-2.png);
-   background-position:center !important;
-    background-repeat: no-repeat !important;
-    background-size: 17px  !important;
-    cursor:pointer;
-   
-  
-    width:23px !important;
-    height:23px !important;
-    border:none;
-
+      clear: both;
+      /* width: 23px !important; */
+      height: 23px !important;
+      background-position:center !important;
+      background-repeat: no-repeat !important;
+      background-size: 17px  !important;
+      cursor:pointer;
 }
 
 .exportpdfbtn:focus {
@@ -1887,8 +1884,8 @@ border:3px solid #4d749f ;
 
 .infoicon{
     clear: both;
-    width: 16px;
-    height: 16px;
+    width: 16px !important;
+    height: 16px !important;
     border-radius: 50%;
     border: 1px solid lightgray;
     background-image:  url(img/help.png);
@@ -1981,26 +1978,13 @@ border:3px solid #4d749f ;
 }
 .subtitle{
     clear: both;
-    font-size: 16px;
-    height: 16px;
-    line-height:16px;
-    font-family:Verdana;
-    font-weight: bold;
-    color:gray;    
-    margin: 0 0 0 0;
+    font-size: 15px;
+    /*height: 14px;*/
+    font-family:Verdana; 
     padding: 0 0 0 0;
+    cursor: pointer;
 }
-.subtitle p{
-    clear: both;
-    font-size: 16px;
-    height: 16px;
-    line-height:16px;
-    font-family:Verdana;
-    font-weight: bold;
-    color:gray;    
-    margin: 0 0 0 0;
-    padding: 0 0 0 0;
-}
+
 
 
 
@@ -2915,7 +2899,7 @@ img {
     clear: both;
     width: 23px !important;
     height: 23px !important;
-    background-image: url(img/file-text-o-2.png) !important;
+    background-image: url(img/file-text-o-3.png) !important;
     background-position:center !important;
     background-repeat: no-repeat !important;
     background-size: 17px  !important;
@@ -3326,24 +3310,28 @@ width:64px !important;
 
 }
 .appliedicon{
-   background-image: url(img/check-blue.png);
-   border:1px solid lightgray;
-   background-position:center;
-   background-size:22px 22px;
-   background-color:white;
-   background-repeat:no-repeat;
-   border-radius:50px;
+      background-image: url(img/scatter_plot_applied.png);
+    height: 24px !important;
+    background-position:center !important;
+    background-repeat: no-repeat !important;
+    background-size:20px 20px !important;
+    
+    cursor:pointer;
+
 }
 .unappliedicon{
-   background-image: url(img/minus-blue.png);
-   border:1px solid lightgray;
+   background-image: url(img/scatter_plot_unapplied.png);
+     height: 24px !important;
+    background-position:center !important;
+    background-repeat: no-repeat !important;
+    background-size: 20px 20px !important;
+    cursor:pointer;
 
-     background-position:center;
-     background-size:22px 22px;
-   background-color:white;
-   background-repeat:no-repeat;
-   border-radius:50px;
 }
+
+
+
+
 
 
 
@@ -3364,13 +3352,13 @@ width:64px !important;
     clear: both;
     width: 23px;
     height: 23px;
-    background-image: url(img/select_multi_bubble.png);
+    background-image: url(img/select_multi_bubble_1.png);
     background-position:center;
     background-repeat: no-repeat;
     cursor:pointer;
 }
 .selectmultibubblebtn:hover{
-    background-image: url(img/select_multi_bubble_selected.png);
+    background-image: url(img/select_multi_bubble_selected_2.png);
 }
 .selectmultiselectedbubblebtn{
     clear: both;
@@ -3378,7 +3366,7 @@ width:64px !important;
     height: 23px;
     border:1px solid black;
 
-    background-image: url(img/select_multi_bubble_selected.png);
+    background-image: url(img/select_multi_bubble_selected_2.png);
     background-position:center;
     background-repeat: no-repeat;
     background-size:cover;
@@ -3386,7 +3374,7 @@ width:64px !important;
 
 }
 .selectmultiselectedbubblebtn:hover{
-    background-image: url(img/select_multi_bubble.png);
+    background-image: url(img/select_multi_bubble_1.png);
     border:none;
 
 }

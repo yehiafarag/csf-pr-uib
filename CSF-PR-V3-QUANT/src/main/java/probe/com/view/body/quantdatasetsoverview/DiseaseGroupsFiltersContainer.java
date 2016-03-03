@@ -351,7 +351,7 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
         rightBottomBtnLayout.setWidthUndefined();
         rightBottomBtnLayout.setSpacing(true);
         btnsLayout.addComponent(rightBottomBtnLayout);
-        btnsLayout.setComponentAlignment(rightBottomBtnLayout, Alignment.TOP_LEFT);
+        btnsLayout.setComponentAlignment(rightBottomBtnLayout, Alignment.TOP_RIGHT);
 
         StudiesInformationPopupBtn showStudiesBtn = new StudiesInformationPopupBtn(Quant_Central_Manager);
         rightBottomBtnLayout.addComponent(showStudiesBtn);
