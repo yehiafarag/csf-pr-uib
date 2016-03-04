@@ -1173,8 +1173,8 @@ border:3px solid #4d749f ;
 
 }
 .selected_transparentcyclecomp{ 
- border-radius: 50%;
-  
+    border-radius: 50%;
+
 }
 
 
@@ -1707,14 +1707,14 @@ border:3px solid #4d749f ;
 
 
 .exportpdfbtn{
-      background-image: url(img/pdf-text-o-2.png);
-      clear: both;
-      /* width: 23px !important; */
-      height: 23px !important;
-      background-position:center !important;
-      background-repeat: no-repeat !important;
-      background-size: 17px  !important;
-      cursor:pointer;
+    background-image: url(img/pdf-text-o-2.png);
+    clear: both;
+    /* width: 23px !important; */
+    height: 23px !important;
+    background-position:center !important;
+    background-repeat: no-repeat !important;
+    background-size: 17px  !important;
+    cursor:pointer;
 }
 
 .exportpdfbtn:focus {
@@ -1746,12 +1746,12 @@ border:3px solid #4d749f ;
 }
 .exportxslbtn{
     background-image: url(img/xls-text-o-2.png);
-       background-position:center !important;
+    background-position:center !important;
     background-repeat: no-repeat !important;
     background-size: 17px  !important;
     cursor:pointer;
-   
-  
+
+
     width:23px !important;
     height:23px !important;
     border:none;
@@ -1792,25 +1792,21 @@ border:3px solid #4d749f ;
     outline: none;
 }
 
-.exportzipbtn{
+.exportreportbtn{
     clear: both;
-    width: 20px;
-    height: 20px;
-    border-radius: 5px;
-    border:  1px solid lightgray;
-    background-color:  whitesmoke;
-    background-image: url(img/zip.png);
-    background-position:center;
-    background-repeat: no-repeat;
+
+    background-image: url(img/reporticon.png);
+    clear: both;
+    width: 24px !important; 
+    height: 24px !important;
+    background-position:center !important;
+    background-repeat: no-repeat !important;
+    background-size: contain;
     cursor:pointer;
 
 }
-.exportzipbtn:hover{
-    background-color: lightgray;
 
-}
-
-.exportzipbtn:focus {
+.exportreportbtn:focus {
     outline: none;
 }
 .peptideslayoutlabel{
@@ -2004,7 +2000,7 @@ border:3px solid #4d749f ;
 }
 .lowerlink{
     background: url(img/Lbackground.png) no-repeat;
-    background-position:211px -13px;
+    background-position:115px -13px;
 
 }
 
@@ -2796,9 +2792,9 @@ img {
 
 }
 .overlayout{
-    margin-left: -320px !important;
+    margin-left: -600px !important;
     position:absolute;
-    margin-top:-15px;
+    margin-top:5px;
     clear:both;
 }
 .selectedfilter{
@@ -2970,17 +2966,17 @@ img {
     border-radius:4px;  
     color:  #707070; 
     padding:0 20px;    
-     width:70px !important;
-    
+    width:70px !important;
+
 
 }
 .hidefilterbtnlabel:hover{
-/*    -webkit-transition: color 2s;  For Safari 3.1 to 6.0 
-    transition: color 2s; 
+    /*    -webkit-transition: color 2s;  For Safari 3.1 to 6.0 
+        transition: color 2s; 
+        
     
-
-    background-image: url(img/filters-128.png),  url(img/angle-double-up.png);
-    width:90px !important;*/
+        background-image: url(img/filters-128.png),  url(img/angle-double-up.png);
+        width:90px !important;*/
 
 }
 
@@ -3180,16 +3176,16 @@ img {
     outline: none !important;
 }
 .filtercontainer2 {
-     overflow:hidden !important;
+    overflow:hidden !important;
     -webkit-transition: height 1s; /* For Safari 3.1 to 6.0 */
     transition: height 1s; 
 
 }
 
 .enableserumunselected{
-     width: 40px !important;
+    width: 40px !important;
     height:28px !important;
-     cursor: pointer; 
+    cursor: pointer; 
     background-image: url(img/blood-drop.png);
     background-size:15px;
     background-repeat:no-repeat;
@@ -3200,8 +3196,8 @@ img {
     color:rgba(255, 255, 255, 0) !important;
 
 
-    
-    
+
+
 }
 .enableserumunselected:hover{  
 
@@ -3215,7 +3211,7 @@ img {
 .enableserumselected{
     width: 40px !important;
     height:28px !important;
-     cursor: pointer; 
+    cursor: pointer; 
     background-image: url(img/blood-drop-applied.png);
     background-size:18px;
     background-repeat:no-repeat;
@@ -3226,54 +3222,54 @@ img {
     font-size:13px;    
     border:1px solid lightgray;
     background-color:whitesmoke;
-    
+
 }
 .enableserumselected:hover{      
-     border:1px solid darkgray;
+    border:1px solid darkgray;
     background-color:lightgray;
 
 }
 .slowresizelayout{
-    
-      
-     overflow:hidden !important;
+
+
+    overflow:hidden !important;
     -webkit-transition: width 1s; /* For Safari 3.1 to 6.0 */
     transition: width 1s; 
-     
-    
+
+
 }
 .legendred100 div{
     background: rgb(204, 0, 0);    
-    
+
 }
 .legendredless100 div{
-     background: rgb(247, 119, 119);    
+    background: rgb(247, 119, 119);    
 }
 .legendblue div{
-    
-      background: rgb(1, 141, 244);    
+
+    background: rgb(1, 141, 244);    
 }
 .legendgreen100 div{
     background: rgb(0, 229, 132);    
-    
+
 }
 .legendgreenless100 div{
-    
+
     background: rgb(0, 153, 0);    
-    
+
 }
 .legendgray div{
-    
+
     background: rgb(128, 128, 128);    
 }
 .leftspacer{
-    
-    
+
+
     margin-left:56px;
 }
 .bottomspacer{
-    
-    
+
+
 }
 
 
@@ -3282,13 +3278,13 @@ img {
     width:23px !important;    
     text-align:center;    
     cursor:pointer;       
-   background-position:40px;
-   overflow:hidden !important;
+    background-position:40px;
+    overflow:hidden !important;
 }
 .stablebtn:hover{
-     -webkit-transition: width 1s; /* For Safari 3.1 to 6.0 */
+    -webkit-transition: width 1s; /* For Safari 3.1 to 6.0 */
     transition: width 1s; 
-  width:64px !important;
+    width:64px !important;
 
 
 }
@@ -3297,11 +3293,11 @@ img {
     line-height:23px;
     font-weight:bold;
     cursor:pointer;
-   
-   
+
+
 }
 .stablebtnselected{
-width:64px !important;  
+    width:64px !important;  
     color:white;
     text-align:center; 
     border-radius:4px;
@@ -3310,18 +3306,18 @@ width:64px !important;
 
 }
 .appliedicon{
-      background-image: url(img/scatter_plot_applied.png);
+    background-image: url(img/scatter_plot_applied.png);
     height: 24px !important;
     background-position:center !important;
     background-repeat: no-repeat !important;
     background-size:20px 20px !important;
-    
+
     cursor:pointer;
 
 }
 .unappliedicon{
-   background-image: url(img/scatter_plot_unapplied.png);
-     height: 24px !important;
+    background-image: url(img/scatter_plot_unapplied.png);
+    height: 24px !important;
     background-position:center !important;
     background-repeat: no-repeat !important;
     background-size: 20px 20px !important;
@@ -3377,4 +3373,100 @@ width:64px !important;
     background-image: url(img/select_multi_bubble_1.png);
     border:none;
 
+}
+.defaultorder{
+    clear: both;
+
+    background-image: url(img/defaulttrend.png);
+    clear: both;
+    width: 24px !important; 
+    height: 24px !important;
+    background-position:center !important;
+    background-repeat: no-repeat !important;
+    background-size: contain;
+    cursor:pointer;
+
+}
+
+.defaultorder:focus {
+    outline: none;
+}
+
+.trendorder{
+    background-image: url(img/orderedtrend_highlighted.png);
+    clear: both;
+    width: 24px !important; 
+    height: 24px !important;
+    background-position:center !important;
+    background-repeat: no-repeat !important;
+    background-size: 20px;
+    background-color: black;
+    cursor:pointer;
+    border-radius:3px;
+}
+
+.trendorder:focus {
+    outline: none;
+}
+.legendtared100 div{
+    background-image: url(img/red_ta.png);
+    background-size: 12px 12px;
+    background-position:center;    
+
+
+}
+.legendredtaless100 div{
+     background-image: url(img/mid_red_ta.png);
+     background-size: 12px 12px;
+    background-position:center;    
+
+}
+.legendbluedm div{
+
+    background: rgb(1, 141, 244); 
+    -ms-transform: rotate(45deg); /* IE 9 */
+    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+    transform: rotate(45deg);
+}
+.legendgreenta100 div{
+    background-image: url(img/mid_green_ta.png);
+    background-size: 12px 12px;
+    background-position:center;    
+
+
+}
+.legendgreentaless100 div{
+
+   background-image: url(img/green_ta.png);
+   background-size: 12px 12px;
+    background-position:center;    
+ 
+    
+
+}
+.legendgraydm div{
+
+    background: rgb(128, 128, 128);    
+     -ms-transform: rotate(45deg); /* IE 9 */
+    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+    transform: rotate(45deg);
+}
+.legendemptygraydm div{
+
+    border:1px solid  rgb(128, 128, 128);    
+     -ms-transform: rotate(45deg); /* IE 9 */
+    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+    transform: rotate(45deg);
+}
+.custuserup{
+     background: #ffe5e5;  
+     border: 1px solid gray;
+}
+.custuserstable{
+     background: #e6f4ff; 
+      border: 1px solid gray;
+}
+.custuserdown{
+    background-color: #e5ffe5; 
+     border: 1px solid gray;
 }

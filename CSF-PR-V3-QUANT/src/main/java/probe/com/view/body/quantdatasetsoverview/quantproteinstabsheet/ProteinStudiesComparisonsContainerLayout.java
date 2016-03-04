@@ -73,6 +73,29 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
         this.setHeightUndefined();
         this.setSpacing(true);
         this.Quant_Central_Manager = Quant_Central_Manager;
+        this.setMargin(new MarginInfo(false, false, false, true));
+        
+        HorizontalLayout topLayout = new HorizontalLayout();
+        this.addComponent(topLayout);
+        topLayout.setSpacing(true);
+        
+         Label overviewLabel = new Label("<font>Details </font> ");
+
+        
+
+        overviewLabel.setContentMode(ContentMode.HTML);
+        topLayout.addComponent(overviewLabel);
+        overviewLabel.setStyleName("subtitle");
+        overviewLabel.setWidth("100%");
+        overviewLabel.setHeight("22px");
+
+        InfoPopupBtn info = new InfoPopupBtn("add text");
+        info.setWidth("16px");
+        info.setHeight("16px");
+        topLayout.addComponent(info);
+        
+        
+        
         studiesPeptidesSwich.setWidth("180px");
         studiesPeptidesSwich.setNullSelectionAllowed(false); // user can not 'unselect'
         studiesPeptidesSwich.setMultiSelect(false);
@@ -179,21 +202,21 @@ public class ProteinStudiesComparisonsContainerLayout extends VerticalLayout {
 //        topPanelLayout.setComponentAlignment(topRightLayout, Alignment.TOP_RIGHT);
 //        topPanelLayout.setExpandRatio(topRightLayout,20);
         legend = new TrendLegend("ministackedpeptidessequence");
-        legend.setWidth("300px");
+        legend.setWidth("600px");
         VerticalLayout wrapper = new VerticalLayout();
-        wrapper.setWidth("300px");
-        wrapper.setHeight("40px");
+        wrapper.setWidth("600px");
+        wrapper.setHeight("20px");
         wrapper.setStyleName(Reindeer.LAYOUT_WHITE);
         overTabBtnsLayout.addComponent(wrapper);
         legend.setVisible(false);
 
         wrapper.addComponent(legend);
 
-        InfoPopupBtn info = new InfoPopupBtn("add text");
-        info.setWidth("20px");
-        info.setHeight("20px");
-        overTabBtnsLayout.addComponent(info);
-        overTabBtnsLayout.setComponentAlignment(info, Alignment.BOTTOM_LEFT);
+//        InfoPopupBtn info = new InfoPopupBtn("add text");
+//        info.setWidth("20px");
+//        info.setHeight("20px");
+//        overTabBtnsLayout.addComponent(info);
+//        overTabBtnsLayout.setComponentAlignment(info, Alignment.BOTTOM_LEFT);
 
 //        topRightLayout.addComponent(info);
 //        topRightLayout.setComponentAlignment(info, Alignment.TOP_RIGHT);

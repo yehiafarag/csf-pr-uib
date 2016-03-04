@@ -21,9 +21,23 @@ public class TrendLegend extends GridLayout {
 
     public TrendLegend(String type) {
         this.setSpacing(true);
-         if (type.equalsIgnoreCase("bubblechart")) {
-            String[] labels = new String[]{"High   100%","High < 100%", "Stable", "Low < 100%","Low   100%","No Quant. Info."};
-            String[] styleName = new String[]{"legendred100", "legendredless100", "legendblue","legendgreenless100","legendgreen100","legendgray"};
+        if (type.equalsIgnoreCase("linechart")) {
+            String[] labels = new String[]{"High   100%", "High < 100%", "Stable", "Low < 100%", "Low   100%", "No Quant. Info.", "No Data"};
+            String[] styleName = new String[]{"legendtared100", "legendredtaless100", "legendbluedm", "legendgreentaless100", "legendgreenta100", "legendgraydm", "legendemptygraydm"};
+            this.setSpacing(true);
+            this.setColumns(7);
+            this.setRows(1);
+            this.setMargin(new MarginInfo(false, true, false, false));
+            for (int i = 0; i < styleName.length; i++) {
+                HorizontalLayout item = generateItemLabel(labels[i], styleName[i]);
+                this.addComponent(item, i, 0);
+                this.setComponentAlignment(item, Alignment.MIDDLE_CENTER);
+
+            }
+
+        } else if (type.equalsIgnoreCase("bubblechart")) {
+            String[] labels = new String[]{"High   100%", "High < 100%", "Stable", "Low < 100%", "Low   100%", "No Quant. Info."};
+            String[] styleName = new String[]{"legendred100", "legendredless100", "legendblue", "legendgreenless100", "legendgreen100", "legendgray"};
             this.setSpacing(true);
             this.setColumns(6);
             this.setRows(1);
@@ -34,11 +48,10 @@ public class TrendLegend extends GridLayout {
                 this.setComponentAlignment(item, Alignment.MIDDLE_CENTER);
 
             }
-        
-         }
-            else if (type.equalsIgnoreCase("table")) {
-            String[] labels = new String[]{"High", "Stable", "Low","No Quant. Info.","Not Available"};
-            String[] styleName = new String[]{"redlayout", "lightbluelayout", "greenlayout","novaluelayout","empty"};
+
+        } else if (type.equalsIgnoreCase("table")) {
+            String[] labels = new String[]{"High", "Stable", "Low", "No Quant. Info.", "Not Available"};
+            String[] styleName = new String[]{"redlayout", "lightbluelayout", "greenlayout", "novaluelayout", "empty"};
             this.setSpacing(true);
             this.setColumns(5);
             this.setRows(1);
@@ -49,42 +62,39 @@ public class TrendLegend extends GridLayout {
                 this.setComponentAlignment(item, Alignment.MIDDLE_CENTER);
 
             }
-        }else if(type.equalsIgnoreCase("ministackedpeptidessequence")){
-            String[] labels = new String[]{"High","High-not sign.", "Stable","Low", "Low-not sign.","No Quant. Info."};
-            String[] styleName = new String[]{ "redlayout","notsigredstackedlayout", "lightbluelayout","greenlayout",  "notsiggreenstackedlayout", "novaluelayout"};
+        } else if (type.equalsIgnoreCase("ministackedpeptidessequence")) {
+            String[] labels = new String[]{"High", "High-not sign.", "Stable", "Low", "Low-not sign.", "No Quant. Info."};
+            String[] styleName = new String[]{"redlayout", "notsigredstackedlayout", "lightbluelayout", "greenlayout", "notsiggreenstackedlayout", "novaluelayout"};
             this.setSpacing(false);
-            this.setRows(2);
-            this.setColumns(3);
+            this.setRows(1);
+            this.setColumns(6);
             this.setMargin(new MarginInfo(false, false, false, false));
-           
+
             int colCounter = 0;
             int rowCounter = 0;
             for (int i = 0; i < styleName.length; i++) {
                 HorizontalLayout item = generateItemLabel(labels[i], styleName[i]);
-                this.addComponent(item,colCounter++,rowCounter);
-                if(colCounter==3){
-                    colCounter=0;
-                    rowCounter++;
-                }
+                this.addComponent(item, colCounter++, rowCounter);
+//                if (colCounter == 3) {
+//                    colCounter = 0;
+//                    rowCounter++;
+//                }
                 this.setComponentAlignment(item, Alignment.TOP_LEFT);
-               
 
             }
 
-        }else {
-            String[] labels = new String[]{"High", "High,not sign.", "Stable", "Low,not sign.", "Low","No Quant. Info."};
-            String[] styleName = new String[]{"redlayout", "notsigredstackedlayout", "lightbluelayout", "notsiggreenstackedlayout", "greenlayout","novaluelayout"};
+        } else {
+            String[] labels = new String[]{"High", "High,not sign.", "Stable", "Low,not sign.", "Low", "No Quant. Info."};
+            String[] styleName = new String[]{"redlayout", "notsigredstackedlayout", "lightbluelayout", "notsiggreenstackedlayout", "greenlayout", "novaluelayout"};
             this.setSpacing(true);
             this.setRows(1);
             this.setColumns(6);
             this.setMargin(new MarginInfo(false, false, false, false));
-          
+
             for (int i = 0; i < styleName.length; i++) {
                 HorizontalLayout item = generateItemLabel(labels[i], styleName[i]);
-                this.addComponent(item,i,0);
+                this.addComponent(item, i, 0);
                 this.setComponentAlignment(item, Alignment.MIDDLE_CENTER);
-                
-                
 
             }
 
@@ -108,6 +118,33 @@ public class TrendLegend extends GridLayout {
         labelLayout.addComponent(l);
 
         return labelLayout;
+
+    }
+
+    public TrendLegend(int userTrend) {
+        String[] labels = new String[]{"High   100%", "High < 100%", "Stable", "Low < 100%", "Low   100%", "No Quant. Info.", "No Data"};
+        String[] styleName = new String[]{"legendtared100", "legendredtaless100", "legendbluedm", "legendgreentaless100", "legendgreenta100", "legendgraydm", "legendemptygraydm"};
+        this.setSpacing(true);
+        this.setColumns(8);
+        this.setRows(1);
+        this.setMargin(new MarginInfo(false, true, false, false));
+        for (int i = 0; i < styleName.length; i++) {
+            HorizontalLayout item = generateItemLabel(labels[i], styleName[i]);
+            this.addComponent(item, i, 0);
+            this.setComponentAlignment(item, Alignment.MIDDLE_CENTER);
+
+        }
+        HorizontalLayout item;
+        if (userTrend == 0 ||userTrend == 1) { 
+            item = generateItemLabel("User Data", "custuserdown");
+            
+        } else if (userTrend == 2) {
+            item = generateItemLabel("User Data", "custuserstable");
+        } else {
+           item = generateItemLabel("User Data", "custuserup");
+        }
+        this.addComponent(item, 7, 0);
+        this.setComponentAlignment(item, Alignment.MIDDLE_CENTER);
 
     }
 

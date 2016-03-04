@@ -392,6 +392,7 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
 //                UI.getCurrent().scrollIntoView(QuantProteinsTabsheetContainerLayout.this);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("error at line 300 " + this.getClass().getName() + "  " + e.getMessage());
         }
     }
