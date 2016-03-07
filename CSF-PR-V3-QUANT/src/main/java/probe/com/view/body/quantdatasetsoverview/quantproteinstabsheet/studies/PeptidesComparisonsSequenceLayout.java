@@ -73,7 +73,7 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
         comparisonTitle = new Label();
         comparisonTitle.setContentMode(ContentMode.HTML);
         comparisonTitle.setStyleName("custChartLabelHeader");
-        comparisonTitle.setWidth((width - 70) + "px");
+        comparisonTitle.setWidth((width - 55) + "px");
         this.addComponent(comparisonTitle, 1, 0);
         this.setComponentAlignment(comparisonTitle, Alignment.TOP_LEFT);
 
@@ -83,21 +83,17 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
         closeBtn.setStyleName("closebtn");
         this.addComponent(closeBtn, 2, 0);
         this.setComponentAlignment(closeBtn, Alignment.TOP_RIGHT);
+        //end of toplayout
+        //init comparison study layout
 
-        GridLayout proteinSequenceComparisonsContainer = new GridLayout(2, cp.getComparison().getDatasetIndexes().length);
-        this.addComponent(proteinSequenceComparisonsContainer, 1, 1);
-        coverageWidth = (width - 100 - 180);
-        VerticalLayout bottomSpacer = new VerticalLayout();
-        bottomSpacer.setWidth((width - 100) + "px");
-        bottomSpacer.setHeight("10px");
-        bottomSpacer.setStyleName("dottedline");
-        this.addComponent(bottomSpacer, 1, 2);
-
+        GridLayout proteinSequenceComparisonsContainer = new GridLayout(2, cp.getComparison().getDatasetIndexes().length);           
         proteinSequenceComparisonsContainer.setWidthUndefined();
         proteinSequenceComparisonsContainer.setHeightUndefined();
         proteinSequenceComparisonsContainer.setStyleName(Reindeer.LAYOUT_WHITE);
         proteinSequenceComparisonsContainer.setSpacing(true);
-
+        this.addComponent(proteinSequenceComparisonsContainer, 1, 1);        
+        coverageWidth = (width - 100 - 180);  
+      
         Map<Integer, Set<QuantPeptide>> dsQuantPepMap = new HashMap<Integer, Set<QuantPeptide>>();
         for (QuantPeptide quantPep : cp.getQuantPeptidesList()) {
             if (!dsQuantPepMap.containsKey(quantPep.getDsKey())) {
@@ -157,8 +153,8 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
             iconTitle.setDescription(cp.getProteinAccssionNumber() + " : #Patients (" + (quantProtein.getPatientsGroupIINumber() + quantProtein.getPatientsGroupINumber()) + ")  " + quantProtein.getStringFCValue() + " " + quantProtein.getStringPValue() + "");
 
             VerticalLayout labelContainer = new VerticalLayout();
+            labelContainer.setMargin(new MarginInfo(true, false , false, false));
             labelContainer.addComponent(studyTitle);
-
             labelContainer.addComponent(iconTitle);
 
             proteinSequenceComparisonsContainer.addComponent(labelContainer, 0, numb);
@@ -179,7 +175,7 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
 
             labelContainer.addLayoutClickListener(studyListener);
             labelContainer.setData(ds.getDsKey());
-            studyTitle.setValue("[" + (numb + 1) + ")] " + ds.getAuthor());
+            studyTitle.setValue("[" + (numb + 1) + "] " + ds.getAuthor());
             exportData.setTitle(ds.getAuthor());
 
             if (dsQuantPepMap.get(quantProtein.getDsKey()) == null) {
@@ -209,8 +205,18 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
             studiesMap.put((numb + 1) + ds.getAuthor(), exportData);
 
         }
+        
+        
+        
+        
         String rgbColor = Quant_Central_Manager.getDiseaseHashedColor(groupCompTitle.split(" / ")[1].split("\n")[1]);
-        comparisonTitle.setValue("<font color='"+rgbColor+"' style='font-weight: bold;'>"+updatedHeader + " (#Studies " + numb + "/" + cp.getComparison().getDatasetIndexes().length + ")</font>");
+        comparisonTitle.setValue("<font color='"+rgbColor+"' style='font-weight: bold;'>"+updatedHeader + " (#Studies " + numb + "/" + cp.getComparison().getDatasetIndexes().length + ")</font>");        
+        VerticalLayout bottomSpacer = new VerticalLayout();
+        bottomSpacer.setWidth((width - 100) + "px");
+        bottomSpacer.setHeight("10px");
+        bottomSpacer.setStyleName("dottedline");
+        this.addComponent(bottomSpacer, 1, 2);
+
 
     }
 

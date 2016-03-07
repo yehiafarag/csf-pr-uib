@@ -87,7 +87,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
     private final int width;
     private final VerticalLayout orederingTrendBtn = new VerticalLayout();
     ;
-    private final ProteinStudiesComparisonsContainerLayout studiesScatterChartsLayout;
+    private final StudiesPeptidesDetailsContainerLayout studiesScatterChartsLayout;
     private final AbsoluteLayout defaultLineChartContainer, orderedLineChartContainer;
     private final String teststyle;
     private final Page.Styles styles = Page.getCurrent().getStyles();
@@ -374,7 +374,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         });
 
      
-        studiesScatterChartsLayout = new ProteinStudiesComparisonsContainerLayout(Quant_Central_Manager, comparisonProteins, selectedComparisonList, (widthValue - width), chartHeight, custTrend);
+        studiesScatterChartsLayout = new StudiesPeptidesDetailsContainerLayout(Quant_Central_Manager, comparisonProteins, selectedComparisonList, (widthValue - width), chartHeight, custTrend);
         studyOverviewPanelLayout.addComponent(studiesScatterChartsLayout);
         defaultPeptidesExportInfoSet = studiesScatterChartsLayout.getDefaultPeptidesExportInfoSet();
 
@@ -643,7 +643,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         });
 
      
-        studiesScatterChartsLayout = new ProteinStudiesComparisonsContainerLayout(Quant_Central_Manager, comparisonProteins, selectedComparisonList, (widthValue - width), chartHeight, custTrend);
+        studiesScatterChartsLayout = new StudiesPeptidesDetailsContainerLayout(Quant_Central_Manager, comparisonProteins, selectedComparisonList, (widthValue - width), chartHeight, custTrend);
         studyOverviewPanelLayout.addComponent(studiesScatterChartsLayout);
         defaultPeptidesExportInfoSet = studiesScatterChartsLayout.getDefaultPeptidesExportInfoSet();
 

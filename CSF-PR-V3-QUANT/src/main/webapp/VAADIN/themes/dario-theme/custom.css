@@ -2839,28 +2839,28 @@ img {
 }
 .ctermlayout{
     clear: both;
-    background-size:auto 10px;
-    background-image: url(img/c-terminal.png);
-    background-position:left;
-    background-repeat: no-repeat;;
-
+    width:12px !important;
+     background-color:white;
+     color:gray;
+    text-align:right;
+    float:right;
 
 }
 
 .ntermlayout{
-    clear: both;
-    background-size:auto 10px;
-    background-image: url(img/n-terminal.png);
-    background-position: right;
-    background-repeat: no-repeat;
+   clear: both;
+    width:10px !important;
+     background-color:white;
+     color:gray
 }
 
 .terminal{
     clear: both;
-    border: 1px solid lightgray;
-    border-radius: 4px;
-    background-color: rgb(242,242,242);
+     background: url(img/Lbackground.png) no-repeat;
+    background-position:-1px -14px;
+
 }
+
 .flipvertically{
 
     -ms-transform:rotateX(180deg); /* IE 9 */
@@ -3469,4 +3469,34 @@ img {
 .custuserdown{
     background-color: #e5ffe5; 
      border: 1px solid gray;
+}
+
+.allpeptidesseqbtn{
+    background-image: url(img/all_peptides_sequence.png);
+    height: 24px !important;
+    background-position:center !important;
+    background-repeat: no-repeat !important;
+    background-size: 23px 22px !important;
+
+    cursor:pointer;
+
+}
+.sigpeptidesseqbtn{
+    background-image: url(img/seg_peptides_sequence.png);
+    height: 24px !important;
+    background-position:center !important;
+    background-repeat: no-repeat !important;
+    background-size: 23px 22px !important;
+    cursor:pointer;
+
+}
+
+.ptmpeptidesseqbtn{
+    background-image: url(img/ptm_btn.png);
+    height: 24px !important;
+    background-position:center !important;
+    background-repeat: no-repeat !important;
+    background-size: 23px 22px !important;
+    cursor:pointer;
+
 }

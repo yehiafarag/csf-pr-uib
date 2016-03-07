@@ -107,12 +107,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         this.setSpacing(true);
         this.setMargin(new MarginInfo(false, false, true, false));
         this.comparisonProtein = cp;
-        HorizontalLayout topLayout = new HorizontalLayout();
-        topLayout.setWidthUndefined();
-        topLayout.setHeight("20px");
-        topLayout.setStyleName(Reindeer.LAYOUT_WHITE);
         int numb = cp.getSignificantDown() + cp.getStable() + cp.getSignificantUp();
-
         String groupCompTitle = cp.getComparison().getComparisonHeader();
         String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0];// + " ( " + groupCompTitle.split(" / ")[1].split("\n")[1] + " )";
 
@@ -120,7 +115,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         comparisonTitle = new Label("<font color='" + rgbColor + "' style='font-weight: bold;'>" + updatedHeader + " (#Studies " + numb + "/" + cp.getComparison().getDatasetIndexes().length + ")</font>");
         comparisonTitle.setContentMode(ContentMode.HTML);
         comparisonTitle.setStyleName("custChartLabelHeader");
-        comparisonTitle.setWidth((width - 70) + "px");
+        comparisonTitle.setWidth((width - 55) + "px");
         this.addComponent(comparisonTitle, 1, 0);
         this.setComponentAlignment(comparisonTitle, Alignment.TOP_LEFT);
 
@@ -131,7 +126,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         this.addComponent(closeBtn, 2, 0);
         this.setComponentAlignment(closeBtn, Alignment.TOP_RIGHT);
 
-        imgWidth = (width - 70);
+        imgWidth = (width - 55);
         ProteinScatterPlotContainer = new AbsoluteLayout();
 
         this.addComponent(ProteinScatterPlotContainer, 1, 1);
@@ -150,7 +145,6 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
                     SquaredDot dot = (SquaredDot) event.getClickedComponent();
                     int trend = (Integer) dot.getParam("trend");
                     int pGrNumber = (Integer) dot.getParam("pGrNumber");
-//                    Quant_Central_Manager.setSelectedDataset(patientGroupsNumToDsIdMap.get(pGrNumber).getRegulatedList(trend));
                     int[] dssArr = new int[patientGroupsNumToDsIdMap.get(pGrNumber).getRegulatedList(trend).size()];
                     for (int x = 0; x < dssArr.length; x++) {
                         dssArr[x] = patientGroupsNumToDsIdMap.get(pGrNumber).getRegulatedList(trend).get(x);
