@@ -56,7 +56,6 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
     private Map<String, Integer> customizedTrendMap;
     private final boolean showCustTrend;
 
-    private final int high = Page.getCurrent().getBrowserWindowHeight() - 150;
     private final int pageWidth = Page.getCurrent().getBrowserWindowWidth();
 
     /**
@@ -335,9 +334,9 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
     private HorizontalLayout generateProtTab(String proteinKey, String quantProteinName, String quantProteinAccession, DiseaseGroupsComparisonsProteinLayout[] diseaseGroupsComparisonsProteinArray, Set<QuantDiseaseGroupsComparison> selectedDiseaseGroupsComparisonsList) {
         HorizontalLayout bodyLayout = new HorizontalLayout();
 
-        bodyLayout.setWidthUndefined();
+        bodyLayout.setWidth("100%");
         bodyLayout.setSpacing(true);
-        bodyLayout.setMargin(true);
+        bodyLayout.setMargin(new MarginInfo(true, false, false, false));
         bodyLayout.setHeightUndefined();
         bodyLayout.setStyleName(Reindeer.LAYOUT_WHITE);
         ProteinOverviewJFreeLineChartContainer overallPlotLayout = new ProteinOverviewJFreeLineChartContainer(Quant_Central_Manager, CSFPR_Handler, diseaseGroupsComparisonsProteinArray, selectedDiseaseGroupsComparisonsList, (pageWidth), quantProteinName, quantProteinAccession, searchingMode, proteinKey);

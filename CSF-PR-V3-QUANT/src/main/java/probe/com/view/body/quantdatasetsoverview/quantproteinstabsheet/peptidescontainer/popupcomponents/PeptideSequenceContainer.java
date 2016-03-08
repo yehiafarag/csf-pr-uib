@@ -29,7 +29,6 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
     private final List< StackedBarPeptideComponent> stackedPeptides = new ArrayList<StackedBarPeptideComponent>();
     private boolean ptmAvailable = false;
 
-    private int level = 1;
 
     public PeptideSequenceContainer(int width, LinkedHashSet<StackedBarPeptideComponent> allPeptidesStackedBarComponentsMap) {
         this.allPeptidesStackedBarComponentsMap = allPeptidesStackedBarComponentsMap;
@@ -240,7 +239,6 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
                 nextLevel.clear();
                 intersect = true;
                 top = top + 20;
-                level++;
             }
 
         }

@@ -1,22 +1,24 @@
 package probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet;
 
-import com.vaadin.data.Property;
 import probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.studies.ProteinStudyComparisonScatterPlotLayout;
 import com.vaadin.event.LayoutEvents;
+import com.vaadin.server.Page;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.shared.ui.window.WindowMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.OptionGroup;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -40,19 +42,21 @@ public class StudiesPeptidesDetailsContainerLayout extends VerticalLayout {
 
     private final Map<QuantDiseaseGroupsComparison, ProteinStudyComparisonScatterPlotLayout> studyCompLayoutMap = new LinkedHashMap<QuantDiseaseGroupsComparison, ProteinStudyComparisonScatterPlotLayout>();
     private final Map<QuantDiseaseGroupsComparison, PeptidesComparisonsSequenceLayout> peptideCompLayoutMap = new LinkedHashMap<QuantDiseaseGroupsComparison, PeptidesComparisonsSequenceLayout>();
-    private final GridLayout mainStudiesLayout, mainPeptidesLayout;
+    private final GridLayout mainStudiesLayout, mainPeptidesLayout, popupStudyContainer;
+    ;
     private final Panel studiesPanel, peptidesPanel;
     private final QuantCentralManager Quant_Central_Manager;
     private final int width;
     private final DiseaseGroupsComparisonsProteinLayout[] diiseaseGroupsComparisonsProteinArr;
 //    private final OptionGroup studiesPeptidesSwich = new OptionGroup();
-    private final OptionGroup showSigneficantPeptidesOnly;
+//    private final OptionGroup showSigneficantPeptidesOnly;
     private final Set<ProteinInformationDataForExport> defaultPeptidesExportInfoSet, orderedPeptidesExportInfoSet;
     private final Map<String, ProteinInformationDataForExport> proteinInformationDataForExportMap;
     private final int custTrend;
-    private final TrendLegend legend;
+    private final HorizontalLayout peptidesBtnWrapper, studiesBtnWrapper;
     private final TabSheet studiesPeptidesTabsheet;
-    private final HorizontalLayout studiesOverviewTopSpacer, peptidesControlBtnsLayout;
+//    private final HorizontalLayout  peptidesControlBtnsLayout;
+    private final VerticalLayout showPTMBtn, significantPeptidesBtn;
 
     public Set<ProteinInformationDataForExport> getOrderedPeptidesExportInfoSet() {
         return orderedPeptidesExportInfoSet;
@@ -64,6 +68,7 @@ public class StudiesPeptidesDetailsContainerLayout extends VerticalLayout {
      * @param selectedComparisonList
      * @param Quant_Central_Manager
      * @param width
+     * @param height
      * @param custTrend
      */
     public StudiesPeptidesDetailsContainerLayout(final QuantCentralManager Quant_Central_Manager, DiseaseGroupsComparisonsProteinLayout[] proteinsComparisonsArr, Set<QuantDiseaseGroupsComparison> selectedComparisonList, int width, int height, int custTrend) {
@@ -95,13 +100,11 @@ public class StudiesPeptidesDetailsContainerLayout extends VerticalLayout {
         info.setWidth("16px");
         info.setHeight("16px");
         topLayout.addComponent(info);
-        //end of titlr layout  panel
-        //init tab layout
-        width = width - 100;
-        this.width = width;
+        this.width = width - 30;
 
         HorizontalLayout tapsheetLayoutContainer = new HorizontalLayout();
         tapsheetLayoutContainer.setHeight(height + "px");
+        tapsheetLayoutContainer.setWidth("100%");
         tapsheetLayoutContainer.setStyleName(Reindeer.LAYOUT_WHITE);
         this.addComponent(tapsheetLayoutContainer);
 
@@ -109,8 +112,8 @@ public class StudiesPeptidesDetailsContainerLayout extends VerticalLayout {
         tapsheetLayoutContainer.addComponent(studiesPeptidesTabsheet);
         tapsheetLayoutContainer.setComponentAlignment(studiesPeptidesTabsheet, Alignment.TOP_LEFT);
         studiesPeptidesTabsheet.setStyleName(Reindeer.TABSHEET_MINIMAL);
-        studiesPeptidesTabsheet.setWidth((width) + "px");
-        studiesPeptidesTabsheet.setHeight(100 + "%");
+        studiesPeptidesTabsheet.setWidth(100 + "%");
+        studiesPeptidesTabsheet.setHeight(height + "px");
 
         mainStudiesLayout = new GridLayout(1, selectedComparisonList.size() + 1);
         mainStudiesLayout.setMargin(new MarginInfo(true, false, false, false));
@@ -119,32 +122,16 @@ public class StudiesPeptidesDetailsContainerLayout extends VerticalLayout {
 
         studiesPanel = new Panel(mainStudiesLayout);
         studiesPanel.setStyleName(Reindeer.PANEL_LIGHT);
-        studiesPanel.setHeight((height - 40) + "px");
+        studiesPanel.setHeight(100 + "%");
         studiesPeptidesTabsheet.addTab(studiesPanel, "Studies");
 
-        studiesOverviewTopSpacer = new HorizontalLayout();
-        studiesOverviewTopSpacer.setStyleName(Reindeer.LAYOUT_WHITE);
-        studiesOverviewTopSpacer.setHeight("40px");
-        studiesOverviewTopSpacer.setWidth("20px");
-
         //end of studies scatter plot container
-        //init overlayout (legend) 
-        HorizontalLayout overTabBtnsLayout = new HorizontalLayout();
-        overTabBtnsLayout.setHeight("40px");
-        overTabBtnsLayout.setStyleName("overlayout");
-        tapsheetLayoutContainer.addComponent(overTabBtnsLayout);
-        tapsheetLayoutContainer.setComponentAlignment(overTabBtnsLayout, Alignment.TOP_LEFT);
-        legend = new TrendLegend("ministackedpeptidessequence");
-        legend.setWidth("600px");
-        VerticalLayout wrapper = new VerticalLayout();
-        wrapper.setWidth("600px");
-        wrapper.setHeight("20px");
-        wrapper.setStyleName(Reindeer.LAYOUT_WHITE);
-        overTabBtnsLayout.addComponent(wrapper);
-        legend.setVisible(false);
-        wrapper.addComponent(legend);
-
         //init peptides layout container
+        popupStudyContainer = new GridLayout(2, selectedComparisonList.size() + 1);
+        popupStudyContainer.setMargin(new MarginInfo(true, false, false, false));
+        popupStudyContainer.setWidth((100) + "%");
+        popupStudyContainer.setHeightUndefined();
+
         mainPeptidesLayout = new GridLayout(1, selectedComparisonList.size() + 1);
         mainPeptidesLayout.setMargin(new MarginInfo(true, false, false, false));
         mainPeptidesLayout.setWidth((100) + "%");
@@ -152,40 +139,92 @@ public class StudiesPeptidesDetailsContainerLayout extends VerticalLayout {
 
         peptidesPanel = new Panel(mainPeptidesLayout);
         peptidesPanel.setStyleName(Reindeer.PANEL_LIGHT);
-        peptidesPanel.setHeight((height - 40) + "px");
+        peptidesPanel.setHeight((100) + "%");
         studiesPeptidesTabsheet.addTab(peptidesPanel, "Peptides");
 
-        peptidesControlBtnsLayout = new HorizontalLayout();
-        peptidesControlBtnsLayout.setHeight("40px");
-        peptidesControlBtnsLayout.setWidth(100 + "%");
-        peptidesControlBtnsLayout.setStyleName("lowerlink");
-        peptidesControlBtnsLayout.addStyleName(Reindeer.LAYOUT_BLUE);
+        // end of peptides layout
+        //init bottom layout 
+        //init overlayout (legend) 
+        HorizontalLayout bottomLayout = new HorizontalLayout();
+        bottomLayout.setHeight("24px");
+        bottomLayout.setWidth("100%");
+        this.addComponent(bottomLayout);
 
-        VerticalLayout vlo = new VerticalLayout();
-        vlo.setWidth("425px");
-        vlo.setHeight("40px");
-        peptidesControlBtnsLayout.addComponent(vlo);
+        peptidesBtnWrapper = new HorizontalLayout();
+        peptidesBtnWrapper.setWidthUndefined();
+        peptidesBtnWrapper.setStyleName(Reindeer.LAYOUT_WHITE);
+        peptidesBtnWrapper.setVisible(false);
+        bottomLayout.addComponent(peptidesBtnWrapper);
+        bottomLayout.setComponentAlignment(peptidesBtnWrapper, Alignment.BOTTOM_RIGHT);
+        peptidesBtnWrapper.setSpacing(true);
 
-        showSigneficantPeptidesOnly = new OptionGroup();
-        showSigneficantPeptidesOnly.setWidth("135px");
-        showSigneficantPeptidesOnly.setNullSelectionAllowed(true); // user can not 'unselect'
-        showSigneficantPeptidesOnly.setMultiSelect(true);
+        TrendLegend legend = new TrendLegend("ministackedpeptidessequence");
 
-        showSigneficantPeptidesOnly.addItem("Significant");
-        showSigneficantPeptidesOnly.addItem("PTMs");
+        legend.setSpacing(true);
+        peptidesBtnWrapper.addComponent(legend);
 
-        showSigneficantPeptidesOnly.addStyleName("horizontal");
-        showSigneficantPeptidesOnly.setVisible(true);
+        significantPeptidesBtn = new VerticalLayout();
+        significantPeptidesBtn.setWidth("24px");
+        significantPeptidesBtn.setHeight("24px");
+        significantPeptidesBtn.setStyleName("allpeptidesseqbtn");
+        significantPeptidesBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
-        showSigneficantPeptidesOnly.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                showSignificantRegulationOnly(showSigneficantPeptidesOnly.getValue().toString().contains("Significant"));
-                showPTM(showSigneficantPeptidesOnly.getValue().toString().contains("PTMs"));
+            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+                if (significantPeptidesBtn.getStyleName().equalsIgnoreCase("allpeptidesseqbtn")) {
+                    significantPeptidesBtn.setStyleName("sigpeptidesseqbtn");
+                    showSignificantRegulationOnly(true);
+                } else {
+                    significantPeptidesBtn.setStyleName("allpeptidesseqbtn");
+                    showSignificantRegulationOnly(false);
+                }
             }
         });
-        vlo.addComponent(showSigneficantPeptidesOnly);
-        vlo.setComponentAlignment(showSigneficantPeptidesOnly, Alignment.TOP_RIGHT);
+        peptidesBtnWrapper.addComponent(significantPeptidesBtn);
+
+        showPTMBtn = new VerticalLayout();
+        showPTMBtn.setWidth("24px");
+        showPTMBtn.setHeight("24px");
+        showPTMBtn.setStyleName("ptm_selected_btn");
+        showPTMBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+
+            @Override
+            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+                if (showPTMBtn.getStyleName().equalsIgnoreCase("ptm_selected_btn")) {
+                    showPTMBtn.setStyleName("ptm_unselected_btn");
+                    showPTM(false);
+                } else {
+                    showPTMBtn.setStyleName("ptm_selected_btn");
+                    showPTM(true);
+                }
+            }
+        });
+        peptidesBtnWrapper.addComponent(showPTMBtn);
+
+        studiesBtnWrapper = new HorizontalLayout();
+        studiesBtnWrapper.setWidthUndefined();
+        studiesBtnWrapper.setStyleName(Reindeer.LAYOUT_WHITE);
+        studiesBtnWrapper.setVisible(true);
+        studiesBtnWrapper.setSpacing(true);
+        bottomLayout.addComponent(studiesBtnWrapper);
+        bottomLayout.setComponentAlignment(studiesBtnWrapper, Alignment.BOTTOM_RIGHT);
+
+        TrendLegend studieslegend = new TrendLegend("miniscatterpeptidessequence");
+        studieslegend.setSpacing(true);
+        studiesBtnWrapper.addComponent(studieslegend);
+
+        final VerticalLayout maxmizeView = new VerticalLayout();
+        maxmizeView.setWidth("24px");
+        maxmizeView.setHeight("24px");
+        maxmizeView.setStyleName("maxmizebtn");
+        maxmizeView.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+
+            @Override
+            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+                popupStudiesChart();
+            }
+        });
+        studiesBtnWrapper.addComponent(maxmizeView);
 
         studiesPeptidesTabsheet.addSelectedTabChangeListener(new TabSheet.SelectedTabChangeListener() {
 
@@ -193,9 +232,11 @@ public class StudiesPeptidesDetailsContainerLayout extends VerticalLayout {
             public void selectedTabChange(TabSheet.SelectedTabChangeEvent event) {
                 String c = studiesPeptidesTabsheet.getTab(event.getTabSheet().getSelectedTab()).getCaption();
                 if (c.equalsIgnoreCase("Peptides")) {
-                    legend.setVisible(true);
+                    peptidesBtnWrapper.setVisible(true);
+                    studiesBtnWrapper.setVisible(false);
                 } else {
-                    legend.setVisible(false);
+                    peptidesBtnWrapper.setVisible(false);
+                    studiesBtnWrapper.setVisible(true);
                 }
             }
         });
@@ -209,9 +250,7 @@ public class StudiesPeptidesDetailsContainerLayout extends VerticalLayout {
     public void orderComparisons(DiseaseGroupsComparisonsProteinLayout[] ordComparisonProteins) {
 
         mainStudiesLayout.removeAllComponents();
-        mainStudiesLayout.addComponent(studiesOverviewTopSpacer, 0, 0);
         mainPeptidesLayout.removeAllComponents();
-        mainPeptidesLayout.addComponent(peptidesControlBtnsLayout, 0, 0);
 
         int rowIndex = 1;
 
@@ -263,8 +302,11 @@ public class StudiesPeptidesDetailsContainerLayout extends VerticalLayout {
     public void redrawCharts() {
 
         if (studyCompLayoutMap.isEmpty()) {
-            mainStudiesLayout.addComponent(studiesOverviewTopSpacer, 0, 0);
+//            mainStudiesLayout.addComponent(studiesOverviewTopSpacer, 0, 0);
             int rowIndex = 1;
+            int rowIndexII = 0;
+            int colIndexII = 0;
+
             for (DiseaseGroupsComparisonsProteinLayout cprot : diiseaseGroupsComparisonsProteinArr) {
                 if (cprot == null || cprot.getSignificantTrindCategory() == -1) {
                     continue;
@@ -284,19 +326,36 @@ public class StudiesPeptidesDetailsContainerLayout extends VerticalLayout {
                         Set<QuantDiseaseGroupsComparison> selectedComparisonList = Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList();
                         selectedComparisonList.remove(localComparison);
                         Quant_Central_Manager.setDiseaseGroupsComparisonSelection(selectedComparisonList);
+                        event.getComponent().getParent().setVisible(false);
+                        popupStudyContainer.removeComponent(event.getComponent().getParent());                        
+                        if (popupStudyContainer.getComponentCount() == 0 && fullStudiesPopupWindow != null) {
+                            Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList();
+                            UI.getCurrent().removeWindow(fullStudiesPopupWindow);
+                        }
+                        
+
                     }
                 };
                 protCompLayout.getCloseBtn().addLayoutClickListener(closeListener);
+                ProteinStudyComparisonScatterPlotLayout protCompLayoutII = new ProteinStudyComparisonScatterPlotLayout(Quant_Central_Manager, cprot, width, custTrend);
+                popupStudyContainer.addComponent(protCompLayoutII, colIndexII++, rowIndexII);
+                protCompLayoutII.getCloseBtn().addLayoutClickListener(closeListener);
+                protCompLayoutII.redrawChart();
+                if (colIndexII == 2) {
+                    colIndexII = 0;
+                    rowIndexII++;
+
+                }
+
                 rowIndex++;
             }
 
         }
         for (ProteinStudyComparisonScatterPlotLayout layout : studyCompLayoutMap.values()) {
-
             layout.redrawChart();
         }
         if (peptideCompLayoutMap.isEmpty()) {
-            mainPeptidesLayout.addComponent(peptidesControlBtnsLayout, 0, 0);
+//            mainPeptidesLayout.addComponent(peptidesControlBtnsLayout, 0, 0);
             defaultPeptidesExportInfoSet.clear();
             int rowIndex = 1;
             for (DiseaseGroupsComparisonsProteinLayout cprot : diiseaseGroupsComparisonsProteinArr) {
@@ -332,13 +391,11 @@ public class StudiesPeptidesDetailsContainerLayout extends VerticalLayout {
                 rowIndex++;
             }
 
-            showSigneficantPeptidesOnly.setItemEnabled("PTMs", false);
+            showPTMBtn.setEnabled(false);
+            showPTMBtn.setStyleName("ptm_selected_btn");
             for (PeptidesComparisonsSequenceLayout protCompLayout : peptideCompLayoutMap.values()) {
                 if (protCompLayout.isHasPTM()) {
-                    showSigneficantPeptidesOnly.setItemEnabled("PTMs", true);
-                    Set<String> ids = new HashSet<String>();
-                    ids.add("PTMs");
-                    showSigneficantPeptidesOnly.setValue(ids);
+                    showPTMBtn.setEnabled(true);
                     break;
                 }
             }
@@ -379,5 +436,51 @@ public class StudiesPeptidesDetailsContainerLayout extends VerticalLayout {
 
     public Set<ProteinInformationDataForExport> getDefaultPeptidesExportInfoSet() {
         return defaultPeptidesExportInfoSet;
+    }
+
+    private Window fullStudiesPopupWindow;
+    private VerticalLayout popupBody;
+
+    private void popupStudiesChart() {
+
+        if (fullStudiesPopupWindow == null) {
+            int height = Page.getCurrent().getBrowserWindowHeight() - 100;
+            int width = Page.getCurrent().getBrowserWindowWidth() - 100;
+            popupBody = new VerticalLayout();
+            popupBody.setWidth((width) + "px");
+            popupBody.setHeightUndefined();
+            popupBody.setStyleName(Reindeer.LAYOUT_WHITE);
+            fullStudiesPopupWindow = new Window() {
+
+                @Override
+                public void close() {
+                    fullStudiesPopupWindow.setVisible(false);
+                }
+
+            };
+            fullStudiesPopupWindow.setCaption("<a href='" + "google.com" + "'target=\"_blank\"> " + "protein name" + " </a> ");
+            fullStudiesPopupWindow.setContent(popupBody);
+            fullStudiesPopupWindow.setWindowMode(WindowMode.NORMAL);
+            fullStudiesPopupWindow.setWidth((width + 40) + "px");
+            fullStudiesPopupWindow.setHeight((height) + "px");
+            fullStudiesPopupWindow.setVisible(false);
+            fullStudiesPopupWindow.setResizable(false);
+            fullStudiesPopupWindow.setClosable(false);
+            fullStudiesPopupWindow.setStyleName(Reindeer.WINDOW_LIGHT);
+            fullStudiesPopupWindow.setModal(true);
+            fullStudiesPopupWindow.setDraggable(true);
+            UI.getCurrent().addWindow(fullStudiesPopupWindow);
+            
+            fullStudiesPopupWindow.setPositionX(30);
+            fullStudiesPopupWindow.setPositionY(40);
+            fullStudiesPopupWindow.setCaptionAsHtml(true);
+            fullStudiesPopupWindow.setClosable(true);
+            popupBody.setMargin(true);
+            popupBody.setSpacing(true);
+            popupBody.addComponent(popupStudyContainer);
+        }
+
+        fullStudiesPopupWindow.setVisible(true);
+
     }
 }

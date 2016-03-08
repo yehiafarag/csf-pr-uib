@@ -21,7 +21,21 @@ public class TrendLegend extends GridLayout {
 
     public TrendLegend(String type) {
         this.setSpacing(true);
-        if (type.equalsIgnoreCase("linechart")) {
+         if (type.equalsIgnoreCase("miniscatterpeptidessequence")) {
+            String[] labels = new String[]{"High", "Stable", "Low ", "No Quant. Info."};
+            String[] styleName = new String[]{"legendtared100", "legendbluedm", "legendgreenta100", "legendgraydm"};
+            this.setSpacing(true);
+            this.setColumns(4);
+            this.setRows(1);
+            for (int i = 0; i < styleName.length; i++) {
+                HorizontalLayout item = generateItemLabel(labels[i], styleName[i]);
+                this.addComponent(item, i, 0);
+                this.setComponentAlignment(item, Alignment.MIDDLE_CENTER);
+
+            }
+
+        } 
+         else if (type.equalsIgnoreCase("linechart")) {
             String[] labels = new String[]{"High   100%", "High < 100%", "Stable", "Low < 100%", "Low   100%", "No Quant. Info.", "No Data"};
             String[] styleName = new String[]{"legendtared100", "legendredtaless100", "legendbluedm", "legendgreentaless100", "legendgreenta100", "legendgraydm", "legendemptygraydm"};
             this.setSpacing(true);

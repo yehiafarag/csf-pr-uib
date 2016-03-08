@@ -455,7 +455,7 @@ public class StudiesFilterManager implements Serializable {
         filterSelection = selection;
         updateFilteredDatasetList(selection.getDatasetIndexes());
         this.updateDiseaseGroups(getFilteredDatasetsList());
-        this.updateDiseaseGroups(getFullQuantDatasetMap());
+//        this.updateDiseaseGroups(getFullQuantDatasetMap());
         this.SelectionChanged(selection.getType());
 
 //        }

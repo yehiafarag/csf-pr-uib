@@ -97,6 +97,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
      * @param cp
      * @param width
      * @param Quant_Central_Manager
+     * @param custTrend
      */
     public ProteinStudyComparisonScatterPlotLayout(final QuantCentralManager Quant_Central_Manager, final DiseaseGroupsComparisonsProteinLayout cp, int width, int custTrend) {
         this.custTrend = custTrend;
@@ -105,7 +106,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         this.setRows(2);
         this.width = width;
         this.setSpacing(true);
-        this.setMargin(new MarginInfo(false, false, true, false));
+        this.setMargin(new MarginInfo(true, false, false, false));
         this.comparisonProtein = cp;
         int numb = cp.getSignificantDown() + cp.getStable() + cp.getSignificantUp();
         String groupCompTitle = cp.getComparison().getComparisonHeader();

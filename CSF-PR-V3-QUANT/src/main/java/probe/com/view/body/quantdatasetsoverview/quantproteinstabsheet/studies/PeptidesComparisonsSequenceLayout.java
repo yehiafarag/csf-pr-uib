@@ -39,9 +39,7 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
 
     private final Label comparisonTitle;
     private final VerticalLayout closeBtn;
-//    private final AbsoluteLayout ProteinScatterPlotContainer;
     private final int coverageWidth;
-//    private Map<String, QuantDatasetObject> dsKeyDatasetMap = new HashMap<String, QuantDatasetObject>();
     private Map<String, StudyInfoData> studiesMap;
 
     /**
@@ -69,7 +67,7 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
         this.setRows(3);
         this.setWidthUndefined();
         this.setSpacing(true);
-        this.setMargin(new MarginInfo(false, false, true, false));
+        this.setMargin(new MarginInfo(true, false, false, false));
         comparisonTitle = new Label();
         comparisonTitle.setContentMode(ContentMode.HTML);
         comparisonTitle.setStyleName("custChartLabelHeader");
@@ -91,6 +89,7 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
         proteinSequenceComparisonsContainer.setHeightUndefined();
         proteinSequenceComparisonsContainer.setStyleName(Reindeer.LAYOUT_WHITE);
         proteinSequenceComparisonsContainer.setSpacing(true);
+        proteinSequenceComparisonsContainer.setMargin(new MarginInfo(true, false , false, false));
         this.addComponent(proteinSequenceComparisonsContainer, 1, 1);        
         coverageWidth = (width - 100 - 180);  
       
@@ -153,7 +152,6 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
             iconTitle.setDescription(cp.getProteinAccssionNumber() + " : #Patients (" + (quantProtein.getPatientsGroupIINumber() + quantProtein.getPatientsGroupINumber()) + ")  " + quantProtein.getStringFCValue() + " " + quantProtein.getStringPValue() + "");
 
             VerticalLayout labelContainer = new VerticalLayout();
-            labelContainer.setMargin(new MarginInfo(true, false , false, false));
             labelContainer.addComponent(studyTitle);
             labelContainer.addComponent(iconTitle);
 

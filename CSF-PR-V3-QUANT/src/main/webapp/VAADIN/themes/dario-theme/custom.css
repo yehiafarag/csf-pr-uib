@@ -974,6 +974,7 @@ resetlabelbtn p{
     background-position:center;
     background-repeat: no-repeat;
     cursor:pointer;
+    border-radius: 5px;
 
 }
 .lightborder{
@@ -1978,7 +1979,6 @@ border:3px solid #4d749f ;
     /*height: 14px;*/
     font-family:Verdana; 
     padding: 0 0 0 0;
-    cursor: pointer;
 }
 
 
@@ -3066,8 +3066,8 @@ img {
     border-radius:4px;
     -webkit-transition: width 2s; /* For Safari 3.1 to 6.0 */
     transition: width 2s;   
-    background-image: url(img/merge.png);
-    background-size:20px;
+    background-image: url(img/connect-o.png);
+    background-size:21px auto;
     background-repeat:no-repeat;
     background-position:center;
     border-right:1px solid white;
@@ -3429,15 +3429,15 @@ img {
     transform: rotate(45deg);
 }
 .legendgreenta100 div{
-    background-image: url(img/mid_green_ta.png);
+   background-image: url(img/green_ta.png);
     background-size: 12px 12px;
     background-position:center;    
 
 
 }
 .legendgreentaless100 div{
-
-   background-image: url(img/green_ta.png);
+ background-image: url(img/mid_green_ta.png);
+   
    background-size: 12px 12px;
     background-position:center;    
  
@@ -3474,6 +3474,7 @@ img {
 .allpeptidesseqbtn{
     background-image: url(img/all_peptides_sequence.png);
     height: 24px !important;
+    width: 25px !important;
     background-position:center !important;
     background-repeat: no-repeat !important;
     background-size: 23px 22px !important;
@@ -3484,19 +3485,45 @@ img {
 .sigpeptidesseqbtn{
     background-image: url(img/seg_peptides_sequence.png);
     height: 24px !important;
+     width: 25px !important;
     background-position:center !important;
     background-repeat: no-repeat !important;
-    background-size: 23px 22px !important;
+    background-size: 21px 20px, 20px 20px !important;
     cursor:pointer;
+    border:2px solid black;
 
 }
 
-.ptmpeptidesseqbtn{
+.ptm_selected_btn{
     background-image: url(img/ptm_btn.png);
-    height: 24px !important;
+     height: 24px !important;
+    width: 25px !important;
     background-position:center !important;
     background-repeat: no-repeat !important;
     background-size: 23px 22px !important;
     cursor:pointer;
+    border:2px solid orange;
+
+}
+.ptm_unselected_btn{
+    background-image: url(img/ptm_unselected_btn.png);
+     height: 24px !important;
+    width: 25px !important;
+    background-position:center !important;
+    background-repeat: no-repeat !important;
+    background-size: 23px 22px !important;
+    cursor:pointer;
+    border:2px solid white;
+
+}
+.maxmizebtn{
+    background-image: url(img/expand-square.png);
+     height: 24px !important;
+    width: 25px !important;
+    background-position:center !important;
+    background-repeat: no-repeat !important;
+    background-size: 23px 22px !important;
+    cursor:pointer;
+    border:2px solid white;
 
 }

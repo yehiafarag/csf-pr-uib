@@ -30,13 +30,7 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
      */
     @Override
     public void selectionChanged(String type) {
-        System.out.println("at type "+type);
         if (type.equalsIgnoreCase("Reorder_Selection")) {
-//            if (selfselection) {
-//                selfselection = false;
-//                return;
-//            }
-            System.out.println("at piechart re-order selection");
             externalSelectionChanged = true;
             selectedDsIds.clear();
             for (QuantDatasetObject qDs : Quant_Central_Manager.getFilteredQuantDatasetArr().values()) {
@@ -47,10 +41,7 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
             }
 
         } else if (type.equalsIgnoreCase("Reset_Disease_Groups_Level")) {
-//            if (selfselection) {
-//                selfselection = false;
-//                return;
-//            }
+
             externalSelectionChanged = true;
             selectedDsIds.clear();
             resetToInitState();
@@ -81,11 +72,11 @@ public class PieChartsSelectionManager implements Serializable, CSFFilter {
 
         }
 
+       
         int[] dsIds = new int[finalFilterValue.size()];
         for (int i = 0; i < finalFilterValue.size(); i++) {
             dsIds[i] = (Integer) finalFilterValue.toArray()[i];
         }
-
         Quant_Central_Manager.applyFilters(new CSFFilterSelection("Pie_Chart_Selection", dsIds, Filter_ID, null));
 
     }

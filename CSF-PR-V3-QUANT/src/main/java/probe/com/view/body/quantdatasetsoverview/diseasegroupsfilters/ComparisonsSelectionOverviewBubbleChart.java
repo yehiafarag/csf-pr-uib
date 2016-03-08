@@ -148,7 +148,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         overviewLabel.setContentMode(ContentMode.HTML);
         topLayout.addComponent(overviewLabel);
         overviewLabel.setStyleName("subtitle");
-        overviewLabel.setWidth("140px");
+        overviewLabel.setWidth("120px");
 
         InfoPopupBtn info = new InfoPopupBtn("The bubble chart give an overview for the proteins existed in the selected comparisons.<br/>The diameter of the bubble represents the number of the proteins in the selected comparison and the color represents the trend<br/>");
         info.setWidth("16px");
@@ -331,7 +331,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         overviewLabel.setContentMode(ContentMode.HTML);
         topLayout.addComponent(overviewLabel);
         overviewLabel.setStyleName("subtitle");
-        overviewLabel.setWidth("140px");
+        overviewLabel.setWidth("120px");
 
         InfoPopupBtn info = new InfoPopupBtn("The bubble chart give an overview for the proteins existed in the selected comparisons.<br/>The diameter of the bubble represents the number of the proteins in the selected comparison and the color represents the trend<br/>");
         info.setWidth("16px");
