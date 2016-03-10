@@ -366,9 +366,10 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
 
     }
 
+    private Double v1 =0.0;
     @Override
     public int compareTo(DiseaseGroupsComparisonsProteinLayout t) {
-        Double v1 = null;
+        
         if (highSignificant.intValue() == lowSignificant.intValue()) {
             v1 = trendValue;
         } else if (trendValue > 0) {
@@ -398,6 +399,7 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
     private String fullDownLabelValue = "";
     private String fullUpLabelValue = "";
     private boolean updated = false;
+    private double overallCellPercentValue;
 
     /**
      *
@@ -432,29 +434,53 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
         }
         this.setExpandRatio(emptyLayout, ((float) (subTotal - dcounter) / subTotal));
         String overall;
+        
+        int existStudiesNumber = lowSignificant+highSignificant+stable;
+        
+        
         if (cellValue > 0) {
             overall = "High (" + cellValue + ")";
             if (stable > 0 || lowSignificant > 0) {
                 significantTrindCategory = 3;
+               overallCellPercentValue= Math.max( (((double)(highSignificant-lowSignificant))/(double)existStudiesNumber)*100.0,5.0);
             } else {
                 significantTrindCategory = 4;
+                overallCellPercentValue=  100;
             }
         } else if (cellValue == 0) {
             overall = "Stable (" + cellValue + ")";
             significantTrindCategory = 2;
+            overallCellPercentValue=0;
         } else {
             overall = "Low (" + cellValue + ")";
             if (stable > 0 || highSignificant > 0) {
                 significantTrindCategory = 1;
+                overallCellPercentValue= Math.max((((double)(lowSignificant-highSignificant))/(double)existStudiesNumber)*100.0,5.0);
+                overallCellPercentValue = -1*overallCellPercentValue;
             } else {
                 significantTrindCategory = 0;
+                overallCellPercentValue=  -100;
             }
         }
         if (stable == 0 && highSignificant == 0 && lowSignificant == 0 && noValueprovided > 0) {
             significantTrindCategory = 5;
+            overallCellPercentValue=0;
         }
-        this.setDescription("Low: " + lowSignificant + "  /  Stable : " + stable + " /  High: " + highSignificant + " Overall Trend " + overall);
+        
+        
+        //calculate overallCellPercentValue for linechart
+        
+        
+        
+        
+        
+        
+        this.setDescription(overallCellPercentValue+" %   Low: " + lowSignificant + "  /  Stable : " + stable + " /  High: " + highSignificant + " Overall Trend " + overall);
 
+    }
+
+    public double getOverallCellPercentValue() {
+        return overallCellPercentValue;
     }
 
     @Override
