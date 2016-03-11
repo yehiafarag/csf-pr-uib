@@ -212,7 +212,7 @@ public class IdentificationDatasetInformationLayout extends VerticalLayout imple
             value = "<textarea readonly>" + value + "</textarea>";
 
         }
-        int w =Page.getCurrent().getWebBrowser().getScreenWidth()-(Page.getCurrent().getWebBrowser().getScreenWidth()/4);
+        int w =Page.getCurrent().getBrowserWindowWidth()-(Page.getCurrent().getBrowserWindowWidth()/4);
         Page.getCurrent().getStyles().add(".datasetInfoValues textArea{ width:"+ (w)+"px;}");
 
         Label valueLabel = new Label(value);

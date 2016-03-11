@@ -49,11 +49,11 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
     public WelcomeLayout(Button adminIcon, CSFPRHandler CSFPR_Handler) {
 
         int fullWidth = Page.getCurrent().getBrowserWindowWidth();
-        this.setWidth(fullWidth + "px");
+        this.setWidth(100 + "%");
         VerticalLayout mainBodyHLayout = new VerticalLayout();
         mainBodyHLayout.setWidth("100%");
         this.addComponent(mainBodyHLayout);
-        this.setHeight((Page.getCurrent().getBrowserWindowHeight() - 100) + "px");
+        this.setHeight(100 + "%");
 
         HorizontalLayout mainBody = new HorizontalLayout();
         mainBody.setWidthUndefined();

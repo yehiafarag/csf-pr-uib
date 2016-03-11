@@ -5,6 +5,7 @@ import com.vaadin.server.Page;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
@@ -42,13 +43,26 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
      */
     public QuantDatasetsOverviewLayout(CSFPRHandler CSFPR_Handler, boolean searchingMode, List<QuantProtein> searchQuantificationProtList) {
 //        Studies_Selection_Manager = new StudiesSelectionManager();//,filterUtility.getFullFilterList()
+      
+        
 
         topLabelMarker = new VerticalLayout();
         this.addComponent(topLabelMarker);
         this.setExpandRatio(topLabelMarker, 0.01f);
         topLabelMarker.setHeight("10px");
         topLabelMarker.setWidth("20px");
-        topLabelMarker.setStyleName(Reindeer.LAYOUT_WHITE);
+        topLabelMarker.setStyleName(Reindeer.LAYOUT_WHITE);  
+        
+        Button zoomBtn = new Button("zoom");
+        topLabelMarker.addComponent(zoomBtn);
+        zoomBtn.addClickListener(new Button.ClickListener() {
+
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+               addStyleName("zoom");
+                addStyleName("scrollable");
+            }
+        });
 
         if (CSFPR_Handler.getQuantDatasetInitialInformationObject().isEmpty()) {
             Label noExpLable = new Label("<h4 style='font-family:verdana;color:black;font-weight:bold;'>Sorry No Dataset Availabe Now !</h4>");
@@ -82,7 +96,7 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
 
         HideOnClickLayout comparisonsTableContainer = new HideOnClickLayout("Proteins", quantProteinsComparisonsContainer, null, Alignment.TOP_LEFT, infoText, null);
 
-        int pageWidth = Page.getCurrent().getWebBrowser().getScreenWidth();
+        int pageWidth = Page.getCurrent().getBrowserWindowWidth();
         int layoutWidth = (pageWidth - 70);
         quantProteinsComparisonsContainer.setLayoutWidth(layoutWidth);
         this.addComponent(comparisonsTableContainer);

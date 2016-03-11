@@ -2965,33 +2965,11 @@ img {
     border:1px solid lightgray;
     border-radius:4px;  
     color:  #707070; 
-    padding:0 20px;    
-    width:70px !important;
+    padding:0 25px;    
+    width:80px !important;
 
 
 }
-.hidefilterbtnlabel:hover{
-    /*    -webkit-transition: color 2s;  For Safari 3.1 to 6.0 
-        transition: color 2s; 
-        
-    
-        background-image: url(img/filters-128.png),  url(img/angle-double-up.png);
-        width:90px !important;*/
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .hidefilters{
     opacity:0;
@@ -3004,31 +2982,11 @@ img {
     transition: width 2s; 
     -webkit-transition: height 3s; /* For Safari 3.1 to 6.0 */
     transition: height 3s;    
-
-
-
-    /*padding-left: 30px;*/
-    /*background-image: url(img/filters-128.png);*/
-    /*background-size:20px,12px;*/
-    /*    background-repeat:no-repeat;
-        background-position:2px 4px, 70px;    */
-    max-width: 430px !important;
+    max-width: 440px !important;
     z-index:2;
 
 }
-.filtercontainer:hover{
 
-
-}
-.angleright{
-
-
-
-}
-.hidefilter{
-
-
-}
 .sortandselect{
 
     width: 40px !important;
@@ -3072,6 +3030,10 @@ img {
     background-position:center;
     border-right:1px solid white;
     border-left:1px solid white;
+    
+     -ms-transform: rotate(180deg); /* IE 9 */
+    -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
+    transform: rotate(180deg);
 }
 .merge:hover{
     border-right:1px solid lightgray;
@@ -3527,3 +3489,13 @@ img {
     border:2px solid white;
 
 }
+
+.zoom{
+    zoom: 220%; width: 2000px !important;
+}
+.scrollable{
+    overflow:auto !important;
+    
+    
+}
+

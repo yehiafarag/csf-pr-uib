@@ -69,8 +69,8 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
      * @param userCustomizedComparison
      */
     public DiseaseGroupsFiltersContainer(final QuantCentralManager Quant_Central_Manager, final CSFPRHandler CSFPR_Handler, List<QuantProtein> searchQuantificationProtList, QuantDiseaseGroupsComparison userCustomizedComparison) {
-        pageWidth = Page.getCurrent().getWebBrowser().getScreenWidth();
-        this.setWidth(pageWidth + "px");
+        pageWidth = Page.getCurrent().getBrowserWindowWidth();
+//        this.setWidth(pageWidth + "px");
         this.setHeightUndefined();
         this.setSpacing(true);
         this.setMargin(false);
@@ -86,7 +86,7 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
 
         //init left panel 
         leftContainerLayout.setSpacing(true);
-//        leftContainerLayout.setStyleName("slowresizelayout");
+       
         Set<String> diseaseSet = Quant_Central_Manager.getDiseaseCategorySet();
         NativeSelect diseaseTypeSelectionList = new NativeSelect();
         diseaseTypeSelectionList.setDescription("Select disease category");
@@ -142,7 +142,7 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
 
         final HorizontalLayout filterLabelBtnWrpper = new HorizontalLayout();
         diseaseCategorySelectLayout.addComponent(filterLabelBtnWrpper);
-        diseaseCategorySelectLayout.setComponentAlignment(filterLabelBtnWrpper, Alignment.MIDDLE_LEFT);
+        diseaseCategorySelectLayout.setComponentAlignment(filterLabelBtnWrpper, Alignment.MIDDLE_RIGHT);
 
         final Label filterLabelBtn = new Label("Filters");
         filterLabelBtn.setHeight("20px");
@@ -156,18 +156,12 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
         popupBtnsLayout.setWidth("100%");
         popupBtnsLayout.setHeight("30px");
         popupBtnsLayout.setSpacing(true);
-        popupBtnsLayout.setStyleName("filtercontainer");
-
-//        final PopupView btnsPopup = new PopupView(null, popupBtnsLayout);
-//        btnsPopup.setHideOnMouseOut(false);
-//        updatedFiltersContainer.addComponent(btnsPopup);
+        popupBtnsLayout.setStyleName("filtercontainer");        
+        
         final VerticalLayout filtersContainerLayout = new VerticalLayout();
         filtersContainerLayout.addComponent(popupBtnsLayout);
         filtersContainerLayout.setHeight("0px");
         filtersContainerLayout.setStyleName("filtercontainer2");
-//        filtersContainerLayout.setVisible(false);
-//        diseaseCategorySelectLayout.addComponent(filtersContainerLayout);
-//        diseaseCategorySelectLayout.setComponentAlignment(filtersContainerLayout, Alignment.MIDDLE_LEFT);
 
         leftContainerLayout.addComponent(filtersContainerLayout);
         leftContainerLayout.setComponentAlignment(filtersContainerLayout, Alignment.MIDDLE_LEFT);
@@ -183,7 +177,6 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
                 filtersContainerLayout.setHeight("0px");
                 filterLabelBtn.setDescription("Show filters");
                 filterLabelBtn.setStyleName("showfilterbtnlabel");
-//                filterLabelBtn.setStyleName("showfilter");
             }
         });
 
@@ -191,8 +184,6 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
 
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-//                filterLabelBtn.setStyleName("hidefilters");
-//                filterLabelBtnWrpper.setWidth("0px");
                 if (filterLabelBtn.getDescription().equalsIgnoreCase("Show filters")) {
                     filtersContainerLayout.setHeight("30px");
                     filterLabelBtn.setDescription("Hide filters");
@@ -204,7 +195,6 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
 
                 }
 
-//                btnsPopup.setPopupVisible(true);
             }
         });
 
@@ -325,6 +315,7 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
         //init heatmap filters buttons 
         btnsLayout = new HorizontalLayout();
         btnsLayout.setWidth(leftPanelWidth + "px");
+        leftContainerLayout.setWidth(leftPanelWidth+"px");
         btnsLayout.setHeight("24px");
         btnsLayout.setSpacing(true);
         this.leftContainerLayout.addComponent(btnsLayout);
@@ -339,11 +330,11 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
 //        
         btnsLayout.setStyleName(Reindeer.LAYOUT_WHITE);
 
-        Label filterTitle = new Label("Filters:");
-        filterTitle.setHeight("24px");
-        filterTitle.setDescription("Available filters");
-        filterTitle.setStyleName("filtercaption");
-        filterTitle.setWidth("50px");
+//        Label filterTitle = new Label("Filters:");
+//        filterTitle.setHeight("24px");
+//        filterTitle.setDescription("Available filters");
+//        filterTitle.setStyleName("filtercaption");
+//        filterTitle.setWidth("50px");
 //        popupBtnsLayout.addComponent(filterTitle);
 
         rightBottomBtnLayout = new HorizontalLayout();
@@ -491,8 +482,8 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
 //        topRightLayout.addComponent(selectionOverviewBubbleChart.getBtnsLayout());
 //        topRightLayout.setComponentAlignment(selectionOverviewBubbleChart.getBtnsLayout(), Alignment.TOP_RIGHT);
 //        System.out.println("at heatmapRatio " + leftPanelExpendingRatio);
-        this.setExpandRatio(leftContainerLayout, leftPanelExpendingRatio);
-        this.setExpandRatio(rightContainerLayout, rightPanelExpandingRatio);
+//        this.setExpandRatio(leftContainerLayout, leftPanelExpendingRatio);
+//        this.setExpandRatio(rightContainerLayout, rightPanelExpandingRatio);
         Quant_Central_Manager.registerStudySelectionListener(DiseaseGroupsFiltersContainer.this);
         Quant_Central_Manager.registerFilterListener(DiseaseGroupsFiltersContainer.this);
         heatmapFilterComponent.unselectAll();

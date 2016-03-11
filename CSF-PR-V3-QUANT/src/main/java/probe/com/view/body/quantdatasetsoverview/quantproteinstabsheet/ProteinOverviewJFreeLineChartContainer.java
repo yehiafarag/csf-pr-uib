@@ -39,12 +39,9 @@ import org.apache.commons.codec.binary.Base64;
 import org.jfree.chart.ChartRenderingInfo;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.AxisState;
-import org.jfree.chart.axis.MarkerAxisBand;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.NumberTick;
 import org.jfree.chart.axis.NumberTickUnit;
-import org.jfree.chart.axis.StandardTickUnitSource;
 import org.jfree.chart.axis.SymbolAxis;
 import org.jfree.chart.axis.Tick;
 import org.jfree.chart.axis.TickUnit;
@@ -52,7 +49,6 @@ import org.jfree.chart.axis.TickUnits;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.entity.ChartEntity;
 import org.jfree.chart.entity.XYItemEntity;
-import org.jfree.chart.plot.PlotRenderingInfo;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.chart.title.LegendTitle;
@@ -116,9 +112,11 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
      */
     public String getThumbChart() {
         if (thumbChart.equalsIgnoreCase("")) {
+
             resetThumbChart(defaultChart, false);
             thumbChart = saveToFile(defaultChart, (selectedComparisonListSize * 15), 35, null);
             resetThumbChart(defaultChart, true);
+//            highlitedLineStrok = new BasicStroke(10f);
         }
         return thumbChart;
     }
@@ -658,6 +656,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
     private DiseaseGroupsComparisonsProteinLayout[] inUseComparisonProteins;
     private boolean verticalLabels;
+    private XYPlot xyplot;
 
     private JFreeChart generateLineChart(DiseaseGroupsComparisonsProteinLayout[] comparisonProteins, Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
 
@@ -1005,39 +1004,8 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         yAxis.setTickMarksVisible(false);
         yAxis.setAutoRangeStickyZero(false);
 
-//        SymbolAxis yAxis = new SymbolAxis(null, tickLabels) {
-//
-//            int x = 0;
-//
-//            @Override
-//            public Paint getTickLabelPaint() {
-//                if (x >= labelsColor.length) {
-//                    x = 0;
-//                }
-//                return labelsColor[x++];
-//            }
-//
-//            @Override
-//            protected void drawGridBandsVertical(Graphics2D g2, Rectangle2D drawArea, Rectangle2D plotArea, boolean firstGridBandIsDark, List ticks) {
-//                List udatedTicksList = new ArrayList();
-//                for (Object tick : ticks) {
-//                    if (tick.toString().equalsIgnoreCase(tickLabels[custTrend])) {
-//                        udatedTicksList.add(tick);
-//                    }
-//                }
-//                int factor = (int) ((plotArea.getHeight() / 5) * 0.25);
-//
-//                Rectangle2D up = new Rectangle((int) drawArea.getX(), (int) drawArea.getY() - factor, (int) drawArea.getWidth(), (int) drawArea.getHeight());
-//                Rectangle2D pa = new Rectangle((int) plotArea.getX(), (int) plotArea.getY() - factor, (int) plotArea.getWidth(), (int) plotArea.getHeight());
-//
-//                super.drawGridBandsVertical(g2, up, pa, firstGridBandIsDark, udatedTicksList); //To change body of generated methods, choose Tools | Templates.
-//            }
-//
-//        };
         yAxis.setTickLabelFont(font);
         xAxis.setGridBandsVisible(false);
-//        yAxis.setGridBandsVisible(false);
-
         yAxis.setAxisLinePaint(Color.WHITE);
 
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
@@ -1087,19 +1055,85 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         renderer.setSeriesLinesVisible(6, false);
         renderer.setSeriesLinesVisible(7, false);
 
-        XYPlot xyplot = new XYPlot(dataset, xAxis, yAxis, renderer) {
+        xyplot = new XYPlot(dataset, xAxis, yAxis, renderer) {
 
             private int counter = 0;
 
             @Override
             public Paint getRangeGridlinePaint() {
+                if (counter == 239) {
+                    counter = 0;
+                }
                 if (counter == 20 || (counter == 120) || (counter == 220)) {
                     counter++;
                     return super.getRangeGridlinePaint(); //To change body of generated methods, choose Tools | Templates.
                 }
+                if (custTrend != -1) {
+                    if (custTrend == 0) {
+                        if ((counter >= 10 && counter <= 19) || (counter >= 21 && counter <= 29)) {
+                            counter++;
+                            return customizedUserDataColor[custTrend];
+                        }
+
+                    }
+                    if (custTrend == 2) {
+                        if ((counter >= 110 && counter <= 119) || (counter >= 121 && counter <= 129)) {
+                            counter++;
+                            return customizedUserDataColor[custTrend];
+                        }
+
+                    }
+                    if (custTrend == 4) {
+                        if ((counter >= 210 && counter <= 219) || (counter >= 221 && counter <= 229)) {
+                            counter++;
+                            return customizedUserDataColor[custTrend];
+                        }
+
+                    }
+
+                }
                 counter++;
                 return Color.WHITE;
 
+            }
+
+            private  BasicStroke highlitedLineStrok = new BasicStroke(10f);
+            private int counterII = 0;
+
+            @Override
+            public Stroke getRangeGridlineStroke() {
+                if (counterII == 239) {
+                    counterII = 0;
+                     highlitedLineStrok = new BasicStroke(4f);
+                }
+
+                if (custTrend != -1) {
+                    if (custTrend == 0) {
+                        if ((counterII >= 10 && counterII <= 19) || (counterII >= 21 && counterII <= 29)) {
+                            counterII++;
+                            return highlitedLineStrok;
+                        }
+
+                    }
+                    if (custTrend == 2) {
+                        if ((counterII >= 110 && counterII <= 119) || (counterII >= 121 && counterII <= 129)) {
+                            counterII++;
+                            return highlitedLineStrok;
+                        }
+
+                    }
+                    if (custTrend == 4) {
+                        if ((counterII >= 210 && counterII <= 219) || (counterII >= 221 && counterII <= 229)) {
+                            counterII++;
+                            return highlitedLineStrok;
+                        }
+
+                    }
+
+                }
+                counterII++;
+
+                return super.getRangeGridlineStroke();
             }
 
             @Override
@@ -1110,158 +1144,48 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                     return;
 
                 }
-                List udatedTicksList = new ArrayList();
+                int counterI = 0;
+                List updatedTicksList = new ArrayList();
                 for (Object tick : ticks) {
+
                     if (tick.toString().equalsIgnoreCase(tickLabels[custTrend])) {
-                        udatedTicksList.add(tick);
+                        for (int i = counterI - 1; i > counterI - 10; i--) {
+                            updatedTicksList.add(ticks.get(i));
+                        }
+                        updatedTicksList.add(tick);
+                        for (int i = counterI + 1; i < counterI + 11; i++) {
+                            updatedTicksList.add(ticks.get(i));
+                        }
                     }
+                    counterI++;
                 }
                 Rectangle2D up;
-                int factor = (int) ((dataArea.getHeight() / 5) * 0.25);
                 if (custTrend == 4) {
-                    up = new Rectangle((int) dataArea.getX(), (int) dataArea.getY() + factor, (int) dataArea.getWidth(), (int) dataArea.getHeight());
+                    up = new Rectangle((int) dataArea.getX(), (int) dataArea.getY(), (int) dataArea.getWidth(), (int) dataArea.getHeight());
 
                 } else if (custTrend == 2) {
-                    up = new Rectangle((int) dataArea.getX(), (int) dataArea.getY() - factor, (int) dataArea.getWidth(), (int) dataArea.getHeight());
-
+                    up = new Rectangle((int) dataArea.getX(), (int) dataArea.getY(), (int) dataArea.getWidth(), (int) dataArea.getHeight());//                    
+//
                 } else {
-                    up = new Rectangle((int) dataArea.getX(), (int) dataArea.getY() - factor, (int) dataArea.getWidth(), (int) dataArea.getHeight());
+                    up = new Rectangle((int) dataArea.getX(), (int) dataArea.getY(), (int) dataArea.getWidth(), (int) dataArea.getHeight());
                 }
 
-                super.drawRangeTickBands(g2, up, udatedTicksList); //To change body of generated methods, choose Tools | Templates.
+                super.drawRangeTickBands(g2, up, updatedTicksList); //To change body of generated methods, choose Tools | Templates.
             }
             private int x = 0;
 
-            @Override
-            public Paint getRangeTickBandPaint() {
-
-                if (custTrend == 2) {
-                   
-//                if (x == 0 || x == 1|| x == 2 || x == 3) {
-//                        x++;
-                        System.out.println("cust is 2");
-                        return Color.WHITE;
-//                    }
-                }
-                else if (custTrend == 0) {
-                    if (x == 1 || x == 2 || x == 3) {
-                        x++;
-                        return Color.WHITE;
-                    }
-                } 
-                x++;
-                return super.getRangeTickBandPaint(); //To change body of generated methods, choose Tools | Templates.
-            } 
-            
-            
-            
-
-            @Override
-            public Paint getRangeCrosshairPaint() {
-                  System.out.println("getRangeCrosshairPaint is ");
-                return super.getRangeCrosshairPaint(); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public Paint getQuadrantPaint(int index) {
-                  System.out.println("getQuadrantPaint is "+index);
-                return super.getQuadrantPaint(index); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public Paint getRangeZeroBaselinePaint() {
-                  System.out.println("cugetRangeZeroBaselinePaint st is 2");
-                return super.getRangeZeroBaselinePaint(); //To change body of generated methods, choose Tools | Templates.
-            }
-            
-
-
-
-
-//           
-            //
-            //            @Override
-            //            public Paint getRangeGridlinePaint() {
-            //                if (x >= 5) {
-            //                    x = 0;
-            //                }
-            //                if (x == 2) {
-            //                    x++;
-            //                    return super.getRangeGridlinePaint();
-            //                } else {
-            //                    x++;
-            //                    return Color.WHITE;
-            //                }
-            //            }
-            //            private final Color[] labelsColor = new Color[]{new Color(204, 0, 0), new Color(247, 119, 119), new Color(1, 141, 244), new Color(0, 229, 132), new Color(0, 153, 0), Color.decode("#b5babb"), Color.WHITE};
-            //            private final Color[] labelsOutColor = new Color[]{new Color(204, 0, 0), new Color(247, 119, 119), new Color(1, 141, 244), new Color(0, 229, 132), new Color(0, 153, 0), Color.GRAY, Color.GRAY, new Color(0, 229, 132)};
-            //
-            //            private final Font font = new Font("Verdana", Font.PLAIN, 11);
-            //            private final String[] labels = new String[]{"High  100%", "High < 100%", "Stable", "Low < 100%", "Low  100%", "No Quant. Info.", "No Data"};
-            //            private final Shape[] shapes = new Shape[]{upArr, upArr, notRShape, downArr, downArr, emptyRShape, emptyRShape, square};
-            //
-            //            @Override
-            //            public LegendItemCollection getLegendItems() {
-            //                LegendItemCollection legendItemCollection = new LegendItemCollection();
-            //                for (int i = 0; i < labelsColor.length; i++) {
-            //                    LegendItem item = new LegendItem(labels[i], "", "", "", shapes[i], labelsColor[i]) {
-            //
-            //                        @Override
-            //                        public boolean isShapeOutlineVisible() {
-            //                            return true; //To change body of generated methods, choose Tools | Templates.
-            //                        }
-            //
-            //                    };
-            //
-            //                    item.setOutlinePaint(labelsOutColor[i]);
-            //
-            ////                    item.setLabelPaint(Color.GRAY);
-            //                    item.setLabelFont(font);
-            //
-            //                    legendItemCollection.add(item);
-            //
-            //                }
-            //                if (custTrend != -1) {
-            //                    LegendItem item = new LegendItem("User Data", "", "", "", shapes[shapes.length - 1], customizedUserDataColor[custTrend]) {
-            //                        @Override
-            //                        public boolean isShapeOutlineVisible() {
-            //                            return true; //To change body of generated methods, choose Tools | Templates.
-            //                        }
-            //                    };
-            //                    legendItemCollection.add(item);
-            //
-            //                }
-            //
-            //                return legendItemCollection;//To change body of generated methods, choose Tools | Templates.
-            //            }
-
-            @Override
-            public Paint getBackgroundPaint() {
-                System.out.println("at background paing");
-                return super.getBackgroundPaint(); //To change body of generated methods, choose Tools | Templates.
-            }
         };
-        if (custTrend!= -1) {
-//            yAxis.setGridBandsVisible(true);
+        if (custTrend != -1) {
             if (custTrend == 4) {
-//                yAxis.setGridBandPaint(Color.WHITE);
                 xyplot.setRangeTickBandPaint(customizedUserDataColor[4]);
-                
 
             } else if (custTrend == 0) {
                 xyplot.setRangeTickBandPaint(customizedUserDataColor[0]);
-                
-//                xyplot.setRangeTickBandPaint(Color.WHITE);
-//                xyplot.set
             } else if (custTrend == 2) {
-              
-//                yAxis.setGridBandPaint(customizedUserDataColor[2]);
-                xyplot.setRangeTickBandPaint(customizedUserDataColor[2]);
-                xyplot.setBackgroundPaint(customizedUserDataColor[2]);
+                xyplot.setRangeTickBandPaint(customizedUserDataColor[2]);//TickBandPaint(customizedUserDataColor[2]);
             }
 
         } else {
-//            yAxis.setGridBandsVisible(false);
             xyplot.setRangeTickBandPaint(Color.WHITE);
         }
 
@@ -1270,35 +1194,17 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         jFreeChart.setBackgroundPaint(Color.WHITE);
         final XYPlot plot = jFreeChart.getXYPlot();
 
-//        plot.setBackgroundPaint(Color.WHITE);
-
         plot.setDomainGridlinePaint(Color.LIGHT_GRAY);
-//        plot.setRangeTickBandPaint(Color.ORANGE);
 
-        plot.setDomainGridlinesVisible(
-                true);
-        plot.setRangeGridlinesVisible(
-                true);
+        plot.setDomainGridlinesVisible(true);
+        plot.setRangeGridlinesVisible(true);
         plot.setRangeGridlinePaint(Color.LIGHT_GRAY);
-
         plot.setOutlinePaint(Color.GRAY);
-
-        jFreeChart.setBorderVisible(
-                false);
-        jFreeChart.setPadding(
-                new RectangleInsets(0, 0, 0, 0));
-
+        jFreeChart.setBorderVisible(false);
+        jFreeChart.setPadding(new RectangleInsets(0, 0, 0, 0));
         LegendTitle legend = jFreeChart.getLegend();
+        legend.setVisible(false);
 
-        legend.setVisible(
-                false);
-//        legend.setMargin(20, 0, 20, 0);
-////        legend.setBorder(1, 1, 1, 1);
-//        legend.setFrame(new BlockBorder(0, 0, 0, 0, Color.LIGHT_GRAY));
-//        legend.setHorizontalAlignment(HorizontalAlignment.RIGHT);
-
-//        JfreeExporter exporter = new JfreeExporter();
-//        exporter.writeChartToPDFFile(jFreeChart, 595, 842, "line" + teststyle + ".pdf");
         return jFreeChart;
     }
 
@@ -1359,25 +1265,6 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
                 }
 
-//                if (paramName.equalsIgnoreCase("GroupsComparison")) {
-//                    MouseEvents.MouseOverListener mouseOverListener = new MouseEvents.MouseOverListener() {
-//                        private final QuantDiseaseGroupsComparison gc = inUseComparisonProteins[((XYItemEntity) entity).getItem()].getComparison();
-//
-//                        @Override
-//                        public void mouseOver() {
-//                            studiesScatterChartsLayout.highlightComparison(gc, false);
-//                        }
-//                    };
-//                    MouseEvents.MouseOutListener mouseOutListener = new MouseEvents.MouseOutListener() {
-//                        @Override
-//                        public void mouseOut() {
-//                            studiesScatterChartsLayout.highlightComparison(null, false);
-//                        }
-//                    };
-//                    final MouseEvents mouseEvents = MouseEvents.enableFor(square);
-//                    mouseEvents.addMouseOutListener(mouseOutListener);
-//                    mouseEvents.addMouseOverListener(mouseOverListener);
-//                }
             }
         }
         return imgUrl;
@@ -1391,40 +1278,13 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         SymbolAxis xAxis = (SymbolAxis) plot.getDomainAxis();
 
         plot.setDomainGridlinesVisible(isFullChart);
-        plot.setRangeGridlinesVisible(isFullChart);
+        plot.setRangeGridlinesVisible(true);
         yAxis.setVisible(isFullChart);
         xAxis.setVisible(isFullChart);
         plot.setOutlineVisible(isFullChart);
 
         XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
-//        renderer.setSeriesShapesVisible(1, isFullChart);
-//        renderer.setSeriesShapesVisible(2, isFullChart);
-//        renderer.setSeriesShapesVisible(3, isFullChart);
         if (isFullChart) {
-
-//             Color[] dataColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0)};
-//
-//        renderer.setUseOutlinePaint(true);
-//        renderer.setSeriesPaint(1,dataColor[4]);
-//        renderer.setSeriesOutlinePaint(1, dataColor[4]);
-//        
-//          renderer.setSeriesPaint(2,dataColor[3]);
-//        renderer.setSeriesOutlinePaint(2, dataColor[3]);
-//       
-//        renderer.setSeriesPaint(3, dataColor[2]);
-//        renderer.setSeriesOutlinePaint(3, dataColor[2]);
-//        
-//        renderer.setSeriesPaint(4, dataColor[1]);
-//        renderer.setSeriesOutlinePaint(4, dataColor[1]);
-//        
-//        renderer.setSeriesPaint(5, dataColor[0]);
-//        renderer.setSeriesOutlinePaint(5,dataColor[0]);
-//        
-//        
-//        
-//        
-//        renderer.setSeriesPaint(6, Color.WHITE);
-//        renderer.setSeriesOutlinePaint(6, dataColor[2]);
             renderer.setSeriesShape(7, emptyRShape);
             renderer.setSeriesShape(6, emptyRShape);
             renderer.setSeriesShape(5, downArr);
@@ -1454,10 +1314,6 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
             renderer.setSeriesShape(3, snotRShape);
             renderer.setSeriesShape(2, srightArr);
             renderer.setSeriesShape(1, srightArr);
-//            renderer.setSeriesShape(4, semptyRShape);
-//            renderer.setSeriesShape(3, sleftArr);
-//            renderer.setSeriesShape(2, snotRShape);
-//            renderer.setSeriesShape(1, srightArr);
             renderer.setSeriesPaint(0, Color.DARK_GRAY);
             renderer.setSeriesStroke(0, null);
 

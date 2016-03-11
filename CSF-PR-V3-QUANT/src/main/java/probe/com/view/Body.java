@@ -50,7 +50,6 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
     public Body(CSFPRHandler CSFPR_Handler) {
         this.setWidth("100%");
         this.CSFPR_Handler = CSFPR_Handler;
-
         mainTabSheet = new TabSheet();
         this.addComponent(mainTabSheet);
         mainTabSheet.setHeight("100%");
@@ -58,13 +57,6 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
         adminIcon = this.initAdminIcoBtn();
         initBodyLayout(CSFPR_Handler);
 
-//        ProcessBuilder pb = new ProcessBuilder("C:\\Program Files\\Java\\jdk1.8.0_45\\bin\\java.exe", "-jar", "CSFPR.Utility-0.2.jar");
-//        pb.directory(new File("D:\\csf-pr-runing"));
-//        try {
-//            Process p = pb.start();
-//        } catch (IOException ex) {
-//            System.out.println("error "+ex.getMessage());
-//        }
     }
     private int bodyHeight;
     private int pageHeight;
@@ -76,41 +68,23 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
 //      Tab 1 content home page 
         welcomeLayout = new WelcomeLayout(adminIcon, CSFPR_Handler);
         welcomeLayout.setWidth("100%");
+        welcomeLayout.setHeight("100%");
         homeTab = mainTabSheet.addTab(welcomeLayout, "Home", null);
 
 //      Tab 2 content quant dataset overview
-        quantDatasetsOverviewPanel = new Panel() {
+        quantDatasetsOverviewPanel = new Panel();
 
-//            @Override
-//            public void paintContent(PaintTarget target) throws PaintException {
-//                int scroll = super.getScrollTop();
-//                 System.out.println("at paintContent "+super.getScrollTop()+"    "+target.toString());
-//                super.paintContent(target); //To change body of generated methods, choose Tools | Templates.
-//                super.setScrollTop(scroll);
-//            }
-//
-//     
-//          
-//        
-        };
-
-//        quantDatasetsOverviewPanel.setMargin(true);
         pageHeight = Page.getCurrent().getBrowserWindowHeight();
         bodyHeight = (pageHeight - 100);
-//        
-//        int width = Page.getCurrent().getBrowserWindowWidth()-15;
+
         quantDatasetsOverviewPanel.setHeight(bodyHeight + "px");
         quantDatasetsOverviewPanel.setWidth("100%");
-//        quantDatasetsOverviewPanel.setPrimaryStyleName("scrollable");
         mainTabSheet.addTab(quantDatasetsOverviewPanel, "Quantitative Studies");
 
 //      Tab 3 content       identificationDatasetsOverviewPanel    
         identificationDatasetsOverviewPanel = new Panel();
-//        identificationDatasetsOverviewPanel.setMargin(true);
-//        identificationDatasetsOverviewPanel.setHeight("100%");
         identificationDatasetsOverviewPanel.setHeight(bodyHeight + "px");
         identificationDatasetsOverviewPanel.setWidth("100%");
-//        identificationDatasetsOverviewPanel.setPrimaryStyleName("scrollable");
         mainTabSheet.addTab(this.identificationDatasetsOverviewPanel, "Identification Datasets");
 
 //      Tab 4 content  searching proteins tab 
@@ -119,10 +93,8 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
         TabSheet.Tab serchingTab = mainTabSheet.addTab(this.searchDataPanel, "Search");
 
         compareUserDataPanel = new Panel();
-//        compareUserDataPanel.setMargin(true);
         compareUserDataPanel.setHeight(bodyHeight + "px");
         compareUserDataPanel.setWidth("100%");
-//        compareUserDataPanel.setPrimaryStyleName("scrollable");
         mainTabSheet.addTab(compareUserDataPanel, "Compare");
 
 //      Tab 5content hidden tab (login form)
@@ -130,7 +102,6 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
         adminLayout.setMargin(true);
         adminLayout.setHeight("100%");
         adminLayout.setHeight(bodyHeight + "px");
-//        adminLayout.setPrimaryStyleName("scrollable");
         adminLayout.addComponent(new AdminLayout(CSFPR_Handler));
         adminTab = mainTabSheet.addTab(adminLayout, "Dataset Editor (Require Sign In)", null);
 
@@ -197,7 +168,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
                             init = false;
                             return;
                         }
-                          if ((sizeControl + 60) <= (pageHeight)) {
+                        if ((sizeControl + 60) <= (pageHeight)) {
                             return;
                         }
                         CSFPR_Handler.controlHeaderHeights(60);
@@ -208,7 +179,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
 
                     @Override
                     public void onEnter(InviewExtension.EnterEvent event) {
-                          if ((sizeControl + 60) <= (pageHeight)) {
+                        if ((sizeControl + 60) <= (pageHeight)) {
                             return;
                         }
                         CSFPR_Handler.controlHeaderHeights(60);
@@ -219,7 +190,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
 
                     @Override
                     public void onExited(InviewExtension.ExitedEvent event) {
-                          if ((sizeControl + 60) <= (pageHeight)) {
+                        if ((sizeControl + 60) <= (pageHeight)) {
                             return;
                         }
                         CSFPR_Handler.controlHeaderHeights(0);
@@ -235,8 +206,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
 
             if (datasetOverviewTabLayout == null && CSFPR_Handler != null) {
 
-                datasetOverviewTabLayout = new QuantDatasetsOverviewLayout(CSFPR_Handler, false, null);
-
+                datasetOverviewTabLayout = new QuantDatasetsOverviewLayout(CSFPR_Handler, false, null);                
                 quantDatasetsOverviewPanel.setContent(datasetOverviewTabLayout);
 
                 boolean horizontal = false;
@@ -405,8 +375,9 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
             CSFPR_Handler.controlHeaderHeights(60);
             compareUserDataPanel.setHeight((bodyHeight) + "px");
 
-        }else
-             CSFPR_Handler.controlHeaderHeights(60);
+        } else {
+            CSFPR_Handler.controlHeaderHeights(60);
+        }
 
     }
 

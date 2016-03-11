@@ -1,12 +1,9 @@
 package probe.com;
 
+import com.vaadin.ui.Panel;
 import java.io.Serializable;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
-import eu.dusse.vaadin.waypoints.InviewExtension;
-import eu.dusse.vaadin.waypoints.InviewExtension.EnterEvent;
-import eu.dusse.vaadin.waypoints.InviewExtension.EnterListener;
-import eu.dusse.vaadin.waypoints.InviewExtensionImpl;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.view.Body;
 import probe.com.view.HeaderLayout;
@@ -17,7 +14,7 @@ import probe.com.view.HeaderLayout;
  * The CSF-PR application class the class is the main container for csf-pr html
  * web page the class contains the header layout and main body
  */
-public class CSFPRApplication extends VerticalLayout implements Serializable {
+public class CSFPRApplication extends Panel implements Serializable {
 
     private static final long serialVersionUID = 1490961570483515444L;
     private final CSFPRHandler CSFPR_Handler;
@@ -40,13 +37,17 @@ public class CSFPRApplication extends VerticalLayout implements Serializable {
      *
      */
     private void buildMainLayout() {
+        this.setWidth("100%");
+        VerticalLayout content = new VerticalLayout();
+        this.setContent(content);
         //header part
         HeaderLayout header = new HeaderLayout();
-        this.addComponent(header);
+        content.addComponent(header);
         CSFPR_Handler.setHeader(header);
         //body
         final Body body = new Body(CSFPR_Handler);
-        this.addComponent(body);
+        content.addComponent(body);
+//        body.addStyleName("zoom");
         
         final VerticalLayout bottom = new VerticalLayout();
         bottom.setWidth("100%");

@@ -122,7 +122,7 @@ public class AppController extends UI {
 
     private void checkWindowSize() {
 
-        if (Page.getCurrent().getBrowserWindowWidth() < 368 || Page.getCurrent().getBrowserWindowHeight() < 403) {
+        if (Page.getCurrent().getBrowserWindowWidth()< 368 || Page.getCurrent().getBrowserWindowHeight()< 403) {
             Notification.show("Opps.. Screen size is too small to use the system", Notification.Type.ERROR_MESSAGE);
             application.setVisible(false);
             checkSize = true;

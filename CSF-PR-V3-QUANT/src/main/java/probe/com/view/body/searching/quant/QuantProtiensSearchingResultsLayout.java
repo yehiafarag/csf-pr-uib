@@ -59,7 +59,7 @@ public class QuantProtiensSearchingResultsLayout extends VerticalLayout {
         quantProteinsComparisonsContainer = new QuantProteinsComparisonsContainer(Quant_Central_Manager, CSFPR_Handler, searchQuantificationProtList);
 
         HideOnClickLayout comparisonsTableContainer = new HideOnClickLayout("Proteins", quantProteinsComparisonsContainer, null, Alignment.TOP_LEFT, infoText, null);
-        int pageWidth = Page.getCurrent().getWebBrowser().getScreenWidth();
+        int pageWidth = Page.getCurrent().getBrowserWindowWidth();
         int layoutWidth = (pageWidth - 70);
         quantProteinsComparisonsContainer.setLayoutWidth(layoutWidth);
         this.addComponent(comparisonsTableContainer);

@@ -1,6 +1,7 @@
 package probe.com.view;
 
 import com.vaadin.server.ExternalResource;
+import com.vaadin.server.Page;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
@@ -27,9 +28,9 @@ public class HeaderLayout extends VerticalLayout {
     public HeaderLayout() {
 
         this.setWidth("100%");
-        this.setStyleName(Reindeer.LAYOUT_WHITE);
-        //init header
-        header.setWidth("1300px");
+        this.setStyleName(Reindeer.LAYOUT_WHITE);        //init header
+        
+        header.setWidth(100+"100%");
         header.setHeight("60px");
         header.setStyleName(Reindeer.LAYOUT_WHITE);
         header.setWidth("100%");
