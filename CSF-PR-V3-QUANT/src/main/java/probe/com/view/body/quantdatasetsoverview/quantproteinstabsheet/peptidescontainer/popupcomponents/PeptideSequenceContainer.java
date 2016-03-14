@@ -11,10 +11,13 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import probe.com.view.core.jfreeutil.StackedBarPeptideComponent;
 
 /**
@@ -29,13 +32,11 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
     private final List< StackedBarPeptideComponent> stackedPeptides = new ArrayList<StackedBarPeptideComponent>();
     private boolean ptmAvailable = false;
 
-
     public PeptideSequenceContainer(int width, LinkedHashSet<StackedBarPeptideComponent> allPeptidesStackedBarComponentsMap) {
         this.allPeptidesStackedBarComponentsMap = allPeptidesStackedBarComponentsMap;
         this.setVisible(true);
         this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.setWidth((width) + "px");
-       
 
         highPeptidesSequencesBar = new AbsoluteLayout();
         highPeptidesSequencesBar.setWidth(width - 50 + "px");
@@ -76,14 +77,16 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
         cTerminalEdge.setWidth("25px");
         cTerminalEdge.setHeight("15px");
         cTerminalEdge.setStyleName("terminal");
-         Label cLabel = new Label("C");
-         cLabel.setStyleName("ctermlayout");
+        Label cLabel = new Label("C");
+        cLabel.setStyleName("ctermlayout");
         cTerminalEdge.addComponent(cLabel);
         cLabel.setWidth("10px");
         cTerminalEdge.setComponentAlignment(cLabel, Alignment.TOP_RIGHT);
         this.addComponent(cTerminalEdge, "left: " + (width - 26) + "px; top: " + (top) + "px;");
 
     }
+
+//    TreeMap<Integer, VerticalLayout> covergeMap = new TreeMap<Integer, VerticalLayout>();
 
     private void initLayout() {
 
@@ -101,6 +104,8 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
             coverageComp.setStyleName("vdarkgray");
             coverageComp.setHeight("15px");
             coverageComp.setWidth(peptideLayout.getWidth(), peptideLayout.getWidthUnits());
+            coverageComp.setData("left: " + (peptideLayout.getX0() - 25) + "px; top: " + (0) + "px;___" + peptideLayout.getParam("end"));
+            int start = (Integer) peptideLayout.getParam("start");
             coveragePeptidesSequencesBar.addComponent(coverageComp, "left: " + (peptideLayout.getX0() - 25) + "px; top: " + (0) + "px;");
 
         }
@@ -112,6 +117,29 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
             }
 
         }
+
+//        TreeMap<Integer, VerticalLayout> updatedCovergeMap = new TreeMap<Integer, VerticalLayout>(covergeMap);
+//         TreeMap<Integer, VerticalLayout> finalCovergeMap = new TreeMap<Integer, VerticalLayout>();
+//        for (int startI : covergeMap.keySet()) {
+//            VerticalLayout comp= covergeMap.get(startI);
+//            for(int startII:covergeMap.keySet()){
+//                if(startI == startII){
+//                    continue;                
+//                }
+//                
+//                
+//                
+//               
+//                int endI= Integer.valueOf(comp.getData().toString().split("___")[1]);
+//                int endII= Integer.valueOf(updatedCovergeMap.get(startII).getData().toString().split("___")[1]);
+//                
+//                
+//                
+//            
+//            }
+//            finalCovergeMap.put(startI, comp);
+//          
+//        }
 
         ptmsLayoutMap.clear();
         int top = 0;
@@ -134,7 +162,7 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
 //            top += lowPeptidesSequencesBar.getHeight() + 5;
 //        }
 
-         top +=5;
+        top += 5;
         this.setHeight(top + "px");
         ptmAvailable = !ptmsLayoutMap.isEmpty();
 
@@ -257,6 +285,22 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
     private boolean checkIntersect(StackedBarPeptideComponent smallXComp, StackedBarPeptideComponent bigXComp) {
         int area = smallXComp.getX0() + smallXComp.getWidthArea();
         return bigXComp.getX0() < area;
+
+    }
+
+    private VerticalLayout checkAndMerge(String value1, Map<String, VerticalLayout> updatedCovergeMap) {
+        int startI = Integer.valueOf(value1.split("_end_")[0].split("_start_")[1]);
+        int endI = Integer.valueOf(value1.split("_end_")[1]);
+        for (String key : updatedCovergeMap.keySet()) {
+            int startII = Integer.valueOf(key.split("_end_")[0].split("_start_")[1]);
+            int endII = Integer.valueOf(key.split("_end_")[1]);
+
+//            if ((startI > endII) || (endII)
+        
+          {
+
+            }
+        }
 
     }
 

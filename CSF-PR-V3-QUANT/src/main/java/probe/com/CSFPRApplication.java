@@ -7,6 +7,7 @@ import com.vaadin.ui.themes.Reindeer;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.view.Body;
 import probe.com.view.HeaderLayout;
+import probe.com.view.core.ZoomUnit;
 
 /**
  * @author Yehia Farag
@@ -44,6 +45,11 @@ public class CSFPRApplication extends Panel implements Serializable {
         HeaderLayout header = new HeaderLayout();
         content.addComponent(header);
         CSFPR_Handler.setHeader(header);
+        ZoomUnit zoompanel = new ZoomUnit();
+        content.addComponent(zoompanel);
+        CSFPR_Handler.setZoomUnit(zoompanel);
+        
+        
         //body
         final Body body = new Body(CSFPR_Handler);
         content.addComponent(body);

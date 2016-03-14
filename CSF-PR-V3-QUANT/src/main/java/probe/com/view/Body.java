@@ -152,7 +152,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
                 extension.addExitListener(new InviewExtension.ExitListener() {
                     @Override
                     public void onExit(InviewExtension.ExitEvent event) {
-                        if ((sizeControl + 60) <= (pageHeight)) {
+                        if ((sizeControl + 100) <= (pageHeight)) {
                             return;
                         }
                         CSFPR_Handler.controlHeaderHeights(0);
@@ -168,7 +168,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
                             init = false;
                             return;
                         }
-                        if ((sizeControl + 60) <= (pageHeight)) {
+                        if ((sizeControl + 100) <= (pageHeight)) {
                             return;
                         }
                         CSFPR_Handler.controlHeaderHeights(60);
@@ -179,7 +179,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
 
                     @Override
                     public void onEnter(InviewExtension.EnterEvent event) {
-                        if ((sizeControl + 60) <= (pageHeight)) {
+                        if ((sizeControl + 100) <= (pageHeight)) {
                             return;
                         }
                         CSFPR_Handler.controlHeaderHeights(60);
@@ -190,7 +190,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
 
                     @Override
                     public void onExited(InviewExtension.ExitedEvent event) {
-                        if ((sizeControl + 60) <= (pageHeight)) {
+                        if ((sizeControl + 100) <= (pageHeight)) {
                             return;
                         }
                         CSFPR_Handler.controlHeaderHeights(0);
@@ -201,12 +201,14 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
             CSFPR_Handler.controlHeaderHeights(60);
             searchDataPanel.setHeight((bodyHeight) + "px");
 
+            CSFPR_Handler.setZoomedLayout(searchingLayout);
+
         } else if (c.equals("Quantitative Studies")) {
             adminTab.setVisible(false);
 
             if (datasetOverviewTabLayout == null && CSFPR_Handler != null) {
 
-                datasetOverviewTabLayout = new QuantDatasetsOverviewLayout(CSFPR_Handler, false, null);                
+                datasetOverviewTabLayout = new QuantDatasetsOverviewLayout(CSFPR_Handler, false, null);
                 quantDatasetsOverviewPanel.setContent(datasetOverviewTabLayout);
 
                 boolean horizontal = false;
@@ -214,7 +216,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
                 extension.addExitListener(new InviewExtension.ExitListener() {
                     @Override
                     public void onExit(InviewExtension.ExitEvent event) {
-                        if ((sizeControl + 60) <= (pageHeight)) {
+                        if ((sizeControl + 100) <= (pageHeight)) {
                             return;
                         }
                         CSFPR_Handler.controlHeaderHeights(0);
@@ -252,6 +254,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
                 });
 
             }
+            CSFPR_Handler.setZoomedLayout(datasetOverviewTabLayout);
             CSFPR_Handler.controlHeaderHeights(60);
             quantDatasetsOverviewPanel.setHeight((bodyHeight) + "px");
 
@@ -317,6 +320,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
             }
             CSFPR_Handler.controlHeaderHeights(60);
             identificationDatasetsOverviewPanel.setHeight((bodyHeight) + "px");
+            CSFPR_Handler.setZoomedLayout(identificationDatasetsTabLayout);
 
         } else if (c.equals("Compare")) {
             adminTab.setVisible(false);
@@ -374,9 +378,11 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
             }
             CSFPR_Handler.controlHeaderHeights(60);
             compareUserDataPanel.setHeight((bodyHeight) + "px");
+            CSFPR_Handler.setZoomedLayout(quantCompareDataTabLayout);
 
         } else {
             CSFPR_Handler.controlHeaderHeights(60);
+            CSFPR_Handler.setZoomedLayout(null);
         }
 
     }

@@ -17,6 +17,7 @@ import probe.com.view.body.quantdatasetsoverview.DiseaseGroupsFiltersContainer;
 import probe.com.view.body.quantdatasetsoverview.QuantProteinsComparisonsContainer;
 import probe.com.view.core.HideOnClickLayout;
 import probe.com.view.body.quantdatasetsoverview.QuantProteinsTabsheetContainerLayout;
+import probe.com.view.core.ZoomUnit;
 
 /**
  * This is the studies layout include publication heatmapFiltere and publication
@@ -50,19 +51,18 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
         this.addComponent(topLabelMarker);
         this.setExpandRatio(topLabelMarker, 0.01f);
         topLabelMarker.setHeight("10px");
-        topLabelMarker.setWidth("20px");
+        topLabelMarker.setWidth("100%");
         topLabelMarker.setStyleName(Reindeer.LAYOUT_WHITE);  
         
-        Button zoomBtn = new Button("zoom");
-        topLabelMarker.addComponent(zoomBtn);
-        zoomBtn.addClickListener(new Button.ClickListener() {
-
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-               addStyleName("zoom");
-                addStyleName("scrollable");
-            }
-        });
+       
+//        zoomBtn.addClickListener(new Button.ClickListener() {
+//
+//            @Override
+//            public void buttonClick(Button.ClickEvent event) {
+//               addStyleName("zoom");
+//                addStyleName("scrollable");
+//            }
+//        });
 
         if (CSFPR_Handler.getQuantDatasetInitialInformationObject().isEmpty()) {
             Label noExpLable = new Label("<h4 style='font-family:verdana;color:black;font-weight:bold;'>Sorry No Dataset Availabe Now !</h4>");

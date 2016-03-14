@@ -2840,23 +2840,23 @@ img {
 .ctermlayout{
     clear: both;
     width:12px !important;
-     background-color:white;
-     color:gray;
+    background-color:white;
+    color:gray;
     text-align:right;
     float:right;
 
 }
 
 .ntermlayout{
-   clear: both;
+    clear: both;
     width:10px !important;
-     background-color:white;
-     color:gray
+    background-color:white;
+    color:gray
 }
 
 .terminal{
     clear: both;
-     background: url(img/Lbackground.png) no-repeat;
+    background: url(img/Lbackground.png) no-repeat;
     background-position:-1px -14px;
 
 }
@@ -3030,8 +3030,8 @@ img {
     background-position:center;
     border-right:1px solid white;
     border-left:1px solid white;
-    
-     -ms-transform: rotate(180deg); /* IE 9 */
+
+    -ms-transform: rotate(180deg); /* IE 9 */
     -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
     transform: rotate(180deg);
 }
@@ -3378,8 +3378,8 @@ img {
 
 }
 .legendredtaless100 div{
-     background-image: url(img/mid_red_ta.png);
-     background-size: 12px 12px;
+    background-image: url(img/mid_red_ta.png);
+    background-size: 12px 12px;
     background-position:center;    
 
 }
@@ -3391,46 +3391,46 @@ img {
     transform: rotate(45deg);
 }
 .legendgreenta100 div{
-   background-image: url(img/green_ta.png);
+    background-image: url(img/green_ta.png);
     background-size: 12px 12px;
     background-position:center;    
 
 
 }
 .legendgreentaless100 div{
- background-image: url(img/mid_green_ta.png);
-   
-   background-size: 12px 12px;
+    background-image: url(img/mid_green_ta.png);
+
+    background-size: 12px 12px;
     background-position:center;    
- 
-    
+
+
 
 }
 .legendgraydm div{
 
     background: rgb(128, 128, 128);    
-     -ms-transform: rotate(45deg); /* IE 9 */
+    -ms-transform: rotate(45deg); /* IE 9 */
     -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
     transform: rotate(45deg);
 }
 .legendemptygraydm div{
 
     border:1px solid  rgb(128, 128, 128);    
-     -ms-transform: rotate(45deg); /* IE 9 */
+    -ms-transform: rotate(45deg); /* IE 9 */
     -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
     transform: rotate(45deg);
 }
 .custuserup{
-     background: #ffe5e5;  
-     border: 1px solid gray;
+    background: #ffe5e5;  
+    border: 1px solid gray;
 }
 .custuserstable{
-     background: #e6f4ff; 
-      border: 1px solid gray;
+    background: #e6f4ff; 
+    border: 1px solid gray;
 }
 .custuserdown{
     background-color: #e5ffe5; 
-     border: 1px solid gray;
+    border: 1px solid gray;
 }
 
 .allpeptidesseqbtn{
@@ -3447,7 +3447,7 @@ img {
 .sigpeptidesseqbtn{
     background-image: url(img/seg_peptides_sequence.png);
     height: 24px !important;
-     width: 25px !important;
+    width: 25px !important;
     background-position:center !important;
     background-repeat: no-repeat !important;
     background-size: 21px 20px, 20px 20px !important;
@@ -3458,7 +3458,7 @@ img {
 
 .ptm_selected_btn{
     background-image: url(img/ptm_btn.png);
-     height: 24px !important;
+    height: 24px !important;
     width: 25px !important;
     background-position:center !important;
     background-repeat: no-repeat !important;
@@ -3469,7 +3469,7 @@ img {
 }
 .ptm_unselected_btn{
     background-image: url(img/ptm_unselected_btn.png);
-     height: 24px !important;
+    height: 24px !important;
     width: 25px !important;
     background-position:center !important;
     background-repeat: no-repeat !important;
@@ -3480,7 +3480,7 @@ img {
 }
 .maxmizebtn{
     background-image: url(img/expand-square.png);
-     height: 24px !important;
+    height: 24px !important;
     width: 25px !important;
     background-position:center !important;
     background-repeat: no-repeat !important;
@@ -3489,13 +3489,271 @@ img {
     border:2px solid white;
 
 }
+.zoom25{
+    zoom: 25%;
+    overflow:auto !important;
 
-.zoom{
-    zoom: 220%; width: 2000px !important;
 }
+.zoom50{
+    zoom: 50%; 
+    -ms-zoom: 50%;
+    -webkit-zoom:50%;
+    overflow:auto !important;
+    image-rendering: -moz-crisp-edges !important;         /* Firefox */
+    image-rendering:   -o-crisp-edges !important;         /* Opera */
+    image-rendering: -webkit-optimize-contrast !important;/* Webkit (non-standard naming) */
+    image-rendering: crisp-edges !important;
+    -ms-interpolation-mode: nearest-neighbor !important;  /* IE (non-standard property) */
+
+    filter: progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand',
+        M11=0.5, M12=0,
+        M21=0, M22=0.5);
+    -webkit-backface-visibility: hidden;
+}
+.zoom75{
+    zoom: 75%;  
+    -ms-zoom: 75%;
+    -webkit-zoom:75%;
+    overflow:auto !important;
+    image-rendering: -moz-crisp-edges !important;         /* Firefox */
+    image-rendering:   -o-crisp-edges !important;         /* Opera */
+    image-rendering: -webkit-optimize-contrast !important;/* Webkit (non-standard naming) */
+    image-rendering: crisp-edges !important;
+    -ms-interpolation-mode: nearest-neighbor !important;  /* IE (non-standard property) */
+
+    filter: progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand',
+        M11=0.5, M12=0,
+        M21=0, M22=0.5);
+    -webkit-backface-visibility: hidden;
+}
+.zoom100{
+    zoom: 100%; 
+    overflow:auto !important;
+
+
+
+}
+.zoom125{
+    zoom: 125%; width: 2000px !important;
+    -ms-zoom: 125%;
+    -webkit-zoom:125%;
+    overflow:auto !important;   
+    image-rendering: -moz-crisp-edges !important;         /* Firefox */
+    image-rendering:   -o-crisp-edges !important;         /* Opera */
+    image-rendering: -webkit-optimize-contrast !important;/* Webkit (non-standard naming) */
+    image-rendering: crisp-edges !important;
+    -ms-interpolation-mode: nearest-neighbor !important;  /* IE (non-standard property) */
+
+    filter: progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand',
+        M11=0.5, M12=0,
+        M21=0, M22=0.5);
+    -webkit-backface-visibility: hidden;
+}
+
+.zoom150{
+    zoom: 150%;
+    -ms-zoom: 150%;
+    -webkit-zoom:150%;
+    width: 2000px !important;
+
+
+    overflow:auto !important;
+    image-rendering: -moz-crisp-edges !important;         /* Firefox */
+    image-rendering:   -o-crisp-edges !important;         /* Opera */
+    image-rendering: -webkit-optimize-contrast !important;/* Webkit (non-standard naming) */
+    image-rendering: crisp-edges !important;
+    -ms-interpolation-mode: nearest-neighbor !important;  /* IE (non-standard property) */
+
+    filter: progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand',
+        M11=0.5, M12=0,
+        M21=0, M22=0.5);
+    -webkit-backface-visibility: hidden;
+}
+.zoom175{
+    zoom: 175%;
+    -ms-zoom: 175%;
+    -webkit-zoom:175%;
+    width: 2000px !important;
+    overflow:auto !important;
+    image-rendering: -moz-crisp-edges !important;         /* Firefox */
+    image-rendering:   -o-crisp-edges !important;         /* Opera */
+    image-rendering: -webkit-optimize-contrast !important;/* Webkit (non-standard naming) */
+    image-rendering: crisp-edges !important;
+    -ms-interpolation-mode: nearest-neighbor !important;  /* IE (non-standard property) */
+
+    filter: progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand',
+        M11=0.5, M12=0,
+        M21=0, M22=0.5);
+    -webkit-backface-visibility: hidden;
+}
+
+.zoom200{
+    zoom: 200%;
+    -ms-zoom: 200%;
+    -webkit-zoom:200%;
+    width: 2000px !important;
+    overflow:auto !important;
+    image-rendering: -moz-crisp-edges !important;         /* Firefox */
+    image-rendering:   -o-crisp-edges !important;         /* Opera */
+    image-rendering: -webkit-optimize-contrast !important;/* Webkit (non-standard naming) */
+    image-rendering: crisp-edges !important;
+    -ms-interpolation-mode: nearest-neighbor !important;  /* IE (non-standard property) */
+
+    filter: progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand',
+        M11=0.5, M12=0,
+        M21=0, M22=0.5);
+    -webkit-backface-visibility: hidden;
+}
+.zoom225{
+    zoom: 225%; width: 2000px !important;
+    -ms-zoom: 225%;
+    -webkit-zoom:225%;
+    overflow:auto !important;
+    image-rendering: -moz-crisp-edges !important;         /* Firefox */
+    image-rendering:   -o-crisp-edges !important;         /* Opera */
+    image-rendering: -webkit-optimize-contrast !important;/* Webkit (non-standard naming) */
+    image-rendering: crisp-edges !important;
+    -ms-interpolation-mode: nearest-neighbor !important;  /* IE (non-standard property) */
+
+    filter: progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand',
+        M11=0.5, M12=0,
+        M21=0, M22=0.5);
+    -webkit-backface-visibility: hidden;
+}
+.zoom250{
+    zoom: 250%;
+    -ms-zoom: 250%;
+    -webkit-zoom:250%;
+    width: 2000px !important;
+    overflow:auto !important;
+    image-rendering: -moz-crisp-edges !important;         /* Firefox */
+    image-rendering:   -o-crisp-edges !important;         /* Opera */
+    image-rendering: -webkit-optimize-contrast !important;/* Webkit (non-standard naming) */
+    image-rendering: crisp-edges !important;
+    -ms-interpolation-mode: nearest-neighbor !important;  /* IE (non-standard property) */
+
+    filter: progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand',
+        M11=0.5, M12=0,
+        M21=0, M22=0.5);
+    -webkit-backface-visibility: hidden;
+}
+.zoom275{
+    zoom: 275%; width: 2000px !important;
+    -ms-zoom: 275%;
+    -webkit-zoom: 275;
+    overflow:auto !important;
+    image-rendering: -moz-crisp-edges !important;         /* Firefox */
+    image-rendering:   -o-crisp-edges !important;         /* Opera */
+    image-rendering: -webkit-optimize-contrast !important;/* Webkit (non-standard naming) */
+    image-rendering: crisp-edges !important;
+    -ms-interpolation-mode: nearest-neighbor !important;  /* IE (non-standard property) */
+
+    filter: progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand',
+        M11=0.5, M12=0,
+        M21=0, M22=0.5);
+    -webkit-backface-visibility: hidden;
+}
+.zoom300{
+    zoom: 300%;
+    -ms-zoom: 300%;
+    -webkit-zoom:300%;
+    width: 2000px !important;
+    overflow:auto !important;
+    image-rendering: -moz-crisp-edges !important;         /* Firefox */
+    image-rendering:   -o-crisp-edges !important;         /* Opera */
+    image-rendering: -webkit-optimize-contrast !important;/* Webkit (non-standard naming) */
+    image-rendering: crisp-edges !important;
+    -ms-interpolation-mode: nearest-neighbor !important;  /* IE (non-standard property) */
+
+    filter: progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand',
+        M11=0.5, M12=0,
+        M21=0, M22=0.5);
+    -webkit-backface-visibility: hidden;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 .scrollable{
     overflow:auto !important;
-    
-    
+
+
 }
 
+
+.zoompanel{
+    clear:both;
+    top:66px !important;
+    position:absolute;
+    right:45px;
+    z-index:9;
+
+}
+
+.zoominbtn div{
+    clear:both;
+    background-image: url(img/search-minus.png);
+    background-size: 15px 15px;
+    background-repeat:no-repeat;
+    background-position:center;
+    border-radius:4px;
+    border:1px solid lightgray;
+    background-color:whitesmoke;
+    cursor:pointer;
+
+
+}
+.zoominbtn div:hover{
+    background-color:white;
+    border:1px solid gray;
+}
+.zoominbtn div:focus{
+    outline:none !important;
+    border:none;
+}
+
+.zoomoutbtn div{
+    background-image: url(img/search-plus.png);
+    background-size: 15px 15px;
+    background-repeat:no-repeat;
+    background-position:center;
+    border-radius:4px;
+    border:1px solid lightgray;
+    background-color:whitesmoke;
+    cursor:pointer;    
+}
+.zoomoutbtn div:hover{
+    background-color:white;
+    border:1px solid gray;
+}
+.zoomoutbtn div:focus{
+    outline:none !important;
+    border:none;
+}
+
+.resetzoombtn div{
+    background-image: url(img/minus-circle-o.png);
+    background-size: 15px 15px;
+    background-repeat:no-repeat;
+    background-position:center;
+    border-radius:4px;
+    border:1px solid lightgray;
+    background-color:whitesmoke;
+    cursor:pointer;    
+}
+.resetzoombtn div:hover{
+    background-color:white;
+    border:1px solid gray;
+}
+.resetzoombtn div:focus{
+    outline:none !important;
+    border:none;
+}

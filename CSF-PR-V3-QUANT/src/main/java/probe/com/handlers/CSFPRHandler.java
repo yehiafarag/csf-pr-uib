@@ -1,5 +1,6 @@
 package probe.com.handlers;
 
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Panel;
 import java.sql.SQLException;
 
@@ -30,6 +31,7 @@ import probe.com.model.beans.quant.QuantDatasetObject;
 import probe.com.model.util.vaadintoimageutil.peptideslayout.ProteinInformationDataForExport;
 import probe.com.view.HeaderLayout;
 import probe.com.view.core.TipGenerator;
+import probe.com.view.core.ZoomUnit;
 
 /**
  * @author Yehia Farag
@@ -685,7 +687,15 @@ public class CSFPRHandler implements Serializable {
     public Map<String, String> getDiseaseHashedColorMap() {
         return diseaseHashedColorMap;
     }
+    
+    private ZoomUnit zoomUnit;
 
+    public void setZoomUnit(ZoomUnit zoomUnit) {
+        this.zoomUnit = zoomUnit;
+    }
+    public void setZoomedLayout(Component layout){
+        zoomUnit.setLayout(layout);
+    }
 
    
 
