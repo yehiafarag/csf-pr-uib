@@ -115,7 +115,11 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
         return widthArea;
     }
 
-    private final int x0;
+    public void setX0(int x0) {
+        this.x0 = x0;
+    }
+
+    private  int x0;
     private final Integer widthArea;
     private final VerticalLayout ptmLayout = new VerticalLayout();
     private boolean ptmAvailable = false;
@@ -129,7 +133,7 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
      */
     public StackedBarPeptideComponent(int x0, int widthArea, String peptideKey, String peptideModification) {
         this.setHeight("15px");
-        this.setWidth((widthArea + 2) + "px");
+        this.setWidth((widthArea) + "px");
         this.x0 = x0;
         this.widthArea = widthArea;
         this.peptideKey = peptideKey;
