@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.jfree.chart.JFreeChart;
@@ -103,6 +104,18 @@ public class StudiesFilterManager implements Serializable {
 
     public StudiesFilterManager(Map<String, QuantDatasetInitialInformationObject> quantDatasetListObject, Map<String, boolean[]> activeFilterMap, Map<String, Map<String, String>> default_DiseaseCat_DiseaseGroupMap) {
 
+       msReindexMap = new ArrayList<String>();
+        msReindexMap.add("RRMS\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("Progressive MS\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("CDMS\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("CIS-MS\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("CIS\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("CIS-CIS\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("MS treated\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("Neurological\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("Healthy\n" + "Multiple_Sclerosis_Disease");
+        
+        
         this.default_DiseaseCat_DiseaseGroupMap = default_DiseaseCat_DiseaseGroupMap;
         this.fullDiseaseGroupMap = new LinkedHashMap<Integer, DiseaseGroup>();
         this.selectedDiseaseGroupMap = new LinkedHashMap<Integer, DiseaseGroup>();
@@ -145,7 +158,16 @@ public class StudiesFilterManager implements Serializable {
     private String userDiseaseGroupA = "VeryHårdToExistByChanceøæå", userDiseaseGroupB = "VeryHårdToExistByChanceøæå";
 
     public StudiesFilterManager(Map<String, QuantDatasetInitialInformationObject> quantDatasetListObject, Map<String, boolean[]> activeFilterMap, QuantDiseaseGroupsComparison userCustomizedComparison, Map<String, Map<String, String>> default_DiseaseCat_DiseaseGroupMap) {
-
+        msReindexMap = new ArrayList<String>();
+        msReindexMap.add("RRMS\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("Progressive MS\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("CDMS\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("CIS-MS\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("CIS\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("CIS-CIS\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("MS treated\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("Neurological\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("Healthy\n" + "Multiple_Sclerosis_Disease");
         this.default_DiseaseCat_DiseaseGroupMap = default_DiseaseCat_DiseaseGroupMap;
         this.fullDiseaseGroupMap = new LinkedHashMap<Integer, DiseaseGroup>();
         this.selectedDiseaseGroupMap = new LinkedHashMap<Integer, DiseaseGroup>();
@@ -191,6 +213,10 @@ public class StudiesFilterManager implements Serializable {
         this.updateRowsAndColumns("Reset_Disease_Groups_Level");
 
     }
+    private final List<String> msReindexMap;
+    private final int[] msReindex = new int[]{8, 7, 0, 3, 1, 2, 5, 6, 4};
+    private final int[] adReindex = new int[]{0, 2, 3, 4, 5, 8, 6, 7, 1};
+    private final int[] pdReindex = new int[]{5, 4, 0, 2, 3, 1};
 
     private void updateRowsAndColumns(String type) {
         if (type.equalsIgnoreCase("Disease_Groups_Level")) {
@@ -226,11 +252,83 @@ public class StudiesFilterManager implements Serializable {
                     selectedHeatMapRows.add(str);
                 }
             }
-            selectedHeatMapColumns.clear();
+
+            String[] sortRows = new String[selectedHeatMapRows.size()];
+            int count = 0;
+
+            System.out.println("at inUseDiseaseName " + inUseDiseaseName);
+            if (inUseDiseaseName.equalsIgnoreCase("Multiple Sclerosis")) {
+                
+                 for (String str : msReindexMap) {
+                     if(selectedHeatMapRows.contains(str)){
+                     sortRows[count]=str;
+                     selectedHeatMapRows.remove(str);
+                     count++;                     
+                     }
+                }   
+                for (String str : selectedHeatMapRows) {
+                    sortRows[count] = str;
+                    count++;
+                }
+                selectedHeatMapRows.clear();
+                selectedHeatMapRows.addAll(Arrays.asList(sortRows));
+                selectedHeatMapColumns.clear();
+            } else if (inUseDiseaseName.equalsIgnoreCase("Alzheimer's")) {
+                for (String str : selectedHeatMapRows) {
+                    sortRows[count] = selectedHeatMapRows.toArray()[adReindex[count]].toString();
+                    count++;
+                }
+                selectedHeatMapRows.clear();
+                selectedHeatMapRows.addAll(Arrays.asList(sortRows));
+                selectedHeatMapColumns.clear();
+            } else if (inUseDiseaseName.equalsIgnoreCase("Parkinson's")) {
+                for (String str : selectedHeatMapRows) {
+                    sortRows[count] = selectedHeatMapRows.toArray()[pdReindex[count]].toString();
+                    count++;
+                }
+                selectedHeatMapRows.clear();
+                selectedHeatMapRows.addAll(Arrays.asList(sortRows));
+                selectedHeatMapColumns.clear();
+            }
+
             for (String str : pgArr) {
                 if (!str.equalsIgnoreCase("") && !str.contains(userDiseaseGroupA)) {
                     selectedHeatMapColumns.add(str);
                 }
+            }
+
+            String[] sortCols = new String[selectedHeatMapColumns.size()];
+            count = 0;
+
+            if (inUseDiseaseName.equalsIgnoreCase("Multiple Sclerosis")) {
+               
+                for (String str : msReindexMap) {
+                     if(selectedHeatMapColumns.contains(str)){
+                     sortCols[count]=str;
+                     selectedHeatMapColumns.remove(str);
+                     count++;                     
+                     }
+                }   
+                for (String str : selectedHeatMapColumns) {
+                    sortCols[count] = str;
+                    count++;
+                }
+                selectedHeatMapColumns.clear();
+                selectedHeatMapColumns.addAll(Arrays.asList(sortCols));
+            } else if (inUseDiseaseName.equalsIgnoreCase("Alzheimer's")) {
+                for (String str : selectedHeatMapColumns) {
+                    sortCols[count] = selectedHeatMapColumns.toArray()[adReindex[count]].toString();
+                    count++;
+                }
+                selectedHeatMapColumns.clear();
+                selectedHeatMapColumns.addAll(Arrays.asList(sortCols));
+            } else if (inUseDiseaseName.equalsIgnoreCase("Parkinson's")) {
+                for (String str : selectedHeatMapColumns) {
+                    sortCols[count] = selectedHeatMapColumns.toArray()[pdReindex[count]].toString();
+                    count++;
+                }
+                selectedHeatMapColumns.clear();
+                selectedHeatMapColumns.addAll(Arrays.asList(sortCols));
             }
 
 //            selectedHeatMapColumns.clear();
@@ -489,6 +587,7 @@ public class StudiesFilterManager implements Serializable {
                 selectedHeatMapRows.add(str);
             }
         }
+
         selectedHeatMapColumns.clear();
         selectedHeatMapColumns.addAll(selectedHeatMapRows);
 
@@ -600,9 +699,8 @@ public class StudiesFilterManager implements Serializable {
         this.selectedHeatMapColumns.clear();
         this.selectedHeatMapColumns.addAll(selectedColumns);
         this.currentDsNumber = fullDiseaseGroupMap.size();
-
         this.updateDiseaseGroups(getFilteredDatasetsList());
-        this.updateDiseaseGroups(getFullQuantDatasetMap());
+//        this.updateDiseaseGroups(getFullQuantDatasetMap());
 
         this.SelectionChanged("HeatMap_Update_level");
 

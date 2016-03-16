@@ -286,7 +286,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         orederingTrendBtn.setWidth("24px");
         orederingTrendBtn.setHeight("24px");
         orederingTrendBtn.setStyleName("defaultorder");
-        orederingTrendBtn.setDescription("Order studies by trend");
+        orederingTrendBtn.setDescription("Order datasets by trend");
         orederingTrendBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
             private DiseaseGroupsComparisonsProteinLayout[] ordComparisonProteins;
 
@@ -299,11 +299,11 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                     orderedLineChartContainer.setVisible(false);
                     studiesScatterChartsLayout.orderComparisons(comparisonProteins);
                     orederingTrendBtn.setStyleName("defaultorder");
-                    orederingTrendBtn.setDescription("Order studies by trend");
+                    orederingTrendBtn.setDescription("Order datasets by trend");
 
                 } else {
                     orederingTrendBtn.setStyleName("trendorder");
-                    orederingTrendBtn.setDescription("Restore studies order");
+                    orederingTrendBtn.setDescription("Restore datasets order");
                     if (orderedLineChartImg.equalsIgnoreCase("")) {
                         //order the comparisons and proteins
                         TreeMap<String, DiseaseGroupsComparisonsProteinLayout> orderedCompProteins = new TreeMap<String, DiseaseGroupsComparisonsProteinLayout>();
@@ -548,7 +548,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         orederingTrendBtn.setWidth("24px");
         orederingTrendBtn.setHeight("24px");
         orederingTrendBtn.setStyleName("defaultorder");
-        orederingTrendBtn.setDescription("Order studies by trend");
+        orederingTrendBtn.setDescription("Order datasets by trend");
         orederingTrendBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
             private DiseaseGroupsComparisonsProteinLayout[] ordComparisonProteins;
 
@@ -561,11 +561,11 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                     orderedLineChartContainer.setVisible(false);
                     studiesScatterChartsLayout.orderComparisons(comparisonProteins);
                     orederingTrendBtn.setStyleName("defaultorder");
-                    orederingTrendBtn.setDescription("Order studies by trend");
+                    orederingTrendBtn.setDescription("Order datasets by trend");
 
                 } else {
                     orederingTrendBtn.setStyleName("trendorder");
-                    orederingTrendBtn.setDescription("Restore studies order");
+                    orederingTrendBtn.setDescription("Restore datasets order");
                     if (orderedLineChartImg.equalsIgnoreCase("")) {
                         //order the comparisons and proteins
                         TreeMap<String, DiseaseGroupsComparisonsProteinLayout> orderedCompProteins = new TreeMap<String, DiseaseGroupsComparisonsProteinLayout>();

@@ -2050,6 +2050,28 @@ public class DataBase implements Serializable {
 
             }
             rs.close();
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             return diseaseCategoriesMap;
 
         } catch (ClassNotFoundException e) {

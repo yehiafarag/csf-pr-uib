@@ -113,7 +113,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0];// + " ( " + groupCompTitle.split(" / ")[1].split("\n")[1] + " )";
 
         String rgbColor = Quant_Central_Manager.getDiseaseHashedColor(groupCompTitle.split(" / ")[1].split("\n")[1]);
-        comparisonTitle = new Label("<font color='" + rgbColor + "' style='font-weight: bold;'>" + updatedHeader + " (#Studies " + numb + "/" + cp.getComparison().getDatasetIndexes().length + ")</font>");
+        comparisonTitle = new Label("<font color='" + rgbColor + "' style='font-weight: bold;'>" + updatedHeader + " (Datasets " + numb + "/" + cp.getComparison().getDatasetIndexes().length + ")</font>");
         comparisonTitle.setContentMode(ContentMode.HTML);
         comparisonTitle.setStyleName("custChartLabelHeader");
         comparisonTitle.setWidth((width - 55) + "px");

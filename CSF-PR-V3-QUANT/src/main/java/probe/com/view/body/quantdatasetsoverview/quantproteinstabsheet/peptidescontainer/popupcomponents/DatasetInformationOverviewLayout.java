@@ -36,7 +36,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
     }
 
     private final GridLayout datasetInfoForm;
-    private InformationField quantProteinsNum, quantPeptidesNum, diseaseCategory, pumedId, rawData, analyticalMethod, typeOfStudy, shotgunTargeted, enzyme, sampleType, technology, quantificationBasis, patientsGroup1Number, patientsGroup2Number, patientsGroup1, patientsGroup2, patientssubGroup1, patientsCommGroup1, patientssubGroup2, patientsCommGroup2, identifiedProteinsNumber, quantifiedProteinsNumber, sampleMatching, analyticalApproach, normalization_strategy;
+    private InformationField uQuantProteinsNum, uQuantPeptidesNum,quantProteinsNum, quantPeptidesNum, diseaseCategory, pumedId, rawData, analyticalMethod, typeOfStudy, shotgunTargeted, enzyme, sampleType, technology, quantificationBasis, patientsGroup1Number, patientsGroup2Number, patientsGroup1, patientsGroup2, patientssubGroup1, patientsCommGroup1, patientssubGroup2, patientsCommGroup2, identifiedProteinsNumber, quantifiedProteinsNumber, sampleMatching, analyticalApproach, normalization_strategy;
 
     private GridLayout initQuantDatasetInformationLayout() {
 
@@ -74,10 +74,10 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         quantificationBasis = new InformationField("Quantification Basis");
         datasetInfoFormLayout.addComponent(quantificationBasis, 0, 2);
 
-        identifiedProteinsNumber = new InformationField("# Identified Proteins");
+        identifiedProteinsNumber = new InformationField("#Identified Proteins");
         datasetInfoFormLayout.addComponent(identifiedProteinsNumber, 1, 2);
 
-        quantifiedProteinsNumber = new InformationField("# Quantified Proteins");
+        quantifiedProteinsNumber = new InformationField("#Quantified Proteins");
         datasetInfoFormLayout.addComponent(quantifiedProteinsNumber, 2, 2);
 
         sampleMatching = new InformationField("Sample Matching");
@@ -113,7 +113,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         rawData = new InformationField("Raw Data");
         datasetInfoFormLayout.addComponent(rawData, 1, 5);
 
-        diseaseCategory = new InformationField("disease Category");
+        diseaseCategory = new InformationField("Disease Category");
         datasetInfoFormLayout.addComponent(diseaseCategory, 2, 5);
 
         quantProteinsNum = new InformationField("#Proteins");
@@ -121,6 +121,14 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
 
         quantPeptidesNum = new InformationField("#Peptides");
         datasetInfoFormLayout.addComponent(quantPeptidesNum, 0, 6);
+        
+         uQuantProteinsNum = new InformationField("#Dataset Specific Proteins");
+        datasetInfoFormLayout.addComponent(uQuantProteinsNum, 1, 6);
+        
+        uQuantPeptidesNum = new InformationField("#Dataset Specific Peptides");
+        datasetInfoFormLayout.addComponent(uQuantPeptidesNum, 2, 6);
+        
+       
 
 //        quantBasisComment = new InformationField("Quantification BasisComment");
 //        datasetInfoFormLayout.addComponent(quantBasisComment, 1, 5);
@@ -170,8 +178,10 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
 
         quantifiedProteinsNumber.setValue("" + dataset.getQuantifiedProteinsNumber(), null);
 
-        quantPeptidesNum.setValue("" + dataset.getUniqePepNum() + "/" + dataset.getTotalPepNum() + "", null);
-        quantProteinsNum.setValue("" + dataset.getUniqueProtNum() + "/" + dataset.getTotalProtNum() + "", null);
+        quantPeptidesNum.setValue("" + dataset.getTotalPepNum() + "", null);
+        quantProteinsNum.setValue("" + dataset.getTotalProtNum() + "", null);
+        uQuantPeptidesNum.setValue(dataset.getUniqePepNum(), null);
+        uQuantProteinsNum.setValue(dataset.getUniqueProtNum(), null);
         this.datasetInfoForm.setVisible(true);
     }
 

@@ -574,9 +574,9 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
         newProteinsTextArea.setReadOnly(false);
 
         foundPublicationLabel.setValue("#Publications: " + foundPublicationcounter.size()+"/18");
-        foundStudiesLabel.setValue("#Studies: " + foundStudiescounter.size()+"/86");
+        foundStudiesLabel.setValue("#Datasets: " + foundStudiescounter.size()+"/86");
         foundProteinsLabel.setValue("#Found Proteins: " + foundProtcounter.size()+"/2839");
-        selectionResultsOverview.setValue("(#Publications: " + foundPublicationcounter.size() + "/18&nbsp;&nbsp;&nbsp;&nbsp;#Studies: " + foundStudiescounter.size() + "/86 &nbsp;&nbsp;&nbsp;&nbsp;#Found: " + foundProtcounter.size() + "/2839&nbsp;&nbsp;&nbsp;&nbsp;<font color='#1b699f'>#New: " + newProtNumber + "</font>)");
+        selectionResultsOverview.setValue("(#Publications: " + foundPublicationcounter.size() + "/18&nbsp;&nbsp;&nbsp;&nbsp;#Datasets: " + foundStudiescounter.size() + "/86 &nbsp;&nbsp;&nbsp;&nbsp;#Found: " + foundProtcounter.size() + "/2839&nbsp;&nbsp;&nbsp;&nbsp;<font color='#1b699f'>#New: " + newProtNumber + "</font>)");
         newProteinsTextArea.setValue(quantNotFound.replace(",", "\n"));
         newProteinsTextArea.setReadOnly(true);
         if (searchQuantificationProtList.isEmpty()) {
@@ -587,7 +587,7 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
         resultContainer.removeComponent(2, 1);
         PieChart pubicationPieChart = new PieChart("Publications", 18, foundPublicationcounter.size());
         resultContainer.addComponent(pubicationPieChart, 0, 1);
-        PieChart studiesPieChart = new PieChart("Studies", 86, foundStudiescounter.size());
+        PieChart studiesPieChart = new PieChart("Datasets", 86, foundStudiescounter.size());
         resultContainer.addComponent(studiesPieChart, 1, 1);
         PieChart fountNotfoundPieChart = new PieChart("Found", 2839, foundProtcounter.size());
         resultContainer.addComponent(fountNotfoundPieChart, 2, 1);

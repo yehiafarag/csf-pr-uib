@@ -112,7 +112,7 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
             String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0] + " ( " + groupCompTitle.split(" / ")[1].split("\n")[1].replace("_", " ").replace("-", "'").replace("Disease", "") + " )";
             valueLabel.setValue("<center><div  style='background-color:" + color + "; background-position: center;height:" + (heatmapCellWidth - 4) + "px;width:" + (heatmapCellWidth - 4) + "px; cursor:" + pointer + "; '> <font Color='#4d749f'>(" + strValue + ")</font></div><center>");
 
-            this.setDescription("<h3>Same type comparison ( " + updatedHeader + " )</h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + strValue + (value == 1 ? " study" : " studies") + " </h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + publicationsNumber + (publicationsNumber == 1 ? " publication" : " publications") + " </h3>");
+            this.setDescription("<h3>Same type comparison ( " + updatedHeader + " )</h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + strValue + (value == 1 ? " Dataset" : " Datasets") + " </h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + publicationsNumber + (publicationsNumber == 1 ? " publication" : " publications") + " </h3>");
             comparison.setComparisonHeader(" / ");
             combinedHeader = true;
 
@@ -136,7 +136,7 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
         if (value > 0 && !color.equalsIgnoreCase("#EFF2FB")) {
             String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0] + " ( " + groupCompTitle.split(" / ")[1].split("\n")[1].replace("_", " ").replace("-", "'").replace("Disease", "") + " )";
 
-            this.setDescription("<h3>" + updatedHeader + "</h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + strValue + (value == 1 ? " study" : " studies") + " </h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + publicationsNumber + (publicationsNumber == 1 ? " publication" : " publications") + " </h3>");
+            this.setDescription("<h3>" + updatedHeader + "</h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + strValue + (value == 1 ? " Dataset" : " Datasets") + " </h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + publicationsNumber + (publicationsNumber == 1 ? " publication" : " publications") + " </h3>");
         }
 
     }

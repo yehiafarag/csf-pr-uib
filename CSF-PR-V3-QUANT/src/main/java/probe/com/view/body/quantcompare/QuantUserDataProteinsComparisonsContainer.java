@@ -679,11 +679,11 @@ public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout im
             }
 
             comparisonToAccessionMap.put(comparison.getComparisonHeader(), comparisonProtAccessionsSet);
-            this.groupsComparisonProteinsTable.setColumnHeader(comparison.getComparisonHeader(), " (" + protCounter + ((protCounter == 1) ? " Protein / " : " Proteins / ") + comparison.getDatasetIndexes().length + ((comparison.getDatasetIndexes().length == 1) ? " Study)" : " Studies)"));
+            this.groupsComparisonProteinsTable.setColumnHeader(comparison.getComparisonHeader(), " (" + protCounter + ((protCounter == 1) ? " Protein / " : " Proteins / ") + comparison.getDatasetIndexes().length + ((comparison.getDatasetIndexes().length == 1) ? " Dataset)" : " Datasets)"));
             String header = comparison.getComparisonHeader();
             String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + " ( " + header.split(" / ")[1].split("\n")[1] + " )";
 
-            columnTitleLayout.setDescription("<h3>" + updatedHeader + "</h3><center><h4>(" + protCounter + ((protCounter == 1) ? " Protein / " : " Proteins / ") + comparison.getDatasetIndexes().length + ((comparison.getDatasetIndexes().length == 1) ? " Study)" : " Studies)</h4></center>"));
+            columnTitleLayout.setDescription("<h3>" + updatedHeader + "</h3><center><h4>(" + protCounter + ((protCounter == 1) ? " Protein / " : " Proteins / ") + comparison.getDatasetIndexes().length + ((comparison.getDatasetIndexes().length == 1) ? " Dataset)" : " Datasets)</h4></center>"));
         }
 
         int index = 0;
@@ -731,7 +731,7 @@ public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout im
         String header = userCustomizedComparison.getComparisonHeader();
         String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0];// + " ( " + header.split(" / ")[1].split("\n")[1] + " )";
 
-        userCustColumnTitleLayout.setDescription("<h3>" + updatedHeader + "</h3><center><h4>(" + groupsComparisonProteinsTable.size() + ((groupsComparisonProteinsTable.size() == 1) ? " Protein / " : " Proteins / ") + userCustomizedComparison.getDatasetIndexes().length + ((userCustomizedComparison.getDatasetIndexes().length == 1) ? " Study)" : " Studies)</h4></center>"));
+        userCustColumnTitleLayout.setDescription("<h3>" + updatedHeader + "</h3><center><h4>(" + groupsComparisonProteinsTable.size() + ((groupsComparisonProteinsTable.size() == 1) ? " Protein / " : " Proteins / ") + userCustomizedComparison.getDatasetIndexes().length + ((userCustomizedComparison.getDatasetIndexes().length == 1) ? " Dataset)" : " Datasets)</h4></center>"));
         sortComparisonTableColumn = userCustomizedComparison.getComparisonHeader();
         this.groupsComparisonProteinsTable.sort(new String[]{sortComparisonTableColumn}, new boolean[]{false});
         this.groupsComparisonProteinsTable.setSortAscending(false);

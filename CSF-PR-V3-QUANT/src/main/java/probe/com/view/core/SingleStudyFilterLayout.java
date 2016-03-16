@@ -90,9 +90,9 @@ public class SingleStudyFilterLayout extends VerticalLayout {
         publicationInfoLayoutComponents[1] = year;
         
         
-        InformationField identifiedProteinsNumber = new InformationField("# Identified Proteins");
+        InformationField identifiedProteinsNumber = new InformationField("#Identified Proteins");
         publicationInfoLayoutComponents[2] = identifiedProteinsNumber;
-        InformationField quantifiedProteinsNumber = new InformationField("# Quantified Proteins");
+        InformationField quantifiedProteinsNumber = new InformationField("#Quantified Proteins");
        
         publicationInfoLayoutComponents[3] = quantifiedProteinsNumber;
         diseaseGroup = new InformationField("Disease Group");

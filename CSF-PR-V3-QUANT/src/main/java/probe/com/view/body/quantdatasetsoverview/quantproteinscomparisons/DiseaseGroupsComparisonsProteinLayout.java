@@ -485,7 +485,7 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
 
     @Override
     public String toString() {
-        return ("Low: " + lowSignificant + (lowSignificant == 1 ? " study" : " studies") + "  -  Stable : " + stable + (stable == 1 ? " study" : " studies") + " -  High: " + highSignificant + (highSignificant == 1 ? " study" : " studies"));//"Low: " + lowSignificant +" ( "+ df.format(((double) lowSignificant / (double) total) * 100.0)+ "% )  /  Stable : " + stableSignificant + " /  High: " + highSignificant+" ( "+ df.format(((double) highSignificant / (double) total) * 100.0)+ "% )";
+        return ("Low: " + lowSignificant + (lowSignificant == 1 ? " dataset" : " datasets") + "  -  Stable : " + stable + (stable == 1 ? " dataset" : " datasets") + " -  High: " + highSignificant + (highSignificant == 1 ? " dataset" : " datasets"));//"Low: " + lowSignificant +" ( "+ df.format(((double) lowSignificant / (double) total) * 100.0)+ "% )  /  Stable : " + stableSignificant + " /  High: " + highSignificant+" ( "+ df.format(((double) highSignificant / (double) total) * 100.0)+ "% )";
 
     }
 

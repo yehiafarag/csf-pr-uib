@@ -79,7 +79,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
 
         quantDatasetsOverviewPanel.setHeight(bodyHeight + "px");
         quantDatasetsOverviewPanel.setWidth("100%");
-        mainTabSheet.addTab(quantDatasetsOverviewPanel, "Quantitative Studies");
+        mainTabSheet.addTab(quantDatasetsOverviewPanel, "Quantitative Datasets");
 
 //      Tab 3 content       identificationDatasetsOverviewPanel    
         identificationDatasetsOverviewPanel = new Panel();
@@ -203,7 +203,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
 
             CSFPR_Handler.setZoomedLayout(searchingLayout);
 
-        } else if (c.equals("Quantitative Studies")) {
+        } else if (c.equals("Quantitative Datasets")) {
             adminTab.setVisible(false);
 
             if (datasetOverviewTabLayout == null && CSFPR_Handler != null) {

@@ -238,7 +238,7 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
 //
 //        });
         final VerticalLayout noSerumOption = new VerticalLayout();
-        noSerumOption.setDescription("Include serum studies");
+        noSerumOption.setDescription("Include serum datasets");
         popupBtnsLayout.addComponent(noSerumOption);
         popupBtnsLayout.setComponentAlignment(noSerumOption, Alignment.MIDDLE_RIGHT);
         noSerumOption.setWidth("40px");
@@ -355,7 +355,7 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
 //        exportTableBtn.addStyleName("heatmapbtns");
         rightBottomBtnLayout.addComponent(exportTableBtn);
         rightBottomBtnLayout.setComponentAlignment(exportTableBtn, Alignment.BOTTOM_RIGHT);
-        exportTableBtn.setDescription("Export all studies data");
+        exportTableBtn.setDescription("Export all datasets data");
         final QuantDatasetsfullStudiesTableLayout quantStudiesTable = new QuantDatasetsfullStudiesTableLayout(Quant_Central_Manager);
         rightBottomBtnLayout.addComponent(quantStudiesTable);
 
@@ -363,9 +363,9 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                ExcelExport csvExport = new ExcelExport(quantStudiesTable, "CSF-PR  Quant Studies Information");
-                csvExport.setReportTitle("CSF-PR / Quant Studies Information ");
-                csvExport.setExportFileName("CSF-PR - Quant Studies Information" + ".xls");
+                ExcelExport csvExport = new ExcelExport(quantStudiesTable, "CSF-PR  Quant Datasets Information");
+                csvExport.setReportTitle("CSF-PR / Quant Datasets Information ");
+                csvExport.setExportFileName("CSF-PR - Quant Datasets Information" + ".xls");
                 csvExport.setMimeType(ExcelExport.EXCEL_MIME_TYPE);
                 csvExport.setDisplayTotals(false);
                 csvExport.export();

@@ -420,10 +420,10 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
             quantResultsOverview.setCaption("Proteins Quantitative Data ");
             return;
         }
-        quantResultsOverview.setCaption("Proteins Quantitative Data ( #Proteins " + quantHitsList.size() + "  |  #Studies " + studiesNum + "  |  #Hits " + totalProtNum + " )");
+        quantResultsOverview.setCaption("Proteins Quantitative Data ( #Proteins " + quantHitsList.size() + "  |  #Datasets " + studiesNum + "  |  #Hits " + totalProtNum + " )");
         quantResultsOverview.setVisible(true);
         quantProteinsDataLayout.removeAllComponents();
-        quantProteinsDataLayoutContainer.updateTitleLabel("Proteins Quantitative Data ( #Proteins " + quantHitsList.size() + "  | #Studies " + studiesNum + "  |  #Hits " + totalProtNum + " )");
+        quantProteinsDataLayoutContainer.updateTitleLabel("Proteins Quantitative Data ( #Proteins " + quantHitsList.size() + "  | #Datasets " + studiesNum + "  |  #Hits " + totalProtNum + " )");
         quantProteinsDataLayoutContainer.setVisible(true);
         quantProteinsDataLayout.setVisible(true);
         if (quantHitsList.size() > 1) {

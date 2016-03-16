@@ -100,7 +100,7 @@ public class PublicationsInformationWindow extends VerticalLayout implements Lay
 
         for (Object[] obj : publicationList) {
             VerticalLayout publicationLayout = initPublicationLayout(obj);
-            String btnName = obj[1].toString() + " (" + obj[2].toString() + ")<br/><font size=1 >#Proteins: " + obj[4].toString() + "/" + obj[5].toString() + "    #peptides: " + obj[5].toString() + "/" + obj[7].toString() + "</font>";
+            String btnName = "<font size=1 >"+obj[0].toString()+"</font><br/>"+obj[1].toString() + "<br/>(" + obj[2].toString() + ")<br/><font size=1 >#Proteins: " + obj[5].toString() /*+ "/" + obj[5].toString() + */+"   #Peptides: " + obj[7].toString() /*+ "/" + obj[7].toString() +*/+ "</font>";
 
             PopupInfoBtn publicationBtn = new PopupInfoBtn(publicationLayout, btnName);
             publicationContainer.addComponent(publicationBtn, col++, row);
@@ -142,27 +142,45 @@ public class PublicationsInformationWindow extends VerticalLayout implements Lay
 //        PeptidesNumLabel.setTargetName("_blank");
         pubmedIdLabel.setContentMode(ContentMode.HTML);
         publicationlayout.addComponent(pubmedIdLabel);
-        pubmedIdLabel.setHeight("30px");
+        pubmedIdLabel.setHeight("40px");
 
 //        HorizontalLayout protInfoLayout = new HorizontalLayout();
 //        protInfoLayout.setWidth("390px");
 //        protInfoLayout.setSpacing(true);
 //        publicationlayout.addComponent(protInfoLayout);
-        Label proteinsNumLabel = new Label("<h5>#Proteins: " + publicationData[4].toString() + "/" + publicationData[5].toString() + "</h5>");
-        proteinsNumLabel.setDescription("Number of publication proteins " + publicationData[4].toString() + "<br/>Number of unique proteins " + publicationData[5].toString());
+        Label proteinsNumLabel = new Label("<h5>#Proteins: "+ publicationData[5].toString() + "</h5>");
+        proteinsNumLabel.setDescription("Number of publication proteins " + publicationData[4].toString());
         proteinsNumLabel.setContentMode(ContentMode.HTML);
         publicationlayout.addComponent(proteinsNumLabel);
-        proteinsNumLabel.setHeight("30px");
+        proteinsNumLabel.setHeight("40px");
+        
+        
+        Label uproteinsNumLabel = new Label("<h5>#Publication Specific Proteins: " + publicationData[4].toString() + "</h5>");
+        uproteinsNumLabel.setDescription("Number of publication specific proteins " + publicationData[4].toString());
+        uproteinsNumLabel.setContentMode(ContentMode.HTML);
+        publicationlayout.addComponent(uproteinsNumLabel);
+        uproteinsNumLabel.setHeight("40px");
+        
 
-        Label PeptidesNumLabel = new Label("<h5>#Peptides: " + publicationData[6].toString() + "/" + publicationData[7].toString() + "</h5>");
+        Label PeptidesNumLabel = new Label("<h5>#Peptides: " +publicationData[7].toString() + "</h5>");
         PeptidesNumLabel.setContentMode(ContentMode.HTML);
         publicationlayout.addComponent(PeptidesNumLabel);
-        PeptidesNumLabel.setDescription("Number of publication peptides " + publicationData[6].toString() + "<br/>Number of unique peptides " + publicationData[7].toString());
-        PeptidesNumLabel.setHeight("30px");
+        PeptidesNumLabel.setDescription("Number of publication peptides " + publicationData[7].toString());
+        PeptidesNumLabel.setHeight("40px");
+        
+        Label uPeptidesNumLabel = new Label("<h5>#Publication Specific Peptides: " + publicationData[6].toString() + "</h5>");
+        uPeptidesNumLabel.setContentMode(ContentMode.HTML);
+        publicationlayout.addComponent(uPeptidesNumLabel);
+        uPeptidesNumLabel.setDescription("Number of publication specific  peptides " + publicationData[6].toString());
+        uPeptidesNumLabel.setHeight("40px");
+      
+        
+  
 
-        Label titleLabel = new Label("<textarea rows='auto' cols='52' readonly >" + publicationData[3].toString() + "</textarea>");
+        Label titleLabel = new Label("<textarea rows='5' cols='52' readonly >" + publicationData[3].toString() + "</textarea>");
         titleLabel.setContentMode(ContentMode.HTML);
         publicationlayout.addComponent(titleLabel);
+        titleLabel.setHeight("100px");
 
 //        VerticalLayout miniLayout = new VerticalLayout();
 //        miniLayout.setWidth("100%");

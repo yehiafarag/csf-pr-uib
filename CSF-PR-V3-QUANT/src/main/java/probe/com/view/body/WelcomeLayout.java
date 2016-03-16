@@ -174,11 +174,11 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
        
         StudiesInformationWindow sub2quantStatLabelWrapper = new StudiesInformationWindow(dsObjects,CSFPR_Handler.getDiseaseHashedColorMap());
         subQuantStatLayout.addComponent(sub2quantStatLabelWrapper, 0, 1);
-        sub2quantStatLabelWrapper.setDescription("Click to view studies information");
+        sub2quantStatLabelWrapper.setDescription("Click to view datasets information");
         
         
 
-        Label sub2quantStatLabel = new Label("<h3 style='text-decoration: underline;cursor: pointer;'>#Studies</h3>");
+        Label sub2quantStatLabel = new Label("<h3 style='text-decoration: underline;cursor: pointer;'>#Datasets</h3>");
         sub2quantStatLabel.setContentMode(ContentMode.HTML);
         sub2quantStatLabelWrapper.addComponent(sub2quantStatLabel);
 

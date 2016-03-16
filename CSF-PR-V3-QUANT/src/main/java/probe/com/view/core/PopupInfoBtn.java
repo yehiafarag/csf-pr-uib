@@ -26,7 +26,7 @@ public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutC
     public PopupInfoBtn(VerticalLayout pupupLayout, String btnName) {
 //        String btnName = data[0] + " (" + data[1] + ")<br/><font size=1 >#Proteins: " + data[3] + "    #peptides: " + data[4] + "</font>";
         this.addLayoutClickListener(PopupInfoBtn.this);
-        this.setHeight("60px");
+        this.setHeight("80px");
         this.setWidth("200px");
         Label btnLabel = new Label(btnName);
         btnLabel.setContentMode(ContentMode.HTML);

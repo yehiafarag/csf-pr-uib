@@ -123,7 +123,7 @@ public class StudiesPeptidesDetailsContainerLayout extends VerticalLayout {
         studiesPanel = new Panel(mainStudiesLayout);
         studiesPanel.setStyleName(Reindeer.PANEL_LIGHT);
         studiesPanel.setHeight(100 + "%");
-        studiesPeptidesTabsheet.addTab(studiesPanel, "Studies");
+        studiesPeptidesTabsheet.addTab(studiesPanel, "Datasets");
 
         //end of studies scatter plot container
         //init peptides layout container

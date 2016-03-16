@@ -208,7 +208,7 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
         
         
         String rgbColor = Quant_Central_Manager.getDiseaseHashedColor(groupCompTitle.split(" / ")[1].split("\n")[1]);
-        comparisonTitle.setValue("<font color='"+rgbColor+"' style='font-weight: bold;'>"+updatedHeader + " (#Studies " + numb + "/" + cp.getComparison().getDatasetIndexes().length + ")</font>");        
+        comparisonTitle.setValue("<font color='"+rgbColor+"' style='font-weight: bold;'>"+updatedHeader + " (#Datasets " + numb + "/" + cp.getComparison().getDatasetIndexes().length + ")</font>");        
         VerticalLayout bottomSpacer = new VerticalLayout();
         bottomSpacer.setWidth((width - 100) + "px");
         bottomSpacer.setHeight("10px");
