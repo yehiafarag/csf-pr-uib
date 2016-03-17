@@ -56,6 +56,10 @@ public class StudiesFilterManager implements Serializable {
     private final Map<Integer, DiseaseGroup> fullDiseaseGroupMap;
     private final Map<Integer, DiseaseGroup> selectedDiseaseGroupMap;
     private final Map<String, Set<String>> diseaseGroupsHeaderToOregenalDiseaseGroupsNames = new LinkedHashMap<String, Set<String>>();
+    private final List<String> msReindexMap;
+    private final List<String> adReindexMap;
+    private final List<String> pdReindexMap;
+    private final List<String> allDReindexMap;
 
     public boolean isNoSerum() {
         return noSerum;
@@ -104,18 +108,64 @@ public class StudiesFilterManager implements Serializable {
 
     public StudiesFilterManager(Map<String, QuantDatasetInitialInformationObject> quantDatasetListObject, Map<String, boolean[]> activeFilterMap, Map<String, Map<String, String>> default_DiseaseCat_DiseaseGroupMap) {
 
-       msReindexMap = new ArrayList<String>();
+        msReindexMap = new ArrayList<String>();
         msReindexMap.add("RRMS\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("CDMS\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("PMS\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("SPMS\n" + "Multiple_Sclerosis_Disease");
         msReindexMap.add("Progressive MS\n" + "Multiple_Sclerosis_Disease");
         msReindexMap.add("CDMS\n" + "Multiple_Sclerosis_Disease");
         msReindexMap.add("CIS-MS\n" + "Multiple_Sclerosis_Disease");
-        msReindexMap.add("CIS\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("CIS-MS(CIS)\n" + "Multiple_Sclerosis_Disease");
         msReindexMap.add("CIS-CIS\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("RRMS Nataliz.\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("SPMS Lamotri.\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("OIND\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("OIND + OND\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("OND\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("Sympt. controls\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("Non MS\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("CIS\n" + "Multiple_Sclerosis_Disease");
         msReindexMap.add("MS treated\n" + "Multiple_Sclerosis_Disease");
         msReindexMap.add("Neurological\n" + "Multiple_Sclerosis_Disease");
-        msReindexMap.add("Healthy\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("Healthy*\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("Healthy controls\n" + "Multiple_Sclerosis_Disease");
+
+        
+        pdReindexMap = new ArrayList<String>();
+        pdReindexMap.add("Parkinson's\n" + "Parkinson-s_Disease");
+        pdReindexMap.add("PDD\n" + "Parkinson-s_Disease");
+        pdReindexMap.add("Alzheimer's\n" + "Parkinson-s_Disease");
+        pdReindexMap.add("NDC\n" + "Parkinson-s_Disease");
+        pdReindexMap.add("Non Demented\n" + "Parkinson-s_Disease");
+        pdReindexMap.add("Non-neurodeg.\n" + "Parkinson-s_Disease");
+        pdReindexMap.add("Non Neurodeg.\n" + "Parkinson-s_Disease");
+        pdReindexMap.add("Healthy*\n" + "Parkinson-s_Disease");
+        pdReindexMap.add("Healthy controls\n" + "Parkinson-s_Disease");
         
         
+        adReindexMap = new ArrayList<String>();
+        adReindexMap.add("Alzheimer's\n" + "Alzheimer-s_Disease");
+        adReindexMap.add("LBD\n" + "Alzheimer-s_Disease");
+        adReindexMap.add("MCI\n" + "Alzheimer-s_Disease");
+        adReindexMap.add("MCI progressors\n" + "Alzheimer-s_Disease");
+        adReindexMap.add("MCI nonprogressors\n" + "Alzheimer-s_Disease");
+        adReindexMap.add("MCI-Alzheimer's\n" + "Alzheimer-s_Disease");
+        adReindexMap.add("MCI-MCI\n" + "Alzheimer-s_Disease");
+        adReindexMap.add("Parkinson's\n" + "Alzheimer-s_Disease");
+        adReindexMap.add("Non Alzheimer's\n" + "Alzheimer-s_Disease");
+        adReindexMap.add("Non Neurodeg.\n" + "Alzheimer-s_Disease");
+        adReindexMap.add("Non-neurodeg.\n" + "Alzheimer-s_Disease");
+         adReindexMap.add("Aged controls\n" + "Alzheimer-s_Disease");
+          adReindexMap.add("Aged healthy\n" + "Alzheimer-s_Disease");
+        adReindexMap.add("Healthy*\n" + "Alzheimer-s_Disease");
+        adReindexMap.add("Healthy controls\n" + "Alzheimer-s_Disease");
+
+        allDReindexMap = new ArrayList<String>();
+        allDReindexMap.addAll(msReindexMap);
+        allDReindexMap.addAll(pdReindexMap);
+        allDReindexMap.addAll(adReindexMap);
+
         this.default_DiseaseCat_DiseaseGroupMap = default_DiseaseCat_DiseaseGroupMap;
         this.fullDiseaseGroupMap = new LinkedHashMap<Integer, DiseaseGroup>();
         this.selectedDiseaseGroupMap = new LinkedHashMap<Integer, DiseaseGroup>();
@@ -158,16 +208,65 @@ public class StudiesFilterManager implements Serializable {
     private String userDiseaseGroupA = "VeryHårdToExistByChanceøæå", userDiseaseGroupB = "VeryHårdToExistByChanceøæå";
 
     public StudiesFilterManager(Map<String, QuantDatasetInitialInformationObject> quantDatasetListObject, Map<String, boolean[]> activeFilterMap, QuantDiseaseGroupsComparison userCustomizedComparison, Map<String, Map<String, String>> default_DiseaseCat_DiseaseGroupMap) {
-        msReindexMap = new ArrayList<String>();
+       msReindexMap = new ArrayList<String>();
         msReindexMap.add("RRMS\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("CDMS\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("PMS\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("SPMS\n" + "Multiple_Sclerosis_Disease");
         msReindexMap.add("Progressive MS\n" + "Multiple_Sclerosis_Disease");
         msReindexMap.add("CDMS\n" + "Multiple_Sclerosis_Disease");
         msReindexMap.add("CIS-MS\n" + "Multiple_Sclerosis_Disease");
-        msReindexMap.add("CIS\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("CIS-MS(CIS)\n" + "Multiple_Sclerosis_Disease");
         msReindexMap.add("CIS-CIS\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("RRMS Nataliz.\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("SPMS Lamotri.\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("OIND\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("OIND + OND\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("OND\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("Sympt. controls\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("Non MS\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("CIS\n" + "Multiple_Sclerosis_Disease");
         msReindexMap.add("MS treated\n" + "Multiple_Sclerosis_Disease");
         msReindexMap.add("Neurological\n" + "Multiple_Sclerosis_Disease");
-        msReindexMap.add("Healthy\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("Healthy*\n" + "Multiple_Sclerosis_Disease");
+        msReindexMap.add("Healthy controls\n" + "Multiple_Sclerosis_Disease");
+
+        
+        pdReindexMap = new ArrayList<String>();
+        pdReindexMap.add("Parkinson's\n" + "Parkinson-s_Disease");
+        pdReindexMap.add("PDD\n" + "Parkinson-s_Disease");
+        pdReindexMap.add("Alzheimer's\n" + "Parkinson-s_Disease");
+        pdReindexMap.add("NDC\n" + "Parkinson-s_Disease");
+        pdReindexMap.add("Non Demented\n" + "Parkinson-s_Disease");
+        pdReindexMap.add("Non-neurodeg.\n" + "Parkinson-s_Disease");
+        pdReindexMap.add("Non Neurodeg.\n" + "Parkinson-s_Disease");
+        pdReindexMap.add("Healthy*\n" + "Parkinson-s_Disease");
+        pdReindexMap.add("Healthy controls\n" + "Parkinson-s_Disease");
+        
+        
+        adReindexMap = new ArrayList<String>();
+        adReindexMap.add("Alzheimer's\n" + "Alzheimer-s_Disease");
+        adReindexMap.add("LBD\n" + "Alzheimer-s_Disease");
+        adReindexMap.add("MCI\n" + "Alzheimer-s_Disease");
+        adReindexMap.add("MCI progressors\n" + "Alzheimer-s_Disease");
+        adReindexMap.add("MCI nonprogressors\n" + "Alzheimer-s_Disease");
+        adReindexMap.add("MCI-Alzheimer's\n" + "Alzheimer-s_Disease");
+        adReindexMap.add("MCI-MCI\n" + "Alzheimer-s_Disease");
+        adReindexMap.add("Parkinson's\n" + "Alzheimer-s_Disease");
+        adReindexMap.add("Non Alzheimer's\n" + "Alzheimer-s_Disease");
+        adReindexMap.add("Non Neurodeg.\n" + "Alzheimer-s_Disease");
+        adReindexMap.add("Non-neurodeg.\n" + "Alzheimer-s_Disease");
+        adReindexMap.add("Aged controls\n" + "Alzheimer-s_Disease");
+        adReindexMap.add("Aged healthy\n" + "Alzheimer-s_Disease");
+        adReindexMap.add("Healthy*\n" + "Alzheimer-s_Disease");
+        adReindexMap.add("Healthy controls\n" + "Alzheimer-s_Disease");
+
+
+        allDReindexMap = new ArrayList<String>();
+        allDReindexMap.addAll(msReindexMap);
+        allDReindexMap.addAll(pdReindexMap);
+        allDReindexMap.addAll(adReindexMap);
+
         this.default_DiseaseCat_DiseaseGroupMap = default_DiseaseCat_DiseaseGroupMap;
         this.fullDiseaseGroupMap = new LinkedHashMap<Integer, DiseaseGroup>();
         this.selectedDiseaseGroupMap = new LinkedHashMap<Integer, DiseaseGroup>();
@@ -213,10 +312,6 @@ public class StudiesFilterManager implements Serializable {
         this.updateRowsAndColumns("Reset_Disease_Groups_Level");
 
     }
-    private final List<String> msReindexMap;
-    private final int[] msReindex = new int[]{8, 7, 0, 3, 1, 2, 5, 6, 4};
-    private final int[] adReindex = new int[]{0, 2, 3, 4, 5, 8, 6, 7, 1};
-    private final int[] pdReindex = new int[]{5, 4, 0, 2, 3, 1};
 
     private void updateRowsAndColumns(String type) {
         if (type.equalsIgnoreCase("Disease_Groups_Level")) {
@@ -256,16 +351,15 @@ public class StudiesFilterManager implements Serializable {
             String[] sortRows = new String[selectedHeatMapRows.size()];
             int count = 0;
 
-            System.out.println("at inUseDiseaseName " + inUseDiseaseName);
             if (inUseDiseaseName.equalsIgnoreCase("Multiple Sclerosis")) {
-                
-                 for (String str : msReindexMap) {
-                     if(selectedHeatMapRows.contains(str)){
-                     sortRows[count]=str;
-                     selectedHeatMapRows.remove(str);
-                     count++;                     
-                     }
-                }   
+
+                for (String str : msReindexMap) {
+                    if (selectedHeatMapRows.contains(str)) {
+                        sortRows[count] = str;
+                        selectedHeatMapRows.remove(str);
+                        count++;
+                    }
+                }
                 for (String str : selectedHeatMapRows) {
                     sortRows[count] = str;
                     count++;
@@ -274,21 +368,55 @@ public class StudiesFilterManager implements Serializable {
                 selectedHeatMapRows.addAll(Arrays.asList(sortRows));
                 selectedHeatMapColumns.clear();
             } else if (inUseDiseaseName.equalsIgnoreCase("Alzheimer's")) {
+                for (String str : adReindexMap) {
+                    System.out.println("at ad " + str + "  --->>  " + (selectedHeatMapRows.contains(str)));
+                    if (selectedHeatMapRows.contains(str)) {
+                        sortRows[count] = str;
+                        selectedHeatMapRows.remove(str);
+                        count++;
+                    } else {
+                        System.out.println(" selectedHeatMapRows " + selectedHeatMapRows);
+                    }
+                }
                 for (String str : selectedHeatMapRows) {
-                    sortRows[count] = selectedHeatMapRows.toArray()[adReindex[count]].toString();
+
+                    sortRows[count] = str;
                     count++;
                 }
                 selectedHeatMapRows.clear();
                 selectedHeatMapRows.addAll(Arrays.asList(sortRows));
                 selectedHeatMapColumns.clear();
             } else if (inUseDiseaseName.equalsIgnoreCase("Parkinson's")) {
+                for (String str : pdReindexMap) {
+                    if (selectedHeatMapRows.contains(str)) {
+                        sortRows[count] = str;
+                        selectedHeatMapRows.remove(str);
+                        count++;
+                    }
+                }
                 for (String str : selectedHeatMapRows) {
-                    sortRows[count] = selectedHeatMapRows.toArray()[pdReindex[count]].toString();
+                    sortRows[count] = str;
                     count++;
                 }
                 selectedHeatMapRows.clear();
                 selectedHeatMapRows.addAll(Arrays.asList(sortRows));
                 selectedHeatMapColumns.clear();
+            } else {
+                for (String str : allDReindexMap) {
+                    if (selectedHeatMapRows.contains(str)) {
+                        sortRows[count] = str;
+                        selectedHeatMapRows.remove(str);
+                        count++;
+                    }
+                }
+                for (String str : selectedHeatMapRows) {
+                    sortRows[count] = str;
+                    count++;
+                }
+                selectedHeatMapRows.clear();
+                selectedHeatMapRows.addAll(Arrays.asList(sortRows));
+                selectedHeatMapColumns.clear();
+
             }
 
             for (String str : pgArr) {
@@ -301,14 +429,14 @@ public class StudiesFilterManager implements Serializable {
             count = 0;
 
             if (inUseDiseaseName.equalsIgnoreCase("Multiple Sclerosis")) {
-               
+
                 for (String str : msReindexMap) {
-                     if(selectedHeatMapColumns.contains(str)){
-                     sortCols[count]=str;
-                     selectedHeatMapColumns.remove(str);
-                     count++;                     
-                     }
-                }   
+                    if (selectedHeatMapColumns.contains(str)) {
+                        sortCols[count] = str;
+                        selectedHeatMapColumns.remove(str);
+                        count++;
+                    }
+                }
                 for (String str : selectedHeatMapColumns) {
                     sortCols[count] = str;
                     count++;
@@ -316,19 +444,48 @@ public class StudiesFilterManager implements Serializable {
                 selectedHeatMapColumns.clear();
                 selectedHeatMapColumns.addAll(Arrays.asList(sortCols));
             } else if (inUseDiseaseName.equalsIgnoreCase("Alzheimer's")) {
+                for (String str : adReindexMap) {
+                    if (selectedHeatMapColumns.contains(str)) {
+                        sortCols[count] = str;
+                        selectedHeatMapColumns.remove(str);
+                        count++;
+                    }
+                }
                 for (String str : selectedHeatMapColumns) {
-                    sortCols[count] = selectedHeatMapColumns.toArray()[adReindex[count]].toString();
+                    sortCols[count] = str;
                     count++;
                 }
                 selectedHeatMapColumns.clear();
                 selectedHeatMapColumns.addAll(Arrays.asList(sortCols));
             } else if (inUseDiseaseName.equalsIgnoreCase("Parkinson's")) {
+                for (String str : pdReindexMap) {
+                    if (selectedHeatMapColumns.contains(str)) {
+                        sortCols[count] = str;
+                        selectedHeatMapColumns.remove(str);
+                        count++;
+                    }
+                }
                 for (String str : selectedHeatMapColumns) {
-                    sortCols[count] = selectedHeatMapColumns.toArray()[pdReindex[count]].toString();
+                    sortCols[count] = str;
                     count++;
                 }
                 selectedHeatMapColumns.clear();
                 selectedHeatMapColumns.addAll(Arrays.asList(sortCols));
+            } else {
+                for (String str : allDReindexMap) {
+                    if (selectedHeatMapColumns.contains(str)) {
+                        sortCols[count] = str;
+                        selectedHeatMapColumns.remove(str);
+                        count++;
+                    }
+                }
+                for (String str : selectedHeatMapColumns) {
+                    sortCols[count] = str;
+                    count++;
+                }
+                selectedHeatMapColumns.clear();
+                selectedHeatMapColumns.addAll(Arrays.asList(sortCols));
+
             }
 
 //            selectedHeatMapColumns.clear();

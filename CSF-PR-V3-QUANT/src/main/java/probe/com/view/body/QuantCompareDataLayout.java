@@ -181,10 +181,10 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
         ResultsOverviewLayout.setComponentAlignment(resultContainer, Alignment.TOP_LEFT);
         resultContainer.setWidth("100%");
         foundPublicationLabel = new Label();
-        resultContainer.addComponent(foundPublicationLabel, 0, 0);
+//        resultContainer.addComponent(foundPublicationLabel, 0, 0);
 
         foundStudiesLabel = new Label();
-        resultContainer.addComponent(foundStudiesLabel, 1, 0);
+//        resultContainer.addComponent(foundStudiesLabel, 1, 0);
 
         foundProteinsLabel = new Label();
         resultContainer.addComponent(foundProteinsLabel, 2, 0);
@@ -192,10 +192,10 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
         newProteinsDownloadBtn = new Button();
         newProteinsDownloadBtn.setCaptionAsHtml(true);
         newProteinsDownloadBtn.setStyleName(Reindeer.BUTTON_LINK);
-        ResultsOverviewLayout.addComponent(newProteinsDownloadBtn);
+//        ResultsOverviewLayout.addComponent(newProteinsDownloadBtn);
         newProteinsDownloadBtn.setDescription("Download new proteins (not found in CSF-PR) records");
 
-        ResultsOverviewLayout.addComponent(newProteinsTextArea);
+//        ResultsOverviewLayout.addComponent(newProteinsTextArea);
         newProteinsTextArea.setWidth("302px");
         newProteinsTextArea.setHeight("200px");
         newProteinsTextArea.setReadOnly(true);
@@ -573,7 +573,7 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
         newProteinsDownloadBtn.setVisible(true);
         newProteinsTextArea.setReadOnly(false);
 
-        foundPublicationLabel.setValue("#Publications: " + foundPublicationcounter.size()+"/18");
+//        foundPublicationLabel.setValue("#Publications: " + foundPublicationcounter.size()+"/18");
         foundStudiesLabel.setValue("#Datasets: " + foundStudiescounter.size()+"/86");
         foundProteinsLabel.setValue("#Found Proteins: " + foundProtcounter.size()+"/2839");
         selectionResultsOverview.setValue("(#Publications: " + foundPublicationcounter.size() + "/18&nbsp;&nbsp;&nbsp;&nbsp;#Datasets: " + foundStudiescounter.size() + "/86 &nbsp;&nbsp;&nbsp;&nbsp;#Found: " + foundProtcounter.size() + "/2839&nbsp;&nbsp;&nbsp;&nbsp;<font color='#1b699f'>#New: " + newProtNumber + "</font>)");
@@ -582,15 +582,15 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
         if (searchQuantificationProtList.isEmpty()) {
             return;
         }
-        resultContainer.removeComponent(0, 1);
-        resultContainer.removeComponent(1, 1);
+//        resultContainer.removeComponent(0, 1);
+//        resultContainer.removeComponent(1, 1);
         resultContainer.removeComponent(2, 1);
         PieChart pubicationPieChart = new PieChart("Publications", 18, foundPublicationcounter.size());
-        resultContainer.addComponent(pubicationPieChart, 0, 1);
+//        resultContainer.addComponent(pubicationPieChart, 0, 1);
         PieChart studiesPieChart = new PieChart("Datasets", 86, foundStudiescounter.size());
-        resultContainer.addComponent(studiesPieChart, 1, 1);
+//        resultContainer.addComponent(studiesPieChart, 1, 1);
         PieChart fountNotfoundPieChart = new PieChart("Found", 2839, foundProtcounter.size());
-        resultContainer.addComponent(fountNotfoundPieChart, 2, 1);
+//        resultContainer.addComponent(fountNotfoundPieChart, 2, 1);
 
         QuantDiseaseGroupsComparison userCustomizedComparison = CSFPR_Handler.initUserCustomizedComparison(diseaseGroupsListA.getValue().toString().trim(), diseaseGroupsListB.getValue().toString().trim(), highSet, stableSet, lowSet);
         userCustomizedComparison.setUseCustomRowHeaderToSort(useRowSorter);

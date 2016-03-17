@@ -439,14 +439,27 @@
     font-weight: bold;
 
 }
-.comparisonHeaders{
+.comparisonheaders{
     font-family: Verdana; 
     font-size: 12px;
     text-align: center;
-    color:black;
-    line-height:22px;
     padding-left:7px !important;
 
+}
+.topheaderborder font{
+
+    height:18px !important;
+    border-bottom:1px solid gray;
+   
+    
+}
+
+.bottomheaderborder font{
+
+    height:18px !important;
+    border-top:1px solid gray;
+   
+    
 }
 .datasetInfoValues{
     font-family:Verdana; 
@@ -2401,12 +2414,12 @@ border:3px solid #4d749f ;
 }
 
 .usercustdatatitle {
-
     color: #8210B0;
     border:1px solid #8210B0;
 
 }
-.usercustdatatitle .comparisonHeaders {
+.usercustdatatitle font{
+  
     color:#8210B0 !important;
     font-weight: bold;
 }
@@ -3758,4 +3771,21 @@ img {
 .resetzoombtn div:focus{
     outline:none !important;
     border:none;
+}
+.logo{
+      background-color: #4d749f;
+    margin-top:3px;
+    height:27px !important;
+    width:26px !important;
+    border-radius:4px;
+    
+}
+.logo div{
+margin-top:-2px;
+margin-left:2px
+
+}
+.logocontainer{
+
+    margin-left:40px;
 }

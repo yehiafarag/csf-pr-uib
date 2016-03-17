@@ -73,26 +73,15 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
         this.parentcom = parentcom;
         valueLabel = new Label();
         this.title = title;
-
-//        if (all) {
-        allStyle = title.split("\n")[1].toLowerCase().replace("-s", "").replace("_disease","").replace("_", "");
-//            valueLabel.setValue("<center><font>" + title.split("\n")[0] + "</font></br><font size='1' color='#003e99'>(" + title.split("\n")[1] + ")</font></center>");
-
-//        }
-//    else {
-//            allStyle = "";
+        allStyle = title.split("\n")[1].toLowerCase().replace("-s", "").replace("_disease", "").replace("_", "");
         valueLabel.setValue("<center><font>" + title.split("\n")[0] + "</font></center>");
 
-//        }
         if (rowHeader) {
             this.cellStyleName = "hmrowlabel";
-//            this.setStyleName("hmrowlabel");
         } else {
             this.cellStyleName = "hmcolumnlabel";
-//            this.setStyleName("hmcolumnlabel");
         }
         valueLabel.setStyleName(allStyle + cellStyleName);
-//        super("<b>" + title + "</b>");
         valueLabel.setWidth((heatmapHeaderCellWidth - 4) + "px");
         valueLabel.setHeight((heatmapCellWidth - 4) + "px");
         this.setStyleName(cellStyleName);
@@ -109,8 +98,7 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
         } else {
             this.fullName = fullName;
         }
-
-        this.setDescription(this.fullName.replace("_","").replace("-",","));
+        this.setDescription(this.fullName.replace("_", "").replace("-", ","));
 
     }
 
@@ -153,12 +141,10 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         if (selected) {
             selected = false;
-//            unSelectCellStyle();
             parentcom.removeRowSelectedDs(title);
 
         } else {
             selected = true;
-//            selectCellStyle();
             parentcom.addRowSelectedDs(title);
         }
     }
@@ -174,7 +160,7 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
         this.includedComparisons.add(groupComp);
         if (!combinedHeader && cell.isCombinedHeader()) {
             combinedHeader = true;
-            valueLabel.setValue("<center><font>" + title.split("\n")[0] + "*</font></center>");
+            valueLabel.setValue("<center><font>" + title.split("\n")[0] + "</font></center>");
             this.setDescription(title.split("\n")[0] + " (" + "Combined group)");
         }
         if (!cell.isCombinedHeader()) {

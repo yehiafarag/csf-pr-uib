@@ -44,17 +44,18 @@ public class PopupRecombineDiseaseGroups extends VerticalLayout implements Layou
     private final Map<String, Map<String, String>> default_DiseaseCat_DiseaseGroupMap;
     private final NativeSelect diseaseTypeSelectionList;
     private final Map<String, String> diseaseStyleMap;
+    private final Map<String, Integer> captionAstrMap;
 
     public PopupRecombineDiseaseGroups(QuantCentralManager Quant_Central_Manager) {
 //        super(" ");
         this.diseaseStyleMap = Quant_Central_Manager.getDiseaseStyleMap();
-        
 
         default_DiseaseCat_DiseaseGroupMap = new LinkedHashMap<String, Map<String, String>>(Quant_Central_Manager.getDefault_DiseaseCat_DiseaseGroupMap());
 
         this.setStyleName("merge");
         this.setDescription("Recombine Disease Groups");
         this.Quant_Central_Manager = Quant_Central_Manager;
+        captionAstrMap = new HashMap<String, Integer>();
         this.addLayoutClickListener(PopupRecombineDiseaseGroups.this);
         this.popupBodyLayout = new VerticalLayout();
         VerticalLayout windowLayout = new VerticalLayout();
@@ -305,7 +306,7 @@ public class PopupRecombineDiseaseGroups extends VerticalLayout implements Layou
         rotateContainer.setHeight("20px");
         diseaseLabelContainer.addComponent(rotateContainer);
 
-        rotateContainer.setStyleName("row_" + diseaseStyleMap.get(diseaseCategory.replace(" ","_").replace("'", "-")+("_Disease")));
+        rotateContainer.setStyleName("row_" + diseaseStyleMap.get(diseaseCategory.replace(" ", "_").replace("'", "-") + ("_Disease")));
         rotateContainer.addComponent(label);
         HorizontalLayout layout = new HorizontalLayout();
         layout.setSpacing(true);
@@ -316,8 +317,8 @@ public class PopupRecombineDiseaseGroups extends VerticalLayout implements Layou
     }
 
     private VerticalLayout generateLabel(String strLabel, String diseaseCategory) {
-        
-        DiseaseGroupLabel container = new DiseaseGroupLabel(300, strLabel, diseaseStyleMap.get(diseaseCategory.replace(" ","_").replace("'", "-")+("_Disease")));
+
+        DiseaseGroupLabel container = new DiseaseGroupLabel(300, strLabel, diseaseStyleMap.get(diseaseCategory.replace(" ", "_").replace("'", "-") + ("_Disease")));
         container.setHeight("24px");
         return container;
     }
@@ -329,23 +330,54 @@ public class PopupRecombineDiseaseGroups extends VerticalLayout implements Layou
         diseaseGroupsList.setImmediate(true);
         diseaseGroupsList.setNewItemsAllowed(true);
         diseaseGroupsList.setWidth(300, Unit.PIXELS);
-//        diseaseGroupsList.setScrollToSelectedItem(true);
+
+        diseaseGroupsList.setInputPrompt("Select or enter new disease group name");
         diseaseGroupsList.setPageLength(500);
 
         for (String name : default_DiseaseCat_DiseaseGroupMap.get(diseaseCategory).values()) {
             diseaseGroupsList.addItem(name);
-            diseaseGroupsList.select(name);
+            if (!captionAstrMap.containsKey(name)) {
+                captionAstrMap.put(name, 0);
+            }
+
         }
 
         diseaseGroupsList.setNewItemHandler(new AbstractSelect.NewItemHandler() {
 
             @Override
             public void addNewItem(String newItemCaption) {
-                diseaseGroupsList.addItem(newItemCaption);
-                diseaseGroupsList.select(newItemCaption);
+                diseaseGroupsList.addItem(newItemCaption + "*");
+                diseaseGroupsList.select(newItemCaption + "*");
+                captionAstrMap.put(newItemCaption + "*", 1);
+
             }
         });
         diseaseGroupsList.setHeight("24px");
+        diseaseGroupsList.addValueChangeListener(new Property.ValueChangeListener() {
+
+            private String lastSelected = "";
+
+            @Override
+            public void valueChange(Property.ValueChangeEvent event) {
+                String selectedItem = event.getProperty().getValue().toString();
+                if (!selectedItem.equalsIgnoreCase(diseaseGroupsList.getData().toString())) {
+                    String astr = "";
+                    if (!selectedItem.contains("*")) {
+                        astr = "*";
+                        captionAstrMap.put(selectedItem, captionAstrMap.get(selectedItem) + 1);
+                    } else {
+
+                    }
+                    diseaseGroupsList.setItemCaption(selectedItem, selectedItem + astr);
+                } else {
+                    diseaseGroupsList.setItemCaption(diseaseGroupsList.getData().toString(), diseaseGroupsList.getData().toString());
+                }
+                if (!lastSelected.equalsIgnoreCase("")) {
+                    captionAstrMap.put(lastSelected, Math.max(captionAstrMap.get(lastSelected) - 1, 0));
+                }
+                lastSelected = selectedItem;
+            }
+        });
 
         return diseaseGroupsList;
     }
@@ -354,7 +386,6 @@ public class PopupRecombineDiseaseGroups extends VerticalLayout implements Layou
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         popupWindow.setVisible(true);
     }
-
 
     private void resetToDefault() {
 
@@ -366,20 +397,25 @@ public class PopupRecombineDiseaseGroups extends VerticalLayout implements Layou
                 Map<String, ComboBox> diseaseGroupNameToListMap = diseaseGroupsSelectionListMap.get(diseaseKey);
                 for (String key : diseaseGroupNameToListMap.keySet()) {
                     ComboBox list = diseaseGroupNameToListMap.get(key);
-                    list.select(default_DiseaseCat_DiseaseGroupMap.get(diseaseKey).get(key));
+
+                    String selection = default_DiseaseCat_DiseaseGroupMap.get(diseaseKey).get(key);
+                    list.setData(selection);
+//                    list.select(selection);
+                    list.setValue(null);
                 }
             }
         } else {
             Map<String, ComboBox> diseaseGroupNameToListMap = diseaseGroupsSelectionListMap.get(selectedDiseaseKey);
             for (String key : diseaseGroupNameToListMap.keySet()) {
                 ComboBox list = diseaseGroupNameToListMap.get(key);
-                list.select(default_DiseaseCat_DiseaseGroupMap.get(selectedDiseaseKey).get(key));
+                String selection = default_DiseaseCat_DiseaseGroupMap.get(selectedDiseaseKey).get(key);
+                list.setData(selection);
+//                list.select(selection);
+                list.setValue(null);
+
             }
 
         }
-
-//            System.out.println("at default_DiseaseCat_DiseaseGroupMap " + default_DiseaseCat_DiseaseGroupMap.containsKey(diseaseKey) + "  " + diseaseKey);
-//        
     }
 
     private void updateGroups() {
@@ -389,9 +425,19 @@ public class PopupRecombineDiseaseGroups extends VerticalLayout implements Layou
             Map<String, String> updatedDiseaseGroupsMappingName = new LinkedHashMap<String, String>();
             for (String key : diseaseGroupNameToListMap.keySet()) {
                 ComboBox list = diseaseGroupNameToListMap.get(key);
-                updatedDiseaseGroupsMappingName.put(key, list.getValue().toString().trim());
-
+                String ast = "";
+                String selection ;
+                if (list.getValue() != null) {
+                    selection = list.getValue().toString().trim();
+                } else {
+                    selection = list.getData().toString();
+                }
+                if (captionAstrMap.get(selection) > 0 && !selection.contains("*")) {
+                    ast = "*";
+                }
+                updatedDiseaseGroupsMappingName.put(key, selection + ast);
             }
+
             updatedGroupsNamesMap.put(diseaseKey, updatedDiseaseGroupsMappingName);
 
         }

@@ -21,6 +21,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.OptionGroup;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.PopupView;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
@@ -42,7 +43,6 @@ import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.beans.quant.QuantProtein;
 import probe.com.selectionmanager.CSFFilter;
 import probe.com.selectionmanager.QuantCentralManager;
-import probe.com.view.body.quantdatasetsoverview.QuantProteinsComparisonsContainer;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.TrendLegend;
 import probe.com.view.core.CustomExternalLink;
@@ -55,7 +55,7 @@ import probe.com.view.core.CustomExternalLink;
  * buttons and the overview bar charts.
  *
  */
-public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout implements LayoutEvents.LayoutClickListener, CSFFilter, Property.ValueChangeListener {
+public class QuantUserDataProteinsComparisonsContainer extends Panel implements LayoutEvents.LayoutClickListener, CSFFilter, Property.ValueChangeListener {
 
     private final QuantCentralManager Quant_Central_Manager;
     private Table groupsComparisonProteinsTable;
@@ -91,6 +91,7 @@ public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout im
     private final Map<String, Item> fullAccessionTableItemMap = new HashMap<String, Item>();
     private final Map<String, Set<String>> comparisonToAccessionMap;
     private Set<String> selectedQuantAccessionsSubSet;
+    private final VerticalLayout mainPanelBody = new VerticalLayout();
 
     /**
      * update the layout width based on the available space (on hide/show
@@ -100,18 +101,26 @@ public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout im
      */
     public void setLayoutWidth(int width) {
         this.width = width;
-        this.setWidth(width + "px");
+        this.mainPanelBody.setWidth(width + "px");
         this.bottomLayout.setWidth(width + "px");
-        float ratio = 360f / (float) width;
+        float ratio = 385f / (float) width;
         int columnWidth = 400;
         boolean useRatio = false;
         if (quantDiseaseGroupsComparisonArr.length > 1) {
-            if (((quantDiseaseGroupsComparisonArr.length + 1) * 400) > (width - 360)) {
+            if (((quantDiseaseGroupsComparisonArr.length + 1) * 400) > (width - 385)) {
                 useRatio = true;
                 int persWidth = (int) (100.0 - (16.0 * 100.0 / (double) width));
                 columnLabelContainer.setWidth(persWidth + "%");
-                int contWid = (persWidth * (width - 380) / 100);
-                columnWidth = contWid / quantDiseaseGroupsComparisonArr.length;
+                int contWid = (persWidth * (width - 385) / 100);
+                columnWidth = contWid / quantDiseaseGroupsComparisonArr.length+1;
+                if (columnWidth < 200) {
+                    columnWidth = 200;
+                    columnLabelContainer.setWidth(((quantDiseaseGroupsComparisonArr.length+1) * 200) + "px");
+                    useRatio = false;
+                    this.width = Math.max(width, (quantDiseaseGroupsComparisonArr.length+1) * 200 + 385);
+                    mainPanelBody.setWidth(this.width + "px");
+                    this.bottomLayout.setWidth(this.width + "px");
+                }
 
             } else {
                 useRatio = false;
@@ -123,7 +132,7 @@ public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout im
 
         topLayout.setExpandRatio(searchingFieldLayout, ratio);
         topLayout.setExpandRatio(columnLabelContainer, (1f - ratio));
-        resizeTable(useRatio, ratio);
+        resizeTable(useRatio, ratio,columnWidth);
         updateQuantProteinsSparkLineLabels(columnWidth);
     }
 
@@ -171,11 +180,14 @@ public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout im
         this.Quant_Central_Manager = Quant_Central_Manager;
         this.Quant_Central_Manager.registerStudySelectionListener(QuantUserDataProteinsComparisonsContainer.this);
         this.userCustomizedComparison = userCustomizedComparison;
-        this.setWidth("100%");
+         this.setWidth("100%");
+        this.setContent(mainPanelBody);
+        this.setStyleName(Reindeer.PANEL_LIGHT);
+       
         this.setHeightUndefined();
-        this.setStyleName(Reindeer.LAYOUT_WHITE);
-        this.setMargin(false);
-        this.setSpacing(true);
+        this.mainPanelBody.setStyleName(Reindeer.LAYOUT_WHITE);
+        this.mainPanelBody.setMargin(false);
+        this.mainPanelBody.setSpacing(true);
         final SizeReporter sizeReporter = new SizeReporter(this);
         sizeReporter.addResizeListener(new ComponentResizeListener() {
             @Override
@@ -191,10 +203,10 @@ public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout im
         this.comparisonToAccessionMap = new HashMap<String, Set<String>>();
         this.noProtLabel.setContentMode(ContentMode.HTML);
         noProtLabel.setWidth("400px");
-        noProtLabel.setHeight("40px");
-        this.addComponent(noProtLabel);
-        this.setComponentAlignment(noProtLabel, Alignment.TOP_LEFT);
-        this.setVisible(true);
+        noProtLabel.setHeight("35px");
+        this.mainPanelBody.addComponent(noProtLabel);
+        this.mainPanelBody.setComponentAlignment(noProtLabel, Alignment.TOP_LEFT);
+        this.mainPanelBody.setVisible(true);
 
         topLayout = new HorizontalLayout();
         topLayout.setVisible(false);
@@ -266,13 +278,13 @@ public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout im
         resetTableBtn.setWidth("76px");
         resetTableBtn.setHeight("24px");
 
-        this.addComponent(topLayout);
+        this.mainPanelBody.addComponent(topLayout);
 
         tableLayout = new VerticalLayout();
         updateComparisonsTable();
         groupsComparisonProteinsTable.setVisible(false);
-        this.addComponent(tableLayout);
-        this.setComponentAlignment(tableLayout, Alignment.MIDDLE_CENTER);
+        mainPanelBody.addComponent(tableLayout);
+        this.mainPanelBody.setComponentAlignment(tableLayout, Alignment.MIDDLE_CENTER);
         tableLayout.addComponent(groupsComparisonProteinsTable);
         tableLayout.setComponentAlignment(groupsComparisonProteinsTable, Alignment.MIDDLE_CENTER);
 
@@ -318,6 +330,7 @@ public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout im
         bottomLayout = new HorizontalLayout();
         bottomLayout.setHeight("100%");
         bottomLayout.setStyleName(Reindeer.LAYOUT_WHITE);
+        bottomLayout.setMargin(new MarginInfo(false, false, true, false));
 
 //        hideUniqueProteinsOption = new OptionGroup();
 //        bottomLayout.addComponent(hideUniqueProteinsOption);
@@ -448,7 +461,7 @@ public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout im
 
       
         bottomLayout.setVisible(false);
-        this.addComponent(bottomLayout);
+        this.mainPanelBody.addComponent(bottomLayout);
 
     }
 
@@ -598,12 +611,20 @@ public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout im
         boolean useRatio = false;
         int columnWidth = 400;
         if (quantDiseaseGroupsComparisonArr.length + 1 > 1) {
-            if (((quantDiseaseGroupsComparisonArr.length + 1) * 400) > (width - 360)) {
+            if (((quantDiseaseGroupsComparisonArr.length + 1) * 400) > (width - 385)) {
                 useRatio = true;
                 int persWidth = (int) (100.0 - (16.0 * 100.0 / (double) width));
                 columnLabelContainer.setWidth(persWidth + "%");
-                int contWid = (persWidth * (width - 360) / 100);
+                int contWid = (persWidth * (width - 385) / 100);
                 columnWidth = contWid / (quantDiseaseGroupsComparisonArr.length + 1);
+                if (columnWidth < 200) {
+                    columnWidth = 200;
+                    columnLabelContainer.setWidth(((quantDiseaseGroupsComparisonArr.length+1) * 200) + "px");
+                    useRatio = false;
+                    this.width = Math.max(width, (quantDiseaseGroupsComparisonArr.length+1) * 200 + 385);
+                    mainPanelBody.setWidth(this.width + "px");
+                    this.bottomLayout.setWidth(this.width + "px");
+                }
 
             } else {
                 columnLabelContainer.setWidth(((quantDiseaseGroupsComparisonArr.length + 1) * 400) + "px");
@@ -612,7 +633,7 @@ public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout im
         } else {
             columnLabelContainer.setWidth(((quantDiseaseGroupsComparisonArr.length + 1) * 400) + "px");
         }
-        float ratio = 360f / (float) width;
+        float ratio = 385f / (float) width;
         topLayout.setExpandRatio(searchingFieldLayout, ratio);
         topLayout.setExpandRatio(columnLabelContainer, (1f - ratio));
 
@@ -756,7 +777,7 @@ public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout im
             }
             indexing++;
         }
-        this.resizeTable(useRatio, ratio);
+        this.resizeTable(useRatio, ratio,columnWidth);
         groupsComparisonProteinsTable.addHeaderClickListener(new Table.HeaderClickListener() {
             @Override
             public void headerClick(Table.HeaderClickEvent event) {
@@ -973,23 +994,55 @@ public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout im
      */
     private HorizontalLayout generateColumnHeaderLayout(final QuantDiseaseGroupsComparison comparison, int width) {
 
+        
         HorizontalLayout titleLayout = new HorizontalLayout();
         titleLayout.setWidth(width + "px");
-        titleLayout.setHeight("20px");
+        titleLayout.setHeight("35px");
+
+        HorizontalLayout titleContainer = new HorizontalLayout();
+        titleLayout.addComponent(titleContainer);
+        titleContainer.setWidthUndefined();
+        titleContainer.setHeightUndefined();
+
+        VerticalLayout leftSideHeader = new VerticalLayout();
+        leftSideHeader.setStyleName("hideoverflow");
+        titleContainer.addComponent(leftSideHeader);
+//        leftSideHeader.setSpacing(true);
+        VerticalLayout rightSideHeader = new VerticalLayout();
+        titleContainer.addComponent(rightSideHeader);
+
+        //init leftside comparison title
         String header = comparison.getComparisonHeader();
-        String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0];// " ( " + header.split(" / ")[1].split("\n")[1] + " )";
+        String updatedHeaderI = header.split(" / ")[0].split("\n")[0];
+        String updatedHeaderII = header.split(" / ")[1].split("\n")[0];
+        String diseaseColor = this.Quant_Central_Manager.getDiseaseHashedColor(header.split(" / ")[1].split("\n")[1]);
 
-        Label label = new Label();
-        label.setStyleName("comparisonHeaders");
-        label.setContentMode(ContentMode.HTML);
-        label.setWidth("90%");
+        Label labelI = new Label("<font color='" + diseaseColor + "' style='font-weight: bold;width='" + (width - 42) + "px !important'>" + updatedHeaderI + "</font>");
+        labelI.setStyleName("comparisonheaders");
 
-        HorizontalLayout btnsLayout = new HorizontalLayout();
+        labelI.setWidth((width - 42) + "px");
+        labelI.setContentMode(ContentMode.HTML);
+        leftSideHeader.addComponent(labelI);
+        leftSideHeader.setComponentAlignment(labelI, Alignment.MIDDLE_CENTER);
+
+        Label labelII = new Label("<font color='" + diseaseColor + "' style='font-weight: bold;width='" + (width - 42) + "px !important'>" + updatedHeaderII + "</font>");
+        labelII.setStyleName("comparisonheaders");
+        labelII.setWidth((width - 42) + "px");
+        labelII.setContentMode(ContentMode.HTML);
+        leftSideHeader.addComponent(labelII);
+        leftSideHeader.setComponentAlignment(labelII, Alignment.MIDDLE_CENTER);
+
+        if (updatedHeaderI.length() >= updatedHeaderII.length()) {
+            labelI.addStyleName("topheaderborder");
+        } else {
+            labelII.addStyleName("bottomheaderborder");
+        }
+
+        VerticalLayout btnsLayout = new VerticalLayout();
         btnsLayout.setSpacing(true);
         btnsLayout.setMargin(new MarginInfo(false, true, false, false));
-
-        VerticalLayout filterIcon = generateDropDownFilterLayout(comparison.getComparisonHeader());
-        btnsLayout.addComponent(filterIcon);
+        btnsLayout.setWidth("15px");
+        btnsLayout.setHeight("30px");
 
         VerticalLayout closeCompariosonBtn = new VerticalLayout();
         closeCompariosonBtn.setWidth("10px");
@@ -998,11 +1051,11 @@ public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout im
         if (comparison.getDatasetIndexes()[0] == -1) {
             closeCompariosonBtn.setEnabled(false);
             titleLayout.setStyleName("usercustdatatitle");
-            label.setValue(updatedHeader);
+//            label.setValue(updatedHeader);
         } else {
-            String diseaseColor = this.Quant_Central_Manager.getDiseaseHashedColor(header.split(" / ")[1].split("\n")[1]);
-
-            label.setValue("<font color='" + diseaseColor + "' style='font-weight: bold;'>" + updatedHeader + "</font>");
+//            String diseaseColor = this.Quant_Central_Manager.getDiseaseHashedColor(header.split(" / ")[1].split("\n")[1]);
+//
+//            label.setValue("<font color='" + diseaseColor + "' style='font-weight: bold;'>" + updatedHeader + "</font>");
         }
 
         closeCompariosonBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
@@ -1010,21 +1063,98 @@ public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout im
 
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-
                 Set<QuantDiseaseGroupsComparison> selectedComparisonList = Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList();
                 selectedComparisonList.remove(localComparison);
                 Quant_Central_Manager.setDiseaseGroupsComparisonSelection(selectedComparisonList);
             }
         });
-
         btnsLayout.addComponent(closeCompariosonBtn);
 
-        titleLayout.addComponent(label);
-        titleLayout.setComponentAlignment(label, Alignment.MIDDLE_CENTER);
-        titleLayout.addComponent(btnsLayout);
-        titleLayout.setComponentAlignment(btnsLayout, Alignment.MIDDLE_LEFT);
-        titleLayout.setExpandRatio(label, width - 42);
-        titleLayout.setExpandRatio(btnsLayout, 42);
+        VerticalLayout filterIcon = generateDropDownFilterLayout(comparison.getComparisonHeader());
+        btnsLayout.addComponent(filterIcon);
+
+        rightSideHeader.addComponent(btnsLayout);
+        rightSideHeader.setComponentAlignment(btnsLayout, Alignment.MIDDLE_CENTER
+        );
+        if (width < 70) {
+            labelI.setVisible(false);
+            labelII.setVisible(false);
+            leftSideHeader.setWidth((width - 42) + "px");
+            leftSideHeader.setVisible(false);
+            rightSideHeader.setWidth(width+"px");
+        } else {
+           labelI.setVisible(true);
+            labelII.setVisible(true);
+            leftSideHeader.setWidthUndefined();
+            rightSideHeader.setWidthUndefined();
+            leftSideHeader.setVisible(true);
+        }
+
+
+//        VerticalLayout closeCompariosonBtn = ne
+        
+        
+        
+        
+        
+        
+        
+        
+        
+//        
+//        
+//        HorizontalLayout titleLayout = new HorizontalLayout();
+//        titleLayout.setWidth(width + "px");
+//        titleLayout.setHeight("20px");
+//        String header = comparison.getComparisonHeader();
+//        String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0];// " ( " + header.split(" / ")[1].split("\n")[1] + " )";
+//
+//        Label label = new Label();
+//        label.setStyleName("comparisonHeaders");
+//        label.setContentMode(ContentMode.HTML);
+//        label.setWidth("90%");
+//
+//        HorizontalLayout btnsLayout = new HorizontalLayout();
+//        btnsLayout.setSpacing(true);
+//        btnsLayout.setMargin(new MarginInfo(false, true, false, false));
+//
+//        VerticalLayout filterIcon = generateDropDownFilterLayout(comparison.getComparisonHeader());
+//        btnsLayout.addComponent(filterIcon);
+//
+//        VerticalLayout closeCompariosonBtn = new VerticalLayout();
+//        closeCompariosonBtn.setWidth("10px");
+//        closeCompariosonBtn.setHeight("10px");
+//        closeCompariosonBtn.setStyleName("closebtn");
+//        if (comparison.getDatasetIndexes()[0] == -1) {
+//            closeCompariosonBtn.setEnabled(false);
+//            titleLayout.setStyleName("usercustdatatitle");
+//            label.setValue(updatedHeader);
+//        } else {
+//            String diseaseColor = this.Quant_Central_Manager.getDiseaseHashedColor(header.split(" / ")[1].split("\n")[1]);
+//
+//            label.setValue("<font color='" + diseaseColor + "' style='font-weight: bold;'>" + updatedHeader + "</font>");
+//        }
+//
+//        closeCompariosonBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+//            private final QuantDiseaseGroupsComparison localComparison = comparison;
+//
+//            @Override
+//            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+//
+//                Set<QuantDiseaseGroupsComparison> selectedComparisonList = Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList();
+//                selectedComparisonList.remove(localComparison);
+//                Quant_Central_Manager.setDiseaseGroupsComparisonSelection(selectedComparisonList);
+//            }
+//        });
+//
+//        btnsLayout.addComponent(closeCompariosonBtn);
+//
+//        titleLayout.addComponent(label);
+//        titleLayout.setComponentAlignment(label, Alignment.MIDDLE_CENTER);
+//        titleLayout.addComponent(btnsLayout);
+//        titleLayout.setComponentAlignment(btnsLayout, Alignment.MIDDLE_LEFT);
+//        titleLayout.setExpandRatio(label, width - 42);
+//        titleLayout.setExpandRatio(btnsLayout, 42);
 
         return titleLayout;
 
@@ -1036,7 +1166,7 @@ public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout im
      * @param useRatio use ratio or pixels
      * @param ratio the column ration
      */
-    private void resizeTable(boolean useRatio, float ratio) {
+    private void resizeTable(boolean useRatio, float ratio, int columnWidth) {
 
         groupsComparisonProteinsTable.setColumnWidth("Index", 47);
         groupsComparisonProteinsTable.setColumnWidth("Accession", 87);
@@ -1051,11 +1181,16 @@ public class QuantUserDataProteinsComparisonsContainer extends VerticalLayout im
             }
 
         } else {
+             if (columnWidth == 400) {
+                columnWidth = 387;
+            } else {
+                columnWidth = 187;
+            }
             for (Object propertyId : groupsComparisonProteinsTable.getSortableContainerPropertyIds()) {
                 if (propertyId.toString().equalsIgnoreCase("Index") || propertyId.toString().equalsIgnoreCase("Accession") || propertyId.toString().equalsIgnoreCase("Name")) {
                     continue;
                 }
-                groupsComparisonProteinsTable.setColumnWidth(propertyId, 387);
+                groupsComparisonProteinsTable.setColumnWidth(propertyId, columnWidth);
             }
         }
 

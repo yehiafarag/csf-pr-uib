@@ -37,15 +37,34 @@ public class HeaderLayout extends VerticalLayout {
         header.setHeight("60px");
         header.setSpacing(true);
         this.addComponent(header);
+        
+        //tile logo container
+        HorizontalLayout logoTitleContainer = new HorizontalLayout();
+        logoTitleContainer.setStyleName("logocontainer");
+        VerticalLayout logo =new VerticalLayout();
+        logo.setWidth("20px");
+        logo.setHeight("30px");
+        logo.setStyleName("logo");
+        
+        Label cLabel = new Label("<a href='' style='text-decoration:none'><p align='left' ; style='margin-left:0px;font-family:verdana;color:#ffffff;font-weight:bold;text-decoration:none '><FONT SIZE='5.5'>C</FONT></p></a>");
+        cLabel.setContentMode(ContentMode.HTML);
+        cLabel.setStyleName(Reindeer.LABEL_SMALL);
+        cLabel.setWidth("100%");
+        logo.addComponent(cLabel);
+        logo.setComponentAlignment(cLabel, Alignment.MIDDLE_CENTER);
+        
+        logoTitleContainer.addComponent(logo);
 
         //Coronetscript, cursive Helvetica
-        Label csfLable = new Label("<a href='' style='text-decoration:none'><p   align='left' ; style='margin-left:40px;font-family:verdana;color:#4d749f;font-weight:bold;text-decoration:none '><FONT SIZE='5.5'>CSF Proteome Resource (CSF-PR)</FONT><font size='2' > v2.0</font></p></a>");
+        Label csfLable = new Label("<a href='' style='text-decoration:none'><p   align='left' ; style='margin-left:0px;font-family:verdana;color:#4d749f;font-weight:bold;text-decoration:none '><FONT SIZE='5.5'>SF Proteome Resource (CSF-PR)</FONT><font size='2' > v2.0</font></p></a>");
         csfLable.setContentMode(ContentMode.HTML);
         csfLable.setStyleName(Reindeer.LABEL_SMALL);
         csfLable.setWidth("100%");
+        logoTitleContainer.addComponent(csfLable);
+        logoTitleContainer.setComponentAlignment(csfLable, Alignment.MIDDLE_LEFT);
 
-        header.addComponent(csfLable);
-        header.setComponentAlignment(csfLable, Alignment.MIDDLE_LEFT);
+        header.addComponent(logoTitleContainer);
+        header.setComponentAlignment(logoTitleContainer, Alignment.MIDDLE_LEFT);
 
         VerticalLayout logoLayout = new VerticalLayout();
         logoLayout.setStyleName(Reindeer.LAYOUT_WHITE);

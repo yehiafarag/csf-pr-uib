@@ -41,7 +41,7 @@
     <context-param>
         <description>Database name csf_db_v2_1  dbtest, quantdataupdated_10_9</description>
         <param-name>dbName</param-name>
-        <param-value>all_of_all</param-value>
+        <param-value>all_no_MCP</param-value>
     </context-param>
     <context-param>
         <description>Database Driver</description>
@@ -61,7 +61,7 @@
     <context-param>
         <description>exported files folder url D:\CSF_Files(/home/probe/user/CSF-PR-FILES)</description>
         <param-name>filesURL</param-name>
-        <param-value>D:\CSF_Files</param-value>
+        <param-value>/home/probe/user/CSF-PR-FILES</param-value>
     </context-param>
     <servlet>
         <servlet-name>Vaadin Application Servlet</servlet-name>

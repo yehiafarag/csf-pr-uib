@@ -52,7 +52,7 @@ private final Map<String, Color> defaultKeyColorMap = new HashMap<String, Color>
         defaultKeyColorMap.put("Not Found", new Color(219, 169, 1));
          otherSymbols.setGroupingSeparator('.');
          
-        labels = new String[]{"Found","Not Found"};
+        labels = new String[]{"Not Found","Found"};
         
         double uservalue = ((userValue/csfValue)*100.0);
           df = new DecimalFormat("#.##", otherSymbols);
