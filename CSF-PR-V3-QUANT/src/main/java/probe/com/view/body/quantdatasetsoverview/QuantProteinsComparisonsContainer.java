@@ -66,6 +66,7 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
     private final Button resetTableBtn;
     private final Label protCounterLabel;
     private int width = 0;
+    private int defaultWidth = 0;
 //    private final OptionGroup hideUniqueProteinsOption;
     private final VerticalLayout tableLayout;
     private String sortComparisonTableColumn;
@@ -100,6 +101,7 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
      * @param width the update layout width
      */
     public void setLayoutWidth(int width) {
+        this.defaultWidth = width;
         this.width = width;
 
         mainPanelBody.setWidth(width + "px");
@@ -118,9 +120,9 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
                     columnWidth = 200;
                     columnLabelContainer.setWidth((quantDiseaseGroupsComparisonArr.length * 200) + "px");
                     useRatio = false;
-                    this.width = Math.max(width, quantDiseaseGroupsComparisonArr.length * 200 + 385);
-                    mainPanelBody.setWidth(this.width + "px");
-                    this.bottomLayout.setWidth(this.width + "px");
+                    int tempWidth = Math.max(width, quantDiseaseGroupsComparisonArr.length * 200 + 385);
+                    mainPanelBody.setWidth(tempWidth + "px");
+                    this.bottomLayout.setWidth(tempWidth + "px");
                 }
 
             } else {
@@ -499,6 +501,7 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
                 groupsComparisonProteinsTable.setVisible(false);
                 bottomLayout.setVisible(false);
                 noProtLabel.setVisible(true);
+                mainPanelBody.setWidthUndefined();
                 searchField.clear();
                 groupsComparisonProteinsTable.setValue(null);
                 return;
@@ -512,6 +515,7 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
                 groupsComparisonProteinsTable.setVisible(true);
                 bottomLayout.setVisible(true);
                 noProtLabel.setVisible(false);
+
                 this.updateTableData(quantDiseaseGroupsComparisonArr);
                 this.localSelectAccessions(selectedQuantAccessionsSet);
                 this.updateSelectionManager();
@@ -610,16 +614,19 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
                     columnWidth = 200;
                     columnLabelContainer.setWidth((quantDiseaseGroupsComparisonArr.length * 200) + "px");
                     useRatio = false;
-                    this.width = Math.max(width, quantDiseaseGroupsComparisonArr.length * 200 + 385);
-                    mainPanelBody.setWidth(this.width + "px");
-                    this.bottomLayout.setWidth(this.width + "px");
+
                 }
+                this.width = Math.max(defaultWidth, quantDiseaseGroupsComparisonArr.length * 200 + 385);
+                mainPanelBody.setWidth(this.width + "px");
+                this.bottomLayout.setWidth(this.width + "px");
 
             } else {
                 columnLabelContainer.setWidth((quantDiseaseGroupsComparisonArr.length * 400) + "px");
                 useRatio = false;
             }
-        } else {
+        } else { this.width = Math.max(defaultWidth, quantDiseaseGroupsComparisonArr.length * 200 + 385);
+                mainPanelBody.setWidth(this.width + "px");
+                this.bottomLayout.setWidth(this.width + "px");
             columnLabelContainer.setWidth((quantDiseaseGroupsComparisonArr.length * 400) + "px");
         }
 

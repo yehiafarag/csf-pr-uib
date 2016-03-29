@@ -41,8 +41,8 @@ public class StudyPopupLayout extends VerticalLayout {
         int rowcounter = 0;
         for (QuantDatasetObject quantDS : dsObjects) {
 //            VerticalLayout btn = this.generateBtn(quantDS.getDsKey(), quantDS.getAuthor() + " (" + quantDS.getYear() + ")<br/><font size=1 >#Proteins: "+quantDS.getTotalProtNum()+"    #peptides: "+quantDS.getTotalPepNum()+"</font>");
-            String btnName =  "<font size=1 >"+quantDS.getPumedID()+"</font><br/>"+quantDS.getAuthor() + "<br/>(" + quantDS.getYear() + ")<br/><font size=1 >#Proteins: "+quantDS.getTotalProtNum()+"   #peptides: "+quantDS.getTotalPepNum()+"</font>";
-            PopupInfoBtn btn = new PopupInfoBtn(datasetInfoLayoutDSIndexMap.get(quantDS.getDsKey()), btnName);
+            String btnName =  "<font size=1 >"+quantDS.getPumedID()+"</font><br/>"+quantDS.getAuthor() + "<br/><font size=1 >" + quantDS.getYear() + "</font><br/><font size=1 >#Proteins: "+quantDS.getTotalProtNum()+"   #peptides: "+quantDS.getTotalPepNum()+"</font>";
+            PopupInfoBtn btn = new PopupInfoBtn(datasetInfoLayoutDSIndexMap.get(quantDS.getDsKey()), btnName,quantDS.getAuthor());
             topLayout.addComponent(btn, colcounter++, rowcounter);
             if (colcounter >= topLayout.getColumns()) {
                 colcounter = 0;

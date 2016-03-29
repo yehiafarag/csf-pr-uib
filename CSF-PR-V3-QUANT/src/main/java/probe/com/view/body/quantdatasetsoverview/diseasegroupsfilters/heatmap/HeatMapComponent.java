@@ -122,12 +122,12 @@ public class HeatMapComponent extends VerticalLayout {
         defaultResource = new ThemeResource("img/hideshow.png");
 
         icon.setSource(defaultResource);
-        hideCompBtn.setDescription("Hide Comparisons Table");
+        hideCompBtn.setDescription("Expand chart and hide comparisons table");
         hideCompBtn.addComponent(icon);
         hideCompBtn.setComponentAlignment(icon, Alignment.MIDDLE_CENTER);
         icon.setHeight((heatmapHeaderCellWidth - 20 + 10) + "px");
 
-        hideShowBtnLabel = new Label("Hide Comparisons");
+        hideShowBtnLabel = new Label("Expand Chart");
         hideShowBtnLabel.setHeight((20) + "px");
         hideCompBtn.addComponent(hideShowBtnLabel);
         hideCompBtn.setComponentAlignment(hideShowBtnLabel, Alignment.BOTTOM_CENTER);
@@ -361,9 +361,9 @@ public class HeatMapComponent extends VerticalLayout {
      */
     public void updateDsCellSelection(Set<QuantDiseaseGroupsComparison> selectedDsList) {
         if (selectedDsList.isEmpty()) {
+            icon.setSource(null);
+            hideShowBtnLabel.setValue("");
             hideCompBtn.setEnabled(false);
-            icon.setSource(defaultResource);
-            hideShowBtnLabel.setValue("Hide Comparisons");
 
         } else {
             hideCompBtn.setEnabled(true);
@@ -858,7 +858,7 @@ public class HeatMapComponent extends VerticalLayout {
     public void unselectAll() {
         selectedCells.clear();
         updateHideShowThumbImg(null);
-        updateShowHideBtnLabel(false);
+        updateShowHideBtnLabel(null);
         for (HeatmapCell cell : comparisonsCellsMap.values()) {
             cell.initStyle();
         }
@@ -889,16 +889,23 @@ public class HeatMapComponent extends VerticalLayout {
 
     public void updateHideShowThumbImg(String imgUrl) {
         if (imgUrl == null) {
-            icon.setSource(defaultResource);
+            icon.setSource(null);
             return;
         }
-        icon.setSource(new ExternalResource(imgUrl));
+        if (imgUrl.equalsIgnoreCase("defaultResource")) {
+            icon.setSource(defaultResource);
+        } else {
+            icon.setSource(new ExternalResource(imgUrl));
+        }
     }
 
-    public void updateShowHideBtnLabel(boolean show) {
+    public void updateShowHideBtnLabel(Boolean show) {
 
-        if (show) {
-            hideShowBtnLabel.setValue("Hide Comparisons");
+        if (show == null) {
+
+            hideShowBtnLabel.setValue("");
+        } else if (show) {
+            hideShowBtnLabel.setValue("Expand Chart");
         } else {
             hideShowBtnLabel.setValue("Show Comparisons");
         }

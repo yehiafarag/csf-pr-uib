@@ -80,17 +80,7 @@ public class PublicationsInformationWindow extends VerticalLayout implements Lay
         publicationContainer.setSpacing(true);
         publicationContainer.setMargin(true);
         popupBody.addComponent(publicationContainer);
-//        int maxNump = width / 400;
-//        int columnNum =width / 400;
-//        int counter = 1;
-//        while (true) {
-//            if ((publicationList.size() / counter) < maxNump) {
-//                columnNum = counter;
-//                break;
-//            }
-//            counter++;
-//            
-//        }
+
         publicationContainer.setColumns(columnNum);
         publicationContainer.setRows(publicationList.size());
 
@@ -100,26 +90,18 @@ public class PublicationsInformationWindow extends VerticalLayout implements Lay
 
         for (Object[] obj : publicationList) {
             VerticalLayout publicationLayout = initPublicationLayout(obj);
-            String btnName = "<font size=1 >"+obj[0].toString()+"</font><br/>"+obj[1].toString() + "<br/>(" + obj[2].toString() + ")<br/><font size=1 >#Proteins: " + obj[5].toString() /*+ "/" + obj[5].toString() + */+"   #Peptides: " + obj[7].toString() /*+ "/" + obj[7].toString() +*/+ "</font>";
+            String btnName = "<font size=1 >"+obj[0].toString()+"</font><br/>"+obj[1].toString() + "<br/><font size=1 >" + obj[2].toString() + "</font><br/><font size=1 >#Proteins: " + obj[5].toString() /*+ "/" + obj[5].toString() + */+"   #Peptides: " + obj[7].toString() /*+ "/" + obj[7].toString() +*/+ "</font>";
 
-            PopupInfoBtn publicationBtn = new PopupInfoBtn(publicationLayout, btnName);
+            PopupInfoBtn publicationBtn = new PopupInfoBtn(publicationLayout, btnName,obj[1].toString());
             publicationContainer.addComponent(publicationBtn, col++, row);
             publicationContainer.setComponentAlignment(publicationBtn, Alignment.TOP_CENTER);
-//            if (row == 0 && col == 1) {
-//                publicationLayout.setVisability(true);
-//            }
             if (col >= columnNum) {
                 row++;
-//                for(int i=col;i==0;i--)
-//                {
-//                    
-//                }
-
                 col = 0;
 
             }
         }
-//        height = Math.min((row * 240) + 70, height);
+        height = Math.min((++row*85)+200,height);
         popupWindow.setHeight((height) + "px");
 
     }
@@ -133,34 +115,22 @@ public class PublicationsInformationWindow extends VerticalLayout implements Lay
         publicationlayout.setMargin(new MarginInfo(false, false, false, false));
         publicationlayout.setStyleName("publicationstyle");
 
-//        Label authorLabel = new Label("<a style='hight=30px' href='http://www.ncbi.nlm.nih.gov/pubmed/' target='_blank' ><h4>" + publicationData[1].toString() + " (" + publicationData[2].toString() + ")</h4></a>");//, new ExternalResource("http://www.ncbi.nlm.nih.gov/pubmed/"));
-////        authorLabel.setTargetName("_blank");
-//        authorLabel.setContentMode(ContentMode.HTML);
-//        publicationlayout.addComponent(authorLabel);
-//        authorLabel.setHeight("30px");
         Label pubmedIdLabel = new Label("<h5>Pubmed Id: <a href='http://www.ncbi.nlm.nih.gov/pubmed/" + publicationData[0].toString() + "' target='_blank'  ><font style:'text-decoration:underline !important;'>" + publicationData[0].toString() + "</font></a></h5>");
-//        PeptidesNumLabel.setTargetName("_blank");
         pubmedIdLabel.setContentMode(ContentMode.HTML);
         publicationlayout.addComponent(pubmedIdLabel);
         pubmedIdLabel.setHeight("40px");
 
-//        HorizontalLayout protInfoLayout = new HorizontalLayout();
-//        protInfoLayout.setWidth("390px");
-//        protInfoLayout.setSpacing(true);
-//        publicationlayout.addComponent(protInfoLayout);
         Label proteinsNumLabel = new Label("<h5>#Proteins: "+ publicationData[5].toString() + "</h5>");
         proteinsNumLabel.setDescription("Number of publication proteins " + publicationData[4].toString());
         proteinsNumLabel.setContentMode(ContentMode.HTML);
         publicationlayout.addComponent(proteinsNumLabel);
-        proteinsNumLabel.setHeight("40px");
-        
+        proteinsNumLabel.setHeight("40px");        
         
         Label uproteinsNumLabel = new Label("<h5>#Publication Specific Proteins: " + publicationData[4].toString() + "</h5>");
         uproteinsNumLabel.setDescription("Number of publication specific proteins " + publicationData[4].toString());
         uproteinsNumLabel.setContentMode(ContentMode.HTML);
         publicationlayout.addComponent(uproteinsNumLabel);
-        uproteinsNumLabel.setHeight("40px");
-        
+        uproteinsNumLabel.setHeight("40px");        
 
         Label PeptidesNumLabel = new Label("<h5>#Peptides: " +publicationData[7].toString() + "</h5>");
         PeptidesNumLabel.setContentMode(ContentMode.HTML);
@@ -173,29 +143,12 @@ public class PublicationsInformationWindow extends VerticalLayout implements Lay
         publicationlayout.addComponent(uPeptidesNumLabel);
         uPeptidesNumLabel.setDescription("Number of publication specific  peptides " + publicationData[6].toString());
         uPeptidesNumLabel.setHeight("40px");
-      
-        
-  
 
         Label titleLabel = new Label("<textarea rows='5' cols='52' readonly >" + publicationData[3].toString() + "</textarea>");
         titleLabel.setContentMode(ContentMode.HTML);
         publicationlayout.addComponent(titleLabel);
         titleLabel.setHeight("100px");
 
-//        VerticalLayout miniLayout = new VerticalLayout();
-//        miniLayout.setWidth("100%");
-//        Label miniInfoLabel = new Label("<h5>#Proteins: " + publicationData[4].toString() + "/" + publicationData[5].toString() + "  |  #Peptides: " + publicationData[6].toString() + "/" + publicationData[7].toString() + "</h5>");
-//        miniInfoLabel.setContentMode(ContentMode.HTML);
-//        miniInfoLabel.setWidth("100%");
-//
-//        miniLayout.addComponent(miniInfoLabel);
-//        miniLayout.setComponentAlignment(miniInfoLabel, Alignment.TOP_RIGHT);
-//        miniLayout.setStyleName("minipublicationstyle");
-//        miniLayout.setMargin(false);
-//        HideOnClickLayout hideOnClick = new HideOnClickLayout(publicationData[1].toString() + " (" + publicationData[2].toString() + ")", publicationlayout, miniLayout, null, null);
-//        hideOnClick.setStyleName("underlineseparation");
-//        hideOnClick.setWidth("400px");
-//        hideOnClick.setMargin(true);
         return publicationlayout;
 
     }

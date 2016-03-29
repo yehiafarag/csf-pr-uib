@@ -1,7 +1,6 @@
 package probe.com.handlers;
 
 import com.vaadin.ui.Component;
-import com.vaadin.ui.Panel;
 import java.sql.SQLException;
 
 import java.io.File;

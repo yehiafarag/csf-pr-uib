@@ -56,9 +56,7 @@ public class AppController extends UI {
         application = new CSFPRApplication(CSFPR_Handler);
         this.getPage().setTitle("CSF Proteome Resource (CSF-PR)");
         setContent(application);
-        
-        
-        
+
 //         final SizeReporter reporter = new SizeReporter(application);
 //                reporter.addResizeListener(new ComponentResizeListener() {
 //                    @Override
@@ -67,14 +65,6 @@ public class AppController extends UI {
 //                    }
 //                });
 //        
-        
-        
-        
-        
-        
-        
-        
-        
         this.addDetachListener(new DetachListener() {
             @Override
             public void detach(DetachEvent event) {
@@ -103,26 +93,46 @@ public class AppController extends UI {
                 }
             }, (5 * 60 * 1000 * 60));
             //maximum session time out is 5 hours
-        }
+        }  
+        
+        final int appWidth = Page.getCurrent().getBrowserWindowWidth();
+        final int appHeight = Page.getCurrent().getBrowserWindowHeight();
+        application.setWidth(appWidth + "px");
+        application.setHeight(appHeight + "px");
         Page.getCurrent().addBrowserWindowResizeListener(new Page.BrowserWindowResizeListener() {
 
             @Override
             public void browserWindowResized(Page.BrowserWindowResizeEvent event) {
-                if (checkSize) {
-                    Page.getCurrent().reload();
-                }
-                checkSize = false;
-                checkWindowSize();
+
+                System.out.println("at window resized " + event.getWidth());
+                 application.setWidth(appWidth + "px");
+                application.setHeight(appHeight + "px");
+
+//                if (checkSize) {
+//                    Page.getCurrent().reload();
+//                }
+//                checkSize = false;
+//                checkWindowSize();
             }
         });
-        
+      
+        final SizeReporter sizeReporter = new SizeReporter(application);
+        sizeReporter.addResizeListener(new ComponentResizeListener() {            
+            @Override
+            public void sizeChanged(ComponentResizeEvent event) {           
+
+                application.setWidth(appWidth + "px");
+                application.setHeight(appHeight + "px");
+            }
+        });
+
         checkWindowSize();
 
     }
 
     private void checkWindowSize() {
 
-        if (Page.getCurrent().getBrowserWindowWidth()< 368 || Page.getCurrent().getBrowserWindowHeight()< 403) {
+        if (Page.getCurrent().getBrowserWindowWidth() < 368 || Page.getCurrent().getBrowserWindowHeight() < 403) {
             Notification.show("Opps.. Screen size is too small to use the system", Notification.Type.ERROR_MESSAGE);
             application.setVisible(false);
             checkSize = true;

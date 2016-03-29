@@ -4,6 +4,7 @@
  */
 package probe.com.view.body;
 
+import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.Page;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
@@ -12,9 +13,12 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
+import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.Reindeer;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,14 +50,17 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
      *
      *
      */
-    public WelcomeLayout(Button adminIcon, CSFPRHandler CSFPR_Handler) {
+    public WelcomeLayout(Button adminIcon, CSFPRHandler CSFPR_Handler,final TabSheet mainTabSheet) {
 
         int fullWidth = Page.getCurrent().getBrowserWindowWidth();
-        this.setWidth(100 + "%");
+        int fullHeight = Page.getCurrent().getBrowserWindowHeight()-100;
+        this.setWidth(100 + "%"); 
+        this.setHeight(fullHeight + "px");
+        this.setStyleName("hideoverflow");
         VerticalLayout mainBodyHLayout = new VerticalLayout();
         mainBodyHLayout.setWidth("100%");
         this.addComponent(mainBodyHLayout);
-        this.setHeight(100 + "%");
+       
 
         HorizontalLayout mainBody = new HorizontalLayout();
         mainBody.setWidthUndefined();
@@ -85,19 +92,19 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
 
         VerticalLayout middleLayout = new VerticalLayout();
         middleLayout.setWidth("100%");
-        middleLayout.setMargin(new MarginInfo(true, true, true, false));
+        middleLayout.setMargin(new MarginInfo(true, true, true, true));
         rightPanel.addComponent(middleLayout);
 
         VerticalLayout rightLayout = new VerticalLayout();
         rightLayout.setWidth("100%");
         rightPanel.addComponent(rightLayout);
 
-        Label infoLable = new Label("<h2 style='margin-left:40px;font-family:Verdana;'>Welcome to CSF Proteome Resource (CSF-PR)</h2>");
+        Label infoLable = new Label("<h2 style='font-family:Verdana;'>Welcome to CSF Proteome Resource (CSF-PR)</h2>");
         infoLable.setContentMode(ContentMode.HTML);
         middleLayout.addComponent(infoLable);
         middleLayout.setComponentAlignment(infoLable, Alignment.MIDDLE_LEFT);
 
-        Label para_1 = new Label("<p align='justify' Style='margin-left:40px;color:#585858;'><font size=\"2\">CSF Proteome Resource (CSF-PR) is an online repository of mass spectrometry based proteomics "
+        Label para_1 = new Label("<p align='justify' Style='color:#585858;'><font size=\"2\">CSF Proteome Resource (CSF-PR)v2.0 is an online repository of mass spectrometry based proteomics "
                 + "experiments on human cerebrospinal fluid (CSF). CSF is in direct contact with the central nervous"
                 + "system (CNS) and can give indications about the state of the CNS.This is particularly relevant for "
                 + "neurodegenerative diseases, such as Multiple Sclerosis, where CSF would be a natural place to look "
@@ -106,16 +113,161 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         para_1.setContentMode(ContentMode.HTML);
         middleLayout.addComponent(para_1);
 
-        Label para_2 = new Label("<p align='justify' Style='margin-left:40px;color:#585858;'><font size=\"2\">The data can be viewed by selecting individual experiments or by searching for key words (protein "
-                + "name/accession number or peptide sequence) across all experiments. For GeLC-MS experiments the "
-                + "distribution of the identified proteins in the gel is also displayed.</font></p>");
+//        Label para_2 = new Label("<p align='justify' Style='margin-left:40px;color:#585858;'><font size=\"2\">The data can be viewed by selecting individual experiments or by searching for key words (protein "
+//                + "name/accession number or peptide sequence) across all experiments. For GeLC-MS experiments the "
+//                + "distribution of the identified proteins in the gel is also displayed.</font></p>");
+//
+//        para_2.setContentMode(ContentMode.HTML);
+//        middleLayout.addComponent(para_2);
+//        
+//         
+        
+        
+        GridLayout middlePanelServicesLayout = new GridLayout(2, 2);
+        middleLayout.setWidth("100%");
+        int labelWidth = (layoutWidth/4)-130;
+        middlePanelServicesLayout.setStyleName("btnsiconcontainer");
+        middlePanelServicesLayout.setSpacing(true);
+        middleLayout.addComponent(middlePanelServicesLayout);
+        
+        
+        
+        HorizontalLayout quantDatasetBtnContainer = new HorizontalLayout();
+        quantDatasetBtnContainer.setWidth("100%");
+        middlePanelServicesLayout.addComponent(quantDatasetBtnContainer,0,0);
+        quantDatasetBtnContainer.setMargin(new MarginInfo(true, true, true, false));
+        quantDatasetBtnContainer.setSpacing(true);
+        quantDatasetBtnContainer.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
-        para_2.setContentMode(ContentMode.HTML);
-        middleLayout.addComponent(para_2);
+            @Override
+            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+                 mainTabSheet.setSelectedTab(1);
+                mainTabSheet.markAsDirty();
+            }
+        });
+        
+        
+        
+        
+        Image quantDatasetBtnIcon = new Image();
+        quantDatasetBtnIcon.setWidth("70px");
+        quantDatasetBtnIcon.setHeight("70px");
+        quantDatasetBtnIcon.setSource(new ThemeResource("img/scatter_plot_applied.png"));
+        quantDatasetBtnContainer.addComponent(quantDatasetBtnIcon);
+        
+        Label quantDatasetBtnLabel = new Label("<br/><b>Quantitative Dataset</b><br/><font size='1'>Brows quantitative data available in CSF-PR v2.0.</font>");
+        quantDatasetBtnLabel.setContentMode(ContentMode.HTML);
+        quantDatasetBtnContainer.addComponent(quantDatasetBtnLabel);
+        quantDatasetBtnLabel.setWidth(labelWidth+"px");
+        
+        
+        
+         HorizontalLayout idDatasetBtnContainer = new HorizontalLayout();
+         idDatasetBtnContainer.setWidth("100%");
+        middlePanelServicesLayout.addComponent(idDatasetBtnContainer,0,1);
+        idDatasetBtnContainer.setMargin(new MarginInfo(true, true, true, false));
+        idDatasetBtnContainer.setSpacing(true);
+        idDatasetBtnContainer.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
-//        ThemeResource img1 = new ThemeResource("img/overview.jpg");
+            @Override
+            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+                 mainTabSheet.setSelectedTab(2);
+                mainTabSheet.markAsDirty();
+            }
+        });         
+
+        
+        
+        Image idDatasetBtnIcon = new Image();
+        idDatasetBtnIcon.setWidth("70px");
+        idDatasetBtnIcon.setHeight("70px");
+        idDatasetBtnIcon.setSource(new ThemeResource("img/bar-chart.png"));
+        idDatasetBtnContainer.addComponent(idDatasetBtnIcon);
+        
+        Label idDatasetBtnLabel = new Label("<br/><b>Identification Dataset</b><br/><font size='1'>Brows identification data available in CSF-PR v2.0.</font>");
+        idDatasetBtnLabel.setContentMode(ContentMode.HTML);
+        idDatasetBtnContainer.addComponent(idDatasetBtnLabel);
+        idDatasetBtnLabel.setWidth(labelWidth+"px");
+        
+        
+        
+        
+         HorizontalLayout searchingBtnContainer = new HorizontalLayout();
+         searchingBtnContainer.setWidth("100%");
+        middlePanelServicesLayout.addComponent(searchingBtnContainer,1,0);
+        searchingBtnContainer.setMargin(new MarginInfo(true, true, true, false));
+        searchingBtnContainer.setSpacing(true);
+        searchingBtnContainer.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+
+            @Override
+            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+                 mainTabSheet.setSelectedTab(3);
+                mainTabSheet.markAsDirty();
+            }
+        });
+        
+        
+        Image searchingDatasetBtnIcon = new Image();
+        searchingDatasetBtnIcon.setSource(new ThemeResource("img/search.png"));
+        searchingDatasetBtnIcon.setWidth("70px");
+        searchingDatasetBtnIcon.setHeight("70px");
+        searchingBtnContainer.addComponent(searchingDatasetBtnIcon);
+        
+        Label searchingDatasetBtnLabel = new Label("<br/><b>Search</b><br/><font size='1'>Search quantitative and  identification proteins using protein's name, accessions and peptides sequences.</font>");
+        searchingDatasetBtnLabel.setContentMode(ContentMode.HTML);
+        searchingBtnContainer.addComponent(searchingDatasetBtnLabel);
+        searchingDatasetBtnLabel.setWidth(labelWidth+"px");
+        
+        
+        
+         
+         HorizontalLayout compareBtnContainer = new HorizontalLayout();
+         compareBtnContainer.setWidth("100%");
+        middlePanelServicesLayout.addComponent(compareBtnContainer,1,1);
+        compareBtnContainer.setMargin(new MarginInfo(true, true, true, false));
+        compareBtnContainer.setSpacing(true);
+        compareBtnContainer.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+
+            @Override
+            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+                 mainTabSheet.setSelectedTab(4);
+                mainTabSheet.markAsDirty();
+            }
+        });
+        Image compareDatasetBtnIcon = new Image();
+        compareDatasetBtnIcon.setWidth("70px");
+        compareDatasetBtnIcon.setHeight("70px");
+         compareDatasetBtnIcon.setSource(new ThemeResource("img/compare.png"));
+        compareBtnContainer.addComponent(compareDatasetBtnIcon);
+        
+        Label compareDatasetBtnLabel = new Label("<br/><b>Compare</b><br/><font size='1'>Compare your quantitative proteins information with the available data in CSF-PR v2.0.</font>");
+        compareDatasetBtnLabel.setContentMode(ContentMode.HTML);
+        compareBtnContainer.addComponent(compareDatasetBtnLabel);
+        compareDatasetBtnLabel.setWidth(labelWidth+"px");
+        
+        
+        
+        
+        VerticalLayout spacer = new VerticalLayout();
+        spacer.setHeight("30px");
+        spacer.setWidth("10px");
+          middleLayout.addComponent(spacer);
+        
+        Label para_3 = new Label("<p align='justify' Style='color:#585858;'><font size=\"1\">CSF-PR v2.0 is being developed by the <a Style='color:#585858;' href='http://www.uib.no/rg/probe' target=\"_blank\">Proteomics Unit</a> at the<a Style='color:#585858;' href='http://www.uib.no/biomedisin/en' target=\"_blank\"> Department of Biomedicine at the University of Bergen</a>, Norway, in close collaboration with <a Style='color:#585858;' href='http://haukeland.no/en/OmOss/Avdelinger/ms/Sider/om-oss.aspx' target=\"_blank\">The Norwegian Multiple Sclerosis Competence Centre</a>, Haukeland University Hospital, Bergen, Norway.</font></p>");
+        para_3.setContentMode(ContentMode.HTML);
+        middleLayout.addComponent(para_3);
+         middleLayout.setComponentAlignment(para_3,Alignment.BOTTOM_LEFT);
+
+//        Label para_4 = new Label("<p align='justify' Style='margin-left:40px;color:#585858;'><font size=\"2\">See also: <a Style='color:#585858;' href='http://www.mcponline.org/content/13/11/3152.full.pdf+html' target=\"_blank\">Guldbrandsen et al.: In-depth Characterization of the Cerebrospinal Fluid (CSF) Proteome Displayed Through the CSF Proteome Resource (CSF-PR). Mol Cell Proteomics. 2014.</a></font></p>");
+//        para_4.setContentMode(ContentMode.HTML);
+//        middleLayout.addComponent(para_4);
+//        
+        
+        
+        
+        
+
         Link fullOverviewImgLink = new Link(null, new ThemeResource("img/fulloverview.jpg"));
-//        fullOverviewImgLink.setIcon(img1);
         fullOverviewImgLink.setStyleName("fulloverview");
         fullOverviewImgLink.setTargetName("_blank");
         fullOverviewImgLink.setWidth("100%");
@@ -124,13 +276,7 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         rightLayout.setMargin(new MarginInfo(true, true, true, true));
         rightLayout.setComponentAlignment(fullOverviewImgLink, Alignment.MIDDLE_CENTER);
 
-        Label para_3 = new Label("<p align='justify' Style='margin-left:40px;color:#585858;'><font size=\"2\">CSF-PR is being developed by the <a Style='color:#585858;' href='http://www.uib.no/rg/probe' target=\"_blank\">Proteomics Unit</a> at the<a Style='color:#585858;' href='http://www.uib.no/biomedisin/en' target=\"_blank\"> Department of Biomedicine at the University of Bergen</a>, Norway, in close collaboration with <a Style='color:#585858;' href='http://haukeland.no/en/OmOss/Avdelinger/ms/Sider/om-oss.aspx' target=\"_blank\">The Norwegian Multiple Sclerosis Competence Centre</a>, Haukeland University Hospital, Bergen, Norway.</font></p>");
-        para_3.setContentMode(ContentMode.HTML);
-        middleLayout.addComponent(para_3);
-
-        Label para_4 = new Label("<p align='justify' Style='margin-left:40px;color:#585858;'><font size=\"2\">See also: <a Style='color:#585858;' href='http://www.mcponline.org/content/13/11/3152.full.pdf+html' target=\"_blank\">Guldbrandsen et al.: In-depth Characterization of the Cerebrospinal Fluid (CSF) Proteome Displayed Through the CSF Proteome Resource (CSF-PR). Mol Cell Proteomics. 2014.</a></font></p>");
-        para_4.setContentMode(ContentMode.HTML);
-        middleLayout.addComponent(para_4);
+       
 
         bottomLayout.addComponent(adminIcon);
         bottomLayout.setComponentAlignment(adminIcon, Alignment.BOTTOM_RIGHT);
@@ -208,31 +354,6 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         subQuantStatLayout.setColumnExpandRatio(0, 2);
         subQuantStatLayout.setColumnExpandRatio(1, 1);
 
-//        Timer timer = new Timer();
-//        bottomLayout.addComponent(timer);
-//        
-//        VerticalLayout idStatLayout = new VerticalLayout();
-//        leftLayout.addComponent(idStatLayout);
-//        leftLayout.setComponentAlignment(idStatLayout, Alignment.MIDDLE_CENTER);
-//        idStatLayout.setWidth("90%");
-//        idStatLayout.setHeight("450px");
-//        idStatLayout.setStyleName(Reindeer.LAYOUT_BLUE);
-//        
-//        Label idLabel = new Label("Protein identification data");
-//        idLabel.setStyleName(Reindeer.LABEL_H2);
-//        idStatLayout.addComponent(idLabel);
-//        
-//        
-//        
-//        
-//        
-//        
-//        VerticalLayout quantStatLayout = new VerticalLayout();
-//        leftLayout.addComponent(quantStatLayout);
-//        leftLayout.setComponentAlignment(quantStatLayout, Alignment.MIDDLE_CENTER);
-//        quantStatLayout.setWidth("90%");
-//        quantStatLayout.setHeight("450px");
-//        quantStatLayout.setStyleName(Reindeer.LAYOUT_BLUE);
         
         Label idStatLabel = new Label("<h2>Identification Data</h2>");
         idStatLabel.setContentMode(ContentMode.HTML);
@@ -242,13 +363,6 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         subIdStatLayout.setWidth("100%");
         leftLayout.addComponent(subIdStatLayout);
 
-//        Label sub1IdStatLabel = new Label("<h3>#Publications:</h3>");
-//        sub1IdStatLabel.setContentMode(ContentMode.HTML);
-//        subIdStatLayout.addComponent(sub1IdStatLabel,0,0);
-//        Label sub1IdStatValue = new Label("<h3>"+infoBean.getNumberOfIdPublication()+"</h3>");
-//        sub1IdStatValue.setContentMode(ContentMode.HTML);
-//        subIdStatLayout.addComponent(sub1IdStatValue,1,0);
-//        subIdStatLayout.setComponentAlignment(sub1IdStatValue, Alignment.MIDDLE_RIGHT);
         Label sub2IdStatLabel = new Label("<h3>#Datasets</h3>");
         sub2IdStatLabel.setContentMode(ContentMode.HTML);
         subIdStatLayout.addComponent(sub2IdStatLabel, 0, 1);

@@ -66,14 +66,11 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
      */
     private void initBodyLayout(final CSFPRHandler CSFPR_Handler) {
 //      Tab 1 content home page 
-        welcomeLayout = new WelcomeLayout(adminIcon, CSFPR_Handler);
-        welcomeLayout.setWidth("100%");
-        welcomeLayout.setHeight("100%");
+        welcomeLayout = new WelcomeLayout(adminIcon, CSFPR_Handler,mainTabSheet);
         homeTab = mainTabSheet.addTab(welcomeLayout, "Home", null);
 
 //      Tab 2 content quant dataset overview
         quantDatasetsOverviewPanel = new Panel();
-
         pageHeight = Page.getCurrent().getBrowserWindowHeight();
         bodyHeight = (pageHeight - 100);
 
@@ -118,13 +115,13 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
         mainTabSheet.markAsDirty();
 
         //        int width = Page.getCurrent().getBrowserWindowWidth()-15;
-        VerticalLayout test = new VerticalLayout();
-        test.setHeight(bodyHeight + "px");
-        test.setWidth("100%");
-        test.setPrimaryStyleName("scrollable");
-        VennDiagramContainer vennDiagram = new VennDiagramContainer();
-        test.addComponent(vennDiagram);
-        mainTabSheet.addTab(test, "Test");
+//        VerticalLayout test = new VerticalLayout();
+//        test.setHeight(bodyHeight + "px");
+//        test.setWidth("100%");
+//        test.setPrimaryStyleName("scrollable");
+//        VennDiagramContainer vennDiagram = new VennDiagramContainer();
+//        test.addComponent(vennDiagram);
+//        mainTabSheet.addTab(test, "Test");
 
     }
 
@@ -140,13 +137,11 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
         } else if (c.equals("Proteins")) {
             adminTab.setVisible(false);
         } else if (c.equals("Search")) {
-
             adminTab.setVisible(false);
             if (searchingLayout == null && CSFPR_Handler != null) {
                 searchingLayout = new ProteinsSearchingLayout(CSFPR_Handler, mainTabSheet);
                 this.searchDataPanel.setContent(searchingLayout);
                 searchingLayout.setHeightUndefined();
-
                 boolean horizontal = false;
                 InviewExtension extension = new InviewExtensionImpl(searchingLayout.getTopLabelMarker(), quantDatasetsOverviewPanel, horizontal);
                 extension.addExitListener(new InviewExtension.ExitListener() {

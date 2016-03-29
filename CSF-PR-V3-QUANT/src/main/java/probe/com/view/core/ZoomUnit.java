@@ -72,7 +72,6 @@ public class ZoomUnit extends HorizontalLayout implements LayoutEvents.LayoutCli
                 zoomLevel -= 25;
                 zoomLevel = Math.max(zoomLevel, 50);
             }
-            System.out.println("at zoom style " + "zoom" + zoomLevel);
             zoomedLayout.addStyleName("zoom" + zoomLevel);
         }
     }

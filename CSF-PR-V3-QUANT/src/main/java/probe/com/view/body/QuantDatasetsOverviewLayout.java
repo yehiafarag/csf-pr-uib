@@ -5,7 +5,6 @@ import com.vaadin.server.Page;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
@@ -17,7 +16,6 @@ import probe.com.view.body.quantdatasetsoverview.DiseaseGroupsFiltersContainer;
 import probe.com.view.body.quantdatasetsoverview.QuantProteinsComparisonsContainer;
 import probe.com.view.core.HideOnClickLayout;
 import probe.com.view.body.quantdatasetsoverview.QuantProteinsTabsheetContainerLayout;
-import probe.com.view.core.ZoomUnit;
 
 /**
  * This is the studies layout include publication heatmapFiltere and publication
@@ -43,9 +41,6 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
      * @param searchQuantificationProtList
      */
     public QuantDatasetsOverviewLayout(CSFPRHandler CSFPR_Handler, boolean searchingMode, List<QuantProtein> searchQuantificationProtList) {
-//        Studies_Selection_Manager = new StudiesSelectionManager();//,filterUtility.getFullFilterList()
-      
-        
 
         topLabelMarker = new VerticalLayout();
         this.addComponent(topLabelMarker);
@@ -54,15 +49,7 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
         topLabelMarker.setWidth("100%");
         topLabelMarker.setStyleName(Reindeer.LAYOUT_WHITE);  
         
-       
-//        zoomBtn.addClickListener(new Button.ClickListener() {
-//
-//            @Override
-//            public void buttonClick(Button.ClickEvent event) {
-//               addStyleName("zoom");
-//                addStyleName("scrollable");
-//            }
-//        });
+
 
         if (CSFPR_Handler.getQuantDatasetInitialInformationObject().isEmpty()) {
             Label noExpLable = new Label("<h4 style='font-family:verdana;color:black;font-weight:bold;'>Sorry No Dataset Availabe Now !</h4>");
@@ -81,7 +68,6 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
         this.setHeightUndefined();
 
         // init piecharts filter
-//        studiesSelectionManager.changeDiseaseCategory("Multiple Sclerosis");
         DiseaseGroupsFiltersContainer heatmapFilter = new DiseaseGroupsFiltersContainer(Quant_Central_Manager, CSFPR_Handler, searchQuantificationProtList, null);
         heatmapFilter.setWidth("100%");
         heatmapFilter.setMargin(new MarginInfo(false, false, true, false));
@@ -112,7 +98,6 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
         proteinsLevelLayout.setVisability(true);
         this.addComponent(proteinsLevelLayout);
 
-//        proteinsLevelLayout.setVisability(false);
     }
 
 }

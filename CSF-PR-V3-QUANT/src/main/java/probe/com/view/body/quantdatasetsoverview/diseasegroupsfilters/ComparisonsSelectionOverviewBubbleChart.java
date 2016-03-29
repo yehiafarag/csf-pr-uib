@@ -825,7 +825,6 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
         };
 
-        System.out.println("on right plot");
         XYPlot xyplot = new XYPlot(defaultxyzdataset, xAxis, yAxis, xyitemrenderer) {
 
             @Override
@@ -1435,7 +1434,8 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
     @Override
     public void selectionChanged(String type) {
         if (type.equalsIgnoreCase("Comparison_Selection")) {
-//            selectedComparisonList = this.Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList();
+             lastselectedComponents.clear();
+             resetSelection();
             selectedComparisonList = this.Quant_Central_Manager.getUpdatedSelectedDiseaseGroupsComparisonListProteins(searchQuantificationProtList);
 
             if (selectedComparisonList.isEmpty()) {
@@ -1490,8 +1490,6 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
         double logValue = (Math.log(linearValue + 1) / Math.log(2));
         logValue = (logValue * 2 / logMax) + lowerLimit;
-        System.out.println("at linear value " + linearValue + "   log " + logValue);
-
         return logValue;
     }
 //      public final double scaleValues(double linearValue, int max, double upperLimit, double lowerLimit) {
@@ -1578,7 +1576,6 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                         }
 
                     } 
-                    System.out.println("selectionMap size is "+selectionMap.size());
                 }
                 if (selectedCom == square) {
                     selectedheader = comparison.getComparisonHeader();

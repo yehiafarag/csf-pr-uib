@@ -187,7 +187,7 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
         heatMap.getHideCompBtn().addLayoutClickListener(listener);
     }
     
-    public void updateHideComparisonThumbBtn(String imgUrl,boolean show){
+    public void updateHideComparisonThumbBtn(String imgUrl,Boolean show){
     heatMap.updateHideShowThumbImg(imgUrl);
     heatMap.updateShowHideBtnLabel(show);
     

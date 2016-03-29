@@ -65,7 +65,6 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
      */
     @Override
     public void selectionChanged(String type) {
-        System.out.println("at type here is " + type);
 //        if (type.equalsIgnoreCase("Comparison_Selection")) {
 //           Set<QuantDiseaseGroupsComparison> selectedComparisonList = Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList();
 //            System.out.println("at selectedComparisonList "+selectedComparisonList.size());

@@ -977,12 +977,8 @@ public class CoreLogic implements Serializable {
 
         Set<QuantDiseaseGroupsComparison> updatedSelectedComparisonList = new LinkedHashSet<QuantDiseaseGroupsComparison>();
         Set<QuantProtein> fullComparisonProtMap = new HashSet<QuantProtein>();
-        Set<String> cleaningList = new HashSet<String>();
-//        Map<QuantDiseaseGroupsComparison, Set<QuantProtein>> comparisonsToProtMap = new HashMap<QuantDiseaseGroupsComparison, Set<QuantProtein>>();
         Map<Integer, QuantDiseaseGroupsComparison> dsIndexToComparisonsMap = new HashMap<Integer, QuantDiseaseGroupsComparison>();
-
         Set<Integer> dsIdsList = new HashSet<Integer>();
-
         if (searchQuantificationProtList != null) {
             for (QuantDiseaseGroupsComparison comparison : selectedComparisonList) {
                 for (int dsID : comparison.getDatasetIndexes()) {
@@ -996,11 +992,25 @@ public class CoreLogic implements Serializable {
                 }
             }
         } else {
-            for (QuantDiseaseGroupsComparison comparison : selectedComparisonList) {
 
-                for (int dsID : comparison.getDatasetIndexes()) {
-                    dsIdsList.add(dsID);
-                    dsIndexToComparisonsMap.put(dsID, comparison);
+            for (QuantDiseaseGroupsComparison comparison : selectedComparisonList) {
+                if (comparison.getComparProtsMap() == null || comparison.getComparProtsMap().isEmpty()) {
+
+                    for (int dsID : comparison.getDatasetIndexes()) {
+                        dsIdsList.add(dsID);
+                        dsIndexToComparisonsMap.put(dsID, comparison);
+                    }
+                } else {
+                    for (int dsID : comparison.getDatasetIndexes()) {
+                        dsIndexToComparisonsMap.put(dsID, comparison);
+                    }
+                    for (DiseaseGroupsComparisonsProteinLayout quantProteinlayout : comparison.getComparProtsMap().values()) {
+                        for (QuantProtein qp : quantProteinlayout.getDsQuantProteinsMap().values()) {
+                            fullComparisonProtMap.add(qp);
+
+                        }
+                    }
+
                 }
 
             }
@@ -1034,13 +1044,11 @@ public class CoreLogic implements Serializable {
             String pGrI;
             String pGrII;
 
-            pGrI = comparison.getComparisonHeader().split(" / ")[0].trim();           
+            pGrI = comparison.getComparisonHeader().split(" / ")[0].trim();
             Set<String> pGrISet = diseaseGroupsHeaderToOregenalDiseaseGroupsNames.get(pGrI);
 
             pGrII = comparison.getComparisonHeader().split(" / ")[1].trim();
             Set<String> pGrIISet = diseaseGroupsHeaderToOregenalDiseaseGroupsNames.get(pGrII);
-
-           
 
             for (QuantProtein quant : comparisonProtMap) {
                 boolean inverted = false;
@@ -1065,7 +1073,6 @@ public class CoreLogic implements Serializable {
                 }
 
                //+ "\n" + disease_category.replace(" ","_").replace("'", "-")+"_Disease"
-
 //                System.out.println("at pGrISet "+pGrISet);
 //                 System.out.println("at quant.getPatientGroupI( "+quant.getPatientGroupI());
 //                  System.out.println("at quant.getPatientSubGroupI( "+quant.getPatientSubGroupI());
@@ -1075,8 +1082,6 @@ public class CoreLogic implements Serializable {
 //                  System.out.println("at quant.getPatientSubGroupI( "+quant.getPatientSubGroupII());
 //                
 //                  System.out.println("------------------------------------------------------------------------");
-                  
-                  
                 if ((pGrISet.contains(quant.getPatientGroupI()) || pGrISet.contains(quant.getPatientSubGroupI())) && (pGrIISet.contains(quant.getPatientGroupII()) || pGrIISet.contains(quant.getPatientSubGroupII()))) {
                     if (quant.getStringFCValue().equalsIgnoreCase("Decreased") || quant.getStringFCValue().equalsIgnoreCase("Decrease")) {
                         comProt.addDown((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
@@ -1089,8 +1094,8 @@ public class CoreLogic implements Serializable {
                     }
 
                 } else {
-                    inverted = true; 
-                   
+                    inverted = true;
+
                     if (quant.getStringFCValue().equalsIgnoreCase("Decreased") || quant.getStringFCValue().equalsIgnoreCase("Decrease")) {
                         comProt.addUp((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
                     } else if (quant.getStringFCValue().equalsIgnoreCase("Increased") || quant.getStringFCValue().equalsIgnoreCase("Increase")) {
@@ -1194,8 +1199,6 @@ public class CoreLogic implements Serializable {
                     dsQuantProteinsMap.put("_-_" + quant.getDsKey() + "_-_" + comProt.getProteinAccssionNumber() + "_-_", quant);
 //                    }
                 } else {
-
-                    cleaningList.add(protAcc);
 
                     /////for iso testing remove as soon as possible 
                     System.out.println("at major error in data dublicated keys " + ("_-_" + quant.getDsKey() + "_-_" + comProt.getProteinAccssionNumber() + "_-_"));

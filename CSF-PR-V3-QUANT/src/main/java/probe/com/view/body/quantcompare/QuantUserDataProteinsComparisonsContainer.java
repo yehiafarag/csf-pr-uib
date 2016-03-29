@@ -66,6 +66,7 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
     private final Button resetTableBtn;
     private final Label protCounterLabel;
     private int width = 0;
+    private int defaultWidth = 0;
 //    private final OptionGroup hideUniqueProteinsOption;
     private final VerticalLayout tableLayout;
     private String sortComparisonTableColumn;
@@ -101,6 +102,7 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
      */
     public void setLayoutWidth(int width) {
         this.width = width;
+        this.defaultWidth = width;
         this.mainPanelBody.setWidth(width + "px");
         this.bottomLayout.setWidth(width + "px");
         float ratio = 385f / (float) width;
@@ -112,17 +114,22 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
                 int persWidth = (int) (100.0 - (16.0 * 100.0 / (double) width));
                 columnLabelContainer.setWidth(persWidth + "%");
                 int contWid = (persWidth * (width - 385) / 100);
-                columnWidth = contWid / quantDiseaseGroupsComparisonArr.length+1;
+                columnWidth = contWid / quantDiseaseGroupsComparisonArr.length + 1;
                 if (columnWidth < 200) {
                     columnWidth = 200;
-                    columnLabelContainer.setWidth(((quantDiseaseGroupsComparisonArr.length+1) * 200) + "px");
+                    columnLabelContainer.setWidth(((quantDiseaseGroupsComparisonArr.length + 1) * 200) + "px");
                     useRatio = false;
-                    this.width = Math.max(width, (quantDiseaseGroupsComparisonArr.length+1) * 200 + 385);
-                    mainPanelBody.setWidth(this.width + "px");
-                    this.bottomLayout.setWidth(this.width + "px");
+
                 }
+                int tempWidth = Math.max(width, (quantDiseaseGroupsComparisonArr.length + 1) * 200 + 385);
+                mainPanelBody.setWidth(tempWidth + "px");
+                this.bottomLayout.setWidth(tempWidth + "px");
 
             } else {
+                int tempWidth = Math.max(width, (quantDiseaseGroupsComparisonArr.length + 1) * 200 + 385);
+                mainPanelBody.setWidth(tempWidth + "px");
+                this.bottomLayout.setWidth(tempWidth + "px");
+
                 useRatio = false;
                 columnLabelContainer.setWidth(((quantDiseaseGroupsComparisonArr.length + 1) * 400) + "px");
             }
@@ -132,7 +139,7 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
 
         topLayout.setExpandRatio(searchingFieldLayout, ratio);
         topLayout.setExpandRatio(columnLabelContainer, (1f - ratio));
-        resizeTable(useRatio, ratio,columnWidth);
+        resizeTable(useRatio, ratio, columnWidth);
         updateQuantProteinsSparkLineLabels(columnWidth);
     }
 
@@ -180,10 +187,10 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
         this.Quant_Central_Manager = Quant_Central_Manager;
         this.Quant_Central_Manager.registerStudySelectionListener(QuantUserDataProteinsComparisonsContainer.this);
         this.userCustomizedComparison = userCustomizedComparison;
-         this.setWidth("100%");
+        this.setWidth("100%");
         this.setContent(mainPanelBody);
         this.setStyleName(Reindeer.PANEL_LIGHT);
-       
+
         this.setHeightUndefined();
         this.mainPanelBody.setStyleName(Reindeer.LAYOUT_WHITE);
         this.mainPanelBody.setMargin(false);
@@ -366,7 +373,6 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
 //                updateProtCountLabel(groupsComparisonProteinsTable.getItemIds().size());
 //            }
 //        });
-
         HorizontalLayout rightBottomLayout = new HorizontalLayout();
         rightBottomLayout.setWidthUndefined();
         rightBottomLayout.setSpacing(true);
@@ -377,11 +383,6 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
         rightBottomLayout.addComponent(tableLegendLayout);
         rightBottomLayout.setComponentAlignment(tableLegendLayout, Alignment.MIDDLE_CENTER);
 
-        
-    
-
-        
-          
         VerticalLayout removeAllFiltersBtn = new VerticalLayout();
         removeAllFiltersBtn.setStyleName("clearfiltersbtn");
         rightBottomLayout.addComponent(removeAllFiltersBtn);
@@ -394,7 +395,7 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
                 clearAllFilters();
             }
         });
-          Button exportTableBtn = new Button("");
+        Button exportTableBtn = new Button("");
         exportTableBtn.setHeight("24px");
         exportTableBtn.setWidth("24px");
         exportTableBtn.setPrimaryStyleName("exportxslbtn");
@@ -431,7 +432,6 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
 
             }
         });
-      
 
         VerticalLayout selectAllBtn = new VerticalLayout();
         selectAllBtn.setStyleName("selectallbtn");
@@ -459,7 +459,6 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
             }
         });
 
-      
         bottomLayout.setVisible(false);
         this.mainPanelBody.addComponent(bottomLayout);
 
@@ -511,6 +510,7 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
                 groupsComparisonProteinsTable.setVisible(false);
                 bottomLayout.setVisible(false);
                 noProtLabel.setVisible(true);
+                mainPanelBody.setWidthUndefined();
                 searchField.clear();
                 groupsComparisonProteinsTable.setValue(null);
                 return;
@@ -610,7 +610,7 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
 
         boolean useRatio = false;
         int columnWidth = 400;
-        if (quantDiseaseGroupsComparisonArr.length + 1 > 1) {
+        if (quantDiseaseGroupsComparisonArr.length + 1 > 2) {
             if (((quantDiseaseGroupsComparisonArr.length + 1) * 400) > (width - 385)) {
                 useRatio = true;
                 int persWidth = (int) (100.0 - (16.0 * 100.0 / (double) width));
@@ -619,18 +619,22 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
                 columnWidth = contWid / (quantDiseaseGroupsComparisonArr.length + 1);
                 if (columnWidth < 200) {
                     columnWidth = 200;
-                    columnLabelContainer.setWidth(((quantDiseaseGroupsComparisonArr.length+1) * 200) + "px");
+                    columnLabelContainer.setWidth(((quantDiseaseGroupsComparisonArr.length + 1) * 200) + "px");
                     useRatio = false;
-                    this.width = Math.max(width, (quantDiseaseGroupsComparisonArr.length+1) * 200 + 385);
-                    mainPanelBody.setWidth(this.width + "px");
-                    this.bottomLayout.setWidth(this.width + "px");
+
                 }
+                this.width = Math.max(defaultWidth, (quantDiseaseGroupsComparisonArr.length + 1) * 200 + 385);
+                mainPanelBody.setWidth(this.width + "px");
+                this.bottomLayout.setWidth(this.width + "px");
 
             } else {
                 columnLabelContainer.setWidth(((quantDiseaseGroupsComparisonArr.length + 1) * 400) + "px");
                 useRatio = false;
             }
         } else {
+            this.width = Math.max(defaultWidth, (quantDiseaseGroupsComparisonArr.length + 1) * 200 + 385);
+            mainPanelBody.setWidth(this.width + "px");
+            this.bottomLayout.setWidth(this.width + "px");
             columnLabelContainer.setWidth(((quantDiseaseGroupsComparisonArr.length + 1) * 400) + "px");
         }
         float ratio = 385f / (float) width;
@@ -777,7 +781,7 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
             }
             indexing++;
         }
-        this.resizeTable(useRatio, ratio,columnWidth);
+        this.resizeTable(useRatio, ratio, columnWidth);
         groupsComparisonProteinsTable.addHeaderClickListener(new Table.HeaderClickListener() {
             @Override
             public void headerClick(Table.HeaderClickEvent event) {
@@ -994,7 +998,6 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
      */
     private HorizontalLayout generateColumnHeaderLayout(final QuantDiseaseGroupsComparison comparison, int width) {
 
-        
         HorizontalLayout titleLayout = new HorizontalLayout();
         titleLayout.setWidth(width + "px");
         titleLayout.setHeight("35px");
@@ -1081,26 +1084,16 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
             labelII.setVisible(false);
             leftSideHeader.setWidth((width - 42) + "px");
             leftSideHeader.setVisible(false);
-            rightSideHeader.setWidth(width+"px");
+            rightSideHeader.setWidth(width + "px");
         } else {
-           labelI.setVisible(true);
+            labelI.setVisible(true);
             labelII.setVisible(true);
             leftSideHeader.setWidthUndefined();
             rightSideHeader.setWidthUndefined();
             leftSideHeader.setVisible(true);
         }
 
-
 //        VerticalLayout closeCompariosonBtn = ne
-        
-        
-        
-        
-        
-        
-        
-        
-        
 //        
 //        
 //        HorizontalLayout titleLayout = new HorizontalLayout();
@@ -1155,7 +1148,6 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
 //        titleLayout.setComponentAlignment(btnsLayout, Alignment.MIDDLE_LEFT);
 //        titleLayout.setExpandRatio(label, width - 42);
 //        titleLayout.setExpandRatio(btnsLayout, 42);
-
         return titleLayout;
 
     }
@@ -1181,7 +1173,7 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
             }
 
         } else {
-             if (columnWidth == 400) {
+            if (columnWidth == 400) {
                 columnWidth = 387;
             } else {
                 columnWidth = 187;
