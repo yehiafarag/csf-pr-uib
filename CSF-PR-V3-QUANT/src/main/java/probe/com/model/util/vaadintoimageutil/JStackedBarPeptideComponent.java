@@ -23,9 +23,6 @@ public class JStackedBarPeptideComponent extends JPanel implements Comparable<JS
     private String defaultStyleShowAllMode;
     private boolean significant;
     private final String peptideKey;
-//    private final NetworkDiagram ptmDiagram;
-//    private final Options ptmOptions;
-
     public String getPeptideKey() {
         return peptideKey;
     }
@@ -126,35 +123,14 @@ public class JStackedBarPeptideComponent extends JPanel implements Comparable<JS
         this.x0 = x0;
         this.widthArea = widthArea;
         this.peptideKey = peptideKey;
-//        ptmOptions = new Options();
-//        ptmDiagram = new NetworkDiagram(ptmOptions);
         if (peptideModification != null && !peptideModification.trim().equalsIgnoreCase("")) {
-//            Node n = initNode(peptideKey);
-//            Node n2 = new Node(peptideKey + "-l", "-G-");
-//            n2.setRadius(1);
-//            n2.setShape(Node.Shape.circle);
-//            Edge edge1 = new Edge(n.getId(), n2.getId());
-//            edge1.setAllowedToMove(false);
-//            ptmDiagram.addNode(n);
-//            ptmDiagram.addNode(n2);
-//            ptmDiagram.addEdge(edge1);
-//            ptmDiagram.setWidth("50px");
-//            ptmDiagram.setHeight("500px");
-            ptmAvailable = true;
-//            
+            ptmAvailable = true;//            
             ptmLayout.setStyleName("ptmglycosylation");
             ptmLayout.setWidth("10px");
             ptmLayout.setHeight("10px");
             ptmLayout.setDescription(peptideModification);
             ptmLayout.setVisible(false);
-//            PopupView labelpopup = new PopupView(null, i);
-//            labelpopup.setPopupVisible(true);
-//            labelpopup.setPrimaryStyleName("ptmglycosylation");
-//            labelpopup.setHideOnMouseOut(false);
 
-//                            exportAllProteinPeptidesPopup.setDescription("Export CSF-PR Peptides for ( " + accession + " ) for All Available Datasets");
-//            this.addComponent(i);
-//            labelpopup.setVisible(true);
         }
     }
 
@@ -166,20 +142,6 @@ public class JStackedBarPeptideComponent extends JPanel implements Comparable<JS
         return ptmLayout;
     }
 
-//    public NetworkDiagram getPtmDiagram() {
-//        return ptmDiagram;
-//    }
-//
-//    private Node initNode(String id) {
-//        Node node = new Node(id, "");
-//
-//        node.setRadius(0);
-//        node.setAllowedToMoveX(false);
-//        node.setAllowedToMoveY(false);
-//        node.setShape(Node.Shape.dot);
-//        return node;
-//
-//    }
     /**
      *
      * @param key

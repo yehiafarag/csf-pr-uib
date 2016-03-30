@@ -17,6 +17,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -55,6 +56,11 @@ public class HeatMapComponent extends VerticalLayout {
     private final HorizontalLayout diseaseGroupsColumnsLabels;
 
     private final Map<String, String> diseaseStyleMap;
+
+    //heatmap swing data
+    private String[] rowsColors;
+    private String[] columnsColors;
+    private String[][] dataColors;
 
     /**
      *
@@ -119,7 +125,7 @@ public class HeatMapComponent extends VerticalLayout {
         hideCompBtn.setStyleName("matrixbtn");
 
         icon = new Image();
-        defaultResource = new ThemeResource("img/hideshow.png");
+        defaultResource = new ThemeResource("img/logo.png");
 
         icon.setSource(defaultResource);
         hideCompBtn.setDescription("Expand chart and hide comparisons table");
@@ -361,8 +367,8 @@ public class HeatMapComponent extends VerticalLayout {
      */
     public void updateDsCellSelection(Set<QuantDiseaseGroupsComparison> selectedDsList) {
         if (selectedDsList.isEmpty()) {
-            icon.setSource(null);
-            hideShowBtnLabel.setValue("");
+            icon.setSource(defaultResource);
+            hideShowBtnLabel.setValue("CSF-PR v2.0");
             hideCompBtn.setEnabled(false);
 
         } else {
@@ -691,15 +697,18 @@ public class HeatMapComponent extends VerticalLayout {
         columnHeader.setWidth((colheaders.size() * heatmapCellWidth) + "px");
         columnHeader.setHeight(heatmapHeaderCellWidth + "px");
         columnCells = new HeaderCell[colheaders.size()];
+        columnsColors = new String[colheaders.size()];
 
         rowHeader.setColumns(1);
         rowHeader.setRows(rowheaders.size());
         rowHeader.setWidth(heatmapHeaderCellWidth + "px");
         rowHeader.setHeight((heatmapCellWidth * rowheaders.size()) + "px");
         rowCells = new HeaderCell[rowheaders.size()];
+        rowsColors = new String[rowheaders.size()];
 
         heatmapBody.setColumns(colheaders.size());
         heatmapBody.setRows(rowheaders.size());
+        dataColors = new String[rowheaders.size()][colheaders.size()];
         heatmapBody.setWidth((colheaders.size() * heatmapCellWidth) + "px");
         heatmapBody.setHeight((heatmapCellWidth * rowheaders.size()) + "px");
 
@@ -713,20 +722,20 @@ public class HeatMapComponent extends VerticalLayout {
             columnHeader.addComponent(headerCell, i, 0);
             columnHeader.setComponentAlignment(headerCell, Alignment.MIDDLE_CENTER);
             columnCells[i] = headerCell;
+            columnsColors[i] = headerCell.getColor();
 
         }
-//this.selectedDsList.clear();
-//            updateSelectionManagerIndexes();
         //init row headers
         for (int i = 0; i < rowheaders.size(); i++) {
             String la = rowheaders.toArray()[i].toString();
             if (la.equalsIgnoreCase("")) {
                 la = "Not Available";
             }
-            HeaderCell headerCell = new HeaderCell(true, la, i, HeatMapComponent.this, heatmapCellWidth, heatmapHeaderCellWidth, diseaseFullNameMap.get(la));
+            HeaderCell headerCell = new HeaderCell(true, la, i, HeatMapComponent.this, heatmapCellWidth, heatmapHeaderCellWidth,diseaseFullNameMap.get(la.split("\n")[0]));
             rowHeader.addComponent(headerCell, 0, i);
             rowHeader.setComponentAlignment(headerCell, Alignment.MIDDLE_CENTER);
             rowCells[i] = headerCell;
+            rowsColors[i] = headerCell.getColor();
         }
 
         for (int x = 0; x < values.length; x++) {
@@ -748,6 +757,7 @@ public class HeatMapComponent extends VerticalLayout {
                 HeatmapCell cell = new HeatmapCell(value, color, dsIndexes, x, y, null, HeatMapComponent.this, headerTitle, heatmapCellWidth, pubCounter.size());
                 comparisonsCellsMap.put(headerTitle, cell);
                 heatmapBody.addComponent(cell, y, x);
+                dataColors[x][y] = color;
                 if (cell.getComparison().getDatasetIndexes().length > 0) {
                     columnCells[y].addComparison(cell.getComparison(), cell);
                     rowCells[x].addComparison(cell.getComparison(), cell);
@@ -760,16 +770,6 @@ public class HeatMapComponent extends VerticalLayout {
 
         }
 
-//        Set<String> keymap = new HashSet<String>();
-//        for (QuantDiseaseGroupsComparison gr : this.availableComparisonsList) {
-//            String kI = gr.getComparisonHeader();
-//            String[] k1Arr = kI.split(" / ");
-//            String kII = k1Arr[1] + " / " + k1Arr[0];
-//            keymap.add(kI);
-//            keymap.add(kII);
-//
-//        }
-//        activeSelectAll = keymap.size() <= 10;
     }
 
     /**
@@ -886,14 +886,19 @@ public class HeatMapComponent extends VerticalLayout {
         }
 
     }
+    private final HeatMapImgGenerator gen = new HeatMapImgGenerator();
 
     public void updateHideShowThumbImg(String imgUrl) {
         if (imgUrl == null) {
-            icon.setSource(null);
+            icon.setSource(defaultResource);
+            hideShowBtnLabel.setValue("CSF-PR v2.0");
             return;
         }
         if (imgUrl.equalsIgnoreCase("defaultResource")) {
-            icon.setSource(defaultResource);
+
+            String url = gen.generateHeatmap(rowsColors, columnsColors, dataColors);
+            icon.setSource(new ExternalResource(url));
+//            icon.setSource(defaultResource);
         } else {
             icon.setSource(new ExternalResource(imgUrl));
         }

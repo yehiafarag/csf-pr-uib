@@ -58,6 +58,7 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
     private final String title;
     private final String allStyle;
     private final String fullName;
+    private final String color;
 
     /**
      *
@@ -75,6 +76,13 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
         this.title = title;
         allStyle = title.split("\n")[1].toLowerCase().replace("-s", "").replace("_disease", "").replace("_", "");
         valueLabel.setValue("<center><font>" + title.split("\n")[0] + "</font></center>");
+        if (allStyle.equalsIgnoreCase("multiplesclerosis")) {
+            color = "#A52A2A";
+        } else if (allStyle.equalsIgnoreCase("alzheimer")) {
+            color = "#4b7865";
+        } else {
+            color = "#74716E";
+        }
 
         if (rowHeader) {
             this.cellStyleName = "hmrowlabel";
@@ -98,8 +106,16 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
         } else {
             this.fullName = fullName;
         }
-        this.setDescription(this.fullName.replace("_", "").replace("-", ","));
+        String combinedGroup = "";
+        if (this.fullName.contains("*")) {
+            combinedGroup = " - Combined disease groups";
+        }
+        this.setDescription(this.fullName.replace("_", "").replace("-", ",") + combinedGroup);
 
+    }
+
+    public String getColor() {
+        return color;
     }
 
     /**

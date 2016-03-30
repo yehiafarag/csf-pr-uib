@@ -180,6 +180,7 @@ public class StudiesSelectionManager implements Serializable {
             this.SelectionChanged("Protens_Selection");
 
         } catch (Exception exp) {
+            exp.printStackTrace();
             System.err.println("at error " + this.getClass().getName() + "  line 291  " + exp.getLocalizedMessage());
 
         } finally {

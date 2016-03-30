@@ -914,9 +914,13 @@ resetlabelbtn p{
 
 
 .matrixbtn img{
-    cursor:pointer;
+    margin-top: 10px;
+     cursor:pointer;
     width:auto !important;
-    padding-top:10px;
+    border-bottom:1px solid lightgray;
+    border-right:1px solid lightgray;
+    border-radius:4px;
+    padding-left:0px;
 
 
 }
@@ -1234,7 +1238,9 @@ border:3px solid #4d749f ;
 
 .v-tooltip{
     z-index: 30000 !important;
-    font-weight:bold !important;
+    /*font-weight:bold !important;*/
+    border-radius:4px !important;
+    padding:10px !important;
 
 }
 .v-tooltip p{

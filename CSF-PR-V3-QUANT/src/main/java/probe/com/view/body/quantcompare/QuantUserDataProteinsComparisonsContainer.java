@@ -329,7 +329,9 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
                 } else {
                     updateTableData(quantDiseaseGroupsComparisonArr);
                 }
-                localSelectAccessions(QuantUserDataProteinsComparisonsContainer.this.Quant_Central_Manager.getQuantProteinsLayoutSelectionMap().keySet());
+                if (QuantUserDataProteinsComparisonsContainer.this.Quant_Central_Manager.getQuantProteinsLayoutSelectionMap() != null) {
+                    localSelectAccessions(QuantUserDataProteinsComparisonsContainer.this.Quant_Central_Manager.getQuantProteinsLayoutSelectionMap().keySet());
+                }
                 updateProtCountLabel(groupsComparisonProteinsTable.getItemIds().size());
 
             }
@@ -412,8 +414,10 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
                 Map<String, String> idMap = new HashMap<String, String>();
                 for (QuantDiseaseGroupsComparison comp : quantDiseaseGroupsComparisonArr) {
                     String preHeader = groupsComparisonProteinsTable.getColumnHeader(comp.getComparisonHeader());
-                    groupsComparisonProteinsTable.setColumnHeader(comp.getComparisonHeader(), comp.getComparisonHeader() + " " + preHeader);
-                    idMap.put(comp.getComparisonHeader(), preHeader);
+                    String header = comp.getComparisonHeader();
+                    String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + " - " + header.split(" / ")[1].split("\n")[1].replace("_", " ").replace("-", "'").replace("Disease", "") + " ";
+                    groupsComparisonProteinsTable.setColumnHeader(comp.getComparisonHeader(), updatedHeader + " " + preHeader);
+                    idMap.put(updatedHeader, preHeader);
                 }
 
                 ExcelExport csvExport = new ExcelExport(groupsComparisonProteinsTable, "CSF-PR  Quant Comparisons Proteins");
@@ -425,9 +429,11 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
                 csvExport.export();
 
                 for (QuantDiseaseGroupsComparison comp : quantDiseaseGroupsComparisonArr) {
-                    String preHeader = idMap.get(comp.getComparisonHeader());
+                    String header = comp.getComparisonHeader();
+                    String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + " - " + header.split(" / ")[1].split("\n")[1].replace("_", " ").replace("-", "'").replace("Disease", "") + " ";
+                    String preHeader = idMap.get(updatedHeader);
                     groupsComparisonProteinsTable.setColumnHeader(comp.getComparisonHeader(), preHeader);
-                    idMap.put(comp.getComparisonHeader(), preHeader);
+                    idMap.put(updatedHeader, preHeader);
                 }
 
             }
@@ -704,11 +710,11 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
             }
 
             comparisonToAccessionMap.put(comparison.getComparisonHeader(), comparisonProtAccessionsSet);
-            this.groupsComparisonProteinsTable.setColumnHeader(comparison.getComparisonHeader(), " (" + protCounter + ((protCounter == 1) ? " Protein / " : " Proteins / ") + comparison.getDatasetIndexes().length + ((comparison.getDatasetIndexes().length == 1) ? " Dataset)" : " Datasets)"));
+            this.groupsComparisonProteinsTable.setColumnHeader(comparison.getComparisonHeader(), " " + protCounter + ((protCounter == 1) ? " Protein / " : " Proteins / ") + comparison.getDatasetIndexes().length + ((comparison.getDatasetIndexes().length == 1) ? " Dataset" : " Datasets"));
             String header = comparison.getComparisonHeader();
-            String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + " ( " + header.split(" / ")[1].split("\n")[1] + " )";
+            String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + " - " + header.split(" / ")[1].split("\n")[1] + " ";
 
-            columnTitleLayout.setDescription("<h3>" + updatedHeader + "</h3><center><h4>(" + protCounter + ((protCounter == 1) ? " Protein / " : " Proteins / ") + comparison.getDatasetIndexes().length + ((comparison.getDatasetIndexes().length == 1) ? " Dataset)" : " Datasets)</h4></center>"));
+            columnTitleLayout.setDescription("<h4>" + updatedHeader.replace("_", " ").replace("_Disease", "") + "</h4><center><h5>(" + protCounter + ((protCounter == 1) ? " Protein / " : " Proteins / ") + comparison.getDatasetIndexes().length + ((comparison.getDatasetIndexes().length == 1) ? " Dataset)" : " Datasets)</h5></center>"));
         }
 
         int index = 0;
@@ -756,7 +762,7 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
         String header = userCustomizedComparison.getComparisonHeader();
         String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0];// + " ( " + header.split(" / ")[1].split("\n")[1] + " )";
 
-        userCustColumnTitleLayout.setDescription("<h3>" + updatedHeader + "</h3><center><h4>(" + groupsComparisonProteinsTable.size() + ((groupsComparisonProteinsTable.size() == 1) ? " Protein / " : " Proteins / ") + userCustomizedComparison.getDatasetIndexes().length + ((userCustomizedComparison.getDatasetIndexes().length == 1) ? " Dataset)" : " Datasets)</h4></center>"));
+        userCustColumnTitleLayout.setDescription("<h4>" + updatedHeader + "</h4><center><h5>" + groupsComparisonProteinsTable.size() + ((groupsComparisonProteinsTable.size() == 1) ? " Protein / " : " Proteins / ") + userCustomizedComparison.getDatasetIndexes().length + ((userCustomizedComparison.getDatasetIndexes().length == 1) ? " Datase)" : " Datasets</h5></center>"));
         sortComparisonTableColumn = userCustomizedComparison.getComparisonHeader();
         this.groupsComparisonProteinsTable.sort(new String[]{sortComparisonTableColumn}, new boolean[]{false});
         this.groupsComparisonProteinsTable.setSortAscending(false);
@@ -897,6 +903,7 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
 
                     cp.updateLabelLayout();
                     tableRow[i] = cp;
+
                 }
                 i++;
             }
@@ -1016,8 +1023,8 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
 
         //init leftside comparison title
         String header = comparison.getComparisonHeader();
-        String updatedHeaderI = header.split(" / ")[0].split("\n")[0];
-        String updatedHeaderII = header.split(" / ")[1].split("\n")[0];
+        String updatedHeaderI = header.split(" / ")[0].split("\n")[0].replace("User Data -", "").replace("_", " ").replace("_Disease", "");
+        String updatedHeaderII = header.split(" / ")[1].split("\n")[0].replace("_", " ").replace("_Disease", "");
         String diseaseColor = this.Quant_Central_Manager.getDiseaseHashedColor(header.split(" / ")[1].split("\n")[1]);
 
         Label labelI = new Label("<font color='" + diseaseColor + "' style='font-weight: bold;width='" + (width - 42) + "px !important'>" + updatedHeaderI + "</font>");
@@ -1054,13 +1061,7 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
         if (comparison.getDatasetIndexes()[0] == -1) {
             closeCompariosonBtn.setEnabled(false);
             titleLayout.setStyleName("usercustdatatitle");
-//            label.setValue(updatedHeader);
-        } else {
-//            String diseaseColor = this.Quant_Central_Manager.getDiseaseHashedColor(header.split(" / ")[1].split("\n")[1]);
-//
-//            label.setValue("<font color='" + diseaseColor + "' style='font-weight: bold;'>" + updatedHeader + "</font>");
         }
-
         closeCompariosonBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
             private final QuantDiseaseGroupsComparison localComparison = comparison;
 

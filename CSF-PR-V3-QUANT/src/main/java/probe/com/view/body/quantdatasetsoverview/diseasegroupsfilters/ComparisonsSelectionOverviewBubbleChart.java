@@ -8,7 +8,6 @@ package probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FileDownloader;
-import com.vaadin.server.Page;
 import com.vaadin.server.StreamResource;
 import com.vaadin.server.StreamResource.StreamSource;
 import com.vaadin.server.ThemeResource;
@@ -75,8 +74,6 @@ import probe.com.view.core.jfreeutil.SquaredDot;
  */
 public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout implements CSFFilter, LayoutEvents.LayoutClickListener {
 
-    private final String teststyle;
-    private final Page.Styles styles = Page.getCurrent().getStyles();
     private String defaultImgURL = "";
     private final ChartRenderingInfo chartRenderingInfo = new ChartRenderingInfo();
     private final QuantCentralManager Quant_Central_Manager;
@@ -93,7 +90,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
     private final List<QuantProtein> searchQuantificationProtList;
     private boolean isNewImge = true;
     private byte imageData[];
-    private final String[] tooltipLabels = new String[]{"", "( Low <img src='VAADIN/themes/dario-theme/img/greendot.png' alt='Low'>" + " )", "( Low <img src='VAADIN/themes/dario-theme/img/lgreendot.png' alt='Low'>" + " )", "( Stable <img src='VAADIN/themes/dario-theme/img/bluedot.png' alt='Stable'>" + " )", " ( High <img src='VAADIN/themes/dario-theme/img/lreddot.png' alt='High'>" + " )", " ( High <img src='VAADIN/themes/dario-theme/img/reddot.png' alt='High'>" + " )", ""};
+    private final String[] tooltipLabels = new String[]{"", " Low <img src='VAADIN/themes/dario-theme/img/greendot.png' alt='Low'>" + " ", " Low <img src='VAADIN/themes/dario-theme/img/lgreendot.png' alt='Low'>" + " ", " Stable <img src='VAADIN/themes/dario-theme/img/bluedot.png' alt='Stable'>" + " ", "  High <img src='VAADIN/themes/dario-theme/img/lreddot.png' alt='High'>" + " ", "  High <img src='VAADIN/themes/dario-theme/img/reddot.png' alt='High'>" + " ", ""};
     private final Map<String, Color> diseaseColorMap = new HashMap<String, Color>();
     private QuantDiseaseGroupsComparison userCustomizedComparison;
     private Color stableColor;
@@ -163,7 +160,6 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
         //end of toplayout
         //init chartlayout
-        this.teststyle = "__" + System.currentTimeMillis() + "_heatmapOverviewBubbleChart";
         
         this.chartLayoutContainer.setVisible(false);
         this.addComponent(chartLayoutContainer);
@@ -345,7 +341,6 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
         //end of toplayout
         //init chartlayout
-        this.teststyle = "__" + System.currentTimeMillis() + "_heatmapOverviewBubbleChart";
         this.chartLayoutContainer.setVisible(false);
         this.addComponent(chartLayoutContainer);
         
@@ -1378,10 +1373,10 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                     }
 
                     String header = comparison.getComparisonHeader();
-                    String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + " ( " + header.split(" / ")[1].split("\n")[1].replace("_", " ").replace("-", "'").replace("Disease", "") + " )";
+                    String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + " - " + header.split(" / ")[1].split("\n")[1].replace("_", " ").replace("-", "'").replace("Disease", "") + "";
                     int itemNumber = (int) ((XYItemEntity) entity).getDataset().getYValue(((XYItemEntity) entity).getSeriesIndex(), ((XYItemEntity) entity).getItem());
 
-                    square.setDescription(updatedHeader + "    <br/>#Proteins " + (int) tooltipsProtNumberMap.get(header)[itemNumber] + " " + tooltipLabels[itemNumber]);
+                    square.setDescription(updatedHeader + "<br/>#Proteins " + (int) tooltipsProtNumberMap.get(header)[itemNumber] + " " + tooltipLabels[itemNumber]);
                     double categIndex = (double) itemNumber;
                     int seriesIndex = ((XYItemEntity) entity).getSeriesIndex();
                     square.setParam("seriesIndex", seriesIndex);
@@ -1423,8 +1418,6 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
      */
     public final void redrawChart() {
 
-//        styles.add("." + teststyle + " { background-image: url(" + defaultImgURL + " );background-position:0px 0px; background-repeat: no-repeat; overflow:visible !important}");
-//        chartLayout.setStyleName(teststyle);
         chartImage.setSource(new ExternalResource(defaultImgURL));
 
     }
@@ -1556,7 +1549,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                 double trendIndex = (Double) selectedCom.getParam("categIndex")-1;
                 int seriousIndex = (Integer) selectedCom.getParam("seriesIndex")-1;
                 QuantDiseaseGroupsComparison comparison;
-                if (userCustomizedComparison != null && seriousIndex == 1) {
+                if (userCustomizedComparison != null && seriousIndex == 0) {
                     comparison = userCustomizedComparison;
                     for (String key : comparison.getComparProtsMap().keySet()) {
                         DiseaseGroupsComparisonsProteinLayout compProt = comparison.getComparProtsMap().get(key);

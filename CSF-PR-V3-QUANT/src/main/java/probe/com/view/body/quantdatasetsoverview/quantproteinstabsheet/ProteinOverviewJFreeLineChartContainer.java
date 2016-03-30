@@ -1,6 +1,7 @@
 package probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet;
 
 import com.vaadin.event.LayoutEvents;
+import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FileDownloader;
 import com.vaadin.server.Page;
 import com.vaadin.server.StreamResource;
@@ -11,6 +12,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
@@ -88,23 +90,25 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
     private final JFreeChart defaultChart;
     private JFreeChart orderedChart;
     private final int selectedComparisonListSize;
-//    private final VerticalLayout bottomLiftSide;
     private final int width;
     private final VerticalLayout orederingTrendBtn = new VerticalLayout();
     ;
     private final StudiesPeptidesDetailsContainerLayout studiesScatterChartsLayout;
     private final AbsoluteLayout defaultLineChartContainer, orderedLineChartContainer;
-    private final String teststyle;
-    private final Page.Styles styles = Page.getCurrent().getStyles();
+//    private final String teststyle;
+//    private final Page.Styles styles = Page.getCurrent().getStyles();
     private final QuantCentralManager Quant_Central_Manager;
     private final CSFPRHandler CSFPR_Handler;
     private final Shape notRShape = ShapeUtilities.createDiamond(6f);
     private final Shape emptyRShape = ShapeUtilities.createDiamond(6f);
     private final Shape downArr = ShapeUtilities.createDownTriangle(6f);
     private final Shape upArr = ShapeUtilities.createUpTriangle(6f);
-    private final Shape square = ShapeUtilities.rotateShape(ShapeUtilities.createDiamond(8f), 0.8f, 0f, 0f);
     private final Map<String, Color> diseaseColorMap = new HashMap<String, Color>();
     private final Color[] customizedUserDataColor = new Color[]{Color.decode("#e5ffe5"), Color.WHITE, Color.decode("#e6f4ff"), Color.WHITE, Color.decode("#ffe5e5")};
+    private final Image defaultChartImage = new Image();
+    private final AbsoluteLayout defaultChartLayout = new AbsoluteLayout();
+    private final Image trendOrderedChartImage = new Image();
+    private final AbsoluteLayout trendOrederdChartLayout = new AbsoluteLayout();
 
     /**
      *
@@ -112,11 +116,9 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
      */
     public String getThumbChart() {
         if (thumbChart.equalsIgnoreCase("")) {
-
             resetThumbChart(defaultChart, false);
             thumbChart = saveToFile(defaultChart, (selectedComparisonListSize * 15), 35, null);
             resetThumbChart(defaultChart, true);
-//            highlitedLineStrok = new BasicStroke(10f);
         }
         return thumbChart;
     }
@@ -249,18 +251,28 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         linechartContainerLayout.addComponent(defaultLineChartContainer);
         defaultLineChartContainer.setWidth(width + "px");
         defaultLineChartContainer.setHeight(chartHeight + "px");
-        teststyle = proteinName.replace(" ", "_").replace(")", "_").replace("(", "_").replace(";", "_").toLowerCase().replace("#", "_").replace("?", "_").replace("[", "").replace("]", "").replace("/", "_").replace(":", "_").replace("'", "_").replace(".", "_") + "linechart";
-        styles.add("." + teststyle + " {  background-image: url(" + defaultLineChartImgUrl + " );background-position:center; background-repeat: no-repeat; }");
-        defaultLineChartContainer.setStyleName(teststyle);
-        defaultLineChartContainer.addLayoutClickListener(chartListener);
+        defaultLineChartContainer.addComponent(defaultChartImage, "left: " + 0 + "px; top: " + 0 + "px;");
+        defaultLineChartContainer.addComponent(defaultChartLayout, "left: " + 0 + "px; top: " + 0 + "px;");
+        defaultChartLayout.setWidth(width + "px");
+        defaultChartLayout.setHeight(chartHeight + "px");
+        defaultChartLayout.addLayoutClickListener(chartListener);
+//        teststyle = proteinName.replace(" ", "_").replace(")", "_").replace("(", "_").replace(";", "_").toLowerCase().replace("#", "_").replace("?", "_").replace("[", "").replace("]", "").replace("/", "_").replace(":", "_").replace("'", "_").replace(".", "_") + "linechart";
+//        styles.add("." + teststyle + " {  background-image: url(" + defaultLineChartImgUrl + " );background-position:center; background-repeat: no-repeat; }");
+//        defaultLineChartContainer.setStyleName(teststyle);
+//        defaultLineChartContainer.addLayoutClickListener(chartListener);
 
         orderedLineChartContainer = new AbsoluteLayout();
         linechartContainerLayout.addComponent(orderedLineChartContainer);
         orderedLineChartContainer.setWidth((width) + "px");
         orderedLineChartContainer.setHeight(chartHeight + "px");
         orderedLineChartContainer.setVisible(false);
-        orderedLineChartContainer.addLayoutClickListener(chartListener);
+        orderedLineChartContainer.addComponent(trendOrderedChartImage, "left: " + 0 + "px; top: " + 0 + "px;");
+        orderedLineChartContainer.addComponent(trendOrederdChartLayout, "left: " + 0 + "px; top: " + 0 + "px;");
+        trendOrederdChartLayout.setWidth(width + "px");
+        trendOrederdChartLayout.setHeight(chartHeight + "px");
+        trendOrederdChartLayout.addLayoutClickListener(chartListener);
 
+//        orderedLineChartContainer.addLayoutClickListener(chartListener);
         //end of linechart layout
         //init bottom layout     
         HorizontalLayout bottomLayout = new HorizontalLayout();
@@ -293,8 +305,8 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
                 if (orederingTrendBtn.getStyleName().equalsIgnoreCase("trendorder")) {
-                    styles.add("." + teststyle + " {  background-image: url(" + defaultLineChartImgUrl + " );background-position:center; background-repeat: no-repeat; }");
-                    defaultLineChartContainer.setStyleName(teststyle);
+//                    styles.add("." + teststyle + " {  background-image: url(" + defaultLineChartImgUrl + " );background-position:center; background-repeat: no-repeat; }");
+//                    defaultLineChartContainer.setStyleName(teststyle);
                     defaultLineChartContainer.setVisible(true);
                     orderedLineChartContainer.setVisible(false);
                     studiesScatterChartsLayout.orderComparisons(comparisonProteins);
@@ -312,7 +324,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                             if (cp.getSignificantTrindCategory() == -1) {
                                 orderedCompProteins.put((2) + "-z" + cp.getComparison().getComparisonHeader(), cp);
                             } else {
-                                orderedCompProteins.put((cp.getSignificantTrindCategory()) + "-" + cp.getComparison().getComparisonHeader(), cp);
+                                orderedCompProteins.put((cp.getSignificantTrindCategory())+"-"+cp.getSignificantCellValue() + "-" + cp.getComparison().getComparisonHeader(), cp);
                             }
                         }
                         ordComparisonProteins = new DiseaseGroupsComparisonsProteinLayout[orderedCompProteins.size()];
@@ -331,10 +343,12 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                         }
 
                         orderedChart = generateLineChart(ordComparisonProteins, orederedComparisonSet);//, (width - 100), height, orderedLineChartRenderingInfo);
-                        orderedLineChartImg = generateChartImage(orderedChart, (width), chartHeight, orderedLineChartRenderingInfo, orderedLineChartContainer);
+                        orderedLineChartImg = generateChartImage(orderedChart, (width), chartHeight, orderedLineChartRenderingInfo, trendOrederdChartLayout);
+                        trendOrderedChartImage.setSource(new ExternalResource(orderedLineChartImg));
                     }
-                    styles.add("." + teststyle + " {  background-image: url(" + orderedLineChartImg + " );background-position:center; background-repeat: no-repeat; }");
-                    orderedLineChartContainer.setStyleName(teststyle);
+//                    styles.add("." + teststyle + " {  background-image: url(" + orderedLineChartImg + " );background-position:center; background-repeat: no-repeat; }");
+//                    orderedLineChartContainer.setStyleName(teststyle);
+
                     defaultLineChartContainer.setVisible(false);
                     orderedLineChartContainer.setVisible(true);
                     studiesScatterChartsLayout.orderComparisons(ordComparisonProteins);
@@ -510,17 +524,27 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         linechartContainerLayout.addComponent(defaultLineChartContainer);
         defaultLineChartContainer.setWidth(width + "px");
         defaultLineChartContainer.setHeight(chartHeight + "px");
-        teststyle = proteinName.replace(" ", "_").replace(")", "_").replace("(", "_").replace(";", "_").toLowerCase().replace("#", "_").replace("?", "_").replace("[", "").replace("]", "").replace("/", "_").replace(":", "_").replace("'", "_").replace(".", "_") + "linechart";
-        styles.add("." + teststyle + " {  background-image: url(" + defaultLineChartImgUrl + " );background-position:center; background-repeat: no-repeat; }");
-        defaultLineChartContainer.setStyleName(teststyle);
-        defaultLineChartContainer.addLayoutClickListener(chartListener);
+        defaultLineChartContainer.addComponent(defaultChartImage, "left: " + 0 + "px; top: " + 0 + "px;");
+        defaultLineChartContainer.addComponent(defaultChartLayout, "left: " + 0 + "px; top: " + 0 + "px;");
+        defaultChartLayout.setWidth(width + "px");
+        defaultChartLayout.setHeight(chartHeight + "px");
+        defaultChartLayout.addLayoutClickListener(chartListener);
+//        teststyle = proteinName.replace(" ", "_").replace(")", "_").replace("(", "_").replace(";", "_").toLowerCase().replace("#", "_").replace("?", "_").replace("[", "").replace("]", "").replace("/", "_").replace(":", "_").replace("'", "_").replace(".", "_") + "linechart";
+//        styles.add("." + teststyle + " {  background-image: url(" + defaultLineChartImgUrl + " );background-position:center; background-repeat: no-repeat; }");
+//        defaultLineChartContainer.setStyleName(teststyle);
+//        defaultLineChartContainer.addLayoutClickListener(chartListener);
 
         orderedLineChartContainer = new AbsoluteLayout();
         linechartContainerLayout.addComponent(orderedLineChartContainer);
         orderedLineChartContainer.setWidth((width) + "px");
         orderedLineChartContainer.setHeight(chartHeight + "px");
         orderedLineChartContainer.setVisible(false);
-        orderedLineChartContainer.addLayoutClickListener(chartListener);
+        orderedLineChartContainer.addComponent(trendOrderedChartImage, "left: " + 0 + "px; top: " + 0 + "px;");
+        orderedLineChartContainer.addComponent(trendOrederdChartLayout, "left: " + 0 + "px; top: " + 0 + "px;");
+        trendOrederdChartLayout.setWidth(width + "px");
+        trendOrederdChartLayout.setHeight(chartHeight + "px");
+        trendOrederdChartLayout.addLayoutClickListener(chartListener);
+//        orderedLineChartContainer.addLayoutClickListener(chartListener);
 
         //end of linechart layout
         //init bottom layout
@@ -555,8 +579,9 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
                 if (orederingTrendBtn.getStyleName().equalsIgnoreCase("trendorder")) {
-                    styles.add("." + teststyle + " {  background-image: url(" + defaultLineChartImgUrl + " );background-position:center; background-repeat: no-repeat; }");
-                    defaultLineChartContainer.setStyleName(teststyle);
+//                    styles.add("." + teststyle + " {  background-image: url(" + defaultLineChartImgUrl + " );background-position:center; background-repeat: no-repeat; }");
+//                    defaultLineChartContainer.setStyleName(teststyle);
+//                    defaultChartImage.setSource(new ExternalResource(defaultLineChartImgUrl));
                     defaultLineChartContainer.setVisible(true);
                     orderedLineChartContainer.setVisible(false);
                     studiesScatterChartsLayout.orderComparisons(comparisonProteins);
@@ -574,7 +599,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                             if (cp.getSignificantTrindCategory() == -1) {
                                 orderedCompProteins.put((2) + "-z" + cp.getComparison().getComparisonHeader(), cp);
                             } else {
-                                orderedCompProteins.put((cp.getSignificantTrindCategory()) + "-" + cp.getComparison().getComparisonHeader(), cp);
+                                orderedCompProteins.put((cp.getSignificantTrindCategory())+"-"+cp.getSignificantCellValue() + "-" + cp.getComparison().getComparisonHeader(), cp);
                             }
                         }
                         ordComparisonProteins = new DiseaseGroupsComparisonsProteinLayout[orderedCompProteins.size()];
@@ -593,10 +618,12 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                         }
 
                         orderedChart = generateLineChart(ordComparisonProteins, orederedComparisonSet);//, (width - 100), height, orderedLineChartRenderingInfo);
-                        orderedLineChartImg = generateChartImage(orderedChart, (width), chartHeight, orderedLineChartRenderingInfo, orderedLineChartContainer);
+                        orderedLineChartImg = generateChartImage(orderedChart, (width), chartHeight, orderedLineChartRenderingInfo, trendOrederdChartLayout);
+                        trendOrderedChartImage.setSource(new ExternalResource(orderedLineChartImg));
                     }
-                    styles.add("." + teststyle + " {  background-image: url(" + orderedLineChartImg + " );background-position:center; background-repeat: no-repeat; }");
-                    orderedLineChartContainer.setStyleName(teststyle);
+//                    styles.add("." + teststyle + " {  background-image: url(" + orderedLineChartImg + " );background-position:center; background-repeat: no-repeat; }");
+//                    orderedLineChartContainer.setStyleName(teststyle);
+
                     defaultLineChartContainer.setVisible(false);
                     orderedLineChartContainer.setVisible(true);
                     studiesScatterChartsLayout.orderComparisons(ordComparisonProteins);
@@ -1097,14 +1124,14 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
             }
 
-            private  BasicStroke highlitedLineStrok = new BasicStroke(10f);
+            private BasicStroke highlitedLineStrok = new BasicStroke(10f);
             private int counterII = 0;
 
             @Override
             public Stroke getRangeGridlineStroke() {
                 if (counterII == 239) {
                     counterII = 0;
-                     highlitedLineStrok = new BasicStroke(4f);
+                    highlitedLineStrok = new BasicStroke(4f);
                 }
 
                 if (custTrend != -1) {
@@ -1240,9 +1267,9 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                         trend = 2;
                     }
                     String groupCompTitle = gc.getComparisonHeader();
-                    String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0] + " ( " + groupCompTitle.split(" / ")[1].split("\n")[1] + " )";
+                    String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0] + " - " + groupCompTitle.split(" / ")[1].split("\n")[1].replace("_"," ").replace("Disease", "") + "";
 
-                    square.setDescription("<h2>" + updatedHeader + "" + tooltipLabels[trend] + "" + "</h2>" + "<h3>" + protLayout.toString() + "</h3>");
+                    square.setDescription("<h4>" + updatedHeader + "" + tooltipLabels[trend] + "" + "</h4>" + "<h5>" + protLayout.toString() + "</h5>");
                 }
 
                 square.setParam(paramName, gc);
@@ -1343,20 +1370,22 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         if (orederingTrendBtn.getStyleName().equalsIgnoreCase("defaultorder")) {
             if (defaultLineChartImgUrl.equalsIgnoreCase("")) {
 
-                defaultLineChartImgUrl = this.generateChartImage(defaultChart, (width), chartHeight, defaultLineChartRenderingInfo, defaultLineChartContainer);
+                defaultLineChartImgUrl = this.generateChartImage(defaultChart, (width), chartHeight, defaultLineChartRenderingInfo, defaultChartLayout);
+                defaultChartImage.setSource(new ExternalResource(defaultLineChartImgUrl));
             }
             defaultLineChartContainer.setVisible(true);
             orderedLineChartContainer.setVisible(false);
-            styles.add("." + teststyle + " {  background-image: url(" + defaultLineChartImgUrl + " );background-position:center; background-repeat: no-repeat; }");
-            defaultLineChartContainer.setStyleName(teststyle);
+//            styles.add("." + teststyle + " {  background-image: url(" + defaultLineChartImgUrl + " );background-position:center; background-repeat: no-repeat; }");
+//            defaultLineChartContainer.setStyleName(teststyle);
         } else {
             if (orderedLineChartImg.equalsIgnoreCase("")) {
-                orderedLineChartImg = this.generateChartImage(orderedChart, (width), chartHeight, orderedLineChartRenderingInfo, orderedLineChartContainer);
+                orderedLineChartImg = this.generateChartImage(orderedChart, (width), chartHeight, orderedLineChartRenderingInfo, trendOrederdChartLayout);
+                trendOrderedChartImage.setSource(new ExternalResource(orderedLineChartImg));
             }
             defaultLineChartContainer.setVisible(false);
             orderedLineChartContainer.setVisible(true);
-            styles.add("." + teststyle + " {  background-image: url(" + orderedLineChartImg + " );background-position:center; background-repeat: no-repeat; }");
-            orderedLineChartContainer.setStyleName(teststyle);
+//            styles.add("." + teststyle + " {  background-image: url(" + orderedLineChartImg + " );background-position:center; background-repeat: no-repeat; }");
+//            orderedLineChartContainer.setStyleName(teststyle);
         }
 
         studiesScatterChartsLayout.redrawCharts();

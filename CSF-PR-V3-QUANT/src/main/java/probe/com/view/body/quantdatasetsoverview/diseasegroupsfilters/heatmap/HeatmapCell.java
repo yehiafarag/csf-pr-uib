@@ -84,29 +84,6 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
         comparison.setComparisonHeader(groupCompTitle);
         comparison.setRgbStringColor(color);
         comparison.setDatasetIndexes(dsIndexes);
-
-//        mouseOverListener = new MouseEvents.MouseOverListener() {
-//
-//            @Override
-//            public void mouseOver() {
-//
-//                parent.highlightHeaders(colLabelIndex, rowLabelIndex);
-////                setValue("<div style='background-color: " + heighlightColor + " ;height:50px;width:50px; cursor:" + pointer + "; '><b>" + strValue + "</b></div>");
-//
-//            }
-//        };
-//
-//        mouseOutListener = new MouseEvents.MouseOutListener() {
-//
-//            @Override
-//            public void mouseOut() {
-//                if (selected) {
-//                    return;
-//                }
-//                parent.resetHeadersStyle(colLabelIndex, rowLabelIndex);
-////                setValue("<div style='background-color:" + color + ";height:50px;width:50px; cursor:" + pointer + "; '><b>" + strValue + "</b></div>");
-//            }
-//        };
         if (color.equalsIgnoreCase("#EFF2FB") && value != 0) {
             strValue = ((int) value) + "";
             String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0] + " ( " + groupCompTitle.split(" / ")[1].split("\n")[1].replace("_", " ").replace("-", "'").replace("Disease", "") + " )";
@@ -134,9 +111,9 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
         this.addComponent(valueLabel);
         this.setComponentAlignment(valueLabel, Alignment.MIDDLE_CENTER);
         if (value > 0 && !color.equalsIgnoreCase("#EFF2FB")) {
-            String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0] + " ( " + groupCompTitle.split(" / ")[1].split("\n")[1].replace("_", " ").replace("-", "'").replace("Disease", "") + " )";
+            String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0] + " - " + groupCompTitle.split(" / ")[1].split("\n")[1].replace("_", " ").replace("-", "'").replace("Disease", "") + "";
 
-            this.setDescription("<h3>" + updatedHeader + "</h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + strValue + (value == 1 ? " Dataset" : " Datasets") + " </h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + publicationsNumber + (publicationsNumber == 1 ? " publication" : " publications") + " </h3>");
+            this.setDescription("<h4>" + updatedHeader + "</h4><h4 style='font-size:11px;line-height:100%;font-weight: normal; '>" + strValue + (value == 1 ? " Dataset" : " Datasets") + " </h4><h4 style='font-size:11px;line-height:100%;font-weight: normal; '>" + publicationsNumber + (publicationsNumber == 1 ? " publication" : " publications") + " </h4>");
         }
 
     }

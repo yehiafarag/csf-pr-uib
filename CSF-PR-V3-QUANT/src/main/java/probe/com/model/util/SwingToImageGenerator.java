@@ -30,19 +30,19 @@ import org.jfree.chart.encoders.ImageFormat;
  * @author yfa041
  */
 public class SwingToImageGenerator {
-    
-     public String generateHeatMap(JComponent component) {
 
-         BufferedImage   heatMapImg = new BufferedImage((component.getWidth()), (component.getHeight()), BufferedImage.TYPE_INT_ARGB);
+    public String generateHeatMap(JComponent component) {
+
+        BufferedImage heatMapImg = new BufferedImage((component.getWidth()), (component.getHeight()), BufferedImage.TYPE_INT_ARGB);
         Graphics g = heatMapImg.getGraphics();
         component.paint(g);
         return generateEncodedImg(heatMapImg);
     }
-     private String generateEncodedImg(BufferedImage image) {
+
+    private String generateEncodedImg(BufferedImage image) {
         String base64 = "";
         try {
             ImageEncoder in = ImageEncoderFactory.newInstance(ImageFormat.PNG, 0);
-          
             byte[] imageData = in.encode(image);
             base64 = Base64.encodeBase64String(imageData);
             base64 = "data:image/png;base64," + base64;
@@ -52,8 +52,7 @@ public class SwingToImageGenerator {
         }
         return base64;
     }
-     
     
-     
     
+
 }

@@ -403,8 +403,11 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
                 Map<String, String> idMap = new HashMap<String, String>();
                 for (QuantDiseaseGroupsComparison comp : quantDiseaseGroupsComparisonArr) {
                     String preHeader = groupsComparisonProteinsTable.getColumnHeader(comp.getComparisonHeader());
-                    groupsComparisonProteinsTable.setColumnHeader(comp.getComparisonHeader(), comp.getComparisonHeader() + " " + preHeader);
-                    idMap.put(comp.getComparisonHeader(), preHeader);
+                    String header = comp.getComparisonHeader();
+                    String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + " - " + header.split(" / ")[1].split("\n")[1].replace("_", " ").replace("-", "'").replace("Disease", "") + " ";
+
+                    groupsComparisonProteinsTable.setColumnHeader(comp.getComparisonHeader(), updatedHeader + " " + preHeader);
+                    idMap.put(updatedHeader, preHeader);
                 }
 
                 ExcelExport csvExport = new ExcelExport(groupsComparisonProteinsTable, "CSF-PR  Quant Comparisons Proteins");
@@ -416,9 +419,13 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
                 csvExport.export();
 
                 for (QuantDiseaseGroupsComparison comp : quantDiseaseGroupsComparisonArr) {
-                    String preHeader = idMap.get(comp.getComparisonHeader());
+                     String header = comp.getComparisonHeader();
+                    String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + " - " + header.split(" / ")[1].split("\n")[1].replace("_", " ").replace("-", "'").replace("Disease", "") + " ";
+
+                    String preHeader = idMap.get(updatedHeader);
+                    
                     groupsComparisonProteinsTable.setColumnHeader(comp.getComparisonHeader(), preHeader);
-                    idMap.put(comp.getComparisonHeader(), preHeader);
+                    idMap.put(updatedHeader, preHeader);
                 }
 
             }
@@ -624,9 +631,10 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
                 columnLabelContainer.setWidth((quantDiseaseGroupsComparisonArr.length * 400) + "px");
                 useRatio = false;
             }
-        } else { this.width = Math.max(defaultWidth, quantDiseaseGroupsComparisonArr.length * 200 + 385);
-                mainPanelBody.setWidth(this.width + "px");
-                this.bottomLayout.setWidth(this.width + "px");
+        } else {
+            this.width = Math.max(defaultWidth, quantDiseaseGroupsComparisonArr.length * 200 + 385);
+            mainPanelBody.setWidth(this.width + "px");
+            this.bottomLayout.setWidth(this.width + "px");
             columnLabelContainer.setWidth((quantDiseaseGroupsComparisonArr.length * 400) + "px");
         }
 
@@ -636,23 +644,19 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
 
         this.groupsComparisonProteinsTable.addContainerProperty("Index", Integer.class, null, "", null, Table.Align.RIGHT);
 
-        this.groupsComparisonProteinsTable.addContainerProperty(
-                "Accession", CustomExternalLink.class, null, "Accession", null, Table.Align.LEFT);
+        this.groupsComparisonProteinsTable.addContainerProperty("Accession", CustomExternalLink.class, null, "Accession", null, Table.Align.LEFT);
 
-        this.groupsComparisonProteinsTable.addContainerProperty(
-                "Name", String.class, null, "Name", null, Table.Align.LEFT);
+        this.groupsComparisonProteinsTable.addContainerProperty("Name", String.class, null, "Name", null, Table.Align.LEFT);
 
         diseaseGroupsComparisonsProteinsMap = new HashMap<String, DiseaseGroupsComparisonsProteinLayout[]>();
         uniprotProteinsMap = new HashMap<String, Boolean>();
-        for (int compIndex = 0;
-                compIndex < quantDiseaseGroupsComparisonArr.length;
-                compIndex++) {
+        for (int compIndex = 0; compIndex < quantDiseaseGroupsComparisonArr.length; compIndex++) {
             QuantDiseaseGroupsComparison comparison = quantDiseaseGroupsComparisonArr[compIndex];
             HorizontalLayout columnTitleLayout = generateColumnHeaderLayout(comparison, columnWidth);
             this.columnLabelContainer.addComponent(columnTitleLayout);
             this.columnLabelContainer.setComponentAlignment(columnTitleLayout, Alignment.BOTTOM_LEFT);
 
-            this.groupsComparisonProteinsTable.addContainerProperty(comparison.getComparisonHeader(), DiseaseGroupsComparisonsProteinLayout.class, null, comparison.getComparisonHeader() + " (#Proteins: " + comparison.getComparProtsMap().size() + "/" + comparison.getDatasetIndexes().length + ")", null, Table.Align.CENTER);
+            this.groupsComparisonProteinsTable.addContainerProperty(comparison.getComparisonHeader(), DiseaseGroupsComparisonsProteinLayout.class, null, comparison.getComparisonHeader() + " #Proteins: " + comparison.getComparProtsMap().size() + "/" + comparison.getDatasetIndexes().length + "", null, Table.Align.CENTER);
             this.groupsComparisonProteinsTable.setColumnWidth(comparison.getComparisonHeader(), 100);
             Map<String, DiseaseGroupsComparisonsProteinLayout> protList = comparison.getComparProtsMap();
             int protCounter = 0;
@@ -682,13 +686,14 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
             }
             comparisonToAccessionMap.put(comparison.getComparisonHeader(), comparisonProtAccessionsSet);
 
-            this.groupsComparisonProteinsTable.setColumnHeader(comparison.getComparisonHeader(), " (" + protCounter + ((protCounter == 1) ? " Protein / " : " Proteins / ") + comparison.getDatasetIndexes().length + ((comparison.getDatasetIndexes().length == 1) ? " Dataset)" : " Datasets)"));
+            this.groupsComparisonProteinsTable.setColumnHeader(comparison.getComparisonHeader(), " " + protCounter + ((protCounter == 1) ? " Protein / " : " Proteins / ") + comparison.getDatasetIndexes().length + ((comparison.getDatasetIndexes().length == 1) ? " Dataset" : " Datasets"));
 
             String header = comparison.getComparisonHeader();
-            String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + " ( " + header.split(" / ")[1].split("\n")[1].replace("_", " ").replace("-", "'").replace("Disease", "") + " )";
+            String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + " - " + header.split(" / ")[1].split("\n")[1].replace("_", " ").replace("-", "'").replace("Disease", "") + " ";
 
-            columnTitleLayout.setDescription("<h3>" + updatedHeader + "</h3><center><h4>(" + protCounter + ((protCounter == 1) ? " Protein / " : " Proteins / ") + comparison.getDatasetIndexes().length + ((comparison.getDatasetIndexes().length == 1) ? " Dataset)" : " Datasets)</h4></center>"));
+            columnTitleLayout.setDescription("<h4>" + updatedHeader + "</h4><center><h5>" + protCounter + ((protCounter == 1) ? " Protein / " : " Proteins / ") + comparison.getDatasetIndexes().length + ((comparison.getDatasetIndexes().length == 1) ? " Dataset" : " Datasets</h5></center>"));
         }
+
         int index = 0;
         for (String key
                 : diseaseGroupsComparisonsProteinsMap.keySet()) {
