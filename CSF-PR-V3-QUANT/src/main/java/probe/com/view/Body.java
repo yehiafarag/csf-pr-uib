@@ -100,7 +100,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
         adminLayout.setHeight("100%");
         adminLayout.setHeight(bodyHeight + "px");
         adminLayout.addComponent(new AdminLayout(CSFPR_Handler));
-        adminTab = mainTabSheet.addTab(adminLayout, "Dataset Editor (Require Sign In)", null);
+        adminTab = mainTabSheet.addTab(adminLayout, "Dataset editor (require username and password)", null);
 
         mainTabSheet.addSelectedTabChangeListener(this);
 
@@ -131,7 +131,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
     public void selectedTabChange(TabSheet.SelectedTabChangeEvent event) {
 
         String c = mainTabSheet.getTab(event.getTabSheet().getSelectedTab()).getCaption();
-        if (c.equals("Dataset Editor (Require Sign In)")) {
+        if (c.equals("Dataset editor (require username and password)")) {
             adminTab.setVisible(false);
             sizeControl = 0;
         } else if (c.equals("Proteins")) {
@@ -385,7 +385,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
     private Button initAdminIcoBtn() {
         Button b = new Button("(Admin Login)");
         b.setStyleName(Runo.BUTTON_LINK);
-        b.setDescription("Dataset Editor (Require Sign In)");
+        b.setDescription("Dataset editor (require username and password)");
         Button.ClickListener adminClickListener = new Button.ClickListener() {
             private static final long serialVersionUID = 1L;
 

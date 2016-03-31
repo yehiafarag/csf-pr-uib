@@ -243,7 +243,7 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
         searchFieldContainerLayout.setWidthUndefined();
         searchFieldContainerLayout.setSpacing(true);
         searchField = new TextField();
-        searchField.setDescription("Search Proteins By Name or Accession");
+        searchField.setDescription("Search proteins by name or accession");
         searchField.setImmediate(true);
         searchField.setWidth("100%");
         searchField.setHeight("24px");
@@ -456,7 +456,7 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
         unselectAllBtn.setStyleName("unselectallbtn");
         rightBottomLayout.addComponent(unselectAllBtn);
         rightBottomLayout.setComponentAlignment(unselectAllBtn, Alignment.TOP_LEFT);
-        unselectAllBtn.setDescription("Unselect all data");
+        unselectAllBtn.setDescription("Clear table selection");
         unselectAllBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
             @Override

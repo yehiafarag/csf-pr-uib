@@ -6,16 +6,15 @@
 package probe.com.view.body.quantdatasetsoverview.quantproteinstabsheet.studies;
 
 import com.vaadin.event.LayoutEvents;
-import com.vaadin.server.Page;
+import com.vaadin.server.ExternalResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.Reindeer;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -72,6 +71,18 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
     private final AbsoluteLayout ProteinScatterPlotContainer;
     private final int imgWidth;
     private final Map<String, QuantDatasetObject> dsKeyDatasetMap = new HashMap<String, QuantDatasetObject>();
+    private String defaultScatterPlottImgUrl, heighlightedScatterPlottImgUrl;
+    private final ChartRenderingInfo defaultScatterPlotRenderingInfo = new ChartRenderingInfo();
+    private final QuantCentralManager Quant_Central_Manager;
+//    private final String teststyle;
+//    private final Page.Styles styles = Page.getCurrent().getStyles();
+    private final DiseaseGroupsComparisonsProteinLayout comparisonProtein;
+    private PeptidesStackedBarChartsControler studyPopupLayoutManager;
+    private final int width;
+    private JFreeChart scatterPlot;
+    private int custTrend = -1;
+    private final Image defaultChartImage = new Image();
+    private final AbsoluteLayout defaultChartLayout = new AbsoluteLayout();
 
     /**
      *
@@ -80,17 +91,6 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
     public VerticalLayout getCloseBtn() {
         return closeBtn;
     }
-
-    private String defaultScatterPlottImgUrl, heighlightedScatterPlottImgUrl;
-    private final ChartRenderingInfo defaultScatterPlotRenderingInfo = new ChartRenderingInfo();
-    private final QuantCentralManager Quant_Central_Manager;
-    private final String teststyle;
-    private final Page.Styles styles = Page.getCurrent().getStyles();
-    private final DiseaseGroupsComparisonsProteinLayout comparisonProtein;
-    private PeptidesStackedBarChartsControler studyPopupLayoutManager;
-    private final int width;
-    private JFreeChart scatterPlot;
-    private int custTrend = -1;
 
     /**
      *
@@ -134,11 +134,16 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         ProteinScatterPlotContainer.setWidth(imgWidth + "px");
         ProteinScatterPlotContainer.setHeight(150 + "px");
 
-        String styleString = "_" + cp.getProteinAccssionNumber() + "_" + cp.getComparison().getComparisonHeader();
-        teststyle = styleString.replace(" ", "_").replace("+", "_").replace(")", "_").replace("(", "_").toLowerCase().replace(" ", "_").replace("\n", "_").replace(")", "_").replace("(", "_").toLowerCase().replace("+", "_").replace("/", "_").replace(".", "_").replace("'s", "_") + "_scatterplot";
-        styles.add("." + teststyle + " {  background-image: url(" + defaultScatterPlottImgUrl + " );background-position:center; background-repeat: no-repeat; }");
-        ProteinScatterPlotContainer.setStyleName(teststyle);
-        ProteinScatterPlotContainer.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+//        String styleString = "_" + cp.getProteinAccssionNumber() + "_" + cp.getComparison().getComparisonHeader();
+//        teststyle = styleString.replace(" ", "_").replace("+", "_").replace(")", "_").replace("(", "_").toLowerCase().replace(" ", "_").replace("\n", "_").replace(")", "_").replace("(", "_").toLowerCase().replace("+", "_").replace("/", "_").replace(".", "_").replace("'s", "_") + "_scatterplot";
+//        styles.add("." + teststyle + " {  background-image: url(" + defaultScatterPlottImgUrl + " );background-position:center; background-repeat: no-repeat; }");
+//        ProteinScatterPlotContainer.setStyleName(teststyle);
+        ProteinScatterPlotContainer.addComponent(defaultChartImage, "left: " + 0 + "px; top: " + 0 + "px;");
+        ProteinScatterPlotContainer.addComponent(defaultChartLayout, "left: " + 0 + "px; top: " + 0 + "px;");
+        defaultChartLayout.setWidth(imgWidth + "px");
+        defaultChartLayout.setHeight(150 + "px");
+
+        defaultChartLayout.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
 
@@ -527,12 +532,28 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
 
         xyplot.setSeriesRenderingOrder(SeriesRenderingOrder.REVERSE);
 
-        xyplot.setBackgroundPaint(c);
-
         heighlightedScatterPlottImgUrl = saveToFile(tempScatterPlot, w, h, defaultScatterPlotRenderingInfo);
 
         xyplot.setBackgroundPaint(Color.WHITE);
         defaultScatterPlottImgUrl = saveToFile(tempScatterPlot, w, h, defaultScatterPlotRenderingInfo);
+
+        xyplot.setBackgroundPaint(c);
+
+        if (custTrend != -1) {
+            domainAxis.setGridBandsVisible(true);
+            if (custTrend == 4) {
+                domainAxis.setGridBandPaint(Color.decode("#ffe5e5"));
+                xyplot.setDomainTickBandPaint(Color.decode("#ffe5e5"));
+                domainAxis.setGridBandAlternatePaint(Color.decode("#ffe5e5"));
+            } else if (custTrend == 0) {
+                domainAxis.setGridBandPaint(Color.decode("#e5ffe5"));
+                xyplot.setDomainTickBandPaint(c);
+            } else if (custTrend == 2) {
+                domainAxis.setGridBandPaint(Color.decode("#e6f4ff"));
+                xyplot.setDomainTickBandPaint(c);
+            }
+
+        }
 
         TextTitle title = new TextTitle(comparisonTitle.getValue(), f);
 
@@ -572,7 +593,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
                 for (int dsId : dsList) {
                     QuantDatasetObject ds;
 
-                    sb.append("<h3>").append((Quant_Central_Manager.getFullQuantDatasetMap().get(dsId)).getAuthor()).append(" (").append((Quant_Central_Manager.getFullQuantDatasetMap().get(dsId)).getYear()).append(")<h3/>");
+                    sb.append("<h4>").append((Quant_Central_Manager.getFullQuantDatasetMap().get(dsId)).getAuthor()).append(" ").append((Quant_Central_Manager.getFullQuantDatasetMap().get(dsId)).getYear()).append("<h4/>");
                     sb.append("<p></p>");
                     ds = Quant_Central_Manager.getFullQuantDatasetMap().get(dsId);
 
@@ -594,7 +615,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
                 if (ySer > ySerEnd) {
                     top = ySerEnd - 3;
                 }
-                ProteinScatterPlotContainer.addComponent(square, "left: " + (xSer - 5) + "px; top: " + top + "px;");
+                defaultChartLayout.addComponent(square, "left: " + (xSer - 5) + "px; top: " + top + "px;");
             }
         }
 
@@ -623,11 +644,12 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
     public void highlight(boolean heighlight, boolean clicked) {
 
         if (heighlight) {
-            styles.add("." + teststyle + " {  background-image: url(" + heighlightedScatterPlottImgUrl + " );background-position:center; background-repeat: no-repeat; }");
-
+//            styles.add("." + teststyle + " {  background-image: url(" + heighlightedScatterPlottImgUrl + " );background-position:center; background-repeat: no-repeat; }");
+            defaultChartImage.setSource(new ExternalResource(heighlightedScatterPlottImgUrl));
         } else if (!heighlight) {
 //            if (!isclicked) {
-            styles.add("." + teststyle + " {  background-image: url(" + defaultScatterPlottImgUrl + " );background-position:center; background-repeat: no-repeat; }");
+//            styles.add("." + teststyle + " {  background-image: url(" + defaultScatterPlottImgUrl + " );background-position:center; background-repeat: no-repeat; }");
+            defaultChartImage.setSource(new ExternalResource(defaultScatterPlottImgUrl));
 //            } else {
 //                isclicked = false;
 //            }
@@ -650,8 +672,9 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
             this.generateScatterplotchart(comparisonProtein, imgWidth, 150);
             studyPopupLayoutManager = new PeptidesStackedBarChartsControler(width, patientGroupsNumToDsIdMap, comparisonProtein.getProteinAccssionNumber(), comparisonProtein.getProtName(), comparisonProtein.getUrl(), comparisonProtein.getComparison().getComparisonHeader(), comparisonProtein.getDsQuantProteinsMap(), dsKeyDatasetMap, Quant_Central_Manager.getDiseaseHashedColorMap());
         }
-        styles.add("." + teststyle + " {  background-image: url(" + defaultScatterPlottImgUrl + " );background-position:center; background-repeat: no-repeat; }");
 
+//        styles.add("." + teststyle + " {  background-image: url(" + defaultScatterPlottImgUrl + " );background-position:center; background-repeat: no-repeat; }");
+        defaultChartImage.setSource(new ExternalResource(defaultScatterPlottImgUrl));
     }
 
     public JFreeChart getScatterPlot() {

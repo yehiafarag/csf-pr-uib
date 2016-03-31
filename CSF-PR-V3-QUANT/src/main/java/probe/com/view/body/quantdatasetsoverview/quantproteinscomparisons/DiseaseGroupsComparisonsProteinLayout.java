@@ -28,26 +28,26 @@ import probe.com.model.beans.quant.QuantProtein;
  * @author Yehia Farag
  */
 public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout implements Serializable, Comparable<DiseaseGroupsComparisonsProteinLayout> {
-    
+
     private String proteinAccssionNumber;
     private String protName;
     private final int uniqueId;
-    
+
     public String getUrl() {
         return url;
     }
-    
+
     public void setUrl(String url) {
         this.url = url;
     }
     private String url;
-    
+
     private int significantTrindCategory;
-    
+
     public Object getTableItemId() {
         return tableItemId;
     }
-    
+
     public void setTableItemId(Object tableItemId) {
         this.tableItemId = tableItemId;
     }
@@ -73,11 +73,11 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
     private final Map<String, List<Integer>> patientsNumToTrindMap = new HashMap<String, List<Integer>>();
     private final Map<String, List<Integer>> patientsNumToDSIDMap = new HashMap<String, List<Integer>>();
     private Map<String, QuantProtein> dsQuantProteinsMap = new HashMap<String, QuantProtein>();
-    
+
     public Map<String, QuantProtein> getDsQuantProteinsMap() {
         return dsQuantProteinsMap;
     }
-    
+
     public void setDsQuantProteinsMap(Map<String, QuantProtein> dsQuantProteinsMap) {
         this.dsQuantProteinsMap = dsQuantProteinsMap;
     }
@@ -97,7 +97,7 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
     public QuantDiseaseGroupsComparison getComparison() {
         return comparison;
     }
-    
+
     private final QuantDiseaseGroupsComparison comparison;
 
     /**
@@ -155,62 +155,70 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
         patientsNumToDSIDMap.put("down", new ArrayList<Integer>());
         patientsNumToTrindMap.put("noValueProvided", new ArrayList<Integer>());
         patientsNumToDSIDMap.put("noValueProvided", new ArrayList<Integer>());
-        
+
         initLabelLayout();
     }
-    
+
     public void setSignificantTrindCategory(int significantTrindCategory) {
         this.significantTrindCategory = significantTrindCategory;
     }
-    
+
     final VerticalLayout upLayout, downLayout, emptyLayout, stableLayout, noValueProvidedLayout;
-    
+    private HorizontalLayout trendataLayoutWrapper;
+    private HorizontalLayout stableLayoutWrapper;
+
     private void initLabelLayout() {
         this.setWidth("100%");
         this.setHeight("20px");
         this.setStyleName("pointer");
         this.setSpacing(false);
         this.setMargin(false);
-        
+
         downLabel = new Label();
         downLabel.setWidth("50px");
         downLabel.setHeight("15px");
         downLabel.setContentMode(ContentMode.HTML);
         this.addComponent(downLabel);
         this.setComponentAlignment(downLabel, Alignment.TOP_RIGHT);
-        
+
+        this.trendataLayoutWrapper = new HorizontalLayout();
+        trendataLayoutWrapper.setStyleName("emptybackground");//"empty"
+        this.addComponent(trendataLayoutWrapper);
+        this.setComponentAlignment(trendataLayoutWrapper, Alignment.MIDDLE_CENTER);
+
         downLayout.setHeight("15px");
         downLayout.setStyleName("greenlayout");
-        this.addComponent(downLayout);
-        this.setComponentAlignment(downLayout, Alignment.MIDDLE_CENTER);
+        trendataLayoutWrapper.addComponent(downLayout);
+        trendataLayoutWrapper.setComponentAlignment(downLayout, Alignment.MIDDLE_LEFT);
+
+        stableLayoutWrapper = new HorizontalLayout();
+        stableLayoutWrapper.setStyleName("empty");
+        trendataLayoutWrapper.addComponent(stableLayoutWrapper);
+        trendataLayoutWrapper.setComponentAlignment(stableLayoutWrapper, Alignment.MIDDLE_CENTER);
+
+        emptyLayout.setHeight("15px");
+//        trendataLayoutWrapper.setStyleName("empty");//"empty"
 
         //        stableLayout.setWidth("100%");
         stableLayout.setHeight("15px");
         stableLayout.setStyleName("lightbluelayout");
-        this.addComponent(stableLayout);
-        this.setComponentAlignment(stableLayout, Alignment.MIDDLE_CENTER);
+
         noValueProvidedLayout.setHeight("15px");
         noValueProvidedLayout.setStyleName("novaluelayout");//"empty"
-        this.addComponent(noValueProvidedLayout);
-        this.setComponentAlignment(noValueProvidedLayout, Alignment.MIDDLE_CENTER);
-        emptyLayout.setHeight("15px");
-        emptyLayout.setStyleName("empty");//"empty"
-        this.addComponent(emptyLayout);
-        this.setComponentAlignment(emptyLayout, Alignment.MIDDLE_CENTER);
-        
+
         upLayout.setHeight("15px");
         upLayout.setStyleName("redlayout");
-        this.addComponent(upLayout);
-        this.setComponentAlignment(upLayout, Alignment.MIDDLE_CENTER);
+        trendataLayoutWrapper.addComponent(upLayout);
+        trendataLayoutWrapper.setComponentAlignment(upLayout, Alignment.MIDDLE_RIGHT);
         upLayout.setCaptionAsHtml(true);
-        
+
         upLabel = new Label();
         upLabel.setContentMode(ContentMode.HTML);
         upLabel.setWidth("50px");
         upLabel.setHeight("15px");
         this.addComponent(upLabel);
         this.setComponentAlignment(upLabel, Alignment.TOP_LEFT);
-        
+
     }
 
     /**
@@ -269,22 +277,22 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
      * @param significant
      */
     public void addUp(int patientsNumber, int dsID, boolean significant) {
-        
+
         if (significant) {
             trendValue += (double) 1;
             this.highSignificant += 1;
             List<Integer> upList = this.patientsNumToTrindMap.get("up");
             upList.add(patientsNumber);
             this.patientsNumToTrindMap.put("up", upList);
-            
+
             List<Integer> upDsList = this.patientsNumToDSIDMap.get("up");
             upDsList.add(dsID);
             this.patientsNumToDSIDMap.put("up", upDsList);
-            
+
         } else {
             addStable(patientsNumber, dsID);
         }
-        
+
     }
 
     /**
@@ -294,7 +302,7 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
     public int getSignificantDown() {
         return lowSignificant;
     }
-    
+
     public int getNoValueprovided() {
         return noValueprovided;
     }
@@ -306,20 +314,20 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
      * @param significant
      */
     public void addDown(int patientsNumber, int dsID, boolean significant) {
-        
+
         if (significant) {
             trendValue -= (double) 1;
             this.lowSignificant += 1;
             List<Integer> downList = this.patientsNumToTrindMap.get("down");
             downList.add(patientsNumber);
             this.patientsNumToTrindMap.put("down", downList);
-            
+
             List<Integer> downDsList = this.patientsNumToDSIDMap.get("down");
             downDsList.add(dsID);
             this.patientsNumToDSIDMap.put("down", downDsList);
-            
+
         } else {
-            
+
             addStable(patientsNumber, dsID);
         }
     }
@@ -354,23 +362,23 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
      * @param dsID
      */
     public void addNoValueProvided(int patientsNumber, int dsID) {
-        
+
         this.noValueprovided += 1;
         List<Integer> noValueProvidedList = this.patientsNumToTrindMap.get("noValueProvided");
         noValueProvidedList.add(patientsNumber);
         this.patientsNumToTrindMap.put("noValueProvided", noValueProvidedList);
-        
+
         List<Integer> noValueProvidedDsList = this.patientsNumToDSIDMap.get("noValueProvided");
         noValueProvidedDsList.add(dsID);
         this.patientsNumToDSIDMap.put("noValueProvided", noValueProvidedDsList);
-        
+
     }
-    
+
     private Double v1 = 0.0;
-    
+
     @Override
     public int compareTo(DiseaseGroupsComparisonsProteinLayout t) {
-        
+
         if (highSignificant.intValue() == lowSignificant.intValue()) {
             v1 = trendValue;
         } else if (trendValue > 0) {
@@ -395,7 +403,7 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
             v2 = Math.min(v2, 0) + ((double) (t.highSignificant - t.lowSignificant) / 10.0);
         }
         return (v1).compareTo(v2);
-        
+
     }
     private String fullDownLabelValue = "";
     private String fullUpLabelValue = "";
@@ -415,9 +423,9 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
         downLabel.setValue(fullDownLabelValue);
         fullUpLabelValue = "<font style='float: left;'><strong>&nbsp;&#8593; " + df.format(((double) highSignificant / (double) subTotal) * 100.0) + "%</strong></font>";
         upLabel.setValue(fullUpLabelValue);
-        
+
         Double v1;
-        if (highSignificant.intValue() == lowSignificant.intValue()) {
+        if (highSignificant == lowSignificant.intValue()) {
             v1 = trendValue;
         } else if (trendValue > 0) {
             double factor = penalty;
@@ -433,12 +441,14 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
         } else if (v1 < 0) {
             cellValue = Math.max(v1, -1);
         }
-        this.setExpandRatio(emptyLayout, ((float) (subTotal - dcounter) / subTotal));
         String overall;
-        
+
         int existStudiesNumber = lowSignificant + highSignificant + stable;
-        
+
         if (cellValue > 0) {
+
+            updateComponentLocation(emptyLayout, noValueProvidedLayout, stableLayout);
+
             overall = "High (" + cellValue + ")";
             if (stable > 0 || lowSignificant > 0) {
                 significantTrindCategory = 3;
@@ -447,11 +457,29 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
                 significantTrindCategory = 4;
                 overallCellPercentValue = 100;
             }
+            trendataLayoutWrapper.setExpandRatio(stableLayoutWrapper, ((float) (subTotal - dcounter) / subTotal));
+            
         } else if (cellValue == 0) {
             overall = "Stable (" + cellValue + ")";
             significantTrindCategory = 2;
             overallCellPercentValue = 0;
+            updateComponentLocation(emptyLayout, stableLayout, noValueProvidedLayout);
+            if (!downLayout.isVisible() && !upLayout.isVisible()) {
+                if (subTotal == stable) {
+                    trendataLayoutWrapper.setExpandRatio(stableLayoutWrapper, ((float) (subTotal - dcounter) / subTotal) );
+                } else {
+                    trendataLayoutWrapper.setExpandRatio(stableLayoutWrapper, ((float) (subTotal - dcounter) / subTotal) );
+                    emptyLayout.setVisible(false);
+                    stableLayoutWrapper.setStyleName("empty");
+
+                }
+            } else {
+                trendataLayoutWrapper.setExpandRatio(stableLayoutWrapper, ((float) (subTotal - dcounter) / subTotal) );
+
+            }
+
         } else {
+            updateComponentLocation(stableLayout, noValueProvidedLayout, emptyLayout);
             overall = "Low (" + cellValue + ")";
             if (stable > 0 || highSignificant > 0) {
                 significantTrindCategory = 1;
@@ -461,6 +489,7 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
                 significantTrindCategory = 0;
                 overallCellPercentValue = -100;
             }
+            trendataLayoutWrapper.setExpandRatio(stableLayoutWrapper, ((float) (subTotal - dcounter) / subTotal) + 1);
         }
         if (stable == 0 && highSignificant == 0 && lowSignificant == 0 && noValueprovided > 0) {
             significantTrindCategory = 5;
@@ -477,15 +506,15 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
 //                this.setDescription("Stable");
 //            }
 //        } else {
-            this.setDescription("Protein value: "+overallCellPercentValue + "%<br/>#Low: " + lowSignificant + "<br/>#Stable : " + stable + "<br/>#High: " + highSignificant + "<br/>Overall trend " + overall);
+        this.setDescription("Protein value: " + overallCellPercentValue + "%<br/>#Low: " + lowSignificant + "<br/>#Stable : " + stable + "<br/>#High: " + highSignificant + "<br/>Overall trend " + overall);
 //        }
-        
+
     }
-    
+
     public double getOverallCellPercentValue() {
         return overallCellPercentValue;
     }
-    
+
     @Override
     public String toString() {
         return ("Low: " + lowSignificant + (lowSignificant == 1 ? " dataset" : " datasets") + "  -  Stable : " + stable + (stable == 1 ? " dataset" : " datasets") + " -  High: " + highSignificant + (highSignificant == 1 ? " dataset" : " datasets"));//"Low: " + lowSignificant +" ( "+ df.format(((double) lowSignificant / (double) total) * 100.0)+ "% )  /  Stable : " + stableSignificant + " /  High: " + highSignificant+" ( "+ df.format(((double) highSignificant / (double) total) * 100.0)+ "% )";
@@ -510,9 +539,9 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
         } else {
             return -1;
         }
-        
+
     }
-    
+
     public List<Integer> getRegulationDsList(int regulation) {
         if (regulation == 2) {
             return patientsNumToDSIDMap.get("up");
@@ -525,7 +554,7 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
         } else {
             return null;
         }
-        
+
     }
 
     /**
@@ -566,10 +595,11 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
      */
     public void updateWidth(int width) {
         width = width - 20;
-        this.setWidth(width + "px");
+//        this.setWidth(width + "px");
+        this.setWidthUndefined();
         float freeArea = width;
         int subTotal = this.total;
-        
+
         if (width > 200) {
             downLabel.setWidth("80px");
             upLabel.setWidth("80px");
@@ -585,8 +615,9 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
         } else {
             downLabel.setVisible(false);
             upLabel.setVisible(false);
-            
+
         }
+        trendataLayoutWrapper.setWidth(freeArea + "px");
         if (((float) highSignificant / subTotal) <= 0.0) {
             upLayout.setVisible(false);
         } else {
@@ -604,7 +635,7 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
         } else {
             float notProvidedWidth = ((float) stable / (float) subTotal) * freeArea;
             stableLayout.setWidth(notProvidedWidth + "px");
-            
+
         }
         if (((float) lowSignificant / subTotal) <= 0.0) {
             downLayout.setVisible(false);
@@ -613,8 +644,9 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
             downLayout.setWidth(downWidth + "px");
         }
         
+
     }
-    
+
     public void setCustomizedUserData(boolean isCustomized) {
         if (isCustomized) {
             this.setStyleName("customizedproteinsLayout");
@@ -625,11 +657,27 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
             } else {
                 this.setDescription("Stable");
             }
-            
+
         } else {
             this.setStyleName("pointer");
         }
-        
+
     }
-    
+
+    private void updateComponentLocation(VerticalLayout compI, VerticalLayout compII, VerticalLayout compIII) {
+
+        stableLayoutWrapper.removeComponent(compI);
+        stableLayoutWrapper.removeComponent(compII);
+        stableLayoutWrapper.removeComponent(compIII);
+
+        stableLayoutWrapper.addComponent(compI);
+        stableLayoutWrapper.setComponentAlignment(compI, Alignment.MIDDLE_CENTER);
+        stableLayoutWrapper.addComponent(compII);
+        stableLayoutWrapper.setComponentAlignment(compII, Alignment.MIDDLE_CENTER);
+
+        stableLayoutWrapper.addComponent(compIII);
+        stableLayoutWrapper.setComponentAlignment(compIII, Alignment.MIDDLE_CENTER);
+
+    }
+
 }

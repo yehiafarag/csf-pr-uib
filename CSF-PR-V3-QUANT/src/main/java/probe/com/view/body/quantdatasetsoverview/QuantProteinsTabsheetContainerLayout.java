@@ -65,16 +65,20 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
      */
     @Override
     public void selectionChanged(String type) {
-//        if (type.equalsIgnoreCase("Comparison_Selection")) {
-//           Set<QuantDiseaseGroupsComparison> selectedComparisonList = Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList();
-//            System.out.println("at selectedComparisonList "+selectedComparisonList.size());
-//           if(selectedComparisonList.isEmpty()){
-//               this.getUI().scrollIntoView(this.getUI());
-//               redrawCharts();
-//           
-//           }
-//        
-//        }
+        if (type.equalsIgnoreCase("Comparison_Selection")) {
+            Set<QuantDiseaseGroupsComparison> selectedComparisonList = Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList();
+            if (selectedComparisonList.isEmpty() && proteinsTabsheet != null) {
+                proteinsTabsheet.removeAllComponents();
+                protSelectionMap.clear();
+                protSelectionTabMap.clear();
+                protSelectionKeyTabMap.clear();
+                noProtLabel.setVisible(true);
+                proteinsTabsheet.setVisible(false);
+            } else {
+//                type = "Quant_Proten_Selection";
+            }
+
+        }
         if (type.equalsIgnoreCase("Quant_Proten_Selection") && !selfSelection) {
 
             if (lastSelectedTab != null) {
@@ -332,7 +336,6 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
      */
     private HorizontalLayout generateProtTab(String proteinKey, String quantProteinName, String quantProteinAccession, DiseaseGroupsComparisonsProteinLayout[] diseaseGroupsComparisonsProteinArray, Set<QuantDiseaseGroupsComparison> selectedDiseaseGroupsComparisonsList) {
         HorizontalLayout bodyLayout = new HorizontalLayout();
-
         bodyLayout.setWidth("100%");
         bodyLayout.setSpacing(true);
         bodyLayout.setMargin(new MarginInfo(true, false, false, false));
@@ -355,10 +358,10 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
      * list in case of searching mode
      */
     private HorizontalLayout generateProtTab(String proteinKey, String quantProteinName, String quantProteinAccession, DiseaseGroupsComparisonsProteinLayout[] diseaseGroupsComparisonsProteinArray, Set<QuantDiseaseGroupsComparison> selectedDiseaseGroupsComparisonsList, int custTrend) {
-        HorizontalLayout bodyLayout = new HorizontalLayout();       
-        bodyLayout.setWidthUndefined();
+        HorizontalLayout bodyLayout = new HorizontalLayout();
+        bodyLayout.setWidth("100%");
         bodyLayout.setSpacing(true);
-        bodyLayout.setMargin(true);
+        bodyLayout.setMargin(new MarginInfo(true, false, false, false));
         bodyLayout.setHeightUndefined();
         bodyLayout.setStyleName(Reindeer.LAYOUT_WHITE);
         ProteinOverviewJFreeLineChartContainer overallPlotLayout = new ProteinOverviewJFreeLineChartContainer(Quant_Central_Manager, CSFPR_Handler, diseaseGroupsComparisonsProteinArray, selectedDiseaseGroupsComparisonsList, (pageWidth), quantProteinName, quantProteinAccession, searchingMode, proteinKey, custTrend);
@@ -374,7 +377,7 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
     public void redrawCharts() {
         try {
             if (proteinsTabsheet == null || proteinsTabsheet.getSelectedTab() == null) {
-                ((HideOnClickLayout) this.getParent()).setVisability(false);
+//                ((HideOnClickLayout) this.getParent()).setVisability(true);
                 this.noProtLabel.setVisible(true);
                 this.setHeightUndefined();
                 return;
@@ -384,7 +387,7 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
             HorizontalLayout selectedTab = (HorizontalLayout) proteinsTabsheet.getSelectedTab();
             ProteinOverviewJFreeLineChartContainer overallPlotLayout = (ProteinOverviewJFreeLineChartContainer) selectedTab.getComponent(0);
             overallPlotLayout.redrawCharts();
-            this.setHeight((overallPlotLayout.getChartHeight()+200) + "px");
+            this.setHeight((overallPlotLayout.getChartHeight() + 200) + "px");
             if (init) {
                 init = false;
 //                UI.getCurrent().scrollIntoView(QuantProteinsTabsheetContainerLayout.this);

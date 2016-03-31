@@ -217,6 +217,7 @@ public class StudiesPeptidesDetailsContainerLayout extends VerticalLayout {
         maxmizeView.setWidth("24px");
         maxmizeView.setHeight("24px");
         maxmizeView.setStyleName("maxmizebtn");
+        maxmizeView.setDescription("Show all charts in popup panel");
         maxmizeView.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
             @Override
@@ -311,6 +312,7 @@ public class StudiesPeptidesDetailsContainerLayout extends VerticalLayout {
                 if (cprot == null || cprot.getSignificantTrindCategory() == -1) {
                     continue;
                 }
+                
                 ProteinStudyComparisonScatterPlotLayout protCompLayout = new ProteinStudyComparisonScatterPlotLayout(Quant_Central_Manager, cprot, width, custTrend);
                 mainStudiesLayout.addComponent(protCompLayout, 0, rowIndex);
                 mainStudiesLayout.setComponentAlignment(protCompLayout, Alignment.MIDDLE_LEFT);

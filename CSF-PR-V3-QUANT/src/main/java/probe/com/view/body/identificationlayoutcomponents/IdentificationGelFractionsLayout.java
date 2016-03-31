@@ -95,8 +95,8 @@ public class IdentificationGelFractionsLayout extends VerticalLayout implements 
         this.addComponent(fractTable);
 
         ExporterBtnsGenerator dataExporter = new ExporterBtnsGenerator(handler);
-        VerticalLayout proteinFractionsExportLayout = dataExporter.exportProteinFractions(datasetName, accession, fractTable, true, "Export Fractions from Selected Dataset for ( " + accession + " )");
-        proteinFractionsExportLayout.setDescription("Export Fractions from ( " + datasetName + " ) Dataset for ( " + accession + " )");
+        VerticalLayout proteinFractionsExportLayout = dataExporter.exportProteinFractions(datasetName, accession, fractTable, true, "Export fractions from selected dataset for ( " + accession + " )");
+        proteinFractionsExportLayout.setDescription("Export fractions from ( " + datasetName + " ) dataset for ( " + accession + " )");
         exportFracLayout.addComponent(proteinFractionsExportLayout);
         exportFracLayout.setMargin(new MarginInfo(false, true, false, false));
         exportFracLayout.setComponentAlignment(proteinFractionsExportLayout, Alignment.BOTTOM_RIGHT);

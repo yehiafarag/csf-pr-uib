@@ -206,10 +206,10 @@ public class IdentificationDatasetLayout extends VerticalLayout implements Seria
         ExporterBtnsGenerator dataExporter = new ExporterBtnsGenerator(CSFPR_Handler);
 
         VerticalLayout allPeptidesProteinsExportLayout = dataExporter.exportAllAvailablePeptidesForProtein(accession, otherAccession, desc, true, "Export Peptides from All Datasets for ( " + accession + " )");
-        allPeptidesProteinsExportLayout.setDescription("Export CSF-PR Peptides for ( " + accession + " ) from All Datasets");
+        allPeptidesProteinsExportLayout.setDescription("Export CSF-PR peptides for ( " + accession + " ) from all datasets");
 
-        VerticalLayout datasetProteinsExportLayout = dataExporter.exportDatasetProteins(datasetId, true, "Export All Proteins from Selected Dataset");
-        datasetProteinsExportLayout.setDescription("Export All Proteins from ( " + CSFPR_Handler.getDataset(datasetId).getName() + " ) Dataset");
+        VerticalLayout datasetProteinsExportLayout = dataExporter.exportDatasetProteins(datasetId, true, "Export all proteins from selected dataset");
+        datasetProteinsExportLayout.setDescription("Export all proteins from ( " + CSFPR_Handler.getDataset(datasetId).getName() + " ) dataset");
 
         protTableLayout.setExpBtnProtAllPepTable(allPeptidesProteinsExportLayout, datasetProteinsExportLayout);
 
@@ -227,8 +227,8 @@ public class IdentificationDatasetLayout extends VerticalLayout implements Seria
                 peptidesLayout.setHeight("" + protTableLayout.getHeight());
                 peptidesLayout.addComponent(peptideTableLayout);
 
-                VerticalLayout proteinPeptidesExportLayout = dataExporter.exportPeptidesForProtein(datasetId, accession, otherAccession, desc, peptideProteintList, true, "Export Peptides from Selected Dataset for ( " + accession + " )");
-                proteinPeptidesExportLayout.setDescription("Export Peptides from ( " + CSFPR_Handler.getDataset(datasetId).getName() + " ) Dataset for ( " + accession + " )");
+                VerticalLayout proteinPeptidesExportLayout = dataExporter.exportPeptidesForProtein(datasetId, accession, otherAccession, desc, peptideProteintList, true, "Export peptides from selected dataset for ( " + accession + " )");
+                proteinPeptidesExportLayout.setDescription("Export peptides from ( " + CSFPR_Handler.getDataset(datasetId).getName() + " ) dataset for ( " + accession + " )");
                 peptideTableLayout.setExportingBtnForIdentificationPeptidesTable(proteinPeptidesExportLayout);
 
             }

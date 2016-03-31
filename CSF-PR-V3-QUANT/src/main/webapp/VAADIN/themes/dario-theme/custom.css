@@ -1426,18 +1426,18 @@ border:3px solid #4d749f ;
     opacity: 1;
 }
 .novaluelayout div{
-    background: #b5babb;
-    border: 1px solid gray;
+    background: #b5babb  !important;
+    border: 1px solid gray  !important;
 }
 
 .greenlayout div{
-    background: #009900;
+    background: #009900  !important;
 }
 .darkgray div{
     background: #b5babb;
 }
 .lightbluelayout div{
-    background: rgb(1, 141, 244);
+    background: rgb(1, 141, 244) !important;
 }
 .midgreenlayout div{
     background: #00937A;
@@ -1449,13 +1449,17 @@ border:3px solid #4d749f ;
 
 }
 .redlayout div{
-    background: #cc0000;
+    background: #cc0000  !important;
+     margin-left:2px;
 }
 .empty div{
     /*background-image: url(img/empty.png);*/
     background:#cccccc;
     background-position:center;
 
+}
+.emptybackground div{
+     background:#cccccc;    
 }
 .orangestackedlayout div{
     background: #FF8000;

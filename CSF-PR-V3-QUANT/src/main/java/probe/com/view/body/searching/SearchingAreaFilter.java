@@ -77,7 +77,7 @@ public class SearchingAreaFilter extends VerticalLayout implements Serializable 
         searchbyGroup = new OptionGroupFilter(filtersController, "Search By:", 4, true);
         searchbyLayout.addComponent(searchbyGroup);
         searchbyGroup.setWidth("330px");
-        searchbyGroup.setDescription("Please Select Search Method");
+        searchbyGroup.setDescription("Select search method");
         searchbyGroup.getOptionGroup().setEnabled(false);
         searchbyGroup.getOptionGroup().setNullSelectionAllowed(true);
 

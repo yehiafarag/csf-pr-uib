@@ -243,7 +243,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         unselectAllBtn.setStyleName("unselectallbtn");
         btnContainerLayout.addComponent(unselectAllBtn);
         btnContainerLayout.setComponentAlignment(unselectAllBtn, Alignment.TOP_LEFT);
-        unselectAllBtn.setDescription("Unselect All Disease Groups Comparisons");
+        unselectAllBtn.setDescription("Clear selection");
         unselectAllBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
             @Override
@@ -427,7 +427,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         unselectAllBtn.setStyleName("unselectallbtn");
         btnContainerLayout.addComponent(unselectAllBtn);
         btnContainerLayout.setComponentAlignment(unselectAllBtn, Alignment.TOP_LEFT);
-        unselectAllBtn.setDescription("Unselect All Disease Groups Comparisons");
+        unselectAllBtn.setDescription("Clear selection");
         unselectAllBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
             @Override

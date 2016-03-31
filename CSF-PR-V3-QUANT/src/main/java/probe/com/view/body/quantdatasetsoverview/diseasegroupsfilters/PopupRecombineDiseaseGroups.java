@@ -53,7 +53,7 @@ public class PopupRecombineDiseaseGroups extends VerticalLayout implements Layou
         default_DiseaseCat_DiseaseGroupMap = new LinkedHashMap<String, Map<String, String>>(Quant_Central_Manager.getDefault_DiseaseCat_DiseaseGroupMap());
 
         this.setStyleName("merge");
-        this.setDescription("Recombine Disease Groups");
+        this.setDescription("Recombine disease groups");
         this.Quant_Central_Manager = Quant_Central_Manager;
         captionAstrMap = new HashMap<String, Integer>();
         this.addLayoutClickListener(PopupRecombineDiseaseGroups.this);

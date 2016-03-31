@@ -465,7 +465,7 @@ public class CoreLogic implements Serializable {
      * calculate the identification proteins table search indexesSet for the
      * searching in identification proteins table
      *
-     * @param protToIndexSearchingMap proteins information supported in the
+     * @param protToIndexSearchingMap protein information supported in the
      * search (accession, other accession, and description) mapped to protein
      * index in the table
      * @param searchMapIndex

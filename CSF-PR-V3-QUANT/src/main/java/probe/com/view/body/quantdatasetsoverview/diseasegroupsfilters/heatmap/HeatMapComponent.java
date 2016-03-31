@@ -132,6 +132,7 @@ public class HeatMapComponent extends VerticalLayout {
         hideCompBtn.addComponent(icon);
         hideCompBtn.setComponentAlignment(icon, Alignment.MIDDLE_CENTER);
         icon.setHeight((heatmapHeaderCellWidth - 20 + 10) + "px");
+        System.out.println(" icon "+ icon.getHeight());
 
         hideShowBtnLabel = new Label("Expand Chart");
         hideShowBtnLabel.setHeight((20) + "px");

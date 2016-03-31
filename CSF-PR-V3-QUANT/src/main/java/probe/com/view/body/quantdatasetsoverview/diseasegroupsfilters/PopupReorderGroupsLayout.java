@@ -75,7 +75,7 @@ public class PopupReorderGroupsLayout extends VerticalLayout implements CSFFilte
      
         
         this.setStyleName("sortandselect");
-        this.setDescription("Reorder And Select Disease Groups");
+        this.setDescription("Reorder and select disease groups");
         this.Quant_Central_Manager = Quant_Central_Manager;
         this.addLayoutClickListener(PopupReorderGroupsLayout.this);
         this.popupBodyLayout = new VerticalLayout();
@@ -320,7 +320,7 @@ public class PopupReorderGroupsLayout extends VerticalLayout implements CSFFilte
 
         popupBodyLayout.addComponent(bottomLayout);
         int width = w - 200;
-        ToggleBtn sortSelectToggleBtn = new ToggleBtn("Sort Groups ", "Select Groups ", "*Sort – Drag & drop", "*Select to filter datasets", width);
+        ToggleBtn sortSelectToggleBtn = new ToggleBtn("Sort Groups ", "Select Groups ", "Sort – drag & drop", "*Select to filter datasets", width);
         bottomLayout.addComponent(sortSelectToggleBtn);//commentLabel
         bottomLayout.setComponentAlignment(sortSelectToggleBtn, Alignment.MIDDLE_LEFT);//commentLabel
         bottomLayout.setExpandRatio(sortSelectToggleBtn, w);

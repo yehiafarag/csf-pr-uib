@@ -37,7 +37,7 @@ public class TipGenerator implements LayoutEvents.LayoutClickListener, Serializa
         VerticalLayout tipsIcon = new VerticalLayout();
         tipsIcon.setWidth("16px");
         tipsIcon.setHeight("16px");
-        tipsIcon.setDescription("Show Tips");
+        tipsIcon.setDescription("Show tips");
         tipsIcon.setStyleName("tipbtn");
         tipsIcon.addLayoutClickListener(this);
         return tipsIcon;

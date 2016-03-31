@@ -106,13 +106,13 @@ public class IdentificationProteinsTableLayout extends VerticalLayout implements
 
         //allow search in 
         searchField = new TextField(" ");
-        searchField.setDescription("Search Proteins By Name or Accession");
+        searchField.setDescription("Search proteins by name or accession");
 
         topLayout.addComponent(searchField);
         topLayout.setComponentAlignment(searchField, Alignment.TOP_RIGHT);
         topLayout.setExpandRatio(searchField, 0.47f);
         nextSearchBtn = new Button();
-        nextSearchBtn.setDescription("Next Result");
+        nextSearchBtn.setDescription("Next result");
         nextSearchBtn.setStyleName(Reindeer.BUTTON_LINK);
         nextSearchBtn.setIcon(new ThemeResource("img/next.gif"));
         nextSearchBtn.setWidth("20px");

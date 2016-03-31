@@ -112,6 +112,7 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
 
         diseaseCategorySelectLayout.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
         counterLabel = new Label("( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )");
+        counterLabel.setDescription("#datasets: "+Quant_Central_Manager.getCurrentDsNumber()+"<br/>#total datasets: "+Quant_Central_Manager.getTotalDsNumber());
         diseaseTypeSelectionList.setWidth("200px");
         diseaseTypeSelectionList.setNullSelectionAllowed(false);
         diseaseTypeSelectionList.setValue(Quant_Central_Manager.getInUseDiseaseName());
@@ -129,6 +130,7 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
                 StudiesPieChartFiltersContainerLayout pieChartFiltersLayout = new StudiesPieChartFiltersContainerLayout(Quant_Central_Manager, CSFPR_Handler);
                 pieChartFiltersBtnWrapper.addComponent(pieChartFiltersLayout.getPieChartFiltersBtn());
                 counterLabel.setValue("( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )");
+                counterLabel.setDescription("#datasets: "+Quant_Central_Manager.getCurrentDsNumber()+"<br/>#total datasets: "+Quant_Central_Manager.getTotalDsNumber());
 
             }
         });
@@ -260,6 +262,7 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
                 StudiesPieChartFiltersContainerLayout pieChartFiltersLayout = new StudiesPieChartFiltersContainerLayout(Quant_Central_Manager, CSFPR_Handler);
                 pieChartFiltersBtnWrapper.addComponent(pieChartFiltersLayout.getPieChartFiltersBtn());
                 counterLabel.setValue("( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )");
+                counterLabel.setDescription("#datasets: "+Quant_Central_Manager.getCurrentDsNumber()+"<br/>#total datasets: "+Quant_Central_Manager.getTotalDsNumber());
             }
         });
 
@@ -285,7 +288,7 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
         hideFiltersBtn.setStyleName("hidefilterslayout");
         popupBtnsLayout.addComponent(hideFiltersBtn);
         popupBtnsLayout.setComponentAlignment(hideFiltersBtn, Alignment.MIDDLE_RIGHT);
-        hideFiltersBtn.setDescription("hide filters layout");
+        hideFiltersBtn.setDescription("Hide filters layout");
 
         hideFiltersBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
             @Override
@@ -318,23 +321,13 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
         btnsLayout.setHeight("24px");
         btnsLayout.setSpacing(true);
         this.leftContainerLayout.addComponent(btnsLayout);
-        btnsLayout.setMargin(new MarginInfo(false, false, true, false));
-
-//        VerticalLayout angelRightLabel = new VerticalLayout();
-//        angelRightLabel.setHeight("25px");
-//        angelRightLabel.setDescription("Show filters");
-//        angelRightLabel.setStyleName("showfilter");
-//        angelRightLabel.setWidth("25px");
-//        updatedFiltersContainer.addComponent(angelRightLabel);
-//        
+        btnsLayout.setMargin(new MarginInfo(false, false, true, false));//        
         btnsLayout.setStyleName(Reindeer.LAYOUT_WHITE);
 
-//        Label filterTitle = new Label("Filters:");
-//        filterTitle.setHeight("24px");
-//        filterTitle.setDescription("Available filters");
-//        filterTitle.setStyleName("filtercaption");
-//        filterTitle.setWidth("50px");
-//        popupBtnsLayout.addComponent(filterTitle);
+        Label commentLabel = new Label("<b>*</b> Multiple groups combined in one group");
+        commentLabel.setStyleName(Reindeer.LABEL_SMALL);
+        commentLabel.setContentMode(ContentMode.HTML);
+        btnsLayout.addComponent(commentLabel);
         rightBottomBtnLayout = new HorizontalLayout();
         rightBottomBtnLayout.setHeightUndefined();
         rightBottomBtnLayout.setWidthUndefined();
@@ -375,7 +368,7 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
         selectAllBtn.setStyleName("selectallbtn");
         rightBottomBtnLayout.addComponent(selectAllBtn);
         rightBottomBtnLayout.setComponentAlignment(selectAllBtn, Alignment.TOP_LEFT);
-        selectAllBtn.setDescription("Select All Disease Groups Comparisons");
+        selectAllBtn.setDescription("Select all disease groups comparisons");
         selectAllBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
             @Override
@@ -388,7 +381,7 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
         unselectAllBtn.setStyleName("unselectallbtn");
         rightBottomBtnLayout.addComponent(unselectAllBtn);
         rightBottomBtnLayout.setComponentAlignment(unselectAllBtn, Alignment.TOP_LEFT);
-        unselectAllBtn.setDescription("Unselect All Disease Groups Comparisons");
+        unselectAllBtn.setDescription("Unselect all disease groups comparisons");
         unselectAllBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
             @Override
@@ -514,12 +507,14 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
 
             heatmapFilterComponent.updateHideComparisonThumbBtn(null, null);
             counterLabel.setValue("( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )");
+            counterLabel.setDescription("#datasets: "+Quant_Central_Manager.getCurrentDsNumber()+"<br/>#total datasets: "+Quant_Central_Manager.getTotalDsNumber());
             return;
         } else if (type.equalsIgnoreCase("HeatMap_Update_level")) {
             selectAllComparisons();
 
         }
         counterLabel.setValue("( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )");
+        counterLabel.setDescription("#datasets: "+Quant_Central_Manager.getCurrentDsNumber()+"<br/>#total datasets: "+Quant_Central_Manager.getTotalDsNumber());
         heatmapFilterComponent.updateHideComparisonThumbBtn(selectionOverviewBubbleChart.getChartThumbImage(), true);
     }
 

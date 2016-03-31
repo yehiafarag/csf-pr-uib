@@ -240,7 +240,7 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
          compareDatasetBtnIcon.setSource(new ThemeResource("img/compare.png"));
         compareBtnContainer.addComponent(compareDatasetBtnIcon);
         
-        Label compareDatasetBtnLabel = new Label("<br/><b>Compare</b><br/><font size='1'>Compare your quantitative proteins information with the available data in CSF-PR v2.0.</font>");
+        Label compareDatasetBtnLabel = new Label("<br/><b>Compare</b><br/><font size='1'>Compare your quantitative protein information with the available data in CSF-PR v2.0.</font>");
         compareDatasetBtnLabel.setContentMode(ContentMode.HTML);
         compareBtnContainer.addComponent(compareDatasetBtnLabel);
         compareDatasetBtnLabel.setWidth(labelWidth+"px");

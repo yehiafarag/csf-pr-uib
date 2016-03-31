@@ -230,7 +230,7 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
         searchFieldContainerLayout.setWidthUndefined();
         searchFieldContainerLayout.setSpacing(true);
         searchField = new TextField();
-        searchField.setDescription("Search Proteins By Name or Accession");
+        searchField.setDescription("Search proteins by name or accession");
         searchField.setImmediate(true);
         searchField.setWidth("100%");
         searchField.setHeight("24px");
@@ -448,7 +448,7 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
         unselectAllBtn.setStyleName("unselectallbtn");
         rightBottomLayout.addComponent(unselectAllBtn);
         rightBottomLayout.setComponentAlignment(unselectAllBtn, Alignment.TOP_LEFT);
-        unselectAllBtn.setDescription("Unselect all data");
+        unselectAllBtn.setDescription("Clear table selection");
         unselectAllBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
             @Override
@@ -1128,10 +1128,10 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
 
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-        if (event.getClickedComponent() == null || event.getClickedComponent().getParent() == null) {
+        if (event.getComponent()== null ||event.getClickedComponent() == null || event.getClickedComponent().getParent() == null) {
             return;
         }
-        DiseaseGroupsComparisonsProteinLayout protCompLayout = (DiseaseGroupsComparisonsProteinLayout) event.getClickedComponent().getParent();
+        DiseaseGroupsComparisonsProteinLayout protCompLayout = (DiseaseGroupsComparisonsProteinLayout) event.getComponent();
         if (protCompLayout == null) {
             return;
         }

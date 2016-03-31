@@ -78,7 +78,7 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
         bottomLayout.addComponent(peptideProteinInfoHideShow);
         peptideProteinInfoHideShow.setVisability(true);
 
-        HideOnClickLayout proteinInfoHideShow = new HideOnClickLayout("Proteins Information", proteinsInformationContainer, null, Alignment.TOP_CENTER, infoText,null);
+        HideOnClickLayout proteinInfoHideShow = new HideOnClickLayout("Protein Information", proteinsInformationContainer, null, Alignment.TOP_CENTER, infoText,null);
         proteinInfoHideShow.setHeightUndefined();
         bottomLayout.addComponent(proteinInfoHideShow);
         proteinInfoHideShow.setVisability(true);
@@ -134,7 +134,7 @@ public class StudyPopupLayout extends VerticalLayout implements LayoutEvents.Lay
         bottomLayout.addComponent(peptideProteinInfoHideShow);
         peptideProteinInfoHideShow.setVisability(true);
 
-        HideOnClickLayout proteinInfoHideShow = new HideOnClickLayout("Proteins Information", proteinsInformationContainer, null, Alignment.TOP_CENTER, infoText,null);
+        HideOnClickLayout proteinInfoHideShow = new HideOnClickLayout("Protein Information", proteinsInformationContainer, null, Alignment.TOP_CENTER, infoText,null);
         proteinInfoHideShow.setHeightUndefined();
         bottomLayout.addComponent(proteinInfoHideShow);
         proteinInfoHideShow.setVisability(true);

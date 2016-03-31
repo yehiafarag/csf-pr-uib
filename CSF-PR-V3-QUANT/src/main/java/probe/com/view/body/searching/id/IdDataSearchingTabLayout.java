@@ -92,8 +92,8 @@ public class IdDataSearchingTabLayout extends VerticalLayout implements Serializ
                 int fractionNumber = handler.getDataset(datasetId).getFractionsNumber();
                 if (datasetId != 0 && handler.getDataset(datasetId).getDatasetType() == 1) {
 
-                    VerticalLayout allPeptidesProteinsExportLayout = dataExporter.exportAllAvailablePeptidesForProtein(accession, otherAccession, desc, true, "Export Peptides from All Datasets for ( " + accession + " )");
-                    allPeptidesProteinsExportLayout.setDescription("Export CSF-PR Peptides for ( " + accession + " ) from All Datasets");
+                    VerticalLayout allPeptidesProteinsExportLayout = dataExporter.exportAllAvailablePeptidesForProtein(accession, otherAccession, desc, true, "Export peptides from all datasets for ( " + accession + " )");
+                    allPeptidesProteinsExportLayout.setDescription("Export CSF-PR peptides for ( " + accession + " ) from all datasets");
                     searcheResultsTableLayout.setExpBtnProtAllPepTable(allPeptidesProteinsExportLayout);
                     if (key >= 0) {
                         Map<Integer, IdentificationPeptideBean> pepProtList = handler.getIdentificationProteinPeptidesList(datasetId, accession, otherAccession);
@@ -107,7 +107,7 @@ public class IdDataSearchingTabLayout extends VerticalLayout implements Serializ
                             idPeptidesLayout.addComponent(idPeptideTableLayout);
 
                             VerticalLayout proteinPeptidesExportLayout = dataExporter.exportPeptidesForProtein(datasetId, accession, otherAccession, desc, pepProtList, true, "Export Peptides from Selected Dataset for ( " + accession + " )");
-                            proteinPeptidesExportLayout.setDescription("Export Peptides from ( " + handler.getDataset(datasetId).getName() + " ) Dataset for ( " + accession + " )");
+                            proteinPeptidesExportLayout.setDescription("Export peptides from ( " + handler.getDataset(datasetId).getName() + " ) dataset for ( " + accession + " )");
 
                             idPeptideTableLayout.setExportingBtnForIdentificationPeptidesTable(proteinPeptidesExportLayout);
 

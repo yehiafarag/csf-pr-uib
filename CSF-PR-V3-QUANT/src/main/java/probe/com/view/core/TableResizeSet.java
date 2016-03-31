@@ -44,9 +44,9 @@ public class TableResizeSet extends HorizontalLayout implements Serializable {
         Button b2 = init("img/med.jpg", MEDIUM_SIZE);
         Button b3 = init("img/larg.jpg", LARGE_SIZE);
 
-        b1.setDescription("Small Table Size");
-        b2.setDescription("Medium Table Size");
-        b3.setDescription("Large Table Size");
+        b1.setDescription("Small table size");
+        b2.setDescription("Medium table size");
+        b3.setDescription("Large table size");
         
         this.addComponent(b1);
         this.addComponent(b2);

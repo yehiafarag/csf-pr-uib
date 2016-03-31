@@ -66,7 +66,7 @@ public class QuantProtiensSearchingResultsLayout extends VerticalLayout {
         comparisonsTableContainer.setVisability(true);
 
         proteinsLayout = new QuantProteinsTabsheetContainerLayout(Quant_Central_Manager, true, CSFPR_Handler);
-        HideOnClickLayout proteinsLevelLayout = new HideOnClickLayout("Proteins Information", proteinsLayout, null, infoText, null);
+        HideOnClickLayout proteinsLevelLayout = new HideOnClickLayout("Protein Information", proteinsLayout, null, infoText, null);
 
         this.addComponent(proteinsLevelLayout);
         proteinsLevelLayout.setVisability(true);

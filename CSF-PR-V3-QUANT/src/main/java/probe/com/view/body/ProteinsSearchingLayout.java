@@ -514,7 +514,7 @@ public class ProteinsSearchingLayout extends VerticalLayout implements Serializa
         if (name.equalsIgnoreCase("Load All")) {
             name = "<b>Load All</b>";
         }
-        labelLayout.setDescription("Click to Load Proteins");
+        labelLayout.setDescription("Click to load protein data");
         labelLayout.setMargin(new MarginInfo(true, false, false, true));
         labelLayout.setSpacing(true);
         if (type.equalsIgnoreCase("Protein Accession") && !name.equalsIgnoreCase("<b>Load All</b>")) {

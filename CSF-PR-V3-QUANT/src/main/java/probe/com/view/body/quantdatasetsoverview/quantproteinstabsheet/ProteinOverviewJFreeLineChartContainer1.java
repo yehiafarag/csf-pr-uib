@@ -341,7 +341,7 @@ public class ProteinOverviewJFreeLineChartContainer1 extends HorizontalLayout {
         exportChartBtn.setWidth("24px");
         exportChartBtn.setHeight("24px");
         exportChartBtn.setPrimaryStyleName("exportpdfbtn");
-        exportChartBtn.setDescription("Export Protein Information");
+        exportChartBtn.setDescription("Export protein overview, datasets and peptides charts");
         exportBtnLayout.addComponent(exportChartBtn);
         StreamResource proteinInformationResource = createProteinsInformationResource();
         FileDownloader fileDownloader = new FileDownloader(proteinInformationResource);
@@ -352,7 +352,7 @@ public class ProteinOverviewJFreeLineChartContainer1 extends HorizontalLayout {
         exportFullReportBtn.setWidth("24px");
         exportFullReportBtn.setHeight("24px");
         exportFullReportBtn.setPrimaryStyleName("exportreportbtn");
-        exportFullReportBtn.setDescription("Export Full Report");
+        exportFullReportBtn.setDescription("Export full report");
         exportBtnLayout.addComponent(exportFullReportBtn);
 
         StreamResource fullReportResource = createFullReportResource();
@@ -603,7 +603,7 @@ public class ProteinOverviewJFreeLineChartContainer1 extends HorizontalLayout {
         exportChartBtn.setWidth("24px");
         exportChartBtn.setHeight("24px");
         exportChartBtn.setPrimaryStyleName("exportpdfbtn");
-        exportChartBtn.setDescription("Export Protein Information");
+        exportChartBtn.setDescription("Export protein overview, datasets and peptides charts");
         exportBtnLayout.addComponent(exportChartBtn);
         StreamResource proteinInformationResource = createProteinsInformationResource();
         FileDownloader fileDownloader = new FileDownloader(proteinInformationResource);
@@ -614,7 +614,7 @@ public class ProteinOverviewJFreeLineChartContainer1 extends HorizontalLayout {
         exportFullReportBtn.setWidth("24px");
         exportFullReportBtn.setHeight("24px");
         exportFullReportBtn.setPrimaryStyleName("exportreportbtn");
-        exportFullReportBtn.setDescription("Export Full Report");
+        exportFullReportBtn.setDescription("Export full report");
         exportBtnLayout.addComponent(exportFullReportBtn);
 
         StreamResource fullReportResource = createFullReportResource();

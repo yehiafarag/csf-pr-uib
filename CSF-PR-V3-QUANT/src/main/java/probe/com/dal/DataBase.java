@@ -1154,7 +1154,7 @@ public class DataBase implements Serializable {
     }
 
     /**
-     * Fill identification proteins information from the result set
+     * Fill identification protein information from the result set
      *
      * @param resultSet results set to fill identification peptides data
      * @return datasetProteinsList
@@ -2943,7 +2943,7 @@ public class DataBase implements Serializable {
     }
 
     /**
-     * Fill quant proteins information from the result set
+     * Fill quant protein information from the result set
      *
      * @param resultSet results set to fill identification peptides data
      * @return quant proteins List
