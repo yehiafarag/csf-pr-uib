@@ -248,7 +248,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-                Quant_Central_Manager.setQuantProteinsSelection(new HashSet<String>(), "");
+                Quant_Central_Manager.setBubbleChartQuantProteinsSelection(new HashSet<String>(), "");
                 resetChart();
 
             }
@@ -432,7 +432,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-                Quant_Central_Manager.setQuantProteinsSelection(new HashSet<String>(), "");
+                Quant_Central_Manager.setBubbleChartQuantProteinsSelection(new HashSet<String>(), "");
                 resetChart();
 
             }
@@ -1477,24 +1477,13 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
      */
     public final double scaleValues(double linearValue, int max, double upperLimit, double lowerLimit) {
         double logMax = (Math.log(max) / Math.log(2));
-//        if (linearValue == 1) {
-//            return (lowerLimit * 2 /  logMax) + lowerLimit;
-//        }
-
         double logValue = (Math.log(linearValue + 1) / Math.log(2));
         logValue = (logValue * 2 / logMax) + lowerLimit;
         return logValue;
     }
-//      public final double scaleValues(double linearValue, int max, double upperLimit, double lowerLimit) {
-//        if (linearValue == 0) {
-//            return 0.0;
-//        }
-//        double logValue = (linearValue * upperLimit/ (double) max) + 0.5;
-//        return logValue;
-//    }
 
     private void resetSelection() {
-        Quant_Central_Manager.setQuantProteinsSelection(new HashSet<String>(), "");
+        Quant_Central_Manager.setBubbleChartQuantProteinsSelection(new HashSet<String>(), "");
         resetChart();
 
     }
@@ -1575,7 +1564,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                 }
 
             }
-            Quant_Central_Manager.setQuantProteinsSelection(selectionMap, selectedheader);
+            Quant_Central_Manager.setBubbleChartQuantProteinsSelection(selectionMap, selectedheader);
 
         } else {
             resetSelection();

@@ -195,7 +195,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
        boolean isUniprot = Boolean.valueOf(proteinKey.split(",")[2].trim());
         Label overviewLabel;
         if (isUniprot) {
-            overviewLabel = new Label("<font style='margin-left :50px'>Overview - <a href='http://www.uniprot.org/uniprot/" + proteinAccession.toUpperCase() + "'" + ">" + proteinName.replace("(", "__").split("__")[0].trim() + "</a>" + "</font> ");
+            overviewLabel = new Label("<font style='margin-left :50px'>Overview - <a href='http://www.uniprot.org/uniprot/" + proteinAccession.toUpperCase() + "' target='_blank'" + ">" + proteinName.replace("(", "__").split("__")[0].trim() + "</a>" + "</font> ");
 
         } else {
             overviewLabel = new Label("<font style='margin-left :50px'>Overview - " + proteinName.replace("(", "__").split("__")[0].trim() + "</font> ");

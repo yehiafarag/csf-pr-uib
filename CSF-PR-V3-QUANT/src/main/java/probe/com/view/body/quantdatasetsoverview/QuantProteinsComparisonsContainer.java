@@ -419,11 +419,11 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
                 csvExport.export();
 
                 for (QuantDiseaseGroupsComparison comp : quantDiseaseGroupsComparisonArr) {
-                     String header = comp.getComparisonHeader();
+                    String header = comp.getComparisonHeader();
                     String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + " - " + header.split(" / ")[1].split("\n")[1].replace("_", " ").replace("-", "'").replace("Disease", "") + " ";
 
                     String preHeader = idMap.get(updatedHeader);
-                    
+
                     groupsComparisonProteinsTable.setColumnHeader(comp.getComparisonHeader(), preHeader);
                     idMap.put(updatedHeader, preHeader);
                 }
@@ -484,10 +484,13 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
      */
     @Override
     public void selectionChanged(String type) {
+        if (type.equalsIgnoreCase("Quant_Table_Protein_Selection")) {
+            selfselection = false;
+            return;
+
+        }
 
         if (type.equalsIgnoreCase("Comparison_Selection")) {
-
-//            hideUniqueProteinsOption.unselect("Available in all comparisons only");
             Set<String> selectedQuantAccessionsSet;
             Set<QuantDiseaseGroupsComparison> selectedComparisonList = Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList();
             QuantDiseaseGroupsComparison[] tempDiseaseGroupsComparisonsArray = new QuantDiseaseGroupsComparison[selectedComparisonList.size()];
@@ -528,15 +531,17 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
                 this.updateSelectionManager();
 
             }
-            filterTableSelection(sortComparisonTableColumn, true);
-        } else if (type.equalsIgnoreCase("Quant_Proten_Selection") && !selfselection) {
 
-            selfselection = false;
+        } else if (type.equalsIgnoreCase("Tab_Protein_Selection") && !selfselection) {
+
             Set<String> selectedQuantAccessionsSet = Quant_Central_Manager.getQuantProteinsLayoutSelectionMap().keySet();
-            localSelectAccessions(selectedQuantAccessionsSet);
+            if (selectedQuantAccessionsSet.isEmpty()) {
+                resetTableBtn.click();
+            } else {
+                localSelectAccessions(selectedQuantAccessionsSet);
+            }
 
-        } else if (type.equalsIgnoreCase("Protens_Selection") && !selfselection) {
-
+        } else if (type.equalsIgnoreCase("Bubble_Chart_Protens_Selection")) {
             selfselection = false;
             if (Quant_Central_Manager.getSelectedComparisonHeader() != null && !Quant_Central_Manager.getSelectedComparisonHeader().equalsIgnoreCase("")) {
                 sortComparisonTableColumn = Quant_Central_Manager.getSelectedComparisonHeader();
@@ -547,11 +552,13 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
                 resetTableBtn.click();
             } else {
                 selectedProteinsSubSet = true;
-                filterTable(selectedQuantAccessionsSubSet, quantDiseaseGroupsComparisonArr, sortComparisonTableColumn, false);
+                filterTableSelection(sortComparisonTableColumn, selectedProteinsSubSet);
 
             }
-            filterTableSelection(sortComparisonTableColumn, selectedProteinsSubSet);
-            updateProtCountLabel(groupsComparisonProteinsTable.getItemIds().size());
+            if (Quant_Central_Manager.getQuantProteinsLayoutSelectionMap() != null) {
+                localSelectAccessions(Quant_Central_Manager.getQuantProteinsLayoutSelectionMap().keySet());
+            }
+            updateSelectionManager();
 
         } else if (selfselection) {
             selfselection = false;
@@ -770,10 +777,6 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
                 }
         );
 
-        this.groupsComparisonProteinsTable.addValueChangeListener(this);
-
-        this.updateProtCountLabel(diseaseGroupsComparisonsProteinsMap.size());
-
         //add to iso map
         for (Object itemId : groupsComparisonProteinsTable.getItemIds()) {
             final Item item = groupsComparisonProteinsTable.getItem(itemId);
@@ -793,6 +796,10 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
             isoProtMap.put(isoProtKey, set);
 
         }
+
+        this.groupsComparisonProteinsTable.addValueChangeListener(this);
+        this.updateProtCountLabel(diseaseGroupsComparisonsProteinsMap.size());
+
     }
 
     /**
@@ -872,10 +879,7 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
             this.accssionToItemIdMap.put(tableRow[1].toString(), index);
             index++;
         }
-        initianSort(sortCompColumnName);
-
-        groupsComparisonProteinsTable.addValueChangeListener(QuantProteinsComparisonsContainer.this);
-
+        initialSort(sortCompColumnName);
         for (Object itemId : groupsComparisonProteinsTable.getItemIds()) {
             final Item item = groupsComparisonProteinsTable.getItem(itemId);
             String accession = item.getItemProperty("Accession").getValue().toString();
@@ -893,10 +897,11 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
             set.add((Integer) itemId);
             isoProtMap.put(isoProtKey, set);
         }
+        groupsComparisonProteinsTable.addValueChangeListener(QuantProteinsComparisonsContainer.this);
 
     }
 
-    private void initianSort(String sortCompColumnName) {
+    private void initialSort(String sortCompColumnName) {
         if (sortCompColumnName.equalsIgnoreCase("")) {
             sortCompColumnName = ((QuantDiseaseGroupsComparison) quantDiseaseGroupsComparisonArr[0]).getComparisonHeader();
         }
@@ -1092,12 +1097,12 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
 
     @Override
     public void valueChange(Property.ValueChangeEvent event) {
-        if (!lastSelectedProts.isEmpty()) {
-            for (CustomExternalLink uniprot : lastSelectedProts.values()) {
-                uniprot.rePaintLable("black");
-            }
-        }
-        lastSelectedProts.clear();
+//        if (!lastSelectedProts.isEmpty()) {
+//            for (CustomExternalLink uniprot : lastSelectedProts.values()) {
+//                uniprot.rePaintLable("black");
+//            }
+//        }
+//        lastSelectedProts.clear();
         proteinskeys.clear();
         if (groupsComparisonProteinsTable != null && (groupsComparisonProteinsTable.getValue() != null) && !((Set) groupsComparisonProteinsTable.getValue()).isEmpty()) {
 
@@ -1112,23 +1117,24 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
             }
             localSelectItemID(proteinskeys);
         }
-
-        for (Object proteinskey : proteinskeys) {
-            final Item item = groupsComparisonProteinsTable.getItem(proteinskey);
-            CustomExternalLink lastSelectedProt = (CustomExternalLink) item.getItemProperty("Accession").getValue();
-            selectedProtId.add(lastSelectedProt);
-            Integer index = (Integer) item.getItemProperty("Index").getValue();
-            lastSelectedProt.rePaintLable("white");
-            lastSelectedProts.put(index, lastSelectedProt);
-
-        }
+//
+//        for (Object proteinskey : proteinskeys) {
+//            final Item item = groupsComparisonProteinsTable.getItem(proteinskey);
+//            CustomExternalLink lastSelectedProt = (CustomExternalLink) item.getItemProperty("Accession").getValue();
+//            selectedProtId.add(lastSelectedProt);
+//            Integer index = (Integer) item.getItemProperty("Index").getValue();
+//            lastSelectedProt.rePaintLable("white");
+//            lastSelectedProts.put(index, lastSelectedProt);
+//
+//        }
+//        this.localSelectAccessions(selectedQuantAccessionsSubSet);
         this.updateSelectionManager();
 
     }
 
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-        if (event.getComponent()== null ||event.getClickedComponent() == null || event.getClickedComponent().getParent() == null) {
+        if (event.getComponent() == null || event.getClickedComponent() == null || event.getClickedComponent().getParent() == null) {
             return;
         }
         DiseaseGroupsComparisonsProteinLayout protCompLayout = (DiseaseGroupsComparisonsProteinLayout) event.getComponent();
@@ -1173,7 +1179,7 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
     }
 
     private void localSelectAccessions(Set<String> selectedAcccessions) {
-        groupsComparisonProteinsTable.removeValueChangeListener(this);
+//        groupsComparisonProteinsTable.removeValueChangeListener(this);
 
         Set<Object> itemIds = new HashSet<Object>();
         for (String str : selectedAcccessions) {
@@ -1181,34 +1187,38 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
                 itemIds.add(accssionToItemIdMap.get(str.split(",")[0].replace("--", "").toUpperCase()));
             }
         }
-        groupsComparisonProteinsTable.setValue(itemIds);
-
-        if (!lastSelectedProts.isEmpty()) {
-            for (CustomExternalLink uniprot : lastSelectedProts.values()) {
-                uniprot.rePaintLable("black");
-            }
-        }
-        lastSelectedProts.clear();
-
-        for (Object itemId : (Set) groupsComparisonProteinsTable.getValue()) {
-            final Item item = groupsComparisonProteinsTable.getItem(itemId);
-            CustomExternalLink lastSelectedProt = (CustomExternalLink) item.getItemProperty("Accession").getValue();
-            selectedProtId.add(lastSelectedProt);
-            Integer index = (Integer) item.getItemProperty("Index").getValue();
-            lastSelectedProt.rePaintLable("white");
-            lastSelectedProts.put(index, lastSelectedProt);
-
-        }
-
-        if (!itemIds.isEmpty()) {
-            Object itemID = ((Set) groupsComparisonProteinsTable.getValue()).toArray()[0];
-            groupsComparisonProteinsTable.setCurrentPageFirstItemId(itemID);
-            groupsComparisonProteinsTable.setCurrentPageFirstItemIndex(groupsComparisonProteinsTable.getCurrentPageFirstItemIndex());
-        }
-        groupsComparisonProteinsTable.addValueChangeListener(this);
+        this.localSelectItemID(itemIds);
+//        
+//        groupsComparisonProteinsTable.setValue(itemIds);
+//        if (!lastSelectedProts.isEmpty()) {
+//            for (CustomExternalLink uniprot : lastSelectedProts.values()) {
+//                uniprot.rePaintLable("black");
+//            }
+//        }
+//        lastSelectedProts.clear();
+//
+//        for (Object itemId : (Set) groupsComparisonProteinsTable.getValue()) {
+//            final Item item = groupsComparisonProteinsTable.getItem(itemId);
+//            
+//            CustomExternalLink lastSelectedProt = (CustomExternalLink) item.getItemProperty("Accession").getValue();            
+//            selectedProtId.add(lastSelectedProt);
+//            Integer index = (Integer) item.getItemProperty("Index").getValue();
+//            lastSelectedProt.rePaintLable("white");
+//            lastSelectedProts.put(index, lastSelectedProt);
+//
+//        }
+//
+//        if (!itemIds.isEmpty()) {
+//            Object itemID = ((Set) groupsComparisonProteinsTable.getValue()).toArray()[0];
+//            groupsComparisonProteinsTable.setCurrentPageFirstItemId(itemID);
+//            groupsComparisonProteinsTable.setCurrentPageFirstItemIndex(groupsComparisonProteinsTable.getCurrentPageFirstItemIndex());
+//        }
+//        groupsComparisonProteinsTable.commit();
+//        groupsComparisonProteinsTable.addValueChangeListener(this);
     }
 
     private void localSelectItemID(Set<Object> itemIds) {
+
         if (itemIds == null || itemIds.isEmpty()) {
             return;
         }
@@ -1229,16 +1239,30 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
             lastSelectedProts.put(index, lastSelectedProt);
 
         }
+
+        if (!itemIds.isEmpty()) {
+            Object itemID = ((Set) groupsComparisonProteinsTable.getValue()).toArray()[0];
+            groupsComparisonProteinsTable.setCurrentPageFirstItemId(itemID);
+            groupsComparisonProteinsTable.setCurrentPageFirstItemIndex(groupsComparisonProteinsTable.getCurrentPageFirstItemIndex());
+        }
         groupsComparisonProteinsTable.addValueChangeListener(this);
     }
 
     private void updateSelectionManager() {
         List<String> accessions = new ArrayList<String>();
-        for (int index : lastSelectedProts.keySet()) {
-            CustomExternalLink str = lastSelectedProts.get(index);
-            accessions.add(str.toString());
+        TreeMap<Integer, CustomExternalLink> localLastSelectedProts = new TreeMap<Integer, CustomExternalLink>();
+        localLastSelectedProts.clear();
+        for (Object itemId : (Set) groupsComparisonProteinsTable.getValue()) {
+            final Item item = groupsComparisonProteinsTable.getItem(itemId);
+            CustomExternalLink lastSelectedProt = (CustomExternalLink) item.getItemProperty("Accession").getValue();
+            Integer index = (Integer) item.getItemProperty("Index").getValue();
+            accessions.add(lastSelectedProt.toString());
+            localLastSelectedProts.put(index, lastSelectedProt);
+
         }
-        lastSelectedProteinsMap.clear();
+
+        LinkedHashMap<String, DiseaseGroupsComparisonsProteinLayout[]> localLastSelectedProteinsMap = new LinkedHashMap<String, DiseaseGroupsComparisonsProteinLayout[]>();
+        localLastSelectedProteinsMap.clear();
         for (String accession : accessions) {
             for (int compIndex = 0; compIndex < quantDiseaseGroupsComparisonArr.length; compIndex++) {
                 QuantDiseaseGroupsComparison comp = quantDiseaseGroupsComparisonArr[compIndex];
@@ -1247,19 +1271,19 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
                     if (prot.getProteinAccssionNumber().equalsIgnoreCase(accession)) {
                         String key = ("--" + prot.getProteinAccssionNumber().toLowerCase().trim() + "," + prot.getProtName().trim()).trim();
                         key = key + "," + uniprotProteinsMap.get(key);
-                        if (!lastSelectedProteinsMap.containsKey(key)) {
-                            lastSelectedProteinsMap.put(key, new DiseaseGroupsComparisonsProteinLayout[quantDiseaseGroupsComparisonArr.length]);
+                        if (!localLastSelectedProteinsMap.containsKey(key)) {
+                            localLastSelectedProteinsMap.put(key, new DiseaseGroupsComparisonsProteinLayout[quantDiseaseGroupsComparisonArr.length]);
                         }
-                        DiseaseGroupsComparisonsProteinLayout[] tCompArr = lastSelectedProteinsMap.get(key);
+                        DiseaseGroupsComparisonsProteinLayout[] tCompArr = localLastSelectedProteinsMap.get(key);
                         tCompArr[compIndex] = prot;
-                        lastSelectedProteinsMap.put(key, tCompArr);
+                        localLastSelectedProteinsMap.put(key, tCompArr);
                     }
                 }
             }
         }
         selfselection = true;
-        Quant_Central_Manager.setQuantProteinsSelectionLayout(lastSelectedProteinsMap);
-        Quant_Central_Manager.selectionQuantProteinsSelectionLayoutChanged();
+        Quant_Central_Manager.setQuantProteinsSelectionLayout(localLastSelectedProteinsMap);
+        Quant_Central_Manager.QuantProteinsTableSelectionChanged("Quant_Table_Protein_Selection");
     }
 
     String[] trendCatArray = new String[]{"Low   100%", "Low < 100%", "Stable", "High < 100%", "High   100%", "No Quant Information"};
@@ -1377,7 +1401,6 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
     private void filterTableSelection(String filterComparisonHeader, boolean notifi) {
 
         Set<String> subAccessionMap = new HashSet<String>();
-        //check if any header Filtered applied
         for (boolean comparisonHeader : activeHeaderFiltersMap.values()) {
             if (comparisonHeader) {
                 headerFilterSubSet = true;

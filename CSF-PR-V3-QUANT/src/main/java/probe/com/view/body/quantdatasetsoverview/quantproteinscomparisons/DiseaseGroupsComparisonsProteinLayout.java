@@ -453,12 +453,14 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
             if (stable > 0 || lowSignificant > 0) {
                 significantTrindCategory = 3;
                 overallCellPercentValue = Math.max((((double) (highSignificant - lowSignificant)) / (double) existStudiesNumber) * 100.0, 5.0);
+
             } else {
                 significantTrindCategory = 4;
                 overallCellPercentValue = 100;
             }
+
             trendataLayoutWrapper.setExpandRatio(stableLayoutWrapper, ((float) (subTotal - dcounter) / subTotal));
-            
+
         } else if (cellValue == 0) {
             overall = "Stable (" + cellValue + ")";
             significantTrindCategory = 2;
@@ -466,15 +468,15 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
             updateComponentLocation(emptyLayout, stableLayout, noValueProvidedLayout);
             if (!downLayout.isVisible() && !upLayout.isVisible()) {
                 if (subTotal == stable) {
-                    trendataLayoutWrapper.setExpandRatio(stableLayoutWrapper, ((float) (subTotal - dcounter) / subTotal) );
+                    trendataLayoutWrapper.setExpandRatio(stableLayoutWrapper, ((float) (subTotal - dcounter) / subTotal));
                 } else {
-                    trendataLayoutWrapper.setExpandRatio(stableLayoutWrapper, ((float) (subTotal - dcounter) / subTotal) );
+                    trendataLayoutWrapper.setExpandRatio(stableLayoutWrapper, ((float) (subTotal - dcounter) / subTotal));
                     emptyLayout.setVisible(false);
                     stableLayoutWrapper.setStyleName("empty");
 
                 }
             } else {
-                trendataLayoutWrapper.setExpandRatio(stableLayoutWrapper, ((float) (subTotal - dcounter) / subTotal) );
+                trendataLayoutWrapper.setExpandRatio(stableLayoutWrapper, ((float) (subTotal - dcounter) / subTotal));
 
             }
 
@@ -495,19 +497,18 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
             significantTrindCategory = 5;
             overallCellPercentValue = 0;
         }
+        if ((((double) highSignificant / (double) subTotal) * 100.0) < 100.0) {
+            upLayout.addStyleName("marginleft");
+            
+            
+        }
+         if ((((double) lowSignificant / (double) subTotal) * 100.0) < 100.0) {
+            downLayout.addStyleName("marginright");
+            
+        }
 
-        //calculate overallCellPercentValue for linechart
-//        if (this.getStyleName().equalsIgnoreCase("customizedproteinsLayout")) {
-//            if (highSignificant > 0) {
-//                this.setDescription("High");
-//            } else if (lowSignificant > 0) {
-//                this.setDescription("Low");
-//            } else {
-//                this.setDescription("Stable");
-//            }
-//        } else {
         this.setDescription("Protein value: " + overallCellPercentValue + "%<br/>#Low: " + lowSignificant + "<br/>#Stable : " + stable + "<br/>#High: " + highSignificant + "<br/>Overall trend " + overall);
-//        }
+
 
     }
 
@@ -643,7 +644,6 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
             float downWidth = ((float) lowSignificant / (float) subTotal) * freeArea;
             downLayout.setWidth(downWidth + "px");
         }
-        
 
     }
 

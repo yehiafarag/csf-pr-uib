@@ -203,8 +203,9 @@ public class QuantCentralManager implements Serializable {
 
     }
 
-    public void selectionQuantProteinsSelectionLayoutChanged() {
-        Studies_Selection_Manager.selectionQuantProteinsSelectionLayoutChanged();
+       
+    public void QuantProteinsTableSelectionChanged(String selectionType) {
+        Studies_Selection_Manager.QuantProteinsTableSelectionChanged(selectionType);
     }
 
     public String getSelectedComparisonHeader() {
@@ -217,8 +218,8 @@ public class QuantCentralManager implements Serializable {
      * @param protSelectionSet
      * @param selectedComparisonHeader
      */
-    public void setQuantProteinsSelection(Set<String> protSelectionSet, String selectedComparisonHeader) {
-        Studies_Selection_Manager.setQuantProteinsSelection(protSelectionSet, selectedComparisonHeader);
+    public void setBubbleChartQuantProteinsSelection(Set<String> protSelectionSet, String selectedComparisonHeader) {
+        Studies_Selection_Manager.setBubbleChartQuantProteinsSelection(protSelectionSet, selectedComparisonHeader);
 
     }
 

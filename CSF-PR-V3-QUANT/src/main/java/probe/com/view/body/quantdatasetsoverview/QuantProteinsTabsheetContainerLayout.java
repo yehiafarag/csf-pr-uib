@@ -65,6 +65,7 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
      */
     @Override
     public void selectionChanged(String type) {
+      
         if (type.equalsIgnoreCase("Comparison_Selection")) {
             Set<QuantDiseaseGroupsComparison> selectedComparisonList = Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList();
             if (selectedComparisonList.isEmpty() && proteinsTabsheet != null) {
@@ -74,12 +75,9 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
                 protSelectionKeyTabMap.clear();
                 noProtLabel.setVisible(true);
                 proteinsTabsheet.setVisible(false);
-            } else {
-//                type = "Quant_Proten_Selection";
             }
-
         }
-        if (type.equalsIgnoreCase("Quant_Proten_Selection") && !selfSelection) {
+        if (type.equalsIgnoreCase("Quant_Table_Protein_Selection") ||(type.equalsIgnoreCase("Tab_Protein_Selection"))) {
 
             if (lastSelectedTab != null) {
                 externalSelection = true;
@@ -102,9 +100,10 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
             Set<QuantDiseaseGroupsComparison> selectedComparisonList = Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList();
             proteinsTabsheet.setVisible(true);
             Page.getCurrent().getStyles().add(".v-tabsheet-tabs .v-icon{"
-                    + "    width:" + selectedComparisonList.size() * 15 + "px !important;"
+                    + "    width:" + ((selectedComparisonList.size() * 16)+15) + "px !important;"
                     + "    height:35px !important;"
                     + "    color:blue !important;"
+                    + "     margin-left:-2px !important;"
                     + "}");
 
             int tabCounter = 0;
@@ -122,8 +121,9 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
                 final Tab t1;
                 t1 = proteinsTabsheet.addTab(vlo);
 
-                t1.setCaption(protName);
+                t1.setCaption(protName.replace("(", "__").split("__")[0].trim()+"");
                 t1.setClosable(true);
+               
                 t1.setId(key);
                 t1.setStyleName("tabwithcharticon");
                 ProteinOverviewJFreeLineChartContainer tabLayout = (ProteinOverviewJFreeLineChartContainer) vlo.getComponent(0);
@@ -151,18 +151,20 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
                 }
             }
 
-        } else if (type.equalsIgnoreCase("Quant_Proten_Tab_Selection") && !selfSelection) {
-            String selectedProteinKey = Quant_Central_Manager.getSelectedProteinKey();
-            Tab tab = protSelectionKeyTabMap.get(selectedProteinKey);
-            if (tab != null) {
-                Integer index = (Integer) ((HorizontalLayout) tab.getComponent()).getData();
-                proteinsTabsheet.setSelectedTab(index);
-//                this.getUI().scrollIntoView(proteinsTabsheet);
-
-            } else {
-
-            }
-        } else {
+        } 
+//        else if (type.equalsIgnoreCase("Quant_Table_Protein_Selection")||(type.equalsIgnoreCase("Tab_Protein_Selection")) && !selfSelection) {
+//            String selectedProteinKey = Quant_Central_Manager.getSelectedProteinKey();
+//            Tab tab = protSelectionKeyTabMap.get(selectedProteinKey);
+//            if (tab != null) {
+//                Integer index = (Integer) ((HorizontalLayout) tab.getComponent()).getData();
+//                proteinsTabsheet.setSelectedTab(index);
+////                this.getUI().scrollIntoView(proteinsTabsheet);
+//
+//            } else {
+//
+//            }
+//        }
+        else {
             selfSelection = false;
         }
     }
@@ -296,17 +298,12 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
     private void initTabsheet() {
         if (proteinsTabsheet != null) {
             this.removeComponent(proteinsTabsheet);
-//            proteinsTabsheet.detach();
         }
-
-        proteinsTabsheet = new TabSheet() {
-
-        };
+        proteinsTabsheet = new TabSheet();
         proteinsTabsheet.setCaptionAsHtml(true);
         proteinsTabsheet.setHeightUndefined();
         proteinsTabsheet.setStyleName(Reindeer.TABSHEET_MINIMAL);
         proteinsTabsheet.setVisible(false);
-//        proteinsTabsheet.addStyleName("hideoverflow");
         proteinsTabsheet.setImmediate(true);
         proteinsTabsheet.addSelectedTabChangeListener(QuantProteinsTabsheetContainerLayout.this);
         proteinsTabsheet.setCloseHandler(new TabSheet.CloseHandler() {
@@ -318,7 +315,7 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
                 }
 
                 Quant_Central_Manager.setQuantProteinsSelectionLayout(new LinkedHashMap<String, DiseaseGroupsComparisonsProteinLayout[]>(protSelectionMap));
-                Quant_Central_Manager.selectionQuantProteinsSelectionLayoutChanged();
+                Quant_Central_Manager.QuantProteinsTableSelectionChanged("Tab_Protein_Selection");
             }
         });
         this.addComponent(proteinsTabsheet);
@@ -418,9 +415,6 @@ public class QuantProteinsTabsheetContainerLayout extends VerticalLayout impleme
         if (!externalSelection) {
             lastSelectedTab = event.getTabSheet().getTab(event.getTabSheet().getSelectedTab());
         }
-//        CSFPR_Handler.enableScrollQuantOverviewScrollPanel();
-
-//          UI.getCurrent().scrollIntoView(QuantProteinsTabsheetContainerLayout.this);
     }
 
 }

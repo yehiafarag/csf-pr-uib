@@ -72,7 +72,7 @@
 }
 .v-caption.v-caption-closable{
 
-    font-size:13px !important;
+    font-size:12px !important;
     font-weight:normal;
 
 
@@ -1450,7 +1450,20 @@ border:3px solid #4d749f ;
 }
 .redlayout div{
     background: #cc0000  !important;
-     margin-left:2px;
+}
+.marginleft div{
+     
+     margin-left:2px !important;
+    overflow:hidden !important;
+
+    
+}
+.marginright div{
+     
+    margin-left:-2px !important;
+    overflow:hidden !important;
+
+    
 }
 .empty div{
     /*background-image: url(img/empty.png);*/
@@ -1936,7 +1949,7 @@ border:3px solid #4d749f ;
 }
 .framelayout{
     border-right: 1px solid lightgray;
-    border-bottom:1px solid #f5f5f5;
+    border-bottom:1px solid  #f5f5f5;
     background:  #f5f5f5;
     display: block;
 
@@ -1966,7 +1979,7 @@ border:3px solid #4d749f ;
     font-weight:normal;
 }
 .bottomborder{
-    border-bottom: 1px solid lightgray;
+    border-bottom:0px solid lightgray;
 
 }
 .fulloverview{
@@ -3819,4 +3832,8 @@ margin-left:2px
     border:1px solid lightgray;
     border-radius: 5px;
     padding: 10px;
+}
+.v-tabsheet-deco{
+    background-color:white !important;
+    opacity:0;
 }

@@ -11,6 +11,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.NativeSelect;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 import java.util.LinkedHashSet;
@@ -112,7 +113,7 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
 
         diseaseCategorySelectLayout.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
         counterLabel = new Label("( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )");
-        counterLabel.setDescription("#datasets: "+Quant_Central_Manager.getCurrentDsNumber()+"<br/>#total datasets: "+Quant_Central_Manager.getTotalDsNumber());
+        counterLabel.setDescription("#Datasets: " + Quant_Central_Manager.getCurrentDsNumber() + "<br/>#Total datasets: " + Quant_Central_Manager.getTotalDsNumber());
         diseaseTypeSelectionList.setWidth("200px");
         diseaseTypeSelectionList.setNullSelectionAllowed(false);
         diseaseTypeSelectionList.setValue(Quant_Central_Manager.getInUseDiseaseName());
@@ -130,7 +131,7 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
                 StudiesPieChartFiltersContainerLayout pieChartFiltersLayout = new StudiesPieChartFiltersContainerLayout(Quant_Central_Manager, CSFPR_Handler);
                 pieChartFiltersBtnWrapper.addComponent(pieChartFiltersLayout.getPieChartFiltersBtn());
                 counterLabel.setValue("( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )");
-                counterLabel.setDescription("#datasets: "+Quant_Central_Manager.getCurrentDsNumber()+"<br/>#total datasets: "+Quant_Central_Manager.getTotalDsNumber());
+                counterLabel.setDescription("#Datasets: " + Quant_Central_Manager.getCurrentDsNumber() + "<br/>#Total datasets: " + Quant_Central_Manager.getTotalDsNumber());
 
             }
         });
@@ -262,7 +263,7 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
                 StudiesPieChartFiltersContainerLayout pieChartFiltersLayout = new StudiesPieChartFiltersContainerLayout(Quant_Central_Manager, CSFPR_Handler);
                 pieChartFiltersBtnWrapper.addComponent(pieChartFiltersLayout.getPieChartFiltersBtn());
                 counterLabel.setValue("( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )");
-                counterLabel.setDescription("#datasets: "+Quant_Central_Manager.getCurrentDsNumber()+"<br/>#total datasets: "+Quant_Central_Manager.getTotalDsNumber());
+                counterLabel.setDescription("#Datasets: " + Quant_Central_Manager.getCurrentDsNumber() + "<br/>#Total datasets: " + Quant_Central_Manager.getTotalDsNumber());
             }
         });
 
@@ -504,17 +505,18 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
             selectionOverviewBubbleChart.updateSize(rightPanelWidth, rightPanelHeight);
             DiseaseGroupsFiltersContainer.this.setExpandRatio(leftContainerLayout, leftPanelWidth);
             DiseaseGroupsFiltersContainer.this.setExpandRatio(rightContainerLayout, rightPanelWidth);
-
             heatmapFilterComponent.updateHideComparisonThumbBtn(null, null);
+            if (DiseaseGroupsFiltersContainer.this.isAttached()) {
+                UI.getCurrent().scrollIntoView(counterLabel);
+            }
             counterLabel.setValue("( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )");
-            counterLabel.setDescription("#datasets: "+Quant_Central_Manager.getCurrentDsNumber()+"<br/>#total datasets: "+Quant_Central_Manager.getTotalDsNumber());
+            counterLabel.setDescription("#Datasets: " + Quant_Central_Manager.getCurrentDsNumber() + "<br/>#Total datasets: " + Quant_Central_Manager.getTotalDsNumber());
             return;
         } else if (type.equalsIgnoreCase("HeatMap_Update_level")) {
             selectAllComparisons();
-
         }
         counterLabel.setValue("( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )");
-        counterLabel.setDescription("#datasets: "+Quant_Central_Manager.getCurrentDsNumber()+"<br/>#total datasets: "+Quant_Central_Manager.getTotalDsNumber());
+        counterLabel.setDescription("#Datasets: " + Quant_Central_Manager.getCurrentDsNumber() + "<br/>#Total datasets: " + Quant_Central_Manager.getTotalDsNumber());
         heatmapFilterComponent.updateHideComparisonThumbBtn(selectionOverviewBubbleChart.getChartThumbImage(), true);
     }
 

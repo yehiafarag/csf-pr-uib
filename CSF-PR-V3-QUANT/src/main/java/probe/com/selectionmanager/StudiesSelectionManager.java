@@ -144,10 +144,10 @@ public class StudiesSelectionManager implements Serializable {
 
     }
 
-    public void selectionQuantProteinsSelectionLayoutChanged() {
+    public void QuantProteinsTableSelectionChanged(String selectionType) {
         try {
             VaadinSession.getCurrent().getLockInstance().lock();
-            this.SelectionChanged("Quant_Proten_Selection");
+            this.SelectionChanged(selectionType);
 
         } catch (Exception exp) {
             exp.printStackTrace();
@@ -172,12 +172,12 @@ public class StudiesSelectionManager implements Serializable {
      * @param protSelectionSet
      * @param selectedComparisonHeader
      */
-    public void setQuantProteinsSelection(Set<String> protSelectionSet, String selectedComparisonHeader) {
+    public void setBubbleChartQuantProteinsSelection(Set<String> protSelectionSet, String selectedComparisonHeader) {
         try {
             VaadinSession.getCurrent().getLockInstance().lock();
             this.protSelectionSet = protSelectionSet;
             this.selectedComparisonHeader = selectedComparisonHeader;
-            this.SelectionChanged("Protens_Selection");
+            this.SelectionChanged("Bubble_Chart_Protens_Selection");
 
         } catch (Exception exp) {
             exp.printStackTrace();
