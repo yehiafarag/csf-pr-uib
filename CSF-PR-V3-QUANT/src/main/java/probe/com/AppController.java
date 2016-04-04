@@ -95,18 +95,18 @@ public class AppController extends UI {
             //maximum session time out is 5 hours
         }  
         
-        final int appWidth = Page.getCurrent().getBrowserWindowWidth();
-        final int appHeight = Page.getCurrent().getBrowserWindowHeight();
-        application.setWidth(appWidth + "px");
-        application.setHeight(appHeight + "px");
+//        final int appWidth = Page.getCurrent().getBrowserWindowWidth()-10;
+//        final int appHeight = Page.getCurrent().getBrowserWindowHeight()-20;
+//        application.setWidth(appWidth + "px");
+//        application.setHeight(appHeight + "px");
         Page.getCurrent().addBrowserWindowResizeListener(new Page.BrowserWindowResizeListener() {
 
             @Override
             public void browserWindowResized(Page.BrowserWindowResizeEvent event) {
 
-                System.out.println("at window resized " + event.getWidth());
-                 application.setWidth(appWidth + "px");
-                application.setHeight(appHeight + "px");
+//                System.out.println("at window resized " + event.getWidth());
+//                 application.setWidth(appWidth + "px");
+//                application.setHeight(appHeight + "px");
 
 //                if (checkSize) {
 //                    Page.getCurrent().reload();
@@ -121,8 +121,8 @@ public class AppController extends UI {
             @Override
             public void sizeChanged(ComponentResizeEvent event) {           
 
-                application.setWidth(appWidth + "px");
-                application.setHeight(appHeight + "px");
+//                application.setWidth(appWidth + "px");
+//                application.setHeight(appHeight + "px");
             }
         });
 

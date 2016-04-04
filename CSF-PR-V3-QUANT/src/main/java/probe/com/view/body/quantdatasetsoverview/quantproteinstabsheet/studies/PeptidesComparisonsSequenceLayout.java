@@ -106,7 +106,7 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
 
         int numb = 0;
 
-        int panelWidth = Page.getCurrent().getBrowserWindowWidth() - width - 100;
+        int panelWidth = Page.getCurrent().getBrowserWindowWidth() - 100;
         String groupCompTitle = cp.getComparison().getComparisonHeader();
         String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0] ;//+ " ( " + groupCompTitle.split(" / ")[1].split("\n")[1] + " )";
 

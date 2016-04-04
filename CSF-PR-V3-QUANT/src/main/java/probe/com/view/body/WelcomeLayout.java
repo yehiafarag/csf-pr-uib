@@ -46,10 +46,10 @@ public class WelcomeLayout extends Panel implements Serializable {
      */
     public WelcomeLayout(Button adminIcon, CSFPRHandler CSFPR_Handler, final TabSheet mainTabSheet) {
 
-        int fullWidth = Page.getCurrent().getBrowserWindowWidth();
-        int fullHeight = Page.getCurrent().getBrowserWindowHeight() - 100;
+//        int fullWidth = Page.getCurrent().getBrowserWindowWidth();
+//        int fullHeight = Page.getCurrent().getBrowserWindowHeight() - 100;
         this.setWidth(100 + "%");
-        this.setHeight(fullHeight + "px");
+        this.setHeight(538 + "px");
         this.setStyleName("bottomborder");
         HorizontalLayout mainBodyHLayout = new HorizontalLayout();
         mainBodyHLayout.setWidthUndefined();
@@ -57,8 +57,38 @@ public class WelcomeLayout extends Panel implements Serializable {
 
         VerticalLayout leftPanelWrapper = new VerticalLayout();
         leftPanelWrapper.setWidth("220px");
-        leftPanelWrapper.setHeight("515px");
+        leftPanelWrapper.setHeight("536px");
+        leftPanelWrapper.setStyleName("framelayout");
         mainBodyHLayout.addComponent(leftPanelWrapper);
+        
+        
+        HorizontalLayout leftPanelFrame = new HorizontalLayout();
+        leftPanelFrame.setWidthUndefined();
+        leftPanelFrame.setHeight("100%");
+        leftPanelWrapper.addComponent(leftPanelFrame);
+        leftPanelFrame.setStyleName("bottomborder");
+
+        VerticalLayout leftLayout = new VerticalLayout();
+        leftLayout.setWidth("220px");
+        leftLayout.setHeightUndefined();
+        leftLayout.setMargin(true);
+//        leftLayout.setStyleName("framelayout");
+        leftLayout.setSpacing(true);
+        leftLayout.setMargin(new MarginInfo(true, true, true, true));
+        leftPanelFrame.addComponent(leftLayout);
+        leftPanelFrame.setComponentAlignment(leftLayout, Alignment.TOP_LEFT);
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
         VerticalLayout spacer = new VerticalLayout();
         spacer.setHeight("30px");
@@ -67,28 +97,13 @@ public class WelcomeLayout extends Panel implements Serializable {
 
         VerticalLayout rightPanelWrapper = new VerticalLayout();
         rightPanelWrapper.setWidth("1020px");
-        rightPanelWrapper.setHeight("515px");
+        rightPanelWrapper.setHeight("100%");
         mainBodyHLayout.addComponent(rightPanelWrapper);
 
-        HorizontalLayout mainBody = new HorizontalLayout();
-        mainBody.setWidthUndefined();
-        mainBody.setHeightUndefined();
-        leftPanelWrapper.addComponent(mainBody);
-        mainBody.setStyleName("bottomborder");
-
-        VerticalLayout leftLayout = new VerticalLayout();
-        leftLayout.setWidth("220px");
-        leftLayout.setHeightUndefined();
-        leftLayout.setMargin(true);
-        leftLayout.setStyleName("framelayout");
-        leftLayout.setSpacing(true);
-        leftLayout.setMargin(new MarginInfo(true, true, true, true));
-        mainBody.addComponent(leftLayout);
-        mainBody.setComponentAlignment(leftLayout, Alignment.TOP_LEFT);
-
-        int layoutWidth = (fullWidth - 220);
+        
+        int layoutWidth = 1020;//(fullWidth - 220);
         HorizontalLayout rightPanel = new HorizontalLayout();
-        rightPanel.setWidth(layoutWidth + "px");
+        rightPanel.setWidth(100 + "%");
         rightPanelWrapper.addComponent(rightPanel);
 
         VerticalLayout bottomLayout = new VerticalLayout();
@@ -99,7 +114,7 @@ public class WelcomeLayout extends Panel implements Serializable {
         mainBodyHLayout.setComponentAlignment(bottomLayout, Alignment.BOTTOM_CENTER);
 
         VerticalLayout middleLayout = new VerticalLayout();
-        middleLayout.setWidth("60%");
+        middleLayout.setWidth("100%");
         middleLayout.setMargin(new MarginInfo(true, true, true, true));
         rightPanel.addComponent(middleLayout);
 
@@ -128,7 +143,7 @@ public class WelcomeLayout extends Panel implements Serializable {
 //        
 //         
         GridLayout middlePanelServicesLayout = new GridLayout(2, 2);
-        int labelWidth = (layoutWidth / 4) - 130;
+        int labelWidth = (layoutWidth / 2)-130 ;
         middlePanelServicesLayout.setStyleName("btnsiconcontainer");
         middlePanelServicesLayout.setSpacing(true);
         middleLayout.addComponent(middlePanelServicesLayout);
@@ -236,15 +251,15 @@ public class WelcomeLayout extends Panel implements Serializable {
 //        spacer.setHeight("30px");
 //        spacer.setWidth("10px");
 //          middleLayout.addComponent(spacer);
-        Label para_3 = new Label("<p align='justify' Style='color:#585858;'><font size=\"1\">CSF-PR v2.0 is being developed by the <a Style='color:#585858;' href='http://www.uib.no/rg/probe' target=\"_blank\">Proteomics Unit</a> at the<a Style='color:#585858;' href='http://www.uib.no/biomedisin/en' target=\"_blank\"> Department of Biomedicine at the University of Bergen</a>, Norway, in close collaboration with <a Style='color:#585858;' href='http://haukeland.no/en/OmOss/Avdelinger/ms/Sider/om-oss.aspx' target=\"_blank\">The Norwegian Multiple Sclerosis Competence Centre</a>, Haukeland University Hospital, Bergen, Norway.</font></p>");
+        Label para_3 = new Label("<p align='justify' Style='color:#585858;'><font size=\"1\">CSF-PR v2.0 is being developed by the <a Style='color:#585858;' href='http://www.uib.no/rg/probe' target=\"_blank\">Proteomics Unit</a> at the<a Style='color:#585858;' href='http://www.uib.no/biomedisin/en' target=\"_blank\"> Department of Biomedicine at the University of Bergen</a>, Norway, in close collaboration with <a Style='color:#585858;' href='http://haukeland.no/en/OmOss/Avdelinger/ms/Sider/om-oss.aspx' target=\"_blank\">The Norwegian Multiple Sclerosis Competence Centre</a>, Haukeland University Hospital, Bergen, Norway.</font><br/><font size='1'>See also: <a Style='color:#585858;' href='http://www.mcponline.org/content/13/11/3152.full.pdf+html' target=\"_blank\">Guldbrandsen et al.: In-depth Characterization of the Cerebrospinal Fluid (CSF) Proteome Displayed Through the CSF Proteome Resource (CSF-PR). Mol Cell Proteomics. 2014.</a></font></p>");
         para_3.setContentMode(ContentMode.HTML);
         middleLayout.addComponent(para_3);
         middleLayout.setComponentAlignment(para_3, Alignment.BOTTOM_LEFT);
 
-        Label para_4 = new Label("<p align='justify' Style=';color:#585858;'><font size=\"1\">See also: <a Style='color:#585858;' href='http://www.mcponline.org/content/13/11/3152.full.pdf+html' target=\"_blank\">Guldbrandsen et al.: In-depth Characterization of the Cerebrospinal Fluid (CSF) Proteome Displayed Through the CSF Proteome Resource (CSF-PR). Mol Cell Proteomics. 2014.</a></font></p>");
-        para_4.setContentMode(ContentMode.HTML);
-        middleLayout.addComponent(para_4);
-        middleLayout.setComponentAlignment(para_4, Alignment.BOTTOM_LEFT);
+//        Label para_4 = new Label("<p align='justify' Style=';color:#585858;'><font size=\"1\">See also: <a Style='color:#585858;' href='http://www.mcponline.org/content/13/11/3152.full.pdf+html' target=\"_blank\">Guldbrandsen et al.: In-depth Characterization of the Cerebrospinal Fluid (CSF) Proteome Displayed Through the CSF Proteome Resource (CSF-PR). Mol Cell Proteomics. 2014.</a></font></p>");
+//        para_4.setContentMode(ContentMode.HTML);
+//        middleLayout.addComponent(para_4);
+//        middleLayout.setComponentAlignment(para_4, Alignment.BOTTOM_LEFT);
 //        
 
 //        Link fullOverviewImgLink = new Link(null, new ThemeResource("img/fulloverview.jpg"));

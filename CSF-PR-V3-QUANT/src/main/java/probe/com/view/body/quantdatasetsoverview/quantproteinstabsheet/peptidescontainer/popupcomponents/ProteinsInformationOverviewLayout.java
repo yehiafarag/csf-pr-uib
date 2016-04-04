@@ -46,6 +46,7 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
 
     private GridLayout initProteinsForm(int width) {
         GridLayout proteinsFormLayout = new GridLayout(4, 5);
+        proteinsFormLayout.setMargin(new MarginInfo(false, true, false, false));
         proteinsFormLayout.setWidth(width + "px");
         proteinsFormLayout.setHeightUndefined();
         accsession = new InformationField("Accession");
@@ -62,7 +63,7 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
 
         foldChange = new InformationField("Fold Change");
         proteinsFormLayout.addComponent(foldChange, 0, 1);
-  pValue = new InformationField("p-value");
+        pValue = new InformationField("p-value");
         proteinsFormLayout.addComponent(pValue, 1, 1);
 
         pvalueSignificanceThreshold = new InformationField("p-value Threshold");

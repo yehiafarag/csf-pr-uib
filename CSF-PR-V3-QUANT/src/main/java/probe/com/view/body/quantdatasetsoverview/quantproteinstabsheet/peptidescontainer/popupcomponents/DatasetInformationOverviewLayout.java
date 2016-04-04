@@ -23,12 +23,12 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
      */
     public DatasetInformationOverviewLayout(int width, Map<String, String> diseaseHashedColorMap) {
         this.diseaseHashedColorMap = diseaseHashedColorMap;
-        this.setWidth(850 + "px");
+        this.setWidth(width + "px");
         this.setHeightUndefined();
         this.setSpacing(true);
         this.setMargin(new MarginInfo(false, false, false, false));
         this.setStyleName(Reindeer.LAYOUT_WHITE);
-        datasetInfoForm = initQuantDatasetInformationLayout();
+        datasetInfoForm = initQuantDatasetInformationLayout(width);
         datasetInfoForm.setVisible(false);
         this.addComponent(datasetInfoForm);
         this.setComponentAlignment(datasetInfoForm, Alignment.MIDDLE_CENTER);
@@ -38,14 +38,14 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
     private final GridLayout datasetInfoForm;
     private InformationField uQuantProteinsNum, uQuantPeptidesNum,quantProteinsNum, quantPeptidesNum, diseaseCategory, pumedId, rawData, analyticalMethod, typeOfStudy, shotgunTargeted, enzyme, sampleType, technology, quantificationBasis, patientsGroup1Number, patientsGroup2Number, patientsGroup1, patientsGroup2, patientssubGroup1, patientsCommGroup1, patientssubGroup2, patientsCommGroup2, identifiedProteinsNumber, quantifiedProteinsNumber, sampleMatching, analyticalApproach, normalization_strategy;
 
-    private GridLayout initQuantDatasetInformationLayout() {
+    private GridLayout initQuantDatasetInformationLayout(int width) {
 
-        int width = 800;
+//        int width = 800;
         GridLayout datasetInfoFormLayout = new GridLayout(4, 7);
         datasetInfoFormLayout.setWidth(width + "px");
         datasetInfoFormLayout.setHeightUndefined();
-        datasetInfoFormLayout.setSpacing(true);
-        datasetInfoFormLayout.setMargin(false);
+        datasetInfoFormLayout.setSpacing(true);        
+        datasetInfoFormLayout.setMargin(new MarginInfo(false, true, false, false));
 
         pumedId = new InformationField("Pumed Id");
         datasetInfoFormLayout.addComponent(pumedId, 0, 0);

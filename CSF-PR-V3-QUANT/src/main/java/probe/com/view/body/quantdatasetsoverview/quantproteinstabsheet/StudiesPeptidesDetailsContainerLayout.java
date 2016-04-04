@@ -167,16 +167,19 @@ public class StudiesPeptidesDetailsContainerLayout extends VerticalLayout {
         significantPeptidesBtn.setWidth("24px");
         significantPeptidesBtn.setHeight("24px");
         significantPeptidesBtn.setStyleName("allpeptidesseqbtn");
+        significantPeptidesBtn.setDescription("Show all peptides (significant, not significant and stable)");
         significantPeptidesBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
                 if (significantPeptidesBtn.getStyleName().equalsIgnoreCase("allpeptidesseqbtn")) {
                     significantPeptidesBtn.setStyleName("sigpeptidesseqbtn");
+                    significantPeptidesBtn.setDescription("Show significant peptides only");
                     showSignificantRegulationOnly(true);
                 } else {
                     significantPeptidesBtn.setStyleName("allpeptidesseqbtn");
                     showSignificantRegulationOnly(false);
+                    significantPeptidesBtn.setDescription("Show all peptides (significant, not significant and stable)");
                 }
             }
         });
@@ -186,6 +189,7 @@ public class StudiesPeptidesDetailsContainerLayout extends VerticalLayout {
         showPTMBtn.setWidth("24px");
         showPTMBtn.setHeight("24px");
         showPTMBtn.setStyleName("ptm_selected_btn");
+        showPTMBtn.setDescription("Show/hide PTM");
         showPTMBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
             @Override

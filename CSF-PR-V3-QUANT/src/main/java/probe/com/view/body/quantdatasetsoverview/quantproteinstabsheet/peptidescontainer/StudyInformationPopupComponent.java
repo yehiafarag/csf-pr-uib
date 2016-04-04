@@ -32,6 +32,7 @@ public class StudyInformationPopupComponent extends VerticalLayout {
     public StudyInformationPopupComponent(int width, String protName, String url, String comparisonHeader) {
 
         int height = Page.getCurrent().getBrowserWindowHeight() - 100;
+        
         popupBody = new VerticalLayout();
         popupBody.setWidth((width) + "px");
         popupBody.setHeightUndefined();

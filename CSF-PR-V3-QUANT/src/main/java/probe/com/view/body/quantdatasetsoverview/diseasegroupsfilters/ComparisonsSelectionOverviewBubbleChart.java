@@ -122,6 +122,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
     }
 
     private final Map<String, double[]> tooltipsProtNumberMap = new HashMap<String, double[]>();
+    private final  GroupSwichBtn groupSwichBtn;
 
     public ComparisonsSelectionOverviewBubbleChart(final QuantCentralManager Quant_Central_Manager, final CSFPRHandler CSFPR_Handler, int chartWidth, int chartHeight, Set<QuantDiseaseGroupsComparison> selectedComparisonList, List<QuantProtein> searchQuantificationProtList) {
 
@@ -202,6 +203,11 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 //        stableBtnWrapper.addComponent(stableBtn);
 //        stableBtnWrapper.setComponentAlignment(stableBtn, Alignment.TOP_LEFT);
 //        btnContainerLayout.addComponent(stableBtnWrapper);
+        
+         groupSwichBtn = new GroupSwichBtn(Quant_Central_Manager,searchQuantificationProtList);
+         btnContainerLayout.addComponent(groupSwichBtn);
+        
+        
         final VerticalLayout appliedIcon = new VerticalLayout();
         appliedIcon.setStyleName("appliedicon");
         appliedIcon.setWidth("24px");
@@ -386,6 +392,9 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 //        stableBtnWrapper.addComponent(stableBtn);
 //        stableBtnWrapper.setComponentAlignment(stableBtn, Alignment.TOP_LEFT);
 //        btnContainerLayout.addComponent(stableBtnWrapper);
+        
+        groupSwichBtn = new GroupSwichBtn(Quant_Central_Manager,searchQuantificationProtList);
+         btnContainerLayout.addComponent(groupSwichBtn);
         final VerticalLayout appliedIcon = new VerticalLayout();
         appliedIcon.setStyleName("appliedicon");
         appliedIcon.setWidth("24px");
@@ -1430,6 +1439,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
              lastselectedComponents.clear();
              resetSelection();
             selectedComparisonList = this.Quant_Central_Manager.getUpdatedSelectedDiseaseGroupsComparisonListProteins(searchQuantificationProtList);
+            
 
             if (selectedComparisonList.isEmpty()) {
                 emptySelectionLayout.setVisible(true);

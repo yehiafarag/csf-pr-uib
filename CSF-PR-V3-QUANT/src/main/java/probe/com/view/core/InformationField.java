@@ -47,22 +47,22 @@ public class InformationField extends VerticalLayout {
     public void setValue(Object object, String urlAddress) {
 
         if (object instanceof Number) {
-            valueLabel.setCaption("<p style='text-align: right ;width: 100px;   line-height: 1px;'>" + object + "</p>");
+            valueLabel.setCaption("<p style='text-align: left ;width: 100px;   line-height: 1px;'>" + object + "</p>");
             valueLabel.setCaptionAsHtml(true);
             valueLabel.setStyleName("valuelabel");
 //            valueLabel.setWidth("100%");
 
         } else if (object.toString().contains("/") && !object.toString().contains("</") && !object.toString().contains("/MS") && object.toString().toCharArray().length < 25) {
-            valueLabel.setCaption("<p style='text-align: right ;width:140px;   line-height: 1px;'>" + object + "</p>");
+            valueLabel.setCaption("<p style='text-align: left ;width:140px;   line-height: 1px;'>" + object + "</p>");
             valueLabel.setCaptionAsHtml(true);
             valueLabel.setStyleName("valuelabel");
 
         } else {
             String stringValue = object.toString();
 
-            if (stringValue == null || stringValue.trim().equalsIgnoreCase("") || stringValue.equalsIgnoreCase("-1")) {
+            if (stringValue == null || stringValue.trim().equalsIgnoreCase("") || stringValue.equalsIgnoreCase("-1") || stringValue.equalsIgnoreCase("Not Available")) {
 //            this.setVisible(false);
-                valueLabel.setCaption("");
+                valueLabel.setCaption("<font style='text-align: center ;   line-height: 1px;'>------------</font>");
                 valueLabel.setStyleName("valuelabel");
                 return;
             }

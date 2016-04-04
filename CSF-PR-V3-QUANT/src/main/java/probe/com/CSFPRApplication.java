@@ -1,6 +1,5 @@
 package probe.com;
 
-import com.vaadin.ui.Panel;
 import java.io.Serializable;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
@@ -15,7 +14,7 @@ import probe.com.view.core.ZoomUnit;
  * The CSF-PR application class the class is the main container for csf-pr html
  * web page the class contains the header layout and main body
  */
-public class CSFPRApplication extends Panel implements Serializable {
+public class CSFPRApplication extends VerticalLayout implements Serializable {
 
     private static final long serialVersionUID = 1490961570483515444L;
     private final CSFPRHandler CSFPR_Handler;
@@ -40,7 +39,7 @@ public class CSFPRApplication extends Panel implements Serializable {
     private void buildMainLayout() {
         this.setWidth("100%");
         VerticalLayout content = new VerticalLayout();
-        this.setContent(content);
+        this.addComponent(content);
         //header part
         HeaderLayout header = new HeaderLayout();
         content.addComponent(header);

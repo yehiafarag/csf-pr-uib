@@ -38,7 +38,7 @@ public class PeptidesStackedBarChartsControler {
      */
     public PeptidesStackedBarChartsControler(int width, Map<Integer, ComparisonDetailsBean> patientGroupsNumToDsIdMap, String protAccsession, String protName, String url, String comparisonHeader, Map<String, QuantProtein> datasetQuantProteinsMap, Map<String, QuantDatasetObject> datasetIdDsObjectProteinsMap,Map<String,String> diseaseHashedColorMap) {
 
-        int panelWidth = Page.getCurrent().getBrowserWindowWidth() - width - 100;
+        int panelWidth = Page.getCurrent().getBrowserWindowWidth() - 100;
 
         studyInformationPopupPanel = new StudyInformationPopupComponent(panelWidth, protName, url, comparisonHeader);
         studyInformationPopupPanel.setVisible(false);

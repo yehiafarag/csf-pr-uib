@@ -3475,49 +3475,45 @@ img {
     border: 1px solid gray;
 }
 
+
 .allpeptidesseqbtn{
     background-image: url(img/all_peptides_sequence.png);
-    height: 24px !important;
-    width: 25px !important;
+    height: 22px !important;
+    width: 22px !important;
     background-position:center !important;
     background-repeat: no-repeat !important;
-    background-size: 23px 22px !important;
+    background-size: 24px 24px !important;
 
     cursor:pointer;
 
 }
 .sigpeptidesseqbtn{
     background-image: url(img/seg_peptides_sequence.png);
-    height: 24px !important;
-    width: 25px !important;
+      height: 22px !important;
+    width: 22px !important;
     background-position:center !important;
     background-repeat: no-repeat !important;
-    background-size: 21px 20px, 20px 20px !important;
+    background-size: 24px 24px !important;
     cursor:pointer;
-    border:2px solid black;
 
 }
-
 .ptm_selected_btn{
     background-image: url(img/ptm_btn.png);
-    height: 24px !important;
-    width: 25px !important;
+    height: 20px !important;
+    width: 20px !important;
     background-position:center !important;
     background-repeat: no-repeat !important;
-    background-size: 23px 22px !important;
-    cursor:pointer;
-    border:2px solid orange;
-
+    background-size: 20px 20px !important;
+cursor:pointer;
 }
 .ptm_unselected_btn{
     background-image: url(img/ptm_unselected_btn.png);
-    height: 24px !important;
-    width: 25px !important;
+    height: 20px !important;
+    width: 20px !important;
     background-position:center !important;
     background-repeat: no-repeat !important;
-    background-size: 23px 22px !important;
-    cursor:pointer;
-    border:2px solid white;
+    background-size: 20px 20px !important;
+cursor:pointer;
 
 }
 .maxmizebtn{
