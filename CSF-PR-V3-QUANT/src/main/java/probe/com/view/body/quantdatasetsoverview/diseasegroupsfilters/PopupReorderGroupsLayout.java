@@ -97,7 +97,7 @@ public class PopupReorderGroupsLayout extends VerticalLayout implements CSFFilte
         popupWindow.setStyleName(Reindeer.WINDOW_LIGHT);
         popupWindow.setModal(true);
         popupWindow.setDraggable(false);
-        popupWindow.setCaption("&nbsp;&nbsp;Disease Groups");
+        popupWindow.setCaption("<font color='gray' style='font-weight: bold;!important'>&nbsp;&nbsp;Disease Groups</font>");
         popupWindow.setCaptionAsHtml(true);
         popupBodyLayout.setStyleName(Reindeer.LAYOUT_WHITE);
         popupBodyLayout.setHeightUndefined();//(h - 50) + "px");

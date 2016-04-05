@@ -237,7 +237,7 @@ public class DiseaseGroupsListFilter extends VerticalLayout implements CSFFilter
         popupWindow.setModal(true);
         popupWindow.setDraggable(false);
         popupWindow.center();
-        popupWindow.setCaption("&nbsp;&nbsp;Disease Groups Comparisons");
+        popupWindow.setCaption("<font color='gray' style='font-weight: bold;!important'>&nbsp;&nbsp;Disease Groups Comparisons</font>");
 
         UI.getCurrent().addWindow(popupWindow);
         popupWindow.center();

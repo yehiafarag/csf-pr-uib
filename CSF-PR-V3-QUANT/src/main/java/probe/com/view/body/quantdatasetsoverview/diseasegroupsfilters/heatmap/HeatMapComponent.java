@@ -223,7 +223,7 @@ public class HeatMapComponent extends VerticalLayout {
 
         this.selectedDsList.add(comparison);
         this.selectedCells.add(cell);
-        String kI = cell.getComparison().getComparisonHeader();
+        String kI = cell.getComparison().getOreginalComparisonHeader();
         String[] k1Arr = kI.split(" / ");
         String kII = k1Arr[1] + " / " + k1Arr[0];
         HeatmapCell equalCall = comparisonsCellsMap.get(kII);
@@ -279,7 +279,7 @@ public class HeatMapComponent extends VerticalLayout {
                     selectedCells.addAll(header.getIncludedCells());
 
                     for (QuantDiseaseGroupsComparison qdComp : header.getIncludedComparisons()) {
-                        String kI = qdComp.getComparisonHeader();
+                        String kI = qdComp.getOreginalComparisonHeader();
                         if (!kI.startsWith(selectedheader.replace("<center>", "").replace("</center>", "").trim() + " / ")) {
                             String[] k1Arr = kI.split(" / ");
                             String kII = k1Arr[1] + " / " + k1Arr[0];
@@ -306,7 +306,7 @@ public class HeatMapComponent extends VerticalLayout {
                     header.selectCellStyle();
                     selectedCells.addAll(header.getIncludedCells());
                     for (QuantDiseaseGroupsComparison qdComp : header.getIncludedComparisons()) {
-                        String kI = qdComp.getComparisonHeader();
+                        String kI = qdComp.getOreginalComparisonHeader();
                         if (!kI.startsWith(selectedheader.replace("<center>", "").replace("</center>", "").trim() + " / ")) {
 //                            String[] k1Arr = kI.split(" / ");
 //                            String kII = k1Arr[1] + " / " + k1Arr[0];
@@ -329,7 +329,7 @@ public class HeatMapComponent extends VerticalLayout {
                     header.selectCellStyle();
                     selectedCells.addAll(header.getIncludedCells());
                     for (QuantDiseaseGroupsComparison qdComp : header.getIncludedComparisons()) {
-                        String kI = qdComp.getComparisonHeader();
+                        String kI = qdComp.getOreginalComparisonHeader();
                         if (!kI.startsWith(selectedheader.replace("<center>", "").replace("</center>", "").trim() + " / ")) {
 //                            String[] k1Arr = kI.split(" / ");
 //                            String kII = k1Arr[1] + " / " + k1Arr[0];
@@ -348,7 +348,7 @@ public class HeatMapComponent extends VerticalLayout {
         }
 //        Set<QuantDiseaseGroupsComparison> tempSelectedDsList = new HashSet<QuantDiseaseGroupsComparison>();
 //        for (QuantDiseaseGroupsComparison gr : selectedDsList) {
-//            String kI = gr.getComparisonHeader();
+//            String kI = gr.getOreginalComparisonHeader();
 //            String[] k1Arr = kI.split("/");
 //            if (! k1Arr[0].contains(selectedheader)) {
 //
@@ -393,7 +393,7 @@ public class HeatMapComponent extends VerticalLayout {
         List<HeatmapCell> localSelectedCells = new ArrayList<HeatmapCell>();
         localSelectedCells.addAll(this.selectedCells);
         for (QuantDiseaseGroupsComparison gr : this.selectedDsList) {
-            String kI = gr.getComparisonHeader();
+            String kI = gr.getOreginalComparisonHeader();
             String[] k1Arr = kI.split(" / ");
             String kII = k1Arr[1] + " / " + k1Arr[0];
             Set<String> keymap = new HashSet<String>();
@@ -403,7 +403,7 @@ public class HeatMapComponent extends VerticalLayout {
             if (!selectedDsList.contains(gr) && (comparisonsCellsMap.get(kII) != null && !selectedDsList.contains(comparisonsCellsMap.get(kII).getComparison()))) {
 
                 for (HeatmapCell cell : selectedCells) {
-                    String kI2 = cell.getComparison().getComparisonHeader();
+                    String kI2 = cell.getComparison().getOreginalComparisonHeader();
                     String[] kI2Arr = kI2.split(" / ");
                     String kII2 = kI2Arr[1] + " / " + kI2Arr[0];
                     if (keymap.contains(kI2) && keymap.contains(kII2)) {
@@ -444,7 +444,7 @@ public class HeatMapComponent extends VerticalLayout {
         }
         this.selectedDsList.remove(comparison);
         this.selectedCells.remove(cell);
-        String kI = cell.getComparison().getComparisonHeader();
+        String kI = cell.getComparison().getOreginalComparisonHeader();
         String[] k1Arr = kI.split(" / ");
         String kII = k1Arr[1] + " / " + k1Arr[0];
         HeatmapCell equalCall = comparisonsCellsMap.get(kII);
@@ -513,7 +513,7 @@ public class HeatMapComponent extends VerticalLayout {
         selfSelection = true;
         Map<String, QuantDiseaseGroupsComparison> filteredComp = new LinkedHashMap<String, QuantDiseaseGroupsComparison>();
         for (QuantDiseaseGroupsComparison comp : selectedDsList) {
-            String kI = comp.getComparisonHeader();
+            String kI = comp.getOreginalComparisonHeader();
             String[] k1Arr = kI.split(" / ");
             String kII = k1Arr[1] + " / " + k1Arr[0];
             if (filteredComp.containsKey(kI) || filteredComp.containsKey(kII)) {
@@ -762,7 +762,7 @@ public class HeatMapComponent extends VerticalLayout {
                 if (cell.getComparison().getDatasetIndexes().length > 0) {
                     columnCells[y].addComparison(cell.getComparison(), cell);
                     rowCells[x].addComparison(cell.getComparison(), cell);
-                    if (!cell.getComparison().getComparisonHeader().trim().equalsIgnoreCase("/")) {
+                    if (!cell.getComparison().getOreginalComparisonHeader().trim().equalsIgnoreCase("/")) {
                         availableComparisonsList.add(cell.getComparison());
                     }
                 }
@@ -842,7 +842,7 @@ public class HeatMapComponent extends VerticalLayout {
 //        }
 
         for (HeatmapCell cell : comparisonsCellsMap.values()) {
-            if (cell.getValue() != 0 && !cell.getComparison().getComparisonHeader().trim().equalsIgnoreCase("/") && availableComparisonsList.contains(cell.getComparison())) {
+            if (cell.getValue() != 0 && !cell.getComparison().getOreginalComparisonHeader().trim().equalsIgnoreCase("/") && availableComparisonsList.contains(cell.getComparison())) {
                 cell.select(true);
                 selectedCells.add(cell);
             }

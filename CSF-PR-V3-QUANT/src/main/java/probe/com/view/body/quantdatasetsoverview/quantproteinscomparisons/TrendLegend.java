@@ -22,7 +22,7 @@ public class TrendLegend extends GridLayout {
     public TrendLegend(String type) {
         this.setSpacing(true);
          if (type.equalsIgnoreCase("miniscatterpeptidessequence")) {
-            String[] labels = new String[]{"High", "Stable", "Low ", "No Quant. Info."};
+            String[] labels = new String[]{"Increased", "Equal", "Decreased ", "No Quant. Info."};
             String[] styleName = new String[]{"legendtared100", "legendbluedm", "legendgreenta100", "legendgraydm"};
             this.setSpacing(true);
             this.setColumns(4);
@@ -36,7 +36,7 @@ public class TrendLegend extends GridLayout {
 
         } 
          else if (type.equalsIgnoreCase("linechart")) {
-            String[] labels = new String[]{"High   100%", "High < 100%", "Stable", "Low < 100%", "Low   100%", "No Quant. Info.", "No Data"};
+            String[] labels = new String[]{"Increased   100%", "Increased < 100%", "Equal", "Decreased < 100%", "Decreased   100%", "No Quant. Info.", "No Data"};
             String[] styleName = new String[]{"legendtared100", "legendredtaless100", "legendbluedm", "legendgreentaless100", "legendgreenta100", "legendgraydm", "legendemptygraydm"};
             this.setSpacing(true);
             this.setColumns(7);
@@ -50,7 +50,7 @@ public class TrendLegend extends GridLayout {
             }
 
         } else if (type.equalsIgnoreCase("bubblechart")) {
-            String[] labels = new String[]{"High   100%", "High < 100%", "Stable", "Low < 100%", "Low   100%", "No Quant. Info."};
+            String[] labels = new String[]{"Increased   100%", "Increased < 100%", "Equal", "Decreased < 100%", "Decreased   100%", "No Quant. Info."};
             String[] styleName = new String[]{"legendred100", "legendredless100", "legendblue", "legendgreenless100", "legendgreen100", "legendgray"};
             this.setSpacing(true);
             this.setColumns(6);
@@ -64,7 +64,7 @@ public class TrendLegend extends GridLayout {
             }
 
         } else if (type.equalsIgnoreCase("table")) {
-            String[] labels = new String[]{"High", "Stable", "Low", "No Quant. Info.", "Not Available"};
+            String[] labels = new String[]{"Increased", "Equal", "Decreased", "No Quant. Info.", "Not Available"};
             String[] styleName = new String[]{"redlayout", "lightbluelayout", "greenlayout", "novaluelayout", "empty"};
             this.setSpacing(true);
             this.setColumns(5);
@@ -77,7 +77,7 @@ public class TrendLegend extends GridLayout {
 
             }
         } else if (type.equalsIgnoreCase("ministackedpeptidessequence")) {
-            String[] labels = new String[]{"High", "High-not sign.", "Stable", "Low", "Low-not sign.", "No Quant. Info.","PTM"};
+            String[] labels = new String[]{"Increased", "Increased-not sign.", "Equal", "Decreased", "Decreased-not sign.", "No Quant. Info.","PTM"};
             String[] styleName = new String[]{"redlayout", "notsigredstackedlayout", "lightbluelayout", "greenlayout", "notsiggreenstackedlayout", "novaluelayout","ptmglycosylation"};
             this.setSpacing(false);
             this.setRows(1);
@@ -98,7 +98,7 @@ public class TrendLegend extends GridLayout {
             }
 
         } else {
-            String[] labels = new String[]{"High", "High-not sign.", "Stable", "Low-not sign.", "Low", "No Quant. Info.","PTM"};
+            String[] labels = new String[]{"Increased", "Increased-not sign.", "Equal", "Decreased-not sign.", "Decreased", "No Quant. Info.","PTM"};
             String[] styleName = new String[]{"redlayout", "notsigredstackedlayout", "lightbluelayout", "notsiggreenstackedlayout", "greenlayout", "novaluelayout","ptmglycosylation"};
             this.setSpacing(true);
             this.setRows(1);
@@ -136,7 +136,7 @@ public class TrendLegend extends GridLayout {
     }
 
     public TrendLegend(int userTrend) {
-        String[] labels = new String[]{"High   100%", "High < 100%", "Stable", "Low < 100%", "Low   100%", "No Quant. Info.", "No Data"};
+        String[] labels = new String[]{"Increased   100%", "Increased < 100%", "Equal", "Decreased < 100%", "Decreased   100%", "No Quant. Info.", "No Data"};
         String[] styleName = new String[]{"legendtared100", "legendredtaless100", "legendbluedm", "legendgreentaless100", "legendgreenta100", "legendgraydm", "legendemptygraydm"};
         this.setSpacing(true);
         this.setColumns(8);

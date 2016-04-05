@@ -464,7 +464,7 @@ public class StudiesPeptidesDetailsContainerLayout extends VerticalLayout {
                 }
 
             };
-            fullStudiesPopupWindow.setCaption("<a href='" + "google.com" + "'target=\"_blank\"> " + "protein name" + " </a> ");
+            fullStudiesPopupWindow.setCaption("<font color='gray' style='font-weight: bold;!important'><a href='" + "google.com" + "'target=\"_blank\"> " + "protein name" + " </a></font>");
             fullStudiesPopupWindow.setContent(popupBody);
             fullStudiesPopupWindow.setWindowMode(WindowMode.NORMAL);
             fullStudiesPopupWindow.setWidth((width + 40) + "px");

@@ -46,7 +46,7 @@ public class StudyInformationPopupComponent extends VerticalLayout {
             }
 
         };
-        popupWindow.setCaption("<a href='" + url + "'target=\"_blank\"> " + protName + " <font size='2' color='#666'> (" + comparisonHeader + ")</font></a> ");
+        popupWindow.setCaption("<font color='gray' style='font-weight: bold;!important'><a href='" + url + "'target=\"_blank\"> " + protName + " <font size='2' color='#666'> (" + comparisonHeader + ")</font></a></font> ");
         popupWindow.setContent(popupBody);
         popupWindow.setWindowMode(WindowMode.NORMAL);
         popupWindow.setWidth((width + 40) + "px");

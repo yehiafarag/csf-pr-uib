@@ -288,7 +288,7 @@ public class KMeansClusteringLineChart extends AbsoluteLayout implements LayoutE
             }
         };
         final Color[] labelsColor = new Color[]{new Color(80, 183, 71), Color.LIGHT_GRAY, new Color(1, 141, 244), Color.LIGHT_GRAY, Color.RED};
-        SymbolAxis yAxis = new SymbolAxis(null, new String[]{"Low", " ", "Stable", " ", "High"}) {
+        SymbolAxis yAxis = new SymbolAxis(null, new String[]{"Decreased", " ", "Equal", " ", "Increased"}) {
             int x = 0;
 
             @Override

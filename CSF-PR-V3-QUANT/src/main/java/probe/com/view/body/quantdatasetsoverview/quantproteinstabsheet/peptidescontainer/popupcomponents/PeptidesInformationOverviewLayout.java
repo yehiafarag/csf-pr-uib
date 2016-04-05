@@ -362,13 +362,13 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
                     peptideStackedBarComponent.setSignificant(true);
                     if (quantPeptide.getString_fc_value().equalsIgnoreCase("Increased") || quantPeptide.getString_fc_value().equalsIgnoreCase("Increase") || quantPeptide.getString_fc_value().equalsIgnoreCase("Up")) {
                         peptideStackedBarComponent.setDefaultStyleShowAllMode("redstackedlayout");
-                        peptideStackedBarComponent.setParam("trend", "high");
+                        peptideStackedBarComponent.setParam("trend", "increased");
                     } else if (quantPeptide.getString_fc_value() == null || quantPeptide.getString_fc_value().equalsIgnoreCase("") || quantPeptide.getString_fc_value().trim().equalsIgnoreCase("Not Provided")) {
                         peptideStackedBarComponent.setDefaultStyleShowAllMode("lightbluestackedlayout");
-                        peptideStackedBarComponent.setParam("trend", "stable");
+                        peptideStackedBarComponent.setParam("trend", "equal");
                     } else {
                         peptideStackedBarComponent.setDefaultStyleShowAllMode("greenstackedlayout");
-                        peptideStackedBarComponent.setParam("trend", "low");
+                        peptideStackedBarComponent.setParam("trend", "decreased");
 
                     }
 
@@ -376,13 +376,13 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
                     peptideStackedBarComponent.setSignificant(false);
                     if (quantPeptide.getString_fc_value().equalsIgnoreCase("Increased") || quantPeptide.getString_fc_value().equalsIgnoreCase("Increase") || quantPeptide.getString_fc_value().equalsIgnoreCase("Up")) {
                         peptideStackedBarComponent.setDefaultStyleShowAllMode("midredstackedlayout");
-                        peptideStackedBarComponent.setParam("trend", "high");
+                        peptideStackedBarComponent.setParam("trend", "increased");
                     } else if (quantPeptide.getString_fc_value() == null || quantPeptide.getString_fc_value().equalsIgnoreCase("") || quantPeptide.getString_fc_value().trim().equalsIgnoreCase("Not Provided")) {
                         peptideStackedBarComponent.setDefaultStyleShowAllMode("lightbluestackedlayout");
-                        peptideStackedBarComponent.setParam("trend", "stable");
+                        peptideStackedBarComponent.setParam("trend", "equal");
                     } else {
                         peptideStackedBarComponent.setDefaultStyleShowAllMode("midgreenstackedlayout");
-                        peptideStackedBarComponent.setParam("trend", "low");
+                        peptideStackedBarComponent.setParam("trend", "decreased");
 
                     }
                 }
@@ -457,13 +457,13 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
 
                     if (quantPeptide.getString_fc_value().equalsIgnoreCase("Increased") || quantPeptide.getString_fc_value().equalsIgnoreCase("Up")) {
                         peptideStackedBarComponent.setDefaultStyleShowAllMode("redstackedlayout");
-                        peptideStackedBarComponent.setParam("trend", "high");
+                        peptideStackedBarComponent.setParam("trend", "increased");
                     } else if (quantPeptide.getString_fc_value() == null || quantPeptide.getString_fc_value().equalsIgnoreCase("") || quantPeptide.getString_fc_value().trim().equalsIgnoreCase("Not Provided")) {
                         peptideStackedBarComponent.setDefaultStyleShowAllMode("lightbluestackedlayout");
-                        peptideStackedBarComponent.setParam("trend", "stable");
+                        peptideStackedBarComponent.setParam("trend", "equal");
                     } else {
                         peptideStackedBarComponent.setDefaultStyleShowAllMode("greenstackedlayout");
-                        peptideStackedBarComponent.setParam("trend", "low");
+                        peptideStackedBarComponent.setParam("trend", "decreased");
 
                     }
 

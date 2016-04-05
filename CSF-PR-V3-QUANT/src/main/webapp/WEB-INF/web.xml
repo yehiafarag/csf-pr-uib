@@ -61,7 +61,7 @@
     <context-param>
         <description>exported files folder url D:\CSF_Files(/home/probe/user/CSF-PR-FILES)</description>
         <param-name>filesURL</param-name>
-        <param-value>/home/probe/user/CSF-PR-FILES</param-value>
+        <param-value>D:\CSF_Files</param-value>
     </context-param>
     <servlet>
         <servlet-name>Vaadin Application Servlet</servlet-name>

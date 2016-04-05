@@ -37,6 +37,11 @@
 .spacer v-verticallayout v-layout v-vertical v-widget spacer v-verticallayout-spacer v-has-width v-has-height{
     /*background: #4d749f;*/
 }
+
+.v-table-column-selector {
+    height: 0px;
+    width: 0px;
+  }
 /*.hidescroll{
     overflow:hidden;
 
@@ -450,16 +455,16 @@
 
     height:18px !important;
     border-bottom:1px solid gray;
-   
-    
+
+
 }
 
 .bottomheaderborder font{
 
     height:18px !important;
     border-top:1px solid gray;
-   
-    
+
+
 }
 .datasetInfoValues{
     font-family:Verdana; 
@@ -915,7 +920,7 @@ resetlabelbtn p{
 
 .matrixbtn img{
     margin-top: 10px;
-     cursor:pointer;
+    cursor:pointer;
     width:auto !important;
     border-bottom:1px solid lightgray;
     border-right:1px solid lightgray;
@@ -1452,18 +1457,18 @@ border:3px solid #4d749f ;
     background: #cc0000  !important;
 }
 .marginleft div{
-     
-     margin-left:2px !important;
+
+    margin-left:2px !important;
     overflow:hidden !important;
 
-    
+
 }
 .marginright div{
-     
+
     margin-left:-2px !important;
     overflow:hidden !important;
 
-    
+
 }
 .empty div{
     /*background-image: url(img/empty.png);*/
@@ -1472,7 +1477,7 @@ border:3px solid #4d749f ;
 
 }
 .emptybackground div{
-     background:#cccccc;    
+    background:#cccccc;    
 }
 .orangestackedlayout div{
     background: #FF8000;
@@ -2398,10 +2403,10 @@ border:3px solid #4d749f ;
 
 
 .customizedproteinsLayout{
-
+color:rgba(255, 255, 255, .0)  !important;
 }
 .customizedproteinsLayout div{
-    cursor: pointer;   
+    cursor: pointer  !important;   
 
 
 }
@@ -2416,33 +2421,33 @@ border:3px solid #4d749f ;
 }
 .customizedproteinsLayout .redlayout div{
     background-image:  url(img/high_up.png) !important;
-    background-color:rgba(255, 255, 255, .0);
-    background-repeat: no-repeat;
-    background-size:11px;
-    background-position: center;
+    background-color:rgba(255, 255, 255, .0)  !important;
+    background-repeat: no-repeat  !important;
+    background-size:11px  !important;
+    background-position: center  !important;
 
 }
 .customizedproteinsLayout .lightbluelayout div{
     background-image:  url(img/stable_blue.png) !important;
-    background-color:rgba(255, 255, 255, .0);
-    background-repeat: no-repeat;
-    background-size:11px;
-    background-position: center;
+    background-color:rgba(255, 255, 255, .0)  !important;
+    background-repeat: no-repeat  !important;
+    background-size:11px  !important;
+    background-position: center  !important;
 
 }
 .customizedproteinsLayout .greenlayout div{
     background-image:  url(img/low_down.png) !important;
-    background-color:rgba(255, 255, 255, .0);
-    background-repeat: no-repeat;
-    background-size:11px;
-    background-position: center;
+    background-color:rgba(255, 255, 255, .0)  !important;
+    background-repeat: no-repeat  !important;
+    background-size:11px  !important;
+    background-position: center  !important;
 }
 
 .usercustdatatitle {
     color: #8210B0;
 }
 .usercustdatatitle font{
-  
+
     color:#8210B0 !important;
     font-weight: bold;
 }
@@ -2961,7 +2966,7 @@ img {
     font-stretch: normal;
     font-style: normal;
     font-variant: normal;
-    
+
     zoom: 1;
     font-size:13px;
     color:rgba(255, 255, 255, 0);
@@ -2979,8 +2984,8 @@ img {
 .showfilterbtnlabel:hover{
     -webkit-transition: color 2s; /* For Safari 3.1 to 6.0 */
     transition: color 2s; 
-   
-  background-image: url(img/filters-128.png),  url(img/angle-double-down.png);
+
+    background-image: url(img/filters-128.png),  url(img/angle-double-down.png);
 
     width:90px !important;
 
@@ -3489,7 +3494,7 @@ img {
 }
 .sigpeptidesseqbtn{
     background-image: url(img/seg_peptides_sequence.png);
-      height: 22px !important;
+    height: 22px !important;
     width: 22px !important;
     background-position:center !important;
     background-repeat: no-repeat !important;
@@ -3504,7 +3509,7 @@ img {
     background-position:center !important;
     background-repeat: no-repeat !important;
     background-size: 20px 20px !important;
-cursor:pointer;
+    cursor:pointer;
 }
 .ptm_unselected_btn{
     background-image: url(img/ptm_unselected_btn.png);
@@ -3513,7 +3518,7 @@ cursor:pointer;
     background-position:center !important;
     background-repeat: no-repeat !important;
     background-size: 20px 20px !important;
-cursor:pointer;
+    cursor:pointer;
 
 }
 .maxmizebtn{
@@ -3796,16 +3801,16 @@ cursor:pointer;
     border:none;
 }
 .logo{
-      background-color: #4d749f;
+    background-color: #4d749f;
     margin-top:3px;
     height:27px !important;
     width:26px !important;
     border-radius:4px;
-    
+
 }
 .logo div{
-margin-top:-2px;
-margin-left:2px
+    margin-top:-2px;
+    margin-left:2px
 
 }
 .logocontainer{
@@ -3816,8 +3821,8 @@ margin-left:2px
     line-height:20px;
     cursor: pointer;
 
-    
-    
+
+
 }
 .btnsiconcontainer b{
     cursor: pointer;   
@@ -3832,4 +3837,40 @@ margin-left:2px
 .v-tabsheet-deco{
     background-color:white !important;
     opacity:0;
+}
+.switchicon{
+     background-image: url(img/flip-v-updated.png);
+    background-size:auto 21px;
+    height:20px !important;
+    width:29px !important;    
+
+
+    background-repeat:no-repeat;
+    background-position:center;
+    cursor:pointer;    
+    
+}
+.switchtable b{
+    text-decoration:underline;
+    font-size:13px;
+    color: gray;
+    font-weight: bold;
+}
+.switchbtn{
+    background-image: url(img/exchange.png);
+    background-size:25px auto;
+    height:25px !important;
+    width:50px !important;    
+
+
+    background-repeat:no-repeat;
+    background-position:center;
+    cursor:pointer;    
+
+}
+.switchbtn:hover{
+    background-color:whitesmoke;
+    border:1px solid lightgray;
+    border-radius:4px;
+    
 }

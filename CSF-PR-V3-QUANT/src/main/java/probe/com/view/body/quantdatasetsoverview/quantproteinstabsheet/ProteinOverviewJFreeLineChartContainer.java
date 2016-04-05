@@ -854,7 +854,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         dataset.addSeries("line", linevalues);
         dataset.addSeries("up", upvalues);
         dataset.addSeries("midup", midupvalues);
-        dataset.addSeries("stable", stablevalues);
+        dataset.addSeries("equal", stablevalues);
         dataset.addSeries("middown", middownvalues);
         dataset.addSeries("down", downvalues);
         dataset.addSeries("empty", emptyValues);
@@ -973,7 +973,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         xAxis.setTickLabelFont(font);
         xAxis.setLabelInsets(new RectangleInsets(2, 5, 2, 5));
         final Color[] labelsColor = new Color[]{new Color(80, 183, 71), Color.LIGHT_GRAY, new Color(1, 141, 244), Color.LIGHT_GRAY, new Color(204, 0, 0)};
-        final String[] tickLabels = new String[]{"Low", " ", "Stable", " ", "High"};
+        final String[] tickLabels = new String[]{"Decreased", " ", "Equal", " ", "Increased"};
 
         NumberAxis yAxis = new NumberAxis() {
 
@@ -1014,13 +1014,13 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
             @Override
             public String valueToString(double value) {
                 if (value == 100.0) {
-                    return "High";
+                    return "Increased";
                 }
                 if (value == 0.0) {
-                    return "Stable";
+                    return "Equal";
                 }
                 if (value == -100.0) {
-                    return "Low";
+                    return "Decreased";
                 }
                 return "";
 //                return super.valueToString(value); //To change body of generated methods, choose Tools | Templates.
@@ -1239,7 +1239,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         return jFreeChart;
     }
 
-    private final String[] tooltipLabels = new String[]{"( Low <img src='VAADIN/themes/dario-theme/img/sdown.png' alt='Low'>" + " )", "( Low <img src='VAADIN/themes/dario-theme/img/sdown.png' alt='Low'>" + " )", "( Stable <img src='VAADIN/themes/dario-theme/img/snotreg.png' alt='Stable'>" + " )", " ( High <img src='VAADIN/themes/dario-theme/img/sup.png' alt='High'>" + " )", " ( High <img src='VAADIN/themes/dario-theme/img/sup.png' alt='High'>" + " )"};
+    private final String[] tooltipLabels = new String[]{"( Decreased <img src='VAADIN/themes/dario-theme/img/sdown.png' alt='Decreased'>" + " )", "( Decreased <img src='VAADIN/themes/dario-theme/img/sdown.png' alt='Decreased'>" + " )", "( Equal <img src='VAADIN/themes/dario-theme/img/snotreg.png' alt='Stable'>" + " )", " ( Increased <img src='VAADIN/themes/dario-theme/img/sup.png' alt='Increased'>" + " )", " ( Increased <img src='VAADIN/themes/dario-theme/img/sup.png' alt='Increased'>" + " )"};
 
     private String generateChartImage(JFreeChart jFreeChart, int w, int h, ChartRenderingInfo chartRenderingInfo, AbsoluteLayout layoutContainer) {
         String imgUrl = saveToFile(jFreeChart, w, h, chartRenderingInfo);

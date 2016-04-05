@@ -13,6 +13,7 @@ import com.vaadin.event.ShortcutListener;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.MultiSelectMode;
 import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.shared.ui.table.CollapseMenuContent;
 import com.vaadin.ui.AbstractTextField;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -387,6 +388,7 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
         });
 
         Button exportTableBtn = new Button("");
+        Quant_Central_Manager.setExportQuantTableBtn(exportTableBtn);
         exportTableBtn.setHeight("24px");
         exportTableBtn.setWidth("24px");
         exportTableBtn.setPrimaryStyleName("exportxslbtn");
@@ -415,7 +417,10 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
                 csvExport.setExportFileName("CSF-PR - Quant Comparisons - Proteins" + ".xls");
                 csvExport.setMimeType(CsvExport.EXCEL_MIME_TYPE);
                 csvExport.setDisplayTotals(false);
-                csvExport.setExcelFormatOfProperty("Index", "#0;[Red] #0");
+                csvExport.setExcelFormatOfProperty("Index", "0");
+                
+//                csvExport.setExcelFormatOfProperty("#Quantified Proteins", "0");
+//                 csvExport.setExcelFormatOfProperty("patientsGroup2Number", "0");
                 csvExport.export();
 
                 for (QuantDiseaseGroupsComparison comp : quantDiseaseGroupsComparisonArr) {
@@ -659,11 +664,18 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
         uniprotProteinsMap = new HashMap<String, Boolean>();
         for (int compIndex = 0; compIndex < quantDiseaseGroupsComparisonArr.length; compIndex++) {
             QuantDiseaseGroupsComparison comparison = quantDiseaseGroupsComparisonArr[compIndex];
+            if(comparison.getComparProtsMap()== null)
+                return;
             HorizontalLayout columnTitleLayout = generateColumnHeaderLayout(comparison, columnWidth);
             this.columnLabelContainer.addComponent(columnTitleLayout);
             this.columnLabelContainer.setComponentAlignment(columnTitleLayout, Alignment.BOTTOM_LEFT);
 
             this.groupsComparisonProteinsTable.addContainerProperty(comparison.getComparisonHeader(), DiseaseGroupsComparisonsProteinLayout.class, null, comparison.getComparisonHeader() + " #Proteins: " + comparison.getComparProtsMap().size() + "/" + comparison.getDatasetIndexes().length + "", null, Table.Align.CENTER);
+             this.groupsComparisonProteinsTable.addContainerProperty(comparison.getComparisonHeader()+"_trend", Double.class, null, "Trend %", null, Table.Align.RIGHT);
+               this.groupsComparisonProteinsTable.setColumnCollapsed(comparison.getComparisonHeader()+"_trend", true);
+               
+            
+            
             this.groupsComparisonProteinsTable.setColumnWidth(comparison.getComparisonHeader(), 100);
             Map<String, DiseaseGroupsComparisonsProteinLayout> protList = comparison.getComparProtsMap();
             int protCounter = 0;
@@ -707,6 +719,7 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
             if (key.replace("--", "").trim().split(",").length == 1) {
             }
             int i = 0;
+            int j = 0;
             String protAcc = key.replace("--", "").trim().split(",")[0];
             String protURL = "http://www.uniprot.org/uniprot/" + protAcc.toUpperCase();
             String tooltip = "UniProt link for " + protAcc.toUpperCase();
@@ -717,21 +730,27 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
             String protName = key.replace("--", "").trim().split(",")[1];
             CustomExternalLink acc = new CustomExternalLink(protAcc.toUpperCase(), protURL);
             acc.setDescription(tooltip);
-            Object[] tableRow = new Object[3 + quantDiseaseGroupsComparisonArr.length];
+            Object[] tableRow = new Object[3 + (quantDiseaseGroupsComparisonArr.length*2)];
 
             tableRow[i++] = index;
+            j++;
             tableRow[i++] = acc;
+            j++;
             tableRow[i++] = protName;
+            j++;
             for (QuantDiseaseGroupsComparison cg : quantDiseaseGroupsComparisonArr) {
                 DiseaseGroupsComparisonsProteinLayout cp = diseaseGroupsComparisonsProteinsMap.get(key)[i - 3];
                 if (cp == null) {
-                    tableRow[i] = null;
+                    tableRow[j++] = null;
+                    tableRow[j]=null;
                 } else {
                     cp.updateWidth(columnWidth);
                     cp.updateLabelLayout();
-                    tableRow[i] = cp;
+                    tableRow[j++] = cp;
+                    tableRow[j] = cp.getOverallCellPercentValue();
                 }
                 i++;
+                j++;
             }
             this.groupsComparisonProteinsTable.addItem(tableRow, index);
             this.accssionToItemIdMap.put(tableRow[1].toString(), index);
@@ -840,6 +859,7 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
         int index = 0;
         for (String key : filteredDiseaseGroupsComparisonsProteinsMap.keySet()) {
             int i = 0;
+            int j = 0;
             String protAcc = key.replace("--", "").trim().split(",")[0];
             String protURL = "http://www.uniprot.org/uniprot/" + protAcc.toUpperCase();
             String tooltip = "UniProt link for " + protAcc.toUpperCase();
@@ -852,10 +872,13 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
             String protName = key.replace("--", "").trim().split(",")[1];
             CustomExternalLink acc = new CustomExternalLink(protAcc.toUpperCase(), protURL);
             acc.setDescription(tooltip);
-            Object[] tableRow = new Object[3 + comparisonProteinsArray.length];
+            Object[] tableRow = new Object[3 + (comparisonProteinsArray.length*2)];
             tableRow[i++] = index;
+            j++;
             tableRow[i++] = acc;
+            j++;
             tableRow[i++] = protName;
+            j++;
             boolean checkUnique = false;
             for (QuantDiseaseGroupsComparison cg : comparisonProteinsArray) {
                 DiseaseGroupsComparisonsProteinLayout cp = filteredDiseaseGroupsComparisonsProteinsMap.get(key)[i - 3];
@@ -864,13 +887,16 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
                         checkUnique = true;
                         break;
                     }
-                    tableRow[i] = null;
+                    tableRow[j++] = null;
+                     tableRow[j] = null;
                 } else {
 
                     cp.updateLabelLayout();
-                    tableRow[i] = cp;
+                    tableRow[j++] = cp;
+                     tableRow[j] = cp.getOverallCellPercentValue();
                 }
                 i++;
+                j++;
             }
             if (checkUnique) {
                 continue;
@@ -1286,7 +1312,7 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
         Quant_Central_Manager.QuantProteinsTableSelectionChanged("Quant_Table_Protein_Selection");
     }
 
-    String[] trendCatArray = new String[]{"Low   100%", "Low < 100%", "Stable", "High < 100%", "High   100%", "No Quant Information"};
+    String[] trendCatArray = new String[]{"Decreased   100%", "Decreased < 100%", "Equal", "Increased < 100%", "Increased   100%", "No Quant Information"};
 
     private VerticalLayout generateDropDownFilterLayout(final String header) {
 

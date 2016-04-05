@@ -76,7 +76,7 @@ public class PopupRecombineDiseaseGroups extends VerticalLayout implements Layou
         popupWindow.setStyleName(Reindeer.WINDOW_LIGHT);
         popupWindow.setModal(true);
         popupWindow.setDraggable(false);
-        popupWindow.setCaption("&nbsp;&nbsp;Recombine Disease Groups");
+        popupWindow.setCaption("<font color='gray' style='font-weight: bold;!important'>&nbsp;&nbsp;Recombine Disease Groups</font>");
         popupWindow.setCaptionAsHtml(true);
         popupBodyLayout.setStyleName(Reindeer.LAYOUT_WHITE);
         popupBodyLayout.setHeightUndefined();//(h - 50) + "px");

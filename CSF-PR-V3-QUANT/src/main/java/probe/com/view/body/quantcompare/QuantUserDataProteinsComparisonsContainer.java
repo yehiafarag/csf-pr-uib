@@ -398,6 +398,7 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
             }
         });
         Button exportTableBtn = new Button("");
+         Quant_Central_Manager.setExportQuantTableBtn(exportTableBtn);
         exportTableBtn.setHeight("24px");
         exportTableBtn.setWidth("24px");
         exportTableBtn.setPrimaryStyleName("exportxslbtn");
@@ -556,9 +557,9 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
             } else {
                 selectedProteinsSubSet = true;
                 filterTableSelection(sortComparisonTableColumn, selectedProteinsSubSet);
-               
+
             }
-             if (Quant_Central_Manager.getQuantProteinsLayoutSelectionMap() != null) {
+            if (Quant_Central_Manager.getQuantProteinsLayoutSelectionMap() != null) {
                 localSelectAccessions(Quant_Central_Manager.getQuantProteinsLayoutSelectionMap().keySet());
             }
             updateSelectionManager();
@@ -657,7 +658,7 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
         this.columnLabelContainer.addComponent(userCustColumnTitleLayout);
         this.columnLabelContainer.setComponentAlignment(userCustColumnTitleLayout, Alignment.BOTTOM_LEFT);
 
-        this.groupsComparisonProteinsTable.addContainerProperty(userCustomizedComparison.getComparisonHeader(), DiseaseGroupsComparisonsProteinLayout.class, null, userCustomizedComparison.getComparisonHeader() + " (#Proteins: " + userCustomizedComparison.getComparProtsMap().size() + "/" + userCustomizedComparison.getDatasetIndexes().length + ")", null, Table.Align.CENTER);
+        this.groupsComparisonProteinsTable.addContainerProperty(userCustomizedComparison.getComparisonHeader(), DiseaseGroupsComparisonsProteinLayout.class, null, "(#Proteins: " + userCustomizedComparison.getComparProtsMap().size() + "/" + userCustomizedComparison.getDatasetIndexes().length + ")", null, Table.Align.CENTER);
         this.groupsComparisonProteinsTable.setColumnWidth(userCustomizedComparison.getComparisonHeader(), 100);
 
         diseaseGroupsComparisonsProteinsMap = new HashMap<String, DiseaseGroupsComparisonsProteinLayout[]>();
@@ -681,6 +682,9 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
             this.columnLabelContainer.setComponentAlignment(columnTitleLayout, Alignment.BOTTOM_LEFT);
 
             this.groupsComparisonProteinsTable.addContainerProperty(comparison.getComparisonHeader(), DiseaseGroupsComparisonsProteinLayout.class, null, comparison.getComparisonHeader() + " (#Proteins: " + comparison.getComparProtsMap().size() + "/" + comparison.getDatasetIndexes().length + ")", null, Table.Align.CENTER);
+            this.groupsComparisonProteinsTable.addContainerProperty(comparison.getComparisonHeader() + "_trend", Double.class, null, "Trend %", null, Table.Align.RIGHT);
+            this.groupsComparisonProteinsTable.setColumnCollapsed(comparison.getComparisonHeader() + "_trend", true);
+
             this.groupsComparisonProteinsTable.setColumnWidth(comparison.getComparisonHeader(), 100);
 
             Map<String, DiseaseGroupsComparisonsProteinLayout> protList = comparison.getComparProtsMap();
@@ -724,7 +728,7 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
         for (String key : diseaseGroupsComparisonsProteinsMap.keySet()) {
             if (key.replace("--", "").trim().split(",").length == 1) {
             }
-            int i = 0;
+
             String protAcc = key.replace("--", "").trim().split(",")[0];
             String protURL = "http://www.uniprot.org/uniprot/" + protAcc.toUpperCase();
             String tooltip = "UniProt link for " + protAcc.toUpperCase();
@@ -737,24 +741,33 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
             String protName = key.replace("--", "").trim().split(",")[1];
             CustomExternalLink acc = new CustomExternalLink(protAcc.toUpperCase(), protURL);
             acc.setDescription(tooltip);
-            Object[] tableRow = new Object[4 + quantDiseaseGroupsComparisonArr.length];
-
+            Object[] tableRow = new Object[4 + (quantDiseaseGroupsComparisonArr.length * 2)];
+            int i = 0;
+            int j=0;
             tableRow[i++] = index;
+            j++;
             tableRow[i++] = acc;
+            j++;
             tableRow[i++] = protName;
+            j++;
             userCustomizedComparison.getComparProtsMap().get(acc.toString()).updateWidth(columnWidth);
             userCustomizedComparison.getComparProtsMap().get(acc.toString()).setCustomizedUserData(true);
+            System.out.println("add true");
             tableRow[i++] = userCustomizedComparison.getComparProtsMap().get(acc.toString());
+            j++;
             for (QuantDiseaseGroupsComparison cg : quantDiseaseGroupsComparisonArr) {
                 DiseaseGroupsComparisonsProteinLayout cp = diseaseGroupsComparisonsProteinsMap.get(key)[i - 4];
                 if (cp == null) {
-                    tableRow[i] = null;
+                    tableRow[j++] = null;
+                      tableRow[j] = null;
                 } else {
                     cp.updateWidth(columnWidth);
                     cp.updateLabelLayout();
-                    tableRow[i] = cp;
+                    tableRow[j++] = cp;
+                      tableRow[j] = cp.getOverallCellPercentValue();
                 }
                 i++;
+                j++;
             }
             this.groupsComparisonProteinsTable.addItem(tableRow, index);
             this.accssionToItemIdMap.put(tableRow[1].toString(), index);
@@ -873,7 +886,7 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
 
         int index = 0;
         for (String key : filteredDiseaseGroupsComparisonsProteinsMap.keySet()) {
-            int i = 0;
+           
             String protAcc = key.replace("--", "").trim().split(",")[0];
             String protURL = "http://www.uniprot.org/uniprot/" + protAcc.toUpperCase();
             String tooltip = "UniProt link for " + protAcc.toUpperCase();
@@ -886,11 +899,17 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
             String protName = key.replace("--", "").trim().split(",")[1];
             CustomExternalLink acc = new CustomExternalLink(protAcc.toUpperCase(), protURL);
             acc.setDescription(tooltip);
-            Object[] tableRow = new Object[4 + comparisonProteinsArray.length];
+             int i = 0;
+            int j=0;
+            Object[] tableRow = new Object[4 + (comparisonProteinsArray.length*2)];
             tableRow[i++] = index;
+            j++;
             tableRow[i++] = acc;
+            j++;
             tableRow[i++] = protName;
+            j++;
             tableRow[i++] = userCustomizedComparison.getComparProtsMap().get(acc.toString());
+            j++;
 
             boolean checkUnique = false;
             for (QuantDiseaseGroupsComparison cg : comparisonProteinsArray) {
@@ -900,14 +919,17 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
                         checkUnique = true;
                         break;
                     }
-                    tableRow[i] = null;
+                    tableRow[j++] = null;
+                     tableRow[j] = null;
                 } else {
 
                     cp.updateLabelLayout();
-                    tableRow[i] = cp;
+                    tableRow[j++] = cp;
+                    tableRow[j] = cp.getOverallCellPercentValue();
 
                 }
                 i++;
+                j++;
             }
             if (checkUnique) {
                 continue;
@@ -1357,11 +1379,11 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
             final Item item = groupsComparisonProteinsTable.getItem(itemId);
             CustomExternalLink lastSelectedProt = (CustomExternalLink) item.getItemProperty("Accession").getValue();
             Integer index = (Integer) item.getItemProperty("Index").getValue();
-             accessions.add(lastSelectedProt.toString());
+            accessions.add(lastSelectedProt.toString());
             localLastSelectedProts.put(index, lastSelectedProt);
 
         }
-        
+
         LinkedHashMap<String, DiseaseGroupsComparisonsProteinLayout[]> localLastSelectedProteinsMap = new LinkedHashMap<String, DiseaseGroupsComparisonsProteinLayout[]>();
         localLastSelectedProteinsMap.clear();
         for (String accession : accessions) {
@@ -1387,7 +1409,7 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
         Quant_Central_Manager.QuantProteinsTableSelectionChanged("Quant_Table_Protein_Selection");
     }
 
-    String[] trendCatArray = new String[]{"Low   100%", "Low < 100%", "Stable", "High < 100%", "High   100%", "No Quant Information"};
+    String[] trendCatArray = new String[]{"Decreased   100%", "Decreased < 100%", "Equal", "Increased < 100%", "Increased   100%", "No Quant Information"};
 
     private VerticalLayout generateDropDownFilterLayout(final String header) {
 

@@ -296,7 +296,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
 //        if((downSerII.getItemCount()+stableSerII.getItemCount()+upSerII.getItemCount()+downSer.getItemCount()+stableSer.getItemCount()+upSer.getItemCount())==0)
 //            return;
 //        dataset.addSeries(plusSeries);
-        final String[] labels = new String[]{" ", ("Low (" + cp.getSignificantDown() + ")"), " ", ("Stable (" + cp.getStable() + ")"), " ", ("High (" + cp.getSignificantUp() + ")"), ""};
+        final String[] labels = new String[]{" ", ("Decreased (" + cp.getSignificantDown() + ")"), " ", ("Equal (" + cp.getStable() + ")"), " ", ("Increased (" + cp.getSignificantUp() + ")"), ""};
         final Color[] labelsColor = new Color[]{Color.LIGHT_GRAY, new Color(80, 183, 71), Color.LIGHT_GRAY, new Color(1, 141, 244), Color.LIGHT_GRAY, Color.RED, Color.LIGHT_GRAY};
         final SymbolAxis domainAxis = new SymbolAxis("X", labels) {
 

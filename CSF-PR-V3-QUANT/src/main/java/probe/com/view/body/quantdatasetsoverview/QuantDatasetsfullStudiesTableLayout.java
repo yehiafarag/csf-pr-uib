@@ -13,7 +13,10 @@ import java.util.Locale;
 import java.util.Map;
 import probe.com.selectionmanager.CSFFilter;
 import probe.com.model.beans.quant.QuantDatasetObject;
+import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.selectionmanager.QuantCentralManager;
+import probe.com.view.body.quantcompare.QuantUserDataProteinsComparisonsContainer;
+import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import probe.com.view.core.CustomExternalLink;
 
 /**
@@ -60,7 +63,7 @@ public class QuantDatasetsfullStudiesTableLayout extends Table implements CSFFil
      */
     private void initCombinedQuantDatasetTable(boolean[] activeColumnHeaders) {
         this.setSelectable(true);
-        this.setLocale(Locale.UK);
+//        this.setLocale(Locale.UK);
         this.setVisible(false);
         this.setColumnReorderingAllowed(true);
         this.setColumnCollapsingAllowed(true);
@@ -68,7 +71,7 @@ public class QuantDatasetsfullStudiesTableLayout extends Table implements CSFFil
         this.setMultiSelect(false);//        
         this.setImmediate(true); // react at once when something is selected
         this.setWidth("100%");
-        this.addContainerProperty("Index", Integer.class, null, "", null, Table.Align.RIGHT);
+        this.addContainerProperty("Index", Integer.class, null, "Index", null, Table.Align.RIGHT);
         this.addContainerProperty("Author", String.class, null);
         this.setColumnCollapsed("Author", false);
         this.addContainerProperty("Year", String.class, null, "Year", null, Table.Align.RIGHT);
@@ -83,8 +86,8 @@ public class QuantDatasetsfullStudiesTableLayout extends Table implements CSFFil
 
         this.addContainerProperty("Raw Data", String.class, null);
         this.setColumnCollapsed("Raw Data", !activeColumnHeaders[5]);
-        this.addContainerProperty("#Files", Integer.class, null, "#Files", null, Table.Align.RIGHT);
-        this.setColumnCollapsed("#Files", !activeColumnHeaders[6]);
+//        this.addContainerProperty("#Files", Integer.class, null, "#Files", null, Table.Align.RIGHT);
+//        this.setColumnCollapsed("#Files", !activeColumnHeaders[6]);
         this.addContainerProperty("typeOfStudy", String.class, null, "Study Type", null, Table.Align.LEFT);
         this.setColumnCollapsed("typeOfStudy", !activeColumnHeaders[7]);
 
@@ -196,11 +199,19 @@ public class QuantDatasetsfullStudiesTableLayout extends Table implements CSFFil
             }
 
             CustomExternalLink pumedID = new CustomExternalLink(pb.getPumedID(), "http://www.ncbi.nlm.nih.gov/pubmed/" + pb.getPumedID());
-            this.addItem(new Object[]{index, pb.getAuthor(), pb.getYear() + "", idNumber, quantProtNum, pb.getAnalyticalMethod(), rawDatalink, pb.getFilesNumber(), pb.getTypeOfStudy(), pb.getSampleType(), pb.getSampleMatching(), pb.getShotgunTargeted(), pb.getTechnology(), pb.getAnalyticalApproach(), pb.getEnzyme(), pb.getQuantificationBasis(), pb.getQuantBasisComment(), pb.getNormalizationStrategy(), pumedID, pb.getPatientsGroup1().split("\n")[0], patGr1Num, pb.getPatientsGroup1Comm(), pb.getPatientsSubGroup1().split("\n")[0], pb.getPatientsGroup2().split("\n")[0], patGr2Num, pb.getPatientsGroup2Comm(), pb.getPatientsSubGroup2().split("\n")[0], pb.getAdditionalcomments()}, index);
+            this.addItem(new Object[]{index, pb.getAuthor(), pb.getYear() + "", idNumber, quantProtNum, pb.getAnalyticalMethod(), rawDatalink,pb.getTypeOfStudy(), pb.getSampleType(), pb.getSampleMatching(), pb.getShotgunTargeted(), pb.getTechnology(), pb.getAnalyticalApproach(), pb.getEnzyme(), pb.getQuantificationBasis(), pb.getQuantBasisComment(), pb.getNormalizationStrategy(), pumedID, pb.getPatientsGroup1().split("\n")[0], patGr1Num, pb.getPatientsGroup1Comm(), pb.getPatientsSubGroup1().split("\n")[0], pb.getPatientsGroup2().split("\n")[0], patGr2Num, pb.getPatientsGroup2Comm(), pb.getPatientsSubGroup2().split("\n")[0], pb.getAdditionalcomments()}, index);
             dsIndexes[index] = pb.getDsKey();
             index++;
         }
         this.sort(new Object[]{"Year"}, new boolean[]{false});
+        this.setSortAscending(false);
+        int indexing = 1;
+
+        for (Object id : this.getItemIds()) {
+            Item item = this.getItem(id);
+            item.getItemProperty("Index").setValue(indexing);            
+            indexing++;
+        }
 
     }
 

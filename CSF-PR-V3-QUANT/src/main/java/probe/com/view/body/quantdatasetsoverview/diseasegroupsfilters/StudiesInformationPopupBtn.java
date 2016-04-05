@@ -95,7 +95,7 @@ public class StudiesInformationPopupBtn extends Button implements Button.ClickLi
         popupWindow.center();
         
 
-        popupWindow.setCaption("&nbsp;&nbsp;Study Information (" + selectedDsNumber + ")");
+        popupWindow.setCaption("<font color='gray' style='font-weight: bold;!important'>&nbsp;&nbsp;Study Information (" + selectedDsNumber + ")</font>");
         studiesPopupLayout.setInformationData(dsObjects);
 
         UI.getCurrent().addWindow(popupWindow);

@@ -17,6 +17,7 @@ import com.vaadin.ui.themes.Reindeer;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import org.apache.poi.ss.usermodel.CellStyle;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.beans.quant.QuantProtein;
@@ -360,6 +361,13 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
                 csvExport.setExportFileName("CSF-PR - Quant Datasets Information" + ".xls");
                 csvExport.setMimeType(ExcelExport.EXCEL_MIME_TYPE);
                 csvExport.setDisplayTotals(false);
+
+                csvExport.setDateDataFormat("0");
+                csvExport.setExcelFormatOfProperty("Index", "0");
+                csvExport.setExcelFormatOfProperty("#Quantified Proteins", "0");
+                 csvExport.setExcelFormatOfProperty("patientsGroup2Number", "0");
+                csvExport.setExcelFormatOfProperty("#patientsGroup1Number", "0");
+                
                 csvExport.export();
 
             }

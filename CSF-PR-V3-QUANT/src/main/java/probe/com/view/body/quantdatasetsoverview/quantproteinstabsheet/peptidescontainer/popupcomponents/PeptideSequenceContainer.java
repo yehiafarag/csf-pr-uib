@@ -91,9 +91,9 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
 //        LinkedHashSet<StackedBarPeptideComponent> lowSet = new LinkedHashSet<StackedBarPeptideComponent>();
         LinkedHashSet<StackedBarPeptideComponent> stableSet = new LinkedHashSet<StackedBarPeptideComponent>();
         for (StackedBarPeptideComponent peptideLayout : allPeptidesStackedBarComponentsMap) {
-            if (peptideLayout.getParam("trend").toString().equalsIgnoreCase("high")) {
+            if (peptideLayout.getParam("trend").toString().equalsIgnoreCase("increased")) {
                 highSet.add(peptideLayout);
-            } else if (peptideLayout.getParam("trend").toString().equalsIgnoreCase("stable") || peptideLayout.getParam("trend").toString().equalsIgnoreCase("noquant")) {
+            } else if (peptideLayout.getParam("trend").toString().equalsIgnoreCase("equal") || peptideLayout.getParam("trend").toString().equalsIgnoreCase("noquant")) {
                 stableSet.add(peptideLayout);
             }
 
@@ -108,7 +108,7 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
 
         for (StackedBarPeptideComponent peptideLayout : allPeptidesStackedBarComponentsMap) {
 
-            if (peptideLayout.getParam("trend").toString().equalsIgnoreCase("low")) {
+            if (peptideLayout.getParam("trend").toString().equalsIgnoreCase("decreased")) {
                 stableSet.add(peptideLayout);
             }
 

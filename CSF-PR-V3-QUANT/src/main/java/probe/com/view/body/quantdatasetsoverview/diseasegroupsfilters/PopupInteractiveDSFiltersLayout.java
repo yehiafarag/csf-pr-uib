@@ -80,7 +80,7 @@ public class PopupInteractiveDSFiltersLayout extends VerticalLayout implements L
         popupWindow.setDraggable(false);
         popupWindow.center();
 
-        popupWindow.setCaption("&nbsp;&nbsp;Dataset Expolorer Filters");
+        popupWindow.setCaption("<font color='gray' style='font-weight: bold;!important'>&nbsp;&nbsp;Dataset Expolorer Filters</font>");
 
         UI.getCurrent().addWindow(popupWindow);
         popupWindow.setPositionX(30);

@@ -61,7 +61,7 @@ public class StudiesInformationWindow extends VerticalLayout implements LayoutEv
         popupWindow.setDraggable(false);
         popupWindow.center();
 
-        popupWindow.setCaption("&nbsp;&nbsp;Datasets Information");
+        popupWindow.setCaption("<font color='gray' style='font-weight: bold;!important'>&nbsp;&nbsp;Datasets Information</font>");
 
         UI.getCurrent().addWindow(popupWindow);
         popupWindow.center();

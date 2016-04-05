@@ -743,8 +743,8 @@ public class CoreLogic implements Serializable {
 
     }
 
-    public byte[] exportBubbleChartAsPdf(JFreeChart chart, String fileName, String title) {
-        return exporter.exportBubbleChartAsPdf(chart, fileName, userFolderUrl, title);
+    public byte[] exportBubbleChartAsPdf(JFreeChart chart, String fileName, String title, int w,int h) {
+        return exporter.exportBubbleChartAsPdf(chart, fileName, userFolderUrl, title,w, h);
     }
 
     public byte[] exportfullReportAsZip(Map<String, Set<JFreeChart>> chartsMap, String fileName, String title, Set<ProteinInformationDataForExport> peptidesSet) {
@@ -1050,6 +1050,7 @@ public class CoreLogic implements Serializable {
             pGrII = comparison.getComparisonHeader().split(" / ")[1].trim();
             Set<String> pGrIISet = diseaseGroupsHeaderToOregenalDiseaseGroupsNames.get(pGrII);
 
+            
             for (QuantProtein quant : comparisonProtMap) {
                 boolean inverted = false;
                 String protAcc = quant.getUniprotAccession();

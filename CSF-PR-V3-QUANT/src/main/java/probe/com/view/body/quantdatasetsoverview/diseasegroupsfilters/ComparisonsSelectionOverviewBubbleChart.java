@@ -11,6 +11,8 @@ import com.vaadin.server.FileDownloader;
 import com.vaadin.server.StreamResource;
 import com.vaadin.server.StreamResource.StreamSource;
 import com.vaadin.server.ThemeResource;
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinResponse;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.AbsoluteLayout;
@@ -90,7 +92,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
     private final List<QuantProtein> searchQuantificationProtList;
     private boolean isNewImge = true;
     private byte imageData[];
-    private final String[] tooltipLabels = new String[]{"", " Low <img src='VAADIN/themes/dario-theme/img/greendot.png' alt='Low'>" + " ", " Low <img src='VAADIN/themes/dario-theme/img/lgreendot.png' alt='Low'>" + " ", " Stable <img src='VAADIN/themes/dario-theme/img/bluedot.png' alt='Stable'>" + " ", "  High <img src='VAADIN/themes/dario-theme/img/lreddot.png' alt='High'>" + " ", "  High <img src='VAADIN/themes/dario-theme/img/reddot.png' alt='High'>" + " ", ""};
+    private final String[] tooltipLabels = new String[]{"", " Decreased <img src='VAADIN/themes/dario-theme/img/greendot.png' alt='Decreased'>" + " ", " Decreased <img src='VAADIN/themes/dario-theme/img/lgreendot.png' alt='Decreased'>" + " ", " Equal <img src='VAADIN/themes/dario-theme/img/bluedot.png' alt='Equal'>" + " ", "  Increased <img src='VAADIN/themes/dario-theme/img/lreddot.png' alt='Increased'>" + " ", "  Increased <img src='VAADIN/themes/dario-theme/img/reddot.png' alt='Increased'>" + " ", ""};
     private final Map<String, Color> diseaseColorMap = new HashMap<String, Color>();
     private QuantDiseaseGroupsComparison userCustomizedComparison;
     private Color stableColor;
@@ -216,7 +218,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         btnContainerLayout.addComponent(appliedIcon);
 //        stableBtn.setStyleName("stablebtn");
 //        stableBtn.setHeight("24px");
-//        Label stableLabel = new Label("Stable");
+//        Label stableLabel = new Label("Equal");
 //        stableLabel.setWidth("44px");
 //        stableBtn.addComponent(stableLabel);
 
@@ -403,7 +405,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         btnContainerLayout.addComponent(appliedIcon);
 //        stableBtn.setStyleName("stablebtn");
 //        stableBtn.setHeight("24px");
-//        Label stableLabel = new Label("Stable");
+//        Label stableLabel = new Label("Equal");
 //        stableLabel.setWidth("44px");
 //        stableBtn.addComponent(stableLabel);
 
@@ -501,7 +503,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
             @SuppressWarnings("CallToPrintStackTrace")
             public InputStream getStream() {
                 try {
-                    byte[] pdfFile = CSFPR_Handler.exportBubbleChartAsPdf(chart, "bubblechart_comparisons_selection.pdf", "Proteins Overview");
+                    byte[] pdfFile = CSFPR_Handler.exportBubbleChartAsPdf(chart, "bubblechart_comparisons_selection.pdf", "Overview",(int)chartLayoutContainer.getWidth(),(int)chartLayoutContainer.getHeight());
                     return new ByteArrayInputStream(pdfFile);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -645,7 +647,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
         final Color[] labelsColor = new Color[]{Color.LIGHT_GRAY, new Color(80, 183, 71), Color.LIGHT_GRAY, new Color(1, 141, 244), Color.LIGHT_GRAY, new Color(204, 0, 0), Color.LIGHT_GRAY};
         Font font = new Font("Verdana", Font.BOLD, 13);
-        SymbolAxis yAxis = new SymbolAxis(null, new String[]{"  ", "Low", " ", "Stable", " ", "High", "  "}) {
+        SymbolAxis yAxis = new SymbolAxis(null, new String[]{"  ", "Decreased", " ", "Equal", " ", "Increased", "  "}) {
 
             int i = 0;
 
@@ -848,7 +850,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 //            private final Color[] labelsColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0), Color.decode("#b5babb")};
 //
 //            private final Font font = new Font("Verdana", Font.PLAIN, 12);
-//            private final String[] labels = new String[]{"Low 100%", "Low <100% ", "Stable", " High <100%", "High 100%", "No Quant. Info."};
+//            private final String[] labels = new String[]{"Decreased 100%", "Decreased <100% ", "Equal", " Increased <100%", "Increased 100%", "No Quant. Info."};
 //
 //            @Override
 //            public LegendItemCollection getLegendItems() {
@@ -1070,7 +1072,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
         final Color[] labelsColor = new Color[]{Color.WHITE, new Color(80, 183, 71), Color.LIGHT_GRAY, new Color(1, 141, 244), Color.LIGHT_GRAY, new Color(204, 0, 0), Color.WHITE};
         Font font = new Font("Verdana", Font.BOLD, 13);
-        SymbolAxis yAxis = new SymbolAxis(null, new String[]{"  ", "Low", " ", "Stable", " ", "High", "  "}) {
+        SymbolAxis yAxis = new SymbolAxis(null, new String[]{"  ", "Decreased", " ", "Equal", " ", "Increased", "  "}) {
             int x = 0;
 
             @Override
@@ -1263,7 +1265,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 //            private final Color[] labelsColor = new Color[]{new Color(0, 153, 0), new Color(0, 229, 132), new Color(1, 141, 244), new Color(255, 51, 51), new Color(204, 0, 0), Color.decode("#b5babb")};
 //
 //            private final Font font = new Font("Verdana", Font.PLAIN, 12);
-//            private final String[] labels = new String[]{"Low 100%", "Low <100% ", "Stable", " High <100%", "High 100%", "No Quant. Info."};
+//            private final String[] labels = new String[]{"Decreased 100%", "Decreased <100% ", "Equal", " Increased <100%", "Increased 100%", "No Quant. Info."};
 //
 //            @Override
 //            public LegendItemCollection getLegendItems() {

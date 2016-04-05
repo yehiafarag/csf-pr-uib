@@ -491,8 +491,8 @@ public class CSFPRHandler implements Serializable {
 
     }
 
-    public byte[] exportBubbleChartAsPdf(JFreeChart chart, String fileName, String title) {
-        return logicLayer.exportBubbleChartAsPdf(chart, fileName, title);
+    public byte[] exportBubbleChartAsPdf(JFreeChart chart, String fileName, String title, int w,int h) {
+        return logicLayer.exportBubbleChartAsPdf(chart, fileName, title,w, h);
     }
 
     public byte[] exportfullReportAsZip(Map<String, Set<JFreeChart>> chartsMap, String fileName, String title, Set<ProteinInformationDataForExport> peptidesSet) {

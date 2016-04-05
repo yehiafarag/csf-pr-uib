@@ -822,7 +822,7 @@ public class ProteinOverviewJFreeLineChartContainer1 extends HorizontalLayout {
         dataset.addSeries("line", linevalues);
         dataset.addSeries("up", upvalues);
         dataset.addSeries("midup", midupvalues);
-        dataset.addSeries("stable", stablevalues);
+        dataset.addSeries("equal", stablevalues);
         dataset.addSeries("middown", middownvalues);
         dataset.addSeries("down", downvalues);
         dataset.addSeries("empty", emptyValues);
@@ -941,7 +941,7 @@ public class ProteinOverviewJFreeLineChartContainer1 extends HorizontalLayout {
         xAxis.setTickLabelFont(font);
         xAxis.setLabelInsets(new RectangleInsets(2, 5, 2, 5));
         final Color[] labelsColor = new Color[]{new Color(80, 183, 71), Color.LIGHT_GRAY, new Color(1, 141, 244), Color.LIGHT_GRAY, Color.RED};
-        final String[] tickLabels = new String[]{"Low", " ", "Stable", " ", "High"};
+        final String[] tickLabels = new String[]{"Decreased", " ", "Equal", " ", "Increased"};
         SymbolAxis yAxis = new SymbolAxis(null, tickLabels) {
 
             int x = 0;
@@ -1081,7 +1081,7 @@ public class ProteinOverviewJFreeLineChartContainer1 extends HorizontalLayout {
 //            private final Color[] labelsOutColor = new Color[]{new Color(204, 0, 0), new Color(247, 119, 119), new Color(1, 141, 244), new Color(0, 229, 132), new Color(0, 153, 0), Color.GRAY, Color.GRAY, new Color(0, 229, 132)};
 //
 //            private final Font font = new Font("Verdana", Font.PLAIN, 11);
-//            private final String[] labels = new String[]{"High  100%", "High < 100%", "Stable", "Low < 100%", "Low  100%", "No Quant. Info.", "No Data"};
+//            private final String[] labels = new String[]{"Increased  100%", "Increased < 100%", "Equal", "Decreased < 100%", "Decreased  100%", "No Quant. Info.", "No Data"};
 //            private final Shape[] shapes = new Shape[]{upArr, upArr, notRShape, downArr, downArr, emptyRShape, emptyRShape, square};
 //
 //            @Override
@@ -1163,7 +1163,7 @@ public class ProteinOverviewJFreeLineChartContainer1 extends HorizontalLayout {
         return jFreeChart;
     }
 
-    private final String[] tooltipLabels = new String[]{"( Low <img src='VAADIN/themes/dario-theme/img/sdown.png' alt='Low'>" + " )", "( Low <img src='VAADIN/themes/dario-theme/img/sdown.png' alt='Low'>" + " )", "( Stable <img src='VAADIN/themes/dario-theme/img/snotreg.png' alt='Stable'>" + " )", " ( High <img src='VAADIN/themes/dario-theme/img/sup.png' alt='High'>" + " )", " ( High <img src='VAADIN/themes/dario-theme/img/sup.png' alt='High'>" + " )"};
+    private final String[] tooltipLabels = new String[]{"( Decreased <img src='VAADIN/themes/dario-theme/img/sdown.png' alt='Decreased'>" + " )", "( Decreased <img src='VAADIN/themes/dario-theme/img/sdown.png' alt='Decreased'>" + " )", "( Equal <img src='VAADIN/themes/dario-theme/img/snotreg.png' alt='Equal'>" + " )", " ( Increased <img src='VAADIN/themes/dario-theme/img/sup.png' alt='Increased'>" + " )", " ( Increased <img src='VAADIN/themes/dario-theme/img/sup.png' alt='Increased'>" + " )"};
 
     private String generateChartImage(JFreeChart jFreeChart, int w, int h, ChartRenderingInfo chartRenderingInfo, AbsoluteLayout layoutContainer) {
         String imgUrl = saveToFile(jFreeChart, w, h, chartRenderingInfo);

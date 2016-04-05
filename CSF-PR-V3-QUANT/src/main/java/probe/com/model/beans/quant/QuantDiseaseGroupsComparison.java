@@ -7,21 +7,27 @@ package probe.com.model.beans.quant;
 
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import java.io.Serializable;
-import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  *
  * @author Yehia Farag
  */
-public class QuantDiseaseGroupsComparison implements Serializable, Comparable<QuantDiseaseGroupsComparison>{
+public class QuantDiseaseGroupsComparison implements Serializable, Comparable<QuantDiseaseGroupsComparison> {
+
     private String comparisonHeader;
+    private String oreginalComparisonHeader;
     private int[] datasetIndexes;
     private Map<String, DiseaseGroupsComparisonsProteinLayout> comparProtsMap;
     private String rgbStringColor;
     private boolean useCustomRowHeaderToSort;
     private boolean useCustomColumnHeaderToSort;
+
+    public void switchComparison() {
+        comparisonHeader = comparisonHeader.split(" / ")[1] + " / " + comparisonHeader.split(" / ")[0];
+        comparProtsMap = null;
+
+    }
 
     public String getRgbStringColor() {
         return rgbStringColor;
@@ -31,7 +37,6 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
         this.rgbStringColor = rgbStringColor;
     }
 
-   
     /**
      *
      * @return
@@ -39,13 +44,33 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
     public String getComparisonHeader() {
         return comparisonHeader;
     }
-   
+
+    public String getOreginalComparisonHeader() {
+
+        return oreginalComparisonHeader;
+    }
+
+    public void resetComparisonHeader() {
+        if (!comparisonHeader.equalsIgnoreCase(oreginalComparisonHeader)) {
+            comparisonHeader = oreginalComparisonHeader;
+            comparProtsMap = null;
+        }
+        
+
+    }
+
     /**
      *
      * @param comparisonHeader
      */
     public void setComparisonHeader(String comparisonHeader) {
         this.comparisonHeader = comparisonHeader;
+
+    }
+
+    public void setOreginalComparisonHeader(String oreginalComparisonHeader) {
+        this.oreginalComparisonHeader = oreginalComparisonHeader;
+
     }
 
     /**
@@ -68,7 +93,7 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
      *
      * @return
      */
-    public Map<String, DiseaseGroupsComparisonsProteinLayout>  getComparProtsMap() {
+    public Map<String, DiseaseGroupsComparisonsProteinLayout> getComparProtsMap() {
         return comparProtsMap;
     }
 
@@ -76,7 +101,7 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
      *
      * @param comparProtsMap
      */
-    public void setComparProtsMap(Map<String, DiseaseGroupsComparisonsProteinLayout>  comparProtsMap) {
+    public void setComparProtsMap(Map<String, DiseaseGroupsComparisonsProteinLayout> comparProtsMap) {
         this.comparProtsMap = comparProtsMap;
     }
 
@@ -85,14 +110,12 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
         return this.comparisonHeader.compareTo(t.comparisonHeader);
     }
 
-    
     @Override
-    public String toString(){
-    
-        return comparisonHeader+" -- "+ comparProtsMap.size();
+    public String toString() {
+
+        return comparisonHeader + " -- " + comparProtsMap.size();
     }
 
-    
     public boolean isUseCustomRowHeaderToSort() {
         return useCustomRowHeaderToSort;
     }
@@ -109,5 +132,4 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
         this.useCustomColumnHeaderToSort = useCustomColumnHeaderToSort;
     }
 
-    
 }

@@ -67,7 +67,7 @@ public class PublicationsInformationWindow extends VerticalLayout implements Lay
         popupWindow.setStyleName(Reindeer.WINDOW_LIGHT);
         popupWindow.setModal(true);
         popupWindow.setDraggable(false);
-        popupWindow.setCaption("&nbsp;&nbsp;Publication Information");
+        popupWindow.setCaption("<font color='gray' style='font-weight: bold;!important'>&nbsp;&nbsp;Publication Information</font>");
 
         UI.getCurrent().addWindow(popupWindow);
         popupWindow.center();

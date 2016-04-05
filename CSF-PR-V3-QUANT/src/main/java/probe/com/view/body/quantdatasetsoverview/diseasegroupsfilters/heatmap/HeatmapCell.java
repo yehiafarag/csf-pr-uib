@@ -82,6 +82,7 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
         pointer = "default";
         this.comparison = new QuantDiseaseGroupsComparison();
         comparison.setComparisonHeader(groupCompTitle);
+        comparison.setOreginalComparisonHeader(groupCompTitle);
         comparison.setRgbStringColor(color);
         comparison.setDatasetIndexes(dsIndexes);
         if (color.equalsIgnoreCase("#EFF2FB") && value != 0) {
@@ -91,6 +92,7 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
 
             this.setDescription("<h3>Same type comparison ( " + updatedHeader + " )</h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + strValue + (value == 1 ? " Dataset" : " Datasets") + " </h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + publicationsNumber + (publicationsNumber == 1 ? " Publication" : " Publications") + " </h3>");
             comparison.setComparisonHeader(" / ");
+            comparison.setOreginalComparisonHeader(" / ");
             combinedHeader = true;
 
         } else if (value != 0) {
@@ -125,6 +127,7 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
             parent.resetHeadersStyle(colLabelIndex, rowLabelIndex);
 //            unselect();
         } else {
+         comparison.resetComparisonHeader();
 //            selected = true;
             parent.addSelectedDs(this.comparison, this);
             defaultStyle = "selectedheatmapcoloredcell";

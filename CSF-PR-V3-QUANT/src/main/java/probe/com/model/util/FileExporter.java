@@ -3,6 +3,7 @@ package probe.com.model.util;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.DefaultFontMapper;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfTemplate;
@@ -30,6 +31,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.SymbolAxis;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.title.TextTitle;
+import org.jfree.ui.RectangleEdge;
 import probe.com.model.beans.identification.IdentificationPeptideBean;
 import probe.com.model.util.vaadintoimageutil.peptideslayout.PeptidesSequenceContainer;
 import probe.com.model.util.vaadintoimageutil.peptideslayout.ProteinInformationDataForExport;
@@ -475,9 +477,9 @@ public class FileExporter implements Serializable {
 
     }
 
-    public byte[] exportBubbleChartAsPdf(JFreeChart chart, String fileName, String url, String title) {
-        int width = 842;
-        int height = 595;
+    public byte[] exportBubbleChartAsPdf(JFreeChart chart, String fileName, String url, String title, int w,int h) {
+        int width = w;//842;
+        int height = h ;// 595;
         Font font = new Font("Verdana", Font.PLAIN, 12);
         chart.getXYPlot().getDomainAxis().setTickLabelFont(font);
         chart.getXYPlot().getRangeAxis().setTickLabelFont(font);
@@ -485,8 +487,9 @@ public class FileExporter implements Serializable {
         TextTitle textTitle = new TextTitle(title, font);
         textTitle.setMargin(10, 0, 20, 0);
         textTitle.setPaint(Color.DARK_GRAY);
-
+        textTitle.setPosition(RectangleEdge.TOP);
         chart.setTitle(textTitle);
+        
         try {
             File csfFolder = new File(url);
             csfFolder.mkdir();
@@ -496,7 +499,7 @@ public class FileExporter implements Serializable {
                 file.delete();
                 System.out.println("file deleted");
             }
-            Document document = new Document(PageSize.A4.rotate());
+            Document document = new Document(new Rectangle(width, height));
 
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
 
@@ -627,7 +630,7 @@ public class FileExporter implements Serializable {
             JLabel proteinsOverviewLabel = new JLabel();
             proteinsOverviewLabel.setBackground(new java.awt.Color(255, 255, 255));
             proteinsOverviewLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-            proteinsOverviewLabel.setText("Proteins Overview");
+            proteinsOverviewLabel.setText("Overview");
             proteinsOverviewLabel.setSize(height, 37);
             proteinsOverviewLabel.setFont(resetFont);
             g2d.translate(32, starty);

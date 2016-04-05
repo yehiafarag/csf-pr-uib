@@ -43,7 +43,7 @@ public class KMeansClusteringPopupPanel extends Window {
         this.setCaptionAsHtml(true);
         this.setClosable(true);
 
-        this.setCaption("K-Means Clustering for <a href='http://www.uniprot.org/uniprot/" + proteinAccession + "'target=\"_blank\"> (" + proteinName + ")</a>");
+        this.setCaption("<font color='gray' style='font-weight: bold;!important'>K-Means Clustering for <a href='http://www.uniprot.org/uniprot/" + proteinAccession + "'target=\"_blank\"> (" + proteinName + ")</a></font>");
 
         this.mainBodyLayout = new VerticalLayout();
         height = height - 100;

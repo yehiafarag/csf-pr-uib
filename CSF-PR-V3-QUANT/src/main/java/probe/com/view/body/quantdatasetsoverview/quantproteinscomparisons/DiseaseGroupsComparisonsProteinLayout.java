@@ -148,10 +148,10 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
         stableLayout = new VerticalLayout();
         noValueProvidedLayout = new VerticalLayout();
         patientsNumToTrindMap.put("up", new ArrayList<Integer>());
-        patientsNumToTrindMap.put("stable", new ArrayList<Integer>());
+        patientsNumToTrindMap.put("equal", new ArrayList<Integer>());
         patientsNumToTrindMap.put("down", new ArrayList<Integer>());
         patientsNumToDSIDMap.put("up", new ArrayList<Integer>());
-        patientsNumToDSIDMap.put("stable", new ArrayList<Integer>());
+        patientsNumToDSIDMap.put("equal", new ArrayList<Integer>());
         patientsNumToDSIDMap.put("down", new ArrayList<Integer>());
         patientsNumToTrindMap.put("noValueProvided", new ArrayList<Integer>());
         patientsNumToDSIDMap.put("noValueProvided", new ArrayList<Integer>());
@@ -348,12 +348,12 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
     public void addStable(int patNumber, int dsID) {
         penalty += 0.5;
         this.stable += 1;
-        List<Integer> notRegList = this.patientsNumToTrindMap.get("stable");
+        List<Integer> notRegList = this.patientsNumToTrindMap.get("equal");
         notRegList.add(patNumber);
-        this.patientsNumToTrindMap.put("stable", notRegList);
-        List<Integer> notRegDsList = this.patientsNumToDSIDMap.get("stable");
+        this.patientsNumToTrindMap.put("equal", notRegList);
+        List<Integer> notRegDsList = this.patientsNumToDSIDMap.get("equal");
         notRegDsList.add(dsID);
-        this.patientsNumToDSIDMap.put("stable", notRegDsList);
+        this.patientsNumToDSIDMap.put("equal", notRegDsList);
     }
 
     /**
@@ -417,6 +417,7 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
         if (updated) {
             return;
         }
+        
         int dcounter = 0;
         int subTotal = this.total;
         fullDownLabelValue = "<font style='float: right;'><strong> " + df.format(((double) lowSignificant / (double) subTotal) * 100.0) + "% &#8595; </strong>&nbsp;</font>";
@@ -449,7 +450,7 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
 
             updateComponentLocation(emptyLayout, noValueProvidedLayout, stableLayout);
 
-            overall = "High (" + cellValue + ")";
+            overall = "Increased (" + cellValue + ")";
             if (stable > 0 || lowSignificant > 0) {
                 significantTrindCategory = 3;
                 overallCellPercentValue = Math.max((((double) (highSignificant - lowSignificant)) / (double) existStudiesNumber) * 100.0, 5.0);
@@ -462,7 +463,7 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
             trendataLayoutWrapper.setExpandRatio(stableLayoutWrapper, ((float) (subTotal - dcounter) / subTotal));
 
         } else if (cellValue == 0) {
-            overall = "Stable (" + cellValue + ")";
+            overall = "Equal (" + cellValue + ")";
             significantTrindCategory = 2;
             overallCellPercentValue = 0;
             updateComponentLocation(emptyLayout, stableLayout, noValueProvidedLayout);
@@ -482,7 +483,7 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
 
         } else {
             updateComponentLocation(stableLayout, noValueProvidedLayout, emptyLayout);
-            overall = "Low (" + cellValue + ")";
+            overall = "Decreased (" + cellValue + ")";
             if (stable > 0 || highSignificant > 0) {
                 significantTrindCategory = 1;
                 overallCellPercentValue = Math.max((((double) (lowSignificant - highSignificant)) / (double) existStudiesNumber) * 100.0, 5.0);
@@ -507,7 +508,7 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
             
         }
 
-        this.setDescription("Protein value: " + overallCellPercentValue + "%<br/>#Low: " + lowSignificant + "<br/>#Stable : " + stable + "<br/>#High: " + highSignificant + "<br/>Overall trend " + overall);
+        this.setDescription("Protein value: " + overallCellPercentValue + "%<br/>#Decreased: " + lowSignificant + "<br/>#Equal : " + stable + "<br/>#Increased: " + highSignificant + "<br/>Overall trend " + overall);
 
 
     }
@@ -518,7 +519,7 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
 
     @Override
     public String toString() {
-        return ("Low: " + lowSignificant + (lowSignificant == 1 ? " dataset" : " datasets") + "  -  Stable : " + stable + (stable == 1 ? " dataset" : " datasets") + " -  High: " + highSignificant + (highSignificant == 1 ? " dataset" : " datasets"));//"Low: " + lowSignificant +" ( "+ df.format(((double) lowSignificant / (double) total) * 100.0)+ "% )  /  Stable : " + stableSignificant + " /  High: " + highSignificant+" ( "+ df.format(((double) highSignificant / (double) total) * 100.0)+ "% )";
+        return ("Decreased: " + lowSignificant + (lowSignificant == 1 ? " dataset" : " datasets") + "  -  Equal : " + stable + (stable == 1 ? " dataset" : " datasets") + " -  Increased: " + highSignificant + (highSignificant == 1 ? " dataset" : " datasets"));//"Low: " + lowSignificant +" ( "+ df.format(((double) lowSignificant / (double) total) * 100.0)+ "% )  /  Stable : " + stableSignificant + " /  High: " + highSignificant+" ( "+ df.format(((double) highSignificant / (double) total) * 100.0)+ "% )";
 
     }
 
@@ -532,7 +533,7 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
         if (x == 0) {
             return patientsNumToDSIDMap.get("up").get(y);
         } else if (x == 1) {
-            return patientsNumToDSIDMap.get("stable").get(y);
+            return patientsNumToDSIDMap.get("equal").get(y);
         } else if (x == 2) {
             return patientsNumToDSIDMap.get("down").get(y);
         } else if (x == 3) {
@@ -547,7 +548,7 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
         if (regulation == 2) {
             return patientsNumToDSIDMap.get("up");
         } else if (regulation == 1) {
-            return patientsNumToDSIDMap.get("stable");
+            return patientsNumToDSIDMap.get("equal");
         } else if (regulation == 0) {
             return patientsNumToDSIDMap.get("down");
         } else if (regulation == 3) {
@@ -649,13 +650,16 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
 
     public void setCustomizedUserData(boolean isCustomized) {
         if (isCustomized) {
+            
             this.setStyleName("customizedproteinsLayout");
+             downLabel.setVisible(false);
+            upLabel.setVisible(false);
             if (highSignificant > 0) {
-                this.setDescription("High");
+                this.setDescription("Increased");
             } else if (lowSignificant > 0) {
-                this.setDescription("Low");
+                this.setDescription("Decreased");
             } else {
-                this.setDescription("Stable");
+                this.setDescription("Equal");
             }
 
         } else {

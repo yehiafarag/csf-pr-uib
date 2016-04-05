@@ -5,6 +5,7 @@
  */
 package probe.com.selectionmanager;
 
+import com.vaadin.ui.Button;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -35,6 +36,15 @@ public class QuantCentralManager implements Serializable {
     private final CSFPRHandler CSFPR_Handler;
     private final Map<String, String> diseaseHashedColorMap;
     private final Map<String, String> diseaseStyleMap;
+    private Button exportQuantTableBtn;
+
+    public Button getExportQuantTableBtn() {
+        return exportQuantTableBtn;
+    }
+
+    public void setExportQuantTableBtn(Button exportQuantTableBtn) {
+        this.exportQuantTableBtn = exportQuantTableBtn;
+    }
 
     public Map<String, String> getDiseaseStyleMap() {
         return diseaseStyleMap;
