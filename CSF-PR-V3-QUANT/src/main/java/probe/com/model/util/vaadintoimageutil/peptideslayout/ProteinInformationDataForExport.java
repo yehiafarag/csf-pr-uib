@@ -6,7 +6,6 @@
 package probe.com.model.util.vaadintoimageutil.peptideslayout;
 
 import java.io.Serializable;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**

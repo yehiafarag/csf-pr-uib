@@ -537,7 +537,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         xyplot.setBackgroundPaint(Color.WHITE);
         defaultScatterPlottImgUrl = saveToFile(tempScatterPlot, w, h, defaultScatterPlotRenderingInfo);
 
-        xyplot.setBackgroundPaint(c);
+//        xyplot.setBackgroundPaint(c);
 
         if (custTrend != -1) {
             domainAxis.setGridBandsVisible(true);
@@ -555,7 +555,8 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
 
         }
 
-        TextTitle title = new TextTitle(comparisonTitle.getValue(), f);
+        String textTitle = comparisonTitle.getValue().split("bold;'>")[1].replace("</font>", "");
+        TextTitle title = new TextTitle(textTitle, f);
 
         scatterPlot = new JFreeChart(xyplot);
         scatterPlot.setTitle(title);

@@ -729,10 +729,8 @@ public class CoreLogic implements Serializable {
         }
     }
 
-    public byte[] exportProteinsInfoCharts(Set<JFreeChart> component, String fileName, String title, Set<ProteinInformationDataForExport> peptidesSet) {
-        return exporter.exportProteinsInfoCharts(component, fileName, userFolderUrl, title, peptidesSet);
-//          
-//         "";//url + userFolder.getName() + "/" + pdfFile.getName();
+    public byte[] exportProteinsInfoCharts(Set<JFreeChart> component, String fileName, String title, Set<ProteinInformationDataForExport> peptidesSet, int w, int h) {
+        return exporter.exportProteinsInfoCharts(component, fileName, userFolderUrl, title, peptidesSet,  w,  h);
 
     }
 

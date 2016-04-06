@@ -481,8 +481,8 @@ public class CSFPRHandler implements Serializable {
 
     }
 
-    public byte[] exportProteinsInfoCharts(Set<JFreeChart> component, String fileName, String title, Set<ProteinInformationDataForExport> peptidesSet) {
-        return logicLayer.exportProteinsInfoCharts(component, fileName, title, peptidesSet);
+    public byte[] exportProteinsInfoCharts(Set<JFreeChart> component, String fileName, String title, Set<ProteinInformationDataForExport> peptidesSet, int w, int h) {
+        return logicLayer.exportProteinsInfoCharts(component, fileName, title, peptidesSet,w, h);
 
     }
 

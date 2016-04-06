@@ -110,14 +110,14 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
     private final AbsoluteLayout defaultChartLayout = new AbsoluteLayout();
     private final Image trendOrderedChartImage = new Image();
     private final AbsoluteLayout trendOrederdChartLayout = new AbsoluteLayout();
-    
+
     private final Set<ProteinInformationDataForExport> defaultPeptidesExportInfoSet;
     private Set<ProteinInformationDataForExport> orderedPeptidesExportInfoSet;
 
     private DiseaseGroupsComparisonsProteinLayout[] inUseComparisonProteins;
     private boolean verticalLabels;
     private XYPlot xyplot;
-        private int custTrend = -1;
+    private int custTrend = -1;
 
     /**
      *
@@ -181,18 +181,18 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
         }
 
-         VerticalLayout proteinOverviewPanelLayout = new VerticalLayout();
+        VerticalLayout proteinOverviewPanelLayout = new VerticalLayout();
         VerticalLayout studyOverviewPanelLayout = new VerticalLayout();
         this.addComponent(proteinOverviewPanelLayout);
         this.addComponent(studyOverviewPanelLayout);
         //init toplayout left
-         proteinOverviewPanelLayout.setSpacing(true);
+        proteinOverviewPanelLayout.setSpacing(true);
         proteinOverviewPanelLayout.setWidth("100%");
 
         HorizontalLayout topLayout = new HorizontalLayout();
         proteinOverviewPanelLayout.addComponent(topLayout);
         topLayout.setSpacing(true);
-       boolean isUniprot = Boolean.valueOf(proteinKey.split(",")[2].trim());
+        boolean isUniprot = Boolean.valueOf(proteinKey.split(",")[2].trim());
         Label overviewLabel;
         if (isUniprot) {
             overviewLabel = new Label("<font style='margin-left :50px'>Overview - <a href='http://www.uniprot.org/uniprot/" + proteinAccession.toUpperCase() + "' target='_blank'" + ">" + proteinName.replace("(", "__").split("__")[0].trim() + "</a>" + "</font> ");
@@ -225,7 +225,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
             }
             labelLetterCounter += qdcomp.getComparisonHeader().length();
         }
-        width = ((widthValue) / 2) - 20;
+        width = ((widthValue) / 2) - 40;
         if (verticalLabels) {
             chartHeight = 400 + (labelHeight *= 2.5);
         } else if (((double) labelLetterCounter / (double) width) < 0.4) {
@@ -252,7 +252,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
             }
         };
-
+       
         defaultLineChartContainer = new AbsoluteLayout();
         linechartContainerLayout.addComponent(defaultLineChartContainer);
         defaultLineChartContainer.setWidth(width + "px");
@@ -405,7 +405,6 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
             }
         });
 
-        
         studiesScatterChartsLayout = new StudiesPeptidesDetailsContainerLayout(Quant_Central_Manager, comparisonProteins, selectedComparisonList, (width), chartHeight - 2, custTrend);
         studyOverviewPanelLayout.addComponent(studiesScatterChartsLayout);
         defaultPeptidesExportInfoSet = studiesScatterChartsLayout.getDefaultPeptidesExportInfoSet();
@@ -452,18 +451,18 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
         }
 
-         VerticalLayout proteinOverviewPanelLayout = new VerticalLayout();
+        VerticalLayout proteinOverviewPanelLayout = new VerticalLayout();
         VerticalLayout studyOverviewPanelLayout = new VerticalLayout();
         this.addComponent(proteinOverviewPanelLayout);
         this.addComponent(studyOverviewPanelLayout);
         //init toplayout left
-         proteinOverviewPanelLayout.setSpacing(true);
+        proteinOverviewPanelLayout.setSpacing(true);
         proteinOverviewPanelLayout.setWidth("100%");
 
         HorizontalLayout topLayout = new HorizontalLayout();
         proteinOverviewPanelLayout.addComponent(topLayout);
         topLayout.setSpacing(true);
-       boolean isUniprot = Boolean.valueOf(proteinKey.split(",")[2].trim());
+        boolean isUniprot = Boolean.valueOf(proteinKey.split(",")[2].trim());
         Label overviewLabel;
         if (isUniprot) {
             overviewLabel = new Label("<font style='margin-left :50px'>Overview - <a href='http://www.uniprot.org/uniprot/" + proteinAccession.toUpperCase() + "'" + ">" + proteinName.replace("(", "__").split("__")[0].trim() + "</a>" + "</font> ");
@@ -496,7 +495,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
             }
             labelLetterCounter += qdcomp.getComparisonHeader().length();
         }
-        width = ((widthValue) / 2) - 20;
+        width = ((widthValue) / 2) - 40;
         if (verticalLabels) {
             chartHeight = 400 + (labelHeight *= 2.5);
         } else if (((double) labelLetterCounter / (double) width) < 0.4) {
@@ -676,18 +675,11 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
             }
         });
 
-        
         studiesScatterChartsLayout = new StudiesPeptidesDetailsContainerLayout(Quant_Central_Manager, comparisonProteins, selectedComparisonList, (width), chartHeight - 2, custTrend);
         studyOverviewPanelLayout.addComponent(studiesScatterChartsLayout);
         defaultPeptidesExportInfoSet = studiesScatterChartsLayout.getDefaultPeptidesExportInfoSet();
 
     }
-
-  
-    
-    
-
-    
 
     private JFreeChart generateLineChart(DiseaseGroupsComparisonsProteinLayout[] comparisonProteins, Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
 
@@ -972,21 +964,35 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         };
         xAxis.setTickLabelFont(font);
         xAxis.setLabelInsets(new RectangleInsets(2, 5, 2, 5));
-        final Color[] labelsColor = new Color[]{new Color(80, 183, 71), Color.LIGHT_GRAY, new Color(1, 141, 244), Color.LIGHT_GRAY, new Color(204, 0, 0)};
+
         final String[] tickLabels = new String[]{"Decreased", " ", "Equal", " ", "Increased"};
 
         NumberAxis yAxis = new NumberAxis() {
-
+            final Color[] labelsColor = new Color[]{new Color(80, 183, 71), Color.LIGHT_GRAY, new Color(1, 141, 244), Color.LIGHT_GRAY, new Color(204, 0, 0)};
             private int counter = 0;
 
             @Override
             public Paint getTickLabelPaint() {
 
+                if (counter >= 240) {
+
+                    counter = 0;
+                }
+
                 if (counter == 20) {
                     counter++;
                     return labelsColor[0];
                 }
+                if (counter == 21) {
+                    counter++;
+                    return labelsColor[0];
+                }
+
                 if (counter == 120) {
+                    counter++;
+                    return labelsColor[2];
+                }
+                if (counter == 121) {
                     counter++;
                     return labelsColor[2];
                 }
@@ -994,7 +1000,12 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                     counter++;
                     return labelsColor[4];
                 }
+                if (counter == 221) {
+                    counter++;
+                    return labelsColor[4];
+                }
                 counter++;
+
                 return super.getTickLabelPaint(); //To change body of generated methods, choose Tools | Templates.
             }
 
@@ -1415,7 +1426,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
                         set.add(defaultChart);
                         set.addAll(studiesScatterChartsLayout.getScatterCharts());
-                        byte[] pdfFile = CSFPR_Handler.exportProteinsInfoCharts(set, "proteins_information_charts.pdf", proteinName, defaultPeptidesExportInfoSet);
+                        byte[] pdfFile = CSFPR_Handler.exportProteinsInfoCharts(set, "proteins_information_charts.pdf", proteinName, defaultPeptidesExportInfoSet, (int) defaultLineChartContainer.getWidth(), (int) defaultLineChartContainer.getHeight());
                         return new ByteArrayInputStream(pdfFile);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -1426,7 +1437,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                     try {
                         set.add(orderedChart);
                         set.addAll(studiesScatterChartsLayout.getScatterCharts());
-                        byte[] pdfFile = CSFPR_Handler.exportProteinsInfoCharts(set, "proteins_information_charts.pdf", proteinName, orderedPeptidesExportInfoSet);
+                        byte[] pdfFile = CSFPR_Handler.exportProteinsInfoCharts(set, "proteins_information_charts.pdf", proteinName, orderedPeptidesExportInfoSet, (int) defaultLineChartContainer.getWidth(), (int) defaultLineChartContainer.getHeight());
                         return new ByteArrayInputStream(pdfFile);
                     } catch (Exception e) {
                         e.printStackTrace();

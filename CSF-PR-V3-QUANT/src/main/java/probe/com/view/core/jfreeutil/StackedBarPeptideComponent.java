@@ -22,9 +22,6 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
     private String defaultStyleShowAllMode;
     private boolean significant;
     private final String peptideKey;
-//    private final NetworkDiagram ptmDiagram;
-//    private final Options ptmOptions;
-
     public String getPeptideKey() {
         return peptideKey;
     }

@@ -3346,7 +3346,7 @@ public class DataBase implements Serializable {
     public List<Object[]> getPublicationList() {
 
         List<Object[]> publicationList = new ArrayList<Object[]>();
-        String selectStat = "SELECT * FROM  `publication_table` WHERE `active`='true' ORDER BY  `publication_table`.`year` DESC";
+        String selectStat = "SELECT * FROM  `publication_table` WHERE `active`='true' ORDER BY  `publication_table`.`year` DESC ,`publication_table`.`author` ";
         try {
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();

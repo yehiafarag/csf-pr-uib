@@ -41,7 +41,7 @@
 .v-table-column-selector {
     height: 0px;
     width: 0px;
-  }
+}
 /*.hidescroll{
     overflow:hidden;
 
@@ -2401,9 +2401,8 @@ border:3px solid #4d749f ;
 
 }
 
-
-.customizedproteinsLayout{
-color:rgba(255, 255, 255, .0)  !important;
+.customizedproteinsLayout div{
+    background-color:rgba(255, 255, 255, .0)  !important;
 }
 .customizedproteinsLayout div{
     cursor: pointer  !important;   
@@ -3839,7 +3838,7 @@ img {
     opacity:0;
 }
 .switchicon{
-     background-image: url(img/flip-v-updated.png);
+    background-image: url(img/flip-v-updated.png);
     background-size:auto 21px;
     height:20px !important;
     width:29px !important;    
@@ -3848,7 +3847,7 @@ img {
     background-repeat:no-repeat;
     background-position:center;
     cursor:pointer;    
-    
+
 }
 .switchtable b{
     text-decoration:underline;
@@ -3872,5 +3871,5 @@ img {
     background-color:whitesmoke;
     border:1px solid lightgray;
     border-radius:4px;
-    
+
 }

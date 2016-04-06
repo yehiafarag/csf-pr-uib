@@ -85,7 +85,9 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
             significantPeptidesContainer = new VerticalLayout();
             this.addComponent(significantPeptidesContainer);
 
+            stackedPeptides.clear();
             final LinkedHashSet<StackedBarPeptideComponent> allPeptidesStackedBarComponentsMap = this.initAllBarChartComponents(false, width - 140, sequence, quantPepSet, true, minMode);
+            stackedPeptides.addAll(allPeptidesStackedBarComponentsMap);
             allPeptidesComponent = new PeptideSequenceContainer((int)correctedWidth+40, allPeptidesStackedBarComponentsMap);
             allPeptidesContainer.addComponent(allPeptidesComponent);
              allPeptidesContainer.setComponentAlignment(allPeptidesComponent,Alignment.MIDDLE_CENTER);
@@ -532,6 +534,10 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
     }
 
     private List< StackedBarPeptideComponent> stackedPeptides = new ArrayList<StackedBarPeptideComponent>();
+
+    public void setStackedPeptides(List<StackedBarPeptideComponent> stackedPeptides) {
+        this.stackedPeptides = stackedPeptides;
+    }
 
     private int level = 1;
 

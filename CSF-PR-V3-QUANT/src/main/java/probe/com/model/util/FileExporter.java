@@ -185,8 +185,8 @@ public class FileExporter implements Serializable {
             for (IdentificationPeptideBean pb : allPeptides.values()) {
                 if (index > 65533) {
                     worksheet = workbook.createSheet();
-                     index = 0;
-                     HSSFRow headerRow2 = worksheet.createRow(0);
+                    index = 0;
+                    HSSFRow headerRow2 = worksheet.createRow(0);
                     for (String str : headerArr) {
                         HSSFCell cell = headerRow2.createCell(index);
                         cell.setCellValue(str);
@@ -262,10 +262,10 @@ public class FileExporter implements Serializable {
 
     }
 
-    public byte[] exportProteinsInfoCharts(Set<JFreeChart> chartsSet, String fileName, String url, String title, Set<ProteinInformationDataForExport> peptidesSet) {
-        int width = 595;
+    public byte[] exportProteinsInfoCharts(Set<JFreeChart> chartsSet, String fileName, String url, String title, Set<ProteinInformationDataForExport> peptidesSet, int w, int h) {
+        int width = w + 90;//595;
         int height = 842;
-        int startx = 30;
+        int startx = 20;
 
         try {
 
@@ -277,7 +277,7 @@ public class FileExporter implements Serializable {
                 file.delete();
                 System.out.println("file deleted");
             }
-            Document document = new Document();
+            Document document = new Document(new Rectangle(width, height));
 
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
 
@@ -307,25 +307,24 @@ public class FileExporter implements Serializable {
                     textTitle.setMargin(10, 0, 20, 0);
                     textTitle.setPaint(Color.DARK_GRAY);
                     chart.setTitle(textTitle);
-                    int labelHeight = 0;
-                    for (String str : ((SymbolAxis) chart.getXYPlot().getDomainAxis()).getSymbols()) {
-                        if ((str.length() * 6) > labelHeight) {
-                            labelHeight = (str.length() * 6);
-                        }
-                    }
-                    int chartHeight = 400 + labelHeight;
-                    rect2d = new Rectangle2D.Double(startx, starty, 505, chartHeight);
-                    starty += chartHeight + 20;
+//                    int labelHeight = 0;
+//                    for (String str : ((SymbolAxis) chart.getXYPlot().getDomainAxis()).getSymbols()) {
+//                        if ((str.length() * 6) > labelHeight) {
+//                            labelHeight = (str.length() * 6);
+//                        }
+//                    }
+//                    int chartHeight = 400 + labelHeight;
+//                    rect2d = new Rectangle2D.Double(startx, starty, 505, chartHeight);
+                    rect2d = new Rectangle2D.Double(startx, starty, w, h);
+                    starty += h + 20;
 
                 } else {
-                    rect2d = new Rectangle2D.Double(30, starty, 505, 250);
-                    starty += 270;
+                    rect2d = new Rectangle2D.Double(30, starty, w, 150);
+                    starty += 170;
 
                 }
                 chart.draw(g2d, rect2d);
-
                 counter++;
-
                 if (starty > 600) {
                     g2d.dispose();
                     contentByte.addTemplate(template, 0, 0);
@@ -337,29 +336,39 @@ public class FileExporter implements Serializable {
                 }
 
             }
-            g2d.dispose();
-            contentByte.addTemplate(template, 0, 0);
+            if (newpage) {
+                document.newPage();
+            }
 
-            /// peptides sequences
-//            document.setPageSize(PageSize.A4.rotate());
-            template = contentByte.createTemplate(width, height);
-            g2d = template.createGraphics(width, height, new DefaultFontMapper());
-            document.newPage();
-            g2d.translate(32, 0);
-
+            g2d.translate(0, starty);
             JLabel peptidesOverviewHeaderLabel = new JLabel();
             peptidesOverviewHeaderLabel.setBackground(new java.awt.Color(255, 255, 255));
-            peptidesOverviewHeaderLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+            peptidesOverviewHeaderLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             peptidesOverviewHeaderLabel.setText("Sequence Coverage");
             peptidesOverviewHeaderLabel.setSize(width, 37);
             peptidesOverviewHeaderLabel.setFont(new Font("Verdana", Font.PLAIN, 14));
             peptidesOverviewHeaderLabel.paint(g2d);
-            g2d.translate(0, 37);
+            starty += 37;
+
+            if (starty > 600) {
+                System.out.println("its a new page ");
+                g2d.dispose();
+                contentByte.addTemplate(template, 0, 0);
+                template = contentByte.createTemplate(width, height);
+                g2d = template.createGraphics(width, height, new DefaultFontMapper());
+                document.newPage();
+                starty = 30;
+                g2d.translate(32, 0);
+
+            } else {
+                g2d.translate(32, starty);
+            }
+
             int availableSpace = height - 10 - 37;
 
             for (ProteinInformationDataForExport peptidesInfo : peptidesSet) {
 
-                PeptidesSequenceContainer peptidesSequenceContainer = new PeptidesSequenceContainer(peptidesInfo, csfFolder.getParent());
+                PeptidesSequenceContainer peptidesSequenceContainer = new PeptidesSequenceContainer(peptidesInfo, csfFolder.getParent(),width);
                 starty = peptidesSequenceContainer.getCurrentHeight() + 10;
                 if (starty <= availableSpace) {
                     peptidesSequenceContainer.paint(g2d);
@@ -477,9 +486,9 @@ public class FileExporter implements Serializable {
 
     }
 
-    public byte[] exportBubbleChartAsPdf(JFreeChart chart, String fileName, String url, String title, int w,int h) {
+    public byte[] exportBubbleChartAsPdf(JFreeChart chart, String fileName, String url, String title, int w, int h) {
         int width = w;//842;
-        int height = h ;// 595;
+        int height = h;// 595;
         Font font = new Font("Verdana", Font.PLAIN, 12);
         chart.getXYPlot().getDomainAxis().setTickLabelFont(font);
         chart.getXYPlot().getRangeAxis().setTickLabelFont(font);
@@ -489,7 +498,7 @@ public class FileExporter implements Serializable {
         textTitle.setPaint(Color.DARK_GRAY);
         textTitle.setPosition(RectangleEdge.TOP);
         chart.setTitle(textTitle);
-        
+
         try {
             File csfFolder = new File(url);
             csfFolder.mkdir();
@@ -733,7 +742,7 @@ public class FileExporter implements Serializable {
 
             for (ProteinInformationDataForExport peptidesInfo : peptidesSet) {
 
-                PeptidesSequenceContainer peptidesSequenceContainer = new PeptidesSequenceContainer(peptidesInfo, csfFolder.getParent());
+                PeptidesSequenceContainer peptidesSequenceContainer = new PeptidesSequenceContainer(peptidesInfo, csfFolder.getParent(),width);
                 starty = peptidesSequenceContainer.getCurrentHeight() + 10;
                 if (starty <= availableSpace) {
                     peptidesSequenceContainer.paint(g2d);
