@@ -5,10 +5,14 @@
  */
 package probe.com.model.util.vaadintoimageutil.peptideslayout;
 
-import com.vaadin.ui.AbsoluteLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,6 +29,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import probe.com.view.core.jfreeutil.StackedBarPeptideComponent;
@@ -152,25 +157,26 @@ public class PeptidesSequenceContainer extends JPanel {
         int studyHeight = 0;
         seqContainerLayout.setLayout(null);
 
-        JPanel highPeptidesSequencesBar = new JPanel();
+        RotatedJPanel highPeptidesSequencesBar = new RotatedJPanel();
         highPeptidesSequencesBar.setLayout(null);
         highPeptidesSequencesBar.setLocation(50, 0);
-//        seqContainerLayout.add(highPeptidesSequencesBar);
 
         JPanel coveragePeptidesSequencesBar = new JPanel();
         coveragePeptidesSequencesBar.setLayout(null);
-        coveragePeptidesSequencesBar.setLocation(50, 0);
-        coveragePeptidesSequencesBar.setSize(w-100,15);
+        coveragePeptidesSequencesBar.setSize(w - 100, 15);
+        coveragePeptidesSequencesBar.setBackground(new Color(242, 242, 242));
+        Border b = new LineBorder(new Color(211, 211, 211));
+        coveragePeptidesSequencesBar.setBorder(b);
 
         JPanel stablePeptidesSequencesBar = new JPanel();
         stablePeptidesSequencesBar.setLayout(null);
         stablePeptidesSequencesBar.setLocation(50, 0);
-        stablePeptidesSequencesBar.add(highPeptidesSequencesBar);
+//        stablePeptidesSequencesBar.add(highPeptidesSequencesBar);
 
         JPanel lowPeptidesSequencesBar = new JPanel();
         lowPeptidesSequencesBar.setLayout(null);
         lowPeptidesSequencesBar.setLocation(50, 0);
-        lowPeptidesSequencesBar.add(highPeptidesSequencesBar);
+//        lowPeptidesSequencesBar.add(highPeptidesSequencesBar);
 
         LinkedHashSet<StackedBarPeptideComponent> highSet = new LinkedHashSet<StackedBarPeptideComponent>();
         LinkedHashSet<StackedBarPeptideComponent> stableSet = new LinkedHashSet<StackedBarPeptideComponent>();
@@ -191,19 +197,18 @@ public class PeptidesSequenceContainer extends JPanel {
 
         }
 
-//        ptmsLayoutMap.clear();
         int y = 0;
-//        if (!highSet.isEmpty()) {
-//            initPeptidesStackedBarComponentsLayout(highSet, highPeptidesSequencesBar, coveragePeptidesSequencesBar, true,w-100);
-//            y = (int) highPeptidesSequencesBar.getHeight() +10;
-//            highPeptidesSequencesBar.setLocation(50, 0);
-//            seqContainerLayout.add(highPeptidesSequencesBar);
-//            studyHeight+= y;
-//            
-//
-//        }
-        coveragePeptidesSequencesBar.setLocation(50,y);
-        coveragePeptidesSequencesBar.add(highPeptidesSequencesBar);
+        if (!highSet.isEmpty()) {
+            initPeptidesStackedBarComponentsLayout(highSet, highPeptidesSequencesBar, coveragePeptidesSequencesBar, true, w - 100, res);
+            y = (int) highPeptidesSequencesBar.getHeight() + 10;
+            highPeptidesSequencesBar.setLocation(50, 0);
+
+            seqContainerLayout.add(highPeptidesSequencesBar.getRotatedJPanel());
+            studyHeight += y;
+
+        }
+        coveragePeptidesSequencesBar.setLocation(50, y);
+        seqContainerLayout.add(coveragePeptidesSequencesBar);
         JLabel nTerminalLabel = new JLabel("N-");
         nTerminalLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         nTerminalLabel.setFont(new Font("Verdana", Font.PLAIN, 11));
@@ -267,9 +272,6 @@ public class PeptidesSequenceContainer extends JPanel {
 //        protSeqLayout2.setLocation(50, y);
 //        protSeqLayout2.setSize(w - 100, 15);
 //        seqContainerLayout.add(protSeqLayout2);
-
-       
-
 //        JPanel protSeqLayout3 = new JPanel();
 //        protSeqLayout3.setBackground(new Color(242, 242, 242));
 ////        Border b = new LineBorder(new Color(211, 211, 211));
@@ -335,9 +337,9 @@ public class PeptidesSequenceContainer extends JPanel {
 
     }
 
-    private JLabel initPeptideComponet(Color c, int w, int xlocation, int top) {
-        JLabel peptideComponent = new JLabel();
-        peptideComponent.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+    private JPanel initPeptideComponet(Color c, int w, int xlocation, int top) {
+        JPanel peptideComponent = new JPanel();
+//        peptideComponent.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         LineBorder border;
 //        if (w > 3) {
         border = new LineBorder(Color.DARK_GRAY, 1);
@@ -349,6 +351,7 @@ public class PeptidesSequenceContainer extends JPanel {
         peptideComponent.setBackground(c);
         peptideComponent.setOpaque(true);
         peptideComponent.setSize(w, 15);
+        peptideComponent.setPreferredSize(peptideComponent.getSize());
         peptideComponent.setLocation(xlocation, top);
 
         return peptideComponent;
@@ -417,12 +420,13 @@ public class PeptidesSequenceContainer extends JPanel {
         exportData.setTrend(-1);
         exportData.setTitle("Jia, Yan, et al.");
         exportData.setLevelsNumber(1);
-        StackedBarPeptideComponent peptide = new StackedBarPeptideComponent(292, 4, "key", "");
+        StackedBarPeptideComponent peptide = new StackedBarPeptideComponent(292, 4, "key", "ptm");
         peptide.setX0(292);
         peptide.setLevel(0);
         peptide.setWidth(4 + "px");
-        peptide.setStyleName("greenstackedlayout");
-        peptide.setParam(("trend"),("increased"));
+        peptide.setStyleName("redstackedlayout");
+        peptide.setParam(("trend"), ("increased"));
+
         List<StackedBarPeptideComponent> l = new ArrayList<StackedBarPeptideComponent>();
         l.add(peptide);
         exportData.setPeptidesInfoList(l);
@@ -436,125 +440,129 @@ public class PeptidesSequenceContainer extends JPanel {
         frame.setVisible(true);
         frame.setSize(1500, 1500);
         frame.add(con);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
     }
 
-    private void initPeptidesStackedBarComponentsLayout(LinkedHashSet<StackedBarPeptideComponent> stackedBarComponents, JPanel peptidesComponentsContainer, JPanel coverageContainer, boolean flip, int w) {
+    private void initPeptidesStackedBarComponentsLayout(LinkedHashSet<StackedBarPeptideComponent> stackedBarComponents, RotatedJPanel peptidesComponentsContainer, JPanel coverageContainer, boolean flip, int w, File res) {
 
-
-
-        peptidesComponentsContainer.setBackground(Color.CYAN);
+        peptidesComponentsContainer.setBackground(Color.WHITE);
         Border b = new LineBorder(new Color(211, 211, 211));
         peptidesComponentsContainer.setBorder(b);
         peptidesComponentsContainer.setSize(w, 15);
 
+        int top = 0;
+        List< StackedBarPeptideComponent> initLevel = new ArrayList<StackedBarPeptideComponent>(stackedBarComponents);
+        List< StackedBarPeptideComponent> updatedLevel = new ArrayList<StackedBarPeptideComponent>(stackedBarComponents);
+        List< StackedBarPeptideComponent> nextLevel = new ArrayList<StackedBarPeptideComponent>();
 
+        boolean existedPeptides = false;
+        boolean intersect = true;
+        while (intersect) {
+            intersect = false;
+            for (int x = 0; x < initLevel.size() && initLevel.size() > 1; x++) {
+                StackedBarPeptideComponent pepBarComp = (StackedBarPeptideComponent) initLevel.get(x);
+                for (int y = 0; y < initLevel.size(); y++) {
+                    if (y <= x) {
+                        continue;
+                    }
+                    StackedBarPeptideComponent pepBarComp2 = (StackedBarPeptideComponent) initLevel.get(y);
+                    boolean check;
+                    if (pepBarComp.getX0() > pepBarComp2.getX0()) {
+                        check = checkIntersect(pepBarComp2, pepBarComp);
+                    } else {
+                        check = checkIntersect(pepBarComp, pepBarComp2);
+                    }
+                    if (check) {
+                        intersect = true;
+                        if (pepBarComp.getWidthArea() > pepBarComp2.getWidthArea()) {
+                            updatedLevel.remove(y);
+                            pepBarComp2.setLevel(pepBarComp2.getLevel() + 1);
+                            nextLevel.add(pepBarComp2);
+                        } else if (pepBarComp.getWidthArea() == pepBarComp2.getWidthArea()) {
+                            if (!pepBarComp2.isSignificant()) {
+                                updatedLevel.remove(y);
+                                pepBarComp2.setLevel(pepBarComp2.getLevel() + 1);
+                                nextLevel.add(pepBarComp2);
+                            } else {
+                                updatedLevel.remove(x);
+                                pepBarComp.setLevel(pepBarComp.getLevel() + 1);
+                                nextLevel.add(pepBarComp);
 
+                            }
 
+                        } else {
+                            updatedLevel.remove(x);
+                            pepBarComp.setLevel(pepBarComp.getLevel() + 1);
+                            nextLevel.add(pepBarComp);
+                        }
+                        initLevel.clear();
+                        initLevel.addAll(updatedLevel);
 
+                        break;
+                    }
 
+                }
+                if (intersect) {
+                    break;
+                }
 
+            }
 
-//        int top = 0;
-//        List< StackedBarPeptideComponent> initLevel = new ArrayList<StackedBarPeptideComponent>(stackedBarComponents);
-//        List< StackedBarPeptideComponent> updatedLevel = new ArrayList<StackedBarPeptideComponent>(stackedBarComponents);
-//        List< StackedBarPeptideComponent> nextLevel = new ArrayList<StackedBarPeptideComponent>();
-//
-//        boolean existedPeptides = false;
-//        boolean intersect = true;
-//        while (intersect) {
-//            intersect = false;
-//            for (int x = 0; x < initLevel.size() && initLevel.size() > 1; x++) {
-//                StackedBarPeptideComponent pepBarComp = (StackedBarPeptideComponent) initLevel.get(x);
-//                for (int y = 0; y < initLevel.size(); y++) {
-//                    if (y <= x) {
-//                        continue;
-//                    }
-//                    StackedBarPeptideComponent pepBarComp2 = (StackedBarPeptideComponent) initLevel.get(y);
-//                    boolean check;
-//                    if (pepBarComp.getX0() > pepBarComp2.getX0()) {
-//                        check = checkIntersect(pepBarComp2, pepBarComp);
-//                    } else {
-//                        check = checkIntersect(pepBarComp, pepBarComp2);
-//                    }
-//                    if (check) {
-//                        intersect = true;
-//                        if (pepBarComp.getWidthArea() > pepBarComp2.getWidthArea()) {
-//                            updatedLevel.remove(y);
-//                            pepBarComp2.setLevel(pepBarComp2.getLevel() + 1);
-//                            nextLevel.add(pepBarComp2);
-//                        } else if (pepBarComp.getWidthArea() == pepBarComp2.getWidthArea()) {
-//                            if (!pepBarComp2.isSignificant()) {
-//                                updatedLevel.remove(y);
-//                                pepBarComp2.setLevel(pepBarComp2.getLevel() + 1);
-//                                nextLevel.add(pepBarComp2);
-//                            } else {
-//                                updatedLevel.remove(x);
-//                                pepBarComp.setLevel(pepBarComp.getLevel() + 1);
-//                                nextLevel.add(pepBarComp);
-//
-//                            }
-//
-//                        } else {
-//                            updatedLevel.remove(x);
-//                            pepBarComp.setLevel(pepBarComp.getLevel() + 1);
-//                            nextLevel.add(pepBarComp);
-//                        }
-//                        initLevel.clear();
-//                        initLevel.addAll(updatedLevel);
-//
-//                        break;
-//                    }
-//
-//                }
-//                if (intersect) {
-//                    break;
-//                }
-//
-//            }
-//
-//            if (!intersect) {
-//                for (StackedBarPeptideComponent pepBarComp : updatedLevel) {
-//                    peptidesComponentsContainer.addComponent(pepBarComp, "left: " + (pepBarComp.getX0() - 20) + "px; top: " + (top + 10) + "px;");
-//                    existedPeptides = true;
-//                    if (pepBarComp.isPtmAvailable()) {
-//                        if (flip) {
-//                            peptidesComponentsContainer.addComponent(pepBarComp.getPtmLayout(), "left: " + (pepBarComp.getX0() - 20 + (pepBarComp.getWidth() / 2) - 5) + "px; top: " + (top + 21) + "px;");
-//                        } else {
-//                            peptidesComponentsContainer.addComponent(pepBarComp.getPtmLayout(), "left: " + (pepBarComp.getX0() - 20 + (pepBarComp.getWidth() / 2) - 5) + "px; top: " + (top - 4) + "px;");
-//                        }
+            if (!intersect) {
+                for (StackedBarPeptideComponent pepBarComp : updatedLevel) {
+                    int step = top + (pepBarComp.getLevel() * 30);
+                    int x = 50 + (int) ((double) pepBarComp.getX0() * resizeFactor);
+                    int pepW = (int) (pepBarComp.getWidth() * resizeFactor);
+                    JPanel peptideComponent = initPeptideComponet(peptidesColorMap.get(pepBarComp.getStyleName()), pepW, x, step);
+
+                    peptidesComponentsContainer.add(peptideComponent);
+                    existedPeptides = true;
+                    if (pepBarComp.isPtmAvailable()) {
+                        if (flip) {
+                            int ptmX = x;
+                            if (pepW >= 10) {
+                                ptmX = x + (int) Math.round(pepW / 2);
+                            } else {
+                                ptmX = x - ((10 - pepW) / 2);
+                            }
+
+                            JLabel ptm = initPTMComponent(res, ptmX, step + 15, pepBarComp.getPtmLayout().getStyleName());
+                            peptidesComponentsContainer.add(ptm);
+                        } else {
+                            JLabel ptm = initPTMComponent(res, (x + ((int) pepBarComp.getWidth() / 2)), step - 4, pepBarComp.getPtmLayout().getStyleName());
+                            peptidesComponentsContainer.add(ptm);
+                        }
 //                        pepBarComp.getPtmLayout().setVisible(true);
-//                        ptmsLayoutMap.add(pepBarComp.getPtmLayout());
-//                    }
-//
-//                }
-//                updatedLevel.clear();
-//                updatedLevel.addAll(initLevel);
-//                initLevel.clear();
-//
-//            }
-//            if (!intersect && !nextLevel.isEmpty()) {
-//
-//                initLevel.clear();
-//                updatedLevel.clear();
-//                initLevel.addAll(nextLevel);
-//                updatedLevel.addAll(nextLevel);
-//                nextLevel.clear();
-//                intersect = true;
-//                top = top + 20;
-//            }
-//
-//        }
+                    }
+
+                }
+                updatedLevel.clear();
+                updatedLevel.addAll(initLevel);
+                initLevel.clear();
+
+            }
+            if (!intersect && !nextLevel.isEmpty()) {
+
+                initLevel.clear();
+                updatedLevel.clear();
+                initLevel.addAll(nextLevel);
+                updatedLevel.addAll(nextLevel);
+                nextLevel.clear();
+                intersect = true;
+                top = top + 20;
+            }
+
+        }
 //        if (stackedPeptides.isEmpty()) {
 //            stackedPeptides.addAll(stackedBarComponents);
 //        }
-//        if (existedPeptides) {
-//            top = top + 40;
-//            peptidesComponentsContainer.setHeight(Math.max(40, top) + "px");
-//        } else {
-//            peptidesComponentsContainer.setHeight("0px");
-//        }
-
+        if (existedPeptides) {
+            top = top + 40;
+            peptidesComponentsContainer.setSize(w, Math.max(40, top));
+        } else {
+            peptidesComponentsContainer.setSize(w, 0);
+        }
     }
 
     private boolean checkIntersect(StackedBarPeptideComponent smallXComp, StackedBarPeptideComponent bigXComp) {
@@ -582,6 +590,19 @@ public class PeptidesSequenceContainer extends JPanel {
         return test;
 
     }
-//
+
+    public BufferedImage toImg() {
+
+//        Dimension oreginal =  this.getSize();
+//        this.setSize((int)(this.getWidth()*0.03), (int)(this.getHeight()*0.3));
+        this.doLayout();
+        BufferedImage img = new BufferedImage((int)(this.getWidth()), (int)(this.getHeight()), BufferedImage.TYPE_INT_RGB);
+        Graphics g = img.getGraphics();
+        this.paint(g);
+        g.dispose();
+//        this.setSize(oreginal);
+//        this.doLayout();
+        return img;
+    }
 
 }

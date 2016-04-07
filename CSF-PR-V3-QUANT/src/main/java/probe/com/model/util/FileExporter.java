@@ -1,7 +1,9 @@
 package probe.com.model.util;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.DefaultFontMapper;
@@ -11,6 +13,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,6 +35,7 @@ import org.jfree.chart.axis.SymbolAxis;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.ui.RectangleEdge;
+import org.mozilla.javascript.tools.debugger.Dim;
 import probe.com.model.beans.identification.IdentificationPeptideBean;
 import probe.com.model.util.vaadintoimageutil.peptideslayout.PeptidesSequenceContainer;
 import probe.com.model.util.vaadintoimageutil.peptideslayout.ProteinInformationDataForExport;
@@ -292,7 +296,7 @@ public class FileExporter implements Serializable {
             int counter = 0;
 
             template = contentByte.createTemplate(width, height);
-            g2d = template.createGraphics(width, height, new DefaultFontMapper());
+            g2d = template.createGraphics(width, height, new DefaultFontMapper(), true, 1);
             Rectangle2D rect2d;
             boolean newpage = false;
             for (JFreeChart chart : chartsSet) {
@@ -330,7 +334,7 @@ public class FileExporter implements Serializable {
                     contentByte.addTemplate(template, 0, 0);
                     newpage = true;
                     template = contentByte.createTemplate(width, height);
-                    g2d = template.createGraphics(width, height, new DefaultFontMapper());
+                    g2d = template.createGraphics(width, height, new DefaultFontMapper(), true, 1);
                     starty = 30;
 
                 }
@@ -355,7 +359,7 @@ public class FileExporter implements Serializable {
                 g2d.dispose();
                 contentByte.addTemplate(template, 0, 0);
                 template = contentByte.createTemplate(width, height);
-                g2d = template.createGraphics(width, height, new DefaultFontMapper());
+                g2d = template.createGraphics(width, height, new DefaultFontMapper(), true, 1);
                 document.newPage();
                 starty = 30;
                 g2d.translate(32, 0);
@@ -366,12 +370,32 @@ public class FileExporter implements Serializable {
 
             int availableSpace = height - 10 - 37;
 
+            g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+            g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
             for (ProteinInformationDataForExport peptidesInfo : peptidesSet) {
 
-                PeptidesSequenceContainer peptidesSequenceContainer = new PeptidesSequenceContainer(peptidesInfo, csfFolder.getParent(),width);
+                PeptidesSequenceContainer peptidesSequenceContainer = new PeptidesSequenceContainer(peptidesInfo, csfFolder.getParent(), width);
                 starty = peptidesSequenceContainer.getCurrentHeight() + 10;
                 if (starty <= availableSpace) {
-                    peptidesSequenceContainer.paint(g2d);
+                    Image jpepImg =Image.getInstance(peptidesSequenceContainer.toImg(),null);
+//                    jpepImg.scaleAbsolute(peptidesSequenceContainer.getWidth(), peptidesSequenceContainer.getHeight());
+//                   
+                    System.out.println("i added to doc "+jpepImg.getDpiX()+"  "+jpepImg.getDpiY());
+                    jpepImg.setDpi(360 , 360);
+                    jpepImg.scalePercent(100);
+                     document.add(jpepImg); 
+                     jpepImg.setCompressionLevel(0);
+                     jpepImg.scaleToFit(peptidesSequenceContainer.getWidth(), peptidesSequenceContainer.getHeight());
+                     System.out.println("i added to doc "+jpepImg.getDpiX()+"  "+jpepImg.getDpiY());
+//                    g2d.drawImage(null, null, peptidesSequenceContainer)
+//                    
+//                    peptidesSequenceContainer.paint(g2d);
                     g2d.translate(0, starty);
                     availableSpace = availableSpace - starty;
 
@@ -379,7 +403,15 @@ public class FileExporter implements Serializable {
                     g2d.dispose();
                     contentByte.addTemplate(template, 0, 0);
                     template = contentByte.createTemplate(width, height);
-                    g2d = template.createGraphics(width, height, new DefaultFontMapper());
+                    g2d = template.createGraphics(width, height, new DefaultFontMapper(), true, 1);
+                    g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+                    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                    g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+                    g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+                    g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+                    g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                    g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+                    g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
                     document.newPage();
                     g2d.translate(32, 0);
                     availableSpace = height - 10;
@@ -436,7 +468,15 @@ public class FileExporter implements Serializable {
 
             int counter = 0;
             template = contentByte.createTemplate(width, height);
-            g2d = template.createGraphics(width, height, new DefaultFontMapper());
+            g2d = template.createGraphics(width, height, new DefaultFontMapper(), true, 1);
+            g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+            g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
             JLabel headerLabel = new JLabel();
             headerLabel.setBackground(new java.awt.Color(255, 255, 255));
@@ -521,7 +561,7 @@ public class FileExporter implements Serializable {
             Graphics2D g2d;
 
             template = contentByte.createTemplate(width, height);
-            g2d = template.createGraphics(width, height, new DefaultFontMapper());
+            g2d = template.createGraphics(width, height, new DefaultFontMapper(), true, 1);
 
             Rectangle2D rect2d = new Rectangle2D.Double(10, 10, width - 20, height - 20);
             chart.draw(g2d, rect2d);
@@ -580,7 +620,7 @@ public class FileExporter implements Serializable {
             PdfTemplate template;
             Graphics2D g2d;
             template = contentByte.createTemplate(width, height);
-            g2d = template.createGraphics(width, height, false, 0.084666f);
+            g2d = template.createGraphics(width, height, true, 1);
 
             JLabel reportTiltleLabel = new JLabel();
             reportTiltleLabel.setBackground(new java.awt.Color(255, 255, 255));
@@ -630,7 +670,7 @@ public class FileExporter implements Serializable {
 
             document.setPageSize(PageSize.A4.rotate());
             template = contentByte.createTemplate(height, width);
-            g2d = template.createGraphics(height, width, new DefaultFontMapper());
+            g2d = template.createGraphics(height, width, new DefaultFontMapper(), true, 1);
             document.newPage();
 
             //bubble chart
@@ -658,7 +698,7 @@ public class FileExporter implements Serializable {
             //selected protein overview chart
             document.setPageSize(PageSize.A4);
             template = contentByte.createTemplate(width, height);
-            g2d = template.createGraphics(width, height, new DefaultFontMapper());
+            g2d = template.createGraphics(width, height, new DefaultFontMapper(), true, 1);
             document.newPage();
 
             starty = 10;
@@ -712,7 +752,7 @@ public class FileExporter implements Serializable {
                     contentByte.addTemplate(template, 0, 0);
                     newpage = true;
                     template = contentByte.createTemplate(width, height);
-                    g2d = template.createGraphics(width, height, new DefaultFontMapper());
+                    g2d = template.createGraphics(width, height, new DefaultFontMapper(), true, 1);
                     starty = 30;
                     startx = 32;
 
@@ -726,7 +766,7 @@ public class FileExporter implements Serializable {
             /// peptides sequences
 //            document.setPageSize(PageSize.A4.rotate());
             template = contentByte.createTemplate(width, height);
-            g2d = template.createGraphics(width, height, new DefaultFontMapper());
+            g2d = template.createGraphics(width, height, new DefaultFontMapper(), true, 1);
             document.newPage();
             g2d.translate(32, 0);
 
@@ -742,7 +782,7 @@ public class FileExporter implements Serializable {
 
             for (ProteinInformationDataForExport peptidesInfo : peptidesSet) {
 
-                PeptidesSequenceContainer peptidesSequenceContainer = new PeptidesSequenceContainer(peptidesInfo, csfFolder.getParent(),width);
+                PeptidesSequenceContainer peptidesSequenceContainer = new PeptidesSequenceContainer(peptidesInfo, csfFolder.getParent(), width);
                 starty = peptidesSequenceContainer.getCurrentHeight() + 10;
                 if (starty <= availableSpace) {
                     peptidesSequenceContainer.paint(g2d);
@@ -753,7 +793,7 @@ public class FileExporter implements Serializable {
                     g2d.dispose();
                     contentByte.addTemplate(template, 0, 0);
                     template = contentByte.createTemplate(width, height);
-                    g2d = template.createGraphics(width, height, new DefaultFontMapper());
+                    g2d = template.createGraphics(width, height, new DefaultFontMapper(), true, 1);
                     document.newPage();
                     g2d.translate(32, 0);
                     availableSpace = height - 10;
