@@ -72,7 +72,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
 //      Tab 2 content quant dataset overview
         quantDatasetsOverviewPanel = new Panel();
         pageHeight = Page.getCurrent().getBrowserWindowHeight();
-        bodyHeight = (pageHeight - 100);
+        bodyHeight = (pageHeight - 150);
 
         quantDatasetsOverviewPanel.setHeight(bodyHeight + "px");
         quantDatasetsOverviewPanel.setWidth("100%");

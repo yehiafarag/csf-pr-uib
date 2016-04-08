@@ -6,12 +6,10 @@
 package probe.com.model.util.vaadintoimageutil.peptideslayout;
 
 import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -84,6 +82,7 @@ public class PeptidesSequenceContainer extends JPanel {
             protSeqContainerLayout.setLayout(null);
             int labelWidth = 145;//width - info.getCoverageWidth();
             resizeFactor = (width - 210) / (double) info.getCoverageWidth();
+            System.out.println("resize factor  " + resizeFactor);
             JLabel studyLable1 = initSubLabel(info.getTitle(), labelWidth);
             studyLable1.setLocation(0, 10);
             protSeqContainerLayout.add(studyLable1);
@@ -168,11 +167,10 @@ public class PeptidesSequenceContainer extends JPanel {
         Border b = new LineBorder(new Color(211, 211, 211));
         coveragePeptidesSequencesBar.setBorder(b);
 
-        JPanel stablePeptidesSequencesBar = new JPanel();
+        RotatedJPanel stablePeptidesSequencesBar = new RotatedJPanel();
         stablePeptidesSequencesBar.setLayout(null);
-        stablePeptidesSequencesBar.setLocation(50, 0);
-//        stablePeptidesSequencesBar.add(highPeptidesSequencesBar);
 
+//        stablePeptidesSequencesBar.add(highPeptidesSequencesBar);
         JPanel lowPeptidesSequencesBar = new JPanel();
         lowPeptidesSequencesBar.setLayout(null);
         lowPeptidesSequencesBar.setLocation(50, 0);
@@ -226,7 +224,15 @@ public class PeptidesSequenceContainer extends JPanel {
         seqContainerLayout.add(cTerminalLabel);
 
         y += 20;
-        studyHeight += 20;
+        studyHeight += 30;
+
+        if (!stableSet.isEmpty()) {
+            initPeptidesStackedBarComponentsLayout(stableSet, stablePeptidesSequencesBar, coveragePeptidesSequencesBar, false, w - 100, res);
+            stablePeptidesSequencesBar.setLocation(50, y);
+            seqContainerLayout.add(stablePeptidesSequencesBar);
+            y = y + (int) stablePeptidesSequencesBar.getHeight() + 10;
+            studyHeight += y;
+        }
 
 //        this.addComponent(coveragePeptidesSequencesBar, "left: " + (19) + "px; top: " + (top) + "px;");
 //        this.addTerminalLabels(top, (int) this.getWidth());
@@ -383,75 +389,109 @@ public class PeptidesSequenceContainer extends JPanel {
     }
 
     public static void main(String[] args) {
-        ProteinInformationDataForExport dummyData = new ProteinInformationDataForExport();
-        dummyData.setSequence("MKEASGVGGGHSPMCPPHCHMPPGPAGEWPGATVQQPRQRAPTALLQPDAAGPGGGGVSA\n"
-                + "GVAVLGACPSASEGVLPRPPGRSAPQPPEYPGRPDMAVPGWSAMVRSRLTATSTSQATDH\n"
-                + "TFLQKSHYHHGDHPSYAKPRLPLPVFTVRHYAGTVTYQVHKFLNRNRDQLDPAVVEMLGQ\n"
-                + "SQLQLVGSLFQEAEPQSRGGRGRPTLASRFQQALEDLIARLGRSHVYFIQCLTPNPGKLP\n"
-                + "GLFDVGHVTEQLHQAAILEAVGTRSANFPVRVPFEAFLASFQALGSEGQEDLSDREKCGA\n"
-                + "VLSQVLGAESPLYHLGATKVLLQEQGWQRLEELRDQQRSQALVDLHRSFHTCISRQRVLP\n"
-                + "RMQARMRGFQARKRYLRRRAALGQLNTILLVAQPLLQRRQRLQLGRWQGWHSSERALERV\n"
-                + "PSMELGRLEIPAELAVMLKTAESHRDALAGSITECLPPEVPARPSLTLPADIDLFPFSSF\n"
-                + "VAIGFQEPSLPRPGQPLAKPLTQLDGDNPQRALDINKVMLRLLGDGSLESWQRQIMGAYL\n"
-                + "VRQGQCWPGLRNELFSQLVAQLWQNPDEQQSQRGWALMAVLLSAFPPLPVLQKPLLKFVS\n"
-                + "DQAPRGMAALCQHKLLGALEQSQLASGATRAHPPTQLEWLAGWRRGRMALDVFTFSEECY\n"
-                + "SAEVESWTTGEQLAGWILQSRGLEAPPRGWSVSLHSRDAWQDLAGCDFVLDLISQTEDLG\n"
-                + "DPARPRSYPITPLGSAEAIPLAPGIQAPSLPPGPPPGPAPTLPSRDHTGEVQRSGSLDGF\n"
-                + "LDQIFQPVISSGLSDLEQSWALSSRMKGGGAIGPTQQGYPMVYPGMIQMPAYQPGMVPAP\n"
-                + "MPMMPAMGTVPAMPAMVVPPQPPLPSLDAGQLAVQQQNFIQQQALILAQQMTAQAMSLSL\n"
-                + "EQQMQQRQQQARASEAASQASPSAVTSKPRKPPTPPEKPQRDLGSEGGCLRETSEEAEDR\n"
-                + "PYQPKSFQQKRNYFQRMGQPQITVRTMKPPAKVHIPQGEAQEEEEEEEEEEEQEEQEVET\n"
-                + "RAVPSPPPPPIVKKPLKQGGAKAPKEAEAEPAKETAAKGHGQGPAQGRGTVVRSSDSKPK\n"
-                + "RPQPSREIGNIIRMYQSRPGPVPVPVQPSRPPKAFLRKIDPKDEALAKLGINGAHSSPPM\n"
-                + "LSPSPGKGPPPAVAPRPKAPLQLGPSSSIKEKQGPLLDLFGQKLPIAHTPPPPPAPPLPL\n"
-                + "PEDPGTLSAERRCLTQPVEDQGVSTQLLAPSGSVCFSYTGTPWKLFLRKEVFYPRENFSH\n"
-                + "PYYLRLLCEQILRDTFSESCIRISQNERRKMKDLLGGLEVDLDSLTTTEDSVKKRIVVAA\n"
-                + "RDNWANYFSRFFPVSGESGSDVQLLAVSHRGLRLLKVTQGPGLRPDQLKILCSYSFAEVL\n"
-                + "GVECRGGSTLELSLKSEQLVLHTARARAIEALVELFLNELKKDSGYVIALRSYITDNCSL\n"
-                + "LSFHRGDLIKLLPVATLEPGWQFGSAGGRSGLFPADIVQPAAAPDFSFSKEQRSGWHKGQ\n"
-                + "LSNGEPGLARWDRASEVRKMGEGQAEARPA");
+        try {
+            ProteinInformationDataForExport dummyData = new ProteinInformationDataForExport();
+            dummyData.setSequence("MKEASGVGGGHSPMCPPHCHMPPGPAGEWPGATVQQPRQRAPTALLQPDAAGPGGGGVSA\n"
+                    + "GVAVLGACPSASEGVLPRPPGRSAPQPPEYPGRPDMAVPGWSAMVRSRLTATSTSQATDH\n"
+                    + "TFLQKSHYHHGDHPSYAKPRLPLPVFTVRHYAGTVTYQVHKFLNRNRDQLDPAVVEMLGQ\n"
+                    + "SQLQLVGSLFQEAEPQSRGGRGRPTLASRFQQALEDLIARLGRSHVYFIQCLTPNPGKLP\n"
+                    + "GLFDVGHVTEQLHQAAILEAVGTRSANFPVRVPFEAFLASFQALGSEGQEDLSDREKCGA\n"
+                    + "VLSQVLGAESPLYHLGATKVLLQEQGWQRLEELRDQQRSQALVDLHRSFHTCISRQRVLP\n"
+                    + "RMQARMRGFQARKRYLRRRAALGQLNTILLVAQPLLQRRQRLQLGRWQGWHSSERALERV\n"
+                    + "PSMELGRLEIPAELAVMLKTAESHRDALAGSITECLPPEVPARPSLTLPADIDLFPFSSF\n"
+                    + "VAIGFQEPSLPRPGQPLAKPLTQLDGDNPQRALDINKVMLRLLGDGSLESWQRQIMGAYL\n"
+                    + "VRQGQCWPGLRNELFSQLVAQLWQNPDEQQSQRGWALMAVLLSAFPPLPVLQKPLLKFVS\n"
+                    + "DQAPRGMAALCQHKLLGALEQSQLASGATRAHPPTQLEWLAGWRRGRMALDVFTFSEECY\n"
+                    + "SAEVESWTTGEQLAGWILQSRGLEAPPRGWSVSLHSRDAWQDLAGCDFVLDLISQTEDLG\n"
+                    + "DPARPRSYPITPLGSAEAIPLAPGIQAPSLPPGPPPGPAPTLPSRDHTGEVQRSGSLDGF\n"
+                    + "LDQIFQPVISSGLSDLEQSWALSSRMKGGGAIGPTQQGYPMVYPGMIQMPAYQPGMVPAP\n"
+                    + "MPMMPAMGTVPAMPAMVVPPQPPLPSLDAGQLAVQQQNFIQQQALILAQQMTAQAMSLSL\n"
+                    + "EQQMQQRQQQARASEAASQASPSAVTSKPRKPPTPPEKPQRDLGSEGGCLRETSEEAEDR\n"
+                    + "PYQPKSFQQKRNYFQRMGQPQITVRTMKPPAKVHIPQGEAQEEEEEEEEEEEQEEQEVET\n"
+                    + "RAVPSPPPPPIVKKPLKQGGAKAPKEAEAEPAKETAAKGHGQGPAQGRGTVVRSSDSKPK\n"
+                    + "RPQPSREIGNIIRMYQSRPGPVPVPVQPSRPPKAFLRKIDPKDEALAKLGINGAHSSPPM\n"
+                    + "LSPSPGKGPPPAVAPRPKAPLQLGPSSSIKEKQGPLLDLFGQKLPIAHTPPPPPAPPLPL\n"
+                    + "PEDPGTLSAERRCLTQPVEDQGVSTQLLAPSGSVCFSYTGTPWKLFLRKEVFYPRENFSH\n"
+                    + "PYYLRLLCEQILRDTFSESCIRISQNERRKMKDLLGGLEVDLDSLTTTEDSVKKRIVVAA\n"
+                    + "RDNWANYFSRFFPVSGESGSDVQLLAVSHRGLRLLKVTQGPGLRPDQLKILCSYSFAEVL\n"
+                    + "GVECRGGSTLELSLKSEQLVLHTARARAIEALVELFLNELKKDSGYVIALRSYITDNCSL\n"
+                    + "LSFHRGDLIKLLPVATLEPGWQFGSAGGRSGLFPADIVQPAAAPDFSFSKEQRSGWHKGQ\n"
+                    + "LSNGEPGLARWDRASEVRKMGEGQAEARPA");
 
-        dummyData.setComparisonsTitle("SPMS / Healthy* (#Datasets 1/1)");
+            dummyData.setComparisonsTitle("SPMS / Healthy* (#Datasets 1/1)");
 
-        Map studiesMap = new LinkedHashMap<String, StudyInfoData>();
-        StudyInfoData exportData = new StudyInfoData();
-        exportData.setCoverageWidth(610);
-        exportData.setSubTitle("#Patients (32)");
-        exportData.setTrend(-1);
-        exportData.setTitle("Jia, Yan, et al.");
-        exportData.setLevelsNumber(1);
-        StackedBarPeptideComponent peptide = new StackedBarPeptideComponent(292, 4, "key", "ptm");
-        peptide.setX0(292);
-        peptide.setLevel(0);
-        peptide.setWidth(4 + "px");
-        peptide.setStyleName("redstackedlayout");
-        peptide.setParam(("trend"), ("increased"));
+            Map studiesMap = new LinkedHashMap<String, StudyInfoData>();
+            StudyInfoData exportData = new StudyInfoData();
+            exportData.setCoverageWidth(610);
+            exportData.setSubTitle("#Patients (32)");
+            exportData.setTrend(-1);
+            exportData.setTitle("Jia, Yan, et al.");
+            exportData.setLevelsNumber(2);
+            StackedBarPeptideComponent peptide = new StackedBarPeptideComponent(292, 20, "key", "ptm");
+            peptide.setX0(292);
+            peptide.setLevel(0);
+            peptide.setWidth(20 + "px");
+            peptide.setStyleName("redstackedlayout");
+            peptide.setParam(("trend"), ("increased"));
+            peptide.setParam("end", 312);
+            peptide.setParam("start", 292);
 
-        List<StackedBarPeptideComponent> l = new ArrayList<StackedBarPeptideComponent>();
-        l.add(peptide);
-        exportData.setPeptidesInfoList(l);
+            List<StackedBarPeptideComponent> l = new ArrayList<StackedBarPeptideComponent>();
+            l.add(peptide);
 
-        studiesMap.put("" + 1, exportData);
+            StackedBarPeptideComponent peptide2 = new StackedBarPeptideComponent(302, 15, "key2", "ptm");
+            peptide2.setX0(302);
+            peptide2.setLevel(0);
+            peptide2.setWidth(15 + "px");
+            peptide2.setStyleName("greenstackedlayout");
+            peptide2.setParam(("trend"), ("decreased"));
+            peptide2.setParam("end", 317);
+            peptide2.setParam("start", 302);
 
-        dummyData.setStudies(studiesMap);
+            l.add(peptide2);
 
-        PeptidesSequenceContainer con = new PeptidesSequenceContainer(dummyData, "D:\\CSF_Files", 1500);
-        JFrame frame = new JFrame();
-        frame.setVisible(true);
-        frame.setSize(1500, 1500);
-        frame.add(con);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            exportData.setPeptidesInfoList(l);
+
+            studiesMap.put("" + 1, exportData);
+
+            dummyData.setStudies(studiesMap);
+
+            PeptidesSequenceContainer con = new PeptidesSequenceContainer(dummyData, "D:\\CSF_Files", 1500);
+            JFrame frame = new JFrame() {
+
+                @Override
+                public int getDefaultCloseOperation() {
+                    File file = new File("D:\\CSF_Files\\proteins_information_charts.pdf");
+                    if (file.exists()) {
+                        file.delete();
+                        System.out.println("file deleted");
+                    }
+
+                    return super.getDefaultCloseOperation(); //To change body of generated methods, choose Tools | Templates.
+                }
+
+            };
+            frame.setVisible(true);
+            frame.setSize(1500, 842);
+            frame.add(con);
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        } catch (Exception ex) {
+            Logger.getLogger(PeptidesSequenceContainer.class.getName()).log(Level.SEVERE, null, ex);
+            System.exit(0);
+        }
 
     }
 
     private void initPeptidesStackedBarComponentsLayout(LinkedHashSet<StackedBarPeptideComponent> stackedBarComponents, RotatedJPanel peptidesComponentsContainer, JPanel coverageContainer, boolean flip, int w, File res) {
 
         peptidesComponentsContainer.setBackground(Color.WHITE);
-        Border b = new LineBorder(new Color(211, 211, 211));
-        peptidesComponentsContainer.setBorder(b);
         peptidesComponentsContainer.setSize(w, 15);
 
-        int top = 0;
+        int top = 5;
+        if (flip) {
+            top = 0;
+        }
         List< StackedBarPeptideComponent> initLevel = new ArrayList<StackedBarPeptideComponent>(stackedBarComponents);
         List< StackedBarPeptideComponent> updatedLevel = new ArrayList<StackedBarPeptideComponent>(stackedBarComponents);
         List< StackedBarPeptideComponent> nextLevel = new ArrayList<StackedBarPeptideComponent>();
@@ -461,6 +501,7 @@ public class PeptidesSequenceContainer extends JPanel {
         while (intersect) {
             intersect = false;
             for (int x = 0; x < initLevel.size() && initLevel.size() > 1; x++) {
+
                 StackedBarPeptideComponent pepBarComp = (StackedBarPeptideComponent) initLevel.get(x);
                 for (int y = 0; y < initLevel.size(); y++) {
                     if (y <= x) {
@@ -511,30 +552,38 @@ public class PeptidesSequenceContainer extends JPanel {
 
             if (!intersect) {
                 for (StackedBarPeptideComponent pepBarComp : updatedLevel) {
-                    int step = top + (pepBarComp.getLevel() * 30);
+                    int step = top;//;+ (pepBarComp.getLevel() * 30);
                     int x = 50 + (int) ((double) pepBarComp.getX0() * resizeFactor);
                     int pepW = (int) (pepBarComp.getWidth() * resizeFactor);
                     JPanel peptideComponent = initPeptideComponet(peptidesColorMap.get(pepBarComp.getStyleName()), pepW, x, step);
 
-                    peptidesComponentsContainer.add(peptideComponent);
                     existedPeptides = true;
                     if (pepBarComp.isPtmAvailable()) {
-                        if (flip) {
-                            int ptmX = x;
+                         int ptmX = x;
                             if (pepW >= 10) {
-                                ptmX = x + (int) Math.round(pepW / 2);
+                                ptmX = x - 5 + (int) Math.round(pepW / 2);
                             } else {
                                 ptmX = x - ((10 - pepW) / 2);
                             }
+                            if (flip) {                           
 
-                            JLabel ptm = initPTMComponent(res, ptmX, step + 15, pepBarComp.getPtmLayout().getStyleName());
+                            JLabel ptm = initPTMComponent(res, ptmX, step + 10, pepBarComp.getPtmLayout().getStyleName());
                             peptidesComponentsContainer.add(ptm);
                         } else {
-                            JLabel ptm = initPTMComponent(res, (x + ((int) pepBarComp.getWidth() / 2)), step - 4, pepBarComp.getPtmLayout().getStyleName());
+                            JLabel ptm = initPTMComponent(res, ptmX, step - 4, pepBarComp.getPtmLayout().getStyleName());
                             peptidesComponentsContainer.add(ptm);
                         }
 //                        pepBarComp.getPtmLayout().setVisible(true);
                     }
+                    peptidesComponentsContainer.add(peptideComponent);
+                    Component coverP = coverageContainer.getComponentAt((x - 2), 0);
+                    if (coverP != coverageContainer && coverP instanceof JPanel) {
+                        coverP.setSize(coverP.getWidth() + (int) resizeFactor + 1, coverP.getHeight());
+
+                    }
+                    JPanel coveragePeptideComponent = initPeptideComponet(Color.DARK_GRAY, pepW, x, 0);
+
+                    coverageContainer.add(coveragePeptideComponent);
 
                 }
                 updatedLevel.clear();
@@ -550,16 +599,13 @@ public class PeptidesSequenceContainer extends JPanel {
                 updatedLevel.addAll(nextLevel);
                 nextLevel.clear();
                 intersect = true;
-                top = top + 20;
+                top = top + 25;
             }
 
         }
-//        if (stackedPeptides.isEmpty()) {
-//            stackedPeptides.addAll(stackedBarComponents);
-//        }
         if (existedPeptides) {
-            top = top + 40;
-            peptidesComponentsContainer.setSize(w, Math.max(40, top));
+            top = top + 30;
+            peptidesComponentsContainer.setSize(w, Math.max(20, top));
         } else {
             peptidesComponentsContainer.setSize(w, 0);
         }
@@ -592,16 +638,11 @@ public class PeptidesSequenceContainer extends JPanel {
     }
 
     public BufferedImage toImg() {
-
-//        Dimension oreginal =  this.getSize();
-//        this.setSize((int)(this.getWidth()*0.03), (int)(this.getHeight()*0.3));
         this.doLayout();
-        BufferedImage img = new BufferedImage((int)(this.getWidth()), (int)(this.getHeight()), BufferedImage.TYPE_INT_RGB);
+        BufferedImage img = new BufferedImage((int) (this.getWidth()), (int) (this.getHeight()), BufferedImage.TYPE_INT_RGB);
         Graphics g = img.getGraphics();
         this.paint(g);
         g.dispose();
-//        this.setSize(oreginal);
-//        this.doLayout();
         return img;
     }
 

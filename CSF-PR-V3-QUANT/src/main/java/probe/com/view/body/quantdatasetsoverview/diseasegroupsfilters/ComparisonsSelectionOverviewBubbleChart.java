@@ -85,7 +85,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
     private final VerticalLayout emptySelectionLayout;
     private JFreeChart chart;
     private final AbsoluteLayout chartLayout = new AbsoluteLayout();
-     private final AbsoluteLayout chartLayoutContainer = new AbsoluteLayout();
+    private final AbsoluteLayout chartLayoutContainer = new AbsoluteLayout();
     private final HorizontalLayout bottomLayout = new HorizontalLayout();
     private final HorizontalLayout topLayout = new HorizontalLayout();
     private final Button exportPdfBtn;
@@ -112,7 +112,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         this.chartLayout.setWidth(updatedWidth + "px");
         emptySelectionLayout.setWidth(updatedWidth + "px");
         this.chartLayout.setHeight(height + "px");
-          this.chartLayoutContainer.setWidth(updatedWidth + "px");
+        this.chartLayoutContainer.setWidth(updatedWidth + "px");
         this.chartLayoutContainer.setHeight(height + "px");
         if (chart == null) {
             return;
@@ -124,7 +124,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
     }
 
     private final Map<String, double[]> tooltipsProtNumberMap = new HashMap<String, double[]>();
-    private final  GroupSwichBtn groupSwichBtn;
+    private final GroupSwichBtn groupSwichBtn;
 
     public ComparisonsSelectionOverviewBubbleChart(final QuantCentralManager Quant_Central_Manager, final CSFPRHandler CSFPR_Handler, int chartWidth, int chartHeight, Set<QuantDiseaseGroupsComparison> selectedComparisonList, List<QuantProtein> searchQuantificationProtList) {
 
@@ -163,15 +163,13 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
         //end of toplayout
         //init chartlayout
-        
         this.chartLayoutContainer.setVisible(false);
         this.addComponent(chartLayoutContainer);
         chartLayoutContainer.setWidth(width + "px");
         chartLayoutContainer.setHeight(height + "px");
-        
-        
-        chartLayoutContainer.addComponent(chartImage,"left: " + 0 + "px; top: " + 0 + "px;");
-        chartLayoutContainer.addComponent(chartLayout,"left: " + 0 + "px; top: " + 0 + "px;");
+
+        chartLayoutContainer.addComponent(chartImage, "left: " + 0 + "px; top: " + 0 + "px;");
+        chartLayoutContainer.addComponent(chartLayout, "left: " + 0 + "px; top: " + 0 + "px;");
         chartLayout.setWidth(width + "px");
         chartLayout.setHeight(height + "px");
         chartLayout.addLayoutClickListener(ComparisonsSelectionOverviewBubbleChart.this);
@@ -205,11 +203,9 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 //        stableBtnWrapper.addComponent(stableBtn);
 //        stableBtnWrapper.setComponentAlignment(stableBtn, Alignment.TOP_LEFT);
 //        btnContainerLayout.addComponent(stableBtnWrapper);
-        
-         groupSwichBtn = new GroupSwichBtn(Quant_Central_Manager,searchQuantificationProtList);
-         btnContainerLayout.addComponent(groupSwichBtn);
-        
-        
+        groupSwichBtn = new GroupSwichBtn(Quant_Central_Manager, searchQuantificationProtList);
+        btnContainerLayout.addComponent(groupSwichBtn);
+
         final VerticalLayout appliedIcon = new VerticalLayout();
         appliedIcon.setStyleName("appliedicon");
         appliedIcon.setWidth("24px");
@@ -294,7 +290,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         spacer.setHeight("100px");
         spacer.setWidth("10px");
         spacer.setStyleName(Reindeer.LAYOUT_WHITE);
-        emptySelectionLayout.addComponent(spacer);        
+        emptySelectionLayout.addComponent(spacer);
         emptySelectionLayout.setComponentAlignment(spacer, Alignment.BOTTOM_RIGHT);
 
         Label startLabel = new Label("<center><h2 style='color:gray;'><b>Select comparison from the table</b></h2></center>");
@@ -351,19 +347,16 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         //init chartlayout
         this.chartLayoutContainer.setVisible(false);
         this.addComponent(chartLayoutContainer);
-        
-        
+
         this.addComponent(chartLayoutContainer);
         chartLayoutContainer.setWidth(width + "px");
         chartLayoutContainer.setHeight(height + "px");
-        
-        
-        chartLayoutContainer.addComponent(chartImage,"left: " + 0 + "px; top: " + 0 + "px;");
-        chartLayoutContainer.addComponent(chartLayout,"left: " + 0 + "px; top: " + 0 + "px;");
+
+        chartLayoutContainer.addComponent(chartImage, "left: " + 0 + "px; top: " + 0 + "px;");
+        chartLayoutContainer.addComponent(chartLayout, "left: " + 0 + "px; top: " + 0 + "px;");
         chartLayout.setWidth(width + "px");
         chartLayout.setHeight(height + "px");
         chartLayout.addLayoutClickListener(ComparisonsSelectionOverviewBubbleChart.this);
-       
 
         //end of chartlayout
         //init bottomlayout 
@@ -394,9 +387,8 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 //        stableBtnWrapper.addComponent(stableBtn);
 //        stableBtnWrapper.setComponentAlignment(stableBtn, Alignment.TOP_LEFT);
 //        btnContainerLayout.addComponent(stableBtnWrapper);
-        
-        groupSwichBtn = new GroupSwichBtn(Quant_Central_Manager,searchQuantificationProtList);
-         btnContainerLayout.addComponent(groupSwichBtn);
+        groupSwichBtn = new GroupSwichBtn(Quant_Central_Manager, searchQuantificationProtList);
+        btnContainerLayout.addComponent(groupSwichBtn);
         final VerticalLayout appliedIcon = new VerticalLayout();
         appliedIcon.setStyleName("appliedicon");
         appliedIcon.setWidth("24px");
@@ -503,7 +495,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
             @SuppressWarnings("CallToPrintStackTrace")
             public InputStream getStream() {
                 try {
-                    byte[] pdfFile = CSFPR_Handler.exportBubbleChartAsPdf(chart, "bubblechart_comparisons_selection.pdf", "Overview",(int)chartLayoutContainer.getWidth(),(int)chartLayoutContainer.getHeight());
+                    byte[] pdfFile = CSFPR_Handler.exportBubbleChartAsPdf(chart, "bubblechart_comparisons_selection.pdf", "Overview", (int) chartLayoutContainer.getWidth(), (int) chartLayoutContainer.getHeight());
                     return new ByteArrayInputStream(pdfFile);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -558,14 +550,13 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         final Map<Integer, Color[]> seriousColorMap = new HashMap<Integer, Color[]>();
         Color[] dataColor = new Color[]{Color.WHITE, new Color(0, 153, 0), new Color(0, 229, 132), stableColor, new Color(247, 119, 119), new Color(204, 0, 0), Color.WHITE};
 
-          double[] yAxisValueI = new double[]{0,0,0,0,0,0,0};
-          double[] xAxisValueI = new double[]{0,0,0,0,0,0,0};
-          double[] widthValueI = new double[]{0,0,0,0,0,0,0};
-          double[][] seriesValuesI = {yAxisValueI, xAxisValueI, widthValueI}; 
-          seriousColorMap.put(0, new Color[]{Color.WHITE,Color.WHITE,Color.WHITE,Color.WHITE,Color.WHITE,Color.WHITE,Color.WHITE});
-          defaultxyzdataset.addSeries("   ", seriesValuesI);
-        
-        
+        double[] yAxisValueI = new double[]{0, 0, 0, 0, 0, 0, 0};
+        double[] xAxisValueI = new double[]{0, 0, 0, 0, 0, 0, 0};
+        double[] widthValueI = new double[]{0, 0, 0, 0, 0, 0, 0};
+        double[][] seriesValuesI = {yAxisValueI, xAxisValueI, widthValueI};
+        seriousColorMap.put(0, new Color[]{Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE});
+        defaultxyzdataset.addSeries("   ", seriesValuesI);
+
         for (QuantDiseaseGroupsComparison qc : selectedComparisonList) {
 
             double[] tempWidthValue = new double[8];
@@ -620,7 +611,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
             for (int x = 0; x < tempWidthValue.length; x++) {
                 if (tempWidthValue[x] > 0) {
                     xAxisValue[length] = x;
-                    yAxisValue[length] = counter+1;
+                    yAxisValue[length] = counter + 1;
                     widthValue[length] = tempWidthValue[x];
                     serColorArr[length] = dataColor[x];
                     length++;
@@ -631,19 +622,18 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
             if (length == 1 && selectedComparisonList.size() == 1) {
                 widthValue[0] = 1;
             }
-            seriousColorMap.put(counter+1, serColorArr);
+            seriousColorMap.put(counter + 1, serColorArr);
 
             double[][] seriesValues = {yAxisValue, xAxisValue, widthValue};
             defaultxyzdataset.addSeries(qc.getComparisonHeader(), seriesValues);
             counter++;
         }
-           double[] yAxisValueII = new double[0];
-            double[] xAxisValueII = new double[0];
-            double[] widthValueII = new double[0];
-              seriousColorMap.put(counter+1, new Color[]{});
-             double[][] seriesValuesII = {yAxisValueII, xAxisValueII, widthValueII};            
-         defaultxyzdataset.addSeries(" ", seriesValuesII);
-        
+        double[] yAxisValueII = new double[0];
+        double[] xAxisValueII = new double[0];
+        double[] widthValueII = new double[0];
+        seriousColorMap.put(counter + 1, new Color[]{});
+        double[][] seriesValuesII = {yAxisValueII, xAxisValueII, widthValueII};
+        defaultxyzdataset.addSeries(" ", seriesValuesII);
 
         final Color[] labelsColor = new Color[]{Color.LIGHT_GRAY, new Color(80, 183, 71), Color.LIGHT_GRAY, new Color(1, 141, 244), Color.LIGHT_GRAY, new Color(204, 0, 0), Color.LIGHT_GRAY};
         Font font = new Font("Verdana", Font.BOLD, 13);
@@ -680,16 +670,16 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         yAxis.setTickMarksVisible(false);
         yAxis.setUpperBound(6);
 
-        String[] xAxisLabels = new String[selectedComparisonList.size()+2];
+        String[] xAxisLabels = new String[selectedComparisonList.size() + 2];
         int x = 0;
-        xAxisLabels[x]="";
+        xAxisLabels[x] = "";
         int maxLength = -1;
         //init labels color
 
-        final Color[] diseaseGroupslabelsColor = new Color[selectedComparisonList.size()+2];
-        diseaseGroupslabelsColor[x]=Color.WHITE;
+        final Color[] diseaseGroupslabelsColor = new Color[selectedComparisonList.size() + 2];
+        diseaseGroupslabelsColor[x] = Color.WHITE;
         x++;
-        
+
         for (QuantDiseaseGroupsComparison comp : selectedComparisonList) {
             String header = comp.getComparisonHeader();
             String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + "";
@@ -702,8 +692,8 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
             x++;
 
         }
-         xAxisLabels[x]="";
-         diseaseGroupslabelsColor[x]=Color.WHITE;
+        xAxisLabels[x] = "";
+        diseaseGroupslabelsColor[x] = Color.WHITE;
 
         SymbolAxis xAxis;
         final boolean finalNum;
@@ -805,7 +795,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         xAxis.setTickLabelInsets(new RectangleInsets(2, 20, 2, 20));
         xAxis.setAutoRangeStickyZero(true);
         xAxis.setTickMarksVisible(false);
-        xAxis.setUpperBound(diseaseGroupslabelsColor.length-1);
+        xAxis.setUpperBound(diseaseGroupslabelsColor.length - 1);
 
         xAxis.setGridBandsVisible(false);
         xAxis.setAxisLinePaint(Color.LIGHT_GRAY);
@@ -938,16 +928,15 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         }
 
         final Map<Integer, Color[]> seriousColorMap = new HashMap<Integer, Color[]>();
-        Color[] dataColor = new Color[]{Color.WHITE, new Color(0, 153, 0), new Color(0, 229, 132), stableColor, new Color(247, 119, 119), new Color(204, 0, 0), Color.WHITE};       
+        Color[] dataColor = new Color[]{Color.WHITE, new Color(0, 153, 0), new Color(0, 229, 132), stableColor, new Color(247, 119, 119), new Color(204, 0, 0), Color.WHITE};
         double[] tempWidthValue = new double[8];
-        
-        
-         double[] yAxisValueI = new double[]{0,0,0,0,0,0,0};
-          double[] xAxisValueI = new double[]{0,0,0,0,0,0,0};
-          double[] widthValueI = new double[]{0,0,0,0,0,0,0};
-          double[][] seriesValuesI = {yAxisValueI, xAxisValueI, widthValueI}; 
-          seriousColorMap.put(0, new Color[]{Color.WHITE,Color.WHITE,Color.WHITE,Color.WHITE,Color.WHITE,Color.WHITE,Color.WHITE});
-          defaultxyzdataset.addSeries("   ", seriesValuesI);
+
+        double[] yAxisValueI = new double[]{0, 0, 0, 0, 0, 0, 0};
+        double[] xAxisValueI = new double[]{0, 0, 0, 0, 0, 0, 0};
+        double[] widthValueI = new double[]{0, 0, 0, 0, 0, 0, 0};
+        double[][] seriesValuesI = {yAxisValueI, xAxisValueI, widthValueI};
+        seriousColorMap.put(0, new Color[]{Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE});
+        defaultxyzdataset.addSeries("   ", seriesValuesI);
 
         for (String key : userCustomizedComparison.getComparProtsMap().keySet()) {
             userCustomizedComparison.getComparProtsMap().get(key).updateLabelLayout();
@@ -979,7 +968,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         for (int z = 0; z < tempWidthValue.length; z++) {
             if (tempWidthValue[z] > 0) {
                 xAxisValue[length] = z;
-                yAxisValue[length] = counter+1;
+                yAxisValue[length] = counter + 1;
                 widthValue[length] = tempWidthValue[z];
                 serColorArr[length] = dataColor[z];
                 length++;
@@ -990,7 +979,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         if (length == 1 && selectedComparisonList.size() == 1) {
             widthValue[0] = 1;
         }
-        seriousColorMap.put(++counter , serColorArr);
+        seriousColorMap.put(++counter, serColorArr);
 
         double[][] seriesValues = {yAxisValue, xAxisValue, widthValue};
         defaultxyzdataset.addSeries(userCustomizedComparison.getComparisonHeader(), seriesValues);
@@ -1044,7 +1033,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
             for (int x = 0; x < tempWidthValue.length; x++) {
                 if (tempWidthValue[x] > 0) {
                     xAxisValue[length] = x;
-                    yAxisValue[length] = counter+1;
+                    yAxisValue[length] = counter + 1;
                     widthValue[length] = tempWidthValue[x];
                     serColorArr[length] = dataColor[x];
                     length++;
@@ -1055,20 +1044,20 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
             if (length == 1 && selectedComparisonList.size() == 1) {
                 widthValue[0] = 1;
             }
-            seriousColorMap.put(counter+1, serColorArr);
+            seriousColorMap.put(counter + 1, serColorArr);
 
             seriesValues = new double[][]{yAxisValue, xAxisValue, widthValue};
             defaultxyzdataset.addSeries(qc.getComparisonHeader(), seriesValues);
 
             counter++;
         }
-        
+
         double[] yAxisValueII = new double[0];
-            double[] xAxisValueII = new double[0];
-            double[] widthValueII = new double[0];
-              seriousColorMap.put(counter+1, new Color[]{});
-             double[][] seriesValuesII = {yAxisValueII, xAxisValueII, widthValueII};            
-         defaultxyzdataset.addSeries(" ", seriesValuesII);
+        double[] xAxisValueII = new double[0];
+        double[] widthValueII = new double[0];
+        seriousColorMap.put(counter + 1, new Color[]{});
+        double[][] seriesValuesII = {yAxisValueII, xAxisValueII, widthValueII};
+        defaultxyzdataset.addSeries(" ", seriesValuesII);
 
         final Color[] labelsColor = new Color[]{Color.WHITE, new Color(80, 183, 71), Color.LIGHT_GRAY, new Color(1, 141, 244), Color.LIGHT_GRAY, new Color(204, 0, 0), Color.WHITE};
         Font font = new Font("Verdana", Font.BOLD, 13);
@@ -1083,27 +1072,27 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                 return labelsColor[x++];
             }
         };
-       
-          yAxis.setAutoRangeStickyZero(true);
+
+        yAxis.setAutoRangeStickyZero(true);
         yAxis.setFixedAutoRange(8);
         yAxis.setTickLabelFont(font);
         yAxis.setGridBandsVisible(false);
         yAxis.setAxisLinePaint(Color.LIGHT_GRAY);
-        yAxis.setTickMarksVisible(false);        
+        yAxis.setTickMarksVisible(false);
         yAxis.setUpperBound(6);
 
         String[] xAxisLabels = new String[selectedComparisonList.size() + 3];
-        xAxisLabels[0]="  ";
+        xAxisLabels[0] = "  ";
         final Color[] diseaseGroupslabelsColor = new Color[selectedComparisonList.size() + 3];
         int x = 0;
         int maxLength = -1;
         //init labels color
 
         String updatedHeader = userCustomizedComparison.getComparisonHeader().split(" / ")[0].split("\n")[0] + " / " + userCustomizedComparison.getComparisonHeader().split(" / ")[1].split("\n")[0] + "";
-        diseaseGroupslabelsColor[0]=Color.WHITE;
-        diseaseGroupslabelsColor[x+1] = diseaseColorMap.get("UserData");
-        xAxisLabels[x+1] = updatedHeader + " (" + userCustomizedComparison.getDatasetIndexes().length + ")    ";
-        if (xAxisLabels[x+1].length() > maxLength) {
+        diseaseGroupslabelsColor[0] = Color.WHITE;
+        diseaseGroupslabelsColor[x + 1] = diseaseColorMap.get("UserData");
+        xAxisLabels[x + 1] = updatedHeader + " (" + userCustomizedComparison.getDatasetIndexes().length + ")    ";
+        if (xAxisLabels[x + 1].length() > maxLength) {
             maxLength = xAxisLabels[++x].length();
         }
 
@@ -1111,15 +1100,15 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
             String header = comp.getComparisonHeader();
             updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + "";
 
-            xAxisLabels[x+1] = updatedHeader + " (" + comp.getDatasetIndexes().length + ")    ";
-            if (xAxisLabels[x+1].length() > maxLength) {
-                maxLength = xAxisLabels[x+1].length();
+            xAxisLabels[x + 1] = updatedHeader + " (" + comp.getDatasetIndexes().length + ")    ";
+            if (xAxisLabels[x + 1].length() > maxLength) {
+                maxLength = xAxisLabels[x + 1].length();
             }
-            diseaseGroupslabelsColor[x+1] = diseaseColorMap.get(header.split(" / ")[0].split("\n")[1]);
+            diseaseGroupslabelsColor[x + 1] = diseaseColorMap.get(header.split(" / ")[0].split("\n")[1]);
             x++;
 
         }
-        xAxisLabels[x+1]="   ";
+        xAxisLabels[x + 1] = "   ";
 
         SymbolAxis xAxis;
         final boolean finalNum;
@@ -1219,10 +1208,10 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 //        }
         xAxis.setTickLabelFont(font);
         xAxis.setTickLabelInsets(new RectangleInsets(2, 20, 2, 20));
-         xAxis.setAutoRangeStickyZero(true);
-         xAxis.setAutoRangeStickyZero(true);
+        xAxis.setAutoRangeStickyZero(true);
+        xAxis.setAutoRangeStickyZero(true);
         xAxis.setTickMarksVisible(false);
-        xAxis.setUpperBound(diseaseGroupslabelsColor.length-1);
+        xAxis.setUpperBound(diseaseGroupslabelsColor.length - 1);
         xAxis.setGridBandsVisible(false);
         xAxis.setAxisLinePaint(Color.LIGHT_GRAY);
         int scale = XYBubbleRenderer.SCALE_ON_RANGE_AXIS;
@@ -1296,6 +1285,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
     }
 
     private String saveToFile(final JFreeChart chart, final double width, final double height) {
+        chart.getXYPlot().setNoDataMessage((int)width+","+(int)height);
         isNewImge = true;
         Set<SquaredDot> set = new TreeSet<SquaredDot>();
         Set<SquaredDot> updatedselectedComponents = new HashSet<SquaredDot>();
@@ -1307,7 +1297,6 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
             imageData = ChartUtilities.encodeAsPNG(chart.createBufferedImage((int) width, (int) height, chartRenderingInfo));
             chartLayout.removeAllComponents();
-            
 
             for (int i = 0; i < chartRenderingInfo.getEntityCollection().getEntityCount(); i++) {
                 ChartEntity entity = chartRenderingInfo.getEntityCollection().getEntity(i);
@@ -1375,12 +1364,10 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                     QuantDiseaseGroupsComparison comparison;
                     if (userCustomizedComparison != null && catEnt.getSeriesIndex() == 0) {
                         continue;
-                    }
-                    else if(userCustomizedComparison != null && catEnt.getSeriesIndex()== 1){
+                    } else if (userCustomizedComparison != null && catEnt.getSeriesIndex() == 1) {
                         comparison = userCustomizedComparison;
-                    } 
-                    else {
-                        comparison = ((QuantDiseaseGroupsComparison) selectedComparisonList.toArray()[catEnt.getSeriesIndex()-1 - userDataCounter]);
+                    } else {
+                        comparison = ((QuantDiseaseGroupsComparison) selectedComparisonList.toArray()[catEnt.getSeriesIndex() - 1 - userDataCounter]);
                     }
 
                     String header = comparison.getComparisonHeader();
@@ -1438,10 +1425,9 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
     @Override
     public void selectionChanged(String type) {
         if (type.equalsIgnoreCase("Comparison_Selection")) {
-             lastselectedComponents.clear();
-             resetSelection();
+            lastselectedComponents.clear();
+            resetSelection();
             selectedComparisonList = this.Quant_Central_Manager.getUpdatedSelectedDiseaseGroupsComparisonListProteins(searchQuantificationProtList);
-            
 
             if (selectedComparisonList.isEmpty()) {
                 emptySelectionLayout.setVisible(true);
@@ -1547,8 +1533,8 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
             for (SquaredDot selectedCom : lastselectedComponents) {
 
                 selectedCom.select();
-                double trendIndex = (Double) selectedCom.getParam("categIndex")-1;
-                int seriousIndex = (Integer) selectedCom.getParam("seriesIndex")-1;
+                double trendIndex = (Double) selectedCom.getParam("categIndex") - 1;
+                int seriousIndex = (Integer) selectedCom.getParam("seriesIndex") - 1;
                 QuantDiseaseGroupsComparison comparison;
                 if (userCustomizedComparison != null && seriousIndex == 0) {
                     comparison = userCustomizedComparison;
@@ -1561,7 +1547,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
                 } else {
                     comparison = (QuantDiseaseGroupsComparison) Quant_Central_Manager.getSelectedDiseaseGroupsComparisonList().toArray()[seriousIndex - userDataCounter];
-                   
+
                     for (String key : comparison.getComparProtsMap().keySet()) {
                         DiseaseGroupsComparisonsProteinLayout compProt = comparison.getComparProtsMap().get(key);
                         if (compProt.getSignificantTrindCategory() == trendIndex) {
@@ -1569,7 +1555,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
 
                         }
 
-                    } 
+                    }
                 }
                 if (selectedCom == square) {
                     selectedheader = comparison.getComparisonHeader();
