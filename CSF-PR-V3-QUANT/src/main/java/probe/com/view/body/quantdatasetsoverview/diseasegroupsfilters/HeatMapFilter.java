@@ -247,5 +247,17 @@ public class HeatMapFilter extends VerticalLayout implements CSFFilter {
         }
 
     }
+    
+    /**
+     *
+     * @return
+     */
+    public VerticalLayout getHideCompBtn() {
+        return heatMap.getHideCompBtn();
+    }
+    public void showCompBtn(boolean show){
+        heatMap.showCompBtn(show);
+    }
+
 
 }

@@ -252,7 +252,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
             }
         };
-       
+
         defaultLineChartContainer = new AbsoluteLayout();
         linechartContainerLayout.addComponent(defaultLineChartContainer);
         defaultLineChartContainer.setWidth(width + "px");
@@ -261,6 +261,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         defaultLineChartContainer.addComponent(defaultChartLayout, "left: " + 0 + "px; top: " + 0 + "px;");
         defaultChartLayout.setWidth(width + "px");
         defaultChartLayout.setHeight(chartHeight + "px");
+
         defaultChartLayout.addLayoutClickListener(chartListener);
 //        teststyle = proteinName.replace(" ", "_").replace(")", "_").replace("(", "_").replace(";", "_").toLowerCase().replace("#", "_").replace("?", "_").replace("[", "").replace("]", "").replace("/", "_").replace(":", "_").replace("'", "_").replace(".", "_") + "linechart";
 //        styles.add("." + teststyle + " {  background-image: url(" + defaultLineChartImgUrl + " );background-position:center; background-repeat: no-repeat; }");
@@ -528,6 +529,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         defaultLineChartContainer.setWidth(width + "px");
         defaultLineChartContainer.setHeight(chartHeight + "px");
         defaultLineChartContainer.addComponent(defaultChartImage, "left: " + 0 + "px; top: " + 0 + "px;");
+
         defaultLineChartContainer.addComponent(defaultChartLayout, "left: " + 0 + "px; top: " + 0 + "px;");
         defaultChartLayout.setWidth(width + "px");
         defaultChartLayout.setHeight(chartHeight + "px");
@@ -1366,6 +1368,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
     private String saveToFile(final JFreeChart chart, final double width, final double height, ChartRenderingInfo chartRenderingInfo) {
         try {
+
             byte[] imageData = ChartUtilities.encodeAsPNG(chart.createBufferedImage((int) width, (int) height, chartRenderingInfo));
             String base64 = Base64.encodeBase64String(imageData);
             base64 = "data:image/png;base64," + base64;
@@ -1387,6 +1390,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
                 defaultLineChartImgUrl = this.generateChartImage(defaultChart, (width), chartHeight, defaultLineChartRenderingInfo, defaultChartLayout);
                 defaultChartImage.setSource(new ExternalResource(defaultLineChartImgUrl));
+                defaultChart.getXYPlot().setNoDataMessage(((int) width) + "," + ((int) chartHeight));
             }
             defaultLineChartContainer.setVisible(true);
             orderedLineChartContainer.setVisible(false);
@@ -1471,8 +1475,9 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                 }
                 chartsMap.put("proteinInformationCharts", set);
 //              
-
+                Quant_Central_Manager.getExportQuantTableBtn().click();
                 byte[] pdfFile = CSFPR_Handler.exportfullReportAsZip(chartsMap, "full_Report.pdf", proteinName, peptidesExportInfoSet);
+
                 return new ByteArrayInputStream(pdfFile);
 //               
 

@@ -1951,6 +1951,10 @@ border:3px solid #4d749f ;
     text-align:center;
     background:whitesmoke;
     font-weight:bold;
+    
+    -webkit-transition: visibility 2s; /* For Safari 3.1 to 6.0 */
+    transition: visibility 2s;  
+
 }
 .framelayout{
     border-right: 1px solid lightgray;
@@ -3871,5 +3875,40 @@ img {
     background-color:whitesmoke;
     border:1px solid lightgray;
     border-radius:4px;
+
+}
+.initialquantselectionlist{
+ -webkit-transition: height 2s; /* For Safari 3.1 to 6.0 */
+    transition: height 2s;  
+
+
+}
+.v-caption-initialquantselectionlist{
+    color:gray;
+    margin-bottom:5px; 
+    padding:5px;  
+
+}
+.v-select-initialquantselectionlist select{
+    border:1px solid lightgray !important;
+    border-radius:5px;
+    
+    overflow:hidden !important; 
+    clear:both;
+
+    padding: 10px;
+    border-radius:5px !important;
+    color:#4d749f;
+    background:whitesmoke;
+    font-weight:bold;
+    -webkit-transition: height 2s; /* For Safari 3.1 to 6.0 */
+    transition: height 2s;  
+
+}
+.slowHeightresizelayout{
+
+    -webkit-transition: height 2s;  
+    transition: height 2s; 
+
 
 }

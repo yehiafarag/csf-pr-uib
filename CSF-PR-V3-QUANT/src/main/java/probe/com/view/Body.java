@@ -143,7 +143,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
                 this.searchDataPanel.setContent(searchingLayout);
                 searchingLayout.setHeightUndefined();
                 boolean horizontal = false;
-                InviewExtension extension = new InviewExtensionImpl(searchingLayout.getTopLabelMarker(), quantDatasetsOverviewPanel, horizontal);
+                InviewExtension extension = new InviewExtensionImpl(searchingLayout.getTopLabelMarker(), searchDataPanel, horizontal);
                 extension.addExitListener(new InviewExtension.ExitListener() {
                     @Override
                     public void onExit(InviewExtension.ExitEvent event) {

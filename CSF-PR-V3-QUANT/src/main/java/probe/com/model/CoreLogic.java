@@ -36,13 +36,7 @@ import probe.com.model.util.KMeansClustering;
 import org.jfree.chart.JFreeChart;
 import probe.com.model.beans.OverviewInfoBean;
 import probe.com.model.beans.quant.QuantDatasetObject;
-import probe.com.model.util.vaadintoimageutil.peptideslayout.ProteinInformationDataForExport;
-//import org.apache.batik.svggen.SVGGraphics2D;
-//import org.apache.batik.dom.svg.SVGDOMImplementation;
-//import org.apache.batik.dom.svg12.SVG12DOMImplementation;
-//
-//import org.apache.batik.transcoder.TranscoderInput;
-//import org.apache.batik.transcoder.TranscoderOutput;
+import probe.com.model.util.vaadintoimageutil.peptideslayout.ProteinInformationDataForExport;;
 
 /**
  * @author Yehia Farag
@@ -992,7 +986,7 @@ public class CoreLogic implements Serializable {
         } else {
 
             for (QuantDiseaseGroupsComparison comparison : selectedComparisonList) {
-                if (comparison.getComparProtsMap() == null || comparison.getComparProtsMap().isEmpty()) {
+                if (comparison.getComparProtsMap() == null || comparison.getComparProtsMap().isEmpty()|| true) {
 
                     for (int dsID : comparison.getDatasetIndexes()) {
                         dsIdsList.add(dsID);

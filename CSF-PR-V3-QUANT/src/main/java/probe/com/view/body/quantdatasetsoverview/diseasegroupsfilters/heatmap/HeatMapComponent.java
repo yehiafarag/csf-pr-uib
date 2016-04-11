@@ -69,8 +69,12 @@ public class HeatMapComponent extends VerticalLayout {
     public VerticalLayout getHideCompBtn() {
         return hideCompBtn;
     }
+    public void showCompBtn(boolean show){
+        topLayout.setVisible(show);
+    
+    }
 
-    private final VerticalLayout hideCompBtn;
+    private final VerticalLayout hideCompBtn,  spacer;
     private final HorizontalLayout topLayout;
     private final HorizontalLayout bottomLayout;
     private final VerticalLayout columnContainer;
@@ -113,7 +117,7 @@ public class HeatMapComponent extends VerticalLayout {
         topLayout = new HorizontalLayout();
         topLayout.setHeight((heatmapHeaderCellWidth + 24) + "px");
         topLayout.setSpacing(false);
-        VerticalLayout spacer = new VerticalLayout();
+        spacer = new VerticalLayout();
         spacer.setWidth((heatmapHeaderCellWidth + 25) + "px");
         spacer.setHeight((heatmapHeaderCellWidth + 24) + "px");
         spacer.setStyleName(Reindeer.LAYOUT_WHITE);

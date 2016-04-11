@@ -300,19 +300,7 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
 
         }
 
-//        boolean test = false;
-//        if (((Integer) bigXComp.getParam("start") > (Integer) smallXComp.getParam("start")) && ((Integer) bigXComp.getParam("end") > (Integer) smallXComp.getParam("end"))&& ((Integer) bigXComp.getParam("start") < (Integer) smallXComp.getParam("end"))) {
-//             test=  true;
-//         }
-//         else  if (((Integer) smallXComp.getParam("start") > (Integer) bigXComp.getParam("start")) && ((Integer) smallXComp.getParam("end") > (Integer) bigXComp.getParam("end"))&& ((Integer) smallXComp.getParam("start") < (Integer) bigXComp.getParam("end"))) {
-//             test=  true;
-//         } 
-//        int area = smallXComp.getX0() + smallXComp.getWidthArea();
-//         System.out.println("at test is test "+ test+"   "+(bigXComp.getX0() <= area));
-//        
-////        return bigXComp.getX0() < area;
-//         
-//         return test;
+
         return test;
 
     }

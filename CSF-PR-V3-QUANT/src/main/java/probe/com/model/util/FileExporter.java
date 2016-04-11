@@ -349,24 +349,13 @@ public class FileExporter implements Serializable {
         } catch (IOException exp) {
             System.err.println("at error 446 " + this.getClass().getName() + "  " + exp.getMessage());
         }
-
-//          
-        return null;//url + userFolder.getName() + "/" + pdfFile.getName();
+        return null;
 
     }
 
     public byte[] exportBubbleChartAsPdf(JFreeChart chart, String fileName, String url, String title, int w, int h) {
-        int width = w;//842;
-        int height = h;// 595;
-        Font font = new Font("Verdana", Font.PLAIN, 12);
-        chart.getXYPlot().getDomainAxis().setTickLabelFont(font);
-        chart.getXYPlot().getRangeAxis().setTickLabelFont(font);
 
-        TextTitle textTitle = new TextTitle(title, font);
-        textTitle.setMargin(10, 0, 20, 0);
-        textTitle.setPaint(Color.DARK_GRAY);
-        textTitle.setPosition(RectangleEdge.TOP);
-        chart.setTitle(textTitle);
+        Font font = new Font("Verdana", Font.PLAIN, 12);
 
         try {
             File csfFolder = new File(url);
@@ -377,53 +366,44 @@ public class FileExporter implements Serializable {
                 file.delete();
                 System.out.println("file deleted");
             }
-            Document document = new Document(new Rectangle(width, height));
 
+            int bcw = Integer.valueOf(chart.getXYPlot().getNoDataMessage().split(",")[0]);
+            int bch = Integer.valueOf(chart.getXYPlot().getNoDataMessage().split(",")[1]);
+
+            Document document = new Document(new Rectangle(bcw + 60, bch + 100));
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
 
             document.open();
             document.newPage();
-
             PdfContentByte contentByte = writer.getDirectContent();
             PdfTemplate template;
-
-            Graphics2D g2d;
-
-            template = contentByte.createTemplate(width, height);
-            g2d = template.createGraphics(width, height, new DefaultFontMapper(), true, 1);
-
-            Rectangle2D rect2d = new Rectangle2D.Double(10, 10, width - 20, height - 20);
+            template = contentByte.createTemplate(bcw + 60, bch + 100);
+            document.newPage();
+            Graphics2D g2d = template.createGraphics(bcw + 60, bch + 100, new DefaultFontMapper());
+            g2d.translate(32, 10);
+            JLabel headerII = generateTitleLabel("Overview", bcw);
+            headerII.paint(g2d);
+            g2d.translate(0, 50);
+            chart.getPlot().setNotify(true);
+            Rectangle2D rect2d = new Rectangle2D.Double(0, 0, bcw, bch);
+            ((XYPlot) chart.getPlot()).getDomainAxis().setTickLabelFont(font);
             chart.draw(g2d, rect2d);
-
-//            System.out.println(VaadinService.getCurrent().getClassLoader().getResource("legend1.png").toURI());
-//            File res = new File(csfFolder.getParent(), "Resources");
-//            System.out.println("file exise " + res.exists() + "   " + csfFolder.getParent());
-//            File legendImageFile = new File(res, "legend1.png");
-//            if (legendImageFile.exists()) {
-//                g2d.drawImage(ImageIO.read(legendImageFile), 10, height - 90, null);
-//            }
             g2d.dispose();
             contentByte.addTemplate(template, 0, 0);
-//            document.add(legend);
             document.close();
             byte fileData[] = IOUtils.toByteArray(new FileInputStream(file));
-//            String base64 = Base64.encodeBase64String(fileData.);
-//            base64 = "data:image/png;base64," + base64;
-
             return fileData;
         } catch (DocumentException exp) {
             System.err.println("at error 512 " + this.getClass().getName() + " -- " + exp.getMessage());
         } catch (IOException exp) {
             System.err.println("at error 515 " + this.getClass().getName() + " -- " + exp.getMessage());
         }
-
-//          
-        return null;//url + userFolder.getName() + "/" + pdfFile.getName();
+        return null;
 
     }
 
     public byte[] exportProteinsInfoCharts(Set<JFreeChart> chartsSet, String fileName, String url, String title, Set<ProteinInformationDataForExport> peptidesSet, int w, int h) {
-        int width = w + 90;//595;
+        int width = w + 60;//595;
         int height = 842;
         int startx = 20;
 
@@ -549,7 +529,7 @@ public class FileExporter implements Serializable {
         }
 
 //          
-        return null;//url + userFolder.getName() + "/" + pdfFile.getName();
+        return null;
 
     }
 
@@ -589,7 +569,7 @@ public class FileExporter implements Serializable {
             reportTiltleLabel.setSize(width, 35);
             reportTiltleLabel.setFont(new Font("Verdana", Font.BOLD, 16));
             reportTiltleLabel.paint(g2d);
-            starty += 25;
+            starty += 35;
 
             Phrase headerI = new Phrase(70, "Datasets Overview", new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA, 13f, com.itextpdf.text.Font.NORMAL, BaseColor.GRAY));// new Font("Verdana", Font.PLAIN, 14));                
             document.add(headerI);
@@ -620,88 +600,81 @@ public class FileExporter implements Serializable {
 
             g2d.dispose();
             contentByte.addTemplate(template, 0, 0);
-//            document.setPageSize(PageSize.A4.rotate());
-
             for (JFreeChart chart : chartsMap.get("proteinsOverviewBubbleChart")) {
                 starty = 0;
 
                 int bcw = Integer.valueOf(chart.getXYPlot().getNoDataMessage().split(",")[0]);
                 int bch = Integer.valueOf(chart.getXYPlot().getNoDataMessage().split(",")[1]);
 
-                document.setPageSize(new Rectangle(bcw + 60, bch + 200));
+                document.setPageSize(new Rectangle(bcw + 60, bch + 100));
                 template = contentByte.createTemplate(bcw + 60, bch + 100);
                 document.newPage();
-                g2d = template.createGraphics(bcw + 60, bch + 200, new DefaultFontMapper(), false, 1);
-//                Phrase headerII = new Phrase("Overview", new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA, 14f, com.itextpdf.text.Font.NORMAL, BaseColor.GRAY));// new Font("Verdana", Font.PLAIN, 14));                
-//                document.add(headerII);
+                g2d = template.createGraphics(bcw + 60, bch + 100, new DefaultFontMapper());
                 g2d.translate(32, 10);
-                JLabel headerII = new JLabel();
-                headerII.setBackground(new java.awt.Color(255, 255, 255));
-                headerII.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-                headerII.setText("Overview");
-                headerII.setSize(bcw, 35);
-                headerII.setFont(new Font("Verdana", Font.PLAIN, 14));
-                headerII.setForeground(Color.GRAY);
+                JLabel headerII = generateTitleLabel("Overview", bcw);
                 headerII.paint(g2d);
                 starty += 50;
                 g2d.translate(0, starty);
                 chart.getPlot().setNotify(true);
-                Rectangle2D rect2d = new Rectangle2D.Double(0, 50, bcw, bch);
+                Rectangle2D rect2d = new Rectangle2D.Double(0, 0, bcw, bch);
                 ((XYPlot) chart.getPlot()).getDomainAxis().setTickLabelFont(font);
                 chart.draw(g2d, rect2d);
                 g2d.dispose();
                 contentByte.addTemplate(template, 0, 0);
             }
 
-            //selected protein overview chart 
-            document.setPageSize(PageSize.A4);
-            document.newPage();
-            template = contentByte.createTemplate(width, height);
-            g2d = template.createGraphics(width, height, new DefaultFontMapper(), true, 1);
-//           
-            starty = 10;
+            //selected protein overview line chart chart
             startx = 0;
-
-            JLabel proteinInformationOverviewLabel = new JLabel();
-            proteinInformationOverviewLabel.setBackground(new java.awt.Color(255, 255, 255));
-            proteinInformationOverviewLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-            proteinInformationOverviewLabel.setText("Selected Protein Information ( " + title + " )");
-            proteinInformationOverviewLabel.setSize(width, 37);
-            proteinInformationOverviewLabel.setFont(new Font("Verdana", Font.PLAIN, 12));
-            g2d.translate(32, starty);
-            proteinInformationOverviewLabel.paint(g2d);
-            starty = 37;
+            starty = 10;
             Rectangle2D rect2d;
             boolean newpage = false;
             counter = 0;
+            int pageWidth = 505;
             for (JFreeChart chart : chartsMap.get("proteinInformationCharts")) {
                 if (newpage) {
                     newpage = false;
+                    document.setPageSize(new Rectangle(pageWidth, height));
                     document.newPage();
                     g2d.translate(32, 10);
                 }
 
                 if (counter == 0) {
-                    int labelHeight = 30;
-                    if (chart.getXYPlot().getDomainAxis().isVerticalTickLabels()) {
-                        for (String str : ((SymbolAxis) chart.getXYPlot().getDomainAxis()).getSymbols()) {
-                            if ((str.length() * 6) > labelHeight) {
-                                labelHeight = (str.length() * 6);
-                            }
-                        }
-                    }
-
-                    int chartHeight = 400 + labelHeight;
-                    rect2d = new Rectangle2D.Double(startx, starty, 505, chartHeight);
-                    starty += chartHeight + 20;
+                    int bcw = Integer.valueOf(chart.getXYPlot().getNoDataMessage().split(",")[0]);
+                    int bch = Integer.valueOf(chart.getXYPlot().getNoDataMessage().split(",")[1]);
+                    final JLabel proteinInformationOverviewLabel = generateTitleLabel("Selected Protein Information - " + title.replace("(", "_;_").split("_;_")[0] + " ", bcw);
+                    document.setPageSize(new Rectangle(bcw + 60, bch + 100));
+                    document.newPage();
+                    template = contentByte.createTemplate(bcw + 60, bch + 100);
+                    g2d = template.createGraphics(bcw + 60, bch + 100, new DefaultFontMapper());
+                    g2d.translate(32, starty);
+                    starty += 50;
+                    proteinInformationOverviewLabel.paint(g2d);
+                    rect2d = new Rectangle2D.Double(startx, starty, bcw, bch);
+                    starty += bch + 20;
                     ((XYPlot) chart.getPlot()).getDomainAxis().setTickLabelFont(font);
+                    chart.draw(g2d, rect2d);
+                    g2d.dispose();
+                    contentByte.addTemplate(template, 0, 0);
+                    newpage = false;
+                    pageWidth = bcw + 60;
+                    template = contentByte.createTemplate(pageWidth, height);
+                    g2d = template.createGraphics(pageWidth, height, new DefaultFontMapper(), true, 1);
+                    document.setPageSize(new Rectangle(pageWidth, height));
+                    document.newPage();
+                    g2d.translate(32, 10);
+                    final JLabel datasetformationOverviewLabel = generateTitleLabel("Datasets Details", bcw);
+                    datasetformationOverviewLabel.paint(g2d);
+                    starty = 30;
+                    startx = 32;
+                    g2d.translate(0, starty);
+                    counter++;
+                    continue;
 
                 } else {
-                    rect2d = new Rectangle2D.Double(0, starty, 505, 250);
-                    starty += 270;
-
+                    rect2d = new Rectangle2D.Double(0, starty, pageWidth - 60, 150);
+                    starty += 170;
+                    chart.draw(g2d, rect2d);
                 }
-                chart.draw(g2d, rect2d);
 
                 counter++;
 
@@ -709,8 +682,8 @@ public class FileExporter implements Serializable {
                     g2d.dispose();
                     contentByte.addTemplate(template, 0, 0);
                     newpage = true;
-                    template = contentByte.createTemplate(width, height);
-                    g2d = template.createGraphics(width, height, new DefaultFontMapper(), true, 1);
+                    template = contentByte.createTemplate(pageWidth, height);
+                    g2d = template.createGraphics(pageWidth, height, new DefaultFontMapper());
                     starty = 30;
                     startx = 32;
 
@@ -722,62 +695,62 @@ public class FileExporter implements Serializable {
             contentByte.addTemplate(template, 0, 0);
 
             /// peptides sequences
-//            document.setPageSize(PageSize.A4.rotate());
-            template = contentByte.createTemplate(width, height);
-            g2d = template.createGraphics(width, height, new DefaultFontMapper(), true, 1);
+            template = contentByte.createTemplate(pageWidth, height);
+            g2d = template.createGraphics(pageWidth, height, new DefaultFontMapper());
             document.newPage();
             g2d.translate(32, 0);
 
-            JLabel peptidesOverviewHeaderLabel = new JLabel();
-            peptidesOverviewHeaderLabel.setBackground(new java.awt.Color(255, 255, 255));
-            peptidesOverviewHeaderLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-            peptidesOverviewHeaderLabel.setText("Sequence Coverage");
-            peptidesOverviewHeaderLabel.setSize(width, 37);
-            peptidesOverviewHeaderLabel.setFont(new Font("Verdana", Font.PLAIN, 14));
+            JLabel peptidesOverviewHeaderLabel = generateTitleLabel("Peptides Details (Sequence Coverage)", pageWidth);
             peptidesOverviewHeaderLabel.paint(g2d);
-            g2d.translate(0, 37);
+            g2d.translate(0, 32);
             int availableSpace = height - 10 - 37;
 
             for (ProteinInformationDataForExport peptidesInfo : peptidesSet) {
-
-                PeptidesSequenceContainer peptidesSequenceContainer = new PeptidesSequenceContainer(peptidesInfo, csfFolder.getParent(), width);
+                PeptidesSequenceContainer peptidesSequenceContainer = new PeptidesSequenceContainer(peptidesInfo, csfFolder.getParent(), pageWidth);
                 starty = peptidesSequenceContainer.getCurrentHeight() + 10;
                 if (starty <= availableSpace) {
-                    peptidesSequenceContainer.paint(g2d);
-                    g2d.translate(0, starty);
-                    availableSpace = availableSpace - starty;
-
+                    Image jpepImg = Image.getInstance(peptidesSequenceContainer.toImg(), null);
+                    jpepImg.setDpi(360, 360);
+                    jpepImg.scalePercent(100);
+                    jpepImg.setCompressionLevel(0);
+                    jpepImg.scalePercent(90);
+                    document.add(jpepImg);
                 } else {
-                    g2d.dispose();
-                    contentByte.addTemplate(template, 0, 0);
-                    template = contentByte.createTemplate(width, height);
-                    g2d = template.createGraphics(width, height, new DefaultFontMapper(), true, 1);
                     document.newPage();
-                    g2d.translate(32, 0);
-                    availableSpace = height - 10;
-                    peptidesSequenceContainer.paint(g2d);
-                    g2d.translate(0, starty);
-                    availableSpace = availableSpace - starty;
-
+                    Image jpepImg = Image.getInstance(peptidesSequenceContainer.toImg(), null);
+                    jpepImg.setDpi(360, 360);
+                    jpepImg.scalePercent(90);
+                    jpepImg.setCompressionLevel(0);
+                    document.add(jpepImg);
                 }
-
             }
-//            pepSeqContainer.paint(g2d);
 
             g2d.dispose();
             contentByte.addTemplate(template, 0, 0);
             document.close();
             byte fileData[] = IOUtils.toByteArray(new FileInputStream(file));
-
             return fileData;
         } catch (DocumentException exp) {
             System.err.println("at error 633 " + this.getClass().getName() + " -- " + exp.getMessage());
         } catch (IOException exp) {
             System.err.println("at error 635 " + this.getClass().getName() + " -- " + exp.getMessage());
         }
+        return null;
 
-//          
-        return null;//url + userFolder.getName() + "/" + pdfFile.getName();
+    }
+
+    private JLabel generateTitleLabel(String text, int width) {
+
+        final JLabel TitleLabel = new JLabel();
+        TitleLabel.setBackground(new java.awt.Color(255, 255, 255));
+        TitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        TitleLabel.setText(text);
+        TitleLabel.setSize(width, 37);
+        TitleLabel.setFont(new Font("Verdana", Font.PLAIN, 14));
+        TitleLabel.setBackground(new java.awt.Color(255, 255, 255));
+        TitleLabel.setOpaque(true);
+        TitleLabel.setForeground(Color.GRAY);
+        return TitleLabel;
 
     }
 
