@@ -752,7 +752,6 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
             j++;
             userCustomizedComparison.getComparProtsMap().get(acc.toString()).updateWidth(columnWidth);
             userCustomizedComparison.getComparProtsMap().get(acc.toString()).setCustomizedUserData(true);
-            System.out.println("add true");
             tableRow[i++] = userCustomizedComparison.getComparProtsMap().get(acc.toString());
             j++;
             for (QuantDiseaseGroupsComparison cg : quantDiseaseGroupsComparisonArr) {

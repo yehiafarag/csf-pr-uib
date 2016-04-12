@@ -362,14 +362,11 @@ public class StudiesFilterManager implements Serializable {
                 selectedHeatMapColumns.clear();
             } else if (inUseDiseaseName.equalsIgnoreCase("Alzheimer's")) {
                 for (String str : adReindexMap) {
-                    System.out.println("at ad " + str + "  --->>  " + (selectedHeatMapRows.contains(str)));
                     if (selectedHeatMapRows.contains(str)) {
                         sortRows[count] = str;
                         selectedHeatMapRows.remove(str);
                         count++;
-                    } else {
-                        System.out.println(" selectedHeatMapRows " + selectedHeatMapRows);
-                    }
+                    } 
                 }
                 for (String str : selectedHeatMapRows) {
                     
