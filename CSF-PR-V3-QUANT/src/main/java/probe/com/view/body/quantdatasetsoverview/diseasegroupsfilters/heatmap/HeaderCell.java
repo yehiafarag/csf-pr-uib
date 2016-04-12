@@ -102,7 +102,7 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
         this.setComponentAlignment(valueLabel, Alignment.BOTTOM_CENTER);
         this.addLayoutClickListener(HeaderCell.this);
         if (fullName == null) {
-            this.fullName = title.split("\n")[0];
+            this.fullName = title.split("\n")[0].replace("_", "").replace("-", ",") ;
         } else {
             this.fullName = fullName;
         }
@@ -110,7 +110,7 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
         if (this.fullName.contains("*")) {
             combinedGroup = " - Combined disease groups";
         }
-        this.setDescription(this.fullName.replace("_", "").replace("-", ",") + combinedGroup);
+        this.setDescription(this.fullName+ combinedGroup);
 
     }
 

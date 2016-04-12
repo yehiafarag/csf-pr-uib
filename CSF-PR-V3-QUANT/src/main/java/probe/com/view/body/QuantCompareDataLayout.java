@@ -67,13 +67,13 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
     private final Label selectionResultsLabel;
     private final HideOnClickLayout userDataLayoutContainer;
     private final GridLayout resultContainer;
-    
+
     private final VerticalLayout topLabelMarker;
 
     public VerticalLayout getTopLabelMarker() {
         return topLabelMarker;
     }
-    
+
     private final String highAcc = "P00450\n"
             + "P02774\n"
             + "P02647\n"
@@ -177,6 +177,8 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
 
         resultContainer = new GridLayout(3, 5);
         resultContainer.setSpacing(true);
+        resultContainer.setMargin(true);
+        resultContainer.setHideEmptyRowsAndColumns(true);
         ResultsOverviewLayout.addComponent(resultContainer);
         ResultsOverviewLayout.setComponentAlignment(resultContainer, Alignment.TOP_LEFT);
         resultContainer.setWidth("100%");
@@ -187,7 +189,8 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
 //        resultContainer.addComponent(foundStudiesLabel, 1, 0);
 
         foundProteinsLabel = new Label();
-        resultContainer.addComponent(foundProteinsLabel, 2, 0);
+        resultContainer.addComponent(foundProteinsLabel, 0, 0);
+        
 
         newProteinsDownloadBtn = new Button();
         newProteinsDownloadBtn.setCaptionAsHtml(true);
@@ -437,6 +440,23 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
         proteinsDataCapturingMainLayout.addComponent(btnsLayout);
         proteinsDataCapturingMainLayout.setComponentAlignment(btnsLayout, Alignment.MIDDLE_RIGHT);
 
+        Button sampleBtn = new Button("Sample");
+        sampleBtn.setStyleName(Reindeer.BUTTON_SMALL);
+        btnsLayout.addComponent(sampleBtn);
+        sampleBtn.addClickListener(new Button.ClickListener() {
+
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                reset();
+                highTextArea.setValue(highAcc);
+                lowTextArea.setValue(lowAcc);
+                stableTextArea.setValue(stableAcc);
+                diseaseGroupsListA.select("Group A");
+                diseaseGroupsListB.select("Group B");
+                compareBtn.focus();
+            }
+        });
+
         Button resetBtn = new Button("Reset");
         resetBtn.setStyleName(Reindeer.BUTTON_SMALL);
         btnsLayout.addComponent(resetBtn);
@@ -449,9 +469,9 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
         compareBtn.setId("compareBtn");
         compareBtn.addClickListener(this);
 
-        highTextArea.setValue(highAcc);
-        lowTextArea.setValue(lowAcc);
-        stableTextArea.setValue(stableAcc);
+//        highTextArea.setValue(highAcc);
+//        lowTextArea.setValue(lowAcc);
+//        stableTextArea.setValue(stableAcc);
 
         return proteinsDataCapturingMainLayout;
     }
@@ -480,8 +500,8 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
         } else if (event.getButton().getId().equalsIgnoreCase("compareBtn")) {
             if (diseaseGroupsListA.getValue() == null || diseaseGroupsListA.getValue().toString().trim().equalsIgnoreCase("")) {
                 diseaseGroupsListA.setRequired(true);
-                Notification.show("WARNING ","Select or enter new disease group name first", Notification.Type.TRAY_NOTIFICATION);
-                
+                Notification.show("WARNING ", "Select or enter new disease group name first", Notification.Type.TRAY_NOTIFICATION);
+
                 diseaseGroupsListA.focus();
                 return;
 
@@ -489,7 +509,7 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
             if (diseaseGroupsListB.getValue() == null || diseaseGroupsListB.getValue().toString().trim().equalsIgnoreCase("")) {
                 diseaseGroupsListB.setRequired(true);
                 diseaseGroupsListB.focus();
-                Notification.show("WARNING","Select or enter new disease group name first", Notification.Type.TRAY_NOTIFICATION);
+                Notification.show("WARNING", "Select or enter new disease group name first", Notification.Type.TRAY_NOTIFICATION);
                 return;
 
             }
@@ -568,15 +588,15 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
         }
 
         String quantNotFound = CSFPR_Handler.filterQuantSearchingKeywords(searchQuantificationProtList, query.getSearchKeyWords(), query.getSearchBy());
-        int newProtNumber = quantNotFound.replace(" ", "").split(",").length;
-        newProteinsDownloadBtn.setCaption("#New Proteins: " + newProtNumber + " (download)");
+        int notFoundProtNumber = quantNotFound.replace(" ", "").split(",").length;
+        newProteinsDownloadBtn.setCaption("#New Proteins: " + notFoundProtNumber + " (download)");
         newProteinsDownloadBtn.setVisible(true);
         newProteinsTextArea.setReadOnly(false);
 
 //        foundPublicationLabel.setValue("#Publications: " + foundPublicationcounter.size()+"/18");
-        foundStudiesLabel.setValue("#Datasets: " + foundStudiescounter.size()+"/86");
-        foundProteinsLabel.setValue("#Found Proteins: " + foundProtcounter.size()+"/2839");
-        selectionResultsOverview.setValue("(#Publications: " + foundPublicationcounter.size() + "/18&nbsp;&nbsp;&nbsp;&nbsp;#Datasets: " + foundStudiescounter.size() + "/86 &nbsp;&nbsp;&nbsp;&nbsp;#Found: " + foundProtcounter.size() + "/2839&nbsp;&nbsp;&nbsp;&nbsp;<font color='#1b699f'>#New: " + newProtNumber + "</font>)");
+        foundStudiesLabel.setValue("#Datasets: " + foundStudiescounter.size() + "/86");
+       
+        selectionResultsOverview.setValue("(#Publications: " + foundPublicationcounter.size() + "/18&nbsp;&nbsp;&nbsp;&nbsp;#Datasets: " + foundStudiescounter.size() + "/86 &nbsp;&nbsp;&nbsp;&nbsp;#Found: " + foundProtcounter.size() + "/2839&nbsp;&nbsp;&nbsp;&nbsp;<font color='#1b699f'>#New: " + notFoundProtNumber + "</font>)");
         newProteinsTextArea.setValue(quantNotFound.replace(",", "\n"));
         newProteinsTextArea.setReadOnly(true);
         if (searchQuantificationProtList.isEmpty()) {
@@ -584,13 +604,18 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
         }
 //        resultContainer.removeComponent(0, 1);
 //        resultContainer.removeComponent(1, 1);
-        resultContainer.removeComponent(2, 1);
-        PieChart pubicationPieChart = new PieChart("Publications", 18, foundPublicationcounter.size());
+        resultContainer.removeComponent(0, 1);
+//        PieChart pubicationPieChart = new PieChart("Publications", 18, foundPublicationcounter.size());
 //        resultContainer.addComponent(pubicationPieChart, 0, 1);
-        PieChart studiesPieChart = new PieChart("Datasets", 86, foundStudiescounter.size());
-//        resultContainer.addComponent(studiesPieChart, 1, 1);
-        PieChart fountNotfoundPieChart = new PieChart("Found", 2839, foundProtcounter.size());
-//        resultContainer.addComponent(fountNotfoundPieChart, 2, 1);
+//        PieChart studiesPieChart = new PieChart("Datasets", 86, foundStudiescounter.size());
+//        resultContainer.addComponent(studiesPieChart, 1, 1); 
+        
+        
+        
+        
+        foundProteinsLabel.setValue("#Found Proteins: " + (totalSet.size()-notFoundProtNumber) + "/"+totalSet.size());
+        PieChart fountNotfoundPieChart = new PieChart("Found", totalSet.size(), (totalSet.size()-notFoundProtNumber),quantNotFound);
+        resultContainer.addComponent(fountNotfoundPieChart, 0, 1);
 
         QuantDiseaseGroupsComparison userCustomizedComparison = CSFPR_Handler.initUserCustomizedComparison(diseaseGroupsListA.getValue().toString().trim(), diseaseGroupsListB.getValue().toString().trim(), highSet, stableSet, lowSet);
         userCustomizedComparison.setUseCustomRowHeaderToSort(useRowSorter);
@@ -600,7 +625,6 @@ public class QuantCompareDataLayout extends VerticalLayout implements Button.Cli
 
 //        userDataLayoutContainer.setVisability(false);
         UI.getCurrent().scrollIntoView(quantCompareDataViewLayout);
-        
 
     }
 

@@ -40,7 +40,7 @@ public class StudiesInformationPopupBtn extends Button implements Button.ClickLi
         this.Quant_Central_Manager = Quant_Central_Manager;
         this.setStyleName(Reindeer.BUTTON_LINK);
         this.addStyleName("studyinfo");
-        this.setDescription("Show datasets information");
+        this.setDescription("Show dataset information");
         this.addClickListener(StudiesInformationPopupBtn.this);
         int selectedDsNumber = 0;
         Set<QuantDatasetObject> dsObjects = new TreeSet<QuantDatasetObject>();

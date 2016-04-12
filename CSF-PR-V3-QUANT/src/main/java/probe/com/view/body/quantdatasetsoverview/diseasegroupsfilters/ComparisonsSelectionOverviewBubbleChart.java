@@ -259,10 +259,11 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         });
 
         final VerticalLayout selectMultiBtn = new VerticalLayout();
-        selectMultiBtn.setStyleName("selectmultibtn");
+        selectMultiBtn.setStyleName("selectmultiselectedbtn");
         btnContainerLayout.addComponent(selectMultiBtn);
         btnContainerLayout.setComponentAlignment(selectMultiBtn, Alignment.TOP_LEFT);
         selectMultiBtn.setDescription("Multiple selection");
+        activeMultiSelect = true;
         selectMultiBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
             @Override
@@ -442,10 +443,11 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         });
 
         final VerticalLayout selectMultiBtn = new VerticalLayout();
-        selectMultiBtn.setStyleName("selectmultibtn");
+        selectMultiBtn.setStyleName("selectmultiselectedbtn");
         btnContainerLayout.addComponent(selectMultiBtn);
         btnContainerLayout.setComponentAlignment(selectMultiBtn, Alignment.TOP_LEFT);
         selectMultiBtn.setDescription("Multiple selection");
+        activeMultiSelect = true;
         selectMultiBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
             @Override

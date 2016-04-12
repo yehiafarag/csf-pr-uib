@@ -73,7 +73,7 @@ public class QuantCompareDataViewLayout extends VerticalLayout {
 
         this.addComponent(proteinsLevelLayout);
         proteinsLevelLayout.setVisability(true);
-        heatmapFilter.selectAllComparisons();
+//        heatmapFilter.selectAllComparisons();
 
     }
 

@@ -1951,7 +1951,7 @@ border:3px solid #4d749f ;
     text-align:center;
     background:whitesmoke;
     font-weight:bold;
-    
+
     -webkit-transition: visibility 2s; /* For Safari 3.1 to 6.0 */
     transition: visibility 2s;  
 
@@ -3878,7 +3878,7 @@ img {
 
 }
 .initialquantselectionlist{
- -webkit-transition: height 2s; /* For Safari 3.1 to 6.0 */
+    -webkit-transition: height 2s; /* For Safari 3.1 to 6.0 */
     transition: height 2s;  
 
 
@@ -3889,20 +3889,29 @@ img {
     padding:5px;  
 
 }
-.v-select-initialquantselectionlist select{
+.initialquantselectionlist {
     border:1px solid lightgray !important;
     border-radius:5px;
-    
+
     overflow:hidden !important; 
     clear:both;
-
+    color: #4d749f;
     padding: 10px;
     border-radius:5px !important;
-    color:#4d749f;
-    background:whitesmoke;
+    font-size:15px !important;
     font-weight:bold;
-    -webkit-transition: height 2s; /* For Safari 3.1 to 6.0 */
-    transition: height 2s;  
+    -webkit-transition: opacity 10s; /* For Safari 3.1 to 6.0 */
+    transition: opacity 10s;  
+    font-size:15px !important;
+
+}
+.initialquantselectionlist div{
+
+    font-size:14px !important;    
+}
+.initialquantselectionlist img{
+    height:12px;
+
 
 }
 .slowHeightresizelayout{
@@ -3911,4 +3920,34 @@ img {
     transition: height 2s; 
 
 
+}
+.msicon{
+    background-color:     #A52A2A;
+}
+.adicon{
+    background-color: #4b7865;
+
+}
+.pdicon{
+    background-color: #74716E;
+}
+.initialquantselectionlist option{
+    margin-top:4px;
+    font-weight:bold;
+    font-size:15px !important;
+}
+.click div{
+    cursor: pointer;
+
+}
+.hide{
+    -webkit-transition: opacity 10s;  
+    transition: opacity 10s; 
+    opacity: 0;
+
+}
+.show{
+    -webkit-transition: opacity 10s;  
+    transition: opacity 10s; 
+    opacity: 1;
 }

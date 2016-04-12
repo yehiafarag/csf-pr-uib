@@ -1299,8 +1299,8 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
         groupsComparisonProteinsTable.setWidth("100%");
         groupsComparisonProteinsTable.setHeight("400px");
         groupsComparisonProteinsTable.setMultiSelect(true);
-        groupsComparisonProteinsTable.setMultiSelectMode(MultiSelectMode.DEFAULT);
-        groupsComparisonProteinsTable.setDragMode(Table.TableDragMode.MULTIROW);
+        groupsComparisonProteinsTable.setMultiSelectMode(MultiSelectMode.SIMPLE);
+        groupsComparisonProteinsTable.setDragMode(Table.TableDragMode.NONE);
         groupsComparisonProteinsTable.addColumnResizeListener(new Table.ColumnResizeListener() {
             @Override
             public void columnResize(Table.ColumnResizeEvent event) {

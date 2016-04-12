@@ -139,6 +139,9 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
         topLayout.setExpandRatio(columnLabelContainer, (1f - ratio));
         resizeTable(useRatio, ratio, columnWidth);
         updateQuantProteinsSparkLineLabels(columnWidth);
+        if (noProtLabel.isVisible()) {
+            mainPanelBody.setWidthUndefined();
+        }
 
     }
 
@@ -329,41 +332,6 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
         bottomLayout.setHeight("100%");
         bottomLayout.setStyleName(Reindeer.LAYOUT_WHITE);
         bottomLayout.setMargin(new MarginInfo(false, false, true, false));
-
-//        hideUniqueProteinsOption = new OptionGroup();
-//        bottomLayout.addComponent(hideUniqueProteinsOption);
-//        bottomLayout.setComponentAlignment(hideUniqueProteinsOption, Alignment.TOP_LEFT);
-//        hideUniqueProteinsOption.setWidth("150px");
-//        hideUniqueProteinsOption.setNullSelectionAllowed(true); // user can not 'unselect'
-//        hideUniqueProteinsOption.setMultiSelect(true);
-//
-//        hideUniqueProteinsOption.addItem("Available in all comparisons only");
-//        hideUniqueProteinsOption.addStyleName("horizontal");
-//        hideUniqueProteinsOption.addValueChangeListener(new Property.ValueChangeListener() {
-//            private final Set<String> protAccssions = new HashSet<String>();
-//            private final HashMap<Object, Item> tableItems = new HashMap<Object, Item>();
-//
-//            @Override
-//            public void valueChange(Property.ValueChangeEvent event) {
-//                if (hideUniqueProteinsOption.getValue().toString().equalsIgnoreCase("[Available in all comparisons only]")) {
-//                    protAccssions.clear();
-//                    tableItems.clear();
-//                    HashSet<Object> itemIds = new HashSet<Object>(groupsComparisonProteinsTable.getItemIds());
-//                    for (Object id : itemIds) {
-//                        Item item = groupsComparisonProteinsTable.getItem(id);
-//                        tableItems.put(id, item);
-//                        protAccssions.add(item.getItemProperty("Accession").toString());
-//
-//                    }
-//                    filterTable(protAccssions, quantDiseaseGroupsComparisonArr, sortComparisonTableColumn, true);
-//
-//                } else {
-//
-//                    filterTable(protAccssions, quantDiseaseGroupsComparisonArr, sortComparisonTableColumn, false);
-//                }
-//                updateProtCountLabel(groupsComparisonProteinsTable.getItemIds().size());
-//            }
-//        });
         HorizontalLayout rightBottomLayout = new HorizontalLayout();
         rightBottomLayout.setWidthUndefined();
         rightBottomLayout.setSpacing(true);
@@ -418,7 +386,7 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
                 csvExport.setMimeType(CsvExport.EXCEL_MIME_TYPE);
                 csvExport.setDisplayTotals(false);
                 csvExport.setExcelFormatOfProperty("Index", "0");
-                
+
 //                csvExport.setExcelFormatOfProperty("#Quantified Proteins", "0");
 //                 csvExport.setExcelFormatOfProperty("patientsGroup2Number", "0");
                 csvExport.export();
@@ -462,8 +430,11 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
             }
         });
 
+        topLayout.setVisible(false);
+        groupsComparisonProteinsTable.setVisible(false);
         bottomLayout.setVisible(false);
         mainPanelBody.addComponent(bottomLayout);
+        mainPanelBody.setWidthUndefined();
 
     }
 
@@ -664,18 +635,17 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
         uniprotProteinsMap = new HashMap<String, Boolean>();
         for (int compIndex = 0; compIndex < quantDiseaseGroupsComparisonArr.length; compIndex++) {
             QuantDiseaseGroupsComparison comparison = quantDiseaseGroupsComparisonArr[compIndex];
-            if(comparison.getComparProtsMap()== null)
+            if (comparison.getComparProtsMap() == null) {
                 return;
+            }
             HorizontalLayout columnTitleLayout = generateColumnHeaderLayout(comparison, columnWidth);
             this.columnLabelContainer.addComponent(columnTitleLayout);
             this.columnLabelContainer.setComponentAlignment(columnTitleLayout, Alignment.BOTTOM_LEFT);
 
             this.groupsComparisonProteinsTable.addContainerProperty(comparison.getComparisonHeader(), DiseaseGroupsComparisonsProteinLayout.class, null, comparison.getComparisonHeader() + " #Proteins: " + comparison.getComparProtsMap().size() + "/" + comparison.getDatasetIndexes().length + "", null, Table.Align.CENTER);
-             this.groupsComparisonProteinsTable.addContainerProperty(comparison.getComparisonHeader()+"_trend", Double.class, null, "Trend %", null, Table.Align.RIGHT);
-               this.groupsComparisonProteinsTable.setColumnCollapsed(comparison.getComparisonHeader()+"_trend", true);
-               
-            
-            
+            this.groupsComparisonProteinsTable.addContainerProperty(comparison.getComparisonHeader() + "_trend", Double.class, null, "Trend %", null, Table.Align.RIGHT);
+            this.groupsComparisonProteinsTable.setColumnCollapsed(comparison.getComparisonHeader() + "_trend", true);
+
             this.groupsComparisonProteinsTable.setColumnWidth(comparison.getComparisonHeader(), 100);
             Map<String, DiseaseGroupsComparisonsProteinLayout> protList = comparison.getComparProtsMap();
             int protCounter = 0;
@@ -730,7 +700,7 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
             String protName = key.replace("--", "").trim().split(",")[1];
             CustomExternalLink acc = new CustomExternalLink(protAcc.toUpperCase(), protURL);
             acc.setDescription(tooltip);
-            Object[] tableRow = new Object[3 + (quantDiseaseGroupsComparisonArr.length*2)];
+            Object[] tableRow = new Object[3 + (quantDiseaseGroupsComparisonArr.length * 2)];
 
             tableRow[i++] = index;
             j++;
@@ -742,7 +712,7 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
                 DiseaseGroupsComparisonsProteinLayout cp = diseaseGroupsComparisonsProteinsMap.get(key)[i - 3];
                 if (cp == null) {
                     tableRow[j++] = null;
-                    tableRow[j]=null;
+                    tableRow[j] = null;
                 } else {
                     cp.updateWidth(columnWidth);
                     cp.updateLabelLayout();
@@ -872,7 +842,7 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
             String protName = key.replace("--", "").trim().split(",")[1];
             CustomExternalLink acc = new CustomExternalLink(protAcc.toUpperCase(), protURL);
             acc.setDescription(tooltip);
-            Object[] tableRow = new Object[3 + (comparisonProteinsArray.length*2)];
+            Object[] tableRow = new Object[3 + (comparisonProteinsArray.length * 2)];
             tableRow[i++] = index;
             j++;
             tableRow[i++] = acc;
@@ -888,12 +858,12 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
                         break;
                     }
                     tableRow[j++] = null;
-                     tableRow[j] = null;
+                    tableRow[j] = null;
                 } else {
 
                     cp.updateLabelLayout();
                     tableRow[j++] = cp;
-                     tableRow[j] = cp.getOverallCellPercentValue();
+                    tableRow[j] = cp.getOverallCellPercentValue();
                 }
                 i++;
                 j++;
@@ -1192,8 +1162,8 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
         groupsComparisonProteinsTable.setWidth("100%");
         groupsComparisonProteinsTable.setHeight("400px");
         groupsComparisonProteinsTable.setMultiSelect(true);
-        groupsComparisonProteinsTable.setMultiSelectMode(MultiSelectMode.DEFAULT);
-        groupsComparisonProteinsTable.setDragMode(Table.TableDragMode.MULTIROW);
+        groupsComparisonProteinsTable.setMultiSelectMode(MultiSelectMode.SIMPLE);
+        groupsComparisonProteinsTable.setDragMode(Table.TableDragMode.NONE);
         groupsComparisonProteinsTable.addColumnResizeListener(new Table.ColumnResizeListener() {
             @Override
             public void columnResize(Table.ColumnResizeEvent event) {

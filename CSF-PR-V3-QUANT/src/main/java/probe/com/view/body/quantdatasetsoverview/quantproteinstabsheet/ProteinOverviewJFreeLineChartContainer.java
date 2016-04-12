@@ -371,7 +371,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         exportChartBtn.setWidth("24px");
         exportChartBtn.setHeight("24px");
         exportChartBtn.setPrimaryStyleName("exportpdfbtn");
-        exportChartBtn.setDescription("Export protein overview, datasets and peptides charts");
+        exportChartBtn.setDescription("Export protein overview, datasets and peptides");
         exportBtnLayout.addComponent(exportChartBtn);
         StreamResource proteinInformationResource = createProteinsInformationResource();
         FileDownloader fileDownloader = new FileDownloader(proteinInformationResource);
@@ -642,7 +642,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
         exportChartBtn.setWidth("24px");
         exportChartBtn.setHeight("24px");
         exportChartBtn.setPrimaryStyleName("exportpdfbtn");
-        exportChartBtn.setDescription("Export protein overview, datasets and peptides charts");
+        exportChartBtn.setDescription("Export protein overview, datasets and peptides");
         exportBtnLayout.addComponent(exportChartBtn);
         StreamResource proteinInformationResource = createProteinsInformationResource();
         FileDownloader fileDownloader = new FileDownloader(proteinInformationResource);
@@ -1368,6 +1368,8 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
 
     private String saveToFile(final JFreeChart chart, final double width, final double height, ChartRenderingInfo chartRenderingInfo) {
         try {
+            if(width==0 || height==0)
+                return "";
 
             byte[] imageData = ChartUtilities.encodeAsPNG(chart.createBufferedImage((int) width, (int) height, chartRenderingInfo));
             String base64 = Base64.encodeBase64String(imageData);

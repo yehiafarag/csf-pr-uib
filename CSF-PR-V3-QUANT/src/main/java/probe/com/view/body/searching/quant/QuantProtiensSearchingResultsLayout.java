@@ -60,7 +60,7 @@ public class QuantProtiensSearchingResultsLayout extends VerticalLayout {
 
         HideOnClickLayout comparisonsTableContainer = new HideOnClickLayout("Proteins", quantProteinsComparisonsContainer, null, Alignment.TOP_LEFT, infoText, null);
         int pageWidth = Page.getCurrent().getBrowserWindowWidth();
-        int layoutWidth = (pageWidth - 70);
+        int layoutWidth = (pageWidth - 95);
         quantProteinsComparisonsContainer.setLayoutWidth(layoutWidth);
         this.addComponent(comparisonsTableContainer);
         comparisonsTableContainer.setVisability(true);
@@ -71,7 +71,7 @@ public class QuantProtiensSearchingResultsLayout extends VerticalLayout {
         this.addComponent(proteinsLevelLayout);
         proteinsLevelLayout.setVisability(true);
 
-        heatmapFilter.selectAllComparisons();
+    
 
         final SizeReporter sizeReporter = new SizeReporter(proteinsLevelLayout);
         sizeReporter.addResizeListener(new ComponentResizeListener() {
