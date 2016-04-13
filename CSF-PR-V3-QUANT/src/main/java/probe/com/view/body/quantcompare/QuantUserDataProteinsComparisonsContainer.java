@@ -658,7 +658,7 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
         this.columnLabelContainer.addComponent(userCustColumnTitleLayout);
         this.columnLabelContainer.setComponentAlignment(userCustColumnTitleLayout, Alignment.BOTTOM_LEFT);
 
-        this.groupsComparisonProteinsTable.addContainerProperty(userCustomizedComparison.getComparisonHeader(), DiseaseGroupsComparisonsProteinLayout.class, null, "(#Proteins: " + userCustomizedComparison.getComparProtsMap().size() + "/" + userCustomizedComparison.getDatasetIndexes().length + ")", null, Table.Align.CENTER);
+        this.groupsComparisonProteinsTable.addContainerProperty(userCustomizedComparison.getComparisonHeader(), DiseaseGroupsComparisonsProteinLayout.class, null, "#Proteins: " + userCustomizedComparison.getComparProtsMap().size() + "/" + userCustomizedComparison.getDatasetIndexes().length + "", null, Table.Align.CENTER);
         this.groupsComparisonProteinsTable.setColumnWidth(userCustomizedComparison.getComparisonHeader(), 100);
 
         diseaseGroupsComparisonsProteinsMap = new HashMap<String, DiseaseGroupsComparisonsProteinLayout[]>();
@@ -681,7 +681,7 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
             this.columnLabelContainer.addComponent(columnTitleLayout);
             this.columnLabelContainer.setComponentAlignment(columnTitleLayout, Alignment.BOTTOM_LEFT);
 
-            this.groupsComparisonProteinsTable.addContainerProperty(comparison.getComparisonHeader(), DiseaseGroupsComparisonsProteinLayout.class, null, comparison.getComparisonHeader() + " (#Proteins: " + comparison.getComparProtsMap().size() + "/" + comparison.getDatasetIndexes().length + ")", null, Table.Align.CENTER);
+            this.groupsComparisonProteinsTable.addContainerProperty(comparison.getComparisonHeader(), DiseaseGroupsComparisonsProteinLayout.class, null, comparison.getComparisonHeader() + " #Proteins: " + comparison.getComparProtsMap().size() + "/" + comparison.getDatasetIndexes().length + "", null, Table.Align.CENTER);
             this.groupsComparisonProteinsTable.addContainerProperty(comparison.getComparisonHeader() + "_trend", Double.class, null, "Trend %", null, Table.Align.RIGHT);
             this.groupsComparisonProteinsTable.setColumnCollapsed(comparison.getComparisonHeader() + "_trend", true);
 
@@ -717,8 +717,8 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
 
             comparisonToAccessionMap.put(comparison.getComparisonHeader(), comparisonProtAccessionsSet);
             this.groupsComparisonProteinsTable.setColumnHeader(comparison.getComparisonHeader(), " " + protCounter + ((protCounter == 1) ? " Protein / " : " Proteins / ") + comparison.getDatasetIndexes().length + ((comparison.getDatasetIndexes().length == 1) ? " Dataset" : " Datasets"));
-            String header = comparison.getComparisonHeader();
-            String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + " - " + header.split(" / ")[1].split("\n")[1] + " ";
+//            String header = comparison.getComparisonHeader();
+            String updatedHeader =comparison.getComparisonFullName();// header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + " - " + header.split(" / ")[1].split("\n")[1] + " ";
 
             columnTitleLayout.setDescription("<h4>" + updatedHeader.replace("_", " ").replace("_Disease", "") + "</h4><center><h5>(" + protCounter + ((protCounter == 1) ? " Protein / " : " Proteins / ") + comparison.getDatasetIndexes().length + ((comparison.getDatasetIndexes().length == 1) ? " Dataset)" : " Datasets)</h5></center>"));
         }
@@ -776,7 +776,7 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
         String header = userCustomizedComparison.getComparisonHeader();
         String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0];// + " ( " + header.split(" / ")[1].split("\n")[1] + " )";
 
-        userCustColumnTitleLayout.setDescription("<h4>" + updatedHeader + "</h4><center><h5>" + groupsComparisonProteinsTable.size() + ((groupsComparisonProteinsTable.size() == 1) ? " Protein / " : " Proteins / ") + userCustomizedComparison.getDatasetIndexes().length + ((userCustomizedComparison.getDatasetIndexes().length == 1) ? " Datase)" : " Datasets</h5></center>"));
+        userCustColumnTitleLayout.setDescription("<h4>" + updatedHeader + "</h4><center><h5>" + groupsComparisonProteinsTable.size() + ((groupsComparisonProteinsTable.size() == 1) ? " Protein / " : " Proteins / ") + userCustomizedComparison.getDatasetIndexes().length + ((userCustomizedComparison.getDatasetIndexes().length == 1) ? " Datase" : " Datasets</h5></center>"));
         sortComparisonTableColumn = userCustomizedComparison.getComparisonHeader();
         this.groupsComparisonProteinsTable.sort(new String[]{sortComparisonTableColumn}, new boolean[]{false});
         this.groupsComparisonProteinsTable.setSortAscending(false);
@@ -844,6 +844,10 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
 //            groupsComparisonProteinsTable.setValue(localSelectedProtId);
 //
 //        }
+         if(groupsComparisonProteinsTable.getItemIds().size()==1){
+        
+            selectAll();
+        }
 
     }
 
@@ -971,6 +975,10 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
 //            groupsComparisonProteinsTable.setValue(localSelectedProtId);
 //
 //        }
+         if(groupsComparisonProteinsTable.getItemIds().size()==1){
+        
+            selectAll();
+        }
     }
 
     private void initianSort(String sortCompColumnName) {
@@ -1028,6 +1036,7 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
      */
     private HorizontalLayout generateColumnHeaderLayout(final QuantDiseaseGroupsComparison comparison, int width) {
 
+        boolean userColumn=false;
         HorizontalLayout titleLayout = new HorizontalLayout();
         titleLayout.setWidth(width + "px");
         titleLayout.setHeight("35px");
@@ -1084,6 +1093,7 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
         if (comparison.getDatasetIndexes()[0] == -1) {
             closeCompariosonBtn.setEnabled(false);
             titleLayout.setStyleName("usercustdatatitle");
+            userColumn=true;
         }
         closeCompariosonBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
             private final QuantDiseaseGroupsComparison localComparison = comparison;
@@ -1097,7 +1107,7 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
         });
         btnsLayout.addComponent(closeCompariosonBtn);
 
-        VerticalLayout filterIcon = generateDropDownFilterLayout(comparison.getComparisonHeader());
+        VerticalLayout filterIcon = generateDropDownFilterLayout(comparison.getComparisonHeader(),userColumn);
         btnsLayout.addComponent(filterIcon);
 
         rightSideHeader.addComponent(btnsLayout);
@@ -1410,7 +1420,7 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
 
     String[] trendCatArray = new String[]{"Decreased   100%", "Decreased < 100%", "Equal", "Increased < 100%", "Increased   100%", "No Quant Information"};
 
-    private VerticalLayout generateDropDownFilterLayout(final String header) {
+    private VerticalLayout generateDropDownFilterLayout(final String header, boolean userColumn) {
 
         VerticalLayout popupbodyLayout = new VerticalLayout();
         popupbodyLayout.setStyleName(Reindeer.LAYOUT_BLUE);
@@ -1443,6 +1453,14 @@ public class QuantUserDataProteinsComparisonsContainer extends Panel implements 
         tableHeaderFilterOptions.addItem(trendCatArray[1]);
         tableHeaderFilterOptions.addItem(trendCatArray[0]);
         tableHeaderFilterOptions.addItem(trendCatArray[5]);
+        
+        if(userColumn)
+        {
+            tableHeaderFilterOptions.setItemEnabled(trendCatArray[3], false);
+            tableHeaderFilterOptions.setItemEnabled(trendCatArray[1], false);
+            tableHeaderFilterOptions.setItemEnabled(trendCatArray[5], false);
+            
+        }
 
         tableHeaderFilterOptions.setStyleName("diseaseselectionlist");
         tableHeaderFilterOptions.setNullSelectionAllowed(true);

@@ -110,8 +110,8 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
         int panelWidth = Page.getCurrent().getBrowserWindowWidth() - 100;
         String groupCompTitle = cp.getComparison().getComparisonHeader();
         String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0];//+ " ( " + groupCompTitle.split(" / ")[1].split("\n")[1] + " )";
-
-        final StudyInformationPopupComponent studyInformationPopupPanel = new StudyInformationPopupComponent(panelWidth, cp.getProtName(), cp.getUrl(), updatedHeader);
+;
+        final StudyInformationPopupComponent studyInformationPopupPanel = new StudyInformationPopupComponent(panelWidth, cp.getProtName(), cp.getUrl(), cp.getComparison().getComparisonFullName());
         studyInformationPopupPanel.setVisible(false);
 
         LayoutEvents.LayoutClickListener studyListener = new LayoutEvents.LayoutClickListener() {
@@ -212,6 +212,7 @@ public class PeptidesComparisonsSequenceLayout extends GridLayout {
 
         String rgbColor = Quant_Central_Manager.getDiseaseHashedColor(groupCompTitle.split(" / ")[1].split("\n")[1]);
         comparisonTitle.setValue("<font color='" + rgbColor + "' style='font-weight: bold;'>" + updatedHeader + " (#Datasets " + numb + "/" + cp.getComparison().getDatasetIndexes().length + ")</font>");
+        comparisonTitle.setDescription(cp.getComparison().getComparisonFullName());
         VerticalLayout bottomSpacer = new VerticalLayout();
         bottomSpacer.setWidth((width - 100) + "px");
         bottomSpacer.setHeight("10px");

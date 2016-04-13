@@ -78,17 +78,16 @@ public class QuantCentralManager implements Serializable {
         this.CSFPR_Handler = CSFPR_Handler;
         this.diseaseHashedColorMap = CSFPR_Handler.getDiseaseHashedColorMap();
         diseaseFullNameMap = CSFPR_Handler.getDiseaseFullNameMap();
-        
+
         Map<String, QuantDatasetInitialInformationObject> quantDataInitInfo = CSFPR_Handler.getQuantDatasetInitialInformationObject(searchQuantificationProtList);
-       
+
         Studies_Filter_Manager = new StudiesFilterManager(quantDataInitInfo, CSFPR_Handler.getActivePieChartQuantFilters(searchQuantificationProtList), CSFPR_Handler.getDefault_DiseaseCat_DiseaseGroupMap());//,filterUtility.getFullFilterList()
         Studies_Selection_Manager = new StudiesSelectionManager();
 
         default_DiseaseCat_DiseaseGroupMap = Studies_Filter_Manager.getDefault_DiseaseCat_DiseaseGroupMap();
         diseaseGroupsHeaderToOregenalDiseaseGroupsNames = Studies_Filter_Manager.getDiseaseGroupsHeaderToOregenalDiseaseGroupsNames();
         diseaseStyleMap = CSFPR_Handler.getDiseaseStyleMap();
-        
-       
+
     }
 
     public QuantCentralManager(CSFPRHandler CSFPR_Handler, List<QuantProtein> searchQuantificationProtList, QuantDiseaseGroupsComparison userCustomizedComparison) {
@@ -103,9 +102,20 @@ public class QuantCentralManager implements Serializable {
         diseaseStyleMap = CSFPR_Handler.getDiseaseStyleMap();
     }
 
-    public void setNoSerum(boolean noSerum) {
-        Studies_Filter_Manager.setNoSerum(noSerum);
-        Studies_Filter_Manager.resetFilters();
+    public boolean  setHideSerum(boolean noSerum) {
+        boolean success = Studies_Filter_Manager.setHideSerum(noSerum);
+         if (success) {
+            Studies_Filter_Manager.resetFilters();
+        }
+        return success;
+    }
+
+    public boolean setHideCSF(boolean noCSF) {
+        boolean success = Studies_Filter_Manager.setHideCSF(noCSF);
+        if (success) {
+            Studies_Filter_Manager.resetFilters();
+        }
+        return success;
     }
 
     /**
@@ -213,7 +223,6 @@ public class QuantCentralManager implements Serializable {
 
     }
 
-       
     public void QuantProteinsTableSelectionChanged(String selectionType) {
         Studies_Selection_Manager.QuantProteinsTableSelectionChanged(selectionType);
     }

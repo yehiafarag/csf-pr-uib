@@ -38,7 +38,8 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
     private VerticalLayout allPeptidesContainer, significantPeptidesContainer;
     private int significantPeptidesNumber = 0;
     private int totalPeptidesNumber = 0;
-    private OptionGroup showSigneficantPeptidesOnly;
+//    private OptionGroup showSigneficantPeptidesOnly;
+    private VerticalLayout significantPeptidesBtn,showPTMBtn;
 //    private final Set<VerticalLayout> ptmsLayoutMap = new HashSet<VerticalLayout>();
     private LayoutEvents.LayoutClickListener studyListener;
     private Label noselectionLabel = new Label("<h4 style='font-family:verdana;color:#8A0808;font-weight:bold;'>\t \t Select peptide to show information!</h4>");
@@ -105,22 +106,78 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
             this.addComponent(bottomLayout);
 
             HorizontalLayout btnsWrapper = new HorizontalLayout();
+            btnsWrapper.setSpacing(true);
             bottomLayout.addComponent(btnsWrapper);
             bottomLayout.setComponentAlignment(btnsWrapper, Alignment.MIDDLE_RIGHT);
-            TrendLegend legend = new TrendLegend("fullsequencelegend");
+            TrendLegend legend = new TrendLegend("ministackedpeptidessequence");
+            legend.setSpacing(true);
             btnsWrapper.addComponent(legend);
-            btnsWrapper.setComponentAlignment(legend, Alignment.MIDDLE_RIGHT);
+//            btnsWrapper.setComponentAlignment(legend, Alignment.MIDDLE_RIGHT);
+            
+            
+            significantPeptidesBtn = new VerticalLayout();
+        significantPeptidesBtn.setWidth("24px");
+        significantPeptidesBtn.setHeight("24px");
+        significantPeptidesBtn.setStyleName("allpeptidesseqbtn");
+        significantPeptidesBtn.setDescription("Show all peptides (significant, not significant and stable)");
+        significantPeptidesBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
-            showSigneficantPeptidesOnly = new OptionGroup();
-            showSigneficantPeptidesOnly.setWidth("135px");
-            showSigneficantPeptidesOnly.setNullSelectionAllowed(true); // user can not 'unselect'
-            showSigneficantPeptidesOnly.setMultiSelect(true);
-            showSigneficantPeptidesOnly.addItem("Significant");
-            showSigneficantPeptidesOnly.addItem("PTMs");
-            showSigneficantPeptidesOnly.addStyleName("horizontal");
-            showSigneficantPeptidesOnly.setVisible(false);
-            btnsWrapper.addComponent(showSigneficantPeptidesOnly);
-            btnsWrapper.setComponentAlignment(showSigneficantPeptidesOnly, Alignment.TOP_RIGHT);
+            @Override
+            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+                if (significantPeptidesBtn.getStyleName().equalsIgnoreCase("allpeptidesseqbtn")) {
+                    significantPeptidesBtn.setStyleName("sigpeptidesseqbtn");
+                    significantPeptidesBtn.setDescription("Show significant peptides only");
+                    showSignificantRegulationOnly(true);
+                } else {
+                    significantPeptidesBtn.setStyleName("allpeptidesseqbtn");
+                    showSignificantRegulationOnly(false);
+                    significantPeptidesBtn.setDescription("Show all peptides (significant, not significant and stable)");
+                }
+            }
+        });
+        btnsWrapper.addComponent(significantPeptidesBtn);
+
+        showPTMBtn = new VerticalLayout();
+        showPTMBtn.setWidth("24px");
+        showPTMBtn.setHeight("24px");
+        showPTMBtn.setStyleName("ptm_selected_btn");
+        showPTMBtn.setDescription("Show/hide PTM");
+        showPTMBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+
+            @Override
+            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+                if (showPTMBtn.getStyleName().equalsIgnoreCase("ptm_selected_btn")) {
+                    showPTMBtn.setStyleName("ptm_unselected_btn");
+                    showPtms(false);
+                } else {
+                    showPTMBtn.setStyleName("ptm_selected_btn");
+                    showPtms(true);
+                }
+            }
+        });
+        btnsWrapper.addComponent(showPTMBtn);
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+//            showSigneficantPeptidesOnly = new OptionGroup();
+//            showSigneficantPeptidesOnly.setWidth("135px");
+//            showSigneficantPeptidesOnly.setNullSelectionAllowed(true); // user can not 'unselect'
+//            showSigneficantPeptidesOnly.setMultiSelect(true);
+//            showSigneficantPeptidesOnly.addItem("Significant");
+//            showSigneficantPeptidesOnly.addItem("PTMs");
+//            showSigneficantPeptidesOnly.addStyleName("horizontal");
+//            showSigneficantPeptidesOnly.setVisible(false);
+//            btnsWrapper.addComponent(showSigneficantPeptidesOnly);
+//            btnsWrapper.setComponentAlignment(showSigneficantPeptidesOnly, Alignment.TOP_RIGHT);
 
             if (minMode) {
                 significantPeptidesContainer.addLayoutClickListener(studyListener);
@@ -128,44 +185,55 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
                 allPeptidesContainer.addLayoutClickListener(studyListener);
                 allPeptidesContainer.setData(dsID);
                 legend.setVisible(false);
+                 significantPeptidesBtn.setVisible(false); 
+            showPTMBtn.setVisible(false);
+                
 
             }
 //            ptmsLayoutMap.clear();
             //sort peptides based on sequence length
-            showSigneficantPeptidesOnly.addValueChangeListener(new Property.ValueChangeListener() {
-                @Override
-                public void valueChange(Property.ValueChangeEvent event) {
-                    for (StackedBarPeptideComponent sbar : allPeptidesStackedBarComponentsMap) {
-                        sbar.heighlight(null);
-
-                    }
-                    for (StackedBarPeptideComponent sbar : significantPeptidesStackedBarComponentsMap) {
-                        sbar.heighlight(null);
-
-                    }
-                    lastselectedPeptideComp = null;
-                    showSignificantRegulationOnly(showSigneficantPeptidesOnly.getValue().toString().contains("Significant"));
-                    showPtms(showSigneficantPeptidesOnly.getValue().toString().contains("PTMs"));
-
-                }
-            });
+//            showSigneficantPeptidesOnly.addValueChangeListener(new Property.ValueChangeListener() {
+//                @Override
+//                public void valueChange(Property.ValueChangeEvent event) {
+//                    for (StackedBarPeptideComponent sbar : allPeptidesStackedBarComponentsMap) {
+//                        sbar.heighlight(null);
+//
+//                    }
+//                    for (StackedBarPeptideComponent sbar : significantPeptidesStackedBarComponentsMap) {
+//                        sbar.heighlight(null);
+//
+//                    }
+//                    lastselectedPeptideComp = null;
+//                    showSignificantRegulationOnly(showSigneficantPeptidesOnly.getValue().toString().contains("Significant"));
+//                    showPtms(showSigneficantPeptidesOnly.getValue().toString().contains("PTMs"));
+//
+//                }
+//            });
 
         }
         if (!minMode) {
             noselectionLabel.setContentMode(ContentMode.HTML);
             this.addComponent(peptideForm);
             this.addComponent(noselectionLabel);
-            showSigneficantPeptidesOnly.setVisible(true);
+//            showSigneficantPeptidesOnly.setVisible(true);
+            significantPeptidesBtn.setVisible(true); 
+            showPTMBtn.setVisible(true);
+
+       
+            
 
         }
 
-        showSigneficantPeptidesOnly.setItemEnabled("PTMs", hasPTM);
+        showPTMBtn.setEnabled(hasPTM);
+//        showSigneficantPeptidesOnly.setItemEnabled("PTMs", hasPTM);
 //        for (VerticalLayout ptmLayout : ptmsLayoutMap) {
         if (hasPTM) {
-            Set<String> ids = new HashSet<String>();
-            ids.add("PTMs");
-            showSigneficantPeptidesOnly.setValue(ids);
-        }
+            showPTMBtn.setStyleName("ptm_selected_btn");
+//            Set<String> ids = new HashSet<String>();
+//            ids.add("PTMs");
+//            showSigneficantPeptidesOnly.setValue(ids);
+        }else
+            showPTMBtn.setStyleName("ptm_unselected_btn");
 //        }
 
     }

@@ -677,8 +677,8 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
 
             this.groupsComparisonProteinsTable.setColumnHeader(comparison.getComparisonHeader(), " " + protCounter + ((protCounter == 1) ? " Protein / " : " Proteins / ") + comparison.getDatasetIndexes().length + ((comparison.getDatasetIndexes().length == 1) ? " Dataset" : " Datasets"));
 
-            String header = comparison.getComparisonHeader();
-            String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + " - " + header.split(" / ")[1].split("\n")[1].replace("_", " ").replace("-", "'").replace("Disease", "") + " ";
+//            String header = comparison.getComparisonHeader();
+            String updatedHeader = comparison.getComparisonFullName();//header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + " - " + header.split(" / ")[1].split("\n")[1].replace("_", " ").replace("-", "'").replace("Disease", "") + " ";
 
             columnTitleLayout.setDescription("<h4>" + updatedHeader + "</h4><center><h5>" + protCounter + ((protCounter == 1) ? " Protein / " : " Proteins / ") + comparison.getDatasetIndexes().length + ((comparison.getDatasetIndexes().length == 1) ? " Dataset" : " Datasets</h5></center>"));
         }
@@ -788,6 +788,10 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
 
         this.groupsComparisonProteinsTable.addValueChangeListener(this);
         this.updateProtCountLabel(diseaseGroupsComparisonsProteinsMap.size());
+        if(groupsComparisonProteinsTable.getItemIds().size()==1){
+        
+            selectAll();
+        }
 
     }
 
@@ -894,6 +898,9 @@ public class QuantProteinsComparisonsContainer extends Panel implements LayoutEv
             isoProtMap.put(isoProtKey, set);
         }
         groupsComparisonProteinsTable.addValueChangeListener(QuantProteinsComparisonsContainer.this);
+         if(groupsComparisonProteinsTable.getItemIds().size()==1){        
+            selectAll();
+        }
 
     }
 

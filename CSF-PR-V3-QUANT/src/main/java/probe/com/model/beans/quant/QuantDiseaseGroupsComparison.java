@@ -22,9 +22,25 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
     private String rgbStringColor;
     private boolean useCustomRowHeaderToSort;
     private boolean useCustomColumnHeaderToSort;
+    private  String comparisonFullName;
+
+    public void setComparisonFullName(String comparisonFullName) {
+        this.comparisonFullName = comparisonFullName;
+    }
+
+    public QuantDiseaseGroupsComparison() {
+    }
+
+    
+    
+    public String getComparisonFullName() {
+        return comparisonFullName;
+    }
 
     public void switchComparison() {
         comparisonHeader = comparisonHeader.split(" / ")[1] + " / " + comparisonHeader.split(" / ")[0];
+        String d =  " - "+oreginalComparisonHeader.split(" / ")[0].split("\n")[1].replace("_"," ").replace("Disease", "");
+       comparisonFullName  = comparisonFullName.split(" / ")[1].replace(d, "") + " / "+ comparisonFullName.split(" / ")[0]+d;
         comparProtsMap = null;
 
     }
@@ -58,6 +74,9 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
         
 
     }
+    
+    
+    
 
     /**
      *
@@ -65,6 +84,7 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
      */
     public void setComparisonHeader(String comparisonHeader) {
         this.comparisonHeader = comparisonHeader;
+        
 
     }
 
@@ -113,7 +133,7 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
     @Override
     public String toString() {
 
-        return comparisonHeader + " -- " + comparProtsMap.size();
+        return comparisonHeader + " - " + comparProtsMap.size();
     }
 
     public boolean isUseCustomRowHeaderToSort() {

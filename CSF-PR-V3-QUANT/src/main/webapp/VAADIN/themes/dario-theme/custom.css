@@ -1536,10 +1536,11 @@ border:3px solid #4d749f ;
     background-size:20px;
     background-repeat:no-repeat;
     background-position:center;
+     border-radius:4px;
+    border-right:1px solid white;
 }
 .studyexplorer:hover{
     border-right:1px solid lightgray;
-    border-left:1px solid lightgray;
     background-color:whitesmoke;
 }
 .studyexplorer:focus{
@@ -3140,13 +3141,14 @@ img {
     cursor: pointer;
     -webkit-user-select: none;
     color: rgb(27, 105, 159);
-    border-radius:4px;
+    
     -webkit-transition: width 2s; /* For Safari 3.1 to 6.0 */
     transition: width 2s;   
     background-image: url(img/filter_disables.png);
-    background-size:16px;
+    background-size:20px;
     background-repeat:no-repeat;
     background-position:center;
+    border-radius:4px;
     border-right:1px solid white;
     border-left:1px solid white;
 }
@@ -3171,7 +3173,7 @@ img {
     -webkit-transition: width 2s; /* For Safari 3.1 to 6.0 */
     transition: width 2s;   
     background-image: url(img/angle-double-up.png);
-    background-size:12px;
+    background-size:20px;
     background-repeat:no-repeat;
     background-position:center;
     border-right:1px solid white;
@@ -3198,14 +3200,17 @@ img {
     width: 40px !important;
     height:28px !important;
     cursor: pointer; 
-    background-image: url(img/blood-drop.png);
-    background-size:15px;
+    background-image: url(img/blood_drop_red.png);
+    background-size:20px;
     background-repeat:no-repeat;
     background-position:center;
     cursor: pointer; 
     zoom: 1;
     font-size:13px;
     color:rgba(255, 255, 255, 0) !important;
+     border-radius:4px;
+    border-right:1px solid white;
+    border-left:1px solid white;
 
 
 
@@ -3224,16 +3229,18 @@ img {
     width: 40px !important;
     height:28px !important;
     cursor: pointer; 
-    background-image: url(img/blood-drop-applied.png);
-    background-size:18px;
+    background-image: url(img/blood_drop_red_applied.png);
+    background-size:20px;
     background-repeat:no-repeat;
     border-radius:4px;
     background-position:center;
     cursor: pointer; 
     zoom: 1;
     font-size:13px;    
-    border:1px solid lightgray;
     background-color:whitesmoke;
+     border-radius:4px;
+    border-right:1px solid lightgray;
+    border-left:1px solid lightgray;
 
 }
 .enableserumselected:hover{      
@@ -3241,6 +3248,76 @@ img {
     background-color:lightgray;
 
 }
+
+
+.enablecsfunselected{
+    width: 40px !important;
+    height:28px !important;
+    cursor: pointer; 
+    background-image: url(img/blood_drop_blue.png);
+    background-size:20px;
+    background-repeat:no-repeat;
+    background-position:center;
+    cursor: pointer; 
+    zoom: 1;
+    font-size:13px;
+    color:rgba(255, 255, 255, 0) !important;
+     border-radius:4px;
+   border-right:1px solid white;
+    border-left:1px solid white;
+
+
+
+}
+.enablecsfunselected:hover{  
+
+    border-right:1px solid lightgray;
+    border-left:1px solid lightgray;
+    background-color:whitesmoke;
+
+
+}
+
+.enablecsfselected{
+    width: 40px !important;
+    height:28px !important;
+    cursor: pointer; 
+    background-image: url(img/blood_drop_blue_applied.png);
+    background-size:20px;
+    background-repeat:no-repeat;
+    border-radius:4px;
+    background-position:center;
+    cursor: pointer; 
+    zoom: 1;
+    font-size:13px;    
+    background-color:whitesmoke;
+    border-right:1px solid lightgray;
+    border-left:1px solid lightgray;
+
+}
+.enablecsfselected:hover{      
+     border-right:1px solid darkgray;
+    border-left:1px solid darkgray;
+    background-color:lightgray;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .slowresizelayout{
 
 
@@ -3878,8 +3955,8 @@ img {
 
 }
 .initialquantselectionlist{
-    -webkit-transition: height 2s; /* For Safari 3.1 to 6.0 */
-    transition: height 2s;  
+/*    -webkit-transition: height 2s;  For Safari 3.1 to 6.0 
+    transition: height 2s;  */
 
 
 }
@@ -3895,13 +3972,13 @@ img {
 
     overflow:hidden !important; 
     clear:both;
-    color: #4d749f;
+    /*color: #4d749f;*/
     padding: 10px;
     border-radius:5px !important;
     font-size:15px !important;
     font-weight:bold;
-    -webkit-transition: opacity 10s; /* For Safari 3.1 to 6.0 */
-    transition: opacity 10s;  
+/*    -webkit-transition: opacity 2s;  For Safari 3.1 to 6.0 
+    transition: opacity 2s;  */
     font-size:15px !important;
 
 }
@@ -3941,13 +4018,13 @@ img {
 
 }
 .hide{
-    -webkit-transition: opacity 10s;  
-    transition: opacity 10s; 
+/*    -webkit-transition: opacity 2s;  
+    transition: opacity 2s; */
     opacity: 0;
 
 }
 .show{
-    -webkit-transition: opacity 10s;  
-    transition: opacity 10s; 
+/*    -webkit-transition: opacity 2s;  
+    transition: opacity 2s; */
     opacity: 1;
 }

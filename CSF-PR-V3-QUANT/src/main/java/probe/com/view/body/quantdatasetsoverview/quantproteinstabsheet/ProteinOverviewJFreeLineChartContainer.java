@@ -406,7 +406,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
             }
         });
 
-        studiesScatterChartsLayout = new StudiesPeptidesDetailsContainerLayout(Quant_Central_Manager, comparisonProteins, selectedComparisonList, (width), chartHeight - 2, custTrend);
+        studiesScatterChartsLayout = new StudiesPeptidesDetailsContainerLayout(Quant_Central_Manager, comparisonProteins, selectedComparisonList, (width), chartHeight - 2, custTrend,proteinName);
         studyOverviewPanelLayout.addComponent(studiesScatterChartsLayout);
         defaultPeptidesExportInfoSet = studiesScatterChartsLayout.getDefaultPeptidesExportInfoSet();
 
@@ -677,7 +677,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
             }
         });
 
-        studiesScatterChartsLayout = new StudiesPeptidesDetailsContainerLayout(Quant_Central_Manager, comparisonProteins, selectedComparisonList, (width), chartHeight - 2, custTrend);
+        studiesScatterChartsLayout = new StudiesPeptidesDetailsContainerLayout(Quant_Central_Manager, comparisonProteins, selectedComparisonList, (width), chartHeight - 2, custTrend,proteinName);
         studyOverviewPanelLayout.addComponent(studiesScatterChartsLayout);
         defaultPeptidesExportInfoSet = studiesScatterChartsLayout.getDefaultPeptidesExportInfoSet();
 
@@ -1272,6 +1272,7 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                 if (inUseComparisonProteins[((XYItemEntity) entity).getItem()] == null || inUseComparisonProteins[((XYItemEntity) entity).getItem()].getSignificantTrindCategory() == -1) {
                     gc = new QuantDiseaseGroupsComparison();
                     gc.setComparisonHeader("No data available");
+                    gc.setComparisonFullName("No data available");
                     paramName = "Empty value";
                     trend = 2;
                     String groupCompTitle = gc.getComparisonHeader();
@@ -1283,8 +1284,8 @@ public class ProteinOverviewJFreeLineChartContainer extends HorizontalLayout {
                     if (trend == 5) {
                         trend = 2;
                     }
-                    String groupCompTitle = gc.getComparisonHeader();
-                    String updatedHeader = groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0] + " - " + groupCompTitle.split(" / ")[1].split("\n")[1].replace("_", " ").replace("Disease", "") + "";
+//                    String groupCompTitle = gc.getComparisonHeader();
+                    String updatedHeader = gc.getComparisonFullName();//groupCompTitle.split(" / ")[0].split("\n")[0] + " / " + groupCompTitle.split(" / ")[1].split("\n")[0] + " - " + groupCompTitle.split(" / ")[1].split("\n")[1].replace("_", " ").replace("Disease", "") + "";
 
                     square.setDescription("<h4>" + updatedHeader + "" + tooltipLabels[trend] + "" + "</h4>" + "<h5>" + protLayout.toString() + "</h5>");
                 }

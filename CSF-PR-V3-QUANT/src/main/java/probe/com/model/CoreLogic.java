@@ -924,9 +924,11 @@ public class CoreLogic implements Serializable {
      * @return updated Selected Comparison List
      */
     public QuantDiseaseGroupsComparison initUserCustomizedComparison(String diseaseGroupI, String diseaseGroupII, Set<String> highAcc, Set<String> stableAcc, Set<String> lowAcc) {
+        String userCompHeader = "User Data - " + diseaseGroupI.trim() + " / " + diseaseGroupII.trim() + "\n ";
         QuantDiseaseGroupsComparison comparison = new QuantDiseaseGroupsComparison();
-        comparison.setDatasetIndexes(new int[]{-1});
-        comparison.setComparisonHeader("User Data - " + diseaseGroupI.trim() + " / " + diseaseGroupII.trim() + "\n ");
+        comparison.setComparisonFullName(userCompHeader);
+        comparison.setDatasetIndexes(new int[]{-1});        
+        comparison.setComparisonHeader(userCompHeader);
         Map<String, DiseaseGroupsComparisonsProteinLayout> comparProtList = new LinkedHashMap<String, DiseaseGroupsComparisonsProteinLayout>();
         int index = -1;
         for (String str : highAcc) {

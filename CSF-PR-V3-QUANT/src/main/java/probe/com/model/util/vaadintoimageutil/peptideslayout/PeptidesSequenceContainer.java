@@ -82,7 +82,6 @@ public class PeptidesSequenceContainer extends JPanel {
             protSeqContainerLayout.setLayout(null);
             int labelWidth = 145;//width - info.getCoverageWidth();
             resizeFactor = (width - 210) / (double) info.getCoverageWidth();
-            System.out.println("resize factor  " + resizeFactor);
             JLabel studyLable1 = initSubLabel(info.getTitle(), labelWidth);
             studyLable1.setLocation(0, 10);
             protSeqContainerLayout.add(studyLable1);

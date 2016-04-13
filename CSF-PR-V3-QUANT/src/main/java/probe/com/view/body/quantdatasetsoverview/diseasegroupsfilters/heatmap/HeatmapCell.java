@@ -68,7 +68,7 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
      * @param heatmapCellWidth
      * @param publicationsNumber
      */
-    public HeatmapCell(double value, final String color, int[] dsIndexes, final int rowLabelIndex, final int colLabelIndex, VerticalLayout tooltipLayout, HeatMapComponent parentcom, String groupCompTitle, int heatmapCellWidth, int publicationsNumber) {
+    public HeatmapCell(double value, final String color, int[] dsIndexes, final int rowLabelIndex, final int colLabelIndex, VerticalLayout tooltipLayout, HeatMapComponent parentcom, String groupCompTitle, int heatmapCellWidth, int publicationsNumber, String fullCompTitle) {
 
         this.colLabelIndex = colLabelIndex;
         this.rowLabelIndex = rowLabelIndex;
@@ -81,6 +81,7 @@ public class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutCl
         strValue = "";
         pointer = "default";
         this.comparison = new QuantDiseaseGroupsComparison();
+        comparison.setComparisonFullName(fullCompTitle);
         comparison.setComparisonHeader(groupCompTitle);
         comparison.setOreginalComparisonHeader(groupCompTitle);
         comparison.setRgbStringColor(color);

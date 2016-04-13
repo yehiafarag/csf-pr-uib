@@ -1373,7 +1373,7 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
                     }
 
                     String header = comparison.getComparisonHeader();
-                    String updatedHeader = header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + " - " + header.split(" / ")[1].split("\n")[1].replace("_", " ").replace("-", "'").replace("Disease", "") + "";
+                    String updatedHeader = comparison.getComparisonFullName();//header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + " - " + header.split(" / ")[1].split("\n")[1].replace("_", " ").replace("-", "'").replace("Disease", "") + "";
                     int itemNumber = (int) ((XYItemEntity) entity).getDataset().getYValue(((XYItemEntity) entity).getSeriesIndex(), ((XYItemEntity) entity).getItem());
 
                     square.setDescription(updatedHeader + "<br/>#Proteins " + (int) tooltipsProtNumberMap.get(header)[itemNumber] + " " + tooltipLabels[itemNumber]);

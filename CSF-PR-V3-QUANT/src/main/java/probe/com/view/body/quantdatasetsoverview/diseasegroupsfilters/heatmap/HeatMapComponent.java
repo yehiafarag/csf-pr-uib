@@ -69,12 +69,13 @@ public class HeatMapComponent extends VerticalLayout {
     public VerticalLayout getHideCompBtn() {
         return hideCompBtn;
     }
-    public void showCompBtn(boolean show){
+
+    public void showCompBtn(boolean show) {
         topLayout.setVisible(show);
-    
+
     }
 
-    private final VerticalLayout hideCompBtn,  spacer;
+    private final VerticalLayout hideCompBtn, spacer;
     private final HorizontalLayout topLayout;
     private final HorizontalLayout bottomLayout;
     private final VerticalLayout columnContainer;
@@ -734,7 +735,7 @@ public class HeatMapComponent extends VerticalLayout {
             if (la.equalsIgnoreCase("")) {
                 la = "Not Available";
             }
-            HeaderCell headerCell = new HeaderCell(true, la, i, HeatMapComponent.this, heatmapCellWidth, heatmapHeaderCellWidth,diseaseFullNameMap.get(la.split("\n")[0]));
+            HeaderCell headerCell = new HeaderCell(true, la, i, HeatMapComponent.this, heatmapCellWidth, heatmapHeaderCellWidth, diseaseFullNameMap.get(la.split("\n")[0]));
             rowHeader.addComponent(headerCell, 0, i);
             rowHeader.setComponentAlignment(headerCell, Alignment.MIDDLE_CENTER);
             rowCells[i] = headerCell;
@@ -757,7 +758,18 @@ public class HeatMapComponent extends VerticalLayout {
                     pubCounter.add(ds.getPumedID());
 
                 }
-                HeatmapCell cell = new HeatmapCell(value, color, dsIndexes, x, y, null, HeatMapComponent.this, headerTitle, heatmapCellWidth, pubCounter.size());
+             
+                String grI = headerTitle.split("/")[0].split("\n")[0];
+                String grII = headerTitle.split("/")[1].split("\n")[0].trim();
+                if (diseaseFullNameMap.containsKey(grI)) {
+                    grI = diseaseFullNameMap.get(grI);
+                }
+                 if (diseaseFullNameMap.containsKey(grII)) {
+                    grII = diseaseFullNameMap.get(grII);
+                }
+                    String fullCompName = grI+" / "+grII+" - "+headerTitle.split("/")[0].split("\n")[1].replace(grII, headerTitle).replace("_", " ").replace("Disease", "");
+
+                HeatmapCell cell = new HeatmapCell(value, color, dsIndexes, x, y, null, HeatMapComponent.this, headerTitle, heatmapCellWidth, pubCounter.size(), fullCompName);
                 comparisonsCellsMap.put(headerTitle, cell);
                 heatmapBody.addComponent(cell, y, x);
                 dataColors[x][y] = color;

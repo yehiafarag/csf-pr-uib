@@ -117,6 +117,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
         comparisonTitle.setContentMode(ContentMode.HTML);
         comparisonTitle.setStyleName("custChartLabelHeader");
         comparisonTitle.setWidth((width - 55) + "px");
+        comparisonTitle.setDescription(cp.getComparison().getComparisonFullName());
         this.addComponent(comparisonTitle, 1, 0);
         this.setComponentAlignment(comparisonTitle, Alignment.TOP_LEFT);
 
@@ -671,7 +672,7 @@ public class ProteinStudyComparisonScatterPlotLayout extends GridLayout {
     public void redrawChart() {
         if (defaultScatterPlottImgUrl == null) {
             this.generateScatterplotchart(comparisonProtein, imgWidth, 150);
-            studyPopupLayoutManager = new PeptidesStackedBarChartsControler(width, patientGroupsNumToDsIdMap, comparisonProtein.getProteinAccssionNumber(), comparisonProtein.getProtName(), comparisonProtein.getUrl(), comparisonProtein.getComparison().getComparisonHeader(), comparisonProtein.getDsQuantProteinsMap(), dsKeyDatasetMap, Quant_Central_Manager.getDiseaseHashedColorMap());
+            studyPopupLayoutManager = new PeptidesStackedBarChartsControler(width, patientGroupsNumToDsIdMap, comparisonProtein.getProteinAccssionNumber(), comparisonProtein.getProtName(), comparisonProtein.getUrl(), comparisonProtein.getComparison().getComparisonFullName(), comparisonProtein.getDsQuantProteinsMap(), dsKeyDatasetMap, Quant_Central_Manager.getDiseaseHashedColorMap());
         }
 
 //        styles.add("." + teststyle + " {  background-image: url(" + defaultScatterPlottImgUrl + " );background-position:center; background-repeat: no-repeat; }");

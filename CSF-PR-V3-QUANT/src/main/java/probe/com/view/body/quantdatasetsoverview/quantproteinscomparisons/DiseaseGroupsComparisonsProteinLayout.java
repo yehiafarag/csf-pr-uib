@@ -97,6 +97,9 @@ public class DiseaseGroupsComparisonsProteinLayout extends HorizontalLayout impl
     public QuantDiseaseGroupsComparison getComparison() {
         return comparison;
     }
+    
+  
+    
 
     private final QuantDiseaseGroupsComparison comparison;
 

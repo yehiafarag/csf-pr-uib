@@ -61,6 +61,7 @@ public class StudiesPeptidesDetailsContainerLayout extends VerticalLayout {
     public Set<ProteinInformationDataForExport> getOrderedPeptidesExportInfoSet() {
         return orderedPeptidesExportInfoSet;
     }
+    private final String proteinName;
 
     /**
      *
@@ -71,7 +72,8 @@ public class StudiesPeptidesDetailsContainerLayout extends VerticalLayout {
      * @param height
      * @param custTrend
      */
-    public StudiesPeptidesDetailsContainerLayout(final QuantCentralManager Quant_Central_Manager, DiseaseGroupsComparisonsProteinLayout[] proteinsComparisonsArr, Set<QuantDiseaseGroupsComparison> selectedComparisonList, int width, int height, int custTrend) {
+    public StudiesPeptidesDetailsContainerLayout(final QuantCentralManager Quant_Central_Manager, DiseaseGroupsComparisonsProteinLayout[] proteinsComparisonsArr, Set<QuantDiseaseGroupsComparison> selectedComparisonList, int width, int height, int custTrend, String proteinName) {
+        this.proteinName=proteinName;
         this.diiseaseGroupsComparisonsProteinArr = proteinsComparisonsArr;
         this.defaultPeptidesExportInfoSet = new LinkedHashSet<ProteinInformationDataForExport>();
         this.orderedPeptidesExportInfoSet = new LinkedHashSet<ProteinInformationDataForExport>();
@@ -451,9 +453,9 @@ public class StudiesPeptidesDetailsContainerLayout extends VerticalLayout {
 
         if (fullStudiesPopupWindow == null) {
             int height = Page.getCurrent().getBrowserWindowHeight() - 100;
-            int width = Page.getCurrent().getBrowserWindowWidth() - 100;
+            int localWidth = Page.getCurrent().getBrowserWindowWidth() - 100;
             popupBody = new VerticalLayout();
-            popupBody.setWidth((width) + "px");
+            popupBody.setWidth((localWidth) + "px");
             popupBody.setHeightUndefined();
             popupBody.setStyleName(Reindeer.LAYOUT_WHITE);
             fullStudiesPopupWindow = new Window() {
@@ -464,10 +466,10 @@ public class StudiesPeptidesDetailsContainerLayout extends VerticalLayout {
                 }
 
             };
-            fullStudiesPopupWindow.setCaption("<font color='gray' style='font-weight: bold;!important'><a href='" + "google.com" + "'target=\"_blank\"> " + "protein name" + " </a></font>");
+            fullStudiesPopupWindow.setCaption("<font size='2' color='gray' style='font-weight: normal;!important'> " + proteinName + "</font>");
             fullStudiesPopupWindow.setContent(popupBody);
             fullStudiesPopupWindow.setWindowMode(WindowMode.NORMAL);
-            fullStudiesPopupWindow.setWidth((width + 40) + "px");
+            fullStudiesPopupWindow.setWidth((localWidth + 40) + "px");
             fullStudiesPopupWindow.setHeight((height) + "px");
             fullStudiesPopupWindow.setVisible(false);
             fullStudiesPopupWindow.setResizable(false);
