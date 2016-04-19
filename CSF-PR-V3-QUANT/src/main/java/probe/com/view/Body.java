@@ -18,7 +18,6 @@ import java.io.Serializable;
 import probe.com.handlers.CSFPRHandler;
 import probe.com.view.body.ProteinsSearchingLayout;
 import probe.com.view.body.QuantCompareDataLayout;
-import probe.com.view.core.chart4j.VennDiagramContainer;
 
 /**
  *
@@ -208,6 +207,8 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
 
                 boolean horizontal = false;
                 InviewExtension extension = new InviewExtensionImpl(datasetOverviewTabLayout.getTopLabelMarker(), quantDatasetsOverviewPanel, horizontal);
+      
+                
                 extension.addExitListener(new InviewExtension.ExitListener() {
                     @Override
                     public void onExit(InviewExtension.ExitEvent event) {
@@ -223,6 +224,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
 
                     @Override
                     public void onEntered(InviewExtension.EnteredEvent event) {
+                       
                         if (init) {
                             init = false;
                             return;

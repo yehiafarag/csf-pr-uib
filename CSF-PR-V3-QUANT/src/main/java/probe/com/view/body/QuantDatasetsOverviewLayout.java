@@ -16,6 +16,7 @@ import probe.com.view.body.quantdatasetsoverview.DiseaseGroupsFiltersContainer;
 import probe.com.view.body.quantdatasetsoverview.QuantProteinsComparisonsContainer;
 import probe.com.view.core.HideOnClickLayout;
 import probe.com.view.body.quantdatasetsoverview.QuantProteinsTabsheetContainerLayout;
+import probe.com.view.core.TipsBtn;
 
 /**
  * This is the studies layout include publication heatmapFiltere and publication
@@ -73,7 +74,7 @@ public class QuantDatasetsOverviewLayout extends VerticalLayout {
         heatmapFilter.setMargin(new MarginInfo(false, false, true, false));
         String infoText = "Select a disease category (Multiple Sclerosis, Alzheimer, etc)<img src='VAADIN/themes/dario-theme/img/1.png'  alt='disease category' Align='center'> in the roll down menu on top to view all available  patients group comparisons on the interactive heat-map <img src='VAADIN/themes/dario-theme/img/2.png' alt='heat-map'  Align='center'> that belong to the selected disease . Select single or multiple comparisons from the heatmap to show the overall protein information on the bubble chart and protein information table.</br>Users can use more filters by clicking on the diffrent available filters <img src='VAADIN/themes/dario-theme/img/4.png' alt='filter'  Align='center'> ";
 
-        HideOnClickLayout comparisonLevelLayout = new HideOnClickLayout("Datasets", heatmapFilter, null, infoText, CSFPR_Handler.getTipsGenerator().generateTipsBtn());
+        HideOnClickLayout comparisonLevelLayout = new HideOnClickLayout("Datasets", heatmapFilter, null, infoText, new TipsBtn("Quantitative Datasets", Quant_Central_Manager));
 
         this.addComponent(comparisonLevelLayout);
         comparisonLevelLayout.setVisability(true);

@@ -11,8 +11,6 @@ import com.vaadin.server.FileDownloader;
 import com.vaadin.server.StreamResource;
 import com.vaadin.server.StreamResource.StreamSource;
 import com.vaadin.server.ThemeResource;
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinResponse;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.AbsoluteLayout;
@@ -379,6 +377,11 @@ public class ComparisonsSelectionOverviewBubbleChart extends VerticalLayout impl
         legendLayout.setHeight("24px");
         btnContainerLayout.addComponent(legendLayout);
         btnContainerLayout.setComponentAlignment(legendLayout, Alignment.TOP_RIGHT);
+        
+        Quant_Central_Manager.insertNoftfication("Quantitative Datasets", "Remeber you can flip the disease group comparisons using (Swich disease groups button)<img src='VAADIN/themes/dario-theme/img/flip-v-updated.png' height='25px' width='25' alt='Reorder and select' Align='center'/> ", width, width,"flipnotification");
+        
+        
+        
 //        btnContainerLayout.setExpandRatio(legendLayout, 600);
 //        btnContainerLayout.setExpandRatio(btnContainerLayout, 210);
 

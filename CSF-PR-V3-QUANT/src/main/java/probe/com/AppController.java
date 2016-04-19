@@ -6,8 +6,10 @@ import com.ejt.vaadin.sizereporter.SizeReporter;
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.JavaScript;
 import com.vaadin.ui.JavaScriptFunction;
 import com.vaadin.ui.Notification;
@@ -17,6 +19,7 @@ import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
 import probe.com.handlers.CSFPRHandler;
 
 /**
@@ -93,8 +96,8 @@ public class AppController extends UI {
                 }
             }, (5 * 60 * 1000 * 60));
             //maximum session time out is 5 hours
-        }  
-        
+        }
+
 //        final int appWidth = Page.getCurrent().getBrowserWindowWidth()-10;
 //        final int appHeight = Page.getCurrent().getBrowserWindowHeight()-20;
 //        application.setWidth(appWidth + "px");
@@ -107,7 +110,6 @@ public class AppController extends UI {
 //                System.out.println("at window resized " + event.getWidth());
 //                 application.setWidth(appWidth + "px");
 //                application.setHeight(appHeight + "px");
-
 //                if (checkSize) {
 //                    Page.getCurrent().reload();
 //                }
@@ -115,11 +117,13 @@ public class AppController extends UI {
 //                checkWindowSize();
             }
         });
-      
+
         final SizeReporter sizeReporter = new SizeReporter(application);
-        sizeReporter.addResizeListener(new ComponentResizeListener() {            
+        sizeReporter.addResizeListener(new ComponentResizeListener() {
             @Override
-            public void sizeChanged(ComponentResizeEvent event) {           
+            public void sizeChanged(ComponentResizeEvent event) {
+              
+            
 
 //                application.setWidth(appWidth + "px");
 //                application.setHeight(appHeight + "px");
@@ -127,6 +131,31 @@ public class AppController extends UI {
         });
 
         checkWindowSize();
+
+        Cookie[] cookies = request.getCookies();
+        boolean firstTime = true;
+        for (Cookie cookie : cookies) {
+            
+             System.out.println("at cookie is " + cookie.getName() + "  " + cookie.getValue());
+            
+            if (cookie.getName().equalsIgnoreCase("csf-user")) {
+                firstTime = false;
+                cookie.setMaxAge(5);
+               
+            }
+           
+
+        }
+        if (firstTime) {
+            Cookie ursCookie = new Cookie("csf-user", "true");
+            ursCookie.setMaxAge(5);
+            VaadinService.getCurrentResponse().addCookie(ursCookie); 
+            Notification.show("Welcome to CSF-PR v2.0");
+        }
+    
+        
+        
+       
 
     }
 

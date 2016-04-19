@@ -1130,7 +1130,7 @@ public class CoreLogic implements Serializable {
                 Set<QuantPeptide> quantPeptidesList = comProt.getQuantPeptidesList();
                 for (String key : fullComparisonPeptideMap.keySet()) {
 
-                    if (key.equalsIgnoreCase("_" + (quant.getProtKey()) + "__" + quant.getDsKey() + "__")) {
+                    if (key.equalsIgnoreCase("__" + (quant.getProtKey()) + "__" + quant.getDsKey() + "__")) {
 //                        System.out.println("peptides list exist");
                         if (inverted) {
                             Set<QuantPeptide> updatedQuantPeptidesList = new HashSet<QuantPeptide>();

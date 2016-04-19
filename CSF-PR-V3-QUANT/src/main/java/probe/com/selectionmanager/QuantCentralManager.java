@@ -7,7 +7,9 @@ package probe.com.selectionmanager;
 
 import com.vaadin.ui.Button;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +22,7 @@ import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.model.beans.quant.QuantProtein;
 import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import probe.com.view.core.DiseaseGroup;
+import probe.com.view.core.NotificationComponent;
 
 /**
  *
@@ -28,88 +31,90 @@ import probe.com.view.core.DiseaseGroup;
  * The central selection manager to manage all selections
  */
 public class QuantCentralManager implements Serializable {
-
+    
     private final StudiesFilterManager Studies_Filter_Manager;
     private final StudiesSelectionManager Studies_Selection_Manager;
     private final Map<String, String> diseaseFullNameMap;
-
+    
     private final CSFPRHandler CSFPR_Handler;
     private final Map<String, String> diseaseHashedColorMap;
     private final Map<String, String> diseaseStyleMap;
     private Button exportQuantTableBtn;
-
+    
+    private final Map<String, Set<NotificationComponent>> notificationsMap = new HashMap<String, Set<NotificationComponent>>();
+    
     public Button getExportQuantTableBtn() {
         return exportQuantTableBtn;
     }
-
+    
     public void setExportQuantTableBtn(Button exportQuantTableBtn) {
         this.exportQuantTableBtn = exportQuantTableBtn;
     }
-
+    
     public Map<String, String> getDiseaseStyleMap() {
         return diseaseStyleMap;
     }
-
+    
     public String getDiseaseHashedColor(String diseaseName) {
         return diseaseHashedColorMap.get(diseaseName);
     }
-
+    
     private final Map<String, Map<String, String>> default_DiseaseCat_DiseaseGroupMap;
     private final Map<String, Set<String>> diseaseGroupsHeaderToOregenalDiseaseGroupsNames;
-
+    
     public QuantCentralManager(CSFPRHandler CSFPR_Handler) {
         this.CSFPR_Handler = CSFPR_Handler;
         this.diseaseHashedColorMap = CSFPR_Handler.getDiseaseHashedColorMap();
-
+        
         diseaseFullNameMap = CSFPR_Handler.getDiseaseFullNameMap();
         Studies_Filter_Manager = new StudiesFilterManager(CSFPR_Handler.getQuantDatasetInitialInformationObject(), CSFPR_Handler.getActivePieChartQuantFilters(), CSFPR_Handler.getDefault_DiseaseCat_DiseaseGroupMap());//,filterUtility.getFullFilterList()
         Studies_Selection_Manager = new StudiesSelectionManager();
         default_DiseaseCat_DiseaseGroupMap = Studies_Filter_Manager.getDefault_DiseaseCat_DiseaseGroupMap();
         diseaseGroupsHeaderToOregenalDiseaseGroupsNames = Studies_Filter_Manager.getDiseaseGroupsHeaderToOregenalDiseaseGroupsNames();
         diseaseStyleMap = CSFPR_Handler.getDiseaseStyleMap();
-
+        
     }
-
+    
     public Map<String, String> getDiseaseFullNameMap() {
         return diseaseFullNameMap;
     }
-
+    
     public QuantCentralManager(CSFPRHandler CSFPR_Handler, List<QuantProtein> searchQuantificationProtList) {
         this.CSFPR_Handler = CSFPR_Handler;
         this.diseaseHashedColorMap = CSFPR_Handler.getDiseaseHashedColorMap();
         diseaseFullNameMap = CSFPR_Handler.getDiseaseFullNameMap();
-
+        
         Map<String, QuantDatasetInitialInformationObject> quantDataInitInfo = CSFPR_Handler.getQuantDatasetInitialInformationObject(searchQuantificationProtList);
-
+        
         Studies_Filter_Manager = new StudiesFilterManager(quantDataInitInfo, CSFPR_Handler.getActivePieChartQuantFilters(searchQuantificationProtList), CSFPR_Handler.getDefault_DiseaseCat_DiseaseGroupMap());//,filterUtility.getFullFilterList()
         Studies_Selection_Manager = new StudiesSelectionManager();
-
+        
         default_DiseaseCat_DiseaseGroupMap = Studies_Filter_Manager.getDefault_DiseaseCat_DiseaseGroupMap();
         diseaseGroupsHeaderToOregenalDiseaseGroupsNames = Studies_Filter_Manager.getDiseaseGroupsHeaderToOregenalDiseaseGroupsNames();
         diseaseStyleMap = CSFPR_Handler.getDiseaseStyleMap();
-
+        
     }
-
+    
     public QuantCentralManager(CSFPRHandler CSFPR_Handler, List<QuantProtein> searchQuantificationProtList, QuantDiseaseGroupsComparison userCustomizedComparison) {
         this.CSFPR_Handler = CSFPR_Handler;
         this.diseaseHashedColorMap = CSFPR_Handler.getDiseaseHashedColorMap();
         diseaseFullNameMap = CSFPR_Handler.getDiseaseFullNameMap();
         Studies_Filter_Manager = new StudiesFilterManager(CSFPR_Handler.getQuantDatasetInitialInformationObject(searchQuantificationProtList), CSFPR_Handler.getActivePieChartQuantFilters(searchQuantificationProtList), userCustomizedComparison, CSFPR_Handler.getDefault_DiseaseCat_DiseaseGroupMap());//,filterUtility.getFullFilterList()
         Studies_Selection_Manager = new StudiesSelectionManager();
-
+        
         default_DiseaseCat_DiseaseGroupMap = Studies_Filter_Manager.getDefault_DiseaseCat_DiseaseGroupMap();
         diseaseGroupsHeaderToOregenalDiseaseGroupsNames = Studies_Filter_Manager.getDiseaseGroupsHeaderToOregenalDiseaseGroupsNames();
         diseaseStyleMap = CSFPR_Handler.getDiseaseStyleMap();
     }
-
-    public boolean  setHideSerum(boolean noSerum) {
+    
+    public boolean setHideSerum(boolean noSerum) {
         boolean success = Studies_Filter_Manager.setHideSerum(noSerum);
-         if (success) {
+        if (success) {
             Studies_Filter_Manager.resetFilters();
         }
         return success;
     }
-
+    
     public boolean setHideCSF(boolean noCSF) {
         boolean success = Studies_Filter_Manager.setHideCSF(noCSF);
         if (success) {
@@ -126,7 +131,7 @@ public class QuantCentralManager implements Serializable {
     public Map<Integer, QuantDatasetObject> getFullQuantDatasetMap() {
         return Studies_Filter_Manager.getFullQuantDatasetMap();
     }
-
+    
     public Map<String, Map<String, String>> getDefault_DiseaseCat_DiseaseGroupMap() {
         return default_DiseaseCat_DiseaseGroupMap;
     }
@@ -174,7 +179,7 @@ public class QuantCentralManager implements Serializable {
      */
     public void updateSelectedComparisonList(Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
         this.Studies_Selection_Manager.updateSelectedComparisonList(selectedComparisonList);
-
+        
     }
 
     /**
@@ -191,7 +196,7 @@ public class QuantCentralManager implements Serializable {
      */
     public void setStudySelectionListenerLevel(CSFFilterSelection selection) {
         Studies_Selection_Manager.setStudyLevelFilterSelection(selection);
-
+        
     }
 
     /**
@@ -218,15 +223,15 @@ public class QuantCentralManager implements Serializable {
      * @param protSelectionMap
      */
     public void setQuantProteinsSelectionLayout(Map<String, DiseaseGroupsComparisonsProteinLayout[]> protSelectionMap) {
-
+        
         this.Studies_Selection_Manager.setQuantProteinsSelectionLayout(protSelectionMap);
-
+        
     }
-
+    
     public void QuantProteinsTableSelectionChanged(String selectionType) {
         Studies_Selection_Manager.QuantProteinsTableSelectionChanged(selectionType);
     }
-
+    
     public String getSelectedComparisonHeader() {
         return Studies_Selection_Manager.getSelectedComparisonHeader();
     }
@@ -239,7 +244,7 @@ public class QuantCentralManager implements Serializable {
      */
     public void setBubbleChartQuantProteinsSelection(Set<String> protSelectionSet, String selectedComparisonHeader) {
         Studies_Selection_Manager.setBubbleChartQuantProteinsSelection(protSelectionSet, selectedComparisonHeader);
-
+        
     }
 
     /**
@@ -250,9 +255,9 @@ public class QuantCentralManager implements Serializable {
      */
     public void removeFilterValue(String filterId, String filterValue) {
         Studies_Selection_Manager.removeFilterValue(filterId, filterValue);
-
+        
     }
-
+    
     public Set<String> getProtSelectionSet() {
         return Studies_Selection_Manager.getProtSelectionSet();
     }
@@ -290,7 +295,7 @@ public class QuantCentralManager implements Serializable {
                 break;
             }
         }
-
+        
         return selectedComparisonList;
     }
 
@@ -332,19 +337,19 @@ public class QuantCentralManager implements Serializable {
     public String getSelectedProteinKey() {
         return Studies_Selection_Manager.getSelectedProteinKey();
     }
-
+    
     public void setSelectedProteinKey(String selectedProteinKey) {
         Studies_Selection_Manager.setSelectedProteinKey(selectedProteinKey);
     }
-
+    
     public boolean isSignificantOnly() {
         return Studies_Selection_Manager.isSignificantOnly();
     }
-
+    
     public Set<JFreeChart> getProteinsOverviewBubbleChart() {
         return Studies_Selection_Manager.getProteinsOverviewBubbleChart();
     }
-
+    
     public void setProteinsOverviewBubbleChart(JFreeChart proteinsOverviewBubbleChart) {
         Studies_Selection_Manager.setProteinsOverviewBubbleChart(proteinsOverviewBubbleChart);
     }
@@ -353,11 +358,11 @@ public class QuantCentralManager implements Serializable {
     public Set<JFreeChart> getStudiesOverviewPieChart() {
         return Studies_Filter_Manager.getStudiesOverviewPieChart();
     }
-
+    
     public void setStudiesOverviewPieChart(Set<JFreeChart> studiesOverviewPieChart) {
         Studies_Filter_Manager.setStudiesOverviewPieChart(studiesOverviewPieChart);
     }
-
+    
     public boolean[] getActiveHeader() {
         return Studies_Filter_Manager.getActiveHeader();
     }
@@ -388,7 +393,7 @@ public class QuantCentralManager implements Serializable {
     public Map<Integer, QuantDatasetObject> getFilteredQuantDatasetArr() {
         return Studies_Filter_Manager.getFilteredQuantDatasetArr();
     }
-
+    
     public Set<String> getDiseaseCategorySet() {
         return Studies_Filter_Manager.getDiseaseCategorySet();
     }
@@ -399,7 +404,7 @@ public class QuantCentralManager implements Serializable {
      */
     public void applyFilters(CSFFilterSelection selection) {
         Studies_Filter_Manager.applyFilters(selection);
-
+        
     }
 
     /**
@@ -415,7 +420,7 @@ public class QuantCentralManager implements Serializable {
      */
     public void resetFiltersListener() {
         Studies_Filter_Manager.resetFilters();
-
+        
     }
 
     /**
@@ -426,30 +431,30 @@ public class QuantCentralManager implements Serializable {
     public boolean[] getActiveFilters() {
         return Studies_Filter_Manager.getActiveFilters();
     }
-
+    
     public Map<Integer, QuantDatasetObject> getFilteredDatasetsList() {
-
+        
         return Studies_Filter_Manager.getFilteredDatasetsList();
     }
-
+    
     public void changeDiseaseCategory(String diseaseCategory) {
         Studies_Filter_Manager.changeDiseaseCategory(diseaseCategory);
-
+        
     }
-
+    
     public void updateDiseaseGroupsNames(Map<String, Map<String, String>> updatedGroupsNamesMap) {
         Studies_Filter_Manager.updateDiseaseGroupsNames(updatedGroupsNamesMap);
-
+        
     }
-
+    
     public String getInUseDiseaseName() {
         return Studies_Filter_Manager.getInUseDiseaseName();
     }
-
+    
     public int getTotalDsNumber() {
         return Studies_Filter_Manager.getTotalDsNumber();
     }
-
+    
     public int getCurrentDsNumber() {
         return Studies_Filter_Manager.getCurrentDsNumber();
     }
@@ -462,7 +467,7 @@ public class QuantCentralManager implements Serializable {
      */
     public void setHeatMapLevelSelection(LinkedHashSet<String> selectedRows, LinkedHashSet<String> selectedColumns, DiseaseGroup[] diseaseGroupsArr) {
         Studies_Filter_Manager.setHeatMapLevelSelection(selectedRows, selectedColumns, diseaseGroupsArr);
-
+        
     }
 
     /**
@@ -495,4 +500,43 @@ public class QuantCentralManager implements Serializable {
 //    public DiseaseGroup[] getDiseaseGroupsArr() {
 //        return Studies_Filter_Manager.getDiseaseGroupsArr();
 //    }
+    public NotificationComponent insertNoftfication(String tabName, String text, int x, int y,String uniqueID) {
+        if (!notificationsMap.containsKey(tabName)) {
+            Set<NotificationComponent> notificationSet = new LinkedHashSet<NotificationComponent>();
+            notificationsMap.put(tabName, notificationSet);
+            
+        }
+        Set<NotificationComponent> notificationSet = notificationsMap.get(tabName);
+        NotificationComponent notificationComponent = new NotificationComponent(text,uniqueID);
+        notificationSet.add(notificationComponent);
+        notificationsMap.put(tabName, notificationSet);
+        return notificationComponent;
+        
+    }
+    
+    public void showNotifications(String tabName) {
+        for (NotificationComponent notificationComponent : notificationsMap.get(tabName)) {
+            notificationComponent.Notifi();
+        }
+        
+    }
+
+    public void hideNotifications() {
+        for (String key : notificationsMap.keySet()) {
+            for (NotificationComponent notificationComponent : notificationsMap.get(key)) {
+                notificationComponent.hideNotification();
+            }
+        }
+        
+    }
+
+    public void showSingleNotification(String tabName, String notificationId) {
+        for (NotificationComponent notificationComponent : notificationsMap.get(tabName)) {
+            if (notificationComponent.getUniqueID().equalsIgnoreCase(notificationId)) {
+                notificationComponent.Notifi();
+                return;
+            }
+        }
+        
+    }
 }

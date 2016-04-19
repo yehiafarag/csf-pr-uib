@@ -1536,7 +1536,7 @@ border:3px solid #4d749f ;
     background-size:20px;
     background-repeat:no-repeat;
     background-position:center;
-     border-radius:4px;
+    border-radius:4px;
     border-right:1px solid white;
 }
 .studyexplorer:hover{
@@ -1952,6 +1952,7 @@ border:3px solid #4d749f ;
     text-align:center;
     background:whitesmoke;
     font-weight:bold;
+    outline: none;
 
     -webkit-transition: visibility 2s; /* For Safari 3.1 to 6.0 */
     transition: visibility 2s;  
@@ -3033,7 +3034,7 @@ img {
     transition: width 2s; 
     -webkit-transition: height 3s; /* For Safari 3.1 to 6.0 */
     transition: height 3s;    
-    max-width: 440px !important;
+    max-width: 450px !important;
     z-index:2;
 
 }
@@ -3141,7 +3142,7 @@ img {
     cursor: pointer;
     -webkit-user-select: none;
     color: rgb(27, 105, 159);
-    
+
     -webkit-transition: width 2s; /* For Safari 3.1 to 6.0 */
     transition: width 2s;   
     background-image: url(img/filter_disables.png);
@@ -3208,7 +3209,7 @@ img {
     zoom: 1;
     font-size:13px;
     color:rgba(255, 255, 255, 0) !important;
-     border-radius:4px;
+    border-radius:4px;
     border-right:1px solid white;
     border-left:1px solid white;
 
@@ -3238,7 +3239,7 @@ img {
     zoom: 1;
     font-size:13px;    
     background-color:whitesmoke;
-     border-radius:4px;
+    border-radius:4px;
     border-right:1px solid lightgray;
     border-left:1px solid lightgray;
 
@@ -3262,8 +3263,8 @@ img {
     zoom: 1;
     font-size:13px;
     color:rgba(255, 255, 255, 0) !important;
-     border-radius:4px;
-   border-right:1px solid white;
+    border-radius:4px;
+    border-right:1px solid white;
     border-left:1px solid white;
 
 
@@ -3296,7 +3297,7 @@ img {
 
 }
 .enablecsfselected:hover{      
-     border-right:1px solid darkgray;
+    border-right:1px solid darkgray;
     border-left:1px solid darkgray;
     background-color:lightgray;
 
@@ -3955,8 +3956,8 @@ img {
 
 }
 .initialquantselectionlist{
-/*    -webkit-transition: height 2s;  For Safari 3.1 to 6.0 
-    transition: height 2s;  */
+    /*    -webkit-transition: height 2s;  For Safari 3.1 to 6.0 
+        transition: height 2s;  */
 
 
 }
@@ -3976,9 +3977,8 @@ img {
     padding: 10px;
     border-radius:5px !important;
     font-size:15px !important;
-    font-weight:bold;
-/*    -webkit-transition: opacity 2s;  For Safari 3.1 to 6.0 
-    transition: opacity 2s;  */
+    /*    -webkit-transition: opacity 2s;  For Safari 3.1 to 6.0 
+        transition: opacity 2s;  */
     font-size:15px !important;
 
 }
@@ -4018,13 +4018,127 @@ img {
 
 }
 .hide{
-/*    -webkit-transition: opacity 2s;  
-    transition: opacity 2s; */
+    /*    -webkit-transition: opacity 2s;  
+        transition: opacity 2s; */
     opacity: 0;
 
 }
 .show{
-/*    -webkit-transition: opacity 2s;  
-    transition: opacity 2s; */
+    /*    -webkit-transition: opacity 2s;  
+        transition: opacity 2s; */
     opacity: 1;
+}
+.v-window-notificationwindow .v-window-outerheader {
+
+    background-color:rgba(255, 255, 255, 0) !important; 
+    margin-top:-38px; 
+}
+
+.notificationbody {
+    /*    background-size:100% 100%  !important;  */
+    /*background-position:center !important;*/
+    z-index:1000000000 !important;
+    color:black;    
+    font-size:13px !important;
+    padding-left:  6px !important;
+    padding-right: 6px !important;
+    padding-top:  6px !important;
+    padding-bottom:  6px !important;
+    opacity:1 !important;
+    border-radius:20px !important;
+    background-color:rgba(255, 255, 255, 0) !important;
+
+
+
+
+}
+
+.notificationwindow { 
+    overflow:hidden !important;
+    border-radius:20px !important;
+    border:4px solid whitesmoke;
+
+
+
+}
+
+.notificationwindow div{
+    overflow:hidden !important;
+
+
+
+
+
+
+}
+
+.v-window-notificationwindow.v-window-outerheader{
+    background-color:rgba(255, 255, 255, 0)!important; 
+
+}.fastvisible{
+    visibility: visible !important;
+    opacity: 1 !important;
+
+}
+.slowinvisible{
+-webkit-transition-delay: 20s; /* Safari */
+    transition-delay: 20s;
+    visibility: hidden !important;
+    opacity: 0   !important;;
+    transition: visibility 20s, opacity 10s linear  !important;
+    -webkit-transition:  visibility 20s, opacity 10s linear  !important;
+
+
+
+}
+.slowinvisible:hover {
+    transition: visibility 0s, opacity 0s linear  !important;
+    -webkit-transition:  visibility 0s, opacity 0s linear  !important;
+    opacity:1 !important;
+    visibility:visible !important;
+    cursor:pointer;
+}
+
+
+
+
+.notificationtext{
+
+    color:black;
+    font-size:12px;
+    max-width:250px;
+    -webkit-text-stroke-color: black;
+    background: url(img/yellowbackground.png) !important;
+    overflow:visible !important;
+    border: 2px solid #424242 !important;
+    padding:5px;
+    border-radius:20px ;
+    text-align:left !important;
+
+}
+.bubbletalkfooter { 
+    background-image: url(img/talk_bubble_1.png) !important;
+    background-repeat:no-repeat !important;
+    background-position:3px 0px !important;
+    overflow:visible !important;
+    margin-top:-10px;
+    position:absolute;
+    z-index:999999999 !important; 
+
+}
+.popupnotification{
+
+
+}
+.v-popupview-popup-popupnotification{
+
+    background-color:rgba(255, 255, 255, 0)!important; 
+    border:0px solid blue;
+    outline:none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    margin-left:130px !important;
+
+
 }

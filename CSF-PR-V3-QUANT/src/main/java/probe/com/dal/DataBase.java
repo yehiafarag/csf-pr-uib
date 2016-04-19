@@ -2891,6 +2891,9 @@ public class DataBase implements Serializable {
                 QuantPeptide quantPeptide = new QuantPeptide();
                 quantPeptide.setDsKey(rs1.getInt("DsKey"));
                 quantPeptide.setProtIndex(rs1.getInt("prot_index"));
+                if((quantPeptide.getProtIndex()==701) || (quantPeptide.getProtIndex()==1261) || (quantPeptide.getProtIndex()==5671)){
+                    System.out.println("peptide exist ");
+                }
                 quantPeptide.setUniqueId(rs1.getInt("index"));
                 quantPeptide.setPeptideModification(rs1.getString("peptide_modification"));
                 quantPeptide.setPeptideSequence(rs1.getString("peptide_sequance"));
@@ -2907,6 +2910,8 @@ public class DataBase implements Serializable {
                 quantPeptide.setPeptideCharge(rs1.getInt("peptide_charge"));
                 quantPeptide.setAdditionalComments(rs1.getString("additional_comments"));
                 quantPeptide.setQuantBasisComment(rs1.getString("quant_bases_comments"));
+                quantPeptide.setPeptideSignature("__" + quantPeptide.getProtIndex() + "__" + quantPeptide.getDsKey() + "__");
+                
                 quantPeptidetList.add(quantPeptide);
             }
             rs1.close();
@@ -2914,14 +2919,15 @@ public class DataBase implements Serializable {
             Map<String, Set<QuantPeptide>> quantProtPeptidetList = new HashMap<String, Set<QuantPeptide>>();
             for (QuantPeptide qp : quantPeptidetList) {
 
-                if (!quantProtPeptidetList.containsKey("_" + qp.getProtIndex() + "_" + qp.getDsKey() + "_")) {
+                if (!quantProtPeptidetList.containsKey(qp.getPeptideSignature())) {
                     Set<QuantPeptide> quantPepProtSet = new HashSet<QuantPeptide>();
-                    quantProtPeptidetList.put("_" + qp.getProtIndex() + "_" + qp.getDsKey() + "_", quantPepProtSet);
+                    quantProtPeptidetList.put(qp.getPeptideSignature(), quantPepProtSet);
 
                 }
-                Set<QuantPeptide> quantPepProtSet = quantProtPeptidetList.get("_" + qp.getProtIndex() + "_" + qp.getDsKey() + "_");
+                Set<QuantPeptide> quantPepProtSet = quantProtPeptidetList.get(qp.getPeptideSignature());
                 quantPepProtSet.add(qp);
-                quantProtPeptidetList.put("_" + qp.getProtIndex() + "__" + qp.getDsKey() + "__", quantPepProtSet);
+                quantProtPeptidetList.put(qp.getPeptideSignature(), quantPepProtSet);
+               
 
             }
             System.gc();

@@ -25,6 +25,15 @@ public class QuantPeptide implements Serializable {
     private String peptideModification;
     private String modification_comment;
     private String quantBasisComment;
+     private String peptideSignature;
+
+    public String getPeptideSignature() {
+        return peptideSignature;
+    }
+
+    public void setPeptideSignature(String peptideSignature) {
+        this.peptideSignature = peptideSignature;
+    }
 
     public String getQuantBasisComment() {
         return quantBasisComment;

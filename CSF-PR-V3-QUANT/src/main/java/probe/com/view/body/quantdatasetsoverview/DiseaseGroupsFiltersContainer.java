@@ -1,24 +1,17 @@
 package probe.com.view.body.quantdatasetsoverview;
 
 import com.vaadin.addon.tableexport.ExcelExport;
-import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.event.LayoutEvents;
-import com.vaadin.server.ExternalResource;
 import com.vaadin.server.Page;
-import com.vaadin.server.PaintException;
-import com.vaadin.server.PaintTarget;
-import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
-import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.ListSelect;
 import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
@@ -39,6 +32,7 @@ import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.PopupRecom
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.PopupReorderGroupsLayout;
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.StudiesInformationPopupBtn;
 import probe.com.view.body.quantdatasetsoverview.diseasegroupsfilters.interactivepiechartfilters.StudiesPieChartFiltersContainerLayout;
+import probe.com.view.core.NotificationComponent;
 
 /**
  * This class represents the top filters layout for exploring datasets tab the
@@ -149,7 +143,7 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
                 pieChartFiltersBtnWrapper.removeAllComponents();
                 StudiesPieChartFiltersContainerLayout pieChartFiltersLayout = new StudiesPieChartFiltersContainerLayout(Quant_Central_Manager, CSFPR_Handler);
                 pieChartFiltersBtnWrapper.addComponent(pieChartFiltersLayout.getPieChartFiltersBtn());
-                counterLabel.setValue("( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )");
+                counterLabel.setValue("<center style='text-align: center;'>( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )</center>");
                 counterLabel.setDescription("#Datasets: " + Quant_Central_Manager.getCurrentDsNumber() + "<br/>#Total datasets: " + Quant_Central_Manager.getTotalDsNumber());
 
             }
@@ -215,6 +209,7 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
                 if (!data.equalsIgnoreCase("Multiple Sclerosis")) {
                     diseaseTypeSelectionList.select(data);
                 }
+                Quant_Central_Manager.showNotifications("Quantitative Datasets");
 
             }
         };
@@ -222,32 +217,35 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
         listLayoutWrapper.addComponent(selectLayout);
 //        listLayoutWrapper.addComponent(initialDiseaseTypeSelectionList);
 
-        counterLabel = new Label("( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )");
+        counterLabel = new Label("<center style='text-align: center;'>( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )</center>");
         counterLabel.setVisible(false);
         counterLabel.setDescription("#Datasets: " + Quant_Central_Manager.getCurrentDsNumber() + "<br/>#Total datasets: " + Quant_Central_Manager.getTotalDsNumber());
         diseaseCategorySelectLayout.addComponent(counterLabel);
         diseaseCategorySelectLayout.setComponentAlignment(counterLabel, Alignment.MIDDLE_CENTER);
-        counterLabel.setWidth("51px");
+        counterLabel.setWidth("60px");
+        counterLabel.setContentMode(ContentMode.HTML);
 
         diseaseCategorySelectLayout.addComponent(filterLabelBtnWrpper);
         diseaseCategorySelectLayout.setComponentAlignment(filterLabelBtnWrpper, Alignment.MIDDLE_RIGHT);
 
         final Label filterLabelBtn = new Label("Filters");
-        filterLabelBtn.setHeight("20px");
+        filterLabelBtn.setHeight("22px");
         filterLabelBtn.setWidth("20px");
         filterLabelBtn.setDescription("Show filters");
         filterLabelBtn.setStyleName("showfilterbtnlabel");
         filterLabelBtn.setContentMode(ContentMode.HTML);
         filterLabelBtnWrpper.addComponent(filterLabelBtn);
 
+       NotificationComponent notification = Quant_Central_Manager.insertNoftfication("Quantitative Datasets", "Remember you can sort and select disease groups using (Reorder and select disease groups filter) <img src='VAADIN/themes/dario-theme/img/sort-select.png' height='25px' width='25' alt='Reorder and select' Align='center'/> ",470 , 115, "sortandselectnotification");
+       filterLabelBtnWrpper.addComponent(notification);
         HorizontalLayout popupBtnsLayout = new HorizontalLayout();
-        popupBtnsLayout.setWidth("437px");
+        popupBtnsLayout.setWidth("446px");
         popupBtnsLayout.setHeight("30px");
         popupBtnsLayout.setSpacing(true);
         popupBtnsLayout.setStyleName("filtercontainer");
 
         filtersContainerLayout.addComponent(popupBtnsLayout);
-        filtersContainerLayout.setHeight("0px");
+        filtersContainerLayout.setHeight("30px");
         filtersContainerLayout.setStyleName("filtercontainer2");
         filtersContainerLayout.setVisible(false);
 
@@ -357,17 +355,16 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
                         noSerumOption.setStyleName("enableserumunselected");
 
                     } else {
-                        Notification.show("No serum datasets available for the selected disease", Notification.Type.TRAY_NOTIFICATION); 
+                        Notification.show("No serum datasets available for the selected disease", Notification.Type.TRAY_NOTIFICATION);
                         return;
                     }
-                  
 
                 }
                 Quant_Central_Manager.resetFiltersListener();
                 pieChartFiltersBtnWrapper.removeAllComponents();
                 StudiesPieChartFiltersContainerLayout pieChartFiltersLayout = new StudiesPieChartFiltersContainerLayout(Quant_Central_Manager, CSFPR_Handler);
                 pieChartFiltersBtnWrapper.addComponent(pieChartFiltersLayout.getPieChartFiltersBtn());
-                counterLabel.setValue("( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )");
+                counterLabel.setValue("<center style='text-align: center;'>( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )</center>");
                 counterLabel.setDescription("#Datasets: " + Quant_Central_Manager.getCurrentDsNumber() + "<br/>#Total datasets: " + Quant_Central_Manager.getTotalDsNumber());
             }
         });
@@ -393,10 +390,9 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
 
                     boolean success = Quant_Central_Manager.setHideCSF(false);
                     if (success) {
-                        noCSFOption.setStyleName("enablecsfselected");                       
-                    }
-                    else {
-                        Notification.show("No serum datasets available for the selected disease", Notification.Type.TRAY_NOTIFICATION); 
+                        noCSFOption.setStyleName("enablecsfselected");
+                    } else {
+                        Notification.show("No serum datasets available for the selected disease", Notification.Type.TRAY_NOTIFICATION);
                         return;
                     }
                 } else {
@@ -404,9 +400,8 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
                     boolean success = Quant_Central_Manager.setHideCSF(true);
                     if (success) {
                         noCSFOption.setStyleName("enablecsfunselected");
-                    }
-                    else {
-                        Notification.show("No serum datasets available for the selected disease", Notification.Type.TRAY_NOTIFICATION); 
+                    } else {
+                        Notification.show("No serum datasets available for the selected disease", Notification.Type.TRAY_NOTIFICATION);
                         return;
                     }
                 }
@@ -414,7 +409,7 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
                 pieChartFiltersBtnWrapper.removeAllComponents();
                 StudiesPieChartFiltersContainerLayout pieChartFiltersLayout = new StudiesPieChartFiltersContainerLayout(Quant_Central_Manager, CSFPR_Handler);
                 pieChartFiltersBtnWrapper.addComponent(pieChartFiltersLayout.getPieChartFiltersBtn());
-                counterLabel.setValue("( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )");
+                counterLabel.setValue("<center style='text-align: center;'>( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )</center>");
                 counterLabel.setDescription("#Datasets: " + Quant_Central_Manager.getCurrentDsNumber() + "<br/>#Total datasets: " + Quant_Central_Manager.getTotalDsNumber());
             }
         });
@@ -646,6 +641,7 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
         filtersContainerLayout.setVisible(false);
         heatmapFilterComponent.setVisible(false);
         heatmapFilterComponent.showCompBtn(false);
+        notification.Notifi();
     }
 
     /**
@@ -676,13 +672,13 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
             if (DiseaseGroupsFiltersContainer.this.isAttached()) {
                 UI.getCurrent().scrollIntoView(counterLabel);
             }
-            counterLabel.setValue("( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )");
+            counterLabel.setValue("<center style='text-align: center;'>( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )</center>");
             counterLabel.setDescription("#Datasets: " + Quant_Central_Manager.getCurrentDsNumber() + "<br/>#Total datasets: " + Quant_Central_Manager.getTotalDsNumber());
             return;
         } else if (type.equalsIgnoreCase("HeatMap_Update_level")) {
             selectAllComparisons();
         }
-        counterLabel.setValue("( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )");
+        counterLabel.setValue("<center style='text-align: center;'>( " + Quant_Central_Manager.getCurrentDsNumber() + " / " + Quant_Central_Manager.getTotalDsNumber() + " )</center>");
         counterLabel.setDescription("#Datasets: " + Quant_Central_Manager.getCurrentDsNumber() + "<br/>#Total datasets: " + Quant_Central_Manager.getTotalDsNumber());
         heatmapFilterComponent.updateHideComparisonThumbBtn(selectionOverviewBubbleChart.getChartThumbImage(), true);
     }
@@ -707,7 +703,7 @@ public class DiseaseGroupsFiltersContainer extends HorizontalLayout implements C
     }
 
     private void resizeLayout(int diseaseGroupsColumnNumber, int diseaseGroupsRowsNumber) {
-        leftPanelWidth = Math.max((heatmapHeaderCellWidth + 20 + 12 + (heatmapCellWidth * diseaseGroupsColumnNumber)), 430);
+        leftPanelWidth = Math.max((heatmapHeaderCellWidth + 20 + 12 + (heatmapCellWidth * diseaseGroupsColumnNumber)), 446);
         leftContainerLayout.setWidth((leftPanelWidth) + "px");
         rightContainerLayout.setWidth((pageWidth - leftPanelWidth - 70) + "px");
         rightPanelWidth = (pageWidth - leftPanelWidth - 100);
