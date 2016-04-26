@@ -90,11 +90,7 @@
             <artifactId>sizereporter</artifactId>
             <version>0.1.4</version>
         </dependency>
-        <dependency>
-            <groupId>org.vaadin.addons</groupId>
-            <artifactId>slidemenu</artifactId>
-            <version>0.2</version>
-        </dependency>
+  
     </dependencies>
 
     <build>

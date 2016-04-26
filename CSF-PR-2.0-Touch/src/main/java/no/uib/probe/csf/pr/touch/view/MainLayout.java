@@ -6,7 +6,6 @@
 package no.uib.probe.csf.pr.touch.view;
 
 import com.ejt.vaadin.sizereporter.ComponentResizeEvent;
-import com.ejt.vaadin.sizereporter.ComponentResizeListener;
 import com.ejt.vaadin.sizereporter.SizeReporter;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.Page;
@@ -26,16 +25,20 @@ import com.vaadin.ui.themes.Reindeer;
  * this class represents the main HTML template for CSF-PR 2.0 touch
  */
 public class MainLayout extends VerticalLayout {
+
     private final HorizontalLayout header;
-    private final  VerticalLayout body ;
-    
+    private final VerticalLayout body;
+
+    /**
+     *
+     */
     public MainLayout() {
         this.setWidth("100%");
         this.setHeight("100%");
         this.setSizeFull();
         this.setSpacing(true);
         this.setStyleName("whitelayout");
-        
+
         //init header
         header = new HorizontalLayout();
         header.setWidth("100%");
@@ -45,7 +48,7 @@ public class MainLayout extends VerticalLayout {
 
         //tile logo container
         HorizontalLayout logoTitleContainer = new HorizontalLayout();
-        logoTitleContainer.setStyleName("toplogo");        
+        logoTitleContainer.setStyleName("toplogo");
         header.addComponent(logoTitleContainer);
         header.setComponentAlignment(logoTitleContainer, Alignment.MIDDLE_LEFT);
         VerticalLayout logo = new VerticalLayout();
@@ -71,12 +74,12 @@ public class MainLayout extends VerticalLayout {
         logo.addComponent(cLabel);
         logo.setComponentAlignment(cLabel, Alignment.MIDDLE_CENTER);
         logoTitleContainer.addComponent(logo);
-        
+
         VerticalLayout rightHeaderLayout = new VerticalLayout();
-        rightHeaderLayout.setStyleName("transparentlayout");        
-        
+        rightHeaderLayout.setStyleName("transparentlayout");
+
         rightHeaderLayout.setWidth("100%");
-        
+
         header.addComponent(rightHeaderLayout);
         header.setComponentAlignment(rightHeaderLayout, Alignment.TOP_RIGHT);
         HorizontalLayout linksIconsLayout = new HorizontalLayout();
@@ -91,59 +94,56 @@ public class MainLayout extends VerticalLayout {
         probe_ico.setWidth("237px");
         probe_ico.setHeight("58px");
         linksIconsLayout.addComponent(probe_ico);
-        
+
         Link uib_ico = new Link(null, new ExternalResource("http://www.uib.no/"));
         uib_ico.setIcon(new ThemeResource("img/uib.png"));
         uib_ico.setTargetName("_blank");
         uib_ico.setWidth("87px");
         uib_ico.setHeight("58px");
         linksIconsLayout.addComponent(uib_ico);
-        
+
         Link kgj_ico = new Link(null, new ExternalResource("http://www.stiftkgj.no/"));
         kgj_ico.setIcon(new ThemeResource("img/kgj.png"));
         kgj_ico.setTargetName("_blank");
         kgj_ico.setHeight("58px");
         linksIconsLayout.addComponent(kgj_ico);
-        
+
         VerticalLayout rightSpacer = new VerticalLayout();
         rightSpacer.setWidth("40px");
         rightSpacer.setHeight("5px");
-      
-        linksIconsLayout.addComponent(rightSpacer);        
+
+        linksIconsLayout.addComponent(rightSpacer);
         linksIconsLayout.setComponentAlignment(probe_ico, Alignment.MIDDLE_RIGHT);
         linksIconsLayout.setComponentAlignment(uib_ico, Alignment.MIDDLE_RIGHT);
-        linksIconsLayout.setComponentAlignment(kgj_ico, Alignment.MIDDLE_RIGHT);        
+        linksIconsLayout.setComponentAlignment(kgj_ico, Alignment.MIDDLE_RIGHT);
         linksIconsLayout.setComponentAlignment(rightSpacer, Alignment.MIDDLE_RIGHT);
-        
-     
 
         //heder is finished 
         //start body
-        
         body = new VerticalLayout();
         body.setWidth("100%");
         body.setHeight("100%");
-        body.setStyleName("blacklayout");
         this.addComponent(body);
-//        this.resizeScreen();
-         final SizeReporter sizeReporter = new SizeReporter(this);
-        sizeReporter.addResizeListener((ComponentResizeEvent event) -> {              
-            resizeScreen(); 
-            System.err.println("at size "+Page.getCurrent().getBrowserWindowWidth() +"    h: "+Page.getCurrent().getBrowserWindowHeight()+"    screen w: "+Page.getCurrent().getWebBrowser().getScreenHeight());
-    
+        final SizeReporter sizeReporter = new SizeReporter(this);
+        sizeReporter.addResizeListener((ComponentResizeEvent event) -> {
+            resizeScreen();
+           
         });
-      
-       }
-    
-    
-    private void resizeScreen(){
-        float windowHeight = (float)Page.getCurrent().getBrowserWindowHeight();
-        float headerRatio = 60f/windowHeight;
-        float bodyRatio = (windowHeight-60f)/(float)Page.getCurrent().getBrowserWindowHeight();
-          this.setExpandRatio(header, headerRatio);
-        this.setExpandRatio(body, bodyRatio);
-    
-    
+        WelcomePageContainer welcomePageContainerLayout = new WelcomePageContainer();
+        body.addComponent(welcomePageContainerLayout);
+
     }
-    
+
+    /**
+     * resize the layout on changing window size
+     */
+    private void resizeScreen() {
+        float windowHeight = (float) Page.getCurrent().getBrowserWindowHeight();
+        float headerRatio = 60f / windowHeight;
+        float bodyRatio = (windowHeight - 60f) / (float) Page.getCurrent().getBrowserWindowHeight();
+        this.setExpandRatio(header, headerRatio);
+        this.setExpandRatio(body, bodyRatio);
+
+    }
+
 }
