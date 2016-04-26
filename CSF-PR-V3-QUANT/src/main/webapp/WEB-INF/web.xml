@@ -41,7 +41,7 @@
     <context-param>
         <description>Database name csf_db_v2_1  dbtest, quantdataupdated_10_9</description>
         <param-name>dbName</param-name>
-        <param-value>all_no_MCP_15_04</param-value>
+        <param-value>all_no_MCP</param-value>
     </context-param>
     <context-param>
         <description>Database Driver</description>
