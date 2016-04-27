@@ -5,6 +5,7 @@
  */
 package no.uib.probe.csf.pr.touch.view;
 
+import no.uib.probe.csf.pr.touch.view.bigscreen.WelcomePageContainer;
 import com.ejt.vaadin.sizereporter.ComponentResizeEvent;
 import com.ejt.vaadin.sizereporter.SizeReporter;
 import com.vaadin.server.ExternalResource;
@@ -28,16 +29,26 @@ public class MainLayout extends VerticalLayout {
 
     private final HorizontalLayout header;
     private final VerticalLayout body;
+    private int windowHeight,windowWidth,bodyHeight;
 
     /**
      *
+     * @param url
+     * @param dbName
+     * @param driver
+     * @param filesURL
+     * @param userName
+     * @param password
      */
-    public MainLayout() {
+    public MainLayout(String url, String dbName, String driver, String userName, String password, String filesURL) {
         this.setWidth("100%");
         this.setHeight("100%");
         this.setSizeFull();
         this.setSpacing(true);
         this.setStyleName("whitelayout");
+        windowHeight =  Page.getCurrent().getBrowserWindowHeight();
+        windowWidth =Page.getCurrent().getBrowserWindowWidth();
+        bodyHeight=windowHeight-60;
 
         //init header
         header = new HorizontalLayout();
@@ -129,7 +140,7 @@ public class MainLayout extends VerticalLayout {
             resizeScreen();
            
         });
-        WelcomePageContainer welcomePageContainerLayout = new WelcomePageContainer();
+        WelcomePageContainer welcomePageContainerLayout = new WelcomePageContainer(windowWidth,bodyHeight,url, dbName, driver, userName, password, filesURL);
         body.addComponent(welcomePageContainerLayout);
 
     }
@@ -138,9 +149,11 @@ public class MainLayout extends VerticalLayout {
      * resize the layout on changing window size
      */
     private void resizeScreen() {
-        float windowHeight = (float) Page.getCurrent().getBrowserWindowHeight();
-        float headerRatio = 60f / windowHeight;
-        float bodyRatio = (windowHeight - 60f) / (float) Page.getCurrent().getBrowserWindowHeight();
+        windowHeight = Page.getCurrent().getBrowserWindowHeight();
+        windowWidth = Page.getCurrent().getBrowserWindowWidth();
+        float headerRatio = 60f / (float)windowHeight;
+        bodyHeight = windowHeight - 60 ;
+        float bodyRatio = (float)bodyHeight/ (float) windowHeight;
         this.setExpandRatio(header, headerRatio);
         this.setExpandRatio(body, bodyRatio);
 

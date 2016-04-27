@@ -1,22 +1,21 @@
 package no.uib.probe.csf.pr.touch.view.welcomepagecontainer;
 
-import com.vaadin.event.LayoutEvents;
-import com.vaadin.server.Page;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
+import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.PublicationsInformationWindow;
+import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.StudiesInformationWindow;
+import no.uib.probe.csf.pr.touch.view.core.BigBtn;
+import no.uib.probe.csf.pr.touch.view.smallscreen.OverviewInfoBean;
 
 /**
  *
@@ -27,19 +26,31 @@ import java.util.Set;
  */
 public class WelcomeLayoutComponents extends VerticalLayout implements Serializable {
 
+    
+    private final HorizontalLayout miniLayout;
+    private final List<Object[]> publicationList;
+
+    public HorizontalLayout getMiniLayout() {
+        return miniLayout;
+    }
     /**
      * initialize body layout
      *
      * @param adminIcon the access button for admin Layout
+     * @param overviewInfoBean resource overview information
+     * @param publicationList list of available publications
+     * @param dsObjects list of dataset information
+     * @param diseaseHashedColorMap map of disease names and colors for disease labels
      * @param CSFPR_Handler
-     * @param mainTabSheet
+     * @param screenWidth current screen with
      *
      *
      */
-    public WelcomeLayoutComponents() {
+    public WelcomeLayoutComponents(int screenWidth,OverviewInfoBean overviewInfoBean,List<Object[]> publicationList,Set<QuantDatasetObject> dsObjects,Map<String, String> diseaseHashedColorMap ) {
         this.setWidth("100%");
         this.setHeight("100%");
 
+        int rightPanelWidth = Math.min(1020, (screenWidth - 220));
         HorizontalLayout mainBodyHLayout = new HorizontalLayout();
         mainBodyHLayout.setWidthUndefined();
         this.addComponent(mainBodyHLayout);
@@ -52,7 +63,6 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         mainBodyHLayout.addComponent(leftPanelWrapper);
 
         // the stat layout
-//        OverviewInfoBean infoBean = CSFPR_Handler.getResourceOverviewInformation();
         Label statLabel = new Label("<center><h1>Resource  Status</h1></center>");
         statLabel.setContentMode(ContentMode.HTML);
         statLabel.setWidthUndefined();
@@ -67,39 +77,37 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         subQuantStatLayout.setWidthUndefined();
         leftPanelWrapper.addComponent(subQuantStatLayout);
 
-//        List<Object[]> publicationList = CSFPR_Handler.getPublicationList();
-//        PublicationsInformationWindow sub1quantStatLabelWrapper = new PublicationsInformationWindow(publicationList);
+        PublicationsInformationWindow sub1quantStatLabelWrapper = new PublicationsInformationWindow(publicationList);
         Label sub1quantStatLabel = new Label("<h3 style='text-decoration: underline;cursor: pointer;'>#Publications</h3>");
         sub1quantStatLabel.setContentMode(ContentMode.HTML);
-//        sub1quantStatLabelWrapper.addComponent(sub1quantStatLabel);
-//        subQuantStatLayout.addComponent(sub1quantStatLabelWrapper, 0, 0);
-//
-//        sub1quantStatLabelWrapper.setDescription("Click to view publications information");
+        sub1quantStatLabelWrapper.addComponent(sub1quantStatLabel);
+        subQuantStatLayout.addComponent(sub1quantStatLabelWrapper, 0, 0);//
+        sub1quantStatLabelWrapper.setDescription("Click to view publication information");
 
-        Label sub1QuantStatValue = new Label("<h4 style='text-align: right;' >" + "infoBean.getNumberOfQuantPublication()" + "</h4>");
+        Label sub1QuantStatValue = new Label("<h4 style='text-align: right;' >" + overviewInfoBean.getNumberOfQuantPublication()+ "</h4>");
         sub1QuantStatValue.setContentMode(ContentMode.HTML);
-//        subQuantStatLayout.addComponent(sub1QuantStatValue, 1, 0);
-//        subQuantStatLayout.setComponentAlignment(sub1QuantStatValue, Alignment.MIDDLE_RIGHT);
+        subQuantStatLayout.addComponent(sub1QuantStatValue, 1, 0);
+        subQuantStatLayout.setComponentAlignment(sub1QuantStatValue, Alignment.MIDDLE_RIGHT);
 
 //        Set<QuantDatasetObject> dsObjects = CSFPR_Handler.getQuantDatasetList();
 //
-//        StudiesInformationWindow sub2quantStatLabelWrapper = new StudiesInformationWindow(dsObjects, CSFPR_Handler.getDiseaseHashedColorMap());
-//        subQuantStatLayout.addComponent(sub2quantStatLabelWrapper, 0, 1);
-//        sub2quantStatLabelWrapper.setDescription("Click to view datasets information");
+        StudiesInformationWindow sub2quantStatLabelWrapper = new StudiesInformationWindow(dsObjects, diseaseHashedColorMap);
+        subQuantStatLayout.addComponent(sub2quantStatLabelWrapper, 0, 1);
+        sub2quantStatLabelWrapper.setDescription("Click to view datasets information");
         Label sub2quantStatLabel = new Label("<h3 style='text-decoration: underline;cursor: pointer;'>#Datasets</h3>");
         sub2quantStatLabel.setContentMode(ContentMode.HTML);
-//        sub2quantStatLabelWrapper.addComponent(sub2quantStatLabel);
+        sub2quantStatLabelWrapper.addComponent(sub2quantStatLabel);
 
-        Label sub2QuantStatValue = new Label("<h4 style='text-align: right;'>" + "infoBean.getNumberOfQuantStudies()" + "</h4>");
+        Label sub2QuantStatValue = new Label("<h4 style='text-align: right;'>" + overviewInfoBean.getNumberOfQuantStudies() + "</h4>");
         sub2QuantStatValue.setContentMode(ContentMode.HTML);
-//        subQuantStatLayout.addComponent(sub2QuantStatValue, 1, 1);
-//        subQuantStatLayout.setComponentAlignment(sub2QuantStatValue, Alignment.MIDDLE_RIGHT);
+        subQuantStatLayout.addComponent(sub2QuantStatValue, 1, 1);
+        subQuantStatLayout.setComponentAlignment(sub2QuantStatValue, Alignment.MIDDLE_RIGHT);
 
         Label sub3quantStatLabel = new Label("<h3>#Proteins</h3>");
         sub3quantStatLabel.setContentMode(ContentMode.HTML);
         subQuantStatLayout.addComponent(sub3quantStatLabel, 0, 2);
 
-        Label sub3QuantStatValue = new Label("<h4 style='text-align: right;'>" + "infoBean.getNumberOfQuantProteins()" + "</h4>");
+        Label sub3QuantStatValue = new Label("<h4 style='text-align: right;'>" + overviewInfoBean.getNumberOfQuantProteins() + "</h4>");
         sub3QuantStatValue.setContentMode(ContentMode.HTML);
         subQuantStatLayout.addComponent(sub3QuantStatValue, 1, 2);
         subQuantStatLayout.setComponentAlignment(sub3QuantStatValue, Alignment.MIDDLE_RIGHT);
@@ -108,7 +116,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         sub4quantStatLabel.setContentMode(ContentMode.HTML);
         subQuantStatLayout.addComponent(sub4quantStatLabel, 0, 3);
 
-        Label sub4QuantStatValue = new Label("<h4 style='text-align: right;'>" + "infoBean.getNumberOfQuantPeptides()" + "</h4>");
+        Label sub4QuantStatValue = new Label("<h4 style='text-align: right;'>" + overviewInfoBean.getNumberOfQuantPeptides() + "</h4>");
         sub4QuantStatValue.setContentMode(ContentMode.HTML);
         subQuantStatLayout.addComponent(sub4QuantStatValue, 1, 3);
         subQuantStatLayout.setComponentAlignment(sub4QuantStatValue, Alignment.MIDDLE_RIGHT);
@@ -131,7 +139,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         subIdStatLayout.setColumnExpandRatio(0, 2);
         subIdStatLayout.setColumnExpandRatio(1, 1);
 
-        Label sub2IdStatValue = new Label("<h4 style='text-align: right;'>" + "infoBean.getNumberOfIdStudies()" + "</h4>");
+        Label sub2IdStatValue = new Label("<h4 style='text-align: right;'>" + overviewInfoBean.getNumberOfIdStudies() + "</h4>");
         sub2IdStatValue.setContentMode(ContentMode.HTML);
         subIdStatLayout.addComponent(sub2IdStatValue, 1, 1);
         subIdStatLayout.setComponentAlignment(sub2IdStatValue, Alignment.MIDDLE_RIGHT);
@@ -140,7 +148,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         sub3IdStatLabel.setContentMode(ContentMode.HTML);
         subIdStatLayout.addComponent(sub3IdStatLabel, 0, 2);
 
-        Label sub3IdStatValue = new Label("<h4 style='text-align: right;'>" + "infoBean.getNumberOfIdProteins()" + "</h4>");
+        Label sub3IdStatValue = new Label("<h4 style='text-align: right;'>" + overviewInfoBean.getNumberOfIdProteins()+ "</h4>");
         sub3IdStatValue.setContentMode(ContentMode.HTML);
         subIdStatLayout.addComponent(sub3IdStatValue, 1, 2);
         subIdStatLayout.setComponentAlignment(sub3IdStatValue, Alignment.MIDDLE_RIGHT);
@@ -149,7 +157,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         sub4IdStatLabel.setContentMode(ContentMode.HTML);
         subIdStatLayout.addComponent(sub4IdStatLabel, 0, 3);
 
-        Label sub4IdStatValue = new Label("<h4 style='text-align: right;'>" + "infoBean.getNumberOfIdPeptides()" + "</h4>");
+        Label sub4IdStatValue = new Label("<h4 style='text-align: right;'>" + overviewInfoBean.getNumberOfIdPeptides()+ "</h4>");
         sub4IdStatValue.setContentMode(ContentMode.HTML);
         subIdStatLayout.addComponent(sub4IdStatValue, 1, 3);
         subIdStatLayout.setComponentAlignment(sub4IdStatValue, Alignment.MIDDLE_RIGHT);
@@ -163,9 +171,9 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         mainBodyHLayout.addComponent(spacer);
 
         //end of spacer
-        //init rightlayout
+        //init rightlayout top
         VerticalLayout rightPanelWrapper = new VerticalLayout();
-        rightPanelWrapper.setWidthUndefined();
+        rightPanelWrapper.setWidth(rightPanelWidth + "px");
         rightPanelWrapper.setHeightUndefined();
         rightPanelWrapper.setStyleName("framelayout");
         mainBodyHLayout.addComponent(rightPanelWrapper);
@@ -175,175 +183,90 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         infoLable.setContentMode(ContentMode.HTML);
         rightPanelWrapper.addComponent(infoLable);
 
-        Label para_1 = new Label("<h2>CSF Proteome Resource (CSF-PR)v2.0 is an online repository of mass spectrometry based proteomics"
+        Label para_1 = new Label("<p style='font-size: 14px;color: black;/* font-weight: bold; */line-height: 30px;'>CSF Proteome Resource (CSF-PR)v2.0 is an online repository of mass spectrometry based proteomics"
                 + "experiments on human cerebrospinal fluid (CSF). CSF is in direct contact with the central nervous"
                 + "system (CNS) and can give indications about the state of the CNS.This is particularly relevant for "
                 + "neurodegenerative diseases, such as Multiple Sclerosis, where CSF would be a natural place to look"
-                + "for disease biomarkers.</h2>");
+                + "for disease biomarkers.</p>");
         para_1.setContentMode(ContentMode.HTML);
         rightPanelWrapper.addComponent(para_1);
-        para_1.setWidth("600px");
+        para_1.setWidth(rightPanelWidth+"px");
 
         HorizontalLayout rightPanel = new HorizontalLayout();
         rightPanel.setWidth(100 + "%");
         rightPanelWrapper.addComponent(rightPanel);
 
-        VerticalLayout bottomLayout = new VerticalLayout();
-        bottomLayout.setWidth("100%");
-        bottomLayout.setSpacing(true);
-        bottomLayout.setMargin(new MarginInfo(true, true, true, true));
-        mainBodyHLayout.addComponent(bottomLayout);
-        mainBodyHLayout.setComponentAlignment(bottomLayout, Alignment.BOTTOM_CENTER);
+        
+        
+        
+        
+//        VerticalLayout bottomLayout = new VerticalLayout();
+//        bottomLayout.setWidth("100%");
+//        bottomLayout.setSpacing(true);
+//        bottomLayout.setMargin(false);
+//        mainBodyHLayout.addComponent(bottomLayout);
+//        mainBodyHLayout.setComponentAlignment(bottomLayout, Alignment.BOTTOM_CENTER);
 
         VerticalLayout middleLayout = new VerticalLayout();
         middleLayout.setWidth("100%");
-        middleLayout.setMargin(new MarginInfo(true, true, true, true));
+        middleLayout.setMargin(false);
         rightPanel.addComponent(middleLayout);
-
-//        VerticalLayout rightLayout = new VerticalLayout();
-//        rightLayout.setWidth("100%");
-//        rightPanel.addComponent(rightLayout);
-//        middleLayout.addComponent(para_1);
-//        Label para_2 = new Label("<p align='justify' Style='margin-left:40px;color:#585858;'><font size=\"2\">The data can be viewed by selecting individual experiments or by searching for key words (protein "
-//                + "name/accession number or peptide sequence) across all experiments. For GeLC-MS experiments the "
-//                + "distribution of the identified proteins in the gel is also displayed.</font></p>");
-//
-//        para_2.setContentMode(ContentMode.HTML);
-//        middleLayout.addComponent(para_2);
-//        
-//         
+     
         GridLayout middlePanelServicesLayout = new GridLayout(2, 2);
-        int labelWidth = 100;//(layoutWidth / 2) - 130;
-        middlePanelServicesLayout.setStyleName("btnsiconcontainer");
         middlePanelServicesLayout.setSpacing(true);
+        middlePanelServicesLayout.setMargin(new MarginInfo(true, false, true, false));
         middleLayout.addComponent(middlePanelServicesLayout);
 
-        HorizontalLayout quantDatasetBtnContainer = new HorizontalLayout();
-        quantDatasetBtnContainer.setWidth("100%");
-        middlePanelServicesLayout.addComponent(quantDatasetBtnContainer, 0, 0);
-        quantDatasetBtnContainer.setMargin(new MarginInfo(true, true, true, false));
-        quantDatasetBtnContainer.setSpacing(true);
-        quantDatasetBtnContainer.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+        BigBtn quantDatasetBtn = new BigBtn("Quantitative Dataset", "Brows quantitative data.", "img/scatter_plot_applied.png") {
 
             @Override
-            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-//                mainTabSheet.setSelectedTab(1);
-//                mainTabSheet.markAsDirty();
+            public void onClick() {
+////                mainTabSheet.setSelectedTab(1);
+////                mainTabSheet.markAsDirty();
             }
-        });
+        };
+        middlePanelServicesLayout.addComponent(quantDatasetBtn, 0, 0);
 
-        Image quantDatasetBtnIcon = new Image();
-        quantDatasetBtnIcon.setWidth("70px");
-        quantDatasetBtnIcon.setHeight("70px");
-        quantDatasetBtnIcon.setSource(new ThemeResource("img/scatter_plot_applied.png"));
-        quantDatasetBtnContainer.addComponent(quantDatasetBtnIcon);
-
-        Label quantDatasetBtnLabel = new Label("<br/><b>Quantitative Dataset</b><br/><font size='1'>Brows quantitative data available in CSF-PR v2.0.</font>");
-        quantDatasetBtnLabel.setContentMode(ContentMode.HTML);
-        quantDatasetBtnContainer.addComponent(quantDatasetBtnLabel);
-        quantDatasetBtnLabel.setWidth(labelWidth + "px");
-
-        HorizontalLayout idDatasetBtnContainer = new HorizontalLayout();
-        idDatasetBtnContainer.setWidth("100%");
-        middlePanelServicesLayout.addComponent(idDatasetBtnContainer, 0, 1);
-        idDatasetBtnContainer.setMargin(new MarginInfo(true, true, true, false));
-        idDatasetBtnContainer.setSpacing(true);
-        idDatasetBtnContainer.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+        BigBtn idDatasetBtn = new BigBtn("Identification Dataset", "Brows identification data.", "img/bar-chart.png") {
 
             @Override
-            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-//                mainTabSheet.setSelectedTab(2);
-//                mainTabSheet.markAsDirty();
+            public void onClick() {
+                //                mainTabSheet.setSelectedTab(2);
+//                mainTabSheet.markAsDirty();throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
-        });
-
-        Image idDatasetBtnIcon = new Image();
-        idDatasetBtnIcon.setWidth("70px");
-        idDatasetBtnIcon.setHeight("70px");
-        idDatasetBtnIcon.setSource(new ThemeResource("img/bar-chart.png"));
-        idDatasetBtnContainer.addComponent(idDatasetBtnIcon);
-
-        Label idDatasetBtnLabel = new Label("<br/><b>Identification Dataset</b><br/><font size='1'>Brows identification data available in CSF-PR v2.0.</font>");
-        idDatasetBtnLabel.setContentMode(ContentMode.HTML);
-        idDatasetBtnContainer.addComponent(idDatasetBtnLabel);
-        idDatasetBtnLabel.setWidth(labelWidth + "px");
-
-        HorizontalLayout searchingBtnContainer = new HorizontalLayout();
-        searchingBtnContainer.setWidth("100%");
-        middlePanelServicesLayout.addComponent(searchingBtnContainer, 1, 0);
-        searchingBtnContainer.setMargin(new MarginInfo(true, true, true, false));
-        searchingBtnContainer.setSpacing(true);
-        searchingBtnContainer.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+        };
+        middlePanelServicesLayout.addComponent(idDatasetBtn, 0, 1);
+        BigBtn searchingDatasetBtn = new BigBtn("Search", "Search quantitative and  identification proteins.", "img/search.png") {
 
             @Override
-            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-//                mainTabSheet.setSelectedTab(3);
-//                mainTabSheet.markAsDirty();
+            public void onClick() {
+                //                mainTabSheet.setSelectedTab(3);
+//                mainTabSheet.markAsDirty();throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
-        });
+        };
 
-        Image searchingDatasetBtnIcon = new Image();
-        searchingDatasetBtnIcon.setSource(new ThemeResource("img/search.png"));
-        searchingDatasetBtnIcon.setWidth("70px");
-        searchingDatasetBtnIcon.setHeight("70px");
-        searchingBtnContainer.addComponent(searchingDatasetBtnIcon);
+        middlePanelServicesLayout.addComponent(searchingDatasetBtn, 1, 0);
 
-        Label searchingDatasetBtnLabel = new Label("<br/><b>Search</b><br/><font size='1'>Search quantitative and  identification proteins using protein's name, accessions and peptides sequences.</font>");
-        searchingDatasetBtnLabel.setContentMode(ContentMode.HTML);
-        searchingBtnContainer.addComponent(searchingDatasetBtnLabel);
-        searchingDatasetBtnLabel.setWidth(labelWidth + "px");
-
-        HorizontalLayout compareBtnContainer = new HorizontalLayout();
-        compareBtnContainer.setWidth("100%");
-        middlePanelServicesLayout.addComponent(compareBtnContainer, 1, 1);
-        compareBtnContainer.setMargin(new MarginInfo(true, true, true, false));
-        compareBtnContainer.setSpacing(true);
-        compareBtnContainer.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
-
+        BigBtn compareBtn = new BigBtn("Compare", "Compare your quantified with the available data.","img/compare.png" ) {
+            
             @Override
-            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-//                mainTabSheet.setSelectedTab(4);
-//                mainTabSheet.markAsDirty();
+            public void onClick() {
+                //                mainTabSheet.setSelectedTab(4);
+//                mainTabSheet.markAsDirty();throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
-        });
-        Image compareDatasetBtnIcon = new Image();
-        compareDatasetBtnIcon.setWidth("70px");
-        compareDatasetBtnIcon.setHeight("70px");
-        compareDatasetBtnIcon.setSource(new ThemeResource("img/compare.png"));
-        compareBtnContainer.addComponent(compareDatasetBtnIcon);
-
-        Label compareDatasetBtnLabel = new Label("<br/><b>Compare</b><br/><font size='1'>Compare your quantitative protein information with the available data in CSF-PR v2.0.</font>");
-        compareDatasetBtnLabel.setContentMode(ContentMode.HTML);
-        compareBtnContainer.addComponent(compareDatasetBtnLabel);
-        compareDatasetBtnLabel.setWidth(labelWidth + "px");
-
-//        VerticalLayout spacer = new VerticalLayout();
-//        spacer.setHeight("30px");
-//        spacer.setWidth("10px");
-//          middleLayout.addComponent(spacer);
-        Label para_3 = new Label("<p align='justify' Style='color:#585858;'><font size=\"1\">CSF-PR v2.0 is being developed by the <a Style='color:#585858;' href='http://www.uib.no/rg/probe' target=\"_blank\">Proteomics Unit</a> at the<a Style='color:#585858;' href='http://www.uib.no/biomedisin/en' target=\"_blank\"> Department of Biomedicine at the University of Bergen</a>, Norway, in close collaboration with <a Style='color:#585858;' href='http://haukeland.no/en/OmOss/Avdelinger/ms/Sider/om-oss.aspx' target=\"_blank\">The Norwegian Multiple Sclerosis Competence Centre</a>, Haukeland University Hospital, Bergen, Norway.</font><br/><font size='1'>See also: <a Style='color:#585858;' href='http://www.mcponline.org/content/13/11/3152.full.pdf+html' target=\"_blank\">Guldbrandsen et al.: In-depth Characterization of the Cerebrospinal Fluid (CSF) Proteome Displayed Through the CSF Proteome Resource (CSF-PR). Mol Cell Proteomics. 2014.</a></font></p>");
+        };
+        middlePanelServicesLayout.addComponent(compareBtn, 1, 1);
+       
+        Label para_3 = new Label("<p align='justify' Style='font-size: 12px;color: black;/* font-weight: bold; */line-height: 20px;'><font>CSF-PR v2.0 is being developed by the <a Style='color:#141414;' href='http://www.uib.no/rg/probe' target='_blank'>Proteomics Unit</a> at the<a Style='color:#141414;' href='http://www.uib.no/biomedisin/en' target='_blank'> Department of Biomedicine at the University of Bergen</a>, Norway, in close collaboration with <a Style='color:#141414;' href='http://haukeland.no/en/OmOss/Avdelinger/ms/Sider/om-oss.aspx' target='_blank'>The Norwegian Multiple Sclerosis Competence Centre</a>, Haukeland University Hospital, Bergen, Norway.</font><br/><font>See also: <a Style='color:#141414;' href='http://www.mcponline.org/content/13/11/3152.full.pdf+html' target='_blank'>Guldbrandsen et al.: In-depth Characterization of the Cerebrospinal Fluid (CSF) Proteome Displayed Through the CSF Proteome Resource (CSF-PR). Mol Cell Proteomics. 2014.</a></font></p>");
         para_3.setContentMode(ContentMode.HTML);
         middleLayout.addComponent(para_3);
         middleLayout.setComponentAlignment(para_3, Alignment.BOTTOM_LEFT);
 
-//        Label para_4 = new Label("<p align='justify' Style=';color:#585858;'><font size=\"1\">See also: <a Style='color:#585858;' href='http://www.mcponline.org/content/13/11/3152.full.pdf+html' target=\"_blank\">Guldbrandsen et al.: In-depth Characterization of the Cerebrospinal Fluid (CSF) Proteome Displayed Through the CSF Proteome Resource (CSF-PR). Mol Cell Proteomics. 2014.</a></font></p>");
-//        para_4.setContentMode(ContentMode.HTML);
-//        middleLayout.addComponent(para_4);
-//        middleLayout.setComponentAlignment(para_4, Alignment.BOTTOM_LEFT);
+        //init mini layout
+        miniLayout = new HorizontalLayout(quantDatasetBtn.getThumbBtn(),idDatasetBtn.getThumbBtn(),searchingDatasetBtn.getThumbBtn(),compareBtn.getThumbBtn());
+        miniLayout.setSpacing(true);
+        miniLayout.setMargin(new MarginInfo(false));
 //        
-//        Link fullOverviewImgLink = new Link(null, new ThemeResource("img/fulloverview.jpg"));
-//        fullOverviewImgLink.setStyleName("fulloverview");
-//        fullOverviewImgLink.setTargetName("_blank");
-//        fullOverviewImgLink.setWidth("100%");
-//        fullOverviewImgLink.setHeight((400) + "px");
-//        rightLayout.addComponent(fullOverviewImgLink);
-//        rightLayout.setMargin(new MarginInfo(true, true, true, true));
-//        rightLayout.setComponentAlignment(fullOverviewImgLink, Alignment.MIDDLE_CENTER);
-//        
-        //admin lyout
-//        bottomLayout.addComponent(adminIcon);
-//        bottomLayout.setComponentAlignment(adminIcon, Alignment.BOTTOM_RIGHT);
-//        bottomLayout.setExpandRatio(adminIcon, 0.05f);
-//        
+        this.publicationList = publicationList;
     }
 }

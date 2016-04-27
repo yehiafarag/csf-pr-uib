@@ -13,6 +13,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import javax.servlet.ServletContext;
 import no.uib.probe.csf.pr.touch.view.MainLayout;
 
 /**
@@ -26,9 +27,22 @@ import no.uib.probe.csf.pr.touch.view.MainLayout;
 @Widgetset("no.uib.probe.csf.pr.touch.CSF_PR_Widgetset")
 public class CSF_PR_UI extends UI {
 
+     private String dbURL, dbName, dbDriver, dbUserName, dbPassword, filesURL;
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        final MainLayout layout = new MainLayout();
+        //init param for DB
+        ServletContext scx = VaadinServlet.getCurrent().getServletContext();
+        dbURL = (scx.getInitParameter("url"));
+        dbName = (scx.getInitParameter("dbName"));
+        dbDriver = (scx.getInitParameter("driver"));
+        dbUserName = (scx.getInitParameter("userName"));
+        dbPassword = (scx.getInitParameter("password"));
+        filesURL = scx.getInitParameter("filesURL");
+        
+        
+        
+        final MainLayout layout = new MainLayout(dbURL, dbName, dbDriver, dbUserName, dbPassword, filesURL);
+        
         
 //        final TextField name = new TextField();
 //        name.setCaption("Type your name here:");
@@ -46,8 +60,8 @@ public class CSF_PR_UI extends UI {
         setContent(layout);
     }
 
-    @WebServlet(urlPatterns = "/*", name = "CSF_PR_UIServlet", asyncSupported = true)
-    @VaadinServletConfiguration(ui = CSF_PR_UI.class, productionMode = false)
-    public static class CSF_PR_UIServlet extends VaadinServlet {
-    }
+//    @WebServlet(urlPatterns = "/*", name = "CSF_PR_UIServlet", asyncSupported = true)
+//    @VaadinServletConfiguration(ui = CSF_PR_UI.class, productionMode = false)
+//    public static class CSF_PR_UIServlet extends VaadinServlet {
+//    }
 }
