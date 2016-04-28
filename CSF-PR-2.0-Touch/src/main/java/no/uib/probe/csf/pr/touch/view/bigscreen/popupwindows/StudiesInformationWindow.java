@@ -12,28 +12,27 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
-import no.uib.probe.csf.pr.touch.view.core.DatasetInformationOverviewLayout;
-import no.uib.probe.csf.pr.touch.view.core.StudyPopupLayout;
+import no.uib.probe.csf.pr.touch.view.core.DatasetButtonsContainerLayout;
 
 /**
  *
  * @author Yehia Farag
- * 
+ *
  * this class represents study information popup window
  */
 public class StudiesInformationWindow extends VerticalLayout implements LayoutEvents.LayoutClickListener {
- private final Window popupWindow;
 
-    public StudiesInformationWindow(Set<QuantDatasetObject> dsObjects,Map<String, String> diseaseHashedColorMap) {
+    private final Window popupWindow;
+
+    public StudiesInformationWindow(Set<QuantDatasetObject> dsObjects, Map<String, String> diseaseHashedColorMap) {
 
         int height = Page.getCurrent().getBrowserWindowHeight() - 100;
         int width = Page.getCurrent().getBrowserWindowWidth() - 100;
         VerticalLayout popupBody = new VerticalLayout();
-        popupBody.setWidth((width-20) + "px");
+        popupBody.setWidth((width - 20) + "px");
         popupBody.setHeightUndefined();
         popupBody.setMargin(true);
         popupBody.setSpacing(true);
@@ -44,6 +43,19 @@ public class StudiesInformationWindow extends VerticalLayout implements LayoutEv
             public void close() {
                 popupWindow.setVisible(false);
 
+            }
+
+            @Override
+            public void setVisible(boolean visible) {
+
+                if (visible) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+
+                    }
+                }
+                super.setVisible(visible); //To change body of generated methods, choose Tools | Templates.
             }
 
         };
@@ -58,30 +70,15 @@ public class StudiesInformationWindow extends VerticalLayout implements LayoutEv
         popupWindow.setModal(true);
         popupWindow.setDraggable(false);
         popupWindow.center();
-
         popupWindow.setCaption("<font color='gray' style='font-weight: bold;!important'>&nbsp;&nbsp;Datasets Information</font>");
-
         UI.getCurrent().addWindow(popupWindow);
-        popupWindow.center();
-
         popupWindow.setCaptionAsHtml(true);
         popupWindow.setClosable(true);
         this.addLayoutClickListener(StudiesInformationWindow.this);
-        
-        
-         Map<Integer, DatasetInformationOverviewLayout> datasetInfoLayoutDSIndexMap = new HashMap<>();
-         dsObjects.stream().forEach((quantDs) -> {
-             DatasetInformationOverviewLayout datasetInfoLayout = new DatasetInformationOverviewLayout(width-40,diseaseHashedColorMap);
-             datasetInfoLayout.updateDatasetForm(quantDs);
-             datasetInfoLayoutDSIndexMap.put(quantDs.getDsKey(), datasetInfoLayout);
-     });
-        
 
-        StudyPopupLayout studiesPopupLayout = new StudyPopupLayout(datasetInfoLayoutDSIndexMap);
-       
+        DatasetButtonsContainerLayout studiesPopupLayout = new DatasetButtonsContainerLayout(dsObjects, diseaseHashedColorMap);
         popupBody.addComponent(studiesPopupLayout);
-        popupBody.setComponentAlignment(studiesPopupLayout, Alignment.TOP_CENTER); 
-        studiesPopupLayout.setInformationData(dsObjects);
+        popupBody.setComponentAlignment(studiesPopupLayout, Alignment.TOP_CENTER);
 
     }
 

@@ -21,6 +21,7 @@ public class InformationField extends VerticalLayout {
     public InformationField(String title) {
 
         this.setHeight("100px");
+        this.setWidth("100%");
         this.setSpacing(true);
         this.setMargin(true);
         Label titleLabel = new Label(title);
@@ -34,8 +35,8 @@ public class InformationField extends VerticalLayout {
         valueLabel.setTargetName("_blank");
         valueLabel.setCaptionAsHtml(true);
         valueLabel.setHeight("100%");
+        valueLabel.setWidth("100%");
 
-//        valueLabel.setContentMode(ContentMode.HTML);
         this.addComponent(valueLabel);
         this.setComponentAlignment(valueLabel, Alignment.TOP_LEFT);
 
@@ -48,7 +49,7 @@ public class InformationField extends VerticalLayout {
      */
     public void setValue(Object object, String urlAddress) {
 
-        if (object instanceof Number) {
+        if (object instanceof Number && urlAddress== null) {
             valueLabel.setCaption("<p style='text-align: left ;width: 100px;   line-height: 1px;'>" + object + "</p>");
             valueLabel.setCaptionAsHtml(true);
             valueLabel.setStyleName("valuelabel");

@@ -12,6 +12,9 @@ package no.uib.probe.csf.pr.touch.view.core;
 public interface Resizable {
     public void resizeComponent(int width,int height);
     
-    public String getComponentId();
+    public String getViewId();
     
+    public void view();
+    
+    public void hide();
 }

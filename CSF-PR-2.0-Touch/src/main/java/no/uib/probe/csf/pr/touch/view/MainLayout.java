@@ -5,7 +5,7 @@
  */
 package no.uib.probe.csf.pr.touch.view;
 
-import no.uib.probe.csf.pr.touch.view.bigscreen.WelcomePageContainer;
+import no.uib.probe.csf.pr.touch.view.bigscreen.CSFApplicationContainer;
 import com.ejt.vaadin.sizereporter.ComponentResizeEvent;
 import com.ejt.vaadin.sizereporter.SizeReporter;
 import com.vaadin.server.ExternalResource;
@@ -13,11 +13,14 @@ import com.vaadin.server.Page;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
+import no.uib.probe.csf.pr.touch.view.core.PopupInfoBtn;
 
 /**
  *
@@ -56,6 +59,11 @@ public class MainLayout extends VerticalLayout {
         header.setHeight("60px");
         header.setSpacing(true);
         this.addComponent(header);
+        
+        
+     
+        
+        
 
         //tile logo container
         HorizontalLayout logoTitleContainer = new HorizontalLayout();
@@ -140,7 +148,7 @@ public class MainLayout extends VerticalLayout {
             resizeScreen();
            
         });
-        WelcomePageContainer welcomePageContainerLayout = new WelcomePageContainer(windowWidth,bodyHeight,url, dbName, driver, userName, password, filesURL);
+        CSFApplicationContainer welcomePageContainerLayout = new CSFApplicationContainer(windowWidth,bodyHeight,url, dbName, driver, userName, password, filesURL);
         body.addComponent(welcomePageContainerLayout);
 
     }

@@ -16,15 +16,28 @@ import no.uib.probe.csf.pr.touch.view.core.Resizable;
  * this class represents the view controller the controller responsible for the
  * select the requested layout and view it and component resize
  */
-public class ViewManager {
+public class LayoutViewManager {
 
     private final Map<String, Resizable> layoutMap = new LinkedHashMap<String, Resizable>();
+    private Resizable currentView;
 
-    public ViewManager() {
+    public LayoutViewManager() {
     }
 
-    public void addComponent(Resizable component) {
-        layoutMap.put(component.getComponentId(), component);
+    public void registerComponent(Resizable component) {
+        layoutMap.put(component.getViewId(), component);
+
+    }
+
+    public void viewLayout(String viewId) {
+        if (currentView != null && !currentView.getViewId().equalsIgnoreCase(viewId) && layoutMap.containsKey(viewId)) {
+            currentView.hide();
+
+        }
+        if (layoutMap.containsKey(viewId)) {
+            currentView = layoutMap.get(viewId);
+            currentView.view();
+        }
 
     }
 }

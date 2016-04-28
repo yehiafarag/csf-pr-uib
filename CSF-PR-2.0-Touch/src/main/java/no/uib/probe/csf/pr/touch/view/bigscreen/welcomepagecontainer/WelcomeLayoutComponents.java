@@ -1,4 +1,4 @@
-package no.uib.probe.csf.pr.touch.view.welcomepagecontainer;
+package no.uib.probe.csf.pr.touch.view.bigscreen.welcomepagecontainer;
 
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
+import no.uib.probe.csf.pr.touch.view.LayoutViewManager;
 import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.PublicationsInformationWindow;
 import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.StudiesInformationWindow;
 import no.uib.probe.csf.pr.touch.view.core.BigBtn;
@@ -36,19 +37,19 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
     /**
      * initialize body layout
      *
-     * @param adminIcon the access button for admin Layout
+     * @param View_Manager view manager to control the current application view
      * @param overviewInfoBean resource overview information
      * @param publicationList list of available publications
      * @param dsObjects list of dataset information
      * @param diseaseHashedColorMap map of disease names and colors for disease labels
-     * @param CSFPR_Handler
      * @param screenWidth current screen with
      *
      *
      */
-    public WelcomeLayoutComponents(int screenWidth,OverviewInfoBean overviewInfoBean,List<Object[]> publicationList,Set<QuantDatasetObject> dsObjects,Map<String, String> diseaseHashedColorMap ) {
+    public WelcomeLayoutComponents(final LayoutViewManager View_Manager,int screenWidth,OverviewInfoBean overviewInfoBean,List<Object[]> publicationList,Set<QuantDatasetObject> dsObjects,Map<String, String> diseaseHashedColorMap ) {
         this.setWidth("100%");
         this.setHeight("100%");
+        
 
         int rightPanelWidth = Math.min(1020, (screenWidth - 220));
         HorizontalLayout mainBodyHLayout = new HorizontalLayout();
@@ -221,8 +222,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
             @Override
             public void onClick() {
-////                mainTabSheet.setSelectedTab(1);
-////                mainTabSheet.markAsDirty();
+                View_Manager.viewLayout("quantview");
             }
         };
         middlePanelServicesLayout.addComponent(quantDatasetBtn, 0, 0);
@@ -231,8 +231,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
             @Override
             public void onClick() {
-                //                mainTabSheet.setSelectedTab(2);
-//                mainTabSheet.markAsDirty();throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                View_Manager.viewLayout("idview");
             }
         };
         middlePanelServicesLayout.addComponent(idDatasetBtn, 0, 1);
@@ -240,8 +239,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
             @Override
             public void onClick() {
-                //                mainTabSheet.setSelectedTab(3);
-//                mainTabSheet.markAsDirty();throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                View_Manager.viewLayout("searchingview");
             }
         };
 
@@ -251,11 +249,21 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
             
             @Override
             public void onClick() {
-                //                mainTabSheet.setSelectedTab(4);
-//                mainTabSheet.markAsDirty();throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                View_Manager.viewLayout("compareview");
             }
         };
         middlePanelServicesLayout.addComponent(compareBtn, 1, 1);
+        
+        
+        BigBtn homeBtn = new BigBtn("", "", "img/home-o.png") {
+
+            @Override
+            public void onClick() {
+                View_Manager.viewLayout("welcomeview");
+            }
+        };
+        this.addComponent(homeBtn);
+        homeBtn.setVisible(false);
        
         Label para_3 = new Label("<p align='justify' Style='font-size: 12px;color: black;/* font-weight: bold; */line-height: 20px;'><font>CSF-PR v2.0 is being developed by the <a Style='color:#141414;' href='http://www.uib.no/rg/probe' target='_blank'>Proteomics Unit</a> at the<a Style='color:#141414;' href='http://www.uib.no/biomedisin/en' target='_blank'> Department of Biomedicine at the University of Bergen</a>, Norway, in close collaboration with <a Style='color:#141414;' href='http://haukeland.no/en/OmOss/Avdelinger/ms/Sider/om-oss.aspx' target='_blank'>The Norwegian Multiple Sclerosis Competence Centre</a>, Haukeland University Hospital, Bergen, Norway.</font><br/><font>See also: <a Style='color:#141414;' href='http://www.mcponline.org/content/13/11/3152.full.pdf+html' target='_blank'>Guldbrandsen et al.: In-depth Characterization of the Cerebrospinal Fluid (CSF) Proteome Displayed Through the CSF Proteome Resource (CSF-PR). Mol Cell Proteomics. 2014.</a></font></p>");
         para_3.setContentMode(ContentMode.HTML);
@@ -263,7 +271,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         middleLayout.setComponentAlignment(para_3, Alignment.BOTTOM_LEFT);
 
         //init mini layout
-        miniLayout = new HorizontalLayout(quantDatasetBtn.getThumbBtn(),idDatasetBtn.getThumbBtn(),searchingDatasetBtn.getThumbBtn(),compareBtn.getThumbBtn());
+        miniLayout = new HorizontalLayout(quantDatasetBtn.getThumbBtn(),idDatasetBtn.getThumbBtn(),searchingDatasetBtn.getThumbBtn(),compareBtn.getThumbBtn(),homeBtn.getThumbBtn());
         miniLayout.setSpacing(true);
         miniLayout.setMargin(new MarginInfo(false));
 //        

@@ -17,11 +17,32 @@ import com.vaadin.ui.VerticalLayout;
  *
  * this class represents slide left panel
  */
-public class SlidePanel extends HorizontalLayout implements LayoutEvents.LayoutClickListener {
+public class SlidePanel extends HorizontalLayout implements LayoutEvents.LayoutClickListener, Resizable {
+
+    @Override
+    public void resizeComponent(int width, int height) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getViewId() {
+        return viewId;
+    }
+
+    @Override
+    public void view() {
+        setShowPanel(true);
+    }
+
+    @Override
+    public void hide() {
+        setVisible(false);
+    }
 
     private boolean show = true;
     private final Layout mainLayout, miniLayout;
     private final VerticalLayout navigationBtn;
+    private final String viewId;
 
     /**
      * Slide touch friendly panel
@@ -31,12 +52,15 @@ public class SlidePanel extends HorizontalLayout implements LayoutEvents.LayoutC
      * @param orientation the slide direction 0 slide to left any other value
      * slide to right
      */
-    public SlidePanel(Layout mainLayout, Layout miniLayout, int orientation) {
+    public SlidePanel(Layout mainLayout, Layout miniLayout, int orientation, String viewId) {
         this.mainLayout = mainLayout;
+        this.viewId = viewId;
         navigationBtn = new VerticalLayout();
         navigationBtn.setHeight("30px");
         navigationBtn.setWidth("30px");
-
+        if (miniLayout == null) {
+            miniLayout = new VerticalLayout();
+        }
         this.miniLayout = miniLayout;
         miniLayout.addStyleName("slowslide");
         miniLayout.addStyleName("hideslidelayout");
@@ -69,6 +93,7 @@ public class SlidePanel extends HorizontalLayout implements LayoutEvents.LayoutC
      */
     public final void setShowPanel(boolean show) {
         if (show) {
+            this.setVisible(true);
             this.navigationBtn.removeStyleName("transformslidebtn");
             this.mainLayout.removeStyleName("hideslidelayout");
             this.miniLayout.addStyleName("hideslidelayout");
@@ -85,12 +110,13 @@ public class SlidePanel extends HorizontalLayout implements LayoutEvents.LayoutC
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         setShowPanel(!show);
     }
-     /**
+
+    /**
      * show full panel (Main layout)
      *
      * @param show boolean
      */
-    public void setShowNavigationBtn(boolean  show){
+    public void setShowNavigationBtn(boolean show) {
         this.navigationBtn.setVisible(show);
     }
 

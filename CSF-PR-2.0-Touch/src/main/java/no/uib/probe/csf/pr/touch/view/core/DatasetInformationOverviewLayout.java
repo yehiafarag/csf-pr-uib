@@ -1,11 +1,9 @@
 package no.uib.probe.csf.pr.touch.view.core;
 
-import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.server.Page;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.Reindeer;
-import java.util.Map;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 
 /**
@@ -14,171 +12,207 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
  */
 public class DatasetInformationOverviewLayout extends VerticalLayout {
 
-    private final Map<String, String> diseaseHashedColorMap;
+    private final String diseaseHashedColor;
 
     /**
-     * @param width
-     * @param diseaseHashedColorMap
+     * @param quantDs
+     * @param diseaseHashedColor hashed color for disease
      */
-    public DatasetInformationOverviewLayout(int width, Map<String, String> diseaseHashedColorMap) {
-        this.diseaseHashedColorMap = diseaseHashedColorMap;
+    public DatasetInformationOverviewLayout(QuantDatasetObject quantDs, String diseaseHashedColor) {
+        this.diseaseHashedColor = diseaseHashedColor;
+        int width = Page.getCurrent().getBrowserWindowWidth() - 320;
+        int height = Page.getCurrent().getBrowserWindowHeight() - 320;
         this.setWidth(width + "px");
-        this.setHeightUndefined();
+        this.setHeight(height + "px");
         this.setSpacing(true);
-//        this.setStyleName("whitelayout");
+
         datasetInfoForm = initQuantDatasetInformationLayout(width);
         datasetInfoForm.setVisible(true);
         this.addComponent(datasetInfoForm);
-        this.setComponentAlignment(datasetInfoForm, Alignment.MIDDLE_CENTER);
+        this.setComponentAlignment(datasetInfoForm, Alignment.TOP_LEFT);
+        this.updateDatasetForm(quantDs);
 
     }
 
-    private final GridLayout datasetInfoForm;
-    private InformationField uQuantProteinsNum, uQuantPeptidesNum,quantProteinsNum, quantPeptidesNum, diseaseCategory, pumedId, rawData, analyticalMethod, typeOfStudy, shotgunTargeted, enzyme, sampleType, technology, quantificationBasis, patientsGroup1Number, patientsGroup2Number, patientsGroup1, patientsGroup2, patientssubGroup1, patientsCommGroup1, patientssubGroup2, patientsCommGroup2, identifiedProteinsNumber, quantifiedProteinsNumber, sampleMatching, analyticalApproach, normalization_strategy;
+    private final VerticalLayout datasetInfoForm;
+    private InformationField uQuantProteinsNum, uQuantPeptidesNum, quantProteinsNum, quantPeptidesNum, diseaseCategory, pumedId, rawData, analyticalMethod, typeOfStudy, shotgunTargeted, enzyme, sampleType, technology, quantificationBasis, patientsGroup1Number, patientsGroup2Number, patientsGroup1, patientsGroup2, patientssubGroup1, patientsCommGroup1, patientssubGroup2, patientsCommGroup2, identifiedProteinsNumber, quantifiedProteinsNumber, sampleMatching, analyticalApproach, normalization_strategy;
 
-    private GridLayout initQuantDatasetInformationLayout(int width) {
+    private VerticalLayout initQuantDatasetInformationLayout(int width) {
 
-        GridLayout datasetInfoFormLayout = new GridLayout(4, 7);
-        datasetInfoFormLayout.setWidth(width + "px");
-        datasetInfoFormLayout.setHeightUndefined();
-        datasetInfoFormLayout.setSpacing(true);        
-//        datasetInfoFormLayout.setMargin(new MarginInfo(false, true, false, false));
+        VerticalLayout mainContainer = new VerticalLayout();
+        mainContainer.setWidth(width, Unit.PIXELS);
+        mainContainer.setHeightUndefined();
+        mainContainer.setSpacing(true);
+
+        HorizontalLayout rowI = new HorizontalLayout();
+        rowI.setWidth(100, Unit.PERCENTAGE);
+        rowI.setHeightUndefined();
+        mainContainer.addComponent(rowI);
 
         pumedId = new InformationField("Pumed Id");
-        datasetInfoFormLayout.addComponent(pumedId, 0, 0);
+        rowI.addComponent(pumedId);
 
         typeOfStudy = new InformationField("Type of Study");
-//        datasetInfoFormLayout.addComponent(typeOfStudy, 1, 0);
+        rowI.addComponent(typeOfStudy);
 
         analyticalApproach = new InformationField("Analytical Approach");
-//        datasetInfoFormLayout.addComponent(analyticalApproach, 2, 0);
+        rowI.addComponent(analyticalApproach);
 
         shotgunTargeted = new InformationField("Shotgun/Targeted");
-//        datasetInfoFormLayout.addComponent(shotgunTargeted, 3, 0);
+        rowI.addComponent(shotgunTargeted);
+
+        HorizontalLayout rowII = new HorizontalLayout();
+        rowII.setWidth(100, Unit.PERCENTAGE);
+        rowII.setHeightUndefined();
+        mainContainer.addComponent(rowII);
 
         analyticalMethod = new InformationField("Analytical Method");
-//        datasetInfoFormLayout.addComponent(analyticalMethod, 0, 1);
+        rowII.addComponent(analyticalMethod);
 
         technology = new InformationField("Technology");
-//        datasetInfoFormLayout.addComponent(technology, 1, 1);
+        rowII.addComponent(technology);
 
         sampleType = new InformationField("Sample Type");
-//        datasetInfoFormLayout.addComponent(sampleType, 2, 1);
+        rowII.addComponent(sampleType);
 
         enzyme = new InformationField("Enzyme");
-//        datasetInfoFormLayout.addComponent(enzyme, 3, 1);
+        rowII.addComponent(enzyme);
+
+        HorizontalLayout rowIII = new HorizontalLayout();
+        rowIII.setWidth(100, Unit.PERCENTAGE);
+        rowIII.setHeightUndefined();
+        mainContainer.addComponent(rowIII);
 
         quantificationBasis = new InformationField("Quantification Basis");
-//        datasetInfoFormLayout.addComponent(quantificationBasis, 0, 2);
+        rowIII.addComponent(quantificationBasis);
 
         identifiedProteinsNumber = new InformationField("#Identified Proteins");
-//        datasetInfoFormLayout.addComponent(identifiedProteinsNumber, 1, 2);
+        rowIII.addComponent(identifiedProteinsNumber);
 
         quantifiedProteinsNumber = new InformationField("#Quantified Proteins");
-//        datasetInfoFormLayout.addComponent(quantifiedProteinsNumber, 2, 2);
+        rowIII.addComponent(quantifiedProteinsNumber);
 
         sampleMatching = new InformationField("Sample Matching");
-//        datasetInfoFormLayout.addComponent(sampleMatching, 3, 2);
+        rowIII.addComponent(sampleMatching);
 
+        HorizontalLayout rowIV = new HorizontalLayout();
+        rowIV.setWidth(100, Unit.PERCENTAGE);
+        rowIV.setHeightUndefined();
+        mainContainer.addComponent(rowIV);
+//
         patientsGroup1 = new InformationField("Patients Gr.I");
-//        datasetInfoFormLayout.addComponent(patientsGroup1, 0, 3);
-
+        rowIV.addComponent(patientsGroup1);
+//
         patientssubGroup1 = new InformationField("Patients Sub Gr.I");
-//        datasetInfoFormLayout.addComponent(patientssubGroup1, 1, 3);
-
+        rowIV.addComponent(patientssubGroup1);
+//
         patientsGroup1Number = new InformationField("#Patients Gr.I");
-//        datasetInfoFormLayout.addComponent(patientsGroup1Number, 2, 3);
-
+        rowIV.addComponent(patientsGroup1Number);
+//
         patientsCommGroup1 = new InformationField("Patients Gr.I Comm.");
-//        datasetInfoFormLayout.addComponent(patientsCommGroup1, 3, 3);
+        rowIV.addComponent(patientsCommGroup1);
 
+        HorizontalLayout rowV = new HorizontalLayout();
+        rowV.setWidth(100, Unit.PERCENTAGE);
+        rowV.setHeightUndefined();
+        mainContainer.addComponent(rowV);
+//
         patientsGroup2 = new InformationField("Patients Gr.II");
-//        datasetInfoFormLayout.addComponent(patientsGroup2, 0, 4);
+        rowV.addComponent(patientsGroup2);
 
         patientssubGroup2 = new InformationField("Patients Sub Gr.II");
-//        datasetInfoFormLayout.addComponent(patientssubGroup2, 1, 4);
+        rowV.addComponent(patientssubGroup2);
 
         patientsGroup2Number = new InformationField("#Patients Gr.II");
-//        datasetInfoFormLayout.addComponent(patientsGroup2Number, 2, 4);
+        rowV.addComponent(patientsGroup2Number);
 
         patientsCommGroup2 = new InformationField("Patients Gr.II Comm.");
-//        datasetInfoFormLayout.addComponent(patientsCommGroup2, 3, 4);
+        rowV.addComponent(patientsCommGroup2);
+
+        HorizontalLayout rowVI = new HorizontalLayout();
+        rowVI.setWidth(100, Unit.PERCENTAGE);
+        rowVI.setHeightUndefined();
+        mainContainer.addComponent(rowVI);
 
         normalization_strategy = new InformationField("Normalization Strategy");
-//        datasetInfoFormLayout.addComponent(normalization_strategy, 0, 5);
+        rowVI.addComponent(normalization_strategy);
 
         rawData = new InformationField("Raw Data");
-//        datasetInfoFormLayout.addComponent(rawData, 1, 5);
+        rowVI.addComponent(rawData);
 
         diseaseCategory = new InformationField("Disease Category");
-//        datasetInfoFormLayout.addComponent(diseaseCategory, 2, 5);
+        rowVI.addComponent(diseaseCategory);
 
         quantProteinsNum = new InformationField("#Proteins");
-//        datasetInfoFormLayout.addComponent(quantProteinsNum, 3, 5);
+        rowVI.addComponent(quantProteinsNum);
+//
+
+        HorizontalLayout rowVII = new HorizontalLayout();
+        rowVII.setWidth(100, Unit.PERCENTAGE);
+        rowVII.setHeightUndefined();
+        mainContainer.addComponent(rowVII);
 
         quantPeptidesNum = new InformationField("#Peptides");
-//        datasetInfoFormLayout.addComponent(quantPeptidesNum, 0, 6);
-        
-         uQuantProteinsNum = new InformationField("#Dataset Specific Proteins");
-//        datasetInfoFormLayout.addComponent(uQuantProteinsNum, 1, 6);
-        
-        uQuantPeptidesNum = new InformationField("#Dataset Specific Peptides");
-//        datasetInfoFormLayout.addComponent(uQuantPeptidesNum, 2, 6);
-        
-       
+        rowVII.addComponent(quantPeptidesNum);
 
-//        quantBasisComment = new InformationField("Quantification BasisComment");
-//        datasetInfoFormLayout.addComponent(quantBasisComment, 1, 5);
-        return datasetInfoFormLayout;
+        uQuantProteinsNum = new InformationField("#Dataset Specific Proteins");
+        rowVII.addComponent(uQuantProteinsNum);
+
+        uQuantPeptidesNum = new InformationField("#Dataset Specific Peptides");
+        rowVII.addComponent(uQuantPeptidesNum);
+
+        InformationField emptyField = new InformationField("");
+        rowVII.addComponent(emptyField);
+
+        return mainContainer;
     }
 
-    public void updateDatasetForm(QuantDatasetObject dataset) {
-        if (dataset == null) {
+    private void updateDatasetForm(QuantDatasetObject quantDs) {
+        if (quantDs == null) {
             return;
         }
-        pumedId.setValue(dataset.getPumedID(), "http://www.ncbi.nlm.nih.gov/pubmed/" + dataset.getPumedID());
-        if (dataset.getRawDataUrl() == null || dataset.getRawDataUrl().equalsIgnoreCase("Raw Data Not Available")) {
+        pumedId.setValue(quantDs.getPumedID(), "http://www.ncbi.nlm.nih.gov/pubmed/" + quantDs.getPumedID());
+        if (quantDs.getRawDataUrl() == null || quantDs.getRawDataUrl().equalsIgnoreCase("Raw Data Not Available")) {
             rawData.setValue("Not Available", null);
         } else {
-            rawData.setValue(dataset.getRawDataUrl(), dataset.getRawDataUrl());
+            rawData.setValue(quantDs.getRawDataUrl(), null);
         }
-        analyticalMethod.setValue(dataset.getAnalyticalMethod(), null);
-        typeOfStudy.setValue(dataset.getTypeOfStudy(), null);
-        shotgunTargeted.setValue(dataset.getShotgunTargeted(), null);
-        enzyme.setValue(dataset.getEnzyme(), null);
+        analyticalMethod.setValue(quantDs.getAnalyticalMethod(), null);
+        typeOfStudy.setValue(quantDs.getTypeOfStudy(), null);
+        shotgunTargeted.setValue(quantDs.getShotgunTargeted(), null);
+        enzyme.setValue(quantDs.getEnzyme(), null);
 
-        sampleType.setValue(dataset.getSampleType(), null);
-        technology.setValue(dataset.getTechnology(), null);
+        sampleType.setValue(quantDs.getSampleType(), null);
+        technology.setValue(quantDs.getTechnology(), null);
 
-        quantificationBasis.setValue(dataset.getQuantificationBasis(), null);
-        patientsGroup1Number.setValue(dataset.getPatientsGroup1Number(), null);
-        patientsGroup2Number.setValue(dataset.getPatientsGroup2Number(), null);
-        patientsGroup1.setValue(dataset.getPatientsGroup1().split("\n")[0], null);
-        patientsGroup2.setValue(dataset.getPatientsGroup2().split("\n")[0] + "", null);
+        quantificationBasis.setValue(quantDs.getQuantificationBasis(), null);
+        patientsGroup1Number.setValue(quantDs.getPatientsGroup1Number(), null);
+        patientsGroup2Number.setValue(quantDs.getPatientsGroup2Number(), null);
+        patientsGroup1.setValue(quantDs.getPatientsGroup1().split("\n")[0], null);
+        patientsGroup2.setValue(quantDs.getPatientsGroup2().split("\n")[0] + "", null);
 
-        patientssubGroup1.setValue(dataset.getPatientsSubGroup1().split("\n")[0], null);
-        patientsCommGroup1.setValue(dataset.getPatientsGroup1Comm(), null);
+        patientssubGroup1.setValue(quantDs.getPatientsSubGroup1().split("\n")[0], null);
+        patientsCommGroup1.setValue(quantDs.getPatientsGroup1Comm(), null);
 
-        patientssubGroup2.setValue(dataset.getPatientsSubGroup2().split("\n")[0], null);
-        patientsCommGroup2.setValue(dataset.getPatientsGroup2Comm(), null);
+        patientssubGroup2.setValue(quantDs.getPatientsSubGroup2().split("\n")[0], null);
+        patientsCommGroup2.setValue(quantDs.getPatientsGroup2Comm(), null);
 
-        identifiedProteinsNumber.setValue(dataset.getIdentifiedProteinsNumber() + "", null);
-        quantifiedProteinsNumber.setValue(dataset.getQuantifiedProteinsNumber() + "", null);
+        identifiedProteinsNumber.setValue(quantDs.getIdentifiedProteinsNumber() + "", null);
+        quantifiedProteinsNumber.setValue(quantDs.getQuantifiedProteinsNumber() + "", null);
 
-        sampleMatching.setValue(dataset.getSampleMatching() + "", null);
+        sampleMatching.setValue(quantDs.getSampleMatching() + "", null);
 //        quantBasisComment.setValue(dataset.getQuantBasisComment() + "", null);
-        analyticalApproach.setValue(dataset.getAnalyticalApproach() + "", null);
-        normalization_strategy.setValue(dataset.getNormalizationStrategy(), null);
+        analyticalApproach.setValue(quantDs.getAnalyticalApproach() + "", null);
+        normalization_strategy.setValue(quantDs.getNormalizationStrategy(), null);
 
-        String diseaseColor = this.diseaseHashedColorMap.get(dataset.getPatientsGroup1().split("\n")[1]);
-        diseaseCategory.setValue("<font color='" + diseaseColor + "' style='font-weight: bold;'>" + dataset.getPatientsGroup1().split("\n")[1].replace("_", " ").replace("-", "'").replace("Disease", "") + "</font>", null);
+        diseaseCategory.setValue("<font color='" + diseaseHashedColor + "' style='font-weight: bold;'>" + quantDs.getPatientsGroup1().split("\n")[1].replace("_", " ").replace("-", "'").replace("Disease", "") + "</font>", null);
 
-        quantifiedProteinsNumber.setValue("" + dataset.getQuantifiedProteinsNumber(), null);
+        quantifiedProteinsNumber.setValue("" + quantDs.getQuantifiedProteinsNumber(), null);
 
-        quantPeptidesNum.setValue("" + dataset.getTotalPepNum() + "", null);
-        quantProteinsNum.setValue("" + dataset.getTotalProtNum() + "", null);
-        uQuantPeptidesNum.setValue(dataset.getUniqePepNum(), null);
-        uQuantProteinsNum.setValue(dataset.getUniqueProtNum(), null);
+        quantPeptidesNum.setValue("" + quantDs.getTotalPepNum() + "", null);
+        quantProteinsNum.setValue("" + quantDs.getTotalProtNum() + "", null);
+        uQuantPeptidesNum.setValue(quantDs.getUniqePepNum(), null);
+        uQuantProteinsNum.setValue(quantDs.getUniqueProtNum(), null);
         this.datasetInfoForm.setVisible(true);
     }
 
