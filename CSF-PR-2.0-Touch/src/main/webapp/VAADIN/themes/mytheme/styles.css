@@ -534,6 +534,28 @@
     }
 }
 
+
+@-webkit-keyframes blink { 
+    50% { 
+        border-color: gray;
+        background-color: lightgray;
+    } 
+}
+
+@-moz-keyframes blink { 
+    50% { 
+        border-color: gray;
+        background-color: lightgray;
+    } 
+}
+
+@keyframes blink { 
+    50% { 
+        border-color: gray;
+        background-color: lightgray;
+    } 
+}
+
 /**
  * Outputs the context menu selectors and styles, which is used by Table and Tree for instance.
  * 
@@ -13145,11 +13167,11 @@ div.v-layout.v-horizontal.v-widget {
     border-radius: 5px;
     padding: 10px;
 
-    animation-name: blink ;
-    animation-duration: .5s ;
-    animation-timing-function: step-end ;
-    animation-iteration-count: 8 ;
-    animation-direction: alternate ;
+    /*    animation-name: blink ;
+        animation-duration: .5s ;
+        animation-timing-function: step-end ;
+        animation-iteration-count: 8 ;
+        animation-direction: alternate ;*/
 
 }
 .bigbtn img:hover{ 
@@ -13173,14 +13195,10 @@ div.v-layout.v-horizontal.v-widget {
 }
 .border {
     border: 1px solid lightgray !important;
+    border-radius: 5px;
 }
 
-@keyframes blink { 
-    50% { 
-        border-color: gray;
-        background-color: lightgray;
-    } 
-}
+
 
 
 .publicationstyle .v-label a{
@@ -13328,4 +13346,94 @@ div.v-layout.v-horizontal.v-widget {
     width: 100%;
     color:gray !important;
     cursor:default !important;
+}
+.blink{ 
+    animation-name: blink !important;
+    animation-duration: .5s !important;
+    animation-timing-function: step-end !important;
+    animation-iteration-count: 8 !important;
+    animation-direction: alternate !important;
+
+}
+.pointer{
+    cursor: pointer !important;
+}
+
+.multiplesclerosisstyle {
+    background-color:  #A52A2A;
+    border: 2px solid #F6F0F0;
+    border-radius:5px;
+    color: white !important;
+}
+.multiplesclerosisstyle:hover {
+     border-top:2px solid #000;
+    border-bottom: 2px solid #000;
+    border-right: 2px solid #000;
+    border-left: 2px solid #000;
+}
+
+.parkinsonstyle{
+    border: 2px solid #F6F0F0;
+    background-color: #74716E;    
+    border-radius:5px;
+    color: white !important;
+
+}
+.parkinsonstyle:hover {
+     border-top:2px solid #000;
+    border-bottom: 2px solid #000;
+    border-right: 2px solid #000;
+    border-left: 2px solid #000;
+}
+.alzheimerstyle{
+
+    border: 2px solid #F6F0F0;
+    background-color: #4b7865;    
+    border-radius:5px;
+    color: white !important;
+
+}
+.alzheimerstyle:hover {
+     border-top:2px solid #000;
+    border-bottom: 2px solid #000;
+    border-right: 2px solid #000;
+    border-left: 2px solid #000;
+}
+
+.alldiseasestyle{
+
+    border: 2px solid #F6F0F0;  
+    border-radius:5px;
+    color: #7E7E7E !important;    
+    font-weight:bold;
+
+}
+.alldiseasestyle:hover {
+     border-top:2px solid #000;
+    border-bottom: 2px solid #000;
+    border-right: 2px solid #000;
+    border-left: 2px solid #000;
+}
+
+
+.msLabel{
+
+    border-bottom: 2px solid #F6F0F0;
+    border-right: 2px solid #F6F0F0;
+    border-left: 2px solid #F6F0F0;
+    background-color: #A52A2A;
+
+}
+.pdLabel{
+    border-bottom: 2px solid #F6F0F0;
+    border-right: 2px solid #F6F0F0;
+    border-left: 2px solid #F6F0F0;
+    background-color: #74716E;}
+.adLabel{
+
+    border-bottom: 2px solid #F6F0F0;
+    border-right: 2px solid #F6F0F0;
+    border-left: 2px solid #F6F0F0;
+    background-color: #4b7865;
+
 }

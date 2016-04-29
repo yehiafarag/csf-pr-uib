@@ -5,7 +5,7 @@ import com.vaadin.ui.VerticalLayout;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import no.uib.probe.csf.pr.touch.DataHandler;
+import no.uib.probe.csf.pr.touch.Data_Handler;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 import no.uib.probe.csf.pr.touch.view.LayoutViewManager;
 import no.uib.probe.csf.pr.touch.view.bigscreen.quantlayoutcontainer.QuantDataLayoutContainer;
@@ -27,14 +27,14 @@ public class CSFApplicationContainer extends VerticalLayout {
     private final ScrollPanel welcomeLayoutPanel;
     private final SlidePanel quantLayoutPanel;
     private final LayoutViewManager View_Manager;
-    private final DataHandler Data_handler;
+    private final Data_Handler Data_handler;
 
     public CSFApplicationContainer(int pageWidth, int bodyHeight,String url, String dbName, String driver, String userName, String password, String filesURL) {
         this.setWidth("100%");
         this.setHeight("100%");
         this.setSpacing(true);
         this.View_Manager = new LayoutViewManager();
-        this.Data_handler = new DataHandler(url, dbName, driver, userName, password, filesURL);
+        this.Data_handler = new Data_Handler(url, dbName, driver, userName, password, filesURL);
         int mainlayoutWidth = pageWidth - 0;
         int mainlayoutHeight = bodyHeight - 100;
         
@@ -58,7 +58,7 @@ public class CSFApplicationContainer extends VerticalLayout {
         bodyWrapper.setComponentAlignment(welcomeLayoutPanel, Alignment.TOP_RIGHT);
         welcomeLayoutPanel.setShowNavigationBtn(false);
         
-        QuantDataLayoutContainer quantLayout = new QuantDataLayoutContainer(mainlayoutWidth,mainlayoutHeight);
+        QuantDataLayoutContainer quantLayout = new QuantDataLayoutContainer(Data_handler,mainlayoutWidth,mainlayoutHeight);
         quantLayoutPanel = new SlidePanel(quantLayout,null,1,"quantview");
         View_Manager.registerComponent(quantLayoutPanel);
         quantLayoutPanel.setVisible(false);

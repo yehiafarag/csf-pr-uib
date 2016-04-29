@@ -54,6 +54,9 @@ public class ScrollPanel extends VerticalLayout implements LayoutEvents.LayoutCl
         navigationBtn.addStyleName("thumbBtn");
         mainLayout.addStyleName("border");
 
+        if (miniLayout == null) {
+            miniLayout = new VerticalLayout();
+        }
         this.miniLayout = miniLayout;
         miniLayout.addStyleName("slowscroll");
         miniLayout.addStyleName("hidescrolllayout");
@@ -93,21 +96,20 @@ public class ScrollPanel extends VerticalLayout implements LayoutEvents.LayoutCl
             this.mainLayout.removeStyleName("hidescrolllayout");
             this.miniLayout.addStyleName("hidescrolllayout");
             this.setWidthUndefined();
-            if (navigationBtn != null && navigationBtn.isVisible() ) {
+            if (navigationBtn != null && navigationBtn.isVisible()) {
 //                navigationBtn.detach();
             }
-                this.addComponent(navigationBtn);
-                this.setComponentAlignment(navigationBtn, Alignment.MIDDLE_CENTER);
-            
+            this.addComponent(navigationBtn);
+            this.setComponentAlignment(navigationBtn, Alignment.MIDDLE_CENTER);
+
         } else {
             this.navigationBtn.addStyleName("transformslidebtn");
             this.mainLayout.addStyleName("hidescrolllayout");
             this.miniLayout.removeStyleName("hidescrolllayout");
-            if (navigationBtn != null && navigationBtn.isVisible()&& navigationBtn.isAttached()) {
+            if (navigationBtn != null && navigationBtn.isVisible() && navigationBtn.isAttached()) {
 //                navigationBtn.detach();
             }
-                miniLayout.addComponent(navigationBtn);
-            
+            miniLayout.addComponent(navigationBtn);
 
         }
         this.show = show;

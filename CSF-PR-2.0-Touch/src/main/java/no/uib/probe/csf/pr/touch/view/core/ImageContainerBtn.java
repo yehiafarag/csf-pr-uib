@@ -18,10 +18,10 @@ import com.vaadin.ui.VerticalLayout;
  * images on fly
  *
  */
-public abstract  class ImageContainerBtn extends VerticalLayout implements LayoutEvents.LayoutClickListener {
-
+public abstract class ImageContainerBtn extends VerticalLayout implements LayoutEvents.LayoutClickListener {
+    
     private final Image img;
-
+    
     public ImageContainerBtn() {
         img = new Image();
         img.setWidth("100px");
@@ -29,22 +29,32 @@ public abstract  class ImageContainerBtn extends VerticalLayout implements Layou
         this.addComponent(img);
         this.setStyleName("bigbtn");
         this.addLayoutClickListener(ImageContainerBtn.this);
+        this.setReadOnly(true);
+        this.setEnabled(false);
+      
     }
 
     /**
      *
-     *this method responsible for updating  button image 
+     * this method responsible for updating button image
+     *
      * @param imgResource
      */
     public void updateIcon(Resource imgResource) {
         img.setSource(imgResource);
     }
-
+    
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         onClick();
     }
+
+    public void blink() {
+        img.removeStyleName("blink");
+        img.addStyleName("blink");
+        
+    }
     
     public abstract void onClick();
-
+    
 }

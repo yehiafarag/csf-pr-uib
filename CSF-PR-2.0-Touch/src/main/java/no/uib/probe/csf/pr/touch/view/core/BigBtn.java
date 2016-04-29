@@ -4,7 +4,6 @@ package no.uib.probe.csf.pr.touch.view.core;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.server.ThemeResource;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
@@ -31,11 +30,13 @@ public abstract class BigBtn extends HorizontalLayout implements LayoutEvents.La
         this.setSpacing(true);
         this.addLayoutClickListener(BigBtn.this);
         this.setStyleName("bigbtn");
+       
 
         bigBtnIcon = new Image();
         bigBtnIcon.setSource(new ThemeResource(imgUrl));
         bigBtnIcon.setWidth("70px");
-        bigBtnIcon.setHeight("70px");       
+        bigBtnIcon.setHeight("70px");     
+        bigBtnIcon.addStyleName("blink");   
         this.addComponent(bigBtnIcon);
         String labelText = "<b>"+header+"</b><br/><font size='1'>"+text+"</font>";
 
