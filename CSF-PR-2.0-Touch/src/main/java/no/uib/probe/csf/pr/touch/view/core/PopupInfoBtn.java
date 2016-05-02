@@ -26,7 +26,7 @@ public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutC
 
     private final PopupView pupupPanel;
 
-    public PopupInfoBtn(QuantDatasetObject quantDS, String btnName, String publicationAuthor, String diseaseHashedColor) {
+    public PopupInfoBtn(QuantDatasetObject quantDS, String btnName, String publicationAuthor) {
         this.addLayoutClickListener(PopupInfoBtn.this);
         this.setHeight("80px");
         this.setWidth("200px");
@@ -36,7 +36,7 @@ public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutC
         this.setComponentAlignment(btnLabel, Alignment.MIDDLE_CENTER);
         this.setStyleName("tabbtn");
 
-        DatasetInformationOverviewLayout infoLayout = new DatasetInformationOverviewLayout(quantDS, diseaseHashedColor);
+        DatasetInformationOverviewLayout infoLayout = new DatasetInformationOverviewLayout(quantDS);
         VerticalLayout infoPopup = initPopupLayout(infoLayout, publicationAuthor);
         pupupPanel = new PopupView(null, infoPopup);
         pupupPanel.setWidth("2px");

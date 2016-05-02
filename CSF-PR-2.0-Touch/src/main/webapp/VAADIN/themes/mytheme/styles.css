@@ -12964,6 +12964,10 @@ div.v-layout.v-horizontal.v-widget {
 .bluelayout{
     background-color: blue !important;
 }
+
+.redlayout{
+    background-color: red !important;
+}
 .transparentlayout{
     background-color:rgba(255, 255, 255, 0.0);     
 }
@@ -13317,8 +13321,6 @@ div.v-layout.v-horizontal.v-widget {
     color:gray;
     resize: none;
     width: 100%;
-    height: 30px;
-    height:30px;
     cursor: default;
 }
 .valuelabel  textArea:focus{
@@ -13361,9 +13363,10 @@ div.v-layout.v-horizontal.v-widget {
 
 .multiplesclerosisstyle {
     background-color:  #A52A2A;
-    border: 2px solid #F6F0F0;
+    border: 2px solid #A52A2A;
     border-radius:5px;
     color: white !important;
+    line-height:100%;
 }
 .multiplesclerosisstyle:hover {
      border-top:2px solid #000;
@@ -13373,10 +13376,11 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .parkinsonstyle{
-    border: 2px solid #F6F0F0;
+    border: 2px solid #74716E;
     background-color: #74716E;    
     border-radius:5px;
     color: white !important;
+    line-height:100%;
 
 }
 .parkinsonstyle:hover {
@@ -13387,10 +13391,11 @@ div.v-layout.v-horizontal.v-widget {
 }
 .alzheimerstyle{
 
-    border: 2px solid #F6F0F0;
+    border: 2px solid #4b7865;
     background-color: #4b7865;    
     border-radius:5px;
     color: white !important;
+    line-height:100%;
 
 }
 .alzheimerstyle:hover {
@@ -13402,7 +13407,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .alldiseasestyle{
 
-    border: 2px solid #F6F0F0;  
+    border: 2px solid #7E7E7E;  
     border-radius:5px;
     color: #7E7E7E !important;    
     font-weight:bold;
@@ -13414,8 +13419,66 @@ div.v-layout.v-horizontal.v-widget {
     border-right: 2px solid #000;
     border-left: 2px solid #000;
 }
+.topbtns{
+  top:65px !important; 
+  position: absolute !important; 
+  max-width:300px!important;
+    
+}
+.rightbtns{
+ right:40px !important;
+    
+}
+.leftbtns{
+    left:40px !important;
+    
+}
+.rotateheader{
+      margin-left:-2px;
+    text-align: center;
+    line-height: 100%;
+    -ms-transform:rotate(270deg) translateX(-100% ); /* IE 9 */
+    -moz-transform:rotate(270deg) translateX(-100% ); /* Firefox */
+    -webkit-transform:rotate(270deg) translateX(-100% );; /* Safari and Chrome */
+    -o-transform:rotate(270deg) translateX(-100% ); /* Opera */
+    transform-origin: 0 0;
+    position:inherit;
+    
+}
+.hmheadercell{
+    border: 1px solid lightgray;
+    cursor: pointer;
+}
 
 
+
+.hmmultiplesclerosisstyle {
+    background-color:  #A52A2A;
+    color: white !important;
+     line-height:200%;
+     font-size:14px !important;
+}
+
+
+
+.hmparkinsonstyle{
+    background-color: #74716E;   
+    color: white !important;
+     line-height:200%;
+     font-size:14px !important;
+
+}
+
+.hmalzheimerstyle{
+ font-size:14px !important;
+    background-color: #4b7865;    
+    color: white !important;
+     line-height:200%;
+
+}
+
+
+/*
 .msLabel{
 
     border-bottom: 2px solid #F6F0F0;
@@ -13436,4 +13499,4 @@ div.v-layout.v-horizontal.v-widget {
     border-left: 2px solid #F6F0F0;
     background-color: #4b7865;
 
-}
+}*/

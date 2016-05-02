@@ -24,7 +24,7 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
     private final int index;
-    private final String cellStyleName;
+    private String cellStyleName;
     private String selectStyle = "";
     private final Label valueLabel;
 
@@ -52,17 +52,17 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
         return title;
     }
     private boolean selected = false;
-    private final Set<QuantDiseaseGroupsComparison> includedComparisons = new LinkedHashSet<QuantDiseaseGroupsComparison>();
-    private final List<HeatmapCell> includedCells = new ArrayList<HeatmapCell>();
-    private final HeatMapLayout parentcom;
-    private final String title;
-    private final String allStyle;
-    private final String fullName;
-    private final String color;
+    private Set<QuantDiseaseGroupsComparison> includedComparisons = new LinkedHashSet<QuantDiseaseGroupsComparison>();
+    private List<HeatmapCell> includedCells = new ArrayList<HeatmapCell>();
+    private HeatMapLayout parentcom;
+    private String title;
+    private String allStyle;
+    private String fullName;
+    private String color;
 
     /**
      *
-     * @param rowHeader
+     * @param rotate
      * @param title
      * @param index
      * @param parentcom
@@ -70,39 +70,34 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
      * @param heatmapHeaderCellWidth
      * @param fullName
      */
-    public HeaderCell(boolean rowHeader, String title, int index, HeatMapLayout parentcom, int heatmapCellWidth, int heatmapHeaderCellWidth, String fullName) {
+    public HeaderCell(boolean rotate, String title, int index, HeatMapLayout parentcom, int headerWidth, int headerHeight, String fullName) {
         this.parentcom = parentcom;
-        valueLabel = new Label();
+        if (rotate) {
+            this.addStyleName("rotateheader");
+            this.setHeight(headerWidth + "px");
+            this.setWidth(headerHeight + "px");
+        } else {
+            this.setWidth(headerWidth + "px");
+            this.setHeight(headerHeight + "px");
+        }
         this.title = title;
-        allStyle = title.split("\n")[1].toLowerCase().replace("-s", "").replace("_disease", "").replace("_", "");
-        valueLabel.setValue("<center><font>" + title.split("\n")[0] + "</font></center>");
-        if (allStyle.equalsIgnoreCase("multiplesclerosis")) {
-            color = "#A52A2A";
-        } else if (allStyle.equalsIgnoreCase("alzheimer")) {
-            color = "#4b7865";
-        } else {
-            color = "#74716E";
-        }
+        this.addStyleName("hmheadercell");
 
-        if (rowHeader) {
-            this.cellStyleName = "hmrowlabel";
-        } else {
-            this.cellStyleName = "hmcolumnlabel";
-        }
-        valueLabel.setStyleName(allStyle + cellStyleName);
-        valueLabel.setWidth((heatmapHeaderCellWidth - 4) + "px");
-        valueLabel.setHeight((heatmapCellWidth - 4) + "px");
-        this.setStyleName(cellStyleName);
-        this.setWidth(heatmapHeaderCellWidth + "px");
-        this.setHeight(heatmapCellWidth + "px");
+        valueLabel = new Label();
+        allStyle = "hm" + title.split("__")[2];
+        valueLabel.setValue("<center><font>" + title.split("__")[0] + "</font></center>");
+        valueLabel.setStyleName(allStyle);
+        valueLabel.setWidth(100, Unit.PERCENTAGE);
+        valueLabel.setHeight(100, Unit.PERCENTAGE);
         this.valueLabel.setContentMode(ContentMode.HTML);
+        this.addComponent(valueLabel);
+        this.setComponentAlignment(valueLabel, Alignment.TOP_CENTER);
+
         this.index = index;
 
-        this.addComponent(valueLabel);
-        this.setComponentAlignment(valueLabel, Alignment.BOTTOM_CENTER);
-        this.addLayoutClickListener(HeaderCell.this);
+//        this.addLayoutClickListener(HeaderCell.this);
         if (fullName == null) {
-            this.fullName = title.split("\n")[0].replace("_", "").replace("-", ",") ;
+            this.fullName = title.split("__")[0];
         } else {
             this.fullName = fullName;
         }
@@ -110,7 +105,7 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
         if (this.fullName.contains("*")) {
             combinedGroup = " - Combined disease groups";
         }
-        this.setDescription(this.fullName+ combinedGroup);
+        this.setDescription(this.fullName + combinedGroup);
 
     }
 
@@ -123,15 +118,14 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
      */
     public void heighlightCellStyle() {
 
-        valueLabel.setStyleName(cellStyleName + selectStyle + "_heighlightcell");
-
+//        valueLabel.setStyleName(cellStyleName + selectStyle + "_heighlightcell");
     }
 
     /**
      *
      */
     public void resetCellStyle() {
-        this.setStyleName(cellStyleName + selectStyle);
+//        this.setStyleName(cellStyleName + selectStyle);
 
     }
 
@@ -140,7 +134,7 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
      */
     public void selectCellStyle() {
         selectStyle = "_selected";
-        this.setStyleName(cellStyleName + selectStyle);
+//        this.setStyleName(cellStyleName + selectStyle);
 
     }
 
@@ -149,7 +143,7 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
      */
     public void unSelectCellStyle() {
         selectStyle = "";
-        this.setStyleName(cellStyleName);
+//        this.setStyleName(cellStyleName);
 
     }
 
@@ -157,7 +151,7 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         if (selected) {
             selected = false;
-            parentcom.removeRowSelectedDs(title);
+//            parentcom.removeRowSelectedDs(title);
 
         } else {
             selected = true;

@@ -27,7 +27,7 @@ public class StudiesInformationWindow extends VerticalLayout implements LayoutEv
 
     private final Window popupWindow;
 
-    public StudiesInformationWindow(Set<QuantDatasetObject> dsObjects, Map<String, String> diseaseHashedColorMap) {
+    public StudiesInformationWindow(Set<QuantDatasetObject> dsObjects) {
 
         int height = Page.getCurrent().getBrowserWindowHeight() - 100;
         int width = Page.getCurrent().getBrowserWindowWidth() - 100;
@@ -76,7 +76,7 @@ public class StudiesInformationWindow extends VerticalLayout implements LayoutEv
         popupWindow.setClosable(true);
         this.addLayoutClickListener(StudiesInformationWindow.this);
 
-        DatasetButtonsContainerLayout studiesPopupLayout = new DatasetButtonsContainerLayout(dsObjects, diseaseHashedColorMap);
+        DatasetButtonsContainerLayout studiesPopupLayout = new DatasetButtonsContainerLayout(dsObjects);
         popupBody.addComponent(studiesPopupLayout);
         popupBody.setComponentAlignment(studiesPopupLayout, Alignment.TOP_CENTER);
 

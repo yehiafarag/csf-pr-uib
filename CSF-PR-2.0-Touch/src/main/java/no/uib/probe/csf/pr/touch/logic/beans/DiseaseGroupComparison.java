@@ -5,12 +5,27 @@
  */
 package no.uib.probe.csf.pr.touch.logic.beans;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Yehia Farag
+ * 
+ * this class represents disease group comparison that has all comparison information  
  */
-public class DiseaseGroup {
+public class DiseaseGroupComparison implements Serializable{
 
+    private String DiseaseCategory;
+
+    private String diseaseStyleName;
+    public String getDiseaseCategory() {
+        return DiseaseCategory;
+    }
+
+    public void setDiseaseCategory(String DiseaseCategory) {
+        this.DiseaseCategory = DiseaseCategory;
+    }
+    
     private String patientsGroupI;
     private String patientsGroupII;
     private int quantDatasetIndex, originalDatasetIndex;
@@ -192,6 +207,14 @@ public class DiseaseGroup {
      */
     public void setOriginalDatasetIndex(int originalDatasetIndex) {
         this.originalDatasetIndex = originalDatasetIndex;
+    }
+
+    public String getDiseaseStyleName() {
+        return diseaseStyleName;
+    }
+
+    public void setDiseaseStyleName(String diseaseStyleName) {
+        this.diseaseStyleName = diseaseStyleName;
     }
 
 }

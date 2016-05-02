@@ -29,14 +29,14 @@ public class CSFApplicationContainer extends VerticalLayout {
     private final LayoutViewManager View_Manager;
     private final Data_Handler Data_handler;
 
-    public CSFApplicationContainer(int pageWidth, int bodyHeight,String url, String dbName, String driver, String userName, String password, String filesURL) {
+    public CSFApplicationContainer(int pageWidth, int pageHeight,String url, String dbName, String driver, String userName, String password, String filesURL) {
         this.setWidth("100%");
         this.setHeight("100%");
         this.setSpacing(true);
         this.View_Manager = new LayoutViewManager();
         this.Data_handler = new Data_Handler(url, dbName, driver, userName, password, filesURL);
         int mainlayoutWidth = pageWidth - 0;
-        int mainlayoutHeight = bodyHeight - 100;
+        int mainlayoutHeight = pageHeight - 100;
         
         VerticalLayout bodyWrapper = new VerticalLayout();
         bodyWrapper.setHeightUndefined();
@@ -44,7 +44,7 @@ public class CSFApplicationContainer extends VerticalLayout {
         this.addComponent(bodyWrapper);
         
         
-        WelcomeLayoutComponents welcomeContent = initWelcomePageLayout(mainlayoutWidth, Data_handler.getResourceOverviewInformation(), Data_handler.getPublicationList(), Data_handler.getQuantDatasetList(), Data_handler.getDiseaseHashedColorMap());
+        WelcomeLayoutComponents welcomeContent = initWelcomePageLayout(mainlayoutWidth, Data_handler.getResourceOverviewInformation(), Data_handler.getPublicationList(), Data_handler.getQuantDatasetList());
 
         VerticalLayout mainLayout = new VerticalLayout();
         mainLayout.setHeight((mainlayoutHeight) + "px");
@@ -74,8 +74,8 @@ public class CSFApplicationContainer extends VerticalLayout {
 
     }
 
-    private WelcomeLayoutComponents initWelcomePageLayout(int width, OverviewInfoBean overviewInfoBean, List<Object[]> publicationList, Set<QuantDatasetObject> dsObjects, Map<String, String> diseaseHashedColorMap) {
-        WelcomeLayoutComponents welcomeContent = new WelcomeLayoutComponents(View_Manager,width, overviewInfoBean, publicationList, dsObjects, diseaseHashedColorMap);
+    private WelcomeLayoutComponents initWelcomePageLayout(int width, OverviewInfoBean overviewInfoBean, List<Object[]> publicationList, Set<QuantDatasetObject> dsObjects) {
+        WelcomeLayoutComponents welcomeContent = new WelcomeLayoutComponents(View_Manager,width, overviewInfoBean, publicationList, dsObjects);
         return welcomeContent;
     }
 

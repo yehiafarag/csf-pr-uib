@@ -144,6 +144,8 @@ public class MainLayout extends VerticalLayout {
         body.setHeight("100%");
         this.addComponent(body);
         final SizeReporter sizeReporter = new SizeReporter(this);
+        windowHeight = Page.getCurrent().getBrowserWindowHeight();
+        windowWidth = Page.getCurrent().getBrowserWindowWidth();
         sizeReporter.addResizeListener((ComponentResizeEvent event) -> {
             resizeScreen();
            

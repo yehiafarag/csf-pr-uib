@@ -90,7 +90,7 @@ public class InformationField extends VerticalLayout {
             if (stringValue.contains("</font>")) {
                 valueLabel.setCaption(stringValue);
             } else if (stringValue.toCharArray().length > 25) {
-                valueLabel.setCaption("<textarea rows='3'  readonly>" + stringValue + "</textarea>");
+                valueLabel.setCaption("<textarea rows='5'  readonly>" + stringValue + "</textarea>");
                 valueLabel.setCaptionAsHtml(true);
 //            this.setHeight("100px");
             } else {

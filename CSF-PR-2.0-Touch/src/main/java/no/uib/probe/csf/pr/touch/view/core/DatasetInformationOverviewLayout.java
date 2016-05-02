@@ -18,8 +18,8 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
      * @param quantDs
      * @param diseaseHashedColor hashed color for disease
      */
-    public DatasetInformationOverviewLayout(QuantDatasetObject quantDs, String diseaseHashedColor) {
-        this.diseaseHashedColor = diseaseHashedColor;
+    public DatasetInformationOverviewLayout(QuantDatasetObject quantDs) {
+        this.diseaseHashedColor = quantDs.getDiseaseCategoryColor();
         int width = Page.getCurrent().getBrowserWindowWidth() - 320;
         int height = Page.getCurrent().getBrowserWindowHeight() - 320;
         this.setWidth(width + "px");
@@ -188,13 +188,13 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         quantificationBasis.setValue(quantDs.getQuantificationBasis(), null);
         patientsGroup1Number.setValue(quantDs.getPatientsGroup1Number(), null);
         patientsGroup2Number.setValue(quantDs.getPatientsGroup2Number(), null);
-        patientsGroup1.setValue(quantDs.getPatientsGroup1().split("\n")[0], null);
-        patientsGroup2.setValue(quantDs.getPatientsGroup2().split("\n")[0] + "", null);
+        patientsGroup1.setValue(quantDs.getPatientsGroup1(), null);
+        patientsGroup2.setValue(quantDs.getPatientsGroup2() + "", null);
 
-        patientssubGroup1.setValue(quantDs.getPatientsSubGroup1().split("\n")[0], null);
+        patientssubGroup1.setValue(quantDs.getPatientsSubGroup1(), null);
         patientsCommGroup1.setValue(quantDs.getPatientsGroup1Comm(), null);
 
-        patientssubGroup2.setValue(quantDs.getPatientsSubGroup2().split("\n")[0], null);
+        patientssubGroup2.setValue(quantDs.getPatientsSubGroup2(), null);
         patientsCommGroup2.setValue(quantDs.getPatientsGroup2Comm(), null);
 
         identifiedProteinsNumber.setValue(quantDs.getIdentifiedProteinsNumber() + "", null);
@@ -205,7 +205,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         analyticalApproach.setValue(quantDs.getAnalyticalApproach() + "", null);
         normalization_strategy.setValue(quantDs.getNormalizationStrategy(), null);
 
-        diseaseCategory.setValue("<font color='" + diseaseHashedColor + "' style='font-weight: bold;'>" + quantDs.getPatientsGroup1().split("\n")[1].replace("_", " ").replace("-", "'").replace("Disease", "") + "</font>", null);
+        diseaseCategory.setValue("<font color='" + diseaseHashedColor + "' style='font-weight: bold;'>" + quantDs.getDiseaseCategory() + "</font>", null);
 
         quantifiedProteinsNumber.setValue("" + quantDs.getQuantifiedProteinsNumber(), null);
 

@@ -47,11 +47,14 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         frame.addComponent(title);
 
         diseaseCategorySet.stream().forEach((diseaseObject) -> {
-            frame.addComponent(this.initDiseaseLayout(diseaseObject));
+            frame.addComponent(this.initDiseaseLayout(diseaseObject,50));
         });
         miniLayout = new HorizontalLayout();
-        miniLayout.addComponent(initDiseaseLayout(diseaseCategorySet.iterator().next()));
-        miniLayout.setMargin(new MarginInfo(false, false, true, true));
+        miniLayout.addComponent(initDiseaseLayout(diseaseCategorySet.iterator().next(),30));
+        miniLayout.setMargin(new MarginInfo(false, false, true, false));
+        miniLayout.setHeight(30,Unit.PIXELS);
+        miniLayout.addStyleName("topbtns");
+        miniLayout.addStyleName("leftbtns");
 
     }
 
@@ -60,10 +63,10 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
      *
      * @param diseaseObject disease category object that has disease information
      */
-    private VerticalLayout initDiseaseLayout(DiseaseCategoryObject diseaseObject) {
+    private VerticalLayout initDiseaseLayout(DiseaseCategoryObject diseaseObject,int height) {
         VerticalLayout diseaseLayout = new VerticalLayout();
         diseaseLayout.setWidth("200px");
-        diseaseLayout.setHeight("50px");
+        diseaseLayout.setHeight(height,Unit.PIXELS);
         Label diseaseTitle = new Label("<center>" + diseaseObject.getDiseaseName() + " - " + diseaseObject.getDatasetNumber() + "</center>");
         diseaseTitle.setDescription("#Datasets " + diseaseObject.getDatasetNumber());
         diseaseLayout.addComponent(diseaseTitle);
@@ -83,7 +86,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         miniLayout.removeAllComponents();
         DiseaseCategoryObject diseaseObject = (DiseaseCategoryObject) (((VerticalLayout) event.getComponent()).getData());
-        miniLayout.addComponent(initDiseaseLayout(diseaseObject));
+        miniLayout.addComponent(initDiseaseLayout(diseaseObject,30));
         onClick(diseaseObject.getDiseaseName());
 
     }

@@ -12,11 +12,29 @@ import java.util.Map;
  */
 public class QuantDatasetObject implements Serializable, Comparable {
 
+   
+
         
     private int x;
     private int y;
-    
+    private String diseaseCategoryColor,diseaseStyleName;
+
+    public String getDiseaseStyleName() {
+        return diseaseStyleName;
+    }
+
+    public void setDiseaseStyleName(String diseaseStyleName) {
+        this.diseaseStyleName = diseaseStyleName;
+    }
     private int dsKey;
+
+    public String getDiseaseCategoryColor() {
+        return diseaseCategoryColor;
+    }
+
+    public void setDiseaseCategoryColor(String diseaseCategoryColor) {
+        this.diseaseCategoryColor = diseaseCategoryColor;
+    }
 
     public String getDiseaseCategory() {
         return  values[27].toString();

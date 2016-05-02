@@ -61,6 +61,8 @@ public class ScrollPanel extends VerticalLayout implements LayoutEvents.LayoutCl
         miniLayout.addStyleName("slowscroll");
         miniLayout.addStyleName("hidescrolllayout");
         mainLayout.addStyleName("slowscroll");
+        miniLayout.addStyleName("topbtns");
+        miniLayout.addStyleName("rightbtns");
         if (orientation == 0) {
 
             navigationBtn.setStyleName("upscrollebtn");

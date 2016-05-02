@@ -21,7 +21,6 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 public class DatasetButtonsContainerLayout extends VerticalLayout {
 
     private final GridLayout btnsContainer;
-    private final  Map<String, String> diseaseHashedColorMap;
 
     private void setInformationData(Set<QuantDatasetObject> dsObjects) {
         btnsContainer.removeAllComponents();
@@ -38,8 +37,7 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
         for (QuantDatasetObject quantDS : dsObjects) {
             String btnName = "<font size=1 >" + quantDS.getPumedID() + "</font><br/>" + quantDS.getAuthor() + "<br/><font size=1 >" + quantDS.getYear() + "</font><br/><font size=1 >#Proteins: " + quantDS.getTotalProtNum() + "   #peptides: " + quantDS.getTotalPepNum() + "</font>";
 
-            String diseaseColor = this.diseaseHashedColorMap.get(quantDS.getPatientsGroup1().split("\n")[1]);
-            PopupInfoBtn btn = new PopupInfoBtn(quantDS, btnName, quantDS.getAuthor(),diseaseColor);
+            PopupInfoBtn btn = new PopupInfoBtn(quantDS, btnName, quantDS.getAuthor());
             btnsContainer.addComponent(btn, colcounter++, rowcounter);
             if (colcounter >= btnsContainer.getColumns()) {
                 colcounter = 0;
@@ -51,12 +49,11 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
 
     }
 
-    public DatasetButtonsContainerLayout(Set<QuantDatasetObject> dsObjects, Map<String, String> diseaseHashedColorMap) {
+    public DatasetButtonsContainerLayout(Set<QuantDatasetObject> dsObjects) {
         this.setWidth("100%");
         this.setHeightUndefined();
         this.setMargin(false);
         this.setSpacing(true);
-        this.diseaseHashedColorMap=diseaseHashedColorMap;
         
         int width = Page.getCurrent().getBrowserWindowWidth() * 90 / 100;
         int colNum = Math.max(1, width / 200);

@@ -46,7 +46,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
      *
      *
      */
-    public WelcomeLayoutComponents(final LayoutViewManager View_Manager,int screenWidth,OverviewInfoBean overviewInfoBean,List<Object[]> publicationList,Set<QuantDatasetObject> dsObjects,Map<String, String> diseaseHashedColorMap ) {
+    public WelcomeLayoutComponents(final LayoutViewManager View_Manager,int screenWidth,OverviewInfoBean overviewInfoBean,List<Object[]> publicationList,Set<QuantDatasetObject> dsObjects ) {
         this.setWidth("100%");
         this.setHeight("100%");
         
@@ -92,7 +92,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
 //        Set<QuantDatasetObject> dsObjects = CSFPR_Handler.getQuantDatasetList();
 //
-        StudiesInformationWindow sub2quantStatLabelWrapper = new StudiesInformationWindow(dsObjects, diseaseHashedColorMap);
+        StudiesInformationWindow sub2quantStatLabelWrapper = new StudiesInformationWindow(dsObjects);
         subQuantStatLayout.addComponent(sub2quantStatLabelWrapper, 0, 1);
         sub2quantStatLabelWrapper.setDescription("Click to view datasets information");
         Label sub2quantStatLabel = new Label("<h3 style='text-decoration: underline;cursor: pointer;'>#Datasets</h3>");

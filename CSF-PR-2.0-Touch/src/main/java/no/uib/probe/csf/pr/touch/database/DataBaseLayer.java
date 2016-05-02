@@ -5,6 +5,7 @@
  */
 package no.uib.probe.csf.pr.touch.database;
 
+import java.awt.Color;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,6 +15,7 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -45,6 +47,9 @@ public class DataBaseLayer implements Serializable {
     private final DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
     private DecimalFormat df = null;
 
+    private final Map<String, String> diseaseCategoryStyles = new HashMap<>();
+    private final Map<String, String> diseaseColorMap = new HashMap<>();
+
     /**
      * Initialize Database abstraction layer
      *
@@ -61,6 +66,13 @@ public class DataBaseLayer implements Serializable {
         this.driver = driver;
         this.userName = userName;
         this.password = password;
+        diseaseCategoryStyles.put("Multiple Sclerosis", "multiplesclerosisstyle");
+        diseaseCategoryStyles.put("Alzheimer's", "alzheimerstyle");
+        diseaseCategoryStyles.put("Parkinson's", "parkinsonstyle");
+
+        diseaseColorMap.put("Multiple Sclerosis", "#A52A2A");
+        diseaseColorMap.put("Alzheimer's", "#4b7865");
+        diseaseColorMap.put("Parkinson's", "#74716E");
     }
 
     /**
@@ -252,8 +264,11 @@ public class DataBaseLayer implements Serializable {
                     boolean[] activeHeaders = datasetObject.getActiveHeaders();
                     Map<Integer, QuantDatasetObject> updatedQuantDatasetObjectMap = datasetObject.getQuantDatasetsList();
                     Set<String> diseaseCategories = datasetObject.getDiseaseCategories();
+                    
 
                     QuantDatasetObject ds = new QuantDatasetObject();
+                    ds.setDiseaseCategoryColor(diseaseColorMap.get(disease_category));
+                    ds.setDiseaseStyleName(diseaseCategoryStyles.get(disease_category));
                     String author = rs.getString("author");
                     if (!activeHeaders[0] && author != null && !author.equalsIgnoreCase("Not Available")) {
                         activeHeaders[0] = true;
@@ -368,7 +383,7 @@ public class DataBaseLayer implements Serializable {
                     if (!activeHeaders[18] && patient_group_i != null && !patient_group_i.equalsIgnoreCase("Not Available")) {
                         activeHeaders[18] = true;
                     }
-                    ds.setPatientsGroup1(patient_group_i + "\n" + disease_category.replace(" ", "_").replace("'", "-") + "_Disease");
+                    ds.setPatientsGroup1(patient_group_i);
 
                     int patients_group_i_number = rs.getInt("patients_group_i_number");
                     if (!activeHeaders[19] && patients_group_i_number != -1) {
@@ -386,13 +401,13 @@ public class DataBaseLayer implements Serializable {
                     if (!activeHeaders[21] && patient_sub_group_i != null && !patient_sub_group_i.equalsIgnoreCase("Not Available")) {
                         activeHeaders[21] = true;
                     }
-                    ds.setPatientsSubGroup1(patient_sub_group_i + "\n" + disease_category.replace(" ", "_").replace("'", "-") + "_Disease");
+                    ds.setPatientsSubGroup1(patient_sub_group_i);
 
                     String patient_group_ii = rs.getString("patient_group_ii");
                     if (!activeHeaders[22] && patient_group_ii != null && !patient_group_ii.equalsIgnoreCase("Not Available")) {
                         activeHeaders[22] = true;
                     }
-                    ds.setPatientsGroup2(patient_group_ii + "\n" + disease_category.replace(" ", "_").replace("'", "-") + "_Disease");
+                    ds.setPatientsGroup2(patient_group_ii);
 
                     int patients_group_ii_number = rs.getInt("patients_group_ii_number");
                     if (!activeHeaders[23] && patients_group_ii_number != -1) {
@@ -410,7 +425,7 @@ public class DataBaseLayer implements Serializable {
                     if (!activeHeaders[25] && patient_sub_group_ii != null && !patient_sub_group_ii.equalsIgnoreCase("Not Available")) {
                         activeHeaders[25] = true;
                     }
-                    ds.setPatientsSubGroup2(patient_sub_group_ii + "\n" + disease_category.replace(" ", "_").replace("'", "-") + "_Disease");
+                    ds.setPatientsSubGroup2(patient_sub_group_ii);
                     ds.setAdditionalcomments("Not Available");
                     ds.setDiseaseCategory(rs.getString("disease_category"));
 
@@ -460,20 +475,33 @@ public class DataBaseLayer implements Serializable {
             PreparedStatement st = conn.prepareStatement(selectStat);
 
             ResultSet rs = st.executeQuery();
-
+            int total = 0;
             while (rs.next()) {
-                DiseaseCategoryObject diseaseObject = new DiseaseCategoryObject();
-                diseaseObject.setDiseaseName(rs.getString("disease_category"));
-                diseaseObject.setDatasetNumber(rs.getInt("Rows"));
-                availableDiseaseCategory.add(diseaseObject);
+                DiseaseCategoryObject diseaseCategoryObject = new DiseaseCategoryObject();
+                diseaseCategoryObject.setDiseaseName(rs.getString("disease_category"));
+                diseaseCategoryObject.setDatasetNumber(rs.getInt("Rows"));
+                diseaseCategoryObject.setDiseaseStyleName(diseaseCategoryStyles.get(diseaseCategoryObject.getDiseaseName()));
+                diseaseCategoryObject.setDiseaseHashedColor(diseaseColorMap.get(diseaseCategoryObject.getDiseaseName()));
+                diseaseCategoryObject.setDiseaseAwtColor(Color.decode(diseaseCategoryObject.getDiseaseHashedColor()));
+                total += diseaseCategoryObject.getDatasetNumber();
+                availableDiseaseCategory.add(diseaseCategoryObject);
+
             }
+            DiseaseCategoryObject diseaseCategoryObject = new DiseaseCategoryObject();
+            diseaseCategoryObject.setDiseaseName("All Diseases");
+            diseaseCategoryObject.setDatasetNumber(total);
+            diseaseCategoryObject.setDiseaseStyleName("alldiseasestyle");
+            diseaseCategoryObject.setDiseaseHashedColor("#7E7E7E");
+            diseaseCategoryObject.setDiseaseAwtColor(Color.decode("#7E7E7E"));
+            availableDiseaseCategory.add(diseaseCategoryObject);
+
         } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             System.err.println("at error " + this.getClass().getName() + "  line 470  " + e.getLocalizedMessage());
         }
         return availableDiseaseCategory;
     }
-    
-     /**
+
+    /**
      * Get active quantification pie charts filters (to hide them if they are
      * empty)
      *
@@ -648,7 +676,7 @@ public class DataBaseLayer implements Serializable {
         System.gc();
         return activePieChartQuantFiltersDiseaseCategoryMap;
     }
-    
+
     /**
      * Get set of disease groups names for special disease category
      *

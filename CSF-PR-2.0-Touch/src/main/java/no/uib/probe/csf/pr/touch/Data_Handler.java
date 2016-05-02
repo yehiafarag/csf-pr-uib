@@ -6,16 +6,16 @@
 package no.uib.probe.csf.pr.touch;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.CoreLogic;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseCategoryObject;
-import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetInitialInformationObject;
+import no.uib.probe.csf.pr.touch.logic.beans.DiseaseGroupComparison;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantProtein;
+import no.uib.probe.csf.pr.touch.logic.dataset.DatasetUtility;
 import no.uib.probe.csf.pr.touch.view.smallscreen.OverviewInfoBean;
 
 /**
@@ -30,70 +30,8 @@ import no.uib.probe.csf.pr.touch.view.smallscreen.OverviewInfoBean;
 public class Data_Handler implements Serializable {
 
     private final CoreLogic coreLogic;
-    private final Map<String, String> diseaseHashedColorMap = new HashMap<String, String>();
-    private final Set<DiseaseCategoryObject> fullDiseaseCategorySet;
-    private Set<DiseaseCategoryObject> inUseDiseaseCategorySet;
-    private final Map<String, Map<String, String>> default_DiseaseCat_DiseaseGroupMap;
-    private final String suggestNames = "Alzheimer's\n"
-            + "CIS-MS(CIS)\n"
-            + "CIS-CIS\n"
-            + "CIS-MS\n"
-            + "Healthy*\n"
-            + "Healthy*\n"
-            + "MCI\n"
-            + "MCI nonprogressors\n"
-            + "MCI progressors\n"
-            + "RRMS Nataliz.\n"
-            + "SPMS Lamotri.\n"
-            + "Non MS\n"
-            + "OIND\n"
-            + "OIND + OND\n"
-            + "OND\n"
-            + "Sympt. controls\n"
-            + "Aged controls\n"
-            + "NDC\n"
-            + "Non-neurodeg.\n"
-            + "Parkinson's\n"
-            + "PDD\n"
-            + "PMS\n"
-            + "SPMS\n"
-            + "RRMS";
-
-    private final String oreginalNames = "Alzheimer's\n"
-            + "CIS-MS(CIS)\n"
-            + "CIS-CIS\n"
-            + "CIS-MS\n"
-            + "Aged healthy\n"
-            + "Healthy controls\n"
-            + "MCI\n"
-            + "MCI nonprogressors\n"
-            + "MCI progressors\n"
-            + "RRMS Nataliz.\n"
-            + "SPMS Lamotri.\n"
-            + "Non MS\n"
-            + "OIND\n"
-            + "OIND + OND\n"
-            + "OND\n"
-            + "Sympt. controls\n"
-            + "Aged controls\n"
-            + "NDC\n"
-            + "Non-neurodeg.\n"
-            + "Parkinson's\n"
-            + "PDD\n"
-            + "PMS\n"
-            + "SPMS\n"
-            + "RRMS";
-
-    private final Map<String, QuantDatasetInitialInformationObject> quantDatasetInitialInformationObject;
-    private final Map<String, String> diseaseStyleMap = new HashMap<String, String>();
-
-    public Map<String, QuantDatasetInitialInformationObject> getQuantDatasetInitialInformationObject() {
-        return quantDatasetInitialInformationObject;
-    }
-
-    public Map<String, String> getDiseaseStyleMap() {
-        return diseaseStyleMap;
-    }
+    private final DatasetUtility Dataset_Util;
+    
 
     /**
      *
@@ -105,36 +43,14 @@ public class Data_Handler implements Serializable {
      * @param password database password
      */
     public Data_Handler(String url, String dbName, String driver, String userName, String password, String filesURL) {
+
+        
+        
         this.coreLogic = new CoreLogic(url, dbName, driver, userName, password, filesURL);
-        this.fullDiseaseCategorySet = coreLogic.getDiseaseCategorySet();
-        this.inUseDiseaseCategorySet = fullDiseaseCategorySet;
-
-        this.quantDatasetInitialInformationObject = coreLogic.getQuantDatasetInitialInformationObject();
-
-        diseaseHashedColorMap.put("Multiple_Sclerosis_Disease", "#A52A2A");
-        diseaseHashedColorMap.put("Alzheimer-s_Disease", "#4b7865");
-        diseaseHashedColorMap.put("Parkinson-s_Disease", "#74716E");
-        diseaseHashedColorMap.put("Amyotrophic_Lateral_Sclerosis_Disease", "#7D0725");
-        diseaseHashedColorMap.put("UserData", "#8210B0");
-
-        default_DiseaseCat_DiseaseGroupMap = new LinkedHashMap<>();
-        quantDatasetInitialInformationObject.keySet().stream().filter((str) -> !(str.equalsIgnoreCase("All"))).forEach((str) -> {
-            Set<String> diseaseGroupsName = coreLogic.getDiseaseGroupNameMap(str);
-
-            Map<String, String> diseaseGroupMap = new LinkedHashMap<>();
-            for (int i = 0; i < oreginalNames.split("\n").length; i++) {
-                if (!diseaseGroupsName.contains(oreginalNames.split("\n")[i])) {
-                    continue;
-                }
-                diseaseGroupMap.put(oreginalNames.split("\n")[i], suggestNames.split("\n")[i]);
-            }
-            default_DiseaseCat_DiseaseGroupMap.put(str, diseaseGroupMap);
-        });
-
-        diseaseStyleMap.put("Parkinson-s_Disease", "pdLabel");
-        diseaseStyleMap.put("Alzheimer-s_Disease", "adLabel");
-        diseaseStyleMap.put("Amyotrophic_Lateral_Sclerosis_Disease", "alsLabel");
-        diseaseStyleMap.put("Multiple_Sclerosis_Disease", "msLabel");
+        Dataset_Util = new DatasetUtility(coreLogic);
+       
+       
+        
     }
 
     /**
@@ -168,14 +84,6 @@ public class Data_Handler implements Serializable {
 
     }
 
-    /**
-     * this method responsible for map of disease # colors for disease labels
-     *
-     * @return map of disease names and colors
-     */
-    public Map<String, String> getDiseaseHashedColorMap() {
-        return diseaseHashedColorMap;
-    }
 
     /**
      * Get the current available disease category list
@@ -184,7 +92,7 @@ public class Data_Handler implements Serializable {
      * information and styling information
      */
     public Set<DiseaseCategoryObject> getDiseaseCategorySet() {
-        return inUseDiseaseCategorySet;
+        return Dataset_Util.getFullDiseaseCategorySet();
     }
 
     /**
@@ -194,7 +102,7 @@ public class Data_Handler implements Serializable {
      * @param diseaseCategory
      */
     public void loadDiseaseCategory(String diseaseCategory) {
-
+        Dataset_Util.setMainDiseaseCategory(diseaseCategory);
     }
 
     /**
@@ -221,9 +129,38 @@ public class Data_Handler implements Serializable {
         return coreLogic.getActivePieChartQuantFilters(searchQuantificationProtList);
 
     }
+    
+    /**
+     * this method to get the disease group row labels for the current active 
+     * disease category
+     *
+     * @return active row labels category set
+     */
+    public LinkedHashSet<String> getRowLabels() {
+        return Dataset_Util.getRowLabels();
 
-    public Map<String, Map<String, String>> getDefault_DiseaseCat_DiseaseGroupMap() {
-        return default_DiseaseCat_DiseaseGroupMap;
     }
+
+    /**
+     * this method to get the disease group column labels for the current active 
+     * disease category
+     *
+     * @return active column labels category set
+     */
+    public LinkedHashSet<String> getColumnLabels() {
+        return Dataset_Util.getColumnLabels();
+
+    }
+    
+     /* this method to get the disease group comparisons  for the current active 
+     * disease category
+     *
+     * @return active disease group comparisons
+     */
+    public Set<DiseaseGroupComparison> getDiseaseGroupComparisonsSet() {
+        return Dataset_Util.getDiseaseGroupComparisonsSet();
+
+    }
+
 
 }

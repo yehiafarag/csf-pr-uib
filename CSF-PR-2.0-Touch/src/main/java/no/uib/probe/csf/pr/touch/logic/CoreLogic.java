@@ -25,18 +25,12 @@ import no.uib.probe.csf.pr.touch.view.smallscreen.OverviewInfoBean;
 public class CoreLogic implements Serializable {
 
     private final DataBaseLayer database;
-    private final Map<String, String> diseaseCategoryStyles = new HashMap<>();
-    private final Map<String, String> diseaseColorMap = new HashMap<>();
+    
 
     public CoreLogic(String url, String dbName, String driver, String userName, String password, String filesURL) {
         database = new DataBaseLayer(url, dbName, driver, userName, password);
-        diseaseCategoryStyles.put("Multiple Sclerosis", "multiplesclerosisstyle");
-        diseaseCategoryStyles.put("Alzheimer's", "alzheimerstyle");
-        diseaseCategoryStyles.put("Parkinson's", "parkinsonstyle");
-
-        diseaseColorMap.put("Multiple Sclerosis", "#A52A2A");
-        diseaseColorMap.put("Alzheimer's", "#4b7865");
-        diseaseColorMap.put("Parkinson's", "#74716E");
+        
+     
 
     }
 
@@ -77,25 +71,8 @@ public class CoreLogic implements Serializable {
      * @return set of disease category objects that has all disease category
      * information and styling information
      */
-    public Set<DiseaseCategoryObject> getDiseaseCategorySet() {
-
-        int total = 0;
-        Set<DiseaseCategoryObject> availableDiseaseCategory = database.getDiseaseCategorySet();
-        for (DiseaseCategoryObject diseaseCategoryObject : availableDiseaseCategory) {
-            diseaseCategoryObject.setDiseaseStyleName(diseaseCategoryStyles.get(diseaseCategoryObject.getDiseaseName()));
-            diseaseCategoryObject.setDiseaseHashedColor(diseaseColorMap.get(diseaseCategoryObject.getDiseaseName()));
-            diseaseCategoryObject.setDiseaseAwtColor(Color.decode(diseaseCategoryObject.getDiseaseHashedColor()));
-            total += diseaseCategoryObject.getDatasetNumber();
-
-        }
-        DiseaseCategoryObject diseaseCategoryObject = new DiseaseCategoryObject();
-        diseaseCategoryObject.setDiseaseName("All Diseases");
-        diseaseCategoryObject.setDatasetNumber(total);
-        diseaseCategoryObject.setDiseaseStyleName("alldiseasestyle");
-        diseaseCategoryObject.setDiseaseHashedColor("#7E7E7E");
-        diseaseCategoryObject.setDiseaseAwtColor(Color.decode("#7E7E7E"));
-        availableDiseaseCategory.add(diseaseCategoryObject);
-
+    public Set<DiseaseCategoryObject> getDiseaseCategorySet() {        
+        Set<DiseaseCategoryObject> availableDiseaseCategory = database.getDiseaseCategorySet();  
         return availableDiseaseCategory;
     }
 
