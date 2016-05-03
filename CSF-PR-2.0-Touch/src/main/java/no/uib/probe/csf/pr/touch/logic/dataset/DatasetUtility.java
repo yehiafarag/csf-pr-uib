@@ -123,6 +123,7 @@ public class DatasetUtility implements Serializable {
         if (quantDataMap.containsKey(diseaseCategory)) {
             activeData = quantDataMap.get(diseaseCategory);
         } else {
+            System.out.println("at diseasee cate "+diseaseCategory);
 
             QuantDatasetInitialInformationObject initQuantData = quantDatasetInitialInformationObject.get(diseaseCategory);
             activeData = updateDiseaseGroups(initQuantData.getQuantDatasetsList());
@@ -282,6 +283,17 @@ public class DatasetUtility implements Serializable {
 
         return sortedArr;
 
+    }
+    /**
+     * this method to get the full quant dataset map  the current active 
+     * disease category
+     *
+     * @return map of quant dataset objects
+     */
+     public Map<Integer, QuantDatasetObject> getFullQuantDsMap(){
+         return quantDatasetInitialInformationObject.get(activeData.getDiseaseCategory()).getQuantDatasetsList();
+    
+    
     }
 
 }

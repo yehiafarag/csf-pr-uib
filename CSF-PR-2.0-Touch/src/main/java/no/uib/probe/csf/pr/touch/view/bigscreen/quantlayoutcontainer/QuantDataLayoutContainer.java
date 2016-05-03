@@ -32,7 +32,7 @@ public class QuantDataLayoutContainer extends VerticalLayout {
     private final VerticalLayout sideButtonsContainer;
     private final VerticalLayout quantBodyWrapper;
     private final VerticalLayout mainComponetViewPanel;
-    private final ImageContainerBtn heatmapBtn, bubblechartBtn, tableBtn, linechartBtn, peptideInfoBtn;
+    private final ImageContainerBtn  heatmapBtn, bubblechartBtn, tableBtn, linechartBtn, peptideInfoBtn;
     private final Data_Handler Data_handler;
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
     private final ScrollPanel initialLayoutPanel;
@@ -40,6 +40,7 @@ public class QuantDataLayoutContainer extends VerticalLayout {
     
     private final int mainViewPanelWidth;
     private final int mainViewPanelHeight;
+    private final  QuantInitialLayout quantInitialLayout;
 
     public QuantDataLayoutContainer(final Data_Handler Data_handler, int width, int height) {
         this.Data_handler = Data_handler;
@@ -56,7 +57,7 @@ public class QuantDataLayoutContainer extends VerticalLayout {
         this.addComponent(quantBodyWrapper);
         
         Set<DiseaseCategoryObject> availableDiseaseCategory = Data_handler.getDiseaseCategorySet();
-        QuantInitialLayout quantInitialLayout = new QuantInitialLayout(availableDiseaseCategory, width, height ) {
+         quantInitialLayout = new QuantInitialLayout(availableDiseaseCategory, width, height ) {
             
             private String lastSelectedDisease = "";
             private boolean showPanel = true;
@@ -76,7 +77,7 @@ public class QuantDataLayoutContainer extends VerticalLayout {
             }
             
         };
-        initialLayoutPanel = new ScrollPanel(quantInitialLayout, quantInitialLayout.getMiniLayout(), 0, "diseasecategoryselectionset");
+        initialLayoutPanel = new ScrollPanel(quantInitialLayout, null, 0, "diseasecategoryselectionset");
         initialLayoutPanel.setShowNavigationBtn(false);
         initialLayoutPanel.setShowPanel(true);
         quantBodyWrapper.addComponent(initialLayoutPanel);
@@ -98,6 +99,11 @@ public class QuantDataLayoutContainer extends VerticalLayout {
         subBodyWrapper.addComponent(sideButtonsContainer);
         subBodyWrapper.setComponentAlignment(sideButtonsContainer, Alignment.MIDDLE_CENTER);
         
+        
+        
+        
+        sideButtonsContainer.addComponent(quantInitialLayout.getMiniLayout());
+        
         heatmapBtn = new ImageContainerBtn() {
             
             @Override
@@ -107,6 +113,7 @@ public class QuantDataLayoutContainer extends VerticalLayout {
         };
         heatmapBtn.updateIcon(new ThemeResource("img/logo.png"));
         sideButtonsContainer.addComponent(heatmapBtn);
+        
         
         bubblechartBtn = new ImageContainerBtn() {
             
@@ -152,8 +159,9 @@ public class QuantDataLayoutContainer extends VerticalLayout {
         mainViewPanelWidth = width-200;
         mainComponetViewPanel = new VerticalLayout();
         subBodyWrapper.addComponent(mainComponetViewPanel);
-        mainComponetViewPanel.setWidth((mainViewPanelWidth) + "px");
-        mainComponetViewPanel.setHeight(height+"px");
+        subBodyWrapper.setComponentAlignment(mainComponetViewPanel,Alignment.MIDDLE_CENTER);
+        mainComponetViewPanel.setWidth((mainViewPanelWidth) ,Unit.PIXELS);
+        mainComponetViewPanel.setHeight(height,Unit.PIXELS);
         
     }
     
@@ -173,9 +181,10 @@ public class QuantDataLayoutContainer extends VerticalLayout {
         if (heatmapComponent == null) {
             heatmapComponent = new HeatMapComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight);            
             mainComponetViewPanel.addComponent(heatmapComponent);
+            mainComponetViewPanel.setComponentAlignment(heatmapComponent,Alignment.MIDDLE_CENTER);
             
         }
-        heatmapComponent.updateData(Data_handler.getRowLabels(),Data_handler.getColumnLabels(),Data_handler.getDiseaseGroupComparisonsSet());
+        heatmapComponent.updateData(Data_handler.getRowLabels(),Data_handler.getColumnLabels(),Data_handler.getDiseaseGroupComparisonsSet(),Data_handler.getFullQuantDsMap());
         
     }
     

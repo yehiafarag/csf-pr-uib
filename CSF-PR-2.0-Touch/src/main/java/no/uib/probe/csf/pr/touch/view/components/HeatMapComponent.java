@@ -2,8 +2,8 @@ package no.uib.probe.csf.pr.touch.view.components;
 
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.VerticalLayout;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -47,6 +47,7 @@ public class HeatMapComponent extends VerticalLayout implements CSFFilter {
         bodyLayoutWrapper.setSpacing(true);
 
         this.addComponent(bodyLayoutWrapper);
+        this.setComponentAlignment(bodyLayoutWrapper, Alignment.MIDDLE_CENTER);
 
         //top filters layout
         VerticalLayout topFilterContainerLayout = new VerticalLayout();
@@ -54,12 +55,13 @@ public class HeatMapComponent extends VerticalLayout implements CSFFilter {
         topFilterContainerLayout.setHeight(30, Unit.PIXELS);
         topFilterContainerLayout.setStyleName("blacklayout");
         bodyLayoutWrapper.addComponent(topFilterContainerLayout);
-
+        
+        
+        
 
         //init heatmap
-        
-        int availableHMHeight = mainbodyLayoutHeight - 100; 
-        heatmapLayoutContainer = new HeatMapLayout(mainbodyLayoutWidth,availableHMHeight) {
+        int availableHMHeight = mainbodyLayoutHeight - 100;
+        heatmapLayoutContainer = new HeatMapLayout(mainbodyLayoutWidth, availableHMHeight) {
             @Override
             public void updateSelectionManager(Set<QuantDiseaseGroupsComparison> selectedDsList) {
 
@@ -67,7 +69,7 @@ public class HeatMapComponent extends VerticalLayout implements CSFFilter {
             }
         };
         bodyLayoutWrapper.addComponent(heatmapLayoutContainer);
-      
+
     }
 
     /**
@@ -117,15 +119,18 @@ public class HeatMapComponent extends VerticalLayout implements CSFFilter {
      * @param colheaders
      * @param patientsGroupComparisonsSet
      */
-    public void updateData(LinkedHashSet<String> rowheaders, LinkedHashSet<String> colheaders, Set<DiseaseGroupComparison>patientsGroupComparisonsSet) {
+    public void updateData(LinkedHashSet<String> rowheaders, LinkedHashSet<String> colheaders, Set<DiseaseGroupComparison> patientsGroupComparisonsSet,Map<Integer, QuantDatasetObject> fullQuantDsMap) {
 
+       
+            try {
+                Thread.sleep(colheaders.size()*20);
+            } catch (InterruptedException e) {
 
-        heatmapLayoutContainer.updateData(rowheaders, colheaders,patientsGroupComparisonsSet);
+            }
+        
+        heatmapLayoutContainer.updateData(rowheaders, colheaders, patientsGroupComparisonsSet,fullQuantDsMap);
 
     }
-
-   
-    
 
 //    /**
 //     *

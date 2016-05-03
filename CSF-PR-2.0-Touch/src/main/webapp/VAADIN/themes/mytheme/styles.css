@@ -11466,7 +11466,7 @@ div.v-layout.v-horizontal.v-widget {
     font-weight: 500;
     font-size: 14px;
     color: #414141;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     letter-spacing: 0;
     margin-top: 2.4em;
     margin-bottom: 0.8em;
@@ -13086,7 +13086,7 @@ div.v-layout.v-horizontal.v-widget {
     padding: 5px;
     cursor: pointer;   
     border:1px solid lightgray;
-    border-radius: 5px;
+    border-radius: 4px;
 }
 .leftslidebtn:hover{
     background-color: lightgray;
@@ -13105,7 +13105,7 @@ div.v-layout.v-horizontal.v-widget {
     padding: 5px;
     cursor: pointer;   
     border:1px solid lightgray;
-    border-radius: 5px;
+    border-radius: 4px;
 }
 .rightslidebtn:hover{
     background-color: lightgray;
@@ -13126,7 +13126,7 @@ div.v-layout.v-horizontal.v-widget {
     padding: 5px;
     cursor: pointer;   
     border:1px solid lightgray;
-    border-radius: 5px;
+    border-radius: 4px;
 }
 .upscrollebtn:hover{
     background-color: lightgray;
@@ -13145,7 +13145,7 @@ div.v-layout.v-horizontal.v-widget {
     padding: 5px;
     cursor: pointer;   
     border:1px solid lightgray;
-    border-radius: 5px;
+    border-radius: 4px;
 
 }
 .downscrollbtn:hover{
@@ -13168,7 +13168,7 @@ div.v-layout.v-horizontal.v-widget {
     margin-right: 20px;
     cursor: pointer;   
     border:1px solid lightgray;
-    border-radius: 5px;
+    border-radius: 4px;
     padding: 10px;
 
     /*    animation-name: blink ;
@@ -13182,6 +13182,10 @@ div.v-layout.v-horizontal.v-widget {
     border:1px solid gray;
     background-color:lightgray;
 
+}
+.bigbtn div{
+    word-wrap:break-word;
+    border-radius:4px;
 }
 
 .thumbBtn{
@@ -13363,61 +13367,49 @@ div.v-layout.v-horizontal.v-widget {
 
 .multiplesclerosisstyle {
     background-color:  #A52A2A;
-    border: 2px solid #A52A2A;
-    border-radius:5px;
+    border: 1px solid #A52A2A;
+    border-radius:2px;
     color: white !important;
     line-height:100%;
 }
 .multiplesclerosisstyle:hover {
-     border-top:2px solid #000;
-    border-bottom: 2px solid #000;
-    border-right: 2px solid #000;
-    border-left: 2px solid #000;
+     border-color:#000;
 }
 
 .parkinsonstyle{
     border: 2px solid #74716E;
     background-color: #74716E;    
-    border-radius:5px;
+    border-radius:2px;
     color: white !important;
     line-height:100%;
 
 }
 .parkinsonstyle:hover {
-     border-top:2px solid #000;
-    border-bottom: 2px solid #000;
-    border-right: 2px solid #000;
-    border-left: 2px solid #000;
+    border-color:#000;
 }
 .alzheimerstyle{
 
     border: 2px solid #4b7865;
     background-color: #4b7865;    
-    border-radius:5px;
+    border-radius:2px;
     color: white !important;
     line-height:100%;
 
 }
 .alzheimerstyle:hover {
-     border-top:2px solid #000;
-    border-bottom: 2px solid #000;
-    border-right: 2px solid #000;
-    border-left: 2px solid #000;
+    border-color:#000;
 }
 
 .alldiseasestyle{
 
     border: 2px solid #7E7E7E;  
-    border-radius:5px;
+    border-radius:2px;
     color: #7E7E7E !important;    
     font-weight:bold;
 
 }
 .alldiseasestyle:hover {
-     border-top:2px solid #000;
-    border-bottom: 2px solid #000;
-    border-right: 2px solid #000;
-    border-left: 2px solid #000;
+     border-color:#000;
 }
 .topbtns{
   top:65px !important; 
@@ -13433,20 +13425,21 @@ div.v-layout.v-horizontal.v-widget {
     left:40px !important;
     
 }
+
 .rotateheader{
-      margin-left:-2px;
     text-align: center;
     line-height: 100%;
     -ms-transform:rotate(270deg) translateX(-100% ); /* IE 9 */
     -moz-transform:rotate(270deg) translateX(-100% ); /* Firefox */
-    -webkit-transform:rotate(270deg) translateX(-100% );; /* Safari and Chrome */
+    -webkit-transform:rotate(270deg) translateX(-100% ); /* Safari and Chrome */
     -o-transform:rotate(270deg) translateX(-100% ); /* Opera */
     transform-origin: 0 0;
     position:inherit;
     
+    
 }
 .hmheadercell{
-    border: 1px solid lightgray;
+    border:1px solid #dce0e0;
     cursor: pointer;
 }
 
@@ -13457,7 +13450,9 @@ div.v-layout.v-horizontal.v-widget {
     color: white !important;
      line-height:200%;
      font-size:14px !important;
+     
 }
+
 
 
 
@@ -13476,27 +13471,37 @@ div.v-layout.v-horizontal.v-widget {
      line-height:200%;
 
 }
+.heatmapbody{    
+    background-color:lightgray;
+}
 
+.hmbodycell {
+    border:1px solid #dce0e0;
+    color:white;
+    
 
-/*
-.msLabel{
-
-    border-bottom: 2px solid #F6F0F0;
-    border-right: 2px solid #F6F0F0;
-    border-left: 2px solid #F6F0F0;
-    background-color: #A52A2A;
 
 }
-.pdLabel{
-    border-bottom: 2px solid #F6F0F0;
-    border-right: 2px solid #F6F0F0;
-    border-left: 2px solid #F6F0F0;
-    background-color: #74716E;}
-.adLabel{
+.hmbodycell:hover{
+    font-weight:bold;
+border-color:orange;
+    
+}
+.hmbodycell div{
+width:100% !important;
+height:28px !important;
+background-size:cover;
+text-align:-webkit-center !important;
 
-    border-bottom: 2px solid #F6F0F0;
-    border-right: 2px solid #F6F0F0;
-    border-left: 2px solid #F6F0F0;
-    background-color: #4b7865;
 
-}*/
+}
+.hmselectedcell{
+    border-color:orange;
+    border-radius:2px;
+    border-width:1px;
+    font-weight:bold;
+
+}
+.hmunselectedcell{
+    opacity:0.5;
+}

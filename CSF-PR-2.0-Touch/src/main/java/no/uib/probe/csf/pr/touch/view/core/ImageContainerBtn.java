@@ -7,6 +7,7 @@ package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.Resource;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.VerticalLayout;
 
@@ -19,19 +20,21 @@ import com.vaadin.ui.VerticalLayout;
  *
  */
 public abstract class ImageContainerBtn extends VerticalLayout implements LayoutEvents.LayoutClickListener {
-    
+
     private final Image img;
-    
+
     public ImageContainerBtn() {
         img = new Image();
+
         img.setWidth("100px");
         img.setHeight("100px");
         this.addComponent(img);
+
         this.setStyleName("bigbtn");
         this.addLayoutClickListener(ImageContainerBtn.this);
         this.setReadOnly(true);
         this.setEnabled(false);
-      
+
     }
 
     /**
@@ -43,7 +46,7 @@ public abstract class ImageContainerBtn extends VerticalLayout implements Layout
     public void updateIcon(Resource imgResource) {
         img.setSource(imgResource);
     }
-    
+
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         onClick();
@@ -52,9 +55,9 @@ public abstract class ImageContainerBtn extends VerticalLayout implements Layout
     public void blink() {
         img.removeStyleName("blink");
         img.addStyleName("blink");
-        
+
     }
-    
+
     public abstract void onClick();
-    
+
 }

@@ -31,7 +31,6 @@ public class Data_Handler implements Serializable {
 
     private final CoreLogic coreLogic;
     private final DatasetUtility Dataset_Util;
-    
 
     /**
      *
@@ -44,13 +43,9 @@ public class Data_Handler implements Serializable {
      */
     public Data_Handler(String url, String dbName, String driver, String userName, String password, String filesURL) {
 
-        
-        
         this.coreLogic = new CoreLogic(url, dbName, driver, userName, password, filesURL);
         Dataset_Util = new DatasetUtility(coreLogic);
-       
-       
-        
+
     }
 
     /**
@@ -83,7 +78,6 @@ public class Data_Handler implements Serializable {
         return this.coreLogic.getQuantDatasetList();
 
     }
-
 
     /**
      * Get the current available disease category list
@@ -129,9 +123,9 @@ public class Data_Handler implements Serializable {
         return coreLogic.getActivePieChartQuantFilters(searchQuantificationProtList);
 
     }
-    
+
     /**
-     * this method to get the disease group row labels for the current active 
+     * this method to get the disease group row labels for the current active
      * disease category
      *
      * @return active row labels category set
@@ -142,7 +136,7 @@ public class Data_Handler implements Serializable {
     }
 
     /**
-     * this method to get the disease group column labels for the current active 
+     * this method to get the disease group column labels for the current active
      * disease category
      *
      * @return active column labels category set
@@ -151,8 +145,8 @@ public class Data_Handler implements Serializable {
         return Dataset_Util.getColumnLabels();
 
     }
-    
-     /* this method to get the disease group comparisons  for the current active 
+
+    /* this method to get the disease group comparisons  for the current active 
      * disease category
      *
      * @return active disease group comparisons
@@ -162,5 +156,14 @@ public class Data_Handler implements Serializable {
 
     }
 
+    /**
+     * this method to get the full quant dataset map the current active disease
+     * category
+     *
+     * @return map of quant dataset objects
+     */
+    public Map<Integer, QuantDatasetObject> getFullQuantDsMap() {
+        return Dataset_Util.getFullQuantDsMap();
+    }
 
 }
