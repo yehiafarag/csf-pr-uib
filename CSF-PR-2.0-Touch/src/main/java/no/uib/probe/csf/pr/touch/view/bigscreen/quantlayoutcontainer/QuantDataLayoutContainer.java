@@ -18,6 +18,8 @@ import no.uib.probe.csf.pr.touch.view.components.HeatMapComponent;
 import no.uib.probe.csf.pr.touch.view.components.QuantInitialLayout;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 import no.uib.probe.csf.pr.touch.view.core.ScrollPanel;
+import no.uib.probe.csf.pr.touch.view.core.SlidePanel;
+import no.uib.probe.csf.pr.touch.view.core.ViewControlPanel;
 
 /**
  *
@@ -27,41 +29,48 @@ import no.uib.probe.csf.pr.touch.view.core.ScrollPanel;
  * slide panel layout
  *
  */
-public class QuantDataLayoutContainer extends VerticalLayout {
-    
-    private final VerticalLayout sideButtonsContainer;
-    private final VerticalLayout quantBodyWrapper;
-    private final VerticalLayout mainComponetViewPanel;
-    private final ImageContainerBtn  heatmapBtn, bubblechartBtn, tableBtn, linechartBtn, peptideInfoBtn;
+public class QuantDataLayoutContainer extends ViewControlPanel {
+
+//    private final VerticalLayout sideButtonsContainer;
+//    private final HorizontalLayout quantBodyWrapper;
+    private final VerticalLayout heatmapViewContainer;
+    private final ImageContainerBtn heatmapBtn, bubblechartBtn, tableBtn, linechartBtn, peptideInfoBtn;
     private final Data_Handler Data_handler;
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
-    private final ScrollPanel initialLayoutPanel;
-    private HeatMapComponent heatmapComponent;
+//    private final SlidePanel initialLayoutPanel;
     
+    
+    
+    
+    private HeatMapComponent heatmapComponent;
+
     private final int mainViewPanelWidth;
     private final int mainViewPanelHeight;
-    private final  QuantInitialLayout quantInitialLayout;
+    private final QuantInitialLayout quantInitialLayout;
 
     public QuantDataLayoutContainer(final Data_Handler Data_handler, int width, int height) {
+        super(width, height);
         this.Data_handler = Data_handler;
-        CSFPR_Central_Manager = new CSFPR_Central_Manager();
-        this.setWidth(width + "px");
-        this.setHeight(height + "px");
+        CSFPR_Central_Manager = new CSFPR_Central_Manager();        
+        this.setMargin(true);
         
+
+//        quantBodyWrapper = new HorizontalLayout();
+//        quantBodyWrapper.setWidthUndefined();
+//        quantBodyWrapper.setHeightUndefined();
+//        quantBodyWrapper.setWidthUndefined();
+//        quantBodyWrapper.setSpacing(false);
+//        this.addComponent(quantBodyWrapper);
+
+        Set<DiseaseCategoryObject> availableDiseaseCategory = Data_handler.getDiseaseCategorySet();  
+        final HorizontalLayout subBodyWrapper = new HorizontalLayout();
+        subBodyWrapper.setWidthUndefined();
+        subBodyWrapper.setHeight((height - 200), Unit.PIXELS);
         
-        quantBodyWrapper = new VerticalLayout();
-        quantBodyWrapper.setWidthUndefined();
-        quantBodyWrapper.setHeightUndefined();
-        quantBodyWrapper.setWidthUndefined();
-        quantBodyWrapper.setSpacing(true);
-        this.addComponent(quantBodyWrapper);
-        
-        Set<DiseaseCategoryObject> availableDiseaseCategory = Data_handler.getDiseaseCategorySet();
-         quantInitialLayout = new QuantInitialLayout(availableDiseaseCategory, width, height ) {
-            
+        quantInitialLayout = new QuantInitialLayout(availableDiseaseCategory, width, height) {
+
             private String lastSelectedDisease = "";
-            private boolean showPanel = true;
-            
+
             @Override
             public void onClick(String diseaseCategoryName) {
                 if (!lastSelectedDisease.equalsIgnoreCase(diseaseCategoryName)) {
@@ -69,123 +78,124 @@ public class QuantDataLayoutContainer extends VerticalLayout {
                     //do functions
                     //load dataset
                     loadDiseaseCategory(diseaseCategoryName);
-                    
                 }
-                initialLayoutPanel.setShowPanel(!showPanel);
-                showPanel = !showPanel;
-                
             }
-            
+
         };
-        initialLayoutPanel = new ScrollPanel(quantInitialLayout, null, 0, "diseasecategoryselectionset");
-        initialLayoutPanel.setShowNavigationBtn(false);
-        initialLayoutPanel.setShowPanel(true);
-        quantBodyWrapper.addComponent(initialLayoutPanel);
-        quantBodyWrapper.setComponentAlignment(initialLayoutPanel, Alignment.TOP_LEFT);
-        
-        HorizontalLayout subBodyWrapper = new HorizontalLayout();
-        subBodyWrapper.setWidthUndefined();
-        subBodyWrapper.setHeight((height - 200), Unit.PIXELS);
-        quantBodyWrapper.addComponent(subBodyWrapper);
-        quantBodyWrapper.setComponentAlignment(subBodyWrapper, Alignment.TOP_LEFT);
-        
-        sideButtonsContainer = new VerticalLayout();
-        sideButtonsContainer.setWidth("150px");
-        
-        sideButtonsContainer.setSpacing(true);
-        sideButtonsContainer.setMargin(new MarginInfo(true, false, false, true));
-        sideButtonsContainer.setVisible(true);
-        
-        subBodyWrapper.addComponent(sideButtonsContainer);
-        subBodyWrapper.setComponentAlignment(sideButtonsContainer, Alignment.MIDDLE_CENTER);
-        
-        
-        
-        
-        sideButtonsContainer.addComponent(quantInitialLayout.getMiniLayout());
-        
+//        initialLayoutPanel = new SlidePanel(quantInitialLayout, null, 0, "diseasecategoryselectionset");
+//        initialLayoutPanel.setShowNavigationBtn(false);
+//        initialLayoutPanel.setShowPanel(true);
+//        quantBodyWrapper.addComponent(initialLayoutPanel);
+//        quantBodyWrapper.setComponentAlignment(initialLayoutPanel, Alignment.MIDDLE_LEFT);
+
+//      
+//        quantBodyWrapper.addComponent(subBodyWrapper);
+//        quantBodyWrapper.setComponentAlignment(subBodyWrapper, Alignment.MIDDLE_LEFT);
+//        subBodyWrapper.setMargin(new MarginInfo(true, false, false, false));
+//
+//        VerticalLayout sideButtonsContainerWrapper = new VerticalLayout();
+//        sideButtonsContainerWrapper.setWidth(150, Unit.PIXELS);
+//        sideButtonsContainerWrapper.setHeight(height, Unit.PIXELS);
+//        subBodyWrapper.addComponent(sideButtonsContainerWrapper);
+//        subBodyWrapper.setComponentAlignment(sideButtonsContainerWrapper, Alignment.TOP_CENTER);
+
+//        sideButtonsContainer = new VerticalLayout();
+//        sideButtonsContainer.setWidth("150px");
+//
+//        sideButtonsContainer.setSpacing(true);
+//        sideButtonsContainer.setMargin(new MarginInfo(false, false, false, true));
+//        sideButtonsContainer.setVisible(true);
+//
+//        sideButtonsContainerWrapper.addComponent(sideButtonsContainer);
+//        sideButtonsContainerWrapper.setComponentAlignment(sideButtonsContainer, Alignment.TOP_CENTER);
+
+        this.setInitialLayout(quantInitialLayout.getMiniLayout(),quantInitialLayout);
+
         heatmapBtn = new ImageContainerBtn() {
-            
+
             @Override
             public void onClick() {
                 processFunction("heatmap");
             }
         };
         heatmapBtn.updateIcon(new ThemeResource("img/logo.png"));
-        sideButtonsContainer.addComponent(heatmapBtn);
         
-        
+        mainViewPanelHeight = height;
+        mainViewPanelWidth = width - 200;
+        heatmapViewContainer = new VerticalLayout();
+        heatmapViewContainer.setWidth(mainViewPanelWidth,Unit.PIXELS);
+        this.addButton(heatmapBtn,heatmapViewContainer,true);
+
         bubblechartBtn = new ImageContainerBtn() {
-            
+
             @Override
             public void onClick() {
                 processFunction("bubblechart");
             }
         };
         bubblechartBtn.updateIcon(new ThemeResource("img/logo.png"));
-        sideButtonsContainer.addComponent(bubblechartBtn);
-        
+//        sideButtonsContainer.addComponent(bubblechartBtn);
+
         tableBtn = new ImageContainerBtn() {
-            
+
             @Override
             public void onClick() {
                 processFunction("proteintable");
             }
         };
         tableBtn.updateIcon(new ThemeResource("img/logo.png"));
-        sideButtonsContainer.addComponent(tableBtn);
-        
+//        sideButtonsContainer.addComponent(tableBtn);
+
         linechartBtn = new ImageContainerBtn() {
-            
+
             @Override
             public void onClick() {
                 processFunction("linechart");
             }
         };
         linechartBtn.updateIcon(new ThemeResource("img/logo.png"));
-        sideButtonsContainer.addComponent(linechartBtn);
-        
+//        sideButtonsContainer.addComponent(linechartBtn);
+
         peptideInfoBtn = new ImageContainerBtn() {
-            
+
             @Override
             public void onClick() {
                 processFunction("peptidelayout");
             }
         };
         peptideInfoBtn.updateIcon(new ThemeResource("img/logo.png"));
-        sideButtonsContainer.addComponent(peptideInfoBtn);
-        
-        mainViewPanelHeight = height ;
-        mainViewPanelWidth = width-200;
-        mainComponetViewPanel = new VerticalLayout();
-        subBodyWrapper.addComponent(mainComponetViewPanel);
-        subBodyWrapper.setComponentAlignment(mainComponetViewPanel,Alignment.MIDDLE_CENTER);
-        mainComponetViewPanel.setWidth((mainViewPanelWidth) ,Unit.PIXELS);
-        mainComponetViewPanel.setHeight(height,Unit.PIXELS);
-        
+//        sideButtonsContainer.addComponent(peptideInfoBtn);
+
+     
+//        mainComponetViewPanel = new VerticalLayout();
+//        subBodyWrapper.addComponent(mainComponetViewPanel);
+//        subBodyWrapper.setComponentAlignment(mainComponetViewPanel, Alignment.MIDDLE_CENTER);
+//        mainComponetViewPanel.setWidth((mainViewPanelWidth), Unit.PIXELS);
+//        mainComponetViewPanel.setHeight(height, Unit.PIXELS);
+
     }
-    
+
     private void processFunction(String btnId) {
         switch (btnId) {
-            
+
             case "heatmap":
                 bubblechartBtn.blink();
                 break;
-            
+
         }
-        
+
     }
-    
+
     private void loadDiseaseCategory(String DiseaseCategoryName) {
         Data_handler.loadDiseaseCategory(DiseaseCategoryName);
         if (heatmapComponent == null) {
-            heatmapComponent = new HeatMapComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight);            
-            mainComponetViewPanel.addComponent(heatmapComponent);
-            mainComponetViewPanel.setComponentAlignment(heatmapComponent,Alignment.MIDDLE_CENTER);
-            
+            heatmapComponent = new HeatMapComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight,heatmapBtn);
+            heatmapViewContainer.addComponent(heatmapComponent);
+//            mainComponetViewPanel.setComponentAlignment(heatmapComponent,Alignment.MIDDLE_CENTER);
+
         }
-        heatmapComponent.updateData(Data_handler.getRowLabels(),Data_handler.getColumnLabels(),Data_handler.getDiseaseGroupComparisonsSet(),Data_handler.getFullQuantDsMap());
-        
+        heatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), Data_handler.getFullQuantDsMap());
+
     }
-    
+
 }

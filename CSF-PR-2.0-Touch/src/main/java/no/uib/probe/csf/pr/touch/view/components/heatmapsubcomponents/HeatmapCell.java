@@ -115,11 +115,11 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         if (selected) {
             this.unselect();
-            unSelectData(this.comparison,this);
+            unSelectData(this);
             
         } else {
             this.select();
-             selectData(this.comparison,this);
+             selectData(this);
         }
     }
 
@@ -149,7 +149,7 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
     
     }
     
-    public abstract void selectData(QuantDiseaseGroupsComparison comparison, HeatmapCell cell);
-    public abstract void unSelectData(QuantDiseaseGroupsComparison comparison, HeatmapCell cell);
+    public abstract void selectData(HeatmapCell cell);
+    public abstract void unSelectData(HeatmapCell cell);
 
 }

@@ -13,7 +13,7 @@ import com.vaadin.ui.VerticalLayout;
 
 /**
  *
- * @author YEhia Farag
+ * @author Yehia Farag
  *
  * this class represents slide left panel
  */

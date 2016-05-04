@@ -47,15 +47,12 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         frame.addComponent(title);
 
         diseaseCategorySet.stream().forEach((diseaseObject) -> {
-            frame.addComponent(this.initDiseaseLayout(diseaseObject,50,200));
+            frame.addComponent(this.initDiseaseLayout(diseaseObject, 50, 200));
         });
         miniLayout = new HorizontalLayout();
-        miniLayout.addComponent(initDiseaseLayout(diseaseCategorySet.iterator().next(),100,100));
-        miniLayout.setMargin(new MarginInfo(false, false, false, false));
-//        miniLayout.setHeight(30,Unit.PIXELS);
-//        miniLayout.addStyleName("topbtns");
-//        miniLayout.addStyleName("leftbtns");
+        miniLayout.addComponent(initDiseaseLayout(diseaseCategorySet.iterator().next(), 100, 100));
         miniLayout.addStyleName("bigbtn");
+        miniLayout.addStyleName("blink");
 
     }
 
@@ -64,19 +61,27 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
      *
      * @param diseaseObject disease category object that has disease information
      */
-    private VerticalLayout initDiseaseLayout(DiseaseCategoryObject diseaseObject,int height,int width) {
+    private VerticalLayout initDiseaseLayout(DiseaseCategoryObject diseaseObject, int height, int width) {
         VerticalLayout diseaseLayout = new VerticalLayout();
-        diseaseLayout.setWidth(width,Unit.PIXELS);
-        diseaseLayout.setHeight(height,Unit.PIXELS);
-        Label diseaseTitle = new Label("<center>" + diseaseObject.getDiseaseName() + " - " + diseaseObject.getDatasetNumber() + "</center>");
+        diseaseLayout.setWidth(width, Unit.PIXELS);
+        diseaseLayout.setHeight(height, Unit.PIXELS);
+        String SpacerI = " - ";
+         String SpacerII = "";
+        if (width == height) {
+            SpacerI = "<br/>(";
+            SpacerII=")";
+        }else{
+        diseaseLayout.addLayoutClickListener(this);
+        
+        }
+        Label diseaseTitle = new Label("<center>" + diseaseObject.getDiseaseName() + SpacerI + diseaseObject.getDatasetNumber() +SpacerII+ "</center>");
         diseaseTitle.setDescription("#Datasets " + diseaseObject.getDatasetNumber());
         diseaseLayout.addComponent(diseaseTitle);
         diseaseTitle.setContentMode(ContentMode.HTML);
         diseaseLayout.setComponentAlignment(diseaseTitle, Alignment.MIDDLE_CENTER);
         diseaseLayout.setStyleName(diseaseObject.getDiseaseStyleName());
-        diseaseLayout.addLayoutClickListener(this);
-        diseaseLayout.addStyleName("pointer");
-        diseaseLayout.addStyleName("blink");
+        
+        diseaseLayout.addStyleName("pointer");        
         diseaseLayout.setData(diseaseObject);
 
         return diseaseLayout;
@@ -87,7 +92,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         miniLayout.removeAllComponents();
         DiseaseCategoryObject diseaseObject = (DiseaseCategoryObject) (((VerticalLayout) event.getComponent()).getData());
-        miniLayout.addComponent(initDiseaseLayout(diseaseObject,100,100));
+        miniLayout.addComponent(initDiseaseLayout(diseaseObject, 100, 100));
         onClick(diseaseObject.getDiseaseName());
 
     }

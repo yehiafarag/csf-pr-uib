@@ -1,8 +1,8 @@
 package no.uib.probe.csf.pr.touch.view.components;
 
 import com.vaadin.event.LayoutEvents;
+import com.vaadin.server.ExternalResource;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.VerticalLayout;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -14,6 +14,7 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFFilter;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
 import no.uib.probe.csf.pr.touch.view.components.heatmapsubcomponents.HeatMapLayout;
+import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 //import probe.com.selectionmanager.QuantCentralManager;
 
 /**
@@ -27,6 +28,7 @@ public class HeatMapComponent extends VerticalLayout implements CSFFilter {
     private boolean selfselected = false;
     private int heatmapW;
     private final HeatMapLayout heatmapLayoutContainer;
+    private final ImageContainerBtn btn;
 
     /**
      *
@@ -34,28 +36,30 @@ public class HeatMapComponent extends VerticalLayout implements CSFFilter {
      * @param mainbodyLayoutWidth mainbody layout width (the container)
      * @param mainbodyLayoutHeight mainbody layout height (the container)
      */
-    public HeatMapComponent(final CSFPR_Central_Manager CSFPR_Central_Manager, int mainbodyLayoutWidth, int mainbodyLayoutHeight) {
+    public HeatMapComponent(final CSFPR_Central_Manager CSFPR_Central_Manager, int mainbodyLayoutWidth, int mainbodyLayoutHeight,ImageContainerBtn btn) {
 
         this.setWidth(mainbodyLayoutWidth, Unit.PIXELS);
         this.setHeight(mainbodyLayoutHeight, Unit.PIXELS);
         this.setMargin(false);
+        
+        this.btn=btn;
 
         VerticalLayout bodyLayoutWrapper = new VerticalLayout();
         bodyLayoutWrapper.setWidth(100, Unit.PERCENTAGE);
         bodyLayoutWrapper.setHeightUndefined();
         bodyLayoutWrapper.setMargin(false);
-        bodyLayoutWrapper.setSpacing(true);
+        bodyLayoutWrapper.setSpacing(false);
 
         this.addComponent(bodyLayoutWrapper);
-        this.setComponentAlignment(bodyLayoutWrapper, Alignment.MIDDLE_CENTER);
+        this.setComponentAlignment(bodyLayoutWrapper, Alignment.TOP_CENTER);
 
         //top filters layout
-        VerticalLayout topFilterContainerLayout = new VerticalLayout();
-        topFilterContainerLayout.setWidth(446, Unit.PIXELS);
-        topFilterContainerLayout.setHeight(30, Unit.PIXELS);
-        topFilterContainerLayout.setStyleName("blacklayout");
-        bodyLayoutWrapper.addComponent(topFilterContainerLayout);
-        
+//        VerticalLayout topFilterContainerLayout = new VerticalLayout();
+//        topFilterContainerLayout.setWidth(446, Unit.PIXELS);
+//        topFilterContainerLayout.setHeight(30, Unit.PIXELS);
+//        topFilterContainerLayout.setStyleName("blacklayout");
+//        bodyLayoutWrapper.addComponent(topFilterContainerLayout);
+//        
         
         
 
@@ -64,7 +68,6 @@ public class HeatMapComponent extends VerticalLayout implements CSFFilter {
         heatmapLayoutContainer = new HeatMapLayout(mainbodyLayoutWidth, availableHMHeight) {
             @Override
             public void updateSelectionManager(Set<QuantDiseaseGroupsComparison> selectedDsList) {
-
 //                CSFPR_Central_Manager.setDiseaseGroupsComparisonSelection(selectedDsList);
             }
         };
@@ -118,18 +121,20 @@ public class HeatMapComponent extends VerticalLayout implements CSFFilter {
      * @param rowheaders
      * @param colheaders
      * @param patientsGroupComparisonsSet
+     * @param fullQuantDsMap
      */
     public void updateData(LinkedHashSet<String> rowheaders, LinkedHashSet<String> colheaders, Set<DiseaseGroupComparison> patientsGroupComparisonsSet,Map<Integer, QuantDatasetObject> fullQuantDsMap) {
 
        
             try {
-                Thread.sleep(colheaders.size()*20);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
 
             }
         
         heatmapLayoutContainer.updateData(rowheaders, colheaders, patientsGroupComparisonsSet,fullQuantDsMap);
-
+        heatmapLayoutContainer.selectAll();
+        btn.updateIcon(new ExternalResource(heatmapLayoutContainer.getHMThumbImg()));
     }
 
 //    /**

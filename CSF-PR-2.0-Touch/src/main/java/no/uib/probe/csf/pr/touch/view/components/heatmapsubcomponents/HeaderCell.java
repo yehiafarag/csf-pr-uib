@@ -21,11 +21,9 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
  *
  * @author Yehia Farag
  */
-public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutClickListener {
+public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
     private final int index;
-    private String cellStyleName;
-    private String selectStyle = "";
     private final Label valueLabel;
 
     /**
@@ -52,12 +50,10 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
         return title;
     }
     private boolean selected = false;
-    private Set<QuantDiseaseGroupsComparison> includedComparisons = new LinkedHashSet<QuantDiseaseGroupsComparison>();
-    private List<HeatmapCell> includedCells = new ArrayList<HeatmapCell>();
-    private HeatMapLayout parentcom;
-    private String title;
-    private String allStyle;
-    private String fullName;
+    private final Set<QuantDiseaseGroupsComparison> includedComparisons = new LinkedHashSet<>();
+    private final List<HeatmapCell> includedCells;
+    private final String title;
+    private final String fullName;
     private String color;
 
     /**
@@ -65,13 +61,12 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
      * @param rotate
      * @param title
      * @param index
-     * @param parentcom
-     * @param heatmapCellWidth
-     * @param heatmapHeaderCellWidth
+     * @param headerWidth
+     * @param headerHeight
      * @param fullName
      */
-    public HeaderCell(boolean rotate, String title, int index, HeatMapLayout parentcom, int headerWidth, int headerHeight, String fullName) {
-        this.parentcom = parentcom;
+    public HeaderCell(boolean rotate, String title, int index, int headerWidth, int headerHeight, String fullName) {
+        this.includedCells = new ArrayList<>();
         if (rotate) {
             this.addStyleName("rotateheader");
             this.setHeight(headerWidth + "px");
@@ -84,7 +79,7 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
         this.addStyleName("hmheadercell");
 
         valueLabel = new Label();
-        allStyle = "hm" + title.split("__")[2];
+        String allStyle = "hm" + title.split("__")[2];
         valueLabel.setValue("<center><font>" + title.split("__")[0] + "</font></center>");
         valueLabel.setStyleName(allStyle);
         valueLabel.setWidth(100, Unit.PERCENTAGE);
@@ -95,7 +90,7 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
 
         this.index = index;
 
-//        this.addLayoutClickListener(HeaderCell.this);
+        this.addLayoutClickListener(HeaderCell.this);
         if (fullName == null) {
             this.fullName = title.split("__")[0];
         } else {
@@ -108,57 +103,34 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
         this.setDescription(this.fullName + combinedGroup);
 
     }
+      @Override
+    public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+        if (selected) {
+            selected = false;
+            unselect();
+            unSelectData(getValueLabel());
+        } else {
+            selected = true;
+            select();
+            selectData(getValueLabel());
+        }
+    }
+
+    
+    public void select(){
+        this.addStyleName("hmselectedcell");
+    
+    }
+    public void unselect() {
+        this.removeStyleName("hmselectedcell");
+      
+    }
 
     public String getColor() {
         return color;
     }
 
-    /**
-     *
-     */
-    public void heighlightCellStyle() {
-
-//        valueLabel.setStyleName(cellStyleName + selectStyle + "_heighlightcell");
-    }
-
-    /**
-     *
-     */
-    public void resetCellStyle() {
-//        this.setStyleName(cellStyleName + selectStyle);
-
-    }
-
-    /**
-     *
-     */
-    public void selectCellStyle() {
-        selectStyle = "_selected";
-//        this.setStyleName(cellStyleName + selectStyle);
-
-    }
-
-    /**
-     *
-     */
-    public void unSelectCellStyle() {
-        selectStyle = "";
-//        this.setStyleName(cellStyleName);
-
-    }
-
-    @Override
-    public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-        if (selected) {
-            selected = false;
-//            parentcom.removeRowSelectedDs(title);
-
-        } else {
-            selected = true;
-            parentcom.addRowSelectedDs(title);
-        }
-    }
-
+  
     private boolean combinedHeader = false;
 
     /**
@@ -177,5 +149,8 @@ public class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutCli
             this.includedCells.add(cell);
         }
     }
+    
+     public abstract void selectData(String cellheader);
+    public abstract void unSelectData(String cellHeader);
 
 }

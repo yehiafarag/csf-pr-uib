@@ -69,7 +69,7 @@ public class HeatMapImgGenerator {
 
         try {
 
-            ImageEncoder in = ImageEncoderFactory.newInstance(ImageFormat.PNG, new Float(0.084666f));
+            ImageEncoder in = ImageEncoderFactory.newInstance(ImageFormat.PNG, 1);
             imageData = in.encode(image);
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());

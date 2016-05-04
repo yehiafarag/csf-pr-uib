@@ -100,11 +100,12 @@
             <artifactId>itextpdf</artifactId>
             <version>5.0.6</version>
         </dependency>
-             <dependency>
-            <groupId>org.vaadin.addon</groupId>
-            <artifactId>jfreechartwrapper</artifactId>
-            <version>3.0.2</version>
-        </dependency>
+            <dependency>
+	<groupId>org.jfree</groupId>
+	<artifactId>jfreechart</artifactId>
+	<version>1.0.19</version>
+</dependency>
+
   
     </dependencies>
 
