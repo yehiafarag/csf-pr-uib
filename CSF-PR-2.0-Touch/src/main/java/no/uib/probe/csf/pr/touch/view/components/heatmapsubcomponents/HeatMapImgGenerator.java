@@ -21,16 +21,18 @@ import org.jfree.chart.encoders.ImageFormat;
  */
 public class HeatMapImgGenerator {
 
+    private final Color transparent = Color.WHITE;
+
     public String generateHeatmap(String[] rows, String[] columns, String[][] data) {
 
         JPanel heatmapPanelLayout = new JPanel();
         heatmapPanelLayout.setLayout(null);
         heatmapPanelLayout.setVisible(true);
-        
+
         int width = (columns.length + 1) * 50;
         int height = (rows.length + 1) * 50;
         heatmapPanelLayout.setSize(width, height);
-        JPanel cornerCell = initCell("#ffffff", 0, 0);
+        JPanel cornerCell = initCell("transparent", 0, 0);
         int x = 50;
         int y = 0;
         heatmapPanelLayout.add(cornerCell);
@@ -60,10 +62,10 @@ public class HeatMapImgGenerator {
             y += 50;
         }
 
-        BufferedImage image = new BufferedImage(width+10, height+10, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage image = new BufferedImage(width + 10, height + 10, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = image.createGraphics();
-        graphics.setPaint(Color.WHITE);
-        graphics.setBackground(Color.WHITE);
+        graphics.setPaint(transparent);
+        graphics.setBackground(transparent);
         heatmapPanelLayout.paint(graphics);
         byte[] imageData = null;
 
@@ -85,20 +87,22 @@ public class HeatMapImgGenerator {
         JPanel cell = new JPanel();
         cell.setSize(50, 50);
         Color c;
-        if (color.contains("#")) {
+        if (color.equalsIgnoreCase("RGB(255,255,255)")) {
+            c = transparent;
+        } else if (color.contains("#")) {
             c = Color.decode(color);
         } else if (color.toLowerCase().contains("rgb")) {
             String rgb = color.toLowerCase().replace("rgb", "").replace("(", "").replace(")", "").replace(" ", "");
             String[] stringRGBArr = rgb.split(",");
             c = new Color(Integer.valueOf(stringRGBArr[0]), Integer.valueOf(stringRGBArr[1]), Integer.valueOf(stringRGBArr[2]));
         } else {
-            c = Color.RED;
+            c = transparent;
         }
 
         cell.setBackground(c);
         cell.setOpaque(true);
         cell.setLocation(x, y);
-        cell.setBorder(new LineBorder(Color.WHITE));
+        cell.setBorder(new LineBorder(transparent));
         return cell;
 
     }

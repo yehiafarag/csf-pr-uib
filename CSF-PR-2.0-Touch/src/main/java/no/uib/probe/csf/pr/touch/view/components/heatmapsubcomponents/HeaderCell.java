@@ -60,12 +60,13 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
      *
      * @param rotate
      * @param title
+     * @param diseaseStyle
      * @param index
      * @param headerWidth
      * @param headerHeight
-     * @param fullName
+     * @param fullDiseaseGroupName
      */
-    public HeaderCell(boolean rotate, String title, int index, int headerWidth, int headerHeight, String fullName) {
+    public HeaderCell(boolean rotate, String title,String diseaseStyle, int index, int headerWidth, int headerHeight, String fullDiseaseGroupName) {
         this.includedCells = new ArrayList<>();
         if (rotate) {
             this.addStyleName("rotateheader");
@@ -79,8 +80,8 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
         this.addStyleName("hmheadercell");
 
         valueLabel = new Label();
-        String allStyle = "hm" + title.split("__")[2];
-        valueLabel.setValue("<center><font>" + title.split("__")[0] + "</font></center>");
+        String allStyle = "hm" + diseaseStyle;
+        valueLabel.setValue("<center><font>" + title + "</font></center>");
         valueLabel.setStyleName(allStyle);
         valueLabel.setWidth(100, Unit.PERCENTAGE);
         valueLabel.setHeight(100, Unit.PERCENTAGE);
@@ -91,10 +92,10 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
         this.index = index;
 
         this.addLayoutClickListener(HeaderCell.this);
-        if (fullName == null) {
-            this.fullName = title.split("__")[0];
+        if (fullDiseaseGroupName == null) {
+            this.fullName = title;
         } else {
-            this.fullName = fullName;
+            this.fullName = fullDiseaseGroupName;
         }
         String combinedGroup = "";
         if (this.fullName.contains("*")) {
@@ -142,8 +143,8 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
         this.includedComparisons.add(groupComp);
         if (!combinedHeader && cell.isCombinedHeader()) {
             combinedHeader = true;
-            valueLabel.setValue("<center><font>" + title.split("\n")[0] + "</font></center>");
-            this.setDescription(title.split("\n")[0] + " (" + "Combined group)");
+            valueLabel.setValue("<center><font>" + title + "</font></center>");
+            this.setDescription(title + " (" + "Combined group)");
         }
         if (!cell.isCombinedHeader()) {
             this.includedCells.add(cell);

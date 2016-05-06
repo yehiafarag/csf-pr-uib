@@ -174,7 +174,6 @@ public class DataBaseLayer implements Serializable {
             rs.close();
 
         } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
             System.err.println("at error " + this.getClass().getName() + "  line 152  " + e.getLocalizedMessage());
         }
 
@@ -461,9 +460,9 @@ public class DataBaseLayer implements Serializable {
      * @return set of disease category objects that has all disease category
      * information and styling information
      */
-    public Set<DiseaseCategoryObject> getDiseaseCategorySet() {
+    public Map<String,DiseaseCategoryObject> getDiseaseCategorySet() {
 
-        LinkedHashSet<DiseaseCategoryObject> availableDiseaseCategory = new LinkedHashSet<>();
+        LinkedHashMap<String,DiseaseCategoryObject> availableDiseaseCategory = new LinkedHashMap<>();
 
         String selectStat = "SELECT COUNT( * ) AS  `Rows` ,  `disease_category` FROM  `quant_dataset_table` GROUP BY  `disease_category`ORDER BY  `Rows` DESC ";
         try {
@@ -484,7 +483,7 @@ public class DataBaseLayer implements Serializable {
                 diseaseCategoryObject.setDiseaseHashedColor(diseaseColorMap.get(diseaseCategoryObject.getDiseaseName()));
                 diseaseCategoryObject.setDiseaseAwtColor(Color.decode(diseaseCategoryObject.getDiseaseHashedColor()));
                 total += diseaseCategoryObject.getDatasetNumber();
-                availableDiseaseCategory.add(diseaseCategoryObject);
+                availableDiseaseCategory.put(diseaseCategoryObject.getDiseaseName(),diseaseCategoryObject);
 
             }
             DiseaseCategoryObject diseaseCategoryObject = new DiseaseCategoryObject();
@@ -493,7 +492,7 @@ public class DataBaseLayer implements Serializable {
             diseaseCategoryObject.setDiseaseStyleName("alldiseasestyle");
             diseaseCategoryObject.setDiseaseHashedColor("#7E7E7E");
             diseaseCategoryObject.setDiseaseAwtColor(Color.decode("#7E7E7E"));
-            availableDiseaseCategory.add(diseaseCategoryObject);
+            availableDiseaseCategory.put(diseaseCategoryObject.getDiseaseName(),diseaseCategoryObject);
 
         } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             System.err.println("at error " + this.getClass().getName() + "  line 470  " + e.getLocalizedMessage());
@@ -510,8 +509,8 @@ public class DataBaseLayer implements Serializable {
      */
     public Map<String, boolean[]> getActivePieChartQuantFilters() {
 
-        Map<String, boolean[]> activePieChartQuantFiltersDiseaseCategoryMap = new LinkedHashMap<String, boolean[]>();
-        List<String> disCatList = new LinkedList<String>();
+        Map<String, boolean[]> activePieChartQuantFiltersDiseaseCategoryMap = new LinkedHashMap<>();
+        List<String> disCatList = new LinkedList<>();
         try {
 
             PreparedStatement selectPumed_idStat;
@@ -521,17 +520,17 @@ public class DataBaseLayer implements Serializable {
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
             selectPumed_idStat = conn.prepareStatement(selectPumed_id);
-            ResultSet rs = selectPumed_idStat.executeQuery();
-            int pumed_id_index = 0;
-            while (rs.next()) {
-                disCatList.add(pumed_id_index, rs.getString("disease_category"));
-                pumed_id_index++;
+            try (ResultSet rs = selectPumed_idStat.executeQuery()) {
+                int pumed_id_index = 0;
+                while (rs.next()) {
+                    disCatList.add(pumed_id_index, rs.getString("disease_category"));
+                    pumed_id_index++;
+                }
             }
-            rs.close();
             /// check the colums one by one 
             boolean[] activeFilters = new boolean[]{false, false, false, false, true, true, false, true, true, true, false, true, false, false, false, false, false, false};
-            for (String str : disCatList) {
-//                String[] columnArr = new String[]{"`identified_proteins_number`", "`quantified_proteins_number`", "`analytical_method`", "`raw_data_available`", "`year`", "`type_of_study`", "`sample_type`", "`sample_matching`", "`technology`", "`analytical_approach`", "`enzyme`", "`shotgun_targeted`", "`quantification_basis`", "`quant_basis_comment`", "`patients_group_i_number`", "`patients_group_ii_number`", "`normalization_strategy`"};
+            disCatList.stream().forEach((str) -> {
+                //                String[] columnArr = new String[]{"`identified_proteins_number`", "`quantified_proteins_number`", "`analytical_method`", "`raw_data_available`", "`year`", "`type_of_study`", "`sample_type`", "`sample_matching`", "`technology`", "`analytical_approach`", "`enzyme`", "`shotgun_targeted`", "`quantification_basis`", "`quant_basis_comment`", "`patients_group_i_number`", "`patients_group_ii_number`", "`normalization_strategy`"};
 
 //                for (int index = 0; index < columnArr.length; index++) {
 //                    String selectPumed_id1 = "SELECT  `pumed_id`  FROM  `quant_dataset_table` WHERE `disease_category`=? GROUP BY  `pumed_id`, " + columnArr[index] + " ORDER BY  `pumed_id` ";
@@ -567,7 +566,7 @@ public class DataBaseLayer implements Serializable {
 //                activeFilters[activeFilters.length - 3] = false;
 //                activeFilters[activeFilters.length - 4] = false;
                 activePieChartQuantFiltersDiseaseCategoryMap.put(str, activeFilters);
-            }
+            });
             activePieChartQuantFiltersDiseaseCategoryMap.put("All", activeFilters);
 
         } catch (ClassNotFoundException e) {
@@ -595,22 +594,22 @@ public class DataBaseLayer implements Serializable {
      */
     public Map<String, boolean[]> getActivePieChartQuantFilters(List<QuantProtein> searchQuantificationProtList) {
 
-        Map<String, boolean[]> activePieChartQuantFiltersDiseaseCategoryMap = new LinkedHashMap<String, boolean[]>();
-        List<String> disCatList = new LinkedList<String>();
+        Map<String, boolean[]> activePieChartQuantFiltersDiseaseCategoryMap = new LinkedHashMap<>();
+        List<String> disCatList = new LinkedList<>();
         try {
 
-            Set<Integer> QuantDatasetIds = new HashSet<Integer>();
-            for (QuantProtein quantProt : searchQuantificationProtList) {
+            Set<Integer> QuantDatasetIds = new HashSet<>();
+            searchQuantificationProtList.stream().forEach((quantProt) -> {
                 QuantDatasetIds.add(quantProt.getDsKey());
-            }
+            });
             StringBuilder sb = new StringBuilder();
 
-            for (int index : QuantDatasetIds) {
+            QuantDatasetIds.stream().map((index) -> {
                 sb.append("  `index` = ").append(index);
+                return index;
+            }).forEach((_item) -> {
                 sb.append(" OR ");
-
-            }
-
+            });
 //            String stat = sb.toString().substring(0, sb.length() - 4);
             PreparedStatement selectPumed_idStat;
             String selectPumed_id = "SELECT  `pumed_id` ,  `disease_category` FROM  `quant_dataset_table` GROUP BY  `pumed_id` ,  `disease_category` ORDER BY  `pumed_id` ";
@@ -619,17 +618,18 @@ public class DataBaseLayer implements Serializable {
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
             selectPumed_idStat = conn.prepareStatement(selectPumed_id);
-            ResultSet rs = selectPumed_idStat.executeQuery();
-            int pumed_id_index = 0;
-            while (rs.next()) {
-                disCatList.add(pumed_id_index, rs.getString("disease_category"));
-                pumed_id_index++;
+            try (ResultSet rs = selectPumed_idStat.executeQuery()) {
+                int pumed_id_index = 0;
+                while (rs.next()) {
+                    disCatList.add(pumed_id_index, rs.getString("disease_category"));
+                    pumed_id_index++;
+                }
+                rs.close();
+                /// check the colums one by one 
             }
-            rs.close();
-            /// check the colums one by one 
 
             boolean[] activeFilters = new boolean[]{false, false, false, false, true, true, false, true, true, true, false, true, false, false, false, false, false, false};
-            for (String str : disCatList) {
+            disCatList.stream().forEach((str) -> {
                 activePieChartQuantFiltersDiseaseCategoryMap.put(str, activeFilters);
 //                String[] columnArr = new String[]{"`identified_proteins_number`", "`quantified_proteins_number`", "`analytical_method`", "`raw_data_available`", "`year`", "`type_of_study`", "`sample_type`", "`sample_matching`", "`technology`", "`analytical_approach`", "`enzyme`", "`shotgun_targeted`", "`quantification_basis`", "`quant_basis_comment`", "`patients_group_i_number`", "`patients_group_ii_number`", "`normalization_strategy`"};
 ////                boolean[] activeFilters = new boolean[columnArr.length];
@@ -662,7 +662,7 @@ public class DataBaseLayer implements Serializable {
 //                activeFilters[activeFilters.length - 3] = false;
 //                activeFilters[activeFilters.length - 4] = false;
 //                activePieChartQuantFiltersDiseaseCategoryMap.put(str, activeFilters);
-            }
+            });
             activePieChartQuantFiltersDiseaseCategoryMap.put("All", activeFilters);
         } catch (ClassNotFoundException e) {
             System.err.println("at error line 2912 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
@@ -684,7 +684,7 @@ public class DataBaseLayer implements Serializable {
      * @return map of the short and long diseases names
      */
     public Set<String> getDiseaseGroupNameMap(String diseaseCat) {
-        Set<String> diseaseNames = new HashSet<String>();
+        Set<String> diseaseNames = new HashSet<>();
         String selectPatient_sub_group_i = "SELECT `patient_sub_group_i` FROM `quant_dataset_table`  where `disease_category` = ? GROUP BY `patient_sub_group_i` ORDER BY `patient_sub_group_i` ";
 
         String selectPatient_sub_group_ii = "SELECT `patient_sub_group_ii` FROM `quant_dataset_table`  where `disease_category` = ? GROUP BY `patient_sub_group_ii` ORDER BY `patient_sub_group_ii` ";
@@ -710,17 +710,38 @@ public class DataBaseLayer implements Serializable {
                 diseaseNames.add(rs.getString("patient_sub_group_ii").trim());
             }
 
-        } catch (SQLException e) {
-            System.err.println("at error " + this.getClass().getName() + "  line 3167  " + e.getLocalizedMessage());
-        } catch (ClassNotFoundException e) {
-            System.err.println("at error " + this.getClass().getName() + "  line 3167  " + e.getLocalizedMessage());
-        } catch (InstantiationException e) {
-            System.err.println("at error " + this.getClass().getName() + "  line 3167  " + e.getLocalizedMessage());
-        } catch (IllegalAccessException e) {
+        } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             System.err.println("at error " + this.getClass().getName() + "  line 3167  " + e.getLocalizedMessage());
         }
 
         return diseaseNames;
+    }
+    
+     /**
+     * Get map for disease groups full name
+     *
+     * @return map of the short and long diseases names
+     */
+    public Map<String, String> getDiseaseGroupsFullNameMap() {
+        Map diseaseFullNameMap = new HashMap<>();
+        String selectAllDiseFullName = "SELECT * FROM  `defin_disease_groups` ";
+        try {
+            if (conn == null || conn.isClosed()) {
+                Class.forName(driver).newInstance();
+                conn = DriverManager.getConnection(url + dbName, userName, password);
+            }
+            PreparedStatement selectProStat = conn.prepareStatement(selectAllDiseFullName);
+
+            ResultSet rs = selectProStat.executeQuery();
+            System.gc();
+            while (rs.next()) {
+                diseaseFullNameMap.put(rs.getString("min").trim(), rs.getString("full").trim());
+            }
+        } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+            System.err.println("at error " + this.getClass().getName() + "  line 3167  " + e.getLocalizedMessage());
+        }
+
+        return diseaseFullNameMap;
     }
 
 }

@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseGroupComparison;
+import no.uib.probe.csf.pr.touch.logic.beans.HeatMapHeaderCellInformationBean;
 
 /**
  *
@@ -16,24 +17,27 @@ import no.uib.probe.csf.pr.touch.logic.beans.DiseaseGroupComparison;
  */
 public class QuantData implements Serializable {
 
-    private LinkedHashSet<String> activeRowIds;
-    private LinkedHashSet<String> activeColumnIds;
+    private LinkedHashSet<HeatMapHeaderCellInformationBean> activeRowIds;
+    private LinkedHashSet<HeatMapHeaderCellInformationBean> activeColumnIds;
     private String diseaseCategory;
-    Set<DiseaseGroupComparison>diseaseGroupArry;
+    private Set<DiseaseGroupComparison> diseaseGroupArry;
+    private boolean[] activeHeaders;
 
-    public LinkedHashSet<String> getActiveRowIds() {
+    
+
+    public LinkedHashSet<HeatMapHeaderCellInformationBean> getActiveRowIds() {
         return activeRowIds;
     }
 
-    public void setActiveRowIds(LinkedHashSet<String> activeRowIds) {
+    public void setActiveRowIds(LinkedHashSet<HeatMapHeaderCellInformationBean> activeRowIds) {
         this.activeRowIds = activeRowIds;
     }
 
-    public LinkedHashSet<String> getActiveColumnIds() {
+    public LinkedHashSet<HeatMapHeaderCellInformationBean> getActiveColumnIds() {
         return activeColumnIds;
     }
 
-    public void setActiveColumnIds(LinkedHashSet<String> activeColumnIds) {
+    public void setActiveColumnIds(LinkedHashSet<HeatMapHeaderCellInformationBean> activeColumnIds) {
         this.activeColumnIds = activeColumnIds;
     }
 
@@ -45,14 +49,20 @@ public class QuantData implements Serializable {
         this.diseaseGroupArry = diseaseGroupArry;
     }
 
-    
-
     public String getDiseaseCategory() {
         return diseaseCategory;
     }
 
     public void setDiseaseCategory(String diseaseCategory) {
         this.diseaseCategory = diseaseCategory;
+    }
+
+    public boolean[] getActiveHeaders() {
+        return activeHeaders;
+    }
+
+    public void setActiveHeaders(boolean[] activeHeaders) {
+        this.activeHeaders = activeHeaders;
     }
 
 }

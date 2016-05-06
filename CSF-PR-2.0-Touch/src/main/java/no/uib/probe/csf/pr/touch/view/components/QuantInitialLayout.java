@@ -1,14 +1,13 @@
 package no.uib.probe.csf.pr.touch.view.components;
 
 import com.vaadin.event.LayoutEvents;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
-import java.util.Set;
+import java.util.Collection;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseCategoryObject;
 
 /**
@@ -28,7 +27,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
      * @param width body layout width in pixels
      * @param height body layout height in pixels
      */
-    public QuantInitialLayout(Set<DiseaseCategoryObject> diseaseCategorySet, int width, int height) {
+    public QuantInitialLayout(Collection<DiseaseCategoryObject> diseaseCategorySet, int width, int height) {
         this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
 

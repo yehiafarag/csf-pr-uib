@@ -8,8 +8,7 @@ package no.uib.probe.csf.pr.touch.view.core;
 import com.vaadin.server.Page;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.VerticalLayout;
-import java.util.Map;
-import java.util.Set;
+import java.util.Collection;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 
 /**
@@ -22,7 +21,7 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
 
     private final GridLayout btnsContainer;
 
-    private void setInformationData(Set<QuantDatasetObject> dsObjects) {
+    public void setInformationData(Collection<QuantDatasetObject> dsObjects) {
         btnsContainer.removeAllComponents();
         int rowNumb = Math.max(1, ((dsObjects.size() / btnsContainer.getColumns()) + 1));
         btnsContainer.setRows(rowNumb);
@@ -49,12 +48,12 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
 
     }
 
-    public DatasetButtonsContainerLayout(Set<QuantDatasetObject> dsObjects) {
+    public DatasetButtonsContainerLayout() {
         this.setWidth("100%");
         this.setHeightUndefined();
         this.setMargin(false);
         this.setSpacing(true);
-        
+
         int width = Page.getCurrent().getBrowserWindowWidth() * 90 / 100;
         int colNum = Math.max(1, width / 200);
         btnsContainer = new GridLayout();
@@ -64,12 +63,7 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
         btnsContainer.setHeightUndefined();
         btnsContainer.setSpacing(true);
         this.addComponent(btnsContainer);
-        this.setInformationData(dsObjects);
 
     }
 
-//    public void updateDatasetInfoLayoutDSIndexMap(Map<Integer, DatasetInformationOverviewLayout> datasetInfoLayoutDSIndexMap) {
-//        this.datasetInfoLayoutDSIndexMap = datasetInfoLayoutDSIndexMap;
-//
-//    }
 }

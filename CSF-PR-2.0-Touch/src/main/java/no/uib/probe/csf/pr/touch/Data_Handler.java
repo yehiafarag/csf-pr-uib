@@ -6,6 +6,7 @@
 package no.uib.probe.csf.pr.touch;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -13,10 +14,12 @@ import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.CoreLogic;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseCategoryObject;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseGroupComparison;
+import no.uib.probe.csf.pr.touch.logic.beans.HeatMapHeaderCellInformationBean;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantProtein;
 import no.uib.probe.csf.pr.touch.logic.dataset.DatasetUtility;
 import no.uib.probe.csf.pr.touch.view.smallscreen.OverviewInfoBean;
+import org.jsoup.helper.DataUtil;
 
 /**
  *
@@ -85,7 +88,7 @@ public class Data_Handler implements Serializable {
      * @return set of disease category objects that has all disease category
      * information and styling information
      */
-    public Set<DiseaseCategoryObject> getDiseaseCategorySet() {
+    public Collection<DiseaseCategoryObject> getDiseaseCategorySet() {
         return Dataset_Util.getFullDiseaseCategorySet();
     }
 
@@ -130,7 +133,7 @@ public class Data_Handler implements Serializable {
      *
      * @return active row labels category set
      */
-    public LinkedHashSet<String> getRowLabels() {
+    public LinkedHashSet<HeatMapHeaderCellInformationBean> getRowLabels() {
         return Dataset_Util.getRowLabels();
 
     }
@@ -141,7 +144,7 @@ public class Data_Handler implements Serializable {
      *
      * @return active column labels category set
      */
-    public LinkedHashSet<String> getColumnLabels() {
+    public LinkedHashSet<HeatMapHeaderCellInformationBean> getColumnLabels() {
         return Dataset_Util.getColumnLabels();
 
     }
@@ -165,5 +168,16 @@ public class Data_Handler implements Serializable {
     public Map<Integer, QuantDatasetObject> getFullQuantDsMap() {
         return Dataset_Util.getFullQuantDsMap();
     }
+    
+     /**
+     * this method to get the active data columns for the current active
+     * disease category
+     *
+     * @return boolean array  of active column
+     */
+     public  boolean[] getActiveDataColumns(){
+     
+         return Dataset_Util.getActiveDataColumns();
+     }
 
 }

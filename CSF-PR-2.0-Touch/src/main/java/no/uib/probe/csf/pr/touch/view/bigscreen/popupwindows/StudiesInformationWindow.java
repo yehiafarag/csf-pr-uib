@@ -12,8 +12,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
-import java.util.Map;
-import java.util.Set;
+import java.util.Collection;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 import no.uib.probe.csf.pr.touch.view.core.DatasetButtonsContainerLayout;
 
@@ -26,8 +25,9 @@ import no.uib.probe.csf.pr.touch.view.core.DatasetButtonsContainerLayout;
 public class StudiesInformationWindow extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
     private final Window popupWindow;
+    private final   DatasetButtonsContainerLayout studiesPopupLayout;
 
-    public StudiesInformationWindow(Set<QuantDatasetObject> dsObjects) {
+    public StudiesInformationWindow() {
 
         int height = Page.getCurrent().getBrowserWindowHeight() - 100;
         int width = Page.getCurrent().getBrowserWindowWidth() - 100;
@@ -76,14 +76,23 @@ public class StudiesInformationWindow extends VerticalLayout implements LayoutEv
         popupWindow.setClosable(true);
         this.addLayoutClickListener(StudiesInformationWindow.this);
 
-        DatasetButtonsContainerLayout studiesPopupLayout = new DatasetButtonsContainerLayout(dsObjects);
+        studiesPopupLayout = new DatasetButtonsContainerLayout();
         popupBody.addComponent(studiesPopupLayout);
         popupBody.setComponentAlignment(studiesPopupLayout, Alignment.TOP_CENTER);
 
     }
+    
+    public void updateData(Collection<QuantDatasetObject> dsObjects){
+        studiesPopupLayout.setInformationData(dsObjects);
+    
+    }
 
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+        popupWindow.setVisible(true);
+    }
+    
+    public void view(){
         popupWindow.setVisible(true);
     }
 }

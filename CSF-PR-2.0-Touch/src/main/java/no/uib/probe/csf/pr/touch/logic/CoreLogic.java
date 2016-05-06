@@ -71,8 +71,8 @@ public class CoreLogic implements Serializable {
      * @return set of disease category objects that has all disease category
      * information and styling information
      */
-    public Set<DiseaseCategoryObject> getDiseaseCategorySet() {        
-        Set<DiseaseCategoryObject> availableDiseaseCategory = database.getDiseaseCategorySet();  
+    public Map<String,DiseaseCategoryObject> getDiseaseCategorySet() {        
+       Map<String,DiseaseCategoryObject> availableDiseaseCategory = database.getDiseaseCategorySet();  
         return availableDiseaseCategory;
     }
 
@@ -148,6 +148,15 @@ public class CoreLogic implements Serializable {
     public Set<String> getDiseaseGroupNameMap(String diseaseCat) {
         return database.getDiseaseGroupNameMap(diseaseCat);
 
+    }
+    
+     /**
+     * Get map for disease groups full name
+     *
+     * @return map of the short and long diseases groups names
+     */
+    public Map<String, String> getDiseaseGroupsFullNameMap() {
+        return database.getDiseaseGroupsFullNameMap();
     }
 
 }

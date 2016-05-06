@@ -9,7 +9,6 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 import no.uib.probe.csf.pr.touch.view.LayoutViewManager;
@@ -92,7 +91,8 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
 //        Set<QuantDatasetObject> dsObjects = CSFPR_Handler.getQuantDatasetList();
 //
-        StudiesInformationWindow sub2quantStatLabelWrapper = new StudiesInformationWindow(dsObjects);
+        StudiesInformationWindow sub2quantStatLabelWrapper = new StudiesInformationWindow();
+        sub2quantStatLabelWrapper.updateData(dsObjects);
         subQuantStatLayout.addComponent(sub2quantStatLabelWrapper, 0, 1);
         sub2quantStatLabelWrapper.setDescription("Click to view datasets information");
         Label sub2quantStatLabel = new Label("<h3 style='text-decoration: underline;cursor: pointer;'>#Datasets</h3>");

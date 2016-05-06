@@ -1,78 +1,90 @@
 package no.uib.probe.csf.pr.touch.view.components;
 
-import com.vaadin.event.LayoutEvents;
-import com.vaadin.server.ExternalResource;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseGroupComparison;
-import no.uib.probe.csf.pr.touch.logic.beans.QuantDSIndexes;
+import no.uib.probe.csf.pr.touch.logic.beans.HeatMapHeaderCellInformationBean;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFFilter;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
 import no.uib.probe.csf.pr.touch.view.components.heatmapsubcomponents.HeatMapLayout;
-import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
-//import probe.com.selectionmanager.QuantCentralManager;
 
 /**
  *
  * @author Yehia Farag
  */
-public class HeatMapComponent extends VerticalLayout implements CSFFilter {
-
-    private int maxDatasetNumber;
-    private QuantDSIndexes[][] values;
+public abstract class HeatMapComponent extends VerticalLayout implements CSFFilter {
+    
     private boolean selfselected = false;
-    private int heatmapW;
     private final HeatMapLayout heatmapLayoutContainer;
-    private final ImageContainerBtn btn;
 
     /**
      *
      * @param CSFPR_Central_Manager
      * @param mainbodyLayoutWidth mainbody layout width (the container)
      * @param mainbodyLayoutHeight mainbody layout height (the container)
+     * @param activeColumnHeaders boolean array of active columns for dataset
+     * table export
      */
-    public HeatMapComponent(final CSFPR_Central_Manager CSFPR_Central_Manager, int mainbodyLayoutWidth, int mainbodyLayoutHeight,ImageContainerBtn btn) {
-
+    public HeatMapComponent(final CSFPR_Central_Manager CSFPR_Central_Manager, int mainbodyLayoutWidth, int mainbodyLayoutHeight, boolean[] activeColumnHeaders) {
+        
         this.setWidth(mainbodyLayoutWidth, Unit.PIXELS);
         this.setHeight(mainbodyLayoutHeight, Unit.PIXELS);
-        this.setMargin(false);
         
-        this.btn=btn;
-
         VerticalLayout bodyLayoutWrapper = new VerticalLayout();
         bodyLayoutWrapper.setWidth(100, Unit.PERCENTAGE);
         bodyLayoutWrapper.setHeightUndefined();
-        bodyLayoutWrapper.setMargin(false);
-        bodyLayoutWrapper.setSpacing(false);
-
+        
         this.addComponent(bodyLayoutWrapper);
         this.setComponentAlignment(bodyLayoutWrapper, Alignment.TOP_CENTER);
 
         //top filters layout
-//        VerticalLayout topFilterContainerLayout = new VerticalLayout();
-//        topFilterContainerLayout.setWidth(446, Unit.PIXELS);
-//        topFilterContainerLayout.setHeight(30, Unit.PIXELS);
-//        topFilterContainerLayout.setStyleName("blacklayout");
-//        bodyLayoutWrapper.addComponent(topFilterContainerLayout);
-//        
-        
-        
+        VerticalLayout topFilterContainerLayout = new VerticalLayout();
+        topFilterContainerLayout.setWidth(446, Unit.PIXELS);
+        topFilterContainerLayout.setHeight(30, Unit.PIXELS);
+        topFilterContainerLayout.setStyleName("bluelayout");
+        bodyLayoutWrapper.addComponent(topFilterContainerLayout);
 
+        
+        
+        
+        
+        
+//        
         //init heatmap
         int availableHMHeight = mainbodyLayoutHeight - 100;
-        heatmapLayoutContainer = new HeatMapLayout(mainbodyLayoutWidth, availableHMHeight) {
+        heatmapLayoutContainer = new HeatMapLayout(mainbodyLayoutWidth, availableHMHeight, activeColumnHeaders) {
             @Override
             public void updateSelectionManager(Set<QuantDiseaseGroupsComparison> selectedDsList) {
 //                CSFPR_Central_Manager.setDiseaseGroupsComparisonSelection(selectedDsList);
             }
+            
+            private boolean showFilters = true;
+            
+            @Override
+            public void showHideFilters() {
+                if (showFilters) {
+                    topFilterContainerLayout.addStyleName("hidescrolllayout");
+                    topFilterContainerLayout.addStyleName("absoluteposition");
+                    showFilters=false;
+                }else{
+                showFilters=true;
+                topFilterContainerLayout.removeStyleName("hidescrolllayout");
+                topFilterContainerLayout.removeStyleName("absoluteposition");
+                }
+                
+            }
+            
         };
         bodyLayoutWrapper.addComponent(heatmapLayoutContainer);
-
+        
     }
 
     /**
@@ -87,12 +99,12 @@ public class HeatMapComponent extends VerticalLayout implements CSFFilter {
         }
         if (type.equalsIgnoreCase("HeatMap_Update_level") || type.equalsIgnoreCase("Pie_Chart_Selection")) {
 //            this.updateHeatmap(CSFPR_Central_Manager.getSelectedHeatMapRows(), CSFPR_Central_Manager.getSelectedHeatMapColumns(), CSFPR_Central_Manager.getDiseaseGroupsArray());
-            unselectAll();
+//            unselectAll();
         } else if (type.equalsIgnoreCase("Comparison_Selection")) {
 //            this.updateCellSelection(CSFPR_Central_Manager.getSelectedDiseaseGroupsComparisonList());
 
         } else if (type.equalsIgnoreCase("Reset_Disease_Groups_Level")) {
-            unselectAll();
+//            unselectAll();
 //             this.updateHeatmap(CSFPR_Central_Manager.getSelectedHeatMapRows(), CSFPR_Central_Manager.getSelectedHeatMapColumns(), CSFPR_Central_Manager.getDiseaseGroupsArray());
 
         }
@@ -123,119 +135,17 @@ public class HeatMapComponent extends VerticalLayout implements CSFFilter {
      * @param patientsGroupComparisonsSet
      * @param fullQuantDsMap
      */
-    public void updateData(LinkedHashSet<String> rowheaders, LinkedHashSet<String> colheaders, Set<DiseaseGroupComparison> patientsGroupComparisonsSet,Map<Integer, QuantDatasetObject> fullQuantDsMap) {
-
-       
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-
-            }
+    public void updateData(LinkedHashSet<HeatMapHeaderCellInformationBean> rowheaders, LinkedHashSet<HeatMapHeaderCellInformationBean> colheaders, Set<DiseaseGroupComparison> patientsGroupComparisonsSet, Map<Integer, QuantDatasetObject> fullQuantDsMap) {
         
-        heatmapLayoutContainer.updateData(rowheaders, colheaders, patientsGroupComparisonsSet,fullQuantDsMap);
-        heatmapLayoutContainer.selectAll();
-        btn.updateIcon(new ExternalResource(heatmapLayoutContainer.getHMThumbImg()));
-    }
-
-//    /**
-//     *
-//     * @param selectedRows
-//     * @param selectedColumns
-//     */
-//    public void updateHeatmap(Set<String> selectedRows, Set<String> selectedColumns) {
-//        Map<Integer, QuantDatasetObject> fullDsMap = CSFPR_Central_Manager.getFullQuantDatasetMap();
-//        heatMap.updateData(selectedRows, selectedColumns, values, maxDatasetNumber, diseaseFullNameMap, fullDsMap);
-//    }
-    /**
-     *
-     * @param singleSelection
-     */
-    public void setSingleSelection(boolean singleSelection) {
-//        heatMap.setSingleSelection(singleSelection);
-    }
-
-    /**
-     *
-     * @param listener
-     */
-    public void addHideHeatmapBtnListener(LayoutEvents.LayoutClickListener listener) {
-//        heatMap.getHideCompBtn().addLayoutClickListener(listener);
-    }
-
-    public void updateHideComparisonThumbBtn(String imgUrl, Boolean show) {
-//        heatMap.updateHideShowThumbImg(imgUrl);
-//        heatMap.updateShowHideBtnLabel(show);
-
-    }
-
-    /**
-     *
-     * @param selectedComparisonList
-     */
-    public void updateCellSelection(Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
-        if (selectedComparisonList.isEmpty()) {
-//            heatMap.setVisible(true);
-
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
         }
-//        heatMap.updateDsCellSelection(selectedComparisonList);
+        
+        heatmapLayoutContainer.updateData(rowheaders, colheaders, patientsGroupComparisonsSet, fullQuantDsMap);
+        updateIcon(heatmapLayoutContainer.getHMThumbImg());
     }
-
-    /**
-     *
-     */
-    public void selectAll() {
-//        heatMap.selectAll();
-
-    }
-
-    /**
-     *
-     */
-    public void unselectAll() {
-//        heatMap.unselectAll();
-
-    }
-
-    /**
-     *
-     * @return
-     */
-    public boolean isActiveSelectAll() {
-//        return heatMap.isActiveSelectAll();
-        return true;
-    }
-
-    public boolean isVisibleComponent() {
-//        return heatMap.isVisibleComponent();
-        return true;
-    }
-
-    @Override
-    public void setVisible(boolean visible) {
-//        heatMap.setVisible(visible);
-        if (visible) {
-            this.setWidth(heatmapW + "px");
-            this.setHeight("100%");
-
-        } else {
-
-            this.setWidthUndefined();
-            this.setHeightUndefined();
-        }
-
-    }
-
-    /**
-     *
-     * @return
-     */
-    public VerticalLayout getHideCompBtn() {
-//        return heatMap.getHideCompBtn();
-        return null;
-    }
-
-    public void showCompBtn(boolean show) {
-//        heatMap.showCompBtn(show);
-    }
-
+    
+    public abstract void updateIcon(String imageUrl);
+    
 }
