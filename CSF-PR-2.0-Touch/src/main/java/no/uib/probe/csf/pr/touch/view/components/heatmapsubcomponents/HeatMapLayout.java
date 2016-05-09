@@ -102,7 +102,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
         final Label filterLabelBtn = new Label("Filters");
         filterLabelBtn.setHeight(100,Unit.PERCENTAGE);
-        filterLabelBtn.setWidth(100,Unit.PERCENTAGE);
+        filterLabelBtn.setWidth(99,Unit.PERCENTAGE);
         filterLabelBtn.setDescription("Show filters");
         filterLabelBtn.setStyleName("showfilterbtnlabel");
         filterLabelBtn.setContentMode(ContentMode.HTML);

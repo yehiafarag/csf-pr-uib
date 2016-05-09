@@ -13052,8 +13052,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .slowscroll{
-    -webkit-transition: height 2s, width 2s; /* For Safari 3.1 to 6.0 */
-    transition: height 2s, width 2s;
+    -webkit-transition: height 2s, width 2s,position 2s; /* For Safari 3.1 to 6.0 */
+    transition: height 2s, width 2s,position 2s
 
 }
 
@@ -13178,7 +13178,7 @@ div.v-layout.v-horizontal.v-widget {
     padding: 5px;
     cursor: pointer;   
     border:1px solid lightgray;
-    border-radius: 5px;
+    border-radius: 4px;
 }
 .thumbBtn:hover{
     border:1px solid gray;
@@ -13187,7 +13187,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 .border {
     border: 1px solid lightgray !important;
-    border-radius: 5px;
+    border-radius: 4px;
 }
 
 
@@ -13610,4 +13610,17 @@ div.v-layout.v-horizontal.v-widget {
 
     background-image: url(img/filters-128.png),  url(img/angle-double-up.png);
 
+}
+.filterbtn{
+    background-color: whitesmoke;
+    border: 1px solid lightgray;
+    border-radius:4px;
+    cursor: pointer;
+    padding:2px;
+    
+}
+.filterbtn:hover{
+    background-color: lightgray;
+    border-color: gray;
+    
 }
