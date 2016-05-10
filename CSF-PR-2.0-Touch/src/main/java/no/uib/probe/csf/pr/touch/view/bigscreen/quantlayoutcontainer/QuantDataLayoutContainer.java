@@ -63,7 +63,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
                     loadDiseaseCategory(diseaseCategoryName);
                 }
                 defaultView();
-                
+
             }
 
         };
@@ -92,7 +92,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
             }
         };
         bubblechartBtn.updateIcon(new ThemeResource("img/logo.png"));
-      this.addButton(bubblechartBtn,new VerticalLayout(),false);
+        this.addButton(bubblechartBtn, new VerticalLayout(), false);
 
         tableBtn = new ImageContainerBtn() {
 
@@ -102,7 +102,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
             }
         };
         tableBtn.updateIcon(new ThemeResource("img/logo.png"));
-      this.addButton(tableBtn,new VerticalLayout(),false);
+        this.addButton(tableBtn, new VerticalLayout(), false);
 
         linechartBtn = new ImageContainerBtn() {
 
@@ -112,7 +112,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
             }
         };
         linechartBtn.updateIcon(new ThemeResource("img/logo.png"));
-      this.addButton(linechartBtn,new VerticalLayout(),false);
+        this.addButton(linechartBtn, new VerticalLayout(), false);
 
         peptideInfoBtn = new ImageContainerBtn() {
 
@@ -122,7 +122,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
             }
         };
         peptideInfoBtn.updateIcon(new ThemeResource("img/logo.png"));
-      this.addButton(peptideInfoBtn,new VerticalLayout(),false);
+        this.addButton(peptideInfoBtn, new VerticalLayout(), false);
     }
 
     private void processFunction(String btnId) {
@@ -139,7 +139,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
     private void loadDiseaseCategory(String DiseaseCategoryName) {
         Data_handler.loadDiseaseCategory(DiseaseCategoryName);
         if (heatmapComponent == null) {
-            heatmapComponent = new HeatMapComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight, Data_handler.getActiveDataColumns()) {
+            heatmapComponent = new HeatMapComponent(CSFPR_Central_Manager, Data_handler.getDiseaseCategorySet(),  mainViewPanelWidth, mainViewPanelHeight, Data_handler.getActiveDataColumns()) {
 
                 @Override
                 public void updateIcon(String imageUrl) {

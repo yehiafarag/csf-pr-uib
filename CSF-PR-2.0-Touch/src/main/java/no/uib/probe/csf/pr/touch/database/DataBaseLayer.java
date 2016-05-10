@@ -477,26 +477,32 @@ public class DataBaseLayer implements Serializable {
             int total = 0;
             while (rs.next()) {
                 DiseaseCategoryObject diseaseCategoryObject = new DiseaseCategoryObject();
-                diseaseCategoryObject.setDiseaseName(rs.getString("disease_category"));
+                diseaseCategoryObject.setDiseaseCategory(rs.getString("disease_category"));
                 diseaseCategoryObject.setDatasetNumber(rs.getInt("Rows"));
-                diseaseCategoryObject.setDiseaseStyleName(diseaseCategoryStyles.get(diseaseCategoryObject.getDiseaseName()));
-                diseaseCategoryObject.setDiseaseHashedColor(diseaseColorMap.get(diseaseCategoryObject.getDiseaseName()));
+                diseaseCategoryObject.setDiseaseStyleName(diseaseCategoryStyles.get(diseaseCategoryObject.getDiseaseCategory()));
+                diseaseCategoryObject.setDiseaseHashedColor(diseaseColorMap.get(diseaseCategoryObject.getDiseaseCategory()));
                 diseaseCategoryObject.setDiseaseAwtColor(Color.decode(diseaseCategoryObject.getDiseaseHashedColor()));
                 total += diseaseCategoryObject.getDatasetNumber();
-                availableDiseaseCategory.put(diseaseCategoryObject.getDiseaseName(),diseaseCategoryObject);
+                availableDiseaseCategory.put(diseaseCategoryObject.getDiseaseCategory(),diseaseCategoryObject);
 
             }
             DiseaseCategoryObject diseaseCategoryObject = new DiseaseCategoryObject();
-            diseaseCategoryObject.setDiseaseName("All Diseases");
+            diseaseCategoryObject.setDiseaseCategory("All Diseases");
             diseaseCategoryObject.setDatasetNumber(total);
             diseaseCategoryObject.setDiseaseStyleName("alldiseasestyle");
             diseaseCategoryObject.setDiseaseHashedColor("#7E7E7E");
             diseaseCategoryObject.setDiseaseAwtColor(Color.decode("#7E7E7E"));
-            availableDiseaseCategory.put(diseaseCategoryObject.getDiseaseName(),diseaseCategoryObject);
+            availableDiseaseCategory.put(diseaseCategoryObject.getDiseaseCategory(),diseaseCategoryObject);
 
         } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             System.err.println("at error " + this.getClass().getName() + "  line 470  " + e.getLocalizedMessage());
         }
+        
+        
+        
+        
+        
+        
         return availableDiseaseCategory;
     }
 

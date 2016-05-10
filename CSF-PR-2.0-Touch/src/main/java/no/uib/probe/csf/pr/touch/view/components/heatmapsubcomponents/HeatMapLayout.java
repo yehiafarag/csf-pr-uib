@@ -12,6 +12,7 @@ import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -72,10 +73,12 @@ public abstract class HeatMapLayout extends VerticalLayout {
     private final HorizontalLayout controlsLayout;
     private int maxDatasetNumber;
     private QuantDSIndexes[][] values;
+
+    private Set<HeatMapHeaderCellInformationBean> rowheaders, colheaders;
+
     /*
      *  
      */
-
     public HeatMapLayout(int heatMapContainerWidth, int availableHMHeight, boolean[] activeColumnHeaders) {
         this.availableComparisonsList = new LinkedHashSet<>();
         this.updatedDatasetMap = new LinkedHashMap<>();
@@ -98,11 +101,9 @@ public abstract class HeatMapLayout extends VerticalLayout {
         this.spacer.setWidth("175px");
         topLayout.addComponent(spacer);
 
-       
-
         final Label filterLabelBtn = new Label("Filters");
-        filterLabelBtn.setHeight(100,Unit.PERCENTAGE);
-        filterLabelBtn.setWidth(99,Unit.PERCENTAGE);
+        filterLabelBtn.setHeight(100, Unit.PERCENTAGE);
+        filterLabelBtn.setWidth(99, Unit.PERCENTAGE);
         filterLabelBtn.setDescription("Show filters");
         filterLabelBtn.setStyleName("showfilterbtnlabel");
         filterLabelBtn.setContentMode(ContentMode.HTML);
@@ -268,8 +269,103 @@ public abstract class HeatMapLayout extends VerticalLayout {
         updateHeatMapLayout(rowsLbels, columnsLbels, patientsGroupComparisonsSet, rotate, colHeaderWidth, colHeaderHeight, rowHeaderHeight, fullQuantDsMap);
     }
 
+    /**
+     * this method responsible for filtering the heatmap based on filters
+     * selection
+     *
+     *
+     * @param datasets
+     */
+    public void filterHeatMap(Map<Integer, QuantDatasetObject> datasets) {
+        Set<String> headers = new HashSet<>();
+        Set<String> comparisonTitlesMap = new HashSet<>();
+        Map<String, Integer> valueMap = new HashMap<>();
+
+        Set<HeatMapHeaderCellInformationBean> rowheaders = new LinkedHashSet<>(), colheaders = new LinkedHashSet<>();
+
+        for (QuantDatasetObject dataset : datasets.values()) {
+
+            String grI = dataset.getPatientsSubGroup1();
+            String grII = dataset.getPatientsSubGroup2();
+
+            comparisonTitlesMap.add(grI + " / " + grII);
+            comparisonTitlesMap.add(grII + " / " + grI);
+
+            headers.add(grI);
+            headers.add(grII);
+
+            if (!valueMap.containsKey(grI + " / " + grII)) {
+                valueMap.put(grI + " / " + grII, 0);
+                valueMap.put(grII + " / " + grI, 0);
+
+            }
+            valueMap.put(grI + " / " + grII, valueMap.get(grI + " / " + grII) + 1);
+            valueMap.put(grII + " / " + grI, valueMap.get(grII + " / " + grI) + 1);
+        }
+
+        Set<Integer> activeColumn = new HashSet<>();
+        Set<Integer> activeRows = new HashSet<>();
+        //update column
+        activeColumn.add(0);
+        activeRows.add(0);
+        int counter = 1;
+        for (HeaderCell header : columnHeaderCells) {
+            if (headers.contains(header.getValueLabel())) {
+                header.setVisible(true);
+                activeColumn.add(counter);
+                colheaders.add((HeatMapHeaderCellInformationBean) this.colheaders.toArray()[counter - 1]);
+            } else {
+                header.setVisible(false);
+
+            }
+            counter++;
+
+        }
+        //update rows
+        counter = 1;
+        for (HeaderCell header : rowHeaderCells) {
+            if (headers.contains(header.getValueLabel())) {
+                header.setVisible(true);
+                activeRows.add(counter);
+                rowheaders.add((HeatMapHeaderCellInformationBean) this.rowheaders.toArray()[counter - 1]);
+            } else {
+                header.setVisible(false);
+            }
+            counter++;
+
+        }
+        //updateBody
+        for (int row = 1; row < heatmapBody.getRows(); row++) {
+            for (int col = 1; col < heatmapBody.getColumns(); col++) {
+                HeatmapCell cell = (HeatmapCell) heatmapBody.getComponent(col, row);
+                if (activeRows.contains(row) && activeColumn.contains(col)) {
+                    if (cell.getValue() == 0) {
+                        cell.setVisible(true);
+                    } else if (comparisonTitlesMap.contains(cell.getComparison().getComparisonHeader())) {
+                        cell.setVisible(true);
+                        cell.updateLabel(valueMap.get(cell.getComparison().getComparisonHeader()) + "");
+                    } else {
+                        cell.setVisible(false);
+                    }
+
+                } else {
+                    cell.setVisible(false);
+                }
+
+            }
+
+        }
+        //update labels        
+        this.columnCategoryHeadersContainer.setWidth(heatmapCellWidth * colheaders.size(), Unit.PIXELS);
+        this.rawCategoryHeadersContainer.setHeight(heatmapCellHeight * rowheaders.size(), Unit.PIXELS);        
+        updateDiseaseHeadersLabel(rowheaders, colheaders);
+
+    }
+
     private void updateHeatMapLayout(Set<HeatMapHeaderCellInformationBean> rowheaders, Set<HeatMapHeaderCellInformationBean> colheaders, Set<DiseaseGroupComparison> patientsGroupComparisonsSet, boolean rotate, int colHeaderW, int colHeaderH, int rowHeaderH, Map<Integer, QuantDatasetObject> fullQuantDsMap) {//, Map<String, String> diseaseFullNameMap, ) {
 
+        this.rowheaders=rowheaders;
+        this.colheaders=colheaders;
         updateDiseaseHeadersLabel(rowheaders, colheaders);
         this.heatmapBody.removeAllComponents();
         heatmapBody.setColumns(colheaders.size() + 1);
@@ -938,7 +1034,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
         return gen.generateHeatmap(rowsColors, columnsColors, dataColors);
 
     }
-    
+
     public abstract void showHideFilters();
 
 }

@@ -6,11 +6,28 @@
 package no.uib.probe.csf.pr.touch.view.components.heatmapsubcomponents;
 
 import com.vaadin.event.LayoutEvents;
+import com.vaadin.server.ClientMethodInvocation;
+import com.vaadin.server.ErrorHandler;
+import com.vaadin.server.Extension;
+import com.vaadin.server.Resource;
+import com.vaadin.server.ServerRpcManager;
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinResponse;
+import com.vaadin.server.VaadinSession;
+import com.vaadin.shared.communication.ClientRpc;
+import com.vaadin.shared.communication.ServerRpc;
+import com.vaadin.shared.communication.SharedState;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import elemental.json.JsonObject;
+import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EventObject;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,7 +39,7 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
  * @author Yehia Farag
  */
 public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutClickListener {
-
+    
     private final int index;
     private final Label valueLabel;
 
@@ -66,7 +83,7 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
      * @param headerHeight
      * @param fullDiseaseGroupName
      */
-    public HeaderCell(boolean rotate, String title,String diseaseStyle, int index, int headerWidth, int headerHeight, String fullDiseaseGroupName) {
+    public HeaderCell(boolean rotate, String title, String diseaseStyle, int index, int headerWidth, int headerHeight, String fullDiseaseGroupName) {
         this.includedCells = new ArrayList<>();
         if (rotate) {
             this.addStyleName("rotateheader");
@@ -78,7 +95,7 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
         }
         this.title = title;
         this.addStyleName("hmheadercell");
-
+        
         valueLabel = new Label();
         String allStyle = "hm" + diseaseStyle;
         valueLabel.setValue("<center><font>" + title + "</font></center>");
@@ -88,9 +105,9 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
         this.valueLabel.setContentMode(ContentMode.HTML);
         this.addComponent(valueLabel);
         this.setComponentAlignment(valueLabel, Alignment.TOP_CENTER);
-
+        
         this.index = index;
-
+        
         this.addLayoutClickListener(HeaderCell.this);
         if (fullDiseaseGroupName == null) {
             this.fullName = title;
@@ -102,9 +119,10 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
             combinedGroup = " - Combined disease groups";
         }
         this.setDescription(this.fullName + combinedGroup);
-
+        
     }
-      @Override
+
+    @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         if (selected) {
             selected = false;
@@ -116,22 +134,21 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
             selectData(getValueLabel());
         }
     }
-
     
-    public void select(){
+    public void select() {
         this.addStyleName("hmselectedcell");
-    
+        
     }
+
     public void unselect() {
         this.removeStyleName("hmselectedcell");
-      
+        
     }
-
+    
     public String getColor() {
         return color;
     }
-
-  
+    
     private boolean combinedHeader = false;
 
     /**
@@ -151,7 +168,17 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
         }
     }
     
-     public abstract void selectData(String cellheader);
-    public abstract void unSelectData(String cellHeader);
+    public abstract void selectData(String cellheader);
 
+    public abstract void unSelectData(String cellHeader);
+    
+    @Override
+    public void setEnabled(boolean enabled) {
+        if (enabled) {
+            this.removeStyleName("disabled");
+        } else {
+            this.addStyleName("disabled");
+        }
+    }
+    
 }

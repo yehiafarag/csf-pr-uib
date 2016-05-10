@@ -7,6 +7,7 @@ package no.uib.probe.csf.pr.touch.logic.beans;
 
 import java.awt.Color;
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  *
@@ -16,11 +17,27 @@ import java.io.Serializable;
  */
 public class DiseaseCategoryObject implements Serializable{
     
-    private String diseaseName;
+    private String diseaseCategory;
     private Color diseaseAwtColor;
     private String diseaseHashedColor;
     private String diseaseStyleName;
     private int datasetNumber;
+    private Set<String> diseaseSubGroups;
+
+    
+    
+    
+    
+    
+    
+    
+    public Set<String> getDiseaseSubGroups() {
+        return diseaseSubGroups;
+    }
+
+    public void setDiseaseSubGroups(Set<String> diseaseSubGroups) {
+        this.diseaseSubGroups = diseaseSubGroups;
+    }
 
     public int getDatasetNumber() {
         return datasetNumber;
@@ -38,12 +55,12 @@ public class DiseaseCategoryObject implements Serializable{
         this.diseaseStyleName = diseaseStyleName;
     }
 
-    public String getDiseaseName() {
-        return diseaseName;
+    public String getDiseaseCategory() {
+        return diseaseCategory;
     }
 
-    public void setDiseaseName(String diseaseName) {
-        this.diseaseName = diseaseName;
+    public void setDiseaseCategory(String diseaseCategory) {
+        this.diseaseCategory = diseaseCategory;
     }
 
     public Color getDiseaseAwtColor() {
@@ -64,7 +81,7 @@ public class DiseaseCategoryObject implements Serializable{
 
     @Override
     public String toString() {
-        return this.diseaseName;
+        return this.diseaseCategory;
     }
     
 }

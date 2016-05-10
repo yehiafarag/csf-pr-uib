@@ -35,6 +35,7 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
     private final Label valueLabel;
     private boolean selected = false;
     private boolean combinedHeader = false;
+    final String color;
 
     /**
      *
@@ -87,9 +88,11 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
         valueLabel.setContentMode(ContentMode.HTML);
         strValue = "";
         pointer = "default";
+        this.color=color;
         if (color.equalsIgnoreCase("#EFF2FB") && value != 0) {
             strValue = ((int) value) + "";
-            valueLabel.setValue("<center><div  style='background-color:" + color + "; background-position: center;cursor:" + pointer + "; '> <font Color='#4d749f'>(" + strValue + ")</font></div><center>");
+            this.updateLabel(strValue);
+//            valueLabel.setValue("<center><div  style='background-color:" + color + "; background-position: center;cursor:" + pointer + "; '> <font Color='#4d749f'>(" + strValue + ")</font></div><center>");
             this.setDescription("<h3>Same type comparison ( " + groupCompTitle + " )</h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + strValue + (value == 1 ? " Dataset" : " Datasets") + " </h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + publicationsNumber + (publicationsNumber == 1 ? " Publication" : " Publications") + " </h3>");
             comparison.setComparisonHeader(" / ");
             comparison.setOreginalComparisonHeader(" / ");
@@ -99,10 +102,12 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
             strValue = ((int) value) + "";
             pointer = "pointer";
             this.addLayoutClickListener(HeatmapCell.this);
-            valueLabel.setValue("<center><div  style='background-color:" + color + "; background-position: center;cursor:" + pointer + "; '>" + strValue + "</div><center>");
+             this.updateLabel(strValue);
+//            valueLabel.setValue("<center><div  style='background-color:" + color + "; background-position: center;cursor:" + pointer + "; '>" + strValue + "</div><center>");
 
         } else {
-            valueLabel.setValue("<center><div  style='background-color:" + color + "; background-position: center;cursor:" + pointer + "; '> " + strValue + "</div><center>");
+             this.updateLabel(strValue);
+//            valueLabel.setValue("<center><div  style='background-color:" + color + "; background-position: center;cursor:" + pointer + "; '> " + strValue + "</div><center>");
 
         }
 
@@ -146,6 +151,12 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
         selected=false;
        this.removeStyleName("hmunselectedcell");
        this.removeStyleName("hmselectedcell"); 
+    
+    }
+    
+    public final void updateLabel(String strValue){
+    
+    valueLabel.setValue("<center><div  style='background-color:" + color + "; background-position: center;cursor:" + pointer + "; '>" + strValue + "</div><center>");
     
     }
     

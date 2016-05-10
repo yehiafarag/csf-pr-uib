@@ -73,7 +73,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         diseaseLayout.addLayoutClickListener(this);
         
         }
-        Label diseaseTitle = new Label("<center>" + diseaseObject.getDiseaseName() + SpacerI + diseaseObject.getDatasetNumber() +SpacerII+ "</center>");
+        Label diseaseTitle = new Label("<center>" + diseaseObject.getDiseaseCategory() + SpacerI + diseaseObject.getDatasetNumber() +SpacerII+ "</center>");
         diseaseTitle.setDescription("#Datasets " + diseaseObject.getDatasetNumber());
         diseaseLayout.addComponent(diseaseTitle);
         diseaseTitle.setContentMode(ContentMode.HTML);
@@ -92,7 +92,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         miniLayout.removeAllComponents();
         DiseaseCategoryObject diseaseObject = (DiseaseCategoryObject) (((VerticalLayout) event.getComponent()).getData());
         miniLayout.addComponent(initDiseaseLayout(diseaseObject, 100, 100));
-        onClick(diseaseObject.getDiseaseName());
+        onClick(diseaseObject.getDiseaseCategory());
 
     }
 

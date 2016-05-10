@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.view.components.datasetfilters;
 
 import com.itextpdf.text.pdf.codec.Base64;
@@ -39,44 +34,38 @@ import org.jfree.data.general.PieDataset;
 /**
  *
  * @author Yehia Farag
+ *
+ * this class represents a dataset interactive filter
  */
 public abstract class DatasetPieChartFilter extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
-//    public Map<String, Color> getDefaultKeyColorMap() {
-//        return defaultKeyColorMap;
-//    }
     public JFreeChart getChart() {
         return chart;
     }
 
-//    private final String defaultImgURL;
     private final Color selectedColor = new Color(59, 90, 122);
-
     private final Map<Comparable, Color> defaultKeyColorMap = new HashMap<>();
-//    private final Page.Styles styles = Page.getCurrent().getStyles();
-    private String[] labels;
-    private int[] values;
     private final Map<Comparable, String> valuesMap = new HashMap<>();
     private final String filter_Id;
-//    private final PieChartsSelectionManager Local_Filter_Manager;
     private final int width;
     private final int height;
-//    private final Map<String, List<Integer>> dsIndexesMap;
     private final Map<Comparable, List<Integer>> inuseDsIndexesMap;
     private final HashSet<Integer> selectedDsIds = new HashSet<>();
     private final HashSet<Integer> fullDsIds = new HashSet<>();
     private final Set<Integer> availableDsIds = new LinkedHashSet<>();
-    private Map<Comparable, PieChartSlice> chartData;
+    private final Map<Comparable, PieChartSlice> chartData;
     private final Color[] defaultColors = new Color[]{new Color(110, 177, 206), new Color(219, 169, 1), new Color(213, 8, 8), new Color(4, 180, 95), new Color(174, 180, 4), new Color(10, 255, 14), new Color(244, 250, 88), new Color(255, 0, 64), new Color(246, 216, 206), new Color(189, 189, 189), new Color(255, 128, 0), Color.WHITE};
-
+    private PiePlot plot;
+    private JFreeChart chart;
+    private final ChartRenderingInfo chartRenderingInfo = new ChartRenderingInfo();
     private final Image chartBackgroundImg;
 
     /**
      *
+     * @param filterTitle
      * @param filterId
      * @param filterIndex
-     * @param Local_Filter_Manager
-     * @param dsIndexesMap
+     * @param filterHeight
      * @param filterWidth
      */
     public DatasetPieChartFilter(String filterTitle, String filterId, int filterIndex, int filterWidth, int filterHeight) {
@@ -93,106 +82,9 @@ public abstract class DatasetPieChartFilter extends VerticalLayout implements La
         this.addComponent(chartBackgroundImg);
         this.initPieChart(filterTitle);
         this.redrawChart();
-
-//        this.Local_Filter_Manager = Local_Filter_Manager;
-//        this.dsIndexesMap = dsIndexesMap;
         this.inuseDsIndexesMap = new LinkedHashMap<>();
-//        this.updateLabelsAndValues(null, false);
-//        for (int z = 0; z < labels.length; z++) {
-//            defaultKeyColorMap.put(labels[z], defaultColors[z]);
-//        }
-//        teststyle = "pieChartCssfilter_" + filterId;
-//        styles.add("." + teststyle + " :focus { outline: none !important;}");
-//        inUseImgURL = defaultImgURL;
-//        redrawChart();
-//        Local_Filter_Manager.registerLocalPieChartFilter(DatasetPieChartFilter.this);
+        this.chartData = new HashMap<>();
     }
-
-//    private void updateLabelsAndValues(Set<Integer> dsIndexes, boolean reset) {;
-//        if (dsIndexes == null || dsIndexes.isEmpty()) {
-//            this.labels = new String[inuseDsIndexesMap.size()];
-//            this.values = new int[inuseDsIndexesMap.size()];
-//            int x = 0;
-//            int notAvailableIndex = -1;
-//            for (String str : inuseDsIndexesMap.keySet()) {
-//                if (str.equalsIgnoreCase("Not Available")) {
-//                    notAvailableIndex = x;
-//                }
-//                labels[x] = str;
-//                values[x] = inuseDsIndexesMap.get(str).size();
-//                valuesMap.put(labels[x], values[x] + "");
-//                
-//                x++;
-//            }
-//            if (notAvailableIndex != -1) {
-//                labels[notAvailableIndex] = labels[labels.length - 1];
-//                labels[labels.length - 1] = "Not Available";
-//                int notAvaiValue = values[notAvailableIndex];
-//                values[notAvailableIndex] = values[values.length - 1];
-//                values[values.length - 1] = notAvaiValue;
-//                defaultColors[labels.length - 1] = Color.LIGHT_GRAY;
-//            }
-//
-//        } else {
-////            availableDsIds.addAll(dsIndexes);
-//            Map<String, List<Integer>> filteredDssMap = new HashMap<String, List<Integer>>();
-//            Map<String, Integer> filteredDsIndexesMap = new HashMap<String, Integer>();
-//            for (int y : dsIndexes) {
-//                for (String key : dsIndexesMap.keySet()) {
-//                    if (dsIndexesMap.get(key).contains(y)) {
-//                        if (!filteredDsIndexesMap.containsKey(key)) {
-//                            filteredDsIndexesMap.put(key, 0);
-//                            filteredDssMap.put(key, new ArrayList<Integer>());
-//                        }
-//                        int val = filteredDsIndexesMap.get(key);
-//                        val++;
-//                        List<Integer> dsIds = filteredDssMap.get(key);
-//                        dsIds.add(y);
-//                        filteredDsIndexesMap.put(key, val);
-//                        filteredDssMap.put(key, dsIds);
-//                    }
-//                }
-//
-//            }
-//
-//            this.labels = new String[filteredDsIndexesMap.size()];
-//            this.values = new int[filteredDsIndexesMap.size()];
-//            int x = 0;
-//            int notAvailableIndex = -1;
-//
-//            for (String str : filteredDsIndexesMap.keySet()) {
-//                if (str.equalsIgnoreCase("Not Available")) {
-//                    notAvailableIndex = x;
-//                }
-//                labels[x] = str;
-//                values[x] = filteredDsIndexesMap.get(str);
-//                valuesMap.put(labels[x], values[x] + "");
-//                x++;
-//            }
-//            if (notAvailableIndex != -1) {
-//                labels[notAvailableIndex] = labels[labels.length - 1];
-//                labels[labels.length - 1] = "Not Available";
-//                int notAvaiValue = values[notAvailableIndex];
-//                values[notAvailableIndex] = values[values.length - 1];
-//                values[values.length - 1] = notAvaiValue;
-//            }
-//            if (reset) {
-//                inuseDsIndexesMap = filteredDssMap;
-//            }
-//
-//        }
-//
-//    }
-    /**
-     *
-     * @return
-     */
-    public String getFilter_Id() {
-        return filter_Id;
-    }
-
-    private PiePlot plot;
-    private JFreeChart chart;
 
     private void initPieChart(String title) {
         DefaultPieDataset dataset = new DefaultPieDataset();
@@ -237,7 +129,6 @@ public abstract class DatasetPieChartFilter extends VerticalLayout implements La
         chart.getLegend().setItemFont(new Font("Open Sans", Font.PLAIN, 12));
 
     }
-    private final ChartRenderingInfo chartRenderingInfo = new ChartRenderingInfo();
 
     private String saveToFile(final JFreeChart chart, final double width, final double height) {
         byte imageData[];
@@ -259,33 +150,23 @@ public abstract class DatasetPieChartFilter extends VerticalLayout implements La
      * @param chartData information required to update chart data
      */
     public void initializeFilterData(Map<Comparable, PieChartSlice> chartData) {
-        this.chartData = chartData;
+        this.chartData.putAll(chartData);
         fullDsIds.clear();
-        DefaultPieDataset dataset = (DefaultPieDataset) plot.getDataset();
-        dataset.clear();
-        defaultKeyColorMap.clear();
-        valuesMap.clear();
-        int counter = 0;
-        for (PieChartSlice slice : chartData.values()) {
-            dataset.setValue(slice.getLabel(), slice.getValue());
-            fullDsIds.addAll(slice.getDatasetIds());
-            slice.setColor(defaultColors[counter++]);
-            plot.setSectionPaint(slice.getLabel(), slice.getColor());
-            valuesMap.put(slice.getLabel(), slice.getValue() + "");
-            defaultKeyColorMap.put(slice.getLabel(), slice.getColor());
-            inuseDsIndexesMap.put(slice.getLabel(), new ArrayList<>(slice.getDatasetIds()));
-        }
-
-        redrawChart();
-
+        reset();
     }
 
-    public abstract void selectDatasets(Collection<Integer> datasetId, boolean selected);
+    /**
+     * this method responsible for the selection action the method to be
+     * implemented in the container to maintain pie-chart interactivity
+     *
+     * @param noselection
+     */
+    public abstract void selectDatasets(boolean noselection);
 
     /**
      *
      */
-    public final void redrawChart() {
+    private void redrawChart() {
         String imgUrl = saveToFile(chart, width, height);
         this.chartBackgroundImg.setSource(new ExternalResource(imgUrl));
     }
@@ -306,21 +187,30 @@ public abstract class DatasetPieChartFilter extends VerticalLayout implements La
         if (plot.getExplodePercent(sliceKey) == 0.1) {
             plot.setExplodePercent(sliceKey, 0);
             plot.setSectionPaint(sliceKey, defaultKeyColorMap.get(sliceKey));
-            selectedDsIds.removeAll(inuseDsIndexesMap.get(sliceKey));
+            selectedDsIds.removeAll(chartData.get(sliceKey).getDatasetIds());
         } else {
             plot.setExplodePercent(sliceKey, 0.1);
             plot.setSectionPaint(sliceKey, selectedColor);
-            selectedDsIds.addAll(inuseDsIndexesMap.get(sliceKey));
+            selectedDsIds.addAll(chartData.get(sliceKey).getDatasetIds());
 
         }
-        selectDatasets(selectedDsIds, true);
+        selectDatasets(selectedDsIds.isEmpty());
         redrawChart();
 
     }
 
-    public void localUpdate(Collection<Integer> datasetId) {
+    public boolean isActiveFilter() {
 
-        inuseDsIndexesMap.clear();
+        return !selectedDsIds.isEmpty();
+    }
+
+    public void localUpdate(Collection<Integer> datasetId, boolean single) {
+
+        if (single && !selectedDsIds.isEmpty()) {
+            datasetId.clear();
+            datasetId.addAll(fullDsIds);
+
+        }
         valuesMap.clear();
         DefaultPieDataset dataset = (DefaultPieDataset) plot.getDataset();
         dataset.clear();
@@ -331,52 +221,12 @@ public abstract class DatasetPieChartFilter extends VerticalLayout implements La
                 idList.add(id);
                 return id;
             }).map((_item) -> 1).reduce(value, Integer::sum);
-
-            if (value > 0) {
-                inuseDsIndexesMap.put(slice.getLabel(), idList);
-                dataset.setValue(slice.getLabel(), value);
-                valuesMap.put(slice.getLabel(), value + "");
-            }
+            inuseDsIndexesMap.put(slice.getLabel(), idList);
+            dataset.setValue(slice.getLabel(), value);
+            valuesMap.put(slice.getLabel(), value + "");
         });
-        if (valuesMap.size() == 1) {
-            this.removeLayoutClickListener(DatasetPieChartFilter.this);
-        } else {
-            this.addLayoutClickListener(DatasetPieChartFilter.this);
-        }
 
         redrawChart();
-
-    }
-
-    /**
-     *
-     * @param width
-     * @param height
-     * @return
-     */
-    public String updatePieChart(int width, int height) {
-        DefaultPieDataset dataset = new DefaultPieDataset();
-        for (int x = 0; x < labels.length; x++) {
-            dataset.setValue(labels[x], new Double(values[x]));
-
-        }
-        plot.setDataset(dataset);
-        String chartImgUrl = saveToFile(chart, width, height);
-        return chartImgUrl;
-
-    }
-
-    /**
-     *
-     * @param dsIndexes
-     */
-    public void selectionChanged(Set<Integer> dsIndexes) {
-//        updateLabelsAndValues(dsIndexes, false);
-        availableDsIds.clear();
-        availableDsIds.addAll(dsIndexes);
-//        inUseImgURL = updatePieChart(width, height);
-        redrawChart();
-
     }
 
     /**
@@ -384,58 +234,41 @@ public abstract class DatasetPieChartFilter extends VerticalLayout implements La
      * @return
      */
     public HashSet<Integer> getSelectedDsIds() {
-
+        if (selectedDsIds.isEmpty()) {
+            return fullDsIds;
+        }
         return selectedDsIds;
     }
 
-    /**
-     *
-     * @param dsIndexes
-     * @param reset
-     */
-    public void resetFilterWithUpdatedFilters(Set<Integer> dsIndexes, boolean reset) {
-//        updateLabelsAndValues(dsIndexes, reset);
-//        inUseImgURL = initPieChart(width, height);
-        redrawChart();
-
-    }
-
-    /**
-     *
-     */
-    public void resetFilterToClearState() {
-//        inuseDsIndexesMap = dsIndexesMap;
-//        updateLabelsAndValues(null, false);
-//        inUseImgURL = initPieChart(width, height);
-        redrawChart();
-
-    }
-
-    /**
-     *
-     */
-    public void unselectFilter() {
+    public void reset() {
+        DefaultPieDataset dataset = (DefaultPieDataset) plot.getDataset();
+        dataset.clear();
+        defaultKeyColorMap.clear();
+        valuesMap.clear();
+        inuseDsIndexesMap.clear();
         selectedDsIds.clear();
-//        for (String sliceKey : inuseDsIndexesMap.keySet()) {
-//            if (plot.getExplodePercent(sliceKey) == 0.1) {
-//                plot.setExplodePercent(sliceKey, 0);
-//                plot.setSectionPaint(sliceKey, defaultKeyColorMap.get(sliceKey));
-//                selectedDsIds.removeAll(inuseDsIndexesMap.get(sliceKey));
-//
-//            }
-//        }
+        Map<Comparable, PieChartSlice> tchartData = new LinkedHashMap<>();
+        int counter = 0;
+        for (PieChartSlice slice : chartData.values()) {
+            if (slice.getLabel().toString().trim().equals("")) {
+                slice.setLabel("Not Available");
+                slice.setColor(Color.LIGHT_GRAY);
+
+            } else {
+                slice.setColor(defaultColors[counter++]);
+            }
+            dataset.setValue(slice.getLabel(), slice.getValue());
+            fullDsIds.addAll(slice.getDatasetIds());
+            plot.setSectionPaint(slice.getLabel(), slice.getColor());
+            valuesMap.put(slice.getLabel(), slice.getValue() + "");
+            defaultKeyColorMap.put(slice.getLabel(), slice.getColor());
+            inuseDsIndexesMap.put(slice.getLabel(), new ArrayList<>(slice.getDatasetIds()));
+            tchartData.put(slice.getLabel(), slice);
+            plot.setExplodePercent(slice.getLabel(), 0);
+        }
+        this.chartData.clear();
+        this.chartData.putAll(tchartData);
+        redrawChart();
 
     }
-
-    public Set<Integer> getFinalFilterValue() {
-        Set<Integer> finalFilterValue = new LinkedHashSet<Integer>(availableDsIds);
-//        if (finalFilterValue.isEmpty()) {
-//            for (List<Integer> l : inuseDsIndexesMap.values()) {
-//                finalFilterValue.addAll(l);
-//            }
-//        }
-        return finalFilterValue;
-
-    }
-
 }
