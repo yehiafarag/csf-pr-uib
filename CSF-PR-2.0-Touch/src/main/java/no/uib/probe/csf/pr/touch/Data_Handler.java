@@ -168,16 +168,27 @@ public class Data_Handler implements Serializable {
     public Map<Integer, QuantDatasetObject> getFullQuantDsMap() {
         return Dataset_Util.getFullQuantDsMap();
     }
-    
-     /**
-     * this method to get the active data columns for the current active
-     * disease category
+
+    /**
+     * this method to get the active data columns for the current active disease
+     * category
      *
-     * @return boolean array  of active column
+     * @return boolean array of active column
      */
-     public  boolean[] getActiveDataColumns(){
-     
-         return Dataset_Util.getActiveDataColumns();
-     }
+    public boolean[] getActiveDataColumns() {
+
+        return Dataset_Util.getActiveDataColumns();
+    }
+
+    /**
+     * this method to update and combine disease sub groups based on user selection
+     * 
+     *
+     * @param  updatedGroupsNamesMap updated disease sub group names
+     */
+    public void updateCobinedGroups(Map<String, Map<String, String>> updatedGroupsNamesMap) {
+        Dataset_Util.updateCobinedGroups(updatedGroupsNamesMap);
+
+    }
 
 }

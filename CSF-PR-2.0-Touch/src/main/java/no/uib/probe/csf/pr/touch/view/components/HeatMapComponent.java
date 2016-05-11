@@ -91,7 +91,15 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFFilt
         
         
         
-        reconineDiseaseGroupsFiltersBtn = new RecombineDiseaseGroupsCombonent(diseaseCategorySet);
+        reconineDiseaseGroupsFiltersBtn = new RecombineDiseaseGroupsCombonent(diseaseCategorySet){
+
+            @Override
+            public void updateSystem(Map<String, Map<String, String>> updatedGroupsNamesMap) {
+                updateCobinedGroups(updatedGroupsNamesMap);
+            }
+        
+        
+        };
           btnsWrapper.addComponent(reconineDiseaseGroupsFiltersBtn);
         btnsWrapper.setComponentAlignment(reconineDiseaseGroupsFiltersBtn, Alignment.MIDDLE_LEFT);
 
@@ -214,5 +222,8 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFFilt
     public void removeFilterValue(String value) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    
+      public abstract void updateCobinedGroups(Map<String, Map<String, String>> updatedGroupsNamesMap);
     
 }

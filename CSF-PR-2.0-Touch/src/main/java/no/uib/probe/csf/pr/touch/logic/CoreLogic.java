@@ -108,7 +108,7 @@ public class CoreLogic implements Serializable {
         allDatasetObject.setQuantDatasetsList(updatedQuantDatasetObjectMap);
         allDatasetObject.setActiveHeaders(activeHeaders);
         allDatasetObject.setDiseaseCategories(diseaseCategories);
-        quantStudyInitInfoMap.put("All", allDatasetObject);
+        quantStudyInitInfoMap.put("All Diseases", allDatasetObject);
 
         return quantStudyInitInfoMap;
 

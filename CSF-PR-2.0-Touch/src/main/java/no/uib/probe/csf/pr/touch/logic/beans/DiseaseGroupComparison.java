@@ -10,14 +10,16 @@ import java.io.Serializable;
 /**
  *
  * @author Yehia Farag
- * 
- * this class represents disease group comparison that has all comparison information  
+ *
+ * this class represents disease group comparison that has all comparison
+ * information
  */
-public class DiseaseGroupComparison implements Serializable{
+public class DiseaseGroupComparison implements Serializable {
 
     private String DiseaseCategory;
 
     private String diseaseStyleName;
+
     public String getDiseaseCategory() {
         return DiseaseCategory;
     }
@@ -25,16 +27,12 @@ public class DiseaseGroupComparison implements Serializable{
     public void setDiseaseCategory(String DiseaseCategory) {
         this.DiseaseCategory = DiseaseCategory;
     }
-    
-    private String patientsGroupI;
-    private String patientsGroupII;
+
     private int quantDatasetIndex, originalDatasetIndex;
 
-    private String patientsSubGroupI, patientsSubGroupII;
-
-    private String patientsGroupILabel;
-    private String patientsGroupIILabel;
+    private String diseaseMainGroupI, diseaseMainGroupII;
     private String originalDiseaseSubGroupI, originalDiseaseSubGroupII;
+    private String activeDiseaseSubGroupI, activeDiseaseSubGroupII;
 
     public String getOriginalDiseaseSubGroupI() {
         return originalDiseaseSubGroupI;
@@ -56,8 +54,8 @@ public class DiseaseGroupComparison implements Serializable{
      *
      * @return
      */
-    public String getPatientsGroupI() {
-        return patientsGroupI;
+    public String getDiseaseMainGroupI() {
+        return diseaseMainGroupI;
     }
 
     /**
@@ -78,90 +76,50 @@ public class DiseaseGroupComparison implements Serializable{
 
     /**
      *
-     * @param patientsGroupI
+     * @param diseaseMainGroupI
      */
-    public void setPatientsGroupI(String patientsGroupI) {
-        this.patientsGroupI = patientsGroupI;
+    public void setDiseaseMainGroupI(String diseaseMainGroupI) {
+        this.diseaseMainGroupI = diseaseMainGroupI;
     }
 
     /**
      *
      * @return
      */
-    public String getPatientsGroupII() {
-        return patientsGroupII;
+    public String getDiseaseMainGroupII() {
+        return diseaseMainGroupII;
     }
 
     /**
      *
-     * @param patientsGroupII
+     * @param diseaseMainGroupII
      */
-    public void setPatientsGroupII(String patientsGroupII) {
-        this.patientsGroupII = patientsGroupII;
+    public void setDiseaseMainGroupII(String diseaseMainGroupII) {
+        this.diseaseMainGroupII = diseaseMainGroupII;
     }
 
-    /**
-     *
-     * @return
-     */
-    public String getPatientsSubGroupI() {
-        return patientsSubGroupI;
+    public String getActiveDiseaseSubGroupII() {
+        return activeDiseaseSubGroupII;
     }
 
-    /**
-     *
-     * @param patientsSubGroupI
-     */
-    public void setPatientsSubGroupI(String patientsSubGroupI) {
-        this.patientsSubGroupI = patientsSubGroupI;
+    public void setActiveDiseaseSubGroupII(String activeDiseaseSubGroupII) {
+        this.activeDiseaseSubGroupII = activeDiseaseSubGroupII;
     }
 
     /**
      *
      * @return
      */
-    public String getPatientsSubGroupII() {
-        return patientsSubGroupII;
+    public String getActiveDiseaseSubGroupI() {
+        return activeDiseaseSubGroupI;
     }
 
     /**
      *
-     * @param patientsSubGroupII
+     * @param activeDiseaseSubGroupI
      */
-    public void setPatientsSubGroupII(String patientsSubGroupII) {
-        this.patientsSubGroupII = patientsSubGroupII;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public String getPatientsGroupILabel() {
-        return patientsGroupILabel;
-    }
-
-    /**
-     *
-     * @param patientsGroupILabel
-     */
-    public void setPatientsGroupILabel(String patientsGroupILabel) {
-        this.patientsGroupILabel = patientsGroupILabel;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public String getPatientsGroupIILabel() {
-        return patientsGroupIILabel;
-    }
-
-    /**
-     *
-     * @param patientsGroupIILabel
-     */
-    public void setPatientsGroupIILabel(String patientsGroupIILabel) {
-        this.patientsGroupIILabel = patientsGroupIILabel;
+    public void setActiveDiseaseSubGroupI(String activeDiseaseSubGroupI) {
+        this.activeDiseaseSubGroupI = activeDiseaseSubGroupI;
     }
 
     /**
@@ -170,7 +128,7 @@ public class DiseaseGroupComparison implements Serializable{
      * @return
      */
     public boolean checkLabel(String label) {
-        if (label.equalsIgnoreCase(patientsGroupILabel) || label.equalsIgnoreCase(patientsGroupIILabel)) {
+        if (label.equalsIgnoreCase(activeDiseaseSubGroupI) || label.equalsIgnoreCase(activeDiseaseSubGroupII)) {
             return true;
         }
         return false;
@@ -183,10 +141,10 @@ public class DiseaseGroupComparison implements Serializable{
      * @return
      */
     public String getValLabel(String key) {
-        if (key.equalsIgnoreCase(patientsGroupILabel)) {
-            return patientsGroupIILabel;
-        } else if (key.equalsIgnoreCase(patientsGroupIILabel)) {
-            return patientsGroupILabel;
+        if (key.equalsIgnoreCase(activeDiseaseSubGroupI)) {
+            return activeDiseaseSubGroupII;
+        } else if (key.equalsIgnoreCase(activeDiseaseSubGroupII)) {
+            return activeDiseaseSubGroupI;
         } else {
             return null;
         }

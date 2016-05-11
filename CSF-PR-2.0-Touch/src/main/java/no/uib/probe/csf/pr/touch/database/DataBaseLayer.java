@@ -573,7 +573,7 @@ public class DataBaseLayer implements Serializable {
 //                activeFilters[activeFilters.length - 4] = false;
                 activePieChartQuantFiltersDiseaseCategoryMap.put(str, activeFilters);
             });
-            activePieChartQuantFiltersDiseaseCategoryMap.put("All", activeFilters);
+            activePieChartQuantFiltersDiseaseCategoryMap.put("All Diseases", activeFilters);
 
         } catch (ClassNotFoundException e) {
             System.err.println("at error line 2912 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
@@ -669,7 +669,7 @@ public class DataBaseLayer implements Serializable {
 //                activeFilters[activeFilters.length - 4] = false;
 //                activePieChartQuantFiltersDiseaseCategoryMap.put(str, activeFilters);
             });
-            activePieChartQuantFiltersDiseaseCategoryMap.put("All", activeFilters);
+            activePieChartQuantFiltersDiseaseCategoryMap.put("All Diseases", activeFilters);
         } catch (ClassNotFoundException e) {
             System.err.println("at error line 2912 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
         } catch (IllegalAccessException e) {

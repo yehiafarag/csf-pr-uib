@@ -7,6 +7,7 @@ package no.uib.probe.csf.pr.touch.logic.beans;
 
 import java.awt.Color;
 import java.io.Serializable;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -22,7 +23,7 @@ public class DiseaseCategoryObject implements Serializable{
     private String diseaseHashedColor;
     private String diseaseStyleName;
     private int datasetNumber;
-    private Set<String> diseaseSubGroups;
+    private Map<String,String> diseaseSubGroups;
 
     
     
@@ -31,11 +32,11 @@ public class DiseaseCategoryObject implements Serializable{
     
     
     
-    public Set<String> getDiseaseSubGroups() {
+    public Map<String,String> getDiseaseSubGroups() {
         return diseaseSubGroups;
     }
 
-    public void setDiseaseSubGroups(Set<String> diseaseSubGroups) {
+    public void setDiseaseSubGroups(Map<String,String> diseaseSubGroups) {
         this.diseaseSubGroups = diseaseSubGroups;
     }
 

@@ -17,15 +17,32 @@ import no.uib.probe.csf.pr.touch.logic.beans.HeatMapHeaderCellInformationBean;
  */
 public class QuantData implements Serializable {
 
-    private LinkedHashSet<HeatMapHeaderCellInformationBean> activeRowIds;
-    private LinkedHashSet<HeatMapHeaderCellInformationBean> activeColumnIds;
+    private LinkedHashSet<HeatMapHeaderCellInformationBean> activeRowIds, oreginalRowIds;
+    private LinkedHashSet<HeatMapHeaderCellInformationBean> activeColumnIds, oreginalColumnIds;
+
+    public LinkedHashSet<HeatMapHeaderCellInformationBean> getOreginalRowIds() {
+        return oreginalRowIds;
+    }
+
+    public void setOreginalRowIds(LinkedHashSet<HeatMapHeaderCellInformationBean> oreginalRowIds) {
+        this.oreginalRowIds = oreginalRowIds;
+    }
+
+    public LinkedHashSet<HeatMapHeaderCellInformationBean> getOreginalColumnIds() {
+        return oreginalColumnIds;
+    }
+
+    public void setOreginalColumnIds(LinkedHashSet<HeatMapHeaderCellInformationBean> oreginalColumnIds) {
+        this.oreginalColumnIds = oreginalColumnIds;
+    }
     private String diseaseCategory;
-    private Set<DiseaseGroupComparison> diseaseGroupArry;
+    private Set<DiseaseGroupComparison> diseaseComparisonSet;
     private boolean[] activeHeaders;
 
-    
-
     public LinkedHashSet<HeatMapHeaderCellInformationBean> getActiveRowIds() {
+        if (activeRowIds == null) {
+            return oreginalRowIds;
+        }
         return activeRowIds;
     }
 
@@ -34,6 +51,9 @@ public class QuantData implements Serializable {
     }
 
     public LinkedHashSet<HeatMapHeaderCellInformationBean> getActiveColumnIds() {
+        if (activeColumnIds == null) {
+            return oreginalColumnIds;
+        }
         return activeColumnIds;
     }
 
@@ -42,11 +62,11 @@ public class QuantData implements Serializable {
     }
 
     public Set<DiseaseGroupComparison> getDiseaseGroupComparisonsSet() {
-        return diseaseGroupArry;
+        return diseaseComparisonSet;
     }
 
-    public void setDiseaseGroupArry(Set<DiseaseGroupComparison> diseaseGroupArry) {
-        this.diseaseGroupArry = diseaseGroupArry;
+    public void setDiseaseComparisonSet(Set<DiseaseGroupComparison> diseaseComparisonSet) {
+        this.diseaseComparisonSet = diseaseComparisonSet;
     }
 
     public String getDiseaseCategory() {

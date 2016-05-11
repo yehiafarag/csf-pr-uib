@@ -10,6 +10,7 @@ import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
 import java.util.Collection;
+import java.util.Map;
 import no.uib.probe.csf.pr.touch.Data_Handler;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseCategoryObject;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
@@ -145,6 +146,14 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
                 public void updateIcon(String imageUrl) {
                     heatmapBtn.updateIcon(new ExternalResource(imageUrl));
                 }
+
+                @Override
+                public void updateCobinedGroups(Map<String, Map<String, String>> updatedGroupsNamesMap) {
+                    Data_handler.updateCobinedGroups(updatedGroupsNamesMap);
+                      heatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), Data_handler.getFullQuantDsMap());
+                }
+                
+                
 
             };
             heatmapViewContainer.addComponent(heatmapComponent);

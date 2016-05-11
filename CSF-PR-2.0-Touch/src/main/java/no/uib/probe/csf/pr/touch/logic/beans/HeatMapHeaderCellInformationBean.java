@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package no.uib.probe.csf.pr.touch.logic.beans;
 
 import java.io.Serializable;
@@ -20,6 +16,15 @@ public class HeatMapHeaderCellInformationBean implements Serializable{
     private String diseaseStyleName;
     private String diseaseColor;
     private String diseaseGroupFullName;
+    private String diseaseGroupOreginalName;
+
+    public String getDiseaseGroupOreginalName() {
+        return diseaseGroupOreginalName;
+    }
+
+    public void setDiseaseGroupOreginalName(String diseaseGroupOreginalName) {
+        this.diseaseGroupOreginalName = diseaseGroupOreginalName;
+    }
 
     public String getDiseaseCategory() {
         return diseaseCategory;
