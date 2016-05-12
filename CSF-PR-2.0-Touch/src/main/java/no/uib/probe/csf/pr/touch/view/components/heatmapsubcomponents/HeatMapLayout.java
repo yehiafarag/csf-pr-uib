@@ -271,10 +271,10 @@ public abstract class HeatMapLayout extends VerticalLayout {
         this.rawCategoryHeadersContainer.setHeight(rowHeaderHeight * rowsLbels.size(), Unit.PIXELS);
 
         if (rawCategoryHeadersContainer.getHeight() + 200 > availableHMHeight) {
-            double ration = availableHMHeight/(rawCategoryHeadersContainer.getHeight() + 200);
-            String inject = ".zoom{zoom:"+ration+";}";
-            Page.getCurrent().getStyles().add(inject);
-            this.setStyleName("zoom");
+            double ratio = availableHMHeight/(rawCategoryHeadersContainer.getHeight() + 200);
+            String styleName ="zoom"+((int)ratio*10);
+            this.setStyleName(styleName);
+            System.err.println("at zoom style "+ styleName);
         }else
         {            
         this.removeStyleName("zoomable");

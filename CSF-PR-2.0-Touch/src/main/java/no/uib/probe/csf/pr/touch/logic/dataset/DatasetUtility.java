@@ -729,7 +729,6 @@ public class DatasetUtility implements Serializable {
             Map<String, String> subGroupMap = mapToSort.get(diseaseCategory);
             Map<String, String> sortedSubGroupMap = new LinkedHashMap<>();
             for (HeatMapHeaderCellInformationBean group : quantData.getOreginalRowIds()) {
-                System.out.println("at group " + group);
                 sortedSubGroupMap.put(group.getDiseaseGroupOreginalName(), subGroupMap.get(group.getDiseaseGroupOreginalName()));
             }
             sortedMap.put(diseaseCategory, sortedSubGroupMap);

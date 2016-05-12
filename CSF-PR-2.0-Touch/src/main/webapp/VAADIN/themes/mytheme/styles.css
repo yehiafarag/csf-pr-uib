@@ -13046,9 +13046,9 @@ div.v-layout.v-horizontal.v-widget {
     overflow-wrap: normal;
 }
 .absoluteposition{
-    
+
     position: absolute !important;
-    
+
 }
 
 .slowscroll{
@@ -13432,20 +13432,20 @@ div.v-layout.v-horizontal.v-widget {
 }
 .hmheaderlabel{
 
-   border-left:1px solid #dce0e0 !important;   
-   border-right:1px solid #dce0e0 !important;
-      border-bottom:1px solid #dce0e0;
+    border-left:1px solid #dce0e0 !important;   
+    border-right:1px solid #dce0e0 !important;
+    border-bottom:1px solid #dce0e0;
     border-top:0px solid #dce0e0;
     border-radius:5px;
     line-height:25px;
-    
+
 }
 .hmheaderlabel:hover{
-   border-left:1px solid #dce0e0 !important;   
-   border-right:0px solid #dce0e0 !important;
-   border-bottom:0px solid #dce0e0;
+    border-left:1px solid #dce0e0 !important;   
+    border-right:0px solid #dce0e0 !important;
+    border-bottom:0px solid #dce0e0;
     border-top:0px solid #dce0e0;
-    
+
 }
 
 .hmmultiplesclerosisstyle {
@@ -13585,7 +13585,7 @@ div.v-layout.v-horizontal.v-widget {
 
 }
 .studyinfobtn{
-     clear: both;
+    clear: both;
     width: 23px !important;
     height: 23px !important;
     background-image: url(img/file-text-o.png) !important;
@@ -13632,16 +13632,16 @@ div.v-layout.v-horizontal.v-widget {
     border-radius:4px;
     cursor: pointer;
     padding:2px;
-    
+
 }
 .filterbtn:hover{
     background-color: lightgray;
     border-color: gray;
-    
+
 }
 .exportpdfbtn{
     background-image: url(img/pdf-text-o.png);
-     width: 25px !important; 
+    width: 25px !important; 
     height: 25px !important;
     background-position:center !important;
     background-repeat: no-repeat !important;
@@ -13655,11 +13655,33 @@ div.v-layout.v-horizontal.v-widget {
     -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
     transform: rotate(180deg);
 }
-.zoomable{   
-    
-    zoom: 80%;
-
-    overflow:auto !important;
-   
-
+.zoom1{    
+    zoom: 0.1; 
+}
+.zoom2{    
+    zoom: 0.2; 
+}
+.zoom3{    
+    zoom: 0.3; 
+}
+.zoom4{    
+    zoom: 0.4; 
+}
+.zoom5{    
+    zoom: 0.5; 
+}
+.zoom6{    
+    zoom: 0.6; 
+}
+.zoom7{    
+    zoom: 0.7; 
+}
+.zoom8{    
+    zoom: 0.8; 
+}
+.zoom9{    
+    zoom: 0.9; 
+}
+.zoom0{    
+    zoom: 1; 
 }
