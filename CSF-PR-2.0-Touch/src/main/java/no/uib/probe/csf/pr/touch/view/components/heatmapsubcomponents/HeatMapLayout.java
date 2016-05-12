@@ -272,7 +272,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
         if (rawCategoryHeadersContainer.getHeight() + 200 > availableHMHeight) {
             double ratio = availableHMHeight/(rawCategoryHeadersContainer.getHeight() + 200);
-            String styleName ="zoom"+((int)ratio*10);
+            String styleName ="zoom"+((int)Math.round(ratio*10.0));
             this.setStyleName(styleName);
             System.err.println("at zoom style "+ styleName);
         }else

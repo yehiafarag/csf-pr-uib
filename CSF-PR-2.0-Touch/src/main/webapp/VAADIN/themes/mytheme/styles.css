@@ -12957,8 +12957,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .slidepanel{
-    -webkit-transition: width 2s; /* For Safari 3.1 to 6.0 */
-    transition: width 2s; 
+    -webkit-transition: width 1s; /* For Safari 3.1 to 6.0 */
+    transition: width 1s; 
     border:1px solid lightgray;
 
     -moz-border-radius:4px;
@@ -12966,16 +12966,16 @@ div.v-layout.v-horizontal.v-widget {
     overflow:hidden;
 }
 .scrollpanel{
-    -webkit-transition: height 2s, width 2s; /* For Safari 3.1 to 6.0 */
-    transition: height 2s, width 2s;
+    -webkit-transition: height 1s, width 1s; /* For Safari 3.1 to 6.0 */
+    transition: height 1s, width 1s;
     -moz-border-radius:4px;
     border-radius:  4px;
     overflow:hidden;
     margin-right: 45px;
 }
 .framelayout{
-    -webkit-transition: height 2s, width 2s; /* For Safari 3.1 to 6.0 */
-    transition: height 2s, width 2s;
+    -webkit-transition: height 1s, width 1s; /* For Safari 3.1 to 6.0 */
+    transition: height 1s, width 1s;
     margin-left: 40px;
     display: block;  
     overflow:hidden;
@@ -12984,8 +12984,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .framelayout div{
-    -webkit-transition: height 2s, width 2s; /* For Safari 3.1 to 6.0 */
-    transition: height 2s, width 2s;
+    -webkit-transition: height 1s, width 1s; /* For Safari 3.1 to 6.0 */
+    transition: height 1s, width 1s;
     overflow:hidden;
 
 
@@ -13019,25 +13019,25 @@ div.v-layout.v-horizontal.v-widget {
     border-right:  1px solid lightgray;
 }
 .hideslidelayout {
-    -webkit-transition: width 2s ; /* For Safari 3.1 to 6.0 */
-    transition: width 2s; 
+    -webkit-transition: width 1s ; /* For Safari 3.1 to 6.0 */
+    transition: width 1s; 
     width: 0px !important;
     overflow:hidden;
     word-wrap:normal;
     overflow-wrap: normal;
-    -webkit-transition: width 2s; /* For Safari 3.1 to 6.0 */
-    transition: width 2s; 
+    -webkit-transition: width 1s; /* For Safari 3.1 to 6.0 */
+    transition: width 1s; 
     width: 0px !important;    
     position:absolute;
 }
 .slowslide{
-    -webkit-transition: width 2s,position 2s; /* For Safari 3.1 to 6.0 */
-    transition: width 2s,position 2s; 
+    -webkit-transition: width 1s,position 1s; /* For Safari 3.1 to 6.0 */
+    transition: width 1s,position 1s; 
 
 }
 .hidescrolllayout {
-    -webkit-transition: height 2s, width 2s , position 2s; /* For Safari 3.1 to 6.0 */
-    transition: height 2s, width 2s , position 2s;
+    -webkit-transition: height 1s, width 1s , position 1s; /* For Safari 3.1 to 6.0 */
+    transition: height 1s, width 1s , position 1s;
     height:  0px !important;
     width:  0px !important;
 
@@ -13052,15 +13052,15 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .slowscroll{
-    -webkit-transition: height 2s, width 2s,position 2s; /* For Safari 3.1 to 6.0 */
-    transition: height 2s, width 2s,position 2s
+    -webkit-transition: height 1s, width 1s,position 1s; /* For Safari 3.1 to 6.0 */
+    transition: height 1s, width 1s,position 1s
 
 }
 
 
 .leftslidebtn{
-    -webkit-transition:transform 2s; /* For Safari 3.1 to 6.0 */
-    transition: transform 2s; 
+    -webkit-transition:transform 1s; /* For Safari 3.1 to 6.0 */
+    transition: transform 1s; 
     background-image: url(img/chevron-circle-right-o.png);
     background-repeat: no-repeat;
     background-size:20px ;
@@ -13078,8 +13078,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .rightslidebtn{
-    -webkit-transition:transform 2s; /* For Safari 3.1 to 6.0 */
-    transition: transform 2s; 
+    -webkit-transition:transform 1s; /* For Safari 3.1 to 6.0 */
+    transition: transform 1s; 
     background-image: url(img/chevron-circle-left-o.png);
     background-repeat: no-repeat;
     background-size:20px ;
@@ -13098,8 +13098,8 @@ div.v-layout.v-horizontal.v-widget {
 
 
 .upscrollebtn{
-    -webkit-transition:transform 2s; /* For Safari 3.1 to 6.0 */
-    transition: transform 2s; 
+    -webkit-transition:transform 1s; /* For Safari 3.1 to 6.0 */
+    transition: transform 1s; 
 
     background-image: url(img/chevron-circle-up-o.png);
     background-repeat: no-repeat;
@@ -13118,8 +13118,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .downscrollbtn{
-    -webkit-transition:transform 2s; /* For Safari 3.1 to 6.0 */
-    transition: transform 2s; 
+    -webkit-transition:transform 1s; /* For Safari 3.1 to 6.0 */
+    transition: transform 1s; 
     background-image: url(img/chevron-circle-down-o.png);
     background-repeat: no-repeat;
     background-size:20px ;
@@ -13137,8 +13137,8 @@ div.v-layout.v-horizontal.v-widget {
     border-color: gray;
 }
 .transformslidebtn{
-    -webkit-transition:transform 2s; /* For Safari 3.1 to 6.0 */
-    transition: transform 2s; 
+    -webkit-transition:transform 1s; /* For Safari 3.1 to 6.0 */
+    transition: transform 1s; 
 
 
     -ms-transform: rotate(180deg); /* IE 9 */
