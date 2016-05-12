@@ -78,6 +78,9 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
             }
         };
         heatmapBtn.updateIcon(new ThemeResource("img/logo.png"));
+        heatmapBtn.setWidth(100,Unit.PIXELS);
+        heatmapBtn.setHeight(100,Unit.PIXELS);
+        
 
         mainViewPanelHeight = height;
         mainViewPanelWidth = width - 200;
@@ -93,6 +96,8 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
             }
         };
         bubblechartBtn.updateIcon(new ThemeResource("img/logo.png"));
+        bubblechartBtn.setWidth(100,Unit.PIXELS);
+        bubblechartBtn.setHeight(100,Unit.PIXELS);
         this.addButton(bubblechartBtn, new VerticalLayout(), false);
 
         tableBtn = new ImageContainerBtn() {
@@ -103,6 +108,8 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
             }
         };
         tableBtn.updateIcon(new ThemeResource("img/logo.png"));
+        tableBtn.setWidth(100,Unit.PIXELS);
+        tableBtn.setHeight(100,Unit.PIXELS);
         this.addButton(tableBtn, new VerticalLayout(), false);
 
         linechartBtn = new ImageContainerBtn() {
@@ -113,6 +120,8 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
             }
         };
         linechartBtn.updateIcon(new ThemeResource("img/logo.png"));
+        linechartBtn.setWidth(100,Unit.PIXELS);
+        linechartBtn.setHeight(100,Unit.PIXELS);
         this.addButton(linechartBtn, new VerticalLayout(), false);
 
         peptideInfoBtn = new ImageContainerBtn() {
@@ -123,6 +132,8 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
             }
         };
         peptideInfoBtn.updateIcon(new ThemeResource("img/logo.png"));
+        peptideInfoBtn.setWidth(100,Unit.PIXELS);
+        peptideInfoBtn.setHeight(100,Unit.PIXELS);
         this.addButton(peptideInfoBtn, new VerticalLayout(), false);
     }
 

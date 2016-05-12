@@ -29,29 +29,32 @@ public class HeatMapImgGenerator {
         heatmapPanelLayout.setLayout(null);
         heatmapPanelLayout.setVisible(true);
 
-        int width = (columns.length + 1) * 50;
-        int height = (rows.length + 1) * 50;
+        int width = (columns.length *50)+100;
+        int height = (rows.length * 50)+100;
         heatmapPanelLayout.setSize(width, height);
         JPanel cornerCell = initCell("transparent", 0, 0);
-        int x = 50;
+        cornerCell.setSize(100,100);
+        int x = 100;
         int y = 0;
         heatmapPanelLayout.add(cornerCell);
 
         for (String headerCell : columns) {
             JPanel cell = initCell(headerCell, x, y);
+            cell.setSize(50, 100);
             x += 50;
             heatmapPanelLayout.add(cell);
 
         }
-        y = 50;
+        y = 100;
         for (String headerCell : rows) {
             JPanel cell = initCell(headerCell, 0, y);
+             cell.setSize(100, 50);
             y += 50;
             heatmapPanelLayout.add(cell);
 
         }
-        x = 50;
-        y = 50;
+        x = 100;
+        y = 100;
         for (String[] row : data) {
             for (String color : row) {
                 JPanel cell = initCell(color, x, y);
@@ -106,5 +109,6 @@ public class HeatMapImgGenerator {
         return cell;
 
     }
+    
 
 }

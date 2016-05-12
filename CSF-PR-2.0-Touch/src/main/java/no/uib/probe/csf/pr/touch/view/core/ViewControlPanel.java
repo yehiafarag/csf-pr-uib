@@ -67,6 +67,7 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
         Btn.addLayoutClickListener(this);
         layoutControlMap.put(leftSideContainer.getComponentIndex(Btn), mainViewLayout);
         this.addComponent(mainViewLayout);
+        this.setComponentAlignment(mainViewLayout, Alignment.TOP_CENTER);
         listener = (LayoutEvents.LayoutClickEvent event) -> {
             mainViewLayout.removeLayoutClickListener(listener);
             mainViewLayout.setWidth(mainViewLayout.getWidth() - 200, Unit.PIXELS);

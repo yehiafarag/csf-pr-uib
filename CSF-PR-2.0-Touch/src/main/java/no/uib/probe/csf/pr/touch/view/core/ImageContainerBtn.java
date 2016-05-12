@@ -26,8 +26,8 @@ public abstract class ImageContainerBtn extends VerticalLayout implements Layout
     public ImageContainerBtn() {
         img = new Image();
 
-        img.setWidth("100px");
-        img.setHeight("100px");
+        img.setWidth(100,Unit.PERCENTAGE);
+        img.setHeight(100,Unit.PERCENTAGE);
         this.addComponent(img);
 
         this.setStyleName("bigbtn");
