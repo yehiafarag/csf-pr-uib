@@ -280,6 +280,9 @@
         transform: translatey(30%);
     }
 }
+@keyframes blink { 
+    50% { border-color: orange; } 
+}
 
 /**
  * Outputs cross-browser Valo-specific linear gradient background-image declarations.
@@ -11444,7 +11447,6 @@ div.v-layout.v-horizontal.v-widget {
     font-weight: 500;
     font-size: 14px;
     color: #414141;
-    text-transform: uppercase;
     letter-spacing: 0;
     margin-top: 2.4em;
     margin-bottom: 0.8em;
@@ -12944,7 +12946,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 .lightgraylayout{
     background-color: lightgray !important;
-    
+
 }
 
 .redlayout{
@@ -13389,10 +13391,10 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .alldiseasestyle{
- border: 2px solid lightgray;
-   background: -webkit-linear-gradient(left, #A52A2A, #74716E 76%, #74716E 12%, #4b7865 );
+    border: 2px solid lightgray;
+    background: -webkit-linear-gradient(left, #A52A2A, #74716E 76%, #74716E 12%, #4b7865 );
     color: white !important;
-    
+
 
 
 }
@@ -13515,7 +13517,7 @@ div.v-layout.v-horizontal.v-widget {
 .hmbottom{
     zoom: 1 !important;
     min-width: 400px !important;
-    
+
 }
 .exportxslbtn{
     background-image: url(img/xls-text-o-2.png);
@@ -13709,22 +13711,22 @@ div.v-layout.v-horizontal.v-widget {
 
 
 .zoompanel{
-     -ms-transform: rotate(-45eg); /* IE 9 */
+    -ms-transform: rotate(-45eg); /* IE 9 */
     -webkit-transform: rotate(-45deg); /* Chrome, Safari, Opera */
     transform: rotate(-45deg);
     overflow:hidden;
-  
-    
+
+
 }
 .zoompanel:hover{
 
- 
+
 
 
 }
 .zoompanel .filterbtn{
 
-   -ms-transform: rotate(-45eg); /* IE 9 */
+    -ms-transform: rotate(-45eg); /* IE 9 */
     -webkit-transform: rotate(-45deg); /* Chrome, Safari, Opera */
     transform: rotate(-45deg);
     background-color:white;
@@ -13737,34 +13739,34 @@ div.v-layout.v-horizontal.v-widget {
     background-repeat:no-repeat;
     background-size:contain;
     background-position:center;
-    
+
 }
 .resetzoom:hover{
 
 }
 .scrollable{
     overflow: auto !important;
-    
+
 }
 .v-panel-content-panelwrapper{
     margin-right:25px;
-    
+
 }
 .v-panel-content-maxbodyheight{
-padding-bottom:10px !important;
+    padding-bottom:10px !important;
 
 }
 .bubble{
     box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
- -webkit-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
- -moz-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
- /* CSS3 Border Radius */
- border-radius:50%;
- -webkit-border-radius:50%;
- -moz-border-radius:50%;
- /* CSS3 Transition */
- -webkit-transition: all .5s ease-in-out;
- -moz-transition: all .5s ease-in-out;
- -o-transition: all .5s ease-in-out;
- transition: all .5s ease-in-out;
+    -webkit-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+    -moz-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+    /* CSS3 Border Radius */
+    border-radius:50%;
+    -webkit-border-radius:50%;
+    -moz-border-radius:50%;
+    /* CSS3 Transition */
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
 }

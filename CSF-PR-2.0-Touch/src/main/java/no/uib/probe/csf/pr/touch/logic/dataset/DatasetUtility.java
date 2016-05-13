@@ -365,6 +365,7 @@ public class DatasetUtility implements Serializable {
                 headerCellInfo.setDiseaseGroupOreginalName(str.split("__")[0]);
                 headerCellInfo.setDiseaseCategory(str.split("__")[1]);
                 headerCellInfo.setDiseaseStyleName(str.split("__")[2]);
+                headerCellInfo.setDiseaseCategory(str.split("__")[1]);
                 headerCellInfo.setDiseaseColor(fullDiseaseCategoryMap.get(headerCellInfo.getDiseaseCategory()).getDiseaseHashedColor());
                 headerCellInfo.setDiseaseGroupFullName(diseaseGroupFullNameMap.get(headerCellInfo.getDiseaseGroupName()));
                 selectedHeatMapRows.add(headerCellInfo);

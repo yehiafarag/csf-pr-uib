@@ -21,19 +21,21 @@ import org.jfree.chart.encoders.ImageFormat;
  */
 public class HeatMapImgGenerator {
 
-    private final Color transparent = Color.WHITE;
+    private final Color transparent = new Color(255, 255, 255, 0);
+    private final Color white = new Color(255, 255, 255);
 
     public String generateHeatmap(String[] rows, String[] columns, String[][] data) {
 
         JPanel heatmapPanelLayout = new JPanel();
         heatmapPanelLayout.setLayout(null);
         heatmapPanelLayout.setVisible(true);
+        heatmapPanelLayout.setBackground(white);
 
-        int width = (columns.length *50)+100;
-        int height = (rows.length * 50)+100;
+        int width = (columns.length * 50) + 100;
+        int height = (rows.length * 50) + 100;
         heatmapPanelLayout.setSize(width, height);
         JPanel cornerCell = initCell("transparent", 0, 0);
-        cornerCell.setSize(100,100);
+        cornerCell.setSize(100, 100);
         int x = 100;
         int y = 0;
         heatmapPanelLayout.add(cornerCell);
@@ -48,7 +50,7 @@ public class HeatMapImgGenerator {
         y = 100;
         for (String headerCell : rows) {
             JPanel cell = initCell(headerCell, 0, y);
-             cell.setSize(100, 50);
+            cell.setSize(100, 50);
             y += 50;
             heatmapPanelLayout.add(cell);
 
@@ -61,7 +63,7 @@ public class HeatMapImgGenerator {
                 heatmapPanelLayout.add(cell);
                 x += 50;
             }
-            x = 50;
+            x = 100;
             y += 50;
         }
 
@@ -90,8 +92,11 @@ public class HeatMapImgGenerator {
         JPanel cell = new JPanel();
         cell.setSize(50, 50);
         Color c;
-        if (color.equalsIgnoreCase("RGB(255,255,255)")) {
-            c = transparent;
+        if (color == null) {
+            c = white;
+        }
+        else if (color.equalsIgnoreCase("RGB(255,255,255)")) {
+            c = white;
         } else if (color.contains("#")) {
             c = Color.decode(color);
         } else if (color.toLowerCase().contains("rgb")) {
@@ -99,16 +104,15 @@ public class HeatMapImgGenerator {
             String[] stringRGBArr = rgb.split(",");
             c = new Color(Integer.valueOf(stringRGBArr[0]), Integer.valueOf(stringRGBArr[1]), Integer.valueOf(stringRGBArr[2]));
         } else {
-            c = transparent;
+            c = white;
         }
 
         cell.setBackground(c);
         cell.setOpaque(true);
         cell.setLocation(x, y);
-        cell.setBorder(new LineBorder(transparent));
+        cell.setBorder(new LineBorder(Color.LIGHT_GRAY));
         return cell;
 
     }
-    
 
 }

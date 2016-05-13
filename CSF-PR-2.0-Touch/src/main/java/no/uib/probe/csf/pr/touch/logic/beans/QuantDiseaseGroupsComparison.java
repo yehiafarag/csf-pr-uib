@@ -14,14 +14,19 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
     private String comparisonHeader;
     private String oreginalComparisonHeader;
     private int[] datasetIndexes;
-//    private Map<String, DiseaseGroupsComparisonsProteinLayout> comparProtsMap;
     private String rgbStringColor;
     private boolean useCustomRowHeaderToSort;
     private boolean useCustomColumnHeaderToSort;
     private String comparisonFullName;
-    private String diseaseGroupI;
-    private String DiseaseGroupII;
     private DiseaseCategoryObject diseaseCategory;
+
+    public DiseaseCategoryObject getDiseaseCategory() {
+        return diseaseCategory;
+    }
+
+    public void setDiseaseCategory(DiseaseCategoryObject diseaseCategory) {
+        this.diseaseCategory = diseaseCategory;
+    }
 
     public void setComparisonFullName(String comparisonFullName) {
         this.comparisonFullName = comparisonFullName;
@@ -38,7 +43,6 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
         comparisonHeader = comparisonHeader.split(" / ")[1] + " / " + comparisonHeader.split(" / ")[0];
         String d = " - " + oreginalComparisonHeader.split(" / ")[0].split("\n")[1].replace("_", " ").replace("Disease", "");
         comparisonFullName = comparisonFullName.split(" / ")[1].replace(d, "") + " / " + comparisonFullName.split(" / ")[0] + d;
-//        comparProtsMap = null;
 
     }
 

@@ -163,6 +163,8 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
                     Data_handler.updateCobinedGroups(updatedGroupsNamesMap);
                       heatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), Data_handler.getFullQuantDsMap());
                 }
+
+                
                 
                 
 

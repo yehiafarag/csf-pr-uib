@@ -1,4 +1,3 @@
-
 package no.uib.probe.csf.pr.touch.logic.beans;
 
 import java.io.Serializable;
@@ -7,11 +6,12 @@ import java.util.Objects;
 /**
  *
  * @author Yehia Farag
- * 
- * this class provides all requires information for heat map cell 
+ *
+ * this class provides all requires information for heat map cell
  */
-public class HeatMapHeaderCellInformationBean implements Serializable{
-    private String diseaseCategory ;
+public class HeatMapHeaderCellInformationBean implements Serializable {
+
+    private String diseaseCategory;
     private String diseaseGroupName;
     private String diseaseStyleName;
     private String diseaseColor;
@@ -60,16 +60,20 @@ public class HeatMapHeaderCellInformationBean implements Serializable{
 
     @Override
     public String toString() {
-        return diseaseGroupName;
+        return diseaseGroupName + "__" + diseaseCategory;
     }
 
     public String getDiseaseGroupFullName() {
+        if (diseaseGroupFullName == null) {
+            return diseaseGroupName;
+        }
         return diseaseGroupFullName;
     }
 
     public void setDiseaseGroupFullName(String diseaseGroupFullName) {
         this.diseaseGroupFullName = diseaseGroupFullName;
     }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -95,6 +99,5 @@ public class HeatMapHeaderCellInformationBean implements Serializable{
         hash = 19 * hash + Objects.hashCode(this.diseaseGroupName);
         return hash;
     }
-    
-    
+
 }

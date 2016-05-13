@@ -75,7 +75,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFFilt
         btnsWrapper.setWidthUndefined();
         popupBtnsLayout.addComponent(btnsWrapper);
 
-         zoomControler = new ZoomControler();
+        zoomControler = new ZoomControler();
 
         btnsWrapper.addComponent(zoomControler);
         btnsWrapper.setComponentAlignment(zoomControler, Alignment.MIDDLE_LEFT);
@@ -110,7 +110,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFFilt
 //        
         //init heatmap
         int availableHMHeight = mainbodyLayoutHeight - 100;
-        heatmapLayoutContainer = new HeatMapLayout(mainbodyLayoutWidth, availableHMHeight, activeColumnHeaders,zoomControler.getResetZoomBtn()) {
+        heatmapLayoutContainer = new HeatMapLayout(mainbodyLayoutWidth, availableHMHeight, activeColumnHeaders, zoomControler.getResetZoomBtn()) {
             @Override
             public void updateSelectionManager(Set<QuantDiseaseGroupsComparison> selectedDsList) {
 //                CSFPR_Central_Manager.setDiseaseGroupsComparisonSelection(selectedDsList);
@@ -130,6 +130,12 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFFilt
                     topFilterContainerLayout.removeStyleName("absoluteposition");
                 }
 
+            }
+
+            @Override
+            public void updateHMThumb(String imgUrl, int datasetNumber) {
+//l, datasetNumber, fullQuantDsMap.size()
+                HeatMapComponent.this.updateIcon(imgUrl);
             }
 
         };
@@ -158,18 +164,17 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFFilt
             Thread.sleep(500);
         } catch (InterruptedException e) {
         }
-
+        this.fullQuantDsMap.clear();
+        this.fullQuantDsMap.putAll(fullQuantDsMap);
         heatmapLayoutContainer.updateData(rowheaders, colheaders, patientsGroupComparisonsSet, fullQuantDsMap);
 
-        updateIcon(heatmapLayoutContainer.getHMThumbImg());
         this.rowheaders.clear();
         this.rowheaders.addAll(rowheaders);
         this.colheaders.clear();
         this.colheaders.addAll(colheaders);
         this.patientsGroupComparisonsSet.clear();
         this.patientsGroupComparisonsSet.addAll(patientsGroupComparisonsSet);
-        this.fullQuantDsMap.clear();
-        this.fullQuantDsMap.putAll(fullQuantDsMap);
+
         this.filteredQuantDsMap.clear();
         this.filteredQuantDsMap.putAll(fullQuantDsMap);
         zoomControler.setDefaultZoomLevel(heatmapLayoutContainer.getZoomLevel());
@@ -230,5 +235,6 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFFilt
     }
 
     public abstract void updateCobinedGroups(Map<String, Map<String, String>> updatedGroupsNamesMap);
+
 
 }

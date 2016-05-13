@@ -16,16 +16,16 @@ import java.io.Serializable;
  */
 public class DiseaseGroupComparison implements Serializable {
 
-    private String DiseaseCategory;
+    private String diseaseCategory;
 
     private String diseaseStyleName;
 
     public String getDiseaseCategory() {
-        return DiseaseCategory;
+        return diseaseCategory;
     }
 
     public void setDiseaseCategory(String DiseaseCategory) {
-        this.DiseaseCategory = DiseaseCategory;
+        this.diseaseCategory = DiseaseCategory;
     }
 
     private int quantDatasetIndex, originalDatasetIndex;
@@ -124,14 +124,11 @@ public class DiseaseGroupComparison implements Serializable {
 
     /**
      *
-     * @param label
+     * @param label subgroup name__disease category
      * @return
      */
     public boolean checkLabel(String label) {
-        if (label.equalsIgnoreCase(activeDiseaseSubGroupI) || label.equalsIgnoreCase(activeDiseaseSubGroupII)) {
-            return true;
-        }
-        return false;
+        return label.equalsIgnoreCase(activeDiseaseSubGroupI+"__"+diseaseCategory) || label.equalsIgnoreCase(activeDiseaseSubGroupII+"__"+diseaseCategory);
 
     }
 
@@ -141,10 +138,10 @@ public class DiseaseGroupComparison implements Serializable {
      * @return
      */
     public String getValLabel(String key) {
-        if (key.equalsIgnoreCase(activeDiseaseSubGroupI)) {
-            return activeDiseaseSubGroupII;
-        } else if (key.equalsIgnoreCase(activeDiseaseSubGroupII)) {
-            return activeDiseaseSubGroupI;
+        if (key.equalsIgnoreCase(activeDiseaseSubGroupI+"__"+diseaseCategory)) {
+            return activeDiseaseSubGroupII+"__"+diseaseCategory;
+        } else if (key.equalsIgnoreCase(activeDiseaseSubGroupII+"__"+diseaseCategory)) {
+            return activeDiseaseSubGroupI+"__"+diseaseCategory;
         } else {
             return null;
         }

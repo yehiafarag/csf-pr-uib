@@ -6,28 +6,11 @@
 package no.uib.probe.csf.pr.touch.view.components.heatmapsubcomponents;
 
 import com.vaadin.event.LayoutEvents;
-import com.vaadin.server.ClientMethodInvocation;
-import com.vaadin.server.ErrorHandler;
-import com.vaadin.server.Extension;
-import com.vaadin.server.Resource;
-import com.vaadin.server.ServerRpcManager;
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinResponse;
-import com.vaadin.server.VaadinSession;
-import com.vaadin.shared.communication.ClientRpc;
-import com.vaadin.shared.communication.ServerRpc;
-import com.vaadin.shared.communication.SharedState;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import elemental.json.JsonObject;
-import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.EventObject;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -64,7 +47,7 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
      * @return
      */
     public String getValueLabel() {
-        return title;
+        return title+"__"+diseaseCategory;
     }
     private boolean selected = false;
     private final Set<QuantDiseaseGroupsComparison> includedComparisons = new LinkedHashSet<>();
@@ -72,6 +55,7 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
     private final String title;
     private final String fullName;
     private String color;
+    private final String diseaseCategory;
 
     /**
      *
@@ -83,8 +67,9 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
      * @param headerHeight
      * @param fullDiseaseGroupName
      */
-    public HeaderCell(boolean rotate, String title, String diseaseStyle, int index, int headerWidth, int headerHeight, String fullDiseaseGroupName) {
+    public HeaderCell(boolean rotate, String title, String diseaseStyle, int index, int headerWidth, int headerHeight, String fullDiseaseGroupName,String diseaseCategory) {
         this.includedCells = new ArrayList<>();
+        this.diseaseCategory=diseaseCategory;
         if (rotate) {
             this.addStyleName("rotateheader");
             this.setHeight(headerWidth + "px");

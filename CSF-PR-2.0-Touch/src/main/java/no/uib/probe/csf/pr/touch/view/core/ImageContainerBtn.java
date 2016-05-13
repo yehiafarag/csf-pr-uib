@@ -45,6 +45,7 @@ public abstract class ImageContainerBtn extends VerticalLayout implements Layout
      */
     public void updateIcon(Resource imgResource) {
         img.setSource(imgResource);
+        blink();
     }
 
     @Override
