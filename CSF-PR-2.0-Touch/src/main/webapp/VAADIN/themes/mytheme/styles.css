@@ -283,6 +283,9 @@
 @keyframes blink { 
     50% { border-color: orange; } 
 }
+@keyframes blinkII { 
+    50% { border-color: orange; } 
+}
 
 /**
  * Outputs cross-browser Valo-specific linear gradient background-image declarations.
@@ -13161,11 +13164,6 @@ div.v-layout.v-horizontal.v-widget {
     border-radius: 4px;
     padding: 5px;
 
-    /*    animation-name: blink ;
-        animation-duration: .5s ;
-        animation-timing-function: step-end ;
-        animation-iteration-count: 8 ;
-        animation-direction: alternate ;*/
 
 }
 .bigbtn img:hover{ 
@@ -13345,6 +13343,14 @@ div.v-layout.v-horizontal.v-widget {
 }
 .blink{ 
     animation-name: blink !important;
+    animation-duration: .5s !important;
+    animation-timing-function: step-end !important;
+    animation-iteration-count: 8 !important;
+    animation-direction: alternate !important;
+
+}
+.blinkII{ 
+    animation-name: blinkII !important;
     animation-duration: .5s !important;
     animation-timing-function: step-end !important;
     animation-iteration-count: 8 !important;

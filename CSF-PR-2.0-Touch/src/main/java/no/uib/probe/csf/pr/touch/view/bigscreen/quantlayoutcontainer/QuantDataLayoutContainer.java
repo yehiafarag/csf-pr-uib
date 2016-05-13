@@ -141,7 +141,6 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
         switch (btnId) {
 
             case "heatmap":
-                bubblechartBtn.blink();
                 break;
 
         }

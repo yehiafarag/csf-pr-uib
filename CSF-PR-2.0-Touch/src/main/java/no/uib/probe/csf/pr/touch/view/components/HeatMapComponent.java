@@ -160,8 +160,9 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFFilt
      */
     public void updateData(LinkedHashSet<HeatMapHeaderCellInformationBean> rowheaders, LinkedHashSet<HeatMapHeaderCellInformationBean> colheaders, Set<DiseaseGroupComparison> patientsGroupComparisonsSet, Map<Integer, QuantDatasetObject> fullQuantDsMap) {
 
+        int waiting = fullQuantDsMap.size()*100;
         try {
-            Thread.sleep(500);
+            Thread.sleep(waiting);
         } catch (InterruptedException e) {
         }
         this.fullQuantDsMap.clear();
