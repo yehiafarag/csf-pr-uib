@@ -44,8 +44,7 @@ public abstract class ImageContainerBtn extends VerticalLayout implements Layout
      *
      * @param imgResource
      */
-    public void updateIcon(Resource imgResource) {        
-//        muteBlink();
+    public void updateIcon(Resource imgResource) {     
         img.setSource(imgResource);
         blink();
     }
@@ -66,12 +65,7 @@ public abstract class ImageContainerBtn extends VerticalLayout implements Layout
             img.addStyleName("blinkII");
         }
         
-    }
-
-    private void muteBlink() {
-        img.removeStyleName("blink");
-        
-    }
+    } 
     
     public abstract void onClick();
     

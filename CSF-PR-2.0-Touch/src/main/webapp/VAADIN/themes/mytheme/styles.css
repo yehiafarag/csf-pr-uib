@@ -13649,6 +13649,13 @@ div.v-layout.v-horizontal.v-widget {
     border-radius:4px;
     cursor: pointer;
     padding:2px;
+    font-size:14px;
+    line-height:1.4;
+    font-weight:bold;
+
+}
+.defaultcursor{
+    cursor: default !important;
 
 }
 .filterbtn:hover{
@@ -13775,4 +13782,27 @@ div.v-layout.v-horizontal.v-widget {
     -moz-transition: all .5s ease-in-out;
     -o-transition: all .5s ease-in-out;
     transition: all .5s ease-in-out;
+}
+.applied{
+    border-color:gray;
+    border-width:1px;
+    background-color:lightgray;
+    opacity: 1 !important;
+    
+
+     -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+
+    
+     box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+    -webkit-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+    -moz-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+
+
+
+}
+.unapplied{
+    opacity: 0.5 !important;
 }

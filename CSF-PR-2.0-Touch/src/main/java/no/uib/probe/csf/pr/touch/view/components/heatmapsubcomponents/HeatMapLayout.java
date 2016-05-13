@@ -329,9 +329,9 @@ public abstract class HeatMapLayout extends VerticalLayout {
      * @param datasets
      */
     public void filterHeatMap(Map<Integer, QuantDatasetObject> datasets) {
-        Set<String> headers = new HashSet<>();
-        Set<String> comparisonTitlesMap = new HashSet<>();
-        Map<String, Integer> valueMap = new HashMap<>();
+        Set<String> headers = new LinkedHashSet<>();
+        Set<String> comparisonTitlesMap = new LinkedHashSet<>();
+        Map<String, Integer> valueMap = new LinkedHashMap<>();
 
         Set<HeatMapHeaderCellInformationBean> localRowHeadersSet = new LinkedHashSet<>(), localcolHeadersSet = new LinkedHashSet<>();
 
@@ -354,8 +354,8 @@ public abstract class HeatMapLayout extends VerticalLayout {
             valueMap.put(grII + " / " + grI, valueMap.get(grII + " / " + grI) + 1);
         });
 
-        Set<Integer> activeColumn = new HashSet<>();
-        Set<Integer> activeRows = new HashSet<>();
+        Set<Integer> activeColumn = new LinkedHashSet<>();
+        Set<Integer> activeRows = new LinkedHashSet<>();
         //update column
         activeColumn.add(0);
         activeRows.add(0);
@@ -386,9 +386,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
         }
 
-     
         //updateBody
-
         for (int row = 1; row < heatmapBody.getRows(); row++) {
             for (int col = 1; col < heatmapBody.getColumns(); col++) {
                 HeatmapCell cell = (HeatmapCell) heatmapBody.getComponent(col, row);
@@ -416,41 +414,40 @@ public abstract class HeatMapLayout extends VerticalLayout {
         //update thumb  data
         activeRows.remove(0);
         activeColumn.remove(0);
-           rowsColors = new String[activeRows.size()];
+        rowsColors = new String[activeRows.size()];
         columnsColors = new String[activeColumn.size()];
         int r = 0;
         for (int i : activeRows) {
-            
-            rowsColors[r++] = ((HeatMapHeaderCellInformationBean)rowheadersSet.toArray()[i]).getDiseaseColor();
+
+            rowsColors[r++] = ((HeatMapHeaderCellInformationBean) rowheadersSet.toArray()[i]).getDiseaseColor();
 
         }
         r = 0;
         for (int i : activeColumn) {
-            columnsColors[r++] = ((HeatMapHeaderCellInformationBean)colheadersSet.toArray()[i]).getDiseaseColor();
+            columnsColors[r++] = ((HeatMapHeaderCellInformationBean) colheadersSet.toArray()[i]).getDiseaseColor();
         }
 
         int rowCount = 0, ColumnCount = 0;
         for (int x : activeRows) {
             for (int y : activeColumn) {
                 HeatmapCell cell = (HeatmapCell) heatmapBody.getComponent(y, x);
-                dataColors[rowCount][ColumnCount++] = cell.getColor();
+                if (cell.isVisible()) {
+                    dataColors[rowCount][ColumnCount++] = cell.getColor();
+                } else {
+                    dataColors[rowCount][ColumnCount++] = "#BDBDBD";
+                }
 
             }
             rowCount++;
             ColumnCount = 0;
         }
-        
-        
-        
+
         //update labels        
         this.columnCategoryHeadersContainer.setWidth(heatmapCellWidth * localcolHeadersSet.size(), Unit.PIXELS);
         this.rowCategoryHeadersContainer.setHeight(heatmapCellHeight * localRowHeadersSet.size(), Unit.PIXELS);
 
         updateDiseaseHeadersLabel(localRowHeadersSet, localcolHeadersSet);
         updateHMThumb(getHMThumbImg(), datasets.size());
-        
-        
-        
 
     }
 
