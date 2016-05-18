@@ -150,6 +150,7 @@ public abstract class DatasetPieChartFilter extends VerticalLayout implements La
      * @param chartData information required to update chart data
      */
     public void initializeFilterData(Map<Comparable, PieChartSlice> chartData) {
+        this.chartData.clear();
         this.chartData.putAll(chartData);
         fullDsIds.clear();
         reset();

@@ -30,6 +30,7 @@
 // Example variants can be copy/pasted from https://vaadin.com/wiki/-/wiki/Main/Valo+Examples
 
 @import "../valo/valo.scss";
+@import "mytheme.css"
 
 @mixin mytheme {
   @include valo;

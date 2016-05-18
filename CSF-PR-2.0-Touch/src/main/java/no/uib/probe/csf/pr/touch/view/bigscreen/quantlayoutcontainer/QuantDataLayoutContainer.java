@@ -78,9 +78,8 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
             }
         };
         heatmapBtn.updateIcon(new ThemeResource("img/logo.png"));
-        heatmapBtn.setWidth(100,Unit.PIXELS);
-        heatmapBtn.setHeight(100,Unit.PIXELS);
-        
+        heatmapBtn.setWidth(100, Unit.PIXELS);
+        heatmapBtn.setHeight(100, Unit.PIXELS);
 
         mainViewPanelHeight = height;
         mainViewPanelWidth = width - 200;
@@ -96,8 +95,8 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
             }
         };
         bubblechartBtn.updateIcon(new ThemeResource("img/logo.png"));
-        bubblechartBtn.setWidth(100,Unit.PIXELS);
-        bubblechartBtn.setHeight(100,Unit.PIXELS);
+        bubblechartBtn.setWidth(100, Unit.PIXELS);
+        bubblechartBtn.setHeight(100, Unit.PIXELS);
         this.addButton(bubblechartBtn, new VerticalLayout(), false);
 
         tableBtn = new ImageContainerBtn() {
@@ -108,8 +107,8 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
             }
         };
         tableBtn.updateIcon(new ThemeResource("img/logo.png"));
-        tableBtn.setWidth(100,Unit.PIXELS);
-        tableBtn.setHeight(100,Unit.PIXELS);
+        tableBtn.setWidth(100, Unit.PIXELS);
+        tableBtn.setHeight(100, Unit.PIXELS);
         this.addButton(tableBtn, new VerticalLayout(), false);
 
         linechartBtn = new ImageContainerBtn() {
@@ -120,8 +119,8 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
             }
         };
         linechartBtn.updateIcon(new ThemeResource("img/logo.png"));
-        linechartBtn.setWidth(100,Unit.PIXELS);
-        linechartBtn.setHeight(100,Unit.PIXELS);
+        linechartBtn.setWidth(100, Unit.PIXELS);
+        linechartBtn.setHeight(100, Unit.PIXELS);
         this.addButton(linechartBtn, new VerticalLayout(), false);
 
         peptideInfoBtn = new ImageContainerBtn() {
@@ -132,8 +131,8 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
             }
         };
         peptideInfoBtn.updateIcon(new ThemeResource("img/logo.png"));
-        peptideInfoBtn.setWidth(100,Unit.PIXELS);
-        peptideInfoBtn.setHeight(100,Unit.PIXELS);
+        peptideInfoBtn.setWidth(100, Unit.PIXELS);
+        peptideInfoBtn.setHeight(100, Unit.PIXELS);
         this.addButton(peptideInfoBtn, new VerticalLayout(), false);
     }
 
@@ -150,7 +149,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
     private void loadDiseaseCategory(String DiseaseCategoryName) {
         Data_handler.loadDiseaseCategory(DiseaseCategoryName);
         if (heatmapComponent == null) {
-            heatmapComponent = new HeatMapComponent(CSFPR_Central_Manager, Data_handler.getDiseaseCategorySet(),  mainViewPanelWidth, mainViewPanelHeight, Data_handler.getActiveDataColumns()) {
+            heatmapComponent = new HeatMapComponent(CSFPR_Central_Manager, Data_handler.getDiseaseCategorySet(), mainViewPanelWidth, mainViewPanelHeight, Data_handler.getActiveDataColumns()) {
 
                 @Override
                 public void updateIcon(String imageUrl) {
@@ -158,14 +157,16 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
                 }
 
                 @Override
-                public void updateCobinedGroups(Map<String, Map<String, String>> updatedGroupsNamesMap) {
-                    Data_handler.updateCobinedGroups(updatedGroupsNamesMap);
-                      heatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), Data_handler.getFullQuantDsMap());
+                public void updateCombinedGroups(Map<String, Map<String, String>> updatedGroupsNamesMap) {
+                    Data_handler.updateCombinedGroups(updatedGroupsNamesMap);
+                    heatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), Data_handler.getFullQuantDsMap());
                 }
 
-                
-                
-                
+                @Override
+                public void updateCSFSerumDatasets(boolean serumApplied, boolean csfApplied) {
+                    Data_handler.updateCSFSerumDatasets(serumApplied, csfApplied);
+                    heatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), Data_handler.getFullQuantDsMap());
+                }
 
             };
             heatmapViewContainer.addComponent(heatmapComponent);

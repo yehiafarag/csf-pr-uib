@@ -683,6 +683,18 @@ public class DatasetUtility implements Serializable {
         });
 
     }
+    
+    /**
+     * this method allow users to filter the datasets based on sample type (CSF
+     * / Serum)
+     *
+     *
+     * @param serumApplied show Serum datasets
+     * @param csfApplied show CSF datasets
+     */
+     public void updateCSFSerumDatasets(boolean serumApplied, boolean csfApplied){
+     
+     }
 
     private void updateGroupsNames(String diseaseCategoryName, QuantData updatingData) {
         if (!inUse_DiseaseCat_DiseaseGroupMap.containsKey(diseaseCategoryName)) {

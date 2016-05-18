@@ -130,7 +130,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
 
         this.popupBody.addComponent(btnLayout, 2, 2);
         this.popupBody.setComponentAlignment(btnLayout, Alignment.MIDDLE_CENTER);
-        
+
         Button applyFilters = new Button("Apply");
         applyFilters.setDescription("Apply the selected filters");
         applyFilters.setStyleName(ValoTheme.BUTTON_TINY);
@@ -140,11 +140,10 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
-               popupWindow.close();
+                popupWindow.close();
             }
         });
 
-      
         Button unselectAllBtn = new Button("Clear");
         unselectAllBtn.setStyleName(ValoTheme.BUTTON_TINY);
         btnLayout.addComponent(unselectAllBtn);
@@ -154,7 +153,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                singlefilter=false;
+                singlefilter = false;
                 resetFilters();
             }
         });
@@ -187,7 +186,6 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
 //        StreamResource myResource = createResource(handler);
 //        FileDownloader fileDownloader = new FileDownloader(myResource);
 //        fileDownloader.extend(exportChartsBtn);
-
     }
 
     /**
@@ -203,6 +201,10 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         }
         this.quantDatasetMap = quantDatasetMap;
         updatePieChartSliceSet();
+
+    }
+
+    public void updateFullDatasetIds() {
 
     }
 
@@ -353,7 +355,6 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         if (counter == 1) {
             singlefilter = true;
         }
-
         return finalSelectionIds;
 
     }
@@ -363,14 +364,13 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
             filter.localUpdate(datasetIds, singlefilter);
         });
     }
-    
-    private void resetFilters() {        
+
+    private void resetFilters() {
         filtersSet.values().stream().forEach((filter) -> {
             filter.reset();
         });
-       
+
     }
-    
 
     /**
      * Update the system with the current selected dataset ids
@@ -390,5 +390,11 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         this.updateQuantDatasetMap(this.updatedDatasets());
         popupWindow.setVisible(true);
+    }
+
+    public Set<Integer> checkAndFilter(Map<Integer, QuantDatasetObject> quantDatasetToFilter) {
+        this.updateQuantDatasetMap(quantDatasetToFilter);
+        return filterSelectionUnit();
+
     }
 }

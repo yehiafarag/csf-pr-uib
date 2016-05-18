@@ -13806,3 +13806,68 @@ div.v-layout.v-horizontal.v-widget {
 .unapplied{
     opacity: 0.5 !important;
 }
+
+.v-switch-slider {
+    background: url(img/my-switch.png) no-repeat !important; 
+}
+
+
+.v-select-optiongroup-sortablelayoutselect .v-select-option {
+    height:24px!important;
+    margin-left:-28px !important;
+    margin-top:0px !important;
+    padding-top:0px !important;
+    top:3px;
+}
+
+.countItem{
+    border: 1px solid lightgray;
+    background: whitesmoke;
+    border-radius:4px;
+    margin-left:-2px;
+
+
+}
+
+.countItem div{
+    font-size: 13px;
+    font-stretch: normal;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: bolder;
+    color: gray;
+    text-align:center;
+
+
+}
+.grab{
+      cursor: -webkit-grab !important;;
+      cursor: -moz-grab !important;
+    
+    
+}
+
+.v-drag-element div{
+
+    background:black !important; 
+    opacity:1 !important;
+    border-radius:5px;
+    cursor: -webkit-grabbing !important;
+    cursor: -moz-grabbing !important;    
+  
+}
+
+
+.v-ddwrapper.v-drag-element{
+
+    background:black !important; 
+    border-radius:5px;
+    
+    cursor: -webkit-grabbing !important;   
+    cursor: -moz-grabbing !important;
+    
+   
+}
+.nooutline :focus {
+    outline: none;
+}

@@ -4,7 +4,6 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.ValoTheme;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -19,6 +18,7 @@ import no.uib.probe.csf.pr.touch.selectionmanager.CSFFilter;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
 import no.uib.probe.csf.pr.touch.view.components.datasetfilters.DatasetPieChartFiltersComponent;
 import no.uib.probe.csf.pr.touch.view.components.datasetfilters.RecombineDiseaseGroupsCombonent;
+import no.uib.probe.csf.pr.touch.view.components.datasetfilters.ReorderSelectGroupsFilter;
 import no.uib.probe.csf.pr.touch.view.components.datasetfilters.SerumCsfFilter;
 import no.uib.probe.csf.pr.touch.view.components.heatmapsubcomponents.HeatMapLayout;
 import no.uib.probe.csf.pr.touch.view.core.ZoomControler;
@@ -32,13 +32,15 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFFilt
     private boolean selfselected = false;
     private final HeatMapLayout heatmapLayoutContainer;
     private final DatasetPieChartFiltersComponent datasetPieChartFiltersBtn;
-    private final RecombineDiseaseGroupsCombonent reconineDiseaseGroupsFiltersBtn;
+    private final RecombineDiseaseGroupsCombonent reconbineDiseaseGroupsFiltersBtn;
 
     private final LinkedHashSet<HeatMapHeaderCellInformationBean> rowheaders, colheaders;
     private final Set<DiseaseGroupComparison> patientsGroupComparisonsSet;
     private final Map<Integer, QuantDatasetObject> fullQuantDsMap, filteredQuantDsMap;
     private final ZoomControler zoomControler;
     private final Label datasetCounterLabel;
+    private final  SerumCsfFilter serumCsfFilter ;
+    private final ReorderSelectGroupsFilter reorderSelectBtn;
 
     /**
      *
@@ -78,14 +80,11 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFFilt
         btnsWrapper.setSpacing(true);
         btnsWrapper.setWidthUndefined();
         popupBtnsLayout.addComponent(btnsWrapper);
-        
-        
-        
 
         zoomControler = new ZoomControler();
         btnsWrapper.addComponent(zoomControler);
         btnsWrapper.setComponentAlignment(zoomControler, Alignment.MIDDLE_LEFT);
-        
+
         datasetCounterLabel = new Label();
         datasetCounterLabel.setDescription("#Datasets");
         datasetCounterLabel.setHeight(25, Unit.PIXELS);
@@ -93,8 +92,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFFilt
         btnsWrapper.setComponentAlignment(datasetCounterLabel, Alignment.MIDDLE_LEFT);
         datasetCounterLabel.setStyleName("filterbtn");
         datasetCounterLabel.addStyleName("defaultcursor");
-        
-        
+
         datasetPieChartFiltersBtn = new DatasetPieChartFiltersComponent() {
             @Override
             public void updateSystem(Set<Integer> selectedDatasetIds) {
@@ -110,30 +108,53 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFFilt
         btnsWrapper.addComponent(datasetPieChartFiltersBtn);
         btnsWrapper.setComponentAlignment(datasetPieChartFiltersBtn, Alignment.MIDDLE_LEFT);
 
-        reconineDiseaseGroupsFiltersBtn = new RecombineDiseaseGroupsCombonent(diseaseCategorySet) {
+        reconbineDiseaseGroupsFiltersBtn = new RecombineDiseaseGroupsCombonent(diseaseCategorySet) {
 
             @Override
             public void updateSystem(Map<String, Map<String, String>> updatedGroupsNamesMap) {
-                updateCobinedGroups(updatedGroupsNamesMap);
+                updateCombinedGroups(updatedGroupsNamesMap);
             }
 
         };
-        btnsWrapper.addComponent(reconineDiseaseGroupsFiltersBtn);
-        btnsWrapper.setComponentAlignment(reconineDiseaseGroupsFiltersBtn, Alignment.MIDDLE_LEFT);
+        btnsWrapper.addComponent(reconbineDiseaseGroupsFiltersBtn);
+        btnsWrapper.setComponentAlignment(reconbineDiseaseGroupsFiltersBtn, Alignment.MIDDLE_LEFT);
         
-        SerumCsfFilter serumCsfFilter = new SerumCsfFilter(){
+        
+        
+        
+        
+        reorderSelectBtn = new ReorderSelectGroupsFilter();
+         btnsWrapper.addComponent(reorderSelectBtn);
+        btnsWrapper.setComponentAlignment(reorderSelectBtn, Alignment.MIDDLE_LEFT);
+        
+        
+        
+        
+        
+        
+        
+        
+
+        serumCsfFilter = new SerumCsfFilter() {
 
             @Override
             public void updateSystem(boolean serumApplied, boolean csfApplied) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                Map<Integer, QuantDatasetObject> updatedDsIds = new LinkedHashMap<>();
+                for (int id : fullQuantDsMap.keySet()) {
+                    if (serumApplied && fullQuantDsMap.get(id).getSampleType().equalsIgnoreCase("Serum")) {
+                        updatedDsIds.put(id,fullQuantDsMap.get(id));
+                    } else if (csfApplied && fullQuantDsMap.get(id).getSampleType().equalsIgnoreCase("CSf")) {
+                         updatedDsIds.put(id,fullQuantDsMap.get(id));
+                    }
+                    
+                } 
+                
+                updateSystemComponents(datasetPieChartFiltersBtn.checkAndFilter(updatedDsIds));
             }
-        
-        
+
         };
-          btnsWrapper.addComponent(serumCsfFilter);
+        btnsWrapper.addComponent(serumCsfFilter);
         btnsWrapper.setComponentAlignment(serumCsfFilter, Alignment.MIDDLE_LEFT);
-        
-        
         
 
 //        
@@ -163,7 +184,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFFilt
 
             @Override
             public void updateHMThumb(String imgUrl, int datasetNumber) {
-                datasetCounterLabel.setValue(datasetNumber+"/"+fullQuantDsMap.size());
+                datasetCounterLabel.setValue(datasetNumber + "/" + fullQuantDsMap.size());
                 HeatMapComponent.this.updateIcon(imgUrl);
             }
 
@@ -177,6 +198,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFFilt
         this.filteredQuantDsMap = new LinkedHashMap<>();
         this.fullQuantDsMap = new LinkedHashMap<>();
         this.patientsGroupComparisonsSet = new LinkedHashSet<>();
+        
 
     }
 
@@ -189,7 +211,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFFilt
      */
     public void updateData(LinkedHashSet<HeatMapHeaderCellInformationBean> rowheaders, LinkedHashSet<HeatMapHeaderCellInformationBean> colheaders, Set<DiseaseGroupComparison> patientsGroupComparisonsSet, Map<Integer, QuantDatasetObject> fullQuantDsMap) {
 
-        int waiting = fullQuantDsMap.size()*100;
+        int waiting = fullQuantDsMap.size() * 100;
         try {
             Thread.sleep(waiting);
         } catch (InterruptedException e) {
@@ -208,6 +230,9 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFFilt
         this.filteredQuantDsMap.clear();
         this.filteredQuantDsMap.putAll(fullQuantDsMap);
         zoomControler.setDefaultZoomLevel(heatmapLayoutContainer.getZoomLevel());
+        serumCsfFilter.resetFilter();
+        
+        reorderSelectBtn.updateData(rowheaders, colheaders, patientsGroupComparisonsSet);
 
     }
 
@@ -218,7 +243,6 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFFilt
         fullQuantDsMap.keySet().stream().filter((datasetId) -> (datasetIds.contains(datasetId))).forEach((datasetId) -> {
             filteredQuantDsMap.put(datasetId, fullQuantDsMap.get(datasetId));
         });
-
         heatmapLayoutContainer.filterHeatMap(filteredQuantDsMap);
 
     }
@@ -264,7 +288,23 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFFilt
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public abstract void updateCobinedGroups(Map<String, Map<String, String>> updatedGroupsNamesMap);
+    /**
+     * this method to update and combine disease sub groups based on user
+     * selection
+     *
+     *
+     * @param updatedGroupsNamesMap updated disease sub group names
+     */
+    public abstract void updateCombinedGroups(Map<String, Map<String, String>> updatedGroupsNamesMap);
 
+    /**
+     * this method allow users to filter the datasets based on sample type (CSF
+     * / Serum)
+     *
+     *
+     * @param serumApplied show Serum datasets
+     * @param csfApplied show CSF datasets
+     */
+    public abstract void updateCSFSerumDatasets(boolean serumApplied, boolean csfApplied);
 
 }

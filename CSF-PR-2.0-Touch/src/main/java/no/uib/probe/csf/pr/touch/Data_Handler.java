@@ -186,9 +186,22 @@ public class Data_Handler implements Serializable {
      *
      * @param  updatedGroupsNamesMap updated disease sub group names
      */
-    public void updateCobinedGroups(Map<String, Map<String, String>> updatedGroupsNamesMap) {
+    public void updateCombinedGroups(Map<String, Map<String, String>> updatedGroupsNamesMap) {
         Dataset_Util.updateCobinedGroups(updatedGroupsNamesMap);
 
     }
+    
+    
+    /**
+     * this method allow users to filter the datasets based on sample type (CSF
+     * / Serum)
+     *
+     *
+     * @param serumApplied show Serum datasets
+     * @param csfApplied show CSF datasets
+     */
+     public void updateCSFSerumDatasets(boolean serumApplied, boolean csfApplied){
+         Dataset_Util.updateCSFSerumDatasets(serumApplied, csfApplied);
+     }
 
 }

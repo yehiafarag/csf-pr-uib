@@ -23,12 +23,13 @@ import com.vaadin.ui.VerticalLayout;
  */
 public abstract class SerumCsfFilter extends HorizontalLayout implements LayoutEvents.LayoutClickListener {
 
+    private final VerticalLayout noCSFOptionBtn,noSerumOptionBtn ;
     public SerumCsfFilter() {
         this.setWidthUndefined();
         this.setHeightUndefined();
         this.setSpacing(true);
 
-        final VerticalLayout noCSFOptionBtn = new VerticalLayout();
+        noCSFOptionBtn = new VerticalLayout();
         noCSFOptionBtn.setDescription("Include CSF datasets");
         this.addComponent(noCSFOptionBtn);
         this.setComponentAlignment(noCSFOptionBtn, Alignment.TOP_LEFT);
@@ -46,7 +47,7 @@ public abstract class SerumCsfFilter extends HorizontalLayout implements LayoutE
 
         noCSFOptionBtn.setData("csfBtn");
 
-        final VerticalLayout noSerumOptionBtn = new VerticalLayout();
+         noSerumOptionBtn = new VerticalLayout();
         noSerumOptionBtn.setDescription("Include serum datasets");
         this.addComponent(noSerumOptionBtn);
         this.setComponentAlignment(noSerumOptionBtn, Alignment.TOP_LEFT);
@@ -72,7 +73,13 @@ public abstract class SerumCsfFilter extends HorizontalLayout implements LayoutE
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
 
         VerticalLayout clickedBtn = (VerticalLayout) event.getComponent();
-        if (clickedBtn.getData().toString().equalsIgnoreCase("csfBtn")) {
+        btnClicked(clickedBtn);
+        
+
+    }
+    
+    private void btnClicked(VerticalLayout clickedBtn){
+    if (clickedBtn.getData().toString().equalsIgnoreCase("csfBtn")) {
             if (csfApplied && !serumApplied) {
                 Notification.show("You can not hide both CSF and serum datasets", Notification.Type.WARNING_MESSAGE);
             } else if (csfApplied && serumApplied) {
@@ -112,43 +119,23 @@ public abstract class SerumCsfFilter extends HorizontalLayout implements LayoutE
             }
 
         }
-
-//        if (().getStyleName().contains("unapplied")) {
-//            ((VerticalLayout) event.getComponent()).removeStyleName("unapplied");
-//            ((VerticalLayout) event.getComponent()).addStyleName("applied");
-//        } else {
-//
-//            ((VerticalLayout) event.getComponent()).removeStyleName("applied");
-//            ((VerticalLayout) event.getComponent()).addStyleName("unapplied");
-//        }
-//
-//        if (noCSFOption.getStyleName().equalsIgnoreCase("enablecsfunselected") && noSerumOption.getStyleName().equalsIgnoreCase("enableserumselected")) {
-//            Notification.show("You can not hide both CSF and serum datasets", Notification.Type.TRAY_NOTIFICATION);
-//            return;
-//
-//        }
-//
-//        if (noSerumOption.getStyleName().equalsIgnoreCase("enableserumunselected")) {
-//            boolean success = Quant_Central_Manager.setHideSerum(false);
-//            if (success) {
-//                noSerumOption.setStyleName("enableserumselected");
-//            } else {
-//                Notification.show("No serum datasets available for the selected disease", Notification.Type.TRAY_NOTIFICATION);
-//                return;
-//            }
-//        } else {
-//            boolean success = Quant_Central_Manager.setHideSerum(true);
-//            if (success) {
-//                noSerumOption.setStyleName("enableserumunselected");
-//
-//            } else {
-//                Notification.show("No serum datasets available for the selected disease", Notification.Type.TRAY_NOTIFICATION);
-//                return;
-//            }
-//
-//        }
+    
+    
+    
     }
 
     public abstract void updateSystem(boolean serumApplied, boolean csfApplied);
+
+    public void resetFilter() {
+        serumApplied = false;
+        csfApplied = true;
+        noCSFOptionBtn.removeStyleName("unapplied");
+        noCSFOptionBtn.addStyleName("applied");
+        
+         noSerumOptionBtn.removeStyleName("applied");
+         noSerumOptionBtn.addStyleName("unapplied");
+         
+         updateSystem(serumApplied, csfApplied);
+    }
 
 }
