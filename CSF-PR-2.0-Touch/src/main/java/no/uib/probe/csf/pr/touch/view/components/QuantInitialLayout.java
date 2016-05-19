@@ -41,7 +41,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         this.addComponent(frame);
         this.setComponentAlignment(frame, Alignment.TOP_CENTER);
 
-        Label title = new Label("<center>Select Disease Category</center>");
+        Label title = new Label("<center Style='color:#4d749f;'>Disease Category</center>");
         title.setContentMode(ContentMode.HTML);
         title.addStyleName(ValoTheme.LABEL_H2);
         title.addStyleName(ValoTheme.LABEL_BOLD);

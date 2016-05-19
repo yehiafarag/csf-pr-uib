@@ -14,6 +14,7 @@ import java.util.Map;
 import no.uib.probe.csf.pr.touch.Data_Handler;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseCategoryObject;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
+import no.uib.probe.csf.pr.touch.view.components.BubbleChartComponent;
 import no.uib.probe.csf.pr.touch.view.components.HeatMapComponent;
 import no.uib.probe.csf.pr.touch.view.components.QuantInitialLayout;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
@@ -29,7 +30,7 @@ import no.uib.probe.csf.pr.touch.view.core.ViewControlPanel;
  */
 public class QuantDataLayoutContainer extends ViewControlPanel {
 
-    private final VerticalLayout heatmapViewContainer;
+    private final VerticalLayout heatmapViewContainer,bubblechartViewContainer;
     private final ImageContainerBtn heatmapBtn, bubblechartBtn, tableBtn, linechartBtn, peptideInfoBtn;
     private final Data_Handler Data_handler;
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
@@ -97,7 +98,13 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
         bubblechartBtn.updateIcon(new ThemeResource("img/logo.png"));
         bubblechartBtn.setWidth(100, Unit.PIXELS);
         bubblechartBtn.setHeight(100, Unit.PIXELS);
-        this.addButton(bubblechartBtn, new VerticalLayout(), false);
+        
+        
+        bubblechartViewContainer = new VerticalLayout();
+        bubblechartViewContainer.setWidth(mainViewPanelWidth, Unit.PIXELS);
+        
+        
+        this.addButton(bubblechartBtn,bubblechartViewContainer, false);
 
         tableBtn = new ImageContainerBtn() {
 
@@ -134,6 +141,11 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
         peptideInfoBtn.setWidth(100, Unit.PIXELS);
         peptideInfoBtn.setHeight(100, Unit.PIXELS);
         this.addButton(peptideInfoBtn, new VerticalLayout(), false);
+        
+        
+        ///init bubble chart container
+        BubbleChartComponent bubblechartComponent= new BubbleChartComponent();
+        bubblechartViewContainer.addComponent(bubblechartComponent);
     }
 
     private void processFunction(String btnId) {
@@ -154,6 +166,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
                 @Override
                 public void updateIcon(String imageUrl) {
                     heatmapBtn.updateIcon(new ExternalResource(imageUrl));
+                    bubblechartBtn.setEnabled(true);
                 }
 
                 @Override
@@ -167,6 +180,12 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
                     Data_handler.updateCSFSerumDatasets(serumApplied, csfApplied);
                     heatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), Data_handler.getFullQuantDsMap());
                 }
+
+                @Override
+                public void blinkIcon() {
+                    heatmapBtn.blink();
+                }
+                
 
             };
             heatmapViewContainer.addComponent(heatmapComponent);

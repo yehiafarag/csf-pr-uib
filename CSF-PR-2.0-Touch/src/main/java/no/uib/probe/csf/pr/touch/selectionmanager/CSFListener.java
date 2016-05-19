@@ -6,7 +6,7 @@ package no.uib.probe.csf.pr.touch.selectionmanager;
  * CSF Filter interface that has the important abstracted
  * methods
  */
-public interface CSFFilter {
+public interface CSFListener {
 
     /**
      *

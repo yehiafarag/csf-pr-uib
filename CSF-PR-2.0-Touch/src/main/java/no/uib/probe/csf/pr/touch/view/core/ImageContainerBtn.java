@@ -55,7 +55,7 @@ public abstract class ImageContainerBtn extends VerticalLayout implements Layout
         onClick();
     }
     
-    private void blink() {        
+    public void blink() {        
         
         if (img.getStyleName().contains("blinkII")) {
             img.removeStyleName("blinkII");

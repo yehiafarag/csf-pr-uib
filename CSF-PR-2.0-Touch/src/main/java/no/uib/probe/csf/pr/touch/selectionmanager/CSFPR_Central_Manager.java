@@ -1,10 +1,9 @@
 package no.uib.probe.csf.pr.touch.selectionmanager;
 
 import java.io.Serializable;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import no.uib.probe.csf.pr.touch.logic.beans.DiseaseGroupComparison;
-import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetInitialInformationObject;
+import java.util.LinkedHashMap;
+import java.util.Set;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 
 /**
  *
@@ -15,45 +14,62 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetInitialInformationObjec
  */
 public class CSFPR_Central_Manager implements Serializable {
 
-    private final DatasetFilterManager Dataset_Filter_manager;
-    private final DatasetSelectionManager Dataset_Selection_manager;
+    private final LinkedHashMap<String, CSFListener> Listeners_Map;
+    private Set<QuantDiseaseGroupsComparison> selectedComparisonsList;
 
     public CSFPR_Central_Manager() {
-        Dataset_Filter_manager = new DatasetFilterManager();
-        Dataset_Selection_manager = new DatasetSelectionManager();
+        Listeners_Map = new LinkedHashMap<>();
+    }
+
+    /**
+     * register new listener
+     *
+     * @param listener listener component
+     */
+    public void registerListener(CSFListener listener) {
+        Listeners_Map.put(listener.getFilterId(), listener);
 
     }
-    
-    /**
-     * get selected heat map rows
-     *
-     * @return set of heat map selected rows values
-     */
-//    public LinkedHashSet<String> getSelectedHeatMapRows() {
-//        return Dataset_Filter_manager.getSelectedHeatMapRows();
-//    }
-    
-     /**
-     * get selected heat map selected columns values
-     *
-     * @return set of heat map selected columns values
-     */
-//    public LinkedHashSet<String> getSelectedHeatMapColumns() {
-//        return Dataset_Filter_manager.getSelectedHeatMapColumns();
-//    }
-//    
-    /**
-     * get selected Disease Group
-     *
-     * @return array of current selected Disease Group
-     */
-//    public DiseaseGroupComparison[] getDiseaseGroupsArray() {
-//        return Dataset_Filter_manager.getDiseaseGroupsArray();
-//    }
-//    private final Map<String, String> diseaseStyleMap;
-//     public Map<String, String> getDiseaseStyleMap() {
-//        return diseaseStyleMap;
-//    }
 
+    /**
+     * remove registered listener
+     *
+     * @param listener listener component
+     */
+    public void unregisterListener(CSFListener listener) {
+        Listeners_Map.remove(listener.getFilterId(), listener);
+
+    }
+
+    /**
+     * selection in registered component
+     *
+     * @param selection selection
+     */
+    public void selectionAction(CSFSelection selection) {
+        this.selectedComparisonsList = selection.getSelectedComparisonsList();
+        SelectionChanged(selection.getType());
+
+    }
+
+    /**
+     * Get current comparisons selection
+     *
+     * @return selected comparisons list
+     */
+    public Set<QuantDiseaseGroupsComparison> getSelectedComparisonsList() {
+        return selectedComparisonsList;
+    }
+
+    /**
+     *
+     * @param type selection type
+     */
+    private void SelectionChanged(String type) {
+        for (CSFListener filter : Listeners_Map.values()) {
+            filter.selectionChanged(type);
+        }
+
+    }
 
 }

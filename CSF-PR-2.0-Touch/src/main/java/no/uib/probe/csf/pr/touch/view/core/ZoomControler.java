@@ -117,9 +117,7 @@ public class ZoomControler extends HorizontalLayout implements LayoutEvents.Layo
                 zoomLevel -= 5;
             }
             zoomLevel = Math.max(zoomLevel, 0);
-        }//         
-        System.out.println("zoom in level " + zoomLevel + "   " + ((VerticalLayout) event.getComponent()).getData().toString());
-
+        }
         updateZoomLevel(zoomLevel);
     }
 

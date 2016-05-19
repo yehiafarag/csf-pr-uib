@@ -54,6 +54,8 @@ public class SortableLayoutContainer extends VerticalLayout {
     private boolean singleSelected = false;
     private Set selectAllSet = new HashSet();
     private final ValueChangeListener selectDataListener;
+    private final int maxHeight;
+    private final Panel bodyPanel;
 //    private final Map<String, String> diseaseStyleMap;
 
     public SortableLayoutContainer(final String strTitle, int height) {
@@ -96,10 +98,11 @@ public class SortableLayoutContainer extends VerticalLayout {
             }
         });
 
-        Panel bodyPanel = new Panel();
-        bodyPanel.setHeight(height - 30, Unit.PIXELS);
+        bodyPanel = new Panel();
+        maxHeight = height - 30;
         bodyPanel.setWidth(100, Unit.PERCENTAGE);
         bodyPanel.setStyleName(ValoTheme.PANEL_BORDERLESS);
+        bodyPanel.addStyleName("paddingleft20");
 
         HorizontalLayout bodyLayout = new HorizontalLayout();
         bodyLayout.setMargin(true);
@@ -107,6 +110,7 @@ public class SortableLayoutContainer extends VerticalLayout {
         bodyLayout.setWidth(100, Unit.PERCENTAGE);
         bodyPanel.setContent(bodyLayout);
         this.addComponent(bodyPanel);
+         this.setComponentAlignment(bodyPanel, Alignment.BOTTOM_CENTER);
 
         counterLayoutContainer = new VerticalLayout();
         bodyLayout.addComponent(counterLayoutContainer);
@@ -174,6 +178,7 @@ public class SortableLayoutContainer extends VerticalLayout {
     }
 
     public void updateData(LinkedHashSet<HeatMapHeaderCellInformationBean> headers) {
+         this.initalLabels=headers;
         diseaseGroupSelectOption.removeValueChangeListener(selectDataListener);
         if (externalListener != null) {
             diseaseGroupSelectOption.removeValueChangeListener(externalListener);
@@ -202,6 +207,8 @@ public class SortableLayoutContainer extends VerticalLayout {
 
             counter++;
         }
+
+        bodyPanel.setHeight(Math.min(maxHeight, 30 * (counter)), Unit.PIXELS);
         autoClear = false;
         diseaseGroupSelectOption.addValueChangeListener(selectDataListener);
         if (externalListener != null) {
@@ -222,40 +229,11 @@ public class SortableLayoutContainer extends VerticalLayout {
 
     }
     private final Map<HeatMapHeaderCellInformationBean, VerticalLayout> labelsLayoutSet = new HashMap<>();
-
-    private void initLists(Set<HeatMapHeaderCellInformationBean> labels) {
-        sortableDiseaseGroupLayout.removeAllComponents();
-        counterLayout.removeAllComponents();
-        diseaseGroupSelectOption.removeAllItems();
-        selectAllSet.clear();
-        int counter = 0;
-        labelsLayoutSet.clear();
-        for (final VerticalLayout component : createComponents(labels)) {
-            VerticalLayout container = new VerticalLayout();
-            container.setWidth(30 + "px");
-            container.setHeight("20px");
-            container.setStyleName("countItem");
-            Label label = new Label(counter + 1 + "");
-            container.addComponent(label);
-            this.counterLayout.addComponent(container);
-            sortableDiseaseGroupLayout.addComponent(component, strTitle);
-            diseaseGroupSelectOption.addItem(counter);
-            diseaseGroupSelectOption.setItemCaption(counter, "");
-            autoClear = true;
-            diseaseGroupSelectOption.select(counter);
-            selectAllSet.add(counter);
-
-            counter++;
-        }
-        autoClear = false;
-
-    }
-
+    private LinkedHashSet<HeatMapHeaderCellInformationBean> initalLabels;
     public void updateLists(Set<HeatMapHeaderCellInformationBean> labels) {
-
+       
         autoClear = true;
         diseaseGroupSelectOption.setValue(null);
-
         Set updatedSelectionSet = new HashSet();
         if (labels.isEmpty() || (labels.size() == groupsIds.size())) {
             updatedSelectionSet.addAll(selectAllSet);
@@ -269,6 +247,10 @@ public class SortableLayoutContainer extends VerticalLayout {
         }
         diseaseGroupSelectOption.setValue(updatedSelectionSet);
 
+    }
+    
+    public void resetToDefault(){
+        updateData(initalLabels);
     }
 
     public void selectAndHideUnselected(Set<HeatMapHeaderCellInformationBean> labels, boolean selectOnly) {

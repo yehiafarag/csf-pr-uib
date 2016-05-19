@@ -13431,6 +13431,8 @@ div.v-layout.v-horizontal.v-widget {
     -o-transform:rotate(270deg) translateX(-100% ); /* Opera */
     transform-origin: 0 0;
     position:inherit;
+    text-overflow:ellipsis !important;
+    overflow:hidden;
 
 
 }
@@ -13868,9 +13870,12 @@ div.v-layout.v-horizontal.v-widget {
     
    
 }
-.nooutline :focus {
-    outline: none;
+
+.paddingleft20 {
+    padding-left:20px !important;
+    
 }
-.link-borderless:focus{
-    outline: none;
+.hidetextoverflow{
+    text-overflow: clip !important;
+    
 }
