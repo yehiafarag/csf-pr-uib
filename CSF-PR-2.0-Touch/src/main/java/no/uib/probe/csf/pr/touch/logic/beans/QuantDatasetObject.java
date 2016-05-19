@@ -12,15 +12,34 @@ import java.util.Map;
  */
 public class QuantDatasetObject implements Serializable, Comparable {
 
-   
-
-        
     private int x;
     private int y;
-    private String diseaseCategoryColor,diseaseStyleName;
+    private String diseaseCategoryColor, diseaseStyleName, updatedDiseaseGroupI, updatedDiseaseGroupII;
 
     public String getDiseaseStyleName() {
         return diseaseStyleName;
+    }
+
+    public String getUpdatedDiseaseGroupI() {
+        if (updatedDiseaseGroupI == null) {
+            return this.getPatientsSubGroup1();
+        }
+        return updatedDiseaseGroupI;
+    }
+
+    public void setUpdatedDiseaseGroupI(String updatedDiseaseGroupI) {
+        this.updatedDiseaseGroupI = updatedDiseaseGroupI;
+    }
+
+    public String getUpdatedDiseaseGroupII() {
+        if (updatedDiseaseGroupII == null) {
+            return this.getPatientsSubGroup2();
+        }
+        return updatedDiseaseGroupII;
+    }
+
+    public void setUpdatedDiseaseGroupII(String updatedDiseaseGroupII) {
+        this.updatedDiseaseGroupII = updatedDiseaseGroupII;
     }
 
     public void setDiseaseStyleName(String diseaseStyleName) {
@@ -37,7 +56,7 @@ public class QuantDatasetObject implements Serializable, Comparable {
     }
 
     public String getDiseaseCategory() {
-        return  values[27].toString();
+        return values[27].toString();
     }
 
     public void setDiseaseCategory(String diseaseCategory) {
@@ -55,9 +74,9 @@ public class QuantDatasetObject implements Serializable, Comparable {
     private final Object[] values = new Object[28];
     private final Map<String, Object> valuesMap = new HashMap<>();
     private String uniqueValues;
-    private final String[] headers = new String[]{"Author", "Year", "#Identified Proteins", "#Quantified Proteins", "Disease Groups", "Raw Data", "#Files", "Study Type", "Sample Type", "Sample Matching", "Shotgun/Targeted", "Technology", "Analytical Approach", "Enzyme", "Quantification Basis", "Quantification Basis Comment","Normalization Strategy", "PumedID","Patients Gr.I", "#Patients Gr.I", "Patients Gr.I Comments", "Patients Sub-Gr.I", "Patients Gr.II","#Patients Gr.II", "Patients Gr.II Comments", "Patients Sub-Gr.II", "Additional Comments","Disease Category"};
-    private int totalProtNum,uniqueProtNum,totalPepNum,uniqePepNum;
-  
+    private final String[] headers = new String[]{"Author", "Year", "#Identified Proteins", "#Quantified Proteins", "Disease Groups", "Raw Data", "#Files", "Study Type", "Sample Type", "Sample Matching", "Shotgun/Targeted", "Technology", "Analytical Approach", "Enzyme", "Quantification Basis", "Quantification Basis Comment", "Normalization Strategy", "PumedID", "Patients Gr.I", "#Patients Gr.I", "Patients Gr.I Comments", "Patients Sub-Gr.I", "Patients Gr.II", "#Patients Gr.II", "Patients Gr.II Comments", "Patients Sub-Gr.II", "Additional Comments", "Disease Category"};
+    private int totalProtNum, uniqueProtNum, totalPepNum, uniqePepNum;
+
     /**
      *
      * @param index
@@ -373,7 +392,7 @@ public class QuantDatasetObject implements Serializable, Comparable {
         values[17] = pumedID;
         valuesMap.put("pumedID", pumedID);
     }
-      
+
     /**
      *
      * @return
@@ -546,13 +565,12 @@ public class QuantDatasetObject implements Serializable, Comparable {
     }
 
 //    
-
     /**
      *
      * @param propertyIndex
      * @return
      */
-        public Object getProperty(int propertyIndex) {
+    public Object getProperty(int propertyIndex) {
         if (propertyIndex < values.length) {
             return values[propertyIndex];
         }
@@ -566,11 +584,11 @@ public class QuantDatasetObject implements Serializable, Comparable {
      * @param propertyIndex
      * @param value
      */
-    public void setProperty(int propertyIndex,Object value) {
+    public void setProperty(int propertyIndex, Object value) {
         if (propertyIndex >= values.length) {
-            return ;
+            return;
         }
-         
+
         values[propertyIndex] = value;
 
     }

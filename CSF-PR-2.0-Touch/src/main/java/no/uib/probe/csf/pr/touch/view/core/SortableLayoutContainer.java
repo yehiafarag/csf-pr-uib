@@ -1,6 +1,7 @@
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.data.Property;
+import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.event.Transferable;
 import com.vaadin.event.dd.DragAndDropEvent;
 import com.vaadin.event.dd.DropHandler;
@@ -52,6 +53,7 @@ public class SortableLayoutContainer extends VerticalLayout {
     private boolean autoClear;//, autoselectall;
     private boolean singleSelected = false;
     private Set selectAllSet = new HashSet();
+    private final ValueChangeListener selectDataListener;
 //    private final Map<String, String> diseaseStyleMap;
 
     public SortableLayoutContainer(final String strTitle, int height) {
@@ -78,10 +80,9 @@ public class SortableLayoutContainer extends VerticalLayout {
         titileI.setWidth(100, Unit.PERCENTAGE);
 
         clearBtn = new Button("Clear");
-        clearBtn.setStyleName(ValoTheme.BUTTON_QUIET);
-        clearBtn.addStyleName(ValoTheme.BUTTON_TINY);
-        clearBtn.addStyleName(ValoTheme.BUTTON_SMALL);
-        clearBtn.addStyleName("nooutline");
+//        clearBtn.addStyleName(ValoTheme.BUTTON_TINY);
+//        clearBtn.addStyleName(ValoTheme.BUTTON_SMALL);
+        clearBtn.setStyleName(ValoTheme.BUTTON_LINK);
 //        clearBtn.setHeight(18, Unit.PIXELS);
         clearBtn.setEnabled(false);
         headerLayout.addComponent(clearBtn);
@@ -142,45 +143,45 @@ public class SortableLayoutContainer extends VerticalLayout {
         diseaseGroupSelectOption.setNullSelectionAllowed(true); // user can not 'unselect'
         diseaseGroupSelectOption.setMultiSelect(true);
         diseaseGroupSelectOption.addStyleName("sortablelayoutselect");
-        diseaseGroupSelectOption.addValueChangeListener(new Property.ValueChangeListener() {
-
-            @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                if (autoClear) {
-                    autoClear = false;
-                    return;
-                }
-                for (HeatMapHeaderCellInformationBean key : groupSelectionMap.keySet()) {
-                    groupSelectionMap.put(key, Boolean.FALSE);
-                }
-                getSelectionSet().clear();
-                singleSelected = false;
-                int counter = 0;
-                for (Object key : ((Set) diseaseGroupSelectOption.getValue())) {
-                    if (((Integer) key) >= groupsIds.size()) {
-                        continue;
-                    }
-                    groupSelectionMap.put(groupsIds.get((Integer) key), Boolean.TRUE);
-                    singleSelected = true;
-                    counter++;
-                    getSelectionSet().add(groupsIds.get((Integer) key));
-                }
-                if (counter == groupsIds.size()) {
-                    singleSelected = false;
-                }
-
+        selectDataListener = (Property.ValueChangeEvent event) -> {
+            if (autoClear) {
+                autoClear = false;
+                return;
             }
-
-        });
+            groupSelectionMap.keySet().stream().forEach((key) -> {
+                groupSelectionMap.put(key, Boolean.FALSE);
+            });
+            getSelectionSet().clear();
+            singleSelected = false;
+            int counter = 0;
+            for (Object key : ((Set) diseaseGroupSelectOption.getValue())) {
+                if (((Integer) key) >= groupsIds.size()) {
+                    continue;
+                }
+                groupSelectionMap.put(groupsIds.get((Integer) key), Boolean.TRUE);
+                singleSelected = true;
+                counter++;
+                getSelectionSet().add(groupsIds.get((Integer) key));
+            }
+            if (counter == groupsIds.size()) {
+                singleSelected = false;
+            }
+        };
+        diseaseGroupSelectOption.addValueChangeListener(selectDataListener);
 
         itemWidth = sortableItremWidth - 10;
 //        initLists(labels);
     }
 
     public void updateData(LinkedHashSet<HeatMapHeaderCellInformationBean> headers) {
+        diseaseGroupSelectOption.removeValueChangeListener(selectDataListener);
+        if (externalListener != null) {
+            diseaseGroupSelectOption.removeValueChangeListener(externalListener);
+        }
+        diseaseGroupSelectOption.removeAllItems();
         sortableDiseaseGroupLayout.removeAllComponents();
         counterLayout.removeAllComponents();
-        diseaseGroupSelectOption.removeAllItems();
+//        
         selectAllSet.clear();
         int counter = 0;
         labelsLayoutSet.clear();
@@ -202,6 +203,10 @@ public class SortableLayoutContainer extends VerticalLayout {
             counter++;
         }
         autoClear = false;
+        diseaseGroupSelectOption.addValueChangeListener(selectDataListener);
+        if (externalListener != null) {
+            diseaseGroupSelectOption.addValueChangeListener(externalListener);
+        }
 
     }
 
@@ -209,7 +214,10 @@ public class SortableLayoutContainer extends VerticalLayout {
         return singleSelected;
     }
 
+    private Property.ValueChangeListener externalListener;
+
     public void addSelectionValueChangeListener(Property.ValueChangeListener listener) {
+        this.externalListener = listener;
         diseaseGroupSelectOption.addValueChangeListener(listener);
 
     }
@@ -358,7 +366,7 @@ public class SortableLayoutContainer extends VerticalLayout {
         return componentsList;
     }
 
-    public Set<HeatMapHeaderCellInformationBean> getSelectionSet() {
+    public final Set<HeatMapHeaderCellInformationBean> getSelectionSet() {
         return selectionSet;
     }
 

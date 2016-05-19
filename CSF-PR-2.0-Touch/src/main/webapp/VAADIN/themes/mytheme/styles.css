@@ -1802,7 +1802,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .v-tooltip .v-tooltip-text {
-    max-height: 10em;
+    max-height: 15em;
     overflow: auto;
     margin-top: 10px;
 }
@@ -2136,9 +2136,9 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .v-button:focus:after {
-    border-color: #197de1;
+/*    border-color: #197de1;
     -webkit-box-shadow: 0 0 0 2px rgba(25, 125, 225, 0.5);
-    box-shadow: 0 0 0 2px rgba(25, 125, 225, 0.5);
+    box-shadow: 0 0 0 2px rgba(25, 125, 225, 0.5);*/
 }
 
 .mytheme .v-button:active:after {
@@ -13869,5 +13869,8 @@ div.v-layout.v-horizontal.v-widget {
    
 }
 .nooutline :focus {
+    outline: none;
+}
+.link-borderless:focus{
     outline: none;
 }

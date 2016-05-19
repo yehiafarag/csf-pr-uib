@@ -39,7 +39,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFFilt
     private final Map<Integer, QuantDatasetObject> fullQuantDsMap, filteredQuantDsMap;
     private final ZoomControler zoomControler;
     private final Label datasetCounterLabel;
-    private final  SerumCsfFilter serumCsfFilter ;
+    private final SerumCsfFilter serumCsfFilter;
     private final ReorderSelectGroupsFilter reorderSelectBtn;
 
     /**
@@ -118,22 +118,10 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFFilt
         };
         btnsWrapper.addComponent(reconbineDiseaseGroupsFiltersBtn);
         btnsWrapper.setComponentAlignment(reconbineDiseaseGroupsFiltersBtn, Alignment.MIDDLE_LEFT);
-        
-        
-        
-        
-        
+
         reorderSelectBtn = new ReorderSelectGroupsFilter();
-         btnsWrapper.addComponent(reorderSelectBtn);
+        btnsWrapper.addComponent(reorderSelectBtn);
         btnsWrapper.setComponentAlignment(reorderSelectBtn, Alignment.MIDDLE_LEFT);
-        
-        
-        
-        
-        
-        
-        
-        
 
         serumCsfFilter = new SerumCsfFilter() {
 
@@ -142,20 +130,19 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFFilt
                 Map<Integer, QuantDatasetObject> updatedDsIds = new LinkedHashMap<>();
                 for (int id : fullQuantDsMap.keySet()) {
                     if (serumApplied && fullQuantDsMap.get(id).getSampleType().equalsIgnoreCase("Serum")) {
-                        updatedDsIds.put(id,fullQuantDsMap.get(id));
+                        updatedDsIds.put(id, fullQuantDsMap.get(id));
                     } else if (csfApplied && fullQuantDsMap.get(id).getSampleType().equalsIgnoreCase("CSf")) {
-                         updatedDsIds.put(id,fullQuantDsMap.get(id));
+                        updatedDsIds.put(id, fullQuantDsMap.get(id));
                     }
-                    
-                } 
-                
+
+                }
+
                 updateSystemComponents(datasetPieChartFiltersBtn.checkAndFilter(updatedDsIds));
             }
 
         };
         btnsWrapper.addComponent(serumCsfFilter);
         btnsWrapper.setComponentAlignment(serumCsfFilter, Alignment.MIDDLE_LEFT);
-        
 
 //        
         //init heatmap
@@ -183,8 +170,13 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFFilt
             }
 
             @Override
-            public void updateHMThumb(String imgUrl, int datasetNumber) {
+            public void updateHMThumb(String imgUrl, int datasetNumber, int deactivated) {
                 datasetCounterLabel.setValue(datasetNumber + "/" + fullQuantDsMap.size());
+                if (deactivated > 0) {
+                    datasetCounterLabel.setDescription("#Datasets<br/>#Not active datasets: " + deactivated);
+                } else {
+                    datasetCounterLabel.setDescription("#Datasets");
+                }
                 HeatMapComponent.this.updateIcon(imgUrl);
             }
 
@@ -198,7 +190,6 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFFilt
         this.filteredQuantDsMap = new LinkedHashMap<>();
         this.fullQuantDsMap = new LinkedHashMap<>();
         this.patientsGroupComparisonsSet = new LinkedHashSet<>();
-        
 
     }
 
@@ -211,7 +202,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFFilt
      */
     public void updateData(LinkedHashSet<HeatMapHeaderCellInformationBean> rowheaders, LinkedHashSet<HeatMapHeaderCellInformationBean> colheaders, Set<DiseaseGroupComparison> patientsGroupComparisonsSet, Map<Integer, QuantDatasetObject> fullQuantDsMap) {
 
-        int waiting = fullQuantDsMap.size() * 100;
+        int waiting = fullQuantDsMap.size() * 10;
         try {
             Thread.sleep(waiting);
         } catch (InterruptedException e) {
@@ -231,7 +222,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFFilt
         this.filteredQuantDsMap.putAll(fullQuantDsMap);
         zoomControler.setDefaultZoomLevel(heatmapLayoutContainer.getZoomLevel());
         serumCsfFilter.resetFilter();
-        
+
         reorderSelectBtn.updateData(rowheaders, colheaders, patientsGroupComparisonsSet);
 
     }

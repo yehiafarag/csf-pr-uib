@@ -178,21 +178,6 @@ public class DatasetUtility implements Serializable {
         adReindexMap.add("Healthy*__Alzheimer's__alzheimerstyle");
         adReindexMap.add("Healthy controls__Alzheimer's__alzheimerstyle");
 
-//        for (String diseaseCategory : quantDatasetInitialInformationObject.keySet()) {
-//            QuantDatasetInitialInformationObject initQuantData = quantDatasetInitialInformationObject.get(diseaseCategory);
-//            QuantData allQuantData = updateDiseaseGroups(initQuantData.getQuantDatasetsList(), diseaseCategory);
-//            allQuantData.setDiseaseCategory(diseaseCategory);
-//            allQuantData.setActiveHeaders(initQuantData.getActiveHeaders());
-//            updateGroupsNames(diseaseCategory, allQuantData);
-//            quantDataMap.put(diseaseCategory, allQuantData);
-//        }
-//
-//        default_DiseaseCat_DiseaseGroupMap = sortDiseaseCategoryGroups(default_DiseaseCat_DiseaseGroupMap);
-//        oreginal_DiseaseCat_DiseaseGroupMap = sortDiseaseCategoryGroups(oreginal_DiseaseCat_DiseaseGroupMap); 
-//        inUse_DiseaseCat_DiseaseGroupMap = default_DiseaseCat_DiseaseGroupMap;
-//        fullDiseaseCategoryMap.values().stream().filter((diseaseCategory) -> !(diseaseCategory.getDiseaseCategory().equalsIgnoreCase("All Diseases"))).forEach((diseaseCategory) -> {
-//            diseaseCategory.setDiseaseSubGroups(inUse_DiseaseCat_DiseaseGroupMap.get(diseaseCategory.getDiseaseCategory()));
-//        });
     }
 
     /**
@@ -218,11 +203,14 @@ public class DatasetUtility implements Serializable {
             Set<DiseaseGroupComparison> diseaseComparisonSet = new LinkedHashSet<>();
             QuantData allQuantData = new QuantData();
             for (String diseaseCategoryname : quantDatasetInitialInformationObject.keySet()) {
+                QuantDatasetInitialInformationObject initQuantData = quantDatasetInitialInformationObject.get(diseaseCategoryname);
+                updateQuantDatasetsList(diseaseCategoryname, initQuantData.getQuantDatasetsList());
                 if (diseaseCategoryname.equalsIgnoreCase("All Diseases")) {
                     continue;
                 }
-                QuantDatasetInitialInformationObject initQuantData = quantDatasetInitialInformationObject.get(diseaseCategoryname);
+
                 QuantData quantData = updateDiseaseGroups(initQuantData.getQuantDatasetsList(), diseaseCategoryname);
+
                 quantData.setDiseaseCategory(diseaseCategoryname);
                 quantData.setActiveHeaders(initQuantData.getActiveHeaders());
                 updateGroupsNames(diseaseCategoryname, quantData);
@@ -240,7 +228,7 @@ public class DatasetUtility implements Serializable {
             allQuantData.setActiveColumnIds(activeColumnIds);
             allQuantData.setActiveRowIds(activeRowIds);
             allQuantData.setDiseaseComparisonSet(diseaseComparisonSet);
-             allQuantData.setDiseaseCategory("All Diseases");
+            allQuantData.setDiseaseCategory("All Diseases");
             quantDataMap.put("All Diseases", allQuantData);
 
             default_DiseaseCat_DiseaseGroupMap = sortDiseaseCategoryGroups(default_DiseaseCat_DiseaseGroupMap);
@@ -261,6 +249,7 @@ public class DatasetUtility implements Serializable {
             activeData.setActiveHeaders(initQuantData.getActiveHeaders());
             updateGroupsNames(mainDiseaseCategory, activeData);
             quantDataMap.put(mainDiseaseCategory, activeData);
+            updateQuantDatasetsList(mainDiseaseCategory, initQuantData.getQuantDatasetsList());
 
         }
 
@@ -390,107 +379,6 @@ public class DatasetUtility implements Serializable {
         quantData.setOreginalRowIds(selectedHeatMapRows);
         quantData.setDiseaseComparisonSet(diseaseComparisonSet);
         return quantData;
-
-    }
-
-    private String[] sortGroupsNoStyle(String[] quantData, String diseaseCategory) {
-        String[] sortedData = new String[quantData.length];
-        List<String> quantDataSet = new ArrayList<>(Arrays.asList(quantData));
-        int count = 0;
-
-        if (diseaseCategory.equalsIgnoreCase("Multiple Sclerosis")) {
-
-            for (String str : msReindexMap) {
-                if (quantDataSet.contains(str)) {
-                    sortedData[count] = str;
-                    quantDataSet.remove(str);
-                    count++;
-                }
-            }
-            for (String str : quantDataSet) {
-                sortedData[count] = str;
-                count++;
-            }
-            quantDataSet.clear();
-            quantDataSet.addAll(Arrays.asList(sortedData));
-        } else if (diseaseCategory.equalsIgnoreCase("Alzheimer's")) {
-            for (String str : adReindexMap) {
-                if (quantDataSet.contains(str)) {
-                    sortedData[count] = str;
-                    quantDataSet.remove(str);
-                    count++;
-                }
-            }
-            for (String str : quantDataSet) {
-                sortedData[count] = str;
-                count++;
-            }
-            quantDataSet.clear();
-            quantDataSet.addAll(Arrays.asList(sortedData));
-        } else if (diseaseCategory.equalsIgnoreCase("Parkinson's")) {
-            for (String str : pdReindexMap) {
-                if (quantDataSet.contains(str)) {
-                    sortedData[count] = str;
-                    quantDataSet.remove(str);
-                    count++;
-                }
-            }
-            for (String str : quantDataSet) {
-                sortedData[count] = str;
-                count++;
-            }
-            quantDataSet.clear();
-            quantDataSet.addAll(Arrays.asList(sortedData));
-        } else {
-            for (String str : msReindexMap) {
-                if (quantDataSet.contains(str)) {
-                    sortedData[count] = str;
-                    quantDataSet.remove(str);
-                    count++;
-                }
-            }
-            for (String str : quantDataSet) {
-                if (str.contains("Multiple Sclerosis")) {
-                    sortedData[count] = str;
-                    count++;
-                }
-
-            }
-
-            for (String str : pdReindexMap) {
-                if (quantDataSet.contains(str)) {
-                    sortedData[count] = str;
-                    quantDataSet.remove(str);
-                    count++;
-                }
-            }
-            for (String str : quantDataSet) {
-                if (str.contains("Parkinson's")) {
-                    sortedData[count] = str;
-                    count++;
-                }
-
-            }
-            for (String str : adReindexMap) {
-                if (quantDataSet.contains(str)) {
-                    sortedData[count] = str;
-                    quantDataSet.remove(str);
-                    count++;
-                }
-            }
-            for (String str : quantDataSet) {
-                if (str.contains("Alzheimer's")) {
-                    sortedData[count] = str;
-                    count++;
-                }
-
-            }
-            quantDataSet.clear();
-            quantDataSet.addAll(Arrays.asList(sortedData));
-
-        }
-
-        return sortedData;
 
     }
 
@@ -676,14 +564,16 @@ public class DatasetUtility implements Serializable {
         } else if (updatedGroupsNamesMap.isEmpty()) {
             this.inUse_DiseaseCat_DiseaseGroupMap = this.default_DiseaseCat_DiseaseGroupMap;
         } else {
-            this.inUse_DiseaseCat_DiseaseGroupMap = updatedGroupsNamesMap;
+            this.inUse_DiseaseCat_DiseaseGroupMap = sortDiseaseCategoryGroups(updatedGroupsNamesMap);
         }
         quantDataMap.keySet().stream().forEach((diseaseCategory) -> {
             updateGroupsNames(diseaseCategory, quantDataMap.get(diseaseCategory));
+            QuantDatasetInitialInformationObject initQuantData = quantDatasetInitialInformationObject.get(diseaseCategory);
+            updateQuantDatasetsList(diseaseCategory, initQuantData.getQuantDatasetsList());
         });
 
     }
-    
+
     /**
      * this method allow users to filter the datasets based on sample type (CSF
      * / Serum)
@@ -692,9 +582,25 @@ public class DatasetUtility implements Serializable {
      * @param serumApplied show Serum datasets
      * @param csfApplied show CSF datasets
      */
-     public void updateCSFSerumDatasets(boolean serumApplied, boolean csfApplied){
-     
-     }
+    public void updateCSFSerumDatasets(boolean serumApplied, boolean csfApplied) {
+
+    }
+
+    private void updateQuantDatasetsList(String diseaseCategoryName, Map<Integer, QuantDatasetObject> quantDatasetsList) {
+       
+        if (!inUse_DiseaseCat_DiseaseGroupMap.containsKey(diseaseCategoryName)) {
+            return;
+
+        }
+        Map<String, String> updatedNamesMap = inUse_DiseaseCat_DiseaseGroupMap.get(diseaseCategoryName);
+        quantDatasetsList.values().stream().map((quantDataset) -> {
+            quantDataset.setUpdatedDiseaseGroupI(updatedNamesMap.get(quantDataset.getPatientsSubGroup1()));
+            return quantDataset;
+        }).forEach((quantDataset) -> {
+            quantDataset.setUpdatedDiseaseGroupII(updatedNamesMap.get(quantDataset.getPatientsSubGroup2()));
+        });
+
+    }
 
     private void updateGroupsNames(String diseaseCategoryName, QuantData updatingData) {
         if (!inUse_DiseaseCat_DiseaseGroupMap.containsKey(diseaseCategoryName)) {
@@ -707,6 +613,7 @@ public class DatasetUtility implements Serializable {
         updatingData.getOreginalColumnIds().stream().filter((header) -> !(!updatedNamesMap.containsKey(header.getDiseaseGroupOreginalName()))).forEach((header) -> {
             header.setDiseaseGroupName(updatedNamesMap.get(header.getDiseaseGroupOreginalName()));
             activeColumnIds.add(header);
+
         });
         updatingData.getOreginalRowIds().stream().filter((header) -> !(!updatedNamesMap.containsKey(header.getDiseaseGroupOreginalName()))).forEach((header) -> {
             header.setDiseaseGroupName(updatedNamesMap.get(header.getDiseaseGroupOreginalName()));
@@ -736,17 +643,23 @@ public class DatasetUtility implements Serializable {
 
     private Map<String, Map<String, String>> sortDiseaseCategoryGroups(Map<String, Map<String, String>> mapToSort) {
         Map<String, Map<String, String>> sortedMap = new LinkedHashMap<>();
+
         mapToSort.keySet().stream().forEach((diseaseCategory) -> {
             QuantData quantData = quantDataMap.get(diseaseCategory);
 
             Map<String, String> subGroupMap = mapToSort.get(diseaseCategory);
             Map<String, String> sortedSubGroupMap = new LinkedHashMap<>();
-            for (HeatMapHeaderCellInformationBean group : quantData.getOreginalRowIds()) {
+            quantData.getOreginalRowIds().stream().forEach((group) -> {
                 sortedSubGroupMap.put(group.getDiseaseGroupOreginalName(), subGroupMap.get(group.getDiseaseGroupOreginalName()));
-            }
+            });
             sortedMap.put(diseaseCategory, sortedSubGroupMap);
         });
 
+        Map<String, String> sortedAllSubGroupMap = new LinkedHashMap<>();
+        sortedMap.values().stream().forEach((subGroupMap) -> {
+            sortedAllSubGroupMap.putAll(subGroupMap);
+        });
+        sortedMap.put("All Diseases", sortedAllSubGroupMap);
         return sortedMap;
     }
 

@@ -93,7 +93,7 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
         if (color.equalsIgnoreCase("#EFF2FB") && value != 0) {
             strValue = ((int) value) + "";
             this.updateLabel(strValue);
-            this.setDescription("<h3>Same type comparison ( " + fullCompTitle.replace("__" + diseaseCategory, "") + " - " + diseaseCategory + " )</h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + strValue + (value == 1 ? " Dataset" : " Datasets") + " </h3><h3 style='font-size:14px;line-height:100%;font-weight: normal; '>" + publicationsNumber + (publicationsNumber == 1 ? " Publication" : " Publications") + " </h3>");
+            this.setDescription("<h4>Same type comparison ( " + fullCompTitle.replace("__" + diseaseCategory, "") + ")</h4><br/><h4>Disease: " + diseaseCategory + "</h4> <h4 style='font-size:14px;line-height:100%;font-weight: normal; '>" + strValue + (value == 1 ? " Dataset" : " Datasets") + " </h4><h4 style='font-size:14px;line-height:100%;font-weight: normal; '>" + publicationsNumber + (publicationsNumber == 1 ? " Publication" : " Publications") + " </h4>");
             comparison.setComparisonHeader(" / ");
             comparison.setOreginalComparisonHeader(" / ");
             combinedHeader = true;
@@ -109,7 +109,7 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
         }
 
         if (value > 0 && !color.equalsIgnoreCase("#EFF2FB")) {
-            this.setDescription("<h4>   " + fullCompTitle.replace("__" + diseaseCategory, "") + " - " + diseaseCategory + "   </h4><h4 style='font-size:11px;line-height:100%;font-weight: normal; '>" + strValue + (value == 1 ? " Dataset" : " Datasets") + " </h4><h4 style='font-size:11px;line-height:100%;font-weight: normal; '>" + publicationsNumber + (publicationsNumber == 1 ? " Publication" : " Publications") + " </h4>");
+            this.setDescription("<h4>   " + fullCompTitle.replace("__" + diseaseCategory, "") + "</h4><br/><h4> Disease: " + diseaseCategory + " </h4>  <h4 style='font-size:11px;line-height:100%;font-weight: normal; '>" + strValue + (value == 1 ? " Dataset" : " Datasets") + " </h4><h4 style='font-size:11px;line-height:100%;font-weight: normal; '>" + publicationsNumber + (publicationsNumber == 1 ? " Publication" : " Publications") + " </h4>");
         }
     }
 

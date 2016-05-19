@@ -53,7 +53,7 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
     private final Set<QuantDiseaseGroupsComparison> includedComparisons = new LinkedHashSet<>();
     private final List<HeatmapCell> includedCells;
     private final String title;
-    private final String fullName;
+//    private final String fullName;
     private String color;
     private final String diseaseCategory;
 
@@ -92,18 +92,18 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
         this.setComponentAlignment(valueLabel, Alignment.TOP_CENTER);
         
         this.index = index;
-        
+        String fullName = "";
         this.addLayoutClickListener(HeaderCell.this);
         if (fullDiseaseGroupName == null) {
-            this.fullName = title;
+            fullName = title;
         } else {
-            this.fullName = fullDiseaseGroupName;
+            fullName = fullDiseaseGroupName;
         }
         String combinedGroup = "";
-        if (this.fullName.contains("*")) {
+        if (fullName.contains("*")) {
             combinedGroup = " - Combined disease groups";
         }
-        this.setDescription(this.fullName + combinedGroup);
+        this.setDescription(fullName + combinedGroup);
         
     }
 

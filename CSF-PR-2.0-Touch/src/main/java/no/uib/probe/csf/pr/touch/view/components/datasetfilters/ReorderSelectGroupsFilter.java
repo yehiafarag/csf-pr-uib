@@ -120,6 +120,7 @@ public class ReorderSelectGroupsFilter extends VerticalLayout implements CSFFilt
 
         Switch selectSortSwichBtn = new Switch();
         selectSortSwichBtn.setDescription("Sort / Select disease groups");
+        selectSortSwichBtn.setValue(Boolean.TRUE);
         selectSortSwichBtn.addValueChangeListener((ValueChangeEvent event) -> {
             if (selectSortSwichBtn.getValue()) {
 
@@ -235,8 +236,7 @@ public class ReorderSelectGroupsFilter extends VerticalLayout implements CSFFilt
     private final Map<String, HeatMapHeaderCellInformationBean> fullCellInfoMap = new HashMap<>();
 
     public void updateData(LinkedHashSet<HeatMapHeaderCellInformationBean> rowHeaders, LinkedHashSet<HeatMapHeaderCellInformationBean> colHeaders, Set<DiseaseGroupComparison> patientsGroupComparisonsSet) {
-        groupILayout.updateData(rowHeaders);
-        groupIILayout.updateData(colHeaders);
+
         this.patientsGroupComparisonsSet = patientsGroupComparisonsSet;
         fullCellInfoMap.clear();
         rowHeaders.stream().forEach((cell) -> {
@@ -244,75 +244,10 @@ public class ReorderSelectGroupsFilter extends VerticalLayout implements CSFFilt
         });
         colHeaders.stream().forEach((cell) -> {
             fullCellInfoMap.put(cell.getDiseaseGroupName() + "__" + cell.getDiseaseCategory(), cell);
-        });////        diseaseGroupsContaioner.removeAllComponents();
-//        DiseaseGroupComparison[] patientsGroupArr = new DiseaseGroupComparison[quantDSMap.size()];
-////        int maxLabelWidth = -1;
-//        int i = 0;
-//        for (QuantDatasetObject ds : quantDSMap.values()) {
-//            if (ds == null) {
-//                continue;
-//            }
-//            DiseaseGroup pg = new DiseaseGroup();
-//            String pgI = ds.getPatientsGroup1();
-//            pg.setPatientsGroupI(pgI);
-//            String label1;
-//            if (pgI.equalsIgnoreCase("Not Available") || pgI.equalsIgnoreCase("control")) {
-//                pgI = "";
-//            }
-//            String subpgI = ds.getPatientsSubGroup1();
-//            pg.setPatientsSubGroupI(subpgI);
-//            if (!subpgI.equalsIgnoreCase("") && !subpgI.equalsIgnoreCase("Not Available")) {
-//                pgI = subpgI;
-//            }
-//            label1 = pgI;
-//            pg.setPatientsGroupILabel(label1);
-//
-//            String pgII = ds.getPatientsGroup2();
-//            pg.setPatientsGroupII(pgII);
-//            String label2;
-//            if (pgII.equalsIgnoreCase("Not Available") || pgII.equalsIgnoreCase("control")) {
-//                pgII = "";
-//            }
-//            String subpgII = ds.getPatientsSubGroup2();
-//            pg.setPatientsSubGroupII(subpgII);
-//            if (!subpgII.equalsIgnoreCase("") && !subpgII.equalsIgnoreCase("Not Available")) {
-//                pgII = subpgII;
-//            }
-//            label2 = pgII;
-//            pg.setPatientsGroupIILabel(label2);
-//            if (label1.split("\n")[0].length() > maxLabelWidth) {
-//                maxLabelWidth = label1.length();
-//            }
-//            if (label2.split("\n")[0].length() > maxLabelWidth) {
-//                maxLabelWidth = label2.length();
-//            }
-//
-//            patientsGroupArr[i] = pg;
-//            pg.setQuantDatasetIndex(i);
-//            pg.setOriginalDatasetIndex(ds.getDsKey());
-//            i++;
-//        }
-//
-//        int h = (Math.max(rowHeaders.size(), colHeaders.size()) * 27) + 150;
-//        int w = (maxLabelWidth * 10 * 2) + 72 + 50;
-//        if (Page.getCurrent().getBrowserWindowHeight() - 280 < h) {
-//            h = Page.getCurrent().getBrowserWindowHeight() - 280;
-//        }
-//        if (Page.getCurrent().getBrowserWindowWidth() < w) {
-//            w = Page.getCurrent().getBrowserWindowWidth();
-//        }
-//
-//        diseaseGroupsContaioner.setWidth((w - 50) + "px");
-//
-//        popupWindow.setWidth(w + "px");
-//        popupWindow.setHeight(h + "px");
-//        int subH = (h - 150);
-//
-//       patientsGroupArr =  Quant_Central_Manager.getDiseaseGroupsArray();
-//
-//        this.sortableDiseaseGroupI = new SortableLayoutContainer((w - 50), subH, " Disease Group A", rowHeaders, Quant_Central_Manager.getDiseaseStyleMap());
-//        this.sortableDiseaseGroupII = new SortableLayoutContainer((w - 50), subH, " Disease Group B", colHeaders, Quant_Central_Manager.getDiseaseStyleMap());
-//        this.initPopupBody((w - 50));
+        });
+        groupILayout.updateData(rowHeaders);
+        groupIILayout.updateData(colHeaders);
+
     }
 
     private void updateSelectionManager(LinkedHashSet<Integer> datasetIndexes) {
@@ -334,56 +269,6 @@ public class ReorderSelectGroupsFilter extends VerticalLayout implements CSFFilt
 
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-//        System.out.println("at layout clicked ");
-//           colHeaders = Quant_Central_Manager.getSelectedHeatMapColumns();
-//        rowHeaders = Quant_Central_Manager.getSelectedHeatMapRows();
-//        patientsGroupArr = Quant_Central_Manager.getDiseaseGroupsArray();
-////        Map<Integer, QuantDatasetObject> quantDSArr = Quant_Central_Manager.getFilteredDatasetsList();
-////        initPopupLayout(rowHeaders, colHeaders, quantDSArr);
-//
-////        Map<Integer, QuantDatasetObject> quantDSArr = Quant_Central_Manager.getFilteredDatasetsList();
-////        patientsGroupArr = new DiseaseGroup[quantDSArr.size()];
-////        int i = 0;
-////        for (QuantDatasetObject ds : quantDSArr.values()) {
-////            if (ds == null) {
-////                continue;
-////            }
-////            DiseaseGroup pg = new DiseaseGroup();
-////            String pgI = ds.getPatientsGroup1();
-////            pg.setPatientsGroupI(pgI);
-////            String label1;
-////            if (pgI.equalsIgnoreCase("Not Available") || pgI.equalsIgnoreCase("control")) {
-////                pgI = "";
-////            }
-////            String subpgI = ds.getPatientsSubGroup1();
-////            pg.setPatientsSubGroupI(subpgI);
-////            if (!subpgI.equalsIgnoreCase("") && !subpgI.equalsIgnoreCase("Not Available")) {
-////                pgI = subpgI;
-////            }
-////            label1 = pgI;
-////            pg.setPatientsGroupILabel(label1);
-////
-////            String pgII = ds.getPatientsGroup2();
-////            pg.setPatientsGroupII(pgII);
-////            String label2;
-////            if (pgII.equalsIgnoreCase("Not Available") || pgII.equalsIgnoreCase("control")) {
-////                pgII = "";
-////            }
-////            String subpgII = ds.getPatientsSubGroup2();
-////            pg.setPatientsSubGroupII(subpgII);
-////            if (!subpgII.equalsIgnoreCase("") && !subpgII.equalsIgnoreCase("Not Available")) {
-////                pgII = subpgII;
-////            }
-////            label2 = pgII;
-////            pg.setPatientsGroupIILabel(label2);
-////            patientsGroupArr[i] = pg;
-////            pg.setQuantDatasetIndex(i);
-////            pg.setOriginalDatasetIndex(ds.getDsKey());
-////            i++;
-////        }
-//        sortableDiseaseGroupI.updateLists(rowHeaders);
-//        sortableDiseaseGroupII.selectAndHideUnselected(colHeaders, true);
-
         popupWindow.setVisible(true);
         popupWindow.center();
     }
