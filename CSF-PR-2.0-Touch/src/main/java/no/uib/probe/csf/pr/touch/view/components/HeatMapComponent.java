@@ -12,6 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import no.uib.probe.csf.pr.touch.Data_Handler;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseCategoryObject;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseGroupComparison;
 import no.uib.probe.csf.pr.touch.logic.beans.HeatMapHeaderCellInformationBean;
@@ -25,6 +26,7 @@ import no.uib.probe.csf.pr.touch.view.components.datasetfilters.RecombineDisease
 import no.uib.probe.csf.pr.touch.view.components.datasetfilters.ReorderSelectGroupsFilter;
 import no.uib.probe.csf.pr.touch.view.components.datasetfilters.SerumCsfFilter;
 import no.uib.probe.csf.pr.touch.view.components.heatmapsubcomponents.HeatMapLayout;
+import no.uib.probe.csf.pr.touch.view.core.InfoPopupBtn;
 import no.uib.probe.csf.pr.touch.view.core.ZoomControler;
 
 /**
@@ -45,6 +47,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
     private final SerumCsfFilter serumCsfFilter;
     private final ReorderSelectGroupsFilter reorderSelectBtn;
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
+    private final Data_Handler Data_Handler;
 
     /**
      *
@@ -55,9 +58,10 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
      * @param activeColumnHeaders boolean array of active columns for dataset
      * table export
      */
-    public HeatMapComponent(final CSFPR_Central_Manager CSFPR_Central_Manager, Collection<DiseaseCategoryObject> diseaseCategorySet, int mainbodyLayoutWidth, int mainbodyLayoutHeight, boolean[] activeColumnHeaders) {
+    public HeatMapComponent(final CSFPR_Central_Manager CSFPR_Central_Manager, Data_Handler Data_Handler, Collection<DiseaseCategoryObject> diseaseCategorySet, int mainbodyLayoutWidth, int mainbodyLayoutHeight, boolean[] activeColumnHeaders) {
 
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
+        this.Data_Handler = Data_Handler;
         this.setWidth(mainbodyLayoutWidth, Unit.PIXELS);
         this.setHeight(mainbodyLayoutHeight, Unit.PIXELS);
 
@@ -92,6 +96,12 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         btnsWrapper.setSpacing(true);
         btnsWrapper.setWidthUndefined();
         popupBtnsLayout.addComponent(btnsWrapper);
+
+        InfoPopupBtn info = new InfoPopupBtn("infoText");
+        info.setWidth(25, Unit.PIXELS);
+        info.setHeight(25, Unit.PIXELS);
+        btnsWrapper.addComponent(info);
+        btnsWrapper.setComponentAlignment(info, Alignment.MIDDLE_LEFT);
 
         zoomControler = new ZoomControler();
         btnsWrapper.addComponent(zoomControler);
@@ -191,8 +201,12 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         int availableHMHeight = mainbodyLayoutHeight - 100;
         heatmapLayoutContainer = new HeatMapLayout(mainbodyLayoutWidth, availableHMHeight, activeColumnHeaders, zoomControler.getResetZoomBtn()) {
             @Override
-            public void updateSelectionManager(Set<QuantDiseaseGroupsComparison> selectedDsList) {
-                CSFSelection selection = new CSFSelection("comparisons_selection", getFilterId(), selectedDsList);
+            public void updateSelectionManager(Set<QuantDiseaseGroupsComparison> selectedQuantComparisonsList) {
+                if (selectedQuantComparisonsList != null && !selectedQuantComparisonsList.isEmpty()) {
+
+                    selectedQuantComparisonsList = Data_Handler.updateComparisonQuantProteins(selectedQuantComparisonsList);
+                }
+                CSFSelection selection = new CSFSelection("comparisons_selection", getFilterId(), selectedQuantComparisonsList);
                 CSFPR_Central_Manager.selectionAction(selection);
             }
 
@@ -264,8 +278,6 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
 
     }
 
-   
-
     private void updateSystemComponents(Set<Integer> datasetIds) {
 
         filteredQuantDsMap.clear();
@@ -329,9 +341,9 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
      * @param csfApplied show CSF datasets
      */
     public abstract void updateCSFSerumDatasets(boolean serumApplied, boolean csfApplied);
-    
-     public abstract void updateIcon(String imageUrl);
-     
-      public abstract void blinkIcon();
+
+    public abstract void updateIcon(String imageUrl);
+
+    public abstract void blinkIcon();
 
 }

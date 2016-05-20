@@ -30,7 +30,7 @@ import no.uib.probe.csf.pr.touch.view.core.ViewControlPanel;
  */
 public class QuantDataLayoutContainer extends ViewControlPanel {
 
-    private final VerticalLayout heatmapViewContainer,bubblechartViewContainer;
+    private final VerticalLayout heatmapViewContainer, bubblechartViewContainer;
     private final ImageContainerBtn heatmapBtn, bubblechartBtn, tableBtn, linechartBtn, peptideInfoBtn;
     private final Data_Handler Data_handler;
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
@@ -95,16 +95,14 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
                 processFunction("bubblechart");
             }
         };
-        bubblechartBtn.updateIcon(new ThemeResource("img/logo.png"));
+        bubblechartBtn.updateIcon(new ThemeResource("img/scatter_plot_applied.png"));
         bubblechartBtn.setWidth(100, Unit.PIXELS);
         bubblechartBtn.setHeight(100, Unit.PIXELS);
-        
-        
+
         bubblechartViewContainer = new VerticalLayout();
         bubblechartViewContainer.setWidth(mainViewPanelWidth, Unit.PIXELS);
-        
-        
-        this.addButton(bubblechartBtn,bubblechartViewContainer, false);
+
+        this.addButton(bubblechartBtn, bubblechartViewContainer, false);
 
         tableBtn = new ImageContainerBtn() {
 
@@ -141,10 +139,22 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
         peptideInfoBtn.setWidth(100, Unit.PIXELS);
         peptideInfoBtn.setHeight(100, Unit.PIXELS);
         this.addButton(peptideInfoBtn, new VerticalLayout(), false);
-        
-        
+
         ///init bubble chart container
-        BubbleChartComponent bubblechartComponent= new BubbleChartComponent();
+        BubbleChartComponent bubblechartComponent = new BubbleChartComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight, null) {
+
+            @Override
+            public void updateIcon(String imageUrl) {
+                if (imageUrl == null) {
+                    bubblechartBtn.updateIcon(new ThemeResource("img/scatter_plot_applied.png"));
+                    bubblechartBtn.setEnabled(false);
+                    return;
+                }
+                bubblechartBtn.setEnabled(true);
+                bubblechartBtn.updateIcon(new ExternalResource(imageUrl));
+            }
+
+        };
         bubblechartViewContainer.addComponent(bubblechartComponent);
     }
 
@@ -161,7 +171,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
     private void loadDiseaseCategory(String DiseaseCategoryName) {
         Data_handler.loadDiseaseCategory(DiseaseCategoryName);
         if (heatmapComponent == null) {
-            heatmapComponent = new HeatMapComponent(CSFPR_Central_Manager, Data_handler.getDiseaseCategorySet(), mainViewPanelWidth, mainViewPanelHeight, Data_handler.getActiveDataColumns()) {
+            heatmapComponent = new HeatMapComponent(CSFPR_Central_Manager, Data_handler, Data_handler.getDiseaseCategorySet(), mainViewPanelWidth, mainViewPanelHeight, Data_handler.getActiveDataColumns()) {
 
                 @Override
                 public void updateIcon(String imageUrl) {
@@ -185,7 +195,6 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
                 public void blinkIcon() {
                     heatmapBtn.blink();
                 }
-                
 
             };
             heatmapViewContainer.addComponent(heatmapComponent);

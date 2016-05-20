@@ -1,17 +1,22 @@
 package no.uib.probe.csf.pr.touch.logic;
 
-import java.awt.Color;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import no.uib.probe.csf.pr.touch.database.DataBaseLayer;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseCategoryObject;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetInitialInformationObject;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantPeptide;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantProtein;
 import no.uib.probe.csf.pr.touch.view.smallscreen.OverviewInfoBean;
 
@@ -25,12 +30,9 @@ import no.uib.probe.csf.pr.touch.view.smallscreen.OverviewInfoBean;
 public class CoreLogic implements Serializable {
 
     private final DataBaseLayer database;
-    
 
     public CoreLogic(String url, String dbName, String driver, String userName, String password, String filesURL) {
         database = new DataBaseLayer(url, dbName, driver, userName, password);
-        
-     
 
     }
 
@@ -71,8 +73,8 @@ public class CoreLogic implements Serializable {
      * @return set of disease category objects that has all disease category
      * information and styling information
      */
-    public Map<String,DiseaseCategoryObject> getDiseaseCategorySet() {        
-       Map<String,DiseaseCategoryObject> availableDiseaseCategory = database.getDiseaseCategorySet();  
+    public Map<String, DiseaseCategoryObject> getDiseaseCategorySet() {
+        Map<String, DiseaseCategoryObject> availableDiseaseCategory = database.getDiseaseCategorySet();
         return availableDiseaseCategory;
     }
 
@@ -91,8 +93,7 @@ public class CoreLogic implements Serializable {
         QuantDatasetInitialInformationObject allDatasetObject = new QuantDatasetInitialInformationObject();
         Map<Integer, QuantDatasetObject> updatedQuantDatasetObjectMap = new LinkedHashMap<>();
 
-        for (String disease_category : quantStudyInitInfoMap.keySet()) {
-            QuantDatasetInitialInformationObject datasetObject = quantStudyInitInfoMap.get(disease_category);
+        quantStudyInitInfoMap.keySet().stream().map((disease_category) -> quantStudyInitInfoMap.get(disease_category)).map((datasetObject) -> {
             boolean[] dataactiveHeader = datasetObject.getActiveHeaders();
             int counter = 0;
             for (boolean active : dataactiveHeader) {
@@ -102,9 +103,10 @@ public class CoreLogic implements Serializable {
                 counter++;
             }
             updatedQuantDatasetObjectMap.putAll(datasetObject.getQuantDatasetsList());
+            return datasetObject;
+        }).forEach((datasetObject) -> {
             diseaseCategories.addAll(datasetObject.getDiseaseCategories());
-
-        }
+        });
         allDatasetObject.setQuantDatasetsList(updatedQuantDatasetObjectMap);
         allDatasetObject.setActiveHeaders(activeHeaders);
         allDatasetObject.setDiseaseCategories(diseaseCategories);
@@ -149,8 +151,8 @@ public class CoreLogic implements Serializable {
         return database.getDiseaseGroupNameMap(diseaseCat);
 
     }
-    
-     /**
+
+    /**
      * Get map for disease groups full name
      *
      * @return map of the short and long diseases groups names
@@ -158,5 +160,223 @@ public class CoreLogic implements Serializable {
     public Map<String, String> getDiseaseGroupsFullNameMap() {
         return database.getDiseaseGroupsFullNameMap();
     }
+
+    /**
+     * this method is responsible for update quant comparison proteins map for
+     * each comparison
+     *
+     *
+     * @param selectedQuantComparisonsList selected comparisons
+     * @return updated quant comparisons list
+     */
+    public Set<QuantDiseaseGroupsComparison> updateComparisonQuantProteins(Set<QuantDiseaseGroupsComparison> selectedQuantComparisonsList) {
+
+        Set<QuantDiseaseGroupsComparison> updatedSelectedComparisonList = new LinkedHashSet<>();
+        Set<QuantProtein> fullComparisonProtMap = new HashSet<>();
+        Map<Integer, QuantDiseaseGroupsComparison> dsIndexToComparisonsMap = new HashMap<>();
+        Set<Integer> dsIdsList = new HashSet<>();
+
+        selectedQuantComparisonsList.stream().filter((comparison) -> (comparison.getQuantComparisonProteinMap() == null || comparison.getQuantComparisonProteinMap().isEmpty())).forEach((comparison) -> {
+            for (int datasetIndex : comparison.getDatasetIndexes()) {
+                dsIdsList.add(datasetIndex);
+                dsIndexToComparisonsMap.put(datasetIndex, comparison);
+            }
+        });
+        if (dsIdsList.isEmpty()) {
+            return selectedQuantComparisonsList;
+        }
+        fullComparisonProtMap.addAll(database.getQuantificationProteins(dsIdsList.toArray()));
+        Map<String, Set<QuantPeptide>> fullComparisonPeptideMap = (database.getQuantificationPeptides(dsIdsList.toArray()));
+
+        Map<String, Set<QuantProtein>> fullComparisonToProtMap = new HashMap<>();
+        fullComparisonProtMap.stream().forEach((qprot) -> {
+            String datasetIndex = dsIndexToComparisonsMap.get(qprot.getDsKey()).getComparisonHeader();
+            if (!fullComparisonToProtMap.containsKey(datasetIndex)) {
+                Set<QuantProtein> comparisonProtMap = new HashSet<>();
+                fullComparisonToProtMap.put(datasetIndex, comparisonProtMap);
+
+            }
+            Set<QuantProtein> comparisonProtMap = fullComparisonToProtMap.get(datasetIndex);
+            comparisonProtMap.add(qprot);
+            fullComparisonToProtMap.put(datasetIndex, comparisonProtMap);
+        });
+
+        for (QuantDiseaseGroupsComparison comparison : selectedQuantComparisonsList) {
+            Set<QuantProtein> comparisonProtMap = fullComparisonToProtMap.get(comparison.getComparisonHeader());
+            if (comparisonProtMap == null) {
+                continue;
+            }
+
+            Map<String, QuantComparisonProtein> comparProtList = new HashMap<>();
+
+            String pGrI = comparison.getOreginalComparisonHeader().split(" / ")[0];
+            String pGrII = comparison.getOreginalComparisonHeader().split(" / ")[1];
+            String diseaseCategory = comparison.getDiseaseCategory();
+
+            for (QuantProtein quant : comparisonProtMap) {
+                boolean inverted = false;
+                String protAcc = quant.getUniprotAccession();
+                if (protAcc.equalsIgnoreCase("") || protAcc.equalsIgnoreCase("Not Available") || protAcc.equalsIgnoreCase("Entry Deleted") || protAcc.equalsIgnoreCase("Entry Demerged") || protAcc.equalsIgnoreCase("NOT RETRIEVED") || protAcc.equalsIgnoreCase("DELETED") || protAcc.trim().equalsIgnoreCase("UNREVIEWED")) {
+                    protAcc = quant.getPublicationAccNumber();
+
+                }
+
+                if (!comparProtList.containsKey(protAcc)) {
+                    QuantComparisonProtein comProt = new QuantComparisonProtein(comparison.getDatasetIndexes().length, comparison, quant.getProtKey());
+                    comProt.setQuantPeptidesList(new HashSet<>());
+                    comparProtList.put(protAcc, comProt);
+                }
+
+                QuantComparisonProtein comProt = comparProtList.get(protAcc);
+
+                boolean significantPValue = true;
+                if (quant.getStringPValue().equalsIgnoreCase("Not Significant") || quant.getStringPValue().equalsIgnoreCase("Not Available")) {
+                    significantPValue = false;
+
+                }
+
+                    if ((pGrI.equalsIgnoreCase(quant.getPatientGroupI()) || pGrI.equalsIgnoreCase(quant.getPatientSubGroupI())) && (pGrII.equalsIgnoreCase(quant.getPatientGroupII()) || pGrII.equalsIgnoreCase(quant.getPatientSubGroupII()))) {
+                        if (quant.getStringFCValue().equalsIgnoreCase("Decreased") || quant.getStringFCValue().equalsIgnoreCase("Decrease")) {
+                            comProt.addDown((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
+                        } else if (quant.getStringFCValue().equalsIgnoreCase("Increased") || quant.getStringFCValue().equalsIgnoreCase("Increase")) {
+                            comProt.addUp((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
+                        } else if (quant.getStringFCValue().equalsIgnoreCase("Not Provided")) {
+                            comProt.addNoValueProvided((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
+                        } else if (quant.getStringFCValue().equalsIgnoreCase("No change")) {
+                            comProt.addStable((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
+                        }
+                    
+
+                } else {
+                    inverted = true;
+
+                    if (quant.getStringFCValue().equalsIgnoreCase("Decreased") || quant.getStringFCValue().equalsIgnoreCase("Decrease")) {
+                        comProt.addUp((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
+                    } else if (quant.getStringFCValue().equalsIgnoreCase("Increased") || quant.getStringFCValue().equalsIgnoreCase("Increase")) {
+                        comProt.addDown((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
+                    } else if (quant.getStringFCValue().equalsIgnoreCase("Not Provided")) {
+                        comProt.addNoValueProvided((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
+                    } else if (quant.getStringFCValue().equalsIgnoreCase("No change")) {
+                        comProt.addStable((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
+                    }
+                }
+                String uniprotAcc = quant.getUniprotAccession();
+                String protName;
+                String accession;
+                String url;
+//
+                if (uniprotAcc.trim().equalsIgnoreCase("") || uniprotAcc.equalsIgnoreCase("Not Available") || uniprotAcc.equalsIgnoreCase("Entry Deleted") || uniprotAcc.equalsIgnoreCase("Entry Demerged") || uniprotAcc.equalsIgnoreCase("NOT RETRIEVED") || uniprotAcc.equalsIgnoreCase("DELETED") || uniprotAcc.trim().equalsIgnoreCase("UNREVIEWED")) {
+                    protName = quant.getPublicationProteinName();
+                    accession = quant.getPublicationAccNumber();
+                    url = null;
+
+                } else {
+                    protName = quant.getUniprotProteinName();
+                    accession = quant.getUniprotAccession();
+                    url = "http://www.uniprot.org/uniprot/" + protAcc.toUpperCase();
+                }
+                if (protName.trim().equalsIgnoreCase("")) {
+                    protName = quant.getPublicationProteinName();
+                }
+
+                comProt.setProtName(protName);
+                comProt.setProteinAccssionNumber(accession);
+                comProt.setUrl(url);
+                comProt.setSequence(quant.getSequence());
+
+                Set<QuantPeptide> quantPeptidesList = comProt.getQuantPeptidesList();
+                for (String key : fullComparisonPeptideMap.keySet()) {
+
+                    if (key.equalsIgnoreCase("__" + (quant.getProtKey()) + "__" + quant.getDsKey() + "__")) {
+                        if (inverted) {
+                            Set<QuantPeptide> updatedQuantPeptidesList = new HashSet<>();
+                            fullComparisonPeptideMap.get(key).stream().map((quantPeptide) -> {
+                                if (quantPeptide.getString_fc_value().equalsIgnoreCase("Increased") || quantPeptide.getString_fc_value().equalsIgnoreCase("Increase")) {
+
+                                    quantPeptide.setString_fc_value("Decreased");
+
+                                } else if (quantPeptide.getString_fc_value().equalsIgnoreCase("Decreased") || quantPeptide.getString_fc_value().equalsIgnoreCase("Decrease")) {
+                                    quantPeptide.setString_fc_value("Increased");
+
+                                }
+                                return quantPeptide;
+                            }).map((quantPeptide) -> {
+                                if (quantPeptide.getFc_value() != -1000000000.0) {
+                                    quantPeptide.setFc_value(quantPeptide.getFc_value() * -1.0);//((1.0 / quantPeptide.getFc_value()) * -1);
+                                }
+                                return quantPeptide;
+                            }).forEach((quantPeptide) -> {
+                                updatedQuantPeptidesList.add(quantPeptide);
+                            });
+                            quantPeptidesList.addAll(updatedQuantPeptidesList);
+
+                        } else {
+
+                            quantPeptidesList.addAll(fullComparisonPeptideMap.get(key));
+
+                        }
+
+                    }
+                }
+                Map<String, QuantProtein> dsQuantProteinsMap = comProt.getDsQuantProteinsMap();
+                if (!dsQuantProteinsMap.containsKey("_-_" + quant.getDsKey() + "_-_" + comProt.getProteinAccssionNumber() + "_-_")) {
+                    if (inverted) {
+                        if (quant.getStringFCValue().equalsIgnoreCase("Increased") || quant.getStringFCValue().equalsIgnoreCase("Increase")) {
+
+                            quant.setStringFCValue("Decreased");
+
+                        } else if (quant.getStringFCValue().equalsIgnoreCase("Decreased") || quant.getStringFCValue().equalsIgnoreCase("Decrease")) {
+                            quant.setStringFCValue("Increased");
+
+                        }
+                        if (quant.getFcPatientGroupIonPatientGroupII() != -1000000000.0) {
+                            quant.setFcPatientGroupIonPatientGroupII(quant.getFcPatientGroupIonPatientGroupII() * -1.0);
+                        }
+                        String pgI = quant.getPatientGroupII();
+                        String pSubGI = quant.getPatientSubGroupII();
+                        String pGrIComm = quant.getPatientGrIIComment();
+                        int pGrINum = quant.getPatientsGroupIINumber();
+
+                        quant.setPatientGroupII(quant.getPatientGroupI());
+                        quant.setPatientGrIIComment(quant.getPatientGrIComment());
+                        quant.setPatientSubGroupII(quant.getPatientSubGroupI());
+                        quant.setPatientsGroupIINumber(quant.getPatientsGroupINumber());
+
+                        quant.setPatientGroupI(pgI);
+                        quant.setPatientGrIComment(pSubGI);
+                        quant.setPatientSubGroupI(pGrIComm);
+                        quant.setPatientsGroupINumber(pGrINum);
+
+                    }
+                    dsQuantProteinsMap.put("_-_" + quant.getDsKey() + "_-_" + comProt.getProteinAccssionNumber() + "_-_", quant);
+                    
+                } else {
+
+                    /////for iso testing remove as soon as possible 
+                    System.out.println("at major error in data dublicated keys " + ("_-_" + quant.getDsKey() + "_-_" + comProt.getProteinAccssionNumber() + "_-_"));
+                    continue;
+                }
+
+                comProt.setDsQuantProteinsMap(dsQuantProteinsMap);
+                comProt.setQuantPeptidesList(quantPeptidesList);
+                comparProtList.put(protAcc, comProt);
+
+            }
+
+//            //init pep for quantProt
+//            //sort the protiens map
+            Map<String, QuantComparisonProtein> sortedcomparProtList = new TreeMap<>(Collections.reverseOrder());
+            comparProtList.keySet().stream().forEach((Key) -> {
+                QuantComparisonProtein temp = comparProtList.get(Key);
+                sortedcomparProtList.put((temp.getSignificantUp() + "_" + Key), temp);
+            });
+            comparison.setQuantComparisonProteinMap(sortedcomparProtList);
+        updatedSelectedComparisonList.add(comparison);
+
+    }
+
+    return updatedSelectedComparisonList ;
+
+}
 
 }

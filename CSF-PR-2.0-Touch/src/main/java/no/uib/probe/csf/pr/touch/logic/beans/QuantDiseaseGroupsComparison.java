@@ -1,7 +1,7 @@
 package no.uib.probe.csf.pr.touch.logic.beans;
 
-//import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  *
@@ -14,17 +14,19 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
     private String comparisonHeader;
     private String oreginalComparisonHeader;
     private int[] datasetIndexes;
-    private String rgbStringColor;
+    private String diseaseCategoryColor;
     private boolean useCustomRowHeaderToSort;
     private boolean useCustomColumnHeaderToSort;
     private String comparisonFullName;
-    private DiseaseCategoryObject diseaseCategory;
+    private String diseaseCategory;
+    
+    private Map<String, QuantComparisonProtein> quantComparisonProteinMap;
 
-    public DiseaseCategoryObject getDiseaseCategory() {
+    public String getDiseaseCategory() {
         return diseaseCategory;
     }
 
-    public void setDiseaseCategory(DiseaseCategoryObject diseaseCategory) {
+    public void setDiseaseCategory(String diseaseCategory) {
         this.diseaseCategory = diseaseCategory;
     }
 
@@ -46,12 +48,12 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
 
     }
 
-    public String getRgbStringColor() {
-        return rgbStringColor;
+    public String getDiseaseCategoryColor() {
+        return diseaseCategoryColor;
     }
 
-    public void setRgbStringColor(String rgbStringColor) {
-        this.rgbStringColor = rgbStringColor;
+    public void setDiseaseCategoryColor(String diseaseCategoryColor) {
+        this.diseaseCategoryColor = diseaseCategoryColor;
     }
 
     /**
@@ -70,7 +72,7 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
     public void resetComparisonHeader() {
         if (!comparisonHeader.equalsIgnoreCase(oreginalComparisonHeader)) {
             comparisonHeader = oreginalComparisonHeader;
-//            comparProtsMap = null;
+//            quantComparisonProteinMap = null;
         }
 
     }
@@ -105,30 +107,25 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
         this.datasetIndexes = datasetIndexes;
     }
 
-//    /**
-//     *
-//     * @return
-//     */
-//    public Map<String, DiseaseGroupsComparisonsProteinLayout> getComparProtsMap() {
-//        return comparProtsMap;
-//    }
     /**
      *
-     * @param comparProtsMap
+     * @return
      */
-//    public void setComparProtsMap(Map<String, DiseaseGroupsComparisonsProteinLayout> comparProtsMap) {
-//        this.comparProtsMap = comparProtsMap;
-//    }
+    public Map<String, QuantComparisonProtein> getQuantComparisonProteinMap() {
+        return quantComparisonProteinMap;
+    }
+    /**
+     *
+     * @param quantComparisonProteinMap
+     */
+    public void setQuantComparisonProteinMap(Map<String, QuantComparisonProtein> quantComparisonProteinMap) {
+        this.quantComparisonProteinMap = quantComparisonProteinMap;
+    }
     @Override
     public int compareTo(QuantDiseaseGroupsComparison t) {
         return this.comparisonHeader.compareTo(t.comparisonHeader);
     }
 
-//    @Override
-//    public String toString() {
-//
-//        return comparisonHeader + " - " + comparProtsMap.size();
-//    }
     public boolean isUseCustomRowHeaderToSort() {
         return useCustomRowHeaderToSort;
     }

@@ -35,7 +35,7 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
     private final Label valueLabel;
     private boolean selected = false;
     private boolean combinedHeader = false;
-    private final String color;
+    private final String cellColor;
 
     /**
      *
@@ -55,16 +55,16 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
     /**
      *
      * @param value
-     * @param color
+     * @param cellColor
      * @param dsIndexes
      * @param rowLabelIndex
      * @param colLabelIndex
      * @param tooltipLayout
-     * @param groupCompTitle
+     * @param updatedComparisonTitile
      * @param heatmapCellWidth
      * @param publicationsNumber
      */
-    public HeatmapCell(double value, final String color, int[] dsIndexes, final int rowLabelIndex, final int colLabelIndex, VerticalLayout tooltipLayout, String groupCompTitle, int heatmapCellWidth, int publicationsNumber, String fullCompTitle, String diseaseCategory) {
+    public HeatmapCell(double value, final String cellColor,String diseaseCategoryColor, int[] dsIndexes, final int rowLabelIndex, final int colLabelIndex, VerticalLayout tooltipLayout, int heatmapCellWidth, int publicationsNumber, String updatedComparisonTitile, String fullCompTitle,String oreginalComparisonTitle, String diseaseCategory) {
 
         
         this.colLabelIndex = colLabelIndex;
@@ -76,10 +76,11 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
 
         this.diseaseCategory = diseaseCategory;
         this.comparison = new QuantDiseaseGroupsComparison();
+        comparison.setDiseaseCategory(diseaseCategory);
         comparison.setComparisonFullName(fullCompTitle);
-        comparison.setComparisonHeader(groupCompTitle);
-        comparison.setOreginalComparisonHeader(groupCompTitle);
-        comparison.setRgbStringColor(color);
+        comparison.setComparisonHeader(updatedComparisonTitile);
+        comparison.setOreginalComparisonHeader(oreginalComparisonTitle);
+        comparison.setDiseaseCategoryColor(diseaseCategoryColor);
         comparison.setDatasetIndexes(dsIndexes);
         this.valueLabel = new Label();
         valueLabel.setWidth(100, Unit.PERCENTAGE);
@@ -89,8 +90,8 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
         valueLabel.setContentMode(ContentMode.HTML);
         strValue = "";
         pointer = "default";
-        this.color = color;
-        if (color.equalsIgnoreCase("#EFF2FB") && value != 0) {
+        this.cellColor = cellColor;
+        if (cellColor.equalsIgnoreCase("#EFF2FB") && value != 0) {
             strValue = ((int) value) + "";
             this.updateLabel(strValue);
             this.setDescription("<h4>Same type comparison ( " + fullCompTitle.replace("__" + diseaseCategory, "") + ")</h4><h4>Disease: " + diseaseCategory + "</h4> <h4 style='font-size:14px;line-height:100%;font-weight: normal; '>" + strValue + (value == 1 ? " Dataset" : " Datasets") + " </h4><h4 style='font-size:14px;line-height:100%;font-weight: normal; '>" + publicationsNumber + (publicationsNumber == 1 ? " Publication" : " Publications") + " </h4>");
@@ -108,7 +109,7 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
             this.updateLabel(strValue);
         }
 
-        if (value > 0 && !color.equalsIgnoreCase("#EFF2FB")) {
+        if (value > 0 && !cellColor.equalsIgnoreCase("#EFF2FB")) {
             this.setDescription("<h4>   " + fullCompTitle.replace("__" + diseaseCategory, "") + "</h4><h4> Disease: " + diseaseCategory + " </h4>  <h4 style='font-size:11px;line-height:100%;font-weight: normal; '>" + strValue + (value == 1 ? " Dataset" : " Datasets") + " </h4><h4 style='font-size:11px;line-height:100%;font-weight: normal; '>" + publicationsNumber + (publicationsNumber == 1 ? " Publication" : " Publications") + " </h4>");
         }
     }
@@ -153,7 +154,7 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
 
     public final void updateLabel(String strValue) {
 
-        valueLabel.setValue("<center><div  style='background-color:" + color + "; background-position: center;cursor:" + pointer + "; '>" + strValue + "</div><center>");
+        valueLabel.setValue("<center><div  style='background-color:" + cellColor + "; background-position: center;cursor:" + pointer + "; '>" + strValue + "</div><center>");
 
     }
 
@@ -165,8 +166,8 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
         return diseaseCategory;
     }
 
-    public String getColor() {
-        return color;
+    public String getCellColor() {
+        return cellColor;
     }
 
 }

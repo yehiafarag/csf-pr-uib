@@ -45,7 +45,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
     private final Set<QuantDiseaseGroupsComparison> selectedDsList;
     private final Set<QuantDiseaseGroupsComparison> availableComparisonsList;
 
-    private boolean singleSelection = true;
+    private boolean singleSelection = false;
     private int heatmapCellWidth;
     private int heatmapCellHeight;
 
@@ -435,7 +435,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
             for (int y : activeColumn) {
                 HeatmapCell cell = (HeatmapCell) heatmapBody.getComponent(y, x);
                 if (cell.isVisible()) {
-                    dataColors[rowCount][ColumnCount++] = cell.getColor();
+                    dataColors[rowCount][ColumnCount++] = cell.getCellColor();
                 } else {
                     dataColors[rowCount][ColumnCount++] = "#BDBDBD";
                 }
@@ -536,7 +536,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
             for (int y = 0; y < values[x].length; y++) {
                 HeatMapHeaderCellInformationBean grI = (HeatMapHeaderCellInformationBean) rowheaders.toArray()[x];
                 HeatMapHeaderCellInformationBean grII = (HeatMapHeaderCellInformationBean) colheaders.toArray()[y];
-                String headerTitle = grI.toString() + " / " + grII.toString();
+                String updatedComparisonTitle = grI.toString() + " / " + grII.toString();
                 double value = values[x][y].getValue();
                 String color = "#EFF2FB";
                 if (!rowheaders.toArray()[x].toString().equalsIgnoreCase(colheaders.toArray()[y].toString())) {
@@ -551,9 +551,9 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
                 }
 
-                String cellComparisonTitle = grI.getDiseaseGroupFullName() + " / " + grII.getDiseaseGroupFullName();
-
-                HeatmapCell cell = new HeatmapCell(value, color, dsIndexes, x, y, null, headerTitle, heatmapCellWidth, pubCounter.size(), cellComparisonTitle, ((HeatMapHeaderCellInformationBean) rowheaders.toArray()[x]).getDiseaseCategory()) {
+                String fullComparisonTitle = grI.getDiseaseGroupFullName() + " / " + grII.getDiseaseGroupFullName();
+                String orginalComparisonName = grI.getDiseaseGroupOreginalName()+" / "+grII.getDiseaseGroupOreginalName();
+                HeatmapCell cell = new HeatmapCell(value, color,grI.getDiseaseColor(), dsIndexes, x, y, null, heatmapCellWidth, pubCounter.size(),updatedComparisonTitle, fullComparisonTitle,orginalComparisonName, ((HeatMapHeaderCellInformationBean) rowheaders.toArray()[x]).getDiseaseCategory()) {
 
                     @Override
                     public void selectData(HeatmapCell cell) {
@@ -566,7 +566,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
                     }
 
                 };
-                comparisonsCellsMap.put(headerTitle, cell);
+                comparisonsCellsMap.put(updatedComparisonTitle, cell);
                 heatmapBody.addComponent(cell, y + 1, x + 1);
                 dataColors[x][y] = color;
                 if (cell.getComparison().getDatasetIndexes().length > 0) {
@@ -1069,7 +1069,6 @@ public abstract class HeatMapLayout extends VerticalLayout {
         selectedDsList.clear();
         comparisonsCellsMap.values().stream().forEach((cell) -> {
             if (comparisonsToSelect.contains(cell.getComparison())) {
-                System.out.println("cell " + cell.getComparison().getComparisonHeader());
                 this.selectedDsList.add(cell.getComparison());
                 this.selectedCells.add(cell);
                 String kI = cell.getComparison().getComparisonHeader();

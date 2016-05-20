@@ -16,10 +16,10 @@ import no.uib.probe.csf.pr.touch.logic.beans.DiseaseCategoryObject;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseGroupComparison;
 import no.uib.probe.csf.pr.touch.logic.beans.HeatMapHeaderCellInformationBean;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantProtein;
 import no.uib.probe.csf.pr.touch.logic.dataset.DatasetUtility;
 import no.uib.probe.csf.pr.touch.view.smallscreen.OverviewInfoBean;
-import org.jsoup.helper.DataUtil;
 
 /**
  *
@@ -202,6 +202,18 @@ public class Data_Handler implements Serializable {
      */
      public void updateCSFSerumDatasets(boolean serumApplied, boolean csfApplied){
          Dataset_Util.updateCSFSerumDatasets(serumApplied, csfApplied);
+     }
+     
+    /**
+     * this method is responsible for update quant comparison proteins map for each comparison
+     *
+     *
+     * @param selectedQuantComparisonsList selected comparisons
+     * @return  updated quant comparisons list
+     */ 
+    public Set<QuantDiseaseGroupsComparison> updateComparisonQuantProteins(Set<QuantDiseaseGroupsComparison> selectedQuantComparisonsList){
+                return coreLogic.updateComparisonQuantProteins(selectedQuantComparisonsList);
+     
      }
 
 }
