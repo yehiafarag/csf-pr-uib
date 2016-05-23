@@ -221,7 +221,6 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
             tempWidthValue[3] = tempWidthValue[3] + tempWidthValue[6];
             tempWidthValue[6] = 0;
             dataColor[3] = stableColor;
-            System.out.println(" stableColor "+stableColor+ "   "+trendStyles[3]);
 
             int length = 0;
             if (upper < 10) {
@@ -666,14 +665,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         set.stream().forEach((square) -> {
             chartComponentLayout.addComponent(square, square.getParam("position").toString());
         });
-//            }
-//            String base64 = Base64.encodeBase64String(imageData);
-//            base64 = "data:image/png;base64," + base64;
-//            return base64;
-//        } catch (IOException e) {
-//            System.err.println("at error " + e.getMessage());
-//        }
-//        return "";
+
     }
 
     @Override

@@ -46,11 +46,13 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
         this.Data_handler = Data_handler;
         CSFPR_Central_Manager = new CSFPR_Central_Manager();
         this.setMargin(true);
+        
 
         Collection<DiseaseCategoryObject> availableDiseaseCategory = Data_handler.getDiseaseCategorySet();
         final HorizontalLayout subBodyWrapper = new HorizontalLayout();
         subBodyWrapper.setWidthUndefined();
         subBodyWrapper.setHeight((height - 200), Unit.PIXELS);
+        subBodyWrapper.setHeightUndefined();
 
         quantInitialLayout = new QuantInitialLayout(availableDiseaseCategory, width, height) {
 
@@ -95,7 +97,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
                 processFunction("bubblechart");
             }
         };
-        bubblechartBtn.updateIcon(new ThemeResource("img/scatter_plot_applied.png"));
+        bubblechartBtn.updateIcon(new ThemeResource("img/logo.png"));
         bubblechartBtn.setWidth(100, Unit.PIXELS);
         bubblechartBtn.setHeight(100, Unit.PIXELS);
 
@@ -146,7 +148,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
             @Override
             public void updateIcon(String imageUrl) {
                 if (imageUrl == null) {
-                    bubblechartBtn.updateIcon(new ThemeResource("img/scatter_plot_applied.png"));
+                    bubblechartBtn.updateIcon(new ThemeResource("img/logo.png"));
                     bubblechartBtn.setEnabled(false);
                     return;
                 }

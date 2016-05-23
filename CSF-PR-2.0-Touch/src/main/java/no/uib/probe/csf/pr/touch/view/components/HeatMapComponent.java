@@ -2,7 +2,9 @@ package no.uib.probe.csf.pr.touch.view.components;
 
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.ThemeResource;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
@@ -80,40 +82,41 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         this.setComponentAlignment(bodyLayoutWrapper, Alignment.TOP_CENTER);
 
         //top filters layout
-        VerticalLayout topFilterContainerLayout = new VerticalLayout();
-        topFilterContainerLayout.setWidth(446, Unit.PIXELS);
-        topFilterContainerLayout.setHeight(30, Unit.PIXELS);
-        bodyLayoutWrapper.addComponent(topFilterContainerLayout);
-        topFilterContainerLayout.setStyleName("slowscroll");
+//        VerticalLayout topFilterContainerLayout = new VerticalLayout();
+//        topFilterContainerLayout.setWidth(446, Unit.PIXELS);
+//        topFilterContainerLayout.setHeight(30, Unit.PIXELS);
+//        bodyLayoutWrapper.addComponent(topFilterContainerLayout);
+//        topFilterContainerLayout.setStyleName("slowscroll");
+//
+//        HorizontalLayout popupBtnsLayout = new HorizontalLayout();
+//        popupBtnsLayout.setWidth(100, Unit.PERCENTAGE);
+//        popupBtnsLayout.setHeight(100, Unit.PERCENTAGE);
+//        popupBtnsLayout.setSpacing(true);
+//        topFilterContainerLayout.addComponent(popupBtnsLayout);
 
-        HorizontalLayout popupBtnsLayout = new HorizontalLayout();
-        popupBtnsLayout.setWidth(100, Unit.PERCENTAGE);
-        popupBtnsLayout.setHeight(100, Unit.PERCENTAGE);
-        popupBtnsLayout.setSpacing(true);
-        topFilterContainerLayout.addComponent(popupBtnsLayout);
+        GridLayout btnsWrapper = new GridLayout(3,3);
+        btnsWrapper.setColumnExpandRatio(0, 25);
+        btnsWrapper.setColumnExpandRatio(1, 50);
+        btnsWrapper.setColumnExpandRatio(2, 25);
+//        btnsWrapper.setRowExpandRatio(0, 1);
+//        btnsWrapper.setRowExpandRatio(1, 1);
+//        btnsWrapper.setRowExpandRatio(2, 1);
+        btnsWrapper.setSpacing(false);
+//        btnsWrapper.setWidth(100,Unit.PERCENTAGE);
+//        popupBtnsLayout.addComponent(btnsWrapper);
 
-        HorizontalLayout btnsWrapper = new HorizontalLayout();
-        btnsWrapper.setSpacing(true);
-        btnsWrapper.setWidthUndefined();
-        popupBtnsLayout.addComponent(btnsWrapper);
+        
+        zoomControler = new ZoomControler(true);
+//        btnsWrapper.addComponent(zoomControler);
+//        btnsWrapper.setComponentAlignment(zoomControler, Alignment.MIDDLE_LEFT);
+//
+//        VerticalLayout spacer = new VerticalLayout();
+//        spacer.setWidth(30,Unit.PIXELS);
+//        spacer.setStyleName("whitelayout");
+//          btnsWrapper.addComponent(spacer);
+//        btnsWrapper.setComponentAlignment(spacer, Alignment.MIDDLE_LEFT);
 
-        InfoPopupBtn info = new InfoPopupBtn("infoText");
-        info.setWidth(25, Unit.PIXELS);
-        info.setHeight(25, Unit.PIXELS);
-        btnsWrapper.addComponent(info);
-        btnsWrapper.setComponentAlignment(info, Alignment.MIDDLE_LEFT);
-
-        zoomControler = new ZoomControler();
-        btnsWrapper.addComponent(zoomControler);
-        btnsWrapper.setComponentAlignment(zoomControler, Alignment.MIDDLE_LEFT);
-
-        datasetCounterLabel = new Label();
-        datasetCounterLabel.setDescription("#Datasets");
-        datasetCounterLabel.setHeight(25, Unit.PIXELS);
-        btnsWrapper.addComponent(datasetCounterLabel);
-        btnsWrapper.setComponentAlignment(datasetCounterLabel, Alignment.MIDDLE_LEFT);
-        datasetCounterLabel.setStyleName("filterbtn");
-        datasetCounterLabel.addStyleName("defaultcursor");
+        
 
         datasetPieChartFiltersBtn = new DatasetPieChartFiltersComponent() {
             @Override
@@ -127,7 +130,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
             }
 
         };
-        btnsWrapper.addComponent(datasetPieChartFiltersBtn);
+        btnsWrapper.addComponent(datasetPieChartFiltersBtn,0,1);
         btnsWrapper.setComponentAlignment(datasetPieChartFiltersBtn, Alignment.MIDDLE_LEFT);
 
         reconbineDiseaseGroupsFiltersBtn = new RecombineDiseaseGroupsCombonent(diseaseCategorySet) {
@@ -138,8 +141,11 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
             }
 
         };
-        btnsWrapper.addComponent(reconbineDiseaseGroupsFiltersBtn);
-        btnsWrapper.setComponentAlignment(reconbineDiseaseGroupsFiltersBtn, Alignment.MIDDLE_LEFT);
+        HorizontalLayout bottomBtnContainer = new HorizontalLayout();
+        bottomBtnContainer.setSpacing(false);
+        bottomBtnContainer.setWidth(53,Unit.PIXELS);
+        bottomBtnContainer.addComponent(reconbineDiseaseGroupsFiltersBtn);
+        bottomBtnContainer.setComponentAlignment(reconbineDiseaseGroupsFiltersBtn, Alignment.TOP_LEFT);
 
         reorderSelectBtn = new ReorderSelectGroupsFilter() {
 
@@ -149,8 +155,12 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
             }
 
         };
-        btnsWrapper.addComponent(reorderSelectBtn);
-        btnsWrapper.setComponentAlignment(reorderSelectBtn, Alignment.MIDDLE_LEFT);
+        bottomBtnContainer.addComponent(reorderSelectBtn);
+        bottomBtnContainer.setComponentAlignment(reorderSelectBtn, Alignment.TOP_LEFT);
+        
+        
+        btnsWrapper.addComponent(bottomBtnContainer,1,2);
+        btnsWrapper.setComponentAlignment(bottomBtnContainer, Alignment.TOP_CENTER);
 
         serumCsfFilter = new SerumCsfFilter() {
 
@@ -170,8 +180,8 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
             }
 
         };
-        btnsWrapper.addComponent(serumCsfFilter);
-        btnsWrapper.setComponentAlignment(serumCsfFilter, Alignment.MIDDLE_LEFT);
+        btnsWrapper.addComponent(serumCsfFilter,1,0);
+        btnsWrapper.setComponentAlignment(serumCsfFilter, Alignment.BOTTOM_CENTER);
 
         VerticalLayout clearFilterBtn = new VerticalLayout();
         clearFilterBtn.setDescription("Clear filters");
@@ -194,12 +204,25 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
 
             }
         });
-        btnsWrapper.addComponent(clearFilterBtn);
-        btnsWrapper.setComponentAlignment(clearFilterBtn, Alignment.MIDDLE_LEFT);
+        btnsWrapper.addComponent(clearFilterBtn,2,1);
+        btnsWrapper.setComponentAlignment(clearFilterBtn, Alignment.MIDDLE_RIGHT);
+        
+        datasetCounterLabel = new Label();
+        datasetCounterLabel.setDescription("#Datasets");
+        datasetCounterLabel.setHeight(25, Unit.PIXELS);
+        btnsWrapper.addComponent(datasetCounterLabel,1,1);
+        datasetCounterLabel.setContentMode(ContentMode.HTML);
+        btnsWrapper.setComponentAlignment(datasetCounterLabel, Alignment.MIDDLE_CENTER);
+        datasetCounterLabel.setStyleName("filterbtn");
+        datasetCounterLabel.addStyleName("defaultcursor");
+        
+        InfoPopupBtn info = new InfoPopupBtn("infoText");
+        info.setWidth(25, Unit.PIXELS);
+        info.setHeight(25, Unit.PIXELS);
 
         //init heatmap
         int availableHMHeight = mainbodyLayoutHeight - 100;
-        heatmapLayoutContainer = new HeatMapLayout(mainbodyLayoutWidth, availableHMHeight, activeColumnHeaders, zoomControler.getResetZoomBtn()) {
+        heatmapLayoutContainer = new HeatMapLayout(mainbodyLayoutWidth, availableHMHeight, activeColumnHeaders, btnsWrapper) {
             @Override
             public void updateSelectionManager(Set<QuantDiseaseGroupsComparison> selectedQuantComparisonsList) {
                 if (selectedQuantComparisonsList != null && !selectedQuantComparisonsList.isEmpty()) {
@@ -210,25 +233,11 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
                 CSFPR_Central_Manager.selectionAction(selection);
             }
 
-            private boolean showFilters = true;
 
-            @Override
-            public void showHideFilters() {
-                if (showFilters) {
-                    topFilterContainerLayout.addStyleName("hidescrolllayout");
-                    topFilterContainerLayout.addStyleName("absoluteposition");
-                    showFilters = false;
-                } else {
-                    showFilters = true;
-                    topFilterContainerLayout.removeStyleName("hidescrolllayout");
-                    topFilterContainerLayout.removeStyleName("absoluteposition");
-                }
-
-            }
 
             @Override
             public void updateHMThumb(String imgUrl, int datasetNumber, int deactivated) {
-                datasetCounterLabel.setValue(datasetNumber + "/" + fullQuantDsMap.size());
+                datasetCounterLabel.setValue("<center>"+datasetNumber + "/" + fullQuantDsMap.size()+"</center>");
                 if (deactivated > 0) {
                     datasetCounterLabel.setDescription("#Datasets<br/>#Not active datasets: " + deactivated);
                 } else {

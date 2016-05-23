@@ -58,6 +58,7 @@ public class CSF_PR_UI extends UI {
 //        layout.setSpacing(true);
         
         setContent(layout);
+//        this.addStyleName("zoom6");
     }
 
 //    @WebServlet(urlPatterns = "/*", name = "CSF_PR_UIServlet", asyncSupported = true)

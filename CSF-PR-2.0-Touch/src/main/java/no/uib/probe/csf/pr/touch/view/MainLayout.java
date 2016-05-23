@@ -13,14 +13,12 @@ import com.vaadin.server.Page;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
-import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
-import no.uib.probe.csf.pr.touch.view.core.PopupInfoBtn;
 
 /**
  *
@@ -32,7 +30,8 @@ public class MainLayout extends VerticalLayout {
 
     private final HorizontalLayout header;
     private final VerticalLayout body;
-    private int windowHeight,windowWidth,bodyHeight;
+    private int windowHeight, windowWidth, bodyHeight;
+    private int initalWidth, initalHeight;
 
     /**
      *
@@ -49,9 +48,9 @@ public class MainLayout extends VerticalLayout {
         this.setSizeFull();
         this.setSpacing(true);
         this.setStyleName("whitelayout");
-        windowHeight =  Page.getCurrent().getBrowserWindowHeight();
-        windowWidth =Page.getCurrent().getBrowserWindowWidth();
-        bodyHeight=windowHeight-60;
+        windowHeight = Page.getCurrent().getBrowserWindowHeight();
+        windowWidth = Page.getCurrent().getBrowserWindowWidth();
+        bodyHeight = windowHeight - 60;
 
         //init header
         header = new HorizontalLayout();
@@ -59,11 +58,6 @@ public class MainLayout extends VerticalLayout {
         header.setHeight("60px");
         header.setSpacing(true);
         this.addComponent(header);
-        
-        
-     
-        
-        
 
         //tile logo container
         HorizontalLayout logoTitleContainer = new HorizontalLayout();
@@ -100,7 +94,7 @@ public class MainLayout extends VerticalLayout {
         rightHeaderLayout.setWidth("100%");
 
         header.addComponent(rightHeaderLayout);
-        header.setComponentAlignment(rightHeaderLayout, Alignment.TOP_RIGHT);
+        header.setComponentAlignment(rightHeaderLayout, Alignment.TOP_CENTER);
         HorizontalLayout linksIconsLayout = new HorizontalLayout();
         linksIconsLayout.setStyleName("transparentlayout");
         linksIconsLayout.addStyleName("margintop10");
@@ -140,32 +134,79 @@ public class MainLayout extends VerticalLayout {
         //heder is finished 
         //start body
         body = new VerticalLayout();
-        body.setWidth("100%");
-        body.setHeight("100%");
+        body.setWidth(100, Unit.PERCENTAGE);
+        body.setHeight(100, Unit.PERCENTAGE);
         this.addComponent(body);
+        this.setComponentAlignment(body, Alignment.TOP_CENTER);
         final SizeReporter sizeReporter = new SizeReporter(this);
-        windowHeight = Page.getCurrent().getBrowserWindowHeight();
-        windowWidth = Page.getCurrent().getBrowserWindowWidth();
+
+        windowHeight = Math.max(Page.getCurrent().getWebBrowser().getScreenHeight(), 800);
+        windowWidth = Math.max(Page.getCurrent().getWebBrowser().getScreenWidth(), 800);
+
         sizeReporter.addResizeListener((ComponentResizeEvent event) -> {
+
+            System.out.println("at size updated time to rezoom WH : " + UI.getCurrent().getWindows().iterator().next().getPositionX() + "    " + Page.getCurrent().getBrowserWindowHeight() + "   WW: " + Page.getCurrent().getBrowserWindowWidth() + "  browser width:  " + Page.getCurrent().getWebBrowser().getScreenWidth() + "  browser H:  " + Page.getCurrent().getWebBrowser().getScreenHeight());
             resizeScreen();
-           
         });
-        CSFApplicationContainer welcomePageContainerLayout = new CSFApplicationContainer(windowWidth,bodyHeight,url, dbName, driver, userName, password, filesURL);
+
+        initalWidth = Page.getCurrent().getBrowserWindowWidth();
+        initalHeight = Page.getCurrent().getBrowserWindowHeight();
+        float headerRatio = 60f / (float) windowHeight;
+        bodyHeight = initalHeight - 60;
+        float bodyRatio = (float) bodyHeight / (float) initalHeight;
+        this.setExpandRatio(header, headerRatio);
+        this.setExpandRatio(body, bodyRatio);
+        CSFApplicationContainer welcomePageContainerLayout = new CSFApplicationContainer(initalWidth, bodyHeight, url, dbName, driver, userName, password, filesURL);
         body.addComponent(welcomePageContainerLayout);
 
+        resizeScreen();
+
     }
+    String updatedZoomStyleName = "";
 
     /**
      * resize the layout on changing window size
      */
     private void resizeScreen() {
-        windowHeight = Page.getCurrent().getBrowserWindowHeight();
-        windowWidth = Page.getCurrent().getBrowserWindowWidth();
-        float headerRatio = 60f / (float)windowHeight;
-        bodyHeight = windowHeight - 60 ;
-        float bodyRatio = (float)bodyHeight/ (float) windowHeight;
-        this.setExpandRatio(header, headerRatio);
-        this.setExpandRatio(body, bodyRatio);
+
+        int swindowHeight = Page.getCurrent().getBrowserWindowHeight();
+        int swindowWidth = Page.getCurrent().getBrowserWindowWidth();
+        boolean scaleOnH = false, scaleOnW = false;
+
+        if (swindowHeight > swindowWidth) {
+            scaleOnW = true;
+
+        } else {
+            scaleOnH = true;
+        }
+        int zoomLevel = 0;
+
+        if (scaleOnH) {
+            if (initalHeight > swindowHeight) {
+                double ratio = (double) swindowHeight / (double) initalHeight;
+                System.out.println(" scaleOnH zoom level " + ratio);
+                zoomLevel = ((int) Math.round(ratio * 10.0));
+
+            } else {
+                zoomLevel = 10;
+            }
+        } else {
+            if (initalWidth > swindowWidth) {
+                double ratio = (double) swindowWidth / (double) initalWidth;
+                System.out.println("scaleOnW zoom level " + ratio);
+                zoomLevel = ((int) Math.round(ratio * 10.0));
+
+            } else {
+                zoomLevel = 10;
+            }
+        }
+
+        this.removeStyleName(updatedZoomStyleName);
+        updatedZoomStyleName = "zoom" + zoomLevel;
+        System.out.println("zoom level " + zoomLevel);
+        header.addStyleName(updatedZoomStyleName);
+        body.setStyleName(updatedZoomStyleName);
+//        UI.getCurrent().getWindows().iterator().next().addStyleName(updatedZoomStyleName);
 
     }
 

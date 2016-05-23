@@ -3,6 +3,7 @@ package no.uib.probe.csf.pr.touch.view.bigscreen.welcomepagecontainer;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -15,6 +16,7 @@ import no.uib.probe.csf.pr.touch.view.LayoutViewManager;
 import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.PublicationsInformationWindow;
 import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.StudiesInformationWindow;
 import no.uib.probe.csf.pr.touch.view.core.BigBtn;
+import no.uib.probe.csf.pr.touch.view.core.ZoomControler;
 import no.uib.probe.csf.pr.touch.view.smallscreen.OverviewInfoBean;
 
 /**
@@ -28,7 +30,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
     
     private final HorizontalLayout miniLayout;
-    private final List<Object[]> publicationList;
+    private final  ZoomControler zoomApp;
 
     public HorizontalLayout getMiniLayout() {
         return miniLayout;
@@ -46,8 +48,8 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
      *
      */
     public WelcomeLayoutComponents(final LayoutViewManager View_Manager,int screenWidth,OverviewInfoBean overviewInfoBean,List<Object[]> publicationList,Set<QuantDatasetObject> dsObjects ) {
-        this.setWidth("100%");
-        this.setHeight("100%");
+        this.setWidth(100,Unit.PERCENTAGE);
+        this.setHeight(100,Unit.PERCENTAGE);
         
 
         int rightPanelWidth = Math.min(1020, (screenWidth - 220));
@@ -66,7 +68,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         Label statLabel = new Label("<center><h1>Resource  Status</h1></center>");
         statLabel.setContentMode(ContentMode.HTML);
         statLabel.setWidthUndefined();
-        statLabel.setHeight("50px");
+        statLabel.setHeight(50,Unit.PIXELS);
         leftPanelWrapper.addComponent(statLabel);
 
         Label quantStatLabel = new Label("<h2>Quantitative  Data</h2>");
@@ -166,21 +168,21 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         //end of left panel
         //init spacer
         VerticalLayout spacer = new VerticalLayout();
-        spacer.setHeight("100%");
-        spacer.setWidth("10px");
+        spacer.setHeight(100,Unit.PERCENTAGE);
+        spacer.setWidth(10,Unit.PIXELS);
         spacer.setStyleName("spacer");
         mainBodyHLayout.addComponent(spacer);
 
         //end of spacer
         //init rightlayout top
         VerticalLayout rightPanelWrapper = new VerticalLayout();
-        rightPanelWrapper.setWidth(rightPanelWidth + "px");
+        rightPanelWrapper.setWidth(rightPanelWidth ,Unit.PIXELS);
         rightPanelWrapper.setHeightUndefined();
         rightPanelWrapper.setStyleName("framelayout");
         mainBodyHLayout.addComponent(rightPanelWrapper);
 
         Label infoLable = new Label("<h1>Welcome to CSF Proteome Resource (CSF-PR)</h1>");
-        infoLable.setHeight("50px");
+        infoLable.setHeight(50,Unit.PIXELS);
         infoLable.setContentMode(ContentMode.HTML);
         rightPanelWrapper.addComponent(infoLable);
 
@@ -191,25 +193,15 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
                 + "for disease biomarkers.</p>");
         para_1.setContentMode(ContentMode.HTML);
         rightPanelWrapper.addComponent(para_1);
-        para_1.setWidth(rightPanelWidth+"px");
+        para_1.setWidth(rightPanelWidth,Unit.PIXELS);
 
         HorizontalLayout rightPanel = new HorizontalLayout();
-        rightPanel.setWidth(100 + "%");
+        rightPanel.setWidth(100 ,Unit.PERCENTAGE);
         rightPanelWrapper.addComponent(rightPanel);
 
-        
-        
-        
-        
-//        VerticalLayout bottomLayout = new VerticalLayout();
-//        bottomLayout.setWidth("100%");
-//        bottomLayout.setSpacing(true);
-//        bottomLayout.setMargin(false);
-//        mainBodyHLayout.addComponent(bottomLayout);
-//        mainBodyHLayout.setComponentAlignment(bottomLayout, Alignment.BOTTOM_CENTER);
 
         VerticalLayout middleLayout = new VerticalLayout();
-        middleLayout.setWidth("100%");
+        middleLayout.setWidth(100,Unit.PERCENTAGE);
         middleLayout.setMargin(false);
         rightPanel.addComponent(middleLayout);
      
@@ -259,6 +251,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
             @Override
             public void onClick() {
+                System.out.println("welcome view");
                 View_Manager.viewLayout("welcomeview");
             }
         };
@@ -271,10 +264,15 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         middleLayout.setComponentAlignment(para_3, Alignment.BOTTOM_LEFT);
 
         //init mini layout
-        miniLayout = new HorizontalLayout(quantDatasetBtn.getThumbBtn(),idDatasetBtn.getThumbBtn(),searchingDatasetBtn.getThumbBtn(),compareBtn.getThumbBtn(),homeBtn.getThumbBtn());
-        miniLayout.setSpacing(true);
-        miniLayout.setMargin(new MarginInfo(false));
+        zoomApp = new ZoomControler(false);
+        zoomApp.setWidth(50,Unit.PIXELS);
+        VerticalLayout miniLayoutContainer = new VerticalLayout(homeBtn.getThumbBtn(),quantDatasetBtn.getThumbBtn(),idDatasetBtn.getThumbBtn(),searchingDatasetBtn.getThumbBtn(),compareBtn.getThumbBtn(),zoomApp);
+        miniLayout = new HorizontalLayout(miniLayoutContainer);
+        miniLayoutContainer.setSpacing(true);
 //        
-        this.publicationList = publicationList;
+    }
+    public void addMainZoomComponents(Component component){
+    
+    zoomApp.addZoomableComponent(component);
     }
 }

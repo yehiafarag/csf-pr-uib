@@ -61,7 +61,7 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
     }
 
     public void setInitialLayout(AbstractOrderedLayout Btn, AbstractOrderedLayout mainViewLayout) {
-        mainViewLayout.addStyleName("slowslide");
+//        mainViewLayout.addStyleName("slowslide");
         this.removeComponent(mainLayoutWrapper);
         leftSideContainer.addComponent(Btn);
         Btn.addLayoutClickListener(this);

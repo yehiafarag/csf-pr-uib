@@ -11,6 +11,7 @@ import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -90,7 +91,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
     /*
      *  
      */
-    public HeatMapLayout(int heatMapContainerWidth, int availableHMHeight, boolean[] activeColumnHeaders, VerticalLayout resetZoomBtn) {
+    public HeatMapLayout(int heatMapContainerWidth, int availableHMHeight, boolean[] activeColumnHeaders, Layout resetZoomBtn) {
         this.availableComparisonsList = new LinkedHashSet<>();
         this.updatedDatasetMap = new LinkedHashMap<>();
         this.selectedDsList = new LinkedHashSet<>();
@@ -129,16 +130,16 @@ public abstract class HeatMapLayout extends VerticalLayout {
         this.spacer.setWidth(175, Unit.PIXELS);
         topLayout.addComponent(spacer);
 
-        final Label filterLabelBtn = new Label("Filters");
-        filterLabelBtn.setHeight(100, Unit.PERCENTAGE);
-        filterLabelBtn.setWidth(99, Unit.PERCENTAGE);
-        filterLabelBtn.setDescription("Show filters");
-        filterLabelBtn.setStyleName("showfilterbtnlabel");
-        filterLabelBtn.setContentMode(ContentMode.HTML);
-        spacer.addComponent(filterLabelBtn);
-        spacer.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
-            HeatMapLayout.this.showHideFilters();
-        });
+//        final Label filterLabelBtn = new Label("Filters");
+//        filterLabelBtn.setHeight(100, Unit.PERCENTAGE);
+//        filterLabelBtn.setWidth(99, Unit.PERCENTAGE);
+//        filterLabelBtn.setDescription("Show filters");
+//        filterLabelBtn.setStyleName("showfilterbtnlabel");
+//        filterLabelBtn.setContentMode(ContentMode.HTML);
+//        spacer.addComponent(filterLabelBtn);
+//        spacer.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
+//            HeatMapLayout.this.showHideFilters();
+//        });
 
         columnCategoryHeadersContainer = new HorizontalLayout();
         this.columnCategoryHeadersContainer.setHeight(100, Unit.PERCENTAGE);
@@ -178,11 +179,12 @@ public abstract class HeatMapLayout extends VerticalLayout {
         controlsLayout.setSpacing(true);
         this.addComponent(controlsLayout);
 
-        Label commentLabel = new Label("<b>*</b> Multiple groups combined in one group");
+        Label commentLabel = new Label("<b>*</b> Multiple groups");
         commentLabel.setStyleName(ValoTheme.LABEL_SMALL);
+         commentLabel.addStyleName(ValoTheme.LABEL_TINY);
         commentLabel.setContentMode(ContentMode.HTML);
         controlsLayout.addComponent(commentLabel);
-        controlsLayout.setComponentAlignment(commentLabel, Alignment.BOTTOM_LEFT);
+        controlsLayout.setComponentAlignment(commentLabel, Alignment.TOP_LEFT);
         controlsLayout.setExpandRatio(commentLabel, 0.6f);
         HorizontalLayout controlBtnsContainer = new HorizontalLayout();
         controlBtnsContainer.setHeightUndefined();
@@ -269,9 +271,10 @@ public abstract class HeatMapLayout extends VerticalLayout {
         if (resetZoomBtn != null) {
 
             cornerCell.addComponent(resetZoomBtn);
-            resetZoomBtn.setWidth(100, Unit.PIXELS);
+            resetZoomBtn.setWidth(115, Unit.PIXELS);
             resetZoomBtn.setHeight(100, Unit.PIXELS);
-            cornerCell.setComponentAlignment(resetZoomBtn, Alignment.MIDDLE_CENTER);
+            cornerCell.setComponentAlignment(resetZoomBtn, Alignment.TOP_LEFT);
+            resetZoomBtn.addStyleName("heatmapcorner");
         }
         bottomLine = new VerticalLayout();
 //        bottomLine.setStyleName("lightgraylayout");
@@ -465,7 +468,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
         heatmapBody.setRows(rowheaders.size() + 2);
 
         heatmapBody.addComponent(cornerCell, 0, 0);
-        heatmapBody.setComponentAlignment(cornerCell, Alignment.MIDDLE_CENTER);
+        heatmapBody.setComponentAlignment(cornerCell, Alignment.TOP_LEFT);
 
         //init columnHeaders  
         columnHeaderCells = new HeaderCell[colheaders.size()];
@@ -1096,7 +1099,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
     }
 
-    public abstract void showHideFilters();
+//    public abstract void showHideFilters();
 
     /**
      * this method to update heatmap Thumb button on updating the heatmap thumb

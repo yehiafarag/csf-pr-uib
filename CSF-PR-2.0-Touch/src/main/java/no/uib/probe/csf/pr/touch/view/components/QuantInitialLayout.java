@@ -37,9 +37,10 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         frame.setWidthUndefined();//100, Unit.PERCENTAGE);
         frame.setHeightUndefined();//100,Unit.PERCENTAGE);
         frame.setSpacing(true);
+        frame.setMargin(true);
 //        frame.setStyleName("border");
         this.addComponent(frame);
-        this.setComponentAlignment(frame, Alignment.TOP_CENTER);
+        this.setComponentAlignment(frame, Alignment.TOP_LEFT);
 
         Label title = new Label("<center Style='color:#4d749f;'>Disease Category</center>");
         title.setContentMode(ContentMode.HTML);
@@ -52,14 +53,12 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         maxNumber = allDeseases.getDatasetNumber();
         double scaledMax = scaleValues(maxNumber, maxNumber, 0.5, 0.05);
         VerticalLayout allDisease = initDiseaseBubbleLayout(allDeseases, maxNumber,scaledMax);
-        frame.addComponent(allDisease, 1, 0);
+        frame.addComponent(allDisease, 1, 2);
         frame.setComponentAlignment(allDisease, Alignment.MIDDLE_CENTER);
 
-//        HorizontalLayout firstLevelContainer = new HorizontalLayout();
-//        firstLevelContainer.setWidth(100, Unit.PERCENTAGE);
-//        frame.addComponent(firstLevelContainer);
-        int rowcounter = 1;
-        int colCounter = 0;
+
+        int rowcounter = 0;
+        int colCounter = 1;
         for (DiseaseCategoryObject dCategory : diseaseCategorySet) {
             if (dCategory == allDeseases) {
                 continue;
@@ -67,11 +66,11 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
              VerticalLayout disease = initDiseaseBubbleLayout(dCategory, maxNumber,scaledMax);
             frame.addComponent(disease, colCounter++, rowcounter);
             frame.setComponentAlignment(disease, Alignment.MIDDLE_CENTER);
-            colCounter++;
-            if(colCounter>2)
+           colCounter++;
+            if(rowcounter==0)
             {
-                colCounter=1;
-                rowcounter++;
+                colCounter=0;
+                rowcounter=1;
             }
 
         }

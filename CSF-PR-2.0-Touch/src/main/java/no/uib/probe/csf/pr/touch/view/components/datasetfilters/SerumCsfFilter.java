@@ -29,6 +29,7 @@ public abstract class SerumCsfFilter extends HorizontalLayout implements LayoutE
         this.setHeightUndefined();
         this.setSpacing(true);
 
+        this.setWidth(53,Unit.PIXELS);
         noCSFOptionBtn = new VerticalLayout();
         noCSFOptionBtn.setDescription("Include CSF datasets");
         this.addComponent(noCSFOptionBtn);
@@ -50,7 +51,7 @@ public abstract class SerumCsfFilter extends HorizontalLayout implements LayoutE
          noSerumOptionBtn = new VerticalLayout();
         noSerumOptionBtn.setDescription("Include serum datasets");
         this.addComponent(noSerumOptionBtn);
-        this.setComponentAlignment(noSerumOptionBtn, Alignment.TOP_LEFT);
+        this.setComponentAlignment(noSerumOptionBtn, Alignment.TOP_RIGHT);
 
         noSerumOptionBtn.setWidth(25, Unit.PIXELS);
         noSerumOptionBtn.setHeight(25, Unit.PIXELS);

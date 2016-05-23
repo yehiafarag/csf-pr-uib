@@ -36,6 +36,7 @@ public class InfoPopupBtn extends VerticalLayout implements LayoutEvents.LayoutC
         Image icon = new Image();
         icon.setSource(new ThemeResource("img/help.png"));
         this.addComponent(icon);
+        icon.setStyleName("paddingimg");
         icon.setWidth(100, Unit.PERCENTAGE);
         icon.setHeight(100, Unit.PERCENTAGE);
         this.addLayoutClickListener(InfoPopupBtn.this);

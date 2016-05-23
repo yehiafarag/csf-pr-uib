@@ -79,7 +79,7 @@ public class SlidePanel extends HorizontalLayout implements LayoutEvents.LayoutC
             this.addComponent(navigationBtn);
         }
         this.setComponentAlignment(navigationBtn, Alignment.MIDDLE_CENTER);
-        this.setHeight("100%");
+        this.setHeight(100,Unit.PERCENTAGE);
         this.setStyleName("slidepanel");
         this.navigationBtn.addLayoutClickListener(SlidePanel.this);
         this.setWidthUndefined();

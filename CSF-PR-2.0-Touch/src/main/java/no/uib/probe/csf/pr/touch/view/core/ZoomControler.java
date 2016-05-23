@@ -26,7 +26,7 @@ public class ZoomControler extends HorizontalLayout implements LayoutEvents.Layo
     private int zoomLevel = 10;
     private int defaultZoomLevel = 10;
 
-    public ZoomControler() {
+    public ZoomControler(boolean isHorizontal) {
         this.zoomableComponentsSet = new HashSet<>();
         this.setWidthUndefined();
         this.setHeightUndefined();
@@ -34,13 +34,9 @@ public class ZoomControler extends HorizontalLayout implements LayoutEvents.Layo
         this.setSpacing(true);
 
         SmallBtn zoomInBtn = new SmallBtn(new ThemeResource("img/search-plus.png"));
-        this.addComponent(zoomInBtn);
-        this.setComponentAlignment(zoomInBtn, Alignment.TOP_CENTER);
         zoomInBtn.setData("zoomIn");
         zoomInBtn.addLayoutClickListener(ZoomControler.this);
-
         resetZoomBtn = new ImageContainerBtn() {
-
             @Override
             public void onClick() {
                 zoomLevel = defaultZoomLevel;
@@ -57,8 +53,37 @@ public class ZoomControler extends HorizontalLayout implements LayoutEvents.Layo
         SmallBtn zoomOutBtn = new SmallBtn(new ThemeResource("img/search-minus.png"));
         zoomOutBtn.addLayoutClickListener(ZoomControler.this);
         zoomOutBtn.setData("zoomOut");
-        this.addComponent(zoomOutBtn);
-        this.setComponentAlignment(zoomOutBtn, Alignment.TOP_CENTER);
+
+        if (isHorizontal) {
+            this.addComponent(zoomInBtn);
+            this.setComponentAlignment(zoomInBtn, Alignment.TOP_CENTER);
+            this.addComponent(zoomOutBtn);
+            this.setComponentAlignment(zoomOutBtn, Alignment.TOP_CENTER);
+        } else {
+            VerticalLayout verticalContainer = new VerticalLayout();
+            this.setStyleName("paddingimg");
+            verticalContainer.setSizeFull();
+            verticalContainer.setSpacing(true);
+            zoomInBtn.setWidth(50, Unit.PIXELS);
+            zoomInBtn.setHeight(50, Unit.PIXELS);
+            zoomInBtn.addStyleName(zoomStyleName);
+            verticalContainer.addComponent(zoomInBtn);
+            verticalContainer.setComponentAlignment(zoomInBtn, Alignment.TOP_CENTER);
+            verticalContainer.addComponent(zoomOutBtn);
+            verticalContainer.setComponentAlignment(zoomOutBtn, Alignment.TOP_CENTER);
+            zoomOutBtn.setWidth(50, Unit.PIXELS);
+            zoomOutBtn.setHeight(50, Unit.PIXELS);
+            resetZoomBtn.setWidth(50, Unit.PIXELS);
+            resetZoomBtn.setHeight(50, Unit.PIXELS);
+            
+            verticalContainer.addComponent(resetZoomBtn);
+            verticalContainer.setComponentAlignment(resetZoomBtn, Alignment.TOP_CENTER);
+            resetZoomBtn.setVisible(false);
+
+            this.addComponent(verticalContainer);
+
+        }
+
     }
 
     public VerticalLayout getResetZoomBtn() {
