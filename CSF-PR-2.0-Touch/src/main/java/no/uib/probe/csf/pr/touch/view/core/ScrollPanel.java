@@ -52,7 +52,7 @@ public class ScrollPanel extends VerticalLayout implements LayoutEvents.LayoutCl
         navigationBtn.setHeight("30px");
         navigationBtn.setWidth("30px");
         navigationBtn.addStyleName("thumbBtn");
-        mainLayout.addStyleName("border");
+//        mainLayout.addStyleName("border");
 
         if (miniLayout == null) {
             miniLayout = new VerticalLayout();
@@ -82,6 +82,7 @@ public class ScrollPanel extends VerticalLayout implements LayoutEvents.LayoutCl
         this.setWidthUndefined();
         this.setHeightUndefined();
         this.setStyleName("scrollpanel");
+        this.addStyleName("slowslide");
         this.navigationBtn.addLayoutClickListener(ScrollPanel.this);
         this.setWidthUndefined();
 

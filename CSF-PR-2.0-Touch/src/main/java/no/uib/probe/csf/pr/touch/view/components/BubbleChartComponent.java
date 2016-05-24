@@ -466,7 +466,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         xyplot.setOutlineVisible(false);
         LegendTitle legend = generatedChart.getLegend();
         legend.setVisible(false);
-        xyplot.setForegroundAlpha(0.9F);
+        xyplot.setForegroundAlpha(0.5F);
 
         xyplot.setBackgroundPaint(Color.WHITE);
         generatedChart.setBackgroundPaint(Color.WHITE);

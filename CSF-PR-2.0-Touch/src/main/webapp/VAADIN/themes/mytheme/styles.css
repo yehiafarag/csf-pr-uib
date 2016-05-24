@@ -12966,9 +12966,9 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .slidepanel{
-    -webkit-transition: width 1s; /* For Safari 3.1 to 6.0 */
-    transition: width 1s; 
-    border:1px solid lightgray;
+     -webkit-transition: height 1s, width 1s; /* For Safari 3.1 to 6.0 */
+    transition: height 1s, width 1s;
+    /*border:1px solid lightgray;*/
 
     -moz-border-radius:4px;
     border-radius:  4px;
@@ -13041,8 +13041,9 @@ div.v-layout.v-horizontal.v-widget {
     position:absolute;
 }
 .slowslide{
-    -webkit-transition: width 1s,position 1s; /* For Safari 3.1 to 6.0 */
-    transition: width 1s,position 1s; 
+       -webkit-transition: width 1s,position 1s, height 1s !important; /* For Safari 3.1 to 6.0 */
+    transition: width 1s,position 1s, height 1s !important; 
+    overflow:hidden !important;
 
 }
 .hidescrolllayout {
@@ -13069,8 +13070,9 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .slowscroll{
-    -webkit-transition: height 1s, width 1s,position 1s; /* For Safari 3.1 to 6.0 */
-    transition: height 1s, width 1s,position 1s
+   -webkit-transition: width 1s,position 1s, height 1s !important; /* For Safari 3.1 to 6.0 */
+    transition: width 1s,position 1s, height 1s !important; 
+    overflow:hidden !important;
 
 }
 
@@ -13417,7 +13419,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 .topbtns{
     top:124px !important; 
-    position: absolute !important; 
+    position: inherit !important; 
     max-width:300px!important;    
     z-index:2 !important;
 
@@ -13500,6 +13502,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 .heatmapbody{    
     background-color:lightgray;
+    border-bottom: 3px solid lightgray;
 }
 
 .hmbodycell {

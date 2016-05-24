@@ -7,6 +7,7 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Label;
@@ -39,7 +40,16 @@ public class CSF_PR_UI extends UI {
         dbPassword = (scx.getInitParameter("password"));
         filesURL = scx.getInitParameter("filesURL");
         
+          this.setWidth(100,Unit.PERCENTAGE);
+        this.setHeight(100,Unit.PERCENTAGE);
         
+        
+        VerticalLayout appWrapper = new VerticalLayout();
+        appWrapper.setWidth(100,Unit.PERCENTAGE);
+        appWrapper.setHeight(100,Unit.PERCENTAGE);
+        appWrapper.setStyleName("bluelayout");
+        setContent(appWrapper);
+      
         
         final MainLayout layout = new MainLayout(dbURL, dbName, dbDriver, dbUserName, dbPassword, filesURL);
         
@@ -57,8 +67,9 @@ public class CSF_PR_UI extends UI {
 //        layout.setMargin(true);
 //        layout.setSpacing(true);
         
-        setContent(layout);
-//        this.addStyleName("zoom6");
+        appWrapper.addComponent(layout);
+        appWrapper.setComponentAlignment(layout, Alignment.MIDDLE_CENTER);
+//        layout.addStyleName("zoom6");
     }
 
 //    @WebServlet(urlPatterns = "/*", name = "CSF_PR_UIServlet", asyncSupported = true)

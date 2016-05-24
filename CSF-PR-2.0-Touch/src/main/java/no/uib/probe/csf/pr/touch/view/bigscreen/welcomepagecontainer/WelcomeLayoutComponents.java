@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
+import no.uib.probe.csf.pr.touch.view.HeaderLayout;
 import no.uib.probe.csf.pr.touch.view.LayoutViewManager;
 import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.PublicationsInformationWindow;
 import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.StudiesInformationWindow;
@@ -43,19 +44,27 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
      * @param publicationList list of available publications
      * @param dsObjects list of dataset information
      * @param diseaseHashedColorMap map of disease names and colors for disease labels
-     * @param screenWidth current screen with
+     * @param bodyWidth current screen with
      *
      *
      */
-    public WelcomeLayoutComponents(final LayoutViewManager View_Manager,int screenWidth,OverviewInfoBean overviewInfoBean,List<Object[]> publicationList,Set<QuantDatasetObject> dsObjects ) {
+    public WelcomeLayoutComponents(final LayoutViewManager View_Manager,int bodyWidth,int bodyHeight,OverviewInfoBean overviewInfoBean,List<Object[]> publicationList,Set<QuantDatasetObject> dsObjects ) {
         this.setWidth(100,Unit.PERCENTAGE);
         this.setHeight(100,Unit.PERCENTAGE);
+        HeaderLayout header = new HeaderLayout();
+        this.addComponent(header);
+         float headerRatio = 65f / (float) bodyHeight;
+        int bottomHeight = bodyHeight - 65;
+        float bodyRatio = (float) bottomHeight / (float) bodyHeight;
+        this.setExpandRatio(header, headerRatio);
         
 
-        int rightPanelWidth = Math.min(1020, (screenWidth - 220));
+        int rightPanelWidth = Math.min(1020, (bodyWidth - 220));
         HorizontalLayout mainBodyHLayout = new HorizontalLayout();
         mainBodyHLayout.setWidthUndefined();
         this.addComponent(mainBodyHLayout);
+        this.setExpandRatio(mainBodyHLayout, bodyRatio);
+        
 
         //init left panel (Resource overview)
         VerticalLayout leftPanelWrapper = new VerticalLayout();

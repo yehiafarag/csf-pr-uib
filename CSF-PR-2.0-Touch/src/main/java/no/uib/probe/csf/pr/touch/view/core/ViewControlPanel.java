@@ -32,11 +32,13 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
 
         this.setWidth(bodyWidth, Unit.PIXELS);
         this.setHeight(bodyHeight, Unit.PIXELS);
+        this.addStyleName("slowslide");
         this.layoutControlMap = new TreeMap<>();
 
         this.mainLayoutWrapper = new HorizontalLayout();
         mainLayoutWrapper.setHeight(bodyHeight, Unit.PIXELS);
         mainLayoutWrapper.setWidthUndefined();
+         this.mainLayoutWrapper.addStyleName("slowslide");
 
         this.addComponent(mainLayoutWrapper);
 

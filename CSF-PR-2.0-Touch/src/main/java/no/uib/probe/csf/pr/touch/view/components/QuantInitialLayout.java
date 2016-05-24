@@ -32,6 +32,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
     public QuantInitialLayout(Collection<DiseaseCategoryObject> diseaseCategorySet, int width, int height) {
         this.setWidth(height, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
+        this.addStyleName("slowslide");
 
         GridLayout frame = new GridLayout(3, 3);
         frame.setWidthUndefined();//100, Unit.PERCENTAGE);

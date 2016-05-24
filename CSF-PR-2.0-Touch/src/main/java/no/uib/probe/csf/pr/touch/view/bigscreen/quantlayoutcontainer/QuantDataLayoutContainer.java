@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package no.uib.probe.csf.pr.touch.view.bigscreen.quantlayoutcontainer;
 
 import com.vaadin.server.ExternalResource;
@@ -46,6 +42,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
         this.Data_handler = Data_handler;
         CSFPR_Central_Manager = new CSFPR_Central_Manager();
         this.setMargin(true);
+        this.addStyleName("slowslide");
         
 
         Collection<DiseaseCategoryObject> availableDiseaseCategory = Data_handler.getDiseaseCategorySet();
