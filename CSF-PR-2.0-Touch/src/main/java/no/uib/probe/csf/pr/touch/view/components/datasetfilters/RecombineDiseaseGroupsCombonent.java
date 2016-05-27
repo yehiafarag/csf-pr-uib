@@ -49,6 +49,7 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
         icon.setStyleName("cobinegroupbtn");
         icon.setSource(new ThemeResource("img/connect-o.png"));
         this.addComponent(icon);
+        this.setComponentAlignment(icon, Alignment.MIDDLE_CENTER);
         icon.setWidth(100, Unit.PERCENTAGE);
         icon.setHeight(100, Unit.PERCENTAGE);
         this.addLayoutClickListener(RecombineDiseaseGroupsCombonent.this);

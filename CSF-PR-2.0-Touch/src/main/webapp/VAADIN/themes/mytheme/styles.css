@@ -12951,6 +12951,10 @@ div.v-layout.v-horizontal.v-widget {
     background-color: lightgray !important;
 
 }
+.lightbluelayout{
+    background-color: #f1f9ff !important;
+
+}
 
 .redlayout{
     background-color: red !important;
@@ -12964,28 +12968,35 @@ div.v-layout.v-horizontal.v-widget {
 .margintop10{
     margin-top: 10px !important;
 }
-
 .slidepanel{
-     -webkit-transition: height 1s, width 1s; /* For Safari 3.1 to 6.0 */
-    transition: height 1s, width 1s;
-    /*border:1px solid lightgray;*/
-
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+    background-color:white;
     -moz-border-radius:4px;
     border-radius:  4px;
     overflow:hidden;
 }
 .scrollpanel{
-    -webkit-transition: height 1s, width 1s; /* For Safari 3.1 to 6.0 */
-    transition: height 1s, width 1s;
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
     -moz-border-radius:4px;
     border-radius:  4px;
     overflow:hidden;
     margin-right: 45px;
     margin-top: 5px;
+    z-index:2;
+    position:relative !important;
+    background-color:white;
 }
 .framelayout{
-    -webkit-transition: height 1s, width 1s; /* For Safari 3.1 to 6.0 */
-    transition: height 1s, width 1s;
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
     margin-left: 40px;
     display: block;  
     overflow:hidden;
@@ -12994,8 +13005,10 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .framelayout div{
-    -webkit-transition: height 1s, width 1s; /* For Safari 3.1 to 6.0 */
-    transition: height 1s, width 1s;
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
     overflow:hidden;
 
 
@@ -13029,26 +13042,29 @@ div.v-layout.v-horizontal.v-widget {
     border-right:  1px solid lightgray;
 }
 .hideslidelayout {
-    -webkit-transition: width 1s ; /* For Safari 3.1 to 6.0 */
-    transition: width 1s; 
-    width: 0px !important;
     overflow:hidden;
     word-wrap:normal;
     overflow-wrap: normal;
-    -webkit-transition: width 1s; /* For Safari 3.1 to 6.0 */
-    transition: width 1s; 
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
     width: 0px !important;    
     position:absolute;
 }
 .slowslide{
-       -webkit-transition: width 1s,position 1s, height 1s !important; /* For Safari 3.1 to 6.0 */
-    transition: width 1s,position 1s, height 1s !important; 
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
     overflow:hidden !important;
 
 }
 .hidescrolllayout {
-    -webkit-transition: height 1s, width 1s , position 1s; /* For Safari 3.1 to 6.0 */
-    transition: height 1s, width 1s , position 1s;
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
     height:  0px !important;
     width:  0px !important;
 
@@ -13057,8 +13073,10 @@ div.v-layout.v-horizontal.v-widget {
     overflow-wrap: normal;
 }
 .v-slot-hidescrollpanel{
-    webkit-transition: height 1s, width 1s , position 1s; /* For Safari 3.1 to 6.0 */
-    transition: height 1s, width 1s , position 1s;
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
     height:5px !important;
 
 
@@ -13070,16 +13088,20 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .slowscroll{
-   -webkit-transition: width 1s,position 1s, height 1s !important; /* For Safari 3.1 to 6.0 */
-    transition: width 1s,position 1s, height 1s !important; 
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
     overflow:hidden !important;
 
 }
 
 
 .leftslidebtn{
-    -webkit-transition:transform 1s; /* For Safari 3.1 to 6.0 */
-    transition: transform 1s; 
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
     background-image: url(img/chevron-circle-right-o.png);
     background-repeat: no-repeat;
     background-size:20px ;
@@ -13097,8 +13119,10 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .rightslidebtn{
-    -webkit-transition:transform 1s; /* For Safari 3.1 to 6.0 */
-    transition: transform 1s; 
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
     background-image: url(img/chevron-circle-left-o.png);
     background-repeat: no-repeat;
     background-size:20px ;
@@ -13117,8 +13141,10 @@ div.v-layout.v-horizontal.v-widget {
 
 
 .upscrollebtn{
-    -webkit-transition:transform 1s; /* For Safari 3.1 to 6.0 */
-    transition: transform 1s; 
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
 
     background-image: url(img/chevron-circle-up-o.png);
     background-repeat: no-repeat;
@@ -13137,8 +13163,10 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .downscrollbtn{
-    -webkit-transition:transform 1s; /* For Safari 3.1 to 6.0 */
-    transition: transform 1s; 
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
     background-image: url(img/chevron-circle-down-o.png);
     background-repeat: no-repeat;
     background-size:20px ;
@@ -13156,10 +13184,10 @@ div.v-layout.v-horizontal.v-widget {
     border-color: gray;
 }
 .transformslidebtn{
-    -webkit-transition:transform 1s; /* For Safari 3.1 to 6.0 */
-    transition: transform 1s; 
-
-
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
     -ms-transform: rotate(180deg); /* IE 9 */
     -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
     transform: rotate(180deg);
@@ -13418,11 +13446,11 @@ div.v-layout.v-horizontal.v-widget {
     border-color:#4d749f;
 }
 .topbtns{
-    top:124px !important; 
-    position: inherit !important; 
+   position: inherit !important; 
     max-width:300px!important;    
     z-index:2 !important;
-
+    margin-top:18px;
+    
 
 }
 .rightbtns{
@@ -13502,7 +13530,6 @@ div.v-layout.v-horizontal.v-widget {
 }
 .heatmapbody{    
     background-color:lightgray;
-    border-bottom: 3px solid lightgray;
 }
 
 .hmbodycell {
@@ -13690,48 +13717,81 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .cobinegroupbtn{  
-
+    margin-top:-2px;
     -ms-transform: rotate(180deg); /* IE 9 */
     -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
     transform: rotate(180deg);
 }
 .zoom1{    
-    zoom: 0.1; 
-}
-.zoom2{    
-    zoom: 0.2; 
-}
-.zoom3{    
-    zoom: 0.3; 
-}
-.zoom4{    
-    zoom: 0.4; 
-}
-.zoom5{    
     zoom: 0.5; 
 }
+.zoom2{    
+    zoom: 0.15; 
+}
+.zoom3{    
+    zoom: 0.25; 
+}
+.zoom4{    
+    zoom: 0.35; 
+}
+.zoom5{    
+    zoom: 0.45; 
+}
 .zoom6{    
-    zoom: 0.6; 
+    zoom: 0.55; 
 }
 .zoom7{    
-    zoom: 0.7; 
+    zoom: 0.65; 
 }
 .zoom8{    
-    zoom: 0.8; 
+    zoom: 0.74; 
 }
 .zoom9{    
-    zoom: 0.9; 
+    zoom: 0.82; 
 }
 .zoom0{    
     zoom: 1; 
 }
 .zoom10{    
     zoom: 1; 
-}.zoom15{    
-    zoom: 1.5; 
+}
+.zoom10{    
+    zoom: 1; 
+}
+
+.zoom11{    
+    zoom: 1.1; 
+}
+.zoom12{    
+    zoom: 1.12; 
+}
+.zoom13{    
+    zoom: 1.22; 
+}
+.zoom14{    
+    zoom: 1.32; 
+}
+.zoom15{    
+    zoom: 1.42; 
+}
+.zoom16{    
+    zoom: 1.52; 
+}
+.zoom17{    
+    zoom: 1.62; 
+}
+.zoom18{    
+    zoom: 1.72; 
+}
+
+
+.zoom19{    
+    zoom: 1.82; 
 }.zoom20{    
-    zoom: 2; 
-}.zoom25{    
+    zoom: 1.92; 
+}
+
+.zoom25{    
     zoom: 2.5; 
 }
 .zoom30{    
@@ -13777,14 +13837,8 @@ div.v-layout.v-horizontal.v-widget {
     overflow: auto !important;
 
 }
-.v-panel-content-panelwrapper{
-    margin-right:25px;
 
-}
-.v-panel-content-maxbodyheight{
-    padding-bottom:10px !important;
 
-}
 .bubble{
     box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
     -webkit-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
@@ -13794,10 +13848,10 @@ div.v-layout.v-horizontal.v-widget {
     -webkit-border-radius:50%;
     -moz-border-radius:50%;
     /* CSS3 Transition */
-    -webkit-transition: all .5s ease-in-out;
-    -moz-transition: all .5s ease-in-out;
-    -o-transition: all .5s ease-in-out;
-    transition: all .5s ease-in-out;
+    -webkit-transition: all 1.5s ease-in-out;
+    -moz-transition: all 1.5s ease-in-out;
+    -o-transition: all 1.5s ease-in-out;
+    transition: all 1.5s ease-in-out;
 }
 .applied{
     border-color:gray;
@@ -13812,7 +13866,7 @@ div.v-layout.v-horizontal.v-widget {
     transition: all .5s ease-in-out;
 
 
-   
+
     box-shadow:0 0px 10px rgba(0, 0, 0, 0.2), inset 0px 25px 0px 1px rgba(255, 255, 255, 1);
     -webkit-box-shadow:0 0px 10px rgba(0, 0, 0, 0.2), inset 0px 25px 0px 1px rgba(255, 255, 255, 1);
     -moz-box-shadow:0 0px 10px rgba(0, 0, 0, 0.2), inset 0px 25px 0px 1px rgba(255, 255, 255, 1);
@@ -13948,4 +14002,89 @@ div.v-layout.v-horizontal.v-widget {
 .paddingimg img{
     padding: 5px;
 
+}
+.zoomborder{
+    border-bottom: 3px solid white;
+    padding-bottom:5px !important;
+
+}
+
+.slowtransition{
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+
+}
+.slowertransition{
+    -webkit-transition: all 1.0s ease-in-out;
+    -moz-transition: all 1.0s ease-in-out;
+    -o-transition: all 1.0s ease-in-out;
+    transition: all 1.0s ease-in-out;
+
+}
+.superslowtransition{
+    -webkit-transition: all 1.5s ease-in-out;
+    -moz-transition: all 1.5s ease-in-out;
+    -o-transition: all 1.5s ease-in-out;
+    transition: all 1.5s ease-in-out;
+
+}
+.hidelayout{
+    -webkit-transition: all 3.5s ease-in-out;
+    -moz-transition: all 3.5s ease-in-out;
+    -o-transition: all 3.5s ease-in-out;
+    transition: all 3.5s ease-in-out;
+    opacity:0.3;
+}
+.roundedborder{
+    border:2px solid lightgray;
+    padding:20px !important;
+    border-radius:10px;
+}
+.sidebtnwrapper{
+    background-color: #f1f9ff !important;
+    padding:5px;
+    border:2px solid lightgray;
+    border-right:none;
+    border-top-left-radius:5px;
+    border-bottom-left-radius:5px;
+    margin-left:2px;
+    position:relative;
+    z-index:2;
+
+}
+.unselectedbtn{
+    background-color: white !important;
+    border-color: white !important;
+    z-index:1;
+
+}
+.mainviewport{
+    background-color: #f1f9ff !important;
+    border:2px solid lightgray;
+    z-index:1;
+    position:relative;
+    border-bottom-left-radius:5px;
+     border-top-left-radius:5px;
+      border-top-right-radius:5px;
+
+
+}
+.sidebtnsmenue{
+    
+    
+        
+    transform:translate(-2px,-38px);
+    max-height:500px;
+     max-width:60px;
+    position:relative;
+    z-index:3 !important;
+    background-color:#f1f9ff;
+    border:2px solid lightgray;
+    border-left:2px solid #f1f9ff;
+     border-top-right-radius:5px;
+       border-bottom-right-radius:5px;
+        border-bottom-left-radius:0px !important;
+    
 }

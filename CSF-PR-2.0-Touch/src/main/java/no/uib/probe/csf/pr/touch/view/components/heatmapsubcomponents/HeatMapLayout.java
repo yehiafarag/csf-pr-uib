@@ -28,6 +28,7 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.StudiesInformationPopupBtn;
 import no.uib.probe.csf.pr.touch.view.components.QuantDatasetsfullStudiesTableLayout;
+import no.uib.probe.csf.pr.touch.view.core.ZoomControler;
 
 /**
  *
@@ -80,13 +81,9 @@ public abstract class HeatMapLayout extends VerticalLayout {
     private Set<HeatMapHeaderCellInformationBean> rowheadersSet, colheadersSet;
     private final VerticalLayout heatMapLayoutWrapper;
 
-    private final VerticalLayout bottomLine;
 
-    public VerticalLayout getHeatMapLayoutWrapper() {
-        return heatMapLayoutWrapper;
-    }
+    private final ZoomControler zoomControler;
 
-    private final Panel heatMapPanel;
 
     /*
      *  
@@ -99,16 +96,14 @@ public abstract class HeatMapLayout extends VerticalLayout {
         this.setWidthUndefined();
         this.setHeightUndefined();
         this.setSpacing(false);
-        heatMapPanel = new Panel();
-        heatMapPanel.setStyleName(ValoTheme.PANEL_BORDERLESS);
-        heatMapPanel.addStyleName("panelwrapper");
-        heatMapPanel.setWidthUndefined();
+        this.addStyleName("whitelayout");
+        this.addStyleName("roundedborder");
 
         this.heatMapLayoutWrapper = new VerticalLayout();
         this.heatMapLayoutWrapper.setWidthUndefined();
         this.heatMapLayoutWrapper.setHeightUndefined();
-        heatMapPanel.setContent(heatMapLayoutWrapper);
-        this.addComponent(heatMapPanel);
+//        heatMapPanel.setContent(heatMapLayoutWrapper);
+        this.addComponent(heatMapLayoutWrapper);
 
         this.availableHMHeight = availableHMHeight;
         this.availableHMWidth = heatMapContainerWidth;
@@ -117,7 +112,6 @@ public abstract class HeatMapLayout extends VerticalLayout {
                 + ".v-panel-content-maxbodyheight {max-height:" + (availableHMHeight - 2) + "px !important;"
                 + "max-width:" + heatMapContainerWidth + "px !important;}";
         Page.getCurrent().getStyles().add(maxBodyHightStyle);
-        heatMapPanel.addStyleName("maxbodyheight");
 
         topLayout = new HorizontalLayout();
         topLayout.setWidthUndefined();
@@ -130,16 +124,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
         this.spacer.setWidth(175, Unit.PIXELS);
         topLayout.addComponent(spacer);
 
-//        final Label filterLabelBtn = new Label("Filters");
-//        filterLabelBtn.setHeight(100, Unit.PERCENTAGE);
-//        filterLabelBtn.setWidth(99, Unit.PERCENTAGE);
-//        filterLabelBtn.setDescription("Show filters");
-//        filterLabelBtn.setStyleName("showfilterbtnlabel");
-//        filterLabelBtn.setContentMode(ContentMode.HTML);
-//        spacer.addComponent(filterLabelBtn);
-//        spacer.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
-//            HeatMapLayout.this.showHideFilters();
-//        });
+        zoomControler = new ZoomControler(true);
 
         columnCategoryHeadersContainer = new HorizontalLayout();
         this.columnCategoryHeadersContainer.setHeight(100, Unit.PERCENTAGE);
@@ -181,7 +166,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
         Label commentLabel = new Label("<b>*</b> Multiple groups");
         commentLabel.setStyleName(ValoTheme.LABEL_SMALL);
-         commentLabel.addStyleName(ValoTheme.LABEL_TINY);
+        commentLabel.addStyleName(ValoTheme.LABEL_TINY);
         commentLabel.setContentMode(ContentMode.HTML);
         controlsLayout.addComponent(commentLabel);
         controlsLayout.setComponentAlignment(commentLabel, Alignment.TOP_LEFT);
@@ -276,18 +261,12 @@ public abstract class HeatMapLayout extends VerticalLayout {
             cornerCell.setComponentAlignment(resetZoomBtn, Alignment.TOP_LEFT);
             resetZoomBtn.addStyleName("heatmapcorner");
         }
-        bottomLine = new VerticalLayout();
-//        bottomLine.setStyleName("lightgraylayout");
-        bottomLine.setWidth(10, Unit.PIXELS);
-        bottomLine.setHeight(1, Unit.PIXELS);
+
+        zoomControler.addZoomableComponent(heatMapLayoutWrapper);
 
     }
 
     private int zoomLevel = 10;
-
-    public int getZoomLevel() {
-        return zoomLevel;
-    }
 
     /**
      * this method responsible for updating the heatmap layout
@@ -312,13 +291,13 @@ public abstract class HeatMapLayout extends VerticalLayout {
         this.columnCategoryHeadersContainer.setWidth(colHeaderWidth * columnsLbels.size(), Unit.PIXELS);
         this.rowCategoryHeadersContainer.setHeight(rowHeaderHeight * rowsLbels.size(), Unit.PIXELS);
 
-        if (rowCategoryHeadersContainer.getHeight() + 200 > availableHMHeight) {
-            double ratio = availableHMHeight / (rowCategoryHeadersContainer.getHeight() + 200);
-            zoomLevel = ((int) Math.round(ratio * 10.0) - 1);
+        if (rowCategoryHeadersContainer.getHeight()+100  > availableHMHeight) {
+            double ratio = availableHMHeight / (rowCategoryHeadersContainer.getHeight()+100 );
+            zoomLevel = ((int) Math.round(ratio * 10.0) );
         } else {
             zoomLevel = 10;
         }
-
+        zoomControler.setDefaultZoomLevel(zoomLevel);
         updateHeatMapLayout(rowsLbels, columnsLbels, patientsGroupComparisonsSet, rotate, colHeaderWidth, colHeaderHeight, rowHeaderHeight, fullQuantDsMap);
         updateHMThumb(this.getHMThumbImg(), fullQuantDsMap.size(), 0);
     }
@@ -393,6 +372,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
         //updateBody
         for (int row = 1; row < heatmapBody.getRows(); row++) {
+           
             for (int col = 1; col < heatmapBody.getColumns(); col++) {
                 HeatmapCell cell = (HeatmapCell) heatmapBody.getComponent(col, row);
                 if (cell == null) {
@@ -465,7 +445,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
         updateDiseaseHeadersLabel(rowheaders, colheaders);
         this.heatmapBody.removeAllComponents();
         heatmapBody.setColumns(colheaders.size() + 1);
-        heatmapBody.setRows(rowheaders.size() + 2);
+        heatmapBody.setRows(rowheaders.size() + 1);
 
         heatmapBody.addComponent(cornerCell, 0, 0);
         heatmapBody.setComponentAlignment(cornerCell, Alignment.TOP_LEFT);
@@ -555,8 +535,8 @@ public abstract class HeatMapLayout extends VerticalLayout {
                 }
 
                 String fullComparisonTitle = grI.getDiseaseGroupFullName() + " / " + grII.getDiseaseGroupFullName();
-                String orginalComparisonName = grI.getDiseaseGroupOreginalName()+" / "+grII.getDiseaseGroupOreginalName();
-                HeatmapCell cell = new HeatmapCell(value, color,grI.getDiseaseColor(), dsIndexes, x, y, null, heatmapCellWidth, pubCounter.size(),updatedComparisonTitle, fullComparisonTitle,orginalComparisonName, ((HeatMapHeaderCellInformationBean) rowheaders.toArray()[x]).getDiseaseCategory()) {
+                String orginalComparisonName = grI.getDiseaseGroupOreginalName() + " / " + grII.getDiseaseGroupOreginalName();
+                HeatmapCell cell = new HeatmapCell(value, color, grI.getDiseaseColor(), dsIndexes, x, y, null, heatmapCellWidth, pubCounter.size(), updatedComparisonTitle, fullComparisonTitle, orginalComparisonName, ((HeatMapHeaderCellInformationBean) rowheaders.toArray()[x]).getDiseaseCategory()) {
 
                     @Override
                     public void selectData(HeatmapCell cell) {
@@ -584,8 +564,8 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
         }
 
-        heatmapBody.addComponent(bottomLine);
     }
+
 
     /**
      * this method responsible for updating heat map layout upon user selection
@@ -1100,7 +1080,6 @@ public abstract class HeatMapLayout extends VerticalLayout {
     }
 
 //    public abstract void showHideFilters();
-
     /**
      * this method to update heatmap Thumb button on updating the heatmap thumb
      * image and number of datasets

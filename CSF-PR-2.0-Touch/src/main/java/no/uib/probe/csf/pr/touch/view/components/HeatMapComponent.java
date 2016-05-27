@@ -29,7 +29,6 @@ import no.uib.probe.csf.pr.touch.view.components.datasetfilters.ReorderSelectGro
 import no.uib.probe.csf.pr.touch.view.components.datasetfilters.SerumCsfFilter;
 import no.uib.probe.csf.pr.touch.view.components.heatmapsubcomponents.HeatMapLayout;
 import no.uib.probe.csf.pr.touch.view.core.InfoPopupBtn;
-import no.uib.probe.csf.pr.touch.view.core.ZoomControler;
 
 /**
  *
@@ -44,7 +43,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
     private final LinkedHashSet<HeatMapHeaderCellInformationBean> rowheaders, colheaders;
     private final Set<DiseaseGroupComparison> patientsGroupComparisonsSet;
     private final Map<Integer, QuantDatasetObject> fullQuantDsMap, filteredQuantDsMap;
-    private final ZoomControler zoomControler;
+    
     private final Label datasetCounterLabel;
     private final SerumCsfFilter serumCsfFilter;
     private final ReorderSelectGroupsFilter reorderSelectBtn;
@@ -66,6 +65,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         this.Data_Handler = Data_Handler;
         this.setWidth(mainbodyLayoutWidth, Unit.PIXELS);
         this.setHeight(mainbodyLayoutHeight, Unit.PIXELS);
+       
 
         //init data structure
         this.rowheaders = new LinkedHashSet<>();
@@ -79,44 +79,16 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         bodyLayoutWrapper.setHeightUndefined();
 
         this.addComponent(bodyLayoutWrapper);
-        this.setComponentAlignment(bodyLayoutWrapper, Alignment.TOP_CENTER);
+        this.setComponentAlignment(bodyLayoutWrapper, Alignment.MIDDLE_CENTER);
 
-        //top filters layout
-//        VerticalLayout topFilterContainerLayout = new VerticalLayout();
-//        topFilterContainerLayout.setWidth(446, Unit.PIXELS);
-//        topFilterContainerLayout.setHeight(30, Unit.PIXELS);
-//        bodyLayoutWrapper.addComponent(topFilterContainerLayout);
-//        topFilterContainerLayout.setStyleName("slowscroll");
-//
-//        HorizontalLayout popupBtnsLayout = new HorizontalLayout();
-//        popupBtnsLayout.setWidth(100, Unit.PERCENTAGE);
-//        popupBtnsLayout.setHeight(100, Unit.PERCENTAGE);
-//        popupBtnsLayout.setSpacing(true);
-//        topFilterContainerLayout.addComponent(popupBtnsLayout);
 
         GridLayout btnsWrapper = new GridLayout(3,3);
         btnsWrapper.setColumnExpandRatio(0, 25);
         btnsWrapper.setColumnExpandRatio(1, 50);
         btnsWrapper.setColumnExpandRatio(2, 25);
-//        btnsWrapper.setRowExpandRatio(0, 1);
-//        btnsWrapper.setRowExpandRatio(1, 1);
-//        btnsWrapper.setRowExpandRatio(2, 1);
         btnsWrapper.setSpacing(false);
-//        btnsWrapper.setWidth(100,Unit.PERCENTAGE);
-//        popupBtnsLayout.addComponent(btnsWrapper);
 
-        
-        zoomControler = new ZoomControler(true);
-//        btnsWrapper.addComponent(zoomControler);
-//        btnsWrapper.setComponentAlignment(zoomControler, Alignment.MIDDLE_LEFT);
-//
-//        VerticalLayout spacer = new VerticalLayout();
-//        spacer.setWidth(30,Unit.PIXELS);
-//        spacer.setStyleName("whitelayout");
-//          btnsWrapper.addComponent(spacer);
-//        btnsWrapper.setComponentAlignment(spacer, Alignment.MIDDLE_LEFT);
-
-        
+               
 
         datasetPieChartFiltersBtn = new DatasetPieChartFiltersComponent() {
             @Override
@@ -173,16 +145,13 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
                     } else if (csfApplied && fullQuantDsMap.get(id).getSampleType().equalsIgnoreCase("CSf")) {
                         updatedDsIds.put(id, fullQuantDsMap.get(id));
                     }
-
                 }
 
                 updateSystemComponents(datasetPieChartFiltersBtn.checkAndFilter(updatedDsIds));
             }
-
         };
         btnsWrapper.addComponent(serumCsfFilter,1,0);
         btnsWrapper.setComponentAlignment(serumCsfFilter, Alignment.BOTTOM_CENTER);
-
         VerticalLayout clearFilterBtn = new VerticalLayout();
         clearFilterBtn.setDescription("Clear filters");
         clearFilterBtn.setWidth(25, Unit.PIXELS);
@@ -194,19 +163,16 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         icon.setWidth(100, Unit.PERCENTAGE);
         icon.setHeight(100, Unit.PERCENTAGE);
         clearFilterBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
-
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
                 filteredQuantDsMap.clear();
                 filteredQuantDsMap.putAll(fullQuantDsMap);
                 heatmapLayoutContainer.updateData(rowheaders, colheaders, patientsGroupComparisonsSet, fullQuantDsMap);
                 serumCsfFilter.resetFilter();
-
             }
         });
         btnsWrapper.addComponent(clearFilterBtn,2,1);
-        btnsWrapper.setComponentAlignment(clearFilterBtn, Alignment.MIDDLE_RIGHT);
-        
+        btnsWrapper.setComponentAlignment(clearFilterBtn, Alignment.MIDDLE_RIGHT);        
         datasetCounterLabel = new Label();
         datasetCounterLabel.setDescription("#Datasets");
         datasetCounterLabel.setHeight(25, Unit.PIXELS);
@@ -214,8 +180,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         datasetCounterLabel.setContentMode(ContentMode.HTML);
         btnsWrapper.setComponentAlignment(datasetCounterLabel, Alignment.MIDDLE_CENTER);
         datasetCounterLabel.setStyleName("filterbtn");
-        datasetCounterLabel.addStyleName("defaultcursor");
-        
+        datasetCounterLabel.addStyleName("defaultcursor");        
         InfoPopupBtn info = new InfoPopupBtn("infoText");
         info.setWidth(25, Unit.PIXELS);
         info.setHeight(25, Unit.PIXELS);
@@ -248,7 +213,8 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
 
         };
         bodyLayoutWrapper.addComponent(heatmapLayoutContainer);
-        zoomControler.addZoomableComponent(heatmapLayoutContainer.getHeatMapLayoutWrapper());
+        bodyLayoutWrapper.setComponentAlignment(heatmapLayoutContainer,Alignment.TOP_CENTER);
+       
         CSFPR_Central_Manager.registerListener(HeatMapComponent.this);
 
     }
@@ -280,7 +246,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
 
         this.filteredQuantDsMap.clear();
         this.filteredQuantDsMap.putAll(fullQuantDsMap);
-        zoomControler.setDefaultZoomLevel(heatmapLayoutContainer.getZoomLevel());
+        
         serumCsfFilter.resetFilter();
 
         reorderSelectBtn.updateData(rowheaders, colheaders, patientsGroupComparisonsSet);

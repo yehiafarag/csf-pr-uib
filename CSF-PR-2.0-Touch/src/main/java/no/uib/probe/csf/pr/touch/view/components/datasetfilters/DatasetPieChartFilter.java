@@ -130,9 +130,11 @@ public abstract class DatasetPieChartFilter extends VerticalLayout implements La
 
     }
 
-    private String saveToFile(final JFreeChart chart, final double width, final double height) {
+    private String saveToFile(final JFreeChart chart,  double width,  double height) {
         byte imageData[];
         try {
+            width=Math.max(width, 250);
+            height=Math.max(height, 250);
 
             imageData = ChartUtilities.encodeAsPNG(chart.createBufferedImage((int) width, (int) height, chartRenderingInfo));
             String base64 = Base64.encodeBytes(imageData);

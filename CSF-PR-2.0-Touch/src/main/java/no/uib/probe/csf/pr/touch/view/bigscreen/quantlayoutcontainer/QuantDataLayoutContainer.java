@@ -1,8 +1,8 @@
-
 package no.uib.probe.csf.pr.touch.view.bigscreen.quantlayoutcontainer;
 
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.ThemeResource;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
 import java.util.Collection;
@@ -43,27 +43,27 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
         CSFPR_Central_Manager = new CSFPR_Central_Manager();
         this.setMargin(true);
         this.addStyleName("slowslide");
-        
 
         Collection<DiseaseCategoryObject> availableDiseaseCategory = Data_handler.getDiseaseCategorySet();
         final HorizontalLayout subBodyWrapper = new HorizontalLayout();
         subBodyWrapper.setWidthUndefined();
-        subBodyWrapper.setHeight((height - 200), Unit.PIXELS);
+//        subBodyWrapper.setHeight((height - 200), Unit.PIXELS);
         subBodyWrapper.setHeightUndefined();
 
+        height=height-42;
         quantInitialLayout = new QuantInitialLayout(availableDiseaseCategory, width, height) {
 
             private String lastSelectedDisease = "";
 
             @Override
             public void onClick(String diseaseCategoryName) {
+                defaultView();
                 if (!lastSelectedDisease.equalsIgnoreCase(diseaseCategoryName)) {
                     lastSelectedDisease = diseaseCategoryName;
                     //do functions
                     //load dataset
                     loadDiseaseCategory(diseaseCategoryName);
                 }
-                defaultView();
 
             }
 
@@ -82,7 +82,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
         heatmapBtn.setHeight(100, Unit.PIXELS);
 
         mainViewPanelHeight = height;
-        mainViewPanelWidth = width - 200;
+        mainViewPanelWidth = width - 220;
         heatmapViewContainer = new VerticalLayout();
         heatmapViewContainer.setWidth(mainViewPanelWidth, Unit.PIXELS);
         this.addButton(heatmapBtn, heatmapViewContainer, true);
@@ -197,6 +197,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
 
             };
             heatmapViewContainer.addComponent(heatmapComponent);
+             heatmapViewContainer.setComponentAlignment(heatmapComponent,Alignment.MIDDLE_CENTER);
 
         }
         heatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), Data_handler.getFullQuantDsMap());

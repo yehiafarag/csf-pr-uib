@@ -98,6 +98,7 @@ public class ScrollPanel extends VerticalLayout implements LayoutEvents.LayoutCl
             this.navigationBtn.removeStyleName("transformslidebtn");
             this.mainLayout.removeStyleName("hidescrolllayout");
             this.miniLayout.addStyleName("hidescrolllayout");
+            this.removeStyleName("sidemenue");
             this.removeStyleName("hidescrollpanel");
             this.setWidthUndefined();
             if (navigationBtn != null && navigationBtn.isVisible()) {
@@ -111,6 +112,7 @@ public class ScrollPanel extends VerticalLayout implements LayoutEvents.LayoutCl
             this.mainLayout.addStyleName("hidescrolllayout");
             this.miniLayout.removeStyleName("hidescrolllayout");
             this.addStyleName("hidescrollpanel");
+              this.addStyleName("sidemenue");
             if (navigationBtn != null && navigationBtn.isVisible() && navigationBtn.isAttached()) {
 //                navigationBtn.detach();
             }

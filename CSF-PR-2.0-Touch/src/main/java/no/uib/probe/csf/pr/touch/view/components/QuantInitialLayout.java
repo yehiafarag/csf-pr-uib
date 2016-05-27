@@ -30,7 +30,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
      * @param height body layout height in pixels
      */
     public QuantInitialLayout(Collection<DiseaseCategoryObject> diseaseCategorySet, int width, int height) {
-        this.setWidth(height, Unit.PIXELS);
+        this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
         this.addStyleName("slowslide");
 
@@ -41,7 +41,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         frame.setMargin(true);
 //        frame.setStyleName("border");
         this.addComponent(frame);
-        this.setComponentAlignment(frame, Alignment.TOP_LEFT);
+        this.setComponentAlignment(frame, Alignment.MIDDLE_CENTER);
 
         Label title = new Label("<center Style='color:#4d749f;'>Disease Category</center>");
         title.setContentMode(ContentMode.HTML);
@@ -144,6 +144,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         if (((VerticalLayout) event.getComponent()).getData() == null) {
             return;
         }
+        this.addStyleName("hidelayout");
         miniLayout.removeAllComponents();
         DiseaseCategoryObject diseaseObject = (DiseaseCategoryObject) (((VerticalLayout) event.getComponent()).getData());
         miniLayout.addComponent(initDiseaseLayout(diseaseObject, 100, 100,maxNumber));

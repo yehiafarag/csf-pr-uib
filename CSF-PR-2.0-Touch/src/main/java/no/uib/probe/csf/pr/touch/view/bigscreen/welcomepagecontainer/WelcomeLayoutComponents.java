@@ -277,6 +277,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         zoomApp.setWidth(50,Unit.PIXELS);
         VerticalLayout miniLayoutContainer = new VerticalLayout(homeBtn.getThumbBtn(),quantDatasetBtn.getThumbBtn(),idDatasetBtn.getThumbBtn(),searchingDatasetBtn.getThumbBtn(),compareBtn.getThumbBtn(),zoomApp);
         miniLayout = new HorizontalLayout(miniLayoutContainer);
+        miniLayout.addStyleName("zoomborder");
         miniLayoutContainer.setSpacing(true);
 //        
     }

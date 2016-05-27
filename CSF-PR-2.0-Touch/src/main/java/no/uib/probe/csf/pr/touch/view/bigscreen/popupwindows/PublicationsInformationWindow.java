@@ -26,8 +26,8 @@ public class PublicationsInformationWindow extends VerticalLayout implements Lay
 
     public PublicationsInformationWindow(List<Object[]> publicationList) {
 
-        int height = Page.getCurrent().getBrowserWindowHeight() - 100;
-        int width = Page.getCurrent().getBrowserWindowWidth() - 100;
+        int height = Math.max(Page.getCurrent().getBrowserWindowHeight() - 100,250);
+        int width = Math.max(Page.getCurrent().getBrowserWindowWidth() - 100,250);
         int columnNum = width / 250;
         width = columnNum * 250;
         VerticalLayout popupBodyWrapper = new VerticalLayout();
