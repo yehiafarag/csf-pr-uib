@@ -48,7 +48,9 @@ public class ZoomControler extends HorizontalLayout implements LayoutEvents.Layo
         resetZoomBtn.setWidth(100, Unit.PERCENTAGE);
         resetZoomBtn.setHeight(100, Unit.PERCENTAGE);
         resetZoomBtn.setReadOnly(false);
-        resetZoomBtn.setEnabled(true);
+        resetZoomBtn.setEnabled(true);this.setStyleName("paddingimg");
+        
+        resetZoomBtn.addStyleName("smallimg");
 
         SmallBtn zoomOutBtn = new SmallBtn(new ThemeResource("img/search-minus.png"));
         zoomOutBtn.addLayoutClickListener(ZoomControler.this);

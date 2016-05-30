@@ -51,7 +51,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
         subBodyWrapper.setHeightUndefined();
 
         height=height-42;
-        quantInitialLayout = new QuantInitialLayout(availableDiseaseCategory, width, height) {
+        quantInitialLayout = new QuantInitialLayout(availableDiseaseCategory, width-20, height) {
 
             private String lastSelectedDisease = "";
 
@@ -99,6 +99,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
         bubblechartBtn.updateIcon(new ThemeResource("img/logo.png"));
         bubblechartBtn.setWidth(100, Unit.PIXELS);
         bubblechartBtn.setHeight(100, Unit.PIXELS);
+        bubblechartBtn.setEnabled(false);
 
         bubblechartViewContainer = new VerticalLayout();
         bubblechartViewContainer.setWidth(mainViewPanelWidth, Unit.PIXELS);
@@ -158,6 +159,8 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
 
         };
         bubblechartViewContainer.addComponent(bubblechartComponent);
+        bubblechartToolsContainer.addComponent(bubblechartComponent.getControlBtnsContainer());
+         bubblechartToolsContainer.setComponentAlignment(bubblechartComponent.getControlBtnsContainer(),Alignment.TOP_RIGHT);
     }
 
     private void processFunction(String btnId) {
@@ -178,7 +181,6 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
                 @Override
                 public void updateIcon(String imageUrl) {
                     heatmapBtn.updateIcon(new ExternalResource(imageUrl));
-                    bubblechartBtn.setEnabled(true);
                 }
 
                 @Override
@@ -202,6 +204,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
             heatmapViewContainer.addComponent(heatmapComponent);
              heatmapViewContainer.setComponentAlignment(heatmapComponent,Alignment.MIDDLE_CENTER);
              heatmapToolsContainer.addComponent(heatmapComponent.getHeatmapToolBtnContainer());
+             heatmapToolsContainer.setComponentAlignment(heatmapComponent.getHeatmapToolBtnContainer(),Alignment.TOP_RIGHT);
              
 
         }

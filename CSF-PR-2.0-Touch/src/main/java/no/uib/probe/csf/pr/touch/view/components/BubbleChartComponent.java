@@ -2,9 +2,13 @@ package no.uib.probe.csf.pr.touch.view.components;
 
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.ExternalResource;
+import com.vaadin.server.FileDownloader;
+import com.vaadin.server.StreamResource;
 import com.vaadin.server.ThemeResource;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
@@ -29,8 +33,10 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFListener;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
+import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 import no.uib.probe.csf.pr.touch.view.core.InfoPopupBtn;
 import no.uib.probe.csf.pr.touch.view.core.SquaredDot;
+import no.uib.probe.csf.pr.touch.view.core.TrendLegend;
 import org.apache.commons.codec.binary.Base64;
 import org.jfree.chart.ChartRenderingInfo;
 import org.jfree.chart.ChartUtilities;
@@ -45,7 +51,6 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYBubbleRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.title.LegendTitle;
-import org.jfree.chart.util.DefaultShadowGenerator;
 import org.jfree.data.xy.DefaultXYZDataset;
 import org.jfree.text.TextUtilities;
 import org.jfree.ui.RectangleEdge;
@@ -81,9 +86,17 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
     private final String[] tooltipLabels;
     private final String[] trendStyles;
 
+    private boolean activeMultiSelect = true;
+
+    public VerticalLayout getControlBtnsContainer() {
+        return controlBtnsContainer;
+    }
+
+    private final VerticalLayout controlBtnsContainer;
+
     public BubbleChartComponent(CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height, QuantDiseaseGroupsComparison userCustomizedComparison) {
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
-        this.width = width;
+
         this.userCustomizedComparison = userCustomizedComparison;
         if (userCustomizedComparison == null) {
             userDataCounter = 0;
@@ -91,39 +104,69 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
             userDataCounter = 1;
         }
 
-        height = height - 20 - 100;
-        this.height = height;
         this.setWidth(100, Unit.PERCENTAGE);
-        this.setHeightUndefined();
-        this.setSpacing(true);
+        this.setHeight(height, Unit.PIXELS);
+
+        VerticalLayout bodyContainer = new VerticalLayout();
+        bodyContainer.setWidth(100, Unit.PERCENTAGE);
+        bodyContainer.setHeightUndefined();
+        bodyContainer.setSpacing(true);
+        this.addComponent(bodyContainer);
 
         //init toplayout
         HorizontalLayout topLayout = new HorizontalLayout();
-        topLayout.setHeightUndefined();
-        topLayout.setWidthUndefined();
+        topLayout.setHeight(25, Unit.PIXELS);
+        topLayout.setWidth(100, Unit.PERCENTAGE);
         topLayout.setSpacing(true);
-        topLayout.setMargin(false);
-        this.addComponent(topLayout);
+        topLayout.setMargin(new MarginInfo(false, false, false, true));
+        bodyContainer.addComponent(topLayout);
+
+        HorizontalLayout titleLayoutWrapper = new HorizontalLayout();
+        titleLayoutWrapper.setHeight(25, Unit.PIXELS);
+        titleLayoutWrapper.setWidthUndefined();
+        titleLayoutWrapper.setSpacing(true);
+        titleLayoutWrapper.setMargin(new MarginInfo(false, false, false, true));
+        topLayout.addComponent(titleLayoutWrapper);
 
         Label overviewLabel = new Label("Overview");
         overviewLabel.setStyleName(ValoTheme.LABEL_BOLD);
         overviewLabel.setWidth(75, Unit.PIXELS);
-        topLayout.addComponent(overviewLabel);
-        topLayout.setComponentAlignment(overviewLabel, Alignment.MIDDLE_CENTER);
+        titleLayoutWrapper.addComponent(overviewLabel);
+        titleLayoutWrapper.setComponentAlignment(overviewLabel, Alignment.MIDDLE_CENTER);
 
         InfoPopupBtn info = new InfoPopupBtn("The bubble chart give an overview for the proteins existed in the selected comparisons.<br/>The diameter of the bubble represents the number of the proteins in the selected comparison and the color represents the trend.<br/>");
-        topLayout.addComponent(info);
-        topLayout.setComponentAlignment(info, Alignment.MIDDLE_CENTER);
+        titleLayoutWrapper.addComponent(info);
+        titleLayoutWrapper.setComponentAlignment(info, Alignment.MIDDLE_CENTER);
+
+        TrendLegend legendLayout = new TrendLegend("bubblechart");
+        legendLayout.setWidthUndefined();
+        legendLayout.setHeight(24, Unit.PIXELS);
+        topLayout.addComponent(legendLayout);
+        topLayout.setComponentAlignment(legendLayout, Alignment.MIDDLE_RIGHT);
+
         //end of toplayout
         //start chart layout
+        VerticalLayout chartLayoutFrame = new VerticalLayout();
+        height = height - 44;
+
+        width = width - 50;
+        chartLayoutFrame.setWidth(width, Unit.PIXELS);
+        chartLayoutFrame.setHeight(height, Unit.PIXELS);
+        chartLayoutFrame.addStyleName("roundedborder");
+        chartLayoutFrame.addStyleName("whitelayout");
+        bodyContainer.addComponent(chartLayoutFrame);
+        bodyContainer.setComponentAlignment(chartLayoutFrame, Alignment.MIDDLE_CENTER);
+        height = height - 40;
+        width = width - 40;
+        this.height = height;
+        this.width = width;
         chartLayoutContainer = new AbsoluteLayout();
         chartLayoutContainer.setWidth(width, Unit.PIXELS);
-        chartLayoutContainer.setHeight(height, Unit.PIXELS);
-        chartLayoutContainer.setStyleName("lightgraylayout");
-        this.addComponent(chartLayoutContainer);
+        chartLayoutContainer.setHeight(this.height, Unit.PIXELS);
+        chartLayoutFrame.addComponent(chartLayoutContainer);
 
         chartImage = new Image();
-        chartImage.setSource(new ThemeResource("img/logo.png"));
+//        chartImage.setSource(new ThemeResource(""));
         chartImage.setWidth(100, Unit.PERCENTAGE);
         chartImage.setHeight(100, Unit.PERCENTAGE);
         chartLayoutContainer.addComponent(chartImage, "left: " + 0 + "px; top: " + 0 + "px;");
@@ -138,14 +181,193 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         //init data structure
         tooltipsProtNumberMap = new HashMap<>();
         lastselectedComponents = new HashSet<>();
-        tooltipLabels = new String[]{"", " Decreased <img src='VAADIN/themes/dario-theme/img/greendot.png' alt='Decreased'>" + " ", " Decreased <img src='VAADIN/themes/dario-theme/img/lgreendot.png' alt='Decreased'>" + " ", " Equal <img src='VAADIN/themes/dario-theme/img/bluedot.png' alt='Equal'>" + " ", "  Increased <img src='VAADIN/themes/dario-theme/img/lreddot.png' alt='Increased'>" + " ", "  Increased <img src='VAADIN/themes/dario-theme/img/reddot.png' alt='Increased'>" + " ", ""};
+        tooltipLabels = new String[]{"", " Decreased <img src='VAADIN/themes/mytheme/img/greendot.png' alt='Decreased'>" + " ", " Decreased <img src='VAADIN/themes/mytheme/img/lgreendot.png' alt='Decreased'>" + " ", " Equal <img src='VAADIN/themes/mytheme/img/bluedot.png' alt='Equal'>" + " ", "  Increased <img src='VAADIN/themes/mytheme/img/lreddot.png' alt='Increased'>" + " ", "  Increased <img src='VAADIN/themes/mytheme/img/reddot.png' alt='Increased'>" + " ", ""};
         trendStyles = new String[]{"", "decreased100", "decreasedless100", "stable", "increasedless100", "increased100", ""};
 
         this.CSFPR_Central_Manager.registerListener(BubbleChartComponent.this);
+
+        //init side control btns layout 
+        controlBtnsContainer = new VerticalLayout();
+        controlBtnsContainer.setHeightUndefined();
+        controlBtnsContainer.setWidthUndefined();
+        controlBtnsContainer.setSpacing(true);
+//        groupSwichBtn = new GroupSwichBtn(Quant_Central_Manager, searchQuantificationProtList);
+//        controlBtnsContainer.addComponent(groupSwichBtn);
+
+        ImageContainerBtn groupSwichBtn = new ImageContainerBtn() {
+
+            @Override
+            public void onClick() {
+//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+        };
+
+        groupSwichBtn.setHeight(45, Unit.PIXELS);
+        groupSwichBtn.setWidth(45, Unit.PIXELS);
+        groupSwichBtn.updateIcon(new ThemeResource("img/flip-v-updated.png"));
+        groupSwichBtn.setEnabled(true);
+        groupSwichBtn.addStyleName("smallimg");
+        controlBtnsContainer.addComponent(groupSwichBtn);
+        controlBtnsContainer.setComponentAlignment(groupSwichBtn, Alignment.MIDDLE_CENTER);
+        groupSwichBtn.setDescription("Export chart image");
+
+        ThemeResource scatterplotApplied = new ThemeResource("img/scatter_plot_applied_updated.png");
+        ThemeResource scatterplotUnapplied = new ThemeResource("img/scatter_plot_unapplied.png");
+        final ImageContainerBtn hideStableBtn = new ImageContainerBtn() {
+
+            @Override
+            public void onClick() {
+                if (this.getDescription().equalsIgnoreCase("Hide stable proteins")) {
+                    this.updateIcon(scatterplotUnapplied);
+//                    Quant_Central_Manager.updateSignificantOnlySelection(true);
+                    this.setDescription("Show stable proteins");
+                } else {
+                    this.updateIcon(scatterplotApplied);
+//                    Quant_Central_Manager.updateSignificantOnlySelection(false);
+                    this.setDescription("Hide stable proteins");
+
+                }
+
+            }
+        };
+
+        hideStableBtn.setHeight(45, Unit.PIXELS);
+        hideStableBtn.setWidth(45, Unit.PIXELS);
+        hideStableBtn.updateIcon(scatterplotApplied);
+        hideStableBtn.setEnabled(true);
+        controlBtnsContainer.addComponent(hideStableBtn);
+        controlBtnsContainer.setComponentAlignment(hideStableBtn, Alignment.MIDDLE_CENTER);
+        hideStableBtn.setDescription("Hide stable proteins");
+//        stableBtn.setStyleName("stablebtn");
+//        stableBtn.setHeight("24px");
+//        Label stableLabel = new Label("Equal");
+//        stableLabel.setWidth("44px");
+//        stableBtn.addComponent(stableLabel);
+
+        ImageContainerBtn exportPdfBtn = new ImageContainerBtn() {
+
+            @Override
+            public void onClick() {
+//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+        };
+
+        exportPdfBtn.setHeight(45, Unit.PIXELS);
+        exportPdfBtn.setWidth(45, Unit.PIXELS);
+        exportPdfBtn.updateIcon(new ThemeResource("img/pdf-text-o.png"));
+        exportPdfBtn.setEnabled(true);
+        controlBtnsContainer.addComponent(exportPdfBtn);
+        controlBtnsContainer.setComponentAlignment(exportPdfBtn, Alignment.MIDDLE_CENTER);
+        exportPdfBtn.setDescription("Export chart image");
+
+//        StreamResource myResource = null;//createResource();
+//        FileDownloader fileDownloader = new FileDownloader(myResource);
+//
+//        fileDownloader.extend(groupSwichBtn);
+        controlBtnsContainer.addComponent(exportPdfBtn);
+        ImageContainerBtn unselectAllBtn = new ImageContainerBtn() {
+
+            @Override
+            public void onClick() {
+//                 Quant_Central_Manager.setBubbleChartQuantProteinsSelection(new HashSet<String>(), "");
+//                        resetChart();
+            }
+
+        };
+        unselectAllBtn.updateIcon(new ThemeResource("img/grid-small-o.png"));
+        unselectAllBtn.setEnabled(true);
+        unselectAllBtn.setWidth(45, Unit.PIXELS);
+        unselectAllBtn.setHeight(45, Unit.PIXELS);
+        unselectAllBtn.addStyleName("smallimg");
+        controlBtnsContainer.addComponent(unselectAllBtn);
+        controlBtnsContainer.setComponentAlignment(unselectAllBtn, Alignment.MIDDLE_CENTER);
+        unselectAllBtn.setDescription("Unselect all disease group comparisons");
+
+        final ImageContainerBtn selectMultiBtn = new ImageContainerBtn() {
+
+            @Override
+            public void onClick() {
+                if (this.getStyleName().contains("selectmultiselectedbtn")) {
+                    activeMultiSelect = false;
+                    this.removeStyleName("selectmultiselectedbtn");
+
+                } else {
+                    activeMultiSelect = true;
+                    this.addStyleName("selectmultiselectedbtn");
+
+                }
+            }
+
+        };
+        selectMultiBtn.addStyleName("selectmultiselectedbtn");
+        selectMultiBtn.addStyleName("smallimg");
+        selectMultiBtn.setDescription("Multiple selection");
+        selectMultiBtn.updateIcon(new ThemeResource("img/grid-small-multi.png"));
+        selectMultiBtn.setEnabled(true);
+        selectMultiBtn.setWidth(45, Unit.PIXELS);
+        selectMultiBtn.setHeight(45, Unit.PIXELS);
+        controlBtnsContainer.addComponent(selectMultiBtn);
+        controlBtnsContainer.setComponentAlignment(selectMultiBtn, Alignment.MIDDLE_CENTER);
+
+//        VerticalLayout unselectAllBtn = new VerticalLayout();
+//
+//        unselectAllBtn.setStyleName(
+//                "unselectallbtn");
+//        controlBtnsContainer.addComponent(unselectAllBtn);
+//
+//        controlBtnsContainer.setComponentAlignment(unselectAllBtn, Alignment.TOP_LEFT);
+//
+//        unselectAllBtn.setDescription(
+//                "Clear selection");
+//        unselectAllBtn.addLayoutClickListener(
+//                new LayoutEvents.LayoutClickListener() {
+//
+//                    @Override
+//                    public void layoutClick(LayoutEvents.LayoutClickEvent event
+//                    ) {
+////                        Quant_Central_Manager.setBubbleChartQuantProteinsSelection(new HashSet<String>(), "");
+////                        resetChart();
+//
+//                    }
+//                }
+//        );
+//
+//        final VerticalLayout selectMultiBtn = new VerticalLayout();
+//
+//        selectMultiBtn.setStyleName(
+//                "selectmultiselectedbtn");
+//        controlBtnsContainer.addComponent(selectMultiBtn);
+//
+//        controlBtnsContainer.setComponentAlignment(selectMultiBtn, Alignment.TOP_LEFT);
+//
+//        selectMultiBtn.setDescription(
+//                "Multiple selection");
+//        activeMultiSelect = true;
+//
+//        selectMultiBtn.addLayoutClickListener(
+//                new LayoutEvents.LayoutClickListener() {
+//
+//                    @Override
+//                    public void layoutClick(LayoutEvents.LayoutClickEvent event
+//                    ) {
+//                        if (selectMultiBtn.getStyleName().equalsIgnoreCase("selectmultiselectedbtn")) {
+//                            selectMultiBtn.setStyleName("selectmultibtn");
+//                            activeMultiSelect = false;
+//
+//                        } else {
+//                            selectMultiBtn.setStyleName("selectmultiselectedbtn");
+//                            activeMultiSelect = true;
+//
+//                        }
+//                    }
+//                }
+//        );
+        //end of btns layout
 //        JFreeChart chart = generateBubbleChart(new HashSet<>());
 //        defaultImgURL = updateChartLayoutComponents(chart, width, height);
 //        chartImage.setSource(new ExternalResource(defaultImgURL));
-
     }
 
     private JFreeChart generateBubbleChart(Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
@@ -213,7 +435,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
             if (tempWidthValue[3] > 0 && tempWidthValue[6] >= 0) {
                 stableColor = new Color(1, 141, 244);
                 trendStyles[3] = "stable";
-            } else if(tempWidthValue[3] == 0 && tempWidthValue[6] > 0) {
+            } else if (tempWidthValue[3] == 0 && tempWidthValue[6] > 0) {
                 stableColor = Color.decode("#b5babb");
                 trendStyles[3] = "nodata";
             }
@@ -318,7 +540,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
 
         SymbolAxis xAxis;
         final boolean finalNum;
-        finalNum = maxLength > 30 && selectedComparisonList.size() > 4;
+        finalNum = maxLength > 50 && selectedComparisonList.size() > 4;
 
         xAxis = new SymbolAxis(null, xAxisLabels) {
 
@@ -459,6 +681,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
             }
 
         };
+        ;
 
         JFreeChart generatedChart = new JFreeChart(xyplot) {
 
@@ -499,14 +722,12 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
     @Override
     public void selectionChanged(String type) {
         this.selectedComparisonList = CSFPR_Central_Manager.getSelectedComparisonsList();
-        if(selectedComparisonList.isEmpty()){
+        if (selectedComparisonList.isEmpty()) {
             updateIcon(null);
             return;
-        
+
         }
-        
-        
-        
+
         JFreeChart chart = generateBubbleChart(selectedComparisonList);
         updateChartLayoutComponents(chart, width, height);
         DefaultXYZDataset emptyxyzdataset = new DefaultXYZDataset();

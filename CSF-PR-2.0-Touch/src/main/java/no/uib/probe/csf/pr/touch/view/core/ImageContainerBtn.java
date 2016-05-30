@@ -20,22 +20,24 @@ import com.vaadin.ui.VerticalLayout;
  *
  */
 public abstract class ImageContainerBtn extends VerticalLayout implements LayoutEvents.LayoutClickListener {
-    
+
     private final Image img;
     
+
+
     public ImageContainerBtn() {
         img = new Image();
-        
+
         img.setWidth(100, Unit.PERCENTAGE);
         img.setHeight(100, Unit.PERCENTAGE);
         this.addComponent(img);
         this.setComponentAlignment(img, Alignment.MIDDLE_CENTER);
-        
+
         this.setStyleName("bigbtn");
         this.addLayoutClickListener(ImageContainerBtn.this);
         this.setReadOnly(true);
         this.setEnabled(false);
-        
+
     }
 
     /**
@@ -44,29 +46,29 @@ public abstract class ImageContainerBtn extends VerticalLayout implements Layout
      *
      * @param imgResource
      */
-    public void updateIcon(Resource imgResource) {     
+    public void updateIcon(Resource imgResource) {
         img.setSource(imgResource);
         blink();
     }
-    
+
     @Override
-    public void layoutClick(LayoutEvents.LayoutClickEvent event) {        
-        
-        onClick();
+    public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+   
+            onClick();
     }
-    
-    public void blink() {        
-        
+
+    public void blink() {
+
         if (img.getStyleName().contains("blinkII")) {
             img.removeStyleName("blinkII");
             img.addStyleName("blink");
-        }else{
-        img.removeStyleName("blinkI");
+        } else {
+            img.removeStyleName("blinkI");
             img.addStyleName("blinkII");
         }
-        
-    } 
-    
+
+    }
+
     public abstract void onClick();
-    
+
 }

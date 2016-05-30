@@ -214,7 +214,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         };
         bodyLayoutWrapper.addComponent(heatmapLayoutContainer);
         bodyLayoutWrapper.setComponentAlignment(heatmapLayoutContainer,Alignment.TOP_CENTER);
-        this.heatmapToolBtnContainer = new VerticalLayout(heatmapLayoutContainer.getControlBtnsContainer());
+        this.heatmapToolBtnContainer = heatmapLayoutContainer.getControlBtnsContainer();
        
         CSFPR_Central_Manager.registerListener(HeatMapComponent.this);
 

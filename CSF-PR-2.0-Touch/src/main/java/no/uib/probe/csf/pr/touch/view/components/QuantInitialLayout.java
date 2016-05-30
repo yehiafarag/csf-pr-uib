@@ -144,7 +144,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         if (((VerticalLayout) event.getComponent()).getData() == null) {
             return;
         }
-        this.addStyleName("hidelayout");
+//        this.addStyleName("hidelayout");
         miniLayout.removeAllComponents();
         DiseaseCategoryObject diseaseObject = (DiseaseCategoryObject) (((VerticalLayout) event.getComponent()).getData());
         miniLayout.addComponent(initDiseaseLayout(diseaseObject, 100, 100,maxNumber));

@@ -28,6 +28,7 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.StudiesInformationPopupBtn;
 import no.uib.probe.csf.pr.touch.view.components.QuantDatasetsfullStudiesTableLayout;
+import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 import no.uib.probe.csf.pr.touch.view.core.ZoomControler;
 
 /**
@@ -80,7 +81,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
     private Set<HeatMapHeaderCellInformationBean> rowheadersSet, colheadersSet;
     private final VerticalLayout heatMapLayoutWrapper;
-    private final  VerticalLayout controlBtnsContainer;
+    private final VerticalLayout controlBtnsContainer;
 
     private final ZoomControler zoomControler;
 
@@ -171,9 +172,8 @@ public abstract class HeatMapLayout extends VerticalLayout {
         controlsLayout.addComponent(commentLabel);
         controlsLayout.setComponentAlignment(commentLabel, Alignment.TOP_LEFT);
 //        controlsLayout.setExpandRatio(commentLabel, 0.6f);
-        
-        
-        controlBtnsContainer = new VerticalLayout();        
+
+        controlBtnsContainer = new VerticalLayout();
         controlBtnsContainer.setHeightUndefined();
         controlBtnsContainer.setWidthUndefined();
         controlBtnsContainer.setSpacing(true);
@@ -183,76 +183,108 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
         final StudiesInformationPopupBtn showStudiesBtn = new StudiesInformationPopupBtn();
         controlBtnsContainer.addComponent(showStudiesBtn);
-        controlBtnsContainer.setComponentAlignment(showStudiesBtn, Alignment.TOP_LEFT);
+        controlBtnsContainer.setComponentAlignment(showStudiesBtn, Alignment.MIDDLE_CENTER);
         showStudiesBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
                 showStudiesBtn.updateData(updatedDatasetMap.values());
-            showStudiesBtn.view();
+                showStudiesBtn.view();
             }
         });
-        Button exportTableBtn = new Button("");
-        exportTableBtn.setHeight(23, Unit.PIXELS);
-        exportTableBtn.setWidth(23, Unit.PIXELS);
-        exportTableBtn.setPrimaryStyleName("exportxslbtn");
-        controlBtnsContainer.addComponent(exportTableBtn);
-        controlBtnsContainer.setComponentAlignment(exportTableBtn, Alignment.BOTTOM_RIGHT);
-        exportTableBtn.setDescription("Export all dataset data");
         final QuantDatasetsfullStudiesTableLayout quantStudiesTable = new QuantDatasetsfullStudiesTableLayout(activeColumnHeaders);
         controlBtnsContainer.addComponent(quantStudiesTable);
+        ImageContainerBtn exportTableBtn = new ImageContainerBtn() {
 
-        exportTableBtn.addClickListener((Button.ClickEvent event) -> {
-            quantStudiesTable.updateCombinedQuantDatasetTableRecords(updatedDatasetMap);
-            ExcelExport csvExport = new ExcelExport(quantStudiesTable, "CSF-PR  Quant Datasets Information");
-            csvExport.setReportTitle("CSF-PR / Quant Datasets Information ");
-            csvExport.setExportFileName("CSF-PR - Quant Datasets Information" + ".xls");
-            csvExport.setMimeType(ExcelExport.EXCEL_MIME_TYPE);
-            csvExport.setDisplayTotals(false);
+            @Override
+            public void onClick() {
+                quantStudiesTable.updateCombinedQuantDatasetTableRecords(updatedDatasetMap);
+                ExcelExport csvExport = new ExcelExport(quantStudiesTable, "CSF-PR  Quant Datasets Information");
+                csvExport.setReportTitle("CSF-PR / Quant Datasets Information ");
+                csvExport.setExportFileName("CSF-PR - Quant Datasets Information" + ".xls");
+                csvExport.setMimeType(ExcelExport.EXCEL_MIME_TYPE);
+                csvExport.setDisplayTotals(false);
 
-            csvExport.setDateDataFormat("0");
-            csvExport.setExcelFormatOfProperty("Index", "0");
-            csvExport.setExcelFormatOfProperty("#Quantified Proteins", "0");
-            csvExport.setExcelFormatOfProperty("patientsGroup2Number", "0");
-            csvExport.setExcelFormatOfProperty("#patientsGroup1Number", "0");
+                csvExport.setDateDataFormat("0");
+                csvExport.setExcelFormatOfProperty("Index", "0");
+                csvExport.setExcelFormatOfProperty("#Quantified Proteins", "0");
+                csvExport.setExcelFormatOfProperty("patientsGroup2Number", "0");
+                csvExport.setExcelFormatOfProperty("#patientsGroup1Number", "0");
 
-            csvExport.export();
-        });
-
-        VerticalLayout selectAllBtn = new VerticalLayout();
-        selectAllBtn.setStyleName("selectallbtn");
-        controlBtnsContainer.addComponent(selectAllBtn);
-        controlBtnsContainer.setComponentAlignment(selectAllBtn, Alignment.TOP_LEFT);
-        selectAllBtn.setDescription("Select all disease group comparisons");
-        selectAllBtn.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
-            selectAll();
-        });
-
-        VerticalLayout unselectAllBtn = new VerticalLayout();
-        unselectAllBtn.setStyleName("unselectallbtn");
-        controlBtnsContainer.addComponent(unselectAllBtn);
-        controlBtnsContainer.setComponentAlignment(unselectAllBtn, Alignment.TOP_LEFT);
-        unselectAllBtn.setDescription("Unselect all disease group comparisons");
-        unselectAllBtn.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
-            unselectAll();
-        });
-
-        final VerticalLayout selectMultiBtn = new VerticalLayout();
-        selectMultiBtn.setStyleName("selectmultiselectedbtn");
-        controlBtnsContainer.addComponent(selectMultiBtn);
-        controlBtnsContainer.setComponentAlignment(selectMultiBtn, Alignment.TOP_LEFT);
-        selectMultiBtn.setDescription("Multiple selection");
-        selectMultiBtn.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
-            if (selectMultiBtn.getStyleName().equalsIgnoreCase("selectmultiselectedbtn")) {
-                singleSelection = true;
-                selectMultiBtn.setStyleName("selectmultibtn");
-
-            } else {
-                singleSelection = false;
-                selectMultiBtn.setStyleName("selectmultiselectedbtn");
-
+                csvExport.export();
             }
-        });
+
+        };
+        exportTableBtn.setHeight(45, Unit.PIXELS);
+        exportTableBtn.setWidth(45, Unit.PIXELS);
+        exportTableBtn.updateIcon(new ThemeResource("img/xls-text-o-2.png"));
+        exportTableBtn.setEnabled(true);
+//        exportTableBtn.setPrimaryStyleName("exportxslbtn");
+        controlBtnsContainer.addComponent(exportTableBtn);
+        controlBtnsContainer.setComponentAlignment(exportTableBtn, Alignment.MIDDLE_CENTER);
+        exportTableBtn.setDescription("Export all dataset data");
+
+        ImageContainerBtn selectAllBtn = new ImageContainerBtn() {
+
+            @Override
+            public void onClick() {
+                selectAll();
+            }
+
+        };
+        selectAllBtn.updateIcon(new ThemeResource("img/grid-small.png"));
+        selectAllBtn.setEnabled(true);
+        selectAllBtn.addStyleName("smallimg");
+        selectAllBtn.setWidth(45, Unit.PIXELS);
+        selectAllBtn.setHeight(45, Unit.PIXELS);
+        controlBtnsContainer.addComponent(selectAllBtn);
+        controlBtnsContainer.setComponentAlignment(selectAllBtn, Alignment.MIDDLE_CENTER);
+        selectAllBtn.setDescription("Select all disease group comparisons");
+
+        ImageContainerBtn unselectAllBtn = new ImageContainerBtn() {
+
+            @Override
+            public void onClick() {
+                unselectAll();
+            }
+
+        };
+        unselectAllBtn.updateIcon(new ThemeResource("img/grid-small-o.png"));
+        unselectAllBtn.setEnabled(true);
+        unselectAllBtn.setWidth(45, Unit.PIXELS);
+        unselectAllBtn.setHeight(45, Unit.PIXELS);
+        unselectAllBtn.addStyleName("smallimg");
+        controlBtnsContainer.addComponent(unselectAllBtn);
+        controlBtnsContainer.setComponentAlignment(unselectAllBtn, Alignment.MIDDLE_CENTER);
+        unselectAllBtn.setDescription("Unselect all disease group comparisons");
+
+        final ImageContainerBtn selectMultiBtn = new ImageContainerBtn() {
+
+            @Override
+            public void onClick() {
+                if (this.getStyleName().contains("selectmultiselectedbtn")) {
+                    singleSelection = true;
+                    this.removeStyleName("selectmultiselectedbtn");
+
+                } else {
+                    singleSelection = false;
+                    this.addStyleName("selectmultiselectedbtn");
+
+                }
+            }
+
+        };
+        selectMultiBtn.addStyleName("selectmultiselectedbtn");
+        selectMultiBtn.addStyleName("smallimg");
+        controlBtnsContainer.addComponent(selectMultiBtn);
+        controlBtnsContainer.setComponentAlignment(selectMultiBtn, Alignment.MIDDLE_CENTER);
+        selectMultiBtn.setDescription("Multiple selection");
+        selectMultiBtn.updateIcon(new ThemeResource("img/grid-small-multi.png"));
+        selectMultiBtn.setEnabled(true);
+        selectMultiBtn.setWidth(45, Unit.PIXELS);
+        selectMultiBtn.setHeight(45, Unit.PIXELS);
+
+      
 
         cornerCell = new VerticalLayout();
         cornerCell.setWidth(150, Unit.PIXELS);
@@ -300,9 +332,9 @@ public abstract class HeatMapLayout extends VerticalLayout {
         this.columnCategoryHeadersContainer.setWidth(colHeaderWidth * columnsLbels.size(), Unit.PIXELS);
         this.rowCategoryHeadersContainer.setHeight(rowHeaderHeight * rowsLbels.size(), Unit.PIXELS);
 
-        if (rowCategoryHeadersContainer.getHeight()+100  > availableHMHeight) {
-            double ratio = availableHMHeight / (rowCategoryHeadersContainer.getHeight()+100 );
-            zoomLevel = ((int) Math.round(ratio * 10.0) );
+        if (rowCategoryHeadersContainer.getHeight() + 100 > availableHMHeight) {
+            double ratio = availableHMHeight / (rowCategoryHeadersContainer.getHeight() + 100);
+            zoomLevel = ((int) Math.round(ratio * 10.0));
         } else {
             zoomLevel = 10;
         }
@@ -381,7 +413,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
         //updateBody
         for (int row = 1; row < heatmapBody.getRows(); row++) {
-           
+
             for (int col = 1; col < heatmapBody.getColumns(); col++) {
                 HeatmapCell cell = (HeatmapCell) heatmapBody.getComponent(col, row);
                 if (cell == null) {
@@ -574,7 +606,6 @@ public abstract class HeatMapLayout extends VerticalLayout {
         }
 
     }
-
 
     /**
      * this method responsible for updating heat map layout upon user selection

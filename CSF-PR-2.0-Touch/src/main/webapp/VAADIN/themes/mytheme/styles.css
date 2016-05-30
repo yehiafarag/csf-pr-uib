@@ -12986,7 +12986,7 @@ div.v-layout.v-horizontal.v-widget {
     -moz-border-radius:4px;
     border-radius:  4px;
     overflow:hidden;
-    margin-right: 45px;
+    margin-right: 30px;
     margin-top: 5px;
     z-index:2;
     position:relative !important;
@@ -13213,6 +13213,27 @@ div.v-layout.v-horizontal.v-widget {
     word-wrap:break-word;
     border-radius:4px;
 }
+
+
+
+
+.smallbtn {
+    background-color:whitesmoke;
+    margin-right: 20px;
+    cursor: pointer;   
+    border:1px solid lightgray;
+    border-radius: 4px;
+    padding: 5px;
+
+
+}
+.smallbtn img:hover{ 
+    border:1px solid gray;
+    background-color:lightgray;
+
+}
+
+
 
 .thumbBtn{
 
@@ -13567,97 +13588,18 @@ div.v-layout.v-horizontal.v-widget {
     min-width: 220px !important;
 
 }
-.exportxslbtn{
-    background-image: url(img/xls-text-o-2.png);
-    background-position:center !important;
-    background-repeat: no-repeat !important;
-    background-size: 17px  !important;
-    cursor:pointer;
-    width:23px !important;
-    height:23px !important;
-    border:none;
 
+.selectmultiselectedbtn img{
+    border:1px solid gray;
+    background-color:lightgray !important;
+    border-radius:5px;
 
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
 }
-.exportxslbtn:hover{
-    border: none !important;
-    background-color: white !important;
-
-}
-.exportxslbtn:focus {
-    outline: none;
-}
-
-
-.selectallbtn{
-    clear: both;
-    width: 23px;
-    height: 23px;
-    background-image: url(img/selectall.png);
-    background-position:center;
-    background-repeat: no-repeat;
-    cursor:pointer;
-
-}
-
-.unselectallbtn{
-    clear: both;
-    width: 23px;
-    height: 23px;
-    background-image: url(img/unselectall.png);
-    background-position:center;
-    background-repeat: no-repeat;
-    cursor:pointer;
-}
-.unselectallbtn:hover{
-    background-image: url(img/unselectall_selected.png);
-
-}
-.selectmultibtn{
-    clear: both;
-    width: 23px;
-    height: 23px;
-    background-image: url(img/selectmulti.png);
-    background-position:center;
-    background-repeat: no-repeat;
-    cursor:pointer;
-}
-.selectmultibtn:hover{
-    background-image: url(img/selectmulti_selected.png);
-}
-.selectmultiselectedbtn{
-    clear: both;
-    width: 23px;
-    height: 23px;
-    border:1px solid black;
-
-    background-image: url(img/selectmulti_selected.png);
-    background-position:center;
-    background-repeat: no-repeat;
-    background-size:cover;
-    cursor:pointer;
-
-}
-.selectmultiselectedbtn:hover{
-    background-image: url(img/selectmulti.png);
-    border:none;
-
-}
-.studyinfobtn{
-    clear: both;
-    width: 23px !important;
-    height: 23px !important;
-    background-image: url(img/file-text-o.png) !important;
-    background-position:center !important;
-    background-repeat: no-repeat !important;
-    background-size: 17px  !important;
-    cursor:pointer;
-    outline: none;
-}
-
-.studyinfobtn:focus {
-    outline: none;
-}.showfilterbtnlabel{
+.showfilterbtnlabel{
     line-height: 1.55;
     cursor: pointer; 
     -webkit-user-select: none;
@@ -14003,6 +13945,10 @@ div.v-layout.v-horizontal.v-widget {
     padding: 5px;
 
 }
+.smallimg img{
+    padding: 10px !important;
+
+}
 .zoomborder{
     border-bottom: 3px solid white;
     padding-bottom:5px !important;
@@ -14043,7 +13989,7 @@ div.v-layout.v-horizontal.v-widget {
     border-radius:10px;
 }
 .sidebtnwrapper{
-    background-color: whitesmoke !important;
+    background-color:  #EAF5FC !important;
     padding:5px;
     border:2px solid lightgray;
     border-right:none;
@@ -14061,7 +14007,7 @@ div.v-layout.v-horizontal.v-widget {
 
 }
 .mainviewport{
-    background-color: whitesmoke !important;
+    background-color:  #EAF5FC !important;
     border:2px solid lightgray;
     z-index:1;
     position:relative;
@@ -14070,21 +14016,69 @@ div.v-layout.v-horizontal.v-widget {
     border-top-right-radius:5px;
 
 
-}
-.sidebtnsmenue{
 
 
+}.sidebtnsmenue{
 
+
+    min-width:50px;
+    min-height:100px;
+    top:-50px;
+    padding-top:7px;    
+    padding-right:7px;    
+    padding-bottom:7px;
     transform:translate(-2px,-38px);
     max-height:500px;
     max-width:60px;
     position:relative;
     z-index:3 !important;
-    background-color:whitesmoke;
+    background-color:  #EAF5FC ;
     border:2px solid lightgray;
     border-left:none;
     border-top-right-radius:5px;
     border-bottom-right-radius:5px;
     border-bottom-left-radius:0px !important;
+}
 
+.v-slot-topbtns.v-slot-rightbtns{
+    background-color:white !important;
+    padding-right:10px;
+    padding-left:10px;
+
+}
+.ultralightbluelayout{
+    background-color:  #EAF5FC !important;
+    
+}
+
+
+.legendred100 div{
+    margin-top:5px;
+    background: rgb(204, 0, 0);    
+
+}
+.legendredless100 div{
+     margin-top:5px;
+    background: rgb(247, 119, 119);    
+}
+.legendblue div{
+     margin-top:5px;
+
+    background: rgb(1, 141, 244);    
+}
+.legendgreen100 div{
+     margin-top:5px;
+    background: rgb(0, 229, 132);    
+
+}
+.legendgreenless100 div{
+
+ margin-top:5px;
+    background: rgb(0, 153, 0);    
+
+}
+.legendgray div{
+     margin-top:5px;
+
+    background: rgb(128, 128, 128);    
 }
