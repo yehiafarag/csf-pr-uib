@@ -48,11 +48,12 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
     private final SerumCsfFilter serumCsfFilter;
     private final ReorderSelectGroupsFilter reorderSelectBtn;
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
-    private final Data_Handler Data_Handler;
+    private final VerticalLayout heatmapToolBtnContainer;
 
     /**
      *
      * @param CSFPR_Central_Manager
+     * @param Data_Handler
      * @param diseaseCategorySet
      * @param mainbodyLayoutWidth mainbody layout width (the container)
      * @param mainbodyLayoutHeight mainbody layout height (the container)
@@ -62,7 +63,6 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
     public HeatMapComponent(final CSFPR_Central_Manager CSFPR_Central_Manager, Data_Handler Data_Handler, Collection<DiseaseCategoryObject> diseaseCategorySet, int mainbodyLayoutWidth, int mainbodyLayoutHeight, boolean[] activeColumnHeaders) {
 
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
-        this.Data_Handler = Data_Handler;
         this.setWidth(mainbodyLayoutWidth, Unit.PIXELS);
         this.setHeight(mainbodyLayoutHeight, Unit.PIXELS);
        
@@ -186,7 +186,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         info.setHeight(25, Unit.PIXELS);
 
         //init heatmap
-        int availableHMHeight = mainbodyLayoutHeight - 100;
+        int availableHMHeight = mainbodyLayoutHeight - 85;
         heatmapLayoutContainer = new HeatMapLayout(mainbodyLayoutWidth, availableHMHeight, activeColumnHeaders, btnsWrapper) {
             @Override
             public void updateSelectionManager(Set<QuantDiseaseGroupsComparison> selectedQuantComparisonsList) {
@@ -214,6 +214,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         };
         bodyLayoutWrapper.addComponent(heatmapLayoutContainer);
         bodyLayoutWrapper.setComponentAlignment(heatmapLayoutContainer,Alignment.TOP_CENTER);
+        this.heatmapToolBtnContainer = new VerticalLayout(heatmapLayoutContainer.getControlBtnsContainer());
        
         CSFPR_Central_Manager.registerListener(HeatMapComponent.this);
 
@@ -317,8 +318,23 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
      */
     public abstract void updateCSFSerumDatasets(boolean serumApplied, boolean csfApplied);
 
+    /**
+     *  Update the main button image with the current heat map image 
+     * @param imageUrl
+     */
     public abstract void updateIcon(String imageUrl);
 
+    /**
+     * Blinking the main button
+     */
     public abstract void blinkIcon();
+
+    /**
+     *get side buttons container that has all the control buttons
+     * @return
+     */
+    public VerticalLayout getHeatmapToolBtnContainer() {
+        return heatmapToolBtnContainer;
+    }
 
 }

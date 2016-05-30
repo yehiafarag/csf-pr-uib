@@ -13446,11 +13446,11 @@ div.v-layout.v-horizontal.v-widget {
     border-color:#4d749f;
 }
 .topbtns{
-   position: inherit !important; 
+    position: inherit !important; 
     max-width:300px!important;    
     z-index:2 !important;
     margin-top:18px;
-    
+
 
 }
 .rightbtns{
@@ -14043,7 +14043,7 @@ div.v-layout.v-horizontal.v-widget {
     border-radius:10px;
 }
 .sidebtnwrapper{
-    background-color: #f1f9ff !important;
+    background-color: whitesmoke !important;
     padding:5px;
     border:2px solid lightgray;
     border-right:none;
@@ -14061,30 +14061,30 @@ div.v-layout.v-horizontal.v-widget {
 
 }
 .mainviewport{
-    background-color: #f1f9ff !important;
+    background-color: whitesmoke !important;
     border:2px solid lightgray;
     z-index:1;
     position:relative;
     border-bottom-left-radius:5px;
-     border-top-left-radius:5px;
-      border-top-right-radius:5px;
+    border-top-left-radius:5px;
+    border-top-right-radius:5px;
 
 
 }
 .sidebtnsmenue{
-    
-    
-        
+
+
+
     transform:translate(-2px,-38px);
     max-height:500px;
-     max-width:60px;
+    max-width:60px;
     position:relative;
     z-index:3 !important;
-    background-color:#f1f9ff;
+    background-color:whitesmoke;
     border:2px solid lightgray;
-    border-left:2px solid #f1f9ff;
-     border-top-right-radius:5px;
-       border-bottom-right-radius:5px;
-        border-bottom-left-radius:0px !important;
-    
+    border-left:none;
+    border-top-right-radius:5px;
+    border-bottom-right-radius:5px;
+    border-bottom-left-radius:0px !important;
+
 }

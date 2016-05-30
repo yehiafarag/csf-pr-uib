@@ -26,7 +26,7 @@ import no.uib.probe.csf.pr.touch.view.core.ViewControlPanel;
  */
 public class QuantDataLayoutContainer extends ViewControlPanel {
 
-    private final VerticalLayout heatmapViewContainer, bubblechartViewContainer;
+    private final VerticalLayout heatmapViewContainer,heatmapToolsContainer, bubblechartViewContainer,bubblechartToolsContainer;
     private final ImageContainerBtn heatmapBtn, bubblechartBtn, tableBtn, linechartBtn, peptideInfoBtn;
     private final Data_Handler Data_handler;
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
@@ -68,7 +68,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
             }
 
         };
-        this.setInitialLayout(quantInitialLayout.getMiniLayout(), quantInitialLayout);
+        this.setInitialLayout(quantInitialLayout.getMiniLayout(), quantInitialLayout,null);
 
         heatmapBtn = new ImageContainerBtn() {
 
@@ -85,7 +85,9 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
         mainViewPanelWidth = width - 220;
         heatmapViewContainer = new VerticalLayout();
         heatmapViewContainer.setWidth(mainViewPanelWidth, Unit.PIXELS);
-        this.addButton(heatmapBtn, heatmapViewContainer, true);
+        heatmapToolsContainer = new VerticalLayout();
+        
+        this.addButton(heatmapBtn, heatmapViewContainer,heatmapToolsContainer, true);
 
         bubblechartBtn = new ImageContainerBtn() {
 
@@ -100,8 +102,9 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
 
         bubblechartViewContainer = new VerticalLayout();
         bubblechartViewContainer.setWidth(mainViewPanelWidth, Unit.PIXELS);
+        bubblechartToolsContainer = new VerticalLayout();
 
-        this.addButton(bubblechartBtn, bubblechartViewContainer, false);
+        this.addButton(bubblechartBtn, bubblechartViewContainer,bubblechartToolsContainer, false);
 
         tableBtn = new ImageContainerBtn() {
 
@@ -113,7 +116,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
         tableBtn.updateIcon(new ThemeResource("img/logo.png"));
         tableBtn.setWidth(100, Unit.PIXELS);
         tableBtn.setHeight(100, Unit.PIXELS);
-        this.addButton(tableBtn, new VerticalLayout(), false);
+        this.addButton(tableBtn, new VerticalLayout(),null, false);
 
         linechartBtn = new ImageContainerBtn() {
 
@@ -125,7 +128,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
         linechartBtn.updateIcon(new ThemeResource("img/logo.png"));
         linechartBtn.setWidth(100, Unit.PIXELS);
         linechartBtn.setHeight(100, Unit.PIXELS);
-        this.addButton(linechartBtn, new VerticalLayout(), false);
+        this.addButton(linechartBtn, new VerticalLayout(),null, false);
 
         peptideInfoBtn = new ImageContainerBtn() {
 
@@ -137,7 +140,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
         peptideInfoBtn.updateIcon(new ThemeResource("img/logo.png"));
         peptideInfoBtn.setWidth(100, Unit.PIXELS);
         peptideInfoBtn.setHeight(100, Unit.PIXELS);
-        this.addButton(peptideInfoBtn, new VerticalLayout(), false);
+        this.addButton(peptideInfoBtn, new VerticalLayout(),null, false);
 
         ///init bubble chart container
         BubbleChartComponent bubblechartComponent = new BubbleChartComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight, null) {
@@ -198,6 +201,8 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
             };
             heatmapViewContainer.addComponent(heatmapComponent);
              heatmapViewContainer.setComponentAlignment(heatmapComponent,Alignment.MIDDLE_CENTER);
+             heatmapToolsContainer.addComponent(heatmapComponent.getHeatmapToolBtnContainer());
+             
 
         }
         heatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), Data_handler.getFullQuantDsMap());

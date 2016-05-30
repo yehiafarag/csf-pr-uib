@@ -1,20 +1,23 @@
 
 package no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows;
 
-import com.vaadin.ui.Button;
+import com.vaadin.server.ThemeResource;
 import java.util.Collection;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
+import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 
 /**
  *
  * @author Yehia Farag
  */
-public class StudiesInformationPopupBtn extends Button {
+public class StudiesInformationPopupBtn extends ImageContainerBtn {
 
     private final StudiesInformationWindow studiesInformationWindow;
 
     public StudiesInformationPopupBtn() {
-        this.setPrimaryStyleName("studyinfobtn");
+        this.updateIcon(new ThemeResource("img/file-text-o-1.png"));
+        this.setWidth(50,Unit.PIXELS);
+        this.setHeight(50,Unit.PIXELS);
         this.setDescription("Show dataset information");
         this.studiesInformationWindow = new StudiesInformationWindow();
     }
@@ -25,5 +28,11 @@ public class StudiesInformationPopupBtn extends Button {
     public void view(){
         studiesInformationWindow.view();
     }
+
+    @Override
+    public void onClick() {
+//       view();
+    }
+    
 
 }

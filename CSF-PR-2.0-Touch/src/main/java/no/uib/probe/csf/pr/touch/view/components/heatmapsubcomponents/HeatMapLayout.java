@@ -80,7 +80,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
     private Set<HeatMapHeaderCellInformationBean> rowheadersSet, colheadersSet;
     private final VerticalLayout heatMapLayoutWrapper;
-
+    private final  VerticalLayout controlBtnsContainer;
 
     private final ZoomControler zoomControler;
 
@@ -158,7 +158,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
         controlsLayout = new HorizontalLayout();
         controlsLayout.setVisible(true);
         controlsLayout.setStyleName("hmbottom");
-        controlsLayout.setHeight(30, Unit.PIXELS);
+        controlsLayout.setHeight(15, Unit.PIXELS);
         controlsLayout.setWidth(100, Unit.PERCENTAGE);
 
         controlsLayout.setSpacing(true);
@@ -170,22 +170,27 @@ public abstract class HeatMapLayout extends VerticalLayout {
         commentLabel.setContentMode(ContentMode.HTML);
         controlsLayout.addComponent(commentLabel);
         controlsLayout.setComponentAlignment(commentLabel, Alignment.TOP_LEFT);
-        controlsLayout.setExpandRatio(commentLabel, 0.6f);
-        HorizontalLayout controlBtnsContainer = new HorizontalLayout();
+//        controlsLayout.setExpandRatio(commentLabel, 0.6f);
+        
+        
+        controlBtnsContainer = new VerticalLayout();        
         controlBtnsContainer.setHeightUndefined();
         controlBtnsContainer.setWidthUndefined();
         controlBtnsContainer.setSpacing(true);
-        controlsLayout.addComponent(controlBtnsContainer);
-        controlsLayout.setComponentAlignment(controlBtnsContainer, Alignment.BOTTOM_RIGHT);
-        controlsLayout.setExpandRatio(commentLabel, 0.4f);
+//        controlsLayout.addComponent(controlBtnsContainer);
+//        controlsLayout.setComponentAlignment(controlBtnsContainer, Alignment.BOTTOM_RIGHT);
+//        controlsLayout.setExpandRatio(commentLabel, 0.4f);
 
         final StudiesInformationPopupBtn showStudiesBtn = new StudiesInformationPopupBtn();
         controlBtnsContainer.addComponent(showStudiesBtn);
         controlBtnsContainer.setComponentAlignment(showStudiesBtn, Alignment.TOP_LEFT);
-        showStudiesBtn.addClickListener((Button.ClickEvent event) -> {
-            showStudiesBtn.updateData(updatedDatasetMap.values());
-            showStudiesBtn.view();
+        showStudiesBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
+            @Override
+            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+                showStudiesBtn.updateData(updatedDatasetMap.values());
+            showStudiesBtn.view();
+            }
         });
         Button exportTableBtn = new Button("");
         exportTableBtn.setHeight(23, Unit.PIXELS);
@@ -264,6 +269,10 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
         zoomControler.addZoomableComponent(heatMapLayoutWrapper);
 
+    }
+
+    public VerticalLayout getControlBtnsContainer() {
+        return controlBtnsContainer;
     }
 
     private int zoomLevel = 10;
