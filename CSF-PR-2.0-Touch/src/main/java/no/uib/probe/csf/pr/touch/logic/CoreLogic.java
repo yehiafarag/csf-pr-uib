@@ -176,11 +176,26 @@ public class CoreLogic implements Serializable {
         Map<Integer, QuantDiseaseGroupsComparison> dsIndexToComparisonsMap = new HashMap<>();
         Set<Integer> dsIdsList = new HashSet<>();
 
+//        for (QuantDiseaseGroupsComparison comparison : selectedQuantComparisonsList) {
+//            if (comparison.getQuantComparisonProteinMap() == null || comparison.getQuantComparisonProteinMap().isEmpty()) {
+//                for (int datasetIndex : comparison.getDatasetMap().keySet()) {
+//                    dsIdsList.add(datasetIndex);
+//                    dsIndexToComparisonsMap.put(datasetIndex, comparison);
+//                }
+//
+//            }else{
+//                updatedSelectedComparisonList.add(comparison);
+//                
+//            }
+//
+//        }
         selectedQuantComparisonsList.stream().filter((comparison) -> (comparison.getQuantComparisonProteinMap() == null || comparison.getQuantComparisonProteinMap().isEmpty())).forEach((comparison) -> {
-            for (int datasetIndex : comparison.getDatasetIndexes()) {
+            comparison.getDatasetMap().keySet().stream().map((datasetIndex) -> {
                 dsIdsList.add(datasetIndex);
+                return datasetIndex;
+            }).forEach((datasetIndex) -> {
                 dsIndexToComparisonsMap.put(datasetIndex, comparison);
-            }
+            });
         });
         if (dsIdsList.isEmpty()) {
             return selectedQuantComparisonsList;
@@ -209,20 +224,35 @@ public class CoreLogic implements Serializable {
 
             Map<String, QuantComparisonProtein> comparProtList = new HashMap<>();
 
-            String pGrI = comparison.getOreginalComparisonHeader().split(" / ")[0];
-            String pGrII = comparison.getOreginalComparisonHeader().split(" / ")[1];
+            String compGrI = comparison.getOreginalComparisonHeader().split(" / ")[0];
+
             String diseaseCategory = comparison.getDiseaseCategory();
 
             for (QuantProtein quant : comparisonProtMap) {
                 boolean inverted = false;
+                String dsPGrI = comparison.getDatasetMap().get(quant.getDsKey()).getUpdatedDiseaseGroupI();
+                String pGrI;
+                pGrI = "";
+                String pGrII;
+                pGrII = "";
+                if (compGrI.equalsIgnoreCase(dsPGrI)) {
+                    pGrI = comparison.getDatasetMap().get(quant.getDsKey()).getPatientsSubGroup1();
+                    pGrII = comparison.getDatasetMap().get(quant.getDsKey()).getPatientsSubGroup2();
+                } else {
+                    pGrI = comparison.getDatasetMap().get(quant.getDsKey()).getPatientsSubGroup2();
+                    pGrII = comparison.getDatasetMap().get(quant.getDsKey()).getPatientsSubGroup1();
+
+                }
+
                 String protAcc = quant.getUniprotAccession();
+//                System.out.println("at ------------------------------------------------------ >> header "+comparison.getDatasetMap().get(quant.getDsKey()).getPatientsSubGroup1()+"  oreg "+comparison.getOreginalComparisonHeader());
                 if (protAcc.equalsIgnoreCase("") || protAcc.equalsIgnoreCase("Not Available") || protAcc.equalsIgnoreCase("Entry Deleted") || protAcc.equalsIgnoreCase("Entry Demerged") || protAcc.equalsIgnoreCase("NOT RETRIEVED") || protAcc.equalsIgnoreCase("DELETED") || protAcc.trim().equalsIgnoreCase("UNREVIEWED")) {
                     protAcc = quant.getPublicationAccNumber();
 
                 }
 
                 if (!comparProtList.containsKey(protAcc)) {
-                    QuantComparisonProtein comProt = new QuantComparisonProtein(comparison.getDatasetIndexes().length, comparison, quant.getProtKey());
+                    QuantComparisonProtein comProt = new QuantComparisonProtein(comparison.getDatasetMap().size(), comparison, quant.getProtKey());
                     comProt.setQuantPeptidesList(new HashSet<>());
                     comparProtList.put(protAcc, comProt);
                 }
@@ -235,17 +265,19 @@ public class CoreLogic implements Serializable {
 
                 }
 
-                    if ((pGrI.equalsIgnoreCase(quant.getPatientGroupI()) || pGrI.equalsIgnoreCase(quant.getPatientSubGroupI())) && (pGrII.equalsIgnoreCase(quant.getPatientGroupII()) || pGrII.equalsIgnoreCase(quant.getPatientSubGroupII()))) {
-                        if (quant.getStringFCValue().equalsIgnoreCase("Decreased") || quant.getStringFCValue().equalsIgnoreCase("Decrease")) {
-                            comProt.addDown((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
-                        } else if (quant.getStringFCValue().equalsIgnoreCase("Increased") || quant.getStringFCValue().equalsIgnoreCase("Increase")) {
-                            comProt.addUp((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
-                        } else if (quant.getStringFCValue().equalsIgnoreCase("Not Provided")) {
-                            comProt.addNoValueProvided((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
-                        } else if (quant.getStringFCValue().equalsIgnoreCase("No change")) {
-                            comProt.addStable((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
-                        }
-                    
+//                System.out.println("at PGI -" + pGrI + "-   -" + quant.getPatientSubGroupI() + "-");
+//                System.out.println("at PGII -" + pGrII + "-   -" + quant.getPatientSubGroupII() + "-");
+//                System.out.println("at not enverted "+((pGrI.equalsIgnoreCase(quant.getPatientGroupI()) || pGrI.equalsIgnoreCase(quant.getPatientSubGroupI())) && (pGrII.equalsIgnoreCase(quant.getPatientGroupII()) || pGrII.equalsIgnoreCase(quant.getPatientSubGroupII()))));
+                if ((pGrI.equalsIgnoreCase(quant.getPatientGroupI()) || pGrI.equalsIgnoreCase(quant.getPatientSubGroupI())) && (pGrII.equalsIgnoreCase(quant.getPatientGroupII()) || pGrII.equalsIgnoreCase(quant.getPatientSubGroupII()))) {
+                    if (quant.getStringFCValue().equalsIgnoreCase("Decreased") || quant.getStringFCValue().equalsIgnoreCase("Decrease")) {
+                        comProt.addDown((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
+                    } else if (quant.getStringFCValue().equalsIgnoreCase("Increased") || quant.getStringFCValue().equalsIgnoreCase("Increase")) {
+                        comProt.addUp((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
+                    } else if (quant.getStringFCValue().equalsIgnoreCase("Not Provided")) {
+                        comProt.addNoValueProvided((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
+                    } else if (quant.getStringFCValue().equalsIgnoreCase("No change")) {
+                        comProt.addStable((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
+                    }
 
                 } else {
                     inverted = true;
@@ -349,7 +381,7 @@ public class CoreLogic implements Serializable {
 
                     }
                     dsQuantProteinsMap.put("_-_" + quant.getDsKey() + "_-_" + comProt.getProteinAccssionNumber() + "_-_", quant);
-                    
+
                 } else {
 
                     /////for iso testing remove as soon as possible 
@@ -371,12 +403,12 @@ public class CoreLogic implements Serializable {
                 sortedcomparProtList.put((temp.getSignificantUp() + "_" + Key), temp);
             });
             comparison.setQuantComparisonProteinMap(sortedcomparProtList);
-        updatedSelectedComparisonList.add(comparison);
+            updatedSelectedComparisonList.add(comparison);
+
+        }
+
+        return updatedSelectedComparisonList;
 
     }
-
-    return updatedSelectedComparisonList ;
-
-}
 
 }

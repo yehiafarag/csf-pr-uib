@@ -6,6 +6,7 @@
 package no.uib.probe.csf.pr.touch.logic.beans;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  *
@@ -14,24 +15,18 @@ import java.io.Serializable;
  */
 public class QuantDSIndexes implements Serializable{
 
-    private int [] indexes;
     private int value;
+    private Map<Integer,QuantDatasetObject> datasetMap;
 
-    /**
-     *
-     * @return
-     */
-    public int[] getIndexes() {
-        return indexes;
+    public Map<Integer, QuantDatasetObject> getDatasetMap() {
+        return datasetMap;
     }
 
-    /**
-     *
-     * @param indexes
-     */
-    public void setIndexes(int[] indexes) {
-        this.indexes = indexes;
+    public void setDatasetMap(Map<Integer, QuantDatasetObject> datasetMap) {
+        this.datasetMap = datasetMap;
     }
+
+   
 
     /**
      *

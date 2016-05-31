@@ -29,6 +29,11 @@ public class QuantComparisonProtein implements Serializable {
     private final int uniqueId;
     private String sequence;
     private Set<QuantPeptide> quantPeptidesList;
+    
+    
+    
+    
+    
 
     public Set<QuantPeptide> getQuantPeptidesList() {
         return quantPeptidesList;

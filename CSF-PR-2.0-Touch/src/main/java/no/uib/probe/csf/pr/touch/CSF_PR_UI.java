@@ -96,7 +96,6 @@ public class CSF_PR_UI extends UI {
         zoomLevel = Math.max(zoomLevel, 4);
         zoomLevel = Math.min(zoomLevel, 20);
 
-        System.out.println("at zoom level " + zoomLevel);
         layout.removeStyleName(updatedZoomStyleName);
         updatedZoomStyleName = "zoom" + zoomLevel;
         layout.setStyleName(updatedZoomStyleName);

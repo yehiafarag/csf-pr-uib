@@ -10,6 +10,8 @@ import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
+import java.util.Map;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 
 /**
@@ -64,7 +66,7 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
      * @param heatmapCellWidth
      * @param publicationsNumber
      */
-    public HeatmapCell(double value, final String cellColor,String diseaseCategoryColor, int[] dsIndexes, final int rowLabelIndex, final int colLabelIndex, VerticalLayout tooltipLayout, int heatmapCellWidth, int publicationsNumber, String updatedComparisonTitile, String fullCompTitle,String oreginalComparisonTitle, String diseaseCategory) {
+    public HeatmapCell(double value, final String cellColor,String diseaseCategoryColor, Map<Integer,QuantDatasetObject> datasetMap, final int rowLabelIndex, final int colLabelIndex, VerticalLayout tooltipLayout, int heatmapCellWidth, int publicationsNumber, String updatedComparisonTitile, String fullCompTitle,String oreginalComparisonTitle, String diseaseCategory) {
 
         
         this.colLabelIndex = colLabelIndex;
@@ -81,7 +83,7 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
         comparison.setComparisonHeader(updatedComparisonTitile);
         comparison.setOreginalComparisonHeader(oreginalComparisonTitle);
         comparison.setDiseaseCategoryColor(diseaseCategoryColor);
-        comparison.setDatasetIndexes(dsIndexes);
+        comparison.setDatasetMap(datasetMap);
         this.valueLabel = new Label();
         valueLabel.setWidth(100, Unit.PERCENTAGE);
         valueLabel.setHeight(100, Unit.PERCENTAGE);

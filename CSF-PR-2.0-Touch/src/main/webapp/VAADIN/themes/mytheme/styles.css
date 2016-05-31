@@ -281,10 +281,30 @@
     }
 }
 @keyframes blink { 
-    50% { border-color: orange; } 
+    50% {        border-color: orange; 
+         box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+    -webkit-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+    -moz-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+   
+    /* CSS3 Transition */
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+ } 
 }
 @keyframes blinkII { 
-    50% { border-color: orange; } 
+    50% {        border-color: orange; 
+         box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+    -webkit-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+    -moz-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+   
+    /* CSS3 Transition */
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+ } 
 }
 
 /**
@@ -14092,5 +14112,12 @@ div.v-layout.v-horizontal.v-widget {
     background-repeat:no-repeat;
     background-position:center;
     cursor:pointer;    
+
+}
+
+.switchbtn:hover{
+    background-color:whitesmoke;
+    border:1px solid lightgray;
+    border-radius:4px;
 
 }

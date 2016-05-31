@@ -2,6 +2,7 @@ package no.uib.probe.csf.pr.touch.selectionmanager;
 
 import java.io.Serializable;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 
@@ -16,9 +17,14 @@ public class CSFPR_Central_Manager implements Serializable {
 
     private final LinkedHashMap<String, CSFListener> Listeners_Map;
     private Set<QuantDiseaseGroupsComparison> selectedComparisonsList;
+    private Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> equalComparisonMap;
 
     public CSFPR_Central_Manager() {
         Listeners_Map = new LinkedHashMap<>();
+    }
+
+    public void setEqualComparisonMap(Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> equalComparisonMap) {
+        this.equalComparisonMap = equalComparisonMap;
     }
 
     /**
@@ -29,6 +35,10 @@ public class CSFPR_Central_Manager implements Serializable {
     public void registerListener(CSFListener listener) {
         Listeners_Map.put(listener.getFilterId(), listener);
 
+    }
+
+    public Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> getEqualComparisonMap() {
+        return equalComparisonMap;
     }
 
     /**

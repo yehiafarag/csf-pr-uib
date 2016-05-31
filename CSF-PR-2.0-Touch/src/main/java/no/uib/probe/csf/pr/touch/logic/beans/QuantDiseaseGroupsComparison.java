@@ -13,13 +13,21 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
 
     private String comparisonHeader;
     private String oreginalComparisonHeader;
-    private int[] datasetIndexes;
+    private Map<Integer,QuantDatasetObject> datasetMap;
     private String diseaseCategoryColor;
     private boolean useCustomRowHeaderToSort;
+
+    public Map<Integer, QuantDatasetObject> getDatasetMap() {
+        return datasetMap;
+    }
+
+    public void setDatasetMap(Map<Integer, QuantDatasetObject> datasetMap) {
+        this.datasetMap = datasetMap;
+    }
     private boolean useCustomColumnHeaderToSort;
     private String comparisonFullName;
     private String diseaseCategory;
-    
+
     private Map<String, QuantComparisonProtein> quantComparisonProteinMap;
 
     public String getDiseaseCategory() {
@@ -40,13 +48,12 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
     public String getComparisonFullName() {
         return comparisonFullName;
     }
-
-    public void switchComparison() {
-        comparisonHeader = comparisonHeader.split(" / ")[1] + " / " + comparisonHeader.split(" / ")[0];
-        String d = " - " + oreginalComparisonHeader.split(" / ")[0].split("\n")[1].replace("_", " ").replace("Disease", "");
-        comparisonFullName = comparisonFullName.split(" / ")[1].replace(d, "") + " / " + comparisonFullName.split(" / ")[0] + d;
-
-    }
+//
+//    public void switchComparison() {
+//        comparisonHeader = comparisonHeader.split(" / ")[1] + " / " + comparisonHeader.split(" / ")[0];
+//        comparisonFullName = comparisonFullName.split(" / ")[1] + " / " + comparisonFullName.split(" / ")[0];
+//
+//    }
 
     public String getDiseaseCategoryColor() {
         return diseaseCategoryColor;
@@ -91,22 +98,7 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
 
     }
 
-    /**
-     *
-     * @return
-     */
-    public int[] getDatasetIndexes() {
-        return datasetIndexes;
-    }
-
-    /**
-     *
-     * @param datasetIndexes
-     */
-    public void setDatasetIndexes(int[] datasetIndexes) {
-        this.datasetIndexes = datasetIndexes;
-    }
-
+ 
     /**
      *
      * @return
@@ -114,6 +106,7 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
     public Map<String, QuantComparisonProtein> getQuantComparisonProteinMap() {
         return quantComparisonProteinMap;
     }
+
     /**
      *
      * @param quantComparisonProteinMap
@@ -121,6 +114,7 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
     public void setQuantComparisonProteinMap(Map<String, QuantComparisonProtein> quantComparisonProteinMap) {
         this.quantComparisonProteinMap = quantComparisonProteinMap;
     }
+
     @Override
     public int compareTo(QuantDiseaseGroupsComparison t) {
         return this.comparisonHeader.compareTo(t.comparisonHeader);
@@ -141,5 +135,14 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
     public void setUseCustomColumnHeaderToSort(boolean useCustomColumnHeaderToSort) {
         this.useCustomColumnHeaderToSort = useCustomColumnHeaderToSort;
     }
+
+//    private void swichProteinsTrend() {
+//
+//        for(QuantComparisonProtein prot :quantComparisonProteinMap.values()){
+//            prot.
+//        
+//        
+//        }
+//    }
 
 }
