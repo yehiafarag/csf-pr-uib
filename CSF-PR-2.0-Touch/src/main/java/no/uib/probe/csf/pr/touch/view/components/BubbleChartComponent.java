@@ -194,8 +194,6 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         controlBtnsContainer.setHeightUndefined();
         controlBtnsContainer.setWidthUndefined();
         controlBtnsContainer.setSpacing(true);
-//        groupSwichBtn = new GroupSwichBtn(Quant_Central_Manager, searchQuantificationProtList);
-//        controlBtnsContainer.addComponent(groupSwichBtn);
 
         GroupSwichBtn groupSwichBtn = new GroupSwichBtn() {
 
@@ -258,12 +256,6 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         controlBtnsContainer.addComponent(hideStableBtn);
         controlBtnsContainer.setComponentAlignment(hideStableBtn, Alignment.MIDDLE_CENTER);
         hideStableBtn.setDescription("Hide stable proteins");
-//        stableBtn.setStyleName("stablebtn");
-//        stableBtn.setHeight("24px");
-//        Label stableLabel = new Label("Equal");
-//        stableLabel.setWidth("44px");
-//        stableBtn.addComponent(stableLabel);
-
         ImageContainerBtn exportPdfBtn = new ImageContainerBtn() {
 
             @Override
@@ -330,63 +322,6 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         controlBtnsContainer.addComponent(selectMultiBtn);
         controlBtnsContainer.setComponentAlignment(selectMultiBtn, Alignment.MIDDLE_CENTER);
 
-//        VerticalLayout unselectAllBtn = new VerticalLayout();
-//
-//        unselectAllBtn.setStyleName(
-//                "unselectallbtn");
-//        controlBtnsContainer.addComponent(unselectAllBtn);
-//
-//        controlBtnsContainer.setComponentAlignment(unselectAllBtn, Alignment.TOP_LEFT);
-//
-//        unselectAllBtn.setDescription(
-//                "Clear selection");
-//        unselectAllBtn.addLayoutClickListener(
-//                new LayoutEvents.LayoutClickListener() {
-//
-//                    @Override
-//                    public void layoutClick(LayoutEvents.LayoutClickEvent event
-//                    ) {
-////                        Quant_Central_Manager.setBubbleChartQuantProteinsSelection(new HashSet<String>(), "");
-////                        resetChart();
-//
-//                    }
-//                }
-//        );
-//
-//        final VerticalLayout selectMultiBtn = new VerticalLayout();
-//
-//        selectMultiBtn.setStyleName(
-//                "selectmultiselectedbtn");
-//        controlBtnsContainer.addComponent(selectMultiBtn);
-//
-//        controlBtnsContainer.setComponentAlignment(selectMultiBtn, Alignment.TOP_LEFT);
-//
-//        selectMultiBtn.setDescription(
-//                "Multiple selection");
-//        activeMultiSelect = true;
-//
-//        selectMultiBtn.addLayoutClickListener(
-//                new LayoutEvents.LayoutClickListener() {
-//
-//                    @Override
-//                    public void layoutClick(LayoutEvents.LayoutClickEvent event
-//                    ) {
-//                        if (selectMultiBtn.getStyleName().equalsIgnoreCase("selectmultiselectedbtn")) {
-//                            selectMultiBtn.setStyleName("selectmultibtn");
-//                            activeMultiSelect = false;
-//
-//                        } else {
-//                            selectMultiBtn.setStyleName("selectmultiselectedbtn");
-//                            activeMultiSelect = true;
-//
-//                        }
-//                    }
-//                }
-//        );
-        //end of btns layout
-//        JFreeChart chart = generateBubbleChart(new HashSet<>());
-//        defaultImgURL = updateChartLayoutComponents(chart, width, height);
-//        chartImage.setSource(new ExternalResource(defaultImgURL));
     }
     
     
@@ -394,7 +329,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
     private JFreeChart generateBubbleChart(Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
 
         if (userCustomizedComparison != null) {
-            return null;//updateBubbleChartChartWithCustUserData(selectedComparisonList);
+            return null;
         }
         tooltipsProtNumberMap.clear();
         DefaultXYZDataset defaultxyzdataset = new DefaultXYZDataset();
@@ -423,7 +358,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
 
         final Map<Integer, Color[]> seriousColorMap = new HashMap<>();
 
-        Color[] dataColor;//= new Color[]{Color.WHITE, new Color(0, 153, 0), new Color(0, 229, 132), stableColor, new Color(247, 119, 119), new Color(204, 0, 0), Color.WHITE};
+        Color[] dataColor;
 
         dataColor = new Color[]{Color.WHITE, new Color(0, 153, 0), new Color(0, 229, 132), stableColor, new Color(247, 119, 119), new Color(204, 0, 0), Color.WHITE};
 
@@ -931,7 +866,8 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
 
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        
     }
 
     public abstract void updateIcon(String imageUrl);
