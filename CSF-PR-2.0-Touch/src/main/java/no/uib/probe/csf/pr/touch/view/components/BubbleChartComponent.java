@@ -2,13 +2,10 @@ package no.uib.probe.csf.pr.touch.view.components;
 
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.ExternalResource;
-import com.vaadin.server.FileDownloader;
-import com.vaadin.server.StreamResource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
@@ -21,6 +18,7 @@ import java.awt.Paint;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -33,6 +31,7 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFListener;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
+import no.uib.probe.csf.pr.touch.view.components.datasetfilters.GroupSwichBtn;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 import no.uib.probe.csf.pr.touch.view.core.InfoPopupBtn;
 import no.uib.probe.csf.pr.touch.view.core.SquaredDot;
@@ -194,23 +193,19 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
 //        groupSwichBtn = new GroupSwichBtn(Quant_Central_Manager, searchQuantificationProtList);
 //        controlBtnsContainer.addComponent(groupSwichBtn);
 
-        ImageContainerBtn groupSwichBtn = new ImageContainerBtn() {
+        GroupSwichBtn groupSwichBtn = new GroupSwichBtn(){
 
             @Override
-            public void onClick() {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            public Collection<QuantDiseaseGroupsComparison> getUpdatedComparsionList() {
+                return CSFPR_Central_Manager.getSelectedComparisonsList();
             }
-
-        };
-
-        groupSwichBtn.setHeight(45, Unit.PIXELS);
-        groupSwichBtn.setWidth(45, Unit.PIXELS);
-        groupSwichBtn.updateIcon(new ThemeResource("img/flip-v-updated.png"));
-        groupSwichBtn.setEnabled(true);
-        groupSwichBtn.addStyleName("smallimg");
+        
+        
+        } ;
+       
         controlBtnsContainer.addComponent(groupSwichBtn);
         controlBtnsContainer.setComponentAlignment(groupSwichBtn, Alignment.MIDDLE_CENTER);
-        groupSwichBtn.setDescription("Export chart image");
+        
 
         ThemeResource scatterplotApplied = new ThemeResource("img/scatter_plot_applied_updated.png");
         ThemeResource scatterplotUnapplied = new ThemeResource("img/scatter_plot_unapplied.png");

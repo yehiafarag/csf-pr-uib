@@ -7088,8 +7088,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .v-gridlayout-spacing-on {
-    padding-left: 12px;
-    padding-top: 12px;
+    padding-left: 2px;
+    padding-top: 2px;
 }
 
 .mytheme .v-menubar {
@@ -14081,4 +14081,16 @@ div.v-layout.v-horizontal.v-widget {
      margin-top:5px;
 
     background: rgb(128, 128, 128);    
+}
+.switchbtn{
+    background-image: url(img/exchange.png);
+    background-size:25px auto;
+    height:25px !important;
+    width:50px !important;    
+
+
+    background-repeat:no-repeat;
+    background-position:center;
+    cursor:pointer;    
+
 }

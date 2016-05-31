@@ -1,13 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.view.components.datasetfilters;
 
 import com.vaadin.data.Property;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.Page;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.shared.ui.window.WindowMode;
@@ -16,224 +12,235 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.themes.Reindeer;
+import com.vaadin.ui.themes.ValoTheme;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantProtein;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
+import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 //import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 //import probe.com.model.beans.quant.QuantProtein;
 //import probe.com.selectionmanager.QuantCentralManager;
 
 /**
  *
- * @author yfa041
+ * @author Yehia Farag
+ *
+ * This class allow the users to switch comparisons
  */
-public class GroupSwichBtn extends VerticalLayout implements LayoutEvents.LayoutClickListener, Property.ValueChangeListener {
+public abstract class GroupSwichBtn extends ImageContainerBtn implements Property.ValueChangeListener {
 
     private final Window popupWindow;
-    private final VerticalLayout popupBody;
+    private final VerticalLayout popupBodyLayout;
 //    private final OptionGroup comparisonList;
-    private Set<QuantDiseaseGroupsComparison> selectedComparisonList;
-    private final GridLayout table;
-    private final CSFPR_Central_Manager Quant_Central_Manager;
-    private final List<QuantProtein> searchQuantificationProtList;
-    private final Label headerI, headerII;
-    private final ArrayList<QuantDiseaseGroupsComparison> updatedComparisonList;
-    private final HorizontalLayout btnWrapper;
+    private final Set<QuantDiseaseGroupsComparison> selectedComparisonList;
+    private GridLayout table;
+    private CSFPR_Central_Manager Quant_Central_Manager;
+    private List<QuantProtein> searchQuantificationProtList;
+    private Label headerI, headerII;
+    private ArrayList<QuantDiseaseGroupsComparison> updatedComparisonList;
+    private HorizontalLayout btnWrapper;
+    private final Panel tablePanelWrapper;
+    private final HorizontalLayout topLayout;
 
-    public void setSelectedComparisonList(Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
-        this.selectedComparisonList = selectedComparisonList;
+    @Override
+    public void onClick() {
+        selectedComparisonList.clear();
+        selectedComparisonList.addAll(getUpdatedComparsionList());
+        if (selectedComparisonList.isEmpty()) {
+            return;
+        }
+        updateSelectionList();
+        popupWindow.setVisible(true);
+
     }
 
-    public GroupSwichBtn(final CSFPR_Central_Manager Quant_Central_Manager, List<QuantProtein> searchQuantificationProtList) {
-        this.Quant_Central_Manager = Quant_Central_Manager;
-        this.searchQuantificationProtList = searchQuantificationProtList;
-        updatedComparisonList = new ArrayList<QuantDiseaseGroupsComparison>();
-        this.setWidth("24px");
-        this.setHeight("24px");
+    public GroupSwichBtn() {
+        this.setHeight(45, Unit.PIXELS);
+        this.setWidth(45, Unit.PIXELS);
+        this.updateIcon(new ThemeResource("img/flip-v-updated.png"));
+        this.setEnabled(true);
+        this.setReadOnly(false);
+        this.addStyleName("smallimg");
         this.setDescription("Switch protein groups");
-        this.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
-            @Override
-            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-                updateSelectionList();
-                popupWindow.setVisible(true);
-            }
-        });
-        this.setStyleName("switchicon");
+        //init popup windoe 
+        int width = Math.min(Page.getCurrent().getBrowserWindowWidth(), 800);
+        int height = Math.min(Page.getCurrent().getBrowserWindowHeight(), 800);
 
-        popupBody = new VerticalLayout();
-
-        popupBody.setHeightUndefined();
-        popupBody.setStyleName(Reindeer.LAYOUT_WHITE);
-
+        this.popupBodyLayout = new VerticalLayout();
+        VerticalLayout popupBody = new VerticalLayout();
+        popupBody.setWidth(100, Unit.PERCENTAGE);
+        popupBody.setHeight(100, Unit.PERCENTAGE);
         popupWindow = new Window() {
-
             @Override
             public void close() {
-                
-                popupWindow.setVisible(false);
-                 Quant_Central_Manager.setDiseaseGroupsComparisonSelection(new LinkedHashSet<QuantDiseaseGroupsComparison>(updatedComparisonList));
-            }
 
+                popupWindow.setVisible(false);//                Quant_Central_Manager.setDiseaseGroupsComparisonSelection(new LinkedHashSet<QuantDiseaseGroupsComparison>(updatedComparisonList));
+            }
         };
-        popupWindow.setCaption("<font color='gray' style='font-weight: bold;!important'>&nbsp;&nbsp;Switch  disease groups</font>");
+        popupWindow.setWidth(width, Unit.PIXELS);
         popupWindow.setContent(popupBody);
-        popupWindow.setWindowMode(WindowMode.NORMAL);
+        popupBody.addComponent(popupBodyLayout);
+        popupBody.setComponentAlignment(popupBodyLayout, Alignment.MIDDLE_CENTER);
 
         popupWindow.setVisible(false);
         popupWindow.setResizable(false);
-        popupWindow.setStyleName(Reindeer.WINDOW_LIGHT);
-        popupWindow.setModal(true);
-        popupWindow.setDraggable(true);
-
-        UI.getCurrent().addWindow(popupWindow);
-//        popupWindow.center();
-//        popupWindow.setPositionX(popupWindow.getPositionX());
-        popupWindow.setPositionY(100);
-
-        popupWindow.setCaptionAsHtml(true);
         popupWindow.setClosable(true);
+        popupWindow.setModal(true);
+        popupWindow.setDraggable(false);
+        popupWindow.setCaption("<font color='gray' style='font-weight: bold;!important'>&nbsp;&nbsp;Switch  disease groups</font>");
+        popupWindow.setCaptionAsHtml(true);
+        popupBodyLayout.setStyleName("whitelayout");
+        popupBodyLayout.setHeightUndefined();
+        popupWindow.setWindowMode(WindowMode.NORMAL);
+        UI.getCurrent().addWindow(popupWindow);
+        popupWindow.center();
 
-        popupBody.setMargin(true);
-        popupBody.setSpacing(true);
+        //init top layout
+        topLayout = new HorizontalLayout();
+        topLayout.setWidth(width - 20, Unit.PIXELS);
+        topLayout.setHeight(30, Unit.PIXELS);
+        topLayout.setSpacing(true);
+        topLayout.setStyleName("lightgraylayout");
 
-        //init table
+        popupBodyLayout.addComponent(topLayout);
+        headerI = new Label("<center><b>Numerator</b></center>");
+//        headerI.setSizeFull();
+        headerI.setContentMode(ContentMode.HTML);
+        topLayout.addComponent(headerI);
+
+        VerticalLayout spacer = new VerticalLayout();
+        spacer.setSizeFull();
+        topLayout.addComponent(spacer);
+
+        headerII = new Label("<center><b>Denominator</b></center>");
+        headerII.setContentMode(ContentMode.HTML);
+//        headerII.setWidth(100, Unit.PERCENTAGE);
+        topLayout.addComponent(headerII);
+
+//        init table
         table = new GridLayout();
-        table.setStyleName("switchtable");
-        table.setWidth("100%");
+        table.setColumnExpandRatio(0, 1);
+        table.setColumnExpandRatio(1, 1);
+        table.setColumnExpandRatio(2, 1);
+        table.setWidth(width - 20, Unit.PIXELS);
         table.setSpacing(true);
         table.setColumns(3);
         table.setRows(1000);
         table.setHeightUndefined();
         table.setHideEmptyRowsAndColumns(true);
-        table.setMargin(new MarginInfo(false, false, true, false));
+//        table.addLayoutClickListener(GroupSwichBtn.this);
+        tablePanelWrapper = new Panel();
+        tablePanelWrapper.setSizeFull();
 
-        headerI = new Label("<center><b>Numerator</b></center>");
-        headerI.setWidth("100%");
-        headerI.setContentMode(ContentMode.HTML);
-        headerII = new Label("<center><b>Denominator</b></center>");
-        headerII.setContentMode(ContentMode.HTML);
-        headerII.setWidth("100%");
+        tablePanelWrapper.setContent(table);
+        tablePanelWrapper.addStyleName(ValoTheme.PANEL_BORDERLESS);
+        popupBodyLayout.addComponent(tablePanelWrapper);
 
-//        comparisonList = new OptionGroup(null);
-//
-//        comparisonList.setMultiSelect(true);
-//        comparisonList.setNullSelectionAllowed(true);
-//        comparisonList.setHtmlContentAllowed(true);
-//        comparisonList.setImmediate(true);
-//        comparisonList.setWidth("80%");
-//        comparisonList.setHeight("80%");
-        popupBody.addComponent(table);
+        //init bottom layout
+        btnWrapper = new HorizontalLayout();
+        btnWrapper.setWidth(100, Unit.PERCENTAGE);
+        btnWrapper.setHeight(30, Unit.PIXELS);
+        btnWrapper.setMargin(true);
+
+        popupBodyLayout.addComponent(btnWrapper);
+        popupBodyLayout.setComponentAlignment(btnWrapper, Alignment.BOTTOM_CENTER);
 
         Button applyFilters = new Button("Apply");
         applyFilters.setDescription("Apply the selected filters");
-        applyFilters.setPrimaryStyleName("resetbtn");
-        applyFilters.setWidth("76px");
-        applyFilters.setHeight("24px");
+        applyFilters.setStyleName(ValoTheme.BUTTON_TINY);
+        applyFilters.setWidth(76, Unit.PIXELS);
+        applyFilters.setHeight(25, Unit.PIXELS);
 
-//        popupBody.addComponent(applyFilters);
-//        popupBody.setComponentAlignment(applyFilters, Alignment.TOP_RIGHT);
-        applyFilters.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                popupWindow.close();
-            }
+        applyFilters.addClickListener((Button.ClickEvent event) -> {
+            popupWindow.close();
         });
-        btnWrapper = new HorizontalLayout();
-        btnWrapper.setWidth("100%");
-        btnWrapper.setHeight("50px");
         btnWrapper.addComponent(applyFilters);
-        btnWrapper.setComponentAlignment(applyFilters, Alignment.BOTTOM_CENTER);
+        btnWrapper.setComponentAlignment(applyFilters, Alignment.TOP_RIGHT);
 
-        table.addLayoutClickListener(GroupSwichBtn.this);
+        //init data structure
+        updatedComparisonList = new ArrayList<>();
+        this.selectedComparisonList = new LinkedHashSet<>();
 
     }
 
-    @Override
-    public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+    public void layoutdClick(LayoutEvents.LayoutClickEvent event) {
         if (event.getClickedComponent() instanceof VerticalLayout) {
             VerticalLayout switchBtn = (VerticalLayout) event.getClickedComponent();
-            int row = (Integer) switchBtn.getData() ;
-            Label labelI = (Label) table.getComponent(0, row+1);
-            Label labelII = (Label) table.getComponent(2, row+1);
+            int row = (Integer) switchBtn.getData();
+            Label labelI = (Label) table.getComponent(0, row + 1);
+            Label labelII = (Label) table.getComponent(2, row + 1);
             table.removeComponent(labelI);
             table.removeComponent(labelII);
-            table.addComponent(labelII, 0, row+1);
+            table.addComponent(labelII, 0, row + 1);
             table.setComponentAlignment(labelII, Alignment.MIDDLE_CENTER);
-            table.addComponent(labelI, 2, row+1);
+            table.addComponent(labelI, 2, row + 1);
             table.setComponentAlignment(labelI, Alignment.MIDDLE_CENTER);
-            QuantDiseaseGroupsComparison comp=  updatedComparisonList.get(row);
+            QuantDiseaseGroupsComparison comp = updatedComparisonList.get(row);
             comp.switchComparison();
             updatedComparisonList.set(row, comp);
         }
 
     }
 
+    public abstract Collection<QuantDiseaseGroupsComparison> getUpdatedComparsionList();
+
     private void updateSelectionList() {
         table.removeAllComponents();
         updatedComparisonList.clear();
-        selectedComparisonList = this.Quant_Central_Manager.getUpdatedSelectedDiseaseGroupsComparisonListProteins(searchQuantificationProtList);//
-        int row = 1;
-        if (selectedComparisonList != null) {
-            table.addComponent(headerI, 0, 0);
-            table.setComponentAlignment(headerI, Alignment.MIDDLE_CENTER);
-            table.addComponent(headerII, 2, 0);
-            table.setComponentAlignment(headerII, Alignment.MIDDLE_CENTER);
-            setWindowHight(selectedComparisonList.size());
-            for (QuantDiseaseGroupsComparison comparison : selectedComparisonList) {
-                updatedComparisonList.add(comparison);
-               
-                String header = comparison.getComparisonHeader();
-                String updatedHeaderI = header.split(" / ")[0].split("\n")[0];
-                String updatedHeaderII = header.split(" / ")[1].split("\n")[0];
-                String diseaseColor = this.Quant_Central_Manager.getDiseaseHashedColor(header.split(" / ")[1].split("\n")[1]);
-                Label labelI = new Label("<center><font color='" + diseaseColor + "' style='font-weight: bold;!important'>" + updatedHeaderI + "</font></center>");
-                Label labelII = new Label("<center><font color='" + diseaseColor + "' style='font-weight: bold;!important'>" + updatedHeaderII + "</font></center>");
-                labelI.setContentMode(ContentMode.HTML);
-                labelII.setContentMode(ContentMode.HTML);
-                labelI.setWidth("100%");
-                labelII.setWidth("100%");
+        int row = 0;
+        setWindowHight(selectedComparisonList.size());
+        for (QuantDiseaseGroupsComparison comparison : selectedComparisonList) {
+            updatedComparisonList.add(comparison);
 
-                VerticalLayout switchBtn = swichIconGenerator();
-                table.addComponent(labelI, 0, row);
-                table.setComponentAlignment(labelI, Alignment.MIDDLE_CENTER);
-                table.addComponent(switchBtn, 1, row);
-                switchBtn.setData(row - 1);
-                table.setComponentAlignment(switchBtn, Alignment.MIDDLE_CENTER);
-                table.addComponent(labelII, 2, row++);
-                table.setComponentAlignment(labelII, Alignment.MIDDLE_CENTER);
+            String header = comparison.getComparisonHeader();
+            System.out.println("at header is " + comparison.getComparisonFullName());
+            String updatedHeaderI = header.split(" / ")[0].split("__")[0];
+            String updatedHeaderII = header.split(" / ")[1].split("__")[0];
+            String diseaseColor = comparison.getDiseaseCategoryColor();//this.Quant_Central_Manager.getDiseaseHashedColor(header.split(" / ")[1].split("\n")[1]);
+            Label labelI = new Label("<center><b  style='font-weight: bold;!important; color:" + diseaseColor + "'>" + updatedHeaderI + "</b></center>");
+            labelI.setDescription(comparison.getComparisonFullName().split(" / ")[0].split("__")[0]);
+            Label labelII = new Label("<center><b  style='font-weight: bold;!important; color:" + diseaseColor + "'>" + updatedHeaderII + "</b></center>");
+            labelII.setDescription(comparison.getComparisonFullName().split(" / ")[1].split("__")[0]);
+            labelI.setContentMode(ContentMode.HTML);
+            labelII.setContentMode(ContentMode.HTML);
+//            labelI.setWidth("100%");
+//            labelII.setWidth("100%");
+//
+            VerticalLayout switchBtn = swichIconGenerator();
+            table.addComponent(labelI, 0, row);
+//            table.setComponentAlignment(labelI, Alignment.MIDDLE_CENTER);
+            table.addComponent(switchBtn, 1, row);
+            switchBtn.setData(row);
+            table.setComponentAlignment(switchBtn, Alignment.MIDDLE_CENTER);
+            table.addComponent(labelII, 2, row++);
+//            table.setComponentAlignment(labelII, Alignment.MIDDLE_CENTER);
 
-            }
-            table.addComponent(btnWrapper, 2, row);
-            table.setComponentAlignment(btnWrapper, Alignment.MIDDLE_CENTER);
         }
-//        comparisonList.addValueChangeListener(GroupSwichBtn.this);
+        topLayout.setExpandRatio(headerI, table.getColumnExpandRatio(0));
+        topLayout.setExpandRatio(topLayout.getComponent(1), table.getColumnExpandRatio(1));
+        topLayout.setExpandRatio(headerII, table.getColumnExpandRatio(2));
+
     }
 
     private void setWindowHight(int itemsNumber) {
-        int itemH = (25 * itemsNumber) + 200;
-        int itemW = 500;
-        int browserW = Page.getCurrent().getBrowserWindowWidth();
-        if (Page.getCurrent().getBrowserWindowHeight() * 90 / 100 > itemH) {
-            popupWindow.setHeightUndefined();
-        } else {
-            int height = Math.min(Page.getCurrent().getBrowserWindowHeight() * 90 / 100, itemH);
-            popupWindow.setHeight((height) + "px");
-        }
-        int width = Math.min(browserW * 90 / 100, itemW);
-        popupBody.setWidth((width) + "px");
-        popupWindow.setWidth((width + 20) + "px");
-
-        int x = (browserW / 2) - (width / 2);
-        popupWindow.setPositionX(x);
+        int itemH = (36 * itemsNumber);
+//        if (Page.getCurrent().getBrowserWindowHeight() * 90 / 100 > itemH) {
+//            popupWindow.setHeightUndefined();
+//        } else {
+        int height = Math.min(Page.getCurrent().getBrowserWindowHeight() - 140, itemH);
+        tablePanelWrapper.setHeight(height + "px");
+        popupWindow.setHeight(height + 140, Unit.PIXELS);
+//        }
 
     }
 
@@ -259,8 +266,8 @@ public class GroupSwichBtn extends VerticalLayout implements LayoutEvents.Layout
 
         VerticalLayout switchBtn = new VerticalLayout();
         switchBtn.setStyleName("switchbtn");
-        switchBtn.setWidth("50px");
-        switchBtn.setHeight("25px");
+        switchBtn.setWidth(50, Unit.PIXELS);
+        switchBtn.setHeight(25, Unit.PIXELS);
         return switchBtn;
 
     }
