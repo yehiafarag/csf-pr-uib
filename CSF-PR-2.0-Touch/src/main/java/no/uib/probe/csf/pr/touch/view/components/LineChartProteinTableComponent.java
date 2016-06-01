@@ -124,12 +124,7 @@ public class LineChartProteinTableComponent extends VerticalLayout implements CS
     }
 
     private Table initProteinTable() {
-        Table table = new Table(){
-        
-        public String getColumnHeader(Object property) {
-return "<a title='Tooltip text'" + propertyId + "</a>".replace("'","\"");
-}
-        };
+        Table table = new Table();
         table.setWidth(100, Unit.PERCENTAGE);
         table.setHeight(100, Unit.PERCENTAGE);
         table.setSelectable(true);
