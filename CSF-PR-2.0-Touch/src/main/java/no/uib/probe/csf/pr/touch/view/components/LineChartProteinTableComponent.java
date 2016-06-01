@@ -13,6 +13,8 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFListener;
@@ -35,12 +37,12 @@ public class LineChartProteinTableComponent extends VerticalLayout implements CS
     private final VerticalLayout controlBtnsContainer;
     private int width, height;
     private final Table quantProteinTable;
+    private final Map<Object, Object[]> tableItemsMap;
 
     public LineChartProteinTableComponent(CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height, QuantDiseaseGroupsComparison userCustomizedComparison) {
 
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
-
-        System.out.println("at heihgt is " + height);
+        this.tableItemsMap = new LinkedHashMap<>();
 
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeight(height, Unit.PIXELS);
@@ -122,11 +124,17 @@ public class LineChartProteinTableComponent extends VerticalLayout implements CS
     }
 
     private Table initProteinTable() {
-        Table table = new Table();
+        Table table = new Table(){
+        
+        public String getColumnHeader(Object property) {
+return "<a title='Tooltip text'" + propertyId + "</a>".replace("'","\"");
+}
+        };
         table.setWidth(100, Unit.PERCENTAGE);
         table.setHeight(100, Unit.PERCENTAGE);
         table.setSelectable(true);
         table.setColumnReorderingAllowed(false);
+
         table.setColumnCollapsingAllowed(false);
         table.setImmediate(true); // react at once when something is selected
         table.setMultiSelect(false);
@@ -141,10 +149,10 @@ public class LineChartProteinTableComponent extends VerticalLayout implements CS
         selectedItemIds.add(4); // We'll start off with #4 selected, just to show that it works
 
         /* This checkbox reflects the contents of the selectedItemIds set */
-        table.addGeneratedColumn("", (Table source, final Object itemId, Object columnId) -> {
+        table.addGeneratedColumn("selected", (Table source, final Object itemId, Object columnId) -> {
             boolean selected = selectedItemIds.contains(itemId);
             /* When the chekboc value changes, add/remove the itemId from the selectedItemIds set */
-            final CheckBox cb = new CheckBox("selected", selected);
+            final CheckBox cb = new CheckBox("", selected);
             cb.addValueChangeListener((Property.ValueChangeEvent event) -> {
                 if (selectedItemIds.contains(itemId)) {
                     selectedItemIds.remove(itemId);
@@ -158,15 +166,42 @@ public class LineChartProteinTableComponent extends VerticalLayout implements CS
         Link link = new Link("google", new ExternalResource("www.google.com"));
         link.setTargetName("_blank");
         link.setPrimaryStyleName("tablelink");
-        table.addItem(new Object[]{1, link, "Yehia Farag", new ProteinTrendLayout()}, 4);
+        
+          Link link2 = new Link("google", new ExternalResource("www.google.com"));
+        link2.setTargetName("_blank");
+        link2.setPrimaryStyleName("tablelink"); 
+        
+        tableItemsMap.put(4, new Object[]{1, link, "Yehia Farag", new ProteinTrendLayout()});
+        tableItemsMap.put(5, new Object[]{2, link2, "Yehia Farag", new ProteinTrendLayout()});
+        table.addItem(tableItemsMap.get(4), 4);
+        table.addItem(tableItemsMap.get(5), 5);
 
-        table.setColumnIcon("selected", VaadinIcons.CHECK_SQUARE);
+        table.setColumnIcon("selected", VaadinIcons.CHECK_SQUARE_O);
+        table.setColumnHeader("selected", "");
+        table.setColumnAlignment("selected", Table.Align.CENTER);
         table.setColumnWidth("selected", 60);
         table.setColumnWidth("Index", 47);
         table.setColumnWidth("Accession", 87);
         table.setColumnWidth("Name", 187);
-        
 
+        table.addHeaderClickListener((Table.HeaderClickEvent event) -> {
+            table.removeAllItems();
+            if (!selectedItemIds.isEmpty()) {
+                for (Object itemId : selectedItemIds) {
+                    table.addItem(tableItemsMap.get(itemId), itemId);
+                }
+            } else {
+                for (Object itemId : tableItemsMap.keySet()) {
+                    table.addItem(tableItemsMap.get(itemId), itemId);
+                }
+            }
+
+        });
+
+        table.addColumnResizeListener((Table.ColumnResizeEvent event) -> {
+            table.setColumnWidth(event.getPropertyId(), event.getPreviousWidth());
+        });
+       
         return table;
 
     }
