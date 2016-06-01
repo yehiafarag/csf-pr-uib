@@ -398,11 +398,25 @@ public class CoreLogic implements Serializable {
 //            //init pep for quantProt
 //            //sort the protiens map
             Map<String, QuantComparisonProtein> sortedcomparProtList = new TreeMap<>(Collections.reverseOrder());
+            Map<Integer,Set<QuantComparisonProtein>>proteinsByTrendMap= new HashMap<>();
+            proteinsByTrendMap.put(0, new HashSet<>());
+            proteinsByTrendMap.put(1, new HashSet<>());
+            proteinsByTrendMap.put(2, new HashSet<>());
+            proteinsByTrendMap.put(2, new HashSet<>());
+            proteinsByTrendMap.put(3, new HashSet<>());
+            proteinsByTrendMap.put(4, new HashSet<>());
+            proteinsByTrendMap.put(5, new HashSet<>());
             comparProtList.keySet().stream().forEach((Key) -> {
                 QuantComparisonProtein temp = comparProtList.get(Key);
                 sortedcomparProtList.put((temp.getSignificantUp() + "_" + Key), temp);
+                temp.finalizeQuantData();
+                Set<QuantComparisonProtein>set = proteinsByTrendMap.get(temp.getSignificantTrindCategory());
+               
+                set.add(temp);
+                proteinsByTrendMap.put(temp.getSignificantTrindCategory(), set);
             });
             comparison.setQuantComparisonProteinMap(sortedcomparProtList);
+            comparison.setProteinsByTrendMap(proteinsByTrendMap); 
             updatedSelectedComparisonList.add(comparison);
 
         }

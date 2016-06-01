@@ -341,6 +341,19 @@
  * @group util
  */
 
+/* This font-face declaration must be outside your theme mixin. */
+@font-face {
+    font-family: 'Vaadin-Icons';
+    src: url('fonts/Vaadin-Icons.eot');
+    src: url('fonts/Vaadin-Icons.eot?#iefix') format('embedded-opentype'),
+         url('fonts/Vaadin-Icons.woff') format('woff'),
+         url('fonts/Vaadin-Icons.ttf') format('truetype'),
+         url('fonts/Vaadin-Icons.svg#icomoon') format('svg');
+}
+.Vaadin-Icons {
+    font-family: 'Vaadin-Icons';
+}
+
 @font-face {
     font-family: ThemeIcons;
     font-weight: normal;
@@ -13958,9 +13971,8 @@ div.v-layout.v-horizontal.v-widget {
 .decreased100{
     background-color: rgb(0, 153, 0) !important;
 }
-.nodata{
-    background-color: #b5babb !important;
-}
+
+
 .paddingimg img{
     padding: 5px;
 
@@ -14102,6 +14114,13 @@ div.v-layout.v-horizontal.v-widget {
 
     background: rgb(128, 128, 128);    
 }
+
+
+.legendempty div{
+     margin-top:5px;
+    background:#cccccc;
+
+}
 .switchbtn{
     background-image: url(img/exchange.png);
     background-size:25px auto;
@@ -14120,4 +14139,42 @@ div.v-layout.v-horizontal.v-widget {
     border:1px solid lightgray;
     border-radius:4px;
 
+}
+.unselectbubble{
+    
+    opacity:0.1 !important;
+     box-shadow:50px 0px 0px rgba(0, 0, 0, 0.2), inset 0px 10px 10px rgba(0, 0, 0, 0.9) !important;
+    -webkit-box-shadow:0px 0px 0px rgba(0, 0, 0, 0.2), inset 0px 10px 10px rgba(0, 0, 0, 0.9) !important;
+    -moz-box-shadow:50px 0px 0px rgba(0, 0, 0, 0.2), inset 0px 10px 10px rgba(0, 0, 0, 0.9) !important;
+   
+}
+.unselectbubble:hover{
+    
+    opacity:1 !important;
+   
+}
+
+.tablesearchingbtn{
+    height: 24px;
+    background-color:  whitesmoke;
+    background-image: url(img/icon_find.png);
+    background-repeat: no-repeat;
+    background-position:center;
+    border: 1px solid  rgb(169, 169, 169) ;
+    border-radius: 3px;
+    cursor:pointer;
+}
+.tablesearchingbtn:hover{
+    background-color: lightgray;
+
+}
+.tablelink a{
+    color:rgb(70, 70, 70) !important;
+    text-decoration:none !important;
+    
+}
+.v-table-row.v-selected .tablelink a{
+    color:rgb(236, 242, 248)!important;
+    text-decoration:none !important;
+    
 }

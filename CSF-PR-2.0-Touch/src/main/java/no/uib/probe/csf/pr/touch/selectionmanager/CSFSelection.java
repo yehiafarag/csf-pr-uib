@@ -2,6 +2,7 @@ package no.uib.probe.csf.pr.touch.selectionmanager;
 
 import java.io.Serializable;
 import java.util.Set;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 
 /**
@@ -14,6 +15,11 @@ public class CSFSelection implements Serializable {
     private final String filter_Id;
     private final Set<QuantDiseaseGroupsComparison> selectedComparisonsList;
     private final String type;
+    private final Set<QuantComparisonProtein> selectedProteinsList;
+
+    public Set<QuantComparisonProtein> getSelectedProteinsList() {
+        return selectedProteinsList;
+    }
 
     /**
      *
@@ -21,13 +27,15 @@ public class CSFSelection implements Serializable {
      * @param selectedDsList
      * @param filter_Id
      */
-    public CSFSelection(String type, String filter_Id, Set<QuantDiseaseGroupsComparison> selectedComparisonsList) {
+    public CSFSelection(String type, String filter_Id, Set<QuantDiseaseGroupsComparison> selectedComparisonsList,Set<QuantComparisonProtein> selectedProteinsList) {
         this.type = type;
         this.filter_Id = filter_Id;
         this.selectedComparisonsList = selectedComparisonsList;
+        this.selectedProteinsList=selectedProteinsList;
 
     }
-
+   
+    
     /**
      * get the filter id
      *

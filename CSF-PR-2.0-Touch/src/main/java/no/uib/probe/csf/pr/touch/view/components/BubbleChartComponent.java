@@ -1,12 +1,12 @@
 package no.uib.probe.csf.pr.touch.view.components;
 
-import com.vaadin.data.Property;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
@@ -19,10 +19,9 @@ import java.awt.Paint;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +37,7 @@ import no.uib.probe.csf.pr.touch.selectionmanager.CSFSelection;
 import no.uib.probe.csf.pr.touch.view.components.datasetfilters.GroupSwichBtn;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 import no.uib.probe.csf.pr.touch.view.core.InfoPopupBtn;
-import no.uib.probe.csf.pr.touch.view.core.SquaredDot;
+import no.uib.probe.csf.pr.touch.view.core.BubbleComponent;
 import no.uib.probe.csf.pr.touch.view.core.TrendLegend;
 import org.apache.commons.codec.binary.Base64;
 import org.jfree.chart.ChartRenderingInfo;
@@ -85,7 +84,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
     private Set<QuantDiseaseGroupsComparison> selectedComparisonList;
     private final QuantDiseaseGroupsComparison userCustomizedComparison;
     private final int userDataCounter;
-    private final Set<SquaredDot> lastselectedComponents;
+    private final Set<BubbleComponent> lastselectedComponents;
     private final String[] tooltipLabels;
     private final String[] trendStyles;
 
@@ -128,7 +127,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         titleLayoutWrapper.setHeight(25, Unit.PIXELS);
         titleLayoutWrapper.setWidthUndefined();
         titleLayoutWrapper.setSpacing(true);
-        titleLayoutWrapper.setMargin(new MarginInfo(false, false, false, true));
+        titleLayoutWrapper.setMargin(false);
         topLayout.addComponent(titleLayoutWrapper);
 
         Label overviewLabel = new Label("Overview");
@@ -205,7 +204,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
             @Override
             public void updateComparisons(LinkedHashSet<QuantDiseaseGroupsComparison> updatedComparisonList) {
 
-                CSFSelection selection = new CSFSelection("comparisons_selection_update", getFilterId(), updatedComparisonList);
+                CSFSelection selection = new CSFSelection("comparisons_selection_update", getFilterId(), updatedComparisonList, null);
                 CSFPR_Central_Manager.selectionAction(selection);
 
             }
@@ -229,21 +228,18 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
                 if (this.getDescription().equalsIgnoreCase("Hide stable proteins")) {
                     this.updateIcon(scatterplotUnapplied);
                     significantOnly = true;
-                    
-                   
-                    
+
 //                    Quant_Central_Manager.updateSignificantOnlySelection(true);
-                    
                     this.setDescription("Show stable proteins");
                 } else {
                     this.updateIcon(scatterplotApplied);
-                    
+
                     significantOnly = false;
 //                    Quant_Central_Manager.updateSignificantOnlySelection(false);
                     this.setDescription("Hide stable proteins");
 
                 }
-                updateChart(); 
+                updateChart();
 //reset prot selection
 
             }
@@ -282,8 +278,8 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
 
             @Override
             public void onClick() {
-//                 Quant_Central_Manager.setBubbleChartQuantProteinsSelection(new HashSet<String>(), "");
-//                        resetChart();
+                lastselectedComponents.clear();
+                rePaintChart();
             }
 
         };
@@ -323,8 +319,6 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         controlBtnsContainer.setComponentAlignment(selectMultiBtn, Alignment.MIDDLE_CENTER);
 
     }
-    
-    
 
     private JFreeChart generateBubbleChart(Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
 
@@ -677,9 +671,12 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
 
     @Override
     public void selectionChanged(String type) {
+       
         if (type.equalsIgnoreCase("comparisons_selection")) {
+            lastselectedComponents.clear();
             this.selectedComparisonList = CSFPR_Central_Manager.getSelectedComparisonsList();
             if (selectedComparisonList.isEmpty()) {
+
                 chartComponentLayout.removeAllComponents();
                 chartImage.setSource(null);
                 updateIcon(null);
@@ -687,32 +684,32 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
 
             }
             updateChart();
-          
+
         }
     }
-    
-    private void updateChart(){
-      JFreeChart chart = generateBubbleChart(selectedComparisonList);
-            updateChartLayoutComponents(chart, width, height);
-            DefaultXYZDataset emptyxyzdataset = new DefaultXYZDataset();
-            DefaultXYZDataset dataset = ((DefaultXYZDataset) chart.getXYPlot().getDataset());
-            for (int i = 0; i < dataset.getSeriesCount(); i++) {
-                emptyxyzdataset.addSeries(dataset.getSeriesKey(i), new double[][]{{}, {}, {}});
-            }
-            chart.getXYPlot().setNoDataMessagePaint(Color.WHITE);
-            chart.getXYPlot().setDataset(emptyxyzdataset);
-            defaultImgURL = getChartImage(chart, width, height);
 
-            chartImage.setSource(new ExternalResource(defaultImgURL));
-            XYPlot xyplot = chart.getXYPlot();
-            xyplot.getDomainAxis().setVisible(false);
-            xyplot.getRangeAxis().setVisible(false);
-            chart.setBorderVisible(true);
-            chart.setBorderPaint(Color.LIGHT_GRAY);
-            chart.getXYPlot().setDataset(dataset);
-            thumbImgUrl = getChartImage(chart, 200, 200);
-            updateIcon(thumbImgUrl);
-    
+    private void updateChart() {
+        JFreeChart chart = generateBubbleChart(selectedComparisonList);
+        updateChartLayoutComponents(chart, width, height);
+        DefaultXYZDataset emptyxyzdataset = new DefaultXYZDataset();
+        DefaultXYZDataset dataset = ((DefaultXYZDataset) chart.getXYPlot().getDataset());
+        for (int i = 0; i < dataset.getSeriesCount(); i++) {
+            emptyxyzdataset.addSeries(dataset.getSeriesKey(i), new double[][]{{}, {}, {}});
+        }
+        chart.getXYPlot().setNoDataMessagePaint(Color.WHITE);
+        chart.getXYPlot().setDataset(emptyxyzdataset);
+        defaultImgURL = getChartImage(chart, width, height);
+
+        chartImage.setSource(new ExternalResource(defaultImgURL));
+        XYPlot xyplot = chart.getXYPlot();
+        xyplot.getDomainAxis().setVisible(false);
+        xyplot.getRangeAxis().setVisible(false);
+        chart.setBorderVisible(true);
+        chart.setBorderPaint(Color.LIGHT_GRAY);
+        chart.getXYPlot().setDataset(dataset);
+        thumbImgUrl = getChartImage(chart, 200, 200);
+        updateIcon(thumbImgUrl);
+
     }
 
     private String getChartImage(JFreeChart chart, int width, int height) {
@@ -743,14 +740,14 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
             Logger.getLogger(BubbleChartComponent.class.getName()).log(Level.SEVERE, null, ex);
         }
         isNewImge = true;
-        Set<SquaredDot> set = new TreeSet<>();
-        Set<SquaredDot> updatedselectedComponents = new HashSet<>();
+        Set<BubbleComponent> set = new TreeSet<>();
+        Set<BubbleComponent> updatedselectedComponents = new HashSet<>();
         chartComponentLayout.removeAllComponents();
         for (int i = 0; i < chartRenderingInfo.getEntityCollection().getEntityCount(); i++) {
             ChartEntity entity = chartRenderingInfo.getEntityCollection().getEntity(i);
             if (entity instanceof XYItemEntity) {
                 XYItemEntity catEnt = (XYItemEntity) entity;
-                SquaredDot square = new SquaredDot("cycle");
+                BubbleComponent square = new BubbleComponent("cycle");
                 square.setStyleName("bubblechart");
                 String[] coords = catEnt.getShapeCoords().split(",");
                 int smallX = Integer.MAX_VALUE;
@@ -805,8 +802,8 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
                 } else {
                     finalHeight = sqheight;
                 }
-                square.setWidth((finalWidth + 2) + "px");
-                square.setHeight((finalHeight + 2) + "px");
+                square.setWidth((finalWidth + 2), Unit.PIXELS);
+                square.setHeight((finalHeight + 2), Unit.PIXELS);
                 if (selectedComparisonList == null || selectedComparisonList.isEmpty()) {
                     return;
                 }
@@ -830,18 +827,18 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
                 square.setParam("categIndex", categIndex);
 
                 if (!lastselectedComponents.isEmpty()) {
-                    square.unselect();
-                    for (SquaredDot lastselectedComponent : lastselectedComponents) {
+                    square.select(false);
+                    for (BubbleComponent lastselectedComponent : lastselectedComponents) {
                         if (lastselectedComponent != null && categIndex == (Double) lastselectedComponent.getParam("categIndex") && seriesIndex == (Integer) lastselectedComponent.getParam("seriesIndex")) {
-                            square.select();
+                            square.select(true);
                             updatedselectedComponents.add(square);
                             break;
                         }
                     }
 
                 }
-
                 square.setParam("position", "left: " + (smallX - 1) + "px; top: " + (smallY - 1) + "px;");
+                square.setParam("proteinList", comparison.getProteinsByTrendMap().get((itemNumber-1)));
                 set.add(square);
             }
 
@@ -866,10 +863,70 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
 
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-        
-        
+        BubbleComponent selectedComponent = (BubbleComponent) event.getClickedComponent();
+        updateSelectionList(selectedComponent);
+        updateSelectionManager();
+
     }
 
     public abstract void updateIcon(String imageUrl);
 
+    private void updateSelectionList(BubbleComponent selectedComponent) {
+        if (selectedComponent == null) {
+            lastselectedComponents.clear();
+        } else if (this.activeMultiSelect) {
+            if (lastselectedComponents.contains(selectedComponent)) {
+                lastselectedComponents.remove(selectedComponent);
+            } else {
+                lastselectedComponents.add(selectedComponent);
+            }
+
+        } else {
+            if (lastselectedComponents.contains(selectedComponent)) {
+                lastselectedComponents.clear();
+            } else {
+                lastselectedComponents.clear();
+                lastselectedComponents.add(selectedComponent);
+            }
+        }
+        rePaintChart();
+
+    }
+
+    private void rePaintChart() {
+        Iterator<Component> itr = chartComponentLayout.iterator();
+        boolean selectAction = false;
+        if (lastselectedComponents.isEmpty()) {
+            selectAction = true;
+        }
+
+        while (itr.hasNext()) {
+            Component component = itr.next();
+            if (lastselectedComponents.contains((BubbleComponent) component)) {
+                ((BubbleComponent) component).select(true);
+
+            } else {
+                ((BubbleComponent) component).select(selectAction);
+            }
+
+        }
+
+    }
+
+    private void updateSelectionManager() {
+        Set<QuantComparisonProtein> selectedProteinsList;
+        if (lastselectedComponents.isEmpty()) {
+            selectedProteinsList = null;
+
+        } else {
+            selectedProteinsList = new LinkedHashSet<>();
+            lastselectedComponents.stream().forEach((component) -> {
+                selectedProteinsList.addAll((Set<QuantComparisonProtein>) component.getParam("proteinList"));
+            });           
+
+        }
+
+        CSFSelection selection = new CSFSelection("protein_selection", getFilterId(), selectedComparisonList, selectedProteinsList);
+        CSFPR_Central_Manager.selectionAction(selection);
+    }
 }

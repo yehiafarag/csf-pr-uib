@@ -2,6 +2,7 @@ package no.uib.probe.csf.pr.touch.logic.beans;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -29,6 +30,15 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
     private String diseaseCategory;
 
     private Map<String, QuantComparisonProtein> quantComparisonProteinMap;
+    private Map<Integer,Set<QuantComparisonProtein>>proteinsByTrendMap; 
+
+    public Map<Integer, Set<QuantComparisonProtein>> getProteinsByTrendMap() {
+        return proteinsByTrendMap;
+    }
+
+    public void setProteinsByTrendMap(Map<Integer, Set<QuantComparisonProtein>> proteinsByTrendMap) {
+        this.proteinsByTrendMap = proteinsByTrendMap;
+    }
 
     public String getDiseaseCategory() {
         return diseaseCategory;

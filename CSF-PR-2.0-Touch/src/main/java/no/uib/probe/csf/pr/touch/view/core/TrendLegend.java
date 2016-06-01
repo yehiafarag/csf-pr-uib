@@ -66,7 +66,7 @@ public class TrendLegend extends GridLayout {
 
         } else if (type.equalsIgnoreCase("table")) {
             String[] labels = new String[]{"Increased", "Equal", "Decreased", "No Quant. Info.", "Not Available"};
-            String[] styleName = new String[]{"redlayout", "lightbluelayout", "greenlayout", "novaluelayout", "empty"};
+            String[] styleName = new String[]{"legendred100", "legendblue", "legendgreen100", "legendgray", "legendempty"};
             this.setSpacing(true);
             this.setColumns(5);
             this.setRows(1);
