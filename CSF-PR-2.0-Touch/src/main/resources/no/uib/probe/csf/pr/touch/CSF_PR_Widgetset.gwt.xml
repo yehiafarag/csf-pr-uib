@@ -15,4 +15,6 @@
     <inherits name="org.tepi.filtertable.gwt.FilterTableWidgetset" />
 
     <inherits name="org.vaadin.teemu.switchui.SwitchComponentWidgetset" />
+
+    <inherits name="org.tepi.table.extension.tooltip.TooltipTableWidgetset" />
 </module>

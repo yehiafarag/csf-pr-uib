@@ -126,6 +126,11 @@
             <artifactId>switch</artifactId>
             <version>2.0.3</version>
         </dependency>
+        <dependency>
+            <groupId>org.vaadin.addons</groupId>
+            <artifactId>tabletooltips</artifactId>
+            <version>0.0.2</version>
+        </dependency>
     </dependencies>
 
     <build>

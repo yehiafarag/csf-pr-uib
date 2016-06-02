@@ -311,8 +311,8 @@ public class CoreLogic implements Serializable {
                     protName = quant.getPublicationProteinName();
                 }
 
-                comProt.setProtName(protName);
-                comProt.setProteinAccssionNumber(accession);
+                comProt.setProteinName(protName);
+                comProt.setProteinAccession(accession);
                 comProt.setUrl(url);
                 comProt.setSequence(quant.getSequence());
 
@@ -351,7 +351,7 @@ public class CoreLogic implements Serializable {
                     }
                 }
                 Map<String, QuantProtein> dsQuantProteinsMap = comProt.getDsQuantProteinsMap();
-                if (!dsQuantProteinsMap.containsKey("_-_" + quant.getDsKey() + "_-_" + comProt.getProteinAccssionNumber() + "_-_")) {
+                if (!dsQuantProteinsMap.containsKey("_-_" + quant.getDsKey() + "_-_" + comProt.getProteinAccession() + "_-_")) {
                     if (inverted) {
                         if (quant.getStringFCValue().equalsIgnoreCase("Increased") || quant.getStringFCValue().equalsIgnoreCase("Increase")) {
 
@@ -380,12 +380,12 @@ public class CoreLogic implements Serializable {
                         quant.setPatientsGroupINumber(pGrINum);
 
                     }
-                    dsQuantProteinsMap.put("_-_" + quant.getDsKey() + "_-_" + comProt.getProteinAccssionNumber() + "_-_", quant);
+                    dsQuantProteinsMap.put("_-_" + quant.getDsKey() + "_-_" + comProt.getProteinAccession() + "_-_", quant);
 
                 } else {
 
                     /////for iso testing remove as soon as possible 
-                    System.out.println("at major error in data dublicated keys " + ("_-_" + quant.getDsKey() + "_-_" + comProt.getProteinAccssionNumber() + "_-_"));
+                    System.out.println("at major error in data dublicated keys " + ("_-_" + quant.getDsKey() + "_-_" + comProt.getProteinAccession() + "_-_"));
                     continue;
                 }
 

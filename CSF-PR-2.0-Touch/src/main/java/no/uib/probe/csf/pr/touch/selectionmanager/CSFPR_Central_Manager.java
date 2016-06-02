@@ -18,7 +18,11 @@ public class CSFPR_Central_Manager implements Serializable {
 
     private final LinkedHashMap<String, CSFListener> Listeners_Map;
     private Set<QuantDiseaseGroupsComparison> selectedComparisonsList;
-    private  Set<QuantComparisonProtein> selectedProteinsList;;
+
+    public Set<QuantComparisonProtein> getSelectedProteinsList() {
+        return selectedProteinsList;
+    }
+    private  Set<QuantComparisonProtein> selectedProteinsList;
     private Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> equalComparisonMap;
 
     public CSFPR_Central_Manager() {

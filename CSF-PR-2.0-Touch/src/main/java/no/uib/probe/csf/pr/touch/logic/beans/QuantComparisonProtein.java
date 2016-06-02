@@ -24,10 +24,18 @@ import java.util.Set;
  */
 public class QuantComparisonProtein implements Serializable {
 
-    private String proteinAccssionNumber;
-    private String protName;
+    private String proteinAccession;
+    private String proteinName;
     private final int uniqueId;
     private String sequence;
+
+    public String getProteinName() {
+        return proteinName;
+    }
+
+    public String getUrl() {
+        return url;
+    }
     private Set<QuantPeptide> quantPeptidesList;
     
     
@@ -71,8 +79,8 @@ public class QuantComparisonProtein implements Serializable {
         return dsQuantProteinsMap;
     }
 
-    public String getProteinAccssionNumber() {
-        return proteinAccssionNumber;
+    public String getProteinAccession() {
+        return proteinAccession;
     }
 
     public void setSequence(String sequence) {
@@ -167,12 +175,12 @@ public class QuantComparisonProtein implements Serializable {
 
     }
 
-    public void setProteinAccssionNumber(String proteinAccssionNumber) {
-        this.proteinAccssionNumber = proteinAccssionNumber;
+    public void setProteinAccession(String proteinAccession) {
+        this.proteinAccession = proteinAccession;
     }
 
-    public void setProtName(String protName) {
-        this.protName = protName;
+    public void setProteinName(String proteinName) {
+        this.proteinName = proteinName;
     }
      /**
      *

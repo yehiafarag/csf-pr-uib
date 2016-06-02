@@ -282,29 +282,29 @@
 }
 @keyframes blink { 
     50% {        border-color: orange; 
-         box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
-    -webkit-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
-    -moz-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
-   
-    /* CSS3 Transition */
-    -webkit-transition: all .5s ease-in-out;
-    -moz-transition: all .5s ease-in-out;
-    -o-transition: all .5s ease-in-out;
-    transition: all .5s ease-in-out;
- } 
+                 box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+                 -webkit-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+                 -moz-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+
+                 /* CSS3 Transition */
+                 -webkit-transition: all .5s ease-in-out;
+                 -moz-transition: all .5s ease-in-out;
+                 -o-transition: all .5s ease-in-out;
+                 transition: all .5s ease-in-out;
+    } 
 }
 @keyframes blinkII { 
     50% {        border-color: orange; 
-         box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
-    -webkit-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
-    -moz-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
-   
-    /* CSS3 Transition */
-    -webkit-transition: all .5s ease-in-out;
-    -moz-transition: all .5s ease-in-out;
-    -o-transition: all .5s ease-in-out;
-    transition: all .5s ease-in-out;
- } 
+                 box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+                 -webkit-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+                 -moz-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+
+                 /* CSS3 Transition */
+                 -webkit-transition: all .5s ease-in-out;
+                 -moz-transition: all .5s ease-in-out;
+                 -o-transition: all .5s ease-in-out;
+                 transition: all .5s ease-in-out;
+    } 
 }
 
 /**
@@ -346,9 +346,9 @@
     font-family: 'Vaadin-Icons';
     src: url('fonts/Vaadin-Icons.eot');
     src: url('fonts/Vaadin-Icons.eot?#iefix') format('embedded-opentype'),
-         url('fonts/Vaadin-Icons.woff') format('woff'),
-         url('fonts/Vaadin-Icons.ttf') format('truetype'),
-         url('fonts/Vaadin-Icons.svg#icomoon') format('svg');
+        url('fonts/Vaadin-Icons.woff') format('woff'),
+        url('fonts/Vaadin-Icons.ttf') format('truetype'),
+        url('fonts/Vaadin-Icons.svg#icomoon') format('svg');
 }
 .Vaadin-Icons {
     font-family: 'Vaadin-Icons';
@@ -14080,7 +14080,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 .ultralightbluelayout{
     background-color:  #EAF5FC !important;
-    
+
 }
 
 
@@ -14090,34 +14090,34 @@ div.v-layout.v-horizontal.v-widget {
 
 }
 .legendredless100 div{
-     margin-top:5px;
+    margin-top:5px;
     background: rgb(247, 119, 119);    
 }
 .legendblue div{
-     margin-top:5px;
+    margin-top:5px;
 
     background: rgb(1, 141, 244);    
 }
 .legendgreen100 div{
-     margin-top:5px;
+    margin-top:5px;
     background: rgb(0, 229, 132);    
 
 }
 .legendgreenless100 div{
 
- margin-top:5px;
+    margin-top:5px;
     background: rgb(0, 153, 0);    
 
 }
 .legendgray div{
-     margin-top:5px;
+    margin-top:5px;
 
     background: rgb(128, 128, 128);    
 }
 
 
 .legendempty div{
-     margin-top:5px;
+    margin-top:5px;
     background:#cccccc;
 
 }
@@ -14141,17 +14141,17 @@ div.v-layout.v-horizontal.v-widget {
 
 }
 .unselectbubble{
-    
+
     opacity:0.1 !important;
-     box-shadow:50px 0px 0px rgba(0, 0, 0, 0.2), inset 0px 10px 10px rgba(0, 0, 0, 0.9) !important;
+    box-shadow:50px 0px 0px rgba(0, 0, 0, 0.2), inset 0px 10px 10px rgba(0, 0, 0, 0.9) !important;
     -webkit-box-shadow:0px 0px 0px rgba(0, 0, 0, 0.2), inset 0px 10px 10px rgba(0, 0, 0, 0.9) !important;
     -moz-box-shadow:50px 0px 0px rgba(0, 0, 0, 0.2), inset 0px 10px 10px rgba(0, 0, 0, 0.9) !important;
-   
+
 }
 .unselectbubble:hover{
-    
+
     opacity:1 !important;
-   
+
 }
 
 .tablesearchingbtn{
@@ -14171,15 +14171,92 @@ div.v-layout.v-horizontal.v-widget {
 .tablelink a{
     color:rgb(70, 70, 70) !important;
     text-decoration:none !important;
-    
+
 }
 .v-table-row.v-selected .tablelink a{
     color:rgb(236, 242, 248)!important;
     text-decoration:none !important;
-    
+
 }
 .v-table-row-odd.v-selected .tablelink a{
     color:rgb(236, 242, 248)!important;
     text-decoration:none !important;
-    
+
+}
+.proteintrendcell{
+    z-index: 1;
+}
+.v-table-cell-wrapper{
+    z-index:2;
+
+}
+
+.arrow-up100 {
+    width: 0; 
+    height: 0; 
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;  
+    border-bottom: 8px solid  rgb(204, 0, 0) ;
+}
+.arrow-upless100 {
+    width: 0; 
+    height: 0; 
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;  
+    border-bottom: 8px solid rgb(247, 119, 119);
+}
+.diamond {
+   width: 0;
+	height: 0;
+	border: 4px solid transparent;
+	border-bottom-color: rgb(1, 141, 244);
+	position: relative;
+	top: -4px;
+}
+.diamond:after {
+	content: '';
+	position: absolute;
+	left: -4px;
+	top: 4px;
+	width: 0;
+	height: 0;
+	border: 4px solid transparent;
+	border-top-color: rgb(1, 141, 244);
+}
+
+
+.graydiamond {
+   width: 0;
+	height: 0;
+	border: 4px solid transparent;
+	border-bottom-color: lightgray;
+	position: relative;
+	top: -4px;
+}
+.graydiamond:after {
+	content: '';
+	position: absolute;
+	left: -4px;
+	top: 4px;
+	width: 0;
+	height: 0;
+	border: 4px solid transparent;
+	border-top-color: lightgray;
+}
+
+
+.arrow-down100 {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 8px solid rgb(0, 153, 0);
+}
+
+.arrow-downless100 {
+    width: 0;
+    height: 0;
+    border-left: 50px solid transparent;
+    border-right: 50px solid transparent;
+    border-top: 100px solid  rgb(0, 229, 132);
 }

@@ -684,6 +684,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
 
             }
             updateChart();
+            updateSelectionManager();
 
         }
     }

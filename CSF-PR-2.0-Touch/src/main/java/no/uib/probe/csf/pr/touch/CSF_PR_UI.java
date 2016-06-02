@@ -103,3 +103,70 @@ public class CSF_PR_UI extends UI {
     }
 
 }
+
+//layout.setStyleName("zoomapp");
+//    }
+//
+//    String updatedZoomStyleName = "";
+//    private int lastResizedHeight, lastResizedWidth;
+//
+//    /**
+//     * resize the layout on changing window size
+//     */
+//    private void resizeScreen() {
+//
+//        int swindowHeight = Page.getCurrent().getBrowserWindowHeight();
+//        int swindowWidth = Page.getCurrent().getBrowserWindowWidth();
+//
+//        if (lastResizedWidth != swindowWidth && lastResizedHeight != swindowHeight) {
+//            if (swindowWidth < swindowHeight) {
+////                int  updatedWidth = swindowWidth;
+//                swindowHeight = 1080 * swindowWidth / 1920;
+//
+//            } else {
+//                swindowWidth = swindowHeight * 1920 / 1080;
+//            }
+//
+//        } else if (lastResizedWidth != swindowWidth) {
+//
+//            swindowHeight = 1080 * swindowWidth / 1920;
+//
+//        }else{
+//          swindowWidth = swindowHeight * 1920 / 1080;
+//        
+//        }
+//
+//        boolean scaleOnH = false;
+////        if (swindowWidth == windowWidth && swindowHeight == windowHeight && updatedZoomStyleName.equalsIgnoreCase("")) {
+////            return;
+////        }
+////        if (swindowHeight < swindowWidth) {
+//            scaleOnH = true;
+////        }
+//        int zoomLevel = 0;
+//        double ratio;
+//        if (scaleOnH) {
+//
+//            ratio = (double) swindowHeight / (double) windowHeight;
+//            zoomLevel = ((int) Math.round(ratio * 10.0));
+//        } else {
+//            ratio = (double) swindowWidth / (double) windowWidth;
+//            zoomLevel = ((int) Math.round(ratio * 10.0));
+//
+//        }
+//
+//        zoomLevel = Math.max(zoomLevel, 4);
+//        zoomLevel = Math.min(zoomLevel, 20);
+//        System.out.println("zoom level is   " + zoomLevel + "   " + ratio + "    ");
+//
+//        String cssData = ".zoomapp{zoom:" + ratio + " ; }";
+//        this.getPage().getStyles().add(cssData);
+//        lastResizedHeight=swindowHeight;
+//        lastResizedWidth=swindowWidth;
+////        layout.removeStyleName(updatedZoomStyleName);
+////        updatedZoomStyleName = cssData;
+//
+//    }
+//
+//}
+
