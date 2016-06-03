@@ -1,11 +1,21 @@
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.event.LayoutEvents;
+import com.vaadin.server.ServerRpcManager;
+import com.vaadin.shared.AbstractComponentState;
+import com.vaadin.shared.communication.ClientRpc;
+import com.vaadin.shared.communication.SharedState;
+import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.shared.ui.absolutelayout.AbsoluteLayoutState;
 import com.vaadin.ui.AbsoluteLayout;
-import com.vaadin.ui.Image;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.declarative.DesignContext;
+import java.util.EventObject;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
+import org.jsoup.nodes.Element;
 
 /**
  *
@@ -16,65 +26,57 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
  */
 public class ProteinTrendLayout extends AbsoluteLayout {
 
-    private final Image chartImg;
-    private final AbsoluteLayout chartComponentsLayout;
+    private final String proteinKey;
+    private final Set<QuantDiseaseGroupsComparison> selectedComparisonsList;
+
+    private int initSparkline = 0;
+    private int width;
 
     public ProteinTrendLayout(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, QuantComparisonProtein selectedProtein, int width) {
+        this.selectedComparisonsList = selectedComparisonsList;
+        proteinKey = selectedProtein.getProteinAccession();
+        this.width = width;
+
         width = width - 10;
         this.setWidth(width, Unit.PIXELS);
         this.setHeight(100, Unit.PIXELS);
-        chartImg = new Image();
-        chartImg.setWidth(100, Unit.PERCENTAGE);
-        chartImg.setHeight(100, Unit.PERCENTAGE);
-        this.addComponent(chartImg, "left: " + 0 + "px; top: " + 0 + "px;");
-
-        chartComponentsLayout = new AbsoluteLayout();
-        chartComponentsLayout.setWidth(100, Unit.PERCENTAGE);
-        chartComponentsLayout.setHeight(100, Unit.PERCENTAGE);
-        this.addComponent(chartComponentsLayout, "left: " + 0 + "px; top: " + 0 + "px;");
-
+        this.addStyleName("slowslide");
         this.setStyleName("proteintrendcell");
-        int trend = 5;
-        int col = 0;
 
-        for (QuantDiseaseGroupsComparison comparison : selectedComparisonsList) {
-            String keyI = 0 + "_" + selectedProtein.getProteinAccession();
-            String keyII = 0 + "_" + selectedProtein.getProteinAccession();
-            if (comparison.getQuantComparisonProteinMap().containsKey(keyI)) {
-                trend = comparison.getQuantComparisonProteinMap().get(keyI).getSignificantTrindCategory();
-            } else if (comparison.getQuantComparisonProteinMap().containsKey(keyII)) {
-                trend = comparison.getQuantComparisonProteinMap().get(keyII).getSignificantTrindCategory();
-            }
-
-            System.out.println("at tesnd  " + trend + "comparison " + comparison.getComparisonHeader());
-            TrendSymbol symbol = new TrendSymbol(trend);
-            symbol.setWidth(8, Unit.PIXELS);
-            symbol.setHeight(8, Unit.PIXELS);
-            if (trend == 5) {
-                trend = 2;
-            }
-//            this.addComponent(symbol,col++,trend);
-//            this.setComponentAlignment(symbol, Alignment.MIDDLE_CENTER);
-
-        }
         this.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
             private boolean max = false;
 
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-                if (max) {                  
-                    setHeight(100, Unit.PIXELS);
-                    max=false;
-                }else{
+                if (max) {
+                      setHeight(100, Unit.PIXELS);
+                    sparkLine.minimize();
+                    max = false;
+                } else {
                     setHeight(500, Unit.PIXELS);
-                max=true;
-                
+                    sparkLine.maxmize();
+                    max = true;
+
                 }
-                
+
             }
         });
 
+    }
+
+    private  LineChart sparkLine ;
+    
+    @Override
+    protected AbsoluteLayoutState getState() {
+        if (initSparkline==6 && sparkLine==null) {            
+             initSparkline++;
+            sparkLine = new LineChart(width, 500);
+            sparkLine.updateData(selectedComparisonsList, proteinKey);            
+            this.addComponent(sparkLine);
+        }
+        initSparkline++;
+        return super.getState();
     }
 
 }

@@ -12,6 +12,7 @@ import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Table;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
@@ -77,7 +78,7 @@ public class ProteinTable extends Table {
         this.setColumnWidth("Index", 47);
         this.setColumnWidth("Accession", 87);
         this.setColumnWidth("Name", 187);
-        availableProteinLayoutWidth = width-71-47-87-187-4;
+        availableProteinLayoutWidth = width-71-47-87-187-10;
          this.setColumnWidth("Comparisons Overview", availableProteinLayoutWidth);
 
         this.addHeaderClickListener((Table.HeaderClickEvent event) -> {
@@ -121,19 +122,13 @@ public class ProteinTable extends Table {
         tableItemsMap.clear();
         this.removeAllItems();
         if(selectedProteinsList==null)
-            return;
-//          ExternalLink link = new ExternalLink("google", new ExternalResource("www.google.com"));
-//        link.setTargetName("_blank");
-//        link.setPrimaryStyleName("tablelink");
-//        
-//        Link link2 = new Link("google", new ExternalResource("www.google.com"));
-//        link2.setTargetName("_blank");
-//        link2.setPrimaryStyleName("tablelink");
-//        
-//        tableItemsMap.put(4, new Object[]{1, link, "Yehia Farag", new ProteinTrendLayout()});
-//        tableItemsMap.put(5, new Object[]{2, link2, "Yehia Farag", new ProteinTrendLayout()});
-//        quantProteinTable.addItem(tableItemsMap.get(4), 4);
-//        quantProteinTable.addItem(tableItemsMap.get(5), 5);
+        {
+            selectedProteinsList=new LinkedHashSet<>();
+            for(QuantDiseaseGroupsComparison comparison :selectedComparisonsList)
+                selectedProteinsList.addAll(comparison.getQuantComparisonProteinMap().values());
+        
+        
+        }
         int protId=0;
         for (QuantComparisonProtein protein : selectedProteinsList) {
             String accession = protein.getProteinAccession();

@@ -14191,14 +14191,17 @@ div.v-layout.v-horizontal.v-widget {
 
 }
 
+
 .arrow-up100 {
     width: 0; 
     height: 0; 
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;  
     border-bottom: 8px solid  rgb(204, 0, 0) ;
+    margin-top:-3px;
 }
 .arrow-upless100 {
+    margin-top:-3px;
     width: 0; 
     height: 0; 
     border-left: 5px solid transparent;
@@ -14206,42 +14209,48 @@ div.v-layout.v-horizontal.v-widget {
     border-bottom: 8px solid rgb(247, 119, 119);
 }
 .diamond {
-   width: 0;
-	height: 0;
-	border: 4px solid transparent;
-	border-bottom-color: rgb(1, 141, 244);
-	position: relative;
-	top: -4px;
+
+
+    margin-top:-2px;
+    width: 0;
+    height: 0;
+    border: 4px solid transparent;
+    border-bottom-color: rgb(1, 141, 244);
+    position: relative;
+    top: -4px;
 }
 .diamond:after {
-	content: '';
-	position: absolute;
-	left: -4px;
-	top: 4px;
-	width: 0;
-	height: 0;
-	border: 4px solid transparent;
-	border-top-color: rgb(1, 141, 244);
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: 4px;
+    width: 0;
+    height: 0;
+    border: 4px solid transparent;
+    border-top-color: rgb(1, 141, 244);
 }
 
 
 .graydiamond {
-   width: 0;
-	height: 0;
-	border: 4px solid transparent;
-	border-bottom-color: lightgray;
-	position: relative;
-	top: -4px;
+    
+    
+    margin-top:-3px;
+    width: 0;
+    height: 0;
+    border: 4px solid transparent;
+    border-bottom-color: lightgray;
+    position: relative;
+    top: -4px;
 }
 .graydiamond:after {
-	content: '';
-	position: absolute;
-	left: -4px;
-	top: 4px;
-	width: 0;
-	height: 0;
-	border: 4px solid transparent;
-	border-top-color: lightgray;
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: 4px;
+    width: 0;
+    height: 0;
+    border: 4px solid transparent;
+    border-top-color: lightgray;
 }
 
 
@@ -14251,12 +14260,28 @@ div.v-layout.v-horizontal.v-widget {
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
     border-top: 8px solid rgb(0, 153, 0);
+
+    margin-top:-2px;
 }
 
 .arrow-downless100 {
     width: 0;
     height: 0;
-    border-left: 50px solid transparent;
-    border-right: 50px solid transparent;
-    border-top: 100px solid  rgb(0, 229, 132);
+    margin-top:-2px;
+
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 8px solid  rgb(0, 229, 132);
 }
+.v-absolutelayout-proteintrendcell{
+/*    border-radius:5px;
+    border:2px solid lightgray;
+    margin-top:5px !important;
+    margin-bottom:5px !important;*/
+
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+}
+

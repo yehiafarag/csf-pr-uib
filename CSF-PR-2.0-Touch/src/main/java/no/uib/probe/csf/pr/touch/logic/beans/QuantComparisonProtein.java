@@ -300,4 +300,8 @@ public class QuantComparisonProtein implements Serializable {
 //        this.setDescription("Protein value: " + overallCellPercentValue + "%<br/>#Decreased: " + lowSignificant + "<br/>#Equal : " + stable + "<br/>#Increased: " + highSignificant + "<br/>Overall trend " + overall);
 
     }
+
+    public double getOverallCellPercentValue() {
+        return overallCellPercentValue;
+    }
 }
