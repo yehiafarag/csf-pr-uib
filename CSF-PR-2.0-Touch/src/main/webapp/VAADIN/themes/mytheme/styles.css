@@ -14192,41 +14192,42 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 
+
 .arrow-up100 {
     width: 0; 
     height: 0; 
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;  
-    border-bottom: 8px solid  rgb(204, 0, 0) ;
-    margin-top:-3px;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;  
+    border-bottom: 12px solid  rgb(204, 0, 0) ;
+    margin-top:-6px;
 }
 .arrow-upless100 {
-    margin-top:-3px;
+    margin-top:-6px;
     width: 0; 
     height: 0; 
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;  
-    border-bottom: 8px solid rgb(247, 119, 119);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;  
+    border-bottom: 12px solid rgb(247, 119, 119);
 }
 .diamond {
 
 
-    margin-top:-2px;
+    margin-top:-6px;
     width: 0;
     height: 0;
-    border: 4px solid transparent;
+    border: 6px solid transparent;
     border-bottom-color: rgb(1, 141, 244);
     position: relative;
-    top: -4px;
+    top: -6px;
 }
 .diamond:after {
     content: '';
     position: absolute;
-    left: -4px;
-    top: 4px;
+    left: -6px;
+    top: 6px;
     width: 0;
     height: 0;
-    border: 4px solid transparent;
+    border: 6px solid transparent;
     border-top-color: rgb(1, 141, 244);
 }
 
@@ -14234,22 +14235,22 @@ div.v-layout.v-horizontal.v-widget {
 .graydiamond {
     
     
-    margin-top:-3px;
+    margin-top:-6px;
     width: 0;
     height: 0;
-    border: 4px solid transparent;
+    border: 6px solid transparent;
     border-bottom-color: lightgray;
     position: relative;
-    top: -4px;
+    top: -6px;
 }
 .graydiamond:after {
     content: '';
     position: absolute;
-    left: -4px;
-    top: 4px;
+    left: -6px;
+    top: 6px;
     width: 0;
     height: 0;
-    border: 4px solid transparent;
+    border: 6px solid transparent;
     border-top-color: lightgray;
 }
 
@@ -14257,27 +14258,27 @@ div.v-layout.v-horizontal.v-widget {
 .arrow-down100 {
     width: 0;
     height: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 8px solid rgb(0, 153, 0);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 12px solid rgb(0, 153, 0);
 
-    margin-top:-2px;
+    margin-top:-5px;
 }
 
 .arrow-downless100 {
     width: 0;
     height: 0;
-    margin-top:-2px;
+    margin-top:-5px;
 
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 8px solid  rgb(0, 229, 132);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 12px solid  rgb(0, 229, 132);
 }
 .v-absolutelayout-proteintrendcell{
-/*    border-radius:5px;
+    border-radius:5px;
     border:2px solid lightgray;
     margin-top:5px !important;
-    margin-bottom:5px !important;*/
+    margin-bottom:5px !important;
 
     -webkit-transition: all .5s ease-in-out;
     -moz-transition: all .5s ease-in-out;

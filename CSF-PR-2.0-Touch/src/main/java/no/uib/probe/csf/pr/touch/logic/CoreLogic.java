@@ -269,8 +269,13 @@ public class CoreLogic implements Serializable {
 //                System.out.println("at PGII -" + pGrII + "-   -" + quant.getPatientSubGroupII() + "-");
 //                System.out.println("at not enverted "+((pGrI.equalsIgnoreCase(quant.getPatientGroupI()) || pGrI.equalsIgnoreCase(quant.getPatientSubGroupI())) && (pGrII.equalsIgnoreCase(quant.getPatientGroupII()) || pGrII.equalsIgnoreCase(quant.getPatientSubGroupII()))));
                 if ((pGrI.equalsIgnoreCase(quant.getPatientGroupI()) || pGrI.equalsIgnoreCase(quant.getPatientSubGroupI())) && (pGrII.equalsIgnoreCase(quant.getPatientGroupII()) || pGrII.equalsIgnoreCase(quant.getPatientSubGroupII()))) {
+                   
+                   
+                    
+                    
                     if (quant.getStringFCValue().equalsIgnoreCase("Decreased") || quant.getStringFCValue().equalsIgnoreCase("Decrease")) {
                         comProt.addDown((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
+                       
                     } else if (quant.getStringFCValue().equalsIgnoreCase("Increased") || quant.getStringFCValue().equalsIgnoreCase("Increase")) {
                         comProt.addUp((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
                     } else if (quant.getStringFCValue().equalsIgnoreCase("Not Provided")) {
@@ -291,7 +296,9 @@ public class CoreLogic implements Serializable {
                     } else if (quant.getStringFCValue().equalsIgnoreCase("No change")) {
                         comProt.addStable((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
                     }
-                }
+                }    
+                
+                
                 String uniprotAcc = quant.getUniprotAccession();
                 String protName;
                 String accession;
@@ -408,10 +415,12 @@ public class CoreLogic implements Serializable {
             proteinsByTrendMap.put(5, new HashSet<>());
             comparProtList.keySet().stream().forEach((Key) -> {
                 QuantComparisonProtein temp = comparProtList.get(Key);
-                sortedcomparProtList.put((temp.getSignificantUp() + "_" + Key), temp);
+                sortedcomparProtList.put((temp.getHighSignificant() + "_" + Key), temp);
                 temp.finalizeQuantData();
                 Set<QuantComparisonProtein>set = proteinsByTrendMap.get(temp.getSignificantTrindCategory());
-               
+//                 if(temp.getProteinAccession().equalsIgnoreCase("P10451"))
+//                System.out.println("at comp prtien to charge  key "+(temp.getHighSignificant() + "_" + Key)+"   "+temp.getOverallCellPercentValue()+" comparisons "+ comparison.getComparisonHeader());
+//               
                 set.add(temp);
                 proteinsByTrendMap.put(temp.getSignificantTrindCategory(), set);
             });

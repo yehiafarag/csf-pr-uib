@@ -1,21 +1,11 @@
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.event.LayoutEvents;
-import com.vaadin.server.ServerRpcManager;
-import com.vaadin.shared.AbstractComponentState;
-import com.vaadin.shared.communication.ClientRpc;
-import com.vaadin.shared.communication.SharedState;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.absolutelayout.AbsoluteLayoutState;
 import com.vaadin.ui.AbsoluteLayout;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.declarative.DesignContext;
-import java.util.EventObject;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
-import org.jsoup.nodes.Element;
 
 /**
  *
@@ -24,17 +14,25 @@ import org.jsoup.nodes.Element;
  * this class represents protein trend (spark line ) required for quant protein
  * table
  */
-public class ProteinTrendLayout extends AbsoluteLayout {
+public class ProteinTrendLayout extends AbsoluteLayout implements Comparable<ProteinTrendLayout> {
 
     private final String proteinKey;
     private final Set<QuantDiseaseGroupsComparison> selectedComparisonsList;
 
     private int initSparkline = 0;
-    private int width;
+    private final int width;
+    private QuantComparisonProtein sortableProtein;
 
     public ProteinTrendLayout(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, QuantComparisonProtein selectedProtein, int width) {
         this.selectedComparisonsList = selectedComparisonsList;
         proteinKey = selectedProtein.getProteinAccession();
+        QuantDiseaseGroupsComparison comp = (QuantDiseaseGroupsComparison) selectedComparisonsList.toArray()[selectedComparisonsList.size() - 1];
+        if (comp.getQuantComparisonProteinMap().containsKey("0_" + proteinKey)) {
+            this.sortableProtein = comp.getQuantComparisonProteinMap().get("0_" + proteinKey);
+        } else if (comp.getQuantComparisonProteinMap().containsKey("1_" + proteinKey)) {
+            this.sortableProtein = comp.getQuantComparisonProteinMap().get("1_" + proteinKey);
+        }
+
         this.width = width;
 
         width = width - 10;
@@ -50,7 +48,7 @@ public class ProteinTrendLayout extends AbsoluteLayout {
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
                 if (max) {
-                      setHeight(100, Unit.PIXELS);
+                    setHeight(100, Unit.PIXELS);
                     sparkLine.minimize();
                     max = false;
                 } else {
@@ -62,21 +60,60 @@ public class ProteinTrendLayout extends AbsoluteLayout {
 
             }
         });
+        
 
     }
 
-    private  LineChart sparkLine ;
-    
+    private LineChart sparkLine;
+
     @Override
     protected AbsoluteLayoutState getState() {
-        if (initSparkline==6 && sparkLine==null) {            
-             initSparkline++;
+        if (initSparkline == 6 && sparkLine == null) {
+            initSparkline++;
             sparkLine = new LineChart(width, 500);
-            sparkLine.updateData(selectedComparisonsList, proteinKey);            
+            sparkLine.updateData(selectedComparisonsList, proteinKey);
             this.addComponent(sparkLine);
         }
         initSparkline++;
         return super.getState();
+    }
+    private Double v1 = 0.0;
+
+    @Override
+    public int compareTo(ProteinTrendLayout t) {
+        if (sortableProtein == null) {
+
+            return -1;
+        }
+        QuantComparisonProtein o = t.sortableProtein;
+        if(o == null)
+            return 1;
+
+        if (sortableProtein.getHighSignificant() == sortableProtein.getLowSignificant()) {
+            v1 = sortableProtein.getTrendValue();
+        } else if (sortableProtein.getTrendValue() > 0) {
+            double factor = sortableProtein.getPenalty();
+            v1 = sortableProtein.getTrendValue() - factor;
+            v1 = Math.max(v1, 0) + ((double) (sortableProtein.getHighSignificant() - sortableProtein.getLowSignificant()) / 10.0);
+        } else {
+            double factor = sortableProtein.getPenalty();
+            v1 = sortableProtein.getTrendValue() + factor;
+            v1 = Math.min(v1, 0) + ((double) (sortableProtein.getHighSignificant() - sortableProtein.getLowSignificant()) / 10.0);
+        }
+        Double v2;
+        if (o.getHighSignificant() == o.getLowSignificant()) {
+            v2 = o.getTrendValue();
+        } else if (o.getTrendValue() > 0) {
+            double factor = o.getPenalty();
+            v2 = o.getTrendValue() - factor;
+            v2 = Math.max(v2, 0) + ((double) (o.getHighSignificant() - o.getLowSignificant()) / 10.0);
+        } else {
+            double factor = o.getPenalty();
+            v2 = o.getTrendValue() + factor;
+            v2 = Math.min(v2, 0) + ((double) (o.getHighSignificant() - o.getLowSignificant()) / 10.0);
+        }
+        return (v1).compareTo(v2);
+
     }
 
 }

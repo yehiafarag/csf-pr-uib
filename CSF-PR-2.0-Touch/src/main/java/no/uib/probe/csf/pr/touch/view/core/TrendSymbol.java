@@ -6,6 +6,7 @@
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.ui.VerticalLayout;
+import java.util.HashMap;
 
 /**
  *
@@ -15,8 +16,10 @@ import com.vaadin.ui.VerticalLayout;
  * spark line in quant protein table
  */
 public class TrendSymbol extends VerticalLayout {
+    private final  HashMap<String,Object> paramMap;
 
     public TrendSymbol(int trend) {
+        paramMap = new HashMap<>();
         switch (trend) {
             case 0:
                 this.setStyleName("arrow-up100");
@@ -39,6 +42,14 @@ public class TrendSymbol extends VerticalLayout {
            
 
         }
+    }
+    
+    public void addParam(String name,Object value){
+        paramMap.put(name, value);
+    
+    }
+    public Object getParam(String paramName){
+        return paramMap.get(paramName);
     }
 
 }

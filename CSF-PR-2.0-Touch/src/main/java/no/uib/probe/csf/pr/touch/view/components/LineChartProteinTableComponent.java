@@ -13,8 +13,10 @@ import com.vaadin.ui.Link;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
@@ -40,10 +42,12 @@ public class LineChartProteinTableComponent extends VerticalLayout implements CS
     private final VerticalLayout controlBtnsContainer;
     private int width, height;
     private final ProteinTable quantProteinTable;
+    private final Map<String, QuantComparisonProtein> proteinSearchingMap;
 
     public LineChartProteinTableComponent(CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height, QuantDiseaseGroupsComparison userCustomizedComparison) {
 
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
+        this.proteinSearchingMap = new HashMap<>();
 
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeight(height, Unit.PIXELS);
@@ -79,7 +83,7 @@ public class LineChartProteinTableComponent extends VerticalLayout implements CS
 
             @Override
             public void textChanged(String text) {
-                System.out.println("at text changed " + text);
+                quantProteinTable.filterTable(getSearchingProteinsList(text));
 
             }
 
@@ -90,7 +94,7 @@ public class LineChartProteinTableComponent extends VerticalLayout implements CS
 //        titleLayoutWrapper.addComponent(info);
 //        titleLayoutWrapper.setComponentAlignment(info, Alignment.MIDDLE_CENTER);
 
-        TrendLegend legendLayout = new TrendLegend("table");
+        TrendLegend legendLayout = new TrendLegend("linechart");
         legendLayout.setWidthUndefined();
         legendLayout.setHeight(24, Unit.PIXELS);
         topLayout.addComponent(legendLayout);
@@ -101,7 +105,7 @@ public class LineChartProteinTableComponent extends VerticalLayout implements CS
         VerticalLayout tableLayoutFrame = new VerticalLayout();
         height = height - 44;
 
-        int tableHeight = height ;
+        int tableHeight = height;
         width = width - 50;
         tableLayoutFrame.setWidth(width, Unit.PIXELS);
         tableLayoutFrame.setHeight(tableHeight, Unit.PIXELS);
@@ -121,22 +125,32 @@ public class LineChartProteinTableComponent extends VerticalLayout implements CS
         controlBtnsContainer.setHeightUndefined();
         controlBtnsContainer.setWidthUndefined();
         controlBtnsContainer.setSpacing(true);
-        
-        
+
         CSFPR_Central_Manager.registerListener(LineChartProteinTableComponent.this);
 
     }
 
-   
-
-   
-
     @Override
     public void selectionChanged(String type) {
-       if(type.equalsIgnoreCase("protein_selection")){
-           quantProteinTable.updateTableData(CSFPR_Central_Manager.getSelectedComparisonsList(), CSFPR_Central_Manager.getSelectedProteinsList());
-       
-       }
+        if (type.equalsIgnoreCase("protein_selection")) {
+            proteinSearchingMap.clear();
+            Set<QuantComparisonProtein> selectedProteinsList;
+            if (CSFPR_Central_Manager.getSelectedProteinsList() == null) {
+                selectedProteinsList = new LinkedHashSet<>();
+                for (QuantDiseaseGroupsComparison comparison : CSFPR_Central_Manager.getSelectedComparisonsList()) {
+                    selectedProteinsList.addAll(comparison.getQuantComparisonProteinMap().values());
+                }
+
+            } else {
+                selectedProteinsList = CSFPR_Central_Manager.getSelectedProteinsList();
+            }
+
+            quantProteinTable.updateTableData(CSFPR_Central_Manager.getSelectedComparisonsList(), selectedProteinsList);
+           selectedProteinsList.stream().forEach((protein) -> {
+                proteinSearchingMap.put(protein.getProteinAccession() + "__" + protein.getProteinName(), protein);
+            });
+
+        }
     }
 
     @Override
@@ -156,6 +170,21 @@ public class LineChartProteinTableComponent extends VerticalLayout implements CS
 
     public VerticalLayout getControlBtnsContainer() {
         return controlBtnsContainer;
+    }
+
+    /**
+     * searching for proteins using name or accessions within the quant
+     * comparisons table
+     *
+     * @param keyword query keyword
+     * @return list of found quant proteins
+     */
+    private Set<QuantComparisonProtein> getSearchingProteinsList(String keyword) {
+        Set<QuantComparisonProtein> subAccessionMap = new HashSet<>();
+        proteinSearchingMap.keySet().stream().filter((key) -> (key.trim().toLowerCase().contains(keyword.toLowerCase().trim()))).forEach((key) -> {
+            subAccessionMap.add(proteinSearchingMap.get(key));
+        });
+        return subAccessionMap;
     }
 
 }

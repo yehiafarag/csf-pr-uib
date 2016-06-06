@@ -115,7 +115,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
                 processFunction("linechart");
             }
         };
-        linechartBtn.updateIcon(new ThemeResource("img/logo.png"));
+        linechartBtn.updateIcon(new ThemeResource("img/table.png"));
         linechartBtn.setWidth(100, Unit.PIXELS);
         linechartBtn.setHeight(100, Unit.PIXELS);
 

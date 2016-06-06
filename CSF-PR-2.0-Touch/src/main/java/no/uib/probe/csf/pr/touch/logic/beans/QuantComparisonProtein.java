@@ -59,6 +59,10 @@ public class QuantComparisonProtein implements Serializable {
     private int noValueprovided = 0;
     private int stable = 0;
     private double penalty = 0.0;
+
+    public double getPenalty() {
+        return penalty;
+    }
     private String key;
     private Label upLabel;
     private Label downLabel;
@@ -203,12 +207,20 @@ public class QuantComparisonProtein implements Serializable {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    public Double getTrendValue() {
+        return trendValue;
+    }
      /**
      *
      * @return
      */
-    public int getSignificantUp() {
+    public int getHighSignificant() {
         return highSignificant;
+    }
+
+    public Integer getLowSignificant() {
+        return lowSignificant;
     }
 
     /**
@@ -218,9 +230,7 @@ public class QuantComparisonProtein implements Serializable {
         if (updated) {
             return;
         }
-
-        int dcounter = 0;
-        int subTotal = this.total;     
+  
 
         Double v1;
         if (highSignificant == lowSignificant.intValue()) {
@@ -250,30 +260,11 @@ public class QuantComparisonProtein implements Serializable {
                 overallCellPercentValue = 100;
             }
 
-//            trendataLayoutWrapper.setExpandRatio(stableLayoutWrapper, ((float) (subTotal - dcounter) / subTotal));
-
         } else if (cellValue == 0) {
-//            overall = "Equal (" + cellValue + ")";
             significantTrindCategory = 2;
             overallCellPercentValue = 0;
-//            updateComponentLocation(emptyLayout, stableLayout, noValueProvidedLayout);
-//            if (!downLayout.isVisible() && !upLayout.isVisible()) {
-//                if (subTotal == stable) {
-//                    trendataLayoutWrapper.setExpandRatio(stableLayoutWrapper, ((float) (subTotal - dcounter) / subTotal));
-//                } else {
-//                    trendataLayoutWrapper.setExpandRatio(stableLayoutWrapper, ((float) (subTotal - dcounter) / subTotal));
-//                    emptyLayout.setVisible(false);
-//                    stableLayoutWrapper.setStyleName("empty");
-//
-//                }
-//            } else {
-//                trendataLayoutWrapper.setExpandRatio(stableLayoutWrapper, ((float) (subTotal - dcounter) / subTotal));
-//
-//            }
 
         } else {
-//            updateComponentLocation(stableLayout, noValueProvidedLayout, emptyLayout);
-//            overall = "Decreased (" + cellValue + ")";
             if (stable > 0 || highSignificant > 0) {
                 significantTrindCategory = 1;
                 overallCellPercentValue = Math.max((((double) (lowSignificant - highSignificant)) / (double) existStudiesNumber) * 100.0, 5.0);
@@ -282,23 +273,11 @@ public class QuantComparisonProtein implements Serializable {
                 significantTrindCategory = 0;
                 overallCellPercentValue = -100;
             }
-//            trendataLayoutWrapper.setExpandRatio(stableLayoutWrapper, ((float) (subTotal - dcounter) / subTotal) + 1);
         }
         if (stable == 0 && highSignificant == 0 && lowSignificant == 0 && noValueprovided > 0) {
             significantTrindCategory = 5;
             overallCellPercentValue = 0;
         }
-//        if ((((double) highSignificant / (double) subTotal) * 100.0) < 100.0) {
-//            upLayout.addStyleName("marginleft");
-//
-//        }
-//        if ((((double) lowSignificant / (double) subTotal) * 100.0) < 100.0) {
-//            downLayout.addStyleName("marginright");
-//
-//        }
-//
-//        this.setDescription("Protein value: " + overallCellPercentValue + "%<br/>#Decreased: " + lowSignificant + "<br/>#Equal : " + stable + "<br/>#Increased: " + highSignificant + "<br/>Overall trend " + overall);
-
     }
 
     public double getOverallCellPercentValue() {

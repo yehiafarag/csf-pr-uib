@@ -38,15 +38,16 @@ public class TrendLegend extends GridLayout {
         } 
          else if (type.equalsIgnoreCase("linechart")) {
             String[] labels = new String[]{"Increased   100%", "Increased < 100%", "Equal", "Decreased < 100%", "Decreased   100%", "No Quant. Info.", "No Data"};
-            String[] styleName = new String[]{"legendtared100", "legendredtaless100", "legendbluedm", "legendgreentaless100", "legendgreenta100", "legendgraydm", "legendemptygraydm"};
+            String[] styleName = new String[]{"arrow-up100", "arrow-upless100", "diamond", "arrow-downless100", "arrow-down100", "graydiamond", "graydiamond"};
             this.setSpacing(true);
             this.setColumns(7);
             this.setRows(1);
             this.setMargin(new MarginInfo(false, true, false, false));
             for (int i = 0; i < styleName.length; i++) {
                 HorizontalLayout item = generateItemLabel(labels[i], styleName[i]);
+                item.setHeight(10,Unit.PIXELS);
                 this.addComponent(item, i, 0);
-                this.setComponentAlignment(item, Alignment.MIDDLE_CENTER);
+                this.setComponentAlignment(item, Alignment.BOTTOM_CENTER);
 
             }
 
