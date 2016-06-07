@@ -150,9 +150,9 @@ public class LineChart extends AbsoluteLayout {
         linevalues[1] = yLineValues;
         dataset.addSeries("line", linevalues);
 
-        verticalLabels = maxLength > 50 && selectedComparisonList.size() > 4;
+        verticalLabels = maxLength > 40 && selectedComparisonList.size() > 4;
 
-        Font font = new Font("Open Sans", Font.BOLD, 13);
+        Font font = new Font("Open Sans", Font.PLAIN, 13);
 
         SymbolAxis xAxis = new SymbolAxis(null, xAxisLabels) {
             int x = 0;

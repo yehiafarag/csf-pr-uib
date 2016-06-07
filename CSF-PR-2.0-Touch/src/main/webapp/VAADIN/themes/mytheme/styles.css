@@ -14233,8 +14233,8 @@ div.v-layout.v-horizontal.v-widget {
 
 
 .graydiamond {
-    
-    
+
+
     margin-top:-6px;
     width: 0;
     height: 0;
@@ -14274,6 +14274,150 @@ div.v-layout.v-horizontal.v-widget {
     border-right: 6px solid transparent;
     border-top: 12px solid  rgb(0, 229, 132);
 }
+
+
+
+.legendarrow-up100 {
+    width: 0; 
+    height: 0; 
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;  
+    border-bottom: 12px solid  rgb(204, 0, 0) ;
+    margin-top:-6px;
+}
+.legendarrow-upless100 {
+    margin-top:-6px;
+    width: 0; 
+    height: 0; 
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;  
+    border-bottom: 12px solid rgb(247, 119, 119);
+}
+.legenddiamond {
+
+
+    margin-top:-6px;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-bottom-color: rgb(1, 141, 244);
+    position: relative;
+    top: -6px;
+}
+.legenddiamond:after {
+    content: '';
+    position: absolute;
+    left: -6px;
+    top: 6px;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-top-color: rgb(1, 141, 244);
+}
+
+
+.legendgraydiamond {
+
+
+    margin-top:-6px;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-bottom-color: lightgray;
+    position: relative;
+    top: -6px;
+}
+.legendgraydiamond:after {
+    content: '';
+    position: absolute;
+    left: -6px;
+    top: 6px;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-top-color: lightgray;
+}
+.legenddarkgraydiamond {
+
+
+    margin-top:-6px;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-bottom-color:gray;
+    position: relative;
+    top: -6px;
+}
+.legenddarkgraydiamond:after {
+    content: '';
+    position: absolute;
+    left: -6px;
+    top: 6px;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-top-color: gray;
+}
+
+
+.legendarrow-down100 {
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 12px solid rgb(0, 153, 0);
+
+    margin-top:-5px;
+}
+
+.legendarrow-downless100 {
+    width: 0;
+    height: 0;
+    margin-top:-5px;
+
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 12px solid  rgb(0, 229, 132);
+}
+.legendlabelcontainer{
+    line-height: 0px;
+}
+.spacing{
+    margin-left:10px;
+    padding-right:10px;
+}
+
+.hideoverflowtext div{
+    white-space: nowrap;             
+    overflow: hidden;              /* "overflow" value must be different from "visible" */ 
+    text-overflow: ellipsis;
+     -webkit-transition: position .5s ease-in-out;
+    -moz-transition: position .5s ease-in-out;
+    -o-transition: position .5s ease-in-out;
+    transition: position .5s ease-in-out; 
+    text-align:center;        
+    background: linear-gradient(#ffffff 0%, #ffffff 49%, #000 50%, #000 51%, #ffffff 52%, #ffffff 100%) ;
+    
+}
+.hideoverflowtext:hover{
+
+    white-space: nowrap;
+    width: 120px !important; 
+    height:50px !important;                  
+    overflow: visible;          
+    background-color:whitesmoke;
+    z-index:2;
+    position:fixed;
+    border:1px solid lightgray;
+    border-radius:5px;
+    outline:1px solid white;
+   
+    
+}
+
+
+
+
 .v-absolutelayout-proteintrendcell{
     border-radius:5px;
     border:2px solid lightgray;

@@ -23,6 +23,17 @@ public class ProteinTrendLayout extends AbsoluteLayout implements Comparable<Pro
     private final int width;
     private QuantComparisonProtein sortableProtein;
 
+    public void setSortableColumnIndex(int comparisonIndex) {
+        QuantDiseaseGroupsComparison comp = (QuantDiseaseGroupsComparison) selectedComparisonsList.toArray()[comparisonIndex];
+        if (comp.getQuantComparisonProteinMap().containsKey("0_" + proteinKey)) {
+            this.sortableProtein = comp.getQuantComparisonProteinMap().get("0_" + proteinKey);
+        } else if (comp.getQuantComparisonProteinMap().containsKey("1_" + proteinKey)) {
+            this.sortableProtein = comp.getQuantComparisonProteinMap().get("1_" + proteinKey);
+        } else {
+            sortableProtein = null;
+        }
+    }
+
     public ProteinTrendLayout(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, QuantComparisonProtein selectedProtein, int width) {
         this.selectedComparisonsList = selectedComparisonsList;
         proteinKey = selectedProtein.getProteinAccession();
@@ -60,7 +71,6 @@ public class ProteinTrendLayout extends AbsoluteLayout implements Comparable<Pro
 
             }
         });
-        
 
     }
 
@@ -86,8 +96,9 @@ public class ProteinTrendLayout extends AbsoluteLayout implements Comparable<Pro
             return -1;
         }
         QuantComparisonProtein o = t.sortableProtein;
-        if(o == null)
+        if (o == null) {
             return 1;
+        }
 
         if (sortableProtein.getHighSignificant() == sortableProtein.getLowSignificant()) {
             v1 = sortableProtein.getTrendValue();

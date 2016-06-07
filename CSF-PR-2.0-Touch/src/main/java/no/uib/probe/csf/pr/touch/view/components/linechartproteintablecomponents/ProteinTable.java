@@ -9,8 +9,11 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.ThemeResource;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
+import com.vaadin.ui.VerticalLayout;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -19,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
+import no.uib.probe.csf.pr.touch.view.core.ColumnHeaderLayout;
 import no.uib.probe.csf.pr.touch.view.core.ExternalLink;
 import no.uib.probe.csf.pr.touch.view.core.ProteinTrendLayout;
 
@@ -26,7 +30,7 @@ import no.uib.probe.csf.pr.touch.view.core.ProteinTrendLayout;
  *
  * @author Yehia Farag
  */
-public class ProteinTable extends Table {
+public class ProteinTable extends VerticalLayout {
 
     private boolean selectedOnly = false;
 
@@ -39,38 +43,65 @@ public class ProteinTable extends Table {
     private final Set<Object> selectedItemIds = new HashSet<>();
     private final ThemeResource checkedRes = new ThemeResource("img/checked.png");
     private final ThemeResource checkedAppliedRes = new ThemeResource("img/checked_applied.png");
-
+    private final Table mainProteinTable;
+    private final HorizontalLayout topComparisonsContainer;
+ 
     public void filterTable(Set<QuantComparisonProtein> selectedProteinsList) {
         selectedItemIds.clear();
-        for (QuantComparisonProtein protein : selectedProteinsList) {
+        selectedProteinsList.stream().forEach((protein) -> {
             selectedItemIds.add(tableProteinsToIDMap.get(protein.getProteinAccession()));
-//            tableItemscheckboxMap.get().setValue(true);
-        }
+        });
         selectedOnly = true;
         showSelectedOnly();
 
     }
 
-    public ProteinTable(int width) {
+    public void sortOnComparison(int comparisonIndex) {
 
+        tableItemsMap.values().stream().map((arr) -> (ProteinTrendLayout) arr[3]).forEach((protTrendLayout) -> {
+            protTrendLayout.setSortableColumnIndex(comparisonIndex);
+        });
+        mainProteinTable.sort(new String[]{"Comparisons Overview"}, new boolean[]{false});
+
+    }
+
+    public ProteinTable(int width) {
+        
+        HorizontalLayout topLayout = new HorizontalLayout();
+        topLayout.setWidthUndefined();
+        topLayout.setHeight(50,Unit.PIXELS);
+        VerticalLayout spacer = new VerticalLayout();
+        spacer.setHeight(100,Unit.PERCENTAGE);
+        spacer.setWidth(325,Unit.PIXELS);
+        topLayout.addComponent(spacer);
+        
+        topComparisonsContainer = new HorizontalLayout();
+        topComparisonsContainer.setHeight(100,Unit.PERCENTAGE);
+        topComparisonsContainer.setStyleName("spacing");
+        topLayout.addComponent(topComparisonsContainer);
+        
+        this.addComponent(topLayout);
+
+        this.mainProteinTable= new Table();
+        this.addComponent(mainProteinTable);
         this.tableItemsMap = new LinkedHashMap<>();
         this.tableProteinsToIDMap = new HashMap<>();
         tableItemscheckboxMap = new HashMap<>();
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeightUndefined();
-        this.setSelectable(true);
-        this.setColumnReorderingAllowed(false);
-        this.setColumnCollapsingAllowed(false);
-        this.setImmediate(true); // react at once when something is selected
-        this.setMultiSelect(false);
+        mainProteinTable.setSelectable(true);
+        mainProteinTable.setColumnReorderingAllowed(false);
+        mainProteinTable.setColumnCollapsingAllowed(false);
+        mainProteinTable.setImmediate(true); // react at once when something is selected
+        mainProteinTable.setMultiSelect(false);
 
-        this.addContainerProperty("Index", Integer.class, null, "", null, Table.Align.RIGHT);
-        this.addContainerProperty("Accession", ExternalLink.class, null, "Accession", null, Table.Align.LEFT);
-        this.addContainerProperty("Name", ExternalLink.class, null, "Name", null, Table.Align.LEFT);
-        this.addContainerProperty("Comparisons Overview", ProteinTrendLayout.class, null, "Comparisons Overview", null, Table.Align.LEFT);
+        mainProteinTable.addContainerProperty("Index", Integer.class, null, "", null, Table.Align.RIGHT);
+        mainProteinTable.addContainerProperty("Accession", ExternalLink.class, null, "Accession", null, Table.Align.LEFT);
+        mainProteinTable.addContainerProperty("Name", ExternalLink.class, null, "Name", null, Table.Align.LEFT);
+        mainProteinTable.addContainerProperty("Comparisons Overview", ProteinTrendLayout.class, null, "Comparisons Overview", null, Table.Align.LEFT);
 
         /* This checkbox reflects the contents of the selectedItemIds set */
-        this.addGeneratedColumn("selected", (Table source, final Object itemId, Object columnId) -> {
+        mainProteinTable.addGeneratedColumn("selected", (Table source, final Object itemId, Object columnId) -> {
             boolean selected = selectedItemIds.contains(itemId);
             /* When the chekboc value changes, add/remove the itemId from the selectedItemIds set */
             final CheckBox cb = new CheckBox("", selected);
@@ -89,17 +120,18 @@ public class ProteinTable extends Table {
             return cb;
         });
 
-        this.setColumnIcon("selected", checkedRes);
-        this.setColumnHeader("selected", "Only Checked");
-        this.setColumnAlignment("selected", Table.Align.CENTER);
-        this.setColumnWidth("selected", 70);
-        this.setColumnWidth("Index", 47);
-        this.setColumnWidth("Accession", 87);
-        this.setColumnWidth("Name", 187);
+        mainProteinTable.setColumnIcon("selected", checkedRes);
+        mainProteinTable.setColumnHeader("selected", "Only Checked");
+        mainProteinTable.setColumnAlignment("selected", Table.Align.CENTER);
+        mainProteinTable.setColumnWidth("selected", 70);
+        mainProteinTable.setColumnWidth("Index", 47);
+        mainProteinTable.setColumnWidth("Accession", 87);
+        mainProteinTable.setColumnWidth("Name", 187);
         availableProteinLayoutWidth = width - 71 - 47 - 87 - 187 - 10;
-        this.setColumnWidth("Comparisons Overview", availableProteinLayoutWidth);
+        topComparisonsContainer.setWidth(availableProteinLayoutWidth,Unit.PIXELS);
+        mainProteinTable.setColumnWidth("Comparisons Overview", availableProteinLayoutWidth);
 
-        this.addHeaderClickListener((Table.HeaderClickEvent event) -> {
+        mainProteinTable.addHeaderClickListener((Table.HeaderClickEvent event) -> {
             if (event.getPropertyId().toString().equalsIgnoreCase("selected")) {
                 if (selectedItemIds.isEmpty()) {
                     return;
@@ -110,37 +142,33 @@ public class ProteinTable extends Table {
             }
         });
 
-        this.addColumnResizeListener((Table.ColumnResizeEvent event) -> {
-            this.setColumnWidth(event.getPropertyId(), event.getPreviousWidth());
+        mainProteinTable.addColumnResizeListener((Table.ColumnResizeEvent event) -> {
+            mainProteinTable.setColumnWidth(event.getPropertyId(), event.getPreviousWidth());
         });
-        
-        this.sort(new String[]{"Comparisons Overview"
-        }, new boolean[]{false
-        }
-        );
 
-        this.setSortAscending(false);
-      
+        mainProteinTable.sort(new String[]{"Comparisons Overview"}, new boolean[]{false});
+
+        mainProteinTable.setSortAscending(false);
 
     }
 
     private void showSelectedOnly() {
-        this.removeAllItems();
+        mainProteinTable.removeAllItems();
         if (!selectedOnly) {
-            this.setColumnIcon("selected", checkedRes);
+            mainProteinTable.setColumnIcon("selected", checkedRes);
             for (Object itemId : tableItemsMap.keySet()) {
-                this.addItem(tableItemsMap.get(itemId), itemId);
+                mainProteinTable.addItem(tableItemsMap.get(itemId), itemId);
             }
 
         } else {
-            this.setColumnIcon("selected", checkedAppliedRes);
+            mainProteinTable.setColumnIcon("selected", checkedAppliedRes);
             if (!selectedItemIds.isEmpty()) {
                 for (Object itemId : selectedItemIds) {
-                    this.addItem(tableItemsMap.get(itemId), itemId);
+                    mainProteinTable.addItem(tableItemsMap.get(itemId), itemId);
                 }
             } else {
                 for (Object itemId : tableItemsMap.keySet()) {
-                    this.addItem(tableItemsMap.get(itemId), itemId);
+                    mainProteinTable.addItem(tableItemsMap.get(itemId), itemId);
                 }
             }
 
@@ -150,11 +178,11 @@ public class ProteinTable extends Table {
 
     public void updateTableData(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, Set<QuantComparisonProtein> selectedProteinsList) {
 
-        this.setHeight(100, Unit.PERCENTAGE);
+        mainProteinTable.setHeight(100, Unit.PERCENTAGE);
         tableItemsMap.clear();
         tableProteinsToIDMap.clear();
         tableItemscheckboxMap.clear();
-        this.removeAllItems();
+        mainProteinTable.removeAllItems();
 
         int protId = 0;
         for (QuantComparisonProtein protein : selectedProteinsList) {
@@ -168,18 +196,30 @@ public class ProteinTable extends Table {
             ExternalLink nameObject = new ExternalLink(name, new ExternalResource(url));
             ProteinTrendLayout protTrendLayout = new ProteinTrendLayout(selectedComparisonsList, protein, availableProteinLayoutWidth);
             tableItemsMap.put(protId, new Object[]{protId + 1, accessionObject, nameObject, protTrendLayout});
-            this.addItem(tableItemsMap.get(protId), protId);
+            mainProteinTable.addItem(tableItemsMap.get(protId), protId);
             tableProteinsToIDMap.put(accession, protId);
             protId++;
 
         }
-          int indexing = 1;
-        for (Object id: this.getItemIds()) {
-            Item item = this.getItem(id);
+        int indexing = 1;
+        for (Object id : mainProteinTable.getItemIds()) {
+            Item item = mainProteinTable.getItem(id);
             item.getItemProperty("Index").setValue(indexing);
             indexing++;
         }
+        updateComparisonsHeader(selectedComparisonsList);
 
+    }
+    
+    private void updateComparisonsHeader(Set<QuantDiseaseGroupsComparison> selectedComparisonsList){
+        topComparisonsContainer.removeAllComponents();
+        for(QuantDiseaseGroupsComparison comparison:selectedComparisonsList){
+            ColumnHeaderLayout comparisonLayout = new ColumnHeaderLayout(comparison);
+            
+            topComparisonsContainer.addComponent(comparisonLayout);
+        
+        }
+    
     }
 
 }
