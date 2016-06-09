@@ -13,10 +13,7 @@ import com.vaadin.ui.VerticalLayout;
  */
 public class MainLayout extends VerticalLayout {
 
-    private final HeaderLayout header;
     private final VerticalLayout body;
-    private int windowHeight, windowWidth;
-//    private int initalWidth, initalHeight;
 
     /**
      *
@@ -31,18 +28,17 @@ public class MainLayout extends VerticalLayout {
 
         this.setSpacing(true);
         this.setStyleName("whitelayout");
-        this.windowHeight =windowHeight;
-        this.windowWidth = windowWidth;
+        windowHeight=windowHeight-10;
 
         this.setWidth(windowWidth, Unit.PIXELS);
         this.setHeight(windowHeight, Unit.PIXELS);
-        header = new HeaderLayout();
 
         //heder is finished 
         //start body
         body = new VerticalLayout();
         body.setWidth(100, Unit.PERCENTAGE);
         body.setHeight(100, Unit.PERCENTAGE);
+//        body.setStyleName("bluelayout");
         this.addComponent(body);
         this.setComponentAlignment(body, Alignment.TOP_CENTER);
         

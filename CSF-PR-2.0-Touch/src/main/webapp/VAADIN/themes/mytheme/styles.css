@@ -14391,13 +14391,13 @@ div.v-layout.v-horizontal.v-widget {
     white-space: nowrap;             
     overflow: hidden;              /* "overflow" value must be different from "visible" */ 
     text-overflow: ellipsis;
-     -webkit-transition: position .5s ease-in-out;
+    -webkit-transition: position .5s ease-in-out;
     -moz-transition: position .5s ease-in-out;
     -o-transition: position .5s ease-in-out;
     transition: position .5s ease-in-out; 
     text-align:center;        
     background: linear-gradient(#ffffff 0%, #ffffff 49%, #000 50%, #000 51%, #ffffff 52%, #ffffff 100%) ;
-    
+
 }
 .hideoverflowtext:hover{
 
@@ -14411,8 +14411,8 @@ div.v-layout.v-horizontal.v-widget {
     border:1px solid lightgray;
     border-radius:5px;
     outline:1px solid white;
-   
-    
+
+
 }
 
 
@@ -14430,3 +14430,18 @@ div.v-layout.v-horizontal.v-widget {
     transition: all .5s ease-in-out;
 }
 
+.sortup{
+    background-color:white;
+    background-image: url(img/caret-up.png);
+    background-repeat:no-repeat;
+    background-size:cover;
+}
+.sortdown{
+    background-color:white;
+    background-image: url(img/caret-up.png);
+    background-repeat:no-repeat;
+    background-size:cover;
+    -ms-transform: rotate(-180deg); /* IE 9 */
+    -webkit-transform: rotate(-180deg); /* Chrome, Safari, Opera */
+    transform: rotate(-180deg);
+}

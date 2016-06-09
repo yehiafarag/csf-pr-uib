@@ -16,6 +16,15 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
     private String oreginalComparisonHeader;
     private Map<Integer,QuantDatasetObject> datasetMap;
     private String diseaseCategoryColor;
+
+    public String getDiseaseCategoryStyle() {
+        return diseaseCategoryStyle;
+    }
+
+    public void setDiseaseCategoryStyle(String diseaseCategoryStyle) {
+        this.diseaseCategoryStyle = diseaseCategoryStyle;
+    }
+     private String diseaseCategoryStyle;
     private boolean useCustomRowHeaderToSort;
 
     public Map<Integer, QuantDatasetObject> getDatasetMap() {

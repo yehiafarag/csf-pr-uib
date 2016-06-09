@@ -66,7 +66,7 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
      * @param heatmapCellWidth
      * @param publicationsNumber
      */
-    public HeatmapCell(double value, final String cellColor,String diseaseCategoryColor, Map<Integer,QuantDatasetObject> datasetMap, final int rowLabelIndex, final int colLabelIndex, VerticalLayout tooltipLayout, int heatmapCellWidth, int publicationsNumber, String updatedComparisonTitile, String fullCompTitle,String oreginalComparisonTitle, String diseaseCategory) {
+    public HeatmapCell(double value, final String cellColor,String diseaseCategoryColor, Map<Integer,QuantDatasetObject> datasetMap, final int rowLabelIndex, final int colLabelIndex, VerticalLayout tooltipLayout, int heatmapCellWidth, int publicationsNumber, String updatedComparisonTitile, String fullCompTitle,String oreginalComparisonTitle, String diseaseCategory,String diseaseCategoryStyle) {
 
         
         this.colLabelIndex = colLabelIndex;
@@ -84,6 +84,7 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
         comparison.setOreginalComparisonHeader(oreginalComparisonTitle);
         comparison.setDiseaseCategoryColor(diseaseCategoryColor);
         comparison.setDatasetMap(datasetMap);
+        comparison.setDiseaseCategoryStyle(diseaseCategoryStyle);
         this.valueLabel = new Label();
         valueLabel.setWidth(100, Unit.PERCENTAGE);
         valueLabel.setHeight(100, Unit.PERCENTAGE);

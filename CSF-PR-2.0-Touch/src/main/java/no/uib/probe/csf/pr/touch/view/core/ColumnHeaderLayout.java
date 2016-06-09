@@ -5,7 +5,9 @@
  */
 package no.uib.probe.csf.pr.touch.view.core;
 
+import com.vaadin.event.LayoutEvents;
 import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
@@ -17,28 +19,48 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
  *
  * this class represents column header that have main sorting functions
  */
-public class ColumnHeaderLayout extends VerticalLayout {
+public abstract class ColumnHeaderLayout extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
-    public ColumnHeaderLayout(QuantDiseaseGroupsComparison comparison) {
+    private final VerticalLayout comparisonLabel;
+    private final int index;
+
+    public ColumnHeaderLayout(QuantDiseaseGroupsComparison comparison, int index) {
         this.setSizeFull();
-        this.setStyleName("hideoverflowtext");
-        this.addStyleName("border");
+        this.index = index;
+        comparisonLabel = new VerticalLayout();
+        comparisonLabel.setWidth(20, Unit.PIXELS);
+        comparisonLabel.setHeight(100, Unit.PERCENTAGE);
+        comparisonLabel.setStyleName(comparison.getDiseaseCategoryStyle());
+        comparisonLabel.setDescription(comparison.getComparisonHeader().split(" / ")[0].split("__")[0] + " / " + comparison.getComparisonHeader().split(" / ")[1].split("__")[0]);
+        this.addComponent(comparisonLabel);
+        this.setComponentAlignment(comparisonLabel, Alignment.TOP_CENTER);
 
-        HorizontalLayout labelFrame = new HorizontalLayout();
-        this.addComponent(labelFrame);
-        labelFrame.setWidthUndefined();
-        Label comparisonLabel = new Label("<font size='2' color='" + comparison.getDiseaseCategoryColor() + "'style='font-weight: bold;'>" + comparison.getComparisonHeader().split(" / ")[0].split("__")[0] + "<br>" + comparison.getComparisonHeader().split(" / ")[1].split("__")[0] + "</font>");
-        comparisonLabel.setContentMode(ContentMode.HTML);
-//        comparisonLabel.setStyleName("hideoverflowtext");
-        comparisonLabel.setSizeFull();
-        labelFrame.addComponent(comparisonLabel);
-
-        VerticalLayout buttonsContainer = new VerticalLayout();
-        buttonsContainer.setWidth(20, Unit.PIXELS);
-        buttonsContainer.setHeight(100, Unit.PERCENTAGE);
-        buttonsContainer.setStyleName("lightbluelayout");
-        labelFrame.addComponent(buttonsContainer);
+        comparisonLabel.addLayoutClickListener(ColumnHeaderLayout.this);
 
     }
+    private Boolean sortedUp;
+
+    @Override
+    public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+        if (sortedUp == null || sortedUp) {
+            comparisonLabel.addStyleName("sortdown");
+            sortedUp = false;
+
+        } else if (!sortedUp) {
+            comparisonLabel.removeStyleName("sortdown");
+            comparisonLabel.addStyleName("sortup");
+            sortedUp = true;
+        }
+        sort(sortedUp, index);
+    }
+
+    public void noSort() {       
+        System.out.println("at no sort "+index);
+        comparisonLabel.removeStyleName("sortdown");
+        comparisonLabel.removeStyleName("sortup");
+        sortedUp = null;
+    }
+
+    public abstract void sort(boolean up, int index);
 
 }

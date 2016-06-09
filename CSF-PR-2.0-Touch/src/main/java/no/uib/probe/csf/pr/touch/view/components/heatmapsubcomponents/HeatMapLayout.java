@@ -593,7 +593,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
                 String fullComparisonTitle = grI.getDiseaseGroupFullName() + " / " + grII.getDiseaseGroupFullName();
                 String orginalComparisonName = grI.getDiseaseGroupOreginalName() + " / " + grII.getDiseaseGroupOreginalName();
-                HeatmapCell cell = new HeatmapCell(value, color, grI.getDiseaseColor(), datasetMap, x, y, null, heatmapCellWidth, pubCounter.size(), updatedComparisonTitle, fullComparisonTitle, orginalComparisonName, ((HeatMapHeaderCellInformationBean) rowheaders.toArray()[x]).getDiseaseCategory()) {
+                HeatmapCell cell = new HeatmapCell(value, color, grI.getDiseaseColor(), datasetMap, x, y, null, heatmapCellWidth, pubCounter.size(), updatedComparisonTitle, fullComparisonTitle, orginalComparisonName, ((HeatMapHeaderCellInformationBean) rowheaders.toArray()[x]).getDiseaseCategory(),((HeatMapHeaderCellInformationBean) rowheaders.toArray()[x]).getDiseaseStyleName()) {
 
                     @Override
                     public void selectData(HeatmapCell cell) {

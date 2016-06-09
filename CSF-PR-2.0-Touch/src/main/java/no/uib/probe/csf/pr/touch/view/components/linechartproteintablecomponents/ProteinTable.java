@@ -37,6 +37,7 @@ public class ProteinTable extends VerticalLayout {
     private final Map<Object, Object[]> tableItemsMap;
     private final Map<String, Integer> tableProteinsToIDMap;
     private final Map<Object, CheckBox> tableItemscheckboxMap;
+    private final Set<ColumnHeaderLayout> columnHeaderSet;
 
     private final int availableProteinLayoutWidth;
     /* This set contains the ids of the "selected" items */
@@ -45,7 +46,7 @@ public class ProteinTable extends VerticalLayout {
     private final ThemeResource checkedAppliedRes = new ThemeResource("img/checked_applied.png");
     private final Table mainProteinTable;
     private final HorizontalLayout topComparisonsContainer;
- 
+
     public void filterTable(Set<QuantComparisonProtein> selectedProteinsList) {
         selectedItemIds.clear();
         selectedProteinsList.stream().forEach((protein) -> {
@@ -56,33 +57,43 @@ public class ProteinTable extends VerticalLayout {
 
     }
 
-    public void sortOnComparison(int comparisonIndex) {
+    public void sortOnComparison(boolean upSort, int comparisonIndex) {
 
+        int index = 0;
+        for (ColumnHeaderLayout comparisonLayout : columnHeaderSet) {
+            if (index == comparisonIndex) {
+                index++;
+                continue;
+            }
+            comparisonLayout.noSort();
+            index++;
+        }
         tableItemsMap.values().stream().map((arr) -> (ProteinTrendLayout) arr[3]).forEach((protTrendLayout) -> {
             protTrendLayout.setSortableColumnIndex(comparisonIndex);
         });
-        mainProteinTable.sort(new String[]{"Comparisons Overview"}, new boolean[]{false});
+        mainProteinTable.sort(new String[]{"Comparisons Overview"}, new boolean[]{upSort});
 
     }
 
     public ProteinTable(int width) {
-        
+
+        this.columnHeaderSet = new HashSet<>();
         HorizontalLayout topLayout = new HorizontalLayout();
         topLayout.setWidthUndefined();
-        topLayout.setHeight(50,Unit.PIXELS);
+        topLayout.setHeight(20, Unit.PIXELS);
         VerticalLayout spacer = new VerticalLayout();
-        spacer.setHeight(100,Unit.PERCENTAGE);
-        spacer.setWidth(325,Unit.PIXELS);
+        spacer.setHeight(100, Unit.PERCENTAGE);
+        spacer.setWidth(325, Unit.PIXELS);
         topLayout.addComponent(spacer);
-        
+
         topComparisonsContainer = new HorizontalLayout();
-        topComparisonsContainer.setHeight(100,Unit.PERCENTAGE);
+        topComparisonsContainer.setHeight(100, Unit.PERCENTAGE);
         topComparisonsContainer.setStyleName("spacing");
         topLayout.addComponent(topComparisonsContainer);
-        
+
         this.addComponent(topLayout);
 
-        this.mainProteinTable= new Table();
+        this.mainProteinTable = new Table();
         this.addComponent(mainProteinTable);
         this.tableItemsMap = new LinkedHashMap<>();
         this.tableProteinsToIDMap = new HashMap<>();
@@ -128,7 +139,7 @@ public class ProteinTable extends VerticalLayout {
         mainProteinTable.setColumnWidth("Accession", 87);
         mainProteinTable.setColumnWidth("Name", 187);
         availableProteinLayoutWidth = width - 71 - 47 - 87 - 187 - 10;
-        topComparisonsContainer.setWidth(availableProteinLayoutWidth,Unit.PIXELS);
+        topComparisonsContainer.setWidth(availableProteinLayoutWidth, Unit.PIXELS);
         mainProteinTable.setColumnWidth("Comparisons Overview", availableProteinLayoutWidth);
 
         mainProteinTable.addHeaderClickListener((Table.HeaderClickEvent event) -> {
@@ -178,7 +189,7 @@ public class ProteinTable extends VerticalLayout {
 
     public void updateTableData(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, Set<QuantComparisonProtein> selectedProteinsList) {
 
-        mainProteinTable.setHeight(100, Unit.PERCENTAGE);
+        mainProteinTable.setHeight(960, Unit.PIXELS);
         tableItemsMap.clear();
         tableProteinsToIDMap.clear();
         tableItemscheckboxMap.clear();
@@ -210,16 +221,26 @@ public class ProteinTable extends VerticalLayout {
         updateComparisonsHeader(selectedComparisonsList);
 
     }
-    
-    private void updateComparisonsHeader(Set<QuantDiseaseGroupsComparison> selectedComparisonsList){
+
+    private void updateComparisonsHeader(Set<QuantDiseaseGroupsComparison> selectedComparisonsList) {
         topComparisonsContainer.removeAllComponents();
-        for(QuantDiseaseGroupsComparison comparison:selectedComparisonsList){
-            ColumnHeaderLayout comparisonLayout = new ColumnHeaderLayout(comparison);
-            
+        columnHeaderSet.clear();
+        int index = 0;
+        for (QuantDiseaseGroupsComparison comparison : selectedComparisonsList) {
+            ColumnHeaderLayout comparisonLayout = new ColumnHeaderLayout(comparison, index) {
+
+                @Override
+                public void sort(boolean up, int index) {
+                    sortOnComparison(up, index);
+                }
+
+            };
+            index++;
             topComparisonsContainer.addComponent(comparisonLayout);
-        
+            columnHeaderSet.add(comparisonLayout);
+
         }
-    
+
     }
 
 }
