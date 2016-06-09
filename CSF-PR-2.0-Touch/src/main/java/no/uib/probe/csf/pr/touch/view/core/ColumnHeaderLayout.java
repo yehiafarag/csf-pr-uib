@@ -34,9 +34,15 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
         comparisonLabel.setDescription(comparison.getComparisonHeader().split(" / ")[0].split("__")[0] + " / " + comparison.getComparisonHeader().split(" / ")[1].split("__")[0]);
         this.addComponent(comparisonLabel);
         this.setComponentAlignment(comparisonLabel, Alignment.TOP_CENTER);
-
         comparisonLabel.addLayoutClickListener(ColumnHeaderLayout.this);
+         comparisonLabel.addStyleName("sortdown");
+         comparisonLabel.addStyleName("unselected");
 
+    }
+
+    public void setAsDefault() {
+        comparisonLabel.removeStyleName("unselected");
+        sortedUp = true;
     }
     private Boolean sortedUp;
 
@@ -51,13 +57,14 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
             comparisonLabel.addStyleName("sortup");
             sortedUp = true;
         }
+        comparisonLabel.removeStyleName("unselected");
         sort(sortedUp, index);
     }
 
-    public void noSort() {       
-        System.out.println("at no sort "+index);
-        comparisonLabel.removeStyleName("sortdown");
+    public void noSort() {
+        comparisonLabel.addStyleName("sortdown");
         comparisonLabel.removeStyleName("sortup");
+        comparisonLabel.addStyleName("unselected");
         sortedUp = null;
     }
 

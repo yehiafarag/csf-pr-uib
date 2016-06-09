@@ -75,9 +75,9 @@ public class ProteinTable extends VerticalLayout {
 
     }
 
-    public ProteinTable(int width) {
+    public ProteinTable(int width,int height) {
 
-        this.columnHeaderSet = new HashSet<>();
+        this.columnHeaderSet = new LinkedHashSet<>();
         HorizontalLayout topLayout = new HorizontalLayout();
         topLayout.setWidthUndefined();
         topLayout.setHeight(20, Unit.PIXELS);
@@ -94,6 +94,7 @@ public class ProteinTable extends VerticalLayout {
         this.addComponent(topLayout);
 
         this.mainProteinTable = new Table();
+        mainProteinTable.setHeight(height-22, Unit.PIXELS);
         this.addComponent(mainProteinTable);
         this.tableItemsMap = new LinkedHashMap<>();
         this.tableProteinsToIDMap = new HashMap<>();
@@ -101,6 +102,7 @@ public class ProteinTable extends VerticalLayout {
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeightUndefined();
         mainProteinTable.setSelectable(true);
+        mainProteinTable.setSortEnabled(false);
         mainProteinTable.setColumnReorderingAllowed(false);
         mainProteinTable.setColumnCollapsingAllowed(false);
         mainProteinTable.setImmediate(true); // react at once when something is selected
@@ -189,7 +191,7 @@ public class ProteinTable extends VerticalLayout {
 
     public void updateTableData(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, Set<QuantComparisonProtein> selectedProteinsList) {
 
-        mainProteinTable.setHeight(960, Unit.PIXELS);
+        
         tableItemsMap.clear();
         tableProteinsToIDMap.clear();
         tableItemscheckboxMap.clear();
@@ -226,8 +228,9 @@ public class ProteinTable extends VerticalLayout {
         topComparisonsContainer.removeAllComponents();
         columnHeaderSet.clear();
         int index = 0;
+        ColumnHeaderLayout comparisonLayout=null;
         for (QuantDiseaseGroupsComparison comparison : selectedComparisonsList) {
-            ColumnHeaderLayout comparisonLayout = new ColumnHeaderLayout(comparison, index) {
+            comparisonLayout = new ColumnHeaderLayout(comparison, index) {
 
                 @Override
                 public void sort(boolean up, int index) {
@@ -240,7 +243,9 @@ public class ProteinTable extends VerticalLayout {
             columnHeaderSet.add(comparisonLayout);
 
         }
-
+        if (comparisonLayout != null) {
+            comparisonLayout.setAsDefault();
+        }
     }
 
 }

@@ -119,7 +119,7 @@ public class LineChartProteinTableComponent extends VerticalLayout implements CS
         this.width = width;
         
        
-        quantProteinTable = new ProteinTable(width);//this.initProteinTable();
+        quantProteinTable = new ProteinTable(width,height);//this.initProteinTable();
         tableLayoutFrame.addComponent(quantProteinTable);
 
         //init side control btns layout 
