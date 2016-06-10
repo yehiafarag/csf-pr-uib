@@ -29,9 +29,18 @@ public class ProteinTrendLayout extends AbsoluteLayout implements Comparable<Pro
             this.sortableProtein = comp.getQuantComparisonProteinMap().get("0_" + proteinKey);
         } else if (comp.getQuantComparisonProteinMap().containsKey("1_" + proteinKey)) {
             this.sortableProtein = comp.getQuantComparisonProteinMap().get("1_" + proteinKey);
+        } else if (comp.getQuantComparisonProteinMap().containsKey("2_" + proteinKey)) {
+            this.sortableProtein = comp.getQuantComparisonProteinMap().get("2_" + proteinKey);
         } else {
             sortableProtein = null;
         }
+    }
+    public int getComparisonTrend(int comparisonIndex){
+        if(sparkLine== null){
+         return 6;
+        }
+        return sparkLine.getComparisonTrend(comparisonIndex);
+    
     }
 
     public ProteinTrendLayout(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, QuantComparisonProtein selectedProtein, int width) {
@@ -42,8 +51,9 @@ public class ProteinTrendLayout extends AbsoluteLayout implements Comparable<Pro
             this.sortableProtein = comp.getQuantComparisonProteinMap().get("0_" + proteinKey);
         } else if (comp.getQuantComparisonProteinMap().containsKey("1_" + proteinKey)) {
             this.sortableProtein = comp.getQuantComparisonProteinMap().get("1_" + proteinKey);
+        } else if (comp.getQuantComparisonProteinMap().containsKey("2_" + proteinKey)) {
+            this.sortableProtein = comp.getQuantComparisonProteinMap().get("2_" + proteinKey);
         }
-
         this.width = width;
 
         width = width - 10;

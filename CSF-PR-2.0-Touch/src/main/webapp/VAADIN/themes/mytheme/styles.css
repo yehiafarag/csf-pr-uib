@@ -13919,6 +13919,10 @@ div.v-layout.v-horizontal.v-widget {
     padding-left:20px !important;
 
 }
+.translateleft10{
+    transform:translate(-10px,0px);
+    background-color:rgba(255,255,255,0) !important;
+}
 .hidetextoverflow{
     text-overflow: clip !important;
 
@@ -14450,16 +14454,32 @@ div.v-layout.v-horizontal.v-widget {
     -webkit-transform: rotate(-180deg); /* Chrome, Safari, Opera */
     transform: rotate(-180deg);
     cursor:pointer;
-    
+
     box-shadow:0px 0px 0px rgba(182,179, 179, 0.2), inset 0px 5px 10px rgba(182, 179, 179, 0.7) !important;
     -webkit-box-shadow:0px 0px 0px rgba(182,179, 179, 0.2), inset 0px 5px 10px rgba(182, 179, 179, 0.7) !important;
     -moz-box-shadow:0px 0px 0px rgba(182,179, 179, 0.2), inset 0px 5px 10px rgba(182, 179, 179, 0.7) !important;
 
 }
 .unselected{
-opacity:0.2;
+    opacity:0.4;
 
 }
 .unselected:hover{
     opacity:0.7;
+}
+.unselectedfilter{
+    background-image: url(img/filter.png) !important;
+    background-position:center;
+    background-color:white;
+    background-repeat:no-repeat;
+    background-size:13px;
+    cursor:pointer;
+}
+.selectedfilter{
+    background-image: url(img/filter_dark.png) !important;
+    background-position:center;
+    background-color:white;
+    background-repeat:no-repeat;
+    background-size:13px;
+    cursor:pointer;
 }

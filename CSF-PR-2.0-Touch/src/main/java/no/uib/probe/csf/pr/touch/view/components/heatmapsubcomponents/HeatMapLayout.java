@@ -333,9 +333,10 @@ public abstract class HeatMapLayout extends VerticalLayout {
         this.columnCategoryHeadersContainer.setWidth(colHeaderWidth * columnsLbels.size(), Unit.PIXELS);
         this.rowCategoryHeadersContainer.setHeight(rowHeaderHeight * rowsLbels.size(), Unit.PIXELS);
 
+        
         if (rowCategoryHeadersContainer.getHeight() + 100 > availableHMHeight) {
             double ratio = availableHMHeight / (rowCategoryHeadersContainer.getHeight() + 100);
-            zoomLevel = ((int) Math.round(ratio * 10.0));
+            zoomLevel = (int) (ratio * 10.0);
         } else {
             zoomLevel = 10;
         }

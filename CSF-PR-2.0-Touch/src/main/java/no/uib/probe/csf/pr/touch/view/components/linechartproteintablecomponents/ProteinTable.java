@@ -12,10 +12,12 @@ import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -30,7 +32,7 @@ import no.uib.probe.csf.pr.touch.view.core.ProteinTrendLayout;
  *
  * @author Yehia Farag
  */
-public class ProteinTable extends VerticalLayout {
+public abstract class ProteinTable extends VerticalLayout {
 
     private boolean selectedOnly = false;
 
@@ -46,6 +48,8 @@ public class ProteinTable extends VerticalLayout {
     private final ThemeResource checkedAppliedRes = new ThemeResource("img/checked_applied.png");
     private final Table mainProteinTable;
     private final HorizontalLayout topComparisonsContainer;
+    private final Map<QuantDiseaseGroupsComparison, Set<Object>> filtersMap;
+    private Set<QuantComparisonProtein> selectedProteinsList;
 
     public void filterTable(Set<QuantComparisonProtein> selectedProteinsList) {
         selectedItemIds.clear();
@@ -54,6 +58,21 @@ public class ProteinTable extends VerticalLayout {
         });
         selectedOnly = true;
         showSelectedOnly();
+
+    }
+
+    public void clearColumnFilters() {
+        filterTableSelection(null, 1, null);
+        columnHeaderSet.stream().forEach((comparisonLayout) -> {
+            comparisonLayout.noFilter();
+        });
+    }
+
+    public void switchHeaderBtns() {
+
+        columnHeaderSet.stream().forEach((comparisonLayout) -> {
+            comparisonLayout.swichBtns();
+        });
 
     }
 
@@ -75,9 +94,10 @@ public class ProteinTable extends VerticalLayout {
 
     }
 
-    public ProteinTable(int width,int height) {
+    public ProteinTable(int width, int height) {
 
         this.columnHeaderSet = new LinkedHashSet<>();
+        this.filtersMap = new LinkedHashMap<>();
         HorizontalLayout topLayout = new HorizontalLayout();
         topLayout.setWidthUndefined();
         topLayout.setHeight(20, Unit.PIXELS);
@@ -94,7 +114,7 @@ public class ProteinTable extends VerticalLayout {
         this.addComponent(topLayout);
 
         this.mainProteinTable = new Table();
-        mainProteinTable.setHeight(height-22, Unit.PIXELS);
+        mainProteinTable.setHeight(height - 22, Unit.PIXELS);
         this.addComponent(mainProteinTable);
         this.tableItemsMap = new LinkedHashMap<>();
         this.tableProteinsToIDMap = new HashMap<>();
@@ -133,7 +153,7 @@ public class ProteinTable extends VerticalLayout {
             return cb;
         });
 
-        mainProteinTable.setColumnIcon("selected", checkedRes);
+//        mainProteinTable.setColumnIcon("selected", checkedRes);
         mainProteinTable.setColumnHeader("selected", "Only Checked");
         mainProteinTable.setColumnAlignment("selected", Table.Align.CENTER);
         mainProteinTable.setColumnWidth("selected", 70);
@@ -168,13 +188,15 @@ public class ProteinTable extends VerticalLayout {
     private void showSelectedOnly() {
         mainProteinTable.removeAllItems();
         if (!selectedOnly) {
-            mainProteinTable.setColumnIcon("selected", checkedRes);
+            mainProteinTable.setColumnHeader("selected", "Checked");
+//            mainProteinTable.setColumnIcon("selected", checkedRes);
             for (Object itemId : tableItemsMap.keySet()) {
                 mainProteinTable.addItem(tableItemsMap.get(itemId), itemId);
             }
 
         } else {
-            mainProteinTable.setColumnIcon("selected", checkedAppliedRes);
+//            mainProteinTable.setColumnIcon("selected", checkedAppliedRes);
+            mainProteinTable.setColumnHeader("selected", "All");
             if (!selectedItemIds.isEmpty()) {
                 for (Object itemId : selectedItemIds) {
                     mainProteinTable.addItem(tableItemsMap.get(itemId), itemId);
@@ -191,11 +213,12 @@ public class ProteinTable extends VerticalLayout {
 
     public void updateTableData(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, Set<QuantComparisonProtein> selectedProteinsList) {
 
-        
         tableItemsMap.clear();
         tableProteinsToIDMap.clear();
         tableItemscheckboxMap.clear();
         mainProteinTable.removeAllItems();
+        filtersMap.clear();
+        this.selectedProteinsList = selectedProteinsList;
 
         int protId = 0;
         for (QuantComparisonProtein protein : selectedProteinsList) {
@@ -228,7 +251,7 @@ public class ProteinTable extends VerticalLayout {
         topComparisonsContainer.removeAllComponents();
         columnHeaderSet.clear();
         int index = 0;
-        ColumnHeaderLayout comparisonLayout=null;
+        ColumnHeaderLayout comparisonLayout = null;
         for (QuantDiseaseGroupsComparison comparison : selectedComparisonsList) {
             comparisonLayout = new ColumnHeaderLayout(comparison, index) {
 
@@ -237,7 +260,18 @@ public class ProteinTable extends VerticalLayout {
                     sortOnComparison(up, index);
                 }
 
+                @Override
+                public void dropComparison(QuantDiseaseGroupsComparison comparison) {
+                    ProteinTable.this.dropComparison(comparison);
+                }
+
+                @Override
+                public void filterTable(QuantDiseaseGroupsComparison comparison, int comparisonIndex, Set<Object> filterSet) {
+                    filterTableSelection(comparison, comparisonIndex, filterSet);
+                }
+
             };
+            filtersMap.put(comparison, null);
             index++;
             topComparisonsContainer.addComponent(comparisonLayout);
             columnHeaderSet.add(comparisonLayout);
@@ -248,4 +282,66 @@ public class ProteinTable extends VerticalLayout {
         }
     }
 
+    public abstract void dropComparison(QuantDiseaseGroupsComparison index);
+
+    private boolean isFiltered = false;
+
+    private void filterTableSelection(QuantDiseaseGroupsComparison comparison, int comparisonIndex, Set<Object> filters) {
+        if (filters == null || filters.isEmpty()) {
+            filters = null;
+        }
+        if (comparison == null) {
+            filtersMap.keySet().stream().forEach((com) -> {
+                filtersMap.put(com, null);               
+            });
+             if (isFiltered) {
+                    isFiltered = false;
+                }
+                else{
+                    return;
+                }
+        } else {
+
+            filtersMap.remove(comparison);
+            filtersMap.put(comparison, filters);
+            isFiltered = true;
+
+        }
+        Set<String> filteredProteinsList = new LinkedHashSet<>(this.tableProteinsToIDMap.keySet());
+
+        for (QuantDiseaseGroupsComparison i : filtersMap.keySet()) {
+
+            if (filtersMap.get(i) != null) {
+                filteredProteinsList = filter(filteredProteinsList, i, filtersMap.get(i));
+
+            }
+
+        }
+
+        mainProteinTable.removeAllItems();
+        for (String accession : filteredProteinsList) {
+            Object itemId = tableProteinsToIDMap.get(accession);
+            Object[] items = tableItemsMap.get(itemId);
+            mainProteinTable.addItem(items, itemId);
+
+        }
+        if (mainProteinTable.getItemIds().size() == tableItemsMap.size()) {
+            isFiltered = false;
+        }
+
+    }
+
+    private Set<String> filter(Set<String> proteinsList, QuantDiseaseGroupsComparison comparison, Set<Object> filters) {
+        if (filters == null || filters.isEmpty()) {
+            return proteinsList;
+        }
+        Set<String> updatedProteinsList = new LinkedHashSet<>();
+        filters.stream().map((filter) -> (comparison.getProteinsByTrendMap().get((Integer) filter))).forEach((tempList) -> {
+            tempList.stream().filter((protein) -> (proteinsList.contains(protein.getProteinAccession()))).forEach((protein) -> {
+                updatedProteinsList.add(protein.getProteinAccession());
+            });
+        });
+        return updatedProteinsList;
+
+    }
 }

@@ -67,6 +67,7 @@ public class LineChart extends AbsoluteLayout {
     private final ChartRenderingInfo chartRenderingInfo = new ChartRenderingInfo();
     private ExternalResource minImgUrl, maxImgUrl;
     private final Map<String, TrendSymbol> symbolMap;
+    private final List<Integer> comparisonTrends;
 
     public LineChart(int width, int height) {
 
@@ -76,6 +77,7 @@ public class LineChart extends AbsoluteLayout {
         this.setHeight(100, Unit.PERCENTAGE);
 
         this.symbolMap = new LinkedHashMap<>();
+        this.comparisonTrends = new ArrayList<>();
 
         chartImg = new Image();
         this.addStyleName("slowslide");
@@ -89,6 +91,10 @@ public class LineChart extends AbsoluteLayout {
 
         this.addComponent(chartComponentsLayout, "left: " + 0 + "px; top: " + 0 + "px;");
 
+    }
+
+    public int getComparisonTrend(int comparisonIndex) {
+        return comparisonTrends.get(comparisonIndex);
     }
 
     private String proteinKey;
@@ -105,6 +111,7 @@ public class LineChart extends AbsoluteLayout {
 
     private JFreeChart generateLineChart(Set<QuantDiseaseGroupsComparison> selectedComparisonList, String key) {
 
+        comparisonTrends.clear();
         DefaultXYDataset dataset = new DefaultXYDataset();
         int compNumber = selectedComparisonList.size();
 
@@ -122,13 +129,23 @@ public class LineChart extends AbsoluteLayout {
         for (QuantDiseaseGroupsComparison comparison : selectedComparisonList) {
             String keyI = 0 + "_" + key;
             String keyII = 1 + "_" + key;
+            String keyIII = 2 + "_" + key;
             trendValue = 0.0;
 
             if (comparison.getQuantComparisonProteinMap().containsKey(keyI)) {
 
                 trendValue = comparison.getQuantComparisonProteinMap().get(keyI).getOverallCellPercentValue();
+                comparisonTrends.add(comparison.getQuantComparisonProteinMap().get(keyI).getSignificantTrindCategory());
             } else if (comparison.getQuantComparisonProteinMap().containsKey(keyII)) {
                 trendValue = comparison.getQuantComparisonProteinMap().get(keyII).getOverallCellPercentValue();
+
+                comparisonTrends.add(comparison.getQuantComparisonProteinMap().get(keyII).getSignificantTrindCategory());
+            } else if (comparison.getQuantComparisonProteinMap().containsKey(keyIII)) {
+                trendValue = comparison.getQuantComparisonProteinMap().get(keyIII).getOverallCellPercentValue();
+                comparisonTrends.add(comparison.getQuantComparisonProteinMap().get(keyIII).getSignificantTrindCategory());
+            } else {
+
+                comparisonTrends.add(6);
             }
 
             xLineValues[comparisonIndex] = comparisonIndex;
@@ -496,7 +513,7 @@ public class LineChart extends AbsoluteLayout {
             lineChart.getXYPlot().getRangeAxis().setVisible(false);
             lineChart.getXYPlot().setOutlineVisible(false);
             lineChart.getXYPlot().setRangeGridlinesVisible(true);
-            lineChart.getXYPlot().setDomainGridlinesVisible(true);            
+            lineChart.getXYPlot().setDomainGridlinesVisible(true);
             maxImgUrl = new ExternalResource(this.getChartImage(lineChart, chartRenderingInfo, width, height));
             initLayoutComponents("maxmize");
             chartImg.setSource(maxImgUrl);
@@ -543,7 +560,8 @@ public class LineChart extends AbsoluteLayout {
 
     }
 
-    private String[] tooltipsIcon = new String[]{"All Increased","Most Increased","Equal","Most Decreased","All Decreased","No Data Available "};
+    private String[] tooltipsIcon = new String[]{"All Increased", "Most Increased", "Equal", "Most Decreased", "All Decreased", "No Data Available "};
+
     private void initLayoutComponents(String mode) {
         if (mode.equalsIgnoreCase("minimize")) {
             for (int i = 0; i < chartRenderingInfo.getEntityCollection().getEntityCount(); i++) {
@@ -557,7 +575,6 @@ public class LineChart extends AbsoluteLayout {
                     double doubleTrend = (Double) comparisonPoint.getDataset().getY(0, comparisonPoint.getItem());
                     double comparisonIndex = ((Double) comparisonPoint.getDataset().getX(0, comparisonPoint.getItem()));
                     QuantDiseaseGroupsComparison gc = (QuantDiseaseGroupsComparison) selectedComparisonList.toArray()[(int) comparisonIndex];
-                    String paramName = "GroupsComparison";
                     String keyI = 0 + "_" + proteinKey;
                     String keyII = 1 + "_" + proteinKey;
                     if (doubleTrend == 0.0) {
@@ -584,7 +601,7 @@ public class LineChart extends AbsoluteLayout {
                     square.addParam(mode, position);
                     chartComponentsLayout.addComponent(square, "left: " + (xSer - 3) + "px; top: " + (ySer) + "px;");
                     this.symbolMap.put(doubleTrend + "," + comparisonIndex, square);
-                    String tooltip = gc.getComparisonFullName()+"<br/>"+ gc.getDiseaseCategory()+"<br/>Overall trend "+tooltipsIcon[trend]+"<br/>Datasets included: "+ gc.getDatasetMap().size();
+                    String tooltip = gc.getComparisonFullName() + "<br/>" + gc.getDiseaseCategory() + "<br/>Overall trend " + tooltipsIcon[trend] + "<br/>Datasets included: " + gc.getDatasetMap().size();
                     square.setDescription(tooltip);
 
 //
