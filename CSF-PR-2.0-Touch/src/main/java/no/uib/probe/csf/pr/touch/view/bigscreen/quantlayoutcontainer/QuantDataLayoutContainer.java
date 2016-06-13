@@ -13,6 +13,7 @@ import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
 import no.uib.probe.csf.pr.touch.view.components.BubbleChartComponent;
 import no.uib.probe.csf.pr.touch.view.components.HeatMapComponent;
 import no.uib.probe.csf.pr.touch.view.components.LineChartProteinTableComponent;
+import no.uib.probe.csf.pr.touch.view.components.PeptideViewComponent;
 import no.uib.probe.csf.pr.touch.view.components.QuantInitialLayout;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 import no.uib.probe.csf.pr.touch.view.core.ViewControlPanel;
@@ -27,7 +28,7 @@ import no.uib.probe.csf.pr.touch.view.core.ViewControlPanel;
  */
 public class QuantDataLayoutContainer extends ViewControlPanel {
 
-    private final VerticalLayout heatmapViewContainer, heatmapToolsContainer, bubblechartViewContainer, bubblechartToolsContainer, linechartViewContainer, linechartToolsContainer;
+    private final VerticalLayout heatmapViewContainer, heatmapToolsContainer, bubblechartViewContainer, bubblechartToolsContainer, linechartViewContainer, linechartToolsContainer, peptidesViewContainer, peptidesToolsContainer;
     private final ImageContainerBtn heatmapBtn, bubblechartBtn, linechartBtn, peptideInfoBtn;
     private final Data_Handler Data_handler;
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
@@ -81,6 +82,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
         heatmapBtn.updateIcon(new ThemeResource("img/logo.png"));
         heatmapBtn.setWidth(100, Unit.PIXELS);
         heatmapBtn.setHeight(100, Unit.PIXELS);
+        
 
         mainViewPanelHeight = height;
         mainViewPanelWidth = width - 220;
@@ -115,7 +117,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
                 processFunction("linechart");
             }
         };
-        linechartBtn.updateIcon(new ThemeResource("img/table.png"));
+        linechartBtn.updateIcon(new ThemeResource("img/logo.png"));
         linechartBtn.setWidth(100, Unit.PIXELS);
         linechartBtn.setHeight(100, Unit.PIXELS);
 
@@ -135,7 +137,13 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
         peptideInfoBtn.updateIcon(new ThemeResource("img/logo.png"));
         peptideInfoBtn.setWidth(100, Unit.PIXELS);
         peptideInfoBtn.setHeight(100, Unit.PIXELS);
-        this.addButton(peptideInfoBtn, new VerticalLayout(), null, false);
+        
+         peptidesViewContainer = new VerticalLayout();
+        peptidesViewContainer.setWidth(mainViewPanelWidth, Unit.PIXELS);
+        peptidesToolsContainer = new VerticalLayout();
+        
+        
+        this.addButton(peptideInfoBtn,  peptidesViewContainer, peptidesToolsContainer, false);
 
         ///init bubble chart container
         BubbleChartComponent bubblechartComponent = new BubbleChartComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight, null) {
@@ -144,11 +152,15 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
             public void updateIcon(String imageUrl) {
                 if (imageUrl == null) {
                     bubblechartBtn.updateIcon(new ThemeResource("img/logo.png"));
+                    linechartBtn.updateIcon(new ThemeResource("img/logo.png"));
                     bubblechartBtn.setEnabled(false);
+                    linechartBtn.setEnabled(false);
                     return;
                 }
                 bubblechartBtn.setEnabled(true);
                 bubblechartBtn.updateIcon(new ExternalResource(imageUrl));
+                linechartBtn.updateIcon(new ThemeResource("img/proteintableicon.png"));
+                linechartBtn.setEnabled(true);
             }
 
         };
@@ -160,6 +172,22 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
         linechartViewContainer.addComponent(lineChartProteinTableComponent);
         linechartToolsContainer.addComponent(lineChartProteinTableComponent.getControlBtnsContainer());
         linechartToolsContainer.setComponentAlignment(lineChartProteinTableComponent.getControlBtnsContainer(), Alignment.TOP_RIGHT);
+        
+        
+        
+        PeptideViewComponent peptideViewComponent = new PeptideViewComponent(CSFPR_Central_Manager,mainViewPanelWidth, mainViewPanelHeight, null);
+        peptidesViewContainer.addComponent(peptideViewComponent);
+         linechartToolsContainer.addComponent(peptideViewComponent.getControlBtnsContainer());
+        linechartToolsContainer.setComponentAlignment(peptideViewComponent.getControlBtnsContainer(), Alignment.TOP_RIGHT);
+        
+        
+        
+        
+        
+        
+        
+        
+        
     }
 
     private void processFunction(String btnId) {
@@ -180,6 +208,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
                 @Override
                 public void updateIcon(String imageUrl) {
                     heatmapBtn.updateIcon(new ExternalResource(imageUrl));
+                    heatmapBtn.setEnabled(true);
                 }
 
                 @Override

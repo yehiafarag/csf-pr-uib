@@ -70,7 +70,7 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
 
         VerticalLayout labelContainer = new VerticalLayout();
         Label headerLabel = new Label("Drop the comparison");
-        headerLabel.setStyleName(ValoTheme.LABEL_COLORED);
+        headerLabel.setStyleName(ValoTheme.LABEL_SUCCESS);
         headerLabel.addStyleName(ValoTheme.LABEL_SMALL);
         headerLabel.addStyleName(ValoTheme.LABEL_TINY);
         headerLabel.addStyleName("pointer");

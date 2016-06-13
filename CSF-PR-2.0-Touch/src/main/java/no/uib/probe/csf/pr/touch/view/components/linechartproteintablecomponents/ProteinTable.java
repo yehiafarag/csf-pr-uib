@@ -1,23 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.view.components.linechartproteintablecomponents;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.server.ExternalResource;
-import com.vaadin.server.ThemeResource;
-import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.shared.ui.table.TableState;
+import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Notification;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -27,12 +26,22 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.view.core.ColumnHeaderLayout;
 import no.uib.probe.csf.pr.touch.view.core.ExternalLink;
 import no.uib.probe.csf.pr.touch.view.core.ProteinTrendLayout;
+import org.apache.commons.codec.binary.Base64;
+import org.jfree.chart.ChartRenderingInfo;
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.xy.DefaultXYDataset;
+import org.jfree.util.ShapeUtilities;
 
 /**
  *
  * @author Yehia Farag
+ *
+ * this class represents quant protein table container
  */
-public abstract class ProteinTable extends VerticalLayout {
+public abstract class ProteinTable extends VerticalLayout implements Property.ValueChangeListener{
 
     private boolean selectedOnly = false;
 
@@ -44,13 +53,15 @@ public abstract class ProteinTable extends VerticalLayout {
     private final int availableProteinLayoutWidth;
     /* This set contains the ids of the "selected" items */
     private final Set<Object> selectedItemIds = new HashSet<>();
-    private final ThemeResource checkedRes = new ThemeResource("img/checked.png");
-    private final ThemeResource checkedAppliedRes = new ThemeResource("img/checked_applied.png");
     private final Table mainProteinTable;
     private final HorizontalLayout topComparisonsContainer;
     private final Map<QuantDiseaseGroupsComparison, Set<Object>> filtersMap;
-    private Set<QuantComparisonProtein> selectedProteinsList;
 
+    /**
+     * filter table items to view only user protein selection
+     *
+     * @param selectedProteinsList
+     */
     public void filterTable(Set<QuantComparisonProtein> selectedProteinsList) {
         selectedItemIds.clear();
         selectedProteinsList.stream().forEach((protein) -> {
@@ -61,6 +72,9 @@ public abstract class ProteinTable extends VerticalLayout {
 
     }
 
+    /**
+     * Remove all applied columns filters
+     */
     public void clearColumnFilters() {
         filterTableSelection(null, 1, null);
         columnHeaderSet.stream().forEach((comparisonLayout) -> {
@@ -68,6 +82,9 @@ public abstract class ProteinTable extends VerticalLayout {
         });
     }
 
+    /**
+     * update sorting buttons to filter buttons
+     */
     public void switchHeaderBtns() {
 
         columnHeaderSet.stream().forEach((comparisonLayout) -> {
@@ -76,6 +93,12 @@ public abstract class ProteinTable extends VerticalLayout {
 
     }
 
+    /**
+     * Sort table based on specific comparison
+     *
+     * @param upSort
+     * @param comparisonIndex
+     */
     public void sortOnComparison(boolean upSort, int comparisonIndex) {
 
         int index = 0;
@@ -94,10 +117,19 @@ public abstract class ProteinTable extends VerticalLayout {
 
     }
 
+    /**
+     *
+     * @param width
+     * @param height
+     */
     public ProteinTable(int width, int height) {
+
+        this.setWidth(100, Unit.PERCENTAGE);
+        this.setHeightUndefined();
 
         this.columnHeaderSet = new LinkedHashSet<>();
         this.filtersMap = new LinkedHashMap<>();
+
         HorizontalLayout topLayout = new HorizontalLayout();
         topLayout.setWidthUndefined();
         topLayout.setHeight(20, Unit.PIXELS);
@@ -113,14 +145,16 @@ public abstract class ProteinTable extends VerticalLayout {
 
         this.addComponent(topLayout);
 
-        this.mainProteinTable = new Table();
-        mainProteinTable.setHeight(height - 22, Unit.PIXELS);
+        this.mainProteinTable = new Table() {         
+        };
+        this.mainProteinTable.addValueChangeListener(ProteinTable.this);
+        this.mainProteinTable.addStyleName(ValoTheme.TABLE_SMALL);
+        this.mainProteinTable.setHeight(height - 22, Unit.PIXELS);
         this.addComponent(mainProteinTable);
         this.tableItemsMap = new LinkedHashMap<>();
         this.tableProteinsToIDMap = new HashMap<>();
         tableItemscheckboxMap = new HashMap<>();
-        this.setWidth(100, Unit.PERCENTAGE);
-        this.setHeightUndefined();
+
         mainProteinTable.setSelectable(true);
         mainProteinTable.setSortEnabled(false);
         mainProteinTable.setColumnReorderingAllowed(false);
@@ -211,6 +245,12 @@ public abstract class ProteinTable extends VerticalLayout {
 
     }
 
+    /**
+     * update table selection based on user comparison selection
+     *
+     * @param selectedComparisonsList
+     * @param selectedProteinsList
+     */
     public void updateTableData(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, Set<QuantComparisonProtein> selectedProteinsList) {
 
         tableItemsMap.clear();
@@ -218,7 +258,6 @@ public abstract class ProteinTable extends VerticalLayout {
         tableItemscheckboxMap.clear();
         mainProteinTable.removeAllItems();
         filtersMap.clear();
-        this.selectedProteinsList = selectedProteinsList;
 
         int protId = 0;
         for (QuantComparisonProtein protein : selectedProteinsList) {
@@ -230,7 +269,18 @@ public abstract class ProteinTable extends VerticalLayout {
             }
             ExternalLink accessionObject = new ExternalLink(accession, new ExternalResource(url));
             ExternalLink nameObject = new ExternalLink(name, new ExternalResource(url));
-            ProteinTrendLayout protTrendLayout = new ProteinTrendLayout(selectedComparisonsList, protein, availableProteinLayoutWidth);
+            ProteinTrendLayout protTrendLayout = new ProteinTrendLayout(selectedComparisonsList, protein, availableProteinLayoutWidth, protId) {
+
+                @Override
+                public void selectTableItem(Object itemId) {
+                    if (mainProteinTable.getValue() == itemId) {
+                        mainProteinTable.unselect(itemId);
+                    } else {
+                        mainProteinTable.select(itemId);
+                    }
+                }
+
+            };
             tableItemsMap.put(protId, new Object[]{protId + 1, accessionObject, nameObject, protTrendLayout});
             mainProteinTable.addItem(tableItemsMap.get(protId), protId);
             tableProteinsToIDMap.put(accession, protId);
@@ -246,6 +296,8 @@ public abstract class ProteinTable extends VerticalLayout {
         updateComparisonsHeader(selectedComparisonsList);
 
     }
+
+  
 
     private void updateComparisonsHeader(Set<QuantDiseaseGroupsComparison> selectedComparisonsList) {
         topComparisonsContainer.removeAllComponents();
@@ -282,6 +334,11 @@ public abstract class ProteinTable extends VerticalLayout {
         }
     }
 
+    /**
+     * Drop comparison (un select comparison)
+     *
+     * @param index
+     */
     public abstract void dropComparison(QuantDiseaseGroupsComparison index);
 
     private boolean isFiltered = false;
@@ -292,14 +349,13 @@ public abstract class ProteinTable extends VerticalLayout {
         }
         if (comparison == null) {
             filtersMap.keySet().stream().forEach((com) -> {
-                filtersMap.put(com, null);               
+                filtersMap.put(com, null);
             });
-             if (isFiltered) {
-                    isFiltered = false;
-                }
-                else{
-                    return;
-                }
+            if (isFiltered) {
+                isFiltered = false;
+            } else {
+                return;
+            }
         } else {
 
             filtersMap.remove(comparison);
@@ -344,4 +400,12 @@ public abstract class ProteinTable extends VerticalLayout {
         return updatedProteinsList;
 
     }
+
+    @Override
+    public void valueChange(Property.ValueChangeEvent event) {
+        System.out.println("at selected property is "+ event.getProperty());
+        
+    }
+    
+    public abstract void selectProtein(Set<QuantComparisonProtein> selectedProteinsList);
 }

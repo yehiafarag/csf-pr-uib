@@ -22,8 +22,6 @@ import com.vaadin.ui.VerticalLayout;
 public abstract class ImageContainerBtn extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
     private final Image img;
-    
-
 
     public ImageContainerBtn() {
         img = new Image();
@@ -53,8 +51,8 @@ public abstract class ImageContainerBtn extends VerticalLayout implements Layout
 
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-   
-            onClick();
+
+        onClick();
     }
 
     public void blink() {
@@ -70,5 +68,15 @@ public abstract class ImageContainerBtn extends VerticalLayout implements Layout
     }
 
     public abstract void onClick();
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        if (enabled) {
+            this.removeStyleName("unapplied");
+        } else {
+            this.addStyleName("unapplied");
+        }
+        super.setEnabled(enabled); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }

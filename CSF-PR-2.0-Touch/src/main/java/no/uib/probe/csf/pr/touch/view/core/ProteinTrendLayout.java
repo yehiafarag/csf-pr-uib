@@ -1,8 +1,12 @@
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.event.LayoutEvents;
+import com.vaadin.server.ExternalResource;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.absolutelayout.AbsoluteLayoutState;
 import com.vaadin.ui.AbsoluteLayout;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.VerticalLayout;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
@@ -14,7 +18,7 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
  * this class represents protein trend (spark line ) required for quant protein
  * table
  */
-public class ProteinTrendLayout extends AbsoluteLayout implements Comparable<ProteinTrendLayout> {
+public abstract class ProteinTrendLayout extends AbsoluteLayout implements Comparable<ProteinTrendLayout>,LayoutEvents.LayoutClickListener {
 
     private final String proteinKey;
     private final Set<QuantDiseaseGroupsComparison> selectedComparisonsList;
@@ -22,6 +26,9 @@ public class ProteinTrendLayout extends AbsoluteLayout implements Comparable<Pro
     private int initSparkline = 0;
     private final int width;
     private QuantComparisonProtein sortableProtein;
+    private final VerticalLayout maxMinBtn;
+    private final  VerticalLayout sparkLineContainer ;
+    private Object itemId;
 
     public void setSortableColumnIndex(int comparisonIndex) {
         QuantDiseaseGroupsComparison comp = (QuantDiseaseGroupsComparison) selectedComparisonsList.toArray()[comparisonIndex];
@@ -35,15 +42,10 @@ public class ProteinTrendLayout extends AbsoluteLayout implements Comparable<Pro
             sortableProtein = null;
         }
     }
-    public int getComparisonTrend(int comparisonIndex){
-        if(sparkLine== null){
-         return 6;
-        }
-        return sparkLine.getComparisonTrend(comparisonIndex);
-    
-    }
+  
 
-    public ProteinTrendLayout(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, QuantComparisonProtein selectedProtein, int width) {
+    public ProteinTrendLayout(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, QuantComparisonProtein selectedProtein, int width,Object itemId) {
+        this.itemId = itemId;
         this.selectedComparisonsList = selectedComparisonsList;
         proteinKey = selectedProtein.getProteinAccession();
         QuantDiseaseGroupsComparison comp = (QuantDiseaseGroupsComparison) selectedComparisonsList.toArray()[selectedComparisonsList.size() - 1];
@@ -61,8 +63,27 @@ public class ProteinTrendLayout extends AbsoluteLayout implements Comparable<Pro
         this.setHeight(100, Unit.PIXELS);
         this.addStyleName("slowslide");
         this.setStyleName("proteintrendcell");
+        
+         sparkLineContainer = new VerticalLayout();
+         sparkLineContainer.setSizeFull();
+         this.addComponent(sparkLineContainer, "left: " + 0 + "px; top: " + 0 + "px;");
+         sparkLineContainer.addLayoutClickListener(ProteinTrendLayout.this);
 
-        this.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+        VerticalLayout resizeIconLayout = new VerticalLayout();
+        resizeIconLayout.setWidth(100, Unit.PERCENTAGE);
+        resizeIconLayout.setHeight(20, Unit.PIXELS);
+        this.addComponent(resizeIconLayout, "left: " + 0 + "px; top: " + 0 + "px;");
+
+        maxMinBtn = new VerticalLayout();
+        maxMinBtn.setWidth(20, Unit.PIXELS);
+        maxMinBtn.setHeight(20, Unit.PIXELS);
+        maxMinBtn.setMargin(new MarginInfo(false, false, false, false));
+        maxMinBtn.setStyleName("maxmizebtn");
+
+        resizeIconLayout.addComponent(maxMinBtn);
+        resizeIconLayout.setComponentAlignment(maxMinBtn, Alignment.TOP_RIGHT);
+
+        maxMinBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
             private boolean max = false;
 
@@ -71,8 +92,10 @@ public class ProteinTrendLayout extends AbsoluteLayout implements Comparable<Pro
                 if (max) {
                     setHeight(100, Unit.PIXELS);
                     sparkLine.minimize();
+                    maxMinBtn.setStyleName("maxmizebtn");
                     max = false;
                 } else {
+                    maxMinBtn.setStyleName("minmizebtn");
                     setHeight(500, Unit.PIXELS);
                     sparkLine.maxmize();
                     max = true;
@@ -81,6 +104,9 @@ public class ProteinTrendLayout extends AbsoluteLayout implements Comparable<Pro
 
             }
         });
+        
+     
+        
 
     }
 
@@ -92,7 +118,7 @@ public class ProteinTrendLayout extends AbsoluteLayout implements Comparable<Pro
             initSparkline++;
             sparkLine = new LineChart(width, 500);
             sparkLine.updateData(selectedComparisonsList, proteinKey);
-            this.addComponent(sparkLine);
+            sparkLineContainer.addComponent(sparkLine);
         }
         initSparkline++;
         return super.getState();
@@ -136,5 +162,15 @@ public class ProteinTrendLayout extends AbsoluteLayout implements Comparable<Pro
         return (v1).compareTo(v2);
 
     }
+
+    @Override
+    public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+        selectTableItem(itemId);
+    }
+    
+    
+    public abstract void selectTableItem(Object itemId);
+    
+    
 
 }

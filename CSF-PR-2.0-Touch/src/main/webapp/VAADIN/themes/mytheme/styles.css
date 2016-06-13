@@ -282,9 +282,7 @@
 }
 @keyframes blink { 
     50% {        border-color: orange; 
-                 box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
-                 -webkit-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
-                 -moz-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+                 border-width:2px;
 
                  /* CSS3 Transition */
                  -webkit-transition: all .5s ease-in-out;
@@ -295,9 +293,7 @@
 }
 @keyframes blinkII { 
     50% {        border-color: orange; 
-                 box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
-                 -webkit-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
-                 -moz-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+                 border-width:2px;
 
                  /* CSS3 Transition */
                  -webkit-transition: all .5s ease-in-out;
@@ -13231,7 +13227,7 @@ div.v-layout.v-horizontal.v-widget {
     background-color:whitesmoke;
     margin-right: 20px;
     cursor: pointer;   
-    border:1px solid lightgray;
+    border:2px solid lightgray;
     border-radius: 4px;
     padding: 5px;
 
@@ -14482,4 +14478,19 @@ div.v-layout.v-horizontal.v-widget {
     background-repeat:no-repeat;
     background-size:13px;
     cursor:pointer;
+}
+.maxmizebtn{
+      background-image: url(img/expand-full.png) !important;
+      background-repeat:no-repeat;
+      background-size:contain;
+      background-color:whitesmoke;
+      border:1px solid lightgray;
+      cursor:pointer;
+}
+.minmizebtn{
+      background-image: url(img/min-full.png) !important;
+       background-repeat:no-repeat;
+      background-size:contain;
+      background-color:whitesmoke;
+      border:1px solid lightgray;
 }

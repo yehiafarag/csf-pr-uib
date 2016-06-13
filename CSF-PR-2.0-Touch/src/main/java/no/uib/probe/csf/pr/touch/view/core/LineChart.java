@@ -107,6 +107,8 @@ public class LineChart extends AbsoluteLayout {
     }
 
     private boolean verticalLabels;
+
+   
     private Set<QuantDiseaseGroupsComparison> selectedComparisonList;
 
     private JFreeChart generateLineChart(Set<QuantDiseaseGroupsComparison> selectedComparisonList, String key) {
@@ -120,7 +122,8 @@ public class LineChart extends AbsoluteLayout {
         double[] xLineValues = new double[compNumber];
         double[] yLineValues = new double[compNumber];
 
-        double trendValue = 0.0;
+        double trendValue;
+
         int comparisonIndex = 0;
 
         String[] xAxisLabels = new String[selectedComparisonList.size()];
@@ -471,7 +474,6 @@ public class LineChart extends AbsoluteLayout {
 
                 super.drawRangeTickBands(g2, up, updatedTicksList); //To change body of generated methods, choose Tools | Templates.
             }
-            private int x = 0;
 
         };
         if (custTrend != -1) {
@@ -551,6 +553,7 @@ public class LineChart extends AbsoluteLayout {
 
         String base64 = "";
         try {
+
             base64 = "data:image/png;base64," + Base64.encodeBase64String(ChartUtilities.encodeAsPNG(chart.createBufferedImage((int) width, (int) height, chartRenderingInfo)));
 
         } catch (IOException ex) {
@@ -560,7 +563,7 @@ public class LineChart extends AbsoluteLayout {
 
     }
 
-    private String[] tooltipsIcon = new String[]{"All Increased", "Most Increased", "Equal", "Most Decreased", "All Decreased", "No Data Available "};
+    private final String[] tooltipsIcon = new String[]{"All Increased", "Most Increased", "Equal", "Most Decreased", "All Decreased", "No Data Available "};
 
     private void initLayoutComponents(String mode) {
         if (mode.equalsIgnoreCase("minimize")) {
@@ -632,9 +635,9 @@ public class LineChart extends AbsoluteLayout {
 
     private void updateComponentLayout(String mode) {
         chartComponentsLayout.removeAllComponents();
-        for (TrendSymbol square : symbolMap.values()) {
+        symbolMap.values().stream().forEach((square) -> {
             chartComponentsLayout.addComponent(square, ((ComponentPosition) square.getParam(mode)).getCSSString());
-        }
+        });
         chartComponentsLayout.markAsDirty();
 
     }
