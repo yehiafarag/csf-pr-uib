@@ -7,9 +7,12 @@ package no.uib.probe.csf.pr.touch.view.components;
 
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.VerticalLayout;
+import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFListener;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
+import no.uib.probe.csf.pr.touch.view.core.LineChart;
+import no.uib.probe.csf.pr.touch.view.core.StudiesLineChart;
 import no.uib.probe.csf.pr.touch.view.core.TrendLegend;
 
 /**
@@ -21,10 +24,12 @@ import no.uib.probe.csf.pr.touch.view.core.TrendLegend;
  * second component consist of table of comparisons and peptides sequences for
  * each protein
  */
-public class PeptideViewComponent extends VerticalLayout implements CSFListener{
+public class PeptideViewComponent extends VerticalLayout implements CSFListener {
 
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
     private final VerticalLayout controlBtnsContainer;
+
+    private StudiesLineChart lineChart;
 
     public VerticalLayout getControlBtnsContainer() {
         return controlBtnsContainer;
@@ -34,46 +39,39 @@ public class PeptideViewComponent extends VerticalLayout implements CSFListener{
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeight(height, Unit.PIXELS);
-        VerticalLayout mainBodyContainer=new VerticalLayout();
+        VerticalLayout mainBodyContainer = new VerticalLayout();
         mainBodyContainer.setSpacing(true);
-        mainBodyContainer.setWidth(100,Unit.PERCENTAGE);
-        mainBodyContainer.setHeightUndefined();        
+        mainBodyContainer.setWidth(100, Unit.PERCENTAGE);
+        mainBodyContainer.setHeightUndefined();
         this.addComponent(mainBodyContainer);
-        
-          
+
         TrendLegend legendLayout = new TrendLegend("linechart");
         legendLayout.setWidthUndefined();
         legendLayout.setHeight(24, Unit.PIXELS);
         mainBodyContainer.addComponent(legendLayout);
         mainBodyContainer.setComponentAlignment(legendLayout, Alignment.MIDDLE_RIGHT);
-        
-        
+
         VerticalLayout topLayout = new VerticalLayout();
-        width=width-50;
-        topLayout.setWidth(width,Unit.PIXELS);
-        topLayout.setHeight(500,Unit.PIXELS);
+        width = width - 50;
+        topLayout.setWidth(width, Unit.PIXELS);
+        topLayout.setHeight(500, Unit.PIXELS);
         topLayout.addStyleName("roundedborder");
         topLayout.addStyleName("whitelayout");
-        
+
         mainBodyContainer.addComponent(topLayout);
-        mainBodyContainer.setComponentAlignment(topLayout, Alignment.MIDDLE_CENTER);
-        
-        
-        
-        
+        mainBodyContainer.setComponentAlignment(topLayout, Alignment.TOP_CENTER);
+        lineChart = new StudiesLineChart(width - 50, 450);
+
+        topLayout.addComponent(lineChart);
+
         VerticalLayout bottomLayout = new VerticalLayout();
-        bottomLayout.setWidth(width,Unit.PIXELS);
-        bottomLayout.setHeight(500,Unit.PIXELS);
+        bottomLayout.setWidth(width, Unit.PIXELS);
+        bottomLayout.setHeight(500, Unit.PIXELS);
         bottomLayout.addStyleName("roundedborder");
         bottomLayout.addStyleName("whitelayout");
-        
+
         mainBodyContainer.addComponent(bottomLayout);
         mainBodyContainer.setComponentAlignment(bottomLayout, Alignment.MIDDLE_CENTER);
-        
-        
-        
-        
-      
 
         //end of toplayout
         //start chart layout
@@ -90,13 +88,7 @@ public class PeptideViewComponent extends VerticalLayout implements CSFListener{
 //        bodyContainer.setComponentAlignment(tableLayoutFrame, Alignment.MIDDLE_CENTER);
 //        height = height - 40;
 //        width = width - 60;
-        
-        
-        
-        
-        
-        
-        
+        CSFPR_Central_Manager.registerListener(PeptideViewComponent.this);
 
         //init side control btns layout 
         controlBtnsContainer = new VerticalLayout();
@@ -107,11 +99,18 @@ public class PeptideViewComponent extends VerticalLayout implements CSFListener{
 
     @Override
     public void selectionChanged(String type) {
-        
-        
-        
-        
-        
+
+        if (type.equalsIgnoreCase("peptide_selection")) {
+            updateData(CSFPR_Central_Manager.getSelectedComparisonsList(), CSFPR_Central_Manager.getSelectedProteinAccession());
+
+        }
+
+    }
+
+    private void updateData(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, String proteinKey) {
+        lineChart.updateData(selectedComparisonsList, proteinKey);
+
+        System.out.println("selected protein is " + CSFPR_Central_Manager.getSelectedProteinAccession());
     }
 
     @Override
@@ -123,18 +122,5 @@ public class PeptideViewComponent extends VerticalLayout implements CSFListener{
     public void removeFilterValue(String value) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
 }

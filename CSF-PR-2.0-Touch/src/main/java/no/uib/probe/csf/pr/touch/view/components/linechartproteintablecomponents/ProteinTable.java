@@ -41,7 +41,7 @@ import org.jfree.util.ShapeUtilities;
  *
  * this class represents quant protein table container
  */
-public abstract class ProteinTable extends VerticalLayout implements Property.ValueChangeListener{
+public abstract class ProteinTable extends VerticalLayout implements Property.ValueChangeListener {
 
     private boolean selectedOnly = false;
 
@@ -145,7 +145,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
 
         this.addComponent(topLayout);
 
-        this.mainProteinTable = new Table() {         
+        this.mainProteinTable = new Table() {
         };
         this.mainProteinTable.addValueChangeListener(ProteinTable.this);
         this.mainProteinTable.addStyleName(ValoTheme.TABLE_SMALL);
@@ -297,8 +297,6 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
 
     }
 
-  
-
     private void updateComparisonsHeader(Set<QuantDiseaseGroupsComparison> selectedComparisonsList) {
         topComparisonsContainer.removeAllComponents();
         columnHeaderSet.clear();
@@ -403,9 +401,14 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
 
     @Override
     public void valueChange(Property.ValueChangeEvent event) {
-        System.out.println("at selected property is "+ event.getProperty());
-        
+        String value = null;
+        ExternalLink link = (ExternalLink) mainProteinTable.getItem(event.getProperty().getValue()).getItemProperty("Accession").getValue();
+        if (link != null) {
+            value = link.getCaption();
+        }
+        selectProtein(value);
+
     }
-    
-    public abstract void selectProtein(Set<QuantComparisonProtein> selectedProteinsList);
+
+    public abstract void selectProtein(String selectedProtein);
 }

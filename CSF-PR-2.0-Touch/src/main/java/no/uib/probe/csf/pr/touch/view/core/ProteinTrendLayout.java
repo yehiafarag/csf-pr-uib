@@ -1,7 +1,6 @@
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.event.LayoutEvents;
-import com.vaadin.server.ExternalResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.absolutelayout.AbsoluteLayoutState;
 import com.vaadin.ui.AbsoluteLayout;
@@ -28,7 +27,7 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
     private QuantComparisonProtein sortableProtein;
     private final VerticalLayout maxMinBtn;
     private final  VerticalLayout sparkLineContainer ;
-    private Object itemId;
+    private final Object itemId;
 
     public void setSortableColumnIndex(int comparisonIndex) {
         QuantDiseaseGroupsComparison comp = (QuantDiseaseGroupsComparison) selectedComparisonsList.toArray()[comparisonIndex];

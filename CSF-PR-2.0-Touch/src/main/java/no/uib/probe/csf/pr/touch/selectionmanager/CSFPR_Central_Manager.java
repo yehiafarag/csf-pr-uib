@@ -22,8 +22,9 @@ public class CSFPR_Central_Manager implements Serializable {
     public Set<QuantComparisonProtein> getSelectedProteinsList() {
         return selectedProteinsList;
     }
-    private  Set<QuantComparisonProtein> selectedProteinsList;
+    private Set<QuantComparisonProtein> selectedProteinsList;
     private Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> equalComparisonMap;
+    private String selectedProteinAccession;
 
     public CSFPR_Central_Manager() {
         Listeners_Map = new LinkedHashMap<>();
@@ -57,14 +58,22 @@ public class CSFPR_Central_Manager implements Serializable {
 
     }
 
+    public String getSelectedProteinAccession() {
+        return selectedProteinAccession;
+    }
+
     /**
      * selection in registered component
      *
      * @param selection selection
      */
     public void selectionAction(CSFSelection selection) {
-        this.selectedComparisonsList = selection.getSelectedComparisonsList();
-        this.selectedProteinsList=selection.getSelectedProteinsList();
+        if (selection.getType().equalsIgnoreCase("peptide_selection")) {
+            selectedProteinAccession=selection.getSelectedProteinAccession();
+        } else {
+            this.selectedComparisonsList = selection.getSelectedComparisonsList();
+            this.selectedProteinsList = selection.getSelectedProteinsList();
+        }
         SelectionChanged(selection.getType());
 
     }

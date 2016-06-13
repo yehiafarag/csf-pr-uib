@@ -29,6 +29,10 @@ public class QuantComparisonProtein implements Serializable {
     private final int uniqueId;
     private String sequence;
 
+    public Map<String, List<Integer>> getPatientsNumToDSIDMap() {
+        return patientsNumToDSIDMap;
+    }
+
     public String getProteinName() {
         return proteinName;
     }

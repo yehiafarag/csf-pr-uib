@@ -122,7 +122,12 @@ public class LineChartProteinTableComponent extends VerticalLayout implements CS
             }
 
             @Override
-            public void selectProtein(Set<QuantComparisonProtein> selectedProteinsList) {
+            public void selectProtein(String selectedProtein) {
+               
+                CSFSelection selection = new CSFSelection("peptide_selection", getFilterId(), null, null);
+                selection.setSelectedProteinAccession(selectedProtein);
+                CSFPR_Central_Manager.selectionAction(selection);
+                
                 
             }
             
@@ -250,13 +255,7 @@ public class LineChartProteinTableComponent extends VerticalLayout implements CS
         }
     }
     
-    
-    private void updateSelectionManager(){
-    
-        CSFSelection selection = new CSFSelection("peptide_selection", this.getFilterId(), null, null);
-    
-    }
-    
+   
     
     @Override
     public String getFilterId() {

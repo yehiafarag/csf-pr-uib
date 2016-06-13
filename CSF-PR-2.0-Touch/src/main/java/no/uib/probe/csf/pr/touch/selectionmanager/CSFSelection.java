@@ -16,6 +16,15 @@ public class CSFSelection implements Serializable {
     private final Set<QuantDiseaseGroupsComparison> selectedComparisonsList;
     private final String type;
     private final Set<QuantComparisonProtein> selectedProteinsList;
+    private String selectedProteinAccession;
+
+    public String getSelectedProteinAccession() {
+        return selectedProteinAccession;
+    }
+
+    public void setSelectedProteinAccession(String selectedProteinAccession) {
+        this.selectedProteinAccession = selectedProteinAccession;
+    }
 
     public Set<QuantComparisonProtein> getSelectedProteinsList() {
         return selectedProteinsList;
