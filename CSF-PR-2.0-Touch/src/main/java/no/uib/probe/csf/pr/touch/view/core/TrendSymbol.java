@@ -5,10 +5,8 @@
  */
 package no.uib.probe.csf.pr.touch.view.core;
 
-import com.vaadin.event.LayoutEvents;
 import com.vaadin.ui.VerticalLayout;
 import java.util.HashMap;
-import java.util.HashSet;
 
 /**
  *
@@ -17,15 +15,12 @@ import java.util.HashSet;
  * this class represents Arrow up layout used in protein trend line chart and
  * spark line in quant protein table
  */
-public class TrendSymbol extends VerticalLayout implements LayoutEvents.LayoutClickListener {
+public class TrendSymbol extends VerticalLayout  {
     
     private final HashMap<String, Object> paramMap;
-    private final HashSet<TrendSymbol> subComponents;
     
     public TrendSymbol(int trend) {
         paramMap = new HashMap<>();
-        subComponents = new HashSet<>();
-        this.addLayoutClickListener(TrendSymbol.this);
         switch (trend) {
             case 0:
                 this.setStyleName("arrow-up100");
@@ -63,27 +58,6 @@ public class TrendSymbol extends VerticalLayout implements LayoutEvents.LayoutCl
         return paramMap.get(paramName);
     }
     
-    public void addSubComponent(TrendSymbol subComponent) {
-        this.subComponents.add(subComponent);
-    }
-    
-    @Override
-    public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-        if (this.getStyleName().contains("unapplied")) {
-            this.removeStyleName("unapplied");
-            for (TrendSymbol sub : subComponents) {
-                sub.setVisible(false);
-                
-            }
-            
-        }else if(!subComponents.isEmpty()){
-            this.addStyleName("unapplied");
-             for (TrendSymbol sub : subComponents) {
-                sub.setVisible(true);
-                
-            }
-        
-        }
-    }
+   
     
 }

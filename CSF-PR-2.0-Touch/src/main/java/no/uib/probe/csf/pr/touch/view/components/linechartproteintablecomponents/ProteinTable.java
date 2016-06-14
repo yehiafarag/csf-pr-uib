@@ -256,6 +256,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         tableItemsMap.clear();
         tableProteinsToIDMap.clear();
         tableItemscheckboxMap.clear();
+        this.mainProteinTable.removeValueChangeListener(ProteinTable.this);
         mainProteinTable.removeAllItems();
         filtersMap.clear();
 
@@ -294,6 +295,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
             indexing++;
         }
         updateComparisonsHeader(selectedComparisonsList);
+        this.mainProteinTable.addValueChangeListener(ProteinTable.this);
 
     }
 
