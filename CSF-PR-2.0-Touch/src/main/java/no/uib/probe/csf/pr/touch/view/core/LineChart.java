@@ -6,6 +6,7 @@
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.server.ExternalResource;
+import com.vaadin.server.Resource;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Image;
 import java.awt.BasicStroke;
@@ -514,6 +515,8 @@ public class LineChart extends AbsoluteLayout {
         return jFreeChart;
     }
 
+  
+
     public void maxmize() {
         if (maxImgUrl == null) {
             lineChart.getXYPlot().getDomainAxis().setVisible(true);
@@ -568,8 +571,7 @@ public class LineChart extends AbsoluteLayout {
 
     }
 
-    
-    private final String[] tooltipsIcon = new String[]{"All Increased", "Most Increased", "Equal", "Most Decreased", "All Decreased","No Quant. Info", "No Data Available "};
+    private final String[] tooltipsIcon = new String[]{"All Increased", "Most Increased", "Equal", "Most Decreased", "All Decreased", "No Quant. Info", "No Data Available "};
 
     private void initLayoutComponents(String mode) {
         if (mode.equalsIgnoreCase("minimize")) {

@@ -21,6 +21,7 @@ public class TrendSymbol extends VerticalLayout  {
     
     public TrendSymbol(int trend) {
         paramMap = new HashMap<>();
+        this.addStyleName("slowtransition");
         switch (trend) {
             case 0:
                 this.setStyleName("arrow-up100");

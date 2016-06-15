@@ -1,6 +1,7 @@
 package no.uib.probe.csf.pr.touch.view.components;
 
 import com.vaadin.event.LayoutEvents;
+import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
@@ -32,7 +33,7 @@ import no.uib.probe.csf.pr.touch.view.core.TrendLegend;
  * this class represents both protein table and linechart component the protein
  * line chart represents the overall protein trend across different comparisons
  */
-public class LineChartProteinTableComponent extends VerticalLayout implements CSFListener, LayoutEvents.LayoutClickListener {
+public  class LineChartProteinTableComponent extends VerticalLayout implements CSFListener, LayoutEvents.LayoutClickListener {
     
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
     private final VerticalLayout controlBtnsContainer;
@@ -290,7 +291,6 @@ public class LineChartProteinTableComponent extends VerticalLayout implements CS
         });
         return subAccessionMap;
     }
-    
     
     
     

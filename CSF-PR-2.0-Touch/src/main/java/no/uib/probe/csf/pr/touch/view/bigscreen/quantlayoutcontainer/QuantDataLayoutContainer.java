@@ -1,6 +1,7 @@
 package no.uib.probe.csf.pr.touch.view.bigscreen.quantlayoutcontainer;
 
 import com.vaadin.server.ExternalResource;
+import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
@@ -82,7 +83,6 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
         heatmapBtn.updateIcon(new ThemeResource("img/logo.png"));
         heatmapBtn.setWidth(100, Unit.PIXELS);
         heatmapBtn.setHeight(100, Unit.PIXELS);
-        
 
         mainViewPanelHeight = height;
         mainViewPanelWidth = width - 220;
@@ -137,13 +137,12 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
         peptideInfoBtn.updateIcon(new ThemeResource("img/logo.png"));
         peptideInfoBtn.setWidth(100, Unit.PIXELS);
         peptideInfoBtn.setHeight(100, Unit.PIXELS);
-        
-         peptidesViewContainer = new VerticalLayout();
+
+        peptidesViewContainer = new VerticalLayout();
         peptidesViewContainer.setWidth(mainViewPanelWidth, Unit.PIXELS);
         peptidesToolsContainer = new VerticalLayout();
-        
-        
-        this.addButton(peptideInfoBtn,  peptidesViewContainer, peptidesToolsContainer, false);
+
+        this.addButton(peptideInfoBtn, peptidesViewContainer, peptidesToolsContainer, false);
 
         ///init bubble chart container
         BubbleChartComponent bubblechartComponent = new BubbleChartComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight, null) {
@@ -168,26 +167,28 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
         bubblechartToolsContainer.addComponent(bubblechartComponent.getControlBtnsContainer());
         bubblechartToolsContainer.setComponentAlignment(bubblechartComponent.getControlBtnsContainer(), Alignment.TOP_RIGHT);
 
-        LineChartProteinTableComponent lineChartProteinTableComponent = new LineChartProteinTableComponent(CSFPR_Central_Manager,mainViewPanelWidth, mainViewPanelHeight, null);
+        LineChartProteinTableComponent lineChartProteinTableComponent = new LineChartProteinTableComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight, null);
         linechartViewContainer.addComponent(lineChartProteinTableComponent);
         linechartToolsContainer.addComponent(lineChartProteinTableComponent.getControlBtnsContainer());
         linechartToolsContainer.setComponentAlignment(lineChartProteinTableComponent.getControlBtnsContainer(), Alignment.TOP_RIGHT);
-        
-        
-        
-        PeptideViewComponent peptideViewComponent = new PeptideViewComponent(CSFPR_Central_Manager,mainViewPanelWidth, mainViewPanelHeight, null);
+
+        PeptideViewComponent peptideViewComponent = new PeptideViewComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight, null) {
+
+            @Override
+            public void updateIcon(Resource iconResource) {
+                if (iconResource == null) {
+                    peptideInfoBtn.updateIcon(new ThemeResource("img/logo.png"));
+                } else {
+                    peptideInfoBtn.setEnabled(true);
+                    peptideInfoBtn.updateIcon(iconResource);
+                }
+            }
+
+        };
         peptidesViewContainer.addComponent(peptideViewComponent);
-         linechartToolsContainer.addComponent(peptideViewComponent.getControlBtnsContainer());
-        linechartToolsContainer.setComponentAlignment(peptideViewComponent.getControlBtnsContainer(), Alignment.TOP_RIGHT);
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        peptidesToolsContainer.addComponent(peptideViewComponent.getControlBtnsContainer());
+        peptidesToolsContainer.setComponentAlignment(peptideViewComponent.getControlBtnsContainer(), Alignment.TOP_RIGHT);
+
     }
 
     private void processFunction(String btnId) {
@@ -233,7 +234,6 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
             heatmapViewContainer.setComponentAlignment(heatmapComponent, Alignment.MIDDLE_CENTER);
             heatmapToolsContainer.addComponent(heatmapComponent.getHeatmapToolBtnContainer());
             heatmapToolsContainer.setComponentAlignment(heatmapComponent.getHeatmapToolBtnContainer(), Alignment.TOP_RIGHT);
-
         }
         heatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), Data_handler.getFullQuantDsMap());
 

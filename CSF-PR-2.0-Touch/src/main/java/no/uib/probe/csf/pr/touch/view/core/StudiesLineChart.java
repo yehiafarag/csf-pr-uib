@@ -5,8 +5,8 @@
  */
 package no.uib.probe.csf.pr.touch.view.core;
 
-import com.google.gwt.user.client.rpc.core.java.util.LinkedHashMap_CustomFieldSerializer;
 import com.vaadin.server.ExternalResource;
+import com.vaadin.server.Resource;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Image;
 import java.awt.BasicStroke;
@@ -22,11 +22,14 @@ import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
+import no.uib.probe.csf.pr.touch.logic.AlphanumComparator;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
@@ -42,14 +45,12 @@ import org.jfree.chart.axis.Tick;
 import org.jfree.chart.axis.TickUnit;
 import org.jfree.chart.axis.TickUnits;
 import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.entity.AxisEntity;
 import org.jfree.chart.entity.ChartEntity;
 import org.jfree.chart.entity.XYItemEntity;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.xy.DefaultXYDataset;
-import org.jfree.data.xy.XYSeries;
 import org.jfree.text.TextUtilities;
 import org.jfree.ui.RectangleEdge;
 import org.jfree.ui.RectangleInsets;
@@ -104,6 +105,7 @@ public class StudiesLineChart extends AbsoluteLayout {
     public void updateData(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, String proteinKey) {
         this.proteinKey = proteinKey;
         this.selectedComparisonList = selectedComparisonsList;
+
         this.updateDataset(selectedComparisonsList, proteinKey);
 
         if (lineChart == null) {
@@ -114,13 +116,15 @@ public class StudiesLineChart extends AbsoluteLayout {
             lineChart.getXYPlot().setRangeAxis((ValueAxis) yAxis);
 
         }
+
         rePaintChart();
+        this.orderedComparisonList = getOrderStudiesByTrend();
+
     }
 
     private void rePaintChart() {
         maxImgUrl = new ExternalResource(this.getChartImage(lineChart, chartRenderingInfo, width, height));
         initLayoutComponents();
-//        initSubComparisonsStudies();
         chartImg.setSource(maxImgUrl);
     }
     private DefaultXYDataset dataset;
@@ -441,17 +445,19 @@ public class StudiesLineChart extends AbsoluteLayout {
             if (absTrend != 6) {
                 Point p = new Point(comparisonIndex, absTrend);
                 subComparisonDatasetList.add(p);
-                PopupTrendSymbol symbol = new PopupTrendSymbol(trend);
-                symbol.setWidth(20, Unit.PIXELS);
-                symbol.setHeight(20, Unit.PIXELS);
-                double scale = this.scaleValues(numPatients, maxPatientsNumber, 1, 0);
-//                symbol.setScale(scale);
-
+                TrendSymbol symbol = new TrendSymbol(trend);
+                double scale = Math.max(this.scaleValues(numPatients, maxPatientsNumber, 100, 0), 1);
+                int w = (int) (12 * scale);
+                symbol.setDescription("#Patients:" + numPatients);
+                symbol.setWidth(12, Unit.PIXELS);
+                symbol.setHeight(12, Unit.PIXELS);
+                symbol.addParam("resize", w);
+//                symbol.setScale(scale,numPatients);
                 if (!subComparisonStudiesMap.containsKey(comparisonIndex + "_" + absTrend)) {
                     subComparisonStudiesMap.put(comparisonIndex + "_" + absTrend, new HashSet<>());
 
                 }
-                Set<PopupTrendSymbol> set = subComparisonStudiesMap.get(comparisonIndex + "_" + absTrend);
+                Set<TrendSymbol> set = subComparisonStudiesMap.get(comparisonIndex + "_" + absTrend);
                 set.add(symbol);
                 subComparisonStudiesMap.put(comparisonIndex + "_" + absTrend, set);
 
@@ -464,6 +470,7 @@ public class StudiesLineChart extends AbsoluteLayout {
     private boolean verticalLabels;
 
     private Set<QuantDiseaseGroupsComparison> selectedComparisonList;
+    private Set<QuantDiseaseGroupsComparison> orderedComparisonList;
 
     private JFreeChart generateLineChart() {
 
@@ -642,6 +649,19 @@ public class StudiesLineChart extends AbsoluteLayout {
         return jFreeChart;
     }
 
+    public Resource generateThumbImg() {
+        lineChart.getXYPlot().getDomainAxis().setVisible(false);
+        lineChart.getXYPlot().getRangeAxis().setVisible(false);
+        lineChart.getXYPlot().setOutlineVisible(false);
+        lineChart.getXYPlot().setRangeGridlinesVisible(false);
+        lineChart.getXYPlot().setDomainGridlinesVisible(false);
+        lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.RED);
+        minImgUrl = new ExternalResource(this.getChartImage(lineChart, chartRenderingInfo, 100, 100));
+        lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.GRAY);
+        return minImgUrl;
+
+    }
+
     private String getChartImage(JFreeChart chart, ChartRenderingInfo chartRenderingInfo, int width, int height) {
         if (chart == null) {
             return null;
@@ -660,10 +680,13 @@ public class StudiesLineChart extends AbsoluteLayout {
     }
 
     private final String[] tooltipsIcon = new String[]{"All Increased", "Most Increased", "Equal", "Most Decreased", "All Decreased", "No Quant. Info", "No Data Available "};
-    private final Map<String, Set<PopupTrendSymbol>> subComparisonStudiesMap = new LinkedHashMap<>();
+    private final Map<String, Set<TrendSymbol>> subComparisonStudiesMap = new LinkedHashMap<>();
+
+    private final Map<String, Double> comparisonTrendMap = new LinkedHashMap<>();
 
     private void initLayoutComponents() {
         chartComponentsLayout.removeAllComponents();
+        comparisonTrendMap.clear();
         for (int i = 0; i < chartRenderingInfo.getEntityCollection().getEntityCount(); i++) {
             final ChartEntity entity = chartRenderingInfo.getEntityCollection().getEntity(i);
 
@@ -702,14 +725,6 @@ public class StudiesLineChart extends AbsoluteLayout {
                 } else if (doubleTrend == -100.0) {
                     trend = 4;
                 }
-
-//                if (subComparisonStudiesMap.containsKey((int) comparisonIndex + "_" + (int) doubleTrend)) {
-//                    int factor = 0;
-//                    for (PopupTrendSymbol symbol : subComparisonStudiesMap.get((int) comparisonIndex + "_" + (int) doubleTrend)) {
-//                        chartComponentsLayout.addComponent(symbol, "left: " + (xSer - 3 + factor) + "px; top: " + (ySer - factor) + "px;");
-//                        factor += 2;
-//                    }
-//                }
                 TrendSymbol square = new TrendSymbol(trend);
                 square.setWidth(12, Unit.PIXELS);
                 square.setHeight(12, Unit.PIXELS);
@@ -718,37 +733,42 @@ public class StudiesLineChart extends AbsoluteLayout {
                 square.addParam("postion", position);
 
                 chartComponentsLayout.addComponent(square, "left: " + (xSer - 3) + "px; top: " + (ySer) + "px;");
+                comparisonTrendMap.put(gc.getComparisonHeader(), doubleTrend);
                 this.symbolMap.put(doubleTrend + "," + comparisonIndex, square);
-                int dsNumber = gc.getDatasetMap().size();
                 square.addParam("comparison", gc);
                 if (trend == 6) {
-                    dsNumber = 0;
+//                    dsNumber = 0;
                     square.addParam("comparison", null);
                 }
-                String tooltip = gc.getComparisonFullName() + "<br/>" + gc.getDiseaseCategory() + "<br/>Overall trend: " + tooltipsIcon[trend] + "<br/>Datasets included: " + dsNumber;
+                String tooltip = gc.getComparisonHeader().replace("__" + gc.getDiseaseCategory(), "") + "<br/>" + gc.getDiseaseCategory() + "<br/>Overall trend: " + tooltipsIcon[trend];//+ "<br/>Datasets included: " + dsNumber;
                 square.setDescription(tooltip);
 
             }
         }
 
         for (int i = 0; i < chartRenderingInfo.getEntityCollection().getEntityCount(); i++) {
-            final ChartEntity entity = chartRenderingInfo.getEntityCollection().getEntity(i); 
+            final ChartEntity entity = chartRenderingInfo.getEntityCollection().getEntity(i);
             if (entity instanceof XYItemEntity) {
                 XYItemEntity comparisonPoint = ((XYItemEntity) entity);
                 if (comparisonPoint.getSeriesIndex() == 0) {
                     continue;
-                }  
+                }
                 String[] arr = comparisonPoint.getShapeCoords().split(",");
                 int xSer = Integer.valueOf(arr[6]);
                 int ySer = Integer.valueOf(arr[1]);
                 double doubleTrend = (Double) comparisonPoint.getDataset().getY(1, comparisonPoint.getItem());
-                double comparisonIndex = ((Double) comparisonPoint.getDataset().getX(1, comparisonPoint.getItem())); 
+                double comparisonIndex = ((Double) comparisonPoint.getDataset().getX(1, comparisonPoint.getItem()));
 
                 if (subComparisonStudiesMap.containsKey((int) comparisonIndex + "_" + (int) doubleTrend)) {
                     int factor = 0;
-                    for (PopupTrendSymbol symbol : subComparisonStudiesMap.get((int) comparisonIndex + "_" + (int) doubleTrend)) {
-                        chartComponentsLayout.addComponent(symbol, "left: " + (xSer-2+factor ) + "px; top: " + (ySer +4-factor) + "px;");
-                        factor += 2;
+                    for (TrendSymbol symbol : subComparisonStudiesMap.get((int) comparisonIndex + "_" + (int) doubleTrend)) {
+
+                        int adju = (int) ((int) symbol.getParam("resize") - 12) / 2;
+                        symbol.addParam("resizePosition", "left: " + (xSer - 2 - adju) + "px; top: " + (ySer + 4 + factor - adju) + "px;");
+                        symbol.addParam("position", "left: " + (xSer - 2) + "px; top: " + (ySer + 4 + factor) + "px;");
+                        chartComponentsLayout.addComponent(symbol, "left: " + (xSer - 2) + "px; top: " + (ySer + 4 + factor) + "px;");
+                        symbol.setVisible(false);
+                        factor += 6;
                     }
                 }
             }
@@ -774,4 +794,89 @@ public class StudiesLineChart extends AbsoluteLayout {
         logValue = (logValue * 2 / logMax) + lowerLimit;
         return logValue;
     }
+
+    public void viewDetailedStudies(boolean showDetailedStudies) {
+        subComparisonStudiesMap.values().stream().forEach((dsSet) -> {
+            dsSet.stream().forEach((ds) -> {
+                ds.setVisible(showDetailedStudies);
+            });
+        });
+
+        symbolMap.values().stream().forEach((comp) -> {
+            if (!comp.getStyleName().contains("graydiamond")) {
+                comp.setVisible(!showDetailedStudies);
+            }
+        });
+
+    }
+
+    public void setResizeDetailedStudies(boolean resize) {
+        if (resize) {
+            subComparisonStudiesMap.values().stream().forEach((dsSet) -> {
+                dsSet.stream().forEach((ds) -> {
+                    String resizePostion = ds.getParam("resizePosition").toString();
+                    ds.setWidth((int) ds.getParam("resize"), Unit.PIXELS);
+                    ds.setHeight((int) ds.getParam("resize"), Unit.PIXELS);
+                    ds.detach();
+                    chartComponentsLayout.addComponent(ds, resizePostion);
+                });
+            });
+
+        } else {
+            subComparisonStudiesMap.values().stream().forEach((dsSet) -> {
+                dsSet.stream().forEach((ds) -> {
+                    String resizePostion = ds.getParam("position").toString();
+                    ds.setWidth(12, Unit.PIXELS);
+                    ds.setHeight(12, Unit.PIXELS);
+                    ds.detach();
+                    chartComponentsLayout.addComponent(ds, resizePostion);
+                });
+            });
+
+        }
+
+    }
+
+    private Set<QuantDiseaseGroupsComparison> getOrderStudiesByTrend() {
+        TreeMap<AlphanumComparator, QuantDiseaseGroupsComparison> orderedCompProteins = new TreeMap<>();
+        LinkedHashSet<QuantDiseaseGroupsComparison> orederedComparisonSet = new LinkedHashSet<>();
+
+        for (QuantDiseaseGroupsComparison cp : selectedComparisonList) {
+            if (!comparisonTrendMap.containsKey(cp.getComparisonHeader())) {
+                continue;
+            }
+            double sigTrend = comparisonTrendMap.get(cp.getComparisonHeader());
+            if (sigTrend == -1) {
+                AlphanumComparator key = new AlphanumComparator((102) + "-z" + cp.getComparisonHeader());
+                orderedCompProteins.put(key, cp);
+            } else {
+                AlphanumComparator key = new AlphanumComparator((sigTrend + 100) + "-" + cp.getComparisonHeader());
+                orderedCompProteins.put(key, cp);
+            }
+        }
+        for (Iterator<AlphanumComparator> it = orderedCompProteins.keySet().iterator(); it.hasNext();) {
+            AlphanumComparator cpHeader = it.next();
+            QuantDiseaseGroupsComparison cp = orderedCompProteins.get(cpHeader);
+            orederedComparisonSet.add(cp);
+        }
+        selectedComparisonList.stream().filter((gv) -> (!orederedComparisonSet.contains(gv))).forEach((gv) -> {
+            orederedComparisonSet.add(gv);
+        });
+        return orederedComparisonSet;
+    }
+
+    public void trendOrder(boolean trendOrder) {
+        if (trendOrder) {
+            this.updateDataset(orderedComparisonList, proteinKey);
+        } else {
+            this.updateDataset(selectedComparisonList, proteinKey);
+
+        }
+        lineChart.getXYPlot().setDataset(dataset);
+        lineChart.getXYPlot().setDomainAxis((ValueAxis) xAxis);
+        lineChart.getXYPlot().setRangeAxis((ValueAxis) yAxis);
+        rePaintChart();
+
+    }
+
 }

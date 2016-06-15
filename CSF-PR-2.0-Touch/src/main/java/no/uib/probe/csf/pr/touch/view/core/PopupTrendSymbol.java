@@ -47,8 +47,12 @@ public class PopupTrendSymbol extends TrendSymbol implements LayoutEvents.Layout
         popupView.setPopupVisible(true);
     }
     
-    public  void setScale(double scale){
-//        this.addStyleName("zoom11");
+    public  void setScale(double scale, int pNumber){
+        
+        int zoomLevel = (int)Math.round(scale*10.0);
+        
+        System.out.println("at scale is "+ scale+" zoom "+zoomLevel+"   pn "+pNumber );
+        this.addStyleName("zoom"+zoomLevel);
         
     }
 
