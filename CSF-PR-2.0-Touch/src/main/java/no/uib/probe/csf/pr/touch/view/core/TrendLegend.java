@@ -73,29 +73,25 @@ public class TrendLegend extends GridLayout {
             this.setRows(1);
             this.setMargin(new MarginInfo(false, true, false, false));
             for (int i = 0; i < styleName.length; i++) {
-                HorizontalLayout item = generateItemLabel(labels[i], styleName[i]);                
+                HorizontalLayout item = generateItemLabel(labels[i], styleName[i]);
                 this.addComponent(item, i, 0);
                 this.setComponentAlignment(item, Alignment.MIDDLE_CENTER);
 
             }
         } else if (type.equalsIgnoreCase("ministackedpeptidessequence")) {
             String[] labels = new String[]{"Increased", "Increased-not sign.", "Equal", "Decreased", "Decreased-not sign.", "No Quant. Info.", "PTM"};
-            String[] styleName = new String[]{"redlayout", "notsigredstackedlayout", "lightbluelayout", "greenlayout", "notsiggreenstackedlayout", "novaluelayout", "ptmglycosylation"};
-            this.setSpacing(false);
+            String[] styleName = new String[]{"legendred100", "legendnotsigredstackedlayout", "legendblue", "legendgreen100", "legendnotsiggreenstackedlayout", "legendgray", "legendptmglycosylation"};
+            this.setSpacing(true);
             this.setRows(1);
             this.setColumns(7);
-            this.setMargin(new MarginInfo(false, false, false, false));
+            this.setMargin(new MarginInfo(false, true, false, false));
 
             int colCounter = 0;
             int rowCounter = 0;
             for (int i = 0; i < styleName.length; i++) {
                 HorizontalLayout item = generateItemLabel(labels[i], styleName[i]);
                 this.addComponent(item, colCounter++, rowCounter);
-//                if (colCounter == 3) {
-//                    colCounter = 0;
-//                    rowCounter++;
-//                }
-                this.setComponentAlignment(item, Alignment.TOP_LEFT);
+                this.setComponentAlignment(item, Alignment.MIDDLE_CENTER);
 
             }
 

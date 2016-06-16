@@ -7,14 +7,19 @@ package no.uib.probe.csf.pr.touch.view.components;
 
 import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFListener;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
+import no.uib.probe.csf.pr.touch.view.components.peptideviewsubcomponents.PeptideSequenceLayoutTable;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
-import no.uib.probe.csf.pr.touch.view.core.StudiesLineChart;
+import no.uib.probe.csf.pr.touch.view.components.peptideviewsubcomponents.StudiesLineChart;
 import no.uib.probe.csf.pr.touch.view.core.TrendLegend;
 
 /**
@@ -30,6 +35,9 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
 
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
     private final VerticalLayout controlBtnsContainer;
+    private boolean showDetailedDs = false;
+    private final PeptideSequenceLayoutTable peptideSequenceTableLayout;
+    private final  Label proteinNameLabel ;
 
     private StudiesLineChart lineChart;
 
@@ -48,50 +56,69 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         mainBodyContainer.setWidth(100, Unit.PERCENTAGE);
         mainBodyContainer.setHeightUndefined();
         this.addComponent(mainBodyContainer);
+        
+        HorizontalLayout labelLegendContaner = new HorizontalLayout();
+        labelLegendContaner.setWidth(100,Unit.PERCENTAGE);
+        mainBodyContainer.addComponent(labelLegendContaner);
+        labelLegendContaner.setMargin(new MarginInfo(false, false, false, true));
+        mainBodyContainer.setComponentAlignment(labelLegendContaner, Alignment.MIDDLE_LEFT);
+        
+        
+        proteinNameLabel = new Label();
+        proteinNameLabel.setStyleName(ValoTheme.LABEL_BOLD);
+        proteinNameLabel.setHeight(24,Unit.PIXELS);
+        labelLegendContaner.addComponent(proteinNameLabel);
+        
 
         TrendLegend legendLayout = new TrendLegend("linechart");
         legendLayout.setWidthUndefined();
         legendLayout.setHeight(24, Unit.PIXELS);
-        mainBodyContainer.addComponent(legendLayout);
-        mainBodyContainer.setComponentAlignment(legendLayout, Alignment.MIDDLE_RIGHT);
-
+        labelLegendContaner.addComponent(legendLayout);
+        labelLegendContaner.setComponentAlignment(legendLayout, Alignment.TOP_RIGHT);
+        int componentHeight = (height-80)/2;
+        
+        
         VerticalLayout topLayout = new VerticalLayout();
         width = width - 50;
         topLayout.setWidth(width, Unit.PIXELS);
-        topLayout.setHeight(500, Unit.PIXELS);
+        topLayout.setHeight(componentHeight, Unit.PIXELS);
         topLayout.addStyleName("roundedborder");
         topLayout.addStyleName("whitelayout");
 
         mainBodyContainer.addComponent(topLayout);
         mainBodyContainer.setComponentAlignment(topLayout, Alignment.TOP_CENTER);
-        lineChart = new StudiesLineChart(width - 50, 450);
+        lineChart = new StudiesLineChart(width - 50, (componentHeight-50)) {
+
+            @Override
+            public void select(QuantDiseaseGroupsComparison comparison,int dsKey) {
+                peptideSequenceTableLayout.select(comparison, dsKey);
+            }
+
+        };
 
         topLayout.addComponent(lineChart);
+        
+         TrendLegend sequenceLegendLayout = new TrendLegend("ministackedpeptidessequence");
+        sequenceLegendLayout.setWidthUndefined();
+        sequenceLegendLayout.setHeight(24, Unit.PIXELS);
+        mainBodyContainer.addComponent(sequenceLegendLayout);
+        mainBodyContainer.setComponentAlignment(sequenceLegendLayout, Alignment.MIDDLE_RIGHT);
+        
+        
 
         VerticalLayout bottomLayout = new VerticalLayout();
         bottomLayout.setWidth(width, Unit.PIXELS);
-        bottomLayout.setHeight(500, Unit.PIXELS);
+        bottomLayout.setHeight(componentHeight, Unit.PIXELS);
         bottomLayout.addStyleName("roundedborder");
         bottomLayout.addStyleName("whitelayout");
 
         mainBodyContainer.addComponent(bottomLayout);
         mainBodyContainer.setComponentAlignment(bottomLayout, Alignment.MIDDLE_CENTER);
 
-        //end of toplayout
-        //start chart layout
-//        VerticalLayout tableLayoutFrame = new VerticalLayout();
-//        height = height - 44;
-//        
-//        int tableHeight = height;
-//        width = width - 50;
-//        tableLayoutFrame.setWidth(width, Unit.PIXELS);
-//        tableLayoutFrame.setHeight(tableHeight, Unit.PIXELS);
-//        tableLayoutFrame.addStyleName("roundedborder");
-//        tableLayoutFrame.addStyleName("whitelayout");
-//        bodyContainer.addComponent(tableLayoutFrame);
-//        bodyContainer.setComponentAlignment(tableLayoutFrame, Alignment.MIDDLE_CENTER);
-//        height = height - 40;
-//        width = width - 60;
+        peptideSequenceTableLayout = new PeptideSequenceLayoutTable(width-50,(componentHeight-50));
+        bottomLayout.addComponent(peptideSequenceTableLayout);
+        bottomLayout.setComponentAlignment(peptideSequenceTableLayout, Alignment.MIDDLE_CENTER);
+
         CSFPR_Central_Manager.registerListener(PeptideViewComponent.this);
 
         //init side control btns layout 
@@ -114,8 +141,6 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         };
 
         ImageContainerBtn dsComparisonsSwichBtn = new ImageContainerBtn() {
-            private boolean showDetailedDs = false;
-
             @Override
             public void onClick() {
                 if (showDetailedDs) {
@@ -143,12 +168,12 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
 
         resizeDsOnPatientNumbersBtn.setHeight(45, Unit.PIXELS);
         resizeDsOnPatientNumbersBtn.setWidth(45, Unit.PIXELS);
-        resizeDsOnPatientNumbersBtn.updateIcon(new ThemeResource("img/resize.png"));
-        resizeDsOnPatientNumbersBtn.addStyleName("smallimg");
+        resizeDsOnPatientNumbersBtn.updateIcon(new ThemeResource("img/resize_1.png"));
+//        resizeDsOnPatientNumbersBtn.addStyleName("smallimg");
         resizeDsOnPatientNumbersBtn.setEnabled(false);
         controlBtnsContainer.addComponent(resizeDsOnPatientNumbersBtn);
         controlBtnsContainer.setComponentAlignment(resizeDsOnPatientNumbersBtn, Alignment.MIDDLE_CENTER);
-        resizeDsOnPatientNumbersBtn.setDescription("Resize dataset symbols based on patients number");
+        resizeDsOnPatientNumbersBtn.setDescription("Resize dataset symbols based on number of patients");
 
         final Resource trendOrderRes = new ThemeResource("img/orderedtrend.png");
         ImageContainerBtn orderByTrendBtn = new ImageContainerBtn() {
@@ -157,15 +182,21 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
 
             @Override
             public void onClick() {
+                dsComparisonsSwichBtn.updateIcon(comparisonDsRes);
+                resizeDsOnPatientNumbersBtn.setEnabled(false);
+                showDetailedDs = false;
+
                 if (defaultTrend) {
                     defaultTrend = false;
-                       this.addStyleName("selectmultiselectedbtn");
-                      
+                    this.addStyleName("selectmultiselectedbtn");
+
                 } else {
                     defaultTrend = true;
-                     this.removeStyleName("selectmultiselectedbtn");
-                } 
+                    this.removeStyleName("selectmultiselectedbtn");
+                }
                 lineChart.trendOrder(!defaultTrend);
+                PeptideViewComponent.this.updateIcon(lineChart.generateThumbImg());
+                peptideSequenceTableLayout.sortTable(lineChart.getOrderedComparisonList(!defaultTrend));
 
             }
 
@@ -178,6 +209,50 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         controlBtnsContainer.addComponent(orderByTrendBtn);
         controlBtnsContainer.setComponentAlignment(orderByTrendBtn, Alignment.MIDDLE_CENTER);
         orderByTrendBtn.setDescription("Order dataset by trend");
+        
+        
+        
+        
+        
+        ImageContainerBtn showSigOnlyBtn = new ImageContainerBtn() {
+
+            private boolean showNotSigPeptides = true;
+
+            @Override
+            public void onClick() {
+                if (showNotSigPeptides) {
+                    showNotSigPeptides = false;
+                    this.removeStyleName("selectmultiselectedbtn");
+
+                } else {
+                    showNotSigPeptides = true;
+                    this.addStyleName("selectmultiselectedbtn");
+                }
+               
+                peptideSequenceTableLayout.showNotSignificantPeptides(showNotSigPeptides);
+
+            }
+
+        };
+
+        showSigOnlyBtn.setHeight(45, Unit.PIXELS);
+        showSigOnlyBtn.setWidth(45, Unit.PIXELS);
+        showSigOnlyBtn.updateIcon(new ThemeResource("img/showSig.png"));
+        this.addStyleName("selectmultiselectedbtn");
+        showSigOnlyBtn.setEnabled(true);
+        controlBtnsContainer.addComponent(showSigOnlyBtn);
+        controlBtnsContainer.setComponentAlignment(showSigOnlyBtn, Alignment.MIDDLE_CENTER);
+        showSigOnlyBtn.setDescription("Show / hide not significant and stable peptides)");
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
     }
 
@@ -192,8 +267,14 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
     }
 
     private void updateData(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, String proteinKey) {
+      
         lineChart.updateData(selectedComparisonsList, proteinKey);
         updateIcon(lineChart.generateThumbImg());
+        peptideSequenceTableLayout.updateTableData(selectedComparisonsList,proteinKey);
+          proteinNameLabel.setValue(lineChart.getProteinName());
+        
+        
+        
 
     }
 
@@ -206,8 +287,5 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
     public void removeFilterValue(String value) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    
-   
 
 }

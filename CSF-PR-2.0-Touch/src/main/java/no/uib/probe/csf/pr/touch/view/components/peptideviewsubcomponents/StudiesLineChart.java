@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package no.uib.probe.csf.pr.touch.view.core;
+package no.uib.probe.csf.pr.touch.view.components.peptideviewsubcomponents;
 
+import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.Resource;
 import com.vaadin.ui.AbsoluteLayout;
@@ -33,6 +34,7 @@ import no.uib.probe.csf.pr.touch.logic.AlphanumComparator;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
+import no.uib.probe.csf.pr.touch.view.core.TrendSymbol;
 import org.apache.commons.codec.binary.Base64;
 import org.jfree.chart.ChartRenderingInfo;
 import org.jfree.chart.ChartUtilities;
@@ -65,7 +67,19 @@ import org.jfree.util.ShapeUtilities;
  * overall absTrend and studies information
  *
  */
-public class StudiesLineChart extends AbsoluteLayout {
+public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutEvents.LayoutClickListener {
+
+    public String getProteinName() {
+        return proteinName;
+    }
+
+    public Set<QuantDiseaseGroupsComparison> getOrderedComparisonList(boolean trendOreder) {
+        if (trendOreder) {
+            return orderedComparisonList;
+        } else {
+            return selectedComparisonList;
+        }
+    }
 
     private final Image chartImg;
     private final AbsoluteLayout chartComponentsLayout;
@@ -97,14 +111,28 @@ public class StudiesLineChart extends AbsoluteLayout {
         chartComponentsLayout = new AbsoluteLayout();
         chartComponentsLayout.setWidth(100, Unit.PERCENTAGE);
         chartComponentsLayout.setHeight(100, Unit.PERCENTAGE);
+        
+        chartComponentsLayout.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+
+            @Override
+            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+                if(event.getClickedComponent() != null && (event.getClickedComponent() instanceof TrendSymbol)){
+                    return;
+                }
+                else
+                    select(null, -100);
+            }
+        });
 
         this.addComponent(chartComponentsLayout, "left: " + 0 + "px; top: " + 0 + "px;");
     }
     private String proteinKey;
+    private String proteinName;
 
     public void updateData(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, String proteinKey) {
         this.proteinKey = proteinKey;
         this.selectedComparisonList = selectedComparisonsList;
+        proteinName = null;
 
         this.updateDataset(selectedComparisonsList, proteinKey);
 
@@ -117,14 +145,14 @@ public class StudiesLineChart extends AbsoluteLayout {
 
         }
 
-        rePaintChart();
+        rePaintChart(selectedComparisonsList);
         this.orderedComparisonList = getOrderStudiesByTrend();
 
     }
 
-    private void rePaintChart() {
+    private void rePaintChart(Set<QuantDiseaseGroupsComparison> comparisonsList) {
         maxImgUrl = new ExternalResource(this.getChartImage(lineChart, chartRenderingInfo, width, height));
-        initLayoutComponents();
+        initLayoutComponents(comparisonsList);
         chartImg.setSource(maxImgUrl);
     }
     private DefaultXYDataset dataset;
@@ -154,12 +182,15 @@ public class StudiesLineChart extends AbsoluteLayout {
 
             if (comparison.getQuantComparisonProteinMap().containsKey(keyI)) {
                 trendValue = comparison.getQuantComparisonProteinMap().get(keyI).getOverallCellPercentValue();
+                proteinName = comparison.getQuantComparisonProteinMap().get(keyI).getProteinName();
                 comparisonTrends.add(comparison.getQuantComparisonProteinMap().get(keyI).getSignificantTrindCategory());
             } else if (comparison.getQuantComparisonProteinMap().containsKey(keyII)) {
                 trendValue = comparison.getQuantComparisonProteinMap().get(keyII).getOverallCellPercentValue();
+                proteinName = comparison.getQuantComparisonProteinMap().get(keyII).getProteinName();
 
                 comparisonTrends.add(comparison.getQuantComparisonProteinMap().get(keyII).getSignificantTrindCategory());
             } else if (comparison.getQuantComparisonProteinMap().containsKey(keyIII)) {
+                proteinName = comparison.getQuantComparisonProteinMap().get(keyIII).getProteinName();
                 trendValue = comparison.getQuantComparisonProteinMap().get(keyIII).getOverallCellPercentValue();
                 comparisonTrends.add(comparison.getQuantComparisonProteinMap().get(keyIII).getSignificantTrindCategory());
             } else {
@@ -448,10 +479,14 @@ public class StudiesLineChart extends AbsoluteLayout {
                 TrendSymbol symbol = new TrendSymbol(trend);
                 double scale = Math.max(this.scaleValues(numPatients, maxPatientsNumber, 100, 0), 1);
                 int w = (int) (12 * scale);
-                symbol.setDescription("#Patients:" + numPatients);
+                String tooltip = comparison.getComparisonHeader().replace("__" + comparison.getDiseaseCategory(), "") + "<br/>" + comparison.getDiseaseCategory() + "<br/>#Patients :" + numPatients;//+ "<br/>Datasets included: " + dsNumber;
+
+                symbol.setDescription(tooltip);
                 symbol.setWidth(12, Unit.PIXELS);
                 symbol.setHeight(12, Unit.PIXELS);
                 symbol.addParam("resize", w);
+                symbol.addParam("dsKey", ds.getDsKey());
+                symbol.addParam("comparison", comparison);
 //                symbol.setScale(scale,numPatients);
                 if (!subComparisonStudiesMap.containsKey(comparisonIndex + "_" + absTrend)) {
                     subComparisonStudiesMap.put(comparisonIndex + "_" + absTrend, new HashSet<>());
@@ -684,9 +719,10 @@ public class StudiesLineChart extends AbsoluteLayout {
 
     private final Map<String, Double> comparisonTrendMap = new LinkedHashMap<>();
 
-    private void initLayoutComponents() {
+    private void initLayoutComponents(Set<QuantDiseaseGroupsComparison> comparisonList) {
         chartComponentsLayout.removeAllComponents();
         comparisonTrendMap.clear();
+        this.symbolMap.clear();
         for (int i = 0; i < chartRenderingInfo.getEntityCollection().getEntityCount(); i++) {
             final ChartEntity entity = chartRenderingInfo.getEntityCollection().getEntity(i);
 
@@ -704,7 +740,7 @@ public class StudiesLineChart extends AbsoluteLayout {
                 double doubleTrend = (Double) comparisonPoint.getDataset().getY(0, comparisonPoint.getItem());
                 double comparisonIndex = ((Double) comparisonPoint.getDataset().getX(0, comparisonPoint.getItem()));
 
-                QuantDiseaseGroupsComparison gc = (QuantDiseaseGroupsComparison) selectedComparisonList.toArray()[(int) comparisonIndex];
+                QuantDiseaseGroupsComparison gc = (QuantDiseaseGroupsComparison) comparisonList.toArray()[(int) comparisonIndex];
                 String keyI = 0 + "_" + proteinKey;
                 String keyII = 1 + "_" + proteinKey;
                 String keyIII = 2 + "_" + proteinKey;
@@ -731,17 +767,20 @@ public class StudiesLineChart extends AbsoluteLayout {
                 ComponentPosition position = new ComponentPosition();
                 position.setCSSString("left: " + (xSer - 1) + "px; top: " + (ySer - 1) + "px;");
                 square.addParam("postion", position);
+                square.addParam("type", "comparison");
 
                 chartComponentsLayout.addComponent(square, "left: " + (xSer - 3) + "px; top: " + (ySer) + "px;");
                 comparisonTrendMap.put(gc.getComparisonHeader(), doubleTrend);
                 this.symbolMap.put(doubleTrend + "," + comparisonIndex, square);
                 square.addParam("comparison", gc);
+                square.addParam("dsKey",-100);
                 if (trend == 6) {
 //                    dsNumber = 0;
                     square.addParam("comparison", null);
                 }
                 String tooltip = gc.getComparisonHeader().replace("__" + gc.getDiseaseCategory(), "") + "<br/>" + gc.getDiseaseCategory() + "<br/>Overall trend: " + tooltipsIcon[trend];//+ "<br/>Datasets included: " + dsNumber;
                 square.setDescription(tooltip);
+                square.addLayoutClickListener(StudiesLineChart.this);
 
             }
         }
@@ -766,6 +805,8 @@ public class StudiesLineChart extends AbsoluteLayout {
                         int adju = (int) ((int) symbol.getParam("resize") - 12) / 2;
                         symbol.addParam("resizePosition", "left: " + (xSer - 2 - adju) + "px; top: " + (ySer + 4 + factor - adju) + "px;");
                         symbol.addParam("position", "left: " + (xSer - 2) + "px; top: " + (ySer + 4 + factor) + "px;");
+                        symbol.addParam("type", "dataset");
+                        symbol.addLayoutClickListener(StudiesLineChart.this);
                         chartComponentsLayout.addComponent(symbol, "left: " + (xSer - 2) + "px; top: " + (ySer + 4 + factor) + "px;");
                         symbol.setVisible(false);
                         factor += 6;
@@ -842,6 +883,7 @@ public class StudiesLineChart extends AbsoluteLayout {
         LinkedHashSet<QuantDiseaseGroupsComparison> orederedComparisonSet = new LinkedHashSet<>();
 
         for (QuantDiseaseGroupsComparison cp : selectedComparisonList) {
+
             if (!comparisonTrendMap.containsKey(cp.getComparisonHeader())) {
                 continue;
             }
@@ -859,9 +901,9 @@ public class StudiesLineChart extends AbsoluteLayout {
             QuantDiseaseGroupsComparison cp = orderedCompProteins.get(cpHeader);
             orederedComparisonSet.add(cp);
         }
-        selectedComparisonList.stream().filter((gv) -> (!orederedComparisonSet.contains(gv))).forEach((gv) -> {
-            orederedComparisonSet.add(gv);
-        });
+//        selectedComparisonList.stream().filter((gv) -> (!orederedComparisonSet.contains(gv))).forEach((gv) -> {
+//            orederedComparisonSet.add(gv);
+//        });
         return orederedComparisonSet;
     }
 
@@ -872,11 +914,30 @@ public class StudiesLineChart extends AbsoluteLayout {
             this.updateDataset(selectedComparisonList, proteinKey);
 
         }
+
         lineChart.getXYPlot().setDataset(dataset);
         lineChart.getXYPlot().setDomainAxis((ValueAxis) xAxis);
         lineChart.getXYPlot().setRangeAxis((ValueAxis) yAxis);
-        rePaintChart();
+        if (trendOrder) {
+            rePaintChart(orderedComparisonList);
+        } else {
+            rePaintChart(selectedComparisonList);
+        }
 
     }
+
+    @Override
+    public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+        TrendSymbol symbol = (TrendSymbol) event.getComponent();
+        QuantDiseaseGroupsComparison comparison = (QuantDiseaseGroupsComparison) symbol.getParam("comparison");
+        if (comparison == null) {
+            return;
+        }
+        int dsKey = (int) symbol.getParam("dsKey");
+        select(comparison, dsKey);
+
+    }
+
+    public abstract void select(QuantDiseaseGroupsComparison comparison, int dsId);
 
 }

@@ -34,7 +34,7 @@ public abstract class ImageContainerBtn extends VerticalLayout implements Layout
         this.setStyleName("bigbtn");
         this.addLayoutClickListener(ImageContainerBtn.this);
         this.setReadOnly(true);
-        this.setEnabled(false);
+        ImageContainerBtn.this.setEnabled(false);
 
     }
 
@@ -73,6 +73,7 @@ public abstract class ImageContainerBtn extends VerticalLayout implements Layout
     public void setEnabled(boolean enabled) {
         if (enabled) {
             this.removeStyleName("unapplied");
+            this.blink();
         } else {
             this.addStyleName("unapplied");
         }

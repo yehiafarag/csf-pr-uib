@@ -14089,6 +14089,17 @@ div.v-layout.v-horizontal.v-widget {
     background: rgb(204, 0, 0);    
 
 }
+
+
+.legendnotsigredstackedlayout div{
+    background: #FF7F7F;
+    margin-top:5px;
+}
+.legendnotsiggreenstackedlayout div{
+    background: #D0F5A9;
+    margin-top:5px;
+}
+
 .legendredless100 div{
     margin-top:5px;
     background: rgb(247, 119, 119);    
@@ -14120,6 +14131,29 @@ div.v-layout.v-horizontal.v-widget {
     margin-top:5px;
     background:#cccccc;
 
+}
+.legendptmglycosylation {
+    /*background: url(http://www.damtp.cam.ac.uk/user/sjc1/damtp/icons/10x10/pinkball.gif) no-repeat;*/
+    background-color:#ff5b09 ;//: url(img/orange_ptm.png) no-repeat;
+/*    background-position:center;*/
+    border: 1px solid black;
+    border-radius: 50%;
+    
+    /*overflow: visible !important;*/
+    
+       margin-top:5px;
+
+
+
+}
+
+.ptmglycosylation{
+      background-color:#ff5b09 ;//: url(img/orange_ptm.png) no-repeat;
+/*    background-position:center;*/
+    border: 1px solid black;
+    border-radius: 50%;
+    
+    
 }
 .switchbtn{
     background-image: url(img/exchange.png);
@@ -14471,4 +14505,244 @@ div.v-layout.v-horizontal.v-widget {
       background-size:contain;
       background-color:whitesmoke;
       border:1px solid lightgray;
+}
+.overflowtext{
+   white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+     text-align:-webkit-center;
+    text-align:center;
+    
+}
+.v-table-row.v-selected font{
+
+    color:white !important;
+}
+.v-table-row-odd.v-selected font{
+      color:white !important;
+
+}
+
+
+.notsigredstackedlayout div{
+    background: #FF7F7F;
+    border: none;
+}
+.notsiggreenstackedlayout div{
+    background: #D0F5A9;
+    border: none;
+}
+
+
+.greenstackedlayout div{
+    background: #009900;
+    border: 1px solid black;     
+    cursor:pointer;
+}
+.midgreenstackedlayout div{
+    background: #D0F5A9;
+    border: 1px solid black; 
+
+    cursor:pointer;
+}
+.lightbluestackedlayout div{
+    background: rgb(1, 141, 244); 
+    border: 1px solid black;    
+    cursor: pointer;
+}
+.redstackedlayout div{
+    background: #cc0000;
+    border: 1px solid black;    
+    cursor:pointer;
+}
+.graystackedlayout div{
+    background: #b5babb;
+    border: 1px solid black;    
+    cursor:pointer;
+}
+.selectedgraystackedlayout div{
+    background: #b5babb;
+    border: 2px solid black;    
+    cursor:pointer;
+    opacity: 1;
+}
+.unselectedgraystackedlayout div{
+    background: #b5babb;
+    border: 1px solid black;    
+    cursor:pointer;
+    opacity: 0.3;
+}
+.unselectedgraystackedlayout div:hover{
+    border:2px solid gray;
+    opacity: 1;
+
+}
+.midredstackedlayout div{
+    background: #FF7F7F;
+    border: 1px solid black;     
+    cursor:pointer;
+}
+
+.greenstackedlayout div:hover{
+    border:2px solid gray;
+}
+.midgreenstackedlayout div:hover{
+    border:2px solid gray;
+}
+.lightbluestackedlayout div:hover{
+    border:2px solid gray;
+}
+.redstackedlayout div:hover{
+    border:2px solid gray;
+
+}
+.midredstackedlayout div:hover{
+    border:2px solid gray;
+    opacity: 1;
+}
+
+
+.selectedgreenstackedlayout div{
+    background: #009900;
+    border: 2px solid black;     
+    cursor:pointer;
+    opacity: 1;
+}
+.selectedmidgreenstackedlayout div{
+    background: #D0F5A9;
+    border: 2px solid black; 
+    opacity: 1;
+    cursor:pointer;
+}
+.selectedlightbluestackedlayout div{
+    background: rgb(1, 141, 244); 
+    border: 2px solid black;    
+    cursor: pointer;
+    opacity: 1;
+}
+.selectedredstackedlayout div{
+    background: #cc0000;
+    border: 2px solid black;    
+    cursor:pointer;
+    opacity: 1;
+}
+.selectedmidredstackedlayout div{
+    background: #FF7F7F;
+    border: 2px solid black;     
+    cursor:pointer;
+    opacity: 1;
+}
+
+
+.unselectedgreenstackedlayout div{
+    background: #009900;
+    border: 1px solid black;     
+    cursor:pointer;
+    opacity: 0.3;
+}
+.unselectedmidgreenstackedlayout div{
+    background: #D0F5A9;
+    border: 1px solid black; 
+    opacity: 0.3;
+
+    cursor:pointer;
+}
+.unselectedlightbluestackedlayout div{
+    background: rgb(1, 141, 244); 
+    border: 1px solid black;    
+    cursor: pointer;
+    opacity: 0.3;
+}
+.unselectedredstackedlayout div{
+    background: #cc0000;
+    border: 1px solid black;    
+    cursor:pointer;
+    opacity: 0.3;
+}
+.unselectedmidredstackedlayout div{
+    background: #FF7F7F;
+    border: 1px solid black;     
+    cursor:pointer;
+    opacity: 0.3;
+}
+
+.unselectedgreenstackedlayout div:hover{
+    border:2px solid gray;
+    opacity: 1;
+}
+.unselectedmidgreenstackedlayout div:hover{
+    border:2px solid gray;
+    opacity: 1;
+}
+.unselectedlightbluestackedlayout div:hover{
+    border:2px solid gray;
+    opacity: 1;
+}
+.unselectedredstackedlayout div:hover{
+    border:2px solid gray;
+    opacity: 1;
+
+}
+.unselectedmidredstackedlayout div:hover{
+    border:2px solid gray;
+    opacity: 1;
+}
+.ctermlayout{
+    clear: both;
+    width:12px !important;
+    background-color:white;
+    color:gray;
+    text-align:right;
+    float:right;
+
+}
+
+.ntermlayout{
+    clear: both;
+    width:10px !important;
+    background-color:white;
+    color:gray
+}
+
+.terminal{
+    clear: both;
+    background: url(img/Lbackground.png) no-repeat;
+    background-position:-1px -14px;
+
+}
+
+.flipvertically{
+
+    -ms-transform:rotateX(180deg); /* IE 9 */
+    -moz-transform:rotateX(180deg); /* Firefox */
+    -webkit-transform:rotateX(180deg);/* Safari and Chrome */
+    -o-transform:rotateX(180deg); /* Opera */
+    transform: rotateX(180deg);
+
+
+}
+.v-layout.v-widget.flipvertically.v-absolutelayout-flipvertically.v-has-width.v-has-height div{
+
+    overflow:visible !important;
+
+}
+.vdarkgray{
+
+    background: #848484;
+    border: 1px solid #848484;
+
+}
+.v-absolutelayout-wrapper.v-absolutelayout-wrapper-flipvertically{
+    overflow:visible !important;
+
+}
+.v-absolutelayout-wrapper.v-absolutelayout-wrapper-ptmglycosylation {
+
+    overflow:visible!important;
+    z-index:2 !important;
+}
+
+.sequencecontainer{
+    background-color: rgb(242,242,242) !important;
+    border: 1px solid  lightgray ;
 }
