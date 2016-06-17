@@ -29,13 +29,13 @@ import no.uib.probe.csf.pr.touch.view.smallscreen.OverviewInfoBean;
  */
 public class WelcomeLayoutComponents extends VerticalLayout implements Serializable {
 
-    
     private final HorizontalLayout miniLayout;
-    private final  ZoomControler zoomApp;
+    private final ZoomControler zoomApp;
 
     public HorizontalLayout getMiniLayout() {
         return miniLayout;
     }
+
     /**
      * initialize body layout
      *
@@ -43,28 +43,27 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
      * @param overviewInfoBean resource overview information
      * @param publicationList list of available publications
      * @param dsObjects list of dataset information
-     * @param diseaseHashedColorMap map of disease names and colors for disease labels
+     * @param diseaseHashedColorMap map of disease names and colors for disease
+     * labels
      * @param bodyWidth current screen with
      *
      *
      */
-    public WelcomeLayoutComponents(final LayoutViewManager View_Manager,int bodyWidth,int bodyHeight,OverviewInfoBean overviewInfoBean,List<Object[]> publicationList,Set<QuantDatasetObject> dsObjects ) {
-        this.setWidth(100,Unit.PERCENTAGE);
-        this.setHeight(100,Unit.PERCENTAGE);
+    public WelcomeLayoutComponents(final LayoutViewManager View_Manager, int bodyWidth, int bodyHeight, OverviewInfoBean overviewInfoBean, List<Object[]> publicationList, Set<QuantDatasetObject> dsObjects) {
+        this.setWidth(100, Unit.PERCENTAGE);
+        this.setHeight(100, Unit.PERCENTAGE);
         HeaderLayout header = new HeaderLayout();
         this.addComponent(header);
-         float headerRatio = 65f / (float) bodyHeight;
+        float headerRatio = 65f / (float) bodyHeight;
         int bottomHeight = bodyHeight - 65;
         float bodyRatio = (float) bottomHeight / (float) bodyHeight;
         this.setExpandRatio(header, headerRatio);
-        
 
         int rightPanelWidth = Math.min(1020, (bodyWidth - 220));
         HorizontalLayout mainBodyHLayout = new HorizontalLayout();
         mainBodyHLayout.setWidthUndefined();
         this.addComponent(mainBodyHLayout);
         this.setExpandRatio(mainBodyHLayout, bodyRatio);
-        
 
         //init left panel (Resource overview)
         VerticalLayout leftPanelWrapper = new VerticalLayout();
@@ -77,7 +76,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         Label statLabel = new Label("<center><h1>Resource  Status</h1></center>");
         statLabel.setContentMode(ContentMode.HTML);
         statLabel.setWidthUndefined();
-        statLabel.setHeight(50,Unit.PIXELS);
+        statLabel.setHeight(50, Unit.PIXELS);
         leftPanelWrapper.addComponent(statLabel);
 
         Label quantStatLabel = new Label("<h2>Quantitative  Data</h2>");
@@ -95,7 +94,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         subQuantStatLayout.addComponent(sub1quantStatLabelWrapper, 0, 0);//
         sub1quantStatLabelWrapper.setDescription("Click to view publication information");
 
-        Label sub1QuantStatValue = new Label("<h4 style='text-align: right;' >" + overviewInfoBean.getNumberOfQuantPublication()+ "</h4>");
+        Label sub1QuantStatValue = new Label("<h4 style='text-align: right;' >" + overviewInfoBean.getNumberOfQuantPublication() + "</h4>");
         sub1QuantStatValue.setContentMode(ContentMode.HTML);
         subQuantStatLayout.addComponent(sub1QuantStatValue, 1, 0);
         subQuantStatLayout.setComponentAlignment(sub1QuantStatValue, Alignment.MIDDLE_RIGHT);
@@ -160,7 +159,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         sub3IdStatLabel.setContentMode(ContentMode.HTML);
         subIdStatLayout.addComponent(sub3IdStatLabel, 0, 2);
 
-        Label sub3IdStatValue = new Label("<h4 style='text-align: right;'>" + overviewInfoBean.getNumberOfIdProteins()+ "</h4>");
+        Label sub3IdStatValue = new Label("<h4 style='text-align: right;'>" + overviewInfoBean.getNumberOfIdProteins() + "</h4>");
         sub3IdStatValue.setContentMode(ContentMode.HTML);
         subIdStatLayout.addComponent(sub3IdStatValue, 1, 2);
         subIdStatLayout.setComponentAlignment(sub3IdStatValue, Alignment.MIDDLE_RIGHT);
@@ -169,7 +168,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         sub4IdStatLabel.setContentMode(ContentMode.HTML);
         subIdStatLayout.addComponent(sub4IdStatLabel, 0, 3);
 
-        Label sub4IdStatValue = new Label("<h4 style='text-align: right;'>" + overviewInfoBean.getNumberOfIdPeptides()+ "</h4>");
+        Label sub4IdStatValue = new Label("<h4 style='text-align: right;'>" + overviewInfoBean.getNumberOfIdPeptides() + "</h4>");
         sub4IdStatValue.setContentMode(ContentMode.HTML);
         subIdStatLayout.addComponent(sub4IdStatValue, 1, 3);
         subIdStatLayout.setComponentAlignment(sub4IdStatValue, Alignment.MIDDLE_RIGHT);
@@ -177,21 +176,21 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         //end of left panel
         //init spacer
         VerticalLayout spacer = new VerticalLayout();
-        spacer.setHeight(100,Unit.PERCENTAGE);
-        spacer.setWidth(10,Unit.PIXELS);
+        spacer.setHeight(100, Unit.PERCENTAGE);
+        spacer.setWidth(10, Unit.PIXELS);
         spacer.setStyleName("spacer");
         mainBodyHLayout.addComponent(spacer);
 
         //end of spacer
         //init rightlayout top
         VerticalLayout rightPanelWrapper = new VerticalLayout();
-        rightPanelWrapper.setWidth(rightPanelWidth ,Unit.PIXELS);
+        rightPanelWrapper.setWidth(rightPanelWidth, Unit.PIXELS);
         rightPanelWrapper.setHeightUndefined();
         rightPanelWrapper.setStyleName("framelayout");
         mainBodyHLayout.addComponent(rightPanelWrapper);
 
         Label infoLable = new Label("<h1>Welcome to CSF Proteome Resource (CSF-PR)</h1>");
-        infoLable.setHeight(50,Unit.PIXELS);
+        infoLable.setHeight(50, Unit.PIXELS);
         infoLable.setContentMode(ContentMode.HTML);
         rightPanelWrapper.addComponent(infoLable);
 
@@ -202,18 +201,17 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
                 + "for disease biomarkers.</p>");
         para_1.setContentMode(ContentMode.HTML);
         rightPanelWrapper.addComponent(para_1);
-        para_1.setWidth(rightPanelWidth,Unit.PIXELS);
+        para_1.setWidth(rightPanelWidth, Unit.PIXELS);
 
         HorizontalLayout rightPanel = new HorizontalLayout();
-        rightPanel.setWidth(100 ,Unit.PERCENTAGE);
+        rightPanel.setWidth(100, Unit.PERCENTAGE);
         rightPanelWrapper.addComponent(rightPanel);
 
-
         VerticalLayout middleLayout = new VerticalLayout();
-        middleLayout.setWidth(100,Unit.PERCENTAGE);
+        middleLayout.setWidth(100, Unit.PERCENTAGE);
         middleLayout.setMargin(false);
         rightPanel.addComponent(middleLayout);
-     
+
         GridLayout middlePanelServicesLayout = new GridLayout(2, 2);
         middlePanelServicesLayout.setSpacing(true);
         middlePanelServicesLayout.setMargin(new MarginInfo(true, false, true, false));
@@ -246,27 +244,26 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
         middlePanelServicesLayout.addComponent(searchingDatasetBtn, 1, 0);
 
-        BigBtn compareBtn = new BigBtn("Compare", "Compare your quantified with the available data.","img/compare.png" ) {
-            
+        BigBtn compareBtn = new BigBtn("Compare", "Compare your quantified with the available data.", "img/compare.png") {
+
             @Override
             public void onClick() {
+              
                 View_Manager.viewLayout("compareview");
             }
         };
         middlePanelServicesLayout.addComponent(compareBtn, 1, 1);
-        
-        
+
         BigBtn homeBtn = new BigBtn("", "", "img/home-o.png") {
 
             @Override
             public void onClick() {
-                System.out.println("welcome view");
                 View_Manager.viewLayout("welcomeview");
             }
         };
         this.addComponent(homeBtn);
         homeBtn.setVisible(false);
-       
+
         Label para_3 = new Label("<p align='justify' Style='font-size: 12px;color: black;/* font-weight: bold; */line-height: 20px;'><font>CSF-PR v2.0 is being developed by the <a Style='color:#141414;' href='http://www.uib.no/rg/probe' target='_blank'>Proteomics Unit</a> at the<a Style='color:#141414;' href='http://www.uib.no/biomedisin/en' target='_blank'> Department of Biomedicine at the University of Bergen</a>, Norway, in close collaboration with <a Style='color:#141414;' href='http://haukeland.no/en/OmOss/Avdelinger/ms/Sider/om-oss.aspx' target='_blank'>The Norwegian Multiple Sclerosis Competence Centre</a>, Haukeland University Hospital, Bergen, Norway.</font><br/><font>See also: <a Style='color:#141414;' href='http://www.mcponline.org/content/13/11/3152.full.pdf+html' target='_blank'>Guldbrandsen et al.: In-depth Characterization of the Cerebrospinal Fluid (CSF) Proteome Displayed Through the CSF Proteome Resource (CSF-PR). Mol Cell Proteomics. 2014.</a></font></p>");
         para_3.setContentMode(ContentMode.HTML);
         middleLayout.addComponent(para_3);
@@ -274,15 +271,16 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
         //init mini layout
         zoomApp = new ZoomControler(false);
-        zoomApp.setWidth(50,Unit.PIXELS);
-        VerticalLayout miniLayoutContainer = new VerticalLayout(homeBtn.getThumbBtn(),quantDatasetBtn.getThumbBtn(),idDatasetBtn.getThumbBtn(),searchingDatasetBtn.getThumbBtn(),compareBtn.getThumbBtn(),zoomApp);
+        zoomApp.setWidth(50, Unit.PIXELS);
+        VerticalLayout miniLayoutContainer = new VerticalLayout(homeBtn.getThumbBtn(), quantDatasetBtn.getThumbBtn(), idDatasetBtn.getThumbBtn(), searchingDatasetBtn.getThumbBtn(), compareBtn.getThumbBtn(), zoomApp);
         miniLayout = new HorizontalLayout(miniLayoutContainer);
         miniLayout.addStyleName("zoomborder");
         miniLayoutContainer.setSpacing(true);
 //        
     }
-    public void addMainZoomComponents(Component component){
-    
-    zoomApp.addZoomableComponent(component);
+
+    public void addMainZoomComponents(Component component) {
+
+        zoomApp.addZoomableComponent(component);
     }
 }

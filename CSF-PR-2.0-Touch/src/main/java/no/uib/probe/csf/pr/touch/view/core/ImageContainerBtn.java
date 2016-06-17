@@ -25,7 +25,6 @@ public abstract class ImageContainerBtn extends VerticalLayout implements Layout
 
     public ImageContainerBtn() {
         img = new Image();
-
         img.setWidth(100, Unit.PERCENTAGE);
         img.setHeight(100, Unit.PERCENTAGE);
         this.addComponent(img);
@@ -46,17 +45,17 @@ public abstract class ImageContainerBtn extends VerticalLayout implements Layout
      */
     public void updateIcon(Resource imgResource) {
         img.setSource(imgResource);
-        blink();
     }
 
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+        this.removeStyleName("orangeBorder");
 
         onClick();
     }
 
     public void blink() {
-
+        this.addStyleName("orangeBorder");
         if (img.getStyleName().contains("blinkII")) {
             img.removeStyleName("blinkII");
             img.addStyleName("blink");
@@ -64,7 +63,6 @@ public abstract class ImageContainerBtn extends VerticalLayout implements Layout
             img.removeStyleName("blinkI");
             img.addStyleName("blinkII");
         }
-
     }
 
     public abstract void onClick();
@@ -74,10 +72,14 @@ public abstract class ImageContainerBtn extends VerticalLayout implements Layout
         if (enabled) {
             this.removeStyleName("unapplied");
             this.blink();
+
         } else {
             this.addStyleName("unapplied");
         }
         super.setEnabled(enabled); //To change body of generated methods, choose Tools | Templates.
+        if (this.getParent() != null) {
+            this.getParent().setEnabled(enabled);
+        }
     }
 
 }

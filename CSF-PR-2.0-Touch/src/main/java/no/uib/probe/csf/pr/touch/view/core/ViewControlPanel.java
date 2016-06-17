@@ -91,7 +91,6 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
         btnWrapper.setWidth(100, Unit.PERCENTAGE);
         leftSideContainer.addComponent(btnWrapper);
         btnWrapper.addLayoutClickListener(this);
-        
 
         layoutControlMap.put(leftSideContainer.getComponentIndex(btnWrapper), mainViewLayout);
         this.addComponent(mainViewLayout);
@@ -102,7 +101,7 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
                 System.out.println("return ");
                 return;
             }
-            
+
             mainViewLayout.removeStyleName("hidelayout");
             mainViewLayout.removeLayoutClickListener(listener);
             mainViewLayout.setWidth(mainViewLayout.getWidth() - 200, Unit.PIXELS);
@@ -123,12 +122,12 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
         };
         mainViewLayout.addLayoutClickListener(listener);
         if (toolBtnsLayout != null) {
-            this.toolBtnContainer.addComponent(toolBtnsLayout);            
-            this.toolBtnContainer.setComponentAlignment(toolBtnsLayout,Alignment.MIDDLE_RIGHT);
+            this.toolBtnContainer.addComponent(toolBtnsLayout);
+            this.toolBtnContainer.setComponentAlignment(toolBtnsLayout, Alignment.MIDDLE_RIGHT);
             mainViewLayout.setData(toolBtnsLayout);
-        }else{
-        mainViewLayout.setData(new VerticalLayout());
-        
+        } else {
+            mainViewLayout.setData(new VerticalLayout());
+
         }
 
     }
@@ -153,21 +152,21 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
         Btn.setEnabled(false);
         Btn.setReadOnly(false);
         Btn.setResponsive(true);
-        
+
         layoutControlMap.put(leftSideContainer.getComponentIndex(btnWrapper), mainViewLayout);
         mainViewContainer.addComponent(mainViewLayout);
         mainViewContainer.setComponentAlignment(mainViewLayout, Alignment.TOP_CENTER);
         mainViewLayout.addStyleName("slowslide");
         mainViewLayout.addStyleName("hideslidelayout");
-        
-         if (toolBtnsLayout != null) {
+
+        if (toolBtnsLayout != null) {
             this.toolBtnContainer.addComponent(toolBtnsLayout);
-            this.toolBtnContainer.setComponentAlignment(toolBtnsLayout,Alignment.MIDDLE_RIGHT);
+            this.toolBtnContainer.setComponentAlignment(toolBtnsLayout, Alignment.MIDDLE_RIGHT);
             mainViewLayout.setData(toolBtnsLayout);
             toolBtnsLayout.setVisible(false);
-        }else{
-         mainViewLayout.setData(new VerticalLayout());
-         }
+        } else {
+            mainViewLayout.setData(new VerticalLayout());
+        }
         if (isDefault) {
             defaultView = mainViewLayout;
             defaultBtn = btnWrapper;
@@ -180,27 +179,27 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
     private AbstractOrderedLayout defaultView;
 
     @Override
-    public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+    public void layoutClick(LayoutEvents.LayoutClickEvent event) {         
         AbstractOrderedLayout mainViewLayout = layoutControlMap.get(leftSideContainer.getComponentIndex(event.getComponent()));
 
         if (currentView == null) {
             currentView = mainViewLayout;
             event.getComponent().removeStyleName("unselectedbtn");
             currentBtn = event.getComponent();
-            ((AbstractOrderedLayout)mainViewLayout.getData()).setVisible(true);
+            ((AbstractOrderedLayout) mainViewLayout.getData()).setVisible(true);
         } else if (mainViewLayout != currentView) {
             currentView.addStyleName("hideslidelayout");
-            ((AbstractOrderedLayout)currentView.getData()).setVisible(false);        
-            
+            ((AbstractOrderedLayout) currentView.getData()).setVisible(false);
+
             currentBtn.addStyleName("unselectedbtn");
-            
+
             currentView = mainViewLayout;
             currentBtn = event.getComponent();
-            ((AbstractOrderedLayout)mainViewLayout.getData()).setVisible(true);
+            ((AbstractOrderedLayout) mainViewLayout.getData()).setVisible(true);
         }
         mainViewLayout.removeStyleName("hideslidelayout");
         event.getComponent().removeStyleName("unselectedbtn");
-         ((AbstractOrderedLayout)mainViewLayout.getData()).setVisible(true);
+        ((AbstractOrderedLayout) mainViewLayout.getData()).setVisible(true);
 
     }
 
@@ -213,17 +212,17 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
         }
         if (currentView == null) {
             currentView = defaultView;
-            currentBtn=defaultBtn;
+            currentBtn = defaultBtn;
         } else if (defaultView != currentView) {
             currentView.addStyleName("hideslidelayout");
             currentBtn.addStyleName("unselectedbtn");
-             ((AbstractOrderedLayout)currentView.getData()).setVisible(false);
+            ((AbstractOrderedLayout) currentView.getData()).setVisible(false);
             currentView = defaultView;
-            currentBtn=defaultBtn;
+            currentBtn = defaultBtn;
         }
         defaultView.removeStyleName("hideslidelayout");
         defaultBtn.removeStyleName("unselectedbtn");
-        ((AbstractOrderedLayout)defaultView.getData()).setVisible(true);
+        ((AbstractOrderedLayout) defaultView.getData()).setVisible(true);
 
     }
 

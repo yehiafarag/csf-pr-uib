@@ -308,7 +308,7 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
                             } else {
                                 sequence = peptideII.getParam("sequence").toString() + peptideI.getParam("sequence");
                             }
-                            StackedBarPeptideComponent updatedCoverComp = new StackedBarPeptideComponent(x0, widthArea, "", "");
+                            StackedBarPeptideComponent updatedCoverComp = new StackedBarPeptideComponent(x0, widthArea, "", "",null);
                             refrenceOrderedCompoMap.remove(keyI);
                             refrenceOrderedCompoMap.remove(keyII);
                             updatedCoverComp.setParam("sequence", sequence);
@@ -331,7 +331,7 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
                                 widthArea = peptideI.getWidthArea() + (peptideI.getX0() - peptideII.getX0());
                             }
 
-                            StackedBarPeptideComponent updatedCoverComp = new StackedBarPeptideComponent(x0, widthArea, "", "");
+                            StackedBarPeptideComponent updatedCoverComp = new StackedBarPeptideComponent(x0, widthArea, "", "",null);
                             refrenceOrderedCompoMap.remove(keyI);
                             refrenceOrderedCompoMap.remove(keyII);
                             updatedCoverComp.setParam("sequence", sequence);
@@ -353,7 +353,7 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
                                 widthArea = peptideII.getWidthArea();
                                 sequence = peptideII.getParam("sequence").toString();
                             }
-                            StackedBarPeptideComponent updatedCoverComp = new StackedBarPeptideComponent(x0, widthArea, "", "");
+                            StackedBarPeptideComponent updatedCoverComp = new StackedBarPeptideComponent(x0, widthArea, "", "",null);
                             refrenceOrderedCompoMap.remove(keyI);
                             refrenceOrderedCompoMap.remove(keyII);
                             updatedCoverComp.setParam("sequence", sequence);

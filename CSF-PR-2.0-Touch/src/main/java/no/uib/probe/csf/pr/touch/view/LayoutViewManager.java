@@ -5,8 +5,10 @@
  */
 package no.uib.probe.csf.pr.touch.view;
 
+import com.vaadin.server.VaadinSession;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import no.uib.probe.csf.pr.touch.view.core.BusyTask;
 import no.uib.probe.csf.pr.touch.view.core.Resizable;
 
 /**
@@ -18,10 +20,12 @@ import no.uib.probe.csf.pr.touch.view.core.Resizable;
  */
 public class LayoutViewManager {
 
-    private final Map<String, Resizable> layoutMap = new LinkedHashMap<String, Resizable>();
+    private final Map<String, Resizable> layoutMap = new LinkedHashMap<>();
     private Resizable currentView;
+    private final BusyTask busyTask;
 
-    public LayoutViewManager() {
+    public LayoutViewManager(BusyTask busyTask) {
+        this.busyTask=busyTask;
     }
 
     public void registerComponent(Resizable component) {
@@ -30,13 +34,21 @@ public class LayoutViewManager {
     }
 
     public void viewLayout(String viewId) {
-        if (currentView != null && !currentView.getViewId().equalsIgnoreCase(viewId) && layoutMap.containsKey(viewId)) {
-            currentView.hide();
-
-        }
-        if (layoutMap.containsKey(viewId)) {
-            currentView = layoutMap.get(viewId);
-            currentView.view();
+          try {
+              VaadinSession.getCurrent().getLockInstance().lock();
+       
+            this.busyTask.setVisible(true);
+            if (currentView != null && !currentView.getViewId().equalsIgnoreCase(viewId) && layoutMap.containsKey(viewId)) {
+                currentView.hide();
+                
+            }
+            if (layoutMap.containsKey(viewId)) {
+                currentView = layoutMap.get(viewId);
+                currentView.view();
+            }
+            this.busyTask.setVisible(false);
+        } finally {
+            VaadinSession.getCurrent().getLockInstance().unlock();
         }
 
     }

@@ -1619,6 +1619,47 @@ div.v-layout.v-horizontal.v-widget {
     background: #fff url(../valo/shared/img/spinner.gif) no-repeat 50%;
     border-radius: 4px;
 }
+/*
+.v-loading-indicator, .v-loading-indicator-delay, .v-loading-indicator-wait {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 30000;
+        width: 31px;
+        height: 31px;
+        background: transparent url(img/loading-indicator.gif);
+        margin-right: 5px;
+        margin-top: 5px;
+}
+
+.v-loading-indicator-delay {
+        background-image: url(img/loading-indicator-delay.gif);
+}
+
+.v-loading-indicator-wait {
+        background-image: url(img/loading-indicator-wait.gif);
+}
+
+.v-loading-indicator,  
+.v-loading-indicator-delay,  
+.v-loading-indicator-wait {  
+    width: 100%;
+    height: 100%;
+    background: gray;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    content: "";
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    opacity: .2;  
+    -ms-filter: alpha(opacity=20);  
+    filter: alpha(opacity=20); 
+    position: fixed !important;
+
+}  */
+
 
 .mytheme .v-loading-indicator {
     position: fixed !important;
@@ -13234,7 +13275,7 @@ div.v-layout.v-horizontal.v-widget {
 
 }
 .bigbtn img:hover{ 
-    border:1px solid gray;
+    border:2px solid gray;
     background-color:lightgray;
 
 }
@@ -13395,13 +13436,17 @@ div.v-layout.v-horizontal.v-widget {
     color:blue;    
 }
 .valuelabel textArea{
-    font-size:12px;
+      font-size:12px;
     background-color:  white;
     border:none;
     color:gray;
     resize: none;
     width: 100%;
     cursor: default;
+   max-height:50px !important;
+   text-overflow:ellipsis !important;
+   overflow:hidden !important;
+   clear:both;
 }
 .valuelabel  textArea:focus{
 
@@ -14135,25 +14180,25 @@ div.v-layout.v-horizontal.v-widget {
 .legendptmglycosylation {
     /*background: url(http://www.damtp.cam.ac.uk/user/sjc1/damtp/icons/10x10/pinkball.gif) no-repeat;*/
     background-color:#ff5b09 ;//: url(img/orange_ptm.png) no-repeat;
-/*    background-position:center;*/
+    /*    background-position:center;*/
     border: 1px solid black;
     border-radius: 50%;
-    
+
     /*overflow: visible !important;*/
-    
-       margin-top:5px;
+
+    margin-top:5px;
 
 
 
 }
 
 .ptmglycosylation{
-      background-color:#ff5b09 ;//: url(img/orange_ptm.png) no-repeat;
-/*    background-position:center;*/
+    background-color:#ff5b09 ;//: url(img/orange_ptm.png) no-repeat;
+    /*    background-position:center;*/
     border: 1px solid black;
     border-radius: 50%;
-    
-    
+
+
 }
 .switchbtn{
     background-image: url(img/exchange.png);
@@ -14256,15 +14301,15 @@ div.v-layout.v-horizontal.v-widget {
 .graydiamond {
 
 
-     background-image: url(img/dimond_lightgray.png);
+    background-image: url(img/dimond_lightgray.png);
     background-repeat: no-repeat;
     background-position:center;
     background-size: contain;
     margin-top:-6px;
 }
 .darkgraydiamond{
-    
-     background-image: url(img/dimond_darkgray.png);
+
+    background-image: url(img/dimond_darkgray.png);
     background-repeat: no-repeat;
     background-position:center;
     background-size: contain;
@@ -14492,34 +14537,34 @@ div.v-layout.v-horizontal.v-widget {
     cursor:pointer;
 }
 .maxmizebtn{
-      background-image: url(img/expand-full.png) !important;
-      background-repeat:no-repeat;
-      background-size:contain;
-      background-color:whitesmoke;
-      border:1px solid lightgray;
-      cursor:pointer;
+    background-image: url(img/expand-full.png) !important;
+    background-repeat:no-repeat;
+    background-size:contain;
+    background-color:whitesmoke;
+    border:1px solid lightgray;
+    cursor:pointer;
 }
 .minmizebtn{
-      background-image: url(img/min-full.png) !important;
-       background-repeat:no-repeat;
-      background-size:contain;
-      background-color:whitesmoke;
-      border:1px solid lightgray;
+    background-image: url(img/min-full.png) !important;
+    background-repeat:no-repeat;
+    background-size:contain;
+    background-color:whitesmoke;
+    border:1px solid lightgray;
 }
 .overflowtext{
-   white-space: nowrap !important;
+    white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
-     text-align:-webkit-center;
+    text-align:-webkit-center;
     text-align:center;
-    
+
 }
 .v-table-row.v-selected font{
 
     color:white !important;
 }
 .v-table-row-odd.v-selected font{
-      color:white !important;
+    color:white !important;
 
 }
 
@@ -14745,4 +14790,23 @@ div.v-layout.v-horizontal.v-widget {
 .sequencecontainer{
     background-color: rgb(242,242,242) !important;
     border: 1px solid  lightgray ;
+}
+
+.v-window-busytaskwindow{
+
+    background-color:whitesmoke !important;
+    overflow:hidden!important;
+    opacity:0.1 !important;
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+}
+.orangeBorder{
+    border-color: orange !important; 
+    border-width:2px !important;
+}
+.v-popupview-popup-margin20{
+
+    margin-left:20px !important;
 }

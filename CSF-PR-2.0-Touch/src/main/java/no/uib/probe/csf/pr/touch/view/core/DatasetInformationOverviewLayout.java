@@ -34,6 +34,10 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
 
     }
 
+    public VerticalLayout getDatasetInfoForm() {
+        return datasetInfoForm;
+    }
+
     private final VerticalLayout datasetInfoForm;
     private InformationField uQuantProteinsNum, uQuantPeptidesNum, quantProteinsNum, quantPeptidesNum, diseaseCategory, pumedId, rawData, analyticalMethod, typeOfStudy, shotgunTargeted, enzyme, sampleType, technology, quantificationBasis, patientsGroup1Number, patientsGroup2Number, patientsGroup1, patientsGroup2, patientssubGroup1, patientsCommGroup1, patientssubGroup2, patientsCommGroup2, identifiedProteinsNumber, quantifiedProteinsNumber, sampleMatching, analyticalApproach, normalization_strategy;
 

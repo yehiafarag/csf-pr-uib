@@ -74,7 +74,9 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
     }
 
     public Set<QuantDiseaseGroupsComparison> getOrderedComparisonList(boolean trendOreder) {
+        
         if (trendOreder) {
+            System.out.println("at thi is orderd one");
             return orderedComparisonList;
         } else {
             return selectedComparisonList;
@@ -693,6 +695,10 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.RED);
         minImgUrl = new ExternalResource(this.getChartImage(lineChart, chartRenderingInfo, 100, 100));
         lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.GRAY);
+         lineChart.getXYPlot().getDomainAxis().setVisible(true);
+        lineChart.getXYPlot().getRangeAxis().setVisible(true);
+        lineChart.getXYPlot().setRangeGridlinesVisible(true);
+        lineChart.getXYPlot().setDomainGridlinesVisible(true);
         return minImgUrl;
 
     }

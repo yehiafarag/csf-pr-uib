@@ -28,6 +28,7 @@ public class InformationField extends VerticalLayout {
         this.addComponent(titleLabel);
         titleLabel.setStyleName("caption");
         titleLabel.setHeight("100%");
+        titleLabel.setWidth(200,Unit.PIXELS);
         this.setComponentAlignment(titleLabel, Alignment.TOP_LEFT);
         valueLabel = new Link();
 
@@ -49,7 +50,7 @@ public class InformationField extends VerticalLayout {
      */
     public void setValue(Object object, String urlAddress) {
 
-        if (object instanceof Number && urlAddress== null) {
+        if (object instanceof Number && urlAddress == null) {
             valueLabel.setCaption("<p style='text-align: left ;width: 100px;   line-height: 1px;'>" + object + "</p>");
             valueLabel.setCaptionAsHtml(true);
             valueLabel.setStyleName("valuelabel");
@@ -92,7 +93,7 @@ public class InformationField extends VerticalLayout {
             } else if (stringValue.toCharArray().length > 25) {
                 valueLabel.setCaption("<textarea rows='5'  readonly>" + stringValue + "</textarea>");
                 valueLabel.setCaptionAsHtml(true);
-//            this.setHeight("100px");
+//                this.setHeight("100px");
             } else {
                 valueLabel.setCaption(stringValue);
             }

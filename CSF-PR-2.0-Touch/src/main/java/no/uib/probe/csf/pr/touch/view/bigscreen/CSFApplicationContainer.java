@@ -9,6 +9,7 @@ import no.uib.probe.csf.pr.touch.view.LayoutViewManager;
 import no.uib.probe.csf.pr.touch.view.bigscreen.quantlayoutcontainer.QuantDataLayoutContainer;
 import no.uib.probe.csf.pr.touch.view.core.ScrollPanel;
 import no.uib.probe.csf.pr.touch.view.bigscreen.welcomepagecontainer.WelcomeLayoutComponents;
+import no.uib.probe.csf.pr.touch.view.core.BusyTask;
 import no.uib.probe.csf.pr.touch.view.core.SlidePanel;
 
 /**
@@ -30,7 +31,8 @@ public class CSFApplicationContainer extends VerticalLayout {
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeight(100, Unit.PERCENTAGE);
         this.setSpacing(true);
-        this.View_Manager = new LayoutViewManager();
+        BusyTask busyTask = new BusyTask();
+        this.View_Manager = new LayoutViewManager(busyTask);
         this.Data_handler = new Data_Handler(url, dbName, driver, userName, password, filesURL);
         int mainlayoutWidth = pageWidth-10 ;
         int mainlayoutHeight = pageHeight - 20;
@@ -53,7 +55,7 @@ public class CSFApplicationContainer extends VerticalLayout {
         bodyWrapper.setComponentAlignment(welcomeLayoutPanel, Alignment.TOP_RIGHT);
         welcomeLayoutPanel.setShowNavigationBtn(false);
 
-        QuantDataLayoutContainer quantLayout = new QuantDataLayoutContainer(Data_handler, mainlayoutWidth - 32, mainlayoutHeight - 2);
+        QuantDataLayoutContainer quantLayout = new QuantDataLayoutContainer(Data_handler, mainlayoutWidth - 32, mainlayoutHeight - 2,busyTask);
 
         quantLayoutPanel = new SlidePanel(quantLayout, null, 1, "quantview") {
 

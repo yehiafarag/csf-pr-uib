@@ -16,6 +16,7 @@ import no.uib.probe.csf.pr.touch.view.components.HeatMapComponent;
 import no.uib.probe.csf.pr.touch.view.components.LineChartProteinTableComponent;
 import no.uib.probe.csf.pr.touch.view.components.PeptideViewComponent;
 import no.uib.probe.csf.pr.touch.view.components.QuantInitialLayout;
+import no.uib.probe.csf.pr.touch.view.core.BusyTask;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 import no.uib.probe.csf.pr.touch.view.core.ViewControlPanel;
 
@@ -33,17 +34,20 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
     private final ImageContainerBtn heatmapBtn, bubblechartBtn, linechartBtn, peptideInfoBtn;
     private final Data_Handler Data_handler;
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
+    private final ThemeResource logoRes = new ThemeResource("img/logo.png");
 
     private HeatMapComponent heatmapComponent;
 
     private final int mainViewPanelWidth;
     private final int mainViewPanelHeight;
     private final QuantInitialLayout quantInitialLayout;
+    private final BusyTask busyTask;
 
-    public QuantDataLayoutContainer(final Data_Handler Data_handler, int width, int height) {
+    public QuantDataLayoutContainer(final Data_Handler Data_handler, int width, int height, BusyTask busyTask) {
         super(width, height);
+        this.busyTask = busyTask;
         this.Data_handler = Data_handler;
-        CSFPR_Central_Manager = new CSFPR_Central_Manager();
+        CSFPR_Central_Manager = new CSFPR_Central_Manager(busyTask);
         this.setMargin(true);
         this.addStyleName("slowslide");
 
@@ -77,10 +81,12 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
 
             @Override
             public void onClick() {
-                processFunction("heatmap");
+                if (this.isEnabled()) {
+                    processFunction("heatmap");
+                }
             }
         };
-        heatmapBtn.updateIcon(new ThemeResource("img/logo.png"));
+        heatmapBtn.updateIcon(logoRes);
         heatmapBtn.setWidth(100, Unit.PIXELS);
         heatmapBtn.setHeight(100, Unit.PIXELS);
 
@@ -96,10 +102,12 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
 
             @Override
             public void onClick() {
-                processFunction("bubblechart");
+                if (this.isEnabled()) {
+                    processFunction("bubblechart");
+                }
             }
         };
-        bubblechartBtn.updateIcon(new ThemeResource("img/logo.png"));
+        bubblechartBtn.updateIcon(logoRes);
         bubblechartBtn.setWidth(100, Unit.PIXELS);
         bubblechartBtn.setHeight(100, Unit.PIXELS);
         bubblechartBtn.setEnabled(false);
@@ -114,10 +122,12 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
 
             @Override
             public void onClick() {
-                processFunction("linechart");
+                if (this.isEnabled()) {
+                    processFunction("linechart");
+                }
             }
         };
-        linechartBtn.updateIcon(new ThemeResource("img/logo.png"));
+        linechartBtn.updateIcon(logoRes);
         linechartBtn.setWidth(100, Unit.PIXELS);
         linechartBtn.setHeight(100, Unit.PIXELS);
 
@@ -131,10 +141,12 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
 
             @Override
             public void onClick() {
-                processFunction("peptidelayout");
+                if (this.isEnabled()) {
+                    processFunction("peptidelayout");
+                }
             }
         };
-        peptideInfoBtn.updateIcon(new ThemeResource("img/logo.png"));
+        peptideInfoBtn.updateIcon(logoRes);
         peptideInfoBtn.setWidth(100, Unit.PIXELS);
         peptideInfoBtn.setHeight(100, Unit.PIXELS);
 
@@ -150,16 +162,17 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
             @Override
             public void updateIcon(String imageUrl) {
                 if (imageUrl == null) {
-                    bubblechartBtn.updateIcon(new ThemeResource("img/logo.png"));
-                    linechartBtn.updateIcon(new ThemeResource("img/logo.png"));
+                    bubblechartBtn.updateIcon(logoRes);
+                    linechartBtn.updateIcon(logoRes);
                     bubblechartBtn.setEnabled(false);
                     linechartBtn.setEnabled(false);
                     return;
                 }
                 bubblechartBtn.setEnabled(true);
-                bubblechartBtn.updateIcon(new ExternalResource(imageUrl));
-                linechartBtn.updateIcon(new ThemeResource("img/proteintableicon.png"));
+                bubblechartBtn.updateIcon(new ExternalResource(imageUrl));                
                 linechartBtn.setEnabled(true);
+                linechartBtn.updateIcon(new ThemeResource("img/table.png"));               
+                
             }
 
         };
@@ -177,7 +190,8 @@ public class QuantDataLayoutContainer extends ViewControlPanel {
             @Override
             public void updateIcon(Resource iconResource) {
                 if (iconResource == null) {
-                    peptideInfoBtn.updateIcon(new ThemeResource("img/logo.png"));
+                      peptideInfoBtn.setEnabled(false);
+                    peptideInfoBtn.updateIcon(logoRes);
                 } else {
                     peptideInfoBtn.setEnabled(true);
                     peptideInfoBtn.updateIcon(iconResource);

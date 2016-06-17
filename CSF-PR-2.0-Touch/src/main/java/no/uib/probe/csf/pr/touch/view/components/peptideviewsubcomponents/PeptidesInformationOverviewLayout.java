@@ -410,7 +410,7 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
             }
 
             if (!significatOnly) {
-                StackedBarPeptideComponent peptideStackedBarComponent = new StackedBarPeptideComponent(x0, (int) (peptideLayoutWidth), quantPeptide.getUniqueId() + "", quantPeptide.getPeptideModification());
+                StackedBarPeptideComponent peptideStackedBarComponent = new StackedBarPeptideComponent(x0, (int) (peptideLayoutWidth), quantPeptide.getUniqueId() + "", quantPeptide.getPeptideModification(),quantPeptide);
                 peptideStackedBarComponent.setWidth(peptideLayoutWidth + "px");
                 peptideStackedBarComponent.setDescription("" + start + "-" + quantPeptide.getPeptideSequence() + "-" + end + "");
                 peptideStackedBarComponent.setParam("peptide", quantPeptide);
@@ -513,7 +513,7 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
             } else {
                 if (quantPeptide.getString_p_value().equalsIgnoreCase("Significant")) {
                     significantPeptidesNumber++;
-                    StackedBarPeptideComponent peptideStackedBarComponent = new StackedBarPeptideComponent(x0, (int) (peptideLayoutWidth), quantPeptide.getUniqueId() + "", quantPeptide.getPeptideModification());
+                    StackedBarPeptideComponent peptideStackedBarComponent = new StackedBarPeptideComponent(x0, (int) (peptideLayoutWidth), quantPeptide.getUniqueId() + "", quantPeptide.getPeptideModification(),quantPeptide);
                     peptideStackedBarComponent.setSignificant(true);
                     peptideStackedBarComponent.setWidth(peptideLayoutWidth + "px");
                     peptideStackedBarComponent.setDescription("" + start + "-" + quantPeptide.getPeptideSequence() + "-" + end + "");

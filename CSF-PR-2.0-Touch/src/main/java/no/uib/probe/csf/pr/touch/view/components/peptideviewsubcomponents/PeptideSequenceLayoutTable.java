@@ -32,7 +32,7 @@ import no.uib.probe.csf.pr.touch.view.core.TrendSymbol;
  * peptide view tab
  */
 public class PeptideSequenceLayoutTable extends VerticalLayout {
-
+    
     private final Table peptideSequenceTable;
     private final Set<Object> selectedItemIds = new HashSet<>();
     private final Map<Object, CheckBox> tableItemscheckboxMap;
@@ -41,28 +41,28 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
     private final Map<String, Object> comparisonToItemId;
     private final Set<ProteinSequenceContainer> proteinSeqSet;
     int proteinSequenceContainerWidth;
-
+    
     public PeptideSequenceLayoutTable(int width, int height) {
         this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
-
+        
         tableItemscheckboxMap = new HashMap<>();
         this.tableItemsMap = new LinkedHashMap<>();
         comparisonToItemId = new HashMap<>();
         proteinSeqSet = new HashSet<>();
-
+        
         peptideSequenceTable = new Table();
         peptideSequenceTable.setWidthUndefined();
         peptideSequenceTable.setHeight(100, Unit.PERCENTAGE);
         this.addComponent(peptideSequenceTable);
-
+        
         peptideSequenceTable.setSelectable(true);
         peptideSequenceTable.setSortEnabled(false);
         peptideSequenceTable.setColumnReorderingAllowed(false);
         peptideSequenceTable.setColumnCollapsingAllowed(false);
         peptideSequenceTable.setImmediate(true); // react at once when something is selected
         peptideSequenceTable.setMultiSelect(false);
-
+        
         peptideSequenceTable.addContainerProperty("Index", TrendSymbol.class, null, "", null, Table.Align.CENTER);
         peptideSequenceTable.addContainerProperty("Comparison", ComparisonLable.class, null, "Comparison", null, Table.Align.LEFT);
         peptideSequenceTable.addContainerProperty("Publication", ExternalLink.class, null, "Publication", null, Table.Align.LEFT);
@@ -104,10 +104,10 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
                 }
                 selectedOnly = !selectedOnly;
                 showSelectedOnly();
-
+                
             }
         });
-
+        
         peptideSequenceTable.addColumnResizeListener((Table.ColumnResizeEvent event) -> {
             peptideSequenceTable.setColumnWidth(event.getPropertyId(), event.getPreviousWidth());
         });
@@ -115,7 +115,7 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
 //        peptideSequenceTable.sort(new String[]{"PeptideSequence"}, new boolean[]{false});
 //        peptideSequenceTable.setSortAscending(false);
     }
-
+    
     private void showSelectedOnly() {
         peptideSequenceTable.removeAllItems();
         if (!selectedOnly) {
@@ -123,7 +123,7 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
             for (Object itemId : tableItemsMap.keySet()) {
                 peptideSequenceTable.addItem(tableItemsMap.get(itemId), itemId);
             }
-
+            
         } else {
             peptideSequenceTable.setColumnHeader("selected", "All");
             if (!selectedItemIds.isEmpty()) {
@@ -135,11 +135,11 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
                     peptideSequenceTable.addItem(tableItemsMap.get(itemId), itemId);
                 }
             }
-
+            
         }
-
+        
     }
-
+    
     public void updateTableData(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, String proteinKey) {
         peptideSequenceTable.removeAllItems();
         tableItemsMap.clear();
@@ -149,28 +149,28 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
         String keyII = 1 + "_" + proteinKey;
         String keyIII = 2 + "_" + proteinKey;
         String key;
-
+        
         for (QuantDiseaseGroupsComparison comparison : selectedComparisonsList) {
             key = "";
             if (comparison.getQuantComparisonProteinMap().containsKey(keyI)) {
                 key = keyI;
-
+                
             } else if (comparison.getQuantComparisonProteinMap().containsKey(keyII)) {
                 key = keyII;
-
+                
             } else if (comparison.getQuantComparisonProteinMap().containsKey(keyIII)) {
                 key = keyIII;
-
+                
             }
             if (!comparison.getQuantComparisonProteinMap().containsKey(key)) {
-
+                
                 continue;
             }
-
+            
             QuantComparisonProtein protein = comparison.getQuantComparisonProteinMap().get(key);
-
+            
             for (QuantProtein quantProt : protein.getDsQuantProteinsMap().values()) {
-
+                
                 int trend = 2;
                 if (quantProt.getStringPValue().equalsIgnoreCase("Significant")) {
                     if (quantProt.getStringFCValue().equalsIgnoreCase("Increased")) {
@@ -178,8 +178,9 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
                     } else if (quantProt.getStringFCValue().equalsIgnoreCase("Decreased")) {
                         trend = 4;
                     }
-
+                    
                 }
+                
                 TrendSymbol symbol = new TrendSymbol(trend);
                 symbol.setWidth(12, Unit.PIXELS);
                 symbol.setHeight(12, Unit.PIXELS);
@@ -192,9 +193,9 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
                 publicationLink.addStyleName(ValoTheme.LABEL_SMALL);
                 publicationLink.addStyleName(ValoTheme.LABEL_TINY);
                 publicationLink.addStyleName("overflowtext");
-
-                ComparisonLable comparisonLabelObject = new ComparisonLable(comparison, objectId) {
-
+                
+                ComparisonLable comparisonLabelObject = new ComparisonLable(comparison, objectId, quantProt, ds) {
+                    
                     @Override
                     public void select(Object itemId) {
                         if (peptideSequenceTable.getValue() == itemId) {
@@ -203,40 +204,47 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
                             peptideSequenceTable.select(itemId);
                         }
                     }
-
+                    
                 };
-
+                
                 ProteinSequenceContainer proteinCoverageLayout = new ProteinSequenceContainer(quantProt.getSequence(), protein.getQuantPeptidesList(), proteinSequenceContainerWidth, quantProt.getDsKey());
                 proteinSeqSet.add(proteinCoverageLayout);
                 tableItemsMap.put(objectId, new Object[]{symbol, comparisonLabelObject, publicationLink, proteinCoverageLayout});
                 peptideSequenceTable.addItem(tableItemsMap.get(objectId), objectId);
                 comparisonToItemId.put(comparison.getComparisonHeader() + "__" + quantProt.getDsKey(), objectId);
                 objectId++;
-
+                
             }
 
 //           
         }
-
+        
     }
-
+    
     public void sortTable(Set<QuantDiseaseGroupsComparison> selectedComparisonsList) {
         peptideSequenceTable.removeAllItems();
-        for (QuantDiseaseGroupsComparison comparison : selectedComparisonsList) {
-            for (int key : comparison.getDatasetMap().keySet()) {
-                if (comparisonToItemId.containsKey(comparison.getComparisonHeader() + "__" + key)) {
-                    Object itemId = comparisonToItemId.get(comparison.getComparisonHeader() + "__" + key);
-                    peptideSequenceTable.addItem(tableItemsMap.get(itemId), itemId);
+        Map<Object, Object[]> sortedTableItemsMap = new LinkedHashMap<>();
+        for (QuantDiseaseGroupsComparison comparison : selectedComparisonsList) {            
+            for (QuantDatasetObject ds : comparison.getDatasetMap().values()) {
+                               if (comparisonToItemId.containsKey(comparison.getComparisonHeader() + "__" + ds.getDsKey())) {
+                    Object itemId = comparisonToItemId.get(comparison.getComparisonHeader() + "__" +  ds.getDsKey());
+                    if (tableItemsMap.containsKey(itemId)) {
+                        peptideSequenceTable.addItem(tableItemsMap.get(itemId), itemId);
+                        sortedTableItemsMap.put(itemId, tableItemsMap.get(itemId));
+                    }
+                   
                 }
             }
-
+            
         }
+        tableItemsMap.clear();
+        tableItemsMap.putAll(sortedTableItemsMap);
         selectedItemIds.clear();
         selectedOnly = false;
         showSelectedOnly();
-
+//        
     }
-
+    
     public void select(QuantDiseaseGroupsComparison comparison, int dsKey) {
         selectedItemIds.clear();
         if (comparison == null) {
@@ -244,28 +252,28 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
             showSelectedOnly();
             return;
         }
-
+        
         if (dsKey == -100) {
             comparison.getDatasetMap().keySet().stream().filter((key) -> (comparisonToItemId.containsKey(comparison.getComparisonHeader() + "__" + key))).forEach((key) -> {
                 selectedItemIds.add(comparisonToItemId.get(comparison.getComparisonHeader() + "__" + key));
             });
-
+            
         } else {
             if (comparisonToItemId.containsKey(comparison.getComparisonHeader() + "__" + dsKey)) {
                 selectedItemIds.add(comparisonToItemId.get(comparison.getComparisonHeader() + "__" + dsKey));
             }
-
+            
         }
         selectedOnly = !selectedItemIds.isEmpty();
         showSelectedOnly();
     }
-
+    
     public void showNotSignificantPeptides(boolean showNotSigPeptides) {
-
+        
         proteinSeqSet.stream().forEach((proteinCoverageLayout) -> {
             proteinCoverageLayout.setShowNotSignificantPeptides(showNotSigPeptides);
         });
-
+        
     }
-
+    
 }

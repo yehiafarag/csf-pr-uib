@@ -123,8 +123,7 @@ public  class LineChartProteinTableComponent extends VerticalLayout implements C
             }
 
             @Override
-            public void selectProtein(String selectedProtein) {
-               
+            public void selectProtein(String selectedProtein) {               
                 CSFSelection selection = new CSFSelection("peptide_selection", getFilterId(), null, null);
                 selection.setSelectedProteinAccession(selectedProtein);
                 CSFPR_Central_Manager.selectionAction(selection);

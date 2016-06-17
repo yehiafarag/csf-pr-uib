@@ -49,9 +49,9 @@ public class ScrollPanel extends VerticalLayout implements LayoutEvents.LayoutCl
         this.viewId = viewId;
         this.mainLayout = mainLayout;
         navigationBtn = new VerticalLayout();
-        navigationBtn.setHeight("30px");
-        navigationBtn.setWidth("30px");
-        navigationBtn.addStyleName("thumbBtn");
+//        navigationBtn.setHeight("30px");
+//        navigationBtn.setWidth("30px");
+//        navigationBtn.addStyleName("thumbBtn");
 //        mainLayout.addStyleName("border");
 
         if (miniLayout == null) {
@@ -65,25 +65,25 @@ public class ScrollPanel extends VerticalLayout implements LayoutEvents.LayoutCl
         miniLayout.addStyleName("rightbtns");
         if (orientation == 0) {
 
-            navigationBtn.setStyleName("upscrollebtn");
+//            navigationBtn.setStyleName("upscrollebtn");
 
             this.addComponent(mainLayout);
             this.addComponent(miniLayout);
-            this.addComponent(navigationBtn);
+//            this.addComponent(navigationBtn);
 
         } else {
-            navigationBtn.setStyleName("downscrollbtn");
+//            navigationBtn.setStyleName("downscrollbtn");
             this.addComponent(miniLayout);
-            this.addComponent(navigationBtn);
+//            this.addComponent(navigationBtn);
             this.addComponent(mainLayout);
 
         }
-        this.setComponentAlignment(navigationBtn, Alignment.MIDDLE_CENTER);
+//        this.setComponentAlignment(navigationBtn, Alignment.MIDDLE_CENTER);
         this.setWidthUndefined();
         this.setHeightUndefined();
         this.setStyleName("scrollpanel");
         this.addStyleName("slowslide");
-        this.navigationBtn.addLayoutClickListener(ScrollPanel.this);
+//        this.navigationBtn.addLayoutClickListener(ScrollPanel.this);
         this.setWidthUndefined();
 
     }
@@ -95,28 +95,28 @@ public class ScrollPanel extends VerticalLayout implements LayoutEvents.LayoutCl
      */
     public final void setShowPanel(boolean show) {
         if (show) {
-            this.navigationBtn.removeStyleName("transformslidebtn");
+//            this.navigationBtn.removeStyleName("transformslidebtn");
             this.mainLayout.removeStyleName("hidescrolllayout");
             this.miniLayout.addStyleName("hidescrolllayout");
             this.removeStyleName("sidemenue");
             this.removeStyleName("hidescrollpanel");
             this.setWidthUndefined();
-            if (navigationBtn != null && navigationBtn.isVisible()) {
-//                navigationBtn.detach();
-            }
-            this.addComponent(navigationBtn);
-            this.setComponentAlignment(navigationBtn, Alignment.MIDDLE_CENTER);
+//            if (navigationBtn != null && navigationBtn.isVisible()) {
+////                navigationBtn.detach();
+//            }
+//            this.addComponent(navigationBtn);
+//            this.setComponentAlignment(navigationBtn, Alignment.MIDDLE_CENTER);
 
         } else {
-            this.navigationBtn.addStyleName("transformslidebtn");
+//            this.navigationBtn.addStyleName("transformslidebtn");
             this.mainLayout.addStyleName("hidescrolllayout");
             this.miniLayout.removeStyleName("hidescrolllayout");
             this.addStyleName("hidescrollpanel");
               this.addStyleName("sidemenue");
-            if (navigationBtn != null && navigationBtn.isVisible() && navigationBtn.isAttached()) {
-//                navigationBtn.detach();
-            }
-            miniLayout.addComponent(navigationBtn);
+//            if (navigationBtn != null && navigationBtn.isVisible() && navigationBtn.isAttached()) {
+////                navigationBtn.detach();
+//            }
+//            miniLayout.addComponent(navigationBtn);
 
         }
         this.show = show;
