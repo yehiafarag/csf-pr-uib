@@ -142,12 +142,12 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
      * @param isDefault
      */
     public void addButton(AbstractOrderedLayout Btn, AbstractOrderedLayout mainViewLayout, AbstractOrderedLayout toolBtnsLayout, boolean isDefault) {
-
         VerticalLayout btnWrapper = new VerticalLayout(Btn);
         btnWrapper.addStyleName("sidebtnwrapper");
         btnWrapper.addStyleName("unselectedbtn");
         btnWrapper.setWidth(100, Unit.PERCENTAGE);
         leftSideContainer.addComponent(btnWrapper);
+       
         btnWrapper.addLayoutClickListener(this);
         Btn.setEnabled(false);
         Btn.setReadOnly(false);

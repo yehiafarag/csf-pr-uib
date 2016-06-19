@@ -54,6 +54,11 @@ public abstract class ImageContainerBtn extends VerticalLayout implements Layout
         onClick();
     }
 
+    public void setHasWrapper(boolean hasWrapper) {
+        this.hasWrapper = hasWrapper;
+    }
+    private boolean hasWrapper=false; 
+
     public void blink() {
         this.addStyleName("orangeBorder");
         if (img.getStyleName().contains("blinkII")) {
@@ -77,7 +82,7 @@ public abstract class ImageContainerBtn extends VerticalLayout implements Layout
             this.addStyleName("unapplied");
         }
         super.setEnabled(enabled); //To change body of generated methods, choose Tools | Templates.
-        if (this.getParent() != null) {
+        if (this.getParent() != null && hasWrapper) {
             this.getParent().setEnabled(enabled);
         }
     }

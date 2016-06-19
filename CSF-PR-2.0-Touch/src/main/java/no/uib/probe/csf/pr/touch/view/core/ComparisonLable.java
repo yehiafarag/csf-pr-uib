@@ -8,6 +8,7 @@ package no.uib.probe.csf.pr.touch.view.core;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.Accordion;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -29,6 +30,8 @@ public abstract class ComparisonLable extends VerticalLayout implements LayoutEv
 
     private final Object itemId;
     private final PopupView datasetInfoPopup;
+
+    private final Accordion datalayout;
 
     public ComparisonLable(QuantDiseaseGroupsComparison comparison, Object itemId, QuantProtein quantProtein, QuantDatasetObject qds) {
         this.itemId = itemId;
@@ -67,27 +70,15 @@ public abstract class ComparisonLable extends VerticalLayout implements LayoutEv
         this.addComponent(labelII);
         this.setDescription(comparison.getComparisonFullName());
 
-        ProteinsInformationOverviewLayout proteinInfoLayout = new ProteinsInformationOverviewLayout(1000);
-
         VerticalLayout popupbodyLayout = new VerticalLayout();
         popupbodyLayout.setSpacing(true);
         popupbodyLayout.setWidth(1000, Unit.PIXELS);
-        popupbodyLayout.setMargin(new MarginInfo(false, false, true, true));
+        popupbodyLayout.setMargin(new MarginInfo(false, false, true, false));
         popupbodyLayout.addStyleName("border");
 
-        
         HorizontalLayout headerIContainer = new HorizontalLayout();
-        headerIContainer.setWidth(100,Unit.PERCENTAGE);
-        
-        Label titleI = new Label("Protein");
-        titleI.setStyleName(ValoTheme.LABEL_BOLD);
-        headerIContainer.addComponent(titleI);
-        
-          popupbodyLayout.addComponent(headerIContainer);
-        proteinInfoLayout.updateProteinsForm(quantProtein, quantProtein.getUniprotAccession(), null, quantProtein.getUniprotProteinName());
-        
-        
-        
+        headerIContainer.setWidth(100, Unit.PERCENTAGE);
+        popupbodyLayout.addComponent(headerIContainer);
         CloseButton closePopup = new CloseButton();
         closePopup.setWidth(10, Unit.PIXELS);
         closePopup.setHeight(10, Unit.PIXELS);
@@ -95,18 +86,31 @@ public abstract class ComparisonLable extends VerticalLayout implements LayoutEv
         headerIContainer.setComponentAlignment(closePopup, Alignment.TOP_RIGHT);
         closePopup.addStyleName("translateleft10");
 
-        popupbodyLayout.addComponent(proteinInfoLayout);
+        VerticalLayout accrWrapper = new VerticalLayout();
+        accrWrapper.setHeight(880, Unit.PIXELS);
+        accrWrapper.setWidth(100, Unit.PERCENTAGE);
+        popupbodyLayout.addComponent(accrWrapper);
+        datalayout = new Accordion();
+        accrWrapper.addComponent(datalayout);
+        datalayout.setTabCaptionsAsHtml(true);
+        datalayout.setWidth(100, Unit.PERCENTAGE);
+
+//
+//        Label titleI = new Label("Protein");
+//        titleI.setStyleName(ValoTheme.LABEL_BOLD);
+//        headerIContainer.addComponent(titleI);
+        ProteinsInformationOverviewLayout proteinInfoLayout = new ProteinsInformationOverviewLayout(980);
         proteinInfoLayout.updateProteinsForm(quantProtein, quantProtein.getUniprotAccession(), null, quantProtein.getUniprotProteinName());
+        datalayout.addTab(proteinInfoLayout, "<b>Protein</b>");
 
-        
-         Label titleII = new Label("Dataset");
-         titleII.setStyleName(ValoTheme.LABEL_BOLD);
-         popupbodyLayout.addComponent(titleII);
-        
+//        Label titleII = new Label("Dataset");
+//        titleII.setStyleName(ValoTheme.LABEL_BOLD);
+//        popupbodyLayout.addComponent(titleII);
         DatasetInformationOverviewLayout dsOverview = new DatasetInformationOverviewLayout(qds);
-        dsOverview.getDatasetInfoForm().setWidth(1000,Unit.PIXELS);
-        popupbodyLayout.addComponent(dsOverview.getDatasetInfoForm());
+        dsOverview.getDatasetInfoForm().setWidth(980, Unit.PIXELS);
+        datalayout.addTab(dsOverview.getDatasetInfoForm(), "<b>Dataset</b>");
 
+//        popupbodyLayout.addComponent(dsOverview.getDatasetInfoForm());
         datasetInfoPopup = new PopupView(null, popupbodyLayout) {
 
             @Override

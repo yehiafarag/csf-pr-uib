@@ -13443,7 +13443,7 @@ div.v-layout.v-horizontal.v-widget {
     resize: none;
     width: 100%;
     cursor: default;
-   max-height:50px !important;
+   max-height:70px !important;
    text-overflow:ellipsis !important;
    overflow:hidden !important;
    clear:both;
