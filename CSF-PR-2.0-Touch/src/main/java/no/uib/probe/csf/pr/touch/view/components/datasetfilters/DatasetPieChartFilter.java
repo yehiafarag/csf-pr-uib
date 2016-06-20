@@ -242,6 +242,7 @@ public abstract class DatasetPieChartFilter extends VerticalLayout implements La
         }
         return selectedDsIds;
     }
+    
 
     public void reset() {
         DefaultPieDataset dataset = (DefaultPieDataset) plot.getDataset();

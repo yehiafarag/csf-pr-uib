@@ -931,4 +931,184 @@ public class DataBaseLayer implements Serializable {
         }
     }
 
+    /**
+     * Search for quant proteins by keywords
+     *
+     * @param query query object that has all query information
+     * @param toCompare
+     * @return Quant Proteins Searching List
+     */
+    public List<QuantProtein> searchQuantificationProteins(Query query, boolean toCompare) {
+
+        StringBuilder sb = new StringBuilder();
+        QueryConstractorHandler qhandler = new QueryConstractorHandler();
+        PreparedStatement selectProStat;
+        String selectPro;
+        //main filters  
+        if (query.getSearchKeyWords() != null && !query.getSearchKeyWords().equalsIgnoreCase("")) {
+            String[] queryWordsArr = query.getSearchKeyWords().split("\n");
+            HashSet<String> searchSet = new HashSet<>();
+            for (String str : queryWordsArr) {
+                if (str.trim().equalsIgnoreCase("")) {
+                    continue;
+                }
+                searchSet.add(str.trim());
+            }
+            if (query.getSearchBy().equalsIgnoreCase("Protein Accession")) {
+                int x = 0;
+                for (String str : searchSet) {
+                    if (x > 0) {
+                        sb.append(" OR ");
+                    }
+                    if (toCompare) {
+                        sb.append("`uniprot_accession` = ?");
+                        qhandler.addQueryParam("String", str);
+                    } else {
+                        sb.append("`uniprot_accession` = ? OR `publication_acc_number` = ?");
+                        qhandler.addQueryParam("String", str);
+                        qhandler.addQueryParam("String", str);
+                    }
+
+                    x++;
+                }
+            } else if (query.getSearchBy().equalsIgnoreCase("Protein Name")) {
+                int x = 0;
+                for (String str : searchSet) {
+                    if (x > 0) {
+                        sb.append(" OR ");
+                    }
+                    sb.append("`uniprot_protein_name` LIKE(?) ");
+                    qhandler.addQueryParam("String", "%" + str + "%");
+                    x++;
+                }
+            } else {  //peptide sequance
+                int x = 0;
+                for (String str : searchSet) {
+                    if (x > 0) {
+                        sb.append(" OR ");
+                    }
+                    sb.append("`sequance` LIKE (?)");//
+                    qhandler.addQueryParam("String", "%" + str + "%");
+                    x++;
+                }
+            }
+        }
+        selectPro = "SELECT * FROM   `quantitative_proteins_table`  Where " + (sb.toString());
+        try {
+            if (conn == null || conn.isClosed()) {
+                Class.forName(driver).newInstance();
+                conn = DriverManager.getConnection(url + dbName, userName, password);
+            }
+            selectProStat = conn.prepareStatement(selectPro);
+            selectProStat = qhandler.initStatment(selectProStat);
+
+            ResultSet rs = selectProStat.executeQuery();
+            List<QuantProtein> quantProtResultList = fillQuantProtData(rs);
+            System.gc();
+
+            Set<Integer> quantDatasetIds = new HashSet<>();
+            quantProtResultList.stream().forEach((quantProt) -> {
+                quantDatasetIds.add(quantProt.getDsKey());
+            });
+            if (quantDatasetIds.isEmpty()) {
+                return new ArrayList<>();
+
+            }
+            sb = new StringBuilder();
+            for (Object index : quantDatasetIds) {
+                sb.append("  `index` = ").append(index);
+                sb.append(" OR ");
+
+            }
+
+            String stat = sb.toString().substring(0, sb.length() - 4);
+            String selectDsGroupNum = "SELECT `disease_category`,`pumed_id` ,`index` ,`patients_group_i_number` , `patients_group_ii_number`,`patient_group_i`,`patient_group_ii`,`patient_sub_group_i`,`patient_sub_group_ii` FROM `quant_dataset_table` Where  " + stat + ";"; //"SELECT `patients_group_i_number` , `patients_group_ii_number`,`patient_group_i`,`patient_group_ii`,`patient_sub_group_i`,`patient_sub_group_ii`,`index` FROM `quant_dataset_table` WHERE  " + stat + " ;";
+
+            PreparedStatement selectselectDsGroupNumStat = conn.prepareStatement(selectDsGroupNum);
+            rs = selectselectDsGroupNumStat.executeQuery();
+            Map<Integer, Object[]> datasetIdDesGrs = new HashMap<>();
+            while (rs.next()) {
+                datasetIdDesGrs.put(rs.getInt("index"), new Object[]{rs.getInt("patients_group_i_number"), rs.getInt("patients_group_ii_number"), rs.getString("patient_group_i").trim(), rs.getString("patient_group_ii").trim(), rs.getString("patient_sub_group_i").trim(), rs.getString("patient_sub_group_ii").trim(), rs.getString("pumed_id"), rs.getString("disease_category")});
+            }
+            rs.close();
+
+            List<QuantProtein> updatedQuantProtResultList = new ArrayList<>();
+            quantProtResultList.stream().filter((quantProt) -> (datasetIdDesGrs.containsKey(quantProt.getDsKey()))).map((quantProt) -> {
+                Object[] grNumArr = datasetIdDesGrs.get(quantProt.getDsKey());
+                quantProt.setPatientsGroupINumber((Integer) grNumArr[0]);
+                quantProt.setPatientsGroupIINumber((Integer) grNumArr[1]);
+                quantProt.setPatientGroupI((String) grNumArr[2] + "\n" + grNumArr[7].toString().replace(" ", "_").replace("'", "-") + "_Disease");
+                quantProt.setPatientGroupII((String) grNumArr[3] + "\n" + grNumArr[7].toString().replace(" ", "_").replace("'", "-") + "_Disease");
+                quantProt.setPatientSubGroupI((String) grNumArr[4] + "\n" + grNumArr[7].toString().replace(" ", "_").replace("'", "-") + "_Disease");
+                quantProt.setPatientSubGroupII((String) grNumArr[5] + "\n" + grNumArr[7].toString().replace(" ", "_").replace("'", "-") + "_Disease");
+                quantProt.setDiseaseCategory(grNumArr[7].toString());
+                quantProt.setPumedID((String) grNumArr[6]);
+                return quantProt;
+            }).forEach((quantProt) -> {
+                updatedQuantProtResultList.add(quantProt);
+            });
+            return updatedQuantProtResultList;
+
+        } catch (ClassNotFoundException e) {
+            System.err.println("at error line 3654 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
+            return null;
+        } catch (IllegalAccessException e) {
+            System.err.println("at error line 3657 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
+
+            return null;
+        } catch (InstantiationException e) {
+            System.err.println("at error line 3660 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
+
+            return null;
+        } catch (SQLException e) {
+            System.err.println("at error line 3665 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
+
+            return null;
+        }
+
+    }
+
+    /**
+     * Fill quant protein information from the result set
+     *
+     * @param resultSet results set to fill identification peptides data
+     * @return quant proteins List
+     */
+    private List<QuantProtein> fillQuantProtData(ResultSet resultSet) {
+        List<QuantProtein> quantProtResultList = new ArrayList<>();
+
+        try {
+            while (resultSet.next()) {
+
+                QuantProtein quantProt = new QuantProtein();
+                quantProt.setProtKey(resultSet.getInt("index"));
+                quantProt.setDsKey(resultSet.getInt("ds_ID"));
+                quantProt.setSequence(resultSet.getString("sequance"));
+                quantProt.setUniprotAccession(resultSet.getString("uniprot_accession"));
+
+                quantProt.setUniprotProteinName(resultSet.getString("uniprot_protein_name"));
+                quantProt.setPublicationAccNumber(resultSet.getString("publication_acc_number"));
+                quantProt.setPublicationProteinName(resultSet.getString("publication_protein_name"));
+                quantProt.setQuantifiedPeptidesNumber(resultSet.getInt("quantified_peptides_number"));
+                quantProt.setIdentifiedProteinsNum(resultSet.getInt("identified_peptides_number"));
+                quantProt.setStringFCValue(resultSet.getString("fold_change"));
+                quantProt.setStringPValue(resultSet.getString("string_p_value"));
+                quantProt.setFcPatientGroupIonPatientGroupII(resultSet.getDouble("log_2_FC"));
+                quantProt.setRocAuc(resultSet.getDouble("roc_auc"));
+                quantProt.setpValue(resultSet.getDouble("p_value"));
+                quantProt.setPvalueComment(resultSet.getString("p_value_comments"));
+                quantProt.setPvalueSignificanceThreshold(resultSet.getString("pvalue_significance_threshold"));
+                quantProt.setAdditionalComments(resultSet.getString("additional_comments"));
+                quantProt.setQuantBasisComment(resultSet.getString("quant_bases_comments"));
+
+                quantProtResultList.add(quantProt);
+
+            }
+
+        } catch (Exception exp) {
+            System.err.println("at error line 2119 " + this.getClass().getName() + "   " + exp.getLocalizedMessage());
+        }
+        return quantProtResultList;
+    }
+
 }

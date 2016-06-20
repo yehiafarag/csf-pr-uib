@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
+
 /**
  *
  * @author Yehia Farag
@@ -33,7 +34,7 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
     private final Window popupWindow;
     private final VerticalLayout popupBodyLayout;
     private final Set<QuantDiseaseGroupsComparison> selectedComparisonList;
-    private final Map<QuantDiseaseGroupsComparison,QuantDiseaseGroupsComparison>equalComparisonMap;
+    private final Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> equalComparisonMap;
     private final GridLayout table;
     private final Label headerI, headerII;
     private final ArrayList<QuantDiseaseGroupsComparison> updatedComparisonList;
@@ -43,8 +44,8 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
     private final LayoutEvents.LayoutClickListener switchListener;
 
     /**
-     * on click method used to update the selection comparison list
-     * and view the pop up window
+     * on click method used to update the selection comparison list and view the
+     * pop up window
      */
     @Override
     public void onClick() {
@@ -55,7 +56,7 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
         if (selectedComparisonList.isEmpty()) {
             return;
         }
-        
+
         updateSelectionList();
         popupWindow.setVisible(true);
 
@@ -72,12 +73,11 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
         this.setReadOnly(false);
         this.addStyleName("smallimg");
         this.setDescription("Switch protein groups");
-        
+
         //init data structure
         updatedComparisonList = new ArrayList<>();
         this.selectedComparisonList = new LinkedHashSet<>();
-        this.equalComparisonMap= new HashMap<>();
-
+        this.equalComparisonMap = new HashMap<>();
 
         //init popup window 
         int width = Math.min(Page.getCurrent().getBrowserWindowWidth(), 800);
@@ -169,7 +169,6 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
         btnWrapper.addComponent(applyFilters);
         btnWrapper.setComponentAlignment(applyFilters, Alignment.TOP_RIGHT);
 
-        
         this.switchListener = GroupSwichBtn.this::switchClick;
 
     }
@@ -192,16 +191,20 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
     }
 
     /**
-     * Get updated comparison list from the central selection manager to update the comparisons panel with the latest selected comparisons
+     * Get updated comparison list from the central selection manager to update
+     * the comparisons panel with the latest selected comparisons
+     *
      * @return Set of selected comparisons
      */
     public abstract Set<QuantDiseaseGroupsComparison> getUpdatedComparsionList();
-    
-     /**
-     * Get updated comparison list from the central selection manager to update the comparisons panel with the latest selected comparisons
+
+    /**
+     * Get updated comparison list from the central selection manager to update
+     * the comparisons panel with the latest selected comparisons
+     *
      * @return Set of selected comparisons
      */
-    public abstract Map<QuantDiseaseGroupsComparison,QuantDiseaseGroupsComparison> getEqualComparsionMap();
+    public abstract Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> getEqualComparsionMap();
 
     private void updateSelectionList() {
         table.removeAllComponents();
@@ -209,8 +212,11 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
         int row = 0;
         setWindowHight(selectedComparisonList.size());
         for (QuantDiseaseGroupsComparison comparison : selectedComparisonList) {
-            updatedComparisonList.add(comparison);
-
+          
+            updatedComparisonList.add(comparison); 
+            if (!comparison.isSwitchable()) {
+                continue;
+            }
             String header = comparison.getComparisonHeader();
             String updatedHeaderI = header.split(" / ")[0].split("__")[0];
             String updatedHeaderII = header.split(" / ")[1].split("__")[0];
@@ -255,7 +261,8 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
     }
 
     /**
-     *Update the selection manager with the updated list
+     * Update the selection manager with the updated list
+     *
      * @param updatedComparisonList
      */
     public abstract void updateComparisons(LinkedHashSet<QuantDiseaseGroupsComparison> updatedComparisonList);

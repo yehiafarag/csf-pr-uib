@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import no.uib.probe.csf.pr.touch.database.DataBaseLayer;
+import no.uib.probe.csf.pr.touch.database.Query;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseCategoryObject;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetInitialInformationObject;
@@ -431,6 +432,131 @@ public class CoreLogic implements Serializable {
         }
 
         return updatedSelectedComparisonList;
+
+    }
+    
+    
+    /**
+     * search for proteins by description keywords
+     *
+     * @param query query words
+     * @param toCompare
+     * @return datasetProteinsSearchList
+     */
+    public List<QuantProtein> searchQuantificationProteins(Query query, boolean toCompare) {
+
+        if (query.getSearchDataType().equals("Quantification Data")) {
+            List<QuantProtein> datasetQuantificationProteinsSearchList = database.searchQuantificationProteins(query, toCompare);
+            return datasetQuantificationProteinsSearchList;
+        }
+        return null;
+
+    }
+    
+    /**
+     * this function to filter the quant search results based on keywords and
+     * detect the not found keywords
+     *
+     * @param quantProteinstList list of found proteins
+     * @param SearchingKeys keyword used for searching
+     * @param searchBy searching method (accession,proteins name, or peptide
+     * sequence )
+     * @return not found keywords within the searching list
+     */
+    public String filterQuantSearchingKeywords(List<QuantProtein> quantProteinstList, String SearchingKeys, String searchBy) {
+        if (quantProteinstList == null || quantProteinstList.isEmpty()) {
+            return SearchingKeys;
+        }
+        HashSet<String> usedKeys = new HashSet<String>();
+        HashSet<String> tUsedKeys = new HashSet<String>();
+        for (String key : SearchingKeys.split("\n")) {
+            if (key.trim().length() > 3) {
+                usedKeys.add(key.toUpperCase());
+            }
+        }
+        tUsedKeys.addAll(usedKeys);
+        for (QuantProtein pb : quantProteinstList) {
+            if (searchBy.equals("Protein Accession")) {
+                if (usedKeys.contains(pb.getUniprotAccession().toUpperCase())) {
+                    usedKeys.remove(pb.getUniprotAccession().toUpperCase());
+                } else if (usedKeys.contains(pb.getPublicationAccNumber().toUpperCase())) {
+                    usedKeys.remove(pb.getPublicationAccNumber().toUpperCase());
+                }
+
+                if (usedKeys.isEmpty()) {
+                    return "";
+                }
+            } else if (searchBy.equals("Protein Name")) {
+                for (String key : tUsedKeys) {
+                    if (pb.getUniprotProteinName().toUpperCase().contains(key.toUpperCase())) {
+                        usedKeys.remove(key.toUpperCase());
+                    } else if (pb.getPublicationProteinName().toUpperCase().contains(key.toUpperCase())) {
+                        usedKeys.remove(key.toUpperCase());
+                    }
+                    if (usedKeys.isEmpty()) {
+                        return "";
+                    }
+                }
+
+            } else {
+                return "";
+            }
+        }
+        return usedKeys.toString().replace("[", "").replace("]", "");
+
+    }
+
+    /**
+     * this function to get the quant hits list from the searching results and
+     * group the common proteins in separated lists
+     *
+     * @param quantProteinsList list of found proteins
+     * @param searchBy searching method (accession,proteins name, or peptide
+     * sequence )
+     * @return list of quant hits results
+     */
+    public Map<String, Integer> getQuantHitsList(List<QuantProtein> quantProteinsList, String searchBy) {
+        Map<String, Integer> quantHitsList = new HashMap<String, Integer>();
+
+        if (quantProteinsList == null || quantProteinsList.isEmpty()) {
+
+            return quantHitsList;
+        }
+        String key;
+
+        for (QuantProtein quantProt : quantProteinsList) {
+
+            if (searchBy.equalsIgnoreCase("Protein Accession")/* ||*/) {
+                String uniprotAcc = quantProt.getUniprotAccession();
+                String protName;
+                String accession;
+                if (uniprotAcc.trim().equalsIgnoreCase("") || uniprotAcc.equalsIgnoreCase("Not Available") || uniprotAcc.equalsIgnoreCase("Entry Deleted") || uniprotAcc.equalsIgnoreCase("Entry Demerged") || uniprotAcc.equalsIgnoreCase("NOT RETRIEVED") || uniprotAcc.equalsIgnoreCase("DELETED") || uniprotAcc.trim().equalsIgnoreCase("UNREVIEWED")) {
+                    protName = quantProt.getPublicationProteinName();
+                    accession = uniprotAcc + " (" + quantProt.getPublicationAccNumber() + ")";
+
+                } else {
+                    protName = quantProt.getUniprotProteinName();
+                    accession = quantProt.getUniprotAccession();
+                }
+                if (protName.trim().equalsIgnoreCase("")) {
+                    protName = quantProt.getPublicationProteinName();
+                }
+
+                key = accession.trim() + "__" + protName.trim();
+            } else {
+                key = quantProt.getUniprotProteinName().trim();
+
+            }
+
+            if (!quantHitsList.containsKey(key)) {
+                quantHitsList.put(key, 0);
+            }
+            int value = quantHitsList.get(key);
+            value++;
+            quantHitsList.put(key, value);
+
+        }
+        return quantHitsList;
 
     }
 

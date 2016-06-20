@@ -206,6 +206,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
                     datasetCounterLabel.setDescription("#Datasets");
                 }
                 HeatMapComponent.this.updateIcon(imgUrl);
+                
                 CSFPR_Central_Manager.setEqualComparisonMap(equalComparisonMap);
             }
 

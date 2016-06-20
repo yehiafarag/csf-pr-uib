@@ -11,6 +11,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import no.uib.probe.csf.pr.touch.database.Query;
 import no.uib.probe.csf.pr.touch.logic.CoreLogic;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseCategoryObject;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseGroupComparison;
@@ -215,5 +216,47 @@ public class Data_Handler implements Serializable {
                 return coreLogic.updateComparisonQuantProteins(selectedQuantComparisonsList);
      
      }
+
+      /**
+     * search for quantification proteins
+     *
+     * @param query query object that has all query information
+     * @param toCompare
+     * @return quant proteins list
+     */
+    public List<QuantProtein> searchQuantificationProtein(Query query, boolean toCompare) {
+        return coreLogic.searchQuantificationProteins(query, toCompare);
+
+    }
+    
+     /**
+     * this function to filter the quant search results based on keywords and
+     * detect the not found keywords
+     *
+     * @param quantProteinstList list of found proteins
+     * @param SearchingKeys keyword used for searching
+     * @param searchBy searching method (accession,proteins name, or peptide
+     * sequence )
+     * @return not found keywords within the searching list
+     */
+    public String filterQuantSearchingKeywords(List<QuantProtein> quantProteinstList, String SearchingKeys, String searchBy) {
+
+        return coreLogic.filterQuantSearchingKeywords(quantProteinstList, SearchingKeys, searchBy);
+
+    }
+
+    /**
+     * this function to get the quant hits list from the searching results and
+     * group the common proteins in separated lists
+     *
+     * @param quantProteinsList list of found proteins
+     * @param searchBy searching method (accession,proteins name, or peptide
+     * sequence )
+     * @return list of quant hits results
+     */
+    public Map<String, Integer> getQuantHitsList(List<QuantProtein> quantProteinsList, String searchBy) {
+        return coreLogic.getQuantHitsList(quantProteinsList, searchBy);
+
+    }
 
 }

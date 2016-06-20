@@ -16,6 +16,7 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
     private String oreginalComparisonHeader;
     private Map<Integer,QuantDatasetObject> datasetMap;
     private String diseaseCategoryColor;
+    private boolean switchable = true;
 
     public String getDiseaseCategoryStyle() {
         return diseaseCategoryStyle;
@@ -163,5 +164,13 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
 //        
 //        }
 //    }
+
+    public boolean isSwitchable() {
+        return switchable;
+    }
+
+    public void setSwitchable(boolean switchable) {
+        this.switchable = switchable;
+    }
 
 }

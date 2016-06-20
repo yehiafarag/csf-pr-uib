@@ -11,11 +11,13 @@ import com.vaadin.ui.VerticalLayout;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
+import no.uib.probe.csf.pr.touch.Data_Handler;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 import no.uib.probe.csf.pr.touch.view.HeaderLayout;
 import no.uib.probe.csf.pr.touch.view.LayoutViewManager;
 import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.PublicationsInformationWindow;
 import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.StudiesInformationWindow;
+import no.uib.probe.csf.pr.touch.view.bigscreen.searchinglayoutcontainer.components.SearchingComponent;
 import no.uib.probe.csf.pr.touch.view.core.BigBtn;
 import no.uib.probe.csf.pr.touch.view.core.ZoomControler;
 import no.uib.probe.csf.pr.touch.view.smallscreen.OverviewInfoBean;
@@ -49,7 +51,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
      *
      *
      */
-    public WelcomeLayoutComponents(final LayoutViewManager View_Manager, int bodyWidth, int bodyHeight, OverviewInfoBean overviewInfoBean, List<Object[]> publicationList, Set<QuantDatasetObject> dsObjects) {
+    public WelcomeLayoutComponents(final Data_Handler Data_handler,final LayoutViewManager View_Manager, int bodyWidth, int bodyHeight, OverviewInfoBean overviewInfoBean, List<Object[]> publicationList, Set<QuantDatasetObject> dsObjects) {
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeight(100, Unit.PERCENTAGE);
         HeaderLayout header = new HeaderLayout();
@@ -217,7 +219,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         middlePanelServicesLayout.setMargin(new MarginInfo(true, false, true, false));
         middleLayout.addComponent(middlePanelServicesLayout);
 
-        BigBtn quantDatasetBtn = new BigBtn("Quantitative Dataset", "Brows quantitative data.", "img/scatter_plot_applied.png") {
+        BigBtn quantDatasetBtn = new BigBtn("Quantitative Dataset", "Browse quantitative data.", "img/scatter_plot_applied.png") {
 
             @Override
             public void onClick() {
@@ -226,22 +228,22 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         };
         middlePanelServicesLayout.addComponent(quantDatasetBtn, 0, 0);
 
-        BigBtn idDatasetBtn = new BigBtn("Identification Dataset", "Brows identification data.", "img/bar-chart.png") {
+        BigBtn idDatasetBtn = new BigBtn("Identification Dataset", "Browse identification data.", "img/bar-chart.png") {
 
             @Override
             public void onClick() {
                 View_Manager.viewLayout("idview");
             }
         };
+        
+        
+        
         middlePanelServicesLayout.addComponent(idDatasetBtn, 0, 1);
-        BigBtn searchingDatasetBtn = new BigBtn("Search", "Search quantitative and  identification proteins.", "img/search.png") {
-
-            @Override
-            public void onClick() {
-                View_Manager.viewLayout("searchingview");
-            }
-        };
-
+        
+        
+        
+        
+        SearchingComponent searchingDatasetBtn = new SearchingComponent(Data_handler);
         middlePanelServicesLayout.addComponent(searchingDatasetBtn, 1, 0);
 
         BigBtn compareBtn = new BigBtn("Compare", "Compare your quantified with the available data.", "img/compare.png") {

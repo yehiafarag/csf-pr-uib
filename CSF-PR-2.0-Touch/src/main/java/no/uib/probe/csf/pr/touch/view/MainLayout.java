@@ -1,7 +1,6 @@
 package no.uib.probe.csf.pr.touch.view;
 
 import no.uib.probe.csf.pr.touch.view.bigscreen.CSFApplicationContainer;
-import com.vaadin.server.Page;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.VerticalLayout;
 

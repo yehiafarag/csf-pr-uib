@@ -42,7 +42,7 @@ public class CSFApplicationContainer extends VerticalLayout {
         bodyWrapper.setWidth(100, Unit.PERCENTAGE);
         this.addComponent(bodyWrapper);
 
-        WelcomeLayoutComponents welcomeContent = new WelcomeLayoutComponents(View_Manager, mainlayoutWidth, mainlayoutHeight, Data_handler.getResourceOverviewInformation(), Data_handler.getPublicationList(), Data_handler.getQuantDatasetList());
+        WelcomeLayoutComponents welcomeContent = new WelcomeLayoutComponents(Data_handler,View_Manager, mainlayoutWidth, mainlayoutHeight, Data_handler.getResourceOverviewInformation(), Data_handler.getPublicationList(), Data_handler.getQuantDatasetList());
 
         VerticalLayout mainLayout = new VerticalLayout();
         mainLayout.setHeight(mainlayoutHeight, Unit.PIXELS);
@@ -83,6 +83,18 @@ public class CSFApplicationContainer extends VerticalLayout {
 
         bodyWrapper.addComponent(quantPanelContaner);
         bodyWrapper.setComponentAlignment(quantPanelContaner, Alignment.TOP_LEFT);
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         View_Manager.viewLayout("welcomeview");
         
       
