@@ -2,7 +2,6 @@
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.server.Resource;
-import com.vaadin.shared.ui.BorderStyle;
 import com.vaadin.ui.Link;
 
 /**

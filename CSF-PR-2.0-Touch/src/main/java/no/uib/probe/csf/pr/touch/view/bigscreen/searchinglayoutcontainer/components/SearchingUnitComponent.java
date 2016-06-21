@@ -37,6 +37,8 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeightUndefined();
         this.setStyleName("whitelayout");
+        this.addStyleName("roundedborder");
+        
         this.setSpacing(true);
 
         searchingArea = new TextArea();

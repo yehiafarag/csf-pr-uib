@@ -254,9 +254,24 @@ public class Data_Handler implements Serializable {
      * sequence )
      * @return list of quant hits results
      */
-    public Map<String, Integer> getQuantHitsList(List<QuantProtein> quantProteinsList, String searchBy) {
+    public Map<String, Integer[]> getQuantHitsList(List<QuantProtein> quantProteinsList, String searchBy) {
         return coreLogic.getQuantHitsList(quantProteinsList, searchBy);
 
     }
+    
+    
+    
+    
+     /**
+     * search for identification proteins
+     *
+     * @param query query object that has all query information
+     * @return identificationProtein list
+     */
+    public String searchIdentificationProtein(Query query) {
+        return coreLogic.searchIdentficationProtein(query);
+
+    }
+
 
 }

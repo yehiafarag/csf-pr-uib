@@ -13038,6 +13038,14 @@ div.v-layout.v-horizontal.v-widget {
 .margintop10{
     margin-top: 10px !important;
 }
+.margintop5{
+    margin-top: 5px !important;
+}
+
+
+
+
+
 .slidepanel{
     -webkit-transition: all .5s ease-in-out;
     -moz-transition: all .5s ease-in-out;
@@ -13501,6 +13509,14 @@ div.v-layout.v-horizontal.v-widget {
     color: white !important;
     line-height:100%;
 }
+.legendmultiplesclerosisstyle {
+    margin-top: -5px;
+    background-color:  #A52A2A;
+    border: 1px solid #A52A2A;
+    border-radius:2px;
+    color: white !important;
+    line-height:100%;
+}
 .multiplesclerosisstyle:hover {
     border-color:#4d749f;
 }
@@ -13513,11 +13529,29 @@ div.v-layout.v-horizontal.v-widget {
     line-height:100%;
 
 }
+.legendparkinsonstyle{
+    margin-top:-5px;
+    border: 2px solid #74716E;
+    background-color: #74716E;    
+    border-radius:2px;
+    color: white !important;
+    line-height:100%;
+
+}
 .parkinsonstyle:hover {
     border-color:#4d749f;
 }
 .alzheimerstyle{
 
+    border: 2px solid #4b7865;
+    background-color: #4b7865;    
+    border-radius:2px;
+    color: white !important;
+    line-height:100%;
+
+}
+.legendalzheimerstyle{
+    margin-top: -5px;
     border: 2px solid #4b7865;
     background-color: #4b7865;    
     border-radius:2px;
@@ -14819,4 +14853,33 @@ div.v-layout.v-horizontal.v-widget {
     -moz-transition: all .5s ease-in-out;
     -o-transition: all .5s ease-in-out;
     transition: all .5s ease-in-out;
+}
+.middledountchart{
+    border-radius:50%;
+    border:2px solid white;
+    background-color:white;
+    color:gray;
+    text-align :-webkit-center;
+
+ box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+    -webkit-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+    -moz-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+    /* CSS3 Border Radius */
+    border-radius:50%;
+    -webkit-border-radius:50%;
+    -moz-border-radius:50%;
+    
+     
+}
+.middledountchart div{
+text-align: center !important;
+    font-weight:bold !important;
+    font-size:20px !important;
+    
+   
+
+}
+.middledountchart:hover{
+    background-color:whitesmoke;
+    color:black;
 }

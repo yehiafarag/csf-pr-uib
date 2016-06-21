@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import no.uib.probe.csf.pr.touch.database.DataBaseLayer;
 import no.uib.probe.csf.pr.touch.database.Query;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseCategoryObject;
+import no.uib.probe.csf.pr.touch.logic.beans.IdentificationProteinBean;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetInitialInformationObject;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
@@ -227,15 +229,12 @@ public class CoreLogic implements Serializable {
 
             String compGrI = comparison.getOreginalComparisonHeader().split(" / ")[0];
 
-            String diseaseCategory = comparison.getDiseaseCategory();
-
+//            String diseaseCategory = comparison.getDiseaseCategory();
             for (QuantProtein quant : comparisonProtMap) {
                 boolean inverted = false;
                 String dsPGrI = comparison.getDatasetMap().get(quant.getDsKey()).getUpdatedDiseaseGroupI();
                 String pGrI;
-                pGrI = "";
                 String pGrII;
-                pGrII = "";
                 if (compGrI.equalsIgnoreCase(dsPGrI)) {
                     pGrI = comparison.getDatasetMap().get(quant.getDsKey()).getPatientsSubGroup1();
                     pGrII = comparison.getDatasetMap().get(quant.getDsKey()).getPatientsSubGroup2();
@@ -270,13 +269,10 @@ public class CoreLogic implements Serializable {
 //                System.out.println("at PGII -" + pGrII + "-   -" + quant.getPatientSubGroupII() + "-");
 //                System.out.println("at not enverted "+((pGrI.equalsIgnoreCase(quant.getPatientGroupI()) || pGrI.equalsIgnoreCase(quant.getPatientSubGroupI())) && (pGrII.equalsIgnoreCase(quant.getPatientGroupII()) || pGrII.equalsIgnoreCase(quant.getPatientSubGroupII()))));
                 if ((pGrI.equalsIgnoreCase(quant.getPatientGroupI()) || pGrI.equalsIgnoreCase(quant.getPatientSubGroupI())) && (pGrII.equalsIgnoreCase(quant.getPatientGroupII()) || pGrII.equalsIgnoreCase(quant.getPatientSubGroupII()))) {
-                   
-                   
-                    
-                    
+
                     if (quant.getStringFCValue().equalsIgnoreCase("Decreased") || quant.getStringFCValue().equalsIgnoreCase("Decrease")) {
                         comProt.addDown((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
-                       
+
                     } else if (quant.getStringFCValue().equalsIgnoreCase("Increased") || quant.getStringFCValue().equalsIgnoreCase("Increase")) {
                         comProt.addUp((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
                     } else if (quant.getStringFCValue().equalsIgnoreCase("Not Provided")) {
@@ -297,9 +293,8 @@ public class CoreLogic implements Serializable {
                     } else if (quant.getStringFCValue().equalsIgnoreCase("No change")) {
                         comProt.addStable((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey());
                     }
-                }    
-                
-                
+                }
+
                 String uniprotAcc = quant.getUniprotAccession();
                 String protName;
                 String accession;
@@ -406,7 +401,7 @@ public class CoreLogic implements Serializable {
 //            //init pep for quantProt
 //            //sort the protiens map
             Map<String, QuantComparisonProtein> sortedcomparProtList = new TreeMap<>(Collections.reverseOrder());
-            Map<Integer,Set<QuantComparisonProtein>>proteinsByTrendMap= new HashMap<>();
+            Map<Integer, Set<QuantComparisonProtein>> proteinsByTrendMap = new HashMap<>();
             proteinsByTrendMap.put(0, new HashSet<>());
             proteinsByTrendMap.put(1, new HashSet<>());
             proteinsByTrendMap.put(2, new HashSet<>());
@@ -418,7 +413,7 @@ public class CoreLogic implements Serializable {
                 QuantComparisonProtein temp = comparProtList.get(Key);
                 sortedcomparProtList.put((temp.getHighSignificant() + "_" + Key), temp);
                 temp.finalizeQuantData();
-                Set<QuantComparisonProtein>set = proteinsByTrendMap.get(temp.getSignificantTrindCategory());
+                Set<QuantComparisonProtein> set = proteinsByTrendMap.get(temp.getSignificantTrindCategory());
 //                 if(temp.getProteinAccession().equalsIgnoreCase("P10451"))
 //                System.out.println("at comp prtien to charge  key "+(temp.getHighSignificant() + "_" + Key)+"   "+temp.getOverallCellPercentValue()+" comparisons "+ comparison.getComparisonHeader());
 //               
@@ -426,7 +421,7 @@ public class CoreLogic implements Serializable {
                 proteinsByTrendMap.put(temp.getSignificantTrindCategory(), set);
             });
             comparison.setQuantComparisonProteinMap(sortedcomparProtList);
-            comparison.setProteinsByTrendMap(proteinsByTrendMap); 
+            comparison.setProteinsByTrendMap(proteinsByTrendMap);
             updatedSelectedComparisonList.add(comparison);
 
         }
@@ -434,8 +429,7 @@ public class CoreLogic implements Serializable {
         return updatedSelectedComparisonList;
 
     }
-    
-    
+
     /**
      * search for proteins by description keywords
      *
@@ -452,7 +446,7 @@ public class CoreLogic implements Serializable {
         return null;
 
     }
-    
+
     /**
      * this function to filter the quant search results based on keywords and
      * detect the not found keywords
@@ -467,8 +461,8 @@ public class CoreLogic implements Serializable {
         if (quantProteinstList == null || quantProteinstList.isEmpty()) {
             return SearchingKeys;
         }
-        HashSet<String> usedKeys = new HashSet<String>();
-        HashSet<String> tUsedKeys = new HashSet<String>();
+        HashSet<String> usedKeys = new HashSet<>();
+        HashSet<String> tUsedKeys = new HashSet<>();
         for (String key : SearchingKeys.split("\n")) {
             if (key.trim().length() > 3) {
                 usedKeys.add(key.toUpperCase());
@@ -476,30 +470,31 @@ public class CoreLogic implements Serializable {
         }
         tUsedKeys.addAll(usedKeys);
         for (QuantProtein pb : quantProteinstList) {
-            if (searchBy.equals("Protein Accession")) {
-                if (usedKeys.contains(pb.getUniprotAccession().toUpperCase())) {
-                    usedKeys.remove(pb.getUniprotAccession().toUpperCase());
-                } else if (usedKeys.contains(pb.getPublicationAccNumber().toUpperCase())) {
-                    usedKeys.remove(pb.getPublicationAccNumber().toUpperCase());
-                }
-
-                if (usedKeys.isEmpty()) {
-                    return "";
-                }
-            } else if (searchBy.equals("Protein Name")) {
-                for (String key : tUsedKeys) {
-                    if (pb.getUniprotProteinName().toUpperCase().contains(key.toUpperCase())) {
-                        usedKeys.remove(key.toUpperCase());
-                    } else if (pb.getPublicationProteinName().toUpperCase().contains(key.toUpperCase())) {
-                        usedKeys.remove(key.toUpperCase());
+            switch (searchBy) {
+                case "Protein Accession":
+                    if (usedKeys.contains(pb.getUniprotAccession().toUpperCase())) {
+                        usedKeys.remove(pb.getUniprotAccession().toUpperCase());
+                    } else if (usedKeys.contains(pb.getPublicationAccNumber().toUpperCase())) {
+                        usedKeys.remove(pb.getPublicationAccNumber().toUpperCase());
                     }
                     if (usedKeys.isEmpty()) {
                         return "";
                     }
-                }
-
-            } else {
-                return "";
+                    break;
+                case "Protein Name":
+                    for (String key : tUsedKeys) {
+                        if (pb.getUniprotProteinName().toUpperCase().contains(key.toUpperCase())) {
+                            usedKeys.remove(key.toUpperCase());
+                        } else if (pb.getPublicationProteinName().toUpperCase().contains(key.toUpperCase())) {
+                            usedKeys.remove(key.toUpperCase());
+                        }
+                        if (usedKeys.isEmpty()) {
+                            return "";
+                        }
+                    }
+                    break;
+                default:
+                    return "";
             }
         }
         return usedKeys.toString().replace("[", "").replace("]", "");
@@ -515,8 +510,8 @@ public class CoreLogic implements Serializable {
      * sequence )
      * @return list of quant hits results
      */
-    public Map<String, Integer> getQuantHitsList(List<QuantProtein> quantProteinsList, String searchBy) {
-        Map<String, Integer> quantHitsList = new HashMap<String, Integer>();
+    public Map<String, Integer[]> getQuantHitsList(List<QuantProtein> quantProteinsList, String searchBy) {
+        Map<String, Integer[]> quantHitsList = new HashMap<>();
 
         if (quantProteinsList == null || quantProteinsList.isEmpty()) {
 
@@ -549,14 +544,117 @@ public class CoreLogic implements Serializable {
             }
 
             if (!quantHitsList.containsKey(key)) {
-                quantHitsList.put(key, 0);
+                quantHitsList.put(key, new Integer[]{0, 0, 0, 0});
             }
-            int value = quantHitsList.get(key);
-            value++;
-            quantHitsList.put(key, value);
+            Integer[] valueArr = quantHitsList.get(key);
+            if (quantProt.getDiseaseCategory().equalsIgnoreCase("Alzheimer's")) {
+                valueArr[0] = valueArr[0] + 1;
+            } else if (quantProt.getDiseaseCategory().equalsIgnoreCase("Multiple Sclerosis")) {
+                valueArr[1] = valueArr[1] + 1;
+            } else if (quantProt.getDiseaseCategory().equalsIgnoreCase("Parkinson's")) {
+                valueArr[2] = valueArr[2] + 1;
+            }
+
+            valueArr[3] = valueArr[3] + 1;
+            quantHitsList.put(key, valueArr);
 
         }
         return quantHitsList;
+
+    }
+
+    /*             *********************************************************8       */
+    /**
+     * search for proteins by description keywords
+     *
+     * @param query query words
+     * @return datasetProteinsSearchList
+     */
+    public String searchIdentficationProtein(Query query) {
+
+        Map<Integer, IdentificationProteinBean> datasetProteinsSearchList = new HashMap<>();
+        if (query.getSearchDataType().equals("Identification Data")) {
+            if (query.getSearchDataset() == null || query.getSearchDataset().isEmpty())//search in all identification datasets
+            {
+                if (query.getSearchBy().equalsIgnoreCase("Protein Accession"))//"Protein Name" "Peptide Sequence"
+                {
+                    String[] queryWordsArr = query.getSearchKeyWords().split("\n");
+                    Set<String> searchSet = new HashSet<>();
+                    for (String str : queryWordsArr) {
+                        if (str.trim().length() > 3) {
+                            searchSet.add(str.trim());
+                        }
+                    }
+                    datasetProteinsSearchList.putAll(database.searchIdentificationProteinAllDatasetsByAccession(searchSet, query.isValidatedProteins()));
+                } else if (query.getSearchBy().equalsIgnoreCase("Protein Name")) {
+                    datasetProteinsSearchList.putAll(database.searchIdentificationProteinAllDatasetsByName(query.getSearchKeyWords(), query.isValidatedProteins()));
+
+                } else if (query.getSearchBy().equalsIgnoreCase("Peptide Sequence")) {
+                    datasetProteinsSearchList.putAll(database.SearchIdentificationProteinAllDatasetsByPeptideSequence(query.getSearchKeyWords(), query.isValidatedProteins()));
+                }
+
+            }
+
+        }
+        Map<String, Integer> idHitsList = getIdentificationHitsList(datasetProteinsSearchList, query.getSearchBy(), query.getSearchKeyWords());
+
+        Set<Integer> datasetIds = new HashSet<>();
+        datasetProteinsSearchList.values().stream().forEach((idProt) -> {
+            datasetIds.add(idProt.getDatasetId());
+        });
+        if (datasetProteinsSearchList.isEmpty()) {
+            return null;
+        }
+        return "Proteins identification data is available ( #Protein Groups " + idHitsList.size() + "  |  #Datasets " + datasetIds.size() + "  |  #Hits " + datasetProteinsSearchList.size() + " )";
+
+    }
+
+    /**
+     * this function to get the identification hits list from the searching
+     * results and group the common proteins in separated lists
+     *
+     * @param identificationProteinsList list of found proteins
+     * @param searchBy searching method (accession,proteins name, or peptide
+     * sequence )
+     * @return list of identification hits results
+     */
+    public Map<String, Integer> getIdentificationHitsList(Map<Integer, IdentificationProteinBean> identificationProteinsList, String searchBy, String mainProt) {
+        final TreeSet<String> usedKeys = new TreeSet<>();
+        for (String key : mainProt.split("\n")) {
+            if (key.trim().length() > 3) {
+                usedKeys.add(key);
+            }
+        }
+
+        Map<String, Integer> idHitsList = new TreeMap<>();
+        if (identificationProteinsList == null || identificationProteinsList.isEmpty()) {
+            return idHitsList;
+        }
+        String key;
+
+        for (IdentificationProteinBean prot : identificationProteinsList.values()) {
+
+            if (searchBy.equalsIgnoreCase("Protein Accession")) {
+                key = prot.getAccession().trim() + "__" + prot.getOtherProteins().trim() + "__" + prot.getDescription().trim();
+
+            } else {
+                key = prot.getDescription().trim();
+            }
+
+            if (!idHitsList.containsKey(key)) {
+                idHitsList.put(key, 0);
+            }
+            int value = idHitsList.get(key);
+            value++;
+            idHitsList.put(key, value);
+
+        }
+        if (!idHitsList.keySet().toArray()[0].toString().startsWith(usedKeys.pollFirst())) {
+            Map<String, Integer> revIdHitsList = new TreeMap<>(Collections.reverseOrder());
+            revIdHitsList.putAll(idHitsList);
+            return revIdHitsList;
+        }
+        return idHitsList;
 
     }
 
