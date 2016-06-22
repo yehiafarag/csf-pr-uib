@@ -13444,17 +13444,17 @@ div.v-layout.v-horizontal.v-widget {
     color:blue;    
 }
 .valuelabel textArea{
-      font-size:12px;
+    font-size:12px;
     background-color:  white;
     border:none;
     color:gray;
     resize: none;
     width: 100%;
     cursor: default;
-   max-height:70px !important;
-   text-overflow:ellipsis !important;
-   overflow:hidden !important;
-   clear:both;
+    max-height:70px !important;
+    text-overflow:ellipsis !important;
+    overflow:hidden !important;
+    clear:both;
 }
 .valuelabel  textArea:focus{
 
@@ -13565,7 +13565,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .alldiseasestyle{
     border: 2px solid lightgray;
-       background: -webkit-linear-gradient(left, #A52A2A, #74716E 76%, #74716E 12%, #4b7865 );; /* For Safari 5.1 to 6.0 */
+    background: -webkit-linear-gradient(left, #A52A2A, #74716E 76%, #74716E 12%, #4b7865 );; /* For Safari 5.1 to 6.0 */
     background: -o-linear-gradient(left, #A52A2A, #74716E 76%, #74716E 12%, #4b7865 );/* For Opera 11.1 to 12.0 */
     background: -moz-linear-gradient(left, #A52A2A, #74716E 76%, #74716E 12%, #4b7865 ); /* For Firefox 3.6 to 15 */
     background: linear-gradient(to left, #A52A2A, #74716E 76%, #74716E 12%, #4b7865 ); /* Standard syntax */
@@ -14848,8 +14848,8 @@ div.v-layout.v-horizontal.v-widget {
     margin-left:20px !important;
 }
 .searchpopup{
-   border-radius :5px; 
-      -webkit-transition: all .5s ease-in-out;
+    border-radius :5px; 
+    -webkit-transition: all .5s ease-in-out;
     -moz-transition: all .5s ease-in-out;
     -o-transition: all .5s ease-in-out;
     transition: all .5s ease-in-out;
@@ -14861,25 +14861,58 @@ div.v-layout.v-horizontal.v-widget {
     color:gray;
     text-align :-webkit-center;
 
- box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+    box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
     -webkit-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
     -moz-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
     /* CSS3 Border Radius */
     border-radius:50%;
     -webkit-border-radius:50%;
     -moz-border-radius:50%;
-    
-     
+
+
 }
 .middledountchart div{
-text-align: center !important;
+    text-align: center !important;
     font-weight:bold !important;
     font-size:20px !important;
-    
-   
+
+
 
 }
 .middledountchart:hover{
     background-color:whitesmoke;
     color:black;
+}
+.searchingresultslabel{
+
+    border:1px solid whitesmoke;
+    border-radius:5px;
+    cursor:pointer;
+
+}
+.searchingresultslabel div{
+    font-size:12px !important;
+    text-overflow:ellipsis !important;
+    line-height:20px !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    text-align:-webkit-center;
+    text-align:center;
+
+
+}
+.searchingresultslabel div:hover{
+
+    color:blue;
+}
+.selected {
+    color:white;
+    background-color:#197de1 !important;
+    
+    box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 0.3);
+    -webkit-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 0.3);
+    -moz-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 0.3);
+ 
 }

@@ -9,6 +9,8 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseCategoryObject;
 
 /**
@@ -21,6 +23,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
 
     private final HorizontalLayout miniLayout;
     private final int maxNumber;
+    private Map<String, DiseaseCategoryObject> diseaseMap;
 
     /**
      *
@@ -33,6 +36,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
         this.addStyleName("slowslide");
+        this.diseaseMap = new HashMap<>();
 
         GridLayout frame = new GridLayout(3, 3);
         frame.setWidthUndefined();//100, Unit.PERCENTAGE);
@@ -52,11 +56,11 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
 
         DiseaseCategoryObject allDeseases = (DiseaseCategoryObject) diseaseCategorySet.toArray()[diseaseCategorySet.size() - 1];
         maxNumber = allDeseases.getDatasetNumber();
+        diseaseMap.put("All Diseases", allDeseases);
         double scaledMax = scaleValues(maxNumber, maxNumber, 0.5, 0.05);
-        VerticalLayout allDisease = initDiseaseBubbleLayout(allDeseases, maxNumber,scaledMax);
+        VerticalLayout allDisease = initDiseaseBubbleLayout(allDeseases, maxNumber, scaledMax);
         frame.addComponent(allDisease, 1, 2);
         frame.setComponentAlignment(allDisease, Alignment.MIDDLE_CENTER);
-
 
         int rowcounter = 0;
         int colCounter = 1;
@@ -64,20 +68,20 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
             if (dCategory == allDeseases) {
                 continue;
             }
-             VerticalLayout disease = initDiseaseBubbleLayout(dCategory, maxNumber,scaledMax);
+            VerticalLayout disease = initDiseaseBubbleLayout(dCategory, maxNumber, scaledMax);
+            diseaseMap.put(dCategory.getDiseaseCategory(), dCategory);
             frame.addComponent(disease, colCounter++, rowcounter);
             frame.setComponentAlignment(disease, Alignment.MIDDLE_CENTER);
-           colCounter++;
-            if(rowcounter==0)
-            {
-                colCounter=0;
-                rowcounter=1;
+            colCounter++;
+            if (rowcounter == 0) {
+                colCounter = 0;
+                rowcounter = 1;
             }
 
         }
 
         miniLayout = new HorizontalLayout();
-        miniLayout.addComponent(initDiseaseLayout(diseaseCategorySet.iterator().next(), 100, 100,maxNumber));
+        miniLayout.addComponent(initDiseaseLayout(diseaseCategorySet.iterator().next(), 100, 100, maxNumber));
         miniLayout.addStyleName("bigbtn");
         miniLayout.addStyleName("blink");
 
@@ -96,7 +100,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         String SpacerII;
         SpacerI = "<br/>(";
         SpacerII = ")";
-        Label diseaseTitle = new Label("<center>" + diseaseObject.getDiseaseCategory() + SpacerI + diseaseObject.getDatasetNumber() +"/"+max+ SpacerII + "</center>");
+        Label diseaseTitle = new Label("<center>" + diseaseObject.getDiseaseCategory() + SpacerI + diseaseObject.getDatasetNumber() + "/" + max + SpacerII + "</center>");
         diseaseTitle.setDescription("#Datasets " + diseaseObject.getDatasetNumber());
         diseaseLayout.addComponent(diseaseTitle);
         diseaseTitle.setContentMode(ContentMode.HTML);
@@ -110,13 +114,13 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
 
     }
 
-    private VerticalLayout initDiseaseBubbleLayout(DiseaseCategoryObject diseaseObject, int max,double scaledMax) {
+    private VerticalLayout initDiseaseBubbleLayout(DiseaseCategoryObject diseaseObject, int max, double scaledMax) {
         VerticalLayout diseaseLayout = new VerticalLayout();
         double width = (scaleValues(diseaseObject.getDatasetNumber(), max, 0.5, 0.05));
-        width = width*90/scaledMax;
-        width = width*3;
+        width = width * 90 / scaledMax;
+        width = width * 3;
         diseaseLayout.setWidth((int) width, Unit.PIXELS);
-        diseaseLayout.setHeight((int)width, Unit.PIXELS);
+        diseaseLayout.setHeight((int) width, Unit.PIXELS);
         String SpacerI;
         String SpacerII;
 
@@ -124,7 +128,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         SpacerII = ")";
         diseaseLayout.addLayoutClickListener(this);
 
-        Label diseaseTitle = new Label("<center>" + diseaseObject.getDiseaseCategory() + SpacerI + diseaseObject.getDatasetNumber()+"/"+max + SpacerII + "</center>");
+        Label diseaseTitle = new Label("<center>" + diseaseObject.getDiseaseCategory() + SpacerI + diseaseObject.getDatasetNumber() + "/" + max + SpacerII + "</center>");
         diseaseTitle.setDescription("#Datasets " + diseaseObject.getDatasetNumber());
         diseaseLayout.addComponent(diseaseTitle);
         diseaseTitle.setContentMode(ContentMode.HTML);
@@ -147,7 +151,16 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
 //        this.addStyleName("hidelayout");
         miniLayout.removeAllComponents();
         DiseaseCategoryObject diseaseObject = (DiseaseCategoryObject) (((VerticalLayout) event.getComponent()).getData());
-        miniLayout.addComponent(initDiseaseLayout(diseaseObject, 100, 100,maxNumber));
+        miniLayout.addComponent(initDiseaseLayout(diseaseObject, 100, 100, maxNumber));
+        onClick(diseaseObject.getDiseaseCategory());
+
+    }
+
+    public void updateSelection(String diseaseCategory) {
+
+        miniLayout.removeAllComponents();
+        DiseaseCategoryObject diseaseObject = diseaseMap.get(diseaseCategory);
+        miniLayout.addComponent(initDiseaseLayout(diseaseObject, 100, 100, maxNumber));
         onClick(diseaseObject.getDiseaseCategory());
 
     }

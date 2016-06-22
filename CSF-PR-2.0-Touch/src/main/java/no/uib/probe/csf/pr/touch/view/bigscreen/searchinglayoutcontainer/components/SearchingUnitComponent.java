@@ -23,16 +23,25 @@ import no.uib.probe.csf.pr.touch.database.Query;
  * searching filters
  */
 public abstract class SearchingUnitComponent extends VerticalLayout implements Button.ClickListener {
-
+    
     private final TextArea searchingArea;
     private final OptionGroup searchByOptionGroup;
     private final Query query;
     private final Label errorLabel;
-
+    
     public Query getQuery() {
         return query;
     }
-
+    
+    public void reset() {
+        searchingArea.clear();
+        searchByOptionGroup.setValue(null);
+        errorLabel.setVisible(false);
+        searchingArea.setRequired(false);
+        searchByOptionGroup.setRequired(false);
+        
+    }
+    
     public SearchingUnitComponent() {
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeightUndefined();
@@ -40,7 +49,7 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
         this.addStyleName("roundedborder");
         
         this.setSpacing(true);
-
+        
         searchingArea = new TextArea();
         searchingArea.setWidth(50, Unit.PERCENTAGE);
         searchingArea.setHeight(100, Unit.PIXELS);
@@ -50,14 +59,14 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
         searchingArea.setRequiredError("Check the used keywords");
         this.addComponent(searchingArea);
         this.setComponentAlignment(searchingArea, Alignment.TOP_CENTER);
-
+        
         HorizontalLayout btnsLayoutContainer = new HorizontalLayout();
 //        btnsLayoutContainer.setMargin(new MarginInfo(false, true, false, true));
         btnsLayoutContainer.setWidth(50, Unit.PERCENTAGE);
         btnsLayoutContainer.setHeight(100, Unit.PIXELS);
         this.addComponent(btnsLayoutContainer);
         this.setComponentAlignment(btnsLayoutContainer, Alignment.TOP_CENTER);
-
+        
         searchByOptionGroup = new OptionGroup();
         searchByOptionGroup.addItem("Protein Accession");
         searchByOptionGroup.addItem("Protein Name");
@@ -66,42 +75,42 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
         btnsLayoutContainer.addComponent(searchByOptionGroup);
         searchByOptionGroup.setRequired(false);
         searchByOptionGroup.setRequiredError("You have to select an option");
-
+        
         Button searchingBtn = new Button("Search");
         searchingBtn.setStyleName(ValoTheme.BUTTON_SMALL);
         searchingBtn.addStyleName(ValoTheme.BUTTON_PRIMARY);
         btnsLayoutContainer.addComponent(searchingBtn);
         btnsLayoutContainer.setComponentAlignment(searchingBtn, Alignment.TOP_RIGHT);
         searchingBtn.addClickListener(SearchingUnitComponent.this);
-
+        
         errorLabel = new Label("error");
         errorLabel.setStyleName(ValoTheme.LABEL_FAILURE);
         errorLabel.setVisible(false);
         this.addComponent(errorLabel);
         errorLabel.setWidth(50, Unit.PERCENTAGE);
         this.setComponentAlignment(errorLabel, Alignment.MIDDLE_CENTER);
-
+        
         query = new Query();
-
+        
     }
-
+    
     @Override
     public void buttonClick(Button.ClickEvent event) {
         errorLabel.setVisible(false);
         searchingArea.setRequired(true);
         searchingArea.commit();
-
+        
         searchByOptionGroup.setRequired(true);
         searchByOptionGroup.commit();
-
+        
         if (searchingArea.isValid() && searchByOptionGroup.isValid()) {
             searchingArea.setRequired(false);
             searchByOptionGroup.setRequired(false);
             String searchKeyWords = searchingArea.getValue();
-
+            
             String updatedSearchingKey = searchKeyWords.replace("\n", ",");
             String ser = "";
-
+            
             String[] keyWordArr = updatedSearchingKey.trim().split(",");
             for (String str : keyWordArr) {
                 if (str.trim().length() == 0) {
@@ -122,17 +131,14 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
             query.setSearchKeyWords(searchKeyWords);
             query.setSearchBy(searchByOptionGroup.getValue().toString());
             search(query);
-
+            
         } else {
             errorLabel.setValue("Check keywords and searching by option");
             errorLabel.setVisible(true);
         }
-
+        
     }
     
-    
-    
-    
     public abstract void search(Query query);
-
+    
 }

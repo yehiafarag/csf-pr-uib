@@ -1,6 +1,7 @@
 package no.uib.probe.csf.pr.touch.logic;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -511,7 +512,8 @@ public class CoreLogic implements Serializable {
      * @return list of quant hits results
      */
     public Map<String, Integer[]> getQuantHitsList(List<QuantProtein> quantProteinsList, String searchBy) {
-        Map<String, Integer[]> quantHitsList = new HashMap<>();
+        Map<String, Integer[]> quantHitsList = new TreeMap<>();
+        
 
         if (quantProteinsList == null || quantProteinsList.isEmpty()) {
 
@@ -521,7 +523,7 @@ public class CoreLogic implements Serializable {
 
         for (QuantProtein quantProt : quantProteinsList) {
 
-            if (searchBy.equalsIgnoreCase("Protein Accession")/* ||*/) {
+//            if (searchBy.equalsIgnoreCase("Protein Accession")/* ||*/) {
                 String uniprotAcc = quantProt.getUniprotAccession();
                 String protName;
                 String accession;
@@ -536,12 +538,12 @@ public class CoreLogic implements Serializable {
                 if (protName.trim().equalsIgnoreCase("")) {
                     protName = quantProt.getPublicationProteinName();
                 }
-
+                quantProt.setFinalAccession(accession);
                 key = accession.trim() + "__" + protName.trim();
-            } else {
-                key = quantProt.getUniprotProteinName().trim();
-
-            }
+//            } else {
+//                key = quantProt.getUniprotProteinName().trim();
+//
+//            }
 
             if (!quantHitsList.containsKey(key)) {
                 quantHitsList.put(key, new Integer[]{0, 0, 0, 0});
@@ -559,6 +561,8 @@ public class CoreLogic implements Serializable {
             quantHitsList.put(key, valueArr);
 
         }
+             
+        
         return quantHitsList;
 
     }

@@ -17,14 +17,19 @@ import com.vaadin.ui.themes.ValoTheme;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Stroke;
 import java.io.IOException;
 import java.text.AttributedString;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 import org.jfree.chart.ChartRenderingInfo;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.block.BlockBorder;
+import org.jfree.chart.entity.ChartEntity;
+import org.jfree.chart.entity.PieSectionEntity;
 import org.jfree.chart.labels.PieSectionLabelGenerator;
 import org.jfree.chart.plot.PieLabelLinkStyle;
 import org.jfree.chart.plot.PiePlot;
@@ -51,12 +56,12 @@ public class PieChart extends AbsoluteLayout implements LayoutEvents.LayoutClick
     private final int height;
     private DefaultPieDataset dataset;
     private final Label selectAllLabel;
-    
-   
+    private final Set<String> selectionSet;
+    private final Color selectedColor = Color.decode("#197de1");
+    private final Stroke stroke = new BasicStroke(5);
 
     public PieChart(int filterWidth, int filterHeight, String title) {
-        
-        
+
         this.setWidth(filterWidth, Unit.PIXELS);
         this.setHeight(filterHeight, Unit.PIXELS);
 
@@ -73,15 +78,16 @@ public class PieChart extends AbsoluteLayout implements LayoutEvents.LayoutClick
         middleDountLayout.setWidth(100, Unit.PIXELS);
         middleDountLayout.setHeight(100, Unit.PIXELS);
         middleDountLayout.setStyleName("middledountchart");
-        
+
         selectAllLabel = new Label();
-        selectAllLabel.setWidth(30,Unit.PIXELS);
+        selectAllLabel.setWidth(30, Unit.PIXELS);
         selectAllLabel.setStyleName(ValoTheme.LABEL_TINY);
         selectAllLabel.addStyleName(ValoTheme.LABEL_SMALL);
         middleDountLayout.addComponent(selectAllLabel);
         middleDountLayout.setComponentAlignment(selectAllLabel, Alignment.MIDDLE_CENTER);
 
         this.initPieChart(title);
+        selectionSet = new LinkedHashSet<>();
 
     }
 
@@ -113,10 +119,7 @@ public class PieChart extends AbsoluteLayout implements LayoutEvents.LayoutClick
         plot.setLabelLinksVisible(true);
         plot.setLabelLinkStyle(PieLabelLinkStyle.QUAD_CURVE);
         plot.setLabelLinkMargin(0);
-        
-   
-     
-        
+
         plot.setBackgroundPaint(Color.WHITE);
         plot.setInteriorGap(0);
         plot.setShadowPaint(Color.WHITE);
@@ -131,13 +134,12 @@ public class PieChart extends AbsoluteLayout implements LayoutEvents.LayoutClick
         chart.setTitle(new TextTitle(title, new Font("Open Sans", Font.PLAIN, 13)));
         chart.setBorderPaint(null);
         chart.setBackgroundPaint(null);
-          chart.getLegend().setVisible(false);
+        chart.getLegend().setVisible(false);
         chart.getLegend().setFrame(BlockBorder.NONE);
-       
+
         chart.getLegend().setItemFont(new Font("Open Sans", Font.PLAIN, 12));
 
     }
-
 
     private String saveToFile(final JFreeChart chart, double width, double height) {
         byte imageData[];
@@ -160,13 +162,16 @@ public class PieChart extends AbsoluteLayout implements LayoutEvents.LayoutClick
     public void initializeFilterData(String[] items, Integer[] values, Color[] colors) {
         dataset.clear();
         for (int x = 0; x < items.length; x++) {
+            if (values[x] == 0) {
+                continue;
+            }
             dataset.setValue(items[x], new Double(values[x]));
-            valuesMap.put(items[x],values[x]+"");
+            valuesMap.put(items[x], values[x] + "");
             if (colors != null) {
                 plot.setSectionPaint(items[x], colors[x]);
             }
         }
-        selectAllLabel.setValue(values[values.length-1]+"");
+        selectAllLabel.setValue(values[values.length - 1] + "");
 //        this.redrawChart();
 
     }
@@ -177,7 +182,10 @@ public class PieChart extends AbsoluteLayout implements LayoutEvents.LayoutClick
     public void redrawChart() {
         String imgUrl = saveToFile(chart, width, height);
         this.chartBackgroundImg.setSource(new ExternalResource(imgUrl));
+
+        this.removeComponent(middleDountLayout);
         this.addComponent(middleDountLayout, "left: " + ((chartRenderingInfo.getPlotInfo().getDataArea().getCenterX()) - 50) + "px; top: " + (chartRenderingInfo.getPlotInfo().getDataArea().getCenterY() - 50) + "px");
+
     }
 
     @Override
@@ -185,11 +193,71 @@ public class PieChart extends AbsoluteLayout implements LayoutEvents.LayoutClick
         if (!chartRenderingInfo.getPlotInfo().getDataArea().contains(event.getRelativeX(), event.getRelativeY())) {
             return;
         }
-        if (event.getClickedComponent() instanceof VerticalLayout) {
-            System.out.println("at all component");
-        } else if (event.getClickedComponent() instanceof Image) {
-            System.out.println("at check the disease category");
+        if (event.getClickedComponent() == null || event.getClickedComponent() instanceof Image) {
+            ChartEntity entity = chartRenderingInfo.getEntityCollection().getEntity(event.getRelativeX(), event.getRelativeY());
+            if (entity instanceof PieSectionEntity) {
+                PieSectionEntity pieEnt = (PieSectionEntity) entity;
+                selectSlice(pieEnt.getSectionKey());
+            }
+
+        } else if (event.getClickedComponent() instanceof VerticalLayout || event.getClickedComponent() instanceof Label) {
+            selectSlice("all");
         }
+    }
+
+    private void selectSlice(Comparable sliceKey) {
+
+        if (selectionSet.contains("all")) {
+            selectionSet.clear();
+        } else if (sliceKey.toString().equalsIgnoreCase("all")) {
+
+            if (middleDountLayout.getStyleName().contains("selected")) {
+                middleDountLayout.removeStyleName("selected");
+                selectionSet.remove("all");
+            } else {
+                middleDountLayout.addStyleName("selected");
+                selectionSet.clear();
+                selectionSet.add("all");
+            }
+        } else if (plot.getSectionOutlinePaint(sliceKey) == selectedColor) {
+            plot.setSectionOutlinePaint(sliceKey, null);
+            plot.setSectionOutlineStroke(sliceKey, null);
+            selectionSet.remove(sliceKey.toString());
+        } else {
+            plot.setSectionOutlinePaint(sliceKey, selectedColor);
+            plot.setSectionOutlineStroke(sliceKey, stroke);
+            selectionSet.add(sliceKey.toString());
+        }
+        if (selectionSet.contains("all") || selectionSet.size() == valuesMap.size() || (!selectionSet.isEmpty() && valuesMap.size() == 1)) {
+            middleDountLayout.addStyleName("selected");
+            selectionSet.clear();
+            selectionSet.add("all");
+            valuesMap.keySet().stream().map((keys) -> {
+                plot.setSectionOutlineStroke(keys, null);
+                return keys;
+            }).forEach((keys) -> {
+                plot.setSectionOutlinePaint(keys, null);
+            });
+        }
+        if (selectionSet.isEmpty()) {
+            middleDountLayout.removeStyleName("selected");
+            valuesMap.keySet().stream().map((keys) -> {
+                plot.setSectionOutlineStroke(keys, null);
+                return keys;
+            }).forEach((keys) -> {
+                plot.setSectionOutlinePaint(keys, null);
+            });
+
+        }
+        redrawChart();
+
+    }
+
+    public Set<String> getSelectionSet() {
+        if ((!selectionSet.isEmpty() && valuesMap.size() == 1)) {
+            selectionSet.clear();
+            selectionSet.add(valuesMap.keySet().iterator().next().toString());
+        }return selectionSet;
     }
 
 }

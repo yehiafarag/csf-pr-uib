@@ -76,6 +76,7 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
 
     }
 
+    private AbstractOrderedLayout mainViewLayout;
     /**
      * Add initial layout include side button, main layout, and control buttons
      *
@@ -91,6 +92,7 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
         btnWrapper.setWidth(100, Unit.PERCENTAGE);
         leftSideContainer.addComponent(btnWrapper);
         btnWrapper.addLayoutClickListener(this);
+        this.mainViewLayout = mainViewLayout;
 
         layoutControlMap.put(leftSideContainer.getComponentIndex(btnWrapper), mainViewLayout);
         this.addComponent(mainViewLayout);
@@ -101,6 +103,7 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
                 System.out.println("return ");
                 return;
             }
+             hideInit=false;
 
             mainViewLayout.removeStyleName("hidelayout");
             mainViewLayout.removeLayoutClickListener(listener);
@@ -147,7 +150,7 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
         btnWrapper.addStyleName("unselectedbtn");
         btnWrapper.setWidth(100, Unit.PERCENTAGE);
         leftSideContainer.addComponent(btnWrapper);
-       
+
         btnWrapper.addLayoutClickListener(this);
         Btn.setEnabled(false);
         Btn.setReadOnly(false);
@@ -173,19 +176,74 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
         }
 
     }
+    private boolean hideInit =true;
+
+    public void updateCurrentLayout(String viewName) {
+        if(hideInit){
+            hideInit=false;
+        mainViewLayout.removeStyleName("hidelayout");
+        mainViewLayout.removeLayoutClickListener(listener);
+        mainViewLayout.setWidth(mainViewLayout.getWidth() - 200, Unit.PIXELS);
+        mainViewLayout.addStyleName("hideslidelayout");
+
+        this.removeComponent(mainViewLayout);
+        mainViewContainer.addComponent(mainViewLayout);
+        mainViewContainer.setComponentAlignment(mainViewLayout, Alignment.TOP_CENTER);
+        if (currentView != null) {
+            currentView.removeStyleName("hideslidelayout");
+            currentBtn.removeStyleName("unselectedbtn");
+        } else {
+            layoutControlMap.lastEntry().getValue().removeStyleName("hideslidelayout");
+
+        }
+
+        this.addComponent(mainLayoutWrapper);
+        }
+
+        if (viewName.equalsIgnoreCase("heatmap")) {
+            updateVew(leftSideContainer.getComponent(1));
+        }else if(viewName.equalsIgnoreCase("proteintable"))
+            updateVew(leftSideContainer.getComponent(3));
+
+    }
 
     private AbstractOrderedLayout currentView;
     private Component currentBtn, defaultBtn;
     private AbstractOrderedLayout defaultView;
 
     @Override
-    public void layoutClick(LayoutEvents.LayoutClickEvent event) {         
-        AbstractOrderedLayout mainViewLayout = layoutControlMap.get(leftSideContainer.getComponentIndex(event.getComponent()));
+    public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+        updateVew(event.getComponent());
+//        AbstractOrderedLayout mainViewLayout = layoutControlMap.get(leftSideContainer.getComponentIndex(event.getComponent()));
+//
+//        if (currentView == null) {
+//            currentView = mainViewLayout;
+//            event.getComponent().removeStyleName("unselectedbtn");
+//            currentBtn = event.getComponent();
+//            ((AbstractOrderedLayout) mainViewLayout.getData()).setVisible(true);
+//        } else if (mainViewLayout != currentView) {
+//            currentView.addStyleName("hideslidelayout");
+//            ((AbstractOrderedLayout) currentView.getData()).setVisible(false);
+//
+//            currentBtn.addStyleName("unselectedbtn");
+//
+//            currentView = mainViewLayout;
+//            currentBtn = event.getComponent();
+//            ((AbstractOrderedLayout) mainViewLayout.getData()).setVisible(true);
+//        }
+//        mainViewLayout.removeStyleName("hideslidelayout");
+//        event.getComponent().removeStyleName("unselectedbtn");
+//        ((AbstractOrderedLayout) mainViewLayout.getData()).setVisible(true);
 
+    }
+
+    private void updateVew(Component comp) {
+//        System.out.println("at leftSideContainer.getComponentIndex(comp) " + leftSideContainer.getComponentIndex(comp));
+        AbstractOrderedLayout mainViewLayout = layoutControlMap.get(leftSideContainer.getComponentIndex(comp));
         if (currentView == null) {
             currentView = mainViewLayout;
-            event.getComponent().removeStyleName("unselectedbtn");
-            currentBtn = event.getComponent();
+            comp.removeStyleName("unselectedbtn");
+            currentBtn = comp;
             ((AbstractOrderedLayout) mainViewLayout.getData()).setVisible(true);
         } else if (mainViewLayout != currentView) {
             currentView.addStyleName("hideslidelayout");
@@ -194,11 +252,11 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
             currentBtn.addStyleName("unselectedbtn");
 
             currentView = mainViewLayout;
-            currentBtn = event.getComponent();
+            currentBtn = comp;
             ((AbstractOrderedLayout) mainViewLayout.getData()).setVisible(true);
         }
         mainViewLayout.removeStyleName("hideslidelayout");
-        event.getComponent().removeStyleName("unselectedbtn");
+        comp.removeStyleName("unselectedbtn");
         ((AbstractOrderedLayout) mainViewLayout.getData()).setVisible(true);
 
     }

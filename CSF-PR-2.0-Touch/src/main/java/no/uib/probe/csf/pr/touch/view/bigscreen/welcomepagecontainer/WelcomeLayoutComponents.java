@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.Data_Handler;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
+import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
 import no.uib.probe.csf.pr.touch.view.HeaderLayout;
 import no.uib.probe.csf.pr.touch.view.LayoutViewManager;
 import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.PublicationsInformationWindow;
@@ -51,7 +52,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
      *
      *
      */
-    public WelcomeLayoutComponents(final Data_Handler Data_handler,final LayoutViewManager View_Manager, int bodyWidth, int bodyHeight, OverviewInfoBean overviewInfoBean, List<Object[]> publicationList, Set<QuantDatasetObject> dsObjects) {
+    public WelcomeLayoutComponents(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager, final LayoutViewManager View_Manager, int bodyWidth, int bodyHeight, OverviewInfoBean overviewInfoBean, List<Object[]> publicationList, Set<QuantDatasetObject> dsObjects) {
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeight(100, Unit.PERCENTAGE);
         HeaderLayout header = new HeaderLayout();
@@ -243,7 +244,15 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         
         
         
-        SearchingComponent searchingDatasetBtn = new SearchingComponent(Data_handler);
+        SearchingComponent searchingDatasetBtn = new SearchingComponent(Data_handler,CSFPR_Central_Manager){
+
+            @Override
+            public void loadQuantSearching() {
+                 View_Manager.viewLayout("quantview");
+            }
+        
+        
+        };
         middlePanelServicesLayout.addComponent(searchingDatasetBtn, 1, 0);
 
         BigBtn compareBtn = new BigBtn("Compare", "Compare your quantified with the available data.", "img/compare.png") {

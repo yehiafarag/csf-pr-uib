@@ -69,9 +69,9 @@ public class CSFPR_Central_Manager implements Serializable {
     }
 
     /**
-     * selection in registered component
+     * quantSearchSelection in registered component
      *
-     * @param selection selection
+     * @param selection quantSearchSelection
      */
     public void selectionAction(CSFSelection selection) {
         if (selection.getType().equalsIgnoreCase("peptide_selection")) {
@@ -88,7 +88,7 @@ public class CSFPR_Central_Manager implements Serializable {
     }
 
     /**
-     * Get current comparisons selection
+     * Get current comparisons quantSearchSelection
      *
      * @return selected comparisons list
      */
@@ -98,7 +98,7 @@ public class CSFPR_Central_Manager implements Serializable {
 
     /**
      *
-     * @param type selection type
+     * @param type quantSearchSelection type
      */
     private void SelectionChanged(String type) {
         try {
@@ -111,6 +111,33 @@ public class CSFPR_Central_Manager implements Serializable {
             busyTask.setVisible(false);
         }
 
+    }
+    
+    
+    private QuantSearchSelection quantSearchSelection;
+    
+    /**
+     * quantSearchSelection in registered component
+     *
+     * @param selection quantSearchSelection
+     */
+    public void searchSelectionAction(QuantSearchSelection selection) {
+        this.quantSearchSelection= selection;
+//        if (quantSearchSelection.getType().equalsIgnoreCase("peptide_selection")) {
+//            selectedProteinAccession = quantSearchSelection.getSelectedProteinAccession();
+//        } else {
+//            this.selectedComparisonsList = quantSearchSelection.getSelectedComparisonsList();
+//            this.selectedProteinsList = quantSearchSelection.getSelectedProteinsList();
+//            if (selectedComparisonsList.size() > 5) {
+//                busyTask.setVisible(true);
+//            }
+//        }
+        SelectionChanged("quant_searching");
+
+    }
+
+    public QuantSearchSelection getQuantSearchSelection() {
+        return quantSearchSelection;
     }
 
 }

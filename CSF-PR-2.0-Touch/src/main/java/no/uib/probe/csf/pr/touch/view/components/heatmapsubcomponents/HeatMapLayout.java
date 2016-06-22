@@ -1074,7 +1074,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
         });
         Set<QuantDiseaseGroupsComparison> filteredSelectedDsList = new LinkedHashSet<>();
         filteredSelectedDsList.addAll(filteredComp.values());
-        updateSelectionManager(filteredSelectedDsList);
+        updateSelectionManager(filteredSelectedDsList,false);
     }
 
     /**
@@ -1089,7 +1089,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
      *
      * @param selectedDsList
      */
-    public void updateSelectionManager(Set<QuantDiseaseGroupsComparison> selectedDsList) {
+    public void updateSelectionManager(Set<QuantDiseaseGroupsComparison> selectedDsList,boolean selfSelection) {
         ///to be overided
     }
 
@@ -1174,6 +1174,22 @@ public abstract class HeatMapLayout extends VerticalLayout {
             }
 
         });
+
+    }
+
+    /**
+     * Reset selection on dataset layout no selection manager update
+     */
+    public void selectComparisonsByID(Set<Integer> comparisonsToSelect) {
+        Set<QuantDiseaseGroupsComparison> comparisons = new LinkedHashSet<>();
+        availableComparisonsList.stream().filter((comparison) -> !(comparisons.contains(comparison))).forEach((comparison) -> {
+            comparison.getDatasetMap().keySet().stream().filter((ds) -> (comparisonsToSelect.contains(ds))).forEach((_item) -> {
+                comparisons.add(comparison);
+            });
+        });
+
+        selectComparisons(comparisons);
+        updateSelectionManager(selectedDsList,true);
 
     }
 

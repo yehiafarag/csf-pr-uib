@@ -949,7 +949,7 @@ public class DataBaseLayer implements Serializable {
         //main filters  
         if (query.getSearchKeyWords() != null && !query.getSearchKeyWords().equalsIgnoreCase("")) {
             String[] queryWordsArr = query.getSearchKeyWords().split("\n");
-            HashSet<String> searchSet = new HashSet<>();
+            HashSet<String> searchSet = new LinkedHashSet<>();
             for (String str : queryWordsArr) {
                 if (str.trim().equalsIgnoreCase("")) {
                     continue;

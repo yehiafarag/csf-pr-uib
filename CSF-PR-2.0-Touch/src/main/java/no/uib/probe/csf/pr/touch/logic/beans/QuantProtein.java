@@ -15,7 +15,15 @@ public class QuantProtein implements Comparable<QuantProtein> {
     private int quantifiedProteinsNumber, peptideIdNumb, quantifiedPeptidesNumber, patientsGroupINumber, patientsGroupIINumber, year, filesNum, IdentifiedProteinsNum, dsKey, protKey;
     private String qPeptideKey, peptideSequence, peptideModification, modificationComment, stringFCValue, stringPValue, author, diseaseGroups, pvalueComment, pvalueSignificanceThreshold;
     private String diseaseCategory;
+private String finalAccession;
 
+    public String getFinalAccession() {
+        return finalAccession;
+    }
+
+    public void setFinalAccession(String finalAccession) {
+        this.finalAccession = finalAccession;
+    }
    
     private String sequence;
 
