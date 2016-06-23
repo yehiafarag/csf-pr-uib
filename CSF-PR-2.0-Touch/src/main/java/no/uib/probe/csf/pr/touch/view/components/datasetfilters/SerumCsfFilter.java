@@ -125,6 +125,11 @@ public abstract class SerumCsfFilter extends HorizontalLayout implements LayoutE
     
     }
 
+    public VerticalLayout getNoSerumOptionBtn() {
+        return noSerumOptionBtn;
+    }
+    
+
     public abstract void updateSystem(boolean serumApplied, boolean csfApplied);
 
     public void resetFilter() {

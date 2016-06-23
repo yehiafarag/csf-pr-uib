@@ -47,6 +47,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
     public void selectionChanged(String type) {
         if (type.equalsIgnoreCase("quant_searching")) {
             quantInitialLayout.updateSelection(CSFPR_Central_Manager.getQuantSearchSelection().getDiseaseCategory());
+            heatmapComponent.showSerumDs();
             heatmapComponent.selectComparisonsByID(CSFPR_Central_Manager.getQuantSearchSelection().getDatasetIds());            
             this.updateCurrentLayout("proteintable");
             lineChartProteinTableComponent.filterSearchSelection(CSFPR_Central_Manager.getQuantSearchSelection().getKeyWords());
@@ -233,7 +234,17 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         bubblechartToolsContainer.addComponent(bubblechartComponent.getControlBtnsContainer());
         bubblechartToolsContainer.setComponentAlignment(bubblechartComponent.getControlBtnsContainer(), Alignment.TOP_RIGHT);
 
-        lineChartProteinTableComponent = new LineChartProteinTableComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight, null);
+        lineChartProteinTableComponent = new LineChartProteinTableComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight, null){
+
+            @Override
+            public void updateRowNumber(int rowNumber) {
+                System.out.println("at text is "+ rowNumber);
+                linechartBtn.updateText(rowNumber+"");
+            }
+        
+        
+        
+        };
         linechartViewContainer.addComponent(lineChartProteinTableComponent);
         linechartToolsContainer.addComponent(lineChartProteinTableComponent.getControlBtnsContainer());
         linechartToolsContainer.setComponentAlignment(lineChartProteinTableComponent.getControlBtnsContainer(), Alignment.TOP_RIGHT);

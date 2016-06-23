@@ -46,6 +46,10 @@ public abstract class FilterColumnButton extends ImageContainerBtn {
         onClickFilter(activeFilter);
        
     }
+    public void reset(){
+    activeFilter = false;
+    this.updateIcon(sortFilterRes);
+    }
 
     public abstract void onClickFilter(boolean isFilter);
 

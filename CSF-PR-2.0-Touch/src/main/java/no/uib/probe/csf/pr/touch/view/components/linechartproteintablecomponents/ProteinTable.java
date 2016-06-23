@@ -227,6 +227,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
             }
             
         }
+        updateRowNumber(mainProteinTable.getItemIds().size());
         
     }
 
@@ -281,6 +282,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         }
         updateComparisonsHeader(selectedComparisonsList);
         this.mainProteinTable.addValueChangeListener(ProteinTable.this);
+         updateRowNumber(mainProteinTable.getItemIds().size());
         
     }
     
@@ -369,6 +371,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         if (mainProteinTable.getItemIds().size() == tableItemsMap.size()) {
             isFiltered = false;
         }
+        updateRowNumber(mainProteinTable.getItemIds().size());
         
     }
     
@@ -402,4 +405,6 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
     }
     
     public abstract void selectProtein(String selectedProtein);
+    
+    public abstract void updateRowNumber(int rowNumber);
 }

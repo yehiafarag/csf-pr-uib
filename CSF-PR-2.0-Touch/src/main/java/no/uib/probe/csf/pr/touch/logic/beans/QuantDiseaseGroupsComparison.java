@@ -2,6 +2,7 @@ package no.uib.probe.csf.pr.touch.logic.beans;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -172,5 +173,28 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
     public void setSwitchable(boolean switchable) {
         this.switchable = switchable;
     }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final QuantDiseaseGroupsComparison other = (QuantDiseaseGroupsComparison) obj;
+        if (!Objects.equals(this.comparisonHeader, other.comparisonHeader)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
+    
 
 }

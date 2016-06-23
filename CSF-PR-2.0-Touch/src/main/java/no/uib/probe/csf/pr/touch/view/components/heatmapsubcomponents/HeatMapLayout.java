@@ -659,7 +659,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
             selectedCells.clear();
         }
 
-        this.selectedDsList.add(cell.getComparison());
+        boolean f = this.selectedDsList.add(cell.getComparison());
         String kI = cell.getComparison().getComparisonHeader();
         String[] k1Arr = kI.split(" / ");
         String kII = k1Arr[1] + " / " + k1Arr[0];
@@ -1065,16 +1065,17 @@ public abstract class HeatMapLayout extends VerticalLayout {
     private void updateSelectionManagerIndexes() {
         Map<String, QuantDiseaseGroupsComparison> filteredComp = new LinkedHashMap<>();
         selectedDsList.stream().forEach((comp) -> {
-            String kI = comp.getOreginalComparisonHeader();
+            String kI = comp.getComparisonHeader();
             String[] k1Arr = kI.split(" / ");
             String kII = k1Arr[1] + " / " + k1Arr[0];
             if (!(filteredComp.containsKey(kI) || filteredComp.containsKey(kII))) {
                 filteredComp.put(kI, comp);
+
             }
         });
         Set<QuantDiseaseGroupsComparison> filteredSelectedDsList = new LinkedHashSet<>();
         filteredSelectedDsList.addAll(filteredComp.values());
-        updateSelectionManager(filteredSelectedDsList,false);
+        updateSelectionManager(filteredSelectedDsList);
     }
 
     /**
@@ -1089,7 +1090,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
      *
      * @param selectedDsList
      */
-    public void updateSelectionManager(Set<QuantDiseaseGroupsComparison> selectedDsList,boolean selfSelection) {
+    public void updateSelectionManager(Set<QuantDiseaseGroupsComparison> selectedDsList) {
         ///to be overided
     }
 
@@ -1174,6 +1175,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
             }
 
         });
+//        selectedDsList.addAll(comparisonsToSelect);
 
     }
 
@@ -1182,14 +1184,29 @@ public abstract class HeatMapLayout extends VerticalLayout {
      */
     public void selectComparisonsByID(Set<Integer> comparisonsToSelect) {
         Set<QuantDiseaseGroupsComparison> comparisons = new LinkedHashSet<>();
-        availableComparisonsList.stream().filter((comparison) -> !(comparisons.contains(comparison))).forEach((comparison) -> {
-            comparison.getDatasetMap().keySet().stream().filter((ds) -> (comparisonsToSelect.contains(ds))).forEach((_item) -> {
-                comparisons.add(comparison);
-            });
+        comparisonsCellsMap.values().stream().forEach((cell) -> {
+            for (int dsId : comparisonsToSelect) {
+                if (cell.getComparison().getDatasetMap().containsKey(dsId)) {
+                    comparisons.add(cell.getComparison());
+                }
+            }
+
+            cell.unselect();
         });
 
+        Map<String, QuantDiseaseGroupsComparison> filteringMap = new HashMap<>();
+        comparisons.stream().forEach((comparison) -> {
+            String kI = comparison.getComparisonHeader();
+            String[] k1Arr = kI.split(" / ");
+            String kII = k1Arr[1] + " / " + k1Arr[0];
+            if (!(filteringMap.containsKey(kII) || filteringMap.containsKey(kI))) {
+                filteringMap.put(kI, comparison);
+            }
+        });
+        comparisons.clear();
+        comparisons.addAll(filteringMap.values());
         selectComparisons(comparisons);
-        updateSelectionManager(selectedDsList,true);
+        updateSelectionManager(selectedDsList);
 
     }
 

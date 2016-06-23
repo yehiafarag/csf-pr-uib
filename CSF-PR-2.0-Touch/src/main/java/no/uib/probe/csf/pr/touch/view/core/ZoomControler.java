@@ -7,6 +7,7 @@ package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.ThemeResource;
+import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
@@ -88,7 +89,7 @@ public class ZoomControler extends HorizontalLayout implements LayoutEvents.Layo
 
     }
 
-    public VerticalLayout getResetZoomBtn() {
+    public AbsoluteLayout getResetZoomBtn() {
         return resetZoomBtn;
     }
 

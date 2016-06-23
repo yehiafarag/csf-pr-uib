@@ -795,7 +795,7 @@ public class DataBaseLayer implements Serializable {
                     quantProt.setDsKey(rs1.getInt("ds_ID"));
                     quantProt.setSequence(rs1.getString("sequance"));
                     quantProt.setUniprotAccession(rs1.getString("uniprot_accession"));
-                    quantProt.setUniprotProteinName(rs1.getString("uniprot_protein_name").replace("(","___").split("___")[0]);
+                    quantProt.setUniprotProteinName(rs1.getString("uniprot_protein_name").replace("(", "___").split("___")[0]);
                     quantProt.setPublicationAccNumber(rs1.getString("publication_acc_number"));
                     quantProt.setPublicationProteinName(rs1.getString("publication_protein_name"));
                     quantProt.setQuantifiedPeptidesNumber(rs1.getInt("quantified_peptides_number"));
@@ -1047,7 +1047,9 @@ public class DataBaseLayer implements Serializable {
                 quantProt.setPumedID((String) grNumArr[6]);
                 return quantProt;
             }).forEach((quantProt) -> {
-                updatedQuantProtResultList.add(quantProt);
+                if (query.getDiseaseCategorys().isEmpty() || query.getDiseaseCategorys().contains(quantProt.getDiseaseCategory())) {
+                    updatedQuantProtResultList.add(quantProt);
+                }
             });
             return updatedQuantProtResultList;
 
@@ -1088,7 +1090,7 @@ public class DataBaseLayer implements Serializable {
                 quantProt.setSequence(resultSet.getString("sequance"));
                 quantProt.setUniprotAccession(resultSet.getString("uniprot_accession"));
 
-                quantProt.setUniprotProteinName(resultSet.getString("uniprot_protein_name").replace("(","___").split("___")[0]);
+                quantProt.setUniprotProteinName(resultSet.getString("uniprot_protein_name").replace("(", "___").split("___")[0]);
                 quantProt.setPublicationAccNumber(resultSet.getString("publication_acc_number"));
                 quantProt.setPublicationProteinName(resultSet.getString("publication_protein_name"));
                 quantProt.setQuantifiedPeptidesNumber(resultSet.getInt("quantified_peptides_number"));
@@ -1112,9 +1114,8 @@ public class DataBaseLayer implements Serializable {
         }
         return quantProtResultList;
     }
-    
-    
-     /**
+
+    /**
      * Search for identification proteins by accession keywords
      *
      * @param searchSet set of query words
@@ -1176,7 +1177,8 @@ public class DataBaseLayer implements Serializable {
         }
 
     }
-     /**
+
+    /**
      * Search for identification proteins by protein description keywords
      *
      * @param protSearchKeyword array of query words
@@ -1241,8 +1243,8 @@ public class DataBaseLayer implements Serializable {
         System.gc();
         return new HashMap<>();
     }
-    
-     /**
+
+    /**
      * Search for identification proteins by peptide sequence keywords
      *
      * @param peptideSequenceKeyword array of query words
@@ -1300,7 +1302,7 @@ public class DataBaseLayer implements Serializable {
                         protAccessionQuerySet.addAll(Arrays.asList(peptideProt.split(",")));
                     }
                     expIds.add(rs.getInt("exp_id"));
-                    
+
                 }
             }
             proteinsList = this.searchIdentificationProteinAllDatasetsByAccession(protAccessionQuerySet, validatedOnly);
@@ -1332,9 +1334,8 @@ public class DataBaseLayer implements Serializable {
         System.gc();
         return null;
     }
-    
-    
-     /**
+
+    /**
      * Fill identification protein information from the result set
      *
      * @param resultSet results set to fill identification peptides data

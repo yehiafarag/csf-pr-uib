@@ -10,7 +10,6 @@ import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -189,13 +188,28 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         int availableHMHeight = mainbodyLayoutHeight - 85;
         heatmapLayoutContainer = new HeatMapLayout(mainbodyLayoutWidth, availableHMHeight, activeColumnHeaders, btnsWrapper) {
             @Override
-            public void updateSelectionManager(Set<QuantDiseaseGroupsComparison> selectedQuantComparisonsList,boolean selfselection) {
-                if (selectedQuantComparisonsList != null && !selectedQuantComparisonsList.isEmpty()) {
+            public void updateSelectionManager(Set<QuantDiseaseGroupsComparison> selectedQuantComparisonsList) {
 
-                    selectedQuantComparisonsList = Data_Handler.updateComparisonQuantProteins(selectedQuantComparisonsList);
+                if (selectedQuantComparisonsList != null && !selectedQuantComparisonsList.isEmpty()) {
+                    while (true) {
+                        Data_Handler.updateComparisonQuantProteins(selectedQuantComparisonsList);
+                        boolean valid = true;
+                        for (QuantDiseaseGroupsComparison comparsion : selectedQuantComparisonsList) {
+                            if (comparsion.getQuantComparisonProteinMap() == null) {
+                                valid = false;
+                                break;
+                            }
+
+                        }
+                        if (valid) {
+                            break;
+                        }
+                    }
+
                 }
-                HeatMapComponent.this.selfselection=selfselection;
-                CSFSelection selection = new CSFSelection("comparisons_selection", getFilterId(), selectedQuantComparisonsList,null);
+
+                HeatMapComponent.this.selfselection = true;
+                CSFSelection selection = new CSFSelection("comparisons_selection", getFilterId(), selectedQuantComparisonsList, null);
                 CSFPR_Central_Manager.selectionAction(selection);
             }
 
@@ -208,7 +222,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
                     datasetCounterLabel.setDescription("#Datasets");
                 }
                 HeatMapComponent.this.updateIcon(imgUrl);
-                
+
                 CSFPR_Central_Manager.setEqualComparisonMap(equalComparisonMap);
             }
 
@@ -264,8 +278,8 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         heatmapLayoutContainer.filterHeatMap(filteredQuantDsMap);
 
     }
-    
-    private boolean selfselection=false;
+
+    private boolean selfselection = false;
 
     /**
      *
@@ -276,16 +290,17 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         if (type.equalsIgnoreCase("comparisons_selection_update")) {
             Set<QuantDiseaseGroupsComparison> selectedQuantComparisonsList = CSFPR_Central_Manager.getSelectedComparisonsList();
             Data_Handler.updateComparisonQuantProteins(selectedQuantComparisonsList);
-            CSFSelection selection = new CSFSelection("comparisons_selection", getFilterId(), selectedQuantComparisonsList,null);
+            selfselection = true;
+            CSFSelection selection = new CSFSelection("comparisons_selection", getFilterId(), selectedQuantComparisonsList, null);
             CSFPR_Central_Manager.selectionAction(selection);
 
         }
 
         if (type.equalsIgnoreCase("comparisons_selection")) {
-            if(selfselection){
-                selfselection=false;
+            if (selfselection) {
+                selfselection = false;
                 return;
-                
+
             }
 
             Set<QuantDiseaseGroupsComparison> compList = CSFPR_Central_Manager.getSelectedComparisonsList();
@@ -295,19 +310,25 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
                 heatmapLayoutContainer.selectComparisons(compList);
             }
         }
-        
-        if(type.equalsIgnoreCase("quant_searching")){
+
+        if (type.equalsIgnoreCase("quant_searching")) {
 //            heatmapLayoutContainer.selectComparisonsByID(CSFPR_Central_Manager.getQuantSearchSelection().getDatasetIds());
-        
+
         }
 
     }
-    
-     /**
+
+    /**
      * Reset selection on dataset layout no selection manager update
      */
     public void selectComparisonsByID(Set<Integer> comparisonsToSelect) {
-         heatmapLayoutContainer.selectComparisonsByID(CSFPR_Central_Manager.getQuantSearchSelection().getDatasetIds());
+        heatmapLayoutContainer.selectComparisonsByID(CSFPR_Central_Manager.getQuantSearchSelection().getDatasetIds());
+    }
+
+    public void showSerumDs() {
+        serumCsfFilter.getNoSerumOptionBtn().removeStyleName("unapplied");
+        serumCsfFilter.updateSystem(true, true);
+
     }
 
     /**

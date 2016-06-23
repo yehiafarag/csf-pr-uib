@@ -71,6 +71,19 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
 
     }
 
+    public void reset() {
+        filterBtn.setVisible(false);
+        sortingBtn.setVisible(true);
+        if (sortingBtn.getStyleName().contains("blinkII")) {
+            sortingBtn.removeStyleName("blinkII");
+            sortingBtn.addStyleName("blink");
+        } else {
+            sortingBtn.removeStyleName("blinkI");
+            sortingBtn.addStyleName("blinkII");
+        }
+
+    }
+
     public void swichBtns() {
         filterBtn.setVisible(!filterBtn.isVisible());
         sortingBtn.setVisible(!sortingBtn.isVisible());

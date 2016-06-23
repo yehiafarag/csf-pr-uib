@@ -336,6 +336,8 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
                 
             } else {
                 if (qc.getQuantComparisonProteinMap() == null) {
+                    
+                    
                     System.out.println("null qc " + qc.getComparisonHeader());
                     
                 }
@@ -671,7 +673,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         
         if (type.equalsIgnoreCase("comparisons_selection")) {
             lastselectedComponents.clear();
-            this.selectedComparisonList = CSFPR_Central_Manager.getSelectedComparisonsList();
+            this.selectedComparisonList = CSFPR_Central_Manager.getSelectedComparisonsList();            
             if (selectedComparisonList.isEmpty()) {
                 
                 chartComponentLayout.removeAllComponents();
@@ -680,6 +682,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
                 return;
                 
             }
+            
             updateChart();
             updateSelectionManager();
             

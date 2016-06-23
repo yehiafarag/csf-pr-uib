@@ -191,16 +191,19 @@ public abstract class SearchingComponent extends BigBtn {
         }
 
         Set<Integer> datasetIds = new HashSet<>();
-
+        QuantSearchSelection selection = new QuantSearchSelection();
         if (noSelection) {
+            selection.setKeyWords(filterKeywordSet);
             searchQuantificationProtList.stream().forEach((protein) -> {
                 datasetIds.add(protein.getDsKey());
                 diseaseCategories.add(protein.getDiseaseCategory());
             });
 
         } else {
+            selection.setKeyWords(proteinList.keySet());
             searchQuantificationProtList.stream().filter((protein) -> (proteinList.keySet().contains(protein.getFinalAccession()) && (proteinList.get(protein.getFinalAccession()).contains("all") || proteinList.get(protein.getFinalAccession()).contains(protein.getDiseaseCategory())))).forEach((protein) -> {
-            datasetIds.add(protein.getDsKey());
+
+                datasetIds.add(protein.getDsKey());
 
             });
         }
@@ -212,10 +215,10 @@ public abstract class SearchingComponent extends BigBtn {
             diseaseCat = diseaseCategories.toArray()[0].toString();
         }
         searchingPanel.close();
-        QuantSearchSelection selection = new QuantSearchSelection();
+
         selection.setDiseaseCategory(diseaseCat);
         selection.setDatasetIds(datasetIds);
-        selection.setKeyWords(filterKeywordSet);
+
         CSFPR_Central_Manager.searchSelectionAction(selection);
         loadQuantSearching();
 
@@ -343,8 +346,8 @@ public abstract class SearchingComponent extends BigBtn {
                 }
             }
 
-            resultsLabel.setValue("Search Results (" + quantHitsList.size() + ")");
         }
+        resultsLabel.setValue("Search Results (" + quantHitsList.size() + ")");
     }
 
     @Override

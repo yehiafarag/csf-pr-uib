@@ -1,7 +1,6 @@
 package no.uib.probe.csf.pr.touch.view.components;
 
 import com.vaadin.event.LayoutEvents;
-import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
@@ -33,12 +32,14 @@ import no.uib.probe.csf.pr.touch.view.core.TrendLegend;
  * this class represents both protein table and linechart component the protein
  * line chart represents the overall protein trend across different comparisons
  */
-public class LineChartProteinTableComponent extends VerticalLayout implements CSFListener, LayoutEvents.LayoutClickListener {
+public abstract class  LineChartProteinTableComponent extends VerticalLayout implements CSFListener, LayoutEvents.LayoutClickListener {
 
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
     private final VerticalLayout controlBtnsContainer;
     private final ProteinTable quantProteinTable;
     private final Map<String, QuantComparisonProtein> proteinSearchingMap;
+    private final ImageContainerBtn removeFilters;
+    private final FilterColumnButton filterSortSwichBtn;
 
     public LineChartProteinTableComponent(CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height, QuantDiseaseGroupsComparison userCustomizedComparison) {
 
@@ -130,6 +131,12 @@ public class LineChartProteinTableComponent extends VerticalLayout implements CS
 
             }
 
+            @Override
+            public void updateRowNumber(int rowNumber) {
+                LineChartProteinTableComponent.this.updateRowNumber(rowNumber);
+            }
+            
+
         };//this.initProteinTable();
         tableLayoutFrame.addComponent(quantProteinTable);
 
@@ -186,7 +193,7 @@ public class LineChartProteinTableComponent extends VerticalLayout implements CS
 //
 //        fileDownloader.extend(groupSwichBtn);
         controlBtnsContainer.addComponent(exportPdfBtn);
-        final ImageContainerBtn removeFilters = new ImageContainerBtn() {
+        removeFilters = new ImageContainerBtn() {
 
             @Override
             public void onClick() {
@@ -206,7 +213,7 @@ public class LineChartProteinTableComponent extends VerticalLayout implements CS
 
         };
 
-        FilterColumnButton filterSortSwichBtn = new FilterColumnButton() {
+        filterSortSwichBtn = new FilterColumnButton() {
 
             @Override
             public void onClickFilter(boolean isFilter) {
@@ -236,7 +243,7 @@ public class LineChartProteinTableComponent extends VerticalLayout implements CS
         keywords.stream().forEach((key) -> {
             searchSet.addAll(getSearchingProteinsList(key));
         });
-         quantProteinTable.filterTable(searchSet);
+        quantProteinTable.filterTable(searchSet);
 
     }
 
@@ -259,6 +266,10 @@ public class LineChartProteinTableComponent extends VerticalLayout implements CS
             selectedProteinsList.stream().forEach((protein) -> {
                 proteinSearchingMap.put(protein.getProteinAccession() + "__" + protein.getProteinName(), protein);
             });
+
+        } else if (type.equalsIgnoreCase("comparisons_selection")) {
+            removeFilters.setEnabled(false);
+            filterSortSwichBtn.reset();
 
         }
     }
@@ -296,5 +307,8 @@ public class LineChartProteinTableComponent extends VerticalLayout implements CS
         });
         return subAccessionMap;
     }
+    
+    
+    public abstract void updateRowNumber(int rowNumber);
 
 }

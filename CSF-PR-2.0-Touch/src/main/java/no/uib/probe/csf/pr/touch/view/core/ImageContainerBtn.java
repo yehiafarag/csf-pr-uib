@@ -7,9 +7,9 @@ package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.Resource;
-import com.vaadin.ui.Alignment;
+import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Image;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Label;
 
 /**
  *
@@ -19,16 +19,21 @@ import com.vaadin.ui.VerticalLayout;
  * images on fly
  *
  */
-public abstract class ImageContainerBtn extends VerticalLayout implements LayoutEvents.LayoutClickListener {
+public abstract class ImageContainerBtn extends AbsoluteLayout implements LayoutEvents.LayoutClickListener {
 
     private final Image img;
+    private final Label text;
 
     public ImageContainerBtn() {
         img = new Image();
         img.setWidth(100, Unit.PERCENTAGE);
         img.setHeight(100, Unit.PERCENTAGE);
-        this.addComponent(img);
-        this.setComponentAlignment(img, Alignment.MIDDLE_CENTER);
+        this.addComponent(img,"left: " + (0) + "px; top: " + (0) + "px;");
+        
+         text = new Label();
+         text.setWidth(100,Unit.PERCENTAGE);
+         text.setHeight(100,Unit.PERCENTAGE);
+         this.addComponent(text, "left: " + (0) + "px; top: " + (0) + "px;");
 
         this.setStyleName("bigbtn");
         this.addLayoutClickListener(ImageContainerBtn.this);
@@ -45,6 +50,16 @@ public abstract class ImageContainerBtn extends VerticalLayout implements Layout
      */
     public void updateIcon(Resource imgResource) {
         img.setSource(imgResource);
+    }
+    
+     /**
+     *
+     * this method responsible for updating button text
+     *
+     * @param imgResource
+     */
+    public void updateText(String textStr) {
+        text.setValue(textStr);
     }
 
     @Override

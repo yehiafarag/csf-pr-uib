@@ -10,6 +10,7 @@ import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
 import java.util.TreeMap;
 
@@ -144,7 +145,7 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
      * @param toolBtnsLayout
      * @param isDefault
      */
-    public void addButton(AbstractOrderedLayout Btn, AbstractOrderedLayout mainViewLayout, AbstractOrderedLayout toolBtnsLayout, boolean isDefault) {
+    public void addButton(Layout Btn, AbstractOrderedLayout mainViewLayout, AbstractOrderedLayout toolBtnsLayout, boolean isDefault) {
         VerticalLayout btnWrapper = new VerticalLayout(Btn);
         btnWrapper.addStyleName("sidebtnwrapper");
         btnWrapper.addStyleName("unselectedbtn");
@@ -154,7 +155,7 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
         btnWrapper.addLayoutClickListener(this);
         Btn.setEnabled(false);
         Btn.setReadOnly(false);
-        Btn.setResponsive(true);
+//        Btn.setResponsive(true);
 
         layoutControlMap.put(leftSideContainer.getComponentIndex(btnWrapper), mainViewLayout);
         mainViewContainer.addComponent(mainViewLayout);

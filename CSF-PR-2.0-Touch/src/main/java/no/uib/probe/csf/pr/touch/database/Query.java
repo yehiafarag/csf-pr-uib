@@ -2,6 +2,7 @@
 package no.uib.probe.csf.pr.touch.database;
 
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  *
@@ -13,6 +14,7 @@ public class Query implements Serializable {
 
     private String searchDataType, searchDataset, searchBy, searchKeyWords;
     private boolean validatedProteins;
+    private Set<Object> diseaseCategorys;
 
     /**
      * Return the requested dataset name
@@ -102,6 +104,14 @@ public class Query implements Serializable {
      */
     public void setValidatedProteins(boolean validatedProteins) {
         this.validatedProteins = validatedProteins;
+    }
+
+    public Set<Object> getDiseaseCategorys() {
+        return diseaseCategorys;
+    }
+
+    public void setDiseaseCategorys(Set<Object> diseaseCategorys) {
+        this.diseaseCategorys = diseaseCategorys;
     }
 
 }
