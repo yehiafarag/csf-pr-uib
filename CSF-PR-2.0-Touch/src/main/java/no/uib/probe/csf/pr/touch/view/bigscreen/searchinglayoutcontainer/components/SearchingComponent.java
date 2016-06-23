@@ -80,7 +80,7 @@ public abstract class SearchingComponent extends BigBtn {
 //        Panel searchingResults = new Panel(resultsLayout);
 //        searchingResults.setStyleName(ValoTheme.PANEL_BORDERLESS);
 //        searchingResults.setWidth(100, Unit.PERCENTAGE);
-        resultsLayout.setHeight(570, Unit.PIXELS);
+        resultsLayout.setHeight(524, Unit.PIXELS);
         resultsLayout.addStyleName("scrollable");
         quantDataResult = new GridLayout();
 
@@ -95,7 +95,7 @@ public abstract class SearchingComponent extends BigBtn {
 
         HorizontalLayout middleLayout = new HorizontalLayout();
 
-        middleLayout.setHeight(37, Unit.PIXELS);
+        middleLayout.setHeight(29, Unit.PIXELS);
         middleLayout.setWidth(100, Unit.PERCENTAGE);
         resultsLabel = new Label("Search Results");
         resultsLabel.setStyleName(ValoTheme.LABEL_BOLD);
@@ -144,12 +144,12 @@ public abstract class SearchingComponent extends BigBtn {
         });
 
         popupbodyLayout.addComponent(searchingUnit);
-        popupbodyLayout.setExpandRatio(searchingUnit, 246f);
+        popupbodyLayout.setExpandRatio(searchingUnit, 290f);
         popupbodyLayout.setSpacing(true);
         popupbodyLayout.addComponent(middleLayout);
-        popupbodyLayout.setExpandRatio(middleLayout, 37f);
+        popupbodyLayout.setExpandRatio(middleLayout, 29f);
         popupbodyLayout.addComponent(resultsLayout);
-        popupbodyLayout.setExpandRatio(resultsLayout, 570);
+        popupbodyLayout.setExpandRatio(resultsLayout, 524);
         popupbodyLayout.addComponent(controlBtnsLayout);
         popupbodyLayout.setExpandRatio(controlBtnsLayout, 50);
 
@@ -168,13 +168,13 @@ public abstract class SearchingComponent extends BigBtn {
         Iterator<Component> itr = quantDataResult.iterator();
         Set<String> diseaseCategories = new HashSet<>();
         Map<String, Set<String>> proteinList = new HashMap<>();
-        Map<String, Set<Integer>> proteinDsMap = new HashMap<>();
+        boolean noSelection = true;
         while (itr.hasNext()) {
             Component comp = itr.next();
             if (comp instanceof PieChart) {
                 PieChart pieChartComponent = (PieChart) comp;
                 if (!pieChartComponent.getSelectionSet().isEmpty()) {
-                    System.out.println("at selected protein " + pieChartComponent.getData().toString() + " data " + pieChartComponent.getSelectionSet());
+                    noSelection = false;
                     diseaseCategories.addAll(pieChartComponent.getSelectionSet());
                     proteinList.put(pieChartComponent.getData().toString(), pieChartComponent.getSelectionSet());
                 }
@@ -182,7 +182,7 @@ public abstract class SearchingComponent extends BigBtn {
             } else {
                 ProteinSearcingResultLabel proteinLabelComponent = (ProteinSearcingResultLabel) comp;
                 if (!proteinLabelComponent.getSelectionSet().isEmpty()) {
-                    System.out.println("at selected protein " + proteinLabelComponent.getProteinKey() + "  data " + proteinLabelComponent.getSelectionSet());
+                    noSelection = false;
                     diseaseCategories.addAll(proteinLabelComponent.getSelectionSet());
                     proteinList.put(proteinLabelComponent.getProteinKey(), proteinLabelComponent.getSelectionSet());
                 }
@@ -191,17 +191,19 @@ public abstract class SearchingComponent extends BigBtn {
         }
 
         Set<Integer> datasetIds = new HashSet<>();
-        searchQuantificationProtList.stream().filter((protein) -> (proteinList.keySet().contains(protein.getFinalAccession()) && (proteinList.get(protein.getFinalAccession()).contains("all") || proteinList.get(protein.getFinalAccession()).contains(protein.getDiseaseCategory())))).forEach((protein) -> {
-            if (!proteinDsMap.containsKey(protein.getFinalAccession())) {
-                proteinDsMap.put(protein.getFinalAccession(), new HashSet<>());
 
-            }
-            Set<Integer> dsIdSet = proteinDsMap.get(protein.getFinalAccession());
-            dsIdSet.add(protein.getDsKey());
-            proteinDsMap.put(protein.getFinalAccession(), dsIdSet);
+        if (noSelection) {
+            searchQuantificationProtList.stream().forEach((protein) -> {
+                datasetIds.add(protein.getDsKey());
+                diseaseCategories.add(protein.getDiseaseCategory());
+            });
+
+        } else {
+            searchQuantificationProtList.stream().filter((protein) -> (proteinList.keySet().contains(protein.getFinalAccession()) && (proteinList.get(protein.getFinalAccession()).contains("all") || proteinList.get(protein.getFinalAccession()).contains(protein.getDiseaseCategory())))).forEach((protein) -> {
             datasetIds.add(protein.getDsKey());
 
-        });
+            });
+        }
 
         String diseaseCat;
         if (diseaseCategories.size() == 1 && diseaseCategories.toArray()[0].toString().equalsIgnoreCase("all") || diseaseCategories.size() > 1) {
@@ -215,7 +217,6 @@ public abstract class SearchingComponent extends BigBtn {
         selection.setDatasetIds(datasetIds);
         selection.setKeyWords(filterKeywordSet);
         CSFPR_Central_Manager.searchSelectionAction(selection);
-
         loadQuantSearching();
 
     }

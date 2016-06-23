@@ -2043,8 +2043,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .v-spacing {
-    width: 2px;
-    height: 2px;
+    width: 5px;
+    height: 5px;
 }
 
 .mytheme .v-verticallayout-well, .mytheme .v-horizontallayout-well {

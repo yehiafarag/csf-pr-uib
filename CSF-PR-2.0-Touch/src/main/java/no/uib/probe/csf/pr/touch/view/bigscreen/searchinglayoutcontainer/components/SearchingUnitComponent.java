@@ -44,11 +44,19 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
     
     public SearchingUnitComponent() {
         this.setWidth(100, Unit.PERCENTAGE);
-        this.setHeightUndefined();
+        this.setHeight(290,Unit.PIXELS);
         this.setStyleName("whitelayout");
         this.addStyleName("roundedborder");
         
         this.setSpacing(true);
+        
+        VerticalLayout frame = new VerticalLayout();
+        frame.setWidth(100,Unit.PERCENTAGE);
+        frame.setHeightUndefined();
+        frame.setSpacing(true);
+//        this.setHeightUndefined();
+        this.addComponent(frame);
+        this.setComponentAlignment(frame, Alignment.TOP_CENTER);
         
         searchingArea = new TextArea();
         searchingArea.setWidth(50, Unit.PERCENTAGE);
@@ -57,15 +65,15 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
         searchingArea.setInputPrompt("Use one key-word per line and choose the search by option");
         searchingArea.setRequired(false);
         searchingArea.setRequiredError("Check the used keywords");
-        this.addComponent(searchingArea);
-        this.setComponentAlignment(searchingArea, Alignment.TOP_CENTER);
+        frame.addComponent(searchingArea);
+        frame.setComponentAlignment(searchingArea, Alignment.TOP_CENTER);
         
         HorizontalLayout btnsLayoutContainer = new HorizontalLayout();
 //        btnsLayoutContainer.setMargin(new MarginInfo(false, true, false, true));
         btnsLayoutContainer.setWidth(50, Unit.PERCENTAGE);
         btnsLayoutContainer.setHeight(100, Unit.PIXELS);
-        this.addComponent(btnsLayoutContainer);
-        this.setComponentAlignment(btnsLayoutContainer, Alignment.TOP_CENTER);
+        frame.addComponent(btnsLayoutContainer);
+        frame.setComponentAlignment(btnsLayoutContainer, Alignment.TOP_CENTER);
         
         searchByOptionGroup = new OptionGroup();
         searchByOptionGroup.addItem("Protein Accession");
@@ -86,9 +94,10 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
         errorLabel = new Label("error");
         errorLabel.setStyleName(ValoTheme.LABEL_FAILURE);
         errorLabel.setVisible(false);
-        this.addComponent(errorLabel);
-        errorLabel.setWidth(50, Unit.PERCENTAGE);
-        this.setComponentAlignment(errorLabel, Alignment.MIDDLE_CENTER);
+        frame.addComponent(errorLabel);
+        frame.setComponentAlignment(errorLabel, Alignment.MIDDLE_CENTER);
+         errorLabel.setWidth(50, Unit.PERCENTAGE);
+       
         
         query = new Query();
         
