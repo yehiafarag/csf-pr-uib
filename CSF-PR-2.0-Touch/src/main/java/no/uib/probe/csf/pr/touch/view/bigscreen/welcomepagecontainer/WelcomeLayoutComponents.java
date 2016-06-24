@@ -18,6 +18,7 @@ import no.uib.probe.csf.pr.touch.view.HeaderLayout;
 import no.uib.probe.csf.pr.touch.view.LayoutViewManager;
 import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.PublicationsInformationWindow;
 import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.StudiesInformationWindow;
+import no.uib.probe.csf.pr.touch.view.bigscreen.searchinglayoutcontainer.components.CompareComponent;
 import no.uib.probe.csf.pr.touch.view.bigscreen.searchinglayoutcontainer.components.SearchingComponent;
 import no.uib.probe.csf.pr.touch.view.core.BigBtn;
 import no.uib.probe.csf.pr.touch.view.core.ZoomControler;
@@ -255,13 +256,14 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         };
         middlePanelServicesLayout.addComponent(searchingDatasetBtn, 1, 0);
 
-        BigBtn compareBtn = new BigBtn("Compare", "Compare your quantified with the available data.", "img/compare.png") {
+        CompareComponent compareBtn = new CompareComponent(Data_handler, CSFPR_Central_Manager){
 
-            @Override
-            public void onClick() {
-              
-                View_Manager.viewLayout("compareview");
+             @Override
+            public void loadQuantComparison() {
+                 View_Manager.viewLayout("quantview");
             }
+            
+            
         };
         middlePanelServicesLayout.addComponent(compareBtn, 1, 1);
 

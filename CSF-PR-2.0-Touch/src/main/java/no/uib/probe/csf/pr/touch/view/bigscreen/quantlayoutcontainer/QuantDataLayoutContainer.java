@@ -35,23 +35,32 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
     private final Data_Handler Data_handler;
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
     private final ThemeResource logoRes = new ThemeResource("img/logo.png");
+    private final BubbleChartComponent bubblechartComponent;
 
     private HeatMapComponent heatmapComponent;
 
     private final int mainViewPanelWidth;
     private final int mainViewPanelHeight;
     private final QuantInitialLayout quantInitialLayout;
-    private final   LineChartProteinTableComponent lineChartProteinTableComponent;
+    private final LineChartProteinTableComponent lineChartProteinTableComponent;
 
     @Override
     public void selectionChanged(String type) {
         if (type.equalsIgnoreCase("quant_searching")) {
             quantInitialLayout.updateSelection(CSFPR_Central_Manager.getQuantSearchSelection().getDiseaseCategory());
             heatmapComponent.showSerumDs();
-            heatmapComponent.selectComparisonsByID(CSFPR_Central_Manager.getQuantSearchSelection().getDatasetIds());            
+            heatmapComponent.selectComparisonsByID(CSFPR_Central_Manager.getQuantSearchSelection().getDatasetIds());
             this.updateCurrentLayout("proteintable");
             lineChartProteinTableComponent.filterSearchSelection(CSFPR_Central_Manager.getQuantSearchSelection().getKeyWords());
-            
+
+        } else if (type.equalsIgnoreCase("quant_compare")) {
+            bubblechartComponent.addCustmisedUserDataCompariosn(CSFPR_Central_Manager.getQuantSearchSelection().getUserCustComparison());
+            quantInitialLayout.updateSelection(CSFPR_Central_Manager.getQuantSearchSelection().getDiseaseCategory());
+            heatmapComponent.showSerumDs();
+            heatmapComponent.selectComparisonsByID(CSFPR_Central_Manager.getQuantSearchSelection().getDatasetIds());
+            this.updateCurrentLayout("proteintable");
+            lineChartProteinTableComponent.filterSearchSelection(CSFPR_Central_Manager.getQuantSearchSelection().getKeyWords());
+
         }
     }
 
@@ -211,7 +220,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         this.addButton(peptideInfoBtn, peptidesViewContainer, peptidesToolsContainer, false);
 
         ///init bubble chart container
-        BubbleChartComponent bubblechartComponent = new BubbleChartComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight, null) {
+        bubblechartComponent = new BubbleChartComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight) {
 
             @Override
             public void updateIcon(String imageUrl) {
@@ -234,16 +243,13 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         bubblechartToolsContainer.addComponent(bubblechartComponent.getControlBtnsContainer());
         bubblechartToolsContainer.setComponentAlignment(bubblechartComponent.getControlBtnsContainer(), Alignment.TOP_RIGHT);
 
-        lineChartProteinTableComponent = new LineChartProteinTableComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight, null){
+        lineChartProteinTableComponent = new LineChartProteinTableComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight, null) {
 
             @Override
             public void updateRowNumber(int rowNumber) {
-                System.out.println("at text is "+ rowNumber);
-                linechartBtn.updateText(rowNumber+"");
+                linechartBtn.updateText(rowNumber + "");
             }
-        
-        
-        
+
         };
         linechartViewContainer.addComponent(lineChartProteinTableComponent);
         linechartToolsContainer.addComponent(lineChartProteinTableComponent.getControlBtnsContainer());

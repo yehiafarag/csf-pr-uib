@@ -8447,8 +8447,8 @@ div.v-layout.v-horizontal.v-widget {
     background-color: #222;
     background-image: -webkit-radial-gradient(50% 50%, circle, #222, #0e0e0e);
     background-image: radial-gradient(  circle at 50% 50%, #222, #0e0e0e);
-    opacity: 0.72;
-    filter: alpha(opacity=72) ;
+    opacity: 0.3;
+    filter: alpha(opacity=30) ;
     -webkit-animation: valo-animate-in-fade 400ms 100ms backwards;
     -moz-animation: valo-animate-in-fade 400ms 100ms backwards;
     animation: valo-animate-in-fade 400ms 100ms backwards;
@@ -13290,9 +13290,20 @@ div.v-layout.v-horizontal.v-widget {
 .bigbtn div{
     word-wrap:break-word;
     border-radius:4px;
+    text-align:-webkit-center;
+    text-align: center;
 }
 
+.bubbleframe{
+    border:1px solid lightgray;
+    border-radius: 100% !important;
+    padding:5px !important;
+    font-weight:bold;    
+    opacity:0.8;
+    font-weight:bold;
 
+
+}
 
 
 .smallbtn {
@@ -14910,9 +14921,24 @@ div.v-layout.v-horizontal.v-widget {
 .selected {
     color:white;
     background-color:#197de1 !important;
-    
+
     box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 0.3);
     -webkit-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 0.3);
     -moz-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 0.3);
- 
+
+}
+.margintop{
+    margin-top:10px !important;
+}
+.marginrightp{
+    margin-right:10px !important;
+}
+.marginleft{
+    margin-left:10px !important;
+}
+.marginbottom{
+    margin-bottom:10px !important;
+}
+.margin{
+    margin:10px !important;
 }

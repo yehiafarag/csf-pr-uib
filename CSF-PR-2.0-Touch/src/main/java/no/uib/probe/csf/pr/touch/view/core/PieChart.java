@@ -59,23 +59,24 @@ public class PieChart extends AbsoluteLayout implements LayoutEvents.LayoutClick
     private final Set<String> selectionSet;
     private final Color selectedColor = Color.decode("#197de1");
     private final Stroke stroke = new BasicStroke(2);
-    private final Map<Comparable,Color>defaultColors;
-    private final Map<Comparable,Color>selectedColors;
+    private final Map<Comparable, Color> defaultColors;
+    private final Map<Comparable, Color> selectedColors;
 
-    public PieChart(int filterWidth, int filterHeight, String title) {
+    public PieChart(int filterWidth, int filterHeight, String title, boolean interactive) {
 
         this.setWidth(filterWidth, Unit.PIXELS);
         this.setHeight(filterHeight, Unit.PIXELS);
 
         this.width = filterWidth;
         this.height = filterHeight;
-        
+
         this.defaultColors = new HashMap<>();
         this.selectedColors = new HashMap<>();
-                
-        
+
         this.chartBackgroundImg = new Image();
-        this.addLayoutClickListener(PieChart.this);
+        if (interactive) {
+            this.addLayoutClickListener(PieChart.this);
+        }
         this.addStyleName("pointer");
         chartBackgroundImg.setWidth(100, Unit.PERCENTAGE);
         chartBackgroundImg.setHeight(100, Unit.PERCENTAGE);
@@ -179,8 +180,8 @@ public class PieChart extends AbsoluteLayout implements LayoutEvents.LayoutClick
             valuesMap.put(items[x], values[x] + "");
             if (colors != null) {
                 plot.setSectionPaint(items[x], colors[x]);
-                this.selectedColors.put(items[x],colors[x].darker());
-                this.defaultColors.put(items[x],colors[x]);
+                this.selectedColors.put(items[x], colors[x].darker());
+                this.defaultColors.put(items[x], colors[x]);
             }
         }
         selectAllLabel.setValue(values[values.length - 1] + "");
@@ -236,7 +237,7 @@ public class PieChart extends AbsoluteLayout implements LayoutEvents.LayoutClick
             plot.setSectionPaint(sliceKey, defaultColors.get(sliceKey));
             selectionSet.remove(sliceKey.toString());
         } else {
-             plot.setSectionPaint(sliceKey, selectedColors.get(sliceKey));
+            plot.setSectionPaint(sliceKey, selectedColors.get(sliceKey));
             plot.setSectionOutlinePaint(sliceKey, selectedColor);
 //            plot.setSectionOutlineStroke(sliceKey, stroke);
             selectionSet.add(sliceKey.toString());
@@ -248,7 +249,7 @@ public class PieChart extends AbsoluteLayout implements LayoutEvents.LayoutClick
             valuesMap.keySet().stream().map((keys) -> {
                 plot.setSectionOutlinePaint(keys, selectedColor);
                 return keys;
-            }).forEach((keys) -> {                 
+            }).forEach((keys) -> {
                 plot.setSectionPaint(keys, selectedColors.get(keys));
             });
         }

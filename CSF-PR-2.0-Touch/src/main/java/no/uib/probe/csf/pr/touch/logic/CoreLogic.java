@@ -566,6 +566,53 @@ public class CoreLogic implements Serializable {
         return quantHitsList;
 
     }
+    
+    
+    
+     /**
+     * this function to get the quant comparison hits list from the searching results and
+     * group the common proteins in separated lists
+     *
+     * @param quantProteinsList list of found proteins
+     * @param searchBy searching method (accession,proteins name, or peptide
+     * sequence )
+     * @return list of quant hits results
+     */
+    public Integer[] getQuantComparisonHitsList(List<QuantProtein> quantProteinsList, String searchBy) {
+        Integer[] quantHitsList = new Integer[]{0, 0, 0, 0};
+        
+
+        if (quantProteinsList == null || quantProteinsList.isEmpty()) {
+
+            return quantHitsList;
+        }
+        quantProteinsList.stream().map((quantProt) -> {           
+            if (quantProt.getDiseaseCategory().equalsIgnoreCase("Alzheimer's")) {
+                quantHitsList[0] = quantHitsList[0] + 1;
+            } else if (quantProt.getDiseaseCategory().equalsIgnoreCase("Multiple Sclerosis")) {
+                quantHitsList[1] = quantHitsList[1] + 1;
+            } else if (quantProt.getDiseaseCategory().equalsIgnoreCase("Parkinson's")) {
+                quantHitsList[2] = quantHitsList[2] + 1;
+            }
+            return quantProt;
+        }).forEach((_item) -> {
+            quantHitsList[3] = quantHitsList[3] + 1;
+        });
+        
+        
+        return quantHitsList;
+
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     /*             *********************************************************8       */
     /**

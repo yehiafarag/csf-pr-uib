@@ -92,6 +92,15 @@ public class Data_Handler implements Serializable {
     public Collection<DiseaseCategoryObject> getDiseaseCategorySet() {
         return Dataset_Util.getFullDiseaseCategorySet();
     }
+    
+    /**
+     * Get full disease sub groups name list
+     *
+     * @return set of disease sub group name 
+     */
+    public Set<String> getFullDiseaseGroupNameSet() {
+        return Dataset_Util.getFullDiseaseGroupNameSet();
+    }
 
     /**
      * this method responsible for loading and initialize all information for
@@ -256,6 +265,21 @@ public class Data_Handler implements Serializable {
      */
     public Map<String, Integer[]> getQuantHitsList(List<QuantProtein> quantProteinsList, String searchBy) {
         return coreLogic.getQuantHitsList(quantProteinsList, searchBy);
+
+    }
+    
+    
+    /**
+     * this function to get the quant compare  list from the searching results and
+     * group the common proteins in separated lists
+     *
+     * @param quantProteinsList list of found proteins
+     * @param searchBy searching method (accession,proteins name, or peptide
+     * sequence )
+     * @return list of quant hits results
+     */
+    public Integer[] getQuantComparisonHitsList(List<QuantProtein> quantProteinsList, String searchBy) {
+        return coreLogic.getQuantComparisonHitsList(quantProteinsList, searchBy);
 
     }
     

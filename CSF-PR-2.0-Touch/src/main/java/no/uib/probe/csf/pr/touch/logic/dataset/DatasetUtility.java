@@ -15,6 +15,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import no.uib.probe.csf.pr.touch.logic.CoreLogic;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseCategoryObject;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseGroupComparison;
@@ -587,7 +588,7 @@ public class DatasetUtility implements Serializable {
     }
 
     private void updateQuantDatasetsList(String diseaseCategoryName, Map<Integer, QuantDatasetObject> quantDatasetsList) {
-       
+
         if (!inUse_DiseaseCat_DiseaseGroupMap.containsKey(diseaseCategoryName)) {
             return;
 
@@ -638,9 +639,6 @@ public class DatasetUtility implements Serializable {
         updatingData.setDiseaseComparisonSet(updatedDiseaseComparisonSet);
         updatingData.setActiveColumnIds(activeColumnIds);
         updatingData.setActiveRowIds(activeRowIds);
-        
-        
-        
 
     }
 
@@ -664,6 +662,21 @@ public class DatasetUtility implements Serializable {
         });
         sortedMap.put("All Diseases", sortedAllSubGroupMap);
         return sortedMap;
+    }
+
+     
+    /**
+     * Get full disease sub groups name list
+     *
+     * @return set of disease sub group name 
+     */
+    public Set<String> getFullDiseaseGroupNameSet() {
+        Set<String> fulldiseaseGroupsNameSet = new TreeSet<>();
+        oreginal_DiseaseCat_DiseaseGroupMap.keySet().stream().forEach((key) -> {
+            fulldiseaseGroupsNameSet.addAll(oreginal_DiseaseCat_DiseaseGroupMap.get(key).keySet());
+        });
+        return fulldiseaseGroupsNameSet;
+
     }
 
 }

@@ -99,6 +99,7 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
         Button searchingBtn = new Button("Search");
         searchingBtn.setStyleName(ValoTheme.BUTTON_SMALL);
         searchingBtn.addStyleName(ValoTheme.BUTTON_PRIMARY);
+        searchingBtn.addStyleName("margintop");
         btnsLayoutContainer.addComponent(searchingBtn);
         btnsLayoutContainer.setComponentAlignment(searchingBtn, Alignment.TOP_RIGHT);
         searchingBtn.addClickListener(SearchingUnitComponent.this);

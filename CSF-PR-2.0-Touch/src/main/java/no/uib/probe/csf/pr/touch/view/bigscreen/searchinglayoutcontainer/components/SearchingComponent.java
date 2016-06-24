@@ -53,7 +53,7 @@ public abstract class SearchingComponent extends BigBtn {
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
 
     public SearchingComponent(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager) {
-        super("Search", "Search quantitative and  identification proteins.", "img/search.png");
+        super("Search", "Search quantitative proteins.", "img/search.png");
         this.Data_handler = Data_handler;
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         VerticalLayout popupbodyLayout = new VerticalLayout();
@@ -316,7 +316,7 @@ public abstract class SearchingComponent extends BigBtn {
             int col = 0;
             int row = 0;
             for (String proteinName : quantHitsList.keySet()) {
-                PieChart chart = new PieChart(250, 200, proteinName.split("__")[1]);
+                PieChart chart = new PieChart(250, 200, proteinName.split("__")[1],true);
                 chart.initializeFilterData(items, quantHitsList.get(proteinName), itemsColors);
                 chart.redrawChart();
                 chart.setData(proteinName.split("__")[0]);

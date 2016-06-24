@@ -82,8 +82,8 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
     private byte imageData[];
     private final ChartRenderingInfo chartRenderingInfo;
     private Set<QuantDiseaseGroupsComparison> selectedComparisonList;
-    private final QuantDiseaseGroupsComparison userCustomizedComparison;
-    private final int userDataCounter;
+    private  QuantDiseaseGroupsComparison userCustomizedComparison;
+    private  int userDataCounter;
     private final Set<BubbleComponent> lastselectedComponents;
     private final String[] tooltipLabels;
     private final String[] trendStyles;
@@ -96,15 +96,10 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
     
     private final VerticalLayout controlBtnsContainer;
     
-    public BubbleChartComponent(CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height, QuantDiseaseGroupsComparison userCustomizedComparison) {
+    public BubbleChartComponent(CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height) {
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         
-        this.userCustomizedComparison = userCustomizedComparison;
-        if (userCustomizedComparison == null) {
-            userDataCounter = 0;
-        } else {
-            userDataCounter = 1;
-        }
+      
         
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeight(height, Unit.PIXELS);
@@ -317,16 +312,24 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
     }
     
     private JFreeChart generateBubbleChart(Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
-        
-        if (userCustomizedComparison != null) {
-            return null;
-        }
-        tooltipsProtNumberMap.clear();
+         tooltipsProtNumberMap.clear();
         DefaultXYZDataset defaultxyzdataset = new DefaultXYZDataset();
         int counter = 0;
         int upper = -1;
+        Set<QuantDiseaseGroupsComparison> tselectedComparisonList = new LinkedHashSet<>();
+        if (userCustomizedComparison != null) {
+         tselectedComparisonList.add(userCustomizedComparison);
+         if (userCustomizedComparison.getQuantComparisonProteinMap().size() > upper) {
+            upper = userCustomizedComparison.getQuantComparisonProteinMap().size();
+        }
+
+            
+        }
+        tselectedComparisonList.addAll(selectedComparisonList);
         
-        for (QuantDiseaseGroupsComparison qc : selectedComparisonList) {
+       
+        
+        for (QuantDiseaseGroupsComparison qc : tselectedComparisonList) {
             if (significantOnly) {
                 int upperCounter = 0;
                 upperCounter = qc.getQuantComparisonProteinMap().values().stream().filter((quantComparisonProtein) -> !(quantComparisonProtein == null)).filter((quantComparisonProtein) -> !(quantComparisonProtein.getSignificantTrindCategory() == 2 || quantComparisonProtein.getSignificantTrindCategory() == 5)).map((_item) -> 1).reduce(upperCounter, Integer::sum);
@@ -335,11 +338,8 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
                 }
                 
             } else {
-                if (qc.getQuantComparisonProteinMap() == null) {
-                    
-                    
-                    System.out.println("null qc " + qc.getComparisonHeader());
-                    
+                if (qc.getQuantComparisonProteinMap() == null) {                    
+                    System.out.println("null qc " + qc.getComparisonHeader());                    
                 }
                 if (qc.getQuantComparisonProteinMap().size() > upper) {
                     upper = qc.getQuantComparisonProteinMap().size();
@@ -361,7 +361,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         seriousColorMap.put(0, new Color[]{Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE});
         defaultxyzdataset.addSeries("   ", seriesValuesI);
         
-        for (QuantDiseaseGroupsComparison quantComparison : selectedComparisonList) {
+        for (QuantDiseaseGroupsComparison quantComparison : tselectedComparisonList) {
             
             double[] tempWidthValue = new double[8];
             if (quantComparison.getQuantComparisonProteinMap() == null) {
@@ -425,7 +425,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
                 
             }
             
-            if (length == 1 && selectedComparisonList.size() == 1) {
+            if (length == 1 && tselectedComparisonList.size() == 1) {
                 widthValue[0] = 1;
             }
             seriousColorMap.put(counter + 1, serColorArr);
@@ -462,17 +462,17 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         yAxis.setTickMarksVisible(false);
         yAxis.setUpperBound(6);
         
-        String[] xAxisLabels = new String[selectedComparisonList.size() + 2];
+        String[] xAxisLabels = new String[tselectedComparisonList.size() + 2];
         int x = 0;
         xAxisLabels[x] = "";
         int maxLength = -1;
         //init labels color
 
-        final Color[] diseaseGroupslabelsColor = new Color[selectedComparisonList.size() + 2];
+        final Color[] diseaseGroupslabelsColor = new Color[tselectedComparisonList.size() + 2];
         diseaseGroupslabelsColor[x] = Color.WHITE;
         x++;
         
-        for (QuantDiseaseGroupsComparison comp : selectedComparisonList) {
+        for (QuantDiseaseGroupsComparison comp : tselectedComparisonList) {
             String header = comp.getComparisonHeader();
             String updatedHeader = header.split(" / ")[0].split("__")[0] + " / " + header.split(" / ")[1].split("__")[0] + "";
             
@@ -489,7 +489,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         
         SymbolAxis xAxis;
         final boolean finalNum;
-        finalNum = maxLength > 50 && selectedComparisonList.size() > 4;
+        finalNum = maxLength > 50 && tselectedComparisonList.size() > 4;
         
         xAxis = new SymbolAxis(null, xAxisLabels) {
             
@@ -687,6 +687,25 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
             updateSelectionManager();
             
         }
+         if (type.equalsIgnoreCase("quant_compare")) {
+//            lastselectedComponents.clear();
+//            this.selectedComparisonList = CSFPR_Central_Manager.getSelectedComparisonsList();         
+//            this.userCustomizedComparison = CSFPR_Central_Manager.getQuantSearchSelection().getUserCustComparison();
+//            if (selectedComparisonList.isEmpty()) {                
+//                chartComponentLayout.removeAllComponents();
+//                chartImage.setSource(null);
+//                updateIcon(null);
+//                return;
+//                
+//            }
+//            
+//            updateChart();
+//            updateSelectionManager();
+//            
+        }
+//        
+        
+        
     }
     
     private void updateChart() {
@@ -929,5 +948,14 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         
         CSFSelection selection = new CSFSelection("protein_selection", getFilterId(), selectedComparisonList, selectedProteinsList);
         CSFPR_Central_Manager.selectionAction(selection);
+    }
+    public void addCustmisedUserDataCompariosn(QuantDiseaseGroupsComparison userCustomizedComparison){
+      this.userCustomizedComparison = userCustomizedComparison;
+        if (userCustomizedComparison == null) {
+            userDataCounter = 0;
+        } else {
+            userDataCounter = 1;
+        }
+    
     }
 }

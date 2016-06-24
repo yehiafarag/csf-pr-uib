@@ -117,24 +117,30 @@ public class CSFPR_Central_Manager implements Serializable {
     private QuantSearchSelection quantSearchSelection;
     
     /**
-     * quantSearchSelection in registered component
+     * quant Search Selection in registered component
      *
      * @param selection quantSearchSelection
      */
     public void searchSelectionAction(QuantSearchSelection selection) {
         this.quantSearchSelection= selection;
-//        if (quantSearchSelection.getType().equalsIgnoreCase("peptide_selection")) {
-//            selectedProteinAccession = quantSearchSelection.getSelectedProteinAccession();
-//        } else {
-//            this.selectedComparisonsList = quantSearchSelection.getSelectedComparisonsList();
-//            this.selectedProteinsList = quantSearchSelection.getSelectedProteinsList();
-//            if (selectedComparisonsList.size() > 5) {
-//                busyTask.setVisible(true);
-//            }
-//        }
         SelectionChanged("quant_searching");
 
     }
+    
+    
+      
+    /**
+     * quant Comparison Selection in registered component
+     *
+     * @param selection quantSearchSelection
+     */
+    public void compareSelectionAction(QuantSearchSelection selection) {
+        this.quantSearchSelection= selection;
+        SelectionChanged("quant_compare");
+
+    }
+
+    
 
     public QuantSearchSelection getQuantSearchSelection() {
         return quantSearchSelection;
