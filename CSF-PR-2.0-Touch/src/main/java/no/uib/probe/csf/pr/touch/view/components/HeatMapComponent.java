@@ -348,6 +348,10 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
     public void removeFilterValue(String value) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    public void unselectAll(){
+        this.heatmapLayoutContainer.unselectAll();
+    }
 
     /**
      * this method to update and combine disease sub groups based on user

@@ -67,6 +67,10 @@ public class CSFPR_Central_Manager implements Serializable {
     public String getSelectedProteinAccession() {
         return selectedProteinAccession;
     }
+    
+    private int custProteinSelectionTrend;
+
+   
 
     /**
      * quantSearchSelection in registered component
@@ -76,6 +80,7 @@ public class CSFPR_Central_Manager implements Serializable {
     public void selectionAction(CSFSelection selection) {
         if (selection.getType().equalsIgnoreCase("peptide_selection")) {
             selectedProteinAccession = selection.getSelectedProteinAccession();
+            custProteinSelectionTrend=selection.getCustProteinSelection();
         } else {
             this.selectedComparisonsList = selection.getSelectedComparisonsList();
             this.selectedProteinsList = selection.getSelectedProteinsList();
@@ -145,5 +150,10 @@ public class CSFPR_Central_Manager implements Serializable {
     public QuantSearchSelection getQuantSearchSelection() {
         return quantSearchSelection;
     }
+
+    public int getCustProteinSelectionTrend() {
+        return custProteinSelectionTrend;
+    }
+
 
 }

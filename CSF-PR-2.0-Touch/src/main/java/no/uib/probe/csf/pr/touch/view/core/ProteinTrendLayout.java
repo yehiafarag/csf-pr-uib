@@ -17,7 +17,7 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
  * this class represents protein trend (spark line ) required for quant protein
  * table
  */
-public abstract class ProteinTrendLayout extends AbsoluteLayout implements Comparable<ProteinTrendLayout>,LayoutEvents.LayoutClickListener {
+public abstract class ProteinTrendLayout extends AbsoluteLayout implements Comparable<ProteinTrendLayout>, LayoutEvents.LayoutClickListener {
 
     private final String proteinKey;
     private final Set<QuantDiseaseGroupsComparison> selectedComparisonsList;
@@ -26,8 +26,9 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
     private final int width;
     private QuantComparisonProtein sortableProtein;
     private final VerticalLayout maxMinBtn;
-    private final  VerticalLayout sparkLineContainer ;
+    private final VerticalLayout sparkLineContainer;
     private final Object itemId;
+    private int custTrend=-1;
 
     public void setSortableColumnIndex(int comparisonIndex) {
         QuantDiseaseGroupsComparison comp = (QuantDiseaseGroupsComparison) selectedComparisonsList.toArray()[comparisonIndex];
@@ -41,9 +42,8 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
             sortableProtein = null;
         }
     }
-  
 
-    public ProteinTrendLayout(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, QuantComparisonProtein selectedProtein, int width,Object itemId) {
+    public ProteinTrendLayout(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, QuantComparisonProtein selectedProtein, int width, Object itemId) {
         this.itemId = itemId;
         this.selectedComparisonsList = selectedComparisonsList;
         proteinKey = selectedProtein.getProteinAccession();
@@ -62,11 +62,11 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
         this.setHeight(100, Unit.PIXELS);
         this.addStyleName("slowslide");
         this.setStyleName("proteintrendcell");
-        
-         sparkLineContainer = new VerticalLayout();
-         sparkLineContainer.setSizeFull();
-         this.addComponent(sparkLineContainer, "left: " + 0 + "px; top: " + 0 + "px;");
-         sparkLineContainer.addLayoutClickListener(ProteinTrendLayout.this);
+
+        sparkLineContainer = new VerticalLayout();
+        sparkLineContainer.setSizeFull();
+        this.addComponent(sparkLineContainer, "left: " + 0 + "px; top: " + 0 + "px;");
+        sparkLineContainer.addLayoutClickListener(ProteinTrendLayout.this);
 
         VerticalLayout resizeIconLayout = new VerticalLayout();
         resizeIconLayout.setWidth(100, Unit.PERCENTAGE);
@@ -103,9 +103,14 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
 
             }
         });
-        
-     
-        
+
+    }
+
+    public void updateCustTrend(int userTrend) {
+        if (sparkLine != null) {
+            sparkLine.updateUrserTrend(userTrend);
+        }
+        this.custTrend = userTrend;
 
     }
 
@@ -116,7 +121,7 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
         if (initSparkline == 6 && sparkLine == null) {
             initSparkline++;
             sparkLine = new LineChart(width, 500);
-            sparkLine.updateData(selectedComparisonsList, proteinKey);
+            sparkLine.updateData(selectedComparisonsList, proteinKey,custTrend);
             sparkLineContainer.addComponent(sparkLine);
         }
         initSparkline++;
@@ -166,10 +171,7 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         selectTableItem(itemId);
     }
-    
-    
+
     public abstract void selectTableItem(Object itemId);
-    
-    
 
 }

@@ -1,5 +1,7 @@
 package no.uib.probe.csf.pr.touch.view.bigscreen.welcomepagecontainer;
 
+import com.vaadin.server.ExternalResource;
+import com.vaadin.server.Page;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
@@ -7,6 +9,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Link;
 import com.vaadin.ui.VerticalLayout;
 import java.io.Serializable;
 import java.util.List;
@@ -220,8 +223,9 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         middlePanelServicesLayout.setSpacing(true);
         middlePanelServicesLayout.setMargin(new MarginInfo(true, false, true, false));
         middleLayout.addComponent(middlePanelServicesLayout);
+        
 
-        BigBtn quantDatasetBtn = new BigBtn("Quantitative Dataset", "Browse quantitative data.", "img/scatter_plot_applied.png") {
+        BigBtn quantDatasetBtn = new BigBtn("Quantitative", "Browse quantitative data.", "img/scatter_plot_applied.png") {
 
             @Override
             public void onClick() {
@@ -229,12 +233,12 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
             }
         };
         middlePanelServicesLayout.addComponent(quantDatasetBtn, 0, 0);
-
-        BigBtn idDatasetBtn = new BigBtn("Identification Dataset", "Browse identification data.", "img/bar-chart.png") {
+        BigBtn idDatasetBtn = new BigBtn("Identification", "Browse identification data.", "img/bar-chart.png") {
 
             @Override
             public void onClick() {
-                View_Manager.viewLayout("idview");
+                Page.getCurrent().open("http://129.177.231.63/csf-pr-v1.0", "_blank");//setLocation("http://129.177.231.63/csf-pr-v1.0");
+                
             }
         };
         

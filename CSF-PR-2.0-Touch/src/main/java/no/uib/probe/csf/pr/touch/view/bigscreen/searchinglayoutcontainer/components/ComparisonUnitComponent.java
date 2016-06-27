@@ -290,7 +290,7 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
             stableSet.addAll(Arrays.asList(stableAccssionArr));
         }
 
-        String lowAccessions = textBoxII.getText();
+        String lowAccessions = textBoxIII.getText();
         Set<String> lowSet = new LinkedHashSet<>();
         if (lowAccessions != null && !lowAccessions.trim().equalsIgnoreCase("")) {
             String[] lowAccssionArr = lowAccessions.replace("\n", ",").replace("\t", ",").replace(";", ",").replace(" ", "").split(",");
@@ -317,7 +317,7 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
         userCustomizedComparison.setDatasetMap(dsMap);
         userCustomizedComparison.setComparisonHeader(userCompHeader);
 
-        Map<String, QuantComparisonProtein> comparProtList = new LinkedHashMap<String, QuantComparisonProtein>();
+        Map<String, QuantComparisonProtein> comparProtList = new LinkedHashMap<>();
         int index = -1;
 
         Set<QuantComparisonProtein> highProtSet = new HashSet<>();
@@ -325,6 +325,7 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
         Set<QuantComparisonProtein> lowProthSet = new HashSet<>();
 
         for (String str : textBoxI.getText().split("\n")) {
+            str = str.trim();
             if (str.trim().equals("")) {
                 continue;
             }

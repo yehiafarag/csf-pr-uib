@@ -6,6 +6,7 @@
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.server.Page;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.window.WindowMode;
 import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Alignment;
@@ -22,12 +23,13 @@ import com.vaadin.ui.Window;
 public class PopupWindow extends Window {
 
     private boolean lazyLoading=false;
+    private final VerticalLayout mainFrame;
     public PopupWindow(AbstractOrderedLayout layout,String title) {
 
         int height = Page.getCurrent().getBrowserWindowHeight() - 100;
         int width = Page.getCurrent().getBrowserWindowWidth() - 100;
        
-        VerticalLayout mainFrame = new VerticalLayout();
+        mainFrame = new VerticalLayout();
         mainFrame.setSizeFull();        
         setContent(mainFrame);
         mainFrame.addStyleName("mainviewport");
@@ -45,7 +47,7 @@ public class PopupWindow extends Window {
         setDraggable(false);
         center();
         setCaption("<font color='gray' style='font-weight: bold;!important'>&nbsp;&nbsp;"+title+"</font>");
-        UI.getCurrent().addWindow(this);
+        UI.getCurrent().addWindow(PopupWindow.this);
         setCaptionAsHtml(true);
         setClosable(true);
     }
@@ -66,6 +68,7 @@ public class PopupWindow extends Window {
 
             }
         }
+         this.mainFrame.addStyleName(VaadinSession.getCurrent().getAttribute("zoomStyle")+"");
         super.setVisible(visible); //To change body of generated methods, choose Tools | Templates.
     }
 

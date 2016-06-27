@@ -8,6 +8,7 @@ import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -42,7 +43,7 @@ public class CSF_PR_UI extends UI {
         dbUserName = (scx.getInitParameter("userName"));
         dbPassword = (scx.getInitParameter("password"));
         filesURL = scx.getInitParameter("filesURL");
-         this.getPage().setTitle("CSF Proteome Resource (CSF-PR) v2.0");
+        this.getPage().setTitle("CSF Proteome Resource (CSF-PR) v2.0");
 
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeight(100, Unit.PERCENTAGE);
@@ -53,8 +54,9 @@ public class CSF_PR_UI extends UI {
 //            scaleOnH = false;
 //        }
 
-        windowHeight = Page.getCurrent().getBrowserWindowHeight(); //Math.max(Page.getCurrent().getBrowserWindowHeight(), 1080);
-        windowWidth = Page.getCurrent().getBrowserWindowWidth();// Math.max(Page.getCurrent().getBrowserWindowWidth(), 1920);
+        windowHeight = Math.max(Page.getCurrent().getBrowserWindowHeight(), 1080);
+        windowWidth =  Math.max(Page.getCurrent().getBrowserWindowWidth(), 1920);        
+        
 //        if (windowWidth < scaleWidth && windowHeight < scaleHeight) {
 //            //scale on both
 //            if (scaleOnH) {
@@ -81,6 +83,8 @@ public class CSF_PR_UI extends UI {
         sizeReporter.addResizeListener((ComponentResizeEvent event) -> {
             resizeScreen();
         });
+        resizeScreen();
+
     }
 
     String updatedZoomStyleName = "";
@@ -114,6 +118,8 @@ public class CSF_PR_UI extends UI {
         layout.removeStyleName(updatedZoomStyleName);
         updatedZoomStyleName = "zoom" + zoomLevel;
         layout.setStyleName(updatedZoomStyleName);
+
+        VaadinSession.getCurrent().setAttribute("zoomStyle", updatedZoomStyleName);
 
     }
 

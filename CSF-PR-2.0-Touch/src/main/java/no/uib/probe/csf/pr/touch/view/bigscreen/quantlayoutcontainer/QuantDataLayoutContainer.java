@@ -47,6 +47,9 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
     @Override
     public void selectionChanged(String type) {
         if (type.equalsIgnoreCase("quant_searching")) {
+
+            bubblechartComponent.addCustmisedUserDataCompariosn(null);
+            lineChartProteinTableComponent.setUserCustomizedComparison(null);
             quantInitialLayout.updateSelection(CSFPR_Central_Manager.getQuantSearchSelection().getDiseaseCategory());
             heatmapComponent.showSerumDs();
             heatmapComponent.selectComparisonsByID(CSFPR_Central_Manager.getQuantSearchSelection().getDatasetIds());
@@ -54,14 +57,28 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
             lineChartProteinTableComponent.filterSearchSelection(CSFPR_Central_Manager.getQuantSearchSelection().getKeyWords());
 
         } else if (type.equalsIgnoreCase("quant_compare")) {
-            bubblechartComponent.addCustmisedUserDataCompariosn(CSFPR_Central_Manager.getQuantSearchSelection().getUserCustComparison());
+             bubblechartComponent.addCustmisedUserDataCompariosn(CSFPR_Central_Manager.getQuantSearchSelection().getUserCustComparison());
+            lineChartProteinTableComponent.setUserCustomizedComparison(CSFPR_Central_Manager.getQuantSearchSelection().getUserCustComparison());
+            if(CSFPR_Central_Manager.getQuantSearchSelection().getUserCustComparison()==null){
+             heatmapComponent.unselectAll();
+              quantInitialLayout.updateSelection("All Diseases");
+              this.updateCurrentLayout("heatmap");
+            
+                return;
+            }
+            
+           
             quantInitialLayout.updateSelection(CSFPR_Central_Manager.getQuantSearchSelection().getDiseaseCategory());
             heatmapComponent.showSerumDs();
             heatmapComponent.selectComparisonsByID(CSFPR_Central_Manager.getQuantSearchSelection().getDatasetIds());
             this.updateCurrentLayout("proteintable");
             lineChartProteinTableComponent.filterSearchSelection(CSFPR_Central_Manager.getQuantSearchSelection().getKeyWords());
 
+        } else {
+//            bubblechartComponent.addCustmisedUserDataCompariosn(null);
+//            lineChartProteinTableComponent.setUserCustomizedComparison(null);
         }
+        
     }
 
     @Override
@@ -255,7 +272,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         linechartToolsContainer.addComponent(lineChartProteinTableComponent.getControlBtnsContainer());
         linechartToolsContainer.setComponentAlignment(lineChartProteinTableComponent.getControlBtnsContainer(), Alignment.TOP_RIGHT);
 
-        PeptideViewComponent peptideViewComponent = new PeptideViewComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight, null) {
+        PeptideViewComponent peptideViewComponent = new PeptideViewComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight) {
 
             @Override
             public void updateIcon(Resource iconResource) {

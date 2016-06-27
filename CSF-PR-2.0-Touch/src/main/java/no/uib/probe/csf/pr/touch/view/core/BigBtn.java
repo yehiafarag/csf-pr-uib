@@ -43,7 +43,7 @@ public abstract class BigBtn extends HorizontalLayout implements LayoutEvents.La
         Label btnLabel = new Label(labelText);
         btnLabel.setContentMode(ContentMode.HTML);
         this.addComponent(btnLabel);
-        btnLabel.setWidth("220px");
+        btnLabel.setWidth(220,Unit.PIXELS);
         
         thumbContainer = new ImageContainerBtn() {
             

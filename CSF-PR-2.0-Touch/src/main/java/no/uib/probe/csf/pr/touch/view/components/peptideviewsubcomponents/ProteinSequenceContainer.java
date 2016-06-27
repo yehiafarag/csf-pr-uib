@@ -1,6 +1,5 @@
 package no.uib.probe.csf.pr.touch.view.components.peptideviewsubcomponents;
 
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
@@ -25,11 +24,9 @@ public class ProteinSequenceContainer extends VerticalLayout {
     private List< StackedBarPeptideComponent> stackedPeptides;
     private PeptideSequenceContainer allPeptidesComponent, significantPeptidesComponent;
     private double correctedWidth = 0;
-    private boolean noPeptide = true;
     private int totalPeptidesNumber = 0;
-    private int significantPeptidesNumber = 0;
 
-    public ProteinSequenceContainer(String sequence, Set<QuantPeptide> quantPepSet, int width, final int dsID) {
+    public ProteinSequenceContainer(String sequence, Set<QuantPeptide> quantPepSet, int proteinSequenceContainerWidth, final int dsID) {
         this.setWidth(100, Unit.PERCENTAGE);
         this.addStyleName("roundedborder");
         this.addStyleName("whitelayout");
@@ -56,13 +53,13 @@ public class ProteinSequenceContainer extends VerticalLayout {
             significantPeptidesLayout = new VerticalLayout();
             this.addComponent(significantPeptidesLayout);
             stackedPeptides = new ArrayList<>();
-            final LinkedHashSet<StackedBarPeptideComponent> allPeptidesStackedBarComponentsMap = this.initAllBarChartComponents(false, width - 140, sequence, filteredQuantPepSet, true);
+            final LinkedHashSet<StackedBarPeptideComponent> allPeptidesStackedBarComponentsMap = this.initAllBarChartComponents(false, proteinSequenceContainerWidth - 160, sequence, filteredQuantPepSet, true);
 
             stackedPeptides.addAll(allPeptidesStackedBarComponentsMap);
             allPeptidesComponent = new PeptideSequenceContainer((int) correctedWidth + 40, allPeptidesStackedBarComponentsMap);
             allPeptidesLayout.addComponent(allPeptidesComponent);
             allPeptidesLayout.setComponentAlignment(allPeptidesComponent, Alignment.MIDDLE_CENTER);
-            final LinkedHashSet<StackedBarPeptideComponent> significantPeptidesStackedBarComponentsMap = this.initAllBarChartComponents(true, width - 140, sequence, filteredQuantPepSet, false);
+            final LinkedHashSet<StackedBarPeptideComponent> significantPeptidesStackedBarComponentsMap = this.initAllBarChartComponents(true, proteinSequenceContainerWidth - 160, sequence, filteredQuantPepSet, false);
             significantPeptidesComponent = new PeptideSequenceContainer((int) correctedWidth + 40, significantPeptidesStackedBarComponentsMap);
             significantPeptidesLayout.addComponent(significantPeptidesComponent);
             significantPeptidesLayout.setComponentAlignment(significantPeptidesComponent, Alignment.MIDDLE_CENTER);
@@ -79,7 +76,7 @@ public class ProteinSequenceContainer extends VerticalLayout {
         correctedWidth = width;
         double charW = (double) ((double) width / (double) sequence.length());
         quantPepSet.stream().filter((quantPeptide) -> !(quantPeptide.getPeptideSequence().equalsIgnoreCase("not available"))).map((quantPeptide) -> {
-            noPeptide = false;
+            
             return quantPeptide;
         }).forEach((quantPeptide) -> {
             String peptideSequence = quantPeptide.getPeptideSequence().trim();
@@ -143,7 +140,7 @@ public class ProteinSequenceContainer extends VerticalLayout {
 
             } else {
                 if (quantPeptide.getString_p_value().equalsIgnoreCase("Significant")) {
-                    significantPeptidesNumber++;
+                    
                     StackedBarPeptideComponent peptideStackedBarComponent = new StackedBarPeptideComponent(x0, (int) (peptideLayoutWidth), quantPeptide.getUniqueId() + "", quantPeptide.getPeptideModification(),quantPeptide);
                     peptideStackedBarComponent.setSignificant(true);
                     peptideStackedBarComponent.setWidth((int) peptideLayoutWidth, Unit.PIXELS);

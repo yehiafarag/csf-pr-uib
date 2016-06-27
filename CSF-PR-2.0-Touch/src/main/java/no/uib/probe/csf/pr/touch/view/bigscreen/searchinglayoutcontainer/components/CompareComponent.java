@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.Data_Handler;
 import no.uib.probe.csf.pr.touch.database.Query;
-import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantProtein;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
 import no.uib.probe.csf.pr.touch.selectionmanager.QuantSearchSelection;
@@ -84,6 +83,7 @@ public abstract class CompareComponent extends BigBtn {
 
         resultsLayout.addComponent(quantCompareDataResult);
         resultsLayout.setComponentAlignment(quantCompareDataResult, Alignment.MIDDLE_CENTER);
+
         HorizontalLayout middleLayout = new HorizontalLayout();
         middleLayout.setHeight(29, Sizeable.Unit.PIXELS);
         middleLayout.setWidth(100, Sizeable.Unit.PERCENTAGE);
@@ -92,9 +92,20 @@ public abstract class CompareComponent extends BigBtn {
         middleLayout.addComponent(resultsLabel);
         middleLayout.setComponentAlignment(resultsLabel, Alignment.MIDDLE_LEFT);
 
+        HorizontalLayout legendContainer = new HorizontalLayout();
+        legendContainer.setSpacing(true);
+        middleLayout.addComponent(legendContainer);
+        middleLayout.setComponentAlignment(legendContainer, Alignment.MIDDLE_RIGHT);
+       
+         TrendLegend legend2 = new TrendLegend("found_notfound");
+        legendContainer.addComponent(legend2);
+        legendContainer.setComponentAlignment(legend2, Alignment.MIDDLE_RIGHT);
+        
         TrendLegend legend = new TrendLegend("diseaselegend");
-        middleLayout.addComponent(legend);
-        middleLayout.setComponentAlignment(legend, Alignment.MIDDLE_RIGHT);
+        legendContainer.addComponent(legend);
+        legendContainer.setComponentAlignment(legend, Alignment.MIDDLE_RIGHT);
+
+       
 
         controlBtnsLayout = new HorizontalLayout();
         controlBtnsLayout.addStyleName("roundedborder");
@@ -121,6 +132,23 @@ public abstract class CompareComponent extends BigBtn {
             resetComparison();
         });
 
+        Button resetSystemBtn = new Button("Hide data");
+        resetSystemBtn.setStyleName(ValoTheme.BUTTON_SMALL);
+        resetSystemBtn.setStyleName(ValoTheme.BUTTON_TINY);
+        resetSystemBtn.setWidth(100, Sizeable.Unit.PIXELS);
+        resetSystemBtn.setEnabled(false);
+        btnsWrapper.addComponent(resetSystemBtn);
+        btnsWrapper.setComponentAlignment(resetSystemBtn, Alignment.MIDDLE_CENTER);
+        resetSystemBtn.setDescription("Hide user data ");
+        resetSystemBtn.addClickListener((Button.ClickEvent event) -> {
+            QuantSearchSelection selection = new QuantSearchSelection();
+            selection.setUserCustComparison(null);
+            CSFPR_Central_Manager.compareSelectionAction(selection);
+            CompareComponent.this.loadQuantComparison();
+            comparePanel.setVisible(false);
+            this.setEnabled(false);
+        });
+
         loadDataBtn = new Button("Load");
         loadDataBtn.setStyleName(ValoTheme.BUTTON_SMALL);
         loadDataBtn.setStyleName(ValoTheme.BUTTON_TINY);
@@ -131,6 +159,7 @@ public abstract class CompareComponent extends BigBtn {
         loadDataBtn.setDescription("Load data");
         loadDataBtn.addClickListener((Button.ClickEvent event) -> {
             loadComparison();
+            resetSystemBtn.setEnabled(true);
         });
 
         popupbodyLayout.addComponent(compareUnit);
@@ -161,18 +190,17 @@ public abstract class CompareComponent extends BigBtn {
         QuantSearchSelection selection = new QuantSearchSelection();
 
         if (!foundChart.getSelectionSet().isEmpty() && !foundChart.getSelectionSet().contains("all")) {
-             searchQuantificationProtList.stream().filter((protein) -> (foundChart.getSelectionSet().contains(protein.getDiseaseCategory()))).map((protein) -> {
+            searchQuantificationProtList.stream().filter((protein) -> (foundChart.getSelectionSet().contains(protein.getDiseaseCategory()))).map((protein) -> {
                 datasetIds.add(protein.getDsKey());
                 return protein;
             }).forEach((protein) -> {
                 proteinList.add(protein.getUniprotAccession());
+                diseaseCategories.add(protein.getDiseaseCategory());
             });
             selection.setKeyWords(proteinList);
-            
-         
 
         } else {
-              searchQuantificationProtList.stream().forEach((protein) -> {               
+            searchQuantificationProtList.stream().forEach((protein) -> {
                 datasetIds.add(protein.getDsKey());
                 diseaseCategories.add(protein.getDiseaseCategory());
             });
@@ -182,13 +210,13 @@ public abstract class CompareComponent extends BigBtn {
         if (diseaseCategories.size() == 1 && diseaseCategories.toArray()[0].toString().equalsIgnoreCase("all") || diseaseCategories.size() > 1) {
             diseaseCat = "All Diseases";
         } else {
-            diseaseCat = diseaseCategories.toArray()[0].toString();
+            diseaseCat = diseaseCategories.toArray()[0] + "";
         }
         selection.setKeyWords(filterKeywordSet);
         comparePanel.close();//
         selection.setDiseaseCategory(diseaseCat);
         selection.setDatasetIds(datasetIds);
-        selection.setUserCustComparison(compareUnit.getUserCustomizedComparison()); 
+        selection.setUserCustComparison(compareUnit.getUserCustomizedComparison());
         CSFPR_Central_Manager.compareSelectionAction(selection);
         loadQuantComparison();
 
@@ -216,11 +244,12 @@ public abstract class CompareComponent extends BigBtn {
         Integer[] quantHitsList = Data_handler.getQuantComparisonHitsList(searchQuantificationProtList, query.getSearchBy());
 
         if (quantHitsList != null && searchQuantificationProtList != null) {
-            Set<Integer> studiesSet = new HashSet<>();
+            Set<Integer> studiesSet;
+            studiesSet = new HashSet<>();
             searchQuantificationProtList.stream().forEach((qp) -> {
                 studiesSet.add(qp.getDsKey());
             });
-            initQuantComparisonresults(quantHitsList, quantNotFound.split(", "), studiesSet.size());
+            initQuantComparisonresults(quantHitsList, quantNotFound.split(", "), filterKeywordSet.size());
         }
         if (quantNotFound != null) {
             for (String s : quantNotFound.split(",")) {
@@ -258,7 +287,7 @@ public abstract class CompareComponent extends BigBtn {
      * @param keywords the keywords used for the searching
      *
      */
-    private void initQuantComparisonresults(Integer[] quantHitsList, String[] notFoundAcc, int datasetNumber) {
+    private void initQuantComparisonresults(Integer[] quantHitsList, String[] notFoundAcc, int found) {
 
         quantCompareDataResult.removeAllComponents();
         if (quantHitsList == null || quantHitsList.length == 0) {
@@ -270,21 +299,22 @@ public abstract class CompareComponent extends BigBtn {
         loadDataBtn.setEnabled(true);
         quantCompareDataResult.setVisible(true);
 
-        foundChart = new PieChart(250, 200, "Proteins Found ", true);
+        PieChart notFoundChart = new PieChart(250, 200, "Proteins", false);
+        notFoundChart.initializeFilterData(new String[]{"Not Found", "Found"}, new Integer[]{notFoundAcc.length, found, found + notFoundAcc.length}, new Color[]{new Color(110, 177, 206), new Color(219, 169, 1)});
+        notFoundChart.redrawChart();
+        notFoundChart.removeStyleName("pointer");
+        quantCompareDataResult.addComponent(notFoundChart);
+        quantCompareDataResult.setComponentAlignment(notFoundChart, Alignment.MIDDLE_CENTER);
+
+        foundChart = new PieChart(250, 200, "Datasets ", true);
         foundChart.initializeFilterData(items, quantHitsList, itemsColors);
         foundChart.redrawChart();
         quantCompareDataResult.addComponent(foundChart);
         quantCompareDataResult.setComponentAlignment(foundChart, Alignment.MIDDLE_CENTER);
 
-        PieChart notFoundChart = new PieChart(250, 200, "Proteins Not Found", false);
-        notFoundChart.initializeFilterData(new String[]{"Not Found"}, new Integer[]{notFoundAcc.length, notFoundAcc.length}, new Color[]{new Color(110, 177, 206)});
-        notFoundChart.redrawChart();
-        quantCompareDataResult.addComponent(notFoundChart);
-        quantCompareDataResult.setComponentAlignment(notFoundChart, Alignment.MIDDLE_CENTER);
-
         notFoundChart.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
             for (String str : notFoundAcc) {
-                System.out.println("at str "+str);
+                System.out.println("at str " + str);
 
             }
         });

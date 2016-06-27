@@ -303,12 +303,12 @@ public class CoreLogic implements Serializable {
 //
                 if (uniprotAcc.trim().equalsIgnoreCase("") || uniprotAcc.equalsIgnoreCase("Not Available") || uniprotAcc.equalsIgnoreCase("Entry Deleted") || uniprotAcc.equalsIgnoreCase("Entry Demerged") || uniprotAcc.equalsIgnoreCase("NOT RETRIEVED") || uniprotAcc.equalsIgnoreCase("DELETED") || uniprotAcc.trim().equalsIgnoreCase("UNREVIEWED")) {
                     protName = quant.getPublicationProteinName();
-                    accession = quant.getPublicationAccNumber();
+                    accession = quant.getPublicationAccNumber().trim();
                     url = null;
 
                 } else {
                     protName = quant.getUniprotProteinName();
-                    accession = quant.getUniprotAccession();
+                    accession = quant.getUniprotAccession().trim();
                     url = "http://www.uniprot.org/uniprot/" + protAcc.toUpperCase();
                 }
                 if (protName.trim().equalsIgnoreCase("")) {

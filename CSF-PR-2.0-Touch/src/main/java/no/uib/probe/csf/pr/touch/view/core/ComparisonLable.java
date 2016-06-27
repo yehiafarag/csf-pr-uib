@@ -51,6 +51,7 @@ public abstract class ComparisonLable extends VerticalLayout implements LayoutEv
         labelI.addStyleName("overflowtext");
         labelI.setContentMode(ContentMode.HTML);
         this.addComponent(labelI);
+        this.setComponentAlignment(labelI, Alignment.MIDDLE_CENTER);
 
         VerticalLayout spacer = new VerticalLayout();
         spacer.setStyleName(ValoTheme.LAYOUT_WELL);
@@ -68,7 +69,8 @@ public abstract class ComparisonLable extends VerticalLayout implements LayoutEv
         labelII.addStyleName(ValoTheme.LABEL_TINY);
         labelII.setContentMode(ContentMode.HTML);
         this.addComponent(labelII);
-        this.setDescription(comparison.getComparisonFullName());
+        this.setComponentAlignment(labelII, Alignment.MIDDLE_CENTER);
+        this.setDescription("View comparison details " + comparison.getComparisonHeader());
 
         VerticalLayout popupbodyLayout = new VerticalLayout();
         popupbodyLayout.setSpacing(true);

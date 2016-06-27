@@ -95,10 +95,9 @@ public class TrendLegend extends GridLayout {
 
             }
 
-        }
-        else if(type.equalsIgnoreCase("diseaselegend")){
-        
-          final String[] labels = new String[]{"Alzheimer's", "Multiple Sclerosis", "Parkinson's"};
+        } else if (type.equalsIgnoreCase("diseaselegend")) {
+
+            final String[] labels = new String[]{"Alzheimer's", "Multiple Sclerosis", "Parkinson's"};
             String[] styleName = new String[]{"legendalzheimerstyle", "legendmultiplesclerosisstyle", "legendparkinsonstyle"};
             this.setSpacing(true);
             this.setRows(1);
@@ -114,11 +113,27 @@ public class TrendLegend extends GridLayout {
                 this.setComponentAlignment(item, Alignment.MIDDLE_CENTER);
 
             }
-        
-        
+
+        }else if(type.equalsIgnoreCase("found_notfound")){
+         final String[] labels = new String[]{"Found", "Not Found"};
+            String[] styleName = new String[]{"legendfoundstyle", "legendnotfoundstyle"};
+            this.setSpacing(true);
+            this.setRows(1);
+            this.setColumns(2);
+            int colCounter = 0;
+            int rowCounter = 0;
+            for (int i = 0; i < styleName.length; i++) {
+                HorizontalLayout item = generateItemLabel(labels[i], styleName[i]);
+                this.addComponent(item, colCounter++, rowCounter);
+                item.setHeight(10, Unit.PIXELS);
+                item.setStyleName("legendlabelcontainer");
+                item.addStyleName("margintop5");
+                this.setComponentAlignment(item, Alignment.MIDDLE_CENTER);
+
+            }
+
         
         }
-        
         else {
             String[] labels = new String[]{"Increased", "Increased-not sign.", "Equal", "Decreased-not sign.", "Decreased", "No Quant. Info.", "PTM"};
             String[] styleName = new String[]{"redlayout", "notsigredstackedlayout", "lightbluelayout", "notsiggreenstackedlayout", "greenlayout", "novaluelayout", "ptmglycosylation"};
@@ -161,28 +176,32 @@ public class TrendLegend extends GridLayout {
 
     public TrendLegend(int userTrend) {
         String[] labels = new String[]{"Increased   100%", "Increased < 100%", "Equal", "Decreased < 100%", "Decreased   100%", "No Quant. Info.", "No Data"};
-        String[] styleName = new String[]{"legendtared100", "legendredtaless100", "legendbluedm", "legendgreentaless100", "legendgreenta100", "legendgraydm", "legendemptygraydm"};
+        String[] styleName = new String[]{"legendarrow-up100", "legendarrow-upless100", "legenddiamond", "legendarrow-downless100", "legendarrow-down100", "legenddarkgraydiamond", "legendgraydiamond"};
         this.setSpacing(true);
         this.setColumns(8);
         this.setRows(1);
         this.setMargin(new MarginInfo(false, true, false, false));
         for (int i = 0; i < styleName.length; i++) {
             HorizontalLayout item = generateItemLabel(labels[i], styleName[i]);
+            item.setStyleName("legendlabelcontainer");
+            item.setHeight(10, Unit.PIXELS);
             this.addComponent(item, i, 0);
-            this.setComponentAlignment(item, Alignment.MIDDLE_CENTER);
+            this.setComponentAlignment(item, Alignment.BOTTOM_CENTER);
 
         }
+
         HorizontalLayout item;
         if (userTrend == 0 || userTrend == 1) {
             item = generateItemLabel("User Data", "custuserdown");
-
         } else if (userTrend == 2) {
             item = generateItemLabel("User Data", "custuserstable");
         } else {
             item = generateItemLabel("User Data", "custuserup");
         }
+        item.setStyleName("legendlabelcontainer");
+        item.setHeight(10, Unit.PIXELS);
         this.addComponent(item, 7, 0);
-        this.setComponentAlignment(item, Alignment.MIDDLE_CENTER);
+        this.setComponentAlignment(item, Alignment.BOTTOM_CENTER);
 
     }
 

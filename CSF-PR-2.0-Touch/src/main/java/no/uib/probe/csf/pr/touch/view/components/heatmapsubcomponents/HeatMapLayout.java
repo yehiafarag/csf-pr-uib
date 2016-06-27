@@ -1123,7 +1123,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
     /**
      *
      */
-    private void unselectAll() {
+    public void unselectAll() {
         clearSelection();
         updateSelectionManagerIndexes();
 

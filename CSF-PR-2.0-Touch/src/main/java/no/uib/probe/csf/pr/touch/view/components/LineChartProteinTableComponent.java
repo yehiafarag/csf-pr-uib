@@ -32,7 +32,7 @@ import no.uib.probe.csf.pr.touch.view.core.TrendLegend;
  * this class represents both protein table and linechart component the protein
  * line chart represents the overall protein trend across different comparisons
  */
-public abstract class  LineChartProteinTableComponent extends VerticalLayout implements CSFListener, LayoutEvents.LayoutClickListener {
+public abstract class LineChartProteinTableComponent extends VerticalLayout implements CSFListener, LayoutEvents.LayoutClickListener {
 
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
     private final VerticalLayout controlBtnsContainer;
@@ -80,7 +80,7 @@ public abstract class  LineChartProteinTableComponent extends VerticalLayout imp
 
             @Override
             public void textChanged(String text) {
-                quantProteinTable.filterTable(getSearchingProteinsList(text));
+                quantProteinTable.filterViewItemTable(getSearchingProteinsList(text));
 
             }
 
@@ -124,9 +124,10 @@ public abstract class  LineChartProteinTableComponent extends VerticalLayout imp
             }
 
             @Override
-            public void selectProtein(String selectedProtein) {
+            public void selectProtein(String selectedProtein, int custTrend) {
                 CSFSelection selection = new CSFSelection("peptide_selection", getFilterId(), null, null);
                 selection.setSelectedProteinAccession(selectedProtein);
+                selection.setCustProteinSelection(custTrend);                
                 CSFPR_Central_Manager.selectionAction(selection);
 
             }
@@ -135,7 +136,6 @@ public abstract class  LineChartProteinTableComponent extends VerticalLayout imp
             public void updateRowNumber(int rowNumber) {
                 LineChartProteinTableComponent.this.updateRowNumber(rowNumber);
             }
-            
 
         };//this.initProteinTable();
         tableLayoutFrame.addComponent(quantProteinTable);
@@ -243,26 +243,33 @@ public abstract class  LineChartProteinTableComponent extends VerticalLayout imp
         keywords.stream().forEach((key) -> {
             searchSet.addAll(getSearchingProteinsList(key));
         });
-        quantProteinTable.filterTable(searchSet);
+        quantProteinTable.filterViewItemTable(searchSet);
 
     }
 
     @Override
     public void selectionChanged(String type) {
         if (type.equalsIgnoreCase("protein_selection")) {
-            proteinSearchingMap.clear();
+//            proteinSearchingMap.clear();
             Set<QuantComparisonProtein> selectedProteinsList;
             if (CSFPR_Central_Manager.getSelectedProteinsList() == null) {
+                proteinSearchingMap.clear();
                 selectedProteinsList = new LinkedHashSet<>();
                 CSFPR_Central_Manager.getSelectedComparisonsList().stream().forEach((comparison) -> {
                     selectedProteinsList.addAll(comparison.getQuantComparisonProteinMap().values());
                 });
+                quantProteinTable.updateTableData(CSFPR_Central_Manager.getSelectedComparisonsList(), selectedProteinsList);
 
             } else {
+                Set<QuantComparisonProtein> searchSet = new LinkedHashSet<>();
                 selectedProteinsList = CSFPR_Central_Manager.getSelectedProteinsList();
+                selectedProteinsList.stream().forEach((key) -> {
+                    searchSet.addAll(getSearchingProteinsList(key.getProteinAccession()));
+                });
+                quantProteinTable.filterTableItem(searchSet);
+
             }
 
-            quantProteinTable.updateTableData(CSFPR_Central_Manager.getSelectedComparisonsList(), selectedProteinsList);
             selectedProteinsList.stream().forEach((protein) -> {
                 proteinSearchingMap.put(protein.getProteinAccession() + "__" + protein.getProteinName(), protein);
             });
@@ -307,8 +314,11 @@ public abstract class  LineChartProteinTableComponent extends VerticalLayout imp
         });
         return subAccessionMap;
     }
-    
-    
+
     public abstract void updateRowNumber(int rowNumber);
+
+    public void setUserCustomizedComparison(QuantDiseaseGroupsComparison userCustomizedComparison) {
+        quantProteinTable.setUserCustomizedComparison(userCustomizedComparison);
+    }
 
 }

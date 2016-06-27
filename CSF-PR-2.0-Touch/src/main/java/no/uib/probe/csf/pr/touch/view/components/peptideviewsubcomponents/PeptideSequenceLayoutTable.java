@@ -63,9 +63,14 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
         peptideSequenceTable.setImmediate(true); // react at once when something is selected
         peptideSequenceTable.setMultiSelect(false);
         
-        peptideSequenceTable.addContainerProperty("Index", TrendSymbol.class, null, "", null, Table.Align.CENTER);
+         peptideSequenceTable.addContainerProperty("Index", Integer.class, null, "", null, Table.Align.RIGHT);
+        peptideSequenceTable.addContainerProperty("trend", TrendSymbol.class, null, "", null, Table.Align.CENTER);
         peptideSequenceTable.addContainerProperty("Comparison", ComparisonLable.class, null, "Comparison", null, Table.Align.LEFT);
         peptideSequenceTable.addContainerProperty("Publication", ExternalLink.class, null, "Publication", null, Table.Align.LEFT);
+        
+        
+         peptideSequenceTable.addContainerProperty("patientsNumber", Integer.class, null, "#Patients", null, Table.Align.RIGHT);
+        
         peptideSequenceTable.addContainerProperty("PeptideSequence", ProteinSequenceContainer.class, null, "Peptide Sequence", null, Table.Align.CENTER);
 
         /* This checkbox reflects the contents of the selectedItemIds set */
@@ -89,13 +94,16 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
         });
 
 //        mainProteinTable.setColumnIcon("selected", checkedRes);
-        peptideSequenceTable.setColumnHeader("selected", "Only Checked");
+        peptideSequenceTable.setColumnHeader("selected", "Checked");
         peptideSequenceTable.setColumnAlignment("selected", Table.Align.CENTER);
         peptideSequenceTable.setColumnWidth("selected", 70);
+        peptideSequenceTable.setColumnWidth("trend", 47);
         peptideSequenceTable.setColumnWidth("Index", 47);
+        
+        peptideSequenceTable.setColumnWidth("patientsNumber", 47);
         peptideSequenceTable.setColumnWidth("Comparison", 100);
         peptideSequenceTable.setColumnWidth("Publication", 175);
-        proteinSequenceContainerWidth = width - 71 - 47 - 87 - 187 - 10;
+        proteinSequenceContainerWidth = width - 71 - 47-47-47 - 87 - 187 - 10;
         peptideSequenceTable.setColumnWidth("PeptideSequence", proteinSequenceContainerWidth);
         peptideSequenceTable.addHeaderClickListener((Table.HeaderClickEvent event) -> {
             if (event.getPropertyId().toString().equalsIgnoreCase("selected")) {
@@ -185,9 +193,9 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
                 symbol.setWidth(12, Unit.PIXELS);
                 symbol.setHeight(12, Unit.PIXELS);
                 QuantDatasetObject ds = comparison.getDatasetMap().get(quantProt.getDsKey());
-                String title = ds.getAuthor() + "<br/>(" + ds.getYear() + ") ";
+                String title = "<font size='2'>"+ds.getAuthor() + "<br/>(" + ds.getYear() + ")</font> ";
                 ExternalLink publicationLink = new ExternalLink(title, new ExternalResource("http://www.ncbi.nlm.nih.gov/pubmed/" + ds.getPumedID()));
-                publicationLink.setDescription(title);
+                publicationLink.setDescription("View publication "+title);
                 publicationLink.setWidth(100, Unit.PERCENTAGE);
                 publicationLink.setCaptionAsHtml(true);
                 publicationLink.addStyleName(ValoTheme.LABEL_SMALL);
@@ -209,7 +217,7 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
                 
                 ProteinSequenceContainer proteinCoverageLayout = new ProteinSequenceContainer(quantProt.getSequence(), protein.getQuantPeptidesList(), proteinSequenceContainerWidth, quantProt.getDsKey());
                 proteinSeqSet.add(proteinCoverageLayout);
-                tableItemsMap.put(objectId, new Object[]{symbol, comparisonLabelObject, publicationLink, proteinCoverageLayout});
+                tableItemsMap.put(objectId, new Object[]{objectId+1,symbol, comparisonLabelObject, publicationLink,ds.getPatientsGroup1Number()+ds.getPatientsGroup2Number() ,proteinCoverageLayout});
                 peptideSequenceTable.addItem(tableItemsMap.get(objectId), objectId);
                 comparisonToItemId.put(comparison.getComparisonHeader() + "__" + quantProt.getDsKey(), objectId);
                 objectId++;

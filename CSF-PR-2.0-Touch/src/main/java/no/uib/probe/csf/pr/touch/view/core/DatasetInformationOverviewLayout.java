@@ -53,7 +53,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         rowI.setHeightUndefined();
         mainContainer.addComponent(rowI);
 
-        pumedId = new InformationField("Pumed Id");
+        pumedId = new InformationField("PubMed Id");
         rowI.addComponent(pumedId);
 
         typeOfStudy = new InformationField("Type of Study");

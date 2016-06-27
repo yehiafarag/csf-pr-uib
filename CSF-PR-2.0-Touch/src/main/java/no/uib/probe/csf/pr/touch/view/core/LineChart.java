@@ -100,8 +100,9 @@ public class LineChart extends AbsoluteLayout {
 
     private String proteinKey;
 
-    public void updateData(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, String proteinKey) {
+    public void updateData(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, String proteinKey,int custTrend) {
         this.proteinKey = proteinKey;
+        this.custTrend=custTrend;
         updateDataset(selectedComparisonsList, proteinKey);
         lineChart = generateLineChart();//
         this.selectedComparisonList = selectedComparisonsList;
@@ -348,6 +349,14 @@ public class LineChart extends AbsoluteLayout {
 
     private Set<QuantDiseaseGroupsComparison> selectedComparisonList;
 
+    public void updateUrserTrend(int userTrend) {
+        this.custTrend = userTrend;
+        updateDataset(selectedComparisonList, proteinKey);
+        lineChart = generateLineChart();//
+        minimize();
+
+    }
+
     private JFreeChart generateLineChart() {
 
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
@@ -365,7 +374,7 @@ public class LineChart extends AbsoluteLayout {
         XYPlot xyplot = new XYPlot(dataset, xAxis, yAxis, renderer) {
 
             private int counter = 0;
-            private int custTrend = -1;
+//            private int custTrend = -1;
 
             @Override
             public Paint getRangeGridlinePaint() {
@@ -405,7 +414,7 @@ public class LineChart extends AbsoluteLayout {
 
             }
 
-            private BasicStroke highlitedLineStrok = new BasicStroke(10f);
+            private BasicStroke highlitedLineStrok = new BasicStroke(1f);
             private int counterII = 0;
 
             @Override
@@ -514,8 +523,6 @@ public class LineChart extends AbsoluteLayout {
 
         return jFreeChart;
     }
-
-  
 
     public void maxmize() {
         if (maxImgUrl == null) {

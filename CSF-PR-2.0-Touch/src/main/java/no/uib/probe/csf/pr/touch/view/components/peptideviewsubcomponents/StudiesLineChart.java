@@ -16,14 +16,12 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -74,7 +72,7 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
     }
 
     public Set<QuantDiseaseGroupsComparison> getOrderedComparisonList(boolean trendOreder) {
-        
+
         if (trendOreder) {
             System.out.println("at thi is orderd one");
             return orderedComparisonList;
@@ -86,7 +84,7 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
     private final Image chartImg;
     private final AbsoluteLayout chartComponentsLayout;
 
-    private int width, height;
+    private final int width, height;
     private int custTrend = -1;
     private final Color[] customizedUserDataColor = new Color[]{Color.decode("#e5ffe5"), Color.WHITE, Color.decode("#e6f4ff"), Color.WHITE, Color.decode("#ffe5e5")};
     private JFreeChart lineChart;
@@ -113,16 +111,12 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         chartComponentsLayout = new AbsoluteLayout();
         chartComponentsLayout.setWidth(100, Unit.PERCENTAGE);
         chartComponentsLayout.setHeight(100, Unit.PERCENTAGE);
-        
-        chartComponentsLayout.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
-            @Override
-            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-                if(event.getClickedComponent() != null && (event.getClickedComponent() instanceof TrendSymbol)){
-                    return;
-                }
-                else
-                    select(null, -100);
+        chartComponentsLayout.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
+            if (event.getClickedComponent() != null && (event.getClickedComponent() instanceof TrendSymbol)) {
+
+            } else {
+                StudiesLineChart.this.select(null, -100);
             }
         });
 
@@ -131,8 +125,14 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
     private String proteinKey;
     private String proteinName;
 
-    public void updateData(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, String proteinKey) {
+    private int gridcounter = 0;
+    private int gridcounterII = 0;
+
+    public void updateData(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, String proteinKey, int custTrend) {
         this.proteinKey = proteinKey;
+        this.custTrend = custTrend;
+        this.gridcounter = 0;
+        this.gridcounterII = 0;
         this.selectedComparisonList = selectedComparisonsList;
         proteinName = null;
 
@@ -451,7 +451,7 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
 
         }
 
-        int numPatients = 0;
+        int numPatients;
         if (!key.equalsIgnoreCase("")) {
             QuantComparisonProtein prot = comparison.getQuantComparisonProteinMap().get(key);
 
@@ -530,137 +530,134 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
 
         XYPlot xyplot = new XYPlot(dataset, xAxis, yAxis, renderer) {
 
-            private int counter = 0;
-            private int custTrend = -1;
-
             @Override
             public Paint getRangeGridlinePaint() {
-                if (counter == 239) {
-                    counter = 0;
+                if (gridcounter == 239) {
+                    gridcounter = 0;
                 }
-                if (counter == 20 || (counter == 120) || (counter == 220)) {
-                    counter++;
+                if (gridcounter == 20 || (gridcounter == 120) || (gridcounter == 220)) {
+                    gridcounter++;
                     return super.getRangeGridlinePaint(); //To change body of generated methods, choose Tools | Templates.
                 }
                 if (custTrend != -1) {
+
                     if (custTrend == 0) {
-                        if ((counter >= 10 && counter <= 19) || (counter >= 21 && counter <= 29)) {
-                            counter++;
+                        if ((gridcounter >= 10 && gridcounter <= 19) || (gridcounter >= 21 && gridcounter <= 29)) {
+                            gridcounter++;
                             return customizedUserDataColor[custTrend];
                         }
 
                     }
                     if (custTrend == 2) {
-                        if ((counter >= 110 && counter <= 119) || (counter >= 121 && counter <= 129)) {
-                            counter++;
+                        if ((gridcounter >= 110 && gridcounter <= 119) || (gridcounter >= 121 && gridcounter <= 129)) {
+                            gridcounter++;
                             return customizedUserDataColor[custTrend];
                         }
 
                     }
                     if (custTrend == 4) {
-                        if ((counter >= 210 && counter <= 219) || (counter >= 221 && counter <= 229)) {
-                            counter++;
+                        if ((gridcounter >= 210 && gridcounter <= 219) || (gridcounter >= 221 && gridcounter <= 229)) {
+                            gridcounter++;
                             return customizedUserDataColor[custTrend];
                         }
 
                     }
 
                 }
-                counter++;
+                gridcounter++;
                 return Color.WHITE;
 
             }
 
-            private BasicStroke highlitedLineStrok = new BasicStroke(10f);
-            private int counterII = 0;
+            private BasicStroke highlitedLineStrok = new BasicStroke(1f);
 
             @Override
             public Stroke getRangeGridlineStroke() {
-                if (counterII == 239) {
-                    counterII = 0;
+                if (gridcounterII == 239) {
+                    gridcounterII = 0;
                     highlitedLineStrok = new BasicStroke(4f);
                 }
 
                 if (custTrend != -1) {
                     if (custTrend == 0) {
-                        if ((counterII >= 10 && counterII <= 19) || (counterII >= 21 && counterII <= 29)) {
-                            counterII++;
+                        if ((gridcounterII >= 10 && gridcounterII <= 19) || (gridcounterII >= 21 && gridcounterII <= 29)) {
+                            gridcounterII++;
                             return highlitedLineStrok;
                         }
 
                     }
                     if (custTrend == 2) {
-                        if ((counterII >= 110 && counterII <= 119) || (counterII >= 121 && counterII <= 129)) {
-                            counterII++;
+                        if ((gridcounterII >= 110 && gridcounterII <= 119) || (gridcounterII >= 121 && gridcounterII <= 129)) {
+                            gridcounterII++;
                             return highlitedLineStrok;
                         }
 
                     }
                     if (custTrend == 4) {
-                        if ((counterII >= 210 && counterII <= 219) || (counterII >= 221 && counterII <= 229)) {
-                            counterII++;
+                        if ((gridcounterII >= 210 && gridcounterII <= 219) || (gridcounterII >= 221 && gridcounterII <= 229)) {
+                            gridcounterII++;
                             return highlitedLineStrok;
                         }
 
                     }
 
                 }
-                counterII++;
+                gridcounterII++;
 
                 return super.getRangeGridlineStroke();
             }
 
-            @Override
-            public void drawRangeTickBands(Graphics2D g2, Rectangle2D dataArea, List ticks) {
-
-                if (custTrend == -1) {
-                    super.drawRangeTickBands(g2, dataArea, ticks);
-                    return;
-
-                }
-                int counterI = 0;
-                List updatedTicksList = new ArrayList();
-                for (Object tick : ticks) {
-
-                    if (tick.toString().equalsIgnoreCase(tickLabels[custTrend])) {
-                        for (int i = counterI - 1; i > counterI - 10; i--) {
-                            updatedTicksList.add(ticks.get(i));
-                        }
-                        updatedTicksList.add(tick);
-                        for (int i = counterI + 1; i < counterI + 11; i++) {
-                            updatedTicksList.add(ticks.get(i));
-                        }
-                    }
-                    counterI++;
-                }
-                Rectangle2D up;
-                if (custTrend == 4) {
-                    up = new Rectangle((int) dataArea.getX(), (int) dataArea.getY(), (int) dataArea.getWidth(), (int) dataArea.getHeight());
-
-                } else if (custTrend == 2) {
-                    up = new Rectangle((int) dataArea.getX(), (int) dataArea.getY(), (int) dataArea.getWidth(), (int) dataArea.getHeight());//                    
+//            @Override
+//            public void drawRangeTickBands(Graphics2D g2, Rectangle2D dataArea, List ticks) {
 //
-                } else {
-                    up = new Rectangle((int) dataArea.getX(), (int) dataArea.getY(), (int) dataArea.getWidth(), (int) dataArea.getHeight());
-                }
-
-                super.drawRangeTickBands(g2, up, updatedTicksList); //To change body of generated methods, choose Tools | Templates.
-            }
-
+//                if (custTrend == -1) {
+//                    super.drawRangeTickBands(g2, dataArea, ticks);
+//                    return;
+//
+//                }
+//                int counterI = 0;
+//                List updatedTicksList = new ArrayList();
+//                for (Object tick : ticks) {
+//
+//                    if (tick.toString().equalsIgnoreCase(tickLabels[custTrend])) {
+//                        for (int i = counterI - 1; i > counterI - 10; i--) {
+//                            updatedTicksList.add(ticks.get(i));
+//                        }
+//                        updatedTicksList.add(tick);
+//                        for (int i = counterI + 1; i < counterI + 11; i++) {
+//                            updatedTicksList.add(ticks.get(i));
+//                        }
+//                    }
+//                    counterI++;
+//                }
+//                Rectangle2D up;
+//                if (custTrend == 4) {
+//                    up = new Rectangle((int) dataArea.getX(), (int) dataArea.getY(), (int) dataArea.getWidth(), (int) dataArea.getHeight());
+//
+//                } else if (custTrend == 2) {
+//                    up = new Rectangle((int) dataArea.getX(), (int) dataArea.getY(), (int) dataArea.getWidth(), (int) dataArea.getHeight());//                    
+////
+//                } else {
+//                    up = new Rectangle((int) dataArea.getX(), (int) dataArea.getY(), (int) dataArea.getWidth(), (int) dataArea.getHeight());
+//                }
+//
+//                super.drawRangeTickBands(g2, up, updatedTicksList); //To change body of generated methods, choose Tools | Templates.
+//            }
         };
-        if (custTrend != -1) {
-            if (custTrend == 4) {
-                xyplot.setRangeTickBandPaint(customizedUserDataColor[4]);
-
-            } else if (custTrend == 0) {
-                xyplot.setRangeTickBandPaint(customizedUserDataColor[0]);
-            } else if (custTrend == 2) {
-                xyplot.setRangeTickBandPaint(customizedUserDataColor[2]);//TickBandPaint(customizedUserDataColor[2]);
-            }
-
-        } else {
-            xyplot.setRangeTickBandPaint(Color.WHITE);
-        }
+//        if (custTrend != -1) {
+//            if (custTrend == 4) {
+//                xyplot.setRangeTickBandPaint(customizedUserDataColor[4]);
+//
+//            } else if (custTrend == 0) {
+//                xyplot.setRangeTickBandPaint(customizedUserDataColor[0]);
+//            } else if (custTrend == 2) {
+//                xyplot.setRangeTickBandPaint(customizedUserDataColor[2]);//TickBandPaint(customizedUserDataColor[2]);
+//            }
+//
+//        } else {
+//            xyplot.setRangeTickBandPaint(Color.WHITE);
+//        }
+        xyplot.setRangeGridlinePaint(Color.LIGHT_GRAY);
 
         JFreeChart jFreeChart = new JFreeChart(null, new Font("Open Sans", Font.PLAIN, 18), xyplot, true);
         jFreeChart.getXYPlot().getDomainAxis().setVisible(true);
@@ -690,15 +687,19 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         lineChart.getXYPlot().getDomainAxis().setVisible(false);
         lineChart.getXYPlot().getRangeAxis().setVisible(false);
         lineChart.getXYPlot().setOutlineVisible(false);
-        lineChart.getXYPlot().setRangeGridlinesVisible(false);
-        lineChart.getXYPlot().setDomainGridlinesVisible(false);
+
+//        lineChart.getXYPlot().setRangeGridlinesVisible(false);
+//        lineChart.getXYPlot().setDomainGridlinesVisible(true);
         lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.RED);
+        gridcounter = 0;
+        gridcounterII = 0;
+
         minImgUrl = new ExternalResource(this.getChartImage(lineChart, chartRenderingInfo, 100, 100));
         lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.GRAY);
-         lineChart.getXYPlot().getDomainAxis().setVisible(true);
+        lineChart.getXYPlot().getDomainAxis().setVisible(true);
         lineChart.getXYPlot().getRangeAxis().setVisible(true);
-        lineChart.getXYPlot().setRangeGridlinesVisible(true);
-        lineChart.getXYPlot().setDomainGridlinesVisible(true);
+//        lineChart.getXYPlot().setRangeGridlinesVisible(true);
+//        lineChart.getXYPlot().setDomainGridlinesVisible(true);
         return minImgUrl;
 
     }
@@ -779,9 +780,8 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
                 comparisonTrendMap.put(gc.getComparisonHeader(), doubleTrend);
                 this.symbolMap.put(doubleTrend + "," + comparisonIndex, square);
                 square.addParam("comparison", gc);
-                square.addParam("dsKey",-100);
+                square.addParam("dsKey", -100);
                 if (trend == 6) {
-//                    dsNumber = 0;
                     square.addParam("comparison", null);
                 }
                 String tooltip = gc.getComparisonHeader().replace("__" + gc.getDiseaseCategory(), "") + "<br/>" + gc.getDiseaseCategory() + "<br/>Overall trend: " + tooltipsIcon[trend];//+ "<br/>Datasets included: " + dsNumber;
@@ -888,11 +888,7 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         TreeMap<AlphanumComparator, QuantDiseaseGroupsComparison> orderedCompProteins = new TreeMap<>();
         LinkedHashSet<QuantDiseaseGroupsComparison> orederedComparisonSet = new LinkedHashSet<>();
 
-        for (QuantDiseaseGroupsComparison cp : selectedComparisonList) {
-
-            if (!comparisonTrendMap.containsKey(cp.getComparisonHeader())) {
-                continue;
-            }
+        selectedComparisonList.stream().filter((cp) -> !(!comparisonTrendMap.containsKey(cp.getComparisonHeader()))).forEach((cp) -> {
             double sigTrend = comparisonTrendMap.get(cp.getComparisonHeader());
             if (sigTrend == -1) {
                 AlphanumComparator key = new AlphanumComparator((102) + "-z" + cp.getComparisonHeader());
@@ -901,15 +897,10 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
                 AlphanumComparator key = new AlphanumComparator((sigTrend + 100) + "-" + cp.getComparisonHeader());
                 orderedCompProteins.put(key, cp);
             }
-        }
-        for (Iterator<AlphanumComparator> it = orderedCompProteins.keySet().iterator(); it.hasNext();) {
-            AlphanumComparator cpHeader = it.next();
-            QuantDiseaseGroupsComparison cp = orderedCompProteins.get(cpHeader);
+        });
+        orderedCompProteins.keySet().stream().map((cpHeader) -> orderedCompProteins.get(cpHeader)).forEach((cp) -> {
             orederedComparisonSet.add(cp);
-        }
-//        selectedComparisonList.stream().filter((gv) -> (!orederedComparisonSet.contains(gv))).forEach((gv) -> {
-//            orederedComparisonSet.add(gv);
-//        });
+        });
         return orederedComparisonSet;
     }
 

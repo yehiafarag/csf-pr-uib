@@ -79,7 +79,7 @@ public class HeaderLayout extends HorizontalLayout{
         uib_ico.setHeight(58,Unit.PIXELS);
         linksIconsLayout.addComponent(uib_ico);
 
-        Link kgj_ico = new Link(null, new ExternalResource("http://www.stiftkgj.no/"));
+        Link kgj_ico = new Link(null, new ExternalResource("http://www.helse-bergen.no/en/OmOss/Avdelinger/ms/Sider/om-oss.aspx"));
         kgj_ico.setIcon(new ThemeResource("img/kgj.png"));
         kgj_ico.setTargetName("_blank");
         kgj_ico.setHeight(58,Unit.PIXELS);

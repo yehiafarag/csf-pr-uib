@@ -177,7 +177,7 @@ public class PieChart extends AbsoluteLayout implements LayoutEvents.LayoutClick
                 continue;
             }
             dataset.setValue(items[x], new Double(values[x]));
-            valuesMap.put(items[x], values[x] + "");
+               valuesMap.put(items[x], values[x] + "");
             if (colors != null) {
                 plot.setSectionPaint(items[x], colors[x]);
                 this.selectedColors.put(items[x], colors[x].darker());
