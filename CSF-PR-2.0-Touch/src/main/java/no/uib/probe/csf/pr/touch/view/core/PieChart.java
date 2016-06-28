@@ -44,7 +44,7 @@ import org.jfree.data.general.PieDataset;
  * this class represents interactive pie-chart the chart developed using JFree
  * chart and DiVA concept
  */
-public class PieChart extends AbsoluteLayout implements LayoutEvents.LayoutClickListener {
+public abstract class PieChart extends AbsoluteLayout implements LayoutEvents.LayoutClickListener {
 
     private final ChartRenderingInfo chartRenderingInfo = new ChartRenderingInfo();
     private final Image chartBackgroundImg;
@@ -177,7 +177,7 @@ public class PieChart extends AbsoluteLayout implements LayoutEvents.LayoutClick
                 continue;
             }
             dataset.setValue(items[x], new Double(values[x]));
-               valuesMap.put(items[x], values[x] + "");
+            valuesMap.put(items[x], values[x] + "");
             if (colors != null) {
                 plot.setSectionPaint(items[x], colors[x]);
                 this.selectedColors.put(items[x], colors[x].darker());
@@ -206,19 +206,24 @@ public class PieChart extends AbsoluteLayout implements LayoutEvents.LayoutClick
         if (!chartRenderingInfo.getPlotInfo().getDataArea().contains(event.getRelativeX(), event.getRelativeY())) {
             return;
         }
+        Comparable sliceName= "all";
         if (event.getClickedComponent() == null || event.getClickedComponent() instanceof Image) {
             ChartEntity entity = chartRenderingInfo.getEntityCollection().getEntity(event.getRelativeX(), event.getRelativeY());
             if (entity instanceof PieSectionEntity) {
                 PieSectionEntity pieEnt = (PieSectionEntity) entity;
                 selectSlice(pieEnt.getSectionKey());
+                sliceName= pieEnt.getSectionKey();
             }
 
         } else if (event.getClickedComponent() instanceof VerticalLayout || event.getClickedComponent() instanceof Label) {
             selectSlice("all");
+            
         }
+        
+        sliceClicked(sliceName);
     }
 
-    private void selectSlice(Comparable sliceKey) {
+    public void selectSlice(Comparable sliceKey) {
 
         if (selectionSet.contains("all")) {
             selectionSet.clear();
@@ -254,16 +259,10 @@ public class PieChart extends AbsoluteLayout implements LayoutEvents.LayoutClick
             });
         }
         if (selectionSet.isEmpty()) {
-            middleDountLayout.removeStyleName("selected");
-            valuesMap.keySet().stream().map((keys) -> {
-                plot.setSectionOutlinePaint(keys, null);
-                return keys;
-            }).forEach((keys) -> {
-                plot.setSectionPaint(keys, defaultColors.get(keys));
-            });
-
+            resetChart();
+        } else {
+            redrawChart();
         }
-        redrawChart();
 
     }
 
@@ -274,5 +273,18 @@ public class PieChart extends AbsoluteLayout implements LayoutEvents.LayoutClick
         }
         return selectionSet;
     }
+
+    public void resetChart() {
+        middleDountLayout.removeStyleName("selected");
+        valuesMap.keySet().stream().map((keys) -> {
+            plot.setSectionOutlinePaint(keys, null);
+            return keys;
+        }).forEach((keys) -> {
+            plot.setSectionPaint(keys, defaultColors.get(keys));
+        });
+        redrawChart();
+    }
+
+    public abstract void sliceClicked(Comparable sliceKey);
 
 }

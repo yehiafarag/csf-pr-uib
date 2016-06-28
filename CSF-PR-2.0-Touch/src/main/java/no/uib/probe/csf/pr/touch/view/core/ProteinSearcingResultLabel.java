@@ -77,7 +77,15 @@ public class ProteinSearcingResultLabel extends HorizontalLayout implements Layo
         chartPanel.setHideOnMouseOut(false);
         this.addComponent(chartPanel);
         
-        chart = new PieChart(250, 200, title.split("__")[1],true);
+        chart = new PieChart(250, 200, title.split("__")[1],true){
+
+            @Override
+            public void sliceClicked(Comparable sliceKey) {
+            }
+        
+        
+        
+        };
         chart.initializeFilterData(items, values, colors);
         popupbodyLayout.addComponent(chart);
         popupbodyLayout.setComponentAlignment(chart, Alignment.MIDDLE_CENTER);

@@ -1,6 +1,7 @@
 package no.uib.probe.csf.pr.touch.view.bigscreen.searchinglayoutcontainer.components;
 
 import com.vaadin.server.ExternalResource;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -270,7 +271,7 @@ public abstract class SearchingComponent extends BigBtn {
         if (idSearchIdentificationProtList != null) {
             idDataResult.setVisible(true);
             idDataResult.removeAllComponents();
-            Link idSearchingLink = new Link(idSearchIdentificationProtList, new ExternalResource("http://localhost:8084/CSF-PR-ID/searchby:" + query.getSearchBy().replace(" ", "*") + "___searchkey:" + query.getSearchKeyWords().replace("\n", "__").replace(" ", "*")));
+            Link idSearchingLink = new Link(idSearchIdentificationProtList, new ExternalResource(VaadinSession.getCurrent().getAttribute("csf_pr_Url")+"/searchby:" + query.getSearchBy().replace(" ", "*") + "___searchkey:" + query.getSearchKeyWords().replace("\n", "__").replace(" ", "*")));
             idSearchingLink.setTargetName("_blank");
             idSearchingLink.setStyleName(ValoTheme.LINK_SMALL);
             idSearchingLink.setDescription("View protein id results in CSF-PR v1.0");
@@ -316,7 +317,15 @@ public abstract class SearchingComponent extends BigBtn {
             int col = 0;
             int row = 0;
             for (String proteinName : quantHitsList.keySet()) {
-                PieChart chart = new PieChart(250, 200, proteinName.split("__")[1],true);
+                PieChart chart = new PieChart(250, 200, proteinName.split("__")[1],true){
+
+            @Override
+            public void sliceClicked(Comparable sliceKey) {
+            }
+        
+        
+        
+        };
                 chart.initializeFilterData(items, quantHitsList.get(proteinName), itemsColors);
                 chart.redrawChart();
                 chart.setData(proteinName.split("__")[0]);

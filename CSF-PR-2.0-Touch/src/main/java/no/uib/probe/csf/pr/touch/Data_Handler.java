@@ -92,11 +92,11 @@ public class Data_Handler implements Serializable {
     public Collection<DiseaseCategoryObject> getDiseaseCategorySet() {
         return Dataset_Util.getFullDiseaseCategorySet();
     }
-    
+
     /**
      * Get full disease sub groups name list
      *
-     * @return set of disease sub group name 
+     * @return set of disease sub group name
      */
     public Set<String> getFullDiseaseGroupNameSet() {
         return Dataset_Util.getFullDiseaseGroupNameSet();
@@ -191,17 +191,17 @@ public class Data_Handler implements Serializable {
     }
 
     /**
-     * this method to update and combine disease sub groups based on user selection
-     * 
+     * this method to update and combine disease sub groups based on user
+     * selection
      *
-     * @param  updatedGroupsNamesMap updated disease sub group names
+     *
+     * @param updatedGroupsNamesMap updated disease sub group names
      */
     public void updateCombinedGroups(Map<String, Map<String, String>> updatedGroupsNamesMap) {
         Dataset_Util.updateCobinedGroups(updatedGroupsNamesMap);
 
     }
-    
-    
+
     /**
      * this method allow users to filter the datasets based on sample type (CSF
      * / Serum)
@@ -210,23 +210,24 @@ public class Data_Handler implements Serializable {
      * @param serumApplied show Serum datasets
      * @param csfApplied show CSF datasets
      */
-     public void updateCSFSerumDatasets(boolean serumApplied, boolean csfApplied){
-         Dataset_Util.updateCSFSerumDatasets(serumApplied, csfApplied);
-     }
-     
+    public void updateCSFSerumDatasets(boolean serumApplied, boolean csfApplied) {
+        Dataset_Util.updateCSFSerumDatasets(serumApplied, csfApplied);
+    }
+
     /**
-     * this method is responsible for update quant comparison proteins map for each comparison
+     * this method is responsible for update quant comparison proteins map for
+     * each comparison
      *
      *
      * @param selectedQuantComparisonsList selected comparisons
-     * @return  updated quant comparisons list
-     */ 
-    public Set<QuantDiseaseGroupsComparison> updateComparisonQuantProteins(Set<QuantDiseaseGroupsComparison> selectedQuantComparisonsList){
-                return coreLogic.updateComparisonQuantProteins(selectedQuantComparisonsList);
-     
-     }
+     * @return updated quant comparisons list
+     */
+    public Set<QuantDiseaseGroupsComparison> updateComparisonQuantProteins(Set<QuantDiseaseGroupsComparison> selectedQuantComparisonsList) {
+        return coreLogic.updateComparisonQuantProteins(selectedQuantComparisonsList);
 
-      /**
+    }
+
+    /**
      * search for quantification proteins
      *
      * @param query query object that has all query information
@@ -237,8 +238,8 @@ public class Data_Handler implements Serializable {
         return coreLogic.searchQuantificationProteins(query, toCompare);
 
     }
-    
-     /**
+
+    /**
      * this function to filter the quant search results based on keywords and
      * detect the not found keywords
      *
@@ -267,11 +268,10 @@ public class Data_Handler implements Serializable {
         return coreLogic.getQuantHitsList(quantProteinsList, searchBy);
 
     }
-    
-    
+
     /**
-     * this function to get the quant compare  list from the searching results and
-     * group the common proteins in separated lists
+     * this function to get the quant compare list from the searching results
+     * and group the common proteins in separated lists
      *
      * @param quantProteinsList list of found proteins
      * @param searchBy searching method (accession,proteins name, or peptide
@@ -282,11 +282,22 @@ public class Data_Handler implements Serializable {
         return coreLogic.getQuantComparisonHitsList(quantProteinsList, searchBy);
 
     }
-    
-    
-    
-    
-     /**
+
+    /**
+     * this function to get the quant compare list from the searching results
+     * and group the common proteins in separated lists
+     *
+     * @param quantProteinsList list of found proteins
+     * @param searchBy searching method (accession,proteins name, or peptide
+     * sequence )
+     * @return list of quant hits results
+     */
+    public Integer[] getQuantComparisonProteinList(List<QuantProtein> quantProteinsList, String searchBy) {
+        return coreLogic.getQuantComparisonProteinList(quantProteinsList, searchBy);
+
+    }
+
+    /**
      * search for identification proteins
      *
      * @param query query object that has all query information
@@ -297,5 +308,16 @@ public class Data_Handler implements Serializable {
 
     }
 
+    
+    /**
+     * export accession list to csv file
+     *
+     * @param proteinsList  list of protein accession
+     * @return  byte[] of the exported file
+     */
+    public byte[] exportProteinsListToCSV(Set<String> proteinsList) {
+        return coreLogic.exportProteinsListToCSV(proteinsList);
+
+    }
 
 }

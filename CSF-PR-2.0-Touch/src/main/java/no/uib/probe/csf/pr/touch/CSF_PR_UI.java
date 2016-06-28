@@ -43,6 +43,10 @@ public class CSF_PR_UI extends UI {
         dbUserName = (scx.getInitParameter("userName"));
         dbPassword = (scx.getInitParameter("password"));
         filesURL = scx.getInitParameter("filesURL");
+        String csf_pr_Url = scx.getInitParameter("csf-pr-id");
+         VaadinSession.getCurrent().setAttribute("csf_pr_Url", csf_pr_Url);
+        
+        
         this.getPage().setTitle("CSF Proteome Resource (CSF-PR) v2.0");
 
         this.setWidth(100, Unit.PERCENTAGE);

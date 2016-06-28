@@ -2,6 +2,7 @@ package no.uib.probe.csf.pr.touch.view.bigscreen.welcomepagecontainer;
 
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.Page;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
@@ -11,6 +12,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
@@ -74,35 +76,42 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
         //init left panel (Resource overview)
         VerticalLayout leftPanelWrapper = new VerticalLayout();
-        leftPanelWrapper.setWidthUndefined();
+        leftPanelWrapper.setWidth(160,Unit.PIXELS);
         leftPanelWrapper.setHeightUndefined();
         leftPanelWrapper.setStyleName("framelayout");
         mainBodyHLayout.addComponent(leftPanelWrapper);
 
         // the stat layout
-        Label statLabel = new Label("<center><h1>Resource  Status</h1></center>");
-        statLabel.setContentMode(ContentMode.HTML);
+        Label statLabel = new Label("Resource  Status");
+        statLabel.setStyleName(ValoTheme.LABEL_H3);
+        statLabel.addStyleName(ValoTheme.LABEL_BOLD);
         statLabel.setWidthUndefined();
-        statLabel.setHeight(50, Unit.PIXELS);
+        statLabel.setHeightUndefined();
         leftPanelWrapper.addComponent(statLabel);
 
-        Label quantStatLabel = new Label("<h2>Quantitative  Data</h2>");
-        quantStatLabel.setContentMode(ContentMode.HTML);
+        Label quantStatLabel = new Label("Quantitative  Data");
+        quantStatLabel.setHeight(20,Unit.PIXELS);
+        quantStatLabel.addStyleName(ValoTheme.LABEL_BOLD);
+        quantStatLabel.addStyleName(ValoTheme.LABEL_H4);
+        quantStatLabel.addStyleName("marginleft");
         leftPanelWrapper.addComponent(quantStatLabel);
 
         GridLayout subQuantStatLayout = new GridLayout(2, 4);
-        subQuantStatLayout.setWidthUndefined();
+        subQuantStatLayout.addStyleName("marginleft");
+        subQuantStatLayout.setMargin(new MarginInfo(false, false, true, false));
+        subQuantStatLayout.setWidth(100,Unit.PERCENTAGE);
         leftPanelWrapper.addComponent(subQuantStatLayout);
 
         PublicationsInformationWindow sub1quantStatLabelWrapper = new PublicationsInformationWindow(publicationList);
-        Label sub1quantStatLabel = new Label("<h3 style='text-decoration: underline;cursor: pointer;'>#Publications</h3>");
-        sub1quantStatLabel.setContentMode(ContentMode.HTML);
+        Label sub1quantStatLabel = new Label("#Publications");
+        sub1quantStatLabel.setStyleName("link");
+        sub1quantStatLabel.addStyleName(ValoTheme.LABEL_SMALL);
         sub1quantStatLabelWrapper.addComponent(sub1quantStatLabel);
         subQuantStatLayout.addComponent(sub1quantStatLabelWrapper, 0, 0);//
         sub1quantStatLabelWrapper.setDescription("Click to view publication information");
 
-        Label sub1QuantStatValue = new Label("<h4 style='text-align: right;' >" + overviewInfoBean.getNumberOfQuantPublication() + "</h4>");
-        sub1QuantStatValue.setContentMode(ContentMode.HTML);
+        Label sub1QuantStatValue = new Label(overviewInfoBean.getNumberOfQuantPublication()+"");
+        sub1QuantStatValue.addStyleName(ValoTheme.LABEL_SMALL);
         subQuantStatLayout.addComponent(sub1QuantStatValue, 1, 0);
         subQuantStatLayout.setComponentAlignment(sub1QuantStatValue, Alignment.MIDDLE_RIGHT);
 
@@ -112,71 +121,78 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         sub2quantStatLabelWrapper.updateData(dsObjects);
         subQuantStatLayout.addComponent(sub2quantStatLabelWrapper, 0, 1);
         sub2quantStatLabelWrapper.setDescription("Click to view datasets information");
-        Label sub2quantStatLabel = new Label("<h3 style='text-decoration: underline;cursor: pointer;'>#Datasets</h3>");
-        sub2quantStatLabel.setContentMode(ContentMode.HTML);
+        Label sub2quantStatLabel = new Label("#Datasets");
+         sub2quantStatLabel.setStyleName("link");
+        sub2quantStatLabel.addStyleName(ValoTheme.LABEL_SMALL);
         sub2quantStatLabelWrapper.addComponent(sub2quantStatLabel);
 
-        Label sub2QuantStatValue = new Label("<h4 style='text-align: right;'>" + overviewInfoBean.getNumberOfQuantStudies() + "</h4>");
-        sub2QuantStatValue.setContentMode(ContentMode.HTML);
+        Label sub2QuantStatValue = new Label(overviewInfoBean.getNumberOfQuantStudies() + "");
+        sub2QuantStatValue.addStyleName(ValoTheme.LABEL_SMALL);
         subQuantStatLayout.addComponent(sub2QuantStatValue, 1, 1);
         subQuantStatLayout.setComponentAlignment(sub2QuantStatValue, Alignment.MIDDLE_RIGHT);
 
-        Label sub3quantStatLabel = new Label("<h3>#Proteins</h3>");
-        sub3quantStatLabel.setContentMode(ContentMode.HTML);
+        Label sub3quantStatLabel = new Label("#Proteins");
+        sub3quantStatLabel.addStyleName(ValoTheme.LABEL_SMALL);
         subQuantStatLayout.addComponent(sub3quantStatLabel, 0, 2);
 
-        Label sub3QuantStatValue = new Label("<h4 style='text-align: right;'>" + overviewInfoBean.getNumberOfQuantProteins() + "</h4>");
-        sub3QuantStatValue.setContentMode(ContentMode.HTML);
+        Label sub3QuantStatValue = new Label("" + overviewInfoBean.getNumberOfQuantProteins());
+        sub3QuantStatValue.addStyleName(ValoTheme.LABEL_SMALL);
         subQuantStatLayout.addComponent(sub3QuantStatValue, 1, 2);
         subQuantStatLayout.setComponentAlignment(sub3QuantStatValue, Alignment.MIDDLE_RIGHT);
 
-        Label sub4quantStatLabel = new Label("<h3>#Peptides</h3>");
-        sub4quantStatLabel.setContentMode(ContentMode.HTML);
+        Label sub4quantStatLabel = new Label("#Peptides");
+        sub4quantStatLabel.addStyleName(ValoTheme.LABEL_SMALL);
         subQuantStatLayout.addComponent(sub4quantStatLabel, 0, 3);
 
-        Label sub4QuantStatValue = new Label("<h4 style='text-align: right;'>" + overviewInfoBean.getNumberOfQuantPeptides() + "</h4>");
-        sub4QuantStatValue.setContentMode(ContentMode.HTML);
+        Label sub4QuantStatValue = new Label("" + overviewInfoBean.getNumberOfQuantPeptides());
+        sub4QuantStatValue.addStyleName(ValoTheme.LABEL_SMALL);
         subQuantStatLayout.addComponent(sub4QuantStatValue, 1, 3);
         subQuantStatLayout.setComponentAlignment(sub4QuantStatValue, Alignment.MIDDLE_RIGHT);
 
         subQuantStatLayout.setColumnExpandRatio(0, 2);
         subQuantStatLayout.setColumnExpandRatio(1, 1);
 
-        Label idStatLabel = new Label("<h2>Identification Data</h2>");
-        idStatLabel.setContentMode(ContentMode.HTML);
+        Label idStatLabel = new Label("Identification Data");
+        idStatLabel.setHeight(20,Unit.PIXELS);
+        idStatLabel.addStyleName(ValoTheme.LABEL_BOLD);
+        idStatLabel.addStyleName(ValoTheme.LABEL_H4);
+        idStatLabel.addStyleName("marginleft");
+        idStatLabel.addStyleName("margintop");
+        
         leftPanelWrapper.addComponent(idStatLabel);
 
         GridLayout subIdStatLayout = new GridLayout(2, 4);
-        subIdStatLayout.setWidthUndefined();
+        subIdStatLayout.addStyleName("marginleft");
+        subIdStatLayout.setWidth(100,Unit.PERCENTAGE);
         subIdStatLayout.setSpacing(true);
         leftPanelWrapper.addComponent(subIdStatLayout);
 
-        Label sub2IdStatLabel = new Label("<h3>#Datasets</h3>");
-        sub2IdStatLabel.setContentMode(ContentMode.HTML);
+        Label sub2IdStatLabel = new Label("#Datasets");
+        sub2IdStatLabel.addStyleName(ValoTheme.LABEL_SMALL);
         subIdStatLayout.addComponent(sub2IdStatLabel, 0, 1);
         subIdStatLayout.setColumnExpandRatio(0, 2);
         subIdStatLayout.setColumnExpandRatio(1, 1);
 
-        Label sub2IdStatValue = new Label("<h4 style='text-align: right;'>" + overviewInfoBean.getNumberOfIdStudies() + "</h4>");
-        sub2IdStatValue.setContentMode(ContentMode.HTML);
+        Label sub2IdStatValue = new Label("" + overviewInfoBean.getNumberOfIdStudies());
+        sub2IdStatValue.addStyleName(ValoTheme.LABEL_SMALL);
         subIdStatLayout.addComponent(sub2IdStatValue, 1, 1);
         subIdStatLayout.setComponentAlignment(sub2IdStatValue, Alignment.MIDDLE_RIGHT);
 
-        Label sub3IdStatLabel = new Label("<h3>#Proteins</h3>");
-        sub3IdStatLabel.setContentMode(ContentMode.HTML);
+        Label sub3IdStatLabel = new Label("#Proteins");
+        sub3IdStatLabel.addStyleName(ValoTheme.LABEL_SMALL);
         subIdStatLayout.addComponent(sub3IdStatLabel, 0, 2);
 
-        Label sub3IdStatValue = new Label("<h4 style='text-align: right;'>" + overviewInfoBean.getNumberOfIdProteins() + "</h4>");
-        sub3IdStatValue.setContentMode(ContentMode.HTML);
+        Label sub3IdStatValue = new Label("" + overviewInfoBean.getNumberOfIdProteins());
+        sub3IdStatValue.addStyleName(ValoTheme.LABEL_SMALL);
         subIdStatLayout.addComponent(sub3IdStatValue, 1, 2);
         subIdStatLayout.setComponentAlignment(sub3IdStatValue, Alignment.MIDDLE_RIGHT);
 
-        Label sub4IdStatLabel = new Label("<h3>#Peptides</h3>");
-        sub4IdStatLabel.setContentMode(ContentMode.HTML);
+        Label sub4IdStatLabel = new Label("#Peptides");
+        sub4IdStatLabel.addStyleName(ValoTheme.LABEL_SMALL);
         subIdStatLayout.addComponent(sub4IdStatLabel, 0, 3);
 
-        Label sub4IdStatValue = new Label("<h4 style='text-align: right;'>" + overviewInfoBean.getNumberOfIdPeptides() + "</h4>");
-        sub4IdStatValue.setContentMode(ContentMode.HTML);
+        Label sub4IdStatValue = new Label("" + overviewInfoBean.getNumberOfIdPeptides() );
+        sub4IdStatValue.addStyleName(ValoTheme.LABEL_SMALL);
         subIdStatLayout.addComponent(sub4IdStatValue, 1, 3);
         subIdStatLayout.setComponentAlignment(sub4IdStatValue, Alignment.MIDDLE_RIGHT);
 
@@ -225,7 +241,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         middleLayout.addComponent(middlePanelServicesLayout);
         
 
-        BigBtn quantDatasetBtn = new BigBtn("Quantitative", "Browse quantitative data.", "img/scatter_plot_applied.png") {
+        BigBtn quantDatasetBtn = new BigBtn("Quantification", "Browse quantitative data.", "img/scatter_plot_applied.png") {
 
             @Override
             public void onClick() {
@@ -237,7 +253,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
             @Override
             public void onClick() {
-                Page.getCurrent().open("http://129.177.231.63/csf-pr-v1.0", "_blank");//setLocation("http://129.177.231.63/csf-pr-v1.0");
+                Page.getCurrent().open(VaadinSession.getCurrent().getAttribute("csf_pr_Url").toString(), "_blank");//setLocation("http://129.177.231.63/csf-pr-v1.0");
                 
             }
         };
@@ -281,7 +297,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         this.addComponent(homeBtn);
         homeBtn.setVisible(false);
 
-        Label para_3 = new Label("<p align='justify' Style='font-size: 12px;color: black;/* font-weight: bold; */line-height: 20px;'><font>CSF-PR v2.0 is being developed by the <a Style='color:#141414;' href='http://www.uib.no/rg/probe' target='_blank'>Proteomics Unit</a> at the<a Style='color:#141414;' href='http://www.uib.no/biomedisin/en' target='_blank'> Department of Biomedicine at the University of Bergen</a>, Norway, in close collaboration with <a Style='color:#141414;' href='http://haukeland.no/en/OmOss/Avdelinger/ms/Sider/om-oss.aspx' target='_blank'>The Norwegian Multiple Sclerosis Competence Centre</a>, Haukeland University Hospital, Bergen, Norway.</font><br/><font>See also: <a Style='color:#141414;' href='http://www.mcponline.org/content/13/11/3152.full.pdf+html' target='_blank'>Guldbrandsen et al.: In-depth Characterization of the Cerebrospinal Fluid (CSF) Proteome Displayed Through the CSF Proteome Resource (CSF-PR). Mol Cell Proteomics. 2014.</a></font></p>");
+        Label para_3 = new Label("<p align='justify' Style='font-size: 12px;color: black;/* font-weight: bold; */line-height: 20px;'><font>CSF-PR v2.0 is being developed by the <a class='link' href='http://www.uib.no/rg/probe' target='_blank'>Proteomics Unit</a> at the<a class='link' href='http://www.uib.no/biomedisin/en' target='_blank'> Department of Biomedicine at the University of Bergen</a>, Norway, in close collaboration with <a class='link' href='http://haukeland.no/en/OmOss/Avdelinger/ms/Sider/om-oss.aspx' target='_blank'>The Norwegian Multiple Sclerosis Competence Centre</a>, Haukeland University Hospital, Bergen, Norway.</font><br/><font>See also: <a class='link' href='http://www.mcponline.org/content/13/11/3152.full.pdf+html' target='_blank'>Guldbrandsen et al.: In-depth Characterization of the Cerebrospinal Fluid (CSF) Proteome Displayed Through the CSF Proteome Resource (CSF-PR). Mol Cell Proteomics. 2014.</a></font></p>");
         para_3.setContentMode(ContentMode.HTML);
         middleLayout.addComponent(para_3);
         middleLayout.setComponentAlignment(para_3, Alignment.BOTTOM_LEFT);

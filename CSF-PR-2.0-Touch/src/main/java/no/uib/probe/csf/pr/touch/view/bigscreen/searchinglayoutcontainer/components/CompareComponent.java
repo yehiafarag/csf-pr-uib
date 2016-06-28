@@ -5,18 +5,25 @@
  */
 package no.uib.probe.csf.pr.touch.view.bigscreen.searchinglayoutcontainer.components;
 
-import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.ExternalResource;
+import com.vaadin.server.FileDownloader;
+import com.vaadin.server.Page;
+import com.vaadin.server.Resource;
 import com.vaadin.server.Sizeable;
+import com.vaadin.server.StreamResource;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.LegacyWindow;
 import com.vaadin.ui.Link;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import java.awt.Color;
+import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -51,6 +58,7 @@ public abstract class CompareComponent extends BigBtn {
     private final Button loadDataBtn;
     private final ComparisonUnitComponent compareUnit;
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
+    private PieChart proteinsChart;
 
     public CompareComponent(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager) {
         super("Compare", "Compare your quantified with the available data.", "img/compare.png");
@@ -96,16 +104,14 @@ public abstract class CompareComponent extends BigBtn {
         legendContainer.setSpacing(true);
         middleLayout.addComponent(legendContainer);
         middleLayout.setComponentAlignment(legendContainer, Alignment.MIDDLE_RIGHT);
-       
-         TrendLegend legend2 = new TrendLegend("found_notfound");
+
+        TrendLegend legend2 = new TrendLegend("found_notfound");
         legendContainer.addComponent(legend2);
         legendContainer.setComponentAlignment(legend2, Alignment.MIDDLE_RIGHT);
-        
+
         TrendLegend legend = new TrendLegend("diseaselegend");
         legendContainer.addComponent(legend);
         legendContainer.setComponentAlignment(legend, Alignment.MIDDLE_RIGHT);
-
-       
 
         controlBtnsLayout = new HorizontalLayout();
         controlBtnsLayout.addStyleName("roundedborder");
@@ -172,6 +178,8 @@ public abstract class CompareComponent extends BigBtn {
         popupbodyLayout.addComponent(controlBtnsLayout);
         popupbodyLayout.setExpandRatio(controlBtnsLayout, 50);
 
+       
+
     }
 
     private void resetComparison() {
@@ -181,7 +189,7 @@ public abstract class CompareComponent extends BigBtn {
         loadDataBtn.setEnabled(false);
 
     }
-    private PieChart foundChart;
+    private PieChart datasetsChart;
 
     private void loadComparison() {
         Set<String> diseaseCategories = new HashSet<>();
@@ -189,8 +197,8 @@ public abstract class CompareComponent extends BigBtn {
         Set<Integer> datasetIds = new HashSet<>();
         QuantSearchSelection selection = new QuantSearchSelection();
 
-        if (!foundChart.getSelectionSet().isEmpty() && !foundChart.getSelectionSet().contains("all")) {
-            searchQuantificationProtList.stream().filter((protein) -> (foundChart.getSelectionSet().contains(protein.getDiseaseCategory()))).map((protein) -> {
+        if (!datasetsChart.getSelectionSet().isEmpty() && !datasetsChart.getSelectionSet().contains("all")) {
+            searchQuantificationProtList.stream().filter((protein) -> (datasetsChart.getSelectionSet().contains(protein.getDiseaseCategory()))).map((protein) -> {
                 datasetIds.add(protein.getDsKey());
                 return protein;
             }).forEach((protein) -> {
@@ -229,9 +237,10 @@ public abstract class CompareComponent extends BigBtn {
 
         //searching quant data
         String defaultText = query.getSearchKeyWords();
-        defaultText = defaultText.replace(",", "\n").trim();
+        defaultText = defaultText.replace(",", "\n").replace(" ", "").trim();
         filterKeywordSet = new LinkedHashSet<>();
         filterKeywordSet.addAll(Arrays.asList(defaultText.split("\n")));
+
         defaultText = "";
         defaultText = filterKeywordSet.stream().map((str) -> str + "\n").reduce(defaultText, String::concat);
         query.setSearchKeyWords(defaultText);
@@ -242,19 +251,22 @@ public abstract class CompareComponent extends BigBtn {
         String quantNotFound = Data_handler.filterQuantSearchingKeywords(searchQuantificationProtList, query.getSearchKeyWords(), query.getSearchBy());
 
         Integer[] quantHitsList = Data_handler.getQuantComparisonHitsList(searchQuantificationProtList, query.getSearchBy());
-
+        Integer[] proteinsHitsList = Data_handler.getQuantComparisonProteinList(searchQuantificationProtList, query.getSearchBy());;
         if (quantHitsList != null && searchQuantificationProtList != null) {
             Set<Integer> studiesSet;
             studiesSet = new HashSet<>();
             searchQuantificationProtList.stream().forEach((qp) -> {
                 studiesSet.add(qp.getDsKey());
             });
-            initQuantComparisonresults(quantHitsList, quantNotFound.split(", "), filterKeywordSet.size());
-        }
-        if (quantNotFound != null) {
-            for (String s : quantNotFound.split(",")) {
-                filterKeywordSet.remove(s.trim());
+            if (quantNotFound != null) {
+                for (String s : quantNotFound.split(",")) {
+                    filterKeywordSet.remove(s.trim());
+                }
+            } else {
+                quantNotFound = "";
             }
+
+            initQuantComparisonresults(quantHitsList, proteinsHitsList, quantNotFound.split(","), filterKeywordSet.size());
         }
 
         query.setSearchDataType("Identification Data");
@@ -264,7 +276,7 @@ public abstract class CompareComponent extends BigBtn {
         if (idSearchIdentificationProtList != null) {
             idDataResult.setVisible(true);
             idDataResult.removeAllComponents();
-            Link idSearchingLink = new Link(idSearchIdentificationProtList, new ExternalResource("http://localhost:8084/CSF-PR-ID/searchby:" + query.getSearchBy().replace(" ", "*") + "___searchkey:" + query.getSearchKeyWords().replace("\n", "__").replace(" ", "*")));
+            Link idSearchingLink = new Link(idSearchIdentificationProtList, new ExternalResource(VaadinSession.getCurrent().getAttribute("csf_pr_Url") + "/searchby:" + query.getSearchBy().replace(" ", "*") + "___searchkey:" + query.getSearchKeyWords().replace("\n", "__").replace(" ", "*")));
             idSearchingLink.setTargetName("_blank");
             idSearchingLink.setStyleName(ValoTheme.LINK_SMALL);
             idSearchingLink.setDescription("View protein id results in CSF-PR v1.0");
@@ -287,7 +299,7 @@ public abstract class CompareComponent extends BigBtn {
      * @param keywords the keywords used for the searching
      *
      */
-    private void initQuantComparisonresults(Integer[] quantHitsList, String[] notFoundAcc, int found) {
+    private void initQuantComparisonresults(Integer[] quantHitsList, Integer[] proteinsHitsList, String[] notFoundAcc, int found) {
 
         quantCompareDataResult.removeAllComponents();
         if (quantHitsList == null || quantHitsList.length == 0) {
@@ -299,25 +311,57 @@ public abstract class CompareComponent extends BigBtn {
         loadDataBtn.setEnabled(true);
         quantCompareDataResult.setVisible(true);
 
-        PieChart notFoundChart = new PieChart(250, 200, "Proteins", false);
-        notFoundChart.initializeFilterData(new String[]{"Not Found", "Found"}, new Integer[]{notFoundAcc.length, found, found + notFoundAcc.length}, new Color[]{new Color(110, 177, 206), new Color(219, 169, 1)});
+        PieChart notFoundChart = new PieChart(250, 200, "Found / Not Found", true) {
+
+            @Override
+            public void sliceClicked(Comparable sliceKey) {
+                resetChart();
+                if (sliceKey.toString().equalsIgnoreCase("Not Found")) {
+                    StreamResource proteinInformationResource = createProteinsExportResource(new HashSet<>(Arrays.asList(notFoundAcc)));
+                    Page.getCurrent().open(proteinInformationResource, "_blank", false);
+
+                } else  if (sliceKey.toString().equalsIgnoreCase("Found")){
+                    StreamResource proteinInformationResource = createProteinsExportResource(filterKeywordSet);
+                    Page.getCurrent().open(proteinInformationResource, "_blank", false);
+
+                }
+
+            }
+
+        };
+        notFoundChart.setDescription("Click slice to export");
+        notFoundChart.initializeFilterData(new String[]{"Not Found", "Found"}, new Integer[]{notFoundAcc.length, found, found + notFoundAcc.length}, new Color[]{new Color(219, 169, 1), new Color(110, 177, 206),});
         notFoundChart.redrawChart();
-        notFoundChart.removeStyleName("pointer");
         quantCompareDataResult.addComponent(notFoundChart);
         quantCompareDataResult.setComponentAlignment(notFoundChart, Alignment.MIDDLE_CENTER);
 
-        foundChart = new PieChart(250, 200, "Datasets ", true);
-        foundChart.initializeFilterData(items, quantHitsList, itemsColors);
-        foundChart.redrawChart();
-        quantCompareDataResult.addComponent(foundChart);
-        quantCompareDataResult.setComponentAlignment(foundChart, Alignment.MIDDLE_CENTER);
+        proteinsChart = new PieChart(250, 200, "Proteins", true) {
 
-        notFoundChart.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
-            for (String str : notFoundAcc) {
-                System.out.println("at str " + str);
-
+            @Override
+            public void sliceClicked(Comparable sliceKey) {
+                datasetsChart.selectSlice(sliceKey);
             }
-        });
+
+        };
+        proteinsChart.initializeFilterData(items, proteinsHitsList, itemsColors);
+        proteinsChart.redrawChart();
+        quantCompareDataResult.addComponent(proteinsChart);
+        quantCompareDataResult.setComponentAlignment(proteinsChart, Alignment.MIDDLE_CENTER);
+
+        datasetsChart = new PieChart(250, 200, "Datasets ", true) {
+
+            @Override
+            public void sliceClicked(Comparable sliceKey) {
+                proteinsChart.selectSlice(sliceKey);
+                
+                
+            }
+
+        };
+        datasetsChart.initializeFilterData(items, quantHitsList, itemsColors);
+        datasetsChart.redrawChart();
+        quantCompareDataResult.addComponent(datasetsChart);
+        quantCompareDataResult.setComponentAlignment(datasetsChart, Alignment.MIDDLE_CENTER);
 
         resultsLabel.setValue("Results Overview (" + quantHitsList[3] + "/" + (quantHitsList[3] + notFoundAcc.length) + ")");
 
@@ -330,5 +374,12 @@ public abstract class CompareComponent extends BigBtn {
     }
 
     public abstract void loadQuantComparison();
+
+    private StreamResource createProteinsExportResource(Set<String> accessions) {
+        return new StreamResource(() -> {
+            byte[] csvFile = Data_handler.exportProteinsListToCSV(accessions);
+            return new ByteArrayInputStream(csvFile);
+        }, "Proteins_List.csv");
+    }
 
 }

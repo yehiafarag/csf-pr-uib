@@ -34,9 +34,11 @@ import no.uib.probe.csf.pr.touch.view.smallscreen.OverviewInfoBean;
 public class CoreLogic implements Serializable {
 
     private final DataBaseLayer database;
+    private final Exporter exporter;
 
     public CoreLogic(String url, String dbName, String driver, String userName, String password, String filesURL) {
         database = new DataBaseLayer(url, dbName, driver, userName, password);
+        this.exporter=new Exporter();
 
     }
 
@@ -604,6 +606,43 @@ public class CoreLogic implements Serializable {
 
     }
     
+     
+     /**
+     * this function to get the quant comparison hits list from the searching results and
+     * group the common proteins in separated lists
+     *
+     * @param quantProteinsList list of found proteins
+     * @param searchBy searching method (accession,proteins name, or peptide
+     * sequence )
+     * @return list of quant hits results
+     */
+    public Integer[] getQuantComparisonProteinList(List<QuantProtein> quantProteinsList, String searchBy) {
+       
+        Set<String> msD = new HashSet<>();
+         Set<String> alD = new HashSet<>();
+          Set<String> parD = new HashSet<>();
+
+        if (quantProteinsList == null || quantProteinsList.isEmpty()) {
+
+            return new Integer[]{};
+        }
+        quantProteinsList.stream().map((quantProt) -> {           
+            if (quantProt.getDiseaseCategory().equalsIgnoreCase("Alzheimer's")) {
+                alD.add(quantProt.getUniprotAccession());
+            } else if (quantProt.getDiseaseCategory().equalsIgnoreCase("Multiple Sclerosis")) {
+                msD.add(quantProt.getUniprotAccession());
+            } else if (quantProt.getDiseaseCategory().equalsIgnoreCase("Parkinson's")) {
+                parD.add(quantProt.getUniprotAccession());
+            }
+            return quantProt;
+        }).forEach((_item) -> {
+        });
+         Integer[] quantHitsList = new Integer[]{alD.size(),msD.size(),parD.size(), alD.size()+msD.size()+parD.size()};
+        
+        
+        return quantHitsList;
+
+    }
     
     
     
@@ -706,6 +745,12 @@ public class CoreLogic implements Serializable {
             return revIdHitsList;
         }
         return idHitsList;
+
+    }
+    
+    
+     public byte[] exportProteinsListToCSV(Set<String> proteinsList) {
+        return exporter.expotProteinAccessionListToCSV(proteinsList);
 
     }
 

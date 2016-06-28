@@ -116,7 +116,7 @@ public class TrendLegend extends GridLayout {
 
         }else if(type.equalsIgnoreCase("found_notfound")){
          final String[] labels = new String[]{"Found", "Not Found"};
-            String[] styleName = new String[]{"legendfoundstyle", "legendnotfoundstyle"};
+            String[] styleName = new String[]{"legendnotfoundstyle","legendfoundstyle"};
             this.setSpacing(true);
             this.setRows(1);
             this.setColumns(2);

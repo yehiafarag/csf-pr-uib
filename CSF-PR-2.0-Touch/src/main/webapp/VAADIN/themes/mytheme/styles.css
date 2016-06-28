@@ -11562,7 +11562,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .v-label-bold {
-    font-weight: 500;
+    font-weight: bold;
 }
 
 .mytheme .v-label-light {
@@ -14983,4 +14983,18 @@ div.v-layout.v-horizontal.v-widget {
     border-radius:2px;
     color: white !important;
     line-height:100%;
+}
+.link{
+    color:#4d749f !important;
+    -webkit-transition: all 0s ease-in-out !important;
+    -moz-transition: all 0s ease-in-out !important;
+    -o-transition: all 0s ease-in-out !important;
+    transition: all 0s ease-in-out !important;
+    text-decoration:none !important;
+    cursor:pointer;
+}
+.link:hover{
+
+    text-decoration:underline;
+    font-weight:bold;
 }

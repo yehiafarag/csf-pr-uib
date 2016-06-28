@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.Data_Handler;
 import no.uib.probe.csf.pr.touch.database.Query;
-import no.uib.probe.csf.pr.touch.logic.beans.DiseaseGroupComparison;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
@@ -137,28 +136,24 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
             diseaseGroupsListB.addItem(str);
         }
 
-        Property.ValueChangeListener diseaseGroupsListListener = new Property.ValueChangeListener() {
-
-            @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                String value = "Selection:   ";
-                if (diseaseGroupsListA.getValue() != null) {
-                    diseaseGroupsListA.setRequired(false);
-                    value += diseaseGroupsListA.getValue().toString();
-                    sorterRows = diseaseGroupNames.contains(diseaseGroupsListA.getValue().toString().trim());
-                }
-
-                if (diseaseGroupsListB.getValue() != null) {
-                    diseaseGroupsListB.setRequired(false);
-                    value += " / " + diseaseGroupsListB.getValue().toString();
-                    sortColumns = diseaseGroupNames.contains(diseaseGroupsListB.getValue().toString().trim());
+        Property.ValueChangeListener diseaseGroupsListListener = (Property.ValueChangeEvent event) -> {
+            String value = "Selection:   ";
+            if (diseaseGroupsListA.getValue() != null) {
+                diseaseGroupsListA.setRequired(false);
+                value += diseaseGroupsListA.getValue().toString();
+                sorterRows = diseaseGroupNames.contains(diseaseGroupsListA.getValue().toString().trim());
+            }
+            
+            if (diseaseGroupsListB.getValue() != null) {
+                diseaseGroupsListB.setRequired(false);
+                value += " / " + diseaseGroupsListB.getValue().toString();
+                sortColumns = diseaseGroupNames.contains(diseaseGroupsListB.getValue().toString().trim());
 //                    reset();
-                }
-                selectionResultsLabel.setValue(value);
-                if ((diseaseGroupsListA.getValue() != null) && (diseaseGroupsListB.getValue() != null)) {
-                    if (diseaseGroupsListA.getValue().toString().trim().equalsIgnoreCase(diseaseGroupsListB.getValue().toString().trim())) {
-                        sorterRows = sortColumns = false;
-                    }
+            }
+            selectionResultsLabel.setValue(value);
+            if ((diseaseGroupsListA.getValue() != null) && (diseaseGroupsListB.getValue() != null)) {
+                if (diseaseGroupsListA.getValue().toString().trim().equalsIgnoreCase(diseaseGroupsListB.getValue().toString().trim())) {
+                    sorterRows = sortColumns = false;
                 }
             }
         };
@@ -367,7 +362,7 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
         proteinsByTrendMap.put(4, highProtSet);
         proteinsByTrendMap.put(5, new HashSet<>());
         userCustomizedComparison.setProteinsByTrendMap(proteinsByTrendMap);
-        userCustomizedComparison.setQuantComparisonProteinMap(comparProtList);;
+        userCustomizedComparison.setQuantComparisonProteinMap(comparProtList);
         userCustomizedComparison.setOreginalComparisonHeader(userCompHeader);
         userCustomizedComparison.setDiseaseCategoryColor("#8210B0");
         userCustomizedComparison.setDiseaseCategoryStyle("user");

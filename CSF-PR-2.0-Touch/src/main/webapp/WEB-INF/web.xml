@@ -21,6 +21,11 @@
         <param-name>adminEmail</param-name>
         <param-value>csf-pr@googlegroups.com</param-value>
     </context-param>
+     <context-param>
+        <description>csf-pr address </description>
+        <param-name>csf-pr-id</param-name>
+        <param-value>http://129.177.231.63/csf-pr-v1.0/</param-value>
+    </context-param>
 
     <context-param>
         <description>Admin Password</description>
@@ -34,9 +39,9 @@
         <param-value>jdbc:mysql://localhost:3306/</param-value>
     </context-param>
     <context-param>
-        <description>Database name csf_db_v2_1  dbtest, quantdataupdated_10_9</description>
+        <description>Database name csf_db_v2_1  dbtest, quantdataupdated_10_9,all_no_MCP</description>
         <param-name>dbName</param-name>
-        <param-value>all_no_MCP</param-value>
+        <param-value>csf_pr_v2_28_06</param-value>
     </context-param>
     <context-param>
         <description>Database Driver</description>

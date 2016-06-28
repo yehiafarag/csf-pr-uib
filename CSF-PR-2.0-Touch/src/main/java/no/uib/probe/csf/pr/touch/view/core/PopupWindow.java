@@ -10,6 +10,7 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.window.WindowMode;
 import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -24,7 +25,7 @@ public class PopupWindow extends Window {
 
     private boolean lazyLoading=false;
     private final VerticalLayout mainFrame;
-    public PopupWindow(AbstractOrderedLayout layout,String title) {
+    public PopupWindow(Layout layout,String title) {
 
         int height = Page.getCurrent().getBrowserWindowHeight() - 100;
         int width = Page.getCurrent().getBrowserWindowWidth() - 100;
@@ -35,7 +36,7 @@ public class PopupWindow extends Window {
         mainFrame.addStyleName("mainviewport");
         
         mainFrame.addComponent(layout);
-        mainFrame.setComponentAlignment(layout, Alignment.TOP_CENTER);
+        mainFrame.setComponentAlignment(layout, Alignment.MIDDLE_CENTER);
         
         setWindowMode(WindowMode.NORMAL);
         setWidth((width),Unit.PIXELS);

@@ -3,8 +3,12 @@ package no.uib.probe.csf.pr.touch.view.components.datasetfilters;
 import com.itextpdf.text.pdf.codec.Base64;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.ExternalResource;
+import com.vaadin.ui.AbsoluteLayout;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Image;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -37,7 +41,7 @@ import org.jfree.data.general.PieDataset;
  *
  * this class represents a dataset interactive filter
  */
-public abstract class DatasetPieChartFilter extends VerticalLayout implements LayoutEvents.LayoutClickListener {
+public abstract class DatasetPieChartFilter extends AbsoluteLayout implements LayoutEvents.LayoutClickListener {
 
     public JFreeChart getChart() {
         return chart;
@@ -45,6 +49,7 @@ public abstract class DatasetPieChartFilter extends VerticalLayout implements La
 
     private final Color selectedColor = new Color(59, 90, 122);
     private final Map<Comparable, Color> defaultKeyColorMap = new HashMap<>();
+    private final Map<Comparable, Color> selectedKeyColorMap = new HashMap<>();
     private final Map<Comparable, String> valuesMap = new HashMap<>();
     private final String filter_Id;
     private final int width;
@@ -59,6 +64,9 @@ public abstract class DatasetPieChartFilter extends VerticalLayout implements La
     private JFreeChart chart;
     private final ChartRenderingInfo chartRenderingInfo = new ChartRenderingInfo();
     private final Image chartBackgroundImg;
+    private final VerticalLayout middleDountLayout;
+
+    private final Label selectAllLabel;
 
     /**
      *
@@ -79,7 +87,19 @@ public abstract class DatasetPieChartFilter extends VerticalLayout implements La
         this.addStyleName("pointer");
         chartBackgroundImg.setWidth(100, Unit.PERCENTAGE);
         chartBackgroundImg.setHeight(100, Unit.PERCENTAGE);
-        this.addComponent(chartBackgroundImg);
+        this.addComponent(chartBackgroundImg, "left: 0px; top: 0px");
+        middleDountLayout = new VerticalLayout();
+        middleDountLayout.setWidth(120, Unit.PIXELS);
+        middleDountLayout.setHeight(120, Unit.PIXELS);
+        middleDountLayout.setStyleName("middledountchart");
+
+        selectAllLabel = new Label();
+        selectAllLabel.setWidth(30, Unit.PIXELS);
+        selectAllLabel.setStyleName(ValoTheme.LABEL_TINY);
+        selectAllLabel.addStyleName(ValoTheme.LABEL_SMALL);
+        middleDountLayout.addComponent(selectAllLabel);
+        middleDountLayout.setComponentAlignment(selectAllLabel, Alignment.MIDDLE_CENTER);
+
         this.initPieChart(filterTitle);
         this.redrawChart();
         this.inuseDsIndexesMap = new LinkedHashMap<>();
@@ -93,7 +113,7 @@ public abstract class DatasetPieChartFilter extends VerticalLayout implements La
         plot.setNoDataMessage("No data available");
         plot.setCircular(true);
         plot.setLabelGap(0);
-        plot.setLabelFont(new Font("Open Sans", Font.BOLD, 15));
+        plot.setLabelFont(new Font("Open Sans", Font.BOLD, 13));
         plot.setLabelGenerator(new PieSectionLabelGenerator() {
 
             @Override
@@ -106,11 +126,12 @@ public abstract class DatasetPieChartFilter extends VerticalLayout implements La
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         });
-        plot.setSimpleLabels(true);
+        plot.setSimpleLabels(false);
         plot.setLabelBackgroundPaint(null);
         plot.setLabelShadowPaint(null);
-        plot.setLabelPaint(Color.WHITE);
+        plot.setLabelPaint(Color.GRAY);
         plot.setLabelOutlinePaint(null);
+
         plot.setBackgroundPaint(Color.WHITE);
         plot.setInteriorGap(0);
         plot.setShadowPaint(Color.WHITE);
@@ -130,11 +151,11 @@ public abstract class DatasetPieChartFilter extends VerticalLayout implements La
 
     }
 
-    private String saveToFile(final JFreeChart chart,  double width,  double height) {
+    private String saveToFile(final JFreeChart chart, double width, double height) {
         byte imageData[];
         try {
-            width=Math.max(width, 250);
-            height=Math.max(height, 250);
+            width = Math.max(width, 250);
+            height = Math.max(height, 250);
 
             imageData = ChartUtilities.encodeAsPNG(chart.createBufferedImage((int) width, (int) height, chartRenderingInfo));
             String base64 = Base64.encodeBytes(imageData);
@@ -155,6 +176,9 @@ public abstract class DatasetPieChartFilter extends VerticalLayout implements La
         this.chartData.clear();
         this.chartData.putAll(chartData);
         fullDsIds.clear();
+        int coundDs = 0;
+        coundDs = chartData.values().stream().map((slice) -> slice.getDatasetIds().size()).reduce(coundDs, Integer::sum);
+        this.selectAllLabel.setValue(coundDs + "");
         reset();
     }
 
@@ -172,10 +196,17 @@ public abstract class DatasetPieChartFilter extends VerticalLayout implements La
     private void redrawChart() {
         String imgUrl = saveToFile(chart, width, height);
         this.chartBackgroundImg.setSource(new ExternalResource(imgUrl));
+        this.removeComponent(middleDountLayout);
+        this.addComponent(middleDountLayout, "left: " + ((chartRenderingInfo.getPlotInfo().getDataArea().getCenterX()) - 60) + "px; top: " + (chartRenderingInfo.getPlotInfo().getDataArea().getCenterY() - 60) + "px");
+
     }
 
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+        if (event.getClickedComponent() instanceof VerticalLayout || event.getClickedComponent() instanceof Label) {
+            return;
+        }
+
         ChartEntity entity = chartRenderingInfo.getEntityCollection().getEntity(event.getRelativeX(), event.getRelativeY());
 
         if (entity != null && entity instanceof PieSectionEntity) {
@@ -187,13 +218,15 @@ public abstract class DatasetPieChartFilter extends VerticalLayout implements La
 
     private void selectSlice(Comparable sliceKey) {
 
-        if (plot.getExplodePercent(sliceKey) == 0.1) {
-            plot.setExplodePercent(sliceKey, 0);
+        if (plot.getSectionOutlinePaint(sliceKey) == selectedColor) {
+//            plot.setExplodePercent(sliceKey, 0);
+            plot.setSectionOutlinePaint(sliceKey, null);
             plot.setSectionPaint(sliceKey, defaultKeyColorMap.get(sliceKey));
             selectedDsIds.removeAll(chartData.get(sliceKey).getDatasetIds());
         } else {
-            plot.setExplodePercent(sliceKey, 0.1);
-            plot.setSectionPaint(sliceKey, selectedColor);
+//            plot.setExplodePercent(sliceKey, 0.1);
+            plot.setSectionOutlinePaint(sliceKey, selectedColor);
+            plot.setSectionPaint(sliceKey, selectedKeyColorMap.get(sliceKey));
             selectedDsIds.addAll(chartData.get(sliceKey).getDatasetIds());
 
         }
@@ -214,6 +247,7 @@ public abstract class DatasetPieChartFilter extends VerticalLayout implements La
             datasetId.addAll(fullDsIds);
 
         }
+        this.selectAllLabel.setValue(datasetId.size() + "");
         valuesMap.clear();
         DefaultPieDataset dataset = (DefaultPieDataset) plot.getDataset();
         dataset.clear();
@@ -242,17 +276,19 @@ public abstract class DatasetPieChartFilter extends VerticalLayout implements La
         }
         return selectedDsIds;
     }
-    
 
     public void reset() {
         DefaultPieDataset dataset = (DefaultPieDataset) plot.getDataset();
         dataset.clear();
         defaultKeyColorMap.clear();
+        selectedKeyColorMap.clear();
         valuesMap.clear();
         inuseDsIndexesMap.clear();
         selectedDsIds.clear();
+
         Map<Comparable, PieChartSlice> tchartData = new LinkedHashMap<>();
         int counter = 0;
+        int coundDs = 0;
         for (PieChartSlice slice : chartData.values()) {
             if (slice.getLabel().toString().trim().equals("")) {
                 slice.setLabel("Not Available");
@@ -264,12 +300,17 @@ public abstract class DatasetPieChartFilter extends VerticalLayout implements La
             dataset.setValue(slice.getLabel(), slice.getValue());
             fullDsIds.addAll(slice.getDatasetIds());
             plot.setSectionPaint(slice.getLabel(), slice.getColor());
+             plot.setSectionOutlinePaint(slice.getLabel(), null);
             valuesMap.put(slice.getLabel(), slice.getValue() + "");
             defaultKeyColorMap.put(slice.getLabel(), slice.getColor());
+            selectedKeyColorMap.put(slice.getLabel(), slice.getColor().darker());
+            coundDs += slice.getDatasetIds().size();
             inuseDsIndexesMap.put(slice.getLabel(), new ArrayList<>(slice.getDatasetIds()));
             tchartData.put(slice.getLabel(), slice);
             plot.setExplodePercent(slice.getLabel(), 0);
+
         }
+        this.selectAllLabel.setValue(coundDs + "");
         this.chartData.clear();
         this.chartData.putAll(tchartData);
         redrawChart();
