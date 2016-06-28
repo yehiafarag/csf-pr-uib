@@ -47,7 +47,7 @@ public abstract class DatasetPieChartFilter extends AbsoluteLayout implements La
         return chart;
     }
 
-    private final Color selectedColor = new Color(59, 90, 122);
+    private final Color selectedColor = Color.decode("#197de1");
     private final Map<Comparable, Color> defaultKeyColorMap = new HashMap<>();
     private final Map<Comparable, Color> selectedKeyColorMap = new HashMap<>();
     private final Map<Comparable, String> valuesMap = new HashMap<>();
