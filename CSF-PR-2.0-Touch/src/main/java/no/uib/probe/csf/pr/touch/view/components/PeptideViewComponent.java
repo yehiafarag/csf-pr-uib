@@ -86,6 +86,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         topLayout.setWidth(width, Unit.PIXELS);
         topLayout.setHeight(componentHeight, Unit.PIXELS);
         topLayout.addStyleName("roundedborder");
+        topLayout.addStyleName("padding20");
         topLayout.addStyleName("whitelayout");
 
         mainBodyContainer.addComponent(topLayout);
@@ -111,6 +112,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         bottomLayout.setWidth(width, Unit.PIXELS);
         bottomLayout.setHeight(componentHeight, Unit.PIXELS);
         bottomLayout.addStyleName("roundedborder");
+        bottomLayout.addStyleName("padding20");
         bottomLayout.addStyleName("whitelayout");
 
         mainBodyContainer.addComponent(bottomLayout);

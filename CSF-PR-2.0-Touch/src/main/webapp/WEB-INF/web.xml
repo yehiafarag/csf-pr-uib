@@ -39,9 +39,9 @@
         <param-value>jdbc:mysql://localhost:3306/</param-value>
     </context-param>
     <context-param>
-        <description>Database name csf_db_v2_1  dbtest, quantdataupdated_10_9,all_no_MCP</description>
+        <description>Database name csf_db_v2 ,all_no_MCP,csf_pr_v2_28_06</description>
         <param-name>dbName</param-name>
-        <param-value>csf_pr_v2_28_06</param-value>
+        <param-value>all_no_MCP</param-value>
     </context-param>
     <context-param>
         <description>Database Driver</description>

@@ -12,6 +12,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
@@ -90,6 +91,9 @@ public class DataBaseLayer implements Serializable {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
+
+
+            
             String selectIdPublicationStudies = "SELECT COUNT(*) AS `Rows`, `pblication_link` FROM `experiments_table` GROUP BY `pblication_link` ORDER BY `pblication_link`";
             PreparedStatement selectIdPublicationStudiesStat = conn.prepareStatement(selectIdPublicationStudies);
 
@@ -1007,7 +1011,6 @@ public class DataBaseLayer implements Serializable {
             ResultSet rs = selectProStat.executeQuery();
             List<QuantProtein> quantProtResultList = fillQuantProtData(rs);
             System.gc();
-            
 
             Set<Integer> quantDatasetIds = new HashSet<>();
             quantProtResultList.stream().forEach((quantProt) -> {
@@ -1036,10 +1039,7 @@ public class DataBaseLayer implements Serializable {
             rs.close();
 
             List<QuantProtein> updatedQuantProtResultList = new ArrayList<>();
-            
-            
-            
-            
+
             quantProtResultList.stream().filter((quantProt) -> (datasetIdDesGrs.containsKey(quantProt.getDsKey()))).map((quantProt) -> {
                 Object[] grNumArr = datasetIdDesGrs.get(quantProt.getDsKey());
                 quantProt.setPatientsGroupINumber((Integer) grNumArr[0]);
@@ -1052,7 +1052,7 @@ public class DataBaseLayer implements Serializable {
                 quantProt.setPumedID((String) grNumArr[6]);
                 return quantProt;
             }).forEach((quantProt) -> {
-                if (query.getDiseaseCategorys()==null || query.getDiseaseCategorys().isEmpty() || query.getDiseaseCategorys().contains(quantProt.getDiseaseCategory())) {
+                if (query.getDiseaseCategorys() == null || query.getDiseaseCategorys().isEmpty() || query.getDiseaseCategorys().contains(quantProt.getDiseaseCategory())) {
                     updatedQuantProtResultList.add(quantProt);
                 }
             });

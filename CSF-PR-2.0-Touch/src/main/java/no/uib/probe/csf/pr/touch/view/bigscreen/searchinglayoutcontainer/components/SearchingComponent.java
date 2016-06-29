@@ -1,6 +1,9 @@
 package no.uib.probe.csf.pr.touch.view.bigscreen.searchinglayoutcontainer.components;
 
 import com.vaadin.server.ExternalResource;
+import com.vaadin.server.Page;
+import com.vaadin.server.Sizeable;
+import com.vaadin.server.StreamResource;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
@@ -13,6 +16,7 @@ import com.vaadin.ui.Link;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import java.awt.Color;
+import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,6 +31,7 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantProtein;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
 import no.uib.probe.csf.pr.touch.selectionmanager.QuantSearchSelection;
 import no.uib.probe.csf.pr.touch.view.core.BigBtn;
+import no.uib.probe.csf.pr.touch.view.core.InformationButton;
 import no.uib.probe.csf.pr.touch.view.core.PieChart;
 import no.uib.probe.csf.pr.touch.view.core.PopupWindow;
 import no.uib.probe.csf.pr.touch.view.core.ProteinSearcingResultLabel;
@@ -43,7 +48,7 @@ public abstract class SearchingComponent extends BigBtn {
     private final PopupWindow searchingPanel;
     private List<QuantProtein> searchQuantificationProtList;
     private final GridLayout quantDataResult;
-    private final VerticalLayout idDataResult;
+    private final VerticalLayout idDataResult, overviewResults;
     private final Label noresultsLabel;
     private final Data_Handler Data_handler;
     private final String noresultMessage = "No results found";
@@ -52,6 +57,8 @@ public abstract class SearchingComponent extends BigBtn {
     private final Button loadDataBtn;
     private final SearchingUnitComponent searchingUnit;
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
+    private final VerticalLayout resultsLayout ;
+    private final    HorizontalLayout quantResultWrapping;
 
     public SearchingComponent(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager) {
         super("Search", "Search quantitative proteins.", "img/search.png");
@@ -67,15 +74,21 @@ public abstract class SearchingComponent extends BigBtn {
         searchingUnit = new SearchingUnitComponent() {
 
             @Override
+            public void resetSearching() {
+                SearchingComponent.this.resetSearch();
+            }
+
+            @Override
             public void search(Query query) {
                 searchProteins(query);
             }
 
         };
 
-        VerticalLayout resultsLayout = new VerticalLayout();
+         resultsLayout = new VerticalLayout();
         resultsLayout.addStyleName("roundedborder");
         resultsLayout.addStyleName("whitelayout");
+        resultsLayout.addStyleName("padding20");
 
         resultsLayout.setWidth(100, Unit.PERCENTAGE);
 //        Panel searchingResults = new Panel(resultsLayout);
@@ -83,10 +96,23 @@ public abstract class SearchingComponent extends BigBtn {
 //        searchingResults.setWidth(100, Unit.PERCENTAGE);
         resultsLayout.setHeight(524, Unit.PIXELS);
         resultsLayout.addStyleName("scrollable");
+        
+        quantResultWrapping = new HorizontalLayout();
+        quantResultWrapping.setWidthUndefined();
+        quantResultWrapping.setSpacing(true);
+
+        resultsLayout.addComponent(quantResultWrapping);
+        
+        
+        overviewResults = new VerticalLayout();
+        
+        quantResultWrapping.addComponent(overviewResults);
+        quantResultWrapping.setComponentAlignment(overviewResults, Alignment.TOP_LEFT);
+
         quantDataResult = new GridLayout();
 
-        resultsLayout.addComponent(quantDataResult);
-        resultsLayout.setComponentAlignment(quantDataResult, Alignment.MIDDLE_CENTER);
+        quantResultWrapping.addComponent(quantDataResult);
+        quantResultWrapping.setComponentAlignment(quantDataResult, Alignment.MIDDLE_CENTER);
 
         noresultsLabel = new Label(noresultMessage);
         noresultsLabel.setStyleName(ValoTheme.LABEL_BOLD);
@@ -94,51 +120,68 @@ public abstract class SearchingComponent extends BigBtn {
         resultsLayout.addComponent(noresultsLabel);
         resultsLayout.setComponentAlignment(noresultsLabel, Alignment.MIDDLE_CENTER);
 
-        HorizontalLayout middleLayout = new HorizontalLayout();
-
-        middleLayout.setHeight(29, Unit.PIXELS);
-        middleLayout.setWidth(100, Unit.PERCENTAGE);
+         HorizontalLayout middleLayout = new HorizontalLayout();
+        middleLayout.setHeight(29, Sizeable.Unit.PIXELS);
+        middleLayout.setWidth(100, Sizeable.Unit.PERCENTAGE);
         resultsLabel = new Label("Search Results");
         resultsLabel.setStyleName(ValoTheme.LABEL_BOLD);
+        resultsLabel.addStyleName("marginleft");
         middleLayout.addComponent(resultsLabel);
         middleLayout.setComponentAlignment(resultsLabel, Alignment.MIDDLE_LEFT);
 
+        HorizontalLayout legendContainer = new HorizontalLayout();
+        legendContainer.setSpacing(true);
+        
+        middleLayout.addComponent(legendContainer);
+        middleLayout.setComponentAlignment(legendContainer, Alignment.TOP_RIGHT);
+
+        TrendLegend legend2 = new TrendLegend("found_notfound");
+        legendContainer.addComponent(legend2);
+        legendContainer.setComponentAlignment(legend2, Alignment.MIDDLE_RIGHT);
+        legend2.addStyleName("marginright");
+
         TrendLegend legend = new TrendLegend("diseaselegend");
-        middleLayout.addComponent(legend);
-        middleLayout.setComponentAlignment(legend, Alignment.MIDDLE_RIGHT);
+        legendContainer.addComponent(legend);
+        legendContainer.setComponentAlignment(legend, Alignment.MIDDLE_RIGHT);
+        legend.addStyleName("marginright");
 
         controlBtnsLayout = new HorizontalLayout();
         controlBtnsLayout.addStyleName("roundedborder");
+        controlBtnsLayout.addStyleName("padding10");
         controlBtnsLayout.addStyleName("whitelayout");
         controlBtnsLayout.setMargin(new MarginInfo(true, false, false, false));
         controlBtnsLayout.setWidth(100, Unit.PERCENTAGE);
-        idDataResult = new VerticalLayout();
-        controlBtnsLayout.addComponent(idDataResult);
 
         HorizontalLayout btnsWrapper = new HorizontalLayout();
         controlBtnsLayout.addComponent(btnsWrapper);
-        controlBtnsLayout.setComponentAlignment(btnsWrapper, Alignment.TOP_RIGHT);
+        controlBtnsLayout.setComponentAlignment(btnsWrapper, Alignment.TOP_LEFT);
         btnsWrapper.setSpacing(true);
 
-        Button resetBtn = new Button("Reset");
-        resetBtn.setStyleName(ValoTheme.BUTTON_SMALL);
-        resetBtn.setStyleName(ValoTheme.BUTTON_TINY);
-        resetBtn.setWidth(60, Unit.PIXELS);
-        resetBtn.setEnabled(true);
-        btnsWrapper.addComponent(resetBtn);
-        btnsWrapper.setComponentAlignment(resetBtn, Alignment.MIDDLE_CENTER);
-        resetBtn.setDescription("Reset searching");
-        resetBtn.addClickListener((Button.ClickEvent event) -> {
-            resetSearch();
-        });
+        InformationButton info = new InformationButton("info", true);
+        btnsWrapper.addComponent(info);
 
+        idDataResult = new VerticalLayout();
+        idDataResult.addStyleName("marginleft");
+        btnsWrapper.addComponent(idDataResult);
+
+//        Button resetBtn = new Button("Reset");
+//        resetBtn.setStyleName(ValoTheme.BUTTON_SMALL);
+//        resetBtn.setStyleName(ValoTheme.BUTTON_TINY);
+//        resetBtn.setWidth(60, Unit.PIXELS);
+//        resetBtn.setEnabled(true);
+//        btnsWrapper.addComponent(resetBtn);
+//        btnsWrapper.setComponentAlignment(resetBtn, Alignment.MIDDLE_CENTER);
+//        resetBtn.setDescription("Reset searching");
+//        resetBtn.addClickListener((Button.ClickEvent event) -> {
+//            resetSearch();
+//        });
         loadDataBtn = new Button("Load");
         loadDataBtn.setStyleName(ValoTheme.BUTTON_SMALL);
         loadDataBtn.setStyleName(ValoTheme.BUTTON_TINY);
         loadDataBtn.setWidth(60, Unit.PIXELS);
         loadDataBtn.setEnabled(false);
-        btnsWrapper.addComponent(loadDataBtn);
-        btnsWrapper.setComponentAlignment(loadDataBtn, Alignment.MIDDLE_CENTER);
+        controlBtnsLayout.addComponent(loadDataBtn);
+        controlBtnsLayout.setComponentAlignment(loadDataBtn, Alignment.MIDDLE_RIGHT);
         loadDataBtn.setDescription("Load data");
         loadDataBtn.addClickListener((Button.ClickEvent event) -> {
             loadSearching();
@@ -153,14 +196,18 @@ public abstract class SearchingComponent extends BigBtn {
         popupbodyLayout.setExpandRatio(resultsLayout, 524);
         popupbodyLayout.addComponent(controlBtnsLayout);
         popupbodyLayout.setExpandRatio(controlBtnsLayout, 50);
+        
+        
+         
 
     }
 
     private void resetSearch() {
-        searchingUnit.reset();
+        resultsLabel.setValue("Search Results");
         idDataResult.setVisible(false);
         noresultsLabel.setVisible(false);
         quantDataResult.removeAllComponents();
+        overviewResults.removeAllComponents();
         loadDataBtn.setEnabled(false);
 
     }
@@ -232,9 +279,10 @@ public abstract class SearchingComponent extends BigBtn {
 
         //searching quant data
         String defaultText = query.getSearchKeyWords();
-        defaultText = defaultText.replace(",", "\n").trim();
+        defaultText = defaultText.replace(",", "\n").trim().toUpperCase();
         filterKeywordSet = new LinkedHashSet<>();
         filterKeywordSet.addAll(Arrays.asList(defaultText.split("\n")));
+
         defaultText = "";
         defaultText = filterKeywordSet.stream().map((str) -> str + "\n").reduce(defaultText, String::concat);
         query.setSearchKeyWords(defaultText);
@@ -245,24 +293,25 @@ public abstract class SearchingComponent extends BigBtn {
 
         String quantNotFound = Data_handler.filterQuantSearchingKeywords(searchQuantificationProtList, query.getSearchKeyWords(), query.getSearchBy());
         Map<String, Integer[]> quantHitsList = Data_handler.getQuantHitsList(searchQuantificationProtList, query.getSearchBy());
-
-        if (quantHitsList != null && searchQuantificationProtList != null) {
-            Set<Integer> studiesSet = new HashSet<>();
-            searchQuantificationProtList.stream().forEach((qp) -> {
-                studiesSet.add(qp.getDsKey());
-            });
-            initProteinsQuantDataLayout(quantHitsList, query.getSearchBy(), searchQuantificationProtList.size(), query.getSearchKeyWords(), studiesSet.size());
-        }
-        if (quantNotFound != null && !quantNotFound.trim().equalsIgnoreCase("")) {
-            noresultsLabel.setValue(noresultMessage + " for (" + quantNotFound + ")");
-            noresultsLabel.setVisible(true);
-
-        }
         if (quantNotFound != null) {
             for (String s : quantNotFound.split(",")) {
                 filterKeywordSet.remove(s.trim());
             }
         }
+        if (quantHitsList != null && searchQuantificationProtList != null) {
+//            Set<Integer> studiesSet = new HashSet<>();
+//            searchQuantificationProtList.stream().forEach((qp) -> {
+//                studiesSet.add(qp.getDsKey());
+//            });
+//            initQuantComparisonresults(quantHitsList,  quantNotFound.split(","), filterKeywordSet.size());
+
+            initProteinsQuantDataLayout(quantHitsList, quantNotFound.split(","), filterKeywordSet.size());
+        }
+//        if (quantNotFound != null && !quantNotFound.trim().equalsIgnoreCase("")) {
+//            noresultsLabel.setValue(noresultMessage + " for (" + quantNotFound + ")");
+//            noresultsLabel.setVisible(true);
+//
+//        }
 
         query.setSearchDataType("Identification Data");
 
@@ -271,7 +320,7 @@ public abstract class SearchingComponent extends BigBtn {
         if (idSearchIdentificationProtList != null) {
             idDataResult.setVisible(true);
             idDataResult.removeAllComponents();
-            Link idSearchingLink = new Link(idSearchIdentificationProtList, new ExternalResource(VaadinSession.getCurrent().getAttribute("csf_pr_Url")+"/searchby:" + query.getSearchBy().replace(" ", "*") + "___searchkey:" + query.getSearchKeyWords().replace("\n", "__").replace(" ", "*")));
+            Link idSearchingLink = new Link(idSearchIdentificationProtList, new ExternalResource(VaadinSession.getCurrent().getAttribute("csf_pr_Url") + "/searchby:" + query.getSearchBy().replace(" ", "*") + "___searchkey:" + query.getSearchKeyWords().replace("\n", "__").replace(" ", "*")));
             idSearchingLink.setTargetName("_blank");
             idSearchingLink.setStyleName(ValoTheme.LINK_SMALL);
             idSearchingLink.setDescription("View protein id results in CSF-PR v1.0");
@@ -295,37 +344,77 @@ public abstract class SearchingComponent extends BigBtn {
      * @param keywords the keywords used for the searching
      *
      */
-    private void initProteinsQuantDataLayout(Map<String, Integer[]> quantHitsList, String searchBy, int totalProtNum, String keywords, int studiesNum) {
+    private void initProteinsQuantDataLayout(Map<String, Integer[]> quantHitsList, String[] notFoundAcc, int found) {
 
         quantDataResult.removeAllComponents();
+        overviewResults.removeAllComponents();
         if (quantHitsList == null || quantHitsList.isEmpty()) {
             quantDataResult.setVisible(false);
             noresultsLabel.setVisible(true);
             loadDataBtn.setEnabled(false);
             return;
         }
+
+        PieChart notFoundChart = new PieChart(250, 200, "Found / Not Found", true) {
+
+            @Override
+            public void sliceClicked(Comparable sliceKey) {
+                resetChart();
+                if (sliceKey.toString().equalsIgnoreCase("Not Found")) {
+                    if (notFoundAcc.length == 1 && notFoundAcc[0].trim().equalsIgnoreCase("")) {
+                        return;
+                    }
+                    StreamResource proteinInformationResource = createProteinsExportResource(new HashSet<>(Arrays.asList(notFoundAcc)));
+                    Page.getCurrent().open(proteinInformationResource, "_blank", false);
+
+                } else if (sliceKey.toString().equalsIgnoreCase("Found")) {
+                    if (filterKeywordSet.isEmpty()) {
+                        return;
+                    }
+                    StreamResource proteinInformationResource = createProteinsExportResource(filterKeywordSet);
+                    Page.getCurrent().open(proteinInformationResource, "_blank", false);
+
+                }
+
+            }
+
+        };
+        notFoundChart.setDescription("Click slice to export");
+        int notFoundLength = notFoundAcc.length;
+        if (notFoundAcc.length == 1 && notFoundAcc[0].trim().equalsIgnoreCase("")) {
+            notFoundLength = 0;
+        }
+        notFoundChart.initializeFilterData(new String[]{"Not Found", "Found"}, new Integer[]{notFoundLength, found, found + notFoundLength}, new Color[]{new Color(219, 169, 1), new Color(110, 177, 206),});
+        notFoundChart.redrawChart();
+        notFoundChart.redrawChart();
+        notFoundChart.getMiddleDountLayout().addStyleName("defaultcursor");
+        notFoundChart.getMiddleDountLayout().setDescription("Click slice to export");
+        notFoundChart.setDescription("Click slice to export");
+
         loadDataBtn.setEnabled(true);
         int availableWidth = (int) searchingPanel.getWidth() - 100;
         quantDataResult.setVisible(true);
         noresultsLabel.setVisible(false);
-
         int maxColNum = Math.max(availableWidth / 250, 1);
 
         if (quantHitsList.size() <= maxColNum * 2) {
+            resultsLayout.setComponentAlignment(quantResultWrapping, Alignment.MIDDLE_CENTER);
+            quantDataResult.addComponent(notFoundChart, 0, 0);
+            quantDataResult.setComponentAlignment(notFoundChart, Alignment.MIDDLE_CENTER);
+            quantDataResult.removeStyleName("marginleft");
+            overviewResults.setVisible(false);
             quantDataResult.setColumns(maxColNum);
             quantDataResult.setRows(3);
-            int col = 0;
+            int col = 1;
             int row = 0;
             for (String proteinName : quantHitsList.keySet()) {
-                PieChart chart = new PieChart(250, 200, proteinName.split("__")[1],true){
+                PieChart chart = new PieChart(250, 200, proteinName.split("__")[1], true) {
 
-            @Override
-            public void sliceClicked(Comparable sliceKey) {
-            }
-        
-        
-        
-        };
+                    @Override
+                    public void sliceClicked(Comparable sliceKey) {
+                    }
+
+                };
                 chart.initializeFilterData(items, quantHitsList.get(proteinName), itemsColors);
                 chart.redrawChart();
                 chart.setData(proteinName.split("__")[0]);
@@ -337,6 +426,13 @@ public abstract class SearchingComponent extends BigBtn {
             }
 
         } else {
+            quantDataResult.addStyleName("marginleft");
+            resultsLayout.setComponentAlignment(quantResultWrapping, Alignment.MIDDLE_LEFT);
+            maxColNum = Math.max((availableWidth - 270) / 250, 1);
+            overviewResults.setVisible(true);
+            overviewResults.addComponent(notFoundChart);
+            overviewResults.setComponentAlignment(notFoundChart, Alignment.MIDDLE_CENTER);
+
             quantDataResult.setColumns(maxColNum);
             quantDataResult.setRows(1000);
             quantDataResult.setHideEmptyRowsAndColumns(true);
@@ -363,6 +459,13 @@ public abstract class SearchingComponent extends BigBtn {
     public void onClick() {
         searchingPanel.setVisible(true);
 
+    }
+
+    private StreamResource createProteinsExportResource(Set<String> accessions) {
+        return new StreamResource(() -> {
+            byte[] csvFile = Data_handler.exportProteinsListToCSV(accessions);
+            return new ByteArrayInputStream(csvFile);
+        }, "Proteins_List.csv");
     }
 
     public abstract void loadQuantSearching();

@@ -1,6 +1,5 @@
 package no.uib.probe.csf.pr.touch.view.bigscreen.welcomepagecontainer;
 
-import com.vaadin.server.ExternalResource;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.MarginInfo;
@@ -10,7 +9,6 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Link;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import java.io.Serializable;
@@ -21,7 +19,6 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
 import no.uib.probe.csf.pr.touch.view.HeaderLayout;
 import no.uib.probe.csf.pr.touch.view.LayoutViewManager;
-import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.PublicationsInformationWindow;
 import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.StudiesInformationWindow;
 import no.uib.probe.csf.pr.touch.view.bigscreen.searchinglayoutcontainer.components.CompareComponent;
 import no.uib.probe.csf.pr.touch.view.bigscreen.searchinglayoutcontainer.components.SearchingComponent;
@@ -102,22 +99,22 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         subQuantStatLayout.setWidth(100,Unit.PERCENTAGE);
         leftPanelWrapper.addComponent(subQuantStatLayout);
 
-        PublicationsInformationWindow sub1quantStatLabelWrapper = new PublicationsInformationWindow(publicationList);
-        Label sub1quantStatLabel = new Label("#Publications");
-        sub1quantStatLabel.setStyleName("link");
-        sub1quantStatLabel.addStyleName(ValoTheme.LABEL_SMALL);
-        sub1quantStatLabelWrapper.addComponent(sub1quantStatLabel);
-        subQuantStatLayout.addComponent(sub1quantStatLabelWrapper, 0, 0);//
-        sub1quantStatLabelWrapper.setDescription("Click to view publication information");
-
-        Label sub1QuantStatValue = new Label(overviewInfoBean.getNumberOfQuantPublication()+"");
-        sub1QuantStatValue.addStyleName(ValoTheme.LABEL_SMALL);
-        subQuantStatLayout.addComponent(sub1QuantStatValue, 1, 0);
-        subQuantStatLayout.setComponentAlignment(sub1QuantStatValue, Alignment.MIDDLE_RIGHT);
+//        PublicationsInformationWindow sub1quantStatLabelWrapper = new PublicationsInformationWindow(publicationList);
+//        Label sub1quantStatLabel = new Label("#Publications");
+//        sub1quantStatLabel.setStyleName("link");
+//        sub1quantStatLabel.addStyleName(ValoTheme.LABEL_SMALL);
+//        sub1quantStatLabelWrapper.addComponent(sub1quantStatLabel);
+//        subQuantStatLayout.addComponent(sub1quantStatLabelWrapper, 0, 0);//
+//        sub1quantStatLabelWrapper.setDescription("Click to view publication information");
+//
+//        Label sub1QuantStatValue = new Label(overviewInfoBean.getNumberOfQuantPublication()+"");
+//        sub1QuantStatValue.addStyleName(ValoTheme.LABEL_SMALL);
+//        subQuantStatLayout.addComponent(sub1QuantStatValue, 1, 0);
+//        subQuantStatLayout.setComponentAlignment(sub1QuantStatValue, Alignment.MIDDLE_RIGHT);
 
 //        Set<QuantDatasetObject> dsObjects = CSFPR_Handler.getQuantDatasetList();
 //
-        StudiesInformationWindow sub2quantStatLabelWrapper = new StudiesInformationWindow();
+        StudiesInformationWindow sub2quantStatLabelWrapper = new StudiesInformationWindow(publicationList);
         sub2quantStatLabelWrapper.updateData(dsObjects);
         subQuantStatLayout.addComponent(sub2quantStatLabelWrapper, 0, 1);
         sub2quantStatLabelWrapper.setDescription("Click to view datasets information");

@@ -19,10 +19,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import org.jfree.chart.ChartRenderingInfo;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -51,13 +49,11 @@ public abstract class DatasetPieChartFilter extends AbsoluteLayout implements La
     private final Map<Comparable, Color> defaultKeyColorMap = new HashMap<>();
     private final Map<Comparable, Color> selectedKeyColorMap = new HashMap<>();
     private final Map<Comparable, String> valuesMap = new HashMap<>();
-    private final String filter_Id;
     private final int width;
     private final int height;
     private final Map<Comparable, List<Integer>> inuseDsIndexesMap;
     private final HashSet<Integer> selectedDsIds = new HashSet<>();
     private final HashSet<Integer> fullDsIds = new HashSet<>();
-    private final Set<Integer> availableDsIds = new LinkedHashSet<>();
     private final Map<Comparable, PieChartSlice> chartData;
     private final Color[] defaultColors = new Color[]{new Color(110, 177, 206), new Color(219, 169, 1), new Color(213, 8, 8), new Color(4, 180, 95), new Color(174, 180, 4), new Color(10, 255, 14), new Color(244, 250, 88), new Color(255, 0, 64), new Color(246, 216, 206), new Color(189, 189, 189), new Color(255, 128, 0), Color.WHITE};
     private PiePlot plot;
@@ -77,7 +73,6 @@ public abstract class DatasetPieChartFilter extends AbsoluteLayout implements La
      * @param filterWidth
      */
     public DatasetPieChartFilter(String filterTitle, String filterId, int filterIndex, int filterWidth, int filterHeight) {
-        this.filter_Id = filterId;
         this.width = filterWidth;
         this.height = filterHeight;
         this.setWidth(width, Unit.PIXELS);

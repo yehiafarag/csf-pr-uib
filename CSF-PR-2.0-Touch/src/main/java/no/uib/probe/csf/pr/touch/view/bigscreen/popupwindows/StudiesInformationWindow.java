@@ -6,15 +6,16 @@
 package no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows;
 
 import com.vaadin.event.LayoutEvents;
-import com.vaadin.server.Page;
-import com.vaadin.shared.ui.window.WindowMode;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.UI;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
+import com.vaadin.ui.themes.ValoTheme;
 import java.util.Collection;
+import java.util.List;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 import no.uib.probe.csf.pr.touch.view.core.DatasetButtonsContainerLayout;
+import no.uib.probe.csf.pr.touch.view.core.PopupWindow;
 
 /**
  *
@@ -24,20 +25,29 @@ import no.uib.probe.csf.pr.touch.view.core.DatasetButtonsContainerLayout;
  */
 public class StudiesInformationWindow extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
-    private final Window popupWindow;
-    private final   DatasetButtonsContainerLayout studiesPopupLayout;
+    private final PopupWindow popupWindow;
+    private final DatasetButtonsContainerLayout studiesPopupLayout;
 
-    public StudiesInformationWindow() {
+    public StudiesInformationWindow(List<Object[]> publicationList) {
 
-        int height = Page.getCurrent().getBrowserWindowHeight() - 100;
-        int width = Page.getCurrent().getBrowserWindowWidth() - 100;
         VerticalLayout popupBody = new VerticalLayout();
-        popupBody.setWidth((width - 20) + "px");
-        popupBody.setHeightUndefined();
-        popupBody.setMargin(true);
+        popupBody.setWidth(100, Unit.PERCENTAGE);
+          popupBody.setHeight(100, Unit.PERCENTAGE);
+        
+        popupBody.setMargin(false);
         popupBody.setSpacing(true);
+        popupBody.addStyleName("roundedborder");
+        popupBody.addStyleName("whitelayout");
+        popupBody.addStyleName("padding20");
+        VerticalLayout frame = new VerticalLayout();
+        frame.setWidth(99, Unit.PERCENTAGE);
+        frame.setHeight(99, Unit.PERCENTAGE);
+        frame.setSpacing(true);
+        frame.addComponent(popupBody);
 
-        popupWindow = new Window() {
+    
+
+        popupWindow = new PopupWindow(frame, "Datasets and Publications") {
 
             @Override
             public void close() {
@@ -60,39 +70,46 @@ public class StudiesInformationWindow extends VerticalLayout implements LayoutEv
 
         };
 
-        popupWindow.setContent(popupBody);
-        popupWindow.setWindowMode(WindowMode.NORMAL);
-        popupWindow.setWidth((width) + "px");
-        popupWindow.setHeight((height) + "px");
-        popupWindow.setVisible(false);
-        popupWindow.setResizable(false);
-        popupWindow.setClosable(false);
-        popupWindow.setModal(true);
-        popupWindow.setDraggable(false);
-        popupWindow.center();
-        popupWindow.setCaption("<font color='gray' style='font-weight: bold;!important'>&nbsp;&nbsp;Datasets Information</font>");
-        UI.getCurrent().addWindow(popupWindow);
-        popupWindow.setCaptionAsHtml(true);
-        popupWindow.setClosable(true);
+//        int availableHeight = (int) popupWindow.getHeight();
+//        popupBody.setHeight(availableHeight, Unit.PIXELS);
+        
         this.addLayoutClickListener(StudiesInformationWindow.this);
 
-        studiesPopupLayout = new DatasetButtonsContainerLayout();
-        popupBody.addComponent(studiesPopupLayout);
-        popupBody.setComponentAlignment(studiesPopupLayout, Alignment.TOP_CENTER);
+        TabSheet tab = new TabSheet();
+        tab.setHeight(100.0f, Unit.PERCENTAGE);
+        tab.setWidth(100.0f, Unit.PERCENTAGE);
+        tab.addStyleName(ValoTheme.TABSHEET_FRAMED);
+        tab.addStyleName(ValoTheme.TABSHEET_PADDED_TABBAR);
+        tab.addStyleName("transparentframe");
+
+        popupBody.addComponent(tab);
+        popupBody.setComponentAlignment(tab, Alignment.TOP_CENTER);
+
+        studiesPopupLayout = new DatasetButtonsContainerLayout((int) popupWindow.getWidth());
+
+        tab.addTab(studiesPopupLayout, "Datasets");
+
+        if (publicationList == null) {
+            return;
+        }
+
+        DatasetButtonsContainerLayout publicationPopupLayout = new DatasetButtonsContainerLayout((int) popupWindow.getWidth());
+        publicationPopupLayout.setPublicationData(publicationList);
+        tab.addTab(publicationPopupLayout, "Publications");
 
     }
-    
-    public void updateData(Collection<QuantDatasetObject> dsObjects){
+
+    public void updateData(Collection<QuantDatasetObject> dsObjects) {
         studiesPopupLayout.setInformationData(dsObjects);
-    
+
     }
 
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         popupWindow.setVisible(true);
     }
-    
-    public void view(){
+
+    public void view() {
         popupWindow.setVisible(true);
     }
 }

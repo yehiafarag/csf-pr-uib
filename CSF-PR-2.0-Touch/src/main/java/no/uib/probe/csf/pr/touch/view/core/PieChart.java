@@ -17,7 +17,6 @@ import com.vaadin.ui.themes.ValoTheme;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Stroke;
 import java.io.IOException;
 import java.text.AttributedString;
 import java.util.HashMap;
@@ -58,7 +57,6 @@ public abstract class PieChart extends AbsoluteLayout implements LayoutEvents.La
     private final Label selectAllLabel;
     private final Set<String> selectionSet;
     private final Color selectedColor = Color.decode("#197de1");
-    private final Stroke stroke = new BasicStroke(2);
     private final Map<Comparable, Color> defaultColors;
     private final Map<Comparable, Color> selectedColors;
 
@@ -88,7 +86,7 @@ public abstract class PieChart extends AbsoluteLayout implements LayoutEvents.La
         middleDountLayout.setStyleName("middledountchart");
 
         selectAllLabel = new Label();
-        selectAllLabel.setWidth(30, Unit.PIXELS);
+        selectAllLabel.setWidth(100, Unit.PERCENTAGE);
         selectAllLabel.setStyleName(ValoTheme.LABEL_TINY);
         selectAllLabel.addStyleName(ValoTheme.LABEL_SMALL);
         middleDountLayout.addComponent(selectAllLabel);
@@ -97,6 +95,10 @@ public abstract class PieChart extends AbsoluteLayout implements LayoutEvents.La
         this.initPieChart(title);
         selectionSet = new LinkedHashSet<>();
 
+    }
+
+    public VerticalLayout getMiddleDountLayout() {
+        return middleDountLayout;
     }
 
     private void initPieChart(String title) {

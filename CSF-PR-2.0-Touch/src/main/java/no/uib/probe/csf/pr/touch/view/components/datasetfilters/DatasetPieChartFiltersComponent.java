@@ -65,6 +65,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         frame.addComponent(popupBody);
 
         popupBody.addStyleName("roundedborder");
+        popupBody.addStyleName("padding20");
         popupBody.addStyleName("whitelayout");
 
         popupBody.setWidth(100, Unit.PERCENTAGE);
@@ -94,6 +95,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         VerticalLayout btnsFrame = new VerticalLayout();
         btnsFrame.setWidth(100, Unit.PERCENTAGE);
         btnsFrame.addStyleName("roundedborder");
+        btnsFrame.addStyleName("padding20");
         btnsFrame.addStyleName("margintop");
         btnsFrame.addStyleName("whitelayout");
         frame.addComponent(btnsFrame);

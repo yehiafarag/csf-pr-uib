@@ -6,9 +6,7 @@
 package no.uib.probe.csf.pr.touch.view.bigscreen.searchinglayoutcontainer.components;
 
 import com.vaadin.server.ExternalResource;
-import com.vaadin.server.FileDownloader;
 import com.vaadin.server.Page;
-import com.vaadin.server.Resource;
 import com.vaadin.server.Sizeable;
 import com.vaadin.server.StreamResource;
 import com.vaadin.server.VaadinSession;
@@ -17,9 +15,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.LegacyWindow;
 import com.vaadin.ui.Link;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import java.awt.Color;
@@ -35,6 +31,7 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantProtein;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
 import no.uib.probe.csf.pr.touch.selectionmanager.QuantSearchSelection;
 import no.uib.probe.csf.pr.touch.view.core.BigBtn;
+import no.uib.probe.csf.pr.touch.view.core.InformationButton;
 import no.uib.probe.csf.pr.touch.view.core.PieChart;
 import no.uib.probe.csf.pr.touch.view.core.PopupWindow;
 import no.uib.probe.csf.pr.touch.view.core.TrendLegend;
@@ -82,6 +79,7 @@ public abstract class CompareComponent extends BigBtn {
 
         VerticalLayout resultsLayout = new VerticalLayout();
         resultsLayout.addStyleName("roundedborder");
+        resultsLayout.addStyleName("padding20");
         resultsLayout.addStyleName("whitelayout");
 
         resultsLayout.setWidth(100, Sizeable.Unit.PERCENTAGE);
@@ -97,29 +95,48 @@ public abstract class CompareComponent extends BigBtn {
         middleLayout.setWidth(100, Sizeable.Unit.PERCENTAGE);
         resultsLabel = new Label("Search Results");
         resultsLabel.setStyleName(ValoTheme.LABEL_BOLD);
+        resultsLabel.addStyleName("marginleft");
         middleLayout.addComponent(resultsLabel);
         middleLayout.setComponentAlignment(resultsLabel, Alignment.MIDDLE_LEFT);
 
         HorizontalLayout legendContainer = new HorizontalLayout();
         legendContainer.setSpacing(true);
         middleLayout.addComponent(legendContainer);
-        middleLayout.setComponentAlignment(legendContainer, Alignment.MIDDLE_RIGHT);
+        middleLayout.setComponentAlignment(legendContainer, Alignment.TOP_RIGHT);
 
         TrendLegend legend2 = new TrendLegend("found_notfound");
         legendContainer.addComponent(legend2);
         legendContainer.setComponentAlignment(legend2, Alignment.MIDDLE_RIGHT);
+        legend2.addStyleName("marginright");
+
 
         TrendLegend legend = new TrendLegend("diseaselegend");
         legendContainer.addComponent(legend);
         legendContainer.setComponentAlignment(legend, Alignment.MIDDLE_RIGHT);
+        legend.addStyleName("marginright");
+
 
         controlBtnsLayout = new HorizontalLayout();
         controlBtnsLayout.addStyleName("roundedborder");
+        controlBtnsLayout.addStyleName("padding20");
         controlBtnsLayout.addStyleName("whitelayout");
         controlBtnsLayout.setMargin(new MarginInfo(true, false, false, false));
         controlBtnsLayout.setWidth(100, Sizeable.Unit.PERCENTAGE);
+        
+          HorizontalLayout leftsideWrapper = new HorizontalLayout();
+        controlBtnsLayout.addComponent(leftsideWrapper);
+        controlBtnsLayout.setComponentAlignment(leftsideWrapper, Alignment.TOP_LEFT);
+        leftsideWrapper.setSpacing(true);
+
+        InformationButton info = new InformationButton("info", true);
+        leftsideWrapper.addComponent(info);
+
         idDataResult = new VerticalLayout();
-        controlBtnsLayout.addComponent(idDataResult);
+        idDataResult.addStyleName("marginleft");
+        leftsideWrapper.addComponent(idDataResult);
+        
+        
+        controlBtnsLayout.addComponent(leftsideWrapper);
 
         HorizontalLayout btnsWrapper = new HorizontalLayout();
         controlBtnsLayout.addComponent(btnsWrapper);
@@ -177,8 +194,6 @@ public abstract class CompareComponent extends BigBtn {
         popupbodyLayout.setExpandRatio(resultsLayout, 254);
         popupbodyLayout.addComponent(controlBtnsLayout);
         popupbodyLayout.setExpandRatio(controlBtnsLayout, 50);
-
-       
 
     }
 
@@ -317,10 +332,16 @@ public abstract class CompareComponent extends BigBtn {
             public void sliceClicked(Comparable sliceKey) {
                 resetChart();
                 if (sliceKey.toString().equalsIgnoreCase("Not Found")) {
+                    if (notFoundAcc.length == 1 && notFoundAcc[0].trim().equalsIgnoreCase("")) {
+                        return;
+                    }
                     StreamResource proteinInformationResource = createProteinsExportResource(new HashSet<>(Arrays.asList(notFoundAcc)));
                     Page.getCurrent().open(proteinInformationResource, "_blank", false);
 
-                } else  if (sliceKey.toString().equalsIgnoreCase("Found")){
+                } else if (sliceKey.toString().equalsIgnoreCase("Found")) {
+                    if (filterKeywordSet.isEmpty()) {
+                        return;
+                    }
                     StreamResource proteinInformationResource = createProteinsExportResource(filterKeywordSet);
                     Page.getCurrent().open(proteinInformationResource, "_blank", false);
 
@@ -329,8 +350,15 @@ public abstract class CompareComponent extends BigBtn {
             }
 
         };
+        
+        notFoundChart.getMiddleDountLayout().addStyleName("defaultcursor");
+        notFoundChart.getMiddleDountLayout().setDescription("Click slice to export");
         notFoundChart.setDescription("Click slice to export");
-        notFoundChart.initializeFilterData(new String[]{"Not Found", "Found"}, new Integer[]{notFoundAcc.length, found, found + notFoundAcc.length}, new Color[]{new Color(219, 169, 1), new Color(110, 177, 206),});
+        int notFoundLength = notFoundAcc.length;
+          if (notFoundAcc.length == 1 && notFoundAcc[0].trim().equalsIgnoreCase("")) {
+                        notFoundLength=0;
+                    }
+        notFoundChart.initializeFilterData(new String[]{"Not Found", "Found"}, new Integer[]{notFoundLength, found, found + notFoundLength}, new Color[]{new Color(219, 169, 1), new Color(110, 177, 206),});
         notFoundChart.redrawChart();
         quantCompareDataResult.addComponent(notFoundChart);
         quantCompareDataResult.setComponentAlignment(notFoundChart, Alignment.MIDDLE_CENTER);
@@ -353,8 +381,7 @@ public abstract class CompareComponent extends BigBtn {
             @Override
             public void sliceClicked(Comparable sliceKey) {
                 proteinsChart.selectSlice(sliceKey);
-                
-                
+
             }
 
         };

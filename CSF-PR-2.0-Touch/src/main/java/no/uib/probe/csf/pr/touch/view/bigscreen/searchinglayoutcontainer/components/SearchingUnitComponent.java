@@ -36,18 +36,21 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
 
     public void reset() {
         searchingArea.clear();
-        searchByOptionGroup.setValue(null);
+        searchByOptionGroup.setValue("Protein Name");
         errorLabel.setVisible(false);
         searchingArea.setRequired(false);
         searchByOptionGroup.setRequired(false);
+        resetSearching();
 
     }
+    public abstract void resetSearching();
 
     public SearchingUnitComponent() {
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeight(290, Unit.PIXELS);
         this.setStyleName("whitelayout");
         this.addStyleName("roundedborder");
+        this.addStyleName("padding20");
 
         this.setSpacing(true);
 
@@ -95,13 +98,29 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
         btnsLayoutContainer.addComponent(diseaseCategoryOption);
         diseaseCategoryOption.setRequired(false);
         diseaseCategoryOption.setMultiSelect(true);
+        
+        
+        HorizontalLayout btnWrapper = new HorizontalLayout();
+        btnWrapper.setSpacing(true);
+          btnsLayoutContainer.addComponent(btnWrapper);
+        btnsLayoutContainer.setComponentAlignment(btnWrapper, Alignment.TOP_RIGHT);
+        
+         Button clearBtn = new Button("Clear");
+        clearBtn.setStyleName(ValoTheme.BUTTON_SMALL);
+        clearBtn.setDescription("Reset searching");
+        clearBtn.addStyleName("margintop");
+        btnWrapper.addComponent(clearBtn);
+        btnWrapper.setComponentAlignment(clearBtn, Alignment.TOP_RIGHT);
+        clearBtn.addClickListener((Button.ClickEvent event) -> {
+            SearchingUnitComponent.this.reset();
+        });
 
         Button searchingBtn = new Button("Search");
         searchingBtn.setStyleName(ValoTheme.BUTTON_SMALL);
         searchingBtn.addStyleName(ValoTheme.BUTTON_PRIMARY);
         searchingBtn.addStyleName("margintop");
-        btnsLayoutContainer.addComponent(searchingBtn);
-        btnsLayoutContainer.setComponentAlignment(searchingBtn, Alignment.TOP_RIGHT);
+        btnWrapper.addComponent(searchingBtn);
+        btnWrapper.setComponentAlignment(searchingBtn, Alignment.TOP_RIGHT);
         searchingBtn.addClickListener(SearchingUnitComponent.this);
 
         errorLabel = new Label("error");

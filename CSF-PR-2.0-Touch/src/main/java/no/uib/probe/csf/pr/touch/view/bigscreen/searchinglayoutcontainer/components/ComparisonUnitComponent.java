@@ -80,6 +80,7 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
         this.setHeight(540, Unit.PIXELS);
         this.setStyleName("whitelayout");
         this.addStyleName("roundedborder");
+        this.addStyleName("padding20");
 
         VerticalLayout frame = new VerticalLayout();
         frame.setWidth(80, Unit.PERCENTAGE);

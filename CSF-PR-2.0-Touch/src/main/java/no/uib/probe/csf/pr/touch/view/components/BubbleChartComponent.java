@@ -150,6 +150,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         chartLayoutFrame.setWidth(width, Unit.PIXELS);
         chartLayoutFrame.setHeight(height, Unit.PIXELS);
         chartLayoutFrame.addStyleName("roundedborder");
+        chartLayoutFrame.addStyleName("padding20");
         chartLayoutFrame.addStyleName("whitelayout");
         bodyContainer.addComponent(chartLayoutFrame);
         bodyContainer.setComponentAlignment(chartLayoutFrame, Alignment.MIDDLE_CENTER);

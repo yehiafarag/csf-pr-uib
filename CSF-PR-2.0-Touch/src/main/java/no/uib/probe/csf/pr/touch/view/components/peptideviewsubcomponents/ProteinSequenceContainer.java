@@ -29,6 +29,7 @@ public class ProteinSequenceContainer extends VerticalLayout {
     public ProteinSequenceContainer(String sequence, Set<QuantPeptide> quantPepSet, int proteinSequenceContainerWidth, final int dsID) {
         this.setWidth(100, Unit.PERCENTAGE);
         this.addStyleName("roundedborder");
+        this.addStyleName("padding20");
         this.addStyleName("whitelayout");
         Label noPeptideAvailable = new Label("No peptides information available");
         noPeptideAvailable.addStyleName(ValoTheme.LABEL_TINY);

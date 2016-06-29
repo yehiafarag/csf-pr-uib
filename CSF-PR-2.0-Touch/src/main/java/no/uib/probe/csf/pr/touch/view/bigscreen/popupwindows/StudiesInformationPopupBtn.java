@@ -21,7 +21,7 @@ public class StudiesInformationPopupBtn extends ImageContainerBtn {
         this.setEnabled(true);
       
         this.setDescription("Show dataset information");
-        this.studiesInformationWindow = new StudiesInformationWindow();
+        this.studiesInformationWindow = new StudiesInformationWindow(null);
     }
 
     public void updateData(Collection<QuantDatasetObject> quantDatasetSet) {

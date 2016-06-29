@@ -6,13 +6,9 @@
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.event.LayoutEvents;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Layout;
-import com.vaadin.ui.PopupView;
 import com.vaadin.ui.VerticalLayout;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 
@@ -24,7 +20,7 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
  */
 public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
-    private final PopupView pupupPanel;
+    private final PopupWindow popupPanel;
 
     public PopupInfoBtn(QuantDatasetObject quantDS, String btnName, String publicationAuthor) {
         this.addLayoutClickListener(PopupInfoBtn.this);
@@ -35,20 +31,27 @@ public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutC
         this.addComponent(btnLabel);
         this.setComponentAlignment(btnLabel, Alignment.MIDDLE_CENTER);
         this.setStyleName("tabbtn");
+        
+        this.addStyleName("margintop");
+        this.addStyleName("marginbottom");
 
         DatasetInformationOverviewLayout infoLayout = new DatasetInformationOverviewLayout(quantDS);
-        VerticalLayout infoPopup = initPopupLayout(infoLayout, publicationAuthor);
-        pupupPanel = new PopupView(null, infoPopup);
-        pupupPanel.setWidth("2px");
-        pupupPanel.setHeight("2px");
-        this.addComponent(pupupPanel);
-        this.setComponentAlignment(pupupPanel, Alignment.BOTTOM_RIGHT);
-        pupupPanel.setVisible(true);
-        pupupPanel.setPopupVisible(false);
-        pupupPanel.setHideOnMouseOut(false);
+        VerticalLayout infoPopup = initPopupLayout(infoLayout);
+        
+        popupPanel = new PopupWindow(infoPopup, publicationAuthor);
+        
+        
+//        popupPanel = new PopupView(null, infoPopup);
+//        popupPanel.setWidth("2px");
+//        popupPanel.setHeight("2px");
+//        this.addComponent(popupPanel);
+//        this.setComponentAlignment(popupPanel, Alignment.BOTTOM_RIGHT);
+//        popupPanel.setVisible(true);
+//        popupPanel.setPopupVisible(false);
+//        popupPanel.setHideOnMouseOut(false);
 
         this.setExpandRatio(btnLabel, 0.99f);
-        this.setExpandRatio(pupupPanel, 0.01f);
+//        this.setExpandRatio(popupPanel, 0.01f);
 
     }
 
@@ -62,74 +65,49 @@ public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutC
         this.addComponent(btnLabel);
         this.setComponentAlignment(btnLabel, Alignment.MIDDLE_CENTER);
         this.setStyleName("tabbtn");
+        this.addStyleName("margintop");
+        this.addStyleName("marginbottom");
 
-        //add popup for testing 
-        VerticalLayout infoLayout = initPublication(publicationData);
-        VerticalLayout infoPopup = initPopupLayout(infoLayout, publicationAuthor);
-        pupupPanel = new PopupView(null, infoPopup);
-        pupupPanel.setWidth("2px");
-        pupupPanel.setHeight("2px");
-        this.addComponent(pupupPanel);
-        this.setComponentAlignment(pupupPanel, Alignment.BOTTOM_RIGHT);
-        pupupPanel.setVisible(true);
-        pupupPanel.setPopupVisible(false);
-        pupupPanel.setHideOnMouseOut(false);
-
-        this.setExpandRatio(btnLabel, 0.99f);
-        this.setExpandRatio(pupupPanel, 0.01f);
-
-    }
-
-    private VerticalLayout initPublication(Object[] publicationData) {
         VerticalLayout infoLayout = initPublicationLayout(publicationData);
-        return infoLayout;
+        VerticalLayout infoPopup = initPopupLayout(infoLayout);
+       
+        
+        popupPanel = new PopupWindow(infoPopup,publicationAuthor);
+        popupPanel.setWidth(600,Unit.PIXELS);
+        popupPanel.setHeight(400,Unit.PIXELS);
+       
+        this.setExpandRatio(btnLabel, 0.99f);
 
     }
 
-    private VerticalLayout initPopupLayout(VerticalLayout infoLayout, String header) {
+   
+    private VerticalLayout initPopupLayout(VerticalLayout infoLayout) {
 
-        VerticalLayout popupBodyWrapper = new VerticalLayout();
-        popupBodyWrapper.setWidth(infoLayout.getWidth()+100,infoLayout.getWidthUnits());
-        popupBodyWrapper.setHeight(infoLayout.getHeight()+100,infoLayout.getHeightUnits());       
-        
+//        VerticalLayout popupBodyWrapper = new VerticalLayout();
+//        popupBodyWrapper.setWidth(infoLayout.getWidth()+100,infoLayout.getWidthUnits());
+//        popupBodyWrapper.setHeight(infoLayout.getHeight()+100,infoLayout.getHeightUnits());       
+//        
         VerticalLayout popupBodyLayout = new VerticalLayout();
-        popupBodyLayout.setWidth(100+ "%");
-        popupBodyLayout.setHeightUndefined();
+        popupBodyLayout.setWidth(99,Unit.PERCENTAGE);
+         popupBodyLayout.setHeight(99,Unit.PERCENTAGE);
         popupBodyLayout.setStyleName("pupupbody");
+        popupBodyLayout.addStyleName("roundedborder");
+        popupBodyLayout.addStyleName("padding20");
         popupBodyLayout.setSpacing(true);
-        popupBodyWrapper.addComponent(popupBodyLayout);
-        popupBodyWrapper.setComponentAlignment(popupBodyLayout, Alignment.TOP_CENTER);
+//        popupBodyWrapper.addComponent(popupBodyLayout);
+//        popupBodyWrapper.setComponentAlignment(popupBodyLayout, Alignment.TOP_CENTER);
         
-        
-        HorizontalLayout titleLayout = new HorizontalLayout();
-        titleLayout.setWidthUndefined();
-        titleLayout.setHeight("40px");
-//
-        popupBodyLayout.addComponent(titleLayout);
         popupBodyLayout.addLayoutClickListener(this);
-
-        Label label = new Label("<b>&nbsp;&nbsp;" + header + "</b>");
-        label.setContentMode(ContentMode.HTML);
-        label.setWidth((infoLayout.getWidth() - 17) + "px");
-        titleLayout.addComponent(label);
-
-        CloseButton closeBtn = new CloseButton();
-        closeBtn.addLayoutClickListener(this);
-        titleLayout.addComponent(closeBtn);
-        titleLayout.setComponentAlignment(closeBtn, Alignment.TOP_RIGHT);
-//
-//        infoLayout.setMargin(true);
-//        infoLayout.setSpacing(true);
         popupBodyLayout.addComponent(infoLayout);
 
 
-        return popupBodyWrapper;
+        return popupBodyLayout;
 
     }
 
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-        pupupPanel.setPopupVisible(!pupupPanel.isPopupVisible());
+        popupPanel.setVisible(!popupPanel.isVisible());
     }
 
     private VerticalLayout initPublicationLayout(Object[] publicationData) {
@@ -138,10 +116,10 @@ public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutC
         publicationlayout.setWidth("500px");
         publicationlayout.setHeightUndefined();
         publicationlayout.setSpacing(true);
-        publicationlayout.setMargin(new MarginInfo(false, false, false, false));
         publicationlayout.setStyleName("publicationstyle");
 
-        Label pubmedIdLabel = new Label("<h5>Pubmed Id: <a href='http://www.ncbi.nlm.nih.gov/pubmed/" + publicationData[0].toString() + "' target='_blank'  ><font style:'text-decoration:underline !important;'>" + publicationData[0].toString() + "</font></a></h5>");
+        Label pubmedIdLabel = new Label("<h5>PubMed Id: <a class='link' href='http://www.ncbi.nlm.nih.gov/pubmed/" + publicationData[0].toString() + "' target='_blank'  >" + publicationData[0].toString() + "</a></h5>");
+        
         pubmedIdLabel.setContentMode(ContentMode.HTML);
         publicationlayout.addComponent(pubmedIdLabel);
         pubmedIdLabel.setHeight("40px");
@@ -170,7 +148,7 @@ public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutC
         uPeptidesNumLabel.setDescription("Number of publication specific  peptides " + publicationData[6].toString());
         uPeptidesNumLabel.setHeight("40px");
 
-        Label titleLabel = new Label("<textarea rows='5' cols='52' readonly >" + publicationData[3].toString() + "</textarea>");
+        Label titleLabel = new Label("<textarea rows='5' cols='72' readonly >" + publicationData[3].toString() + "</textarea>");
         titleLabel.setContentMode(ContentMode.HTML);
         publicationlayout.addComponent(titleLabel);
         titleLabel.setHeight("100px");

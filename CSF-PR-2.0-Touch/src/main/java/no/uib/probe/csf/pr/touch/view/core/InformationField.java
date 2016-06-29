@@ -20,7 +20,7 @@ public class InformationField extends VerticalLayout {
      */
     public InformationField(String title) {
 
-        this.setHeight("100px");
+        this.setHeight(100,Unit.PIXELS);
         this.setWidth("100%");
         this.setSpacing(true);
         this.setMargin(true);
@@ -32,7 +32,8 @@ public class InformationField extends VerticalLayout {
         this.setComponentAlignment(titleLabel, Alignment.TOP_LEFT);
         valueLabel = new Link();
 
-        valueLabel.setStyleName("valuelabel");
+        valueLabel.setStyleName("link");
+//        valueLabel.setStyleName("valuelabel");
         valueLabel.setTargetName("_blank");
         valueLabel.setCaptionAsHtml(true);
         valueLabel.setHeight("100%");
@@ -98,7 +99,9 @@ public class InformationField extends VerticalLayout {
                 valueLabel.setCaption(stringValue);
             }
             if (urlAddress != null) {
-                valueLabel.setStyleName("valuelink");
+                valueLabel.setStyleName("link");
+                valueLabel.addStyleName("valuelink");
+                valueLabel.addStyleName("pointer");
                 valueLabel.setResource(new ExternalResource(urlAddress));
             } else {
                 valueLabel.setStyleName("valuelabel");
