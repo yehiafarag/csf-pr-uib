@@ -66,8 +66,8 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
      *
      */
     public GroupSwichBtn() {
-        this.setHeight(45, Unit.PIXELS);
-        this.setWidth(45, Unit.PIXELS);
+        this.setHeight(40, Unit.PIXELS);
+        this.setWidth(40, Unit.PIXELS);
         this.updateIcon(new ThemeResource("img/flip-v-updated.png"));
         this.setEnabled(true);
         this.setReadOnly(false);

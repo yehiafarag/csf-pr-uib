@@ -33,42 +33,50 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
      * @param height body layout height in pixels
      */
     public QuantInitialLayout(Collection<DiseaseCategoryObject> diseaseCategorySet, int width, int height) {
+
         this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
         this.addStyleName("slowslide");
         this.diseaseMap = new HashMap<>();
 
         GridLayout frame = new GridLayout(3, 3);
-        frame.setWidthUndefined();//100, Unit.PERCENTAGE);
-        frame.setHeightUndefined();//100,Unit.PERCENTAGE);
         frame.setSpacing(true);
         frame.setMargin(true);
 //        frame.setStyleName("border");
         this.addComponent(frame);
-        this.setComponentAlignment(frame, Alignment.MIDDLE_CENTER);
+        this.setComponentAlignment(frame, Alignment.TOP_CENTER);
 
         Label title = new Label("<center Style='color:#4d749f;'>Disease Category</center>");
         title.setContentMode(ContentMode.HTML);
         title.addStyleName(ValoTheme.LABEL_H2);
-        title.addStyleName(ValoTheme.LABEL_BOLD);
+        title.setWidth(250,Unit.PIXELS);
+//        title.addStyleName(ValoTheme.LABEL_BOLD);
         frame.addComponent(title, 1, 1);
         frame.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
 
         DiseaseCategoryObject allDeseases = (DiseaseCategoryObject) diseaseCategorySet.toArray()[diseaseCategorySet.size() - 1];
         maxNumber = allDeseases.getDatasetNumber();
         diseaseMap.put("All Diseases", allDeseases);
-        double scaledMax = scaleValues(maxNumber, maxNumber, 0.5, 0.05);
-        VerticalLayout allDisease = initDiseaseBubbleLayout(allDeseases, maxNumber, scaledMax);
-        frame.addComponent(allDisease, 1, 2);
-        frame.setComponentAlignment(allDisease, Alignment.MIDDLE_CENTER);
+       
+       
 
+//        System.out.println("at h " + height + "  w " + width + "  scaledMax " + scaledMax);
+        
+
+        
+
+         
         int rowcounter = 0;
         int colCounter = 1;
         for (DiseaseCategoryObject dCategory : diseaseCategorySet) {
             if (dCategory == allDeseases) {
                 continue;
             }
-            VerticalLayout disease = initDiseaseBubbleLayout(dCategory, maxNumber, scaledMax);
+           
+             double scaledMax =scaleValues(dCategory.getDatasetNumber(), maxNumber, 0.01,1);
+            int dia =(int) (scaledMax*0.1*height);    
+           
+            VerticalLayout disease = initDiseaseBubbleLayout(dCategory, maxNumber,dia);
             diseaseMap.put(dCategory.getDiseaseCategory(), dCategory);
             frame.addComponent(disease, colCounter++, rowcounter);
             frame.setComponentAlignment(disease, Alignment.MIDDLE_CENTER);
@@ -79,6 +87,12 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
             }
 
         }
+        
+         double scaledMax =scaleValues(allDeseases.getDatasetNumber(), maxNumber,0.01, 1);
+            int dia =(int) (scaledMax*0.1*height);      
+        VerticalLayout allDisease = initDiseaseBubbleLayout(allDeseases, maxNumber,dia);
+        frame.addComponent(allDisease, 1, 2);
+        frame.setComponentAlignment(allDisease, Alignment.MIDDLE_CENTER);
 
         miniLayout = new HorizontalLayout();
         miniLayout.addComponent(initDiseaseLayout(diseaseCategorySet.iterator().next(), 100, 100, maxNumber));
@@ -96,6 +110,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         VerticalLayout diseaseLayout = new VerticalLayout();
         diseaseLayout.setWidth(width, Unit.PIXELS);
         diseaseLayout.setHeight(height, Unit.PIXELS);
+
         String SpacerI;
         String SpacerII;
         SpacerI = "<br/>(";
@@ -114,13 +129,11 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
 
     }
 
-    private VerticalLayout initDiseaseBubbleLayout(DiseaseCategoryObject diseaseObject, int max, double scaledMax) {
+    private VerticalLayout initDiseaseBubbleLayout(DiseaseCategoryObject diseaseObject, int max, int dia) {
         VerticalLayout diseaseLayout = new VerticalLayout();
-        double width = (scaleValues(diseaseObject.getDatasetNumber(), max, 0.5, 0.05));
-        width = width * 90 / scaledMax;
-        width = width * 3;
-        diseaseLayout.setWidth((int) width, Unit.PIXELS);
-        diseaseLayout.setHeight((int) width, Unit.PIXELS);
+        diseaseLayout.setHeight((int) dia, Unit.PIXELS);
+        diseaseLayout.setWidth((int)dia,Unit.PIXELS);
+
         String SpacerI;
         String SpacerII;
 

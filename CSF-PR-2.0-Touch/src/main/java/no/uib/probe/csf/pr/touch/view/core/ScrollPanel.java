@@ -1,7 +1,6 @@
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.event.LayoutEvents;
-import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
 
@@ -33,7 +32,6 @@ public class ScrollPanel extends VerticalLayout implements LayoutEvents.LayoutCl
 
     private boolean show = true;
     private final Layout mainLayout, miniLayout;
-    private final VerticalLayout navigationBtn;
     private final String viewId;
 
     /**
@@ -48,11 +46,6 @@ public class ScrollPanel extends VerticalLayout implements LayoutEvents.LayoutCl
     public ScrollPanel(Layout mainLayout, Layout miniLayout, int orientation, String viewId) {
         this.viewId = viewId;
         this.mainLayout = mainLayout;
-        navigationBtn = new VerticalLayout();
-//        navigationBtn.setHeight("30px");
-//        navigationBtn.setWidth("30px");
-//        navigationBtn.addStyleName("thumbBtn");
-//        mainLayout.addStyleName("border");
 
         if (miniLayout == null) {
             miniLayout = new VerticalLayout();
@@ -65,25 +58,18 @@ public class ScrollPanel extends VerticalLayout implements LayoutEvents.LayoutCl
         miniLayout.addStyleName("rightbtns");
         if (orientation == 0) {
 
-//            navigationBtn.setStyleName("upscrollebtn");
-
             this.addComponent(mainLayout);
             this.addComponent(miniLayout);
-//            this.addComponent(navigationBtn);
 
         } else {
-//            navigationBtn.setStyleName("downscrollbtn");
             this.addComponent(miniLayout);
-//            this.addComponent(navigationBtn);
             this.addComponent(mainLayout);
 
         }
-//        this.setComponentAlignment(navigationBtn, Alignment.MIDDLE_CENTER);
         this.setWidthUndefined();
         this.setHeightUndefined();
         this.setStyleName("scrollpanel");
         this.addStyleName("slowslide");
-//        this.navigationBtn.addLayoutClickListener(ScrollPanel.this);
         this.setWidthUndefined();
 
     }
@@ -95,28 +81,15 @@ public class ScrollPanel extends VerticalLayout implements LayoutEvents.LayoutCl
      */
     public final void setShowPanel(boolean show) {
         if (show) {
-//            this.navigationBtn.removeStyleName("transformslidebtn");
             this.mainLayout.removeStyleName("hidescrolllayout");
             this.miniLayout.addStyleName("hidescrolllayout");
-            this.removeStyleName("sidemenue");
             this.removeStyleName("hidescrollpanel");
             this.setWidthUndefined();
-//            if (navigationBtn != null && navigationBtn.isVisible()) {
-////                navigationBtn.detach();
-//            }
-//            this.addComponent(navigationBtn);
-//            this.setComponentAlignment(navigationBtn, Alignment.MIDDLE_CENTER);
 
         } else {
-//            this.navigationBtn.addStyleName("transformslidebtn");
             this.mainLayout.addStyleName("hidescrolllayout");
             this.miniLayout.removeStyleName("hidescrolllayout");
             this.addStyleName("hidescrollpanel");
-              this.addStyleName("sidemenue");
-//            if (navigationBtn != null && navigationBtn.isVisible() && navigationBtn.isAttached()) {
-////                navigationBtn.detach();
-//            }
-//            miniLayout.addComponent(navigationBtn);
 
         }
         this.show = show;
@@ -134,7 +107,6 @@ public class ScrollPanel extends VerticalLayout implements LayoutEvents.LayoutCl
      * @param show boolean
      */
     public void setShowNavigationBtn(boolean show) {
-        this.navigationBtn.setVisible(show);
         setShowPanel(false);
     }
 

@@ -181,8 +181,8 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
 
         };
 
-        exportPdfBtn.setHeight(45, Unit.PIXELS);
-        exportPdfBtn.setWidth(45, Unit.PIXELS);
+        exportPdfBtn.setHeight(40, Unit.PIXELS);
+        exportPdfBtn.setWidth(40, Unit.PIXELS);
         exportPdfBtn.updateIcon(new ThemeResource("img/pdf-text-o.png"));
         exportPdfBtn.setEnabled(true);
         controlBtnsContainer.addComponent(exportPdfBtn);
@@ -227,8 +227,8 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         controlBtnsContainer.setComponentAlignment(filterSortSwichBtn, Alignment.MIDDLE_CENTER);
         removeFilters.setEnabled(false);
 
-        removeFilters.setHeight(45, Unit.PIXELS);
-        removeFilters.setWidth(45, Unit.PIXELS);
+        removeFilters.setHeight(40, Unit.PIXELS);
+        removeFilters.setWidth(40, Unit.PIXELS);
         removeFilters.addStyleName("smallimg");
         removeFilters.updateIcon(new ThemeResource("img/filter_disables.png"));
         controlBtnsContainer.addComponent(removeFilters);

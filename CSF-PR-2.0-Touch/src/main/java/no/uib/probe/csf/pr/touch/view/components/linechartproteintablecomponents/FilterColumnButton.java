@@ -21,8 +21,8 @@ public abstract class FilterColumnButton extends ImageContainerBtn {
     private boolean activeFilter = false;
 
     public FilterColumnButton() {
-        this.setHeight(45, Unit.PIXELS);
-        this.setWidth(45, Unit.PIXELS);
+        this.setHeight(40, Unit.PIXELS);
+        this.setWidth(40, Unit.PIXELS);
         this.sortFilterRes = new ThemeResource("img/filter_sort.png");
         this.filterSortRes = new ThemeResource("img/sort_filter.png");
         this.updateIcon(sortFilterRes);

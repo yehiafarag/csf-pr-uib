@@ -10,6 +10,7 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import javax.servlet.ServletContext;
@@ -44,43 +45,38 @@ public class CSF_PR_UI extends UI {
         dbPassword = (scx.getInitParameter("password"));
         filesURL = scx.getInitParameter("filesURL");
         String csf_pr_Url = scx.getInitParameter("csf-pr-id");
-         VaadinSession.getCurrent().setAttribute("csf_pr_Url", csf_pr_Url);
-        
-        
+        VaadinSession.getCurrent().setAttribute("csf_pr_Url", csf_pr_Url);
+
         this.getPage().setTitle("CSF Proteome Resource (CSF-PR) v2.0");
 
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeight(100, Unit.PERCENTAGE);
-//        int scaleWidth = Page.getCurrent().getWebBrowser().getScreenWidth();
-//        int scaleHeight = Page.getCurrent().getWebBrowser().getScreenHeight() - 200;
-//        boolean scaleOnH = true;
-//        if (scaleHeight > scaleWidth) {
-//            scaleOnH = false;
-//        }
 
-        windowHeight = Math.max(Page.getCurrent().getBrowserWindowHeight(), 1080);
-        windowWidth =  Math.max(Page.getCurrent().getBrowserWindowWidth(), 1920);        
-        
-//        if (windowWidth < scaleWidth && windowHeight < scaleHeight) {
-//            //scale on both
-//            if (scaleOnH) {
-//                windowHeight = scaleHeight;
-//                windowWidth=scaleWidth;
-//            }
-//
-//        }
+        windowHeight = Page.getCurrent().getBrowserWindowHeight();// Math.max(Page.getCurrent().getBrowserWindowHeight(), 1080);
+        windowWidth = Page.getCurrent().getBrowserWindowWidth();//Math.max(Page.getCurrent().getBrowserWindowWidth(), 1920);
+        if (windowHeight < 1000) {
+            Notification.show("Screen is too small",Notification.Type.ERROR_MESSAGE);
+            windowHeight = 1000;
+            return;
+        }
+        if (windowWidth < 720) {
+              Notification.show("Screen is too small",Notification.Type.ERROR_MESSAGE);
+            windowWidth = 720;
+             return;
+        }
 
+//        windowWidth = 1000;//640;
+//        windowHeight = 720;//480;
         VerticalLayout appWrapper = new VerticalLayout();
         appWrapper.setWidth(100, Unit.PERCENTAGE);
         appWrapper.setHeight(100, Unit.PERCENTAGE);
         appWrapper.setStyleName("whitelayout");
-//        appWrapper.addStyleName("scrollable");
+
         setContent(appWrapper);
 
         layout = new MainLayout(dbURL, dbName, dbDriver, dbUserName, dbPassword, filesURL, windowWidth, windowHeight);
-
         appWrapper.addComponent(layout);
-        appWrapper.setComponentAlignment(layout, Alignment.TOP_CENTER);
+        appWrapper.setComponentAlignment(layout, Alignment.MIDDLE_CENTER);
 
         final SizeReporter sizeReporter = new SizeReporter(appWrapper);
 
@@ -98,33 +94,34 @@ public class CSF_PR_UI extends UI {
      */
     private void resizeScreen() {
 
-        int swindowHeight = Page.getCurrent().getBrowserWindowHeight();
-        int swindowWidth = Page.getCurrent().getBrowserWindowWidth();
-        boolean scaleOnH = false;
-        if (swindowWidth == windowWidth && swindowHeight == windowHeight && updatedZoomStyleName.equalsIgnoreCase("")) {
-            return;
-        }
-        if (swindowHeight < swindowWidth) {
-            scaleOnH = true;
-        }
-        int zoomLevel = 0;
-        if (scaleOnH) {
-            double ratio = (double) swindowHeight / (double) windowHeight;
-            zoomLevel = ((int) Math.round(ratio * 10.0));
-        } else {
-            double ratio = (double) swindowWidth / (double) windowWidth;
-            zoomLevel = ((int) Math.round(ratio * 10.0));
-
-        }
-        zoomLevel = Math.max(zoomLevel, 4);
-        zoomLevel = Math.min(zoomLevel, 20);
-
-        layout.removeStyleName(updatedZoomStyleName);
-        updatedZoomStyleName = "zoom" + zoomLevel;
-        layout.setStyleName(updatedZoomStyleName);
-
-        VaadinSession.getCurrent().setAttribute("zoomStyle", updatedZoomStyleName);
-
+//        int swindowHeight = Page.getCurrent().getBrowserWindowHeight();
+//        int swindowWidth = Page.getCurrent().getBrowserWindowWidth();
+//        boolean scaleOnH = false;
+//        if (swindowWidth == windowWidth && swindowHeight == windowHeight && updatedZoomStyleName.equalsIgnoreCase("")) {
+//            return;
+//        }
+//        if (swindowHeight < swindowWidth) {
+//            scaleOnH = true;
+//        }
+//        int zoomLevel = 0;
+//        if (scaleOnH) {
+//            double ratio = (double) swindowHeight / (double) windowHeight;
+//            zoomLevel = ((int) Math.round(ratio * 10.0));
+//        } else {
+//            double ratio = (double) swindowWidth / (double) windowWidth;
+//            zoomLevel = ((int) Math.round(ratio * 10.0));
+//
+//        }
+//        zoomLevel = Math.max(zoomLevel, 4);
+//        zoomLevel = Math.min(zoomLevel, 20);
+//
+//        layout.removeStyleName(updatedZoomStyleName);
+//        updatedZoomStyleName = "zoom" + zoomLevel;
+//        layout.setStyleName(updatedZoomStyleName);
+//
+//        VaadinSession.getCurrent().setAttribute("zoomStyle", updatedZoomStyleName);
+//        System.out.println("window h " + windowHeight + "   window w " + windowWidth + " zoom " + updatedZoomStyleName);
+//
     }
 
 }

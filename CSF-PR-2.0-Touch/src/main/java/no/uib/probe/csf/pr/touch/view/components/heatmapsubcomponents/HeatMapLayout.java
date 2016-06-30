@@ -187,13 +187,9 @@ public abstract class HeatMapLayout extends VerticalLayout {
         final StudiesInformationPopupBtn showStudiesBtn = new StudiesInformationPopupBtn();
         controlBtnsContainer.addComponent(showStudiesBtn);
         controlBtnsContainer.setComponentAlignment(showStudiesBtn, Alignment.MIDDLE_CENTER);
-        showStudiesBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
-
-            @Override
-            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-                showStudiesBtn.updateData(updatedDatasetMap.values());
-                showStudiesBtn.view();
-            }
+        showStudiesBtn.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
+            showStudiesBtn.updateData(updatedDatasetMap.values());
+            showStudiesBtn.view();
         });
         final QuantDatasetsfullStudiesTableLayout quantStudiesTable = new QuantDatasetsfullStudiesTableLayout(activeColumnHeaders);
         controlBtnsContainer.addComponent(quantStudiesTable);
@@ -218,8 +214,8 @@ public abstract class HeatMapLayout extends VerticalLayout {
             }
 
         };
-        exportTableBtn.setHeight(45, Unit.PIXELS);
-        exportTableBtn.setWidth(45, Unit.PIXELS);
+        exportTableBtn.setHeight(40, Unit.PIXELS);
+        exportTableBtn.setWidth(40, Unit.PIXELS);
         exportTableBtn.updateIcon(new ThemeResource("img/xls-text-o-2.png"));
         exportTableBtn.setEnabled(true);
 //        exportTableBtn.setPrimaryStyleName("exportxslbtn");
@@ -238,8 +234,8 @@ public abstract class HeatMapLayout extends VerticalLayout {
         selectAllBtn.updateIcon(new ThemeResource("img/grid-small.png"));
         selectAllBtn.setEnabled(true);
         selectAllBtn.addStyleName("smallimg");
-        selectAllBtn.setWidth(45, Unit.PIXELS);
-        selectAllBtn.setHeight(45, Unit.PIXELS);
+        selectAllBtn.setWidth(40, Unit.PIXELS);
+        selectAllBtn.setHeight(40, Unit.PIXELS);
         controlBtnsContainer.addComponent(selectAllBtn);
         controlBtnsContainer.setComponentAlignment(selectAllBtn, Alignment.MIDDLE_CENTER);
         selectAllBtn.setDescription("Select all disease group comparisons");
@@ -254,8 +250,8 @@ public abstract class HeatMapLayout extends VerticalLayout {
         };
         unselectAllBtn.updateIcon(new ThemeResource("img/grid-small-o.png"));
         unselectAllBtn.setEnabled(true);
-        unselectAllBtn.setWidth(45, Unit.PIXELS);
-        unselectAllBtn.setHeight(45, Unit.PIXELS);
+        unselectAllBtn.setWidth(40, Unit.PIXELS);
+        unselectAllBtn.setHeight(40, Unit.PIXELS);
         unselectAllBtn.addStyleName("smallimg");
         controlBtnsContainer.addComponent(unselectAllBtn);
         controlBtnsContainer.setComponentAlignment(unselectAllBtn, Alignment.MIDDLE_CENTER);
@@ -284,8 +280,8 @@ public abstract class HeatMapLayout extends VerticalLayout {
         selectMultiBtn.setDescription("Multiple selection");
         selectMultiBtn.updateIcon(new ThemeResource("img/grid-small-multi.png"));
         selectMultiBtn.setEnabled(true);
-        selectMultiBtn.setWidth(45, Unit.PIXELS);
-        selectMultiBtn.setHeight(45, Unit.PIXELS);
+        selectMultiBtn.setWidth(40, Unit.PIXELS);
+        selectMultiBtn.setHeight(40, Unit.PIXELS);
 
         cornerCell = new VerticalLayout();
         cornerCell.setWidth(150, Unit.PIXELS);

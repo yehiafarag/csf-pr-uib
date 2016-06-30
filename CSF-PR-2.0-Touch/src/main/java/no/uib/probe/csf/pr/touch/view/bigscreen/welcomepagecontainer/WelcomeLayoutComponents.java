@@ -58,6 +58,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
     public WelcomeLayoutComponents(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager, final LayoutViewManager View_Manager, int bodyWidth, int bodyHeight, OverviewInfoBean overviewInfoBean, List<Object[]> publicationList, Set<QuantDatasetObject> dsObjects) {
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeight(100, Unit.PERCENTAGE);
+        this.addStyleName("hideoverflow");
         HeaderLayout header = new HeaderLayout();
         this.addComponent(header);
         float headerRatio = 65f / (float) bodyHeight;
@@ -75,7 +76,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         VerticalLayout leftPanelWrapper = new VerticalLayout();
         leftPanelWrapper.setWidth(160,Unit.PIXELS);
         leftPanelWrapper.setHeightUndefined();
-        leftPanelWrapper.setStyleName("framelayout");
+//        leftPanelWrapper.setStyleName("framelayout");
         mainBodyHLayout.addComponent(leftPanelWrapper);
 
         // the stat layout
@@ -245,6 +246,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
                 View_Manager.viewLayout("quantview");
             }
         };
+        quantDatasetBtn.getThumbBtn().setDescription("Click to browse protein quantitative data");
         middlePanelServicesLayout.addComponent(quantDatasetBtn, 0, 0);
         BigBtn idDatasetBtn = new BigBtn("Identification", "Browse identification data.", "img/bar-chart.png") {
 
@@ -255,7 +257,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
             }
         };
         
-        
+        idDatasetBtn.getThumbBtn().setDescription("Click to browse protein identification data");
         
         middlePanelServicesLayout.addComponent(idDatasetBtn, 0, 1);
         
@@ -271,6 +273,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         
         
         };
+          searchingDatasetBtn.getThumbBtn().setDescription("Click to search  protein data");
         middlePanelServicesLayout.addComponent(searchingDatasetBtn, 1, 0);
 
         CompareComponent compareBtn = new CompareComponent(Data_handler, CSFPR_Central_Manager){
@@ -282,6 +285,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
             
             
         };
+        compareBtn.getThumbBtn().setDescription("Click to compare user data with CSF-PR quantative  protein data");
         middlePanelServicesLayout.addComponent(compareBtn, 1, 1);
 
         BigBtn homeBtn = new BigBtn("", "", "img/home-o.png") {
@@ -293,6 +297,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         };
         this.addComponent(homeBtn);
         homeBtn.setVisible(false);
+        homeBtn.getThumbBtn().setDescription("Home page");
 
         Label para_3 = new Label("<p align='justify' Style='font-size: 12px;color: black;/* font-weight: bold; */line-height: 20px;'><font>CSF-PR v2.0 is being developed by the <a class='link' href='http://www.uib.no/rg/probe' target='_blank'>Proteomics Unit</a> at the<a class='link' href='http://www.uib.no/biomedisin/en' target='_blank'> Department of Biomedicine at the University of Bergen</a>, Norway, in close collaboration with <a class='link' href='http://haukeland.no/en/OmOss/Avdelinger/ms/Sider/om-oss.aspx' target='_blank'>The Norwegian Multiple Sclerosis Competence Centre</a>, Haukeland University Hospital, Bergen, Norway.</font><br/><font>See also: <a class='link' href='http://www.mcponline.org/content/13/11/3152.full.pdf+html' target='_blank'>Guldbrandsen et al.: In-depth Characterization of the Cerebrospinal Fluid (CSF) Proteome Displayed Through the CSF Proteome Resource (CSF-PR). Mol Cell Proteomics. 2014.</a></font></p>");
         para_3.setContentMode(ContentMode.HTML);
@@ -301,7 +306,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
         //init mini layout
         zoomApp = new ZoomControler(false);
-        zoomApp.setWidth(50, Unit.PIXELS);
+        zoomApp.setWidth(40, Unit.PIXELS);
         VerticalLayout miniLayoutContainer = new VerticalLayout(homeBtn.getThumbBtn(), quantDatasetBtn.getThumbBtn(), idDatasetBtn.getThumbBtn(), searchingDatasetBtn.getThumbBtn(), compareBtn.getThumbBtn(), zoomApp);
         miniLayout = new HorizontalLayout(miniLayoutContainer);
         miniLayout.addStyleName("zoomborder");

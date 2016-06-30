@@ -237,8 +237,8 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
             }
         };
         
-        hideStableBtn.setHeight(45, Unit.PIXELS);
-        hideStableBtn.setWidth(45, Unit.PIXELS);
+        hideStableBtn.setHeight(40, Unit.PIXELS);
+        hideStableBtn.setWidth(40, Unit.PIXELS);
         hideStableBtn.updateIcon(scatterplotApplied);
         hideStableBtn.setEnabled(true);
         controlBtnsContainer.addComponent(hideStableBtn);
@@ -253,8 +253,8 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
             
         };
         
-        exportPdfBtn.setHeight(45, Unit.PIXELS);
-        exportPdfBtn.setWidth(45, Unit.PIXELS);
+        exportPdfBtn.setHeight(40, Unit.PIXELS);
+        exportPdfBtn.setWidth(40, Unit.PIXELS);
         exportPdfBtn.updateIcon(new ThemeResource("img/pdf-text-o.png"));
         exportPdfBtn.setEnabled(true);
         controlBtnsContainer.addComponent(exportPdfBtn);
@@ -277,8 +277,8 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         };
         unselectAllBtn.updateIcon(new ThemeResource("img/grid-small-o.png"));
         unselectAllBtn.setEnabled(true);
-        unselectAllBtn.setWidth(45, Unit.PIXELS);
-        unselectAllBtn.setHeight(45, Unit.PIXELS);
+        unselectAllBtn.setWidth(40, Unit.PIXELS);
+        unselectAllBtn.setHeight(40, Unit.PIXELS);
         unselectAllBtn.addStyleName("smallimg");
         controlBtnsContainer.addComponent(unselectAllBtn);
         controlBtnsContainer.setComponentAlignment(unselectAllBtn, Alignment.MIDDLE_CENTER);
@@ -305,8 +305,8 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         selectMultiBtn.setDescription("Multiple selection");
         selectMultiBtn.updateIcon(new ThemeResource("img/grid-small-multi.png"));
         selectMultiBtn.setEnabled(true);
-        selectMultiBtn.setWidth(45, Unit.PIXELS);
-        selectMultiBtn.setHeight(45, Unit.PIXELS);
+        selectMultiBtn.setWidth(40, Unit.PIXELS);
+        selectMultiBtn.setHeight(40, Unit.PIXELS);
         controlBtnsContainer.addComponent(selectMultiBtn);
         controlBtnsContainer.setComponentAlignment(selectMultiBtn, Alignment.MIDDLE_CENTER);
         

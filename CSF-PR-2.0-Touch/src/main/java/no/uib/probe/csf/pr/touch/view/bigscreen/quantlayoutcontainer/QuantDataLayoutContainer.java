@@ -95,7 +95,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         super(width, height);
         this.Data_handler = Data_handler;
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
-        this.setMargin(true);
+        this.setMargin(false);
         this.addStyleName("slowslide");
 
         Collection<DiseaseCategoryObject> availableDiseaseCategory = Data_handler.getDiseaseCategorySet();

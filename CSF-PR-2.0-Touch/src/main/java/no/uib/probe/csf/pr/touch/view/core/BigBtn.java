@@ -53,19 +53,12 @@ public abstract class BigBtn extends HorizontalLayout implements LayoutEvents.La
             }
             
         };
-//        thumbContainer.setStyleName("bigbtn");
-//        thumbBtnIcon = new Image();
-//        thumbBtnIcon.setWidth(70, Unit.PIXELS);
-//        thumbBtnIcon.setHeight(70, Unit.PIXELS);
-//        thumbBtnIcon.setDescription(labelText);
 
         thumbContainer.updateIcon(new ThemeResource(imgUrl));
-        thumbContainer.setWidth(50, Unit.PIXELS);
-        thumbContainer.setHeight(50, Unit.PIXELS);
+        thumbContainer.setWidth(40, Unit.PIXELS);
+        thumbContainer.setHeight(40, Unit.PIXELS);
         thumbContainer.setEnabled(true);
         thumbContainer.setReadOnly(false);
-//        thumbContainer.addComponent(thumbBtnIcon);
-//        thumbContainer.addLayoutClickListener(BigBtn.this);
 
     }
     

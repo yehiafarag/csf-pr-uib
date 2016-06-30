@@ -16,8 +16,8 @@ public class StudiesInformationPopupBtn extends ImageContainerBtn {
 
     public StudiesInformationPopupBtn() {
         this.updateIcon(new ThemeResource("img/file-text-o-1.png"));
-        this.setWidth(45,Unit.PIXELS);
-        this.setHeight(45,Unit.PIXELS);
+        this.setWidth(40,Unit.PIXELS);
+        this.setHeight(40,Unit.PIXELS);
         this.setEnabled(true);
       
         this.setDescription("Show dataset information");

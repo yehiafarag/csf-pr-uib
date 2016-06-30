@@ -13032,7 +13032,7 @@ div.v-layout.v-horizontal.v-widget {
 .transparentlayout{
     background-color:rgba(255, 255, 255, 0.0);     
 }
-.toplogo{
+.marginleft40{
     margin-left:40px;
 }
 .margintop10{
@@ -13064,8 +13064,7 @@ div.v-layout.v-horizontal.v-widget {
     -moz-border-radius:4px;
     border-radius:  4px;
     overflow:hidden;
-    margin-right: 30px;
-    margin-top: 5px;
+    /*margin-right: 20px;*/
     z-index:2;
     position:relative !important;
     background-color:white;
@@ -13592,15 +13591,14 @@ div.v-layout.v-horizontal.v-widget {
     position: inherit !important; 
     max-width:300px!important;    
     z-index:2 !important;
-    margin-top:18px;
 
 
 }
-.rightbtns{
+.righ40{
     right:40px !important;
 
 }
-.leftbtns{
+.left40{
     left:40px !important;
 
 }
@@ -13811,10 +13809,13 @@ div.v-layout.v-horizontal.v-widget {
     zoom: 0.74; 
 }
 .zoom9{    
-    /*     transform:scaleY(0.82);
-       transform:scaleX(0.82); 
-        transform-origin: 0 0 !important;*/
-    zoom: 0.82; 
+   -ms-transform: scale(0.85,0.85); /* IE 9 */
+    -webkit-transform: scale(0.85,0.85); /* Safari */
+    transform: scale(0.85,0.85);
+     -ms-transform-origin:50% 0;
+      -webkit-transform-origin:50% 0;
+        transform-origin:50% 0;
+    /*zoom: 0.82;*/ 
 }
 .zoom0{    
     zoom: 1; 
@@ -14163,12 +14164,12 @@ div.v-layout.v-horizontal.v-widget {
     min-width:50px;
     min-height:100px;
     top:-50px;
-    padding-top:7px;    
-    padding-right:7px;    
-    padding-bottom:7px;
+    padding-top:2px;    
+    padding-right:2px;    
+    padding-bottom:2px;
     transform:translate(-2px,-38px);
     max-height:500px;
-    max-width:60px;
+    max-width:75px;
     position:relative;
     z-index:3 !important;
     background-color:  #EAF5FC ;
@@ -14181,8 +14182,8 @@ div.v-layout.v-horizontal.v-widget {
 
 .v-slot-topbtns.v-slot-rightbtns{
     background-color:white !important;
-    padding-right:10px;
-    padding-left:10px;
+    padding-left:5px;
+    padding-right:5px;
 
 }
 .ultralightbluelayout{
@@ -15039,3 +15040,19 @@ div.v-layout.v-horizontal.v-widget {
 .defaultcursor{
     cursor: default !important;
 }
+.appframe{
+    
+}
+.v-slot-hidescrolllayout{
+       -webkit-transition: all 1.5s ease-in-out;
+    -moz-transition: all 1.5s ease-in-out;
+    -o-transition: all 1.5s ease-in-out;
+    transition: all 1.5s ease-in-out;
+
+    overflow:hidden;
+    word-wrap:normal;
+    overflow-wrap: normal;
+    width:0px;
+    height:6px;
+}
+.autobubble{}

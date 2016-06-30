@@ -7,7 +7,6 @@ package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.ThemeResource;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
@@ -35,8 +34,8 @@ public class InformationButton extends ImageContainerBtn {
             this.setWidth(30, Unit.PIXELS);
             this.addStyleName("midimg");
         } else {
-            this.setHeight(45, Unit.PIXELS);
-            this.setWidth(45, Unit.PIXELS);
+            this.setHeight(40, Unit.PIXELS);
+            this.setWidth(40, Unit.PIXELS);
            this.addStyleName("smallimg");
         }
  

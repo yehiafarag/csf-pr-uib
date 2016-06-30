@@ -29,34 +29,45 @@ public class CSFApplicationContainer extends VerticalLayout {
     private final Data_Handler Data_handler;
 
     public CSFApplicationContainer(int pageWidth, int pageHeight, String url, String dbName, String driver, String userName, String password, String filesURL) {
-        this.setWidth(100, Unit.PERCENTAGE);
-        this.setHeight(100, Unit.PERCENTAGE);
-        this.setSpacing(true);
+        this.setWidth(pageWidth, Unit.PIXELS);
+        this.setHeight(pageHeight, Unit.PIXELS);
+        this.setStyleName("whitelayout");
+        this.setSpacing(false);
+        
+        
+        
+        
         BusyTask busyTask = new BusyTask();
         this.View_Manager = new LayoutViewManager(busyTask);
         this.Data_handler = new Data_Handler(url, dbName, driver, userName, password, filesURL);
-        int mainlayoutWidth = pageWidth - 10;
-        int mainlayoutHeight = pageHeight - 20;
+         CSFPR_Central_Manager CSFPR_Central_Manager = new CSFPR_Central_Manager(busyTask);
+         
+         
+        int mainlayoutWidth = pageWidth ;
+        int mainlayoutHeight = pageHeight ;
 
         VerticalLayout bodyWrapper = new VerticalLayout();
         bodyWrapper.setHeightUndefined();
         bodyWrapper.setWidth(100, Unit.PERCENTAGE);
         this.addComponent(bodyWrapper);
-        CSFPR_Central_Manager CSFPR_Central_Manager = new CSFPR_Central_Manager(busyTask);
+        
+        
+       
+        
+        
         WelcomeLayoutComponents welcomeContent = new WelcomeLayoutComponents(Data_handler,CSFPR_Central_Manager, View_Manager, mainlayoutWidth, mainlayoutHeight, Data_handler.getResourceOverviewInformation(), Data_handler.getPublicationList(), Data_handler.getQuantDatasetList());
 
         VerticalLayout mainLayout = new VerticalLayout();
-        mainLayout.setHeight(mainlayoutHeight, Unit.PIXELS);
-        mainLayout.setWidth(mainlayoutWidth, Unit.PIXELS);
+        mainLayout.setHeight(pageHeight, Unit.PIXELS);
+        mainLayout.setWidth(pageWidth, Unit.PIXELS);
         mainLayout.addComponent(welcomeContent);
 
         this.welcomeLayoutPanel = new ScrollPanel(mainLayout, welcomeContent.getMiniLayout(), 0, "welcomeview");
         View_Manager.registerComponent(welcomeLayoutPanel);
         bodyWrapper.addComponent(welcomeLayoutPanel);
         bodyWrapper.setComponentAlignment(welcomeLayoutPanel, Alignment.TOP_RIGHT);
-        welcomeLayoutPanel.setShowNavigationBtn(false);
 
-        QuantDataLayoutContainer quantLayout = new QuantDataLayoutContainer(Data_handler,CSFPR_Central_Manager, mainlayoutWidth - 32, mainlayoutHeight - 2);
+        QuantDataLayoutContainer quantLayout = new QuantDataLayoutContainer(Data_handler,CSFPR_Central_Manager, mainlayoutWidth , mainlayoutHeight);
 
         quantLayoutPanel = new SlidePanel(quantLayout, null, 1, "quantview") {
 

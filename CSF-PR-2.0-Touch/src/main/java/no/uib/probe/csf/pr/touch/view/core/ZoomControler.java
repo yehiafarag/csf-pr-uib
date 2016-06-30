@@ -49,9 +49,10 @@ public class ZoomControler extends HorizontalLayout implements LayoutEvents.Layo
         resetZoomBtn.setWidth(100, Unit.PERCENTAGE);
         resetZoomBtn.setHeight(100, Unit.PERCENTAGE);
         resetZoomBtn.setReadOnly(false);
-        resetZoomBtn.setEnabled(true);this.setStyleName("paddingimg");
+        resetZoomBtn.setEnabled(true);
+//        this.setStyleName("paddingimg");
         
-        resetZoomBtn.addStyleName("smallimg");
+        resetZoomBtn.addStyleName("midimg");
 
         SmallBtn zoomOutBtn = new SmallBtn(new ThemeResource("img/search-minus.png"));
         zoomOutBtn.addLayoutClickListener(ZoomControler.this);
@@ -64,20 +65,20 @@ public class ZoomControler extends HorizontalLayout implements LayoutEvents.Layo
             this.setComponentAlignment(zoomOutBtn, Alignment.TOP_CENTER);
         } else {
             VerticalLayout verticalContainer = new VerticalLayout();
-            this.setStyleName("paddingimg");
+            this.setStyleName("midimg");
             verticalContainer.setSizeFull();
             verticalContainer.setSpacing(true);
-            zoomInBtn.setWidth(50, Unit.PIXELS);
-            zoomInBtn.setHeight(50, Unit.PIXELS);
+            zoomInBtn.setWidth(40, Unit.PIXELS);
+            zoomInBtn.setHeight(40, Unit.PIXELS);
             zoomInBtn.addStyleName(zoomStyleName);
             verticalContainer.addComponent(zoomInBtn);
             verticalContainer.setComponentAlignment(zoomInBtn, Alignment.TOP_CENTER);
             verticalContainer.addComponent(zoomOutBtn);
             verticalContainer.setComponentAlignment(zoomOutBtn, Alignment.TOP_CENTER);
-            zoomOutBtn.setWidth(50, Unit.PIXELS);
-            zoomOutBtn.setHeight(50, Unit.PIXELS);
-            resetZoomBtn.setWidth(50, Unit.PIXELS);
-            resetZoomBtn.setHeight(50, Unit.PIXELS);
+            zoomOutBtn.setWidth(40, Unit.PIXELS);
+            zoomOutBtn.setHeight(40, Unit.PIXELS);
+            resetZoomBtn.setWidth(40, Unit.PIXELS);
+            resetZoomBtn.setHeight(40, Unit.PIXELS);
             
             verticalContainer.addComponent(resetZoomBtn);
             verticalContainer.setComponentAlignment(resetZoomBtn, Alignment.TOP_CENTER);

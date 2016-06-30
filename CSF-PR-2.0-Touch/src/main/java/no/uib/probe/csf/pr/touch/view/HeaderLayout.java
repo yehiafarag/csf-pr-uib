@@ -25,9 +25,9 @@ public class HeaderLayout extends HorizontalLayout{
         this.setSpacing(true);
         //tile logo container
         HorizontalLayout logoTitleContainer = new HorizontalLayout();
-        logoTitleContainer.setStyleName("toplogo");
+//        logoTitleContainer.setStyleName("toplogo");
         this.addComponent(logoTitleContainer);
-        this.setComponentAlignment(logoTitleContainer, Alignment.MIDDLE_LEFT);
+        this.setComponentAlignment(logoTitleContainer, Alignment.TOP_LEFT);
         VerticalLayout logo = new VerticalLayout();
         logo.setWidth(100,Unit.PERCENTAGE);
         logo.setHeight(30,Unit.PIXELS);
@@ -49,7 +49,7 @@ public class HeaderLayout extends HorizontalLayout{
         cLabel.setWidth(100,Unit.PERCENTAGE);
         cLabel.setHeight(100,Unit.PERCENTAGE);
         logo.addComponent(cLabel);
-        logo.setComponentAlignment(cLabel, Alignment.MIDDLE_CENTER);
+        logo.setComponentAlignment(cLabel, Alignment.TOP_CENTER);
         logoTitleContainer.addComponent(logo);
 
         VerticalLayout rightHeaderLayout = new VerticalLayout();
@@ -58,10 +58,10 @@ public class HeaderLayout extends HorizontalLayout{
         rightHeaderLayout.setWidth(100,Unit.PERCENTAGE);
 
         this.addComponent(rightHeaderLayout);
-        this.setComponentAlignment(rightHeaderLayout, Alignment.TOP_CENTER);
+        this.setComponentAlignment(rightHeaderLayout, Alignment.TOP_RIGHT);
         HorizontalLayout linksIconsLayout = new HorizontalLayout();
         linksIconsLayout.setStyleName("transparentlayout");
-        linksIconsLayout.addStyleName("margintop10");
+//        linksIconsLayout.addStyleName("margintop10");
         rightHeaderLayout.addComponent(linksIconsLayout);
         rightHeaderLayout.setComponentAlignment(linksIconsLayout, Alignment.MIDDLE_RIGHT);
         linksIconsLayout.setHeight(30,Unit.PIXELS);
@@ -85,15 +85,15 @@ public class HeaderLayout extends HorizontalLayout{
         kgj_ico.setHeight(58,Unit.PIXELS);
         linksIconsLayout.addComponent(kgj_ico);
 
-        VerticalLayout rightSpacer = new VerticalLayout();
-        rightSpacer.setWidth(40,Unit.PIXELS);
-        rightSpacer.setHeight(5,Unit.PIXELS);
+//        VerticalLayout rightSpacer = new VerticalLayout();
+//        rightSpacer.setWidth(40,Unit.PIXELS);
+//        rightSpacer.setHeight(5,Unit.PIXELS);
 
-        linksIconsLayout.addComponent(rightSpacer);
+//        linksIconsLayout.addComponent(rightSpacer);
         linksIconsLayout.setComponentAlignment(probe_ico, Alignment.MIDDLE_RIGHT);
         linksIconsLayout.setComponentAlignment(uib_ico, Alignment.MIDDLE_RIGHT);
         linksIconsLayout.setComponentAlignment(kgj_ico, Alignment.MIDDLE_RIGHT);
-        linksIconsLayout.setComponentAlignment(rightSpacer, Alignment.MIDDLE_RIGHT);
+//        linksIconsLayout.setComponentAlignment(rightSpacer, Alignment.MIDDLE_RIGHT);
     }
     
 }

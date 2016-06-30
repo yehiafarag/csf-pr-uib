@@ -6,7 +6,6 @@
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.event.LayoutEvents;
-import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
@@ -41,7 +40,6 @@ public class SlidePanel extends HorizontalLayout implements LayoutEvents.LayoutC
 
     private boolean show = true;
     private final Layout mainLayout, miniLayout;
-    private final VerticalLayout navigationBtn;
     private final String viewId;
 
     /**
@@ -55,9 +53,6 @@ public class SlidePanel extends HorizontalLayout implements LayoutEvents.LayoutC
     public SlidePanel(Layout mainLayout, Layout miniLayout, int orientation, String viewId) {
         this.mainLayout = mainLayout;
         this.viewId = viewId;
-        navigationBtn = new VerticalLayout();
-        navigationBtn.setHeight("30px");
-        navigationBtn.setWidth("30px");
         if (miniLayout == null) {
             miniLayout = new VerticalLayout();
         }
@@ -66,22 +61,15 @@ public class SlidePanel extends HorizontalLayout implements LayoutEvents.LayoutC
         miniLayout.addStyleName("hideslidelayout");
         mainLayout.addStyleName("slowslide");
         if (orientation == 0) {
-            this.addComponent(navigationBtn);
-
-            navigationBtn.setStyleName("leftslidebtn");
             this.addComponent(miniLayout);
             this.addComponent(mainLayout);
 
         } else {
-            navigationBtn.setStyleName("rightslidebtn");
             this.addComponent(mainLayout);
             this.addComponent(miniLayout);
-            this.addComponent(navigationBtn);
         }
-        this.setComponentAlignment(navigationBtn, Alignment.MIDDLE_CENTER);
         this.setHeight(100,Unit.PERCENTAGE);
         this.setStyleName("slidepanel");
-        this.navigationBtn.addLayoutClickListener(SlidePanel.this);
         this.setWidthUndefined();
 
     }
@@ -94,11 +82,9 @@ public class SlidePanel extends HorizontalLayout implements LayoutEvents.LayoutC
     public final void setShowPanel(boolean show) {
         if (show) {
             this.setVisible(true);
-            this.navigationBtn.removeStyleName("transformslidebtn");
             this.mainLayout.removeStyleName("hideslidelayout");
             this.miniLayout.addStyleName("hideslidelayout");
         } else {
-            this.navigationBtn.addStyleName("transformslidebtn");
             this.mainLayout.addStyleName("hideslidelayout");
             this.miniLayout.removeStyleName("hideslidelayout");
         }
@@ -117,7 +103,6 @@ public class SlidePanel extends HorizontalLayout implements LayoutEvents.LayoutC
      * @param show boolean
      */
     public void setShowNavigationBtn(boolean show) {
-        this.navigationBtn.setVisible(show);
     }
 
 }

@@ -40,6 +40,7 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
         this.setWidth(bodyWidth, Unit.PIXELS);
         this.setHeight(bodyHeight, Unit.PIXELS);
         this.addStyleName("slowslide");
+        this.addStyleName("whitelayout");
         this.layoutControlMap = new TreeMap<>();
 
         this.mainLayoutWrapper = new HorizontalLayout();
@@ -62,16 +63,24 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
         leftSideContainerWrapper.addComponent(leftSideContainer);
         leftSideContainerWrapper.setComponentAlignment(leftSideContainer, Alignment.TOP_CENTER);
 
-        mainViewContainer = new HorizontalLayout();
-        mainLayoutWrapper.addComponent(mainViewContainer);
+        HorizontalLayout mainViewContainerFrame = new HorizontalLayout();
+        mainLayoutWrapper.addComponent(mainViewContainerFrame);
+        mainViewContainerFrame.setWidth(bodyWidth-120-55,Unit.PIXELS);
+        mainViewContainerFrame.setHeightUndefined();
+        mainViewContainerFrame.addStyleName("mainviewport");
+        
+        
+        
+        
+         mainViewContainer = new HorizontalLayout();
+        mainViewContainerFrame.addComponent(mainViewContainer);
         mainViewContainer.setWidthUndefined();
         mainViewContainer.setHeightUndefined();
-        mainViewContainer.addStyleName("mainviewport");
 
         toolBtnContainer = new VerticalLayout();
         toolBtnContainer.setStyleName("sidebtnsmenue");
         toolBtnContainer.setHeightUndefined();
-        toolBtnContainer.setWidth(100, Unit.PIXELS);
+        toolBtnContainer.setWidth(55, Unit.PIXELS);
         mainLayoutWrapper.addComponent(toolBtnContainer);
         mainLayoutWrapper.setComponentAlignment(toolBtnContainer, Alignment.BOTTOM_RIGHT);
 
@@ -100,7 +109,7 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
         this.setComponentAlignment(mainViewLayout, Alignment.MIDDLE_CENTER);
         listener = (LayoutEvents.LayoutClickEvent event) -> {
 
-            if (event.getClickedComponent() == null || event.getComponent().getStyleName().trim().equalsIgnoreCase("")) {
+            if (event.getClickedComponent() == null || event.getClickedComponent().getStyleName().trim().contains("h2") ||event.getClickedComponent().getStyleName().trim().equalsIgnoreCase("")) {
                 System.out.println("return ");
                 return;
             }
@@ -108,12 +117,14 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
 
             mainViewLayout.removeStyleName("hidelayout");
             mainViewLayout.removeLayoutClickListener(listener);
-            mainViewLayout.setWidth(mainViewLayout.getWidth() - 200, Unit.PIXELS);
+            mainViewLayout.setWidth(mainViewLayout.getWidth()-200, Unit.PIXELS);
             mainViewLayout.addStyleName("hideslidelayout");
 
             this.removeComponent(mainViewLayout);
             mainViewContainer.addComponent(mainViewLayout);
-            mainViewContainer.setComponentAlignment(mainViewLayout, Alignment.TOP_CENTER);
+            mainViewContainer.setComponentAlignment(mainViewLayout, Alignment.TOP_CENTER);            
+            
+            
             if (currentView != null) {
                 currentView.removeStyleName("hideslidelayout");
                 currentBtn.removeStyleName("unselectedbtn");
@@ -126,6 +137,7 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
         };
         mainViewLayout.addLayoutClickListener(listener);
         if (toolBtnsLayout != null) {
+            toolBtnsLayout.addStyleName("marginleft2");
             this.toolBtnContainer.addComponent(toolBtnsLayout);
             this.toolBtnContainer.setComponentAlignment(toolBtnsLayout, Alignment.MIDDLE_RIGHT);
             mainViewLayout.setData(toolBtnsLayout);

@@ -161,16 +161,16 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
 
         };
 
-        dsComparisonsSwichBtn.setHeight(90, Unit.PIXELS);
-        dsComparisonsSwichBtn.setWidth(45, Unit.PIXELS);
+        dsComparisonsSwichBtn.setHeight(80, Unit.PIXELS);
+        dsComparisonsSwichBtn.setWidth(40, Unit.PIXELS);
         dsComparisonsSwichBtn.updateIcon(comparisonDsRes);
         dsComparisonsSwichBtn.setEnabled(true);
         controlBtnsContainer.addComponent(dsComparisonsSwichBtn);
         controlBtnsContainer.setComponentAlignment(dsComparisonsSwichBtn, Alignment.MIDDLE_CENTER);
         dsComparisonsSwichBtn.setDescription("show comparisons / Datasets");
 
-        resizeDsOnPatientNumbersBtn.setHeight(45, Unit.PIXELS);
-        resizeDsOnPatientNumbersBtn.setWidth(45, Unit.PIXELS);
+        resizeDsOnPatientNumbersBtn.setHeight(40, Unit.PIXELS);
+        resizeDsOnPatientNumbersBtn.setWidth(40, Unit.PIXELS);
         resizeDsOnPatientNumbersBtn.updateIcon(new ThemeResource("img/resize_1.png"));
 //        resizeDsOnPatientNumbersBtn.addStyleName("smallimg");
         resizeDsOnPatientNumbersBtn.setEnabled(false);
@@ -206,8 +206,8 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
 
         };
 
-        orderByTrendBtn.setHeight(45, Unit.PIXELS);
-        orderByTrendBtn.setWidth(45, Unit.PIXELS);
+        orderByTrendBtn.setHeight(40, Unit.PIXELS);
+        orderByTrendBtn.setWidth(40, Unit.PIXELS);
         orderByTrendBtn.updateIcon(trendOrderRes);
         orderByTrendBtn.setEnabled(true);
         controlBtnsContainer.addComponent(orderByTrendBtn);
@@ -235,8 +235,8 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
 
         };
 
-        showSigOnlyBtn.setHeight(45, Unit.PIXELS);
-        showSigOnlyBtn.setWidth(45, Unit.PIXELS);
+        showSigOnlyBtn.setHeight(40, Unit.PIXELS);
+        showSigOnlyBtn.setWidth(40, Unit.PIXELS);
         showSigOnlyBtn.updateIcon(new ThemeResource("img/showSig.png"));
         this.addStyleName("selectmultiselectedbtn");
         showSigOnlyBtn.setEnabled(true);
