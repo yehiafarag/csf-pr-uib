@@ -15055,4 +15055,10 @@ div.v-layout.v-horizontal.v-widget {
     width:0px;
     height:6px;
 }
-.autobubble{}
+.heatmapcell{
+    cursor: pointer;
+}
+.heatmapcell:hover{
+    border: 1px solid orange;
+    
+}

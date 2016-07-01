@@ -2,11 +2,9 @@ package no.uib.probe.csf.pr.touch.view.components.heatmapsubcomponents;
 
 import com.vaadin.addon.tableexport.ExcelExport;
 import com.vaadin.event.LayoutEvents;
-import com.vaadin.server.ExternalResource;
 import com.vaadin.server.Page;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.label.ContentMode;
-import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.GridLayout;
@@ -24,7 +22,6 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import javax.swing.JPanel;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseGroupComparison;
 import no.uib.probe.csf.pr.touch.logic.beans.HeatMapHeaderCellInformationBean;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDSIndexes;
@@ -40,7 +37,7 @@ import no.uib.probe.csf.pr.touch.view.core.ZoomControler;
  * @author Yehia Farag this class represents Layout represents the main body for
  * the heat map
  */
-public abstract class HeatMapLayout extends VerticalLayout {
+public abstract class HeatMapLayout1 extends VerticalLayout {
 
     private final GridLayout heatmapBody;
 
@@ -66,10 +63,6 @@ public abstract class HeatMapLayout extends VerticalLayout {
     private Image icon;
     private Label hideShowBtnLabel;
     private ThemeResource defaultResource;
-
-    private final Image heatMapImg;
-    private final AbsoluteLayout heatmapComponentContainer;
-    private final AbsoluteLayout heatmapPanel;
 
     private final int availableHMHeight, availableHMWidth;
 
@@ -98,7 +91,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
     /*
      *  
      */
-    public HeatMapLayout(int heatMapContainerWidth, int availableHMHeight, boolean[] activeColumnHeaders, Layout resetZoomBtn) {
+    public HeatMapLayout1(int heatMapContainerWidth, int availableHMHeight, boolean[] activeColumnHeaders, Layout resetZoomBtn) {
         this.availableComparisonsList = new LinkedHashSet<>();
         this.updatedDatasetMap = new LinkedHashMap<>();
         this.selectedDsList = new LinkedHashSet<>();
@@ -113,20 +106,9 @@ public abstract class HeatMapLayout extends VerticalLayout {
         this.heatMapLayoutWrapper = new VerticalLayout();
         this.heatMapLayoutWrapper.setWidthUndefined();
         this.heatMapLayoutWrapper.setHeightUndefined();
+//        heatMapPanel.setContent(heatMapLayoutWrapper);
+        this.addComponent(heatMapLayoutWrapper);
 
-        this.heatmapPanel = new AbsoluteLayout();
-        this.addComponent(heatmapPanel);
-        heatmapPanel.setStyleName("lightgray");
-
-        this.heatMapImg = new Image();
-        heatMapImg.setSizeFull();
-        this.heatmapPanel.addComponent(heatMapImg, "left: 0px; top: 0px");
-
-        this.heatmapComponentContainer = new AbsoluteLayout();
-        heatmapComponentContainer.setSizeFull();
-        this.heatmapPanel.addComponent(heatmapComponentContainer, "left: 0px; top: 0px");
-
-//        this.addComponent(heatMapLayoutWrapper);
         this.availableHMHeight = availableHMHeight;
         this.availableHMWidth = heatMapContainerWidth;
         String maxBodyHightStyle = ".maxbodyheight{ max-height:" + (availableHMHeight) + "px !important;"
@@ -1228,63 +1210,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
     private final HeatMapImgGenerator gen = new HeatMapImgGenerator();
 
     private String getHMThumbImg() {
-        String imgUrl = gen.generateHeatmap(rowsColors, columnsColors, dataColors, availableHMWidth, availableHMHeight);
-        System.out.println("at corrector factor " + gen.getResizeFactor());
-        heatmapPanel.setWidth(gen.getPanelWidth(), Unit.PIXELS);
-        heatmapPanel.setHeight(gen.getPanelWidth(), Unit.PIXELS);
-        heatMapImg.setSource(new ExternalResource(imgUrl));
-        updateHeatmapComponents();
-
-        return imgUrl;
-
-    }
-
-    private void updateHeatmapComponents() {
-        this.heatmapComponentContainer.removeAllComponents();
-        cornerCell.setWidth((int) (170 * gen.getResizeFactor()), Unit.PIXELS);
-        cornerCell.setHeight(cornerCell.getWidth(), cornerCell.getWidthUnits());
-
-        this.heatmapComponentContainer.addComponent(cornerCell, "left: 0px; top: 0px");
-
-        int x = (int) (170 * gen.getResizeFactor());
-        int y = (int) (20 * gen.getResizeFactor());
-        int cellWidth = (int) (30 * gen.getResizeFactor());
-
-        for (HeaderCell headerCell : columnHeaderCells) {
-            VerticalLayout hcell = new VerticalLayout();
-            hcell.setHeight((int) (150 * gen.getResizeFactor()), Unit.PIXELS);
-            hcell.setWidth(cellWidth, Unit.PIXELS);
-            hcell.setStyleName("heatmapcell");
-
-            this.heatmapComponentContainer.addComponent(hcell, "left: " + x + "px; top: " + y + "px");
-            x += cellWidth;
-        }
-        y = (int) (170 * gen.getResizeFactor());
-        x = (int) (20 * gen.getResizeFactor());
-        for (HeaderCell headerCell : rowHeaderCells) {
-            VerticalLayout hcell = new VerticalLayout();
-            hcell.setWidth((int) (150 * gen.getResizeFactor()), Unit.PIXELS);
-            hcell.setHeight(cellWidth, Unit.PIXELS);
-            hcell.setStyleName("heatmapcell");
-
-            this.heatmapComponentContainer.addComponent(hcell, "left: " + x + "px; top: " + y + "px");
-            y += cellWidth;
-        }
-
-        x = (int) (170 * gen.getResizeFactor());
-        y = (int) (170 * gen.getResizeFactor());
-        for (QuantDSIndexes[] row : values) {
-            for (QuantDSIndexes color : row) {
-                VerticalLayout cell = new VerticalLayout();
-                cell.setWidth(cellWidth, Unit.PIXELS);
-                cell.setHeight(cellWidth, Unit.PIXELS);
-                cell.setStyleName("heatmapcell");
-                this.heatmapComponentContainer.addComponent(cell, "left: " + x + "px; top: " + y + "px");
-                x += cellWidth;
-            }
-            x = (int) (170 * gen.getResizeFactor());
-            y += cellWidth;
-        }
+        return gen.generateHeatmap(rowsColors, columnsColors, dataColors,availableHMWidth,availableHMHeight);
 
     }
 

@@ -65,8 +65,8 @@ public class CSF_PR_UI extends UI {
              return;
         }
 
-//        windowWidth = 1000;//640;
-//        windowHeight = 720;//480;
+        windowWidth = 1000;//640;
+        windowHeight = 720;//480;
         VerticalLayout appWrapper = new VerticalLayout();
         appWrapper.setWidth(100, Unit.PERCENTAGE);
         appWrapper.setHeight(100, Unit.PERCENTAGE);
