@@ -54,19 +54,22 @@ public class CSF_PR_UI extends UI {
 
         windowHeight = Page.getCurrent().getBrowserWindowHeight();// Math.max(Page.getCurrent().getBrowserWindowHeight(), 1080);
         windowWidth = Page.getCurrent().getBrowserWindowWidth();//Math.max(Page.getCurrent().getBrowserWindowWidth(), 1920);
-        if (windowHeight < 1000) {
+        if (windowHeight < 720) {
             Notification.show("Screen is too small",Notification.Type.ERROR_MESSAGE);
-            windowHeight = 1000;
+            
+            System.out.println("it is small window height "+720);
+            windowHeight = 720;
             return;
         }
-        if (windowWidth < 720) {
+        if (windowWidth < 1000) {
               Notification.show("Screen is too small",Notification.Type.ERROR_MESSAGE);
-            windowWidth = 720;
+            windowWidth = 1000;
+            System.out.println("it is small window width "+windowWidth);
              return;
         }
 
-        windowWidth = 1000;//640;
-        windowHeight = 720;//480;
+//        windowWidth = 1000;//640;
+//        windowHeight = 720;//480;
         VerticalLayout appWrapper = new VerticalLayout();
         appWrapper.setWidth(100, Unit.PERCENTAGE);
         appWrapper.setHeight(100, Unit.PERCENTAGE);

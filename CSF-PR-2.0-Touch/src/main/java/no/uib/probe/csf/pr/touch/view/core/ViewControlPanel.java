@@ -10,6 +10,7 @@ import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
 import java.util.TreeMap;
@@ -109,8 +110,8 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
         this.setComponentAlignment(mainViewLayout, Alignment.MIDDLE_CENTER);
         listener = (LayoutEvents.LayoutClickEvent event) -> {
 
-            if (event.getClickedComponent() == null || event.getClickedComponent().getStyleName().trim().contains("h2") ||event.getClickedComponent().getStyleName().trim().equalsIgnoreCase("")) {
-                System.out.println("return ");
+            if (event.getClickedComponent() == null || event.getClickedComponent().getStyleName().trim().contains("h2") ||(event.getClickedComponent().getStyleName().trim().equalsIgnoreCase("")&& !(event.getClickedComponent() instanceof  Label))) {
+                System.out.println("return "+(event.getClickedComponent() == null)+" || "+(event.getClickedComponent().getStyleName().trim().contains("h2"))+" || "+(event.getClickedComponent().getStyleName().trim().equalsIgnoreCase(""))+"  "+(event.getClickedComponent() instanceof  Label) );
                 return;
             }
              hideInit=false;

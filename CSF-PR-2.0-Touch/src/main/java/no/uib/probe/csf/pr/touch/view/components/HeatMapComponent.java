@@ -28,6 +28,7 @@ import no.uib.probe.csf.pr.touch.view.components.datasetfilters.RecombineDisease
 import no.uib.probe.csf.pr.touch.view.components.datasetfilters.ReorderSelectGroupsFilter;
 import no.uib.probe.csf.pr.touch.view.components.datasetfilters.SerumCsfFilter;
 import no.uib.probe.csf.pr.touch.view.components.heatmapsubcomponents.HeatMapLayout;
+import no.uib.probe.csf.pr.touch.view.components.heatmapsubcomponents.HeatmapFiltersContainerResizeControl;
 import no.uib.probe.csf.pr.touch.view.core.InfoPopupBtn;
 
 /**
@@ -84,7 +85,8 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         this.addComponent(bodyLayoutWrapper);
         this.setComponentAlignment(bodyLayoutWrapper, Alignment.MIDDLE_CENTER);
 
-        GridLayout btnsWrapper = new GridLayout(3, 3);
+        
+         GridLayout btnsWrapper = new GridLayout(3, 3);
         btnsWrapper.setColumnExpandRatio(0, 25);
         btnsWrapper.setColumnExpandRatio(1, 50);
         btnsWrapper.setColumnExpandRatio(2, 25);
@@ -115,7 +117,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         };
         HorizontalLayout bottomBtnContainer = new HorizontalLayout();
         bottomBtnContainer.setSpacing(false);
-        bottomBtnContainer.setWidth(53, Unit.PIXELS);
+        
         bottomBtnContainer.addComponent(reconbineDiseaseGroupsFiltersBtn);
         bottomBtnContainer.setComponentAlignment(reconbineDiseaseGroupsFiltersBtn, Alignment.TOP_LEFT);
 
@@ -129,6 +131,8 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         };
         bottomBtnContainer.addComponent(reorderSelectBtn);
         bottomBtnContainer.setComponentAlignment(reorderSelectBtn, Alignment.TOP_LEFT);
+        
+        
 
         btnsWrapper.addComponent(bottomBtnContainer, 1, 2);
         btnsWrapper.setComponentAlignment(bottomBtnContainer, Alignment.TOP_CENTER);
@@ -149,12 +153,11 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
                 updateSystemComponents(datasetPieChartFiltersBtn.checkAndFilter(updatedDsIds));
             }
         };
+       
         btnsWrapper.addComponent(serumCsfFilter, 1, 0);
         btnsWrapper.setComponentAlignment(serumCsfFilter, Alignment.BOTTOM_CENTER);
         VerticalLayout clearFilterBtn = new VerticalLayout();
-        clearFilterBtn.setDescription("Clear filters");
-        clearFilterBtn.setWidth(25, Unit.PIXELS);
-        clearFilterBtn.setHeight(25, Unit.PIXELS);
+        clearFilterBtn.setDescription("Clear filters");        
         clearFilterBtn.setStyleName("filterbtn");
         Image icon = new Image();
         icon.setSource(new ThemeResource("img/filter_clear.png"));
@@ -172,21 +175,26 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         });
         btnsWrapper.addComponent(clearFilterBtn, 2, 1);
         btnsWrapper.setComponentAlignment(clearFilterBtn, Alignment.MIDDLE_RIGHT);
+       
         datasetCounterLabel = new Label();
         datasetCounterLabel.setDescription("#Datasets");
-        datasetCounterLabel.setHeight(25, Unit.PIXELS);
+       
         btnsWrapper.addComponent(datasetCounterLabel, 1, 1);
         datasetCounterLabel.setContentMode(ContentMode.HTML);
         btnsWrapper.setComponentAlignment(datasetCounterLabel, Alignment.MIDDLE_CENTER);
         datasetCounterLabel.setStyleName("filterbtn");
         datasetCounterLabel.addStyleName("defaultcursor");
+        
+         HeatmapFiltersContainerResizeControl filterSizeController = new HeatmapFiltersContainerResizeControl(btnsWrapper,datasetPieChartFiltersBtn, reconbineDiseaseGroupsFiltersBtn,reorderSelectBtn,bottomBtnContainer,serumCsfFilter,clearFilterBtn,datasetCounterLabel);
+       
+        
         InfoPopupBtn info = new InfoPopupBtn("infoText");
         info.setWidth(25, Unit.PIXELS);
         info.setHeight(25, Unit.PIXELS);
 
         //init heatmap
         int availableHMHeight = mainbodyLayoutHeight - 85;
-        heatmapLayoutContainer = new HeatMapLayout(mainbodyLayoutWidth, availableHMHeight, activeColumnHeaders, btnsWrapper) {
+        heatmapLayoutContainer = new HeatMapLayout(mainbodyLayoutWidth, availableHMHeight, activeColumnHeaders, filterSizeController) {
             @Override
             public void updateSelectionManager(Set<QuantDiseaseGroupsComparison> selectedQuantComparisonsList) {
 

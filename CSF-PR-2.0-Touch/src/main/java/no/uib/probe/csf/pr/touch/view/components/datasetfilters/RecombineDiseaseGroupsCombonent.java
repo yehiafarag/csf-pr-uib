@@ -42,14 +42,13 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
 
     public RecombineDiseaseGroupsCombonent(Collection<DiseaseCategoryObject> diseaseCategorySet) {
         this.setDescription("Recombine disease groups");
-        this.setWidth(25, Unit.PIXELS);
-        this.setHeight(25, Unit.PIXELS);
+        
         this.setStyleName("filterbtn");
         Image icon = new Image();
-        icon.setStyleName("cobinegroupbtn");
+        icon.setStyleName("combinegroupbtn");
         icon.setSource(new ThemeResource("img/connect-o.png"));
         this.addComponent(icon);
-        this.setComponentAlignment(icon, Alignment.MIDDLE_CENTER);
+        this.setComponentAlignment(icon, Alignment.TOP_CENTER);
         icon.setWidth(100, Unit.PERCENTAGE);
         icon.setHeight(100, Unit.PERCENTAGE);
         this.addLayoutClickListener(RecombineDiseaseGroupsCombonent.this);
@@ -408,5 +407,10 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
     }
 
     public abstract void updateSystem(Map<String, Map<String, String>> updatedGroupsNamesMap);
+    
+     public void resizeFilter(double resizeFactor) {
+         this.setWidth((int) (25 * resizeFactor), Unit.PIXELS);
+        this.setHeight((int) (25 * resizeFactor), Unit.PIXELS);
+    }
 
 }

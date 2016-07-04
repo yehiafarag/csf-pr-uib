@@ -51,8 +51,6 @@ public abstract class ReorderSelectGroupsFilter extends VerticalLayout implement
      */
     public ReorderSelectGroupsFilter() {
         //init icon
-        this.setWidth(25, Unit.PIXELS);
-        this.setHeight(25, Unit.PIXELS);
         this.setStyleName("filterbtn");
         Image icon = new Image();
         icon.setSource(new ThemeResource("img/sort-select.png"));
@@ -246,5 +244,8 @@ public abstract class ReorderSelectGroupsFilter extends VerticalLayout implement
      * @param colHeaders
      */
     public abstract void updateSystem(LinkedHashSet<HeatMapHeaderCellInformationBean> rowHeaders, LinkedHashSet<HeatMapHeaderCellInformationBean> colHeaders);
-
+ public void resizeFilter(double resizeFactor) {
+         this.setWidth((int) (25 * resizeFactor), Unit.PIXELS);
+        this.setHeight((int) (25 * resizeFactor), Unit.PIXELS);
+    }
 }

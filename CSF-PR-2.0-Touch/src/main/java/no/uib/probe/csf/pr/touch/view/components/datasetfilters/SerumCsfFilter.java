@@ -29,14 +29,12 @@ public abstract class SerumCsfFilter extends HorizontalLayout implements LayoutE
         this.setHeightUndefined();
         this.setSpacing(true);
 
-        this.setWidth(53,Unit.PIXELS);
         noCSFOptionBtn = new VerticalLayout();
         noCSFOptionBtn.setDescription("Include CSF datasets");
         this.addComponent(noCSFOptionBtn);
-        this.setComponentAlignment(noCSFOptionBtn, Alignment.TOP_LEFT);
+        this.setComponentAlignment(noCSFOptionBtn, Alignment.BOTTOM_LEFT);
 
-        noCSFOptionBtn.setWidth(25, Unit.PIXELS);
-        noCSFOptionBtn.setHeight(25, Unit.PIXELS);
+       
         noCSFOptionBtn.setStyleName("filterbtn");
         Image noCSFIcon = new Image();
         noCSFIcon.setSource(new ThemeResource("img/bluedrop.png"));
@@ -51,10 +49,9 @@ public abstract class SerumCsfFilter extends HorizontalLayout implements LayoutE
          noSerumOptionBtn = new VerticalLayout();
         noSerumOptionBtn.setDescription("Include serum datasets");
         this.addComponent(noSerumOptionBtn);
-        this.setComponentAlignment(noSerumOptionBtn, Alignment.TOP_RIGHT);
+        this.setComponentAlignment(noSerumOptionBtn, Alignment.BOTTOM_RIGHT);
 
-        noSerumOptionBtn.setWidth(25, Unit.PIXELS);
-        noSerumOptionBtn.setHeight(25, Unit.PIXELS);
+       
         noSerumOptionBtn.setStyleName("filterbtn");
         Image noSerumIcon = new Image();
         noSerumIcon.setSource(new ThemeResource("img/reddrop.png"));
@@ -142,6 +139,14 @@ public abstract class SerumCsfFilter extends HorizontalLayout implements LayoutE
          noSerumOptionBtn.addStyleName("unapplied");
          
          updateSystem(serumApplied, csfApplied);
+    }
+    
+     public void resizeFilter(double resizeFactor) {
+        this.setWidth((int) (53 * resizeFactor), Unit.PIXELS);
+         noCSFOptionBtn.setWidth((int) (25 * resizeFactor), Unit.PIXELS);
+        noCSFOptionBtn.setHeight((int) (25 * resizeFactor), Unit.PIXELS);
+         noSerumOptionBtn.setWidth((int) (25 * resizeFactor), Unit.PIXELS);
+        noSerumOptionBtn.setHeight((int) (25 * resizeFactor), Unit.PIXELS);
     }
 
 }

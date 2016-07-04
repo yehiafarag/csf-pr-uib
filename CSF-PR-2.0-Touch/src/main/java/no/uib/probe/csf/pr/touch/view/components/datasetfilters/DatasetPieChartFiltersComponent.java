@@ -47,8 +47,6 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
     public DatasetPieChartFiltersComponent() {
 
         //init icon
-        this.setWidth(25, Unit.PIXELS);
-        this.setHeight(25, Unit.PIXELS);
         this.setStyleName("filterbtn");
         Image icon = new Image();
         icon.setSource(new ThemeResource("img/pie-chart.png"));
@@ -56,6 +54,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         icon.setWidth(100, Unit.PERCENTAGE);
         icon.setHeight(100, Unit.PERCENTAGE);
         this.addLayoutClickListener(DatasetPieChartFiltersComponent.this);
+        this.setDescription("Dataset filters");
 
         //init window layout 
         VerticalLayout frame = new VerticalLayout();
@@ -85,7 +84,6 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         };
         popupWindow.setWidth(1100, Unit.PIXELS);
         popupWindow.setHeight(850, Unit.PIXELS);
-
 
         //init datasetructure
         activeDatasetMap = new HashMap<>();
@@ -135,8 +133,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
 //                internalSelectionManager.resetToInitState();
 //                internalSelectionManager.resetCentralSelectionManager();
         });
-        
-        
+
         ImageContainerBtn exportPdfBtn = new ImageContainerBtn() {
 
             @Override
@@ -166,7 +163,6 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
 //                Page.getCurrent().open(res, "_blank", true);
 //            }
 //        });
-
 //        StreamResource myResource = createResource(handler);
 //        FileDownloader fileDownloader = new FileDownloader(myResource);
 //        fileDownloader.extend(exportChartsBtn);
@@ -416,5 +412,10 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         this.updateQuantDatasetMap(quantDatasetToFilter);
         return filterSelectionUnit();
 
+    }
+
+    public void resizeFilter(double resizeFactor) {
+        this.setWidth((int) (25 * resizeFactor), Unit.PIXELS);
+        this.setHeight(this.getWidth(), Unit.PIXELS);
     }
 }

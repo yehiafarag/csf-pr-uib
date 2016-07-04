@@ -1207,7 +1207,7 @@ public abstract class HeatMapLayout1 extends VerticalLayout {
 
     }
 
-    private final HeatMapImgGenerator gen = new HeatMapImgGenerator();
+    private final HeatMapImgGenerator1 gen = new HeatMapImgGenerator1();
 
     private String getHMThumbImg() {
         return gen.generateHeatmap(rowsColors, columnsColors, dataColors,availableHMWidth,availableHMHeight);

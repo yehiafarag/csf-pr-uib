@@ -24,7 +24,7 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutClickListener {
     
     private final int index;
-    private final Label valueLabel;
+//    private final Label valueLabel;
 
     /**
      *
@@ -70,26 +70,26 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
     public HeaderCell(boolean rotate, String title, String diseaseStyle, int index, int headerWidth, int headerHeight, String fullDiseaseGroupName,String diseaseCategory) {
         this.includedCells = new ArrayList<>();
         this.diseaseCategory=diseaseCategory;
-        if (rotate) {
-            this.addStyleName("rotateheader");
-            this.setHeight(headerWidth + "px");
-            this.setWidth(headerHeight + "px");
-        } else {
-            this.setWidth(headerWidth + "px");
-            this.setHeight(headerHeight + "px");
-        }
+//        if (rotate) {
+////            this.addStyleName("rotateheader");
+//            this.setHeight(headerWidth + "px");
+//            this.setWidth(headerHeight + "px");
+//        } else {
+//            this.setWidth(headerWidth + "px");
+//            this.setHeight(headerHeight + "px");
+//        }
         this.title = title;
-        this.addStyleName("hmheadercell");
+//        this.addStyleName("hmheadercell");
         
-        valueLabel = new Label();
-        String allStyle = "hm" + diseaseStyle;
-        valueLabel.setValue("<center><font>" + title + "</font></center>");
-        valueLabel.setStyleName(allStyle);
-        valueLabel.setWidth(100, Unit.PERCENTAGE);
-        valueLabel.setHeight(100, Unit.PERCENTAGE);
-        this.valueLabel.setContentMode(ContentMode.HTML);
-        this.addComponent(valueLabel);
-        this.setComponentAlignment(valueLabel, Alignment.TOP_CENTER);
+//        valueLabel = new Label();
+//        String allStyle = "hm" + diseaseStyle;
+//        valueLabel.setValue("<center><font>" + title + "</font></center>");
+//        valueLabel.setStyleName(allStyle);
+//        valueLabel.setWidth(100, Unit.PERCENTAGE);
+//        valueLabel.setHeight(100, Unit.PERCENTAGE);
+//        this.valueLabel.setContentMode(ContentMode.HTML);
+//        this.addComponent(valueLabel);
+//        this.setComponentAlignment(valueLabel, Alignment.TOP_CENTER);
         
         this.index = index;
         String fullName = "";
@@ -145,7 +145,7 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
         this.includedComparisons.add(groupComp);
         if (!combinedHeader && cell.isCombinedHeader()) {
             combinedHeader = true;
-            valueLabel.setValue("<center><font>" + title + "</font></center>");
+//            valueLabel.setValue("<center><font>" + title + "</font></center>");
             this.setDescription(title + " (" + "Combined group)");
         }
         if (!cell.isCombinedHeader()) {
