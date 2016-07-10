@@ -24,6 +24,15 @@ public class DiseaseCategoryObject implements Serializable{
     private String diseaseStyleName;
     private int datasetNumber;
     private Map<String,String> diseaseSubGroups;
+     private Map<String,String> diseaseSubGroupsToFullName;
+
+    public Map<String, String> getDiseaseSubGroupsToFullName() {
+        return diseaseSubGroupsToFullName;
+    }
+
+    public void setDiseaseSubGroupsToFullName(Map<String, String> diseaseSubGroupsToFullName) {
+        this.diseaseSubGroupsToFullName = diseaseSubGroupsToFullName;
+    }
 
     
     

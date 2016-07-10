@@ -9,6 +9,7 @@ import com.itextpdf.text.pdf.codec.Base64;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -45,6 +46,7 @@ public class HeatMapImgGenerator {
     private final Map<String, Rectangle> headerLabelMap = new LinkedHashMap<>();
 
     public String generateHeatmap(Set<HeatMapHeaderCellInformationBean> rows, Set<HeatMapHeaderCellInformationBean> columns, String[][] data, int heatmapWidth, int heatmaHeight, boolean resetRowLabels, boolean restColumnLabels) {
+
         headerLabelMap.clear();
         int panelHeight = heatmaHeight;
         if (heatmapWidth < heatmaHeight) {
@@ -62,12 +64,11 @@ public class HeatMapImgGenerator {
         imageWidth = (columns.size() * cellWidth) + 170;
         cellWidth = 30;//
         int panelWidth = (columns.size() * cellWidth) + 170;
-
         resizeFactor = (double) imageWidth / (double) panelWidth;
 
         cellWidth = (int) (30 * resizeFactor);
         panelWidth = (int) (panelWidth * resizeFactor);
-
+        
         int height = (rows.size() * cellWidth) + (int) (170 * resizeFactor);
         heatmapPanelLayout.setSize(panelWidth, height);
         JPanel cornerCell = initCell("transparent", 0, 0, fullBorder);
@@ -132,10 +133,8 @@ public class HeatMapImgGenerator {
             }
 
         }
-        
-        
-        
-headerLabelMap.clear();
+
+        headerLabelMap.clear();
         for (HeatMapHeaderCellInformationBean bean : rows) {
 
             headerLabelMap.put(bean.getDiseaseCategory(), new Rectangle(0, 0, 0, 0));
@@ -143,15 +142,13 @@ headerLabelMap.clear();
         }
         y = (int) (170 * resizeFactor);
 
-
         for (HeatMapHeaderCellInformationBean headerCell : rows) {
 
             if (!resetRowLabels) {
-                
-                  Rectangle rectangle = headerLabelMap.get(headerCell.getDiseaseCategory());
-                rectangle.setBounds(0, 0,(int) (20 * resizeFactor), (int) rectangle.getHeight()+ cellWidth);
+
+                Rectangle rectangle = headerLabelMap.get(headerCell.getDiseaseCategory());
+                rectangle.setBounds(0, 0, (int) (20 * resizeFactor), (int) rectangle.getHeight() + cellWidth);
             }
-                
 
             JPanel cell = initCell(headerCell.getDiseaseColor(), (int) (20 * resizeFactor), y, fullBorder);
             cell.setSize((int) (150 * resizeFactor), cellWidth);
@@ -161,13 +158,11 @@ headerLabelMap.clear();
             heatmapPanelLayout.add(cell);
 
         }
-        
-        
-        
-         y = (int) (170 * resizeFactor);
-         topLabelContainerWidth = (rows.size() * cellWidth);
-         countLimit = rows.size() / 3;
-         counter = 0;
+
+        y = (int) (170 * resizeFactor);
+        topLabelContainerWidth = (rows.size() * cellWidth);
+        countLimit = rows.size() / 3;
+        counter = 0;
 
         for (String dCat : headerLabelMap.keySet()) {
 
@@ -186,8 +181,8 @@ headerLabelMap.clear();
                     width += topLabelContainerWidth;
                 }
 
-                JComponent label = initLabel(dCat, (int)(20 * resizeFactor), width , true, Color.decode(bean.getDiseaseColor()), fullBorder);
-                label.setLocation(0,y);
+                JComponent label = initLabel(dCat, (int) (20 * resizeFactor), width, true, Color.decode(bean.getDiseaseColor()), fullBorder);
+                label.setLocation(0, y);
                 heatmapPanelLayout.add(label);
                 y += label.getSize().height;
                 counter++;
@@ -200,27 +195,25 @@ headerLabelMap.clear();
             }
 
         }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
         x = (int) (170 * resizeFactor);
         y = (int) (170 * resizeFactor);
+        int row1 = 0, col = 0;
         for (String[] row : data) {
+
             for (String color : row) {
+
+//                System.out.println("at x "+row1+"  y "+col+" color "+color);
                 JPanel cell = initCell(color.split("__")[0], x, y, fullBorder);
                 cell.setOpaque(true);
                 JComponent label2 = initLabel(color.split("__")[1], cell.getSize().width, cell.getSize().height, false, cell.getBackground(), fullBorder);
                 cell.add(label2);
                 x += cellWidth;
                 heatmapPanelLayout.add(cell);
+                col++;
             }
+            col = 0;
+            row1++;
             x = (int) (170 * resizeFactor);
             y += cellWidth;
         }
@@ -250,12 +243,6 @@ headerLabelMap.clear();
     }
     private final Border testBorder = new LineBorder(Color.red);
     private final Border fullBorder = new LineBorder(Color.LIGHT_GRAY);
-    private final Border topBottomBorder = new MatteBorder(1, 0, 1, 0, Color.LIGHT_GRAY);
-    private final Border topBottomleftBorder = new MatteBorder(1, 1, 1, 0, Color.LIGHT_GRAY);
-    private final Border topBottomRightBorder = new MatteBorder(1, 0, 1, 1, Color.LIGHT_GRAY);
-    private final Border topleftRightBorder = new MatteBorder(1, 1, 0, 1, Color.LIGHT_GRAY);
-    private final Border bottomleftRightBorder = new MatteBorder(0, 1, 1, 1, Color.LIGHT_GRAY);
-    private final Border leftRightBorder = new MatteBorder(0, 1, 0, 1, Color.LIGHT_GRAY);
 
     private JPanel initCell(String color, int x, int y, Border border) {
         JPanel cell = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -295,6 +282,9 @@ headerLabelMap.clear();
 
     private JComponent initLabel(String text, int w, int h, boolean rotate, Color background, Border border) {
         JLabel label = new JLabel(text);
+
+        label.setFont(new Font("Open Sans", Font.BOLD, (int) (13 * resizeFactor)));
+
         label.setVerticalTextPosition(JLabel.CENTER);
         label.setHorizontalTextPosition(JLabel.CENTER);
         label.setForeground(Color.WHITE);
@@ -319,7 +309,7 @@ headerLabelMap.clear();
             rotPanel.add(label);
             JPanel panel = rotPanel.getRotatedJPanel();
             panel.setOpaque(false);
-            panel.setSize(w,h);
+            panel.setSize(w, h);
             rotPanel.setBackground(Color.blue);
 
 //            RotatedJPanel rotPanel = new RotatedJPanel();
@@ -335,57 +325,57 @@ headerLabelMap.clear();
 
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Rotation Test");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JLabel label = new JLabel("kokowawaaaaaaaaaaaaaaaaaaaaaa");
-        label.setVerticalTextPosition(JLabel.TOP);
-        label.setHorizontalTextPosition(JLabel.CENTER);
-        label.setForeground(Color.black);
-        label.setHorizontalAlignment(JLabel.CENTER);
-        label.setVerticalAlignment(JLabel.TOP);
-        label.setSize(150, 150);
-
-        RotatedJPanel rotPanel = new RotatedJPanel();
-        rotPanel.setSize(150, 150);
-        rotPanel.add(label);
-        JPanel panel = rotPanel.getRotatedJPanel();
-        panel.setBackground(Color.ORANGE);
-        panel.setOpaque(true);
-
-        frame.setSize(350, 350);
-        frame.add(panel);
-        frame.setVisible(true);
-    }
-
-    private JPanel rotateLabel(JLabel label) {
-
-        JPanel rotatedPanel = new JPanel() {
-
-            @Override
-            public Dimension getPreferredSize() {
-                return new Dimension(label.getWidth(), label.getHeight());
-            }
-
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                Graphics2D g2 = (Graphics2D) g;
-                g2.translate(0, 0);
-                g2.rotate(Math.PI * 3 / 2, 0, 30);
-
-//                g2.drawImage(label.createVolatileImage(label.getWidth(), label.getHeight()), 0, 0, null);
-            }
-        };
-        rotatedPanel.add(label);
-        rotatedPanel.setSize(new Dimension(label.getWidth(), label.getHeight()));
-//        rotatedPanel.setBackground(Color.BLUE);
-        rotatedPanel.setBorder(testBorder);
-
-        rotatedPanel.setOpaque(false);
-        return rotatedPanel;
-
-    }
+//    public static void main(String[] args) {
+//        JFrame frame = new JFrame("Rotation Test");
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        JLabel label = new JLabel("kokowawaaaaaaaaaaaaaaaaaaaaaa");
+//        label.setVerticalTextPosition(JLabel.TOP);
+//        label.setHorizontalTextPosition(JLabel.CENTER);
+//        label.setForeground(Color.black);
+//        label.setHorizontalAlignment(JLabel.CENTER);
+//        label.setVerticalAlignment(JLabel.TOP);
+//        label.setSize(150, 150);
+//
+//        RotatedJPanel rotPanel = new RotatedJPanel();
+//        rotPanel.setSize(150, 150);
+//        rotPanel.add(label);
+//        JPanel panel = rotPanel.getRotatedJPanel();
+//        panel.setBackground(Color.ORANGE);
+//        panel.setOpaque(true);
+//
+//        frame.setSize(350, 350);
+//        frame.add(panel);
+//        frame.setVisible(true);
+//    }
+//
+//    private JPanel rotateLabel(JLabel label) {
+//
+//        JPanel rotatedPanel = new JPanel() {
+//
+//            @Override
+//            public Dimension getPreferredSize() {
+//                return new Dimension(label.getWidth(), label.getHeight());
+//            }
+//
+//            @Override
+//            protected void paintComponent(Graphics g) {
+//                super.paintComponent(g);
+//                Graphics2D g2 = (Graphics2D) g;
+//                g2.translate(0, 0);
+//                g2.rotate(Math.PI * 3 / 2, 0, 30);
+//
+////                g2.drawImage(label.createVolatileImage(label.getWidth(), label.getHeight()), 0, 0, null);
+//            }
+//        };
+//        rotatedPanel.add(label);
+//        rotatedPanel.setSize(new Dimension(label.getWidth(), label.getHeight()));
+////        rotatedPanel.setBackground(Color.BLUE);
+//        rotatedPanel.setBorder(testBorder);
+//
+//        rotatedPanel.setOpaque(false);
+//        return rotatedPanel;
+//
+//    }
 
     public int getPanelWidth() {
         return imageWidth;

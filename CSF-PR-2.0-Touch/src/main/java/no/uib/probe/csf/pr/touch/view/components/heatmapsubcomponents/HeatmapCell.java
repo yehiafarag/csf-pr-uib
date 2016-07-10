@@ -34,7 +34,7 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
     }
     private String strValue;
     private String pointer;
-    private final Label valueLabel;
+//    private final Label valueLabel;
     private boolean selected = false;
     private boolean combinedHeader = false;
     private final String cellColor;
@@ -71,10 +71,8 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
         
         this.colLabelIndex = colLabelIndex;
         this.rowLabelIndex = rowLabelIndex;
-        this.setStyleName("hmbodycell");
+        
         this.value = value;
-        this.setWidth(heatmapCellWidth, Unit.PIXELS);
-        this.setHeight(30, Unit.PIXELS);
 
         this.diseaseCategory = diseaseCategory;
         this.comparison = new QuantDiseaseGroupsComparison();
@@ -84,13 +82,7 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
         comparison.setOreginalComparisonHeader(oreginalComparisonTitle);
         comparison.setDiseaseCategoryColor(diseaseCategoryColor);
         comparison.setDatasetMap(datasetMap);
-        comparison.setDiseaseCategoryStyle(diseaseCategoryStyle);
-        this.valueLabel = new Label();
-        valueLabel.setWidth(100, Unit.PERCENTAGE);
-        valueLabel.setHeight(100, Unit.PERCENTAGE);
-        this.addComponent(valueLabel);
-        this.setComponentAlignment(valueLabel, Alignment.MIDDLE_CENTER);
-        valueLabel.setContentMode(ContentMode.HTML);
+        comparison.setDiseaseCategoryStyle(diseaseCategoryStyle);;
         strValue = "";
         pointer = "default";
         this.cellColor = cellColor;
@@ -156,8 +148,10 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
     }
 
     public final void updateLabel(String strValue) {
+        this.strValue = strValue;
+        
 
-        valueLabel.setValue("<center><div  style='background-color:" + cellColor + "; background-position: center;cursor:" + pointer + "; '>" + strValue + "</div><center>");
+//        valueLabel.setValue("<center><div  style='background-color:" + cellColor + "; background-position: center;cursor:" + pointer + "; '>" + strValue + "</div><center>");
 
     }
 

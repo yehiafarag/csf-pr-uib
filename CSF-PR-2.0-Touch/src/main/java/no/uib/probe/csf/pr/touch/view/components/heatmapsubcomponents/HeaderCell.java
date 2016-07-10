@@ -6,9 +6,6 @@
 package no.uib.probe.csf.pr.touch.view.components.heatmapsubcomponents;
 
 import com.vaadin.event.LayoutEvents;
-import com.vaadin.shared.ui.label.ContentMode;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -67,7 +64,7 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
      * @param headerHeight
      * @param fullDiseaseGroupName
      */
-    public HeaderCell(boolean rotate, String title, String diseaseStyle, int index, int headerWidth, int headerHeight, String fullDiseaseGroupName,String diseaseCategory) {
+    public HeaderCell(String title, int index, String fullDiseaseGroupName,String diseaseCategory) {
         this.includedCells = new ArrayList<>();
         this.diseaseCategory=diseaseCategory;
 //        if (rotate) {
@@ -126,6 +123,7 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
     }
 
     public void unselect() {
+        
         this.removeStyleName("hmselectedcell");
         
     }

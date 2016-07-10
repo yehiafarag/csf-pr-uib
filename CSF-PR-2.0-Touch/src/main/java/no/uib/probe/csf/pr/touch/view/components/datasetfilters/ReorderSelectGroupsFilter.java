@@ -14,6 +14,7 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.window.WindowMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
@@ -27,6 +28,8 @@ import java.util.Map;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseGroupComparison;
 import no.uib.probe.csf.pr.touch.logic.beans.HeatMapHeaderCellInformationBean;
+import no.uib.probe.csf.pr.touch.view.core.InformationButton;
+import no.uib.probe.csf.pr.touch.view.core.PopupWindow;
 import no.uib.probe.csf.pr.touch.view.core.SortableLayoutContainer;
 import org.vaadin.teemu.switchui.Switch;
 
@@ -39,12 +42,18 @@ import org.vaadin.teemu.switchui.Switch;
  */
 public abstract class ReorderSelectGroupsFilter extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
-    private final Window popupWindow;
+    private final PopupWindow popupWindow;
     private final HorizontalLayout diseaseGroupsContaioner;
-    private final VerticalLayout mainBody;
+    private final VerticalLayout popupBody;
     private LinkedHashSet<Integer> studiesIndexes;
     private final SortableLayoutContainer groupILayout, groupIILayout;
     private Set<DiseaseGroupComparison> patientsGroupComparisonsSet;
+    
+    
+    private final int screenWidth = Math.min(Page.getCurrent().getBrowserWindowWidth(),1000);
+    private final int screenHeight =Math.min(Page.getCurrent().getBrowserWindowHeight(),800);
+            
+
 
     /**
      *
@@ -60,59 +69,99 @@ public abstract class ReorderSelectGroupsFilter extends VerticalLayout implement
         this.addLayoutClickListener(ReorderSelectGroupsFilter.this);
         this.setDescription("Reorder and select disease groups");
 
-        this.mainBody = new VerticalLayout();
-        mainBody.setHeightUndefined();
-        mainBody.setWidth(100, Unit.PERCENTAGE);
-        popupWindow = new Window() {
+        //init window layout 
+        VerticalLayout frame = new VerticalLayout();
+        frame.setWidth(99, Unit.PERCENTAGE);
+        frame.setSpacing(true);
+        popupBody = new VerticalLayout();
+        frame.addComponent(popupBody);
+
+        popupBody.addStyleName("roundedborder");
+        popupBody.addStyleName("padding20");
+        popupBody.addStyleName("whitelayout");
+        
+       
+        
+
+        popupBody.setWidth(100, Unit.PERCENTAGE);
+        popupBody.setHeight(screenHeight-150, Unit.PIXELS);
+        popupBody.setSpacing(true);
+        popupBody.setMargin(true);
+        
+        
+        popupWindow = new PopupWindow(frame, "Disease Groups"){
             @Override
             public void close() {
 
                 popupWindow.setVisible(false);
             }
         };
-        popupWindow.setContent(mainBody);
-
-        popupWindow.setVisible(false);
-        popupWindow.setResizable(false);
-        popupWindow.setClosable(true);
-        popupWindow.setModal(true);
-        popupWindow.setDraggable(false);
-        popupWindow.setCaption("<font color='gray' style='font-weight: bold;!important'>&nbsp;&nbsp;Disease Groups</font>");
-        popupWindow.setCaptionAsHtml(true);
-        popupWindow.setWindowMode(WindowMode.NORMAL);
-        UI.getCurrent().addWindow(popupWindow);
-        popupWindow.center();
-        int width = Math.min(Page.getCurrent().getBrowserWindowWidth(), 800);
-        int height = Math.min(Page.getCurrent().getBrowserWindowHeight(), 800);
-
-        popupWindow.setWidth(width, Unit.PIXELS);
+        
+       
+        
+//        popupWindow.setContent(mainBody);
+//
+//        popupWindow.setVisible(false);
+//        popupWindow.setResizable(false);
+//        popupWindow.setClosable(true);
+//        popupWindow.setModal(true);
+//        popupWindow.setDraggable(false);
+//        popupWindow.setCaption("<font color='gray' style='font-weight: bold;!important'>&nbsp;&nbsp;Disease Groups</font>");
+//        popupWindow.setCaptionAsHtml(true);
+//        popupWindow.setWindowMode(WindowMode.NORMAL);
+//        UI.getCurrent().addWindow(popupWindow);
+//        popupWindow.center();
+//        int width = Math.min(Page.getCurrent().getBrowserWindowWidth(), 800);
+//        int height = Math.min(Page.getCurrent().getBrowserWindowHeight(), 800);
+//
+//        popupWindow.setWidth(width, Unit.PIXELS);
+        
+        popupWindow.setWidth(screenWidth, Unit.PIXELS);
         diseaseGroupsContaioner = new HorizontalLayout();
 
-        mainBody.addComponent(diseaseGroupsContaioner);
-        mainBody.setComponentAlignment(diseaseGroupsContaioner, Alignment.TOP_CENTER);
+        popupBody.addComponent(diseaseGroupsContaioner);
+        popupBody.setComponentAlignment(diseaseGroupsContaioner, Alignment.TOP_CENTER);
 
         diseaseGroupsContaioner.setStyleName("whitelayout");
         diseaseGroupsContaioner.setWidth(100, Unit.PERCENTAGE);
         diseaseGroupsContaioner.setSpacing(true);
 
-        groupILayout = new SortableLayoutContainer("Disease Group A", (height - 100));
-        groupIILayout = new SortableLayoutContainer("Disease Group B", (height - 100));
+        groupILayout = new SortableLayoutContainer("Disease Group A", (screenHeight - 200));
+        groupIILayout = new SortableLayoutContainer("Disease Group B", (screenHeight - 200));
+        
+        
+        
+         HorizontalLayout btnsFrame = new HorizontalLayout();
+        btnsFrame.setWidth(100, Unit.PERCENTAGE);
+        btnsFrame.addStyleName("roundedborder");
+        btnsFrame.addStyleName("padding20");
+        btnsFrame.addStyleName("margintop");
+        btnsFrame.addStyleName("whitelayout");
+        frame.addComponent(btnsFrame);
+        
+          
+           HorizontalLayout leftsideWrapper = new HorizontalLayout();
+        btnsFrame.addComponent(leftsideWrapper);
+        btnsFrame.setComponentAlignment(leftsideWrapper, Alignment.TOP_LEFT);
+        leftsideWrapper.setSpacing(true);
 
+        InformationButton info = new InformationButton("info", true);
+        leftsideWrapper.addComponent(info);
+        
+        
         HorizontalLayout bottomContainert = new HorizontalLayout();
         bottomContainert.setWidth(100, Unit.PERCENTAGE);
-        bottomContainert.setHeight(50, Unit.PIXELS);
-        bottomContainert.setMargin(new MarginInfo(false, true, false, true));
+        bottomContainert.setHeight(100, Unit.PERCENTAGE);
+//        bottomContainert.setMargin(new MarginInfo(false, true, false, true));
 
-        mainBody.addComponent(bottomContainert);
-        mainBody.setComponentAlignment(bottomContainert, Alignment.BOTTOM_CENTER);
+        btnsFrame.addComponent(bottomContainert);
+        btnsFrame.setComponentAlignment(bottomContainert, Alignment.BOTTOM_CENTER);
 
         String sortString = "Sort - drag & drop";
         String selectString = "Select to filter datasets";
         Label commentLabel = new Label(sortString);
         commentLabel.setStyleName(ValoTheme.LABEL_SMALL);
         commentLabel.addStyleName(ValoTheme.LABEL_TINY);
-        bottomContainert.addComponent(commentLabel);
-        bottomContainert.setComponentAlignment(commentLabel, Alignment.TOP_LEFT);
 
         Switch selectSortSwichBtn = new Switch();
         selectSortSwichBtn.setDescription("Sort / Select disease groups");
@@ -137,8 +186,12 @@ public abstract class ReorderSelectGroupsFilter extends VerticalLayout implement
         });
 
         selectSortSwichBtn.setImmediate(true);
-        bottomContainert.addComponent(selectSortSwichBtn);
-        bottomContainert.setComponentAlignment(selectSortSwichBtn, Alignment.TOP_CENTER);
+        leftsideWrapper.addComponent(selectSortSwichBtn);
+        leftsideWrapper.setComponentAlignment(selectSortSwichBtn, Alignment.MIDDLE_LEFT);
+        
+        
+        leftsideWrapper.addComponent(commentLabel);
+        leftsideWrapper.setComponentAlignment(commentLabel, Alignment.MIDDLE_LEFT);
 
         HorizontalLayout btnLayout = new HorizontalLayout();
         btnLayout.setSpacing(true);
@@ -214,6 +267,11 @@ public abstract class ReorderSelectGroupsFilter extends VerticalLayout implement
         });
         groupILayout.updateData(rowHeaders);
         groupIILayout.updateData(colHeaders);
+        
+         popupBody.setHeight(groupILayout.getFinalHeight()+100, Unit.PIXELS);
+        popupWindow.setHeight(groupILayout.getFinalHeight()+250, Unit.PIXELS);
+
+        
 
     }
 

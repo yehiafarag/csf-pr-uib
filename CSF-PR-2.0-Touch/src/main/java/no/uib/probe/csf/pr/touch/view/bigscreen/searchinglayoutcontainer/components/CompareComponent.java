@@ -58,7 +58,7 @@ public abstract class CompareComponent extends BigBtn {
     private PieChart proteinsChart;
 
     public CompareComponent(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager) {
-        super("Compare", "Compare your quantified with the available data.", "img/compare.png");
+        super("Compare", "Compare with your own protein quantification data.", "img/compare.png");
         this.Data_handler = Data_handler;
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         VerticalLayout popupbodyLayout = new VerticalLayout();

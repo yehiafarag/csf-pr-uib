@@ -61,7 +61,7 @@ public abstract class SearchingComponent extends BigBtn {
     private final    HorizontalLayout quantResultWrapping;
 
     public SearchingComponent(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager) {
-        super("Search", "Search quantitative proteins.", "img/search.png");
+        super("Search", "Search quantified and identified protein data", "img/search.png");
         this.Data_handler = Data_handler;
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         VerticalLayout popupbodyLayout = new VerticalLayout();

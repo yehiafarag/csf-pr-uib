@@ -210,16 +210,13 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         rightPanelWrapper.setStyleName("framelayout");
         mainBodyHLayout.addComponent(rightPanelWrapper);
 
-        Label infoLable = new Label("<h1>Welcome to CSF Proteome Resource (CSF-PR)</h1>");
+        Label infoLable = new Label("<h1>Welcome to The CSF Proteome Resource (CSF-PR)</h1>");
         infoLable.setHeight(50, Unit.PIXELS);
         infoLable.setContentMode(ContentMode.HTML);
         rightPanelWrapper.addComponent(infoLable);
 
-        Label para_1 = new Label("<p style='font-size: 14px;color: black;/* font-weight: bold; */line-height: 30px;'>CSF Proteome Resource (CSF-PR)v2.0 is an online repository of mass spectrometry based proteomics"
-                + "experiments on human cerebrospinal fluid (CSF). CSF is in direct contact with the central nervous"
-                + "system (CNS) and can give indications about the state of the CNS.This is particularly relevant for "
-                + "neurodegenerative diseases, such as Multiple Sclerosis, where CSF would be a natural place to look"
-                + "for disease biomarkers.</p>");
+        Label para_1 = new Label("<p style='font-size: 14px;color: black;line-height: 20px;'>As CSF is in direct contact with the central nervous system (CNS) it can provide indications about the state of the CNS. This is particularly relevant for neurodegenerative diseases, such as Multiple Sclerosis, Alzheimer's and Parkinson's, where the CSF would be a natural place to look for disease biomarkers.<br/><br/><font style='font-size: 14px;color: black;line-height: 20px;'>CSF Proteome Resource (CSF-PR) v2.0 is an online repository of mass spectrometry based proteomics "
+                + "experiments on human cerebrospinal fluid (CSF). </font></p>");
         para_1.setContentMode(ContentMode.HTML);
         rightPanelWrapper.addComponent(para_1);
         para_1.setWidth(rightPanelWidth, Unit.PIXELS);
@@ -239,7 +236,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         middleLayout.addComponent(middlePanelServicesLayout);
         
 
-        BigBtn quantDatasetBtn = new BigBtn("Quantification", "Browse quantitative data.", "img/scatter_plot_applied.png") {
+        BigBtn quantDatasetBtn = new BigBtn("Quantification", "Browse quantitative data", "img/scatter_plot_applied.png") {
 
             @Override
             public void onClick() {
@@ -248,7 +245,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         };
         quantDatasetBtn.getThumbBtn().setDescription("Click to browse protein quantitative data");
         middlePanelServicesLayout.addComponent(quantDatasetBtn, 0, 0);
-        BigBtn idDatasetBtn = new BigBtn("Identification", "Browse identification data.", "img/bar-chart.png") {
+        BigBtn idDatasetBtn = new BigBtn("Identification", "Browse identification data", "img/bar-chart.png") {
 
             @Override
             public void onClick() {
@@ -273,7 +270,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         
         
         };
-          searchingDatasetBtn.getThumbBtn().setDescription("Click to search  protein data");
+          searchingDatasetBtn.getThumbBtn().setDescription("Click to search quantified and identified protein data");
         middlePanelServicesLayout.addComponent(searchingDatasetBtn, 1, 0);
 
         CompareComponent compareBtn = new CompareComponent(Data_handler, CSFPR_Central_Manager){
@@ -285,7 +282,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
             
             
         };
-        compareBtn.getThumbBtn().setDescription("Click to compare user data with CSF-PR quantative  protein data");
+        compareBtn.getThumbBtn().setDescription("Click to compare with your own protein quantification data");
         middlePanelServicesLayout.addComponent(compareBtn, 1, 1);
 
         BigBtn homeBtn = new BigBtn("", "", "img/home-o.png") {
@@ -299,7 +296,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         homeBtn.setVisible(false);
         homeBtn.getThumbBtn().setDescription("Home page");
 
-        Label para_3 = new Label("<p align='justify' Style='font-size: 12px;color: black;/* font-weight: bold; */line-height: 20px;'><font>CSF-PR v2.0 is being developed by the <a class='link' href='http://www.uib.no/rg/probe' target='_blank'>Proteomics Unit</a> at the<a class='link' href='http://www.uib.no/biomedisin/en' target='_blank'> Department of Biomedicine at the University of Bergen</a>, Norway, in close collaboration with <a class='link' href='http://haukeland.no/en/OmOss/Avdelinger/ms/Sider/om-oss.aspx' target='_blank'>The Norwegian Multiple Sclerosis Competence Centre</a>, Haukeland University Hospital, Bergen, Norway.</font><br/><font>See also: <a class='link' href='http://www.mcponline.org/content/13/11/3152.full.pdf+html' target='_blank'>Guldbrandsen et al.: In-depth Characterization of the Cerebrospinal Fluid (CSF) Proteome Displayed Through the CSF Proteome Resource (CSF-PR). Mol Cell Proteomics. 2014.</a></font></p>");
+        Label para_3 = new Label("<p align='justify' Style='font-size: 12px;color: black;/* font-weight: bold; */line-height: 20px;'><font>CSF-PR is developed by the <a class='link' href='http://www.uib.no/rg/probe' target='_blank'>Proteomics Unit</a> at the<a class='link' href='http://www.uib.no/biomedisin/en' target='_blank'> Department of Biomedicine at the University of Bergen, Norway</a>, in close collaboration with <a class='link' href='http://haukeland.no/en/OmOss/Avdelinger/ms/Sider/om-oss.aspx' target='_blank'>The Norwegian Multiple Sclerosis Competence Centre, Haukeland University Hospital, Bergen, Norway.</a></font><br/><br/><font>CSF-PR publications:<br/><a class='link' href='http://www.mcponline.org/content/13/11/3152.full.pdf+html' target='_blank'>- Guldbrandsen et al.: In-depth Characterization of the Cerebrospinal Fluid (CSF) Proteome Displayed Through the CSF Proteome Resource (CSF-PR). Mol Cell Proteomics. 2014.</a><br/>- Guldbrandsen et al.: CSF-PR 2.0: your guide to quantitative cerebrospinal fluid mass spectrometry data. <i>(in preparation)</i>.</font></p>");
         para_3.setContentMode(ContentMode.HTML);
         middleLayout.addComponent(para_3);
         middleLayout.setComponentAlignment(para_3, Alignment.BOTTOM_LEFT);

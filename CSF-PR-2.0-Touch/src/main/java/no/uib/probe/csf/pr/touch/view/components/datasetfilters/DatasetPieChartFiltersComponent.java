@@ -25,6 +25,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
+import no.uib.probe.csf.pr.touch.view.core.InformationButton;
 import no.uib.probe.csf.pr.touch.view.core.PopupWindow;
 
 /**
@@ -43,7 +44,9 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
     private final Map<Integer, Boolean> activeDatasetMap;
     private Map<Integer, QuantDatasetObject> quantDatasetMap;
     private boolean singlefilter;
-
+    private final int screenWidth = Math.min(Page.getCurrent().getBrowserWindowWidth(),1000);
+    private final int screenHeight =Math.min(Page.getCurrent().getBrowserWindowHeight(),800);
+        
     public DatasetPieChartFiltersComponent() {
 
         //init icon
@@ -66,9 +69,12 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         popupBody.addStyleName("roundedborder");
         popupBody.addStyleName("padding20");
         popupBody.addStyleName("whitelayout");
+        
+       
+        
 
         popupBody.setWidth(100, Unit.PERCENTAGE);
-        popupBody.setHeight(700, Unit.PIXELS);
+        popupBody.setHeight(screenHeight-150, Unit.PIXELS);
         popupBody.setSpacing(true);
         popupBody.setMargin(true);
 
@@ -76,27 +82,36 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
 
             @Override
             public void close() {
-                updateSystem(filterSelectionUnit());
+//                updateSystem(filterSelectionUnit());
                 popupWindow.setVisible(false);
 
             }
 
         };
-        popupWindow.setWidth(1100, Unit.PIXELS);
-        popupWindow.setHeight(850, Unit.PIXELS);
+        popupWindow.setWidth(screenWidth, Unit.PIXELS);
+        popupWindow.setHeight(screenHeight, Unit.PIXELS);
 
         //init datasetructure
         activeDatasetMap = new HashMap<>();
         //init pie-chart filters
         this.initIntercativeDatasetFilters();
 
-        VerticalLayout btnsFrame = new VerticalLayout();
+        HorizontalLayout btnsFrame = new HorizontalLayout();
         btnsFrame.setWidth(100, Unit.PERCENTAGE);
         btnsFrame.addStyleName("roundedborder");
         btnsFrame.addStyleName("padding20");
         btnsFrame.addStyleName("margintop");
         btnsFrame.addStyleName("whitelayout");
         frame.addComponent(btnsFrame);
+        
+        
+           HorizontalLayout leftsideWrapper = new HorizontalLayout();
+        btnsFrame.addComponent(leftsideWrapper);
+        btnsFrame.setComponentAlignment(leftsideWrapper, Alignment.TOP_LEFT);
+        leftsideWrapper.setSpacing(true);
+
+        InformationButton info = new InformationButton("info", true);
+        leftsideWrapper.addComponent(info);
 
         HorizontalLayout btnLayout = new HorizontalLayout();
         btnLayout.setWidthUndefined();
@@ -112,27 +127,30 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
 
         btnLayout.addComponent(applyFilters);
         applyFilters.addClickListener((Button.ClickEvent event) -> {
-            popupWindow.close();
+            DatasetPieChartFiltersComponent.this.updateSystem(filterSelectionUnit());
+                popupWindow.setVisible(false);
+
         });
 
         Button unselectAllBtn = new Button("Clear");
         unselectAllBtn.setStyleName(ValoTheme.BUTTON_TINY);
         btnLayout.addComponent(unselectAllBtn);
         btnLayout.setComponentAlignment(unselectAllBtn, Alignment.TOP_LEFT);
-        unselectAllBtn.setDescription("Clear All Selections");
+        unselectAllBtn.setDescription("Clear all selections");
         unselectAllBtn.addClickListener((Button.ClickEvent event) -> {
             singlefilter = false;
             resetFilters();
+            
         });
 
-        Button resetFiltersBtn = new Button("Reset");
-        resetFiltersBtn.setStyleName(ValoTheme.BUTTON_TINY);
-        btnLayout.addComponent(resetFiltersBtn);
-        resetFiltersBtn.setDescription("Reset all applied filters");
-        resetFiltersBtn.addClickListener((Button.ClickEvent event) -> {
-//                internalSelectionManager.resetToInitState();
-//                internalSelectionManager.resetCentralSelectionManager();
-        });
+//        Button resetFiltersBtn = new Button("Reset");
+//        resetFiltersBtn.setStyleName(ValoTheme.BUTTON_TINY);
+//        btnLayout.addComponent(resetFiltersBtn);
+//        resetFiltersBtn.setDescription("Reset all applied filters");
+//        resetFiltersBtn.addClickListener((Button.ClickEvent event) -> {
+////                internalSelectionManager.resetToInitState();
+////                internalSelectionManager.resetCentralSelectionManager();
+//        });
 
         ImageContainerBtn exportPdfBtn = new ImageContainerBtn() {
 
@@ -169,8 +187,8 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
     }
 
     private void initIntercativeDatasetFilters() {
-        int filterHeight = 300;//(bodyHeight - 200) / 3;
-        int filterWidth = 300;//(bodyWidth - 200) / 3;
+        int filterHeight = (screenHeight-200)/2;// 300;//(bodyHeight - 200) / 3;
+        int filterWidth = Math.min(filterHeight, screenWidth/3);//(bodyWidth - 200) / 3;
         filtersSet.clear();
         DatasetPieChartFilter yearFilter = initPieChartFilter("Year", "yearFilter", 0, filterWidth, filterHeight);
         this.popupBody.addComponent(yearFilter, 0, 0);
@@ -201,6 +219,8 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         this.popupBody.addComponent(shotgunTargetedFilter, 2, 1);
         this.popupBody.setComponentAlignment(shotgunTargetedFilter, Alignment.BOTTOM_RIGHT);
         filtersSet.put("shotgunTargetedFilter", shotgunTargetedFilter);
+        
+        
 
     }
 
@@ -385,6 +405,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         filtersSet.values().stream().forEach((filter) -> {
             filter.reset();
         });
+        DatasetPieChartFiltersComponent.this.updateSystem(filterSelectionUnit());
 
     }
 

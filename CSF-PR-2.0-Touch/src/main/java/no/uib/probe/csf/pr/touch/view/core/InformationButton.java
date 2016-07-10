@@ -40,7 +40,7 @@ public class InformationButton extends ImageContainerBtn {
         }
  
        
-        this.setDescription("click to view information");
+        this.setDescription("Click to view information");
         this.setEnabled(true);
         this.setReadOnly(false);
 

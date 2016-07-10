@@ -10,9 +10,13 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.JavaScript;
+import com.vaadin.ui.JavaScriptFunction;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
+import elemental.json.JsonArray;
 import javax.servlet.ServletContext;
 import no.uib.probe.csf.pr.touch.view.MainLayout;
 
@@ -37,6 +41,7 @@ public class CSF_PR_UI extends UI {
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         //init param for DB
+
         ServletContext scx = VaadinServlet.getCurrent().getServletContext();
         dbURL = (scx.getInitParameter("url"));
         dbName = (scx.getInitParameter("dbName"));
@@ -55,17 +60,17 @@ public class CSF_PR_UI extends UI {
         windowHeight = Page.getCurrent().getBrowserWindowHeight();// Math.max(Page.getCurrent().getBrowserWindowHeight(), 1080);
         windowWidth = Page.getCurrent().getBrowserWindowWidth();//Math.max(Page.getCurrent().getBrowserWindowWidth(), 1920);
         if (windowHeight < 720) {
-            Notification.show("Screen is too small",Notification.Type.ERROR_MESSAGE);
-            
-            System.out.println("it is small window height "+720);
+            Notification.show("Screen is too small", Notification.Type.ERROR_MESSAGE);
+
+            System.out.println("it is small window height " + 720);
             windowHeight = 720;
             return;
         }
         if (windowWidth < 1000) {
-              Notification.show("Screen is too small",Notification.Type.ERROR_MESSAGE);
+            Notification.show("Screen is too small", Notification.Type.ERROR_MESSAGE);
             windowWidth = 1000;
-            System.out.println("it is small window width "+windowWidth);
-             return;
+            System.out.println("it is small window width " + windowWidth);
+            return;
         }
 
 //        windowWidth = 1000;//640;
@@ -88,6 +93,19 @@ public class CSF_PR_UI extends UI {
         });
         resizeScreen();
 
+        JavaScript.getCurrent().addFunction("aboutToClose", new JavaScriptFunction() {
+            @Override
+            public void call(JsonArray arguments) {
+                System.out.println("at system is closing the tab   " + vaadinRequest.getRemoteAddr());
+                Page.getCurrent().open("", "");
+//                    Notification.show(" notifi", "dont go ", Notification.Type.ASSISTIVE_NOTIFICATION);
+//                    Page.getCurrent().open(vaadinRequest.getRemoteAddr(),"");
+
+//                    cleanUserFolder(new File(filesURL, VaadinSession.getCurrent().getSession().getId()));
+            }
+        });
+        Page.getCurrent().getJavaScript().execute("window.onbeforeunload = function (e) { var e = e || window.event; aboutToClose(); return; };");
+
     }
 
     String updatedZoomStyleName = "";
@@ -96,6 +114,9 @@ public class CSF_PR_UI extends UI {
      * resize the layout on changing window size
      */
     private void resizeScreen() {
+        for (Window w : getWindows()) {
+            w.center();
+        }
 
 //        int swindowHeight = Page.getCurrent().getBrowserWindowHeight();
 //        int swindowWidth = Page.getCurrent().getBrowserWindowWidth();

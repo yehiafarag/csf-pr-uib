@@ -10,6 +10,7 @@ import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -85,8 +86,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         this.addComponent(bodyLayoutWrapper);
         this.setComponentAlignment(bodyLayoutWrapper, Alignment.MIDDLE_CENTER);
 
-        
-         GridLayout btnsWrapper = new GridLayout(3, 3);
+        GridLayout btnsWrapper = new GridLayout(3, 3);
         btnsWrapper.setColumnExpandRatio(0, 25);
         btnsWrapper.setColumnExpandRatio(1, 50);
         btnsWrapper.setColumnExpandRatio(2, 25);
@@ -95,6 +95,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         datasetPieChartFiltersBtn = new DatasetPieChartFiltersComponent() {
             @Override
             public void updateSystem(Set<Integer> selectedDatasetIds) {
+                System.out.println("at update system ");
                 updateSystemComponents(selectedDatasetIds);
             }
 
@@ -117,7 +118,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         };
         HorizontalLayout bottomBtnContainer = new HorizontalLayout();
         bottomBtnContainer.setSpacing(false);
-        
+
         bottomBtnContainer.addComponent(reconbineDiseaseGroupsFiltersBtn);
         bottomBtnContainer.setComponentAlignment(reconbineDiseaseGroupsFiltersBtn, Alignment.TOP_LEFT);
 
@@ -131,8 +132,6 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         };
         bottomBtnContainer.addComponent(reorderSelectBtn);
         bottomBtnContainer.setComponentAlignment(reorderSelectBtn, Alignment.TOP_LEFT);
-        
-        
 
         btnsWrapper.addComponent(bottomBtnContainer, 1, 2);
         btnsWrapper.setComponentAlignment(bottomBtnContainer, Alignment.TOP_CENTER);
@@ -153,11 +152,11 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
                 updateSystemComponents(datasetPieChartFiltersBtn.checkAndFilter(updatedDsIds));
             }
         };
-       
+
         btnsWrapper.addComponent(serumCsfFilter, 1, 0);
         btnsWrapper.setComponentAlignment(serumCsfFilter, Alignment.BOTTOM_CENTER);
         VerticalLayout clearFilterBtn = new VerticalLayout();
-        clearFilterBtn.setDescription("Clear filters");        
+        clearFilterBtn.setDescription("Clear filters");
         clearFilterBtn.setStyleName("filterbtn");
         Image icon = new Image();
         icon.setSource(new ThemeResource("img/filter_clear.png"));
@@ -175,19 +174,18 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         });
         btnsWrapper.addComponent(clearFilterBtn, 2, 1);
         btnsWrapper.setComponentAlignment(clearFilterBtn, Alignment.MIDDLE_RIGHT);
-       
+
         datasetCounterLabel = new Label();
         datasetCounterLabel.setDescription("#Datasets");
-       
+
         btnsWrapper.addComponent(datasetCounterLabel, 1, 1);
         datasetCounterLabel.setContentMode(ContentMode.HTML);
         btnsWrapper.setComponentAlignment(datasetCounterLabel, Alignment.MIDDLE_CENTER);
         datasetCounterLabel.setStyleName("filterbtn");
         datasetCounterLabel.addStyleName("defaultcursor");
-        
-         HeatmapFiltersContainerResizeControl filterSizeController = new HeatmapFiltersContainerResizeControl(btnsWrapper,datasetPieChartFiltersBtn, reconbineDiseaseGroupsFiltersBtn,reorderSelectBtn,bottomBtnContainer,serumCsfFilter,clearFilterBtn,datasetCounterLabel);
-       
-        
+
+        HeatmapFiltersContainerResizeControl filterSizeController = new HeatmapFiltersContainerResizeControl(btnsWrapper, datasetPieChartFiltersBtn, reconbineDiseaseGroupsFiltersBtn, reorderSelectBtn, bottomBtnContainer, serumCsfFilter, clearFilterBtn, datasetCounterLabel);
+
         InfoPopupBtn info = new InfoPopupBtn("infoText");
         info.setWidth(25, Unit.PIXELS);
         info.setHeight(25, Unit.PIXELS);
@@ -272,7 +270,6 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         this.filteredQuantDsMap.putAll(fullQuantDsMap);
 
         serumCsfFilter.resetFilter();
-
         reorderSelectBtn.updateData(rowheaders, colheaders, patientsGroupComparisonsSet);
 
     }
@@ -283,7 +280,37 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         fullQuantDsMap.keySet().stream().filter((datasetId) -> (datasetIds.contains(datasetId))).forEach((datasetId) -> {
             filteredQuantDsMap.put(datasetId, fullQuantDsMap.get(datasetId));
         });
-        heatmapLayoutContainer.filterHeatMap(filteredQuantDsMap);
+        Set<HeatMapHeaderCellInformationBean> localRows = new LinkedHashSet<>(), localColumns = new LinkedHashSet<>();
+        Set<DiseaseGroupComparison> filteredPatientsGroupComparisonsSet = new LinkedHashSet<>();
+
+         for (HeatMapHeaderCellInformationBean rowHeader : rowheaders) {
+             for (int key : filteredQuantDsMap.keySet()) {   
+                  QuantDatasetObject dataset = filteredQuantDsMap.get(key);
+             if (dataset.getUpdatedDiseaseGroupI().equalsIgnoreCase(rowHeader.getDiseaseGroupName()) || dataset.getUpdatedDiseaseGroupII().equalsIgnoreCase(rowHeader.getDiseaseGroupName())) {
+                    localRows.add(rowHeader);
+                    
+                }
+             }
+
+            }
+         
+         colheaders.stream().forEach((rowHeader) -> {
+            for (Iterator<Integer> it = filteredQuantDsMap.keySet().iterator(); it.hasNext();) {
+                int key = it.next();
+                QuantDatasetObject dataset = filteredQuantDsMap.get(key);
+                if (dataset.getUpdatedDiseaseGroupI().equalsIgnoreCase(rowHeader.getDiseaseGroupName()) || dataset.getUpdatedDiseaseGroupII().equalsIgnoreCase(rowHeader.getDiseaseGroupName())) {
+                    localColumns.add(rowHeader);
+                    
+                }
+            }
+        });
+        
+        for (int key : filteredQuantDsMap.keySet()) {
+            patientsGroupComparisonsSet.stream().filter((patientsGroupComparisons) -> (patientsGroupComparisons.getOriginalDatasetIndex() == key)).forEach((patientsGroupComparisons) -> {
+                filteredPatientsGroupComparisonsSet.add(patientsGroupComparisons);
+            });
+        }
+      heatmapLayoutContainer.updateData(localRows, localColumns, filteredPatientsGroupComparisonsSet, filteredQuantDsMap);
 
     }
 
@@ -356,8 +383,8 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
     public void removeFilterValue(String value) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    public void unselectAll(){
+
+    public void unselectAll() {
         this.heatmapLayoutContainer.unselectAll();
     }
 

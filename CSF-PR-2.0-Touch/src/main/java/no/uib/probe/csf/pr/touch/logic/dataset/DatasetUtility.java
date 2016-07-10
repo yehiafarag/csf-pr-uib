@@ -237,6 +237,8 @@ public class DatasetUtility implements Serializable {
             inUse_DiseaseCat_DiseaseGroupMap = default_DiseaseCat_DiseaseGroupMap;
             fullDiseaseCategoryMap.values().stream().filter((diseaseCategory) -> !(diseaseCategory.getDiseaseCategory().equalsIgnoreCase("All Diseases"))).forEach((diseaseCategory) -> {
                 diseaseCategory.setDiseaseSubGroups(inUse_DiseaseCat_DiseaseGroupMap.get(diseaseCategory.getDiseaseCategory()));
+                diseaseCategory.setDiseaseSubGroupsToFullName(diseaseGroupFullNameMap);
+//                diseaseCategory.getAllSubGroupSet().addAll(quantDataMap.get("All Diseases").getOreginalRowIds());
             });
 
         }
@@ -664,11 +666,10 @@ public class DatasetUtility implements Serializable {
         return sortedMap;
     }
 
-     
     /**
      * Get full disease sub groups name list
      *
-     * @return set of disease sub group name 
+     * @return set of disease sub group name
      */
     public Set<String> getFullDiseaseGroupNameSet() {
         Set<String> fulldiseaseGroupsNameSet = new TreeSet<>();

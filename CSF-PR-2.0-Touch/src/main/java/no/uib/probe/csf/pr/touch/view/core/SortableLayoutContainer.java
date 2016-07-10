@@ -44,24 +44,30 @@ public class SortableLayoutContainer extends VerticalLayout {
     private final SortableLayout sortableDiseaseGroupLayout;
     private final VerticalLayout counterLayout, counterLayoutContainer;
     private final VerticalLayout checkboxLayout;
-    private final int itemWidth;
+//    private final int itemWidth;
     private final String strTitle;
     private final OptionGroup diseaseGroupSelectOption;
     private final Button clearBtn;
     private final Map<HeatMapHeaderCellInformationBean, Boolean> groupSelectionMap;
     private final Set<HeatMapHeaderCellInformationBean> selectionSet;
     private boolean autoClear;//, autoselectall;
+
+    public int getFinalHeight() {
+        return (int)bodyPanel.getHeight()+30;
+    }
     private boolean singleSelected = false;
     private Set selectAllSet = new HashSet();
     private final ValueChangeListener selectDataListener;
     private final int maxHeight;
     private final Panel bodyPanel;
+    
 //    private final Map<String, String> diseaseStyleMap;
 
     public SortableLayoutContainer(final String strTitle, int height) {
 
         this.setStyleName("whitelayout");
         this.setSpacing(true);
+        this.setMargin(new MarginInfo(false, true, false, false));
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeightUndefined();
 
@@ -71,8 +77,13 @@ public class SortableLayoutContainer extends VerticalLayout {
 
         HorizontalLayout headerLayout = new HorizontalLayout();
         headerLayout.setWidth(100, Unit.PERCENTAGE);
-        headerLayout.setHeight(20, Unit.PIXELS);
-        headerLayout.setMargin(new MarginInfo(false, true, false, true));
+        headerLayout.setHeight(30, Unit.PIXELS);
+        headerLayout.setStyleName("bottomborder");
+        headerLayout.addStyleName("margin");
+        headerLayout.addStyleName("paddingleft20");
+        headerLayout.setMargin(new MarginInfo(false, true, false, false));
+        
+        
         this.addComponent(headerLayout);
 
         Label titileI = new Label(strTitle);
@@ -82,9 +93,14 @@ public class SortableLayoutContainer extends VerticalLayout {
         titileI.setWidth(100, Unit.PERCENTAGE);
 
         clearBtn = new Button("Clear");
-//        clearBtn.addStyleName(ValoTheme.BUTTON_TINY);
+        
+        clearBtn.setHeight(100,Unit.PERCENTAGE);
+         clearBtn.setStyleName(ValoTheme.BUTTON_LINK);
+//         clearBtn.addStyleName(ValoTheme.BUTTON_TINY);
 //        clearBtn.addStyleName(ValoTheme.BUTTON_SMALL);
-        clearBtn.setStyleName(ValoTheme.BUTTON_LINK);
+          clearBtn.addStyleName("link");
+          clearBtn.addStyleName("marginleft28");
+       
 //        clearBtn.setHeight(18, Unit.PIXELS);
         clearBtn.setEnabled(false);
         headerLayout.addComponent(clearBtn);
@@ -99,15 +115,19 @@ public class SortableLayoutContainer extends VerticalLayout {
         });
 
         bodyPanel = new Panel();
-        maxHeight = height - 30;
+        maxHeight = height - 50;
         bodyPanel.setWidth(100, Unit.PERCENTAGE);
         bodyPanel.setStyleName(ValoTheme.PANEL_BORDERLESS);
-        bodyPanel.addStyleName("paddingleft20");
+//        bodyPanel.addStyleName("paddingleft20");
+        bodyPanel.addStyleName("margin");
 
         HorizontalLayout bodyLayout = new HorizontalLayout();
-        bodyLayout.setMargin(true);
-        bodyLayout.setStyleName("whitelayout");
+        bodyLayout.setMargin(false);
+        bodyLayout.setStyleName("paddingleft20");
+        
+        
         bodyLayout.setWidth(100, Unit.PERCENTAGE);
+      
         bodyPanel.setContent(bodyLayout);
         this.addComponent(bodyPanel);
          this.setComponentAlignment(bodyPanel, Alignment.BOTTOM_CENTER);
@@ -123,7 +143,7 @@ public class SortableLayoutContainer extends VerticalLayout {
         counterLayout.setWidth(100, Unit.PERCENTAGE);
         counterLayout.setSpacing(false);
 
-        int sortableItremWidth = 500;// containerWidth - 26 - 6 - 15;
+//        int sortableItremWidth =  containerWidth - 26 - 6 - 15;
         sortableDiseaseGroupLayout = new SortableLayout();
         bodyLayout.addComponent(sortableDiseaseGroupLayout);
         bodyLayout.setExpandRatio(sortableDiseaseGroupLayout, 80);
@@ -138,7 +158,7 @@ public class SortableLayoutContainer extends VerticalLayout {
 
         checkboxLayout.setSpacing(false);
         checkboxLayout.setEnabled(false);
-        checkboxLayout.setMargin(new MarginInfo(false, false, false, false));
+        checkboxLayout.setMargin(false);
 
         diseaseGroupSelectOption = new OptionGroup();
         checkboxLayout.addComponent(diseaseGroupSelectOption);
@@ -173,7 +193,7 @@ public class SortableLayoutContainer extends VerticalLayout {
         };
         diseaseGroupSelectOption.addValueChangeListener(selectDataListener);
 
-        itemWidth = sortableItremWidth - 10;
+//        itemWidth = sortableItremWidth - 10;
 //        initLists(labels);
     }
 
@@ -208,7 +228,7 @@ public class SortableLayoutContainer extends VerticalLayout {
             counter++;
         }
 
-        bodyPanel.setHeight(Math.min(maxHeight, 30 * (counter)), Unit.PIXELS);
+        bodyPanel.setHeight(Math.min(maxHeight, 25 * (counter)), Unit.PIXELS);
         autoClear = false;
         diseaseGroupSelectOption.addValueChangeListener(selectDataListener);
         if (externalListener != null) {
@@ -335,8 +355,7 @@ public class SortableLayoutContainer extends VerticalLayout {
         final List<VerticalLayout> componentsList = new ArrayList<>();
         groupsIds.clear();
         groupSelectionMap.clear();
-        for (Iterator<HeatMapHeaderCellInformationBean> it = datasource.iterator(); it.hasNext();) {
-            HeatMapHeaderCellInformationBean strLabel = it.next();
+        for (HeatMapHeaderCellInformationBean strLabel : datasource) {
             DiseaseGroupLabel container = new DiseaseGroupLabel(strLabel.getDiseaseGroupName(), strLabel.getDiseaseStyleName());
             container.addStyleName("border");
             container.addStyleName("grab");
