@@ -181,13 +181,13 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
         textAreaContainer.setSpacing(true);
         frame.addComponent(textAreaContainer);
 
-        textBoxI = new TextAreaComponent("<font color='#cc0000'>&nbsp;High</font>");
+        textBoxI = new TextAreaComponent("<font color='#cc0000'>&nbsp;Increased</font>");
         textAreaContainer.addComponent(textBoxI);
 
-        textBoxII = new TextAreaComponent("<font color='#018df4'>&nbsp;Stable</font>");
+        textBoxII = new TextAreaComponent("<font color='#018df4'>&nbsp;Equal</font>");
         textAreaContainer.addComponent(textBoxII);
 
-        textBoxIII = new TextAreaComponent("<font color='#009900'>&nbsp;Low</font>");
+        textBoxIII = new TextAreaComponent("<font color='#009900'>&nbsp;Decreased</font>");
         textAreaContainer.addComponent(textBoxIII);
 
         HorizontalLayout bottomLayout = new HorizontalLayout();

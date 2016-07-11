@@ -18,6 +18,7 @@ import no.uib.probe.csf.pr.touch.view.components.LineChartProteinTableComponent;
 import no.uib.probe.csf.pr.touch.view.components.PeptideViewComponent;
 import no.uib.probe.csf.pr.touch.view.components.QuantInitialLayout;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
+import no.uib.probe.csf.pr.touch.view.core.InformationButton;
 import no.uib.probe.csf.pr.touch.view.core.ViewControlPanel;
 
 /**
@@ -121,7 +122,17 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
             }
 
         };
-        this.setInitialLayout(quantInitialLayout.getMiniLayout(), quantInitialLayout, null);
+        VerticalLayout controlBtnsContainer  = new VerticalLayout();
+        controlBtnsContainer.setHeightUndefined();
+        controlBtnsContainer.setWidthUndefined();
+        controlBtnsContainer.setSpacing(true);
+        InformationButton info = new InformationButton("Info", false);
+        info.setWidth(40,Unit.PIXELS);
+        info.setHeight(40,Unit.PIXELS);
+        controlBtnsContainer.addComponent(info);
+        controlBtnsContainer.setVisible(false);
+        
+        this.setInitialLayout(quantInitialLayout.getMiniLayout(), quantInitialLayout, controlBtnsContainer);
 
         heatmapBtn = new ImageContainerBtn() {
 

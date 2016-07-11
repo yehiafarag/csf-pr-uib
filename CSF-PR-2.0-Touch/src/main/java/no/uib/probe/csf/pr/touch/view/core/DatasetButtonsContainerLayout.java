@@ -71,7 +71,7 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
                     }
 
                 }
-                String btnName = quantDS.getAuthor() + "<br/><font size=1 >" + quantDS.getYear() + "</font><br/><font size=1 >#Proteins: " + quantDS.getTotalProtNum() + "   #peptides: " + quantDS.getTotalPepNum() + "</font>";
+                String btnName = quantDS.getAuthor() + "<br/><font size=1 >" + quantDS.getYear() + "</font><br/><font size=1 >#Proteins: " + quantDS.getTotalProtNum() + "   #Peptides: " + quantDS.getTotalPepNum() + "</font>";
 
                 PopupInfoBtn btn = new PopupInfoBtn(quantDS, btnName, quantDS.getAuthor());
                 btn.addStyleName(publicationStyle.get(quantDS.getPumedID()));

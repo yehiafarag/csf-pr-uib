@@ -83,7 +83,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
 
         });
         mainProteinTable.removeAllItems();
-        mainProteinTable.setColumnHeader("selected", "Checked");
+        mainProteinTable.setColumnHeader("selected", "Checked Only");
         for (Object itemId : filteredItemIds) {
             mainProteinTable.addItem(tableItemsMap.get(itemId), itemId);
             activeTableItemsMap.put(itemId, tableItemsMap.get(itemId));
@@ -220,7 +220,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         });
 
 //        mainProteinTable.setColumnIcon("selected", checkedRes);
-        mainProteinTable.setColumnHeader("selected", "Only Checked");
+        mainProteinTable.setColumnHeader("selected", "Checked Only");
         mainProteinTable.setColumnAlignment("selected", Table.Align.CENTER);
         mainProteinTable.setColumnWidth("selected", 70);
         mainProteinTable.setColumnWidth("Index", 47);
@@ -254,7 +254,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
     private void showSelectedOnly() {
         mainProteinTable.removeAllItems();
         if (!selectedOnly) {
-            mainProteinTable.setColumnHeader("selected", "Checked");
+            mainProteinTable.setColumnHeader("selected", "Checked Only");
 //            mainProteinTable.setColumnIcon("selected", checkedRes);
             for (Object itemId : activeTableItemsMap.keySet()) {
                 mainProteinTable.addItem(tableItemsMap.get(itemId), itemId);

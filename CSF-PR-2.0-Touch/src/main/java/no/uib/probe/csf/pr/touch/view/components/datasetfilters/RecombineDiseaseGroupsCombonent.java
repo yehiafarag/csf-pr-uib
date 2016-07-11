@@ -6,7 +6,6 @@ import com.vaadin.server.Page;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
-import com.vaadin.shared.ui.window.WindowMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
@@ -15,14 +14,14 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseCategoryObject;
 import no.uib.probe.csf.pr.touch.view.core.DiseaseGroupLabel;
 import no.uib.probe.csf.pr.touch.view.core.InformationButton;
@@ -43,10 +42,13 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
 
     private final int screenWidth = Math.min(Page.getCurrent().getBrowserWindowWidth(), 1000);
     private final int screenHeight = Math.min(Page.getCurrent().getBrowserWindowHeight(), 800);
+    private final int maxHeight;
+    private Panel diseaseGroupsNamesPanel;
 
     public RecombineDiseaseGroupsCombonent(Collection<DiseaseCategoryObject> diseaseCategorySet) {
-        this.setDescription("Recombine disease groups");
 
+        maxHeight = screenHeight - 220;
+        this.setDescription("Recombine disease groups");
         this.setStyleName("filterbtn");
         Image icon = new Image();
         icon.setStyleName("combinegroupbtn");
@@ -85,6 +87,9 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
         diseaseTypeSelectionList = new ComboBox();
 
         captionAstrMap = new HashMap<>();
+        diseaseGroupsNamesPanel = new Panel();
+        diseaseGroupsNamesPanel.setWidth(100, Unit.PERCENTAGE);
+        diseaseGroupsNamesPanel.setStyleName(ValoTheme.PANEL_BORDERLESS);
         initPopupLayout(diseaseCategorySet);
 
         HorizontalLayout btnsFrame = new HorizontalLayout();
@@ -114,15 +119,15 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
         btnsFrame.setComponentAlignment(btnLayout, Alignment.TOP_RIGHT);
         btnLayout.setSpacing(true);
 
-        Button resetFiltersBtn = new Button("Reset");
+        Button resetFiltersBtn = new Button("Suggested Groups");
         resetFiltersBtn.setStyleName(ValoTheme.BUTTON_TINY);
         btnLayout.addComponent(resetFiltersBtn);
 
-        resetFiltersBtn.setDescription("Reset group names to default");
+        resetFiltersBtn.setDescription("Use CSF-PR suggested group names");
         resetFiltersBtn.addClickListener((Button.ClickEvent event) -> {
             resetToDefault();
         });
-        Button resetToOriginalBtn = new Button("Publications Names");
+        Button resetToOriginalBtn = new Button("Publication Names");
         resetToOriginalBtn.setStyleName(ValoTheme.BUTTON_TINY);
         btnLayout.addComponent(resetToOriginalBtn);
 
@@ -131,7 +136,7 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
             resetToPublicationsNames();
         });
 
-        Button applyFilters = new Button("Update");
+        Button applyFilters = new Button("Apply");
         applyFilters.setDescription("Update disease groups with the selected names");
         applyFilters.setStyleName(ValoTheme.BUTTON_TINY);
 
@@ -145,9 +150,6 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
     }
 
     private void initPopupLayout(Collection<DiseaseCategoryObject> diseaseCategorySet) {
-
-        int width = Math.min(Page.getCurrent().getBrowserWindowWidth(), 800);
-        int height = Math.min(Page.getCurrent().getBrowserWindowHeight(), 800);
 
 //        popupWindow.setWidth(width, Unit.PIXELS);
 //        popupWindow.setHeight(height, Unit.PIXELS);
@@ -173,7 +175,7 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
         title.addStyleName(ValoTheme.LABEL_BOLD);
         diseaseCategorySelectLayout.addComponent(title);
         diseaseCategorySelectLayout.setComponentAlignment(title, Alignment.TOP_CENTER);
-        diseaseTypeSelectionList.setWidth(width * 50 / 100, Unit.PIXELS);
+        diseaseTypeSelectionList.setWidth((int) (screenWidth * 0.5), Unit.PIXELS);
         diseaseTypeSelectionList.setNullSelectionAllowed(false);
         diseaseTypeSelectionList.setValue("All Diseases");
         diseaseTypeSelectionList.setImmediate(true);
@@ -189,13 +191,18 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
             if (value.equalsIgnoreCase("All Diseases")) {
                 showAll = true;
             }
+            int heightColc = 0;
             for (String dName : diseaseGroupsGridLayoutMap.keySet()) {
                 if (dName.equalsIgnoreCase(value) || showAll) {
                     diseaseGroupsGridLayoutMap.get(dName).setVisible(true);
+                    heightColc += (Integer) diseaseGroupsGridLayoutMap.get(dName).getData();
                 } else {
                     diseaseGroupsGridLayoutMap.get(dName).setVisible(false);
                 }
             }
+
+            diseaseGroupsNamesPanel.setHeight(Math.min(maxHeight - 30, heightColc), Unit.PIXELS);
+            popupWindow.setHeight(diseaseGroupsNamesPanel.getHeight() + (310), Unit.PIXELS);
         });
 
         VerticalLayout diseaseGroupsNamesContainer = new VerticalLayout();
@@ -212,7 +219,7 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
         diseaseNamesHeader.setMargin(new MarginInfo(true, false, false, false));
         diseaseNamesHeader.addStyleName("marginbottom");
         diseaseGroupsNamesContainer.addComponent(diseaseNamesHeader);
-        Label col1Label = new Label("Group Name");
+        Label col1Label = new Label("Publication Name");
 
         col1Label.setStyleName(ValoTheme.LABEL_SMALL);
         col1Label.addStyleName(ValoTheme.LABEL_BOLD);
@@ -221,20 +228,16 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
         diseaseNamesHeader.addComponent(col1Label, 0, 0);
         diseaseNamesHeader.setComponentAlignment(col1Label, Alignment.TOP_LEFT);
 
-        Label col2Label = new Label("Suggested Name");
+        Label col2Label = new Label("Group Name");
 
         col2Label.setStyleName(ValoTheme.LABEL_SMALL);
         col2Label.addStyleName(ValoTheme.LABEL_BOLD);
-        col2Label.addStyleName("paddingleft44");
+        col2Label.addStyleName("paddingleft40");
         diseaseNamesHeader.addComponent(col2Label, 1, 0);
         col2Label.setWidthUndefined();
         diseaseNamesHeader.setComponentAlignment(col2Label, Alignment.TOP_LEFT);
 
-        Panel diseaseGroupsNamesFrame = new Panel();
-        diseaseGroupsNamesFrame.setWidth(100, Unit.PERCENTAGE);
-        diseaseGroupsNamesFrame.setHeight((height * 67 / 100), Unit.PIXELS);
-        diseaseGroupsNamesContainer.addComponent(diseaseGroupsNamesFrame);
-        diseaseGroupsNamesFrame.setStyleName(ValoTheme.PANEL_BORDERLESS);
+        diseaseGroupsNamesContainer.addComponent(diseaseGroupsNamesPanel);
 
         VerticalLayout diseaseNamesUpdateContainerLayout = new VerticalLayout();
 
@@ -247,7 +250,9 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
             diseaseNamesUpdateContainerLayout.setComponentAlignment(diseaseNamesUpdateContainer, Alignment.TOP_CENTER);
             diseaseGroupsGridLayoutMap.put(diseaseCategory.getDiseaseCategory(), diseaseNamesUpdateContainer);
         });
-        diseaseGroupsNamesFrame.setContent(diseaseNamesUpdateContainerLayout);
+        diseaseGroupsNamesPanel.setContent(diseaseNamesUpdateContainerLayout);
+        diseaseGroupsNamesPanel.setHeight((maxHeight - 30), Unit.PIXELS);
+        popupWindow.setHeight(diseaseGroupsNamesPanel.getHeight() + (310), Unit.PIXELS);
 
         resetToDefault();
 
@@ -265,13 +270,15 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
         int widthCalc = 0;
         int row = 0;
         int col = 0;
+        subGroupList.clear();
         Map<String, ComboBox> diseaseGroupNameToListMap = new LinkedHashMap<>();
         for (String diseaseGroupName : diseaseCategory.getDiseaseSubGroups().keySet()) {
-            VerticalLayout label = generateLabel(diseaseGroupName,diseaseCategory.getDiseaseSubGroupsToFullName().get(diseaseGroupName), diseaseCategory.getDiseaseStyleName());
+            VerticalLayout label = generateLabel(diseaseGroupName, diseaseCategory.getDiseaseSubGroupsToFullName().get(diseaseGroupName), diseaseCategory.getDiseaseStyleName());
             diseaseNamesUpdateContainer.addComponent(label, col, row);
             ComboBox list = generateLabelList(diseaseCategory, diseaseGroupName);
+
             diseaseNamesUpdateContainer.addComponent(list, col + 1, row);
-//            diseaseNamesUpdateContainer.setComponentAlignment(list,Alignment.MIDDLE_CENTER);
+            diseaseNamesUpdateContainer.setComponentAlignment(list,Alignment.TOP_LEFT);
             diseaseGroupNameToListMap.put(diseaseGroupName, list);
 
             col = 0;
@@ -293,6 +300,7 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
             widthCalc += 26;
 
         }
+
         diseaseGroupsSelectionListMap.put(diseaseCategory.getDiseaseCategory(), diseaseGroupNameToListMap);
         VerticalLayout diseaseLabelContainer = new VerticalLayout();
         Label label = new Label("<center><font  color='#ffffff'>" + diseaseCategory.getDiseaseCategory() + "</font></center>");
@@ -312,15 +320,17 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
         layout.setSpacing(true);
         layout.addComponent(diseaseLabelContainer);
         layout.addComponent(diseaseNamesUpdateContainer);
+        layout.setData((((row+2) / 2) * 25));
 
         return layout;
     }
 
-    private VerticalLayout generateLabel(String strLabel,String description, String diseaseStyle) {
+    private VerticalLayout generateLabel(String strLabel, String description, String diseaseStyle) {
         DiseaseGroupLabel container = new DiseaseGroupLabel(strLabel, diseaseStyle);
         container.setDescription(description);
         return container;
     }
+    private Set<String> subGroupList = new LinkedHashSet<>();
 
     private ComboBox generateLabelList(DiseaseCategoryObject diseaseCategory, String diseaseSubGroup) {
         final ComboBox diseaseGroupsList = new ComboBox();
@@ -334,17 +344,26 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
         diseaseGroupsList.setPageLength(500);
         diseaseGroupsList.setInputPrompt("Select or enter new disease group name");
         diseaseGroupsList.setDescription("Select or enter new disease group name");
-        
+
         String defaultValue = diseaseCategory.getDiseaseSubGroups().get(diseaseSubGroup);
         diseaseGroupsList.setData(defaultValue);
 
+        diseaseGroupsList.addItem(defaultValue);
+        captionAstrMap.put(defaultValue, 0);
+        subGroupList.add(defaultValue);
+
         for (String name : diseaseCategory.getDiseaseSubGroups().keySet()) {
+            subGroupList.add(name);
             diseaseGroupsList.addItem(name);
             if (!captionAstrMap.containsKey(name)) {
                 captionAstrMap.put(name, 0);
             }
 
         }
+//        if (!captionAstrMap.containsKey(defaultValue)) {
+//            diseaseGroupsList.addItem(defaultValue);
+//            captionAstrMap.put(defaultValue, 0);
+//        }
         diseaseGroupsList.setNewItemHandler((String newItemCaption) -> {
             String ast = "";
             if (!newItemCaption.contains("*")) {
@@ -393,9 +412,24 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
                 list.setItemCaption(itemId, itemCap);
             }
         }
+//        updateListItems();
 
     }
 
+//    private void updateListItems() {
+//        for (String diseaseKey : diseaseGroupsSelectionListMap.keySet()) {
+//            Map<String, ComboBox> diseaseGroupNameToListMap = diseaseGroupsSelectionListMap.get(diseaseKey);
+//            for (String key : diseaseGroupNameToListMap.keySet()) {
+//                ComboBox list = diseaseGroupNameToListMap.get(key);
+//                for (String subGroup : subGroupList) {
+//                    if (list.getItem(subGroup) != null) {
+//                        list.addItem(subGroup);
+//                    }
+//                }
+//            }
+//        }
+//
+//    }
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         popupWindow.setVisible(true);
@@ -403,27 +437,30 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
 
     private void resetToDefault() {
         String selectedDiseaseKey = diseaseTypeSelectionList.getValue().toString().trim();
+
         if (selectedDiseaseKey.equalsIgnoreCase("All Diseases")) {
             for (String diseaseKey : diseaseGroupsSelectionListMap.keySet()) {
                 Map<String, ComboBox> diseaseGroupNameToListMap = diseaseGroupsSelectionListMap.get(diseaseKey);
                 for (String key : diseaseGroupNameToListMap.keySet()) {
                     ComboBox list = diseaseGroupNameToListMap.get(key);
-                    list.setValue(null);
+                    list.setValue(list.getData() + "");
                 }
             }
         } else {
             Map<String, ComboBox> diseaseGroupNameToListMap = diseaseGroupsSelectionListMap.get(selectedDiseaseKey);
             for (String key : diseaseGroupNameToListMap.keySet()) {
                 ComboBox list = diseaseGroupNameToListMap.get(key);
-                list.setValue(null);
+                list.setValue(list.getData() + "");
 
             }
 
         }
+
     }
 
     private void updateGroups() {
         Map<String, Map<String, String>> updatedGroupsNamesMap = new HashMap<>();
+
         diseaseGroupsSelectionListMap.keySet().stream().forEach((diseaseKey) -> {
             Map<String, ComboBox> diseaseGroupNameToListMap = diseaseGroupsSelectionListMap.get(diseaseKey);
             Map<String, String> updatedDiseaseGroupsMappingName = new LinkedHashMap<>();
@@ -431,7 +468,7 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
                 ComboBox list = diseaseGroupNameToListMap.get(key);
                 String selection;
                 if (list.getValue() != null) {
-                    selection = list.getValue().toString().trim();
+                    selection = list.getItemCaption(list.getValue()).trim();
                 } else {
                     selection = list.getData().toString();
                 }

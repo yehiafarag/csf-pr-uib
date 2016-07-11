@@ -38,6 +38,7 @@ import no.uib.probe.csf.pr.touch.view.components.datasetfilters.GroupSwichBtn;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 import no.uib.probe.csf.pr.touch.view.core.InfoPopupBtn;
 import no.uib.probe.csf.pr.touch.view.core.BubbleComponent;
+import no.uib.probe.csf.pr.touch.view.core.InformationButton;
 import no.uib.probe.csf.pr.touch.view.core.TrendLegend;
 import org.apache.commons.codec.binary.Base64;
 import org.jfree.chart.ChartRenderingInfo;
@@ -131,10 +132,10 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         titleLayoutWrapper.addComponent(overviewLabel);
         titleLayoutWrapper.setComponentAlignment(overviewLabel, Alignment.MIDDLE_CENTER);
         
-        InfoPopupBtn info = new InfoPopupBtn("The bubble chart give an overview for the proteins existed in the selected comparisons.<br/>The diameter of the bubble represents the number of the proteins in the selected comparison and the color represents the trend.<br/>");
-        titleLayoutWrapper.addComponent(info);
-        titleLayoutWrapper.setComponentAlignment(info, Alignment.MIDDLE_CENTER);
-        
+//        InfoPopupBtn info = new InfoPopupBtn("The bubble chart give an overview for the proteins existed in the selected comparisons.<br/>The diameter of the bubble represents the number of the proteins in the selected comparison and the color represents the trend.<br/>");
+//        titleLayoutWrapper.addComponent(info);
+//        titleLayoutWrapper.setComponentAlignment(info, Alignment.MIDDLE_CENTER);
+//        
         TrendLegend legendLayout = new TrendLegend("bubblechart");
         legendLayout.setWidthUndefined();
         legendLayout.setHeight(24, Unit.PIXELS);
@@ -179,7 +180,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         //init data structure
         tooltipsProtNumberMap = new HashMap<>();
         lastselectedComponents = new HashSet<>();
-        tooltipLabels = new String[]{"", " Decreased <img src='VAADIN/themes/mytheme/img/greendot.png' alt='Decreased'>" + " ", " Decreased <img src='VAADIN/themes/mytheme/img/lgreendot.png' alt='Decreased'>" + " ", " Equal <img src='VAADIN/themes/mytheme/img/bluedot.png' alt='Equal'>" + " ", "  Increased <img src='VAADIN/themes/mytheme/img/lreddot.png' alt='Increased'>" + " ", "  Increased <img src='VAADIN/themes/mytheme/img/reddot.png' alt='Increased'>" + " ", ""};
+        tooltipLabels = new String[]{"", "  Decreased" + " ", "  Decreased" + " ", "  Equal" + " ", "  Increased>" + " ", "  Increased" + " ", ""};
         trendStyles = new String[]{"", "decreased100", "decreasedless100", "stable", "increasedless100", "increased100", ""};
         
         this.CSFPR_Central_Manager.registerListener(BubbleChartComponent.this);
@@ -309,6 +310,9 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         selectMultiBtn.setHeight(40, Unit.PIXELS);
         controlBtnsContainer.addComponent(selectMultiBtn);
         controlBtnsContainer.setComponentAlignment(selectMultiBtn, Alignment.MIDDLE_CENTER);
+        
+         InformationButton info = new InformationButton("Info", false);
+        controlBtnsContainer.addComponent(info);
         
     }
     
@@ -841,7 +845,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
                 String updatedHeader = comparison.getComparisonFullName();//header.split(" / ")[0].split("\n")[0] + " / " + header.split(" / ")[1].split("\n")[0] + " - " + header.split(" / ")[1].split("\n")[1].replace("_", " ").replace("-", "'").replace("Disease", "") + "";
                 int itemNumber = (int) ((XYItemEntity) entity).getDataset().getYValue(((XYItemEntity) entity).getSeriesIndex(), ((XYItemEntity) entity).getItem());
                 square.addStyleName(trendStyles[itemNumber]);
-                square.setDescription(updatedHeader + "<br/>#Proteins " + (int) tooltipsProtNumberMap.get(header)[itemNumber] + " " + tooltipLabels[itemNumber]);
+                square.setDescription(updatedHeader +"<br/>Category: "+ tooltipLabels[itemNumber] + "<br/>#Proteins: " + (int) tooltipsProtNumberMap.get(header)[itemNumber]);
                 double categIndex = (double) itemNumber;
                 int seriesIndex = ((XYItemEntity) entity).getSeriesIndex();
                 square.setParam("seriesIndex", seriesIndex);

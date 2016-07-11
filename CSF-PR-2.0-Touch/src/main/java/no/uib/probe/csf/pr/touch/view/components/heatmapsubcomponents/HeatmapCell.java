@@ -6,9 +6,6 @@
 package no.uib.probe.csf.pr.touch.view.components.heatmapsubcomponents;
 
 import com.vaadin.event.LayoutEvents;
-import com.vaadin.shared.ui.label.ContentMode;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import java.util.Map;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
@@ -82,14 +79,14 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
         comparison.setOreginalComparisonHeader(oreginalComparisonTitle);
         comparison.setDiseaseCategoryColor(diseaseCategoryColor);
         comparison.setDatasetMap(datasetMap);
-        comparison.setDiseaseCategoryStyle(diseaseCategoryStyle);;
+        comparison.setDiseaseCategoryStyle(diseaseCategoryStyle);
         strValue = "";
         pointer = "default";
         this.cellColor = cellColor;
         if (cellColor.equalsIgnoreCase("#EFF2FB") && value != 0) {
             strValue = ((int) value) + "";
             this.updateLabel(strValue);
-            this.setDescription("<h4>Same type comparison ( " + fullCompTitle.replace("__" + diseaseCategory, "") + ")</h4><h4>Disease: " + diseaseCategory + "</h4> <h4 style='font-size:14px;line-height:100%;font-weight: normal; '>" + strValue + (value == 1 ? " Dataset" : " Datasets") + " </h4><h4 style='font-size:14px;line-height:100%;font-weight: normal; '>" + publicationsNumber + (publicationsNumber == 1 ? " Publication" : " Publications") + " </h4>");
+            this.setDescription("Same type comparison ( " + fullCompTitle.replace("__" + diseaseCategory, "") + ")<br/>Disease: " + diseaseCategory + "<br/>#Datasets: " + strValue +"<br/>#Publications: " + publicationsNumber);
             comparison.setComparisonHeader(" / ");
             comparison.setOreginalComparisonHeader(" / ");
             combinedHeader = true;
@@ -105,7 +102,7 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
         }
 
         if (value > 0 && !cellColor.equalsIgnoreCase("#EFF2FB")) {
-            this.setDescription("<h4>   " + fullCompTitle.replace("__" + diseaseCategory, "") + "</h4><h4> Disease: " + diseaseCategory + " </h4>  <h4 style='font-size:11px;line-height:100%;font-weight: normal; '>" + strValue + (value == 1 ? " Dataset" : " Datasets") + " </h4><h4 style='font-size:11px;line-height:100%;font-weight: normal; '>" + publicationsNumber + (publicationsNumber == 1 ? " Publication" : " Publications") + " </h4>");
+            this.setDescription(fullCompTitle.replace("__" + diseaseCategory, "") + "<br/>Disease: " + diseaseCategory + " <br/>#Datasets: " + strValue +"<br/>#Publications: " + publicationsNumber);
         }
     }
 

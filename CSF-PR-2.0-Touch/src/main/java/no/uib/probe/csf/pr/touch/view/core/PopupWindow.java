@@ -8,7 +8,6 @@ package no.uib.probe.csf.pr.touch.view.core;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.window.WindowMode;
-import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.UI;

@@ -26,6 +26,7 @@ public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutC
         this.addLayoutClickListener(PopupInfoBtn.this);
         this.setHeight("80px");
         this.setWidth("200px");
+        this.setDescription("Click to view dataset information");
         Label btnLabel = new Label(btnName);
         btnLabel.setContentMode(ContentMode.HTML);
         this.addComponent(btnLabel);
@@ -58,6 +59,7 @@ public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutC
    
     public PopupInfoBtn(String btnName, String publicationAuthor, Object[] publicationData) {
         this.addLayoutClickListener(PopupInfoBtn.this);
+        this.setDescription("Click to view publication information");
         this.setHeight("80px");
         this.setWidth("200px");
         Label btnLabel = new Label(btnName);

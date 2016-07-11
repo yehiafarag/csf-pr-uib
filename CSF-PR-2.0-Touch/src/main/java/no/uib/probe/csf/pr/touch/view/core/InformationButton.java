@@ -29,29 +29,20 @@ public class InformationButton extends ImageContainerBtn {
 
     public InformationButton(String infoText, boolean small) {
         updateIcon(new ThemeResource("img/help.png"));
-        if (small) {
-            this.setHeight(30, Unit.PIXELS);
-            this.setWidth(30, Unit.PIXELS);
-            this.addStyleName("midimg");
-        } else {
-            this.setHeight(40, Unit.PIXELS);
-            this.setWidth(40, Unit.PIXELS);
-           this.addStyleName("smallimg");
-        }
- 
-       
+        VerticalLayout mainBody = new VerticalLayout();
+        mainBody.setHeightUndefined();
+        mainBody.setStyleName("border");
+        mainBody.addStyleName("infoLayout");
+
+        this.addStyleName("pointer");
+
         this.setDescription("Click to view information");
         this.setEnabled(true);
         this.setReadOnly(false);
 
         popupBodyLayout = new VerticalLayout();
-        VerticalLayout mainBody = new VerticalLayout();
-        
-//        mainBody.setWidth(450, Unit.PIXELS);
-        mainBody.setHeightUndefined();
-        mainBody.setStyleName("border");
-        mainBody.addStyleName("infoLayout");
 
+//        mainBody.setWidth(450, Unit.PIXELS);
         HorizontalLayout topLayout = new HorizontalLayout();
         topLayout.setWidth(100, Unit.PERCENTAGE);
         mainBody.addComponent(topLayout);
@@ -86,7 +77,20 @@ public class InformationButton extends ImageContainerBtn {
         closeBtn.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
             popupLayout.setPopupVisible(false);
         });
-        popupLayout.addStyleName("infoLayout");
+        if (small) {
+            this.setHeight(30, Unit.PIXELS);
+            this.setWidth(30, Unit.PIXELS);
+            this.addStyleName("midimg");
+
+            popupLayout.addStyleName("infoLayout");
+
+        } else {
+            this.setHeight(40, Unit.PIXELS);
+            this.setWidth(40, Unit.PIXELS);
+            this.addStyleName("smallimg");
+
+            popupLayout.addStyleName("biginfo");
+        }
 
     }
 

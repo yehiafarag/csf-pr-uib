@@ -512,7 +512,8 @@ public abstract class HeatMapLayout1 extends VerticalLayout {
                 title = "Not Available";
             }
             String diseaseStyleName = cellInfo.getDiseaseStyleName();
-            HeaderCell headerCell = new HeaderCell(rotate, title, diseaseStyleName, i, colHeaderW, colHeaderH, cellInfo.getDiseaseGroupFullName(), cellInfo.getDiseaseCategory()) {
+//            HeaderCell headerCell = new HeaderCell(rotate, title, diseaseStyleName, i, colHeaderW, colHeaderH, cellInfo.getDiseaseGroupFullName(), cellInfo.getDiseaseCategory()) {
+             HeaderCell headerCell= new HeaderCell(title, i, diseaseStyleName, diseaseStyleName) {
 
                 @Override
                 public void selectData(String valueLabel) {
@@ -540,7 +541,9 @@ public abstract class HeatMapLayout1 extends VerticalLayout {
                 title = "Not Available";
             }
             String diseaseStyleName = cellInfo.getDiseaseStyleName();
-            HeaderCell headerCell = new HeaderCell(false, title, diseaseStyleName, i, 150, rowHeaderH, cellInfo.getDiseaseGroupFullName(), cellInfo.getDiseaseCategory()) {
+//            HeaderCell headerCell = new HeaderCell(false, title, diseaseStyleName, i, 150, rowHeaderH, cellInfo.getDiseaseGroupFullName(), cellInfo.getDiseaseCategory()) {
+
+            HeaderCell headerCell = new HeaderCell(title, i, diseaseStyleName, diseaseStyleName) {
 
                 @Override
                 public void selectData(String valueLabel) {

@@ -93,16 +93,13 @@ public class CSF_PR_UI extends UI {
         });
         resizeScreen();
 
-        JavaScript.getCurrent().addFunction("aboutToClose", new JavaScriptFunction() {
-            @Override
-            public void call(JsonArray arguments) {
-                System.out.println("at system is closing the tab   " + vaadinRequest.getRemoteAddr());
-                Page.getCurrent().open("", "");
+        JavaScript.getCurrent().addFunction("aboutToClose", (JsonArray arguments) -> {
+            System.out.println("at system is closing the tab   " + vaadinRequest.getContextPath());
+            Page.getCurrent().open(vaadinRequest.getContextPath(), "");
 //                    Notification.show(" notifi", "dont go ", Notification.Type.ASSISTIVE_NOTIFICATION);
 //                    Page.getCurrent().open(vaadinRequest.getRemoteAddr(),"");
 
 //                    cleanUserFolder(new File(filesURL, VaadinSession.getCurrent().getSession().getId()));
-            }
         });
         Page.getCurrent().getJavaScript().execute("window.onbeforeunload = function (e) { var e = e || window.event; aboutToClose(); return; };");
 

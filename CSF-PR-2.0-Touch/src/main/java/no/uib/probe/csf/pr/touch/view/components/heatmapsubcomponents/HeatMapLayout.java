@@ -29,6 +29,7 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.StudiesInformationPopupBtn;
 import no.uib.probe.csf.pr.touch.view.components.QuantDatasetsfullStudiesTableLayout;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
+import no.uib.probe.csf.pr.touch.view.core.InformationButton;
 import no.uib.probe.csf.pr.touch.view.core.ZoomControler;
 
 /**
@@ -302,6 +303,8 @@ public abstract class HeatMapLayout extends VerticalLayout {
             cornerCell.setComponentAlignment(filterResizeController.getFilterContainerLayout(), Alignment.TOP_LEFT);
             filterResizeController.getFilterContainerLayout().addStyleName("heatmapcorner");
         }
+         InformationButton info = new InformationButton("Info", false);
+        controlBtnsContainer.addComponent(info);
 
 //        zoomControler.addZoomableComponent(heatMapLayoutWrapper);
         equalComparisonMap = new HashMap<>();

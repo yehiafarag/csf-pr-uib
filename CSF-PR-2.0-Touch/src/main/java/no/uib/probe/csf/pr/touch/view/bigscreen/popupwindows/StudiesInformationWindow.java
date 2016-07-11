@@ -31,8 +31,8 @@ public class StudiesInformationWindow extends VerticalLayout implements LayoutEv
 
         VerticalLayout popupBody = new VerticalLayout();
         popupBody.setWidth(100, Unit.PERCENTAGE);
-          popupBody.setHeight(100, Unit.PERCENTAGE);
-        
+        popupBody.setHeight(100, Unit.PERCENTAGE);
+
         popupBody.setMargin(false);
         popupBody.setSpacing(true);
         popupBody.addStyleName("roundedborder");
@@ -43,10 +43,12 @@ public class StudiesInformationWindow extends VerticalLayout implements LayoutEv
         frame.setHeight(99, Unit.PERCENTAGE);
         frame.setSpacing(true);
         frame.addComponent(popupBody);
+        String title = "Datasets and Publications";
+        if (publicationList == null) {
+            title = "Datasets";
+        }
 
-    
-
-        popupWindow = new PopupWindow(frame, "Datasets and Publications") {
+        popupWindow = new PopupWindow(frame, title) {
 
             @Override
             public void close() {
@@ -71,7 +73,6 @@ public class StudiesInformationWindow extends VerticalLayout implements LayoutEv
 
 //        int availableHeight = (int) popupWindow.getHeight();
 //        popupBody.setHeight(availableHeight, Unit.PIXELS);
-        
         this.addLayoutClickListener(StudiesInformationWindow.this);
 
         TabSheet tab = new TabSheet();

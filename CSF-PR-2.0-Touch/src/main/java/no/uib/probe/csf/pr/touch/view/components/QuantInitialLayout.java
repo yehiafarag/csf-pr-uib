@@ -116,7 +116,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         SpacerI = "<br/>(";
         SpacerII = ")";
         Label diseaseTitle = new Label("<center>" + diseaseObject.getDiseaseCategory() + SpacerI + diseaseObject.getDatasetNumber() + "/" + max + SpacerII + "</center>");
-        diseaseTitle.setDescription("#Datasets " + diseaseObject.getDatasetNumber());
+        diseaseTitle.setDescription("#Datasets: " + diseaseObject.getDatasetNumber());
         diseaseLayout.addComponent(diseaseTitle);
         diseaseTitle.setContentMode(ContentMode.HTML);
         diseaseLayout.setComponentAlignment(diseaseTitle, Alignment.MIDDLE_CENTER);
@@ -142,7 +142,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         diseaseLayout.addLayoutClickListener(this);
 
         Label diseaseTitle = new Label("<center>" + diseaseObject.getDiseaseCategory() + SpacerI + diseaseObject.getDatasetNumber() + "/" + max + SpacerII + "</center>");
-        diseaseTitle.setDescription("#Datasets " + diseaseObject.getDatasetNumber());
+        diseaseTitle.setDescription("#Datasets: " + diseaseObject.getDatasetNumber());
         diseaseLayout.addComponent(diseaseTitle);
         diseaseTitle.setContentMode(ContentMode.HTML);
         diseaseLayout.setComponentAlignment(diseaseTitle, Alignment.MIDDLE_CENTER);

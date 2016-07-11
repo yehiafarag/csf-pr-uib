@@ -81,7 +81,7 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
         toolBtnContainer = new VerticalLayout();
         toolBtnContainer.setStyleName("sidebtnsmenue");
         toolBtnContainer.setHeightUndefined();
-        toolBtnContainer.setWidth(55, Unit.PIXELS);
+        toolBtnContainer.setWidthUndefined();//setWidth(55, Unit.PIXELS);
         mainLayoutWrapper.addComponent(toolBtnContainer);
         mainLayoutWrapper.setComponentAlignment(toolBtnContainer, Alignment.BOTTOM_RIGHT);
 
