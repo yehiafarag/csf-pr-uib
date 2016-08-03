@@ -70,6 +70,11 @@ public class LineChart extends AbsoluteLayout {
     private final Map<String, TrendSymbol> symbolMap;
     private final List<Integer> comparisonTrends;
 
+    public DefaultXYDataset getDataset() {
+        return dataset;
+    }
+
+
     public LineChart(int width, int height) {
 
         this.width = width;
@@ -108,6 +113,12 @@ public class LineChart extends AbsoluteLayout {
         this.selectedComparisonList = selectedComparisonsList;
         minimize();
     }
+
+    public JFreeChart getLineChart() {
+        return lineChart;
+    }
+    
+    
 
     private DefaultXYDataset dataset;
     private SymbolAxis xAxis;
@@ -578,7 +589,7 @@ public class LineChart extends AbsoluteLayout {
 
     }
 
-    private final String[] tooltipsIcon = new String[]{"All Increased", "Most Increased", "Equal", "Most Decreased", "All Decreased", "No Quant. Info", "No Data Available "};
+    private final String[] tooltipsIcon = new String[]{"All Increased", "Mainly Increased", "Equal", "Mainly Decreased", "All Decreased", "No Quant. Info", "No Data Available "};
 
     private void initLayoutComponents(String mode) {
         if (mode.equalsIgnoreCase("minimize")) {

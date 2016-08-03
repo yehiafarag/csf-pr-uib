@@ -29,15 +29,12 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
     public ColumnHeaderLayout(QuantDiseaseGroupsComparison comparison, int index) {
         this.setSizeFull();
         this.index = index;
-
         VerticalLayout headerFrame = new VerticalLayout();
         headerFrame.setHeight(100, Unit.PERCENTAGE);
         headerFrame.setWidthUndefined();
         this.addComponent(headerFrame);
         this.setComponentAlignment(headerFrame, Alignment.TOP_CENTER);
-
         filterBtn = new ColumnFilterPopupBtn() {
-
             @Override
             public void dropComparison() {
                 ColumnHeaderLayout.this.dropComparison(comparison);
@@ -56,6 +53,8 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
         headerFrame.addComponent(filterBtn);
         headerFrame.setComponentAlignment(filterBtn, Alignment.TOP_CENTER);
         filterBtn.setVisible(false);
+        filterBtn.setDescription(comparison.getComparisonHeader().split(" / ")[0].split("__")[0] + " / " + comparison.getComparisonHeader().split(" / ")[1].split("__")[0]);
+        
 
         sortingBtn = new VerticalLayout();
 

@@ -7,8 +7,10 @@ package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.data.Property;
 import com.vaadin.event.LayoutEvents;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.PopupView;
@@ -16,6 +18,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import java.util.HashSet;
 import java.util.Set;
+import org.vaadin.teemu.VaadinIcons;
 
 /**
  *
@@ -68,16 +71,21 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
         tableHeaderFilterOptions.setNewItemsAllowed(false);
         tableHeaderFilterOptions.setMultiSelect(true);
 
-        VerticalLayout labelContainer = new VerticalLayout();
-        Label headerLabel = new Label("Drop the comparison");
+        HorizontalLayout labelContainer = new HorizontalLayout();
+        labelContainer.setSpacing(true);
+        Label icon = new Label();
+        icon.setIcon(VaadinIcons.CLOSE_CIRCLE);
+       
+        
+        labelContainer.addComponent(icon);
+        Label headerLabel = new Label("Drop comparison");
+        headerLabel.addStyleName("marginleft");
         headerLabel.setStyleName(ValoTheme.LABEL_BOLD);
         headerLabel.addStyleName(ValoTheme.LABEL_SMALL);
-        headerLabel.addStyleName("pointer");
+        labelContainer.addStyleName("pointer");
         labelContainer.addComponent(headerLabel);
         popupbodyLayout.addComponent(labelContainer);
-        labelContainer.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
-            ColumnFilterPopupBtn.this.dropComparison();
-        });
+     
 
         filterPopupLayout = new PopupView(null, popupbodyLayout) {
 
@@ -88,12 +96,19 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
             }
 
         };
+        
+           labelContainer.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {    
+            filterPopupLayout.setPopupVisible(false);            
+            ColumnFilterPopupBtn.this.dropComparison();
+        });
+        
         closePopup.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
             filterPopupLayout.setPopupVisible(false);
         });
         filterPopupLayout.setVisible(false);
         filterPopupLayout.setCaptionAsHtml(true);
         filterPopupLayout.setHideOnMouseOut(false);
+        filterPopupLayout.addStyleName("margintop");
         this.addComponent(filterPopupLayout);
         Property.ValueChangeListener listener = (Property.ValueChangeEvent event) -> {
             Set<Object> headersSet = new HashSet<>((Set<Object>) event.getProperty().getValue());

@@ -10,13 +10,25 @@ import com.vaadin.ui.Link;
  * 
  * this class represents external link object
  */
-public class ExternalLink extends Link{
+public class ExternalLink extends Link implements Comparable<ExternalLink>{
 
+    @Override
+    public int compareTo(ExternalLink o) {
+        return (this.caption.compareTo(o.caption));
+    }
     
+    private final String caption;
+
     public ExternalLink(String caption, Resource resource) {
         super(caption, resource);
-        this.setTargetName("_blank");
+        this.caption = caption;
         this.setPrimaryStyleName("tablelink");
+        if (!caption.startsWith("IPI")) {
+            this.setTargetName("_blank");            
+            this.addStyleName("link");
+        } else {
+            super.setEnabled(false);
+        }
     }
     
 }

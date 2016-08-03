@@ -59,10 +59,10 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
      * @param CSFPR_Central_Manager
      * @param Data_Handler
      * @param diseaseCategorySet
-     * @param mainbodyLayoutWidth mainbody layout width (the container)
-     * @param mainbodyLayoutHeight mainbody layout height (the container)
+     * @param mainbodyLayoutWidth main body layout width (the container)
+     * @param mainbodyLayoutHeight main body layout height (the container)
      * @param activeColumnHeaders boolean array of active columns for dataset
-     * table exportu
+     * table export
      */
     public HeatMapComponent(final CSFPR_Central_Manager CSFPR_Central_Manager, Data_Handler Data_Handler, Collection<DiseaseCategoryObject> diseaseCategorySet, int mainbodyLayoutWidth, int mainbodyLayoutHeight, boolean[] activeColumnHeaders) {
 
@@ -341,6 +341,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
             Set<QuantDiseaseGroupsComparison> compList = CSFPR_Central_Manager.getSelectedComparisonsList();
             if (compList == null || compList.isEmpty()) {
                 heatmapLayoutContainer.clearSelection();
+                
             } else {
                 heatmapLayoutContainer.selectComparisons(compList);
             }

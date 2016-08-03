@@ -22,22 +22,25 @@ import com.vaadin.ui.VerticalLayout;
  *
  */
 public abstract class ImageContainerBtn extends AbsoluteLayout implements LayoutEvents.LayoutClickListener {
-    
+
     private final Image img;
     private final Label text;
-    
+
+    /**
+     *
+     */
     public ImageContainerBtn() {
         img = new Image();
         img.setWidth(100, Unit.PERCENTAGE);
         img.setHeight(100, Unit.PERCENTAGE);
         this.addComponent(img, "left: " + (0) + "px; top: " + (0) + "px;");
-        
+
         VerticalLayout labelcontainer = new VerticalLayout();
         labelcontainer.setWidth(100, Unit.PERCENTAGE);
         labelcontainer.setHeight(100, Unit.PERCENTAGE);
         this.addComponent(labelcontainer, "left: " + (0) + "px; top: " + (0) + "px;");
         text = new Label() {
-            
+
             @Override
             public void setValue(String newStringValue) {
                 if (newStringValue == null || newStringValue.equalsIgnoreCase("")) {
@@ -47,18 +50,18 @@ public abstract class ImageContainerBtn extends AbsoluteLayout implements Layout
                 }
                 super.setValue(newStringValue); //To change body of generated methods, choose Tools | Templates.
             }
-            
+
         };
         text.addStyleName("bubbleframe");
         labelcontainer.addComponent(text);
         text.setWidthUndefined();
         labelcontainer.setComponentAlignment(text, Alignment.MIDDLE_CENTER);
-        
+
         this.setStyleName("bigbtn");
         this.addLayoutClickListener(ImageContainerBtn.this);
         this.setReadOnly(true);
         ImageContainerBtn.this.setEnabled(false);
-        
+
     }
 
     /**
@@ -75,24 +78,31 @@ public abstract class ImageContainerBtn extends AbsoluteLayout implements Layout
      *
      * this method responsible for updating button text
      *
-     * @param imgResource
+     * @param textStr
      */
     public void updateText(String textStr) {
         text.setValue(textStr);
     }
-    
+
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         this.removeStyleName("orangeBorder");
-        
+
         onClick();
     }
-    
+
+    /**
+     *
+     * @param hasWrapper
+     */
     public void setHasWrapper(boolean hasWrapper) {
         this.hasWrapper = hasWrapper;
     }
-    private boolean hasWrapper = false;    
-    
+    private boolean hasWrapper = false;
+
+    /**
+     *
+     */
     public void blink() {
         this.addStyleName("orangeBorder");
         if (img.getStyleName().contains("blinkII")) {
@@ -103,15 +113,18 @@ public abstract class ImageContainerBtn extends AbsoluteLayout implements Layout
             img.addStyleName("blinkII");
         }
     }
-    
+
+    /**
+     *
+     */
     public abstract void onClick();
-    
+
     @Override
     public void setEnabled(boolean enabled) {
         if (enabled) {
             this.removeStyleName("unapplied");
             this.blink();
-            
+
         } else {
             this.addStyleName("unapplied");
             text.setValue("");
@@ -121,5 +134,11 @@ public abstract class ImageContainerBtn extends AbsoluteLayout implements Layout
             this.getParent().setEnabled(enabled);
         }
     }
-    
+
+    /**
+     * to be override
+     */
+    public void reset() {
+    }
+
 }

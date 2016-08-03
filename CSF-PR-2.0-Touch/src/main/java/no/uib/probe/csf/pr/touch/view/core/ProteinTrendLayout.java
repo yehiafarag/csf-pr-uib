@@ -28,7 +28,11 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
     private final VerticalLayout maxMinBtn;
     private final VerticalLayout sparkLineContainer;
     private final Object itemId;
-    private int custTrend=-1;
+    private int custTrend = -1;
+
+    public LineChart getSparkLine() {
+        return sparkLine;
+    }
 
     public void setSortableColumnIndex(int comparisonIndex) {
         QuantDiseaseGroupsComparison comp = (QuantDiseaseGroupsComparison) selectedComparisonsList.toArray()[comparisonIndex];
@@ -43,7 +47,7 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
         }
     }
 
-    public ProteinTrendLayout(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, QuantComparisonProtein selectedProtein, int width, Object itemId) {
+    public ProteinTrendLayout(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, QuantComparisonProtein selectedProtein, int width, Object itemId, boolean draw) {
         this.itemId = itemId;
         this.selectedComparisonsList = selectedComparisonsList;
         proteinKey = selectedProtein.getProteinAccession();
@@ -78,6 +82,7 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
         maxMinBtn.setHeight(20, Unit.PIXELS);
         maxMinBtn.setMargin(new MarginInfo(false, false, false, false));
         maxMinBtn.setStyleName("maxmizebtn");
+        maxMinBtn.setDescription("Click to maximize");
 
         resizeIconLayout.addComponent(maxMinBtn);
         resizeIconLayout.setComponentAlignment(maxMinBtn, Alignment.TOP_RIGHT);
@@ -103,6 +108,11 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
 
             }
         });
+        if (draw) {
+            sparkLine = new LineChart(width, 500);
+            sparkLine.updateData(selectedComparisonsList, proteinKey, custTrend);
+            sparkLineContainer.addComponent(sparkLine);
+        }
 
     }
 
@@ -121,7 +131,7 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
         if (initSparkline == 6 && sparkLine == null) {
             initSparkline++;
             sparkLine = new LineChart(width, 500);
-            sparkLine.updateData(selectedComparisonsList, proteinKey,custTrend);
+            sparkLine.updateData(selectedComparisonsList, proteinKey, custTrend);
             sparkLineContainer.addComponent(sparkLine);
         }
         initSparkline++;

@@ -8,8 +8,10 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 import no.uib.probe.csf.pr.touch.Data_Handler;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseCategoryObject;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFListener;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
 import no.uib.probe.csf.pr.touch.view.components.BubbleChartComponent;
@@ -75,9 +77,15 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
             this.updateCurrentLayout("proteintable");
             lineChartProteinTableComponent.filterSearchSelection(CSFPR_Central_Manager.getQuantSearchSelection().getKeyWords());
 
-        } else {
-//            bubblechartComponent.addCustmisedUserDataCompariosn(null);
-//            lineChartProteinTableComponent.setUserCustomizedComparison(null);
+        } else  if (type.equalsIgnoreCase("comparisons_selection")) {
+            
+
+            Set<QuantDiseaseGroupsComparison> compList = CSFPR_Central_Manager.getSelectedComparisonsList();
+            if (compList == null || compList.isEmpty()) {
+                System.out.println("at update view to default");
+                updateCurrentLayout("heatmap");
+                
+            } 
         }
         
     }
@@ -274,8 +282,9 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         lineChartProteinTableComponent = new LineChartProteinTableComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight, null) {
 
             @Override
-            public void updateRowNumber(int rowNumber) {
+            public void updateRowNumber(int rowNumber,String url) {
                 linechartBtn.updateText(rowNumber + "");
+                linechartBtn.updateIcon(new ExternalResource(url));
             }
 
         };

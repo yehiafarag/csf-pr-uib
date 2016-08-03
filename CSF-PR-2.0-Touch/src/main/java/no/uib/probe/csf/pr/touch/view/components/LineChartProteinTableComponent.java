@@ -22,6 +22,7 @@ import no.uib.probe.csf.pr.touch.view.components.datasetfilters.GroupSwichBtn;
 import no.uib.probe.csf.pr.touch.view.components.linechartproteintablecomponents.FilterColumnButton;
 import no.uib.probe.csf.pr.touch.view.components.linechartproteintablecomponents.ProteinTable;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
+import no.uib.probe.csf.pr.touch.view.core.InformationButton;
 import no.uib.probe.csf.pr.touch.view.core.SearchingField;
 import no.uib.probe.csf.pr.touch.view.core.TrendLegend;
 
@@ -40,6 +41,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
     private final Map<String, QuantComparisonProtein> proteinSearchingMap;
     private final ImageContainerBtn removeFilters;
     private final FilterColumnButton filterSortSwichBtn;
+    private final ImageContainerBtn checkUncheckBtn;
 
     public LineChartProteinTableComponent(CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height, QuantDiseaseGroupsComparison userCustomizedComparison) {
 
@@ -119,23 +121,28 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
             @Override
             public void dropComparison(QuantDiseaseGroupsComparison comparison) {
                 Set<QuantDiseaseGroupsComparison> updatedComparisonList = CSFPR_Central_Manager.getSelectedComparisonsList();
-                updatedComparisonList.remove(comparison);
+                updatedComparisonList.remove(comparison);                    
                 CSFSelection selection = new CSFSelection("comparisons_selection", getFilterId(), updatedComparisonList, null);
                 CSFPR_Central_Manager.selectionAction(selection);
+                
             }
 
             @Override
             public void selectProtein(String selectedProtein, int custTrend) {
                 CSFSelection selection = new CSFSelection("peptide_selection", getFilterId(), null, null);
                 selection.setSelectedProteinAccession(selectedProtein);
-                selection.setCustProteinSelection(custTrend);                
+                selection.setCustProteinSelection(custTrend);
                 CSFPR_Central_Manager.selectionAction(selection);
 
             }
 
             @Override
-            public void updateRowNumber(int rowNumber) {
-                LineChartProteinTableComponent.this.updateRowNumber(rowNumber);
+            public void updateRowNumber(int rowNumber,String url) {
+               
+                
+                
+                
+                LineChartProteinTableComponent.this.updateRowNumber(rowNumber,url);
             }
 
         };//this.initProteinTable();
@@ -235,12 +242,55 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         controlBtnsContainer.setComponentAlignment(removeFilters, Alignment.MIDDLE_CENTER);
         removeFilters.setDescription("Clear all applied filters");
 
+        ThemeResource checkedApplied = new ThemeResource("img/check-square.png");
+        ThemeResource checkedUnApplied = new ThemeResource("img/check-square-o.png");
+
+        checkUncheckBtn = new ImageContainerBtn() {
+
+            private boolean enabled = true;
+
+            @Override
+            public void onClick() {
+//                quantProteinTable.clearColumnFilters();
+                if (enabled) {
+                    enabled = false;
+
+                    this.updateIcon(checkedApplied);
+                } else {
+                    enabled = true;
+                    this.updateIcon(checkedUnApplied);
+                }
+                quantProteinTable.hideCheckedColumn(enabled);
+            }
+
+            @Override
+            public void reset() {
+                enabled = true;
+                this.updateIcon(checkedUnApplied);
+                quantProteinTable.hideCheckedColumn(enabled);
+
+            }
+        };
+        checkUncheckBtn.setEnabled(true);
+
+        checkUncheckBtn.setHeight(40, Unit.PIXELS);
+        checkUncheckBtn.setWidth(40, Unit.PIXELS);
+        checkUncheckBtn.addStyleName("pointer");
+        checkUncheckBtn.updateIcon(checkedUnApplied);
+        controlBtnsContainer.addComponent(checkUncheckBtn);
+        controlBtnsContainer.setComponentAlignment(checkUncheckBtn, Alignment.MIDDLE_CENTER);
+        checkUncheckBtn.setDescription("Show/hide checked column");
+
+        InformationButton info = new InformationButton("Info", false);
+        controlBtnsContainer.addComponent(info);
+
         CSFPR_Central_Manager.registerListener(LineChartProteinTableComponent.this);
 
     }
 
     public void filterSearchSelection(Set<String> keywords) {
         Set<QuantComparisonProtein> searchSet = new LinkedHashSet<>();
+
         keywords.stream().forEach((key) -> {
             searchSet.addAll(getSearchingProteinsList(key));
         });
@@ -251,8 +301,11 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
     @Override
     public void selectionChanged(String type) {
         if (type.equalsIgnoreCase("protein_selection")) {
-//            proteinSearchingMap.clear();
+
             Set<QuantComparisonProtein> selectedProteinsList;
+            filterSortSwichBtn.reset();
+            
+           
             if (CSFPR_Central_Manager.getSelectedProteinsList() == null) {
                 proteinSearchingMap.clear();
                 selectedProteinsList = new LinkedHashSet<>();
@@ -261,23 +314,28 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
                 });
                 quantProteinTable.updateTableData(CSFPR_Central_Manager.getSelectedComparisonsList(), selectedProteinsList);
 
-            } else {
+            } else { 
                 Set<QuantComparisonProtein> searchSet = new LinkedHashSet<>();
                 selectedProteinsList = CSFPR_Central_Manager.getSelectedProteinsList();
                 selectedProteinsList.stream().forEach((key) -> {
                     searchSet.addAll(getSearchingProteinsList(key.getProteinAccession()));
                 });
-                quantProteinTable.filterTableItem(searchSet);
+//                quantProteinTable.filterTableItem(searchSet);
+                 quantProteinTable.updateTableData(CSFPR_Central_Manager.getSelectedComparisonsList(), searchSet);
 
             }
 
             selectedProteinsList.stream().forEach((protein) -> {
                 proteinSearchingMap.put(protein.getProteinAccession() + "__" + protein.getProteinName(), protein);
             });
+            quantProteinTable.hideCheckedColumn(true);
+            checkUncheckBtn.reset();
 
         } else if (type.equalsIgnoreCase("comparisons_selection")) {
             removeFilters.setEnabled(false);
             filterSortSwichBtn.reset();
+            quantProteinTable.hideCheckedColumn(true);
+            checkUncheckBtn.reset();
 
         }
     }
@@ -316,7 +374,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         return subAccessionMap;
     }
 
-    public abstract void updateRowNumber(int rowNumber);
+    public abstract void updateRowNumber(int rowNumber,String imgURl);
 
     public void setUserCustomizedComparison(QuantDiseaseGroupsComparison userCustomizedComparison) {
         quantProteinTable.setUserCustomizedComparison(userCustomizedComparison);

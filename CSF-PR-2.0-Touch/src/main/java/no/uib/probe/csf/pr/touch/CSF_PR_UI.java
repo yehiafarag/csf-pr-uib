@@ -59,22 +59,22 @@ public class CSF_PR_UI extends UI {
 
         windowHeight = Page.getCurrent().getBrowserWindowHeight();// Math.max(Page.getCurrent().getBrowserWindowHeight(), 1080);
         windowWidth = Page.getCurrent().getBrowserWindowWidth();//Math.max(Page.getCurrent().getBrowserWindowWidth(), 1920);
-        if (windowHeight < 720) {
+        if (windowHeight < 700) {
             Notification.show("Screen is too small", Notification.Type.ERROR_MESSAGE);
 
             System.out.println("it is small window height " + 720);
-            windowHeight = 720;
+            windowHeight = 600;
             return;
         }
-        if (windowWidth < 1000) {
+        if (windowWidth < 900) {
             Notification.show("Screen is too small", Notification.Type.ERROR_MESSAGE);
-            windowWidth = 1000;
+            windowWidth = 800;
             System.out.println("it is small window width " + windowWidth);
             return;
         }
-
-//        windowWidth = 1000;//640;
-//        windowHeight = 720;//480;
+//
+//        windowWidth = 900;//640;
+//        windowHeight = 700;//480;
         VerticalLayout appWrapper = new VerticalLayout();
         appWrapper.setWidth(100, Unit.PERCENTAGE);
         appWrapper.setHeight(100, Unit.PERCENTAGE);
@@ -86,7 +86,7 @@ public class CSF_PR_UI extends UI {
         appWrapper.addComponent(layout);
         appWrapper.setComponentAlignment(layout, Alignment.MIDDLE_CENTER);
 
-        final SizeReporter sizeReporter = new SizeReporter(appWrapper);
+        final SizeReporter sizeReporter = new SizeReporter(this);
 
         sizeReporter.addResizeListener((ComponentResizeEvent event) -> {
             resizeScreen();
@@ -106,13 +106,36 @@ public class CSF_PR_UI extends UI {
     }
 
     String updatedZoomStyleName = "";
+    private final VerticalLayout emptyLayout = new VerticalLayout();
 
     /**
      * resize the layout on changing window size
      */
     private void resizeScreen() {
-        for (Window w : getWindows()) {
-            w.center();
+
+        windowHeight = Page.getCurrent().getBrowserWindowHeight();// Math.max(Page.getCurrent().getBrowserWindowHeight(), 1080);
+        windowWidth = Page.getCurrent().getBrowserWindowWidth();//Math.max(Page.getCurrent().getBrowserWindowWidth(), 1920);
+        if (windowHeight < 700) {
+            setContent(emptyLayout);
+            Notification.show("Screen is too small", Notification.Type.ERROR_MESSAGE);
+
+            System.out.println("it is small window height " + 720);
+            windowHeight = 600;
+            return;
+        }
+        if (windowWidth < 900) {
+            setContent(emptyLayout);
+            Notification.show("Screen is too small", Notification.Type.ERROR_MESSAGE);
+            windowWidth = 800;
+            System.out.println("it is small window width " + windowWidth);
+            return;
+        }
+        if (getContent() == emptyLayout) {
+            Page.getCurrent().reload();
+        } else {
+            for (Window w : getWindows()) {
+                w.center();
+            }
         }
 
 //        int swindowHeight = Page.getCurrent().getBrowserWindowHeight();

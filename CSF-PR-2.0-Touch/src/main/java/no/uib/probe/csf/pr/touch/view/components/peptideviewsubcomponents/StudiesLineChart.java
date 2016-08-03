@@ -721,7 +721,7 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
 
     }
 
-    private final String[] tooltipsIcon = new String[]{"All Increased", "Most Increased", "Equal", "Most Decreased", "All Decreased", "No Quant. Info", "No Data Available "};
+    private final String[] tooltipsIcon = new String[]{"All Increased", "Mainly Increased", "Equal", "Mainly Decreased", "All Decreased", "No Quant. Info", "No Data Available "};
     private final Map<String, Set<TrendSymbol>> subComparisonStudiesMap = new LinkedHashMap<>();
 
     private final Map<String, Double> comparisonTrendMap = new LinkedHashMap<>();
