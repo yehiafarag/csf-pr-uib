@@ -5,6 +5,8 @@
  */
 package no.uib.probe.csf.pr.touch.view.components;
 
+import com.itextpdf.text.pdf.codec.Base64;
+import com.vaadin.server.ExternalResource;
 import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
@@ -13,14 +15,28 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.Set;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFListener;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
 import no.uib.probe.csf.pr.touch.view.components.peptideviewsubcomponents.PeptideSequenceLayoutTable;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 import no.uib.probe.csf.pr.touch.view.components.peptideviewsubcomponents.StudiesLineChart;
+import no.uib.probe.csf.pr.touch.view.core.InformationButton;
 import no.uib.probe.csf.pr.touch.view.core.TrendLegend;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.encoders.ImageEncoder;
+import org.jfree.chart.encoders.ImageEncoderFactory;
+import org.jfree.chart.encoders.ImageFormat;
+import org.jfree.ui.about.AboutPanel;
 
 /**
  *
@@ -38,11 +54,77 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
     private boolean showDetailedDs = false;
     private final PeptideSequenceLayoutTable peptideSequenceTableLayout;
     private final Label proteinNameLabel;
+    private final ImageContainerBtn checkUncheckBtn;
 
     private StudiesLineChart lineChart;
 
     public VerticalLayout getControlBtnsContainer() {
         return controlBtnsContainer;
+    }
+
+    private Resource generateThumbImg() {
+        System.out.println("at sequ : " + peptideSequenceTableLayout.getSequence());
+        System.out.println("at pep : " + peptideSequenceTableLayout.getPeptides());
+        String seq = peptideSequenceTableLayout.getSequence();
+        Set<String> peptides = peptideSequenceTableLayout.getPeptides();
+    final Border fullBorder = new LineBorder(Color.GRAY);
+        JPanel proteinSequencePanel = new JPanel();
+        proteinSequencePanel.setLayout(null);
+        proteinSequencePanel.setSize(100, 100);
+        proteinSequencePanel.setBackground(Color.WHITE);
+
+        ChartPanel lineChartPanel = new ChartPanel(lineChart.generateThumbChart());
+        lineChartPanel.setSize(100, 50);
+        lineChartPanel.setLocation(0, 0);
+        lineChartPanel.setOpaque(true);
+        proteinSequencePanel.add(lineChartPanel);
+//        lineChartPanel.setBorder(fullBorder);
+
+        JPanel coveragePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        coveragePanel.setSize(100, 20);
+        coveragePanel.setBackground(new Color(242, 242, 242));
+        coveragePanel.setLocation(0, 65);
+    
+        coveragePanel.setBorder(fullBorder);
+        coveragePanel.setOpaque(true);
+        proteinSequencePanel.add(coveragePanel);
+
+        if (seq != null && !seq.equalsIgnoreCase("") && peptides != null && !peptides.isEmpty()) {
+            double charSize = 100.0 / (double) seq.length();
+            for (String pep : peptides) {
+                JPanel peptide = new JPanel();
+                peptide.setSize((int) (pep.length() * charSize), 18);
+                peptide.setBackground(Color.DARK_GRAY);
+                peptide.setBorder(fullBorder);
+                peptide.setLocation((int) (seq.split(pep)[0].length() * charSize), 1);
+                peptide.setOpaque(true);
+                coveragePanel.add(peptide);
+
+            }
+
+        }
+
+        BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D graphics = image.createGraphics();
+
+        graphics.setPaint(Color.WHITE);
+        graphics.setBackground(Color.WHITE);
+
+        proteinSequencePanel.paint(graphics);
+        byte[] imageData = null;
+
+        try {
+
+            ImageEncoder in = ImageEncoderFactory.newInstance(ImageFormat.PNG, 1);
+            imageData = in.encode(image);
+        } catch (Exception e) {
+            System.out.println(e.getLocalizedMessage());
+        }
+
+        String base64 = Base64.encodeBytes(imageData);
+        base64 = "data:image/png;base64," + base64;
+
+        return new ExternalResource(base64);
     }
 
     public abstract void updateIcon(Resource iconResource);
@@ -165,15 +247,17 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         dsComparisonsSwichBtn.setWidth(40, Unit.PIXELS);
         dsComparisonsSwichBtn.updateIcon(comparisonDsRes);
         dsComparisonsSwichBtn.setEnabled(true);
+        dsComparisonsSwichBtn.addStyleName("pointer");
         controlBtnsContainer.addComponent(dsComparisonsSwichBtn);
         controlBtnsContainer.setComponentAlignment(dsComparisonsSwichBtn, Alignment.MIDDLE_CENTER);
-        dsComparisonsSwichBtn.setDescription("show comparisons / Datasets");
+        dsComparisonsSwichBtn.setDescription("Show/hide individual datasets");
 
         resizeDsOnPatientNumbersBtn.setHeight(40, Unit.PIXELS);
         resizeDsOnPatientNumbersBtn.setWidth(40, Unit.PIXELS);
         resizeDsOnPatientNumbersBtn.updateIcon(new ThemeResource("img/resize_1.png"));
 //        resizeDsOnPatientNumbersBtn.addStyleName("smallimg");
         resizeDsOnPatientNumbersBtn.setEnabled(false);
+        resizeDsOnPatientNumbersBtn.addStyleName("pointer");
         controlBtnsContainer.addComponent(resizeDsOnPatientNumbersBtn);
         controlBtnsContainer.setComponentAlignment(resizeDsOnPatientNumbersBtn, Alignment.MIDDLE_CENTER);
         resizeDsOnPatientNumbersBtn.setDescription("Resize dataset symbols based on number of patients");
@@ -198,15 +282,17 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
                     this.removeStyleName("selectmultiselectedbtn");
                 }
                 lineChart.trendOrder(!defaultTrend);
-                PeptideViewComponent.this.updateIcon(lineChart.generateThumbImg());
                 peptideSequenceTableLayout.sortTable(lineChart.getOrderedComparisonList(!defaultTrend));
+
                 this.setEnabled(true);
+                PeptideViewComponent.this.updateIcon(generateThumbImg());
 
             }
 
         };
 
         orderByTrendBtn.setHeight(40, Unit.PIXELS);
+        orderByTrendBtn.addStyleName("pointer");
         orderByTrendBtn.setWidth(40, Unit.PIXELS);
         orderByTrendBtn.updateIcon(trendOrderRes);
         orderByTrendBtn.setEnabled(true);
@@ -237,6 +323,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
 
         showSigOnlyBtn.setHeight(40, Unit.PIXELS);
         showSigOnlyBtn.setWidth(40, Unit.PIXELS);
+        showSigOnlyBtn.addStyleName("pointer");
         showSigOnlyBtn.updateIcon(new ThemeResource("img/showSig.png"));
         this.addStyleName("selectmultiselectedbtn");
         showSigOnlyBtn.setEnabled(true);
@@ -244,6 +331,48 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         controlBtnsContainer.setComponentAlignment(showSigOnlyBtn, Alignment.MIDDLE_CENTER);
         showSigOnlyBtn.setDescription("Show / hide not significant and stable peptides)");
         controlBtnsContainer.setEnabled(true);
+
+        ThemeResource checkedApplied = new ThemeResource("img/check-square.png");
+        ThemeResource checkedUnApplied = new ThemeResource("img/check-square-o.png");
+
+        checkUncheckBtn = new ImageContainerBtn() {
+
+            private boolean enabled = true;
+
+            @Override
+            public void onClick() {
+//                quantProteinTable.clearColumnFilters();
+                if (enabled) {
+                    enabled = false;
+
+                    this.updateIcon(checkedApplied);
+                } else {
+                    enabled = true;
+                    this.updateIcon(checkedUnApplied);
+                }
+                peptideSequenceTableLayout.hideCheckedColumn(enabled);
+            }
+
+            @Override
+            public void reset() {
+                enabled = true;
+                this.updateIcon(checkedUnApplied);
+                peptideSequenceTableLayout.hideCheckedColumn(enabled);
+
+            }
+        };
+        checkUncheckBtn.setEnabled(true);
+
+        checkUncheckBtn.setHeight(40, Unit.PIXELS);
+        checkUncheckBtn.setWidth(40, Unit.PIXELS);
+        checkUncheckBtn.addStyleName("pointer");
+        checkUncheckBtn.updateIcon(checkedUnApplied);
+        controlBtnsContainer.addComponent(checkUncheckBtn);
+        controlBtnsContainer.setComponentAlignment(checkUncheckBtn, Alignment.MIDDLE_CENTER);
+        checkUncheckBtn.setDescription("Show/hide checked column");
+
+        InformationButton info = new InformationButton("Info", false);
+        controlBtnsContainer.addComponent(info);
 
     }
 
@@ -261,6 +390,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
             updateIcon(null);
 
         }
+        checkUncheckBtn.reset();
 
     }
 
@@ -282,9 +412,10 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         }
 
         lineChart.updateData(selectedComparisonsList, proteinKey, custTrend);
-        updateIcon(lineChart.generateThumbImg());
+
         peptideSequenceTableLayout.updateTableData(selectedComparisonsList, proteinKey);
         proteinNameLabel.setValue(lineChart.getProteinName());
+        updateIcon(generateThumbImg());
 
     }
 

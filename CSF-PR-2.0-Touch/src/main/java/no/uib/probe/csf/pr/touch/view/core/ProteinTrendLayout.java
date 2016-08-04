@@ -73,9 +73,9 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
         sparkLineContainer.addLayoutClickListener(ProteinTrendLayout.this);
 
         VerticalLayout resizeIconLayout = new VerticalLayout();
-        resizeIconLayout.setWidth(100, Unit.PERCENTAGE);
+        resizeIconLayout.setWidth(20, Unit.PERCENTAGE);
         resizeIconLayout.setHeight(20, Unit.PIXELS);
-        this.addComponent(resizeIconLayout, "left: " + 0 + "px; top: " + 0 + "px;");
+        this.addComponent(resizeIconLayout, "left: " + (width-25) + "px; top: " + 0 + "px;");
 
         maxMinBtn = new VerticalLayout();
         maxMinBtn.setWidth(20, Unit.PIXELS);

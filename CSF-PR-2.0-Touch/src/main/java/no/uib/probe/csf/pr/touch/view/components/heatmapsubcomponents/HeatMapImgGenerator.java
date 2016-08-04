@@ -243,6 +243,7 @@ public class HeatMapImgGenerator {
     }
     private final Border testBorder = new LineBorder(Color.red);
     private final Border fullBorder = new LineBorder(Color.LIGHT_GRAY);
+    
 
     private JPanel initCell(String color, int x, int y, Border border) {
         JPanel cell = new JPanel(new FlowLayout(FlowLayout.CENTER));

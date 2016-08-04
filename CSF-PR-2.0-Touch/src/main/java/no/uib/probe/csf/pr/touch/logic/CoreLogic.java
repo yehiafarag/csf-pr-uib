@@ -257,6 +257,7 @@ public class CoreLogic implements Serializable {
                 if (!comparProtList.containsKey(protAcc)) {
                     QuantComparisonProtein comProt = new QuantComparisonProtein(comparison.getDatasetMap().size(), comparison, quant.getProtKey());
                     comProt.setQuantPeptidesList(new HashSet<>());
+                    comProt.setSequence(quant.getSequence());
                     comparProtList.put(protAcc, comProt);
                 }
 

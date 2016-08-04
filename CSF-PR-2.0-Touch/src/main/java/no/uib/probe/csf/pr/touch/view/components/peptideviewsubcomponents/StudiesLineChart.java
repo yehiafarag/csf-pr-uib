@@ -153,6 +153,16 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
     }
 
     private void rePaintChart(Set<QuantDiseaseGroupsComparison> comparisonsList) {
+        lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.GRAY);
+        lineChart.getXYPlot().getDomainAxis().setVisible(true);
+        lineChart.getXYPlot().getRangeAxis().setVisible(true);
+          lineChart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(
+                1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
+                1.0f, new float[]{10.0f, 6.0f}, 0.0f
+        ));
+          lineChart.getXYPlot().setOutlineVisible(false);
+          
+         lineChart.setPadding(new RectangleInsets(0, 0, 0, 0));
         maxImgUrl = new ExternalResource(this.getChartImage(lineChart, chartRenderingInfo, width, height));
         initLayoutComponents(comparisonsList);
         chartImg.setSource(maxImgUrl);
@@ -683,24 +693,26 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         return jFreeChart;
     }
 
-    public Resource generateThumbImg() {
+    public JFreeChart generateThumbChart() {
         lineChart.getXYPlot().getDomainAxis().setVisible(false);
         lineChart.getXYPlot().getRangeAxis().setVisible(false);
-        lineChart.getXYPlot().setOutlineVisible(false);
+        lineChart.getXYPlot().setOutlineVisible(true);
+         lineChart.setPadding(new RectangleInsets(10, 5, 10, 5));
 
 //        lineChart.getXYPlot().setRangeGridlinesVisible(false);
 //        lineChart.getXYPlot().setDomainGridlinesVisible(true);
-        lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.RED);
+        lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.BLACK);
+        lineChart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(5));
         gridcounter = 0;
         gridcounterII = 0;
 
-        minImgUrl = new ExternalResource(this.getChartImage(lineChart, chartRenderingInfo, 100, 100));
-        lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.GRAY);
-        lineChart.getXYPlot().getDomainAxis().setVisible(true);
-        lineChart.getXYPlot().getRangeAxis().setVisible(true);
+//        minImgUrl = new ExternalResource(this.getChartImage(lineChart, chartRenderingInfo, 100, 100));
+//        lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.GRAY);
+//        lineChart.getXYPlot().getDomainAxis().setVisible(true);
+//        lineChart.getXYPlot().getRangeAxis().setVisible(true);
 //        lineChart.getXYPlot().setRangeGridlinesVisible(true);
 //        lineChart.getXYPlot().setDomainGridlinesVisible(true);
-        return minImgUrl;
+        return lineChart;
 
     }
 

@@ -650,8 +650,8 @@ public class LineChart extends AbsoluteLayout {
                     String[] arr = comparisonPoint.getShapeCoords().split(",");
                     int xSer = Integer.valueOf(arr[6]);
                     int ySer = Integer.valueOf(arr[1]);
-                    double doubleTrend = (Double) comparisonPoint.getDataset().getY(0, comparisonPoint.getItem());
-                    double comparisonIndex = ((Double) comparisonPoint.getDataset().getX(0, comparisonPoint.getItem()));
+                    double doubleTrend = (Double) dataset.getY(0, comparisonPoint.getItem());
+                    double comparisonIndex = ((Double) dataset.getX(0, comparisonPoint.getItem()));
                     TrendSymbol square = this.symbolMap.get(doubleTrend + "," + comparisonIndex);
                     ComponentPosition position = new ComponentPosition();
                     position.setCSSString("left: " + (xSer - 3) + "px; top: " + (ySer) + "px;");

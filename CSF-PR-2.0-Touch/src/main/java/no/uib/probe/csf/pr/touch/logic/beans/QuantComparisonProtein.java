@@ -37,6 +37,10 @@ public class QuantComparisonProtein implements Serializable {
         return proteinName;
     }
 
+    public String getSequence() {
+        return sequence;
+    }
+
     public String getUrl() {
         return url;
     }
@@ -287,4 +291,7 @@ public class QuantComparisonProtein implements Serializable {
     public double getOverallCellPercentValue() {
         return overallCellPercentValue;
     }
+    
+    
+    
 }
