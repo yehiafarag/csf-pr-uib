@@ -102,6 +102,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
 
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeight(height, Unit.PIXELS);
+        this.setMargin(new MarginInfo(false, false, false, true));
 
         VerticalLayout bodyContainer = new VerticalLayout();
         bodyContainer.setWidth(100, Unit.PERCENTAGE);
@@ -116,6 +117,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         topLayout.setSpacing(true);
         topLayout.setMargin(new MarginInfo(false, false, false, true));
         bodyContainer.addComponent(topLayout);
+        bodyContainer.setComponentAlignment(topLayout, Alignment.TOP_CENTER);
 
         HorizontalLayout titleLayoutWrapper = new HorizontalLayout();
         titleLayoutWrapper.setHeight(25, Unit.PIXELS);
@@ -123,6 +125,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         titleLayoutWrapper.setSpacing(true);
         titleLayoutWrapper.setMargin(false);
         topLayout.addComponent(titleLayoutWrapper);
+        topLayout.setExpandRatio(titleLayoutWrapper, 10);
 
         Label overviewLabel = new Label("Overview");
         overviewLabel.setStyleName(ValoTheme.LABEL_BOLD);
@@ -137,8 +140,10 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         TrendLegend legendLayout = new TrendLegend("bubblechart");
         legendLayout.setWidthUndefined();
         legendLayout.setHeight(24, Unit.PIXELS);
+        legendLayout.addStyleName("margintop7");
         topLayout.addComponent(legendLayout);
-        topLayout.setComponentAlignment(legendLayout, Alignment.MIDDLE_RIGHT);
+        topLayout.setComponentAlignment(legendLayout, Alignment.TOP_RIGHT);
+        topLayout.setExpandRatio(legendLayout, 90);
 
         //end of toplayout
         //start chart layout

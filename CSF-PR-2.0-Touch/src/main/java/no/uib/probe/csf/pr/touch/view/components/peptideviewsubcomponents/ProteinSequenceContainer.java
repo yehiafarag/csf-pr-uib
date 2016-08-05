@@ -25,12 +25,14 @@ public class ProteinSequenceContainer extends VerticalLayout {
     private PeptideSequenceContainer allPeptidesComponent, significantPeptidesComponent;
     private double correctedWidth = 0;
     private int totalPeptidesNumber = 0;
+    private final String sequence;
 
     public ProteinSequenceContainer(String sequence, Set<QuantPeptide> quantPepSet, int proteinSequenceContainerWidth, final int dsID) {
         this.setWidth(100, Unit.PERCENTAGE);
         this.addStyleName("roundedborder");
         this.addStyleName("padding20");
         this.addStyleName("whitelayout");
+        this.sequence = sequence;
         Label noPeptideAvailable = new Label("No peptides information available");
         noPeptideAvailable.addStyleName(ValoTheme.LABEL_TINY);
         Set<QuantPeptide> filteredQuantPepSet = new LinkedHashSet<>();
@@ -77,7 +79,7 @@ public class ProteinSequenceContainer extends VerticalLayout {
         correctedWidth = width;
         double charW = (double) ((double) width / (double) sequence.length());
         quantPepSet.stream().filter((quantPeptide) -> !(quantPeptide.getPeptideSequence().equalsIgnoreCase("not available"))).map((quantPeptide) -> {
-            
+
             return quantPeptide;
         }).forEach((quantPeptide) -> {
             String peptideSequence = quantPeptide.getPeptideSequence().trim();
@@ -94,9 +96,13 @@ public class ProteinSequenceContainer extends VerticalLayout {
             }
 
             if (!significatOnly) {
-                StackedBarPeptideComponent peptideStackedBarComponent = new StackedBarPeptideComponent(x0, (int) (peptideLayoutWidth), quantPeptide.getUniqueId() + "", quantPeptide.getPeptideModification(),quantPeptide);
+                StackedBarPeptideComponent peptideStackedBarComponent = new StackedBarPeptideComponent(x0, (int) (peptideLayoutWidth), quantPeptide.getUniqueId() + "", quantPeptide.getPeptideModification(), quantPeptide);
                 peptideStackedBarComponent.setWidth((int) peptideLayoutWidth, Unit.PIXELS);
-                peptideStackedBarComponent.setDescription("" + start + "-" + quantPeptide.getPeptideSequence() + "-" + end + "");
+                if (sequence.startsWith("ZZZZZZZZ")) {
+                    peptideStackedBarComponent.setDescription("" + 0 + "-" + quantPeptide.getPeptideSequence() + "-" + peptideSequence.length() + "");
+                } else {
+                    peptideStackedBarComponent.setDescription("" + start + "-" + quantPeptide.getPeptideSequence() + "-" + end + "");
+                }
                 peptideStackedBarComponent.setParam("peptide", quantPeptide);
                 peptideStackedBarComponent.setParam("sequence", quantPeptide.getPeptideSequence());
                 peptideStackedBarComponent.setParam("start", start);
@@ -141,11 +147,15 @@ public class ProteinSequenceContainer extends VerticalLayout {
 
             } else {
                 if (quantPeptide.getString_p_value().equalsIgnoreCase("Significant")) {
-                    
-                    StackedBarPeptideComponent peptideStackedBarComponent = new StackedBarPeptideComponent(x0, (int) (peptideLayoutWidth), quantPeptide.getUniqueId() + "", quantPeptide.getPeptideModification(),quantPeptide);
+
+                    StackedBarPeptideComponent peptideStackedBarComponent = new StackedBarPeptideComponent(x0, (int) (peptideLayoutWidth), quantPeptide.getUniqueId() + "", quantPeptide.getPeptideModification(), quantPeptide);
                     peptideStackedBarComponent.setSignificant(true);
                     peptideStackedBarComponent.setWidth((int) peptideLayoutWidth, Unit.PIXELS);
-                    peptideStackedBarComponent.setDescription("" + start + "-" + quantPeptide.getPeptideSequence() + "-" + end + "");
+                    if (sequence.startsWith("ZZZZZZZZ")) {
+                        peptideStackedBarComponent.setDescription("" + 0 + "-" + quantPeptide.getPeptideSequence() + "-" + peptideSequence.length() + "");
+                    } else {
+                        peptideStackedBarComponent.setDescription("" + start + "-" + quantPeptide.getPeptideSequence() + "-" + end + "");
+                    }
                     peptideStackedBarComponent.setParam("peptide", quantPeptide);
                     peptideStackedBarComponent.setParam("sequence", quantPeptide.getPeptideSequence());
                     peptideStackedBarComponent.setParam("start", start);

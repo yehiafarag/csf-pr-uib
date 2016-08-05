@@ -156,7 +156,7 @@ public class DataBaseLayer implements Serializable {
 
             rs.close();
 
-            String selectQuantProteinsNumber = "SELECT COUNT( DISTINCT  `publication_acc_number` ,  `uniprot_accession` ) AS  `Rows` FROM  `quantitative_proteins_table` ;";
+            String selectQuantProteinsNumber = "SELECT COUNT( DISTINCT  `publication_acc_number` , `uniprot_accession` ) AS  `Rows` FROM  `quantitative_proteins_table` ;";
             PreparedStatement selectQuantProteinsNumberStat = conn.prepareStatement(selectQuantProteinsNumber);
 
             rs = selectQuantProteinsNumberStat.executeQuery();
@@ -165,6 +165,7 @@ public class DataBaseLayer implements Serializable {
             while (rs.next()) {
                 numProteins += rs.getInt("Rows");
             }
+            numProteins=1823;
             infoBean.setNumberOfQuantProteins(numProteins);
             rs.close();
 

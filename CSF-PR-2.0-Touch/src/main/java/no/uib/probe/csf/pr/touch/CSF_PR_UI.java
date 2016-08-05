@@ -53,25 +53,43 @@ public class CSF_PR_UI extends UI {
         VaadinSession.getCurrent().setAttribute("csf_pr_Url", csf_pr_Url);
 
         this.getPage().setTitle("CSF Proteome Resource (CSF-PR) v2.0");
+        
+        
+        emptyLayout.setClosable(false);
+        emptyLayout.setModal(true);
+        emptyLayout.setVisible(false);
+        emptyLayout.setDraggable(false);
+        emptyLayout.setResizable(false);
+        emptyLayout.setWidth(100,Unit.PERCENTAGE);
+        emptyLayout.setHeight(100,Unit.PERCENTAGE);
+        UI.getCurrent().addWindow(emptyLayout);
+        
 
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeight(100, Unit.PERCENTAGE);
 
         windowHeight = Page.getCurrent().getBrowserWindowHeight();// Math.max(Page.getCurrent().getBrowserWindowHeight(), 1080);
         windowWidth = Page.getCurrent().getBrowserWindowWidth();//Math.max(Page.getCurrent().getBrowserWindowWidth(), 1920);
-        if (windowHeight < 700) {
-            Notification.show("Screen is too small", Notification.Type.ERROR_MESSAGE);
 
-            System.out.println("it is small window height " + 720);
-            windowHeight = 600;
-            return;
+        final SizeReporter sizeReporter = new SizeReporter(this);
+
+        sizeReporter.addResizeListener((ComponentResizeEvent event) -> {
+            resizeScreen();
+        });
+        resizeScreen();
+
+        if (Page.getCurrent().getWebBrowser().isTouchDevice()) {
+            if (windowHeight > windowWidth) {
+                Notification.show("Use landscape screen orientation");
+                return;
+            }
+
         }
-        if (windowWidth < 900) {
-            Notification.show("Screen is too small", Notification.Type.ERROR_MESSAGE);
-            windowWidth = 800;
-            System.out.println("it is small window width " + windowWidth);
-            return;
-        }
+//        if (windowHeight < 768 || windowWidth < 1024) {
+//            System.err.println("at window h "+windowHeight+"  window w "+windowWidth);
+//            Notification.show("Screen is too small minimum screen resolution (1024x768)", Notification.Type.ERROR_MESSAGE);
+//            return;
+//        }
 //
 //        windowWidth = 900;//640;
 //        windowHeight = 700;//480;
@@ -86,13 +104,6 @@ public class CSF_PR_UI extends UI {
         appWrapper.addComponent(layout);
         appWrapper.setComponentAlignment(layout, Alignment.MIDDLE_CENTER);
 
-        final SizeReporter sizeReporter = new SizeReporter(this);
-
-        sizeReporter.addResizeListener((ComponentResizeEvent event) -> {
-            resizeScreen();
-        });
-        resizeScreen();
-
         JavaScript.getCurrent().addFunction("aboutToClose", (JsonArray arguments) -> {
             System.out.println("at system is closing the tab   " + vaadinRequest.getContextPath());
             Page.getCurrent().open(vaadinRequest.getContextPath(), "");
@@ -106,7 +117,7 @@ public class CSF_PR_UI extends UI {
     }
 
     String updatedZoomStyleName = "";
-    private final VerticalLayout emptyLayout = new VerticalLayout();
+    private final Window emptyLayout = new Window();
 
     /**
      * resize the layout on changing window size
@@ -115,22 +126,14 @@ public class CSF_PR_UI extends UI {
 
         windowHeight = Page.getCurrent().getBrowserWindowHeight();// Math.max(Page.getCurrent().getBrowserWindowHeight(), 1080);
         windowWidth = Page.getCurrent().getBrowserWindowWidth();//Math.max(Page.getCurrent().getBrowserWindowWidth(), 1920);
-        if (windowHeight < 700) {
-            setContent(emptyLayout);
-            Notification.show("Screen is too small", Notification.Type.ERROR_MESSAGE);
+        if (windowHeight < 680 || windowWidth < 1024) {
+            emptyLayout.setVisible(true);            
+            System.err.println("at window h "+windowHeight+"  window w "+windowWidth);
+            Notification.show("Screen is too small minimum screen resolution (1024x680)", Notification.Type.ERROR_MESSAGE);
+            return;
+        }
 
-            System.out.println("it is small window height " + 720);
-            windowHeight = 600;
-            return;
-        }
-        if (windowWidth < 900) {
-            setContent(emptyLayout);
-            Notification.show("Screen is too small", Notification.Type.ERROR_MESSAGE);
-            windowWidth = 800;
-            System.out.println("it is small window width " + windowWidth);
-            return;
-        }
-        if (getContent() == emptyLayout) {
+        if (emptyLayout.isVisible()) {
             Page.getCurrent().reload();
         } else {
             for (Window w : getWindows()) {

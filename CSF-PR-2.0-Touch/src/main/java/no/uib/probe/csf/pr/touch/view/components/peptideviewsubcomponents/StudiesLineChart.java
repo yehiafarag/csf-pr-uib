@@ -156,14 +156,24 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.GRAY);
         lineChart.getXYPlot().getDomainAxis().setVisible(true);
         lineChart.getXYPlot().getRangeAxis().setVisible(true);
+         lineChart.getXYPlot().setOutlineVisible(false);
           lineChart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(
                 1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
                 1.0f, new float[]{10.0f, 6.0f}, 0.0f
         ));
-          lineChart.getXYPlot().setOutlineVisible(false);
-          
          lineChart.setPadding(new RectangleInsets(0, 0, 0, 0));
         maxImgUrl = new ExternalResource(this.getChartImage(lineChart, chartRenderingInfo, width, height));
+        if(chartRenderingInfo.getEntityCollection().getEntityCount()<4)
+        {
+             lineChart.getXYPlot().getDomainAxis().setVisible(false);
+              maxImgUrl = new ExternalResource(this.getChartImage(lineChart, chartRenderingInfo, width, height));
+               lineChart.getXYPlot().getDomainAxis().setVisible(true);
+        
+        
+        }
+        
+        
+        
         initLayoutComponents(comparisonsList);
         chartImg.setSource(maxImgUrl);
     }
@@ -229,6 +239,7 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         linevalues[1] = yLineValues;
         dataset.addSeries("line", linevalues);
         verticalLabels = maxLength > 40 && selectedComparisonList.size() > 4;
+        
 
         Font font = new Font("Open Sans", Font.PLAIN, 13);
 
@@ -326,6 +337,8 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         };
         xAxis.setTickLabelFont(font);
         xAxis.setLabelInsets(new RectangleInsets(2, 5, 2, 5));
+        
+       
 
         yAxis = new NumberAxis() {
             final Color[] labelsColor = new Color[]{new Color(80, 183, 71), Color.LIGHT_GRAY, new Color(1, 141, 244), Color.LIGHT_GRAY, new Color(204, 0, 0)};
@@ -703,8 +716,8 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
 //        lineChart.getXYPlot().setDomainGridlinesVisible(true);
         lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.BLACK);
         lineChart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(5));
-        gridcounter = 0;
-        gridcounterII = 0;
+//        gridcounter = 0;
+//        gridcounterII = 0;
 
 //        minImgUrl = new ExternalResource(this.getChartImage(lineChart, chartRenderingInfo, 100, 100));
 //        lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.GRAY);

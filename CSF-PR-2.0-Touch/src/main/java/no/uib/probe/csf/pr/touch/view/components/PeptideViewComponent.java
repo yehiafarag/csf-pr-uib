@@ -20,7 +20,6 @@ import java.awt.FlowLayout;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Set;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
@@ -36,7 +35,6 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.encoders.ImageEncoder;
 import org.jfree.chart.encoders.ImageEncoderFactory;
 import org.jfree.chart.encoders.ImageFormat;
-import org.jfree.ui.about.AboutPanel;
 
 /**
  *
@@ -63,8 +61,6 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
     }
 
     private Resource generateThumbImg() {
-        System.out.println("at sequ : " + peptideSequenceTableLayout.getSequence());
-        System.out.println("at pep : " + peptideSequenceTableLayout.getPeptides());
         String seq = peptideSequenceTableLayout.getSequence();
         Set<String> peptides = peptideSequenceTableLayout.getPeptides();
     final Border fullBorder = new LineBorder(Color.GRAY);
@@ -134,6 +130,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeight(height, Unit.PIXELS);
+        this.setMargin(new MarginInfo(false, false, false, true));
         VerticalLayout mainBodyContainer = new VerticalLayout();
         mainBodyContainer.setSpacing(true);
         mainBodyContainer.setWidth(100, Unit.PERCENTAGE);
@@ -148,6 +145,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
 
         proteinNameLabel = new Label();
         proteinNameLabel.setStyleName(ValoTheme.LABEL_BOLD);
+        proteinNameLabel.addStyleName("overflowtext");
         proteinNameLabel.setHeight(24, Unit.PIXELS);
         labelLegendContaner.addComponent(proteinNameLabel);
 
@@ -157,6 +155,9 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
 
         labelLegendContaner.addComponent(legendLayout);
         labelLegendContaner.setComponentAlignment(legendLayout, Alignment.TOP_RIGHT);
+          if (width / 2 < 700) {
+            legendLayout.addStyleName("showonhover");
+        }
 //        TrendLegend legendLayoutComponent = new TrendLegend("linechart");
 //        legendLayoutComponent.setWidthUndefined();
 //        legendLayoutComponent.setHeight(24, Unit.PIXELS);
@@ -189,6 +190,8 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         sequenceLegendLayout.setHeight(24, Unit.PIXELS);
         mainBodyContainer.addComponent(sequenceLegendLayout);
         mainBodyContainer.setComponentAlignment(sequenceLegendLayout, Alignment.MIDDLE_RIGHT);
+        
+       
 
         VerticalLayout bottomLayout = new VerticalLayout();
         bottomLayout.setWidth(width, Unit.PIXELS);
@@ -401,6 +404,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
             legendLayoutComponent.setWidthUndefined();
             legendLayoutComponent.setHeight(24, Unit.PIXELS);
             legendLayout.addComponent(legendLayoutComponent);
+           
 
         } else {
             legendLayout.removeAllComponents();
@@ -415,6 +419,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
 
         peptideSequenceTableLayout.updateTableData(selectedComparisonsList, proteinKey);
         proteinNameLabel.setValue(lineChart.getProteinName());
+        proteinNameLabel.setDescription(lineChart.getProteinName());
         updateIcon(generateThumbImg());
 
     }

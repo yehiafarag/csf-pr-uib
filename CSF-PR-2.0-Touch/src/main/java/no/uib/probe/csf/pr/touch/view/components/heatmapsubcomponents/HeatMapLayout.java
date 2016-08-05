@@ -303,7 +303,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
             cornerCell.setComponentAlignment(filterResizeController.getFilterContainerLayout(), Alignment.TOP_LEFT);
             filterResizeController.getFilterContainerLayout().addStyleName("heatmapcorner");
         }
-         InformationButton info = new InformationButton("Info", false);
+        InformationButton info = new InformationButton("Info", false);
         controlBtnsContainer.addComponent(info);
 
 //        zoomControler.addZoomableComponent(heatMapLayoutWrapper);
@@ -327,6 +327,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
      */
     public void updateData(Set<HeatMapHeaderCellInformationBean> rowsLbels, Set<HeatMapHeaderCellInformationBean> columnsLbels, Set<DiseaseGroupComparison> patientsGroupComparisonsSet, Map<Integer, QuantDatasetObject> fullQuantDsMap) {
 
+        unselectAll();
         equalComparisonMap.clear();
         updatedDatasetMap.clear();
         updatedDatasetMap.putAll(fullQuantDsMap);
@@ -338,6 +339,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 //            double ratio = availableHMHeight / (rowCategoryHeadersContainer.getHeight() + 100);
 //            zoomLevel = (int) (ratio * 10.0);
 //        } else {
+        
 //            zoomLevel = 10;
 //        }
 //        zoomControler.setDefaultZoomLevel(zoomLevel);
@@ -519,7 +521,6 @@ public abstract class HeatMapLayout extends VerticalLayout {
 ////        updateHMThumb(getHMThumbImg(), datasets.size(), deactivated, equalComparisonMap);
 //    }
 //    
-    
     private HeatmapCell[][] cellTable;
 
     private void updateHeatMapLayout(Set<HeatMapHeaderCellInformationBean> rowheaders, Set<HeatMapHeaderCellInformationBean> colheaders, Set<DiseaseGroupComparison> patientsGroupComparisonsSet, Map<Integer, QuantDatasetObject> fullQuantDsMap) {//, Map<String, String> diseaseFullNameMap, ) {
@@ -1144,6 +1145,9 @@ public abstract class HeatMapLayout extends VerticalLayout {
      * Reset selection on dataset layout no selection manager update
      */
     public void clearSelection() {
+        if (columnHeaderCells == null || colheadersSet.isEmpty()) {
+            return;
+        }
         for (HeaderCell header : columnHeaderCells) {
             header.unselect();
         }
@@ -1230,7 +1234,6 @@ public abstract class HeatMapLayout extends VerticalLayout {
         heatmapPanel.setHeight(gen.getPanelWidth(), Unit.PIXELS);
         heatMapImg.setSource(new ExternalResource(imgUrl));
         updateHeatmapComponents();
-        
 
         return imgUrl;
 

@@ -66,6 +66,7 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
 
         HorizontalLayout mainViewContainerFrame = new HorizontalLayout();
         mainLayoutWrapper.addComponent(mainViewContainerFrame);
+        
         mainViewContainerFrame.setWidth(bodyWidth-120-55,Unit.PIXELS);
         mainViewContainerFrame.setHeightUndefined();
         mainViewContainerFrame.addStyleName("mainviewport");

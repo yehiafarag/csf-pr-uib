@@ -272,6 +272,8 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         serumCsfFilter.resetFilter();
         reorderSelectBtn.updateData(rowheaders, colheaders, patientsGroupComparisonsSet);
 
+      
+
     }
 
     private void updateSystemComponents(Set<Integer> datasetIds) {
@@ -283,34 +285,34 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         Set<HeatMapHeaderCellInformationBean> localRows = new LinkedHashSet<>(), localColumns = new LinkedHashSet<>();
         Set<DiseaseGroupComparison> filteredPatientsGroupComparisonsSet = new LinkedHashSet<>();
 
-         for (HeatMapHeaderCellInformationBean rowHeader : rowheaders) {
-             for (int key : filteredQuantDsMap.keySet()) {   
-                  QuantDatasetObject dataset = filteredQuantDsMap.get(key);
-             if (dataset.getUpdatedDiseaseGroupI().equalsIgnoreCase(rowHeader.getDiseaseGroupName()) || dataset.getUpdatedDiseaseGroupII().equalsIgnoreCase(rowHeader.getDiseaseGroupName())) {
+        for (HeatMapHeaderCellInformationBean rowHeader : rowheaders) {
+            for (int key : filteredQuantDsMap.keySet()) {
+                QuantDatasetObject dataset = filteredQuantDsMap.get(key);
+                if (dataset.getUpdatedDiseaseGroupI().equalsIgnoreCase(rowHeader.getDiseaseGroupName()) || dataset.getUpdatedDiseaseGroupII().equalsIgnoreCase(rowHeader.getDiseaseGroupName())) {
                     localRows.add(rowHeader);
-                    
-                }
-             }
 
+                }
             }
-         
-         colheaders.stream().forEach((rowHeader) -> {
+
+        }
+
+        colheaders.stream().forEach((rowHeader) -> {
             for (Iterator<Integer> it = filteredQuantDsMap.keySet().iterator(); it.hasNext();) {
                 int key = it.next();
                 QuantDatasetObject dataset = filteredQuantDsMap.get(key);
                 if (dataset.getUpdatedDiseaseGroupI().equalsIgnoreCase(rowHeader.getDiseaseGroupName()) || dataset.getUpdatedDiseaseGroupII().equalsIgnoreCase(rowHeader.getDiseaseGroupName())) {
                     localColumns.add(rowHeader);
-                    
+
                 }
             }
         });
-        
+
         for (int key : filteredQuantDsMap.keySet()) {
             patientsGroupComparisonsSet.stream().filter((patientsGroupComparisons) -> (patientsGroupComparisons.getOriginalDatasetIndex() == key)).forEach((patientsGroupComparisons) -> {
                 filteredPatientsGroupComparisonsSet.add(patientsGroupComparisons);
             });
         }
-      heatmapLayoutContainer.updateData(localRows, localColumns, filteredPatientsGroupComparisonsSet, filteredQuantDsMap);
+        heatmapLayoutContainer.updateData(localRows, localColumns, filteredPatientsGroupComparisonsSet, filteredQuantDsMap);
 
     }
 
@@ -341,7 +343,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
             Set<QuantDiseaseGroupsComparison> compList = CSFPR_Central_Manager.getSelectedComparisonsList();
             if (compList == null || compList.isEmpty()) {
                 heatmapLayoutContainer.clearSelection();
-                
+
             } else {
                 heatmapLayoutContainer.selectComparisons(compList);
             }

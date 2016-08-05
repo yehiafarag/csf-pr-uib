@@ -51,6 +51,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
 
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeight(height, Unit.PIXELS);
+        this.setMargin(new MarginInfo(false, false, false, true));
 
         VerticalLayout bodyContainer = new VerticalLayout();
         bodyContainer.setWidth(100, Unit.PERCENTAGE);
@@ -72,6 +73,8 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         titleLayoutWrapper.setSpacing(true);
         titleLayoutWrapper.setMargin(false);
         topLayout.addComponent(titleLayoutWrapper);
+        topLayout.addComponent(titleLayoutWrapper);
+//        topLayout.setExpandRatio(titleLayoutWrapper, 40);
 
         Label overviewLabel = new Label("Proteins");
         overviewLabel.setStyleName(ValoTheme.LABEL_BOLD);
@@ -97,8 +100,12 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         TrendLegend legendLayout = new TrendLegend("linechart");
         legendLayout.setWidthUndefined();
         legendLayout.setHeight(24, Unit.PIXELS);
+        if (width / 2 < 700) {
+            legendLayout.addStyleName("showonhover");
+        }
         topLayout.addComponent(legendLayout);
-        topLayout.setComponentAlignment(legendLayout, Alignment.MIDDLE_RIGHT);
+        topLayout.setComponentAlignment(legendLayout, Alignment.TOP_RIGHT);
+//        topLayout.setExpandRatio(legendLayout, 60);
 
         //end of toplayout
         //start chart layout
@@ -309,9 +316,9 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
 
                 Map<String, QuantComparisonProtein> proteinsFilterMap = new LinkedHashMap<>();;
                 CSFPR_Central_Manager.getSelectedComparisonsList().stream().forEach((comparison) -> {
-                    selectedProteinsList.addAll(comparison.getQuantComparisonProteinMap().values());                    
+                    selectedProteinsList.addAll(comparison.getQuantComparisonProteinMap().values());
                     for (QuantComparisonProtein prot : comparison.getQuantComparisonProteinMap().values()) {
-                        proteinsFilterMap.put(prot.getProteinAccession()+"__"+prot.getProteinName(),prot);
+                        proteinsFilterMap.put(prot.getProteinAccession() + "__" + prot.getProteinName(), prot);
                     }
                 });
                 quantProteinTable.updateTableData(CSFPR_Central_Manager.getSelectedComparisonsList(), new LinkedHashSet<>(proteinsFilterMap.values()));
@@ -328,7 +335,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
             }
 
             selectedProteinsList.stream().forEach((protein) -> {
-                proteinSearchingMap.put(protein.getProteinAccession() + "__" + protein.getProteinName(), protein);
+                proteinSearchingMap.put(protein.getProteinAccession() + "__" + protein.getProteinName().toLowerCase(), protein);
             });
             quantProteinTable.hideCheckedColumn(true);
             checkUncheckBtn.reset();

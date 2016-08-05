@@ -250,7 +250,7 @@ public class CoreLogic implements Serializable {
                 String protAcc = quant.getUniprotAccession();
 //                System.out.println("at ------------------------------------------------------ >> header "+comparison.getDatasetMap().get(quant.getDsKey()).getPatientsSubGroup1()+"  oreg "+comparison.getOreginalComparisonHeader());
                 if (protAcc.equalsIgnoreCase("") || protAcc.equalsIgnoreCase("Not Available") || protAcc.equalsIgnoreCase("Entry Deleted") || protAcc.equalsIgnoreCase("Entry Demerged") || protAcc.equalsIgnoreCase("NOT RETRIEVED") || protAcc.equalsIgnoreCase("DELETED") || protAcc.trim().equalsIgnoreCase("UNREVIEWED")) {
-                    protAcc = quant.getPublicationAccNumber();
+                    protAcc = quant.getPublicationAccNumber()+" ("+protAcc+")";
 
                 }
 
@@ -306,7 +306,7 @@ public class CoreLogic implements Serializable {
 //
                 if (uniprotAcc.trim().equalsIgnoreCase("") || uniprotAcc.equalsIgnoreCase("Not Available") || uniprotAcc.equalsIgnoreCase("Entry Deleted") || uniprotAcc.equalsIgnoreCase("Entry Demerged") || uniprotAcc.equalsIgnoreCase("NOT RETRIEVED") || uniprotAcc.equalsIgnoreCase("DELETED") || uniprotAcc.trim().equalsIgnoreCase("UNREVIEWED")) {
                     protName = quant.getPublicationProteinName();
-                    accession = quant.getPublicationAccNumber().trim();
+                    accession = protAcc;
                     url = null;
 
                 } else {
@@ -532,7 +532,7 @@ public class CoreLogic implements Serializable {
                 String accession;
                 if (uniprotAcc.trim().equalsIgnoreCase("") || uniprotAcc.equalsIgnoreCase("Not Available") || uniprotAcc.equalsIgnoreCase("Entry Deleted") || uniprotAcc.equalsIgnoreCase("Entry Demerged") || uniprotAcc.equalsIgnoreCase("NOT RETRIEVED") || uniprotAcc.equalsIgnoreCase("DELETED") || uniprotAcc.trim().equalsIgnoreCase("UNREVIEWED")) {
                     protName = quantProt.getPublicationProteinName();
-                    accession = uniprotAcc + " (" + quantProt.getPublicationAccNumber() + ")";
+                    accession =  quantProt.getPublicationAccNumber()+" ("+uniprotAcc+")";
 
                 } else {
                     protName = quantProt.getUniprotProteinName();

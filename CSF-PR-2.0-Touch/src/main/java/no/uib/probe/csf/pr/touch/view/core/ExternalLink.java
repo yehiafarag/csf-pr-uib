@@ -30,5 +30,12 @@ public class ExternalLink extends Link implements Comparable<ExternalLink>{
             super.setEnabled(false);
         }
     }
+
+    @Override
+    public String toString() {
+        System.out.println("to string is called");
+        return caption; //To change body of generated methods, choose Tools | Templates.
+    }
+    
     
 }
