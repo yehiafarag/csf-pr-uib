@@ -62,8 +62,8 @@ public class HeaderLayout extends HorizontalLayout{
         HorizontalLayout linksIconsLayout = new HorizontalLayout();
         linksIconsLayout.setStyleName("transparentlayout");
 //        linksIconsLayout.addStyleName("margintop10");
-        rightHeaderLayout.addComponent(linksIconsLayout);
-        rightHeaderLayout.setComponentAlignment(linksIconsLayout, Alignment.MIDDLE_RIGHT);
+//        rightHeaderLayout.addComponent(linksIconsLayout);
+//        rightHeaderLayout.setComponentAlignment(linksIconsLayout, Alignment.MIDDLE_RIGHT);
         linksIconsLayout.setHeight(30,Unit.PIXELS);
         Link probe_ico = new Link(null, new ExternalResource("http://www.uib.no/rg/probe"));
         probe_ico.setIcon(new ThemeResource("img/probe.png"));

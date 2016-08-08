@@ -58,6 +58,7 @@ public abstract class ImageContainerBtn extends AbsoluteLayout implements Layout
         labelcontainer.setComponentAlignment(text, Alignment.MIDDLE_CENTER);
 
         this.setStyleName("bigbtn");
+        this.addStyleName("pointer");
         this.addLayoutClickListener(ImageContainerBtn.this);
         this.setReadOnly(true);
         ImageContainerBtn.this.setEnabled(false);

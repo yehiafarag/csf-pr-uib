@@ -284,7 +284,7 @@ public class HeatMapImgGenerator {
     private JComponent initLabel(String text, int w, int h, boolean rotate, Color background, Border border) {
         JLabel label = new JLabel(text);
 
-        label.setFont(new Font("Open Sans", Font.BOLD, (int) (13 * resizeFactor)));
+        label.setFont(new Font("Open Sans", Font.PLAIN, (int) (15 * resizeFactor)));
 
         label.setVerticalTextPosition(JLabel.CENTER);
         label.setHorizontalTextPosition(JLabel.CENTER);

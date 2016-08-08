@@ -40,6 +40,7 @@ public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutC
         VerticalLayout infoPopup = initPopupLayout(infoLayout);
         
         popupPanel = new PopupWindow(infoPopup, publicationAuthor);
+        popupPanel.setHeight(Math.max(popupPanel.getHeight(), 650),Unit.PIXELS);
         
         
 //        popupPanel = new PopupView(null, infoPopup);
@@ -60,8 +61,8 @@ public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutC
     public PopupInfoBtn(String btnName, String publicationAuthor, Object[] publicationData) {
         this.addLayoutClickListener(PopupInfoBtn.this);
         this.setDescription("Click to view publication information");
-        this.setHeight("80px");
-        this.setWidth("200px");
+        this.setHeight(80,Unit.PIXELS);
+        this.setWidth(200,Unit.PIXELS);
         Label btnLabel = new Label(btnName);
         btnLabel.setContentMode(ContentMode.HTML);
         this.addComponent(btnLabel);
@@ -75,7 +76,7 @@ public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutC
        
         
         popupPanel = new PopupWindow(infoPopup,publicationAuthor);
-        popupPanel.setWidth(600,Unit.PIXELS);
+        popupPanel.setWidth(100,Unit.PIXELS);
         popupPanel.setHeight(400,Unit.PIXELS);
        
         this.setExpandRatio(btnLabel, 0.99f);

@@ -13024,6 +13024,10 @@ div.v-layout.v-horizontal.v-widget {
 
     background-color: white !important;
 }
+.whitesmokelayout{
+    background-color: whitesmoke !important;
+    
+}
 .blacklayout{
     background-color: black !important;
 }
@@ -13092,7 +13096,7 @@ div.v-layout.v-horizontal.v-widget {
     /*margin-right: 20px;*/
     z-index:2;
     position:relative !important;
-    background-color:white;
+    /*background-color:white;*/
 }
 .framelayout{
     -webkit-transition: all .5s ease-in-out;
@@ -13490,8 +13494,7 @@ div.v-layout.v-horizontal.v-widget {
     cursor: default;
     max-height:70px !important;
     text-overflow:ellipsis !important;
-    overflow:hidden !important;
-    clear:both;
+    overflow:auto !important;
 }
 .valuelabel  textArea:focus{
 

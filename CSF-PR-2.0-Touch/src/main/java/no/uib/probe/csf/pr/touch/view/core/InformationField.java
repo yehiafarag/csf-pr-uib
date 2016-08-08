@@ -1,6 +1,7 @@
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.server.ExternalResource;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
@@ -13,6 +14,7 @@ import com.vaadin.ui.VerticalLayout;
 public class InformationField extends VerticalLayout {
 
     private final Link valueLabel;
+    private final  Label titleLabel ;
 
     /**
      *
@@ -20,11 +22,11 @@ public class InformationField extends VerticalLayout {
      */
     public InformationField(String title) {
 
-        this.setHeight(100,Unit.PIXELS);
-        this.setWidth("100%");
+        this.setHeight(60,Unit.PIXELS);
+        this.setWidth(100,Unit.PERCENTAGE);
         this.setSpacing(true);
-        this.setMargin(true);
-        Label titleLabel = new Label(title);
+        this.setMargin(new MarginInfo(false, false, true, false));
+        titleLabel = new Label(title);
         this.addComponent(titleLabel);
         titleLabel.setStyleName("caption");
         titleLabel.setHeight("100%");
@@ -37,7 +39,7 @@ public class InformationField extends VerticalLayout {
         valueLabel.setTargetName("_blank");
         valueLabel.setCaptionAsHtml(true);
         valueLabel.setHeight("100%");
-        valueLabel.setWidth("100%");
+        valueLabel.setWidth("90%");
 
         this.addComponent(valueLabel);
         this.setComponentAlignment(valueLabel, Alignment.TOP_LEFT);
@@ -91,10 +93,14 @@ public class InformationField extends VerticalLayout {
             }
             if (stringValue.contains("</font>")) {
                 valueLabel.setCaption(stringValue);
-            } else if (stringValue.toCharArray().length > 25) {
-                valueLabel.setCaption("<textarea rows='5'  readonly>" + stringValue + "</textarea>");
+            } else if (stringValue.toCharArray().length > 100) {
+                valueLabel.setCaption("<textarea cols='100' rows='5'  readonly>" + stringValue + "</textarea>");
                 valueLabel.setCaptionAsHtml(true);
-//                this.setHeight("100px");
+                int h=Math.min(((stringValue.toCharArray().length /100)*20),70);
+                valueLabel.setHeight(h,Unit.PIXELS);
+                titleLabel.setHeight(20,Unit.PIXELS);
+                this.setSpacing(false);
+                this.setHeightUndefined();
             } else {
                 valueLabel.setCaption(stringValue);
             }

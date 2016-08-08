@@ -31,7 +31,8 @@ public class CSFApplicationContainer extends VerticalLayout {
     public CSFApplicationContainer(int pageWidth, int pageHeight, String url, String dbName, String driver, String userName, String password, String filesURL) {
         this.setWidth(pageWidth, Unit.PIXELS);
         this.setHeight(pageHeight, Unit.PIXELS);
-        this.setStyleName("whitelayout");
+        this.setStyleName("whitesmokelayout");
+//         this.setStyleName("lightgraylayout");
         this.setSpacing(false);
         
         
@@ -48,6 +49,7 @@ public class CSFApplicationContainer extends VerticalLayout {
 
         VerticalLayout bodyWrapper = new VerticalLayout();
         bodyWrapper.setHeightUndefined();
+//        bodyWrapper.setStyleName("lightgraylayout");
         bodyWrapper.setWidth(100, Unit.PERCENTAGE);
         this.addComponent(bodyWrapper);
         
@@ -60,7 +62,10 @@ public class CSFApplicationContainer extends VerticalLayout {
         VerticalLayout mainLayout = new VerticalLayout();
         mainLayout.setHeight(pageHeight, Unit.PIXELS);
         mainLayout.setWidth(pageWidth, Unit.PIXELS);
+        mainLayout.setStyleName("whitesmokelayout");
         mainLayout.addComponent(welcomeContent);
+        mainLayout.setComponentAlignment(welcomeContent, Alignment.TOP_CENTER);
+       
 
         this.welcomeLayoutPanel = new ScrollPanel(mainLayout, welcomeContent.getMiniLayout(), 0, "welcomeview");
         View_Manager.registerComponent(welcomeLayoutPanel);

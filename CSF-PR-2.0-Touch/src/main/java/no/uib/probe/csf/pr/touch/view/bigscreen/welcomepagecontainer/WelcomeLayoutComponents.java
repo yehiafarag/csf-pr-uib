@@ -1,14 +1,18 @@
 package no.uib.probe.csf.pr.touch.view.bigscreen.welcomepagecontainer;
 
+import com.vaadin.server.ExternalResource;
 import com.vaadin.server.Page;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Link;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import java.io.Serializable;
@@ -34,10 +38,10 @@ import no.uib.probe.csf.pr.touch.view.smallscreen.OverviewInfoBean;
  * message resource overview information
  */
 public class WelcomeLayoutComponents extends VerticalLayout implements Serializable {
-    
+
     private final HorizontalLayout miniLayout;
     private final ZoomControler zoomApp;
-    
+
     public HorizontalLayout getMiniLayout() {
         return miniLayout;
     }
@@ -56,17 +60,23 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
      *
      */
     public WelcomeLayoutComponents(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager, final LayoutViewManager View_Manager, int bodyWidth, int bodyHeight, OverviewInfoBean overviewInfoBean, List<Object[]> publicationList, Set<QuantDatasetObject> dsObjects) {
-        this.setWidth(100, Unit.PERCENTAGE);
+        this.setWidth(980, Unit.PIXELS);
         this.setHeight(100, Unit.PERCENTAGE);
         this.addStyleName("hideoverflow");
+        this.addStyleName("whitelayout");
+        if (bodyHeight > 720) {
+            this.setMargin(new MarginInfo(true, true, true, true));
+        } else {
+            this.setMargin(new MarginInfo(false, true, false, true));
+        }
         HeaderLayout header = new HeaderLayout();
         this.addComponent(header);
         float headerRatio = 65f / (float) bodyHeight;
         int bottomHeight = bodyHeight - 65;
         float bodyRatio = (float) bottomHeight / (float) bodyHeight;
         this.setExpandRatio(header, headerRatio);
-        
-        int rightPanelWidth = Math.min(1020, (bodyWidth - 220));
+
+        int rightPanelWidth = 700;// Math.min(980, (bodyWidth - 220));
         HorizontalLayout mainBodyHLayout = new HorizontalLayout();
         mainBodyHLayout.setWidthUndefined();
         this.addComponent(mainBodyHLayout);
@@ -81,19 +91,19 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
         // the stat layout
         Label statLabel = new Label("Resource  Status");
-        statLabel.setStyleName(ValoTheme.LABEL_H3);
+        statLabel.setStyleName(ValoTheme.LABEL_H4);
         statLabel.addStyleName(ValoTheme.LABEL_BOLD);
         statLabel.setWidthUndefined();
         statLabel.setHeightUndefined();
         leftPanelWrapper.addComponent(statLabel);
-        
+
         Label quantStatLabel = new Label("Quantitative  Data");
         quantStatLabel.setHeight(20, Unit.PIXELS);
         quantStatLabel.addStyleName(ValoTheme.LABEL_BOLD);
         quantStatLabel.addStyleName(ValoTheme.LABEL_H4);
         quantStatLabel.addStyleName("marginleft");
         leftPanelWrapper.addComponent(quantStatLabel);
-        
+
         GridLayout subQuantStatLayout = new GridLayout(2, 4);
         subQuantStatLayout.addStyleName("marginleft");
         subQuantStatLayout.setMargin(new MarginInfo(false, false, true, false));
@@ -122,72 +132,72 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         sub2quantStatLabel.setStyleName("link");
         sub2quantStatLabel.addStyleName(ValoTheme.LABEL_SMALL);
         sub2quantStatLabelWrapper.addComponent(sub2quantStatLabel);
-        
+
         Label sub2QuantStatValue = new Label(overviewInfoBean.getNumberOfQuantStudies() + "");
         sub2QuantStatValue.addStyleName(ValoTheme.LABEL_SMALL);
         subQuantStatLayout.addComponent(sub2QuantStatValue, 1, 1);
         subQuantStatLayout.setComponentAlignment(sub2QuantStatValue, Alignment.MIDDLE_RIGHT);
-        
+
         Label sub3quantStatLabel = new Label("#Proteins");
         sub3quantStatLabel.addStyleName(ValoTheme.LABEL_SMALL);
         subQuantStatLayout.addComponent(sub3quantStatLabel, 0, 2);
-        
+
         Label sub3QuantStatValue = new Label("" + overviewInfoBean.getNumberOfQuantProteins());
         sub3QuantStatValue.addStyleName(ValoTheme.LABEL_SMALL);
         subQuantStatLayout.addComponent(sub3QuantStatValue, 1, 2);
         subQuantStatLayout.setComponentAlignment(sub3QuantStatValue, Alignment.MIDDLE_RIGHT);
-        
+
         Label sub4quantStatLabel = new Label("#Peptides");
         sub4quantStatLabel.addStyleName(ValoTheme.LABEL_SMALL);
         subQuantStatLayout.addComponent(sub4quantStatLabel, 0, 3);
-        
+
         Label sub4QuantStatValue = new Label("" + overviewInfoBean.getNumberOfQuantPeptides());
         sub4QuantStatValue.addStyleName(ValoTheme.LABEL_SMALL);
         subQuantStatLayout.addComponent(sub4QuantStatValue, 1, 3);
         subQuantStatLayout.setComponentAlignment(sub4QuantStatValue, Alignment.MIDDLE_RIGHT);
-        
+
         subQuantStatLayout.setColumnExpandRatio(0, 2);
         subQuantStatLayout.setColumnExpandRatio(1, 1);
-        
+
         Label idStatLabel = new Label("Identification Data");
         idStatLabel.setHeight(20, Unit.PIXELS);
         idStatLabel.addStyleName(ValoTheme.LABEL_BOLD);
         idStatLabel.addStyleName(ValoTheme.LABEL_H4);
         idStatLabel.addStyleName("marginleft");
         idStatLabel.addStyleName("margintop");
-        
+
         leftPanelWrapper.addComponent(idStatLabel);
-        
+
         GridLayout subIdStatLayout = new GridLayout(2, 4);
         subIdStatLayout.addStyleName("marginleft");
         subIdStatLayout.setWidth(100, Unit.PERCENTAGE);
         subIdStatLayout.setSpacing(true);
         leftPanelWrapper.addComponent(subIdStatLayout);
-        
+
         Label sub2IdStatLabel = new Label("#Datasets");
         sub2IdStatLabel.addStyleName(ValoTheme.LABEL_SMALL);
         subIdStatLayout.addComponent(sub2IdStatLabel, 0, 1);
         subIdStatLayout.setColumnExpandRatio(0, 2);
         subIdStatLayout.setColumnExpandRatio(1, 1);
-        
+
         Label sub2IdStatValue = new Label("" + overviewInfoBean.getNumberOfIdStudies());
         sub2IdStatValue.addStyleName(ValoTheme.LABEL_SMALL);
         subIdStatLayout.addComponent(sub2IdStatValue, 1, 1);
         subIdStatLayout.setComponentAlignment(sub2IdStatValue, Alignment.MIDDLE_RIGHT);
-        
+
         Label sub3IdStatLabel = new Label("#Proteins");
         sub3IdStatLabel.addStyleName(ValoTheme.LABEL_SMALL);
         subIdStatLayout.addComponent(sub3IdStatLabel, 0, 2);
-        
+
         Label sub3IdStatValue = new Label("" + overviewInfoBean.getNumberOfIdProteins());
         sub3IdStatValue.addStyleName(ValoTheme.LABEL_SMALL);
         subIdStatLayout.addComponent(sub3IdStatValue, 1, 2);
         subIdStatLayout.setComponentAlignment(sub3IdStatValue, Alignment.MIDDLE_RIGHT);
-        
+
         Label sub4IdStatLabel = new Label("#Peptides");
         sub4IdStatLabel.addStyleName(ValoTheme.LABEL_SMALL);
         subIdStatLayout.addComponent(sub4IdStatLabel, 0, 3);
-        
+
         Label sub4IdStatValue = new Label("" + overviewInfoBean.getNumberOfIdPeptides());
         sub4IdStatValue.addStyleName(ValoTheme.LABEL_SMALL);
         subIdStatLayout.addComponent(sub4IdStatValue, 1, 3);
@@ -208,34 +218,34 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         rightPanelWrapper.setHeightUndefined();
         rightPanelWrapper.setStyleName("framelayout");
         mainBodyHLayout.addComponent(rightPanelWrapper);
-        
-        Label infoLable = new Label("<h1>Welcome to The CSF Proteome Resource (CSF-PR)</h1>");
+
+        Label infoLable = new Label("<h2>Welcome to The CSF Proteome Resource (CSF-PR)</h2>");
         infoLable.setHeight(50, Unit.PIXELS);
         infoLable.setContentMode(ContentMode.HTML);
         rightPanelWrapper.addComponent(infoLable);
-        
-        Label para_1 = new Label("<p style='font-size: 14px;color: black;line-height: 20px;'>As CSF is in direct contact with the central nervous system (CNS) it can provide indications about the state of the CNS. This is particularly relevant for neurodegenerative diseases, such as Multiple Sclerosis, Alzheimer's and Parkinson's, where the CSF would be a natural place to look for disease biomarkers.<br/><br/><font style='font-size: 14px;color: black;line-height: 20px;'>CSF Proteome Resource (CSF-PR) v2.0 is an online repository of mass spectrometry based proteomics "
+
+        Label para_1 = new Label("<p style='text-align: justify;text-justify: inter-word; font-size: 14px;color: black;line-height: 20px;'>As CSF is in direct contact with the central nervous system (CNS) and it can provide indications about the state of the CNS. This is particularly relevant for neurodegenerative diseases, such as Multiple Sclerosis, Alzheimer's and Parkinson's, where the CSF would be a natural place to look for disease biomarkers.<br/><br/><font style='font-size: 14px;color: black;line-height: 20px;'>CSF Proteome Resource (CSF-PR) v2.0 is an online repository of mass spectrometry based proteomics "
                 + "experiments on human cerebrospinal fluid (CSF). </font></p>");
         para_1.setContentMode(ContentMode.HTML);
         rightPanelWrapper.addComponent(para_1);
         para_1.setWidth(rightPanelWidth, Unit.PIXELS);
-        
+
         HorizontalLayout rightPanel = new HorizontalLayout();
         rightPanel.setWidth(100, Unit.PERCENTAGE);
         rightPanelWrapper.addComponent(rightPanel);
-        
+
         VerticalLayout middleLayout = new VerticalLayout();
         middleLayout.setWidth(100, Unit.PERCENTAGE);
         middleLayout.setMargin(false);
         rightPanel.addComponent(middleLayout);
-        
+
         GridLayout middlePanelServicesLayout = new GridLayout(2, 2);
         middlePanelServicesLayout.setSpacing(true);
         middlePanelServicesLayout.setMargin(new MarginInfo(true, false, true, false));
         middleLayout.addComponent(middlePanelServicesLayout);
-        
+
         BigBtn quantDatasetBtn = new BigBtn("Quantification", "Browse quantitative data", "img/scatter_plot_applied.png") {
-            
+
             @Override
             public void onClick() {
                 View_Manager.viewLayout("quantview");
@@ -244,42 +254,42 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         quantDatasetBtn.getThumbBtn().setDescription("Click to browse protein quantitative data");
         middlePanelServicesLayout.addComponent(quantDatasetBtn, 0, 0);
         BigBtn idDatasetBtn = new BigBtn("Identification", "Browse identification data", "img/bar-chart.png") {
-            
+
             @Override
             public void onClick() {
                 Page.getCurrent().open(VaadinSession.getCurrent().getAttribute("csf_pr_Url").toString(), "_blank");//setLocation("http://129.177.231.63/csf-pr-v1.0");
-                
+
             }
         };
-        
+
         idDatasetBtn.getThumbBtn().setDescription("Click to browse protein identification data");
-        
+
         middlePanelServicesLayout.addComponent(idDatasetBtn, 0, 1);
-        
+
         SearchingComponent searchingDatasetBtn = new SearchingComponent(Data_handler, CSFPR_Central_Manager) {
-            
+
             @Override
             public void loadQuantSearching() {
                 View_Manager.viewLayout("quantview");
             }
-            
+
         };
         searchingDatasetBtn.getThumbBtn().setDescription("Click to search quantified and identified protein data");
         middlePanelServicesLayout.addComponent(searchingDatasetBtn, 1, 0);
-        
+
         CompareComponent compareBtn = new CompareComponent(Data_handler, CSFPR_Central_Manager) {
-            
+
             @Override
             public void loadQuantComparison() {
                 View_Manager.viewLayout("quantview");
             }
-            
+
         };
         compareBtn.getThumbBtn().setDescription("Click to compare with your own protein quantification data");
         middlePanelServicesLayout.addComponent(compareBtn, 1, 1);
-        
+
         BigBtn homeBtn = new BigBtn("", "", "img/home-o.png") {
-            
+
             @Override
             public void onClick() {
                 View_Manager.viewLayout("welcomeview");
@@ -288,12 +298,11 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         this.addComponent(homeBtn);
         homeBtn.setVisible(false);
         homeBtn.getThumbBtn().setDescription("Home page");
-        
-        Label para_3 = new Label("<p align='justify' Style='font-size: 12px;color: black;/* font-weight: bold; */line-height: 20px;'><font>CSF-PR is developed by the <a class='link' href='http://www.uib.no/rg/probe' target='_blank'>Proteomics Unit</a> at the<a class='link' href='http://www.uib.no/biomedisin/en' target='_blank'> Department of Biomedicine at the University of Bergen, Norway</a>, in close collaboration with <a class='link' href='http://haukeland.no/en/OmOss/Avdelinger/ms/Sider/om-oss.aspx' target='_blank'>The Norwegian Multiple Sclerosis Competence Centre, Haukeland University Hospital, Bergen, Norway.</a></font><br/><br/><font>CSF-PR publications:<br/><a class='link' href='http://www.mcponline.org/content/13/11/3152.full.pdf+html' target='_blank'>- Guldbrandsen et al.: In-depth Characterization of the Cerebrospinal Fluid (CSF) Proteome Displayed Through the CSF Proteome Resource (CSF-PR). Mol Cell Proteomics. 2014.</a><br/>- Guldbrandsen et al.: CSF-PR 2.0: your guide to quantitative cerebrospinal fluid mass spectrometry data. <i>(in preparation)</i>.</font></p>");
-        para_3.setContentMode(ContentMode.HTML);
-        middleLayout.addComponent(para_3);
-        middleLayout.setComponentAlignment(para_3, Alignment.BOTTOM_LEFT);
 
+        Label para_2 = new Label("<p align='justify' Style='font-size: 12px;color: black;/* font-weight: bold; */line-height: 20px;'><font>CSF-PR publications:<br/>- Guldbrandsen et al.: CSF-PR 2.0: your guide to quantitative cerebrospinal fluid mass spectrometry data. <i>(in preparation)</i>.</font><br/><a class='link' href='http://www.mcponline.org/content/13/11/3152.full.pdf+html' target='_blank'>- Guldbrandsen et al.: In-depth Characterization of the Cerebrospinal Fluid (CSF) Proteome Displayed Through the CSF Proteome Resource (CSF-PR). Mol Cell Proteomics. 2014.</a></p>");
+        para_2.setContentMode(ContentMode.HTML);
+        middleLayout.addComponent(para_2);
+        middleLayout.setComponentAlignment(para_2, Alignment.BOTTOM_LEFT);
         //init mini layout
         zoomApp = new ZoomControler(false);
         zoomApp.setWidth(40, Unit.PIXELS);
@@ -307,11 +316,69 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         miniLayout = new HorizontalLayout(miniLayoutContainer);
         miniLayout.addStyleName("zoomborder");
         miniLayoutContainer.setSpacing(true);
+
+        AbsoluteLayout footerLayout = new AbsoluteLayout();
+        footerLayout.setWidth(100, Unit.PERCENTAGE);
+        footerLayout.setHeight(70, Unit.PIXELS);
+        this.addComponent(footerLayout);
+        VerticalLayout lineThrough = new VerticalLayout();
+        lineThrough.setWidth(100, Unit.PERCENTAGE);
+        lineThrough.setHeight(2, Unit.PIXELS);
+        lineThrough.setStyleName("lightgraylayout");
+
+//        footerLayout.setComponentAlignment(para_3, Alignment.BOTTOM_LEFT);
+//         footerLayout.addComponent(lineThrough, "left: 0px; top: " + 29 + "px");
+        VerticalLayout rightHeaderLayout = new VerticalLayout();
+//        rightHeaderLayout.setStyleName("whitelayout");
+
+        rightHeaderLayout.setWidth(100, Unit.PERCENTAGE);
+
+        footerLayout.addComponent(rightHeaderLayout, "left: 0px; top: " + 5 + "px");
+//        this.setComponentAlignment(rightHeaderLayout, Alignment.TOP_RIGHT);
+        HorizontalLayout linksIconsLayout = new HorizontalLayout();
+        linksIconsLayout.setStyleName("whitelayout");
+//        linksIconsLayout.addStyleName("margintop10");
+        rightHeaderLayout.addComponent(linksIconsLayout);
+        rightHeaderLayout.setComponentAlignment(linksIconsLayout, Alignment.MIDDLE_RIGHT);
+        linksIconsLayout.setHeight(30, Unit.PIXELS);
+        Link probe_ico = new Link(null, new ExternalResource("http://www.uib.no/rg/probe"));
+        probe_ico.setIcon(new ThemeResource("img/probe.png"));
+        probe_ico.setTargetName("_blank");
+        probe_ico.setWidth(237, Unit.PIXELS);
+        probe_ico.setHeight(58, Unit.PIXELS);
+        linksIconsLayout.addComponent(probe_ico);
+
+        Link uib_ico = new Link(null, new ExternalResource("http://www.uib.no/"));
+        uib_ico.setIcon(new ThemeResource("img/uib.png"));
+        uib_ico.setTargetName("_blank");
+        uib_ico.setWidth(87, Unit.PIXELS);
+        uib_ico.setHeight(58, Unit.PIXELS);
+        linksIconsLayout.addComponent(uib_ico);
+
+        Link kgj_ico = new Link(null, new ExternalResource("http://www.helse-bergen.no/en/OmOss/Avdelinger/ms/Sider/om-oss.aspx"));
+        kgj_ico.setIcon(new ThemeResource("img/kgj.png"));
+        kgj_ico.setTargetName("_blank");
+        kgj_ico.setHeight(58, Unit.PIXELS);
+        linksIconsLayout.addComponent(kgj_ico);
+
+//        VerticalLayout rightSpacer = new VerticalLayout();
+//        rightSpacer.setWidth(40,Unit.PIXELS);
+//        rightSpacer.setHeight(5,Unit.PIXELS);
+//        linksIconsLayout.addComponent(rightSpacer);
+        linksIconsLayout.setComponentAlignment(probe_ico, Alignment.MIDDLE_RIGHT);
+        linksIconsLayout.setComponentAlignment(uib_ico, Alignment.MIDDLE_RIGHT);
+        linksIconsLayout.setComponentAlignment(kgj_ico, Alignment.MIDDLE_RIGHT);
+
+        Label para_3 = new Label("<p align='justify' Style='text-align: justify;text-justify: inter-word;font-size: 10px;color: black;/* font-weight: bold; */line-height: 20px;'><font>CSF-PR is being developed by the <a class='link' href='http://www.uib.no/rg/probe' target='_blank'>Proteomics Unit</a> at the<a class='link' href='http://www.uib.no/biomedisin/en' target='_blank'> Department of Biomedicine at the University of Bergen, Norway</a>, in close collaboration with <a class='link' href='http://haukeland.no/en/OmOss/Avdelinger/ms/Sider/om-oss.aspx' target='_blank'>The Norwegian Multiple Sclerosis Competence Centre, Haukeland University Hospital, Bergen, Norway.</a></font></p>");
+        para_3.setContentMode(ContentMode.HTML);
+        para_3.setWidth(55, Unit.PERCENTAGE);
+        footerLayout.addComponent(para_3, "left: 0px; top: " + 0 + "px");
+
 //        
     }
-    
+
     public void addMainZoomComponents(Component component) {
-        
+
         zoomApp.addZoomableComponent(component);
     }
 }

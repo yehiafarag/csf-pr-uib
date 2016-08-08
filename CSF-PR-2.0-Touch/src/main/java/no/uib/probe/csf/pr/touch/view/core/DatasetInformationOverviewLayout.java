@@ -20,13 +20,16 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
      */
     public DatasetInformationOverviewLayout(QuantDatasetObject quantDs) {
         this.diseaseHashedColor = quantDs.getDiseaseCategoryColor();
-        int width = Page.getCurrent().getBrowserWindowWidth() - 320;
-        int height = Page.getCurrent().getBrowserWindowHeight() - 320;
-        this.setWidth(width + "px");
-        this.setHeight(height + "px");
+//        int width = Page.getCurrent().getBrowserWindowWidth() - 320;
+//        int height = Page.getCurrent().getBrowserWindowHeight() - 320;
+//        this.setWidth(width ,Unit.PIXELS);
+//        this.setHeight(height ,Unit.PIXELS);
+        
+          this.setWidth(100 ,Unit.PERCENTAGE);
+        this.setHeight(100 ,Unit.PERCENTAGE);
         this.setSpacing(true);
 
-        datasetInfoForm = initQuantDatasetInformationLayout(width);
+        datasetInfoForm = initQuantDatasetInformationLayout();
         datasetInfoForm.setVisible(true);
         this.addComponent(datasetInfoForm);
         this.setComponentAlignment(datasetInfoForm, Alignment.TOP_LEFT);
@@ -41,17 +44,19 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
     private final VerticalLayout datasetInfoForm;
     private InformationField uQuantProteinsNum, uQuantPeptidesNum, quantProteinsNum, quantPeptidesNum, diseaseCategory, pumedId, rawData, analyticalMethod, typeOfStudy, shotgunTargeted, enzyme, sampleType, technology, quantificationBasis, patientsGroup1Number, patientsGroup2Number, patientsGroup1, patientsGroup2, patientssubGroup1, patientsCommGroup1, patientssubGroup2, patientsCommGroup2, identifiedProteinsNumber, quantifiedProteinsNumber, sampleMatching, analyticalApproach, normalization_strategy;
 
-    private VerticalLayout initQuantDatasetInformationLayout(int width) {
+    private VerticalLayout initQuantDatasetInformationLayout() {
 
         VerticalLayout mainContainer = new VerticalLayout();
-        mainContainer.setWidth(width, Unit.PIXELS);
+        mainContainer.setWidth(100, Unit.PERCENTAGE);
         mainContainer.setHeightUndefined();
+        
         mainContainer.setSpacing(true);
 
         HorizontalLayout rowI = new HorizontalLayout();
-        rowI.setWidth(100, Unit.PERCENTAGE);
-        rowI.setHeightUndefined();
+        rowI.setWidth(100, Unit.PERCENTAGE);        
+        rowI.setHeight(60,Unit.PIXELS);
         mainContainer.addComponent(rowI);
+//        mainContainer.setExpandRatio(rowI, 10);
 
         pumedId = new InformationField("PubMed Id");
         rowI.addComponent(pumedId);
@@ -67,8 +72,9 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
 
         HorizontalLayout rowII = new HorizontalLayout();
         rowII.setWidth(100, Unit.PERCENTAGE);
-        rowII.setHeightUndefined();
+//        rowII.setHeight(60,Unit.PIXELS);
         mainContainer.addComponent(rowII);
+//         mainContainer.setExpandRatio(rowII, 10);
 
         analyticalMethod = new InformationField("Analytical Method");
         rowII.addComponent(analyticalMethod);
@@ -84,8 +90,9 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
 
         HorizontalLayout rowIII = new HorizontalLayout();
         rowIII.setWidth(100, Unit.PERCENTAGE);
-        rowIII.setHeightUndefined();
+//        rowIII.setHeight(60,Unit.PIXELS);
         mainContainer.addComponent(rowIII);
+//         mainContainer.setExpandRatio(rowI, 10);
 
         quantificationBasis = new InformationField("Quantification Basis");
         rowIII.addComponent(quantificationBasis);
@@ -101,7 +108,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
 
         HorizontalLayout rowIV = new HorizontalLayout();
         rowIV.setWidth(100, Unit.PERCENTAGE);
-        rowIV.setHeightUndefined();
+//        rowIV.setHeight(60,Unit.PIXELS);
         mainContainer.addComponent(rowIV);
 //
         patientsGroup1 = new InformationField("Patients Gr.I");

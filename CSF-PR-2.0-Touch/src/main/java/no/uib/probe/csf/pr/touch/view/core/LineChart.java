@@ -74,7 +74,6 @@ public class LineChart extends AbsoluteLayout {
         return dataset;
     }
 
-
     public LineChart(int width, int height) {
 
         this.width = width;
@@ -105,10 +104,11 @@ public class LineChart extends AbsoluteLayout {
 
     private String proteinKey;
 
-    public void updateData(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, String proteinKey,int custTrend) {
+    public void updateData(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, String proteinKey, int custTrend) {
         this.proteinKey = proteinKey;
-        this.custTrend=custTrend;
+        this.custTrend = custTrend;
         updateDataset(selectedComparisonsList, proteinKey);
+
         lineChart = generateLineChart();//
         this.selectedComparisonList = selectedComparisonsList;
         minimize();
@@ -117,8 +117,29 @@ public class LineChart extends AbsoluteLayout {
     public JFreeChart getLineChart() {
         return lineChart;
     }
-    
-    
+
+    public JFreeChart generateThumbChart() {
+        lineChart.getXYPlot().getDomainAxis().setVisible(false);
+        lineChart.getXYPlot().getRangeAxis().setVisible(false);
+        lineChart.getXYPlot().setOutlineVisible(true);
+        lineChart.setPadding(new RectangleInsets(0, 5, 0, 5));
+
+//        lineChart.getXYPlot().setRangeGridlinesVisible(false);
+//        lineChart.getXYPlot().setDomainGridlinesVisible(true);
+        lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.BLACK);
+        lineChart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(5));
+//        gridcounter = 0;
+//        gridcounterII = 0;
+
+//        minImgUrl = new ExternalResource(this.getChartImage(lineChart, chartRenderingInfo, 100, 100));
+//        lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.GRAY);
+//        lineChart.getXYPlot().getDomainAxis().setVisible(true);
+//        lineChart.getXYPlot().getRangeAxis().setVisible(true);
+//        lineChart.getXYPlot().setRangeGridlinesVisible(true);
+//        lineChart.getXYPlot().setDomainGridlinesVisible(true);
+        return lineChart;
+
+    }
 
     private DefaultXYDataset dataset;
     private SymbolAxis xAxis;
@@ -542,6 +563,15 @@ public class LineChart extends AbsoluteLayout {
             lineChart.getXYPlot().setOutlineVisible(false);
             lineChart.getXYPlot().setRangeGridlinesVisible(true);
             lineChart.getXYPlot().setDomainGridlinesVisible(true);
+
+            lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.GRAY);
+            lineChart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(
+                    1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
+                    1.0f, new float[]{10.0f, 6.0f}, 0.0f
+            ));
+            
+        lineChart.setPadding(new RectangleInsets(0, 0, 0, 0));
+
             maxImgUrl = new ExternalResource(this.getChartImage(lineChart, chartRenderingInfo, width, height));
             initLayoutComponents("maxmize");
             chartImg.setSource(maxImgUrl);

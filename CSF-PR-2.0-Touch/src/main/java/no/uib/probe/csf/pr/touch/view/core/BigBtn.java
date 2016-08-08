@@ -59,6 +59,7 @@ public abstract class BigBtn extends HorizontalLayout implements LayoutEvents.La
         thumbContainer.setHeight(40, Unit.PIXELS);
         thumbContainer.setEnabled(true);
         thumbContainer.setReadOnly(false);
+        
 
     }
     

@@ -30,7 +30,7 @@ public class MainLayout extends VerticalLayout {
         
         
         this.setSpacing(true);
-        this.setStyleName("whitelayout");
+        this.setStyleName("whitesmokelayout");
         windowHeight=windowHeight-40;
         windowWidth=windowWidth-40;
 

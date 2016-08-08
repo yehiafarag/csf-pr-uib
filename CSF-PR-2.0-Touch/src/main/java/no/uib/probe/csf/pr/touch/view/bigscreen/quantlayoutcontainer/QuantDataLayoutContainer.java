@@ -82,7 +82,6 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
 
             Set<QuantDiseaseGroupsComparison> compList = CSFPR_Central_Manager.getSelectedComparisonsList();
             if (compList == null || compList.isEmpty()) {
-                System.out.println("at update view to default");
                 updateCurrentLayout("heatmap");
                 
             } 

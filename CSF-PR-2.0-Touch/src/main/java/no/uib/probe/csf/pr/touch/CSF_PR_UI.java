@@ -96,7 +96,7 @@ public class CSF_PR_UI extends UI {
         VerticalLayout appWrapper = new VerticalLayout();
         appWrapper.setWidth(100, Unit.PERCENTAGE);
         appWrapper.setHeight(100, Unit.PERCENTAGE);
-        appWrapper.setStyleName("whitelayout");
+        appWrapper.setStyleName("whitesmokelayout");
 
         setContent(appWrapper);
 
