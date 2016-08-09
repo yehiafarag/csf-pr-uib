@@ -64,6 +64,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         String seq = peptideSequenceTableLayout.getSequence();
         Set<String> peptides = peptideSequenceTableLayout.getPeptides();
     final Border fullBorder = new LineBorder(Color.GRAY);
+    Border peptideBorder = new LineBorder(Color.decode("#1d69b4").darker());
         JPanel proteinSequencePanel = new JPanel();
         proteinSequencePanel.setLayout(null);
         proteinSequencePanel.setSize(100, 100);
@@ -90,8 +91,8 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
             for (String pep : peptides) {
                 JPanel peptide = new JPanel();
                 peptide.setSize((int) (pep.length() * charSize), 18);
-                peptide.setBackground(Color.DARK_GRAY);
-                peptide.setBorder(fullBorder);
+                peptide.setBackground( Color.decode("#1d69b4"));
+                peptide.setBorder(peptideBorder);
                 peptide.setLocation((int) (seq.split(pep)[0].length() * charSize), 1);
                 peptide.setOpaque(true);
                 coveragePanel.add(peptide);

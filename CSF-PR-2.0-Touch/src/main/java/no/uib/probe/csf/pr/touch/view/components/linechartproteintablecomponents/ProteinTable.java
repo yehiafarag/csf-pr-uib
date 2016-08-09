@@ -182,17 +182,17 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         proteinSequencePanel.setSize(100, 100);
         proteinSequencePanel.setBackground(Color.WHITE);
         int dsIndex = 1;
-        int y=5;
+        int y=0;
         for (Object[] objArr : tableItemsMap.values()) {
             ProteinTrendLayout trend = (ProteinTrendLayout) objArr[3];
             if (trend.getSparkLine() != null) {
 
                 ChartPanel lineChartPanel = new ChartPanel(trend.getSparkLine().generateThumbChart());
-                lineChartPanel.setSize(100, 20);
+                lineChartPanel.setSize(100, 25);
                 lineChartPanel.setLocation(0, y);
                 lineChartPanel.setOpaque(true);
                 proteinSequencePanel.add(lineChartPanel);
-                y+=20;
+                y+=25;
 //                if (lineChart == null) {
 //                    XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 //                    renderer.setSeriesPaint(0, new Color(169, 208, 245));
@@ -222,7 +222,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
 //                    
 //                }
 //                lineChart.getXYPlot().setDataset(dsIndex++, trend.getSparkLine().getDataset());
-                if (dsIndex > 5) {
+                if (dsIndex > 4) {
                     break;
                 }
 

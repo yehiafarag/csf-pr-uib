@@ -185,6 +185,10 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
         String keyI = 0 + "_" + proteinKey;
         String keyII = 1 + "_" + proteinKey;
         String keyIII = 2 + "_" + proteinKey;
+        
+         String keyIV = 3 + "_" + proteinKey;
+        String keyV = 4 + "_" + proteinKey;
+        
         String key;
 
         for (QuantDiseaseGroupsComparison comparison : selectedComparisonsList) {
@@ -197,6 +201,14 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
 
             } else if (comparison.getQuantComparisonProteinMap().containsKey(keyIII)) {
                 key = keyIII;
+
+            }
+            else if (comparison.getQuantComparisonProteinMap().containsKey(keyIV)) {
+                key = keyIV;
+
+            }
+            else if (comparison.getQuantComparisonProteinMap().containsKey(keyV)) {
+                key = keyV;
 
             }
             if (!comparison.getQuantComparisonProteinMap().containsKey(key)) {

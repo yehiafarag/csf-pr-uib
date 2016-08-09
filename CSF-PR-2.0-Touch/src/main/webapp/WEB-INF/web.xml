@@ -41,7 +41,7 @@
     <context-param>
         <description>Database name csf_db_v2 ,all_no_MCP,csf_pr_v2_28_06</description>
         <param-name>dbName</param-name>
-        <param-value>all_no_MCP</param-value>
+        <param-value>csf_pr_v2_28_06</param-value>
     </context-param>
     <context-param>
         <description>Database Driver</description>

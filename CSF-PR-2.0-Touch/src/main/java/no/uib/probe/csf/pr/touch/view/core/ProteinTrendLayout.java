@@ -42,6 +42,10 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
             this.sortableProtein = comp.getQuantComparisonProteinMap().get("1_" + proteinKey);
         } else if (comp.getQuantComparisonProteinMap().containsKey("2_" + proteinKey)) {
             this.sortableProtein = comp.getQuantComparisonProteinMap().get("2_" + proteinKey);
+        } else if (comp.getQuantComparisonProteinMap().containsKey("3_" + proteinKey)) {
+            this.sortableProtein = comp.getQuantComparisonProteinMap().get("3_" + proteinKey);
+        } else if (comp.getQuantComparisonProteinMap().containsKey("4_" + proteinKey)) {
+            this.sortableProtein = comp.getQuantComparisonProteinMap().get("4_" + proteinKey);
         } else {
             sortableProtein = null;
         }
@@ -58,6 +62,12 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
             this.sortableProtein = comp.getQuantComparisonProteinMap().get("1_" + proteinKey);
         } else if (comp.getQuantComparisonProteinMap().containsKey("2_" + proteinKey)) {
             this.sortableProtein = comp.getQuantComparisonProteinMap().get("2_" + proteinKey);
+        }
+        else if (comp.getQuantComparisonProteinMap().containsKey("3_" + proteinKey)) {
+            this.sortableProtein = comp.getQuantComparisonProteinMap().get("3_" + proteinKey);
+        }
+        else if (comp.getQuantComparisonProteinMap().containsKey("4_" + proteinKey)) {
+            this.sortableProtein = comp.getQuantComparisonProteinMap().get("4_" + proteinKey);
         }
         this.width = width;
 

@@ -126,7 +126,7 @@ public class LineChart extends AbsoluteLayout {
 
 //        lineChart.getXYPlot().setRangeGridlinesVisible(false);
 //        lineChart.getXYPlot().setDomainGridlinesVisible(true);
-        lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.BLACK);
+        lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.decode("#1d69b4"));
         lineChart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(5));
 //        gridcounter = 0;
 //        gridcounterII = 0;
@@ -167,6 +167,9 @@ public class LineChart extends AbsoluteLayout {
             String keyI = 0 + "_" + key;
             String keyII = 1 + "_" + key;
             String keyIII = 2 + "_" + key;
+             String keyIV = 3 + "_" + key;
+            String keyV = 4 + "_" + key;
+            
             trendValue = 0.0;
 
             if (comparison.getQuantComparisonProteinMap().containsKey(keyI)) {
@@ -180,6 +183,12 @@ public class LineChart extends AbsoluteLayout {
             } else if (comparison.getQuantComparisonProteinMap().containsKey(keyIII)) {
                 trendValue = comparison.getQuantComparisonProteinMap().get(keyIII).getOverallCellPercentValue();
                 comparisonTrends.add(comparison.getQuantComparisonProteinMap().get(keyIII).getSignificantTrindCategory());
+            }else if (comparison.getQuantComparisonProteinMap().containsKey(keyIV)) {
+                trendValue = comparison.getQuantComparisonProteinMap().get(keyIV).getOverallCellPercentValue();
+                comparisonTrends.add(comparison.getQuantComparisonProteinMap().get(keyIV).getSignificantTrindCategory());
+            }else if (comparison.getQuantComparisonProteinMap().containsKey(keyV)) {
+                trendValue = comparison.getQuantComparisonProteinMap().get(keyV).getOverallCellPercentValue();
+                comparisonTrends.add(comparison.getQuantComparisonProteinMap().get(keyV).getSignificantTrindCategory());
             } else {
 
                 comparisonTrends.add(6);
@@ -637,8 +646,13 @@ public class LineChart extends AbsoluteLayout {
                     String keyI = 0 + "_" + proteinKey;
                     String keyII = 1 + "_" + proteinKey;
                     String keyIII = 2 + "_" + proteinKey;
+                    
+                     String keyIV = 3 + "_" + proteinKey;
+                    String keyV = 4 + "_" + proteinKey;
+                    
+                    
                     if (doubleTrend == 0.0) {
-                        if (gc.getQuantComparisonProteinMap().containsKey(keyI) || gc.getQuantComparisonProteinMap().containsKey(keyII) || gc.getQuantComparisonProteinMap().containsKey(keyIII)) {
+                        if (gc.getQuantComparisonProteinMap().containsKey(keyI) || gc.getQuantComparisonProteinMap().containsKey(keyII) || gc.getQuantComparisonProteinMap().containsKey(keyIII)|| gc.getQuantComparisonProteinMap().containsKey(keyIV)|| gc.getQuantComparisonProteinMap().containsKey(keyV)) {
                             trend = 2;
                         } else {
                             trend = 6;
