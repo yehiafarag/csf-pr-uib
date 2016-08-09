@@ -165,7 +165,7 @@ public class DataBaseLayer implements Serializable {
             while (rs.next()) {
                 numProteins += rs.getInt("Rows");
             }
-            numProteins=1823;
+            numProteins=1956;
             infoBean.setNumberOfQuantProteins(numProteins);
             rs.close();
 

@@ -6,6 +6,9 @@
 package no.uib.probe.csf.pr.touch.view.components.heatmapsubcomponents;
 
 import com.vaadin.event.LayoutEvents;
+import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -21,7 +24,7 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutClickListener {
     
     private final int index;
-//    private final Label valueLabel;
+    private final Label valueLabel;
 
     /**
      *
@@ -78,15 +81,18 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
         this.title = title;
 //        this.addStyleName("hmheadercell");
         
-//        valueLabel = new Label();
-//        String allStyle = "hm" + diseaseStyle;
-//        valueLabel.setValue("<center><font>" + title + "</font></center>");
-//        valueLabel.setStyleName(allStyle);
-//        valueLabel.setWidth(100, Unit.PERCENTAGE);
-//        valueLabel.setHeight(100, Unit.PERCENTAGE);
-//        this.valueLabel.setContentMode(ContentMode.HTML);
-//        this.addComponent(valueLabel);
-//        this.setComponentAlignment(valueLabel, Alignment.TOP_CENTER);
+        valueLabel = new Label();
+        String allStyle = "hm" + diseaseCategory.toLowerCase().replace("'", "").replace(" ","")+"style";
+        
+        System.out.println("at disease style "+ allStyle);
+        
+        valueLabel.setValue("<center><font>" + title + "</font></center>");
+        valueLabel.setStyleName(allStyle);
+        valueLabel.setWidth(100, Unit.PERCENTAGE);
+        valueLabel.setHeight(100, Unit.PERCENTAGE);
+        this.valueLabel.setContentMode(ContentMode.HTML);
+        this.addComponent(valueLabel);
+        this.setComponentAlignment(valueLabel, Alignment.TOP_CENTER);
         
         this.index = index;
         String fullName = "";

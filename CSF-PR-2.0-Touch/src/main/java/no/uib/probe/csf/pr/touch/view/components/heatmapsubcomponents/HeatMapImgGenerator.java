@@ -10,27 +10,30 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
-import java.util.Iterator;
+import java.io.Writer;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-import javax.swing.border.MatteBorder;
 import no.uib.probe.csf.pr.touch.logic.beans.HeatMapHeaderCellInformationBean;
+import org.apache.batik.dom.GenericDOMImplementation;
+import org.apache.batik.svggen.CachedImageHandlerBase64Encoder;
+import org.apache.batik.svggen.SVGGeneratorContext;
+import org.apache.batik.svggen.SVGGraphics2D;
 import org.jfree.chart.encoders.ImageEncoder;
 import org.jfree.chart.encoders.ImageEncoderFactory;
 import org.jfree.chart.encoders.ImageFormat;
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
 
 /**
  *
@@ -68,7 +71,7 @@ public class HeatMapImgGenerator {
 
         cellWidth = (int) (30 * resizeFactor);
         panelWidth = (int) (panelWidth * resizeFactor);
-        
+
         int height = (rows.size() * cellWidth) + (int) (170 * resizeFactor);
         heatmapPanelLayout.setSize(panelWidth, height);
         JPanel cornerCell = initCell("transparent", 0, 0, fullBorder);
@@ -218,12 +221,31 @@ public class HeatMapImgGenerator {
             y += cellWidth;
         }
 
+        
         BufferedImage image = new BufferedImage(panelWidth, panelWidth, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = image.createGraphics();
+        
+        
+        
+           graphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        graphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+        graphics.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+        graphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+        graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+        
+        
+        
+        
+        
+        
+        
 
-        graphics.setPaint(transparent);
+//        graphics.setPaint(transparent);
 
-        graphics.setBackground(transparent);
+//        graphics.setBackground(transparent);
 
         heatmapPanelLayout.paint(graphics);
         byte[] imageData = null;
@@ -241,9 +263,22 @@ public class HeatMapImgGenerator {
         return base64;
 
     }
-    private final Border testBorder = new LineBorder(Color.red);
-    private final Border fullBorder = new LineBorder(Color.LIGHT_GRAY);
-    
+
+    private BufferedImage generateSVG(JPanel myCanvas, int w, int h) {
+        Writer out = null;
+        String svgNS = "http://www.w3.org/2000/svg";
+        DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
+        Document myFactory = domImpl.createDocument(svgNS, "svg", null);
+        SVGGeneratorContext ctx
+                = SVGGeneratorContext.createDefault(myFactory);
+        CachedImageHandlerBase64Encoder cachedImageHandlerBase64Encoder = new CachedImageHandlerBase64Encoder();
+        ctx.setGenericImageHandler(cachedImageHandlerBase64Encoder);
+        SVGGraphics2D svgGenerator = new SVGGraphics2D(ctx, false);
+        myCanvas.paintComponents(svgGenerator);
+        return cachedImageHandlerBase64Encoder.buildBufferedImage(new Dimension(w, h));
+    }
+
+    private final Border fullBorder = new LineBorder( new Color(220,224,224),1);
 
     private JPanel initCell(String color, int x, int y, Border border) {
         JPanel cell = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -282,16 +317,17 @@ public class HeatMapImgGenerator {
     boolean one = false;
 
     private JComponent initLabel(String text, int w, int h, boolean rotate, Color background, Border border) {
-        JLabel label = new JLabel(text);
+        JLabel label = new JLabel("");
 
-        label.setFont(new Font("Open Sans", Font.PLAIN, (int) (15 * resizeFactor)));
-
-        label.setVerticalTextPosition(JLabel.CENTER);
-        label.setHorizontalTextPosition(JLabel.CENTER);
-        label.setForeground(Color.WHITE);
-
-        label.setHorizontalAlignment(JLabel.CENTER);
-        label.setVerticalAlignment(JLabel.CENTER);
+//        System.out.println("at label text size is "+((int) (15 * resizeFactor)));
+//        label.setFont(new Font("Open Sans", Font.PLAIN, (int) (15 * resizeFactor)));
+//
+//        label.setVerticalTextPosition(JLabel.CENTER);
+//        label.setHorizontalTextPosition(JLabel.CENTER);
+//        label.setForeground(Color.WHITE);
+//
+//        label.setHorizontalAlignment(JLabel.CENTER);
+//        label.setVerticalAlignment(JLabel.CENTER);
         label.setSize(w, h);
         label.setBackground(background);
         label.setBorder(border);
@@ -299,10 +335,10 @@ public class HeatMapImgGenerator {
 
         if (rotate) {
 
-            label.setVerticalTextPosition(JLabel.TOP);
-            label.setHorizontalTextPosition(JLabel.CENTER);
-            label.setHorizontalAlignment(JLabel.CENTER);
-            label.setVerticalAlignment(JLabel.TOP);
+//            label.setVerticalTextPosition(JLabel.TOP);
+//            label.setHorizontalTextPosition(JLabel.CENTER);
+//            label.setHorizontalAlignment(JLabel.CENTER);
+//            label.setVerticalAlignment(JLabel.TOP);
             label.setSize(h, w);
 
             RotatedJPanel rotPanel = new RotatedJPanel();
@@ -312,13 +348,8 @@ public class HeatMapImgGenerator {
             panel.setOpaque(false);
             panel.setSize(w, h);
             rotPanel.setBackground(Color.blue);
-
-//            RotatedJPanel rotPanel = new RotatedJPanel();
             rotPanel.setSize(h, h);
             rotPanel.add(label);
-//            JPanel panel = rotPanel.getRotatedJPanel();
-//            panel.setBackground(Color.ORANGE);
-//            panel.setOpaque(true);
             return (panel);
         }
 
@@ -377,7 +408,6 @@ public class HeatMapImgGenerator {
 //        return rotatedPanel;
 //
 //    }
-
     public int getPanelWidth() {
         return imageWidth;
     }

@@ -1232,10 +1232,12 @@ public abstract class HeatMapLayout extends VerticalLayout {
         String imgUrl = gen.generateHeatmap(rowheadersSet, colheadersSet, dataValuesColors, availableHMWidth, availableHMHeight, resetRows, resetcolumns);
         heatmapPanel.setWidth(gen.getPanelWidth(), Unit.PIXELS);
         heatmapPanel.setHeight(gen.getPanelWidth(), Unit.PIXELS);
-        heatMapImg.setSource(new ExternalResource(imgUrl));
+//        heatMapImg.setSource(new ExternalResource(imgUrl));
         updateHeatmapComponents();
+        
+          return gen.generateHeatmap(rowheadersSet, colheadersSet, dataValuesColors, 100, 100, resetRows, resetcolumns);
 
-        return imgUrl;
+//        return imgUrl;
 
     }
 

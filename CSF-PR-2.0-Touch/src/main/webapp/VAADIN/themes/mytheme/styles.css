@@ -13676,32 +13676,59 @@ div.v-layout.v-horizontal.v-widget {
 
 }
 
-.hmmultiplesclerosisstyle {
-    background-color:  #A52A2A;
-    color: white !important;
-    line-height:1.55;
-    font-size:14px !important;
 
+.hmmultiplesclerosisstyle {
+    background-color: #A52A2A;   
+    color: white !important;
+}
+.hmmultiplesclerosisstyle font{
+    background-color: #A52A2A;   
+    color: white !important;
+    font-size:14px;
+    font-size: 0.99vw;
+     display: inline-block;
+  line-height: inherit;
+  text-align:-webkit-center;
+  clear:both;   
 }
 
 
 
 
-.hmparkinsonstyle{
+
+
+.hmparkinsonsstyle {
     background-color: #74716E;   
     color: white !important;
-    line-height:1.55;
-    font-size:14px !important;
-
 }
-
-.hmalzheimerstyle{
-    font-size:14px !important;
-    background-color: #4b7865;    
+.hmparkinsonsstyle font{
+    background-color: #74716E;   
     color: white !important;
-    line-height:1.55;
-
+    font-size:14px;
+    font-size: 0.99vw;
+     display: inline-block;
+  line-height: inherit;
+  text-align:-webkit-center;
+  clear:both;   
 }
+
+.hmalzheimersstyle {
+    background-color: #4b7865;   
+    color: white !important;
+}
+.hmalzheimersstyle font{
+    background-color: #4b7865;   
+    color: white !important;
+    font-size:14px;
+    font-size: 0.99vw;
+     display: inline-block;
+  line-height: inherit;
+  text-align:-webkit-center;
+  clear:both;   
+}
+
+
+
 .heatmapbody{    
     background-color:lightgray;
 }
@@ -15115,7 +15142,8 @@ div.v-layout.v-horizontal.v-widget {
     height:6px;
 }
 .heatmapcell{
-    cursor: pointer;
+    cursor: pointer;    
+    border:1px solid rgb(220,224,224);
 }
 .heatmapcell:hover{
     border: 2px solid orange;
