@@ -127,7 +127,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
     public abstract void updateIcon(Resource iconResource);
     private VerticalLayout legendLayout;
 
-    public PeptideViewComponent(CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height) {
+    public PeptideViewComponent(CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height,boolean smallScreen) {
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeight(height, Unit.PIXELS);
@@ -229,6 +229,11 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
 
         };
 
+          if (smallScreen) {
+            resizeDsOnPatientNumbersBtn.setWidth(25, Unit.PIXELS);
+            resizeDsOnPatientNumbersBtn.setHeight(25,Unit.PIXELS);
+            resizeDsOnPatientNumbersBtn.removeStyleName("smallimg");
+        }
         ImageContainerBtn dsComparisonsSwichBtn = new ImageContainerBtn() {
             @Override
             public void onClick() {
@@ -247,8 +252,14 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
 
         };
 
+          if (smallScreen) {
+            dsComparisonsSwichBtn.setWidth(25, Unit.PIXELS);
+            dsComparisonsSwichBtn.setHeight(50,Unit.PIXELS);
+            dsComparisonsSwichBtn.removeStyleName("smallimg");
+        }else{
         dsComparisonsSwichBtn.setHeight(80, Unit.PIXELS);
         dsComparisonsSwichBtn.setWidth(40, Unit.PIXELS);
+          }
         dsComparisonsSwichBtn.updateIcon(comparisonDsRes);
         dsComparisonsSwichBtn.setEnabled(true);
         dsComparisonsSwichBtn.addStyleName("pointer");
@@ -256,8 +267,14 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         controlBtnsContainer.setComponentAlignment(dsComparisonsSwichBtn, Alignment.MIDDLE_CENTER);
         dsComparisonsSwichBtn.setDescription("Show/hide individual datasets");
 
+          if (smallScreen) {
+            resizeDsOnPatientNumbersBtn.setWidth(25, Unit.PIXELS);
+            resizeDsOnPatientNumbersBtn.setHeight(25,Unit.PIXELS);
+            resizeDsOnPatientNumbersBtn.removeStyleName("smallimg");
+        }else{
         resizeDsOnPatientNumbersBtn.setHeight(40, Unit.PIXELS);
         resizeDsOnPatientNumbersBtn.setWidth(40, Unit.PIXELS);
+          }
         resizeDsOnPatientNumbersBtn.updateIcon(new ThemeResource("img/resize_1.png"));
 //        resizeDsOnPatientNumbersBtn.addStyleName("smallimg");
         resizeDsOnPatientNumbersBtn.setEnabled(false);
@@ -295,9 +312,16 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
 
         };
 
+          if (smallScreen) {
+            orderByTrendBtn.setWidth(25, Unit.PIXELS);
+            orderByTrendBtn.setHeight(25,Unit.PIXELS);
+            orderByTrendBtn.removeStyleName("smallimg");
+        }else{
         orderByTrendBtn.setHeight(40, Unit.PIXELS);
+          orderByTrendBtn.setWidth(40, Unit.PIXELS);
+          }
         orderByTrendBtn.addStyleName("pointer");
-        orderByTrendBtn.setWidth(40, Unit.PIXELS);
+        
         orderByTrendBtn.updateIcon(trendOrderRes);
         orderByTrendBtn.setEnabled(true);
         controlBtnsContainer.addComponent(orderByTrendBtn);
@@ -325,8 +349,14 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
 
         };
 
+          if (smallScreen) {
+            showSigOnlyBtn.setWidth(25, Unit.PIXELS);
+            showSigOnlyBtn.setHeight(25,Unit.PIXELS);
+            showSigOnlyBtn.removeStyleName("smallimg");
+        }else{
         showSigOnlyBtn.setHeight(40, Unit.PIXELS);
         showSigOnlyBtn.setWidth(40, Unit.PIXELS);
+          }
         showSigOnlyBtn.addStyleName("pointer");
         showSigOnlyBtn.updateIcon(new ThemeResource("img/showSig.png"));
         this.addStyleName("selectmultiselectedbtn");
@@ -367,8 +397,14 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         };
         checkUncheckBtn.setEnabled(true);
 
+          if (smallScreen) {
+            checkUncheckBtn.setWidth(25, Unit.PIXELS);
+            checkUncheckBtn.setHeight(25,Unit.PIXELS);
+            checkUncheckBtn.removeStyleName("smallimg");
+        }else{
         checkUncheckBtn.setHeight(40, Unit.PIXELS);
         checkUncheckBtn.setWidth(40, Unit.PIXELS);
+          }
         checkUncheckBtn.addStyleName("pointer");
         checkUncheckBtn.updateIcon(checkedUnApplied);
         controlBtnsContainer.addComponent(checkUncheckBtn);
@@ -377,6 +413,11 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
 
         InformationButton info = new InformationButton("Info", false);
         controlBtnsContainer.addComponent(info);
+          if (smallScreen) {
+            info.setWidth(25, Unit.PIXELS);
+            info.setHeight(25,Unit.PIXELS);
+            info.removeStyleName("smallimg");
+        }
 
     }
 

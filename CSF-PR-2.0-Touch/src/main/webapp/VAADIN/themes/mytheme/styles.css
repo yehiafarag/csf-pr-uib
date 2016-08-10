@@ -9233,7 +9233,7 @@ div.v-layout.v-horizontal.v-widget {
     -webkit-transition: opacity 200ms 2s;
     -moz-transition: opacity 200ms 2s;
     transition: opacity 200ms 2s;
-    
+
     visibility:hidden !important;
 }
 
@@ -9855,7 +9855,7 @@ div.v-layout.v-horizontal.v-widget {
     text-align: right;
     overflow: hidden;
 
-/*    cursor: progress;*/
+    /*    cursor: progress;*/
 }
 
 .mytheme .v-progressbar-point .v-progressbar-indicator:before {
@@ -9901,20 +9901,20 @@ div.v-layout.v-horizontal.v-widget {
     background: #fff url(../valo/shared/img/spinner.gif) no-repeat 50% 50%;
     background-size: 80%;
 
-/*    cursor: progress;*/
+    /*    cursor: progress;*/
 }
 
 .v-ie8 .mytheme .v-progressbar-indeterminate {
     min-width: 30px;
     min-height: 30px;
 
-/*    cursor: progress;*/
+    /*    cursor: progress;*/
 }
 
 .mytheme .v-progressbar-indeterminate .v-progressbar-wrapper {
     display: none;
 
-/*    cursor: progress;*/
+    /*    cursor: progress;*/
 }
 
 .mytheme .v-slider {
@@ -13026,7 +13026,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 .whitesmokelayout{
     background-color: whitesmoke !important;
-    
+
 }
 .blacklayout{
     background-color: black !important;
@@ -13066,7 +13066,7 @@ div.v-layout.v-horizontal.v-widget {
     position:absolute !important;
     z-index:90000000 !important;
     height:30px !important;
-    
+
     background-color:#EAF5FC !important;
     -webkit-transition: left 3.5s ease-in-out;
     -moz-transition: left 3.5s ease-in-out;
@@ -13322,7 +13322,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .bubbleframe{
-       border:1px solid gray;
+    border:1px solid gray;
     background-color:lightgray;
     border-radius: 15px !important;
     padding:5px !important;
@@ -13634,21 +13634,16 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .rotateheader{
-    text-align: center;
+     text-align: center;
     line-height: 100%;
-    border-left:1px solid white;
-    border-right:1px solid white;
-    margin-top:-1px;
     -ms-transform:rotate(270deg) translateX(-100% ); /* IE 9 */
-    -moz-transform:rotate(270deg) translateX(-100% ); /* Firefox */
+    -moz-transform:rotate(270deg) translatfilterbtneX(-100% ); /* Firefox */
     -webkit-transform:rotate(270deg) translateX(-100% ); /* Safari and Chrome */
     -o-transform:rotate(270deg) translateX(-100% ); /* Opera */
     transform-origin: 0 0;
     position:inherit;
     text-overflow:ellipsis !important;
     overflow:hidden;
-
-
 }
 .hmheadercell{
     border:1px solid #dce0e0;
@@ -13680,8 +13675,12 @@ div.v-layout.v-horizontal.v-widget {
 .hmmultiplesclerosisstyle {
     background-color: #A52A2A;   
     color: white !important;
+    display: inline-block;
+    line-height: inherit;
+    text-align:-webkit-center;
+    clear:both;
 }
-.hmmultiplesclerosisstyle font{
+/*.hmmultiplesclerosisstyle font{
     background-color: #A52A2A;   
     color: white !important;
     font-size:14px;
@@ -13690,7 +13689,7 @@ div.v-layout.v-horizontal.v-widget {
   line-height: inherit;
   text-align:-webkit-center;
   clear:both;   
-}
+}*/
 
 
 
@@ -13700,8 +13699,12 @@ div.v-layout.v-horizontal.v-widget {
 .hmparkinsonsstyle {
     background-color: #74716E;   
     color: white !important;
+    display: inline-block;
+    line-height: inherit;
+    text-align:-webkit-center;
+    clear:both;
 }
-.hmparkinsonsstyle font{
+/*.hmparkinsonsstyle font{
     background-color: #74716E;   
     color: white !important;
     font-size:14px;
@@ -13710,13 +13713,17 @@ div.v-layout.v-horizontal.v-widget {
   line-height: inherit;
   text-align:-webkit-center;
   clear:both;   
-}
+}*/
 
 .hmalzheimersstyle {
     background-color: #4b7865;   
     color: white !important;
+    display: inline-block;
+    line-height: inherit;
+    text-align:-webkit-center;
+    clear:both;
 }
-.hmalzheimersstyle font{
+/*.hmalzheimersstyle font{
     background-color: #4b7865;   
     color: white !important;
     font-size:14px;
@@ -13725,7 +13732,7 @@ div.v-layout.v-horizontal.v-widget {
   line-height: inherit;
   text-align:-webkit-center;
   clear:both;   
-}
+}*/
 
 
 
@@ -13734,7 +13741,6 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .hmbodycell {
-    border:1px solid #dce0e0;
     color:white;
 
 
@@ -13742,12 +13748,10 @@ div.v-layout.v-horizontal.v-widget {
 }
 .hmbodycell:hover{
     font-weight:bold;
-    border-color:orange;
+    border-color: #cc7000;
 
 }
 .hmbodycell div{
-    width:100% !important;
-    height:28px !important;
     background-size:cover;
     text-align:-webkit-center !important;
 
@@ -13808,6 +13812,8 @@ div.v-layout.v-horizontal.v-widget {
     line-height:1.4;
     font-weight:bold;
     clear:both;
+    text-align: center;
+    text-align:-webkit-center;
 
 }
 .defaultcursor{
@@ -14943,7 +14949,7 @@ div.v-layout.v-horizontal.v-widget {
     transition: all .5s ease-in-out;
 }
 .orangeBorder{
-    border-color: orange !important; 
+    border-color: #ff9100 !important; 
     border-width:2px !important;
 }
 .v-popupview-popup-margin20{
@@ -15076,8 +15082,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 .bottomborder{
 
-/*     border: 1px solid lightgray !important;
-    border-radius: 4px;*/
+    /*     border: 1px solid lightgray !important;
+        border-radius: 4px;*/
     border-bottom:  1px solid lightgray !important;
 }
 .link{
@@ -15146,14 +15152,14 @@ div.v-layout.v-horizontal.v-widget {
     border:1px solid rgb(220,224,224);
 }
 .heatmapcell:hover{
-    border: 2px solid orange;
+    border: 1px solid #ff9100;
 
 }
 .hmselectedcell{
     /*    border-color:orange !important;
         border-radius:2px  !important;
         border-width:1px  !important;*/
-    border: 2px solid orange;
+    border: 1px solid #ff9100;
 }
 .hmunselectedcell{
     background-color: whitesmoke;
@@ -15161,5 +15167,20 @@ div.v-layout.v-horizontal.v-widget {
 }
 .v-popupview-popup-margintop{
 
-margin-top:40px !important;
+    margin-top:40px !important;
+}
+
+.midfont{
+    font-size: 11px !important;
+}
+.largefont{
+    font-size: 15px !important;
+}
+.smallfont{
+    font-size: 7px !important;
+}
+.topbottomborder{
+border-top:1px solid lightgray;
+border-bottom:1px solid lightgray;
+
 }

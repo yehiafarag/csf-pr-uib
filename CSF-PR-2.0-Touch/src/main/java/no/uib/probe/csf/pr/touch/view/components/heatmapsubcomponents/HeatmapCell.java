@@ -6,6 +6,9 @@
 package no.uib.probe.csf.pr.touch.view.components.heatmapsubcomponents;
 
 import com.vaadin.event.LayoutEvents;
+import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import java.util.Map;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
@@ -19,8 +22,6 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
     private final double value;
-    private final int rowLabelIndex;
-    private final int colLabelIndex;
 
     /**
      *
@@ -31,7 +32,7 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
     }
     private String strValue;
     private String pointer;
-//    private final Label valueLabel;
+    private Label valueLabel;
     private boolean selected = false;
     private boolean combinedHeader = false;
     private final String cellColor;
@@ -63,12 +64,8 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
      * @param heatmapCellWidth
      * @param publicationsNumber
      */
-    public HeatmapCell(double value, final String cellColor,String diseaseCategoryColor, Map<Integer,QuantDatasetObject> datasetMap, final int rowLabelIndex, final int colLabelIndex, VerticalLayout tooltipLayout, int heatmapCellWidth, int publicationsNumber, String updatedComparisonTitile, String fullCompTitle,String oreginalComparisonTitle, String diseaseCategory,String diseaseCategoryStyle) {
+    public HeatmapCell(double value, final String cellColor, String diseaseCategoryColor, Map<Integer, QuantDatasetObject> datasetMap, final int rowLabelIndex, final int colLabelIndex, VerticalLayout tooltipLayout, int heatmapCellWidth, int publicationsNumber, String updatedComparisonTitile, String fullCompTitle, String oreginalComparisonTitle, String diseaseCategory, String diseaseCategoryStyle) {
 
-        
-        this.colLabelIndex = colLabelIndex;
-        this.rowLabelIndex = rowLabelIndex;
-        
         this.value = value;
 
         this.diseaseCategory = diseaseCategory;
@@ -84,26 +81,58 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
         pointer = "default";
         this.cellColor = cellColor;
         if (cellColor.equalsIgnoreCase("#EFF2FB") && value != 0) {
-            strValue = ((int) value) + "";
+            strValue = ((int) value) + "*";
             this.updateLabel(strValue);
-            this.setDescription("Same type comparison ( " + fullCompTitle.replace("__" + diseaseCategory, "") + ")<br/>Disease: " + diseaseCategory + "<br/>#Datasets: " + strValue +"<br/>#Publications: " + publicationsNumber);
+            this.setDescription("Same type comparison ( " + fullCompTitle.replace("__" + diseaseCategory, "") + ")<br/>Disease: " + diseaseCategory + "<br/>#Datasets: " + strValue + "<br/>#Publications: " + publicationsNumber);
             comparison.setComparisonHeader(" / ");
             comparison.setOreginalComparisonHeader(" / ");
             combinedHeader = true;
 
+            this.valueLabel = new Label();
+            this.valueLabel.setWidth(100, Unit.PERCENTAGE);
+            this.valueLabel.setHeight(100, Unit.PERCENTAGE);
+            this.valueLabel.setContentMode(ContentMode.HTML);
+            this.addComponent(valueLabel);
+            this.setComponentAlignment(valueLabel, Alignment.TOP_CENTER);
+            this.valueLabel.setStyleName("hmbodycell");
+            this.valueLabel.setValue("<div style='background:" + cellColor + "; width:" + (100) + "% !important; height:" + (100) + "% !important;'>" + strValue + "</div>");
+
         } else if (value != 0) {
+
+            this.valueLabel = new Label();
+            this.valueLabel.setWidth(100, Unit.PERCENTAGE);
+            this.valueLabel.setHeight(100, Unit.PERCENTAGE);
+            this.valueLabel.setContentMode(ContentMode.HTML);
+            this.addComponent(valueLabel);
+            this.setComponentAlignment(valueLabel, Alignment.TOP_CENTER);
+            this.valueLabel.setStyleName("hmbodycell");
+            this.valueLabel.setValue("<div style='background:" + cellColor + "; width:" + (100) + "% !important; height:" + (100) + "% !important;'>" + (int) value + "</div>");
+
             strValue = ((int) value) + "";
             pointer = "pointer";
             this.addLayoutClickListener(HeatmapCell.this);
             this.updateLabel(strValue);
+
+        } else if (cellColor.equalsIgnoreCase("#EFF2FB")) {
+            strValue = " ";
+
+            this.valueLabel = new Label();
+            this.valueLabel.setWidth(100, Unit.PERCENTAGE);
+            this.valueLabel.setHeight(100, Unit.PERCENTAGE);
+            this.valueLabel.setContentMode(ContentMode.HTML);
+            this.addComponent(valueLabel);
+            this.setComponentAlignment(valueLabel, Alignment.TOP_CENTER);
+            this.valueLabel.setStyleName("hmbodycell");
+            this.valueLabel.setValue("<div style='background:" + cellColor + "; width:" + (100) + "% !important; height:" + (100) + "% !important;'>" + strValue + "</div>");
 
         } else {
             this.updateLabel(strValue);
         }
 
         if (value > 0 && !cellColor.equalsIgnoreCase("#EFF2FB")) {
-            this.setDescription(fullCompTitle.replace("__" + diseaseCategory, "") + "<br/>Disease: " + diseaseCategory + " <br/>#Datasets: " + strValue +"<br/>#Publications: " + publicationsNumber);
+            this.setDescription(fullCompTitle.replace("__" + diseaseCategory, "") + "<br/>Disease: " + diseaseCategory + " <br/>#Datasets: " + strValue + "<br/>#Publications: " + publicationsNumber);
         }
+        this.addStyleName(pointer);
     }
 
     @Override
@@ -146,10 +175,8 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
 
     public final void updateLabel(String strValue) {
         this.strValue = strValue;
-        
 
 //        valueLabel.setValue("<center><div  style='background-color:" + cellColor + "; background-position: center;cursor:" + pointer + "; '>" + strValue + "</div><center>");
-
     }
 
     public abstract void selectData(HeatmapCell cell);
@@ -162,6 +189,21 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
 
     public String getCellColor() {
         return cellColor;
+    }
+
+    @Override
+    public void setHeight(float height, Unit unit) {
+        super.setHeight(height, unit); //To change body of generated methods, choose Tools | Templates.
+        if (valueLabel == null) {
+            return;
+        }
+        if (height < 15) {
+            valueLabel.addStyleName("smallfont");
+        } else if (height >= 15 && height < 20) {
+            valueLabel.addStyleName("midfont");
+        } else {
+            valueLabel.addStyleName("largefont");
+        }
     }
 
 }

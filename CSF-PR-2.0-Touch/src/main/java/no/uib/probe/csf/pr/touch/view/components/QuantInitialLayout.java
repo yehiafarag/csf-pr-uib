@@ -22,10 +22,11 @@ import no.uib.probe.csf.pr.touch.logic.beans.DiseaseCategoryObject;
  * this class represents initial layout for quant data
  */
 public abstract class QuantInitialLayout extends VerticalLayout implements LayoutEvents.LayoutClickListener {
-    
+
     private final HorizontalLayout miniLayout;
     private final int maxNumber;
     private Map<String, DiseaseCategoryObject> diseaseMap;
+    private final boolean smallScreen;
 
     /**
      *
@@ -34,20 +35,20 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
      * @param width body layout width in pixels
      * @param height body layout height in pixels
      */
-    public QuantInitialLayout(Collection<DiseaseCategoryObject> diseaseCategorySet, int width, int height) {
-        
+    public QuantInitialLayout(Collection<DiseaseCategoryObject> diseaseCategorySet, int width, int height, boolean smallScreen) {
+
         this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
         this.addStyleName("slowslide");
         this.diseaseMap = new HashMap<>();
-        
+
         GridLayout frame = new GridLayout(3, 3);
         frame.setSpacing(true);
         frame.setMargin(true);
 //        frame.setStyleName("border");
         this.addComponent(frame);
         this.setComponentAlignment(frame, Alignment.TOP_CENTER);
-        
+
         Label title = new Label("<center Style='color:#4d749f;'>Disease Category</center>");
         title.setContentMode(ContentMode.HTML);
         title.addStyleName(ValoTheme.LABEL_H2);
@@ -55,7 +56,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
 //        title.addStyleName(ValoTheme.LABEL_BOLD);
         frame.addComponent(title, 1, 1);
         frame.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
-        
+
         DiseaseCategoryObject allDeseases = (DiseaseCategoryObject) diseaseCategorySet.toArray()[diseaseCategorySet.size() - 1];
         maxNumber = allDeseases.getDatasetNumber();
         diseaseMap.put("All Diseases", allDeseases);
@@ -67,10 +68,10 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
             if (dCategory == allDeseases) {
                 continue;
             }
-            
+
             double scaledMax = scaleValues(dCategory.getDatasetNumber(), maxNumber, 0.01, 1);
             int dia = (int) (scaledMax * 0.1 * height);
-            
+
             VerticalLayout disease = initDiseaseBubbleLayout(dCategory, maxNumber, dia);
             diseaseMap.put(dCategory.getDiseaseCategory(), dCategory);
             frame.addComponent(disease, colCounter++, rowcounter);
@@ -80,20 +81,25 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
                 colCounter = 0;
                 rowcounter = 1;
             }
-            
+
         }
-        
+
         double scaledMax = scaleValues(allDeseases.getDatasetNumber(), maxNumber, 0.01, 1);
         int dia = (int) (scaledMax * 0.1 * height);
         VerticalLayout allDisease = initDiseaseBubbleLayout(allDeseases, maxNumber, dia);
         frame.addComponent(allDisease, 1, 2);
         frame.setComponentAlignment(allDisease, Alignment.MIDDLE_CENTER);
-        
+
         miniLayout = new HorizontalLayout();
-        miniLayout.addComponent(initDiseaseLayout(null, 100, 100, maxNumber));
+        if (smallScreen) {
+            miniLayout.addComponent(initDiseaseLayout(null, 60, 60, maxNumber));
+        } else {
+            miniLayout.addComponent(initDiseaseLayout(null, 100, 100, maxNumber));
+        }
         miniLayout.addStyleName("bigbtn");
         miniLayout.addStyleName("blink");
-        
+        this.smallScreen=smallScreen;
+
     }
     private final ThemeResource logoRes = new ThemeResource("img/logo.png");
 
@@ -106,7 +112,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         VerticalLayout diseaseLayout = new VerticalLayout();
         diseaseLayout.setWidth(width, Unit.PIXELS);
         diseaseLayout.setHeight(height, Unit.PIXELS);
-        
+
         if (diseaseObject == null) {
             Image img = new Image();
             img.setWidth(100, Unit.PERCENTAGE);
@@ -115,53 +121,59 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
             diseaseLayout.addComponent(img);
             diseaseLayout.setEnabled(false);
         } else {
-            
+
             String SpacerI;
             String SpacerII;
             SpacerI = "<br/>(";
             SpacerII = ")";
             Label diseaseTitle = new Label("<center>" + diseaseObject.getDiseaseCategory() + SpacerI + diseaseObject.getDatasetNumber() + "/" + max + SpacerII + "</center>");
+               if (height >= 60 && height <= 80) {
+                        diseaseTitle.addStyleName("smallfont");
+                    } else {
+                        diseaseTitle.addStyleName("largefont");
+                    }
             diseaseTitle.setDescription("#Datasets: " + diseaseObject.getDatasetNumber());
+            
             diseaseLayout.addComponent(diseaseTitle);
             diseaseTitle.setContentMode(ContentMode.HTML);
             diseaseLayout.setComponentAlignment(diseaseTitle, Alignment.MIDDLE_CENTER);
             diseaseLayout.setStyleName(diseaseObject.getDiseaseStyleName());
-            
+
             diseaseLayout.addStyleName("pointer");
             diseaseLayout.setData(diseaseObject);
         }
-        
+
         return diseaseLayout;
-        
+
     }
-    
+
     private VerticalLayout initDiseaseBubbleLayout(DiseaseCategoryObject diseaseObject, int max, int dia) {
         VerticalLayout diseaseLayout = new VerticalLayout();
         diseaseLayout.setHeight((int) dia, Unit.PIXELS);
         diseaseLayout.setWidth((int) dia, Unit.PIXELS);
-        
+
         String SpacerI;
         String SpacerII;
-        
+
         SpacerI = "<br/>(";
         SpacerII = ")";
         diseaseLayout.addLayoutClickListener(this);
-        
+
         Label diseaseTitle = new Label("<center>" + diseaseObject.getDiseaseCategory() + SpacerI + diseaseObject.getDatasetNumber() + "/" + max + SpacerII + "</center>");
         diseaseTitle.setDescription("#Datasets: " + diseaseObject.getDatasetNumber());
         diseaseLayout.addComponent(diseaseTitle);
         diseaseTitle.setContentMode(ContentMode.HTML);
         diseaseLayout.setComponentAlignment(diseaseTitle, Alignment.MIDDLE_CENTER);
         diseaseLayout.setStyleName(diseaseObject.getDiseaseStyleName());
-        
+
         diseaseLayout.addStyleName("pointer");
         diseaseLayout.addStyleName("bubble");
         diseaseLayout.setData(diseaseObject);
-        
+
         return diseaseLayout;
-        
+
     }
-    
+
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         if (((VerticalLayout) event.getComponent()).getData() == null) {
@@ -170,22 +182,31 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
 //        this.addStyleName("hidelayout");
         miniLayout.removeAllComponents();
         DiseaseCategoryObject diseaseObject = (DiseaseCategoryObject) (((VerticalLayout) event.getComponent()).getData());
-        miniLayout.addComponent(initDiseaseLayout(diseaseObject, 100, 100, maxNumber));
+        if (smallScreen) {
+            miniLayout.addComponent(initDiseaseLayout(diseaseObject, 60, 60, maxNumber));
+        } else {
+            miniLayout.addComponent(initDiseaseLayout(diseaseObject, 100, 100, maxNumber));
+        }
+
         onClick(diseaseObject.getDiseaseCategory());
-        
+
     }
-    
+
     public void updateSelection(String diseaseCategory) {
-        
+
         miniLayout.removeAllComponents();
         DiseaseCategoryObject diseaseObject = diseaseMap.get(diseaseCategory);
-        miniLayout.addComponent(initDiseaseLayout(diseaseObject, 100, 100, maxNumber));
+        if (smallScreen) {
+            miniLayout.addComponent(initDiseaseLayout(diseaseObject, 60, 60, maxNumber));
+        } else {
+            miniLayout.addComponent(initDiseaseLayout(diseaseObject, 100, 100, maxNumber));
+        }
         onClick(diseaseObject.getDiseaseCategory());
-        
+
     }
-    
+
     public abstract void onClick(String diseaseCategoryName);
-    
+
     public HorizontalLayout getMiniLayout() {
         return miniLayout;
     }
@@ -208,5 +229,5 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         logValue = (logValue * 2 / logMax) + lowerLimit;
         return logValue;
     }
-    
+
 }

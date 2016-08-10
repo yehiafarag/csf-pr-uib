@@ -64,7 +64,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
      * @param activeColumnHeaders boolean array of active columns for dataset
      * table export
      */
-    public HeatMapComponent(final CSFPR_Central_Manager CSFPR_Central_Manager, Data_Handler Data_Handler, Collection<DiseaseCategoryObject> diseaseCategorySet, int mainbodyLayoutWidth, int mainbodyLayoutHeight, boolean[] activeColumnHeaders) {
+    public HeatMapComponent(final CSFPR_Central_Manager CSFPR_Central_Manager, Data_Handler Data_Handler, Collection<DiseaseCategoryObject> diseaseCategorySet, int mainbodyLayoutWidth, int mainbodyLayoutHeight, boolean[] activeColumnHeaders, boolean smallScreen) {
 
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         this.Data_Handler = Data_Handler;
@@ -175,11 +175,26 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         btnsWrapper.addComponent(clearFilterBtn, 2, 1);
         btnsWrapper.setComponentAlignment(clearFilterBtn, Alignment.MIDDLE_RIGHT);
 
-        datasetCounterLabel = new Label();
+        datasetCounterLabel = new Label() {
+
+            @Override
+            public void setHeight(float height, Unit unit) {
+                super.setHeight(height, unit); //To change body of generated methods, choose Tools | Templates.
+
+                    if (height < 15) {
+                        this.addStyleName("smallfont");
+                    } else if (height >= 15 && height < 20) {
+                        this.addStyleName("midfont");
+                    } else {
+                        this.addStyleName("largefont");
+                    }
+            }
+
+        };
         datasetCounterLabel.setDescription("#Datasets");
 
         btnsWrapper.addComponent(datasetCounterLabel, 1, 1);
-        datasetCounterLabel.setContentMode(ContentMode.HTML);
+//        datasetCounterLabel.setContentMode(ContentMode.HTML);
         btnsWrapper.setComponentAlignment(datasetCounterLabel, Alignment.MIDDLE_CENTER);
         datasetCounterLabel.setStyleName("filterbtn");
         datasetCounterLabel.addStyleName("defaultcursor");
@@ -192,7 +207,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
 
         //init heatmap
         int availableHMHeight = mainbodyLayoutHeight - 85;
-        heatmapLayoutContainer = new HeatMapLayout(mainbodyLayoutWidth, availableHMHeight, activeColumnHeaders, filterSizeController) {
+        heatmapLayoutContainer = new HeatMapLayout(mainbodyLayoutWidth, availableHMHeight, activeColumnHeaders, filterSizeController, smallScreen) {
             @Override
             public void updateSelectionManager(Set<QuantDiseaseGroupsComparison> selectedQuantComparisonsList) {
 
@@ -221,7 +236,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
 
             @Override
             public void updateHMThumb(String imgUrl, int datasetNumber, int deactivated, Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> equalComparisonMap) {
-                datasetCounterLabel.setValue("<center>" + datasetNumber + "/" + fullQuantDsMap.size() + "</center>");
+                datasetCounterLabel.setValue(datasetNumber + "/" + fullQuantDsMap.size());
                 if (deactivated > 0) {
                     datasetCounterLabel.setDescription("#Datasets<br/>#Not active datasets: " + deactivated);
                 } else {
@@ -257,7 +272,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         }
         this.fullQuantDsMap.clear();
         this.fullQuantDsMap.putAll(fullQuantDsMap);
-        heatmapLayoutContainer.updateData(rowheaders, colheaders, patientsGroupComparisonsSet, fullQuantDsMap);
+//        heatmapLayoutContainer.updateData(rowheaders, colheaders, patientsGroupComparisonsSet, fullQuantDsMap);
 
         this.rowheaders.clear();
         this.rowheaders.addAll(rowheaders);
@@ -271,8 +286,6 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
 
         serumCsfFilter.resetFilter();
         reorderSelectBtn.updateData(rowheaders, colheaders, patientsGroupComparisonsSet);
-
-      
 
     }
 

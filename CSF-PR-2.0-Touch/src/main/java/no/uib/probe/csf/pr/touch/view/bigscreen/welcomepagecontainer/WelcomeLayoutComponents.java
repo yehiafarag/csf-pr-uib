@@ -64,10 +64,11 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         this.setHeight(100, Unit.PERCENTAGE);
         this.addStyleName("hideoverflow");
         this.addStyleName("whitelayout");
-        if (bodyHeight > 720) {
+        boolean smallScreen = bodyHeight <= 720;
+        if (!smallScreen) {
             this.setMargin(new MarginInfo(true, true, true, true));
         } else {
-            this.setMargin(new MarginInfo(false, true, false, true));
+            this.setMargin(new MarginInfo(false, true, false, false));
         }
         HeaderLayout header = new HeaderLayout();
         this.addComponent(header);
@@ -241,10 +242,12 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
         GridLayout middlePanelServicesLayout = new GridLayout(2, 2);
         middlePanelServicesLayout.setSpacing(true);
-        middlePanelServicesLayout.setMargin(new MarginInfo(true, false, true, false));
+        if (!smallScreen) {
+            middlePanelServicesLayout.setMargin(new MarginInfo(true, false, true, false));
+        }
         middleLayout.addComponent(middlePanelServicesLayout);
 
-        BigBtn quantDatasetBtn = new BigBtn("Quantification", "Browse quantitative data", "img/scatter_plot_applied.png") {
+        BigBtn quantDatasetBtn = new BigBtn("Quantification", "Browse quantitative data", "img/scatter_plot_applied.png", smallScreen) {
 
             @Override
             public void onClick() {
@@ -253,7 +256,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         };
         quantDatasetBtn.getThumbBtn().setDescription("Click to browse protein quantitative data");
         middlePanelServicesLayout.addComponent(quantDatasetBtn, 0, 0);
-        BigBtn idDatasetBtn = new BigBtn("Identification", "Browse identification data", "img/bar-chart.png") {
+        BigBtn idDatasetBtn = new BigBtn("Identification", "Browse identification data", "img/bar-chart.png", smallScreen) {
 
             @Override
             public void onClick() {
@@ -266,7 +269,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
         middlePanelServicesLayout.addComponent(idDatasetBtn, 0, 1);
 
-        SearchingComponent searchingDatasetBtn = new SearchingComponent(Data_handler, CSFPR_Central_Manager) {
+        SearchingComponent searchingDatasetBtn = new SearchingComponent(Data_handler, CSFPR_Central_Manager, smallScreen) {
 
             @Override
             public void loadQuantSearching() {
@@ -277,7 +280,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         searchingDatasetBtn.getThumbBtn().setDescription("Click to search quantified and identified protein data");
         middlePanelServicesLayout.addComponent(searchingDatasetBtn, 1, 0);
 
-        CompareComponent compareBtn = new CompareComponent(Data_handler, CSFPR_Central_Manager) {
+        CompareComponent compareBtn = new CompareComponent(Data_handler, CSFPR_Central_Manager, smallScreen) {
 
             @Override
             public void loadQuantComparison() {
@@ -288,7 +291,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         compareBtn.getThumbBtn().setDescription("Click to compare with your own protein quantification data");
         middlePanelServicesLayout.addComponent(compareBtn, 1, 1);
 
-        BigBtn homeBtn = new BigBtn("", "", "img/home-o.png") {
+        BigBtn homeBtn = new BigBtn("", "", "img/home-o.png", smallScreen) {
 
             @Override
             public void onClick() {
@@ -314,7 +317,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         }
         VerticalLayout miniLayoutContainer = new VerticalLayout(homeBtn.getThumbBtn(), quantDatasetBtn.getThumbBtn(), idDatasetBtn.getThumbBtn(), searchingDatasetBtn.getThumbBtn(), compareBtn.getThumbBtn(), zoomApp);
         miniLayout = new HorizontalLayout(miniLayoutContainer);
-        miniLayout.addStyleName("zoomborder");
+        miniLayout.addStyleName("whitesmokelayout");
         miniLayoutContainer.setSpacing(true);
 
         AbsoluteLayout footerLayout = new AbsoluteLayout();

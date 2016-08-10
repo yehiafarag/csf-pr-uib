@@ -97,7 +97,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
 
     private final VerticalLayout controlBtnsContainer;
 
-    public BubbleChartComponent(CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height) {
+    public BubbleChartComponent(CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height,boolean smallScreen) {
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
 
         this.setWidth(100, Unit.PERCENTAGE);
@@ -215,6 +215,11 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
             }
 
         };
+          if (smallScreen) {
+            groupSwichBtn.setWidth(25, Unit.PIXELS);
+            groupSwichBtn.setHeight(25,Unit.PIXELS);
+            groupSwichBtn.removeStyleName("smallimg");
+        }
 
         controlBtnsContainer.addComponent(groupSwichBtn);
         controlBtnsContainer.setComponentAlignment(groupSwichBtn, Alignment.MIDDLE_CENTER);
@@ -241,8 +246,14 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
             }
         };
 
+          if (smallScreen) {
+            hideStableBtn.setWidth(25, Unit.PIXELS);
+            hideStableBtn.setHeight(25,Unit.PIXELS);
+            hideStableBtn.removeStyleName("smallimg");
+        }else{
         hideStableBtn.setHeight(40, Unit.PIXELS);
         hideStableBtn.setWidth(40, Unit.PIXELS);
+          }
         hideStableBtn.updateIcon(scatterplotApplied);
         hideStableBtn.setEnabled(true);
         controlBtnsContainer.addComponent(hideStableBtn);
@@ -257,8 +268,14 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
 
         };
 
+          if (smallScreen) {
+            exportPdfBtn.setWidth(25, Unit.PIXELS);
+            exportPdfBtn.setHeight(25,Unit.PIXELS);
+            exportPdfBtn.removeStyleName("smallimg");
+        }else{
         exportPdfBtn.setHeight(40, Unit.PIXELS);
         exportPdfBtn.setWidth(40, Unit.PIXELS);
+          }
         exportPdfBtn.updateIcon(new ThemeResource("img/pdf-text-o.png"));
         exportPdfBtn.setEnabled(true);
         controlBtnsContainer.addComponent(exportPdfBtn);
@@ -285,9 +302,15 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         };
         unselectAllBtn.updateIcon(new ThemeResource("img/grid-small-o.png"));
         unselectAllBtn.setEnabled(true);
+          if (smallScreen) {
+            unselectAllBtn.setWidth(25, Unit.PIXELS);
+            unselectAllBtn.setHeight(25,Unit.PIXELS);
+            unselectAllBtn.removeStyleName("smallimg");
+        }else{
         unselectAllBtn.setWidth(40, Unit.PIXELS);
         unselectAllBtn.setHeight(40, Unit.PIXELS);
         unselectAllBtn.addStyleName("smallimg");
+          }
         controlBtnsContainer.addComponent(unselectAllBtn);
         controlBtnsContainer.setComponentAlignment(unselectAllBtn, Alignment.MIDDLE_CENTER);
         unselectAllBtn.setDescription("Unselect all disease group comparisons");
@@ -313,13 +336,24 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         selectMultiBtn.setDescription("Multiple selection");
         selectMultiBtn.updateIcon(new ThemeResource("img/grid-small-multi.png"));
         selectMultiBtn.setEnabled(true);
+          if (smallScreen) {
+            selectMultiBtn.setWidth(25, Unit.PIXELS);
+            selectMultiBtn.setHeight(25,Unit.PIXELS);
+            selectMultiBtn.removeStyleName("smallimg");
+        }else{
         selectMultiBtn.setWidth(40, Unit.PIXELS);
         selectMultiBtn.setHeight(40, Unit.PIXELS);
+          }
         controlBtnsContainer.addComponent(selectMultiBtn);
         controlBtnsContainer.setComponentAlignment(selectMultiBtn, Alignment.MIDDLE_CENTER);
 
         InformationButton info = new InformationButton("Info", false);
         controlBtnsContainer.addComponent(info);
+          if (smallScreen) {
+            info.setWidth(25, Unit.PIXELS);
+            info.setHeight(25,Unit.PIXELS);
+            info.removeStyleName("smallimg");
+        }
 
     }
 

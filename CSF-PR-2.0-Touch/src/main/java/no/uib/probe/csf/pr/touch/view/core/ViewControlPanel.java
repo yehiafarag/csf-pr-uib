@@ -30,6 +30,7 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
     private final VerticalLayout toolBtnContainer;
     private final TreeMap<Integer, AbstractOrderedLayout> layoutControlMap;
     private LayoutEvents.LayoutClickListener listener;
+    private final boolean smallScreen;
 
     /**
      *
@@ -37,6 +38,8 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
      * @param bodyHeight
      */
     public ViewControlPanel(int bodyWidth, int bodyHeight) {
+
+        smallScreen = bodyHeight <= 720;
 
         this.setWidth(bodyWidth, Unit.PIXELS);
         this.setHeight(bodyHeight, Unit.PIXELS);
@@ -53,12 +56,12 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
 
         VerticalLayout leftSideContainerWrapper = new VerticalLayout();
         leftSideContainerWrapper.setHeight(100, Unit.PERCENTAGE);
-        leftSideContainerWrapper.setWidth(120, Unit.PIXELS);
+
         leftSideContainerWrapper.setSpacing(true);
         mainLayoutWrapper.addComponent(leftSideContainerWrapper);
 
         leftSideContainer = new VerticalLayout();
-        leftSideContainer.setWidth(120, Unit.PIXELS);
+
         leftSideContainer.setHeightUndefined();
         leftSideContainer.setSpacing(true);
         leftSideContainerWrapper.addComponent(leftSideContainer);
@@ -66,15 +69,20 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
 
         HorizontalLayout mainViewContainerFrame = new HorizontalLayout();
         mainLayoutWrapper.addComponent(mainViewContainerFrame);
-        
-        mainViewContainerFrame.setWidth(bodyWidth-120-55,Unit.PIXELS);
+        if (smallScreen) {
+            leftSideContainerWrapper.setWidth(70, Unit.PIXELS);
+            leftSideContainer.setWidth(70, Unit.PIXELS);
+            mainViewContainerFrame.setWidth(bodyWidth - 70 - 35, Unit.PIXELS);
+        } else {
+            leftSideContainerWrapper.setWidth(120, Unit.PIXELS);
+            leftSideContainer.setWidth(120, Unit.PIXELS);
+            mainViewContainerFrame.setWidth(bodyWidth - 120 - 55, Unit.PIXELS);
+        }
+
         mainViewContainerFrame.setHeightUndefined();
         mainViewContainerFrame.addStyleName("mainviewport");
-        
-        
-        
-        
-         mainViewContainer = new HorizontalLayout();
+
+        mainViewContainer = new HorizontalLayout();
         mainViewContainerFrame.addComponent(mainViewContainer);
         mainViewContainer.setWidthUndefined();
         mainViewContainer.setHeightUndefined();
@@ -89,6 +97,7 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
     }
 
     private AbstractOrderedLayout mainViewLayout;
+
     /**
      * Add initial layout include side button, main layout, and control buttons
      *
@@ -111,22 +120,21 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
         this.setComponentAlignment(mainViewLayout, Alignment.MIDDLE_CENTER);
         listener = (LayoutEvents.LayoutClickEvent event) -> {
 
-            if (event.getClickedComponent() == null || event.getClickedComponent().getStyleName().trim().contains("h2") ||(event.getClickedComponent().getStyleName().trim().equalsIgnoreCase("")&& !(event.getClickedComponent() instanceof  Label))) {
-                System.out.println("return "+(event.getClickedComponent() == null)+" || "+(event.getClickedComponent().getStyleName().trim().contains("h2"))+" || "+(event.getClickedComponent().getStyleName().trim().equalsIgnoreCase(""))+"  "+(event.getClickedComponent() instanceof  Label) );
+            if (event.getClickedComponent() == null || event.getClickedComponent().getStyleName().trim().contains("h2") || (event.getClickedComponent().getStyleName().trim().equalsIgnoreCase("") && !(event.getClickedComponent() instanceof Label))) {
+                System.out.println("return " + (event.getClickedComponent() == null) + " || " + (event.getClickedComponent().getStyleName().trim().contains("h2")) + " || " + (event.getClickedComponent().getStyleName().trim().equalsIgnoreCase("")) + "  " + (event.getClickedComponent() instanceof Label));
                 return;
             }
-             hideInit=false;
+            hideInit = false;
 
             mainViewLayout.removeStyleName("hidelayout");
             mainViewLayout.removeLayoutClickListener(listener);
-            mainViewLayout.setWidth(mainViewLayout.getWidth()-200, Unit.PIXELS);
+            mainViewLayout.setWidth(mainViewLayout.getWidth() - 200, Unit.PIXELS);
             mainViewLayout.addStyleName("hideslidelayout");
 
             this.removeComponent(mainViewLayout);
             mainViewContainer.addComponent(mainViewLayout);
-            mainViewContainer.setComponentAlignment(mainViewLayout, Alignment.TOP_CENTER);            
-            
-            
+            mainViewContainer.setComponentAlignment(mainViewLayout, Alignment.TOP_CENTER);
+
             if (currentView != null) {
                 currentView.removeStyleName("hideslidelayout");
                 currentBtn.removeStyleName("unselectedbtn");
@@ -191,34 +199,35 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
         }
 
     }
-    private boolean hideInit =true;
+    private boolean hideInit = true;
 
     public void updateCurrentLayout(String viewName) {
-        if(hideInit){
-            hideInit=false;
-        mainViewLayout.removeStyleName("hidelayout");
-        mainViewLayout.removeLayoutClickListener(listener);
-        mainViewLayout.setWidth(mainViewLayout.getWidth() - 200, Unit.PIXELS);
-        mainViewLayout.addStyleName("hideslidelayout");
+        if (hideInit) {
+            hideInit = false;
+            mainViewLayout.removeStyleName("hidelayout");
+            mainViewLayout.removeLayoutClickListener(listener);
+            mainViewLayout.setWidth(mainViewLayout.getWidth() - 200, Unit.PIXELS);
+            mainViewLayout.addStyleName("hideslidelayout");
 
-        this.removeComponent(mainViewLayout);
-        mainViewContainer.addComponent(mainViewLayout);
-        mainViewContainer.setComponentAlignment(mainViewLayout, Alignment.TOP_CENTER);
-        if (currentView != null) {
-            currentView.removeStyleName("hideslidelayout");
-            currentBtn.removeStyleName("unselectedbtn");
-        } else {
-            layoutControlMap.lastEntry().getValue().removeStyleName("hideslidelayout");
+            this.removeComponent(mainViewLayout);
+            mainViewContainer.addComponent(mainViewLayout);
+            mainViewContainer.setComponentAlignment(mainViewLayout, Alignment.TOP_CENTER);
+            if (currentView != null) {
+                currentView.removeStyleName("hideslidelayout");
+                currentBtn.removeStyleName("unselectedbtn");
+            } else {
+                layoutControlMap.lastEntry().getValue().removeStyleName("hideslidelayout");
 
-        }
+            }
 
-        this.addComponent(mainLayoutWrapper);
+            this.addComponent(mainLayoutWrapper);
         }
 
         if (viewName.equalsIgnoreCase("heatmap")) {
             updateVew(leftSideContainer.getComponent(1));
-        }else if(viewName.equalsIgnoreCase("proteintable"))
+        } else if (viewName.equalsIgnoreCase("proteintable")) {
             updateVew(leftSideContainer.getComponent(3));
+        }
 
     }
 

@@ -7,6 +7,7 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
@@ -42,6 +43,8 @@ public class CSF_PR_UI extends UI {
     protected void init(VaadinRequest vaadinRequest) {
         //init param for DB
 
+        
+//        Page.getCurrent().getJavaScript().execute("document.head.innerHTML +='<meta name=\"viewport\" content=\"initial-scale = 1.0,maximum-scale = 1.0\">'");
         ServletContext scx = VaadinServlet.getCurrent().getServletContext();
         dbURL = (scx.getInitParameter("url"));
         dbName = (scx.getInitParameter("dbName"));
@@ -97,6 +100,7 @@ public class CSF_PR_UI extends UI {
         appWrapper.setWidth(100, Unit.PERCENTAGE);
         appWrapper.setHeight(100, Unit.PERCENTAGE);
         appWrapper.setStyleName("whitesmokelayout");
+        appWrapper.addStyleName("border");
 
         setContent(appWrapper);
 
@@ -125,11 +129,11 @@ public class CSF_PR_UI extends UI {
     private void resizeScreen() {
 
         windowHeight = Page.getCurrent().getBrowserWindowHeight();// Math.max(Page.getCurrent().getBrowserWindowHeight(), 1080);
-        windowWidth = Page.getCurrent().getBrowserWindowWidth();//Math.max(Page.getCurrent().getBrowserWindowWidth(), 1920);
-        if (windowHeight < 680 || windowWidth < 1024) {
+        windowWidth =  Page.getCurrent().getBrowserWindowWidth();//Math.max(Page.getCurrent().getBrowserWindowWidth(), 1920);
+        if (windowHeight < 551 || windowWidth < 980) {
             emptyLayout.setVisible(true);            
-            System.err.println("at window h "+windowHeight+"  window w "+windowWidth);
-            Notification.show("Screen is too small minimum screen resolution (1024x680)", Notification.Type.ERROR_MESSAGE);
+            System.err.println("at w "+windowWidth+" h "+windowHeight);
+            Notification.show("Screen is too small current screen resolution ("+windowWidth+"x"+windowHeight+")", Notification.Type.ERROR_MESSAGE);
             return;
         }
 

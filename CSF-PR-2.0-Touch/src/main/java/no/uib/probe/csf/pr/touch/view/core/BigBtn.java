@@ -25,7 +25,7 @@ public abstract class BigBtn extends HorizontalLayout implements LayoutEvents.La
         return thumbContainer;
     }
     
-    public BigBtn(String header, String text, String imgUrl) {
+    public BigBtn(String header, String text, String imgUrl,boolean smallScreen) {
         this.setWidthUndefined();
         this.setMargin(false);
         this.setSpacing(true);
@@ -34,8 +34,7 @@ public abstract class BigBtn extends HorizontalLayout implements LayoutEvents.La
         
         bigBtnIcon = new Image();
         bigBtnIcon.setSource(new ThemeResource(imgUrl));
-        bigBtnIcon.setWidth(70, Unit.PIXELS);
-        bigBtnIcon.setHeight(70, Unit.PIXELS);
+      
         bigBtnIcon.addStyleName("blink");
         this.addComponent(bigBtnIcon);
         String labelText = "<b>" + header + "</b><br/><font size='1'>" + text + "</font>";
@@ -43,7 +42,7 @@ public abstract class BigBtn extends HorizontalLayout implements LayoutEvents.La
         Label btnLabel = new Label(labelText);
         btnLabel.setContentMode(ContentMode.HTML);
         this.addComponent(btnLabel);
-        btnLabel.setWidth(220,Unit.PIXELS);
+        btnLabel.setWidth(240,Unit.PIXELS);
         
         thumbContainer = new ImageContainerBtn() {
             
@@ -55,10 +54,22 @@ public abstract class BigBtn extends HorizontalLayout implements LayoutEvents.La
         };
 
         thumbContainer.updateIcon(new ThemeResource(imgUrl));
-        thumbContainer.setWidth(40, Unit.PIXELS);
-        thumbContainer.setHeight(40, Unit.PIXELS);
+        
+        
         thumbContainer.setEnabled(true);
         thumbContainer.setReadOnly(false);
+        
+          if(smallScreen){
+        bigBtnIcon.setWidth(40, Unit.PIXELS);
+        bigBtnIcon.setHeight(40, Unit.PIXELS);
+        thumbContainer.setWidth(25, Unit.PIXELS);
+        thumbContainer.setHeight(25, Unit.PIXELS);
+        }else{
+        bigBtnIcon.setWidth(70, Unit.PIXELS);
+        bigBtnIcon.setHeight(70, Unit.PIXELS);
+        thumbContainer.setWidth(40, Unit.PIXELS);
+        thumbContainer.setHeight(40, Unit.PIXELS);
+        }
         
 
     }

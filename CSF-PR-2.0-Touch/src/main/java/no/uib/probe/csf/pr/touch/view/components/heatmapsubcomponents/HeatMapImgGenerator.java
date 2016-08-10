@@ -48,6 +48,10 @@ public class HeatMapImgGenerator {
     private double resizeFactor;
     private final Map<String, Rectangle> headerLabelMap = new LinkedHashMap<>();
 
+    public Map<String, Rectangle> getHeaderLabelMap() {
+        return headerLabelMap;
+    }
+
     public String generateHeatmap(Set<HeatMapHeaderCellInformationBean> rows, Set<HeatMapHeaderCellInformationBean> columns, String[][] data, int heatmapWidth, int heatmaHeight, boolean resetRowLabels, boolean restColumnLabels) {
 
         headerLabelMap.clear();
@@ -62,7 +66,7 @@ public class HeatMapImgGenerator {
 
         heatmapPanelLayout.setLayout(null);
         heatmapPanelLayout.setVisible(true);
-        heatmapPanelLayout.setBackground(white);
+        heatmapPanelLayout.setBackground(transparent);
 
         imageWidth = (columns.size() * cellWidth) + 170;
         cellWidth = 30;//
@@ -82,14 +86,19 @@ public class HeatMapImgGenerator {
 
         for (HeatMapHeaderCellInformationBean bean : columns) {
 
-            headerLabelMap.put(bean.getDiseaseCategory(), new Rectangle(0, 0, 0, 0));
+            headerLabelMap.put("col__"+bean.getDiseaseCategory(), new Rectangle(0, 0, 0, 0));
+
+        }
+         for (HeatMapHeaderCellInformationBean bean : rows) {
+
+            headerLabelMap.put("row__"+bean.getDiseaseCategory(), new Rectangle(0, 0, 0, 0));
 
         }
 
         for (HeatMapHeaderCellInformationBean headerCell : columns) {
 
             if (!restColumnLabels) {
-                Rectangle rectangle = headerLabelMap.get(headerCell.getDiseaseCategory());
+                Rectangle rectangle = headerLabelMap.get("col__"+headerCell.getDiseaseCategory());
                 rectangle.setBounds(0, 0, (int) rectangle.getWidth() + cellWidth, (int) (20 * resizeFactor));
             }
             JPanel cell = initCell(headerCell.getDiseaseColor(), x, y, fullBorder);
@@ -109,12 +118,12 @@ public class HeatMapImgGenerator {
 
             HeatMapHeaderCellInformationBean bean = null;
             for (HeatMapHeaderCellInformationBean tbean : columns) {
-                if (tbean.getDiseaseCategory().equalsIgnoreCase(dCat)) {
+                if (("col__"+tbean.getDiseaseCategory()).equalsIgnoreCase(dCat)) {
                     bean = tbean;
                     break;
 
                 }
-            };
+            }
             if (restColumnLabels && bean != null) {
                 int width = countLimit * cellWidth;
                 topLabelContainerWidth = topLabelContainerWidth - width;
@@ -137,19 +146,19 @@ public class HeatMapImgGenerator {
 
         }
 
-        headerLabelMap.clear();
-        for (HeatMapHeaderCellInformationBean bean : rows) {
-
-            headerLabelMap.put(bean.getDiseaseCategory(), new Rectangle(0, 0, 0, 0));
-
-        }
+//        headerLabelMap.clear();
+//        for (HeatMapHeaderCellInformationBean bean : rows) {
+//
+//            headerLabelMap.put(bean.getDiseaseCategory(), new Rectangle(0, 0, 0, 0));
+//
+//        }
         y = (int) (170 * resizeFactor);
 
         for (HeatMapHeaderCellInformationBean headerCell : rows) {
 
             if (!resetRowLabels) {
 
-                Rectangle rectangle = headerLabelMap.get(headerCell.getDiseaseCategory());
+                Rectangle rectangle = headerLabelMap.get("row__"+headerCell.getDiseaseCategory());
                 rectangle.setBounds(0, 0, (int) (20 * resizeFactor), (int) rectangle.getHeight() + cellWidth);
             }
 
@@ -171,7 +180,7 @@ public class HeatMapImgGenerator {
 
             HeatMapHeaderCellInformationBean bean = null;
             for (HeatMapHeaderCellInformationBean tbean : rows) {
-                if (tbean.getDiseaseCategory().equalsIgnoreCase(dCat)) {
+                if (("row__"+tbean.getDiseaseCategory()).equalsIgnoreCase(dCat)) {
                     bean = tbean;
                     break;
 
