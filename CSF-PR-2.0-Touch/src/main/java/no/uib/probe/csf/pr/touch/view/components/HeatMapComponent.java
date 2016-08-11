@@ -274,6 +274,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         this.fullQuantDsMap.putAll(fullQuantDsMap);
 //        heatmapLayoutContainer.updateData(rowheaders, colheaders, patientsGroupComparisonsSet, fullQuantDsMap);
 
+        for(HeatMapHeaderCellInformationBean rowheader:rowheaders)
         this.rowheaders.clear();
         this.rowheaders.addAll(rowheaders);
         this.colheaders.clear();

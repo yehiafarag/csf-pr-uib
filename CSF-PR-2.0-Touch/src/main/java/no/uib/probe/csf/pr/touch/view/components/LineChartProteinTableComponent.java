@@ -246,6 +246,11 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
             }
         };
 
+         if (smallScreen) {
+            filterSortSwichBtn.setWidth(25, Unit.PIXELS);
+            filterSortSwichBtn.setHeight(25,Unit.PIXELS);
+            filterSortSwichBtn.removeStyleName("smallimg");
+        }
         controlBtnsContainer.addComponent(filterSortSwichBtn);
         controlBtnsContainer.setComponentAlignment(filterSortSwichBtn, Alignment.MIDDLE_CENTER);
         removeFilters.setEnabled(false);

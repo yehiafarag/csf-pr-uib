@@ -35,7 +35,7 @@ public class DatasetUtility implements Serializable {
 
     private final CoreLogic Core_Logic;
     private final Map<String, QuantData> quantDataMap;
-    private final Map<String, DiseaseCategoryObject> fullDiseaseCategoryMap;
+    private final LinkedHashMap<String, DiseaseCategoryObject> fullDiseaseCategoryMap;
     private final Map<String, QuantDatasetInitialInformationObject> quantDatasetInitialInformationObject;
     private Map<String, Map<String, String>> default_DiseaseCat_DiseaseGroupMap;
     private Map<String, Map<String, String>> inUse_DiseaseCat_DiseaseGroupMap;
@@ -101,8 +101,11 @@ public class DatasetUtility implements Serializable {
         this.Core_Logic = Core_Logic;
         quantDataMap = new LinkedHashMap<>();
         this.fullDiseaseCategoryMap = Core_Logic.getDiseaseCategorySet();
+        
+       
 
         this.quantDatasetInitialInformationObject = Core_Logic.getQuantDatasetInitialInformationObject();
+       
 
         default_DiseaseCat_DiseaseGroupMap = new LinkedHashMap<>();
         oreginal_DiseaseCat_DiseaseGroupMap = new LinkedHashMap<>();
@@ -187,7 +190,7 @@ public class DatasetUtility implements Serializable {
      *
      * @return disease category set
      */
-    public Collection<DiseaseCategoryObject> getFullDiseaseCategorySet() {
+    public Collection<DiseaseCategoryObject> getFullDiseaseCategorySet() {       
         return fullDiseaseCategoryMap.values();
     }
 
@@ -203,7 +206,7 @@ public class DatasetUtility implements Serializable {
             LinkedHashSet<HeatMapHeaderCellInformationBean> activeRowIds = new LinkedHashSet<>();
             Set<DiseaseGroupComparison> diseaseComparisonSet = new LinkedHashSet<>();
             QuantData allQuantData = new QuantData();
-            for (String diseaseCategoryname : quantDatasetInitialInformationObject.keySet()) {
+            for (String diseaseCategoryname : quantDatasetInitialInformationObject.keySet()) {                
                 QuantDatasetInitialInformationObject initQuantData = quantDatasetInitialInformationObject.get(diseaseCategoryname);
                 updateQuantDatasetsList(diseaseCategoryname, initQuantData.getQuantDatasetsList());
                 if (diseaseCategoryname.equalsIgnoreCase("All Diseases")) {

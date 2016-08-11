@@ -62,11 +62,9 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
             this.sortableProtein = comp.getQuantComparisonProteinMap().get("1_" + proteinKey);
         } else if (comp.getQuantComparisonProteinMap().containsKey("2_" + proteinKey)) {
             this.sortableProtein = comp.getQuantComparisonProteinMap().get("2_" + proteinKey);
-        }
-        else if (comp.getQuantComparisonProteinMap().containsKey("3_" + proteinKey)) {
+        } else if (comp.getQuantComparisonProteinMap().containsKey("3_" + proteinKey)) {
             this.sortableProtein = comp.getQuantComparisonProteinMap().get("3_" + proteinKey);
-        }
-        else if (comp.getQuantComparisonProteinMap().containsKey("4_" + proteinKey)) {
+        } else if (comp.getQuantComparisonProteinMap().containsKey("4_" + proteinKey)) {
             this.sortableProtein = comp.getQuantComparisonProteinMap().get("4_" + proteinKey);
         }
         this.width = width;
@@ -85,7 +83,7 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
         VerticalLayout resizeIconLayout = new VerticalLayout();
         resizeIconLayout.setWidth(20, Unit.PERCENTAGE);
         resizeIconLayout.setHeight(20, Unit.PIXELS);
-        this.addComponent(resizeIconLayout, "left: " + (width-25) + "px; top: " + 0 + "px;");
+        this.addComponent(resizeIconLayout, "left: " + (width - 25) + "px; top: " + 0 + "px;");
 
         maxMinBtn = new VerticalLayout();
         maxMinBtn.setWidth(20, Unit.PIXELS);
@@ -99,22 +97,9 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
 
         maxMinBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
-            private boolean max = false;
-
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-                if (max) {
-                    setHeight(100, Unit.PIXELS);
-                    sparkLine.minimize();
-                    maxMinBtn.setStyleName("maxmizebtn");
-                    max = false;
-                } else {
-                    maxMinBtn.setStyleName("minmizebtn");
-                    setHeight(500, Unit.PIXELS);
-                    sparkLine.maxmize();
-                    max = true;
-
-                }
+                maxmize();
 
             }
         });
@@ -122,6 +107,30 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
             sparkLine = new LineChart(width, 500);
             sparkLine.updateData(selectedComparisonsList, proteinKey, custTrend);
             sparkLineContainer.addComponent(sparkLine);
+        }
+
+    }
+
+    private boolean max = false;
+
+    public boolean isMax() {
+        return max;
+    }
+
+    public void maxmize() {
+        if(sparkLine==null)
+            return;
+        if (max) {
+            setHeight(100, Unit.PIXELS);
+            sparkLine.minimize();
+            maxMinBtn.setStyleName("maxmizebtn");
+            max = false;
+        } else {
+            maxMinBtn.setStyleName("minmizebtn");
+            setHeight(500, Unit.PIXELS);
+            sparkLine.maxmize();
+            max = true;
+
         }
 
     }

@@ -79,8 +79,9 @@ public class CoreLogic implements Serializable {
      * @return set of disease category objects that has all disease category
      * information and styling information
      */
-    public Map<String, DiseaseCategoryObject> getDiseaseCategorySet() {
-        Map<String, DiseaseCategoryObject> availableDiseaseCategory = database.getDiseaseCategorySet();
+    public LinkedHashMap<String, DiseaseCategoryObject> getDiseaseCategorySet() {
+        LinkedHashMap<String, DiseaseCategoryObject> availableDiseaseCategory = database.getDiseaseCategorySet();
+         
         return availableDiseaseCategory;
     }
 
@@ -93,6 +94,7 @@ public class CoreLogic implements Serializable {
      */
     public Map<String, QuantDatasetInitialInformationObject> getQuantDatasetInitialInformationObject() {
         Map<String, QuantDatasetInitialInformationObject> quantStudyInitInfoMap = database.getQuantDatasetInitialInformationObject();
+         
 
         boolean[] activeHeaders = new boolean[27];
         Set<String> diseaseCategories = new LinkedHashSet<>();

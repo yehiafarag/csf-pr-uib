@@ -147,6 +147,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         proteinNameLabel = new Label();
         proteinNameLabel.setStyleName(ValoTheme.LABEL_BOLD);
         proteinNameLabel.addStyleName("overflowtext");
+        proteinNameLabel.addStyleName("leftaligntext");
         proteinNameLabel.setHeight(24, Unit.PIXELS);
         labelLegendContaner.addComponent(proteinNameLabel);
 

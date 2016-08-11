@@ -245,6 +245,9 @@ public class DataBaseLayer implements Serializable {
      */
     public Map<String, QuantDatasetInitialInformationObject> getQuantDatasetInitialInformationObject() {
         Map<String, QuantDatasetInitialInformationObject> diseaseCategoriesMap = new LinkedHashMap<>();
+        diseaseCategoriesMap.put("Multiple Sclerosis", null);
+        diseaseCategoriesMap.put("Alzheimer's", null);
+        diseaseCategoriesMap.put("Parkinson's", null);
         try {
             PreparedStatement selectStudiesStat;
             String selectStudies = "SELECT * FROM  `quant_dataset_table` ";
@@ -256,7 +259,7 @@ public class DataBaseLayer implements Serializable {
             try (ResultSet rs = selectStudiesStat.executeQuery()) {
                 while (rs.next()) {
                     String disease_category = rs.getString("disease_category");
-                    if (!diseaseCategoriesMap.containsKey(disease_category)) {
+                    if (!diseaseCategoriesMap.containsKey(disease_category) ||(diseaseCategoriesMap.containsKey(disease_category) && diseaseCategoriesMap.get(disease_category)==null) ) {
                         boolean[] activeHeaders = new boolean[27];
                         Set<String> diseaseCategories = new LinkedHashSet<>();
                         QuantDatasetInitialInformationObject datasetObject = new QuantDatasetInitialInformationObject();
@@ -467,9 +470,13 @@ public class DataBaseLayer implements Serializable {
      * @return set of disease category objects that has all disease category
      * information and styling information
      */
-    public Map<String, DiseaseCategoryObject> getDiseaseCategorySet() {
+    public LinkedHashMap<String, DiseaseCategoryObject> getDiseaseCategorySet() {
 
         LinkedHashMap<String, DiseaseCategoryObject> availableDiseaseCategory = new LinkedHashMap<>();
+        availableDiseaseCategory.put("Multiple Sclerosis", null);
+        availableDiseaseCategory.put("Alzheimer's", null);
+        availableDiseaseCategory.put("Parkinson's", null);
+        
 
         String selectStat = "SELECT COUNT( * ) AS  `Rows` ,  `disease_category` FROM  `quant_dataset_table` GROUP BY  `disease_category`ORDER BY  `Rows` DESC ";
         try {

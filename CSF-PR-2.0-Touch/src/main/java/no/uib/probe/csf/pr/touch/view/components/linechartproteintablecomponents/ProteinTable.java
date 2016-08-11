@@ -5,6 +5,7 @@ import com.vaadin.data.Property;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
@@ -28,18 +29,15 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.view.core.ColumnHeaderLayout;
 import no.uib.probe.csf.pr.touch.view.core.ExternalLink;
 import no.uib.probe.csf.pr.touch.view.core.ProteinTrendLayout;
+import no.uib.probe.csf.pr.touch.view.core.ScrollingTable;
+import no.uib.probe.csf.pr.touch.view.core.ScrollingTableScrollListener;
 import org.apache.commons.codec.binary.Base64;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.SymbolAxis;
 import org.jfree.chart.encoders.ImageEncoder;
 import org.jfree.chart.encoders.ImageEncoderFactory;
 import org.jfree.chart.encoders.ImageFormat;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.chart.title.LegendTitle;
-import org.jfree.ui.RectangleInsets;
 
 /**
  *
@@ -182,7 +180,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         proteinSequencePanel.setSize(100, 100);
         proteinSequencePanel.setBackground(Color.WHITE);
         int dsIndex = 1;
-        int y=0;
+        int y = 0;
         for (Object[] objArr : tableItemsMap.values()) {
             ProteinTrendLayout trend = (ProteinTrendLayout) objArr[3];
             if (trend.getSparkLine() != null) {
@@ -192,7 +190,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
                 lineChartPanel.setLocation(0, y);
                 lineChartPanel.setOpaque(true);
                 proteinSequencePanel.add(lineChartPanel);
-                y+=25;
+                y += 25;
 //                if (lineChart == null) {
 //                    XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 //                    renderer.setSeriesPaint(0, new Color(169, 208, 245));
@@ -228,9 +226,8 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
 
             }
         }
-        
-             
-         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+
+        BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = image.createGraphics();
 
         graphics.setPaint(Color.WHITE);
@@ -248,9 +245,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         }
 
         String base64 = com.itextpdf.text.pdf.codec.Base64.encodeBytes(imageData);
-         return base64 = "data:image/png;base64," + base64;
-
-        
+        return base64 = "data:image/png;base64," + base64;
 
 //        return "";
     }
@@ -375,10 +370,81 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         this.addComponent(topLayout);
 
         this.mainProteinTable = new Table() {
+//            int count = 0;
+////            @Override
+////            protected void registerComponent(Component component) {
+////                
+////
+////                if (getCurrentPageFirstItemId() != null) {
+////                    Object[] items = tableItemsMap.get(getCurrentPageFirstItemId());
+////                    ProteinTrendLayout protTrendLayout = (ProteinTrendLayout) items[3];
+////                    if (!protTrendLayout.isMax()) {
+////                        protTrendLayout.maxmize();
+////                        markAsDirty();
+////                    }
+////                }
+////
+////                super.registerComponent(component); //To change body of generated methods, choose Tools | Templates.
+////            }
+//            boolean reserCounter = true;
+//            int tableitemmapsize = -1;
+//
+//            @Override
+//            protected void refreshRenderedCells() {
+//                if (tableItemsMap == null) {
+//                    super.refreshRenderedCells();
+//                    return;
+//                }
+//
+//                
+//                if (tableitemmapsize != tableItemsMap.size()) {
+//                    tableitemmapsize = tableItemsMap.size();
+//                    count = 0;
+//                    return;
+//                }
+//               
+//
+//                System.out.println("at ------------------------------- count is " + count++ + "    " + tableItemsMap.size());
+//                if (getCurrentPageFirstItemId() != null) {
+//                    Object[] items = tableItemsMap.get(getCurrentPageFirstItemId());
+//                    ProteinTrendLayout protTrendLayout = (ProteinTrendLayout) items[3];
+//                    if (!protTrendLayout.isMax()) {
+//                        protTrendLayout.maxmize();
+////                        setCurrentPageFirstItemId(getCurrentPageFirstItemId());
+//                        markAsDirty();
+//
+//                    }
+//
+//                }
+//                super.refreshRenderedCells(); //To change body of generated methods, choose Tools | Templates.
+//            }
+
         };
+//        mainProteinTable.setBuffered(true);
+        mainProteinTable.setCacheRate(1);
+
+//        this.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+//            
+//            @Override
+//            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+//                
+//                System.out.println("at context clicked "+(event.getRelativeX()+"  "+event.getRelativeY()+"  width is "+ width+"  scroll is "+ (width-20)+"  scroll comp "+ event.getChildComponent())+"   maxmize index "+mainProteinTable.getCurrentPageFirstItemIndex()+" --- "+mainProteinTable.getCurrentPageFirstItemId());
+//            }
+//        });
+//        mainProteinTable.addScrollListener(new ScrollingTableScrollListener() {
+//
+//            @Override
+//            public void doTableScroll() {
+//                Notification.show("You are scrolling!\nYou can add your own behavior here!");
+//            }
+//        });
         this.mainProteinTable.addValueChangeListener(ProteinTable.this);
         this.mainProteinTable.addStyleName(ValoTheme.TABLE_SMALL);
         this.mainProteinTable.setHeight(height - 22, Unit.PIXELS);
+//        int pageLength = ((int) mainProteinTable.getHeight() - 510) / 111;
+//
+//        mainProteinTable.setPageLength(Math.max(1, pageLength + 2));
+//        System.out.println("at ------------------------------------------------>>   page length is " + pageLength + "   " + mainProteinTable.getPageLength());
         this.addComponent(mainProteinTable);
         this.tableItemsMap = new LinkedHashMap<>();
         this.activeTableItemsMap = new LinkedHashMap<>();
@@ -579,7 +645,11 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         updateComparisonsHeader(selectedComparisonsList);
         this.mainProteinTable.addValueChangeListener(ProteinTable.this);
         updateRowNumber(mainProteinTable.getItemIds().size(), generateThumbImg());
+
         hideCheckedColumn(true);
+        Object[] items = tableItemsMap.get(mainProteinTable.getCurrentPageFirstItemId());
+        ProteinTrendLayout protTrendLayout = (ProteinTrendLayout) items[3];
+        protTrendLayout.maxmize();
 
     }
 

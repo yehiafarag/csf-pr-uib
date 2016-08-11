@@ -15,6 +15,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import java.awt.Rectangle;
+import java.nio.file.FileVisitResult;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -120,7 +121,6 @@ public abstract class HeatMapLayout extends VerticalLayout {
 //        this.heatMapImg = new Image();
 //        heatMapImg.setSizeFull();
 //        this.heatmapPanel.addComponent(heatMapImg, "left: 0px; top: 0px");
-
         this.heatmapComponentContainer = new AbsoluteLayout();
         heatmapComponentContainer.setSizeFull();
         this.heatmapPanel.addComponent(heatmapComponentContainer, "left: 0px; top: 0px");
@@ -205,7 +205,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
         if (smallScreen) {
             showStudiesBtn.setWidth(25, Unit.PIXELS);
-            showStudiesBtn.setHeight(25,Unit.PIXELS);
+            showStudiesBtn.setHeight(25, Unit.PIXELS);
             showStudiesBtn.removeStyleName("smallimg");
         }
 
@@ -234,11 +234,11 @@ public abstract class HeatMapLayout extends VerticalLayout {
         };
         if (smallScreen) {
             exportTableBtn.setWidth(25, Unit.PIXELS);
-            exportTableBtn.setHeight(25,Unit.PIXELS);
+            exportTableBtn.setHeight(25, Unit.PIXELS);
             exportTableBtn.removeStyleName("smallimg");
-        }else{
-        exportTableBtn.setHeight(40, Unit.PIXELS);
-        exportTableBtn.setWidth(40, Unit.PIXELS);
+        } else {
+            exportTableBtn.setHeight(40, Unit.PIXELS);
+            exportTableBtn.setWidth(40, Unit.PIXELS);
         }
         exportTableBtn.updateIcon(new ThemeResource("img/xls-text-o-2.png"));
         exportTableBtn.setEnabled(true);
@@ -258,14 +258,14 @@ public abstract class HeatMapLayout extends VerticalLayout {
         selectAllBtn.updateIcon(new ThemeResource("img/grid-small.png"));
         selectAllBtn.setEnabled(true);
         selectAllBtn.addStyleName("smallimg");
-        
+
         if (smallScreen) {
             selectAllBtn.setWidth(25, Unit.PIXELS);
-            selectAllBtn.setHeight(25,Unit.PIXELS);
+            selectAllBtn.setHeight(25, Unit.PIXELS);
             selectAllBtn.removeStyleName("smallimg");
-        }else{
-        selectAllBtn.setWidth(40, Unit.PIXELS);
-        selectAllBtn.setHeight(40, Unit.PIXELS);
+        } else {
+            selectAllBtn.setWidth(40, Unit.PIXELS);
+            selectAllBtn.setHeight(40, Unit.PIXELS);
         }
         controlBtnsContainer.addComponent(selectAllBtn);
         controlBtnsContainer.setComponentAlignment(selectAllBtn, Alignment.MIDDLE_CENTER);
@@ -281,16 +281,16 @@ public abstract class HeatMapLayout extends VerticalLayout {
         };
         unselectAllBtn.updateIcon(new ThemeResource("img/grid-small-o.png"));
         unselectAllBtn.setEnabled(true);
-        
+
         if (smallScreen) {
             unselectAllBtn.setWidth(25, Unit.PIXELS);
-            unselectAllBtn.setHeight(25,Unit.PIXELS);
-        }else{
-        unselectAllBtn.setWidth(40, Unit.PIXELS);
-        unselectAllBtn.setHeight(40, Unit.PIXELS);
-        unselectAllBtn.addStyleName("smallimg");
+            unselectAllBtn.setHeight(25, Unit.PIXELS);
+        } else {
+            unselectAllBtn.setWidth(40, Unit.PIXELS);
+            unselectAllBtn.setHeight(40, Unit.PIXELS);
+            unselectAllBtn.addStyleName("smallimg");
         }
-       
+
         controlBtnsContainer.addComponent(unselectAllBtn);
         controlBtnsContainer.setComponentAlignment(unselectAllBtn, Alignment.MIDDLE_CENTER);
         unselectAllBtn.setDescription("Unselect all disease group comparisons");
@@ -320,11 +320,11 @@ public abstract class HeatMapLayout extends VerticalLayout {
         selectMultiBtn.setEnabled(true);
         if (smallScreen) {
             selectMultiBtn.setWidth(25, Unit.PIXELS);
-            selectMultiBtn.setHeight(25,Unit.PIXELS);
+            selectMultiBtn.setHeight(25, Unit.PIXELS);
             selectMultiBtn.removeStyleName("smallimg");
-        }else{
-        selectMultiBtn.setWidth(40, Unit.PIXELS);
-        selectMultiBtn.setHeight(40, Unit.PIXELS);
+        } else {
+            selectMultiBtn.setWidth(40, Unit.PIXELS);
+            selectMultiBtn.setHeight(40, Unit.PIXELS);
         }
 
         cornerCell = new VerticalLayout();
@@ -341,7 +341,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
         controlBtnsContainer.addComponent(info);
         if (smallScreen) {
             info.setWidth(25, Unit.PIXELS);
-            info.setHeight(25,Unit.PIXELS);
+            info.setHeight(25, Unit.PIXELS);
             info.removeStyleName("smallimg");
         }
 
@@ -684,16 +684,32 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
         }
         equalComparisonMap.clear();
-        comparisonsCellsMap.values().stream().forEach((cell) -> {
+        for (HeatmapCell cell : comparisonsCellsMap.values()) {
             String kI = cell.getComparison().getComparisonHeader();
             String[] k1Arr = kI.split(" / ");
+            if (k1Arr.length == 0) {
+                continue;
+            }
             String kII = k1Arr[1] + " / " + k1Arr[0];
             if (comparisonsCellsMap.containsKey(kII)) {
                 equalComparisonMap.put(cell.getComparison(), comparisonsCellsMap.get(kII).getComparison());
                 equalComparisonMap.put(comparisonsCellsMap.get(kII).getComparison(), cell.getComparison());
             }
-        });
 
+        }
+
+//        comparisonsCellsMap.values().stream().forEach((cell) -> {
+//            String kI = cell.getComparison().getComparisonHeader();
+//            String[] k1Arr = kI.split(" / ");
+//            if (k1Arr.length == 1) {
+//               continue;
+//            }
+//             String kII = k1Arr[1] + " / " + k1Arr[0];
+//            if (comparisonsCellsMap.containsKey(kII)) {
+//                equalComparisonMap.put(cell.getComparison(), comparisonsCellsMap.get(kII).getComparison());
+//                equalComparisonMap.put(comparisonsCellsMap.get(kII).getComparison(), cell.getComparison());
+//            }
+//        });
     }
 
     /**
@@ -810,6 +826,29 @@ public abstract class HeatMapLayout extends VerticalLayout {
                 if (header.getValueLabel().equalsIgnoreCase(selectedheader)) {
                     header.getIncludedCells().stream().forEach((tcell) -> {
                         tcell.select();
+
+                        String kI = tcell.getComparison().getComparisonHeader();
+                        String[] k1Arr = kI.split(" / ");
+                        String kII = k1Arr[1] + " / " + k1Arr[0];
+                        HeatmapCell equalCall = comparisonsCellsMap.get(kII);
+                        if (equalCall != null) {
+                            equalCall.unselect();
+                            this.selectedDsList.remove(equalCall.getComparison());
+                            this.selectedCells.remove(equalCall);
+                        } else {
+                            System.out.println("at equal cell was null " + kII);
+//                            equalCall = cell;
+                        }
+
+                        if (equalCall != null) {
+                            equalCall.select();
+                            this.selectedCells.add(equalCall);
+                            equalCall.getComparison().setSwitchable(true);
+                            tcell.getComparison().setSwitchable(true);
+                        } else {
+                            tcell.getComparison().setSwitchable(false);
+                        }
+
                     });
                     header.select();
                     selectedCells.addAll(header.getIncludedCells());
@@ -828,6 +867,30 @@ public abstract class HeatMapLayout extends VerticalLayout {
                 if (header.getValueLabel().equalsIgnoreCase(selectedheader)) {
                     header.getIncludedCells().stream().forEach((tcell) -> {
                         tcell.select();
+                        
+                        String kI = tcell.getComparison().getComparisonHeader();
+                        String[] k1Arr = kI.split(" / ");
+                        String kII = k1Arr[1] + " / " + k1Arr[0];
+                        HeatmapCell equalCall = comparisonsCellsMap.get(kII);
+                        if (equalCall != null) {
+                            equalCall.unselect();
+                            this.selectedDsList.remove(equalCall.getComparison());
+                            this.selectedCells.remove(equalCall);
+                        } else {
+                            System.out.println("at equal cell was null " + kII);
+//                            equalCall = cell;
+                        }
+
+                        if (equalCall != null) {
+                            equalCall.select();
+                            this.selectedCells.add(equalCall);
+                            equalCall.getComparison().setSwitchable(true);
+                            tcell.getComparison().setSwitchable(true);
+                        } else {
+                            tcell.getComparison().setSwitchable(false);
+                        }
+
+                    
                     });
                     header.select();
                     selectedCells.addAll(header.getIncludedCells());
@@ -849,6 +912,28 @@ public abstract class HeatMapLayout extends VerticalLayout {
                 if (header.getValueLabel().equalsIgnoreCase(selectedheader)) {
                     header.getIncludedCells().stream().forEach((tcell) -> {
                         tcell.select();
+                        String kI = tcell.getComparison().getComparisonHeader();
+                        String[] k1Arr = kI.split(" / ");
+                        String kII = k1Arr[1] + " / " + k1Arr[0];
+                        HeatmapCell equalCall = comparisonsCellsMap.get(kII);
+                        if (equalCall != null) {
+                            equalCall.unselect();
+                            this.selectedDsList.remove(equalCall.getComparison());
+                            this.selectedCells.remove(equalCall);
+                        } else {
+                            System.out.println("at equal cell was null " + kII);
+//                            equalCall = cell;
+                        }
+
+                        if (equalCall != null) {
+                            equalCall.select();
+                            this.selectedCells.add(equalCall);
+                            equalCall.getComparison().setSwitchable(true);
+                            tcell.getComparison().setSwitchable(true);
+                        } else {
+                            tcell.getComparison().setSwitchable(false);
+                        }
+
                     });
                     header.select();
                     selectedCells.addAll(header.getIncludedCells());
@@ -865,6 +950,29 @@ public abstract class HeatMapLayout extends VerticalLayout {
                 if (header.getValueLabel().equalsIgnoreCase(selectedheader)) {
                     header.getIncludedCells().stream().forEach((tcell) -> {
                         tcell.select();
+                    
+                        String kI = tcell.getComparison().getComparisonHeader();
+                        String[] k1Arr = kI.split(" / ");
+                        String kII = k1Arr[1] + " / " + k1Arr[0];
+                        HeatmapCell equalCall = comparisonsCellsMap.get(kII);
+                        if (equalCall != null) {
+                            equalCall.unselect();
+                            this.selectedDsList.remove(equalCall.getComparison());
+                            this.selectedCells.remove(equalCall);
+                        } else {
+                            System.out.println("at equal cell was null " + kII);
+//                            equalCall = cell;
+                        }
+
+                        if (equalCall != null) {
+                            equalCall.select();
+                            this.selectedCells.add(equalCall);
+                            equalCall.getComparison().setSwitchable(true);
+                            tcell.getComparison().setSwitchable(true);
+                        } else {
+                            tcell.getComparison().setSwitchable(false);
+                        }
+
                     });
                     header.select();
                     selectedCells.addAll(header.getIncludedCells());

@@ -485,7 +485,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         defaultxyzdataset.addSeries(" ", seriesValuesII);
 
         final Color[] labelsColor = new Color[]{Color.LIGHT_GRAY, new Color(80, 183, 71), Color.LIGHT_GRAY, new Color(1, 141, 244), Color.LIGHT_GRAY, new Color(204, 0, 0), Color.LIGHT_GRAY};
-        Font font = new Font("Open Sans", Font.BOLD, 13);
+        Font font = new Font("Open Sans", Font.PLAIN, 13);
         SymbolAxis yAxis = new SymbolAxis(null, new String[]{"  ", "Decreased", " ", "Equal", " ", "Increased", "  "}) {
             int x = 0;
 

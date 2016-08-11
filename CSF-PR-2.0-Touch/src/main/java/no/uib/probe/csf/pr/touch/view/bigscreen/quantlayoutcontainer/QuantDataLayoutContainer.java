@@ -109,6 +109,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         this.addStyleName("slowslide");
 
         Collection<DiseaseCategoryObject> availableDiseaseCategory = Data_handler.getDiseaseCategorySet();
+        
         final HorizontalLayout subBodyWrapper = new HorizontalLayout();
         subBodyWrapper.setWidthUndefined();
 //        subBodyWrapper.setHeight((height - 200), Unit.PIXELS);
@@ -139,6 +140,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         if (smallScreen) {
             info.setWidth(25, Unit.PIXELS);
             info.setHeight(25, Unit.PIXELS);
+            info.removeStyleName("smallimg");
         } else {
 
             info.setWidth(40, Unit.PIXELS);
