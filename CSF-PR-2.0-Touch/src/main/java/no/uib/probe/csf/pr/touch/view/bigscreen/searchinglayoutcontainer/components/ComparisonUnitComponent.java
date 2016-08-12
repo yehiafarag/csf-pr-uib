@@ -75,9 +75,9 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
     private boolean sorterRows, sortColumns;
     private final TextAreaComponent textBoxI, textBoxII, textBoxIII;
 
-    public ComparisonUnitComponent(Data_Handler CSFPR_Handler) {
+    public ComparisonUnitComponent(Data_Handler CSFPR_Handler, int height, boolean smallScreen) {
         this.setWidth(100, Unit.PERCENTAGE);
-        this.setHeight(540, Unit.PIXELS);
+        this.setHeight(height, Unit.PIXELS);
         this.setStyleName("whitelayout");
         this.addStyleName("roundedborder");
         this.addStyleName("padding20");
@@ -90,7 +90,9 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
 
         Label title1 = new Label("1. Select/Enter Dataset Disease Groups");
         title1.setStyleName(ValoTheme.LABEL_BOLD);
-        frame.addComponent(title1);
+        if (!smallScreen) {
+            frame.addComponent(title1);
+        }
 
         HorizontalLayout subFrame = new HorizontalLayout();
         subFrame.setWidth(100, Unit.PERCENTAGE);
@@ -144,7 +146,7 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
                 value += diseaseGroupsListA.getValue().toString();
                 sorterRows = diseaseGroupNames.contains(diseaseGroupsListA.getValue().toString().trim());
             }
-            
+
             if (diseaseGroupsListB.getValue() != null) {
                 diseaseGroupsListB.setRequired(false);
                 value += " / " + diseaseGroupsListB.getValue().toString();
@@ -174,20 +176,28 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
         Label title2 = new Label("2. Insert UniProt Proteins Accessions");
         title2.setStyleName(ValoTheme.LABEL_BOLD);
         title2.addStyleName("margintop");
-        frame.addComponent(title2);
+        if (!smallScreen) {
+            frame.addComponent(title2);
+        }
 
         HorizontalLayout textAreaContainer = new HorizontalLayout();
         textAreaContainer.setWidth(100, Unit.PERCENTAGE);
         textAreaContainer.setSpacing(true);
         frame.addComponent(textAreaContainer);
+        int h;
+        if (smallScreen) {
+            h = 70;
+        } else {
+            h = 150;
+        }
 
-        textBoxI = new TextAreaComponent("<font color='#cc0000'>&nbsp;Increased</font>");
+        textBoxI = new TextAreaComponent("<font color='#cc0000'>&nbsp;Increased</font>", h);
         textAreaContainer.addComponent(textBoxI);
 
-        textBoxII = new TextAreaComponent("<font color='#018df4'>&nbsp;Equal</font>");
+        textBoxII = new TextAreaComponent("<font color='#018df4'>&nbsp;Equal</font>", h);
         textAreaContainer.addComponent(textBoxII);
 
-        textBoxIII = new TextAreaComponent("<font color='#009900'>&nbsp;Decreased</font>");
+        textBoxIII = new TextAreaComponent("<font color='#009900'>&nbsp;Decreased</font>", h);
         textAreaContainer.addComponent(textBoxIII);
 
         HorizontalLayout bottomLayout = new HorizontalLayout();

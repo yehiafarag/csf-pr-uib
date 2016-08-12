@@ -25,7 +25,7 @@ public class TextAreaComponent extends VerticalLayout {
 
     private final TextArea textBox;
 
-    public TextAreaComponent(String labelValue) {
+    public TextAreaComponent(String labelValue, int height) {
         this.setWidth(100, Unit.PERCENTAGE);
         this.setSpacing(true);
         this.addStyleName("margintop");
@@ -58,7 +58,7 @@ public class TextAreaComponent extends VerticalLayout {
 
         textBox = new TextArea();
         textBox.setWidth(100, Unit.PERCENTAGE);
-        textBox.setHeight(230, Unit.PIXELS);
+        textBox.setHeight(height, Unit.PIXELS);
         this.addComponent(textBox);
 
         clearBtn.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {

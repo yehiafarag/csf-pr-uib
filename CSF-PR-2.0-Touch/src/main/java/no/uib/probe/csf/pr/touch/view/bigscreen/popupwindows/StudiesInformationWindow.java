@@ -27,7 +27,7 @@ public class StudiesInformationWindow extends VerticalLayout implements LayoutEv
     private final PopupWindow popupWindow;
     private final DatasetButtonsContainerLayout studiesPopupLayout;
 
-    public StudiesInformationWindow(List<Object[]> publicationList) {
+    public StudiesInformationWindow(List<Object[]> publicationList,boolean smallScreen) {
 
         VerticalLayout popupBody = new VerticalLayout();
         popupBody.setWidth(100, Unit.PERCENTAGE);
@@ -85,7 +85,7 @@ public class StudiesInformationWindow extends VerticalLayout implements LayoutEv
         popupBody.addComponent(tab);
         popupBody.setComponentAlignment(tab, Alignment.TOP_CENTER);
 
-        studiesPopupLayout = new DatasetButtonsContainerLayout((int) popupWindow.getWidth());
+        studiesPopupLayout = new DatasetButtonsContainerLayout((int) popupWindow.getWidth(),smallScreen);
 
         tab.addTab(studiesPopupLayout, "Datasets");
 
@@ -93,7 +93,7 @@ public class StudiesInformationWindow extends VerticalLayout implements LayoutEv
             return;
         }
 
-        DatasetButtonsContainerLayout publicationPopupLayout = new DatasetButtonsContainerLayout((int) popupWindow.getWidth());
+        DatasetButtonsContainerLayout publicationPopupLayout = new DatasetButtonsContainerLayout((int) popupWindow.getWidth(),smallScreen);
         publicationPopupLayout.setPublicationData(publicationList);
         tab.addTab(publicationPopupLayout, "Publications");
 

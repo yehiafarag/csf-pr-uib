@@ -14,7 +14,12 @@ import com.vaadin.ui.VerticalLayout;
 public class InformationField extends VerticalLayout {
 
     private final Link valueLabel;
-    private final  Label titleLabel ;
+    private final Label titleLabel;
+    private boolean smallScreen = false;
+
+    public void setSmallScreen(boolean smallScreen) {
+        this.smallScreen = smallScreen;
+    }
 
     /**
      *
@@ -22,15 +27,15 @@ public class InformationField extends VerticalLayout {
      */
     public InformationField(String title) {
 
-        this.setHeight(60,Unit.PIXELS);
-        this.setWidth(100,Unit.PERCENTAGE);
+        this.setHeight(60, Unit.PIXELS);
+        this.setWidth(100, Unit.PERCENTAGE);
         this.setSpacing(true);
         this.setMargin(new MarginInfo(false, false, true, false));
         titleLabel = new Label(title);
         this.addComponent(titleLabel);
         titleLabel.setStyleName("caption");
         titleLabel.setHeight("100%");
-        titleLabel.setWidth(200,Unit.PIXELS);
+        titleLabel.setWidth(200, Unit.PIXELS);
         this.setComponentAlignment(titleLabel, Alignment.TOP_LEFT);
         valueLabel = new Link();
 
@@ -94,11 +99,18 @@ public class InformationField extends VerticalLayout {
             if (stringValue.contains("</font>")) {
                 valueLabel.setCaption(stringValue);
             } else if (stringValue.toCharArray().length > 100) {
-                valueLabel.setCaption("<textarea cols='100' rows='5'  readonly>" + stringValue + "</textarea>");
+
                 valueLabel.setCaptionAsHtml(true);
-                int h=Math.min(((stringValue.toCharArray().length /100)*20),70);
-                valueLabel.setHeight(h,Unit.PIXELS);
-                titleLabel.setHeight(20,Unit.PIXELS);
+               
+                if (smallScreen) { 
+                    valueLabel.setCaption("<textarea cols='100' rows='3'  readonly>" + stringValue + "</textarea>");
+                    valueLabel.setHeight(40, Unit.PIXELS);
+                } else {
+ valueLabel.setCaption("<textarea cols='100' rows='5'  readonly>" + stringValue + "</textarea>");
+                    int h = Math.min(((stringValue.toCharArray().length / 100) * 20), 70);
+                    valueLabel.setHeight(h, Unit.PIXELS);
+                }
+                titleLabel.setHeight(20, Unit.PIXELS);
                 this.setSpacing(false);
                 this.setHeightUndefined();
             } else {

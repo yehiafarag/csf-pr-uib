@@ -1,6 +1,5 @@
 package no.uib.probe.csf.pr.touch.view.core;
 
-import com.vaadin.server.Page;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
@@ -13,20 +12,21 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 public class DatasetInformationOverviewLayout extends VerticalLayout {
 
     private final String diseaseHashedColor;
+    private final boolean smallScreen;
 
     /**
      * @param quantDs
      * @param diseaseHashedColor hashed color for disease
      */
-    public DatasetInformationOverviewLayout(QuantDatasetObject quantDs) {
+    public DatasetInformationOverviewLayout(QuantDatasetObject quantDs, boolean smallScreen) {
         this.diseaseHashedColor = quantDs.getDiseaseCategoryColor();
 //        int width = Page.getCurrent().getBrowserWindowWidth() - 320;
 //        int height = Page.getCurrent().getBrowserWindowHeight() - 320;
 //        this.setWidth(width ,Unit.PIXELS);
 //        this.setHeight(height ,Unit.PIXELS);
-        
-          this.setWidth(100 ,Unit.PERCENTAGE);
-        this.setHeight(100 ,Unit.PERCENTAGE);
+        this.smallScreen = smallScreen;
+        this.setWidth(100, Unit.PERCENTAGE);
+        this.setHeight(100, Unit.PERCENTAGE);
         this.setSpacing(true);
 
         datasetInfoForm = initQuantDatasetInformationLayout();
@@ -49,12 +49,16 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         VerticalLayout mainContainer = new VerticalLayout();
         mainContainer.setWidth(100, Unit.PERCENTAGE);
         mainContainer.setHeightUndefined();
-        
+        int h = 60;
+        if (smallScreen) {
+            h = 40;
+        }
+
         mainContainer.setSpacing(true);
 
         HorizontalLayout rowI = new HorizontalLayout();
-        rowI.setWidth(100, Unit.PERCENTAGE);        
-        rowI.setHeight(60,Unit.PIXELS);
+        rowI.setWidth(100, Unit.PERCENTAGE);
+        rowI.setHeight(h, Unit.PIXELS);
         mainContainer.addComponent(rowI);
 //        mainContainer.setExpandRatio(rowI, 10);
 
@@ -72,7 +76,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
 
         HorizontalLayout rowII = new HorizontalLayout();
         rowII.setWidth(100, Unit.PERCENTAGE);
-//        rowII.setHeight(60,Unit.PIXELS);
+        rowII.setHeight(h, Unit.PIXELS);
         mainContainer.addComponent(rowII);
 //         mainContainer.setExpandRatio(rowII, 10);
 
@@ -90,7 +94,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
 
         HorizontalLayout rowIII = new HorizontalLayout();
         rowIII.setWidth(100, Unit.PERCENTAGE);
-//        rowIII.setHeight(60,Unit.PIXELS);
+        rowIII.setHeight(h, Unit.PIXELS);
         mainContainer.addComponent(rowIII);
 //         mainContainer.setExpandRatio(rowI, 10);
 
@@ -108,7 +112,9 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
 
         HorizontalLayout rowIV = new HorizontalLayout();
         rowIV.setWidth(100, Unit.PERCENTAGE);
-//        rowIV.setHeight(60,Unit.PIXELS);
+        if (smallScreen) {
+            rowIV.setHeight(75, Unit.PIXELS);
+        }
         mainContainer.addComponent(rowIV);
 //
         patientsGroup1 = new InformationField("Patients Gr.I");
@@ -121,11 +127,16 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         rowIV.addComponent(patientsGroup1Number);
 //
         patientsCommGroup1 = new InformationField("Patients Gr.I Comm.");
+        patientsCommGroup1.setSmallScreen(smallScreen);
         rowIV.addComponent(patientsCommGroup1);
 
         HorizontalLayout rowV = new HorizontalLayout();
         rowV.setWidth(100, Unit.PERCENTAGE);
-        rowV.setHeightUndefined();
+        if (smallScreen) {
+            rowV.setHeight(75, Unit.PIXELS);
+        } else {
+            rowV.setHeightUndefined();
+        }
         mainContainer.addComponent(rowV);
 //
         patientsGroup2 = new InformationField("Patients Gr.II");
@@ -138,14 +149,20 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         rowV.addComponent(patientsGroup2Number);
 
         patientsCommGroup2 = new InformationField("Patients Gr.II Comm.");
+        patientsCommGroup2.setSmallScreen(smallScreen);
         rowV.addComponent(patientsCommGroup2);
 
         HorizontalLayout rowVI = new HorizontalLayout();
         rowVI.setWidth(100, Unit.PERCENTAGE);
-        rowVI.setHeightUndefined();
+        if (smallScreen) {
+            rowVI.setHeight(75, Unit.PIXELS);
+        } else {
+            rowVI.setHeightUndefined();
+        }
         mainContainer.addComponent(rowVI);
 
         normalization_strategy = new InformationField("Normalization Strategy");
+        normalization_strategy.setSmallScreen(smallScreen);
         rowVI.addComponent(normalization_strategy);
 
         rawData = new InformationField("Raw Data");
@@ -160,7 +177,11 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
 
         HorizontalLayout rowVII = new HorizontalLayout();
         rowVII.setWidth(100, Unit.PERCENTAGE);
-        rowVII.setHeightUndefined();
+        if (smallScreen) {
+            rowVII.setHeight(75, Unit.PIXELS);
+        } else {
+            rowVII.setHeightUndefined();
+        }
         mainContainer.addComponent(rowVII);
 
         quantPeptidesNum = new InformationField("#Peptides");

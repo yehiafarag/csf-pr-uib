@@ -44,14 +44,16 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
     private final FilterColumnButton filterSortSwichBtn;
     private final ImageContainerBtn checkUncheckBtn;
 
-    public LineChartProteinTableComponent(CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height, QuantDiseaseGroupsComparison userCustomizedComparison,boolean smallScreen) {
+    public LineChartProteinTableComponent(CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height, QuantDiseaseGroupsComparison userCustomizedComparison, boolean smallScreen) {
 
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         this.proteinSearchingMap = new HashMap<>();
 
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeight(height, Unit.PIXELS);
-        this.setMargin(new MarginInfo(false, false, false, true));
+         if (!smallScreen) {
+            this.setMargin(new MarginInfo(false, false, false, true));
+        }
 
         VerticalLayout bodyContainer = new VerticalLayout();
         bodyContainer.setWidth(100, Unit.PERCENTAGE);
@@ -124,7 +126,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         height = height - 40;
         width = width - 60;
 
-        quantProteinTable = new ProteinTable(width, height) {
+        quantProteinTable = new ProteinTable(width, height,smallScreen) {
 
             @Override
             public void dropComparison(QuantDiseaseGroupsComparison comparison) {
@@ -181,9 +183,9 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
 
         };
 
-          if (smallScreen) {
+        if (smallScreen) {
             groupSwichBtn.setWidth(25, Unit.PIXELS);
-            groupSwichBtn.setHeight(25,Unit.PIXELS);
+            groupSwichBtn.setHeight(25, Unit.PIXELS);
             groupSwichBtn.removeStyleName("smallimg");
         }
         controlBtnsContainer.addComponent(groupSwichBtn);
@@ -198,14 +200,14 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
 
         };
 
-          if (smallScreen) {
+        if (smallScreen) {
             exportPdfBtn.setWidth(25, Unit.PIXELS);
-            exportPdfBtn.setHeight(25,Unit.PIXELS);
+            exportPdfBtn.setHeight(25, Unit.PIXELS);
             exportPdfBtn.removeStyleName("smallimg");
-        }else{
-        exportPdfBtn.setHeight(40, Unit.PIXELS);
-        exportPdfBtn.setWidth(40, Unit.PIXELS);
-          }
+        } else {
+            exportPdfBtn.setHeight(40, Unit.PIXELS);
+            exportPdfBtn.setWidth(40, Unit.PIXELS);
+        }
         exportPdfBtn.updateIcon(new ThemeResource("img/pdf-text-o.png"));
         exportPdfBtn.setEnabled(true);
         controlBtnsContainer.addComponent(exportPdfBtn);
@@ -246,24 +248,24 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
             }
         };
 
-         if (smallScreen) {
+        if (smallScreen) {
             filterSortSwichBtn.setWidth(25, Unit.PIXELS);
-            filterSortSwichBtn.setHeight(25,Unit.PIXELS);
+            filterSortSwichBtn.setHeight(25, Unit.PIXELS);
             filterSortSwichBtn.removeStyleName("smallimg");
         }
         controlBtnsContainer.addComponent(filterSortSwichBtn);
         controlBtnsContainer.setComponentAlignment(filterSortSwichBtn, Alignment.MIDDLE_CENTER);
         removeFilters.setEnabled(false);
 
-          if (smallScreen) {
+        if (smallScreen) {
             removeFilters.setWidth(25, Unit.PIXELS);
-            removeFilters.setHeight(25,Unit.PIXELS);
+            removeFilters.setHeight(25, Unit.PIXELS);
             removeFilters.removeStyleName("smallimg");
-        }else{
-        removeFilters.setHeight(40, Unit.PIXELS);
-        removeFilters.setWidth(40, Unit.PIXELS);
-        removeFilters.addStyleName("smallimg");
-          }
+        } else {
+            removeFilters.setHeight(40, Unit.PIXELS);
+            removeFilters.setWidth(40, Unit.PIXELS);
+            removeFilters.addStyleName("smallimg");
+        }
         removeFilters.updateIcon(new ThemeResource("img/filter_disables.png"));
         controlBtnsContainer.addComponent(removeFilters);
         controlBtnsContainer.setComponentAlignment(removeFilters, Alignment.MIDDLE_CENTER);
@@ -300,14 +302,14 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         };
         checkUncheckBtn.setEnabled(true);
 
-          if (smallScreen) {
+        if (smallScreen) {
             checkUncheckBtn.setWidth(25, Unit.PIXELS);
-            checkUncheckBtn.setHeight(25,Unit.PIXELS);
+            checkUncheckBtn.setHeight(25, Unit.PIXELS);
             checkUncheckBtn.removeStyleName("smallimg");
-        }else{
-        checkUncheckBtn.setHeight(40, Unit.PIXELS);
-        checkUncheckBtn.setWidth(40, Unit.PIXELS);
-          }
+        } else {
+            checkUncheckBtn.setHeight(40, Unit.PIXELS);
+            checkUncheckBtn.setWidth(40, Unit.PIXELS);
+        }
         checkUncheckBtn.addStyleName("pointer");
         checkUncheckBtn.updateIcon(checkedUnApplied);
         controlBtnsContainer.addComponent(checkUncheckBtn);
@@ -316,9 +318,9 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
 
         InformationButton info = new InformationButton("Info", false);
         controlBtnsContainer.addComponent(info);
-          if (smallScreen) {
+        if (smallScreen) {
             info.setWidth(25, Unit.PIXELS);
-            info.setHeight(25,Unit.PIXELS);
+            info.setHeight(25, Unit.PIXELS);
             info.removeStyleName("smallimg");
         }
 

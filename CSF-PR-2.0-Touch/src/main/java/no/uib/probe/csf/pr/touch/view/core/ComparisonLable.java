@@ -33,7 +33,7 @@ public abstract class ComparisonLable extends VerticalLayout implements LayoutEv
 
     private final Accordion datalayout;
 
-    public ComparisonLable(QuantDiseaseGroupsComparison comparison, Object itemId, QuantProtein quantProtein, QuantDatasetObject qds) {
+    public ComparisonLable(QuantDiseaseGroupsComparison comparison, Object itemId, QuantProtein quantProtein, QuantDatasetObject qds,boolean smallScreen) {
         this.itemId = itemId;
         this.setWidth(100, Unit.PERCENTAGE);
 
@@ -108,7 +108,7 @@ public abstract class ComparisonLable extends VerticalLayout implements LayoutEv
 //        Label titleII = new Label("Dataset");
 //        titleII.setStyleName(ValoTheme.LABEL_BOLD);
 //        popupbodyLayout.addComponent(titleII);
-        DatasetInformationOverviewLayout dsOverview = new DatasetInformationOverviewLayout(qds);
+        DatasetInformationOverviewLayout dsOverview = new DatasetInformationOverviewLayout(qds,smallScreen);
         dsOverview.getDatasetInfoForm().setWidth(980, Unit.PIXELS);
         datalayout.addTab(dsOverview.getDatasetInfoForm(), "<b>Dataset</b>");
 

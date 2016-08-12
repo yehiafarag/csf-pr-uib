@@ -282,7 +282,9 @@
 }
 @keyframes blink { 
     50% {        border-color: orange; 
-                 border-width:2px;
+                  border-width:2px;
+                 border-radius:40%;
+                
 
                  /* CSS3 Transition */
                  -webkit-transition: all .5s ease-in-out;
@@ -294,6 +296,8 @@
 @keyframes blinkII { 
     50% {        border-color: orange; 
                  border-width:2px;
+                 border-radius:40%;
+                
 
                  /* CSS3 Transition */
                  -webkit-transition: all .5s ease-in-out;
@@ -387,7 +391,7 @@
 }
 
 @font-face {
-    font-family: "Open Sans";
+    font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei New", "Microsoft Yahei", SimSun, STXihei, sans-serif;
     src: url(../valo/fonts/open-sans/OpenSans-Light-webfont.eot);
     src: url(../valo/fonts/open-sans/OpenSans-Light-webfont.eot?#iefix) format("embedded-opentype"), url(../valo/fonts/open-sans/OpenSans-Light-webfont.woff) format("woff"), url(../valo/fonts/open-sans/OpenSans-Light-webfont.ttf) format("truetype");
     font-weight: 300;
@@ -395,7 +399,7 @@
 }
 
 @font-face {
-    font-family: "Open Sans";
+    font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei New", "Microsoft Yahei", SimSun, STXihei, sans-serif;;
     src: url(../valo/fonts/open-sans/OpenSans-Regular-webfont.eot);
     src: url(../valo/fonts/open-sans/OpenSans-Regular-webfont.eot?#iefix) format("embedded-opentype"), url(../valo/fonts/open-sans/OpenSans-Regular-webfont.woff) format("woff"), url(../valo/fonts/open-sans/OpenSans-Regular-webfont.ttf) format("truetype");
     font-weight: 400;
@@ -403,7 +407,7 @@
 }
 
 @font-face {
-    font-family: "Open Sans";
+    font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei New", "Microsoft Yahei", SimSun, STXihei, sans-serif;;
     src: url(../valo/fonts/open-sans/OpenSans-Semibold-webfont.eot);
     src: url(../valo/fonts/open-sans/OpenSans-Semibold-webfont.eot?#iefix) format("embedded-opentype"), url(../valo/fonts/open-sans/OpenSans-Semibold-webfont.woff) format("woff"), url(../valo/fonts/open-sans/OpenSans-Semibold-webfont.ttf) format("truetype");
     font-weight: 600;
@@ -1576,7 +1580,9 @@ div.v-layout.v-horizontal.v-widget {
 .v-disabled [class$="splitter"] div {
     cursor: default;
 }
-
+.padding12 img{
+    padding:12px !important;
+}
 .v-disabled [class$="splitter"] div:before {
     display: none;
 }
@@ -1593,7 +1599,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme.v-app, .mytheme.v-app-loading {
-    font: 300 16px/1.55 "Open Sans", sans-serif;
+    font: 300 16px/1.55 "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei New", "Microsoft Yahei", SimSun, STXihei, sans-serif;
     color: #464646;
     background-color: #fafafa;
 }
@@ -13526,7 +13532,7 @@ div.v-layout.v-horizontal.v-widget {
     animation-name: blink !important;
     animation-duration: .5s !important;
     animation-timing-function: step-end !important;
-    animation-iteration-count: 8 !important;
+    animation-iteration-count: 12 !important;
     animation-direction: alternate !important;
 
 }
@@ -13534,7 +13540,7 @@ div.v-layout.v-horizontal.v-widget {
     animation-name: blinkII !important;
     animation-duration: .5s !important;
     animation-timing-function: step-end !important;
-    animation-iteration-count: 8 !important;
+    animation-iteration-count: 12 !important;
     animation-direction: alternate !important;
 
 }
@@ -15160,6 +15166,7 @@ div.v-layout.v-horizontal.v-widget {
         border-radius:2px  !important;
         border-width:1px  !important;*/
     border: 1px solid #ff9100;
+    font-weight: bold;
 }
 .hmunselectedcell{
     background-color: whitesmoke;
@@ -15187,4 +15194,11 @@ border-bottom:1px solid lightgray;
 .leftaligntext{
     text-align: left !important;
     
+}
+.maxwidth600{
+    max-width: 600px !important;
+}
+.rightaligntext{
+        text-align: right !important;
+    padding-right: 20px !important;
 }

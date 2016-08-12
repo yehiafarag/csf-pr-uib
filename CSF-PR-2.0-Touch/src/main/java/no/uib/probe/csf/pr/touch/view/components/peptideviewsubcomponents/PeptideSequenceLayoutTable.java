@@ -61,9 +61,11 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
 
     }
 
-    public PeptideSequenceLayoutTable(int width, int height) {
+    private final boolean smallScreen;
+    public PeptideSequenceLayoutTable(int width, int height,boolean smallScreen) {
         this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
+        this.smallScreen=smallScreen;
 
         tableItemscheckboxMap = new HashMap<>();
         this.tableItemsMap = new LinkedHashMap<>();
@@ -266,7 +268,7 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
                 publicationLink.addStyleName(ValoTheme.LABEL_TINY);
                 publicationLink.addStyleName("overflowtext");
 
-                ComparisonLable comparisonLabelObject = new ComparisonLable(comparison, objectId, quantProt, ds) {
+                ComparisonLable comparisonLabelObject = new ComparisonLable(comparison, objectId, quantProt, ds,smallScreen) {
 
                     @Override
                     public void select(Object itemId) {

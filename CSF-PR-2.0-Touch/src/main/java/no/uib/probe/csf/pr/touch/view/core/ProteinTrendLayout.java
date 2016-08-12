@@ -29,6 +29,7 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
     private final VerticalLayout sparkLineContainer;
     private final Object itemId;
     private int custTrend = -1;
+    private final boolean smallScreen;
 
     public LineChart getSparkLine() {
         return sparkLine;
@@ -51,8 +52,9 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
         }
     }
 
-    public ProteinTrendLayout(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, QuantComparisonProtein selectedProtein, int width, Object itemId, boolean draw) {
+    public ProteinTrendLayout(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, QuantComparisonProtein selectedProtein, int width, Object itemId, boolean draw, boolean smallScreen) {
         this.itemId = itemId;
+        this.smallScreen=smallScreen;
         this.selectedComparisonsList = selectedComparisonsList;
         proteinKey = selectedProtein.getProteinAccession();
         QuantDiseaseGroupsComparison comp = (QuantDiseaseGroupsComparison) selectedComparisonsList.toArray()[selectedComparisonsList.size() - 1];
@@ -104,7 +106,11 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
             }
         });
         if (draw) {
-            sparkLine = new LineChart(width, 500);
+            if (smallScreen) {
+                sparkLine = new LineChart(width, 200,smallScreen);
+            } else {
+                sparkLine = new LineChart(width, 500,smallScreen);
+            }
             sparkLine.updateData(selectedComparisonsList, proteinKey, custTrend);
             sparkLineContainer.addComponent(sparkLine);
         }
@@ -118,8 +124,9 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
     }
 
     public void maxmize() {
-        if(sparkLine==null)
+        if (sparkLine == null) {
             return;
+        }
         if (max) {
             setHeight(100, Unit.PIXELS);
             sparkLine.minimize();
@@ -149,7 +156,11 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
     protected AbsoluteLayoutState getState() {
         if (initSparkline == 6 && sparkLine == null) {
             initSparkline++;
-            sparkLine = new LineChart(width, 500);
+             if (smallScreen) {
+                sparkLine = new LineChart(width, 200,smallScreen);
+            } else {
+                sparkLine = new LineChart(width, 500,smallScreen);
+            }
             sparkLine.updateData(selectedComparisonsList, proteinKey, custTrend);
             sparkLineContainer.addComponent(sparkLine);
         }

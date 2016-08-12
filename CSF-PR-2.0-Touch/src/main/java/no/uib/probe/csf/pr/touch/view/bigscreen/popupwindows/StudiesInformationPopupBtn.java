@@ -14,14 +14,14 @@ public class StudiesInformationPopupBtn extends ImageContainerBtn {
 
     private final StudiesInformationWindow studiesInformationWindow;
 
-    public StudiesInformationPopupBtn() {
+    public StudiesInformationPopupBtn(boolean smallScreen) {
         this.updateIcon(new ThemeResource("img/file-text-o-1.png"));
         this.setWidth(40,Unit.PIXELS);
         this.setHeight(40,Unit.PIXELS);
         this.setEnabled(true);
       
         this.setDescription("Show dataset information");
-        this.studiesInformationWindow = new StudiesInformationWindow(null);
+        this.studiesInformationWindow = new StudiesInformationWindow(null,smallScreen);
     }
 
     public void updateData(Collection<QuantDatasetObject> quantDatasetSet) {

@@ -38,7 +38,7 @@ public class HeaderLayout extends HorizontalLayout{
                 + "</a> "
                 + "<a href='' align='left'  style='text-decoration:none;    margin-left: -2px;'>"
                 + "<font  SIZE='5.5' align='left' ; style='margin-left:0px;color:#4d749f;font-weight:bold;text-decoration:none;word-wrap: break-word !important; '>"
-                + "SF Proteome Resource (CSF-PR)"
+                + "SF Proteome Resource"
                 + "<font size='2'>"
                 + " v2.0"
                 + "</font>"

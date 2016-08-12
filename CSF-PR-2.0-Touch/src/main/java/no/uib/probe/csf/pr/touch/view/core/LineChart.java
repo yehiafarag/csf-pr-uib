@@ -69,15 +69,17 @@ public class LineChart extends AbsoluteLayout {
     private ExternalResource minImgUrl, maxImgUrl;
     private final Map<String, TrendSymbol> symbolMap;
     private final List<Integer> comparisonTrends;
+    private final boolean smallScreen;
 
     public DefaultXYDataset getDataset() {
         return dataset;
     }
 
-    public LineChart(int width, int height) {
+    public LineChart(int width, int height, boolean smallScreen) {
 
         this.width = width;
         this.height = height;
+        this.smallScreen=smallScreen;
         this.setWidth(width, Unit.PIXELS);
         this.setHeight(100, Unit.PERCENTAGE);
 
@@ -122,12 +124,15 @@ public class LineChart extends AbsoluteLayout {
         lineChart.getXYPlot().getDomainAxis().setVisible(false);
         lineChart.getXYPlot().getRangeAxis().setVisible(false);
         lineChart.getXYPlot().setOutlineVisible(true);
+
         lineChart.setPadding(new RectangleInsets(0, 5, 0, 5));
 
+//        lineChart.getXYPlot().setInsets(new RectangleInsets(5, 0, 0, 5));
 //        lineChart.getXYPlot().setRangeGridlinesVisible(false);
 //        lineChart.getXYPlot().setDomainGridlinesVisible(true);
         lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.decode("#1d69b4"));
         lineChart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(5));
+//        lineChart.setBorderVisible(true);
 //        gridcounter = 0;
 //        gridcounterII = 0;
 
@@ -167,9 +172,9 @@ public class LineChart extends AbsoluteLayout {
             String keyI = 0 + "_" + key;
             String keyII = 1 + "_" + key;
             String keyIII = 2 + "_" + key;
-             String keyIV = 3 + "_" + key;
+            String keyIV = 3 + "_" + key;
             String keyV = 4 + "_" + key;
-            
+
             trendValue = 0.0;
 
             if (comparison.getQuantComparisonProteinMap().containsKey(keyI)) {
@@ -183,10 +188,10 @@ public class LineChart extends AbsoluteLayout {
             } else if (comparison.getQuantComparisonProteinMap().containsKey(keyIII)) {
                 trendValue = comparison.getQuantComparisonProteinMap().get(keyIII).getOverallCellPercentValue();
                 comparisonTrends.add(comparison.getQuantComparisonProteinMap().get(keyIII).getSignificantTrindCategory());
-            }else if (comparison.getQuantComparisonProteinMap().containsKey(keyIV)) {
+            } else if (comparison.getQuantComparisonProteinMap().containsKey(keyIV)) {
                 trendValue = comparison.getQuantComparisonProteinMap().get(keyIV).getOverallCellPercentValue();
                 comparisonTrends.add(comparison.getQuantComparisonProteinMap().get(keyIV).getSignificantTrindCategory());
-            }else if (comparison.getQuantComparisonProteinMap().containsKey(keyV)) {
+            } else if (comparison.getQuantComparisonProteinMap().containsKey(keyV)) {
                 trendValue = comparison.getQuantComparisonProteinMap().get(keyV).getOverallCellPercentValue();
                 comparisonTrends.add(comparison.getQuantComparisonProteinMap().get(keyV).getSignificantTrindCategory());
             } else {
@@ -213,8 +218,12 @@ public class LineChart extends AbsoluteLayout {
         linevalues[1] = yLineValues;
         dataset.addSeries("line", linevalues);
         verticalLabels = maxLength > 40 && selectedComparisonList.size() > 4;
-
-        Font font = new Font("Open Sans", Font.PLAIN, 13);
+        Font font;
+        if (smallScreen) {
+            font = new Font("Open Sans", Font.PLAIN, 9);
+        } else {
+            font = new Font("Open Sans", Font.PLAIN, 13);
+        }
 
         xAxis = new SymbolAxis(null, xAxisLabels) {
             int x = 0;
@@ -308,7 +317,9 @@ public class LineChart extends AbsoluteLayout {
                 return ticks;
             }
         };
+
         xAxis.setTickLabelFont(font);
+
         xAxis.setLabelInsets(new RectangleInsets(2, 5, 2, 5));
 
         yAxis = new NumberAxis() {
@@ -578,8 +589,8 @@ public class LineChart extends AbsoluteLayout {
                     1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
                     1.0f, new float[]{10.0f, 6.0f}, 0.0f
             ));
-            
-        lineChart.setPadding(new RectangleInsets(0, 0, 0, 0));
+
+            lineChart.setPadding(new RectangleInsets(0, 0, 0, 0));
 
             maxImgUrl = new ExternalResource(this.getChartImage(lineChart, chartRenderingInfo, width, height));
             initLayoutComponents("maxmize");
@@ -646,13 +657,12 @@ public class LineChart extends AbsoluteLayout {
                     String keyI = 0 + "_" + proteinKey;
                     String keyII = 1 + "_" + proteinKey;
                     String keyIII = 2 + "_" + proteinKey;
-                    
-                     String keyIV = 3 + "_" + proteinKey;
+
+                    String keyIV = 3 + "_" + proteinKey;
                     String keyV = 4 + "_" + proteinKey;
-                    
-                    
+
                     if (doubleTrend == 0.0) {
-                        if (gc.getQuantComparisonProteinMap().containsKey(keyI) || gc.getQuantComparisonProteinMap().containsKey(keyII) || gc.getQuantComparisonProteinMap().containsKey(keyIII)|| gc.getQuantComparisonProteinMap().containsKey(keyIV)|| gc.getQuantComparisonProteinMap().containsKey(keyV)) {
+                        if (gc.getQuantComparisonProteinMap().containsKey(keyI) || gc.getQuantComparisonProteinMap().containsKey(keyII) || gc.getQuantComparisonProteinMap().containsKey(keyIII) || gc.getQuantComparisonProteinMap().containsKey(keyIV) || gc.getQuantComparisonProteinMap().containsKey(keyV)) {
                             trend = 2;
                         } else {
                             trend = 6;

@@ -174,7 +174,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
 //            return this.getChartImage(lineChart, 100, 100);
 //            
 //        }
-        final Border fullBorder = new LineBorder(Color.GRAY);
+//        final Border fullBorder = new LineBorder(Color.GRAY);
         JPanel proteinSequencePanel = new JPanel();
         proteinSequencePanel.setLayout(null);
         proteinSequencePanel.setSize(100, 100);
@@ -340,16 +340,18 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         this.mainProteinTable.addValueChangeListener(ProteinTable.this);
 
     }
+    private final boolean smallScreen;
 
     /**
      *
      * @param width
      * @param height
      */
-    public ProteinTable(int width, int height) {
+    public ProteinTable(int width, int height, boolean smallScreen) {
 
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeightUndefined();
+        this.smallScreen=smallScreen;
 
         this.columnHeaderSet = new LinkedHashSet<>();
         this.filtersMap = new LinkedHashMap<>();
@@ -608,7 +610,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
             ExternalLink accessionObject = new ExternalLink(accession, new ExternalResource(url));
             accessionObject.setDescription(description);
 //            ExternalLink nameObject = new ExternalLink(name, new ExternalResource(url));
-            ProteinTrendLayout protTrendLayout = new ProteinTrendLayout(selectedComparisonsList, protein, availableProteinLayoutWidth, protId, (protId < 10)) {
+            ProteinTrendLayout protTrendLayout = new ProteinTrendLayout(selectedComparisonsList, protein, availableProteinLayoutWidth, protId, (protId < 10),smallScreen) {
 
                 @Override
                 public void selectTableItem(Object itemId) {

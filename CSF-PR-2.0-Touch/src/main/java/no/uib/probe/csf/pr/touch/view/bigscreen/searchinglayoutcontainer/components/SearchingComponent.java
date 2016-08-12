@@ -57,21 +57,27 @@ public abstract class SearchingComponent extends BigBtn {
     private final Button loadDataBtn;
     private final SearchingUnitComponent searchingUnit;
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
-    private final VerticalLayout resultsLayout ;
-    private final    HorizontalLayout quantResultWrapping;
+    private final VerticalLayout resultsLayout;
+    private final HorizontalLayout quantResultWrapping;
 
-    public SearchingComponent(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager,boolean smallScreen) {
-        super("Search", "Search quantified and identified protein data", "img/search.png",smallScreen);
+    public SearchingComponent(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager, boolean smallScreen) {
+        super("Search", "Search protein data", "img/search.png", smallScreen);
         this.Data_handler = Data_handler;
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         VerticalLayout popupbodyLayout = new VerticalLayout();
         popupbodyLayout.setSpacing(true);
         popupbodyLayout.setWidth(100, Unit.PERCENTAGE);
-        popupbodyLayout.setMargin(new MarginInfo(true, true, false, true));
+        popupbodyLayout.setMargin(new MarginInfo(false, true, false, true));
         popupbodyLayout.addStyleName("searchpopup");
         searchingPanel = new PopupWindow(popupbodyLayout, "Search");
 
-        searchingUnit = new SearchingUnitComponent() {
+        int h1;
+        if (smallScreen) {
+            h1 = 190;
+        } else {
+            h1 = Math.min(((int) searchingPanel.getHeight() / 2) - 30,260);
+        }
+        searchingUnit = new SearchingUnitComponent(h1, smallScreen) {
 
             @Override
             public void resetSearching() {
@@ -85,7 +91,7 @@ public abstract class SearchingComponent extends BigBtn {
 
         };
 
-         resultsLayout = new VerticalLayout();
+        resultsLayout = new VerticalLayout();
         resultsLayout.addStyleName("roundedborder");
         resultsLayout.addStyleName("whitelayout");
         resultsLayout.addStyleName("padding20");
@@ -94,18 +100,18 @@ public abstract class SearchingComponent extends BigBtn {
 //        Panel searchingResults = new Panel(resultsLayout);
 //        searchingResults.setStyleName(ValoTheme.PANEL_BORDERLESS);
 //        searchingResults.setWidth(100, Unit.PERCENTAGE);
-        resultsLayout.setHeight(524, Unit.PIXELS);
+        h1=(int)searchingPanel.getHeight()-h1-30-160;
+        resultsLayout.setHeight(h1, Unit.PIXELS);
         resultsLayout.addStyleName("scrollable");
-        
+
         quantResultWrapping = new HorizontalLayout();
         quantResultWrapping.setWidthUndefined();
         quantResultWrapping.setSpacing(true);
 
         resultsLayout.addComponent(quantResultWrapping);
-        
-        
+
         overviewResults = new VerticalLayout();
-        
+
         quantResultWrapping.addComponent(overviewResults);
         quantResultWrapping.setComponentAlignment(overviewResults, Alignment.TOP_LEFT);
 
@@ -120,7 +126,7 @@ public abstract class SearchingComponent extends BigBtn {
         resultsLayout.addComponent(noresultsLabel);
         resultsLayout.setComponentAlignment(noresultsLabel, Alignment.MIDDLE_CENTER);
 
-         HorizontalLayout middleLayout = new HorizontalLayout();
+        HorizontalLayout middleLayout = new HorizontalLayout();
         middleLayout.setHeight(29, Sizeable.Unit.PIXELS);
         middleLayout.setWidth(100, Sizeable.Unit.PERCENTAGE);
         resultsLabel = new Label("Search Results");
@@ -131,7 +137,7 @@ public abstract class SearchingComponent extends BigBtn {
 
         HorizontalLayout legendContainer = new HorizontalLayout();
         legendContainer.setSpacing(true);
-        
+
         middleLayout.addComponent(legendContainer);
         middleLayout.setComponentAlignment(legendContainer, Alignment.TOP_RIGHT);
 
@@ -196,9 +202,6 @@ public abstract class SearchingComponent extends BigBtn {
         popupbodyLayout.setExpandRatio(resultsLayout, 524);
         popupbodyLayout.addComponent(controlBtnsLayout);
         popupbodyLayout.setExpandRatio(controlBtnsLayout, 50);
-        
-        
-         
 
     }
 
@@ -320,10 +323,11 @@ public abstract class SearchingComponent extends BigBtn {
         if (idSearchIdentificationProtList != null) {
             idDataResult.setVisible(true);
             idDataResult.removeAllComponents();
-            Link idSearchingLink = new Link(idSearchIdentificationProtList, new ExternalResource(VaadinSession.getCurrent().getAttribute("csf_pr_Url") + "/searchby:" + query.getSearchBy().replace(" ", "*") + "___searchkey:" + query.getSearchKeyWords().replace("\n", "__").replace(" ", "*")));
+            Link idSearchingLink = new Link(idSearchIdentificationProtList, new ExternalResource(VaadinSession.getCurrent().getAttribute("csf_pr_Url") + "searchby:" + query.getSearchBy().replace(" ", "*") + "___searchkey:" + query.getSearchKeyWords().replace("\n", "__").replace(" ", "*")));
             idSearchingLink.setTargetName("_blank");
             idSearchingLink.setStyleName(ValoTheme.LINK_SMALL);
             idSearchingLink.setDescription("View protein id results in CSF-PR v1.0");
+            idSearchingLink.setWidth(100,Unit.PERCENTAGE);
             idDataResult.addComponent(idSearchingLink);
 
         } else {

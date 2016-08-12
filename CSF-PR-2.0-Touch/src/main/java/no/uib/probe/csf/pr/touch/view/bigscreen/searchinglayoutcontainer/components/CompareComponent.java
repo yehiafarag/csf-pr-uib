@@ -58,17 +58,23 @@ public abstract class CompareComponent extends BigBtn {
     private PieChart proteinsChart;
 
     public CompareComponent(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager,boolean smallScreen) {
-        super("Compare", "Compare with your own protein quantification data.", "img/compare.png",smallScreen);
+        super("Compare", "Compare to your data", "img/compare.png",smallScreen);
         this.Data_handler = Data_handler;
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         VerticalLayout popupbodyLayout = new VerticalLayout();
         popupbodyLayout.setSpacing(true);
         popupbodyLayout.setWidth(100, Sizeable.Unit.PERCENTAGE);
-        popupbodyLayout.setMargin(new MarginInfo(true, true, false, true));
+        popupbodyLayout.setMargin(new MarginInfo(false, true, false, true));
         popupbodyLayout.addStyleName("searchpopup");
         comparePanel = new PopupWindow(popupbodyLayout, "Compare Data");
 
-        compareUnit = new ComparisonUnitComponent(Data_handler) {
+       int h1;
+        if (smallScreen) {
+            h1 = 190;
+        } else {
+            h1 = 460;//Math.min(((int) comparePanel.getHeight() / 2) - 30,460);
+        }
+        compareUnit = new ComparisonUnitComponent(Data_handler,h1,smallScreen) {
 
             @Override
             public void startComparing(Query query) {
@@ -83,7 +89,8 @@ public abstract class CompareComponent extends BigBtn {
         resultsLayout.addStyleName("whitelayout");
 
         resultsLayout.setWidth(100, Sizeable.Unit.PERCENTAGE);
-        resultsLayout.setHeight(254, Sizeable.Unit.PIXELS);
+        h1=(int)comparePanel.getHeight()-h1-30-130;
+        resultsLayout.setHeight(h1, Sizeable.Unit.PIXELS);
         resultsLayout.addStyleName("scrollable");
         quantCompareDataResult = new HorizontalLayout();
 

@@ -22,7 +22,7 @@ public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutC
 
     private final PopupWindow popupPanel;
 
-    public PopupInfoBtn(QuantDatasetObject quantDS, String btnName, String publicationAuthor) {
+    public PopupInfoBtn(QuantDatasetObject quantDS, String btnName, String publicationAuthor, boolean smallScreen) {
         this.addLayoutClickListener(PopupInfoBtn.this);
         this.setHeight("80px");
         this.setWidth("200px");
@@ -32,17 +32,23 @@ public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutC
         this.addComponent(btnLabel);
         this.setComponentAlignment(btnLabel, Alignment.MIDDLE_CENTER);
         this.setStyleName("tabbtn");
-        
+
         this.addStyleName("margintop");
         this.addStyleName("marginbottom");
 
-        DatasetInformationOverviewLayout infoLayout = new DatasetInformationOverviewLayout(quantDS);
-        VerticalLayout infoPopup = initPopupLayout(infoLayout);
-        
+        DatasetInformationOverviewLayout infoLayout = new DatasetInformationOverviewLayout(quantDS, smallScreen);
+        VerticalLayout infoPopup = initPopupLayout(infoLayout,smallScreen);
+
         popupPanel = new PopupWindow(infoPopup, publicationAuthor);
-        popupPanel.setHeight(Math.max(popupPanel.getHeight(), 650),Unit.PIXELS);
-        
-        
+
+        if (smallScreen) {
+//            popupPanel.setHeight(Math.max(popupPanel.getHeight(), 500), Unit.PIXELS);
+            popupPanel.setWidth(99,Unit.PERCENTAGE);
+            popupPanel.setHeight(99,Unit.PERCENTAGE);
+        } else {
+            popupPanel.setHeight(Math.max(popupPanel.getHeight(), 650), Unit.PIXELS);
+        }
+
 //        popupPanel = new PopupView(null, infoPopup);
 //        popupPanel.setWidth("2px");
 //        popupPanel.setHeight("2px");
@@ -51,18 +57,16 @@ public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutC
 //        popupPanel.setVisible(true);
 //        popupPanel.setPopupVisible(false);
 //        popupPanel.setHideOnMouseOut(false);
-
         this.setExpandRatio(btnLabel, 0.99f);
 //        this.setExpandRatio(popupPanel, 0.01f);
 
     }
 
-   
-    public PopupInfoBtn(String btnName, String publicationAuthor, Object[] publicationData) {
+    public PopupInfoBtn(String btnName, String publicationAuthor, Object[] publicationData, boolean smallScreen) {
         this.addLayoutClickListener(PopupInfoBtn.this);
         this.setDescription("Click to view publication information");
-        this.setHeight(80,Unit.PIXELS);
-        this.setWidth(200,Unit.PIXELS);
+        this.setHeight(80, Unit.PIXELS);
+        this.setWidth(200, Unit.PIXELS);
         Label btnLabel = new Label(btnName);
         btnLabel.setContentMode(ContentMode.HTML);
         this.addComponent(btnLabel);
@@ -72,37 +76,40 @@ public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutC
         this.addStyleName("marginbottom");
 
         VerticalLayout infoLayout = initPublicationLayout(publicationData);
-        VerticalLayout infoPopup = initPopupLayout(infoLayout);
-       
-        
-        popupPanel = new PopupWindow(infoPopup,publicationAuthor);
-        popupPanel.setWidth(100,Unit.PIXELS);
-        popupPanel.setHeight(400,Unit.PIXELS);
-       
+        VerticalLayout infoPopup = initPopupLayout(infoLayout,smallScreen);
+
+        popupPanel = new PopupWindow(infoPopup, publicationAuthor);
+        popupPanel.setWidth(600, Unit.PIXELS);
+        popupPanel.setHeight(400, Unit.PIXELS);
+
         this.setExpandRatio(btnLabel, 0.99f);
 
     }
 
-   
-    private VerticalLayout initPopupLayout(VerticalLayout infoLayout) {
+    private VerticalLayout initPopupLayout(VerticalLayout infoLayout, boolean smallScreen) {
 
 //        VerticalLayout popupBodyWrapper = new VerticalLayout();
 //        popupBodyWrapper.setWidth(infoLayout.getWidth()+100,infoLayout.getWidthUnits());
 //        popupBodyWrapper.setHeight(infoLayout.getHeight()+100,infoLayout.getHeightUnits());       
 //        
         VerticalLayout popupBodyLayout = new VerticalLayout();
-        popupBodyLayout.setWidth(99,Unit.PERCENTAGE);
-         popupBodyLayout.setHeight(99,Unit.PERCENTAGE);
+        if (smallScreen) {
+
+            popupBodyLayout.setWidth(100, Unit.PERCENTAGE);
+            popupBodyLayout.setHeight(100, Unit.PERCENTAGE);
+        } else {
+            popupBodyLayout.setWidth(99, Unit.PERCENTAGE);
+            popupBodyLayout.setHeight(99, Unit.PERCENTAGE);
+            popupBodyLayout.addStyleName("padding20");
+            popupBodyLayout.setSpacing(true);
+        }
         popupBodyLayout.setStyleName("pupupbody");
         popupBodyLayout.addStyleName("roundedborder");
-        popupBodyLayout.addStyleName("padding20");
-        popupBodyLayout.setSpacing(true);
+
 //        popupBodyWrapper.addComponent(popupBodyLayout);
 //        popupBodyWrapper.setComponentAlignment(popupBodyLayout, Alignment.TOP_CENTER);
-        
         popupBodyLayout.addLayoutClickListener(this);
         popupBodyLayout.addComponent(infoLayout);
-
 
         return popupBodyLayout;
 
@@ -122,7 +129,7 @@ public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutC
         publicationlayout.setStyleName("publicationstyle");
 
         Label pubmedIdLabel = new Label("<h5>PubMed Id: <a class='link' href='http://www.ncbi.nlm.nih.gov/pubmed/" + publicationData[0].toString() + "' target='_blank'  >" + publicationData[0].toString() + "</a></h5>");
-        
+
         pubmedIdLabel.setContentMode(ContentMode.HTML);
         publicationlayout.addComponent(pubmedIdLabel);
         pubmedIdLabel.setHeight("40px");
