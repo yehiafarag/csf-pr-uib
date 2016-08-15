@@ -83,7 +83,7 @@ public abstract class HeatMapLayout1 extends VerticalLayout {
     private final VerticalLayout controlBtnsContainer;
 
     private final Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> equalComparisonMap;
-    private final ZoomControler zoomControler;
+//    private final ZoomControler zoomControler;
 
 
     /*
@@ -126,7 +126,7 @@ public abstract class HeatMapLayout1 extends VerticalLayout {
         this.spacer.setWidth(175, Unit.PIXELS);
         topLayout.addComponent(spacer);
 
-        zoomControler = new ZoomControler(true);
+//        zoomControler = new ZoomControler(true);
 
         columnCategoryHeadersContainer = new HorizontalLayout();
         this.columnCategoryHeadersContainer.setHeight(100, Unit.PERCENTAGE);
@@ -294,7 +294,7 @@ public abstract class HeatMapLayout1 extends VerticalLayout {
             resetZoomBtn.addStyleName("heatmapcorner");
         }
 
-        zoomControler.addZoomableComponent(heatMapLayoutWrapper);
+//        zoomControler.addZoomableComponent(heatMapLayoutWrapper);
         equalComparisonMap = new HashMap<>();
     }
 
@@ -334,7 +334,7 @@ public abstract class HeatMapLayout1 extends VerticalLayout {
         } else {
             zoomLevel = 10;
         }
-        zoomControler.setDefaultZoomLevel(zoomLevel);
+//        zoomControler.setDefaultZoomLevel(zoomLevel);
         updateHeatMapLayout(rowsLbels, columnsLbels, patientsGroupComparisonsSet, rotate, colHeaderWidth, colHeaderHeight, rowHeaderHeight, fullQuantDsMap);
         updateHMThumb(this.getHMThumbImg(), fullQuantDsMap.size(), 0, equalComparisonMap);
     }

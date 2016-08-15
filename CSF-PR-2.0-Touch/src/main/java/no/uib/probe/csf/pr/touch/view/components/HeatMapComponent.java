@@ -181,13 +181,13 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
             public void setHeight(float height, Unit unit) {
                 super.setHeight(height, unit); //To change body of generated methods, choose Tools | Templates.
 
-                    if (height < 15) {
-                        this.addStyleName("smallfont");
-                    } else if (height >= 15 && height < 20) {
-                        this.addStyleName("midfont");
-                    } else {
-                        this.addStyleName("largefont");
-                    }
+                if (height < 15) {
+                    this.addStyleName("smallfont");
+                } else if (height >= 15 && height < 20) {
+                    this.addStyleName("midfont");
+                } else {
+                    this.addStyleName("largefont");
+                }
             }
 
         };
@@ -274,7 +274,9 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         this.fullQuantDsMap.putAll(fullQuantDsMap);
 //        heatmapLayoutContainer.updateData(rowheaders, colheaders, patientsGroupComparisonsSet, fullQuantDsMap);
 
-        for(HeatMapHeaderCellInformationBean rowheader:rowheaders)
+//        for (HeatMapHeaderCellInformationBean rowheader : rowheaders) {
+//           
+//        }
         this.rowheaders.clear();
         this.rowheaders.addAll(rowheaders);
         this.colheaders.clear();

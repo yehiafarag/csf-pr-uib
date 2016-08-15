@@ -46,7 +46,7 @@ public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutC
             popupPanel.setWidth(99,Unit.PERCENTAGE);
             popupPanel.setHeight(99,Unit.PERCENTAGE);
         } else {
-            popupPanel.setHeight(Math.max(popupPanel.getHeight(), 650), Unit.PIXELS);
+            popupPanel.setHeight(650, Unit.PIXELS);
         }
 
 //        popupPanel = new PopupView(null, infoPopup);

@@ -116,7 +116,11 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
 //        subBodyWrapper.setHeight((height - 200), Unit.PIXELS);
         subBodyWrapper.setHeightUndefined();
 
-        height = height - 42;
+        if (smallScreen) {
+            height = height - 10;
+        } else {
+            height = height - 42;
+        }
         quantInitialLayout = new QuantInitialLayout(availableDiseaseCategory, width - 20, height, smallScreen) {
             private String lastSelectedDisease = "";
 
@@ -185,7 +189,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
 
         Data_handler.loadDiseaseCategory("All Diseases");
 
-        heatmapComponent = new HeatMapComponent(CSFPR_Central_Manager, Data_handler, Data_handler.getDiseaseCategorySet(), mainViewPanelWidth, mainViewPanelHeight, Data_handler.getActiveDataColumns(), smallScreen) {
+        heatmapComponent = new HeatMapComponent(CSFPR_Central_Manager, Data_handler, Data_handler.getDiseaseCategorySet(), mainViewPanelWidth+100, mainViewPanelHeight, Data_handler.getActiveDataColumns(), smallScreen) {
 
             @Override
             public void updateIcon(String imageUrl) {

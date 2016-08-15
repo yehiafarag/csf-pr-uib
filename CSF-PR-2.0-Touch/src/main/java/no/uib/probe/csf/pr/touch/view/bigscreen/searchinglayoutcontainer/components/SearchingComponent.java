@@ -59,9 +59,12 @@ public abstract class SearchingComponent extends BigBtn {
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
     private final VerticalLayout resultsLayout;
     private final HorizontalLayout quantResultWrapping;
+    private int h1;
+    private final boolean smallScreen;
 
     public SearchingComponent(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager, boolean smallScreen) {
         super("Search", "Search protein data", "img/search.png", smallScreen);
+        this.smallScreen=smallScreen;
         this.Data_handler = Data_handler;
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         VerticalLayout popupbodyLayout = new VerticalLayout();
@@ -71,11 +74,12 @@ public abstract class SearchingComponent extends BigBtn {
         popupbodyLayout.addStyleName("searchpopup");
         searchingPanel = new PopupWindow(popupbodyLayout, "Search");
 
-        int h1;
         if (smallScreen) {
+            searchingPanel.setHeight(searchingPanel.getHeight() + 100, Unit.PIXELS);
+            searchingPanel.setWidth(searchingPanel.getWidth() + 100, Unit.PIXELS);
             h1 = 190;
         } else {
-            h1 = Math.min(((int) searchingPanel.getHeight() / 2) - 30,260);
+            h1 = Math.min(((int) searchingPanel.getHeight() / 2) - 30, 260);
         }
         searchingUnit = new SearchingUnitComponent(h1, smallScreen) {
 
@@ -100,7 +104,7 @@ public abstract class SearchingComponent extends BigBtn {
 //        Panel searchingResults = new Panel(resultsLayout);
 //        searchingResults.setStyleName(ValoTheme.PANEL_BORDERLESS);
 //        searchingResults.setWidth(100, Unit.PERCENTAGE);
-        h1=(int)searchingPanel.getHeight()-h1-30-160;
+        h1 = (int) searchingPanel.getHeight() - h1 - 30 - 160;
         resultsLayout.setHeight(h1, Unit.PIXELS);
         resultsLayout.addStyleName("scrollable");
 
@@ -212,6 +216,9 @@ public abstract class SearchingComponent extends BigBtn {
         quantDataResult.removeAllComponents();
         overviewResults.removeAllComponents();
         loadDataBtn.setEnabled(false);
+        if (smallScreen) {
+            resultsLayout.setHeight(h1, Unit.PIXELS);
+        }
 
     }
 
@@ -327,7 +334,7 @@ public abstract class SearchingComponent extends BigBtn {
             idSearchingLink.setTargetName("_blank");
             idSearchingLink.setStyleName(ValoTheme.LINK_SMALL);
             idSearchingLink.setDescription("View protein id results in CSF-PR v1.0");
-            idSearchingLink.setWidth(100,Unit.PERCENTAGE);
+            idSearchingLink.setWidth(100, Unit.PERCENTAGE);
             idDataResult.addComponent(idSearchingLink);
 
         } else {
@@ -457,6 +464,10 @@ public abstract class SearchingComponent extends BigBtn {
 
         }
         resultsLabel.setValue("Search Results (" + quantHitsList.size() + ")");
+        if (smallScreen) {
+            int h2 = h1 + 130;
+            resultsLayout.setHeight(h2, Unit.PIXELS);
+        }
     }
 
     @Override

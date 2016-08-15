@@ -51,7 +51,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         mainContainer.setHeightUndefined();
         int h = 60;
         if (smallScreen) {
-            h = 40;
+            h = 30;
         }
 
         mainContainer.setSpacing(true);

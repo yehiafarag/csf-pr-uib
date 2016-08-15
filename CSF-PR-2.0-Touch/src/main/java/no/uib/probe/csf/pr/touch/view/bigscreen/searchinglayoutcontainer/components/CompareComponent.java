@@ -56,9 +56,13 @@ public abstract class CompareComponent extends BigBtn {
     private final ComparisonUnitComponent compareUnit;
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
     private PieChart proteinsChart;
+    private final boolean smallScreen;
+    private final VerticalLayout resultsLayout;
+    private final HorizontalLayout middleLayout;
 
-    public CompareComponent(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager,boolean smallScreen) {
-        super("Compare", "Compare to your data", "img/compare.png",smallScreen);
+    public CompareComponent(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager, boolean smallScreen) {
+        super("Compare", "Compare to your data", "img/compare.png", smallScreen);
+        this.smallScreen = smallScreen;
         this.Data_handler = Data_handler;
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         VerticalLayout popupbodyLayout = new VerticalLayout();
@@ -68,13 +72,15 @@ public abstract class CompareComponent extends BigBtn {
         popupbodyLayout.addStyleName("searchpopup");
         comparePanel = new PopupWindow(popupbodyLayout, "Compare Data");
 
-       int h1;
+        int h1;
         if (smallScreen) {
-            h1 = 190;
+            comparePanel.setHeight(comparePanel.getHeight() + 100, Unit.PIXELS);
+            comparePanel.setWidth(comparePanel.getWidth() + 100, Unit.PIXELS);
+            h1 = 340;
         } else {
             h1 = 460;//Math.min(((int) comparePanel.getHeight() / 2) - 30,460);
         }
-        compareUnit = new ComparisonUnitComponent(Data_handler,h1,smallScreen) {
+        compareUnit = new ComparisonUnitComponent(Data_handler, h1, smallScreen) {
 
             @Override
             public void startComparing(Query query) {
@@ -83,21 +89,22 @@ public abstract class CompareComponent extends BigBtn {
 
         };
 
-        VerticalLayout resultsLayout = new VerticalLayout();
+        resultsLayout = new VerticalLayout();
         resultsLayout.addStyleName("roundedborder");
         resultsLayout.addStyleName("padding20");
         resultsLayout.addStyleName("whitelayout");
 
         resultsLayout.setWidth(100, Sizeable.Unit.PERCENTAGE);
-        h1=(int)comparePanel.getHeight()-h1-30-130;
+        h1 = (int) comparePanel.getHeight() - h1 - 30 - 130;
         resultsLayout.setHeight(h1, Sizeable.Unit.PIXELS);
+
         resultsLayout.addStyleName("scrollable");
         quantCompareDataResult = new HorizontalLayout();
 
         resultsLayout.addComponent(quantCompareDataResult);
         resultsLayout.setComponentAlignment(quantCompareDataResult, Alignment.MIDDLE_CENTER);
 
-        HorizontalLayout middleLayout = new HorizontalLayout();
+        middleLayout = new HorizontalLayout();
         middleLayout.setHeight(29, Sizeable.Unit.PIXELS);
         middleLayout.setWidth(100, Sizeable.Unit.PERCENTAGE);
         resultsLabel = new Label("Search Results");
@@ -116,12 +123,10 @@ public abstract class CompareComponent extends BigBtn {
         legendContainer.setComponentAlignment(legend2, Alignment.MIDDLE_RIGHT);
         legend2.addStyleName("marginright");
 
-
         TrendLegend legend = new TrendLegend("diseaselegend");
         legendContainer.addComponent(legend);
         legendContainer.setComponentAlignment(legend, Alignment.MIDDLE_RIGHT);
         legend.addStyleName("marginright");
-
 
         controlBtnsLayout = new HorizontalLayout();
         controlBtnsLayout.addStyleName("roundedborder");
@@ -129,8 +134,8 @@ public abstract class CompareComponent extends BigBtn {
         controlBtnsLayout.addStyleName("whitelayout");
         controlBtnsLayout.setMargin(new MarginInfo(true, false, false, false));
         controlBtnsLayout.setWidth(100, Sizeable.Unit.PERCENTAGE);
-        
-          HorizontalLayout leftsideWrapper = new HorizontalLayout();
+
+        HorizontalLayout leftsideWrapper = new HorizontalLayout();
         controlBtnsLayout.addComponent(leftsideWrapper);
         controlBtnsLayout.setComponentAlignment(leftsideWrapper, Alignment.TOP_LEFT);
         leftsideWrapper.setSpacing(true);
@@ -140,9 +145,10 @@ public abstract class CompareComponent extends BigBtn {
 
         idDataResult = new VerticalLayout();
         idDataResult.addStyleName("marginleft");
+        idDataResult.setWidth(600, Unit.PIXELS);
+
         leftsideWrapper.addComponent(idDataResult);
-        
-        
+
         controlBtnsLayout.addComponent(leftsideWrapper);
 
         HorizontalLayout btnsWrapper = new HorizontalLayout();
@@ -201,6 +207,12 @@ public abstract class CompareComponent extends BigBtn {
         popupbodyLayout.setExpandRatio(resultsLayout, 254);
         popupbodyLayout.addComponent(controlBtnsLayout);
         popupbodyLayout.setExpandRatio(controlBtnsLayout, 50);
+        if (smallScreen) {
+            resultsLayout.setVisible(false);
+            middleLayout.setVisible(false);
+            resultsLayout.setWidth(compareUnit.getWidth(),compareUnit.getWidthUnits());
+            resultsLayout.setHeight(compareUnit.getHeight()-40,compareUnit.getHeightUnits());
+        }
 
     }
 
@@ -209,6 +221,12 @@ public abstract class CompareComponent extends BigBtn {
         idDataResult.setVisible(false);
         quantCompareDataResult.removeAllComponents();
         loadDataBtn.setEnabled(false);
+        if (smallScreen) {
+            resultsLayout.setVisible(false);
+            middleLayout.setVisible(false);
+            compareUnit.setVisible(true);
+           
+        }
 
     }
     private PieChart datasetsChart;
@@ -298,10 +316,11 @@ public abstract class CompareComponent extends BigBtn {
         if (idSearchIdentificationProtList != null) {
             idDataResult.setVisible(true);
             idDataResult.removeAllComponents();
-            Link idSearchingLink = new Link(idSearchIdentificationProtList, new ExternalResource(VaadinSession.getCurrent().getAttribute("csf_pr_Url") + "/searchby:" + query.getSearchBy().replace(" ", "*") + "___searchkey:" + query.getSearchKeyWords().replace("\n", "__").replace(" ", "*")));
+            Link idSearchingLink = new Link(idSearchIdentificationProtList, new ExternalResource(VaadinSession.getCurrent().getAttribute("csf_pr_Url") + "searchby:" + query.getSearchBy().replace(" ", "*") + "___searchkey:" + query.getSearchKeyWords().replace("\n", "__").replace(" ", "*")));
             idSearchingLink.setTargetName("_blank");
             idSearchingLink.setStyleName(ValoTheme.LINK_SMALL);
             idSearchingLink.setDescription("View protein id results in CSF-PR v1.0");
+//            idSearchingLink.setWidth(defaultText);
             idDataResult.addComponent(idSearchingLink);
 
         } else {
@@ -357,14 +376,14 @@ public abstract class CompareComponent extends BigBtn {
             }
 
         };
-        
+
         notFoundChart.getMiddleDountLayout().addStyleName("defaultcursor");
         notFoundChart.getMiddleDountLayout().setDescription("Click slice to export");
         notFoundChart.setDescription("Click slice to export");
         int notFoundLength = notFoundAcc.length;
-          if (notFoundAcc.length == 1 && notFoundAcc[0].trim().equalsIgnoreCase("")) {
-                        notFoundLength=0;
-                    }
+        if (notFoundAcc.length == 1 && notFoundAcc[0].trim().equalsIgnoreCase("")) {
+            notFoundLength = 0;
+        }
         notFoundChart.initializeFilterData(new String[]{"Not Found", "Found"}, new Integer[]{notFoundLength, found, found + notFoundLength}, new Color[]{new Color(219, 169, 1), new Color(110, 177, 206),});
         notFoundChart.redrawChart();
         quantCompareDataResult.addComponent(notFoundChart);
@@ -399,6 +418,12 @@ public abstract class CompareComponent extends BigBtn {
 
         resultsLabel.setValue("Results Overview (" + quantHitsList[3] + "/" + (quantHitsList[3] + notFoundAcc.length) + ")");
 
+        if (smallScreen) {
+            resultsLayout.setVisible(true);
+            middleLayout.setVisible(true);
+            compareUnit.setVisible(false);
+        }
+        
     }
 
     @Override

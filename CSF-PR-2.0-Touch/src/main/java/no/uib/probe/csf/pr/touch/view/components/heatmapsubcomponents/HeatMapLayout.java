@@ -91,7 +91,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
     private final VerticalLayout controlBtnsContainer;
 
     private final Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> equalComparisonMap;
-    private final ZoomControler zoomControler;
+//    private final ZoomControler zoomControler;
     private final HeatmapFiltersContainerResizeControl filterResizeController;
 
 
@@ -143,7 +143,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 //        this.spacer.setHeight(100, Unit.PERCENTAGE);
 //        this.spacer.setWidth(175, Unit.PIXELS);
 //        topLayout.addComponent(spacer);
-        zoomControler = new ZoomControler(true);
+//        zoomControler = new ZoomControler(true);
 
 //        columnCategoryHeadersContainer = new HorizontalLayout();
 //        this.columnCategoryHeadersContainer.setHeight(100, Unit.PERCENTAGE);

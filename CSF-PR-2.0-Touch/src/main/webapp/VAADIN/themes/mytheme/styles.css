@@ -282,9 +282,9 @@
 }
 @keyframes blink { 
     50% {        border-color: orange; 
-                  border-width:2px;
+                 border-width:2px;
                  border-radius:40%;
-                
+
 
                  /* CSS3 Transition */
                  -webkit-transition: all .5s ease-in-out;
@@ -297,7 +297,7 @@
     50% {        border-color: orange; 
                  border-width:2px;
                  border-radius:40%;
-                
+
 
                  /* CSS3 Transition */
                  -webkit-transition: all .5s ease-in-out;
@@ -13055,11 +13055,17 @@ div.v-layout.v-horizontal.v-widget {
 .transparentlayout{
     background-color:rgba(255, 255, 255, 0.0);     
 }
+.nomargin{
+    margin: 0px !important;
+}
 .marginleft40{
     margin-left:40px;
 }
 .margintop10{
     margin-top: 10px !important;
+}
+.margintop15{
+    margin-top: 15px !important;
 }
 .margintop5{
     margin-top: 5px !important;
@@ -13323,7 +13329,9 @@ div.v-layout.v-horizontal.v-widget {
 }
 .bigbtn div{
     word-wrap:break-word;
-    border-radius:4px;
+    border-radius:4px;    
+    line-height:100%;
+
 
 }
 
@@ -13640,7 +13648,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .rotateheader{
-     text-align: center;
+    text-align: center;
     line-height: 100%;
     -ms-transform:rotate(270deg) translateX(-100% ); /* IE 9 */
     -moz-transform:rotate(270deg) translatfilterbtneX(-100% ); /* Firefox */
@@ -14247,7 +14255,7 @@ div.v-layout.v-horizontal.v-widget {
 
     /*min-width:50px;*/
     /*min-height:100px;*/
-    top:-50px;
+    top:-10px;
     padding-top:2px;    
     padding-right:2px;    
     padding-bottom:2px;
@@ -15187,18 +15195,41 @@ div.v-layout.v-horizontal.v-widget {
     font-size: 7px !important;
 }
 .topbottomborder{
-border-top:1px solid lightgray;
-border-bottom:1px solid lightgray;
+    border-top:1px solid lightgray;
+    border-bottom:1px solid lightgray;
 
 }
 .leftaligntext{
     text-align: left !important;
-    
+
 }
 .maxwidth600{
     max-width: 600px !important;
 }
 .rightaligntext{
-        text-align: right !important;
+    text-align: right !important;
     padding-right: 20px !important;
+    font-size: 12px !important;
+}
+.padding10x45{
+    padding-left:10px !important;
+    padding-right:45px!important;
+
+}
+.nopaddingimg img{
+
+    padding:0px !important;
+}
+.resizeto120{
+   max-height:100px;
+    margin:0px !important;
+    padding:5px !important;
+    overflow-y:hidden !important;
+      -webkit-transition: all 1.5s ease-in-out;
+    -moz-transition: all 1.5s ease-in-out;
+    -o-transition: all 1.5s ease-in-out;
+    transition: all 1.5s ease-in-out;
+
+    
+    
 }

@@ -101,12 +101,12 @@ public class InformationField extends VerticalLayout {
             } else if (stringValue.toCharArray().length > 100) {
 
                 valueLabel.setCaptionAsHtml(true);
-               
-                if (smallScreen) { 
-                    valueLabel.setCaption("<textarea cols='100' rows='3'  readonly>" + stringValue + "</textarea>");
-                    valueLabel.setHeight(40, Unit.PIXELS);
+
+                if (smallScreen) {
+                    valueLabel.setCaption("<textarea cols='100' rows='2'  readonly>" + stringValue + "</textarea>");
+                    valueLabel.setHeight(30, Unit.PIXELS);
                 } else {
- valueLabel.setCaption("<textarea cols='100' rows='5'  readonly>" + stringValue + "</textarea>");
+                    valueLabel.setCaption("<textarea cols='100' rows='5'  readonly>" + stringValue + "</textarea>");
                     int h = Math.min(((stringValue.toCharArray().length / 100) * 20), 70);
                     valueLabel.setHeight(h, Unit.PIXELS);
                 }

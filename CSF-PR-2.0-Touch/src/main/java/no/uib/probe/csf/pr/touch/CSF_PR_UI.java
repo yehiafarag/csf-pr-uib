@@ -71,8 +71,8 @@ public class CSF_PR_UI extends UI {
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeight(100, Unit.PERCENTAGE);
 
-        windowHeight = Page.getCurrent().getBrowserWindowHeight();// Math.max(Page.getCurrent().getBrowserWindowHeight(), 1080);
-        windowWidth = Page.getCurrent().getBrowserWindowWidth();//Math.max(Page.getCurrent().getBrowserWindowWidth(), 1920);
+        windowHeight =470;// Page.getCurrent().getBrowserWindowHeight();// Math.max(Page.getCurrent().getBrowserWindowHeight(), 1080);
+        windowWidth = 980;//Page.getCurrent().getBrowserWindowWidth();//Math.max(Page.getCurrent().getBrowserWindowWidth(), 1920);
 
         final SizeReporter sizeReporter = new SizeReporter(this);
 
@@ -130,7 +130,7 @@ public class CSF_PR_UI extends UI {
 
         windowHeight = Page.getCurrent().getBrowserWindowHeight();// Math.max(Page.getCurrent().getBrowserWindowHeight(), 1080);
         windowWidth =  Page.getCurrent().getBrowserWindowWidth();//Math.max(Page.getCurrent().getBrowserWindowWidth(), 1920);
-        if (windowHeight < 551 || windowWidth < 980) {
+        if (windowHeight < 470 || windowWidth < 980) {
             emptyLayout.setVisible(true);            
             System.err.println("at w "+windowWidth+" h "+windowHeight);
             Notification.show("Screen is too small current screen resolution ("+windowWidth+"x"+windowHeight+")", Notification.Type.ERROR_MESSAGE);
@@ -138,7 +138,7 @@ public class CSF_PR_UI extends UI {
         }
 
         if (emptyLayout.isVisible()) {
-            Page.getCurrent().reload();
+//            Page.getCurrent().reload();
         } else {
             for (Window w : getWindows()) {
                 w.center();

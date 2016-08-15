@@ -74,6 +74,7 @@ public class StudiesInformationWindow extends VerticalLayout implements LayoutEv
 //        int availableHeight = (int) popupWindow.getHeight();
 //        popupBody.setHeight(availableHeight, Unit.PIXELS);
         this.addLayoutClickListener(StudiesInformationWindow.this);
+        this.setHeight(10,Unit.PIXELS);
 
         TabSheet tab = new TabSheet();
         tab.setHeight(100.0f, Unit.PERCENTAGE);

@@ -22,12 +22,12 @@ import java.util.HashSet;
  */
 public class ZoomControler extends HorizontalLayout implements LayoutEvents.LayoutClickListener {
 
-    private final ImageContainerBtn resetZoomBtn;
+    private final SmallBtn resetZoomBtn;
     private final HashSet<Component> zoomableComponentsSet;
     private int zoomLevel = 10;
     private int defaultZoomLevel = 10;
 
-    public ZoomControler(boolean isHorizontal) {
+    public ZoomControler(boolean isHorizontal, boolean smallScreen) {
         this.zoomableComponentsSet = new HashSet<>();
         this.setWidthUndefined();
         this.setHeightUndefined();
@@ -36,26 +36,31 @@ public class ZoomControler extends HorizontalLayout implements LayoutEvents.Layo
 
         SmallBtn zoomInBtn = new SmallBtn(new ThemeResource("img/search-plus.png"));
         zoomInBtn.setData("zoomIn");
+        zoomInBtn.setDescription("Click to zoom in");
         zoomInBtn.addLayoutClickListener(ZoomControler.this);
-        resetZoomBtn = new ImageContainerBtn() {
-            @Override
-            public void onClick() {
-                zoomLevel = defaultZoomLevel;
-                updateZoomLevel(defaultZoomLevel);
-            }
+        resetZoomBtn = new SmallBtn(new ThemeResource("img/resetzoom.png")) {
+//            @Override
+//            public void onClick() {
+//                zoomLevel = defaultZoomLevel;
+//                updateZoomLevel(defaultZoomLevel);
+//            }
 
         };
-        resetZoomBtn.updateIcon(new ThemeResource("img/resetzoom.png"));
-        resetZoomBtn.setWidth(100, Unit.PERCENTAGE);
-        resetZoomBtn.setHeight(100, Unit.PERCENTAGE);
-        resetZoomBtn.setReadOnly(false);
-        resetZoomBtn.setEnabled(true);
+        resetZoomBtn.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
+            zoomLevel = defaultZoomLevel;
+            updateZoomLevel(defaultZoomLevel);
+        });
+        resetZoomBtn.setDescription("Click to reset zoom");
+//        resetZoomBtn.updateIcon();
+//        resetZoomBtn.setWidth(100, Unit.PERCENTAGE);
+//        resetZoomBtn.setHeight(100, Unit.PERCENTAGE);
+//        resetZoomBtn.setReadOnly(false);
+//        resetZoomBtn.setEnabled(true);
 //        this.setStyleName("paddingimg");
-        
-        resetZoomBtn.addStyleName("midimg");
 
         SmallBtn zoomOutBtn = new SmallBtn(new ThemeResource("img/search-minus.png"));
         zoomOutBtn.addLayoutClickListener(ZoomControler.this);
+        zoomOutBtn.setDescription("Click to zoom out");
         zoomOutBtn.setData("zoomOut");
 
         if (isHorizontal) {
@@ -65,21 +70,32 @@ public class ZoomControler extends HorizontalLayout implements LayoutEvents.Layo
             this.setComponentAlignment(zoomOutBtn, Alignment.TOP_CENTER);
         } else {
             VerticalLayout verticalContainer = new VerticalLayout();
-            this.setStyleName("midimg");
+
             verticalContainer.setSizeFull();
             verticalContainer.setSpacing(true);
-            zoomInBtn.setWidth(40, Unit.PIXELS);
-            zoomInBtn.setHeight(40, Unit.PIXELS);
+
             zoomInBtn.addStyleName(zoomStyleName);
             verticalContainer.addComponent(zoomInBtn);
             verticalContainer.setComponentAlignment(zoomInBtn, Alignment.TOP_CENTER);
             verticalContainer.addComponent(zoomOutBtn);
             verticalContainer.setComponentAlignment(zoomOutBtn, Alignment.TOP_CENTER);
-            zoomOutBtn.setWidth(40, Unit.PIXELS);
-            zoomOutBtn.setHeight(40, Unit.PIXELS);
-            resetZoomBtn.setWidth(40, Unit.PIXELS);
-            resetZoomBtn.setHeight(40, Unit.PIXELS);
-            
+            if (smallScreen) {
+                zoomInBtn.setWidth(25, Unit.PIXELS);
+                zoomInBtn.setHeight(25, Unit.PIXELS);
+                zoomOutBtn.setWidth(25, Unit.PIXELS);
+                zoomOutBtn.setHeight(25, Unit.PIXELS);
+                resetZoomBtn.setWidth(25, Unit.PIXELS);
+                resetZoomBtn.setHeight(25, Unit.PIXELS);
+            } else {
+                this.setStyleName("midimg");
+//                resetZoomBtn.addStyleName("midimg");
+                zoomInBtn.setWidth(40, Unit.PIXELS);
+                zoomInBtn.setHeight(40, Unit.PIXELS);
+                resetZoomBtn.setWidth(40, Unit.PIXELS);
+                resetZoomBtn.setHeight(40, Unit.PIXELS);
+                zoomOutBtn.setWidth(40, Unit.PIXELS);
+                zoomOutBtn.setHeight(40, Unit.PIXELS);
+            }
             verticalContainer.addComponent(resetZoomBtn);
             verticalContainer.setComponentAlignment(resetZoomBtn, Alignment.TOP_CENTER);
             resetZoomBtn.setVisible(false);
@@ -90,9 +106,9 @@ public class ZoomControler extends HorizontalLayout implements LayoutEvents.Layo
 
     }
 
-    public AbsoluteLayout getResetZoomBtn() {
-        return resetZoomBtn;
-    }
+//    public AbsoluteLayout getResetZoomBtn() {
+//        return resetZoomBtn;
+//    }
 
     public void addZoomableComponent(Component component) {
         zoomableComponentsSet.add(component);

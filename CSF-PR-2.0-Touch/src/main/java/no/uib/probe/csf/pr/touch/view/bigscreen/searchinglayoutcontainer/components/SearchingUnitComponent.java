@@ -29,6 +29,7 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
     private final OptionGroup searchByOptionGroup, diseaseCategoryOption;
     private final Query query;
     private final Label errorLabel;
+    private final boolean smallScreen;
     
     public Query getQuery() {
         return query;
@@ -49,6 +50,7 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
     public SearchingUnitComponent(int height, boolean smallScreen) {
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeight(height, Unit.PIXELS);
+        this.smallScreen = smallScreen;
         this.setStyleName("whitelayout");
         this.addStyleName("roundedborder");
         this.addStyleName("padding20");
@@ -119,6 +121,7 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
         btnWrapper.setComponentAlignment(clearBtn, Alignment.TOP_RIGHT);
         clearBtn.addClickListener((Button.ClickEvent event) -> {
             SearchingUnitComponent.this.reset();
+            removeStyleName("resizeto120");
         });
         
         Button searchingBtn = new Button("Search");
@@ -152,9 +155,9 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
         searchByOptionGroup.setRequired(true);
         searchByOptionGroup.commit();
         
-        if (searchingArea.getValue()!=null && !searchingArea.getValue().trim().equalsIgnoreCase("")&& searchByOptionGroup.isValid()) {
+        if (searchingArea.getValue() != null && !searchingArea.getValue().trim().equalsIgnoreCase("") && searchByOptionGroup.isValid()) {
 //            searchingArea.setRequired(false);
-//            searchByOptionGroup.setRequired(false);
+            searchByOptionGroup.setRequired(false);
             String searchKeyWords = searchingArea.getValue();
             
             String updatedSearchingKey = searchKeyWords.replace("\n", ",");
@@ -181,8 +184,12 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
             query.setSearchBy(searchByOptionGroup.getValue().toString());
             query.setDiseaseCategorys((Set<Object>) diseaseCategoryOption.getValue());
             search(query);
+            if (smallScreen) {
+                this.addStyleName("resizeto120");
+            }
             
         } else {
+             this.removeStyleName("resizeto120");
             errorLabel.setValue("Check keywords and searching by option");
             errorLabel.setVisible(true);
         }

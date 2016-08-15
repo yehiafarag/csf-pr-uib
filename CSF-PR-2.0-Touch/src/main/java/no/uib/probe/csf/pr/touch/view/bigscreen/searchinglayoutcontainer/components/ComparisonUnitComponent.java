@@ -89,15 +89,11 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
         this.setComponentAlignment(frame, Alignment.TOP_CENTER);
 
         Label title1 = new Label("1. Select/Enter Dataset Disease Groups");
-        title1.setStyleName(ValoTheme.LABEL_BOLD);
-        if (!smallScreen) {
-            frame.addComponent(title1);
-        }
+        frame.addComponent(title1);
 
         HorizontalLayout subFrame = new HorizontalLayout();
         subFrame.setWidth(100, Unit.PERCENTAGE);
         frame.addComponent(subFrame);
-        subFrame.addStyleName("margintop");
 
         this.diseaseGroupsListA = new ComboBox("<b>Disease Groups A</b>");
         subFrame.addComponent(diseaseGroupsListA);
@@ -174,20 +170,28 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
         });
 
         Label title2 = new Label("2. Insert UniProt Proteins Accessions");
-        title2.setStyleName(ValoTheme.LABEL_BOLD);
-        title2.addStyleName("margintop");
-        if (!smallScreen) {
-            frame.addComponent(title2);
-        }
+
+        frame.addComponent(title2);
 
         HorizontalLayout textAreaContainer = new HorizontalLayout();
         textAreaContainer.setWidth(100, Unit.PERCENTAGE);
         textAreaContainer.setSpacing(true);
         frame.addComponent(textAreaContainer);
         int h;
+
         if (smallScreen) {
+            title1.setStyleName(ValoTheme.LABEL_SMALL);
+            title1.addStyleName(ValoTheme.LABEL_BOLD);
+            title1.addStyleName("nomargin");
+            title2.setStyleName(ValoTheme.LABEL_SMALL);
+            title2.addStyleName(ValoTheme.LABEL_BOLD);
+            title2.addStyleName("nomargin");
             h = 70;
         } else {
+            subFrame.addStyleName("margintop");
+            title1.setStyleName(ValoTheme.LABEL_BOLD);
+            title2.setStyleName(ValoTheme.LABEL_BOLD);
+            title2.addStyleName("margintop");
             h = 150;
         }
 
@@ -218,8 +222,10 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
 
         };
         errorLabel.setStyleName(ValoTheme.LABEL_FAILURE);
+        errorLabel.addStyleName(ValoTheme.LABEL_SMALL);
+        errorLabel.addStyleName(ValoTheme.LABEL_TINY);
         errorLabel.setVisible(false);
-        errorLabel.setWidth(100, Unit.PERCENTAGE);
+        errorLabel.setWidth(400, Unit.PIXELS);
         bottomLayout.addComponent(errorLabel);
         bottomLayout.setComponentAlignment(errorLabel, Alignment.MIDDLE_CENTER);
 
@@ -266,6 +272,7 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
         textBoxIII.reset();
         diseaseGroupsListA.setValue(null);
         diseaseGroupsListB.setValue(null);
+       
 
     }
 
