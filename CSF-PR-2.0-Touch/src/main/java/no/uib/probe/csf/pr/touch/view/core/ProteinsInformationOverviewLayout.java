@@ -28,16 +28,16 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
     /**
      * @param width
      */
-    public ProteinsInformationOverviewLayout(int width) {
+    public ProteinsInformationOverviewLayout() {
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
         otherSymbols.setGroupingSeparator('.');
         df = new DecimalFormat("#.###", otherSymbols);
-        this.setWidth(width, Unit.PIXELS);
+        this.setWidth(100, Unit.PERCENTAGE);
         this.setHeightUndefined();
         this.setSpacing(true);
-        this.setMargin(new MarginInfo(false, false, false, false));
+        this.setMargin(false);
         this.setStyleName("whitelayout");
-        proteinsForm = initProteinsForm(width);
+        proteinsForm = initProteinsForm();
         proteinsForm.setVisible(false);
         this.addComponent(proteinsForm);
 
@@ -46,9 +46,9 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
     private final VerticalLayout proteinsForm;
     private InformationField quantBasisComment, accsession, name, quantPeptidesNumber, idPeptidesNumber, pValue, pValueComm, foldChange, roc, additionalComments, pvalueSignificanceThreshold;
 
-    private VerticalLayout initProteinsForm(int width) {
+    private VerticalLayout initProteinsForm() {
         VerticalLayout mainContainer = new VerticalLayout();
-        mainContainer.setWidth(width, Unit.PIXELS);
+        mainContainer.setWidth(100, Unit.PERCENTAGE);
         mainContainer.setHeightUndefined();
         mainContainer.setSpacing(true);
 
@@ -68,9 +68,8 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
 
         idPeptidesNumber = new InformationField("#Identified Peptides");
         rowI.addComponent(idPeptidesNumber);
-        
-        
-         HorizontalLayout rowII = new HorizontalLayout();
+
+        HorizontalLayout rowII = new HorizontalLayout();
         rowII.setWidth(100, Unit.PERCENTAGE);
         rowII.setHeightUndefined();
         mainContainer.addComponent(rowII);
@@ -85,13 +84,11 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
 
         pValueComm = new InformationField("Statistical Comments");
         rowII.addComponent(pValueComm);
-        
-        
-         HorizontalLayout rowIII = new HorizontalLayout();
+
+        HorizontalLayout rowIII = new HorizontalLayout();
         rowIII.setWidth(100, Unit.PERCENTAGE);
         rowIII.setHeightUndefined();
         mainContainer.addComponent(rowIII);
-
 
         roc = new InformationField("ROC AUC");
         rowIII.addComponent(roc);
@@ -101,7 +98,7 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
 
         additionalComments = new InformationField("Additional Comments");
         rowIII.addComponent(additionalComments);
-        
+
         rowIII.addComponent(new VerticalLayout());
 
         return mainContainer;

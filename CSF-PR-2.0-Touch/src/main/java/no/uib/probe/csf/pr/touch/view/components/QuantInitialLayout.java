@@ -7,13 +7,13 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseCategoryObject;
+import no.uib.probe.csf.pr.touch.view.core.ResizableTextLabel;
 
 /**
  *
@@ -49,9 +49,9 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         this.addComponent(frame);
         this.setComponentAlignment(frame, Alignment.TOP_CENTER);
 
-        Label title = new Label("<center Style='color:#4d749f;'>Disease Category</center>");
+        ResizableTextLabel title = new ResizableTextLabel("<center Style='color:#4d749f;'>Disease Category</center>");
         title.setContentMode(ContentMode.HTML);
-        title.addStyleName(ValoTheme.LABEL_H2);
+        title.addStyleName(ValoTheme.LABEL_H3);
         title.setWidth(250, Unit.PIXELS);
 //        title.addStyleName(ValoTheme.LABEL_BOLD);
         frame.addComponent(title, 1, 1);
@@ -98,7 +98,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         }
         miniLayout.addStyleName("bigbtn");
         miniLayout.addStyleName("blink");
-        this.smallScreen=smallScreen;
+        this.smallScreen = smallScreen;
 
     }
     private final ThemeResource logoRes = new ThemeResource("img/logo.png");
@@ -126,14 +126,15 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
             String SpacerII;
             SpacerI = "<br/>(";
             SpacerII = ")";
-            Label diseaseTitle = new Label("<center>" + diseaseObject.getDiseaseCategory() + SpacerI + diseaseObject.getDatasetNumber() + "/" + max + SpacerII + "</center>");
-               if (height >= 60 && height <= 80) {
-                        diseaseTitle.addStyleName("smallfont");
-                    } else {
-                        diseaseTitle.addStyleName("largefont");
-                    }
+            ResizableTextLabel diseaseTitle = new ResizableTextLabel("<center>" + diseaseObject.getDiseaseCategory() + SpacerI + diseaseObject.getDatasetNumber() + "/" + max + SpacerII + "</center>");
+            if (height >= 60 && height <= 80) {
+                diseaseTitle.addStyleName("xsmallfont");
+            } else {
+                diseaseTitle.addStyleName("smallfont");
+            }
+             diseaseTitle.addStyleName("padding2");
             diseaseTitle.setDescription("#Datasets: " + diseaseObject.getDatasetNumber());
-            
+
             diseaseLayout.addComponent(diseaseTitle);
             diseaseTitle.setContentMode(ContentMode.HTML);
             diseaseLayout.setComponentAlignment(diseaseTitle, Alignment.MIDDLE_CENTER);
@@ -159,10 +160,16 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         SpacerII = ")";
         diseaseLayout.addLayoutClickListener(this);
 
-        Label diseaseTitle = new Label("<center>" + diseaseObject.getDiseaseCategory() + SpacerI + diseaseObject.getDatasetNumber() + "/" + max + SpacerII + "</center>");
+        ResizableTextLabel diseaseTitle = new ResizableTextLabel("<center>" + diseaseObject.getDiseaseCategory() + SpacerI + diseaseObject.getDatasetNumber() + "/" + max + SpacerII + "</center>");
         diseaseTitle.setDescription("#Datasets: " + diseaseObject.getDatasetNumber());
         diseaseLayout.addComponent(diseaseTitle);
         diseaseTitle.setContentMode(ContentMode.HTML);
+          if (dia >= 60 && dia <= 80) {
+                diseaseTitle.addStyleName("xsmallfont");
+            } else {
+                diseaseTitle.addStyleName("smallfont");
+            }
+          diseaseTitle.addStyleName("padding2");
         diseaseLayout.setComponentAlignment(diseaseTitle, Alignment.MIDDLE_CENTER);
         diseaseLayout.setStyleName(diseaseObject.getDiseaseStyleName());
 

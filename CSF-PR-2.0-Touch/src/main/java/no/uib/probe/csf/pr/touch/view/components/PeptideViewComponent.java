@@ -414,7 +414,8 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         controlBtnsContainer.setComponentAlignment(checkUncheckBtn, Alignment.MIDDLE_CENTER);
         checkUncheckBtn.setDescription("Show/hide checked column");
 
-        InformationButton info = new InformationButton("Info", false);
+        InformationButton info = new InformationButton("The protein panel provides an overview of the available information for the currently selected protein. The chart at the top shows the quantitative information for the selected protein, classified into Increased, Decreased or Equal. If the quantitative data for a given comparison is not exclusively in the same direction an average value will be shown. \n" +
+"To show the individual datasets click the \"Show datasets\" button in the lower right corner. Clicking the \"Resize dataset symbols based on number of patients\" will then change the chart to indicate the number of patients in each dataset. The lower half of the panel shows the details for each dataset, including the sequence coverage (if available). Click a peptide or any of the other columns for further details.", false);
         controlBtnsContainer.addComponent(info);
           if (smallScreen) {
             info.setWidth(25, Unit.PIXELS);

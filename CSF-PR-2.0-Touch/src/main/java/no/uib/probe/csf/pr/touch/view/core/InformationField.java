@@ -98,7 +98,7 @@ public class InformationField extends VerticalLayout {
             }
             if (stringValue.contains("</font>")) {
                 valueLabel.setCaption(stringValue);
-            } else if (stringValue.toCharArray().length > 100) {
+            } else if (stringValue.toCharArray().length > 60) {
 
                 valueLabel.setCaptionAsHtml(true);
 

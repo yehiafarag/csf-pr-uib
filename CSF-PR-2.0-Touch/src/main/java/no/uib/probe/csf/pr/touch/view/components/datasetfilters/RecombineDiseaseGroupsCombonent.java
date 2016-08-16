@@ -105,7 +105,7 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
         btnsFrame.setComponentAlignment(leftsideWrapper, Alignment.TOP_LEFT);
         leftsideWrapper.setSpacing(true);
 
-        InformationButton info = new InformationButton("info", true);
+        InformationButton info = new InformationButton("The disease group names can be altered by the user or reset to the names used in the original publications. If the same name is used for more than one group those groups will be merged into a single group in the other displays. After altering the names click the \"Update\" button.", true);
         leftsideWrapper.addComponent(info);
 
         HorizontalLayout bottomContainert = new HorizontalLayout();

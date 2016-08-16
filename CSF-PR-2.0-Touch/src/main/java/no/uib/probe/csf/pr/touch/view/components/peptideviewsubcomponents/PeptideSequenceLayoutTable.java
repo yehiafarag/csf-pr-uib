@@ -6,6 +6,7 @@
 package no.uib.probe.csf.pr.touch.view.components.peptideviewsubcomponents;
 
 import com.vaadin.data.Property;
+import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.CheckBox;
@@ -258,6 +259,13 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
                 TrendSymbol symbol = new TrendSymbol(trend);
                 symbol.setWidth(12, Unit.PIXELS);
                 symbol.setHeight(12, Unit.PIXELS);
+               
+               
+               
+               
+               
+               
+               
                 QuantDatasetObject ds = comparison.getDatasetMap().get(quantProt.getDsKey());
                 String title = "<font size='2'>" + ds.getAuthor() + "<br/>(" + ds.getYear() + ")</font> ";
                 ExternalLink publicationLink = new ExternalLink(title, new ExternalResource("http://www.ncbi.nlm.nih.gov/pubmed/" + ds.getPumedID()));
@@ -267,6 +275,9 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
                 publicationLink.addStyleName(ValoTheme.LABEL_SMALL);
                 publicationLink.addStyleName(ValoTheme.LABEL_TINY);
                 publicationLink.addStyleName("overflowtext");
+                
+                
+                
 
                 ComparisonLable comparisonLabelObject = new ComparisonLable(comparison, objectId, quantProt, ds,smallScreen) {
 
@@ -280,8 +291,16 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
                     }
 
                 };
+                symbol.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
+                    comparisonLabelObject.openComparisonPopup();
+                });
+               symbol.setDescription(comparisonLabelObject.getDescription());
 
-                ProteinSequenceContainer proteinCoverageLayout = new ProteinSequenceContainer(sequence, protein.getQuantPeptidesList(), proteinSequenceContainerWidth, quantProt.getDsKey());
+               String protName = quantProt.getUniprotProteinName().trim();
+        if (protName.equalsIgnoreCase("")) {
+            protName = quantProt.getPublicationProteinName();
+        }
+                ProteinSequenceContainer proteinCoverageLayout = new ProteinSequenceContainer(sequence, protein.getQuantPeptidesList(), proteinSequenceContainerWidth, quantProt.getDsKey(),smallScreen,protName);
                 proteinSeqSet.add(proteinCoverageLayout);
                 tableItemsMap.put(objectId, new Object[]{objectId + 1, symbol, comparisonLabelObject, publicationLink, ds.getPatientsGroup1Number() + ds.getPatientsGroup2Number(), proteinCoverageLayout, ""});
                 peptideSequenceTable.addItem(tableItemsMap.get(objectId), objectId);

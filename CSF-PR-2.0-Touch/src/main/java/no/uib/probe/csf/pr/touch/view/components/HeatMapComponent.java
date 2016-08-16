@@ -2,12 +2,10 @@ package no.uib.probe.csf.pr.touch.view.components;
 
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.ThemeResource;
-import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import java.util.Collection;
 import java.util.Iterator;
@@ -30,7 +28,7 @@ import no.uib.probe.csf.pr.touch.view.components.datasetfilters.ReorderSelectGro
 import no.uib.probe.csf.pr.touch.view.components.datasetfilters.SerumCsfFilter;
 import no.uib.probe.csf.pr.touch.view.components.heatmapsubcomponents.HeatMapLayout;
 import no.uib.probe.csf.pr.touch.view.components.heatmapsubcomponents.HeatmapFiltersContainerResizeControl;
-import no.uib.probe.csf.pr.touch.view.core.InfoPopupBtn;
+import no.uib.probe.csf.pr.touch.view.core.ResizableTextLabel;
 
 /**
  *
@@ -46,7 +44,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
     private final Set<DiseaseGroupComparison> patientsGroupComparisonsSet;
     private final Map<Integer, QuantDatasetObject> fullQuantDsMap, filteredQuantDsMap;
 
-    private final Label datasetCounterLabel;
+    private final ResizableTextLabel datasetCounterLabel;
     private final SerumCsfFilter serumCsfFilter;
     private final ReorderSelectGroupsFilter reorderSelectBtn;
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
@@ -175,20 +173,20 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         btnsWrapper.addComponent(clearFilterBtn, 2, 1);
         btnsWrapper.setComponentAlignment(clearFilterBtn, Alignment.MIDDLE_RIGHT);
 
-        datasetCounterLabel = new Label() {
+        datasetCounterLabel = new ResizableTextLabel() {
 
-            @Override
-            public void setHeight(float height, Unit unit) {
-                super.setHeight(height, unit); //To change body of generated methods, choose Tools | Templates.
-
-                if (height < 15) {
-                    this.addStyleName("smallfont");
-                } else if (height >= 15 && height < 20) {
-                    this.addStyleName("midfont");
-                } else {
-                    this.addStyleName("largefont");
-                }
-            }
+//            @Override
+//            public void setHeight(float height, Unit unit) {
+//                super.setHeight(height, unit); //To change body of generated methods, choose Tools | Templates.
+//
+//                if (height < 15) {
+//                    this.addStyleName("smallfont");
+//                } else if (height >= 15 && height < 20) {
+//                    this.addStyleName("midfont");
+//                } else {
+//                    this.addStyleName("largefont");
+//                }
+//            }
 
         };
         datasetCounterLabel.setDescription("#Datasets");
@@ -201,12 +199,17 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
 
         HeatmapFiltersContainerResizeControl filterSizeController = new HeatmapFiltersContainerResizeControl(btnsWrapper, datasetPieChartFiltersBtn, reconbineDiseaseGroupsFiltersBtn, reorderSelectBtn, bottomBtnContainer, serumCsfFilter, clearFilterBtn, datasetCounterLabel);
 
-        InfoPopupBtn info = new InfoPopupBtn("infoText");
-        info.setWidth(25, Unit.PIXELS);
-        info.setHeight(25, Unit.PIXELS);
-
+//        InfoPopupBtn info = new InfoPopupBtn("The disease group comparison table provides an overview of the number of datasets available for each comparison. Hover over a given cell to get additional details about the comparison. Selecting one or more cells in the table will display the corresponding protein details. To filter the data use the options in the upper left corner");
+//        info.setWidth(25, Unit.PIXELS);
+//        info.setHeight(25, Unit.PIXELS);
+        int availableHMHeight;
         //init heatmap
-        int availableHMHeight = mainbodyLayoutHeight - 85;
+//        if (smallScreen) {
+            availableHMHeight = mainbodyLayoutHeight;
+//        } else {
+//            availableHMHeight = mainbodyLayoutHeight - 40;
+//        }
+
         heatmapLayoutContainer = new HeatMapLayout(mainbodyLayoutWidth, availableHMHeight, activeColumnHeaders, filterSizeController, smallScreen) {
             @Override
             public void updateSelectionManager(Set<QuantDiseaseGroupsComparison> selectedQuantComparisonsList) {

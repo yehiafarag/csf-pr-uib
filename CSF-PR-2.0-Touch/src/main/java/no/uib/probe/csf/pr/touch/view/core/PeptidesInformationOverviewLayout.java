@@ -17,11 +17,11 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
     private DecimalFormat df = null;
     private final VerticalLayout peptideForm;
 
-    public PeptidesInformationOverviewLayout(int width, QuantPeptide quantPeptide) {
+    public PeptidesInformationOverviewLayout(QuantPeptide quantPeptide) {
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
         otherSymbols.setGroupingSeparator('.');
         df = new DecimalFormat("#.###", otherSymbols);
-        this.setWidth(width, Unit.PIXELS);
+        this.setWidth(100, Unit.PERCENTAGE);
         this.setHeightUndefined();
         this.setSpacing(true);
         peptideForm = initPeptidesForm();

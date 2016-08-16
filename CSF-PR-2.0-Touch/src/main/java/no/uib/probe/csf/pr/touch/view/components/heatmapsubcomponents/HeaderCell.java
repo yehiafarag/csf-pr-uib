@@ -173,11 +173,11 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
             valueLabel.setWidth(height - 2, unit);
         } else {
             if (height < 15) {
-                valueLabel.addStyleName("smallfont");
+                valueLabel.addStyleName("xxsmallfont");
             } else if (height >= 15 && height < 20) {
-                valueLabel.addStyleName("midfont");
+                valueLabel.addStyleName("xsmallfont");
             } else {
-                valueLabel.addStyleName("largefont");
+                valueLabel.addStyleName("smallfont");
             }
         }
     }
@@ -187,11 +187,11 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
         super.setWidth(width, unit); //To change body of generated methods, choose Tools | Templates
         if (rotate) {
              if (width < 15) {
-            valueLabel.addStyleName("smallfont");
+            valueLabel.addStyleName("xxsmallfont");
         } else if (width >= 15 && width < 20) {
-            valueLabel.addStyleName("midfont");
+            valueLabel.addStyleName("xsmallfont");
         } else {
-            valueLabel.addStyleName("largefont");
+            valueLabel.addStyleName("smallfont");
         }
             valueLabel.setHeight(width - 2, unit);
         }

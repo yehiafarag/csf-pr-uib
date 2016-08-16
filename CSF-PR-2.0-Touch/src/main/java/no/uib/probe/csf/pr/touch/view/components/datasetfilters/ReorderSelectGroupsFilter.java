@@ -140,7 +140,7 @@ public abstract class ReorderSelectGroupsFilter extends VerticalLayout implement
         btnsFrame.setComponentAlignment(leftsideWrapper, Alignment.TOP_LEFT);
         leftsideWrapper.setSpacing(true);
 
-        InformationButton info = new InformationButton("info", true);
+        InformationButton info = new InformationButton("The disease groups shown and the order of these groups can be controlled by dragging and dropping the groups in the table, and by selecting only the groups to display. When the wanted order is achieved click the \"Apply\" button.", true);
         leftsideWrapper.addComponent(info);
         
         

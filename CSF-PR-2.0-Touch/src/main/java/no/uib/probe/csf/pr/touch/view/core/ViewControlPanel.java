@@ -120,8 +120,8 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
         this.setComponentAlignment(mainViewLayout, Alignment.MIDDLE_CENTER);
         listener = (LayoutEvents.LayoutClickEvent event) -> {
 
-            if (event.getClickedComponent() == null || event.getClickedComponent().getStyleName().trim().contains("h2") || (event.getClickedComponent().getStyleName().trim().equalsIgnoreCase("") && !(event.getClickedComponent() instanceof Label))) {
-                System.out.println("return " + (event.getClickedComponent() == null) + " || " + (event.getClickedComponent().getStyleName().trim().contains("h2")) + " || " + (event.getClickedComponent().getStyleName().trim().equalsIgnoreCase("")) + "  " + (event.getClickedComponent() instanceof Label));
+            if (event.getClickedComponent() == null || event.getClickedComponent().getStyleName().trim().contains("h3") || (event.getClickedComponent().getStyleName().trim().equalsIgnoreCase("") && !(event.getClickedComponent() instanceof Label))) {
+                System.out.println("return " + (event.getClickedComponent() == null) + " || " + (event.getClickedComponent().getStyleName().trim().contains("h3")) + " || " + (event.getClickedComponent().getStyleName().trim().equalsIgnoreCase("")) + "  " + (event.getClickedComponent() instanceof Label));
                 return;
             }
             hideInit = false;

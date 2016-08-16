@@ -31,11 +31,15 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
     private final Set<VerticalLayout> ptmsLayoutMap = new HashSet<>();
     private final List< StackedBarPeptideComponent> stackedPeptides = new ArrayList<>();
     private boolean ptmAvailable = false;
+    private final boolean smallScreen;
+    private final String proteinName;
 
-    public PeptideSequenceContainer(int width, LinkedHashSet<StackedBarPeptideComponent> allPeptidesStackedBarComponentsMap) {
+    public PeptideSequenceContainer(int width, LinkedHashSet<StackedBarPeptideComponent> allPeptidesStackedBarComponentsMap,boolean smallScreen,String proteinName) {
         this.allPeptidesStackedBarComponentsMap = allPeptidesStackedBarComponentsMap;
         this.setVisible(true);
         this.setWidth(width, Unit.PIXELS);
+        this.smallScreen = smallScreen;
+        this.proteinName=proteinName;
         
 
         highPeptidesSequencesBar = new AbsoluteLayout();
@@ -308,7 +312,7 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
                             } else {
                                 sequence = peptideII.getParam("sequence").toString() + peptideI.getParam("sequence");
                             }
-                            StackedBarPeptideComponent updatedCoverComp = new StackedBarPeptideComponent(x0, widthArea, "", "",null);
+                            StackedBarPeptideComponent updatedCoverComp = new StackedBarPeptideComponent(x0, widthArea, "", "",null,smallScreen,proteinName);
                             refrenceOrderedCompoMap.remove(keyI);
                             refrenceOrderedCompoMap.remove(keyII);
                             updatedCoverComp.setParam("sequence", sequence);
@@ -331,7 +335,7 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
                                 widthArea = peptideI.getWidthArea() + (peptideI.getX0() - peptideII.getX0());
                             }
 
-                            StackedBarPeptideComponent updatedCoverComp = new StackedBarPeptideComponent(x0, widthArea, "", "",null);
+                            StackedBarPeptideComponent updatedCoverComp = new StackedBarPeptideComponent(x0, widthArea, "", "",null,smallScreen,proteinName);
                             refrenceOrderedCompoMap.remove(keyI);
                             refrenceOrderedCompoMap.remove(keyII);
                             updatedCoverComp.setParam("sequence", sequence);
@@ -353,7 +357,7 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
                                 widthArea = peptideII.getWidthArea();
                                 sequence = peptideII.getParam("sequence").toString();
                             }
-                            StackedBarPeptideComponent updatedCoverComp = new StackedBarPeptideComponent(x0, widthArea, "", "",null);
+                            StackedBarPeptideComponent updatedCoverComp = new StackedBarPeptideComponent(x0, widthArea, "", "",null,smallScreen,proteinName);
                             refrenceOrderedCompoMap.remove(keyI);
                             refrenceOrderedCompoMap.remove(keyII);
                             updatedCoverComp.setParam("sequence", sequence);

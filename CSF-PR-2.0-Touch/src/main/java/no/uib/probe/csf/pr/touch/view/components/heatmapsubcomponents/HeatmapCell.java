@@ -197,10 +197,13 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
         if (valueLabel == null) {
             return;
         }
-        if (height < 15) {
-            valueLabel.addStyleName("smallfont");
+         if (height <= 10) {
+            valueLabel.addStyleName("xxsmallfont");
+        } 
+         else if (height < 15) {
+            valueLabel.addStyleName("xsmallfont");
         } else if (height >= 15 && height < 20) {
-            valueLabel.addStyleName("midfont");
+            valueLabel.addStyleName("smallfont");
         } else {
             valueLabel.addStyleName("largefont");
         }

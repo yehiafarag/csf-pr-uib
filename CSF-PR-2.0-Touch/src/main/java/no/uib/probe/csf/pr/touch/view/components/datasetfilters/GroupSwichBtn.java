@@ -169,7 +169,7 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
         btnsFrame.setComponentAlignment(leftsideWrapper, Alignment.TOP_LEFT);
         leftsideWrapper.setSpacing(true);
         
-        InformationButton info = new InformationButton("info", true);
+        InformationButton info = new InformationButton("The order of the groups in each comparison can be switched, i.e. A vs. B or B vs. A. To switch two groups click the icon with the two arrows in between the two groups. When the desired order is achieved click the \"Apply\" button.", true);
         leftsideWrapper.addComponent(info);
         
         Button applyFilters = new Button("Apply");

@@ -167,7 +167,7 @@ public abstract class SearchingComponent extends BigBtn {
         controlBtnsLayout.setComponentAlignment(btnsWrapper, Alignment.TOP_LEFT);
         btnsWrapper.setSpacing(true);
 
-        InformationButton info = new InformationButton("info", true);
+        InformationButton info = new InformationButton("Searching allows the user to locate a specific protein or a group of proteins. Input the search text at the top, select the input type and the disease category, and click \"Search\". A graphical overview of the results will be displayed at the bottom. You can either load all the results or select a subset via the charts before loading.", true);
         btnsWrapper.addComponent(info);
 
         idDataResult = new VerticalLayout();

@@ -36,7 +36,6 @@ import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFSelection;
 import no.uib.probe.csf.pr.touch.view.components.datasetfilters.GroupSwichBtn;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
-import no.uib.probe.csf.pr.touch.view.core.InfoPopupBtn;
 import no.uib.probe.csf.pr.touch.view.core.BubbleComponent;
 import no.uib.probe.csf.pr.touch.view.core.InformationButton;
 import no.uib.probe.csf.pr.touch.view.core.TrendLegend;
@@ -349,7 +348,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         controlBtnsContainer.addComponent(selectMultiBtn);
         controlBtnsContainer.setComponentAlignment(selectMultiBtn, Alignment.MIDDLE_CENTER);
 
-        InformationButton info = new InformationButton("Info", false);
+        InformationButton info = new InformationButton("The bubble chart provides an overview of all the proteins found in the currently selected disease group comparisons. The size of each bubble represents the number of proteins in the given comparison and the color represents the trend. To change the order of the groups in a given comparison please click the \"Switch protein groups\" icon in the lower right corner. Select one or more bubbles to display the corresponding proteins.", false);
         controlBtnsContainer.addComponent(info);
         if (smallScreen) {
             info.setWidth(25, Unit.PIXELS);

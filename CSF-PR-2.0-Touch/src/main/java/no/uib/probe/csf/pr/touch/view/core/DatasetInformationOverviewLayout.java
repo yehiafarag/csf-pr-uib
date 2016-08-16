@@ -27,7 +27,9 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         this.smallScreen = smallScreen;
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeight(100, Unit.PERCENTAGE);
-        this.setSpacing(true);
+        if (!smallScreen) {
+            this.setSpacing(true);
+        }
 
         datasetInfoForm = initQuantDatasetInformationLayout();
         datasetInfoForm.setVisible(true);
@@ -51,7 +53,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         mainContainer.setHeightUndefined();
         int h = 60;
         if (smallScreen) {
-            h = 30;
+            h = 25;
         }
 
         mainContainer.setSpacing(true);
@@ -133,7 +135,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         HorizontalLayout rowV = new HorizontalLayout();
         rowV.setWidth(100, Unit.PERCENTAGE);
         if (smallScreen) {
-            rowV.setHeight(75, Unit.PIXELS);
+            rowV.setHeight(65, Unit.PIXELS);
         } else {
             rowV.setHeightUndefined();
         }
@@ -155,7 +157,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         HorizontalLayout rowVI = new HorizontalLayout();
         rowVI.setWidth(100, Unit.PERCENTAGE);
         if (smallScreen) {
-            rowVI.setHeight(75, Unit.PIXELS);
+            rowVI.setHeight(65, Unit.PIXELS);
         } else {
             rowVI.setHeightUndefined();
         }
@@ -178,7 +180,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         HorizontalLayout rowVII = new HorizontalLayout();
         rowVII.setWidth(100, Unit.PERCENTAGE);
         if (smallScreen) {
-            rowVII.setHeight(75, Unit.PIXELS);
+            rowVII.setHeight(65, Unit.PIXELS);
         } else {
             rowVII.setHeightUndefined();
         }

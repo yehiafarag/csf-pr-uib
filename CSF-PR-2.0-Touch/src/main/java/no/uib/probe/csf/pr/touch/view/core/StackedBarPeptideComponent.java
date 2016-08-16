@@ -6,13 +6,8 @@
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.event.LayoutEvents;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.PopupView;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.ValoTheme;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -129,7 +124,7 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
     private final VerticalLayout ptmLayout = new VerticalLayout();
     private boolean ptmAvailable = false;
 
-    private  PopupView datasetInfoPopup;
+    private PopupWindow popupWindow;
 
     /**
      *
@@ -138,7 +133,7 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
      * @param peptideKey
      * @param peptideModification
      */
-    public StackedBarPeptideComponent(int x0, int widthArea, String peptideKey, String peptideModification, QuantPeptide quantPeptide) {
+    public StackedBarPeptideComponent(int x0, int widthArea, String peptideKey, String peptideModification, QuantPeptide quantPeptide, boolean smallScreen, String proteinName) {
         this.setHeight(15, Unit.PIXELS);
         this.setWidth((widthArea), Unit.PIXELS);
         this.x0 = x0;
@@ -153,46 +148,135 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
             ptmLayout.setVisible(false);
         }
         if (quantPeptide != null) {
-            VerticalLayout popupbodyLayout = new VerticalLayout();
-            popupbodyLayout.setSpacing(true);
-            popupbodyLayout.setWidth(1000, Unit.PIXELS);
-            popupbodyLayout.setMargin(new MarginInfo(false, false, true, true));
-            popupbodyLayout.addStyleName("border");
 
-            HorizontalLayout headerIContainer = new HorizontalLayout();
-            headerIContainer.setWidth(100, Unit.PERCENTAGE);
+            VerticalLayout popupBody = new VerticalLayout();
+            popupBody.setWidth(100, Unit.PERCENTAGE);
+            popupBody.setHeight(100, Unit.PERCENTAGE);
 
-            Label titleI = new Label("Peptides");
-            titleI.setStyleName(ValoTheme.LABEL_BOLD);
-            headerIContainer.addComponent(titleI);
+            popupBody.setMargin(false);
+            popupBody.setSpacing(true);
+            popupBody.addStyleName("roundedborder");
+            popupBody.addStyleName("whitelayout");
+//        if (smallScreen) {
+//            popupBody.addStyleName("padding2");
+//        } else {
+            popupBody.addStyleName("padding20");
+//        }
+            VerticalLayout frame = new VerticalLayout();
+            frame.setWidth(99, Unit.PERCENTAGE);
+            frame.setHeight(99, Unit.PERCENTAGE);
+            frame.setSpacing(true);
+            frame.addComponent(popupBody);
+            String title = "Peptide Information (" + proteinName.trim() + ")";
 
-            popupbodyLayout.addComponent(headerIContainer);
-
-            CloseButton closePopup = new CloseButton();
-            closePopup.setWidth(10, Unit.PIXELS);
-            closePopup.setHeight(10, Unit.PIXELS);
-            headerIContainer.addComponent(closePopup);
-            headerIContainer.setComponentAlignment(closePopup, Alignment.TOP_RIGHT);
-            closePopup.addStyleName("translateleft10");
-
-            PeptidesInformationOverviewLayout peptideInfo = new PeptidesInformationOverviewLayout(1000, quantPeptide);
-            popupbodyLayout.addComponent(peptideInfo);
-            datasetInfoPopup = new PopupView(null, popupbodyLayout) {
+            popupWindow = new PopupWindow(frame, title) {
 
                 @Override
-                public void setPopupVisible(boolean visible) {
-                    this.setVisible(visible);
-                    super.setPopupVisible(visible); //To change body of generated methods, choose Tools | Templates.
+                public void close() {
+                    popupWindow.setVisible(false);
+
+                }
+
+                @Override
+                public void setVisible(boolean visible) {
+
+                    if (visible) {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+
+                        }
+                    }
+                    super.setVisible(visible); //To change body of generated methods, choose Tools | Templates.
                 }
 
             };
-            closePopup.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
-                datasetInfoPopup.setPopupVisible(false);
-            });
-            datasetInfoPopup.setVisible(false);
-            datasetInfoPopup.setCaptionAsHtml(true);
-            datasetInfoPopup.setHideOnMouseOut(false);
-            this.addComponent(datasetInfoPopup);
+            if (smallScreen) {
+                popupWindow.setWidth(popupWindow.getWidth() + 100, popupWindow.getWidthUnits());
+
+                popupWindow.setHeight(popupWindow.getHeight() + 100, popupWindow.getHeightUnits());
+
+            }else{
+            popupWindow.setHeight(500, popupWindow.getHeightUnits());
+            
+            }
+                
+
+            PeptidesInformationOverviewLayout peptideInfo = new PeptidesInformationOverviewLayout(quantPeptide);
+
+            popupBody.addComponent(peptideInfo);
+            popupBody.setComponentAlignment(peptideInfo, Alignment.TOP_CENTER);
+
+//            VerticalLayout popupbodyLayout = new VerticalLayout();
+//            popupbodyLayout.setSpacing(true);
+//            popupbodyLayout.setWidth(1000, Unit.PIXELS);
+//            popupbodyLayout.setMargin(new MarginInfo(false, false, true, true));
+//            popupbodyLayout.addStyleName("border");
+//
+//            HorizontalLayout headerIContainer = new HorizontalLayout();
+//            headerIContainer.setWidth(100, Unit.PERCENTAGE);
+//
+//            Label titleI = new Label("Peptides");
+//            titleI.setStyleName(ValoTheme.LABEL_BOLD);
+//            headerIContainer.addComponent(titleI);
+//
+//            popupbodyLayout.addComponent(headerIContainer);
+//
+//            CloseButton closePopup = new CloseButton();
+//            closePopup.setWidth(10, Unit.PIXELS);
+//            closePopup.setHeight(10, Unit.PIXELS);
+//            headerIContainer.addComponent(closePopup);
+//            headerIContainer.setComponentAlignment(closePopup, Alignment.TOP_RIGHT);
+//            closePopup.addStyleName("translateleft10");
+//
+//           
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            datasetInfoPopup = new PopupView(null, popupbodyLayout) {
+//
+//                @Override
+//                public void setPopupVisible(boolean visible) {
+//                    this.setVisible(visible);
+//                    super.setPopupVisible(visible); //To change body of generated methods, choose Tools | Templates.
+//                }
+//
+//            };
+//            closePopup.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
+//                datasetInfoPopup.setPopupVisible(false);
+//            });
+//            datasetInfoPopup.setVisible(false);
+//            datasetInfoPopup.setCaptionAsHtml(true);
+//            datasetInfoPopup.setHideOnMouseOut(false);
+//            this.addComponent(datasetInfoPopup);
             this.addLayoutClickListener(StackedBarPeptideComponent.this);
         }
 
@@ -277,7 +361,7 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
 
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-        datasetInfoPopup.setPopupVisible(true);
+        popupWindow.setVisible(true);
     }
 
 }

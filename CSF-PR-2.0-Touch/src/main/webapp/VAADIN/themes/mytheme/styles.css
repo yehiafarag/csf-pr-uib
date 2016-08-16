@@ -14216,8 +14216,20 @@ div.v-layout.v-horizontal.v-widget {
     padding:20px !important;
 
 }
+.padding15{
+    padding:15px !important;
+
+}
 .padding10{
     padding:10px !important;
+
+}
+.padding5{
+    
+    padding:5px !important;
+}
+.padding2{
+    padding:2px !important;
 
 }
 .sidebtnwrapper{
@@ -15185,7 +15197,7 @@ div.v-layout.v-horizontal.v-widget {
     margin-top:40px !important;
 }
 
-.midfont{
+/*.midfont{
     font-size: 11px !important;
 }
 .largefont{
@@ -15193,7 +15205,31 @@ div.v-layout.v-horizontal.v-widget {
 }
 .smallfont{
     font-size: 7px !important;
+}*/
+.xsmallfont{
+    font-size: x-small !important;
 }
+.smallfont{
+    font-size: small !important;
+}
+.xxsmallfont{
+    font-size: 5px !important;
+}
+.largefont{
+    font-size: large !important;
+}
+.xlargefont{
+    font-size: x-large !important;
+}
+
+
+
+
+
+
+
+
+
 .topbottomborder{
     border-top:1px solid lightgray;
     border-bottom:1px solid lightgray;

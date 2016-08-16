@@ -94,6 +94,7 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
         maxMinBtn.setStyleName("maxmizebtn");
         maxMinBtn.setDescription("Click to maximize");
 
+        if(!smallScreen){
         resizeIconLayout.addComponent(maxMinBtn);
         resizeIconLayout.setComponentAlignment(maxMinBtn, Alignment.TOP_RIGHT);
 
@@ -105,6 +106,7 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
 
             }
         });
+        }
         if (draw) {
             if (smallScreen) {
                 sparkLine = new LineChart(width, 200,smallScreen);
@@ -124,7 +126,7 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
     }
 
     public void maxmize() {
-        if (sparkLine == null) {
+        if (sparkLine == null || smallScreen) {
             return;
         }
         if (max) {

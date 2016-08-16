@@ -138,6 +138,7 @@ public class CSF_PR_UI extends UI {
         }
 
         if (emptyLayout.isVisible()) {
+            emptyLayout.setVisible(false);
 //            Page.getCurrent().reload();
         } else {
             for (Window w : getWindows()) {

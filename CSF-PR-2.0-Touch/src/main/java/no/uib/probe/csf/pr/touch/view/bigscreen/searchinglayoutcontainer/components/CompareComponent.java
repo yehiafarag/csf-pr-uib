@@ -140,7 +140,7 @@ public abstract class CompareComponent extends BigBtn {
         controlBtnsLayout.setComponentAlignment(leftsideWrapper, Alignment.TOP_LEFT);
         leftsideWrapper.setSpacing(true);
 
-        InformationButton info = new InformationButton("info", true);
+        InformationButton info = new InformationButton("To compare your own data against the protein information in CSF-PR upload your UniProt accession numbers (divided into the three categories Increased, Equal and Decreased), select (or name) the disease comparison categories for your input data at the top, and click the \"Compare\" button. A graphical overview of the results will be displayed at the bottom. You can either load all the results or select a subset via the charts before loading.", true);
         leftsideWrapper.addComponent(info);
 
         idDataResult = new VerticalLayout();
