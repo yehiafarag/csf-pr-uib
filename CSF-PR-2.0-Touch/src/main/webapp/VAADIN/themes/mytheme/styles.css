@@ -15269,3 +15269,9 @@ div.v-layout.v-horizontal.v-widget {
     
     
 }
+.maxwidth500{
+    max-width: 500px !important;
+}
+.maxhight500{
+    max-height:  500px !important;
+}

@@ -31,9 +31,11 @@ public class InformationButton extends ImageContainerBtn {
         updateIcon(new ThemeResource("img/help.png"));
         VerticalLayout mainBody = new VerticalLayout();
         mainBody.setHeightUndefined();
+
         mainBody.setStyleName("border");
         mainBody.addStyleName("infoLayout");
-
+        mainBody.addStyleName("maxwidth500");
+        mainBody.addStyleName("maxhight500");
         this.addStyleName("pointer");
 
         this.setDescription("Click to view information");
