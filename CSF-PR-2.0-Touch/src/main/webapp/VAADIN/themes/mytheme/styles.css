@@ -13509,6 +13509,8 @@ div.v-layout.v-horizontal.v-widget {
     max-height:70px !important;
     text-overflow:ellipsis !important;
     overflow:auto !important;
+    padding:0px !important;
+    margin-top:-50px !important;
 }
 .valuelabel  textArea:focus{
 

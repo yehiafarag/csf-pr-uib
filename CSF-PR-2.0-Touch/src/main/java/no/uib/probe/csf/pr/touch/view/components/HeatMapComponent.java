@@ -90,7 +90,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         btnsWrapper.setColumnExpandRatio(2, 25);
         btnsWrapper.setSpacing(false);
 
-        datasetPieChartFiltersBtn = new DatasetPieChartFiltersComponent() {
+        datasetPieChartFiltersBtn = new DatasetPieChartFiltersComponent(smallScreen) {
             @Override
             public void updateSystem(Set<Integer> selectedDatasetIds) {
                 System.out.println("at update system ");
@@ -106,7 +106,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         btnsWrapper.addComponent(datasetPieChartFiltersBtn, 0, 1);
         btnsWrapper.setComponentAlignment(datasetPieChartFiltersBtn, Alignment.MIDDLE_LEFT);
 
-        reconbineDiseaseGroupsFiltersBtn = new RecombineDiseaseGroupsCombonent(diseaseCategorySet) {
+        reconbineDiseaseGroupsFiltersBtn = new RecombineDiseaseGroupsCombonent(diseaseCategorySet,smallScreen) {
 
             @Override
             public void updateSystem(Map<String, Map<String, String>> updatedGroupsNamesMap) {
@@ -120,7 +120,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         bottomBtnContainer.addComponent(reconbineDiseaseGroupsFiltersBtn);
         bottomBtnContainer.setComponentAlignment(reconbineDiseaseGroupsFiltersBtn, Alignment.TOP_LEFT);
 
-        reorderSelectBtn = new ReorderSelectGroupsFilter() {
+        reorderSelectBtn = new ReorderSelectGroupsFilter(smallScreen) {
 
             @Override
             public void updateSystem(LinkedHashSet<HeatMapHeaderCellInformationBean> rowHeaders, LinkedHashSet<HeatMapHeaderCellInformationBean> colHeaders) {

@@ -24,6 +24,10 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
     private final int index;
+
+    public String getDiseaseCategory() {
+        return diseaseCategory;
+    }
     private final Label valueLabel;
 
     /**
@@ -174,7 +178,7 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
         } else {
             if (height < 15) {
                 valueLabel.addStyleName("xxsmallfont");
-            } else if (height >= 15 && height < 20) {
+            } else if (height >= 15 && height < 18) {
                 valueLabel.addStyleName("xsmallfont");
             } else {
                 valueLabel.addStyleName("smallfont");

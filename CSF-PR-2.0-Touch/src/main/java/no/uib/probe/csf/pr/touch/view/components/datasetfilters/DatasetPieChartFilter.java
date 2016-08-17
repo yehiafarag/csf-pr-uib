@@ -63,6 +63,7 @@ public abstract class DatasetPieChartFilter extends AbsoluteLayout implements La
     private final VerticalLayout middleDountLayout;
 
     private final Label selectAllLabel;
+    private final boolean smallScreen;
 
     /**
      *
@@ -72,9 +73,11 @@ public abstract class DatasetPieChartFilter extends AbsoluteLayout implements La
      * @param filterHeight
      * @param filterWidth
      */
-    public DatasetPieChartFilter(String filterTitle, String filterId, int filterIndex, int filterWidth, int filterHeight) {
+    public DatasetPieChartFilter(String filterTitle, String filterId, int filterIndex, int filterWidth, int filterHeight, boolean smallScreen) {
         this.width = filterWidth;
         this.height = filterHeight;
+        this.smallScreen = smallScreen;
+
         this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
         this.chartBackgroundImg = new Image();
@@ -84,8 +87,14 @@ public abstract class DatasetPieChartFilter extends AbsoluteLayout implements La
         chartBackgroundImg.setHeight(100, Unit.PERCENTAGE);
         this.addComponent(chartBackgroundImg, "left: 0px; top: 0px");
         middleDountLayout = new VerticalLayout();
-        middleDountLayout.setWidth(120, Unit.PIXELS);
-        middleDountLayout.setHeight(120, Unit.PIXELS);
+
+        if (smallScreen) {
+            middleDountLayout.setVisible(false);
+        } else {
+            middleDountLayout.setWidth(120, Unit.PIXELS);
+            middleDountLayout.setHeight(120, Unit.PIXELS);
+        }
+
         middleDountLayout.setStyleName("middledountchart");
 
         selectAllLabel = new Label();
@@ -108,7 +117,7 @@ public abstract class DatasetPieChartFilter extends AbsoluteLayout implements La
         plot.setNoDataMessage("No data available");
         plot.setCircular(true);
         plot.setLabelGap(0);
-        plot.setLabelFont(new Font("Open Sans", Font.PLAIN, 13));
+        plot.setLabelFont(new Font("Helvetica Neue", Font.PLAIN, 13));
         plot.setLabelGenerator(new PieSectionLabelGenerator() {
 
             @Override
@@ -138,19 +147,30 @@ public abstract class DatasetPieChartFilter extends AbsoluteLayout implements La
         plot.setIgnoreZeroValues(true);
 
         chart = new JFreeChart(plot);
-        chart.setTitle(new TextTitle(title, new Font("Open Sans", Font.BOLD, 13)));
+        if (smallScreen) {
+            chart.setTitle(new TextTitle(title, new Font("Helvetica Neue", Font.PLAIN, 10)));
+            chart.getLegend().setItemFont(new Font("Helvetica Neue", Font.PLAIN, 9));
+        } else {
+            chart.setTitle(new TextTitle(title, new Font("Helvetica Neue", Font.PLAIN, 13))); 
+            chart.getLegend().setItemFont(new Font("Helvetica Neue", Font.PLAIN, 12));
+        }
         chart.setBorderPaint(null);
         chart.setBackgroundPaint(null);
         chart.getLegend().setFrame(BlockBorder.NONE);
-        chart.getLegend().setItemFont(new Font("Open Sans", Font.PLAIN, 12));
+        
 
     }
 
     private String saveToFile(final JFreeChart chart, double width, double height) {
         byte imageData[];
         try {
-            width = Math.max(width, 250);
-            height = Math.max(height, 250);
+            if (smallScreen) {
+                width = Math.max(width, 121);
+                height = Math.max(height, 121);
+            } else {
+                width = Math.max(width, 250);
+                height = Math.max(height, 250);
+            }
 
             imageData = ChartUtilities.encodeAsPNG(chart.createBufferedImage((int) width, (int) height, chartRenderingInfo));
             String base64 = Base64.encodeBytes(imageData);
@@ -295,7 +315,7 @@ public abstract class DatasetPieChartFilter extends AbsoluteLayout implements La
             dataset.setValue(slice.getLabel(), slice.getValue());
             fullDsIds.addAll(slice.getDatasetIds());
             plot.setSectionPaint(slice.getLabel(), slice.getColor());
-             plot.setSectionOutlinePaint(slice.getLabel(), null);
+            plot.setSectionOutlinePaint(slice.getLabel(), null);
             valuesMap.put(slice.getLabel(), slice.getValue() + "");
             defaultKeyColorMap.put(slice.getLabel(), slice.getColor());
             selectedKeyColorMap.put(slice.getLabel(), slice.getColor().darker());

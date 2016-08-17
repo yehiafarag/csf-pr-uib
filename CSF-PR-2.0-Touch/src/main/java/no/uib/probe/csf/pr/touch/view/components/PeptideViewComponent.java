@@ -178,7 +178,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
 
         mainBodyContainer.addComponent(topLayout);
         mainBodyContainer.setComponentAlignment(topLayout, Alignment.TOP_CENTER);
-        lineChart = new StudiesLineChart(width - 50, (componentHeight - 50)) {
+        lineChart = new StudiesLineChart(width - 50, (componentHeight - 50),smallScreen) {
 
             @Override
             public void select(QuantDiseaseGroupsComparison comparison, int dsKey) {

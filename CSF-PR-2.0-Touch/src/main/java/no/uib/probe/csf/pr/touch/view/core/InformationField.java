@@ -103,7 +103,7 @@ public class InformationField extends VerticalLayout {
                 valueLabel.setCaptionAsHtml(true);
 
                 if (smallScreen) {
-                    valueLabel.setCaption("<textarea cols='100' rows='2'  readonly>" + stringValue + "</textarea>");
+                    valueLabel.setCaption("<textarea cols='100' rows='1'  readonly>" + stringValue + "</textarea>");
                     valueLabel.setHeight(30, Unit.PIXELS);
                 } else {
                     valueLabel.setCaption("<textarea cols='100' rows='5'  readonly>" + stringValue + "</textarea>");

@@ -524,6 +524,9 @@ public abstract class HeatMapLayout1 extends VerticalLayout {
                 public void unSelectData(String valueLabel) {
                     removeRowSelectedDs(valueLabel);
                 }
+
+               
+                
             };
             columnsColors[i] = cellInfo.getDiseaseColor();
             heatmapBody.addComponent(headerCell, i + 1, 0);
@@ -881,6 +884,7 @@ public abstract class HeatMapLayout1 extends VerticalLayout {
         }
         diseaseLabelContainer.setDescription(dName_dStyle.split("__")[0]);
         diseaseLabelContainer.addStyleName("hmheaderlabel");
+       
 
         return diseaseLabelContainer;
 

@@ -44,10 +44,10 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
     private final Map<Integer, Boolean> activeDatasetMap;
     private Map<Integer, QuantDatasetObject> quantDatasetMap;
     private boolean singlefilter;
-    private final int screenWidth = Math.min(Page.getCurrent().getBrowserWindowWidth(),1000);
-    private final int screenHeight =Math.min(Page.getCurrent().getBrowserWindowHeight(),800);
-        
-    public DatasetPieChartFiltersComponent() {
+    private final int screenWidth = Math.min(Page.getCurrent().getBrowserWindowWidth(), 1000);
+    private final int screenHeight = Math.min(Page.getCurrent().getBrowserWindowHeight(), 800);
+
+    public DatasetPieChartFiltersComponent(boolean smallScreen) {
 
         //init icon
         this.setStyleName("filterbtn");
@@ -69,12 +69,16 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         popupBody.addStyleName("roundedborder");
         popupBody.addStyleName("padding20");
         popupBody.addStyleName("whitelayout");
-        
-       
-        
+
+        int h;
+        if (smallScreen) {
+            h = 100;
+        } else {
+            h = 150;
+        }
 
         popupBody.setWidth(100, Unit.PERCENTAGE);
-        popupBody.setHeight(screenHeight-150, Unit.PIXELS);
+        popupBody.setHeight(screenHeight - h, Unit.PIXELS);
         popupBody.setSpacing(true);
         popupBody.setMargin(true);
 
@@ -82,7 +86,6 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
 
             @Override
             public void close() {
-//                updateSystem(filterSelectionUnit());
                 popupWindow.setVisible(false);
 
             }
@@ -94,18 +97,24 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         //init datasetructure
         activeDatasetMap = new HashMap<>();
         //init pie-chart filters
-        this.initIntercativeDatasetFilters();
+        this.initIntercativeDatasetFilters(smallScreen);
 
         HorizontalLayout btnsFrame = new HorizontalLayout();
         btnsFrame.setWidth(100, Unit.PERCENTAGE);
         btnsFrame.addStyleName("roundedborder");
-        btnsFrame.addStyleName("padding20");
-        btnsFrame.addStyleName("margintop");
+        if(!smallScreen)
+//        btnsFrame.addStyleName("padding10");
+        {
+          btnsFrame.addStyleName("padding20");
+                btnsFrame.addStyleName("margintop");
+        }else {
+            btnsFrame.addStyleName("padding2");
+        }
+        
         btnsFrame.addStyleName("whitelayout");
         frame.addComponent(btnsFrame);
-        
-        
-           HorizontalLayout leftsideWrapper = new HorizontalLayout();
+
+        HorizontalLayout leftsideWrapper = new HorizontalLayout();
         btnsFrame.addComponent(leftsideWrapper);
         btnsFrame.setComponentAlignment(leftsideWrapper, Alignment.TOP_LEFT);
         leftsideWrapper.setSpacing(true);
@@ -128,7 +137,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         btnLayout.addComponent(applyFilters);
         applyFilters.addClickListener((Button.ClickEvent event) -> {
             DatasetPieChartFiltersComponent.this.updateSystem(filterSelectionUnit());
-                popupWindow.setVisible(false);
+            popupWindow.setVisible(false);
 
         });
 
@@ -140,7 +149,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         unselectAllBtn.addClickListener((Button.ClickEvent event) -> {
             singlefilter = false;
             resetFilters();
-            
+
         });
 
 //        Button resetFiltersBtn = new Button("Reset");
@@ -151,7 +160,6 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
 ////                internalSelectionManager.resetToInitState();
 ////                internalSelectionManager.resetCentralSelectionManager();
 //        });
-
         ImageContainerBtn exportPdfBtn = new ImageContainerBtn() {
 
             @Override
@@ -186,41 +194,39 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
 //        fileDownloader.extend(exportChartsBtn);
     }
 
-    private void initIntercativeDatasetFilters() {
-        int filterHeight = (screenHeight-200)/2;// 300;//(bodyHeight - 200) / 3;
-        int filterWidth = Math.min(filterHeight, screenWidth/3);//(bodyWidth - 200) / 3;
+    private void initIntercativeDatasetFilters(boolean smallScreen) {
+        int filterHeight = (screenHeight - 200) / 2;// 300;//(bodyHeight - 200) / 3;
+        int filterWidth = Math.min(filterHeight, screenWidth / 3);//(bodyWidth - 200) / 3;
         filtersSet.clear();
-        DatasetPieChartFilter yearFilter = initPieChartFilter("Year", "yearFilter", 0, filterWidth, filterHeight);
+        DatasetPieChartFilter yearFilter = initPieChartFilter("Year", "yearFilter", 0, filterWidth, filterHeight,smallScreen);
         this.popupBody.addComponent(yearFilter, 0, 0);
         this.popupBody.setComponentAlignment(yearFilter, Alignment.TOP_LEFT);
         filtersSet.put("yearFilter", yearFilter);
 
-        DatasetPieChartFilter studyTypeFilter = initPieChartFilter("Study Type", "studyTypeFilter", 1, filterWidth, filterHeight);
+        DatasetPieChartFilter studyTypeFilter = initPieChartFilter("Study Type", "studyTypeFilter", 1, filterWidth, filterHeight,smallScreen);
         this.popupBody.addComponent(studyTypeFilter, 1, 0);
         this.popupBody.setComponentAlignment(studyTypeFilter, Alignment.TOP_CENTER);
         filtersSet.put("studyTypeFilter", studyTypeFilter);
 
-        DatasetPieChartFilter sampleMatchingFilter = initPieChartFilter("Sample Matching", "sampleMatchingFilter", 1, filterWidth, filterHeight);
+        DatasetPieChartFilter sampleMatchingFilter = initPieChartFilter("Sample Matching", "sampleMatchingFilter", 1, filterWidth, filterHeight,smallScreen);
         this.popupBody.addComponent(sampleMatchingFilter, 2, 0);
         this.popupBody.setComponentAlignment(sampleMatchingFilter, Alignment.TOP_RIGHT);
         filtersSet.put("sampleMatchingFilter", sampleMatchingFilter);
 
-        DatasetPieChartFilter technologyFilter = initPieChartFilter("Technology", "technologyFilter", 1, filterWidth, filterHeight);
+        DatasetPieChartFilter technologyFilter = initPieChartFilter("Technology", "technologyFilter", 1, filterWidth, filterHeight,smallScreen);
         this.popupBody.addComponent(technologyFilter, 0, 1);
         this.popupBody.setComponentAlignment(technologyFilter, Alignment.BOTTOM_LEFT);
         filtersSet.put("technologyFilter", technologyFilter);
 
-        DatasetPieChartFilter analyticalApproachFilter = initPieChartFilter("Analytical Approach", "analyticalApproachFilter", 1, filterWidth, filterHeight);
+        DatasetPieChartFilter analyticalApproachFilter = initPieChartFilter("Analytical Approach", "analyticalApproachFilter", 1, filterWidth, filterHeight,smallScreen);
         this.popupBody.addComponent(analyticalApproachFilter, 1, 1);
         this.popupBody.setComponentAlignment(analyticalApproachFilter, Alignment.BOTTOM_CENTER);
         filtersSet.put("analyticalApproachFilter", analyticalApproachFilter);
 
-        DatasetPieChartFilter shotgunTargetedFilter = initPieChartFilter("Shotgun/Targeted", "shotgunTargetedFilter", 1, filterWidth, filterHeight);
+        DatasetPieChartFilter shotgunTargetedFilter = initPieChartFilter("Shotgun/Targeted", "shotgunTargetedFilter", 1, filterWidth, filterHeight,smallScreen);
         this.popupBody.addComponent(shotgunTargetedFilter, 2, 1);
         this.popupBody.setComponentAlignment(shotgunTargetedFilter, Alignment.BOTTOM_RIGHT);
         filtersSet.put("shotgunTargetedFilter", shotgunTargetedFilter);
-        
-        
 
     }
 
@@ -350,8 +356,8 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
 
     }
 
-    private DatasetPieChartFilter initPieChartFilter(String title, String filterId, int index, int width, int height) {
-        DatasetPieChartFilter filter = new DatasetPieChartFilter(title, filterId, index, width, height) {
+    private DatasetPieChartFilter initPieChartFilter(String title, String filterId, int index, int width, int height,boolean smallScreen) {
+        DatasetPieChartFilter filter = new DatasetPieChartFilter(title, filterId, index, width, height,smallScreen) {
             @Override
             public void selectDatasets(boolean noselection) {
                 Set<Integer> finalSelectionIds = filterSelectionUnit();

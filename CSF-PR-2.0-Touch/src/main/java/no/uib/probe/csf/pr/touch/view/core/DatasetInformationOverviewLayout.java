@@ -53,7 +53,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         mainContainer.setHeightUndefined();
         int h = 60;
         if (smallScreen) {
-            h = 25;
+            h = 42;
         }
 
         mainContainer.setSpacing(true);
@@ -115,7 +115,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         HorizontalLayout rowIV = new HorizontalLayout();
         rowIV.setWidth(100, Unit.PERCENTAGE);
         if (smallScreen) {
-            rowIV.setHeight(75, Unit.PIXELS);
+            rowIV.setHeight(h, Unit.PIXELS);
         }
         mainContainer.addComponent(rowIV);
 //
@@ -135,7 +135,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         HorizontalLayout rowV = new HorizontalLayout();
         rowV.setWidth(100, Unit.PERCENTAGE);
         if (smallScreen) {
-            rowV.setHeight(65, Unit.PIXELS);
+            rowV.setHeight(h, Unit.PIXELS);
         } else {
             rowV.setHeightUndefined();
         }
@@ -157,7 +157,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         HorizontalLayout rowVI = new HorizontalLayout();
         rowVI.setWidth(100, Unit.PERCENTAGE);
         if (smallScreen) {
-            rowVI.setHeight(65, Unit.PIXELS);
+            rowVI.setHeight(h, Unit.PIXELS);
         } else {
             rowVI.setHeightUndefined();
         }
@@ -180,7 +180,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         HorizontalLayout rowVII = new HorizontalLayout();
         rowVII.setWidth(100, Unit.PERCENTAGE);
         if (smallScreen) {
-            rowVII.setHeight(65, Unit.PIXELS);
+            rowVII.setHeight(h, Unit.PIXELS);
         } else {
             rowVII.setHeightUndefined();
         }

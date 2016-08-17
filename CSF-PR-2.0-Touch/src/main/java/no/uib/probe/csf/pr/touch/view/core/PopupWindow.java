@@ -42,7 +42,6 @@ public class PopupWindow extends Window {
         setHeight((height),Unit.PIXELS);
         PopupWindow.this.setVisible(false);
         setResizable(false);
-        setClosable(false);
         setModal(true);
         setDraggable(false);
         center();
@@ -68,7 +67,7 @@ public class PopupWindow extends Window {
 
             }
         }
-         this.mainFrame.addStyleName(VaadinSession.getCurrent().getAttribute("zoomStyle")+"");
+//         this.mainFrame.addStyleName(VaadinSession.getCurrent().getAttribute("zoomStyle")+"");
         super.setVisible(visible); //To change body of generated methods, choose Tools | Templates.
     }
 

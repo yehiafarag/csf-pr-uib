@@ -220,9 +220,9 @@ public class LineChart extends AbsoluteLayout {
         verticalLabels = maxLength > 40 && selectedComparisonList.size() > 4;
         Font font;
         if (smallScreen) {
-            font = new Font("Open Sans", Font.PLAIN, 9);
+            font = new Font("Helvetica Neue", Font.PLAIN, 9);
         } else {
-            font = new Font("Open Sans", Font.PLAIN, 13);
+            font = new Font("Helvetica Neue", Font.PLAIN, 13);
         }
 
         xAxis = new SymbolAxis(null, xAxisLabels) {
@@ -557,7 +557,7 @@ public class LineChart extends AbsoluteLayout {
             xyplot.setRangeTickBandPaint(Color.WHITE);
         }
 
-        JFreeChart jFreeChart = new JFreeChart(null, new Font("Open Sans", Font.PLAIN, 18), xyplot, true);
+        JFreeChart jFreeChart = new JFreeChart(null, new Font("Helvetica Neue", Font.PLAIN, 18), xyplot, true);
 
         jFreeChart.setBackgroundPaint(Color.WHITE);
         final XYPlot plot = jFreeChart.getXYPlot();

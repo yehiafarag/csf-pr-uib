@@ -92,10 +92,12 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
     private ExternalResource minImgUrl, maxImgUrl;
     private final Map<String, TrendSymbol> symbolMap;
     private final List<Integer> comparisonTrends;
+    private final boolean smallScreen;
 
-    public StudiesLineChart(int width, int height) {
+    public StudiesLineChart(int width, int height,boolean smallScreen) {
         this.width = width;
         this.height = height;
+        this.smallScreen=smallScreen;
         this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
 
@@ -252,8 +254,12 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         dataset.addSeries("line", linevalues);
         verticalLabels = maxLength > 40 && selectedComparisonList.size() > 4;
         
-
-        Font font = new Font("Open Sans", Font.PLAIN, 13);
+        Font font;
+      if (smallScreen) {
+            font = new Font("Helvetica Neue", Font.PLAIN, 10);
+        } else {
+            font = new Font("Helvetica Neue", Font.PLAIN, 13);
+        }
 
         xAxis = new SymbolAxis(null, xAxisLabels) {
             int x = 0;
@@ -703,7 +709,7 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
 //        }
         xyplot.setRangeGridlinePaint(Color.LIGHT_GRAY);
 
-        JFreeChart jFreeChart = new JFreeChart(null, new Font("Open Sans", Font.PLAIN, 18), xyplot, true);
+        JFreeChart jFreeChart = new JFreeChart(null, new Font("Helvetica Neue", Font.PLAIN, 18), xyplot, true);
         jFreeChart.getXYPlot().getDomainAxis().setVisible(true);
         jFreeChart.getXYPlot().getRangeAxis().setVisible(true);
         jFreeChart.getXYPlot().setOutlineVisible(false);

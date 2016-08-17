@@ -108,7 +108,7 @@ public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutC
 
 //        popupBodyWrapper.addComponent(popupBodyLayout);
 //        popupBodyWrapper.setComponentAlignment(popupBodyLayout, Alignment.TOP_CENTER);
-        popupBodyLayout.addLayoutClickListener(this);
+//        popupBodyLayout.addLayoutClickListener(this);
         popupBodyLayout.addComponent(infoLayout);
 
         return popupBodyLayout;

@@ -1391,6 +1391,56 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
     private String lastPaddingStyle = "";
 
+    private void selectDiseaseCategory(String diseaseCategoryName) {
+
+        if (singleSelection) {
+            selectedCells.stream().forEach((tcell) -> {
+                tcell.unselect();
+            });
+            selectedDsList.clear();
+            selectedCells.clear();
+
+        }
+        for (HeaderCell rowHeaderCell : rowHeaderCells) {
+            if (rowHeaderCell.getDiseaseCategory().equalsIgnoreCase(diseaseCategoryName)) {
+                rowHeaderCell.select();
+            } else if (singleSelection) {
+                rowHeaderCell.unselect();
+            }
+
+        }
+        for (HeaderCell colHeaderCell : columnHeaderCells) {
+            if (colHeaderCell.getDiseaseCategory().equalsIgnoreCase(diseaseCategoryName)) {
+                colHeaderCell.select();
+            } else if (singleSelection) {
+                colHeaderCell.unselect();
+            }
+
+        }
+
+        comparisonsCellsMap.values().stream().filter((cell) -> (cell.getDiseaseCategory().equalsIgnoreCase(diseaseCategoryName) && cell.isVisible() && cell.getValue() != 0 && !cell.getComparison().getOreginalComparisonHeader().trim().equalsIgnoreCase("/") && availableComparisonsList.contains(cell.getComparison()))).map((cell) -> {
+
+            cell.select();
+            return cell;
+        }).forEach((cell) -> {
+            String kI = cell.getComparison().getComparisonHeader();
+            String[] k1Arr = kI.split(" / ");
+            String kII = k1Arr[1] + " / " + k1Arr[0];
+            HeatmapCell equalCall = comparisonsCellsMap.get(kII);
+            if (equalCall != null) {
+                equalCall.select();
+                cell.getComparison().setSwitchable(true);
+                equalCall.getComparison().setSwitchable(true);
+            } else {
+                cell.getComparison().setSwitchable(false);
+            }
+            selectedCells.add(cell);
+            selectedDsList.add(cell.getComparison());
+        });
+        updateSelectionManagerIndexes();
+
+    }
+
     private void updateHeatmapComponents() {
         int calcWidth = 0, calcHeight = 0;
         this.heatmapComponentContainer.removeAllComponents();
@@ -1416,7 +1466,8 @@ public abstract class HeatMapLayout extends VerticalLayout {
                 HeaderCell headerLabel = new HeaderCell(title, 0, title, title, false) {
 
                     @Override
-                    public void selectData(String cellheader) {
+                    public void selectData(String diseaseCategoryName) {
+                        selectDiseaseCategory(diseaseCategoryName.split("__")[0]);
                         this.removeStyleName("hmselectedcell");
                     }
 
@@ -1437,7 +1488,8 @@ public abstract class HeatMapLayout extends VerticalLayout {
                 HeaderCell headerLabel = new HeaderCell(title, 0, title, title, true) {
 
                     @Override
-                    public void selectData(String cellheader) {
+                    public void selectData(String diseaseCategoryName) {
+                        selectDiseaseCategory(diseaseCategoryName.split("__")[0]);
                         this.removeStyleName("hmselectedcell");
                     }
 
@@ -1500,7 +1552,6 @@ public abstract class HeatMapLayout extends VerticalLayout {
             y += cellWidth;
         }
 
-        
         heatmapPanel.setHeight(calcHeight, Unit.PIXELS);
         heatmapPanel.setWidth(calcWidth, Unit.PIXELS);
         int padding = availableHMHeight - calcHeight - 18;

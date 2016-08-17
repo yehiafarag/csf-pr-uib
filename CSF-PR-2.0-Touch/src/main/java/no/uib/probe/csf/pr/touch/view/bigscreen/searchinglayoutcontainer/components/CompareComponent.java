@@ -130,9 +130,17 @@ public abstract class CompareComponent extends BigBtn {
 
         controlBtnsLayout = new HorizontalLayout();
         controlBtnsLayout.addStyleName("roundedborder");
-        controlBtnsLayout.addStyleName("padding20");
+        if (!smallScreen) //        btnsFrame.addStyleName("padding10");
+        {
+            controlBtnsLayout.addStyleName("padding20");
+            controlBtnsLayout.setMargin(new MarginInfo(true, false, false, false));
+
+        } else {
+            controlBtnsLayout.addStyleName("padding2");
+        }
+
         controlBtnsLayout.addStyleName("whitelayout");
-        controlBtnsLayout.setMargin(new MarginInfo(true, false, false, false));
+
         controlBtnsLayout.setWidth(100, Sizeable.Unit.PERCENTAGE);
 
         HorizontalLayout leftsideWrapper = new HorizontalLayout();
@@ -210,8 +218,8 @@ public abstract class CompareComponent extends BigBtn {
         if (smallScreen) {
             resultsLayout.setVisible(false);
             middleLayout.setVisible(false);
-            resultsLayout.setWidth(compareUnit.getWidth(),compareUnit.getWidthUnits());
-            resultsLayout.setHeight(compareUnit.getHeight()-40,compareUnit.getHeightUnits());
+            resultsLayout.setWidth(compareUnit.getWidth(), compareUnit.getWidthUnits());
+            resultsLayout.setHeight(compareUnit.getHeight() - 40, compareUnit.getHeightUnits());
         }
 
     }
@@ -225,7 +233,7 @@ public abstract class CompareComponent extends BigBtn {
             resultsLayout.setVisible(false);
             middleLayout.setVisible(false);
             compareUnit.setVisible(true);
-           
+
         }
 
     }
@@ -423,7 +431,7 @@ public abstract class CompareComponent extends BigBtn {
             middleLayout.setVisible(true);
             compareUnit.setVisible(false);
         }
-        
+
     }
 
     @Override

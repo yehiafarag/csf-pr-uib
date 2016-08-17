@@ -89,6 +89,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
     private final String[] trendStyles;
 
     private boolean activeMultiSelect = true;
+    private final boolean smallScreen;
 
     public VerticalLayout getControlBtnsContainer() {
         return controlBtnsContainer;
@@ -98,6 +99,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
 
     public BubbleChartComponent(CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height, boolean smallScreen) {
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
+        this.smallScreen = smallScreen;
 
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeight(height, Unit.PIXELS);
@@ -355,7 +357,6 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
             info.setHeight(25, Unit.PIXELS);
             info.removeStyleName("smallimg");
         }
-
     }
 
     private JFreeChart generateBubbleChart(Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
@@ -486,7 +487,12 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         defaultxyzdataset.addSeries(" ", seriesValuesII);
 
         final Color[] labelsColor = new Color[]{Color.LIGHT_GRAY, new Color(80, 183, 71), Color.LIGHT_GRAY, new Color(1, 141, 244), Color.LIGHT_GRAY, new Color(204, 0, 0), Color.LIGHT_GRAY};
-        Font font = new Font("Open Sans", Font.PLAIN, 13);
+        Font font;
+        if (smallScreen) {
+            font = new Font("Helvetica Neue", Font.PLAIN, 10);
+        } else {
+            font = new Font("Helvetica Neue", Font.PLAIN, 13);
+        }
         SymbolAxis yAxis = new SymbolAxis(null, new String[]{"  ", "Decreased", " ", "Equal", " ", "Increased", "  "}) {
             int x = 0;
 

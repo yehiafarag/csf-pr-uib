@@ -108,7 +108,7 @@ public abstract class PieChart extends AbsoluteLayout implements LayoutEvents.La
         plot.setNoDataMessage("No data available");
         plot.setCircular(true);
         plot.setLabelGap(0);
-        plot.setLabelFont(new Font("Open Sans", Font.PLAIN, 13));
+        plot.setLabelFont(new Font("Helvetica Neue", Font.PLAIN, 13));
         plot.setLabelGenerator(new PieSectionLabelGenerator() {
 
             @Override
@@ -142,13 +142,13 @@ public abstract class PieChart extends AbsoluteLayout implements LayoutEvents.La
         plot.setIgnoreZeroValues(true);
 
         chart = new JFreeChart(plot);
-        chart.setTitle(new TextTitle(title, new Font("Open Sans", Font.PLAIN, 13)));
+        chart.setTitle(new TextTitle(title, new Font("Helvetica Neue", Font.PLAIN, 13)));
         chart.setBorderPaint(null);
         chart.setBackgroundPaint(null);
         chart.getLegend().setVisible(false);
         chart.getLegend().setFrame(BlockBorder.NONE);
 
-        chart.getLegend().setItemFont(new Font("Open Sans", Font.PLAIN, 12));
+        chart.getLegend().setItemFont(new Font("Helvetica Neue", Font.PLAIN, 12));
 
     }
 

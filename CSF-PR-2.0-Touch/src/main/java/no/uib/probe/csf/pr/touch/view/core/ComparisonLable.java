@@ -219,7 +219,7 @@ public abstract class ComparisonLable extends VerticalLayout implements LayoutEv
 
 //        popupBodyWrapper.addComponent(popupBodyLayout);
 //        popupBodyWrapper.setComponentAlignment(popupBodyLayout, Alignment.TOP_CENTER);
-        popupBodyLayout.addLayoutClickListener(this);
+//        popupBodyLayout.addLayoutClickListener(this);
         popupBodyLayout.addComponent(infoLayout);
 
         return popupBodyLayout;
