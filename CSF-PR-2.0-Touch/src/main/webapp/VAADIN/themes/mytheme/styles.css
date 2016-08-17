@@ -13651,12 +13651,20 @@ div.v-layout.v-horizontal.v-widget {
     text-align: center;
     line-height: 100%;
     -ms-transform:rotate(270deg) translateX(-100% ); /* IE 9 */
-    -moz-transform:rotate(270deg) translatfilterbtneX(-100% ); /* Firefox */
+    -moz-transform:rotate(270deg) translateX(-100% ); /* Firefox */
     -webkit-transform:rotate(270deg) translateX(-100% ); /* Safari and Chrome */
     -o-transform:rotate(270deg) translateX(-100% ); /* Opera */
+    transform:rotate(270deg) translateX(-100% ); 
+   
+    -ms-transform-origin:0 0; /* IE 9 */
+    -moz-transform-origin:0 0; /* Firefox */
+    -webkit-transform-origin:0 0; /* Safari and Chrome */
+    -o-transform-origin:0 0; /* Opera */
     transform-origin: 0 0;
+    
     position:inherit;
     text-overflow:ellipsis !important;
+   
     overflow:hidden;
 }
 .hmheadercell{
@@ -13692,6 +13700,7 @@ div.v-layout.v-horizontal.v-widget {
     display: inline-block;
     line-height: inherit;
     text-align:-webkit-center;
+    text-align: center;
     clear:both;
 }
 /*.hmmultiplesclerosisstyle font{
@@ -13705,7 +13714,9 @@ div.v-layout.v-horizontal.v-widget {
   clear:both;   
 }*/
 
-
+/* display: flex;
+  align-items: center;
+  justify-content: center*/
 
 
 
@@ -13716,6 +13727,7 @@ div.v-layout.v-horizontal.v-widget {
     display: inline-block;
     line-height: inherit;
     text-align:-webkit-center;
+    text-align: center;
     clear:both;
 }
 /*.hmparkinsonsstyle font{
@@ -13735,6 +13747,7 @@ div.v-layout.v-horizontal.v-widget {
     display: inline-block;
     line-height: inherit;
     text-align:-webkit-center;
+    text-align: center;;
     clear:both;
 }
 /*.hmalzheimersstyle font{
@@ -13768,6 +13781,7 @@ div.v-layout.v-horizontal.v-widget {
 .hmbodycell div{
     background-size:cover;
     text-align:-webkit-center !important;
+    text-align: center !important;
 
 
 }
@@ -14995,6 +15009,7 @@ div.v-layout.v-horizontal.v-widget {
     background-color:white;
     color:gray;
     text-align :-webkit-center;
+    text-align: center;
 
     box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
     -webkit-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
