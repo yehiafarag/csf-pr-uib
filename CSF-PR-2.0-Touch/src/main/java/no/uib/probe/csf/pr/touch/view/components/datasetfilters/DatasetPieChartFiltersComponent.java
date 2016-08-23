@@ -17,6 +17,7 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.themes.ValoTheme;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -253,7 +254,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
     private void updatePieChartSliceSet() {
         fullFiltersData.clear();
         activeDatasetMap.clear();
-        Map<Comparable, PieChartSlice> yearMap = new TreeMap<>();
+        Map<Comparable, PieChartSlice> yearMap = new TreeMap<>(Collections.reverseOrder());
         Map<Comparable, PieChartSlice> studyTypeMap = new TreeMap<>();
         Map<Comparable, PieChartSlice> sampleMatchingMap = new TreeMap<>();
         Map<Comparable, PieChartSlice> technologyMap = new TreeMap<>();

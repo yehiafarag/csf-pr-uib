@@ -2,20 +2,16 @@ package no.uib.probe.csf.pr.touch.view.components.heatmapsubcomponents;
 
 import com.vaadin.addon.tableexport.ExcelExport;
 import com.vaadin.event.LayoutEvents;
-import com.vaadin.server.ExternalResource;
-import com.vaadin.server.Page;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import java.awt.Rectangle;
-import java.nio.file.FileVisitResult;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -32,7 +28,6 @@ import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.StudiesInformationP
 import no.uib.probe.csf.pr.touch.view.components.QuantDatasetsfullStudiesTableLayout;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 import no.uib.probe.csf.pr.touch.view.core.InformationButton;
-import no.uib.probe.csf.pr.touch.view.core.ZoomControler;
 
 /**
  *
@@ -56,16 +51,16 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
     //heatmap swing data
     private String[] rowsColors;
-    private String[] rowLabelColors;
+//    private String[] rowLabelColors;
     private String[] columnsColors;
-    private String[] columnsLabelColors;
+//    private String[] columnsLabelColors;
     private String[][] dataValuesColors;
 
     private VerticalLayout hideCompBtn;
 
-    private Image icon;
-    private Label hideShowBtnLabel;
-    private ThemeResource defaultResource;
+//    private Image icon;
+//    private Label hideShowBtnLabel;
+//    private ThemeResource defaultResource;
 
 //    private final Image heatMapImg;
     private final AbsoluteLayout heatmapComponentContainer;
@@ -337,9 +332,10 @@ public abstract class HeatMapLayout extends VerticalLayout {
         if (filterResizeController != null) {
 
             cornerCell.addComponent(filterResizeController.getFilterContainerLayout());
-            cornerCell.setComponentAlignment(filterResizeController.getFilterContainerLayout(), Alignment.TOP_LEFT);
+            cornerCell.setComponentAlignment(filterResizeController.getFilterContainerLayout(), Alignment.MIDDLE_CENTER);
             filterResizeController.getFilterContainerLayout().addStyleName("heatmapcorner");
         }
+        
         InformationButton info = new InformationButton("The disease group comparison table provides an overview of the number of datasets available for each comparison. Hover over a given cell to get additional details about the comparison. Selecting one or more cells in the table will display the corresponding protein details. To filter the data use the options in the upper left corner.", false);
         controlBtnsContainer.addComponent(info);
         if (smallScreen) {
@@ -386,7 +382,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 //        zoomControler.setDefaultZoomLevel(zoomLevel);
         updateHeatMapLayout(rowsLbels, columnsLbels, patientsGroupComparisonsSet, fullQuantDsMap);
 //        filterHeatMap(fullQuantDsMap);
-        updateHMThumb(this.getHMThumbImg(), fullQuantDsMap.size(), 0, equalComparisonMap);
+        updateHMThumb(this.getHMThumbImg(), patientsGroupComparisonsSet.size(), 0, equalComparisonMap);
     }
 
     /**
@@ -575,7 +571,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
         //init columnHeaders  
         columnHeaderCells = new HeaderCell[colheaders.size()];
         columnsColors = new String[colheaders.size()];
-        columnsLabelColors = new String[colheaders.size()];
+//        columnsLabelColors = new String[colheaders.size()];
         for (int i = 0; i < colheaders.size(); i++) {
             HeatMapHeaderCellInformationBean cellInfo = (HeatMapHeaderCellInformationBean) colheaders.toArray()[i];
             String title = cellInfo.getDiseaseGroupName();
@@ -604,7 +600,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
         //init row headers
         rowHeaderCells = new HeaderCell[rowheaders.size()];
         rowsColors = new String[rowheaders.size()];
-        rowLabelColors = new String[rowheaders.size()];
+//        rowLabelColors = new String[rowheaders.size()];
         for (int i = 0; i < rowheaders.size(); i++) {
             HeatMapHeaderCellInformationBean cellInfo = (HeatMapHeaderCellInformationBean) rowheaders.toArray()[i];
             String title = cellInfo.getDiseaseGroupName();
@@ -1258,7 +1254,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
     /**
      *
      */
-    private void selectAll() {
+    public void selectAll() {
         comparisonsCellsMap.values().stream().filter((cell) -> (cell.isVisible() && cell.getValue() != 0 && !cell.getComparison().getOreginalComparisonHeader().trim().equalsIgnoreCase("/") && availableComparisonsList.contains(cell.getComparison()))).map((cell) -> {
 
             cell.select();
@@ -1444,7 +1440,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
     private void updateHeatmapComponents() {
         int calcWidth = 0, calcHeight = 0;
         this.heatmapComponentContainer.removeAllComponents();
-        cornerCell.setWidth((int) (170 * gen.getResizeFactor()), Unit.PIXELS);
+        cornerCell.setWidth((int) (180 * gen.getResizeFactor()), Unit.PIXELS);
         cornerCell.setHeight(cornerCell.getWidth(), cornerCell.getWidthUnits());
 
         double resizeFilterBtn = 1;
@@ -1508,8 +1504,8 @@ public abstract class HeatMapLayout extends VerticalLayout {
             }
         }
 
-        int x = (int) (170 * gen.getResizeFactor());
-        int y = (int) (20 * gen.getResizeFactor());
+        int x = (int) (180 * gen.getResizeFactor());
+        int y = (int) (30 * gen.getResizeFactor());
         int cellWidth = (int) (30 * gen.getResizeFactor());
 
         for (HeaderCell headerCell : columnHeaderCells) {
@@ -1523,8 +1519,8 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
         }
         calcWidth += x;
-        y = (int) (170 * gen.getResizeFactor());
-        x = (int) (20 * gen.getResizeFactor());
+        y = (int) (180 * gen.getResizeFactor());
+        x = (int) (30 * gen.getResizeFactor());
         for (HeaderCell headerCell : rowHeaderCells) {
 //            VerticalLayout hcell = new VerticalLayout();
             headerCell.setWidth((int) (150 * gen.getResizeFactor()), Unit.PIXELS);
@@ -1537,8 +1533,8 @@ public abstract class HeatMapLayout extends VerticalLayout {
         }
         calcHeight += y;
 
-        x = (int) (170 * gen.getResizeFactor());
-        y = (int) (170 * gen.getResizeFactor());
+        x = (int) (180 * gen.getResizeFactor());
+        y = (int) (180 * gen.getResizeFactor());
         for (HeatmapCell[] row : cellTable) {
             for (HeatmapCell cell : row) {
 //                VerticalLayout cell = new VerticalLayout();
@@ -1548,7 +1544,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
                 this.heatmapComponentContainer.addComponent(cell, "left: " + x + "px; top: " + y + "px");
                 x += cellWidth;
             }
-            x = (int) (170 * gen.getResizeFactor());
+            x = (int) (180 * gen.getResizeFactor());
             y += cellWidth;
         }
 

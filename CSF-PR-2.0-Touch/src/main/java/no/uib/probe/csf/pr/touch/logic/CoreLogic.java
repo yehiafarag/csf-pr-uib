@@ -38,9 +38,11 @@ public class CoreLogic implements Serializable {
 
     public CoreLogic(String url, String dbName, String driver, String userName, String password, String filesURL) {
         database = new DataBaseLayer(url, dbName, driver, userName, password);
-        this.exporter=new Exporter();
+        this.exporter = new Exporter();
 
     }
+    
+    
 
     /**
      * this method responsible for getting the resource overview information
@@ -74,6 +76,25 @@ public class CoreLogic implements Serializable {
     }
 
     /**
+     * this method responsible for getting initial datasets information for
+     * searching layout
+     *
+     * @return set of datasets information available in the the resource
+     */
+    public Set<QuantDatasetObject> getQuantDatasetList(Set<Integer> datasetId) {
+        Set<QuantDatasetObject> quantDatasetSet = new LinkedHashSet<>();
+        for (QuantDatasetObject qDsObject : database.getQuantDatasetList()) {
+            if (datasetId.contains(qDsObject.getDsKey())) {
+                quantDatasetSet.add(qDsObject);
+            }
+
+        }
+
+        return quantDatasetSet;
+
+    }
+
+    /**
      * Get the current available disease category list
      *
      * @return set of disease category objects that has all disease category
@@ -81,7 +102,7 @@ public class CoreLogic implements Serializable {
      */
     public LinkedHashMap<String, DiseaseCategoryObject> getDiseaseCategorySet() {
         LinkedHashMap<String, DiseaseCategoryObject> availableDiseaseCategory = database.getDiseaseCategorySet();
-         
+
         return availableDiseaseCategory;
     }
 
@@ -94,7 +115,6 @@ public class CoreLogic implements Serializable {
      */
     public Map<String, QuantDatasetInitialInformationObject> getQuantDatasetInitialInformationObject() {
         Map<String, QuantDatasetInitialInformationObject> quantStudyInitInfoMap = database.getQuantDatasetInitialInformationObject();
-         
 
         boolean[] activeHeaders = new boolean[27];
         Set<String> diseaseCategories = new LinkedHashSet<>();
@@ -252,7 +272,7 @@ public class CoreLogic implements Serializable {
                 String protAcc = quant.getUniprotAccession();
 //                System.out.println("at ------------------------------------------------------ >> header "+comparison.getDatasetMap().get(quant.getDsKey()).getPatientsSubGroup1()+"  oreg "+comparison.getOreginalComparisonHeader());
                 if (protAcc.equalsIgnoreCase("") || protAcc.equalsIgnoreCase("Not Available") || protAcc.equalsIgnoreCase("Entry Deleted") || protAcc.equalsIgnoreCase("Entry Demerged") || protAcc.equalsIgnoreCase("NOT RETRIEVED") || protAcc.equalsIgnoreCase("DELETED") || protAcc.trim().equalsIgnoreCase("UNREVIEWED")) {
-                    protAcc = quant.getPublicationAccNumber()+" ("+protAcc+")";
+                    protAcc = quant.getPublicationAccNumber() + " (" + protAcc + ")";
 
                 }
 
@@ -518,7 +538,6 @@ public class CoreLogic implements Serializable {
      */
     public Map<String, Integer[]> getQuantHitsList(List<QuantProtein> quantProteinsList, String searchBy) {
         Map<String, Integer[]> quantHitsList = new TreeMap<>();
-        
 
         if (quantProteinsList == null || quantProteinsList.isEmpty()) {
 
@@ -529,22 +548,22 @@ public class CoreLogic implements Serializable {
         for (QuantProtein quantProt : quantProteinsList) {
 
 //            if (searchBy.equalsIgnoreCase("Protein Accession")/* ||*/) {
-                String uniprotAcc = quantProt.getUniprotAccession();
-                String protName;
-                String accession;
-                if (uniprotAcc.trim().equalsIgnoreCase("") || uniprotAcc.equalsIgnoreCase("Not Available") || uniprotAcc.equalsIgnoreCase("Entry Deleted") || uniprotAcc.equalsIgnoreCase("Entry Demerged") || uniprotAcc.equalsIgnoreCase("NOT RETRIEVED") || uniprotAcc.equalsIgnoreCase("DELETED") || uniprotAcc.trim().equalsIgnoreCase("UNREVIEWED")) {
-                    protName = quantProt.getPublicationProteinName();
-                    accession =  quantProt.getPublicationAccNumber()+" ("+uniprotAcc+")";
+            String uniprotAcc = quantProt.getUniprotAccession();
+            String protName;
+            String accession;
+            if (uniprotAcc.trim().equalsIgnoreCase("") || uniprotAcc.equalsIgnoreCase("Not Available") || uniprotAcc.equalsIgnoreCase("Entry Deleted") || uniprotAcc.equalsIgnoreCase("Entry Demerged") || uniprotAcc.equalsIgnoreCase("NOT RETRIEVED") || uniprotAcc.equalsIgnoreCase("DELETED") || uniprotAcc.trim().equalsIgnoreCase("UNREVIEWED")) {
+                protName = quantProt.getPublicationProteinName();
+                accession = quantProt.getPublicationAccNumber() + " (" + uniprotAcc + ")";
 
-                } else {
-                    protName = quantProt.getUniprotProteinName();
-                    accession = quantProt.getUniprotAccession();
-                }
-                if (protName.trim().equalsIgnoreCase("")) {
-                    protName = quantProt.getPublicationProteinName();
-                }
-                quantProt.setFinalAccession(accession);
-                key = accession.trim() + "__" + protName.trim();
+            } else {
+                protName = quantProt.getUniprotProteinName();
+                accession = quantProt.getUniprotAccession();
+            }
+            if (protName.trim().equalsIgnoreCase("")) {
+                protName = quantProt.getPublicationProteinName();
+            }
+            quantProt.setFinalAccession(accession);
+            key = accession.trim() + "__" + protName.trim();
 //            } else {
 //                key = quantProt.getUniprotProteinName().trim();
 //
@@ -566,17 +585,14 @@ public class CoreLogic implements Serializable {
             quantHitsList.put(key, valueArr);
 
         }
-             
-        
+
         return quantHitsList;
 
     }
-    
-    
-    
-     /**
-     * this function to get the quant comparison hits list from the searching results and
-     * group the common proteins in separated lists
+
+    /**
+     * this function to get the quant comparison hits list from the searching
+     * results and group the common proteins in separated lists
      *
      * @param quantProteinsList list of found proteins
      * @param searchBy searching method (accession,proteins name, or peptide
@@ -585,13 +601,12 @@ public class CoreLogic implements Serializable {
      */
     public Integer[] getQuantComparisonHitsList(List<QuantProtein> quantProteinsList, String searchBy) {
         Integer[] quantHitsList = new Integer[]{0, 0, 0, 0};
-        
 
         if (quantProteinsList == null || quantProteinsList.isEmpty()) {
 
             return quantHitsList;
         }
-        quantProteinsList.stream().map((quantProt) -> {           
+        quantProteinsList.stream().map((quantProt) -> {
             if (quantProt.getDiseaseCategory().equalsIgnoreCase("Alzheimer's")) {
                 quantHitsList[0] = quantHitsList[0] + 1;
             } else if (quantProt.getDiseaseCategory().equalsIgnoreCase("Multiple Sclerosis")) {
@@ -603,16 +618,14 @@ public class CoreLogic implements Serializable {
         }).forEach((_item) -> {
             quantHitsList[3] = quantHitsList[3] + 1;
         });
-        
-        
+
         return quantHitsList;
 
     }
-    
-     
-     /**
-     * this function to get the quant comparison hits list from the searching results and
-     * group the common proteins in separated lists
+
+    /**
+     * this function to get the quant comparison hits list from the searching
+     * results and group the common proteins in separated lists
      *
      * @param quantProteinsList list of found proteins
      * @param searchBy searching method (accession,proteins name, or peptide
@@ -620,16 +633,16 @@ public class CoreLogic implements Serializable {
      * @return list of quant hits results
      */
     public Integer[] getQuantComparisonProteinList(List<QuantProtein> quantProteinsList, String searchBy) {
-       
+
         Set<String> msD = new HashSet<>();
-         Set<String> alD = new HashSet<>();
-          Set<String> parD = new HashSet<>();
+        Set<String> alD = new HashSet<>();
+        Set<String> parD = new HashSet<>();
 
         if (quantProteinsList == null || quantProteinsList.isEmpty()) {
 
             return new Integer[]{};
         }
-        quantProteinsList.stream().map((quantProt) -> {           
+        quantProteinsList.stream().map((quantProt) -> {
             if (quantProt.getDiseaseCategory().equalsIgnoreCase("Alzheimer's")) {
                 alD.add(quantProt.getUniprotAccession());
             } else if (quantProt.getDiseaseCategory().equalsIgnoreCase("Multiple Sclerosis")) {
@@ -640,21 +653,11 @@ public class CoreLogic implements Serializable {
             return quantProt;
         }).forEach((_item) -> {
         });
-         Integer[] quantHitsList = new Integer[]{alD.size(),msD.size(),parD.size(), alD.size()+msD.size()+parD.size()};
-        
-        
+        Integer[] quantHitsList = new Integer[]{alD.size(), msD.size(), parD.size(), alD.size() + msD.size() + parD.size()};
+
         return quantHitsList;
 
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
     /*             *********************************************************8       */
     /**
@@ -750,9 +753,8 @@ public class CoreLogic implements Serializable {
         return idHitsList;
 
     }
-    
-    
-     public byte[] exportProteinsListToCSV(Set<String> proteinsList) {
+
+    public byte[] exportProteinsListToCSV(Set<String> proteinsList) {
         return exporter.expotProteinAccessionListToCSV(proteinsList);
 
     }

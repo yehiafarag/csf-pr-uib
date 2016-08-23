@@ -79,11 +79,11 @@ public class TrendLegend extends GridLayout {
 
             }
         } else if (type.equalsIgnoreCase("ministackedpeptidessequence")) {
-            String[] labels = new String[]{"Increased", "Increased-not sign.", "Equal", "Decreased", "Decreased-not sign.", "No Quant. Info.", "PTM"};
-            String[] styleName = new String[]{"legendred100", "legendnotsigredstackedlayout", "legendblue", "legendgreen100", "legendnotsiggreenstackedlayout", "legendgray", "legendptmglycosylation"};
+            String[] labels = new String[]{"Increased", "Increased-not sign.", "Equal", "Decreased", "Decreased-not sign.", "No Quant. Info."};//, "PTM"};
+            String[] styleName = new String[]{"legendred100", "legendnotsigredstackedlayout", "legendblue", "legendgreen100", "legendnotsiggreenstackedlayout", "legendgray"};//, "legendptmglycosylation"};
             this.setSpacing(true);
             this.setRows(1);
-            this.setColumns(7);
+            this.setColumns(6);
             this.setMargin(new MarginInfo(false, true, false, false));
 
             int colCounter = 0;
@@ -135,11 +135,11 @@ public class TrendLegend extends GridLayout {
         
         }
         else {
-            String[] labels = new String[]{"Increased", "Increased-not sign.", "Equal", "Decreased-not sign.", "Decreased", "No Quant. Info.", "PTM"};
-            String[] styleName = new String[]{"redlayout", "notsigredstackedlayout", "lightbluelayout", "notsiggreenstackedlayout", "greenlayout", "novaluelayout", "ptmglycosylation"};
+            String[] labels = new String[]{"Increased", "Increased-not sign.", "Equal", "Decreased-not sign.", "Decreased", "No Quant. Info."};//, "PTM"};
+            String[] styleName = new String[]{"redlayout", "notsigredstackedlayout", "lightbluelayout", "notsiggreenstackedlayout", "greenlayout", "novaluelayout"};//, "ptmglycosylation"};
             this.setSpacing(true);
             this.setRows(1);
-            this.setColumns(7);
+            this.setColumns(6);
             this.setMargin(new MarginInfo(false, false, false, false));
 
             for (int i = 0; i < styleName.length; i++) {

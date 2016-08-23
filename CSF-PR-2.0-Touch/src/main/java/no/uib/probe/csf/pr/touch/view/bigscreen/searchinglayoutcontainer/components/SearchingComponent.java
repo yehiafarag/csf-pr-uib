@@ -28,6 +28,7 @@ import java.util.Set;
 import no.uib.probe.csf.pr.touch.Data_Handler;
 import no.uib.probe.csf.pr.touch.database.Query;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantProtein;
+import no.uib.probe.csf.pr.touch.selectionmanager.CSFListener;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
 import no.uib.probe.csf.pr.touch.selectionmanager.QuantSearchSelection;
 import no.uib.probe.csf.pr.touch.view.core.BigBtn;
@@ -64,7 +65,7 @@ public abstract class SearchingComponent extends BigBtn {
 
     public SearchingComponent(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager, boolean smallScreen) {
         super("Search", "Search protein data", "img/search.png", smallScreen);
-        this.smallScreen=smallScreen;
+        this.smallScreen = smallScreen;
         this.Data_handler = Data_handler;
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         VerticalLayout popupbodyLayout = new VerticalLayout();
@@ -174,17 +175,6 @@ public abstract class SearchingComponent extends BigBtn {
         idDataResult.addStyleName("marginleft");
         btnsWrapper.addComponent(idDataResult);
 
-//        Button resetBtn = new Button("Reset");
-//        resetBtn.setStyleName(ValoTheme.BUTTON_SMALL);
-//        resetBtn.setStyleName(ValoTheme.BUTTON_TINY);
-//        resetBtn.setWidth(60, Unit.PIXELS);
-//        resetBtn.setEnabled(true);
-//        btnsWrapper.addComponent(resetBtn);
-//        btnsWrapper.setComponentAlignment(resetBtn, Alignment.MIDDLE_CENTER);
-//        resetBtn.setDescription("Reset searching");
-//        resetBtn.addClickListener((Button.ClickEvent event) -> {
-//            resetSearch();
-//        });
         loadDataBtn = new Button("Load");
         loadDataBtn.setStyleName(ValoTheme.BUTTON_SMALL);
         loadDataBtn.setStyleName(ValoTheme.BUTTON_TINY);
@@ -206,6 +196,26 @@ public abstract class SearchingComponent extends BigBtn {
         popupbodyLayout.setExpandRatio(resultsLayout, 524);
         popupbodyLayout.addComponent(controlBtnsLayout);
         popupbodyLayout.setExpandRatio(controlBtnsLayout, 50);
+
+        CSFPR_Central_Manager.registerListener(new CSFListener() {
+
+            @Override
+            public void selectionChanged(String type) {
+                if (type.equalsIgnoreCase("reset_quant_searching")) {
+                    resetSearch();
+                }
+            }
+
+            @Override
+            public String getFilterId() {
+                return "searching_component";
+            }
+
+            @Override
+            public void removeFilterValue(String value) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
 
     }
 
@@ -249,12 +259,23 @@ public abstract class SearchingComponent extends BigBtn {
         }
 
         Set<Integer> datasetIds = new HashSet<>();
+        Map<String, Set<Integer>> diseaseCategoriesIdMap = new HashMap<>();
+        Set<String> proteinAccession = new HashSet<>();
         QuantSearchSelection selection = new QuantSearchSelection();
         if (noSelection) {
             selection.setKeyWords(filterKeywordSet);
             searchQuantificationProtList.stream().forEach((protein) -> {
                 datasetIds.add(protein.getDsKey());
                 diseaseCategories.add(protein.getDiseaseCategory());
+                proteinAccession.add(protein.getFinalAccession());
+
+                if (!diseaseCategoriesIdMap.containsKey(protein.getDiseaseCategory())) {
+                    diseaseCategoriesIdMap.put(protein.getDiseaseCategory(), new HashSet<>());
+                }
+                Set<Integer> datasetIdSet = diseaseCategoriesIdMap.get(protein.getDiseaseCategory());
+                datasetIdSet.add(protein.getDsKey());
+                diseaseCategoriesIdMap.put(protein.getDiseaseCategory(), datasetIdSet);
+
             });
 
         } else {
@@ -262,6 +283,13 @@ public abstract class SearchingComponent extends BigBtn {
             searchQuantificationProtList.stream().filter((protein) -> (proteinList.keySet().contains(protein.getFinalAccession()) && (proteinList.get(protein.getFinalAccession()).contains("all") || proteinList.get(protein.getFinalAccession()).contains(protein.getDiseaseCategory())))).forEach((protein) -> {
 
                 datasetIds.add(protein.getDsKey());
+                proteinAccession.add(protein.getFinalAccession());
+                 if (!diseaseCategoriesIdMap.containsKey(protein.getDiseaseCategory())) {
+                    diseaseCategoriesIdMap.put(protein.getDiseaseCategory(), new HashSet<>());
+                }
+                Set<Integer> datasetIdSet = diseaseCategoriesIdMap.get(protein.getDiseaseCategory());
+                datasetIdSet.add(protein.getDsKey());
+                diseaseCategoriesIdMap.put(protein.getDiseaseCategory(), datasetIdSet);
 
             });
         }
@@ -273,12 +301,13 @@ public abstract class SearchingComponent extends BigBtn {
             diseaseCat = diseaseCategories.toArray()[0].toString();
         }
         searchingPanel.close();
-
+        selection.setDiseaseCategoriesIdMap(diseaseCategoriesIdMap);
         selection.setDiseaseCategory(diseaseCat);
         selection.setDatasetIds(datasetIds);
-
-        CSFPR_Central_Manager.searchSelectionAction(selection);
+        selection.setSelectedProteinsList(proteinAccession);
+        Data_handler.switchToSearchingMode(selection);
         loadQuantSearching();
+        CSFPR_Central_Manager.searchSelectionAction(selection);
 
     }
     private Set<String> filterKeywordSet;

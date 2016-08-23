@@ -9,6 +9,7 @@ import no.uib.probe.csf.pr.touch.view.components.datasetfilters.DatasetPieChartF
 import no.uib.probe.csf.pr.touch.view.components.datasetfilters.RecombineDiseaseGroupsCombonent;
 import no.uib.probe.csf.pr.touch.view.components.datasetfilters.ReorderSelectGroupsFilter;
 import no.uib.probe.csf.pr.touch.view.components.datasetfilters.SerumCsfFilter;
+import no.uib.probe.csf.pr.touch.view.core.ResizableTextLabel;
 
 /**
  *
@@ -25,10 +26,10 @@ public class HeatmapFiltersContainerResizeControl {
     private final HorizontalLayout bottomBtnContainer;
     private final SerumCsfFilter serumCsfFilter;
     private final VerticalLayout clearFilterBtn;
-    private final Label datasetCounterLabel;
+    private final ResizableTextLabel datasetCounterLabel;
     private final GridLayout btnsWrapper;
 
-    public HeatmapFiltersContainerResizeControl(GridLayout btnsWrapper, DatasetPieChartFiltersComponent datasetPieChartFiltersBtn, RecombineDiseaseGroupsCombonent reconbineDiseaseGroupsFiltersBtn, ReorderSelectGroupsFilter reorderSelectBtn, HorizontalLayout bottomBtnContainer, SerumCsfFilter serumCsfFilter, VerticalLayout clearFilterBtn, Label datasetCounterLabel) {
+    public HeatmapFiltersContainerResizeControl(GridLayout btnsWrapper, DatasetPieChartFiltersComponent datasetPieChartFiltersBtn, RecombineDiseaseGroupsCombonent reconbineDiseaseGroupsFiltersBtn, ReorderSelectGroupsFilter reorderSelectBtn, HorizontalLayout bottomBtnContainer, SerumCsfFilter serumCsfFilter, VerticalLayout clearFilterBtn, ResizableTextLabel datasetCounterLabel) {
         this.btnsWrapper = btnsWrapper;
         this.datasetPieChartFiltersBtn = datasetPieChartFiltersBtn;
         this.reconbineDiseaseGroupsFiltersBtn = reconbineDiseaseGroupsFiltersBtn;

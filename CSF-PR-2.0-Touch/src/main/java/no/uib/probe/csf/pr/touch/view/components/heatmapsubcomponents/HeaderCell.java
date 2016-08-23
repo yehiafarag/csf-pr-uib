@@ -176,12 +176,17 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
         if (rotate) {
             valueLabel.setWidth(height - 2, unit);
         } else {
+            valueLabel.removeStyleName("linehight200");
+        valueLabel.removeStyleName("linehight180");
             if (height < 15) {
                 valueLabel.addStyleName("xxsmallfont");
+                valueLabel.addStyleName("linehight180");
             } else if (height >= 15 && height < 18) {
                 valueLabel.addStyleName("xsmallfont");
+                valueLabel.addStyleName("linehight180");
             } else {
                 valueLabel.addStyleName("smallfont");
+                valueLabel.addStyleName("linehight200");
             }
         }
     }
@@ -190,12 +195,17 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
     public void setWidth(float width, Unit unit) {
         super.setWidth(width, unit); //To change body of generated methods, choose Tools | Templates
         if (rotate) {
+            valueLabel.removeStyleName("linehight200");
+        valueLabel.removeStyleName("linehight180");
              if (width < 15) {
             valueLabel.addStyleName("xxsmallfont");
+            valueLabel.addStyleName("linehight180");
         } else if (width >= 15 && width < 20) {
             valueLabel.addStyleName("xsmallfont");
+            valueLabel.addStyleName("linehight180");
         } else {
             valueLabel.addStyleName("smallfont");
+            valueLabel.addStyleName("linehight200");
         }
             valueLabel.setHeight(width - 2, unit);
         }

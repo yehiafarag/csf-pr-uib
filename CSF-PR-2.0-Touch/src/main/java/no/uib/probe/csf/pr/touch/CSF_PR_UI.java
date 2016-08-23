@@ -130,19 +130,19 @@ public class CSF_PR_UI extends UI {
         windowHeight = Page.getCurrent().getBrowserWindowHeight();// Math.max(Page.getCurrent().getBrowserWindowHeight(), 1080);
         windowWidth =  Page.getCurrent().getBrowserWindowWidth();//Math.max(Page.getCurrent().getBrowserWindowWidth(), 1920);
         if (windowHeight < 427 || windowWidth < 980) {
-            emptyLayout.setVisible(true);            
+//            emptyLayout.setVisible(true);            
             System.err.println("at w "+windowWidth+" h "+windowHeight);
             Notification.show("Screen is too small current screen resolution ("+windowWidth+"x"+windowHeight+")", Notification.Type.ERROR_MESSAGE);
             return;
         }
 
-        if (emptyLayout.isVisible()) {
-            emptyLayout.setVisible(false);
-        } else {
+//        if (emptyLayout.isVisible()) {
+//            emptyLayout.setVisible(false);
+//        } else {
             for (Window w : getWindows()) {
                 w.center();
             }
-        }
+//        }
     }
 
 }

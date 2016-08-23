@@ -20,8 +20,11 @@ import no.uib.probe.csf.pr.touch.logic.CoreLogic;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseCategoryObject;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseGroupComparison;
 import no.uib.probe.csf.pr.touch.logic.beans.HeatMapHeaderCellInformationBean;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetInitialInformationObject;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
+import no.uib.probe.csf.pr.touch.selectionmanager.QuantSearchSelection;
 
 /**
  *
@@ -32,7 +35,7 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
  *
  */
 public class DatasetUtility implements Serializable {
-
+    
     private final CoreLogic Core_Logic;
     private final Map<String, QuantData> quantDataMap;
     private final LinkedHashMap<String, DiseaseCategoryObject> fullDiseaseCategoryMap;
@@ -42,11 +45,11 @@ public class DatasetUtility implements Serializable {
     private Map<String, Map<String, String>> oreginal_DiseaseCat_DiseaseGroupMap;
     private String userDiseaseGroupA = "VeryHårdToExistByChanceøæå", userDiseaseGroupB = "VeryHårdToExistByChanceøæå";
     private final Map<String, String> diseaseGroupFullNameMap;
-
+    
     private final List<String> msReindexMap;
     private final List<String> adReindexMap;
     private final List<String> pdReindexMap;
-
+    
     private final String suggestNames = "Alzheimer's\n"
             + "CIS-MS(CIS)\n"
             + "CIS-CIS\n"
@@ -71,7 +74,7 @@ public class DatasetUtility implements Serializable {
             + "PMS\n"
             + "SPMS\n"
             + "RRMS";
-
+    
     private final String oreginalNames = "Alzheimer's\n"
             + "CIS-MS(CIS)\n"
             + "CIS-CIS\n"
@@ -96,29 +99,26 @@ public class DatasetUtility implements Serializable {
             + "PMS\n"
             + "SPMS\n"
             + "RRMS";
-
+    
     public DatasetUtility(CoreLogic Core_Logic) {
         this.Core_Logic = Core_Logic;
         quantDataMap = new LinkedHashMap<>();
         this.fullDiseaseCategoryMap = Core_Logic.getDiseaseCategorySet();
         
-       
-
         this.quantDatasetInitialInformationObject = Core_Logic.getQuantDatasetInitialInformationObject();
-       
-
+        
         default_DiseaseCat_DiseaseGroupMap = new LinkedHashMap<>();
         oreginal_DiseaseCat_DiseaseGroupMap = new LinkedHashMap<>();
         quantDatasetInitialInformationObject.keySet().stream().filter((str) -> !(str.equalsIgnoreCase("All Diseases"))).forEach((str) -> {
             Set<String> diseaseGroupsName = Core_Logic.getDiseaseGroupNameMap(str);
-
+            
             Map<String, String> diseaseGroupMap = new LinkedHashMap<>();
             Map<String, String> oreginalDiseaseGroupMap = new LinkedHashMap<>();
             diseaseGroupsName.stream().forEach((diseaseGroupName) -> {
                 oreginalDiseaseGroupMap.put(diseaseGroupName, diseaseGroupName);
                 diseaseGroupMap.put(diseaseGroupName, diseaseGroupName);
             });
-
+            
             for (int i = 0; i < oreginalNames.split("\n").length; i++) {
                 if (!diseaseGroupsName.contains(oreginalNames.split("\n")[i])) {
                     continue;
@@ -128,7 +128,7 @@ public class DatasetUtility implements Serializable {
             default_DiseaseCat_DiseaseGroupMap.put(str, diseaseGroupMap);
             oreginal_DiseaseCat_DiseaseGroupMap.put(str, oreginalDiseaseGroupMap);
         });
-
+        
         this.diseaseGroupFullNameMap = Core_Logic.getDiseaseGroupsFullNameMap();
         inUse_DiseaseCat_DiseaseGroupMap = default_DiseaseCat_DiseaseGroupMap;
         msReindexMap = new ArrayList<>();
@@ -153,7 +153,7 @@ public class DatasetUtility implements Serializable {
         msReindexMap.add("Neurological__Multiple Sclerosis__multiplesclerosisstyle");
         msReindexMap.add("Healthy*__Multiple Sclerosis__multiplesclerosisstyle");
         msReindexMap.add("Healthy controls__Multiple Sclerosis__multiplesclerosisstyle");
-
+        
         pdReindexMap = new ArrayList<>();
         pdReindexMap.add("Parkinson's__Parkinson's__parkinsonstyle");
         pdReindexMap.add("PDD__Parkinson's__parkinsonstyle");
@@ -164,7 +164,7 @@ public class DatasetUtility implements Serializable {
         pdReindexMap.add("Non Neurodeg.__Parkinson's__parkinsonstyle");
         pdReindexMap.add("Healthy*__Parkinson's__parkinsonstyle");
         pdReindexMap.add("Healthy controls__Parkinson's__parkinsonstyle");
-
+        
         adReindexMap = new ArrayList<>();
         adReindexMap.add("Alzheimer's__Alzheimer's__alzheimerstyle");
         adReindexMap.add("LBD__Alzheimer's__alzheimerstyle");
@@ -181,7 +181,7 @@ public class DatasetUtility implements Serializable {
         adReindexMap.add("Aged healthy__Alzheimer's__alzheimerstyle");
         adReindexMap.add("Healthy*__Alzheimer's__alzheimerstyle");
         adReindexMap.add("Healthy controls__Alzheimer's__alzheimerstyle");
-
+        
     }
 
     /**
@@ -190,13 +190,13 @@ public class DatasetUtility implements Serializable {
      *
      * @return disease category set
      */
-    public Collection<DiseaseCategoryObject> getFullDiseaseCategorySet() {       
+    public Collection<DiseaseCategoryObject> getFullDiseaseCategorySet() {
         return fullDiseaseCategoryMap.values();
     }
-
+    
     private QuantData activeData;
     private boolean init = true;
-
+    
     public void setMainDiseaseCategory(String mainDiseaseCategory) {
         if (init) {
             init = false;
@@ -206,15 +206,15 @@ public class DatasetUtility implements Serializable {
             LinkedHashSet<HeatMapHeaderCellInformationBean> activeRowIds = new LinkedHashSet<>();
             Set<DiseaseGroupComparison> diseaseComparisonSet = new LinkedHashSet<>();
             QuantData allQuantData = new QuantData();
-            for (String diseaseCategoryname : quantDatasetInitialInformationObject.keySet()) {                
+            for (String diseaseCategoryname : quantDatasetInitialInformationObject.keySet()) {
                 QuantDatasetInitialInformationObject initQuantData = quantDatasetInitialInformationObject.get(diseaseCategoryname);
                 updateQuantDatasetsList(diseaseCategoryname, initQuantData.getQuantDatasetsList());
                 if (diseaseCategoryname.equalsIgnoreCase("All Diseases")) {
                     continue;
                 }
-
+                
                 QuantData quantData = updateDiseaseGroups(initQuantData.getQuantDatasetsList(), diseaseCategoryname);
-
+                
                 quantData.setDiseaseCategory(diseaseCategoryname);
                 quantData.setActiveHeaders(initQuantData.getActiveHeaders());
                 updateGroupsNames(diseaseCategoryname, quantData);
@@ -225,7 +225,7 @@ public class DatasetUtility implements Serializable {
                 activeRowIds.addAll(quantData.getActiveRowIds());
                 diseaseComparisonSet.addAll(quantData.getDiseaseGroupComparisonsSet());
                 allQuantData.setActiveHeaders(quantData.getActiveHeaders());
-
+                
             }
             allQuantData.setOreginalColumnIds(oreginalColumnIds);
             allQuantData.setOreginalRowIds(oreginalRowIds);
@@ -234,7 +234,7 @@ public class DatasetUtility implements Serializable {
             allQuantData.setDiseaseComparisonSet(diseaseComparisonSet);
             allQuantData.setDiseaseCategory("All Diseases");
             quantDataMap.put("All Diseases", allQuantData);
-
+            
             default_DiseaseCat_DiseaseGroupMap = sortDiseaseCategoryGroups(default_DiseaseCat_DiseaseGroupMap);
             oreginal_DiseaseCat_DiseaseGroupMap = sortDiseaseCategoryGroups(oreginal_DiseaseCat_DiseaseGroupMap);
             inUse_DiseaseCat_DiseaseGroupMap = default_DiseaseCat_DiseaseGroupMap;
@@ -243,9 +243,9 @@ public class DatasetUtility implements Serializable {
                 diseaseCategory.setDiseaseSubGroupsToFullName(diseaseGroupFullNameMap);
 //                diseaseCategory.getAllSubGroupSet().addAll(quantDataMap.get("All Diseases").getOreginalRowIds());
             });
-
+            
         }
-
+        
         if (quantDataMap.containsKey(mainDiseaseCategory)) {
             activeData = quantDataMap.get(mainDiseaseCategory);
         } else {
@@ -256,9 +256,9 @@ public class DatasetUtility implements Serializable {
             updateGroupsNames(mainDiseaseCategory, activeData);
             quantDataMap.put(mainDiseaseCategory, activeData);
             updateQuantDatasetsList(mainDiseaseCategory, initQuantData.getQuantDatasetsList());
-
+            
         }
-
+        
     }
 
     /**
@@ -269,7 +269,7 @@ public class DatasetUtility implements Serializable {
      */
     public LinkedHashSet<HeatMapHeaderCellInformationBean> getRowLabels() {
         return activeData.getActiveRowIds();
-
+        
     }
 
     /**
@@ -280,7 +280,7 @@ public class DatasetUtility implements Serializable {
      */
     public LinkedHashSet<HeatMapHeaderCellInformationBean> getColumnLabels() {
         return activeData.getActiveColumnIds();
-
+        
     }
 
     /**
@@ -291,12 +291,12 @@ public class DatasetUtility implements Serializable {
      */
     public Set<DiseaseGroupComparison> getDiseaseGroupComparisonsSet() {
         return activeData.getDiseaseGroupComparisonsSet();
-
+        
     }
-
+    
     private QuantData updateDiseaseGroups(Map<Integer, QuantDatasetObject> quantDSArr, String diseaseCategory) {
         QuantData quantData = new QuantData();
-
+        
         String[] diseaseGroupsI = new String[quantDSArr.size()];
         String[] diseaseGroupsII = new String[quantDSArr.size()];
         Set<DiseaseGroupComparison> diseaseComparisonSet = new LinkedHashSet<>();
@@ -310,10 +310,10 @@ public class DatasetUtility implements Serializable {
             diseaseGroup.setDiseaseStyleName(ds.getDiseaseStyleName());
             String pgI = ds.getPatientsGroup1();
             diseaseGroup.setDiseaseMainGroupI(pgI);
-
+            
             String subpgI = ds.getPatientsSubGroup1();
             diseaseGroup.setOriginalDiseaseSubGroupI(subpgI);
-
+            
             String label1;
             if (pgI.equalsIgnoreCase("Not Available") || pgI.equalsIgnoreCase("control")) {
                 pgI = "";
@@ -331,13 +331,13 @@ public class DatasetUtility implements Serializable {
             if (pgII.equalsIgnoreCase("Not Available") || pgII.equalsIgnoreCase("control")) {
                 pgII = "";
             }
-
+            
             if (!subpgII.equalsIgnoreCase("") && !subpgII.equalsIgnoreCase("Not Available")) {
                 pgII = subpgII;
             }
             label2 = pgII;
             diseaseGroup.setActiveDiseaseSubGroupII(label2);
-
+            
             diseaseGroupsI[i] = label1 + "__" + diseaseGroup.getDiseaseCategory() + "__" + diseaseGroup.getDiseaseStyleName();
             diseaseGroupsII[i] = label2 + "__" + diseaseGroup.getDiseaseCategory() + "__" + diseaseGroup.getDiseaseStyleName();
             diseaseGroup.setQuantDatasetIndex(ds.getDsKey());
@@ -350,9 +350,9 @@ public class DatasetUtility implements Serializable {
             return null;
         }
         String[] pgArr = sortGroups(merge(diseaseGroupsI, diseaseGroupsII), diseaseCategory);
-
+        
         LinkedHashSet<HeatMapHeaderCellInformationBean> selectedHeatMapRows = new LinkedHashSet<>();
-
+        
         for (String str : pgArr) {
             if (!str.equalsIgnoreCase("") && !str.contains(userDiseaseGroupB)) {
                 HeatMapHeaderCellInformationBean headerCellInfo = new HeatMapHeaderCellInformationBean();
@@ -385,16 +385,16 @@ public class DatasetUtility implements Serializable {
         quantData.setOreginalRowIds(selectedHeatMapRows);
         quantData.setDiseaseComparisonSet(diseaseComparisonSet);
         return quantData;
-
+        
     }
-
+    
     private String[] sortGroups(String[] quantData, String diseaseCategory) {
         String[] sortedData = new String[quantData.length];
         List<String> quantDataSet = new ArrayList<>(Arrays.asList(quantData));
         int count = 0;
-
+        
         if (diseaseCategory.equalsIgnoreCase("Multiple Sclerosis")) {
-
+            
             for (String str : msReindexMap) {
                 if (quantDataSet.contains(str)) {
                     sortedData[count] = str;
@@ -451,9 +451,9 @@ public class DatasetUtility implements Serializable {
                     sortedData[count] = str;
                     count++;
                 }
-
+                
             }
-
+            
             for (String str : pdReindexMap) {
                 if (quantDataSet.contains(str)) {
                     sortedData[count] = str;
@@ -466,7 +466,7 @@ public class DatasetUtility implements Serializable {
                     sortedData[count] = str;
                     count++;
                 }
-
+                
             }
             for (String str : adReindexMap) {
                 if (quantDataSet.contains(str)) {
@@ -480,20 +480,20 @@ public class DatasetUtility implements Serializable {
                     sortedData[count] = str;
                     count++;
                 }
-
+                
             }
             quantDataSet.clear();
             quantDataSet.addAll(Arrays.asList(sortedData));
-
+            
         }
-
+        
         return sortedData;
-
+        
     }
-
+    
     private String[] merge(String[] arr1, String[] arr2) {
         String[] newArr = new String[arr1.length + arr2.length];
-
+        
         int i = 0;
         for (String str : arr1) {
             newArr[i] = str;
@@ -503,9 +503,9 @@ public class DatasetUtility implements Serializable {
             newArr[i] = str;
             i++;
         }
-
+        
         Arrays.sort(newArr);
-
+        
         Map<String, ArrayList<String>> sortOnGroupMap = new LinkedHashMap<>();
         for (int x = newArr.length - 1; x >= 0; x--) {
             String s = newArr[x];
@@ -516,7 +516,7 @@ public class DatasetUtility implements Serializable {
             ArrayList<String> set = sortOnGroupMap.get(diseaseCat);
             set.add(s);
             sortOnGroupMap.put(diseaseCat, set);
-
+            
         }
         String[] sortedArr = new String[newArr.length];
         int index = 0;
@@ -526,12 +526,12 @@ public class DatasetUtility implements Serializable {
             for (String fullName : set) {
                 sortedArr[index] = fullName;
                 index++;
-
+                
             }
         }
-
+        
         return sortedArr;
-
+        
     }
 
     /**
@@ -542,7 +542,7 @@ public class DatasetUtility implements Serializable {
      */
     public Map<Integer, QuantDatasetObject> getFullQuantDsMap() {
         return quantDatasetInitialInformationObject.get(activeData.getDiseaseCategory()).getQuantDatasetsList();
-
+        
     }
 
     /**
@@ -552,7 +552,7 @@ public class DatasetUtility implements Serializable {
      * @return boolean array of active column
      */
     public boolean[] getActiveDataColumns() {
-
+        
         return activeData.getActiveHeaders();
     }
 
@@ -577,7 +577,7 @@ public class DatasetUtility implements Serializable {
             QuantDatasetInitialInformationObject initQuantData = quantDatasetInitialInformationObject.get(diseaseCategory);
             updateQuantDatasetsList(diseaseCategory, initQuantData.getQuantDatasetsList());
         });
-
+        
     }
 
     /**
@@ -589,14 +589,14 @@ public class DatasetUtility implements Serializable {
      * @param csfApplied show CSF datasets
      */
     public void updateCSFSerumDatasets(boolean serumApplied, boolean csfApplied) {
-
+        
     }
-
+    
     private void updateQuantDatasetsList(String diseaseCategoryName, Map<Integer, QuantDatasetObject> quantDatasetsList) {
-
+        
         if (!inUse_DiseaseCat_DiseaseGroupMap.containsKey(diseaseCategoryName)) {
             return;
-
+            
         }
         Map<String, String> updatedNamesMap = inUse_DiseaseCat_DiseaseGroupMap.get(diseaseCategoryName);
         quantDatasetsList.values().stream().map((quantDataset) -> {
@@ -605,13 +605,13 @@ public class DatasetUtility implements Serializable {
         }).forEach((quantDataset) -> {
             quantDataset.setUpdatedDiseaseGroupII(updatedNamesMap.get(quantDataset.getPatientsSubGroup2()));
         });
-
+        
     }
-
+    
     private void updateGroupsNames(String diseaseCategoryName, QuantData updatingData) {
         if (!inUse_DiseaseCat_DiseaseGroupMap.containsKey(diseaseCategoryName)) {
             return;
-
+            
         }
         Map<String, String> updatedNamesMap = inUse_DiseaseCat_DiseaseGroupMap.get(diseaseCategoryName);
         LinkedHashSet<HeatMapHeaderCellInformationBean> activeColumnIds = new LinkedHashSet<>();
@@ -619,7 +619,7 @@ public class DatasetUtility implements Serializable {
         updatingData.getOreginalColumnIds().stream().filter((header) -> !(!updatedNamesMap.containsKey(header.getDiseaseGroupOreginalName()))).forEach((header) -> {
             header.setDiseaseGroupName(updatedNamesMap.get(header.getDiseaseGroupOreginalName()));
             activeColumnIds.add(header);
-
+            
         });
         updatingData.getOreginalRowIds().stream().filter((header) -> !(!updatedNamesMap.containsKey(header.getDiseaseGroupOreginalName()))).forEach((header) -> {
             header.setDiseaseGroupName(updatedNamesMap.get(header.getDiseaseGroupOreginalName()));
@@ -640,19 +640,19 @@ public class DatasetUtility implements Serializable {
         }).forEach((comparison) -> {
             updatedDiseaseComparisonSet.add(comparison);
         });
-
+        
         updatingData.setDiseaseComparisonSet(updatedDiseaseComparisonSet);
         updatingData.setActiveColumnIds(activeColumnIds);
         updatingData.setActiveRowIds(activeRowIds);
-
+        
     }
-
+    
     private Map<String, Map<String, String>> sortDiseaseCategoryGroups(Map<String, Map<String, String>> mapToSort) {
         Map<String, Map<String, String>> sortedMap = new LinkedHashMap<>();
-
+        
         mapToSort.keySet().stream().forEach((diseaseCategory) -> {
             QuantData quantData = quantDataMap.get(diseaseCategory);
-
+            
             Map<String, String> subGroupMap = mapToSort.get(diseaseCategory);
             Map<String, String> sortedSubGroupMap = new LinkedHashMap<>();
             quantData.getOreginalRowIds().stream().forEach((group) -> {
@@ -660,7 +660,7 @@ public class DatasetUtility implements Serializable {
             });
             sortedMap.put(diseaseCategory, sortedSubGroupMap);
         });
-
+        
         Map<String, String> sortedAllSubGroupMap = new LinkedHashMap<>();
         sortedMap.values().stream().forEach((subGroupMap) -> {
             sortedAllSubGroupMap.putAll(subGroupMap);
@@ -680,7 +680,34 @@ public class DatasetUtility implements Serializable {
             fulldiseaseGroupsNameSet.addAll(oreginal_DiseaseCat_DiseaseGroupMap.get(key).keySet());
         });
         return fulldiseaseGroupsNameSet;
+        
+    }
 
+    /**
+     * activate searching layout sub-data handler
+     *
+     * @param searchSelection search selection data
+     */
+    public void switchToSearchingMode(QuantSearchSelection searchSelection) {
+        QuantData refData = quantDataMap.get(searchSelection.getDiseaseCategory());
+        QuantData searchingData = new QuantData();
+        searchingData.setDiseaseCategory(searchSelection.getDiseaseCategory());
+        Set<DiseaseGroupComparison> diseaseComparisonSet = new LinkedHashSet<>();
+        
+        for (DiseaseGroupComparison diseaseGroupComparison : refData.getDiseaseGroupComparisonsSet()) {
+            if (searchSelection.getDatasetIds().contains(diseaseGroupComparison.getQuantDatasetIndex())) {
+                diseaseComparisonSet.add(diseaseGroupComparison);
+            }
+            
+        }
+        searchingData.setDiseaseComparisonSet(diseaseComparisonSet); 
+        searchingData.setActiveColumnIds(refData.getActiveColumnIds());
+        searchingData.setActiveRowIds(refData.getActiveRowIds());
+        searchingData.setActiveHeaders(refData.getActiveHeaders());
+        searchingData.setOreginalColumnIds(refData.getOreginalColumnIds());
+        searchingData.setOreginalRowIds(refData.getOreginalRowIds());        
+        activeData = searchingData;
+        
     }
 
 }

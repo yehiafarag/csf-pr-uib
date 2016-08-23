@@ -526,7 +526,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
             String header = comp.getComparisonHeader();
             String updatedHeader = header.split(" / ")[0].split("__")[0] + " / " + header.split(" / ")[1].split("__")[0] + "";
 
-            xAxisLabels[x] = updatedHeader + " (" + comp.getDatasetMap().size() + ")    ";
+            xAxisLabels[x] = updatedHeader ;//+ " (" + comp.getDatasetMap().size() + ")    ";
             if (xAxisLabels[x].length() > maxLength) {
                 maxLength = xAxisLabels[x].length();
             }

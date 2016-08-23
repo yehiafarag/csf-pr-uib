@@ -90,7 +90,7 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
         diseaseGroupsNamesPanel = new Panel();
         diseaseGroupsNamesPanel.setWidth(100, Unit.PERCENTAGE);
         diseaseGroupsNamesPanel.setStyleName(ValoTheme.PANEL_BORDERLESS);
-        initPopupLayout(diseaseCategorySet,smallScreen);
+        initPopupLayout(diseaseCategorySet, smallScreen);
 
         HorizontalLayout btnsFrame = new HorizontalLayout();
         btnsFrame.setWidth(100, Unit.PERCENTAGE);
@@ -149,7 +149,7 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
 //        popupBodyLayout.setComponentAlignment(btnLayout, Alignment.MIDDLE_RIGHT);
     }
 
-    private void initPopupLayout(Collection<DiseaseCategoryObject> diseaseCategorySet,boolean smallScreen) {
+    private void initPopupLayout(Collection<DiseaseCategoryObject> diseaseCategorySet, boolean smallScreen) {
 
 //        popupWindow.setWidth(width, Unit.PIXELS);
 //        popupWindow.setHeight(height, Unit.PIXELS);
@@ -364,6 +364,11 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
                 captionAstrMap.put(name, 0);
             }
 
+        }
+        subGroupList.add("Healthy*");
+        diseaseGroupsList.addItem("Healthy*");
+        if (!captionAstrMap.containsKey("Healthy*")) {
+            captionAstrMap.put("Healthy*", 0);
         }
 //        if (!captionAstrMap.containsKey(defaultValue)) {
 //            diseaseGroupsList.addItem(defaultValue);

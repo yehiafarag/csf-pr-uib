@@ -54,7 +54,7 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
 
     public ProteinTrendLayout(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, QuantComparisonProtein selectedProtein, int width, Object itemId, boolean draw, boolean smallScreen) {
         this.itemId = itemId;
-        this.smallScreen=smallScreen;
+        this.smallScreen = smallScreen;
         this.selectedComparisonsList = selectedComparisonsList;
         proteinKey = selectedProtein.getProteinAccession();
         QuantDiseaseGroupsComparison comp = (QuantDiseaseGroupsComparison) selectedComparisonsList.toArray()[selectedComparisonsList.size() - 1];
@@ -94,24 +94,24 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
         maxMinBtn.setStyleName("maxmizebtn");
         maxMinBtn.setDescription("Click to maximize");
 
-        if(!smallScreen){
-        resizeIconLayout.addComponent(maxMinBtn);
-        resizeIconLayout.setComponentAlignment(maxMinBtn, Alignment.TOP_RIGHT);
+        if (!smallScreen) {
+            resizeIconLayout.addComponent(maxMinBtn);
+            resizeIconLayout.setComponentAlignment(maxMinBtn, Alignment.TOP_RIGHT);
 
-        maxMinBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+            maxMinBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
 
-            @Override
-            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-                maxmize();
+                @Override
+                public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+                    maxmize();
 
-            }
-        });
+                }
+            });
         }
         if (draw) {
             if (smallScreen) {
-                sparkLine = new LineChart(width, 200,smallScreen);
+                sparkLine = new LineChart(width, 200, smallScreen);
             } else {
-                sparkLine = new LineChart(width, 500,smallScreen);
+                sparkLine = new LineChart(width, 500, smallScreen);
             }
             sparkLine.updateData(selectedComparisonsList, proteinKey, custTrend);
             sparkLineContainer.addComponent(sparkLine);
@@ -158,10 +158,10 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
     protected AbsoluteLayoutState getState() {
         if (initSparkline == 6 && sparkLine == null) {
             initSparkline++;
-             if (smallScreen) {
-                sparkLine = new LineChart(width, 200,smallScreen);
+            if (smallScreen) {
+                sparkLine = new LineChart(width, 200, smallScreen);
             } else {
-                sparkLine = new LineChart(width, 500,smallScreen);
+                sparkLine = new LineChart(width, 500, smallScreen);
             }
             sparkLine.updateData(selectedComparisonsList, proteinKey, custTrend);
             sparkLineContainer.addComponent(sparkLine);
@@ -173,40 +173,45 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
 
     @Override
     public int compareTo(ProteinTrendLayout t) {
+        Double v2;
         if (sortableProtein == null) {
-
-            return -1;
+            v1 = 0.0;
+        } else {
+            v1 = sortableProtein.getOverallCellPercentValue();
         }
         QuantComparisonProtein o = t.sortableProtein;
         if (o == null) {
-            return 1;
+            v2 = 0.0;
+        } else {
+            v2 = t.sortableProtein.getOverallCellPercentValue();
         }
 
-        if (sortableProtein.getHighSignificant() == sortableProtein.getLowSignificant()) {
-            v1 = sortableProtein.getTrendValue();
-        } else if (sortableProtein.getTrendValue() > 0) {
-            double factor = sortableProtein.getPenalty();
-            v1 = sortableProtein.getTrendValue() - factor;
-            v1 = Math.max(v1, 0) + ((double) (sortableProtein.getHighSignificant() - sortableProtein.getLowSignificant()) / 10.0);
-        } else {
-            double factor = sortableProtein.getPenalty();
-            v1 = sortableProtein.getTrendValue() + factor;
-            v1 = Math.min(v1, 0) + ((double) (sortableProtein.getHighSignificant() - sortableProtein.getLowSignificant()) / 10.0);
-        }
-        Double v2;
-        if (o.getHighSignificant() == o.getLowSignificant()) {
-            v2 = o.getTrendValue();
-        } else if (o.getTrendValue() > 0) {
-            double factor = o.getPenalty();
-            v2 = o.getTrendValue() - factor;
-            v2 = Math.max(v2, 0) + ((double) (o.getHighSignificant() - o.getLowSignificant()) / 10.0);
-        } else {
-            double factor = o.getPenalty();
-            v2 = o.getTrendValue() + factor;
-            v2 = Math.min(v2, 0) + ((double) (o.getHighSignificant() - o.getLowSignificant()) / 10.0);
-        }
         return (v1).compareTo(v2);
 
+//        if (sortableProtein.getHighSignificant() == sortableProtein.getLowSignificant()) {
+//            v1 = sortableProtein.getTrendValue();
+//        } else if (sortableProtein.getTrendValue() > 0) {
+//            double factor = sortableProtein.getPenalty();
+//            v1 = sortableProtein.getTrendValue() - factor;
+//            v1 = Math.max(v1, 0) + ((double) (sortableProtein.getHighSignificant() - sortableProtein.getLowSignificant()) / 10.0);
+//        } else {
+//            double factor = sortableProtein.getPenalty();
+//            v1 = sortableProtein.getTrendValue() + factor;
+//            v1 = Math.min(v1, 0) + ((double) (sortableProtein.getHighSignificant() - sortableProtein.getLowSignificant()) / 10.0);
+//        }
+//        Double v2;
+//        if (o.getHighSignificant() == o.getLowSignificant()) {
+//            v2 = o.getTrendValue();
+//        } else if (o.getTrendValue() > 0) {
+//            double factor = o.getPenalty();
+//            v2 = o.getTrendValue() - factor;
+//            v2 = Math.max(v2, 0) + ((double) (o.getHighSignificant() - o.getLowSignificant()) / 10.0);
+//        } else {
+//            double factor = o.getPenalty();
+//            v2 = o.getTrendValue() + factor;
+//            v2 = Math.min(v2, 0) + ((double) (o.getHighSignificant() - o.getLowSignificant()) / 10.0);
+//        }
+//        return (v1).compareTo(v2);
     }
 
     @Override

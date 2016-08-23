@@ -107,7 +107,7 @@ public abstract class DatasetPieChartFilter extends AbsoluteLayout implements La
         this.initPieChart(filterTitle);
         this.redrawChart();
         this.inuseDsIndexesMap = new LinkedHashMap<>();
-        this.chartData = new HashMap<>();
+        this.chartData = new LinkedHashMap<>();
     }
 
     private void initPieChart(String title) {

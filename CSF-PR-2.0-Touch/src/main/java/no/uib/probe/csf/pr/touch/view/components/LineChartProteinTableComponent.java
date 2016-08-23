@@ -356,6 +356,8 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
                         proteinsFilterMap.put(prot.getProteinAccession() + "__" + prot.getProteinName(), prot);
                     }
                 });
+                
+                
                 quantProteinTable.updateTableData(CSFPR_Central_Manager.getSelectedComparisonsList(), new LinkedHashSet<>(proteinsFilterMap.values()));
 
             } else {

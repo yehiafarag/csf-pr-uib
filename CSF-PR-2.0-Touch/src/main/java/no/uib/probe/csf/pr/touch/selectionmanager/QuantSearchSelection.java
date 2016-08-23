@@ -5,6 +5,7 @@
  */
 package no.uib.probe.csf.pr.touch.selectionmanager;
 
+import java.util.Map;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 
@@ -20,6 +21,9 @@ public class QuantSearchSelection {
     private String diseaseCategory;
     private Set<Integer> datasetIds;
     private Set<String> keyWords;
+    private Set<QuantDiseaseGroupsComparison> selectedComparisonsList;
+    private Set<String> selectedProteinsList;
+    private Map<String, Set<Integer>> diseaseCategoriesIdMap;
 
     public QuantDiseaseGroupsComparison getUserCustComparison() {
         return userCustComparison;
@@ -52,6 +56,30 @@ public class QuantSearchSelection {
 
     public void setDatasetIds(Set<Integer> datasetIds) {
         this.datasetIds = datasetIds;
+    }
+
+    public Set<QuantDiseaseGroupsComparison> getSelectedComparisonsList() {
+        return selectedComparisonsList;
+    }
+
+    public void setSelectedComparisonsList(Set<QuantDiseaseGroupsComparison> selectedComparisonsList) {
+        this.selectedComparisonsList = selectedComparisonsList;
+    }
+
+    public Set<String> getSelectedProteinsList() {
+        return selectedProteinsList;
+    }
+
+    public void setSelectedProteinsList(Set<String> selectedProteinsList) {
+        this.selectedProteinsList = selectedProteinsList;
+    }
+
+    public Map<String, Set<Integer>> getDiseaseCategoriesIdMap() {
+        return diseaseCategoriesIdMap;
+    }
+
+    public void setDiseaseCategoriesIdMap(Map<String, Set<Integer>> diseaseCategoriesIdMap) {
+        this.diseaseCategoriesIdMap = diseaseCategoriesIdMap;
     }
 
 }

@@ -21,12 +21,14 @@ import java.util.Set;
 import no.uib.probe.csf.pr.touch.Data_Handler;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
+import no.uib.probe.csf.pr.touch.selectionmanager.QuantSearchSelection;
 import no.uib.probe.csf.pr.touch.view.HeaderLayout;
 import no.uib.probe.csf.pr.touch.view.LayoutViewManager;
 import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.StudiesInformationWindow;
 import no.uib.probe.csf.pr.touch.view.bigscreen.searchinglayoutcontainer.components.CompareComponent;
 import no.uib.probe.csf.pr.touch.view.bigscreen.searchinglayoutcontainer.components.SearchingComponent;
 import no.uib.probe.csf.pr.touch.view.core.BigBtn;
+import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 import no.uib.probe.csf.pr.touch.view.core.ZoomControler;
 import no.uib.probe.csf.pr.touch.view.smallscreen.OverviewInfoBean;
 
@@ -45,6 +47,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
     public HorizontalLayout getMiniLayout() {
         return miniLayout;
     }
+    private final ImageContainerBtn resetThumbBtn, searchThumbBtn, compareThumbBtn;
 
     /**
      * initialize body layout
@@ -308,6 +311,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
         GridLayout middlePanelServicesLayout = new GridLayout(2, 2);
         middlePanelServicesLayout.setSpacing(true);
+        middlePanelServicesLayout.setHeightUndefined();
 
         if (!smallScreen) {
             middlePanelServicesLayout.setMargin(new MarginInfo(true, false, true, false));
@@ -325,6 +329,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
             quantDatasetBtn.addStyleName("padding12");
             quantDatasetBtn.addStyleName("margintop10");
         }
+//        quantDatasetBtn.getThumbBtn().addStyleName("unselectedbtn");
 
         quantDatasetBtn.getThumbBtn().setDescription("Click to browse protein quantitative data");
         middlePanelServicesLayout.addComponent(quantDatasetBtn, 0, 0);
@@ -350,8 +355,9 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         SearchingComponent searchingDatasetBtn = new SearchingComponent(Data_handler, CSFPR_Central_Manager, smallScreen) {
 
             @Override
-            public void loadQuantSearching() {
+            public void loadQuantSearching() {               
                 View_Manager.viewLayout("quantview");
+                
             }
 
         };
@@ -403,16 +409,44 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         } else {
             zoomApp.setWidth(40, Unit.PIXELS);
         }
-        quantDatasetBtn.getThumbBtn().setVisible(false);
+//        quantDatasetBtn.getThumbBtn().setVisible(false);
         if (Page.getCurrent().getWebBrowser().isChrome()) {
-            zoomApp.setVisible(true);
+            zoomApp.setVisible(false);
         } else {
             zoomApp.setVisible(false);
         }
-        VerticalLayout miniLayoutContainer = new VerticalLayout(homeBtn.getThumbBtn(), quantDatasetBtn.getThumbBtn(), idDatasetBtn.getThumbBtn(), searchingDatasetBtn.getThumbBtn(), compareBtn.getThumbBtn(), zoomApp);
+        this.resetThumbBtn = new ImageContainerBtn() {
+
+            @Override
+            public void onClick() {
+                CSFPR_Central_Manager.resetSearchSelection();
+                
+            }
+        };
+        resetThumbBtn.updateIcon(new ThemeResource("img/home-o.png"));
+        resetThumbBtn.setEnabled(true);
+        resetThumbBtn.setReadOnly(false);
+
+        if (smallScreen) {
+            resetThumbBtn.setWidth(40, Unit.PIXELS);
+            resetThumbBtn.setHeight(40, Unit.PIXELS);
+            resetThumbBtn.setWidth(25, Unit.PIXELS);
+            resetThumbBtn.setHeight(25, Unit.PIXELS);
+            resetThumbBtn.addStyleName("nopaddingimg");
+        } else {
+            resetThumbBtn.setWidth(70, Unit.PIXELS);
+            resetThumbBtn.setHeight(70, Unit.PIXELS);
+            resetThumbBtn.setWidth(40, Unit.PIXELS);
+            resetThumbBtn.setHeight(40, Unit.PIXELS);
+        }
+
+        this.searchThumbBtn = searchingDatasetBtn.getThumbBtn();
+        this.compareThumbBtn = compareBtn.getThumbBtn();
+        VerticalLayout miniLayoutContainer = new VerticalLayout(homeBtn.getThumbBtn(), idDatasetBtn.getThumbBtn(), searchingDatasetBtn.getThumbBtn(), compareBtn.getThumbBtn(), zoomApp,resetThumbBtn);
         miniLayout = new HorizontalLayout(miniLayoutContainer);
-        miniLayout.addStyleName("whitesmokelayout");
+//        miniLayout.addStyleName("whitesmokelayout");
         miniLayoutContainer.setSpacing(true);
+        miniLayoutContainer.setStyleName("toprightbtnscontainer");
 
         AbsoluteLayout footerLayout = new AbsoluteLayout();
         footerLayout.setWidth(100, Unit.PERCENTAGE);
@@ -472,6 +506,13 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         footerLayout.addComponent(para_3, "left: 0px; top: " + 0 + "px");
 
 //        
+    }
+
+    private void unselectAllLayoutBtns() {
+//    this.resetThumbBtn = quantDatasetBtn.getThumbBtn();
+//        this.searchThumbBtn= searchingDatasetBtn.getThumbBtn();
+//        this.compareThumbBtn=compareBtn.getThumbBtn();
+
     }
 
     public void addMainZoomComponents(Component component) {

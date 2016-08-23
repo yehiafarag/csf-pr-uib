@@ -11,7 +11,10 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseCategoryObject;
 import no.uib.probe.csf.pr.touch.view.core.ResizableTextLabel;
 
@@ -24,9 +27,12 @@ import no.uib.probe.csf.pr.touch.view.core.ResizableTextLabel;
 public abstract class QuantInitialLayout extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
     private final HorizontalLayout miniLayout;
-    private final int maxNumber;
+    private int maxNumber;
     private Map<String, DiseaseCategoryObject> diseaseMap;
     private final boolean smallScreen;
+    private final GridLayout frame;
+    private final int height, width;
+    private final Collection<DiseaseCategoryObject> diseaseCategorySet;
 
     /**
      *
@@ -37,12 +43,16 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
      */
     public QuantInitialLayout(Collection<DiseaseCategoryObject> diseaseCategorySet, int width, int height, boolean smallScreen) {
 
+        this.diseaseCategorySet = diseaseCategorySet;
+        this.height = height;
+        this.width = width;
+        this.smallScreen = smallScreen;
         this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
         this.addStyleName("slowslide");
         this.diseaseMap = new HashMap<>();
 
-        GridLayout frame = new GridLayout(3, 3);
+        frame = new GridLayout(3, 3);
         frame.setSpacing(true);
         frame.setMargin(true);
 //        frame.setStyleName("border");
@@ -56,49 +66,8 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
 //        title.addStyleName(ValoTheme.LABEL_BOLD);
         frame.addComponent(title, 1, 1);
         frame.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
-
-        DiseaseCategoryObject allDeseases = (DiseaseCategoryObject) diseaseCategorySet.toArray()[diseaseCategorySet.size() - 1];
-        maxNumber = allDeseases.getDatasetNumber();
-        diseaseMap.put("All Diseases", allDeseases);
-
-//        System.out.println("at h " + height + "  w " + width + "  scaledMax " + scaledMax);
-        int rowcounter = 0;
-        int colCounter = 1;
-        for (DiseaseCategoryObject dCategory : diseaseCategorySet) {
-            if (dCategory == allDeseases) {
-                continue;
-            }
-
-            double scaledMax = scaleValues(dCategory.getDatasetNumber(), maxNumber, 0.01, 1);
-            int dia = (int) (scaledMax * 0.1 * height);
-
-            VerticalLayout disease = initDiseaseBubbleLayout(dCategory, maxNumber, dia);
-            diseaseMap.put(dCategory.getDiseaseCategory(), dCategory);
-            frame.addComponent(disease, colCounter++, rowcounter);
-            frame.setComponentAlignment(disease, Alignment.MIDDLE_CENTER);
-            colCounter++;
-            if (rowcounter == 0) {
-                colCounter = 0;
-                rowcounter = 1;
-            }
-
-        }
-
-        double scaledMax = scaleValues(allDeseases.getDatasetNumber(), maxNumber, 0.01, 1);
-        int dia = (int) (scaledMax * 0.1 * height);
-        VerticalLayout allDisease = initDiseaseBubbleLayout(allDeseases, maxNumber, dia);
-        frame.addComponent(allDisease, 1, 2);
-        frame.setComponentAlignment(allDisease, Alignment.MIDDLE_CENTER);
-
         miniLayout = new HorizontalLayout();
-        if (smallScreen) {
-            miniLayout.addComponent(initDiseaseLayout(null, 60, 60, maxNumber));
-        } else {
-            miniLayout.addComponent(initDiseaseLayout(null, 100, 100, maxNumber));
-        }
-        miniLayout.addStyleName("bigbtn");
-        miniLayout.addStyleName("blink");
-        this.smallScreen = smallScreen;
+        updateData(diseaseCategorySet);
 
     }
     private final ThemeResource logoRes = new ThemeResource("img/logo.png");
@@ -132,7 +101,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
             } else {
                 diseaseTitle.addStyleName("smallfont");
             }
-             diseaseTitle.addStyleName("padding2");
+            diseaseTitle.addStyleName("padding2");
             diseaseTitle.setDescription("#Datasets: " + diseaseObject.getDatasetNumber());
 
             diseaseLayout.addComponent(diseaseTitle);
@@ -145,6 +114,131 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         }
 
         return diseaseLayout;
+
+    }
+
+    public final void updateData(Collection<DiseaseCategoryObject> diseaseCategorySet) {
+
+        frame.removeAllComponents();
+        diseaseMap.clear();
+        miniLayout.removeAllComponents();
+
+        if (diseaseCategorySet.size() == 1) {
+            for (DiseaseCategoryObject dCategory : diseaseCategorySet) {
+
+                VerticalLayout disease = initDiseaseBubbleLayout(dCategory, 20, 200);
+
+                diseaseMap.put(dCategory.getDiseaseCategory(), dCategory);
+                frame.addComponent(disease, 1, 1);
+                frame.setComponentAlignment(disease, Alignment.MIDDLE_CENTER);
+
+            }
+
+            if (smallScreen) {
+                miniLayout.addComponent(initDiseaseLayout(null, 60, 60, maxNumber));
+            } else {
+                miniLayout.addComponent(initDiseaseLayout(null, 100, 100, maxNumber));
+            }
+            miniLayout.addStyleName("bigbtn");
+            miniLayout.addStyleName("blink");
+            return;
+
+        }
+
+        DiseaseCategoryObject allDeseases = (DiseaseCategoryObject) diseaseCategorySet.toArray()[diseaseCategorySet.size() - 1];
+        maxNumber = allDeseases.getDatasetNumber();
+        diseaseMap.put("All Diseases", allDeseases);
+
+//        System.out.println("at h " + height + "  w " + width + "  scaledMax " + scaledMax);
+        int rowcounter = 0;
+        int colCounter = 1;
+        for (DiseaseCategoryObject dCategory : diseaseCategorySet) {
+            if (dCategory == allDeseases) {
+                continue;
+            }
+
+            double scaledMax = scaleValues(dCategory.getDatasetNumber(), maxNumber, 0.01, 1);
+            int dia = (int) (scaledMax * 0.1 * height);
+
+            VerticalLayout disease = initDiseaseBubbleLayout(dCategory, maxNumber, dia);
+            if (dCategory.getDatasetNumber() == 1 && maxNumber == 1) {
+                disease.setWidth(200, Unit.PIXELS);
+                disease.setHeight(200, Unit.PIXELS);
+            }
+
+            diseaseMap.put(dCategory.getDiseaseCategory(), dCategory);
+            frame.addComponent(disease, colCounter++, rowcounter);
+            frame.setComponentAlignment(disease, Alignment.MIDDLE_CENTER);
+            colCounter++;
+            if (rowcounter == 0) {
+                colCounter = 0;
+                rowcounter = 1;
+            }
+
+        }
+
+        double scaledMax = scaleValues(allDeseases.getDatasetNumber(), maxNumber, 0.01, 1);
+        int dia = (int) (scaledMax * 0.1 * height);
+
+        if (diseaseCategorySet.size() > 2) {
+            VerticalLayout allDisease = initDiseaseBubbleLayout(allDeseases, maxNumber, dia);
+            frame.addComponent(allDisease, 1, 2);
+            frame.setComponentAlignment(allDisease, Alignment.MIDDLE_CENTER);
+        }
+
+        if (smallScreen) {
+            miniLayout.addComponent(initDiseaseLayout(null, 60, 60, maxNumber));
+        } else {
+            miniLayout.addComponent(initDiseaseLayout(null, 100, 100, maxNumber));
+        }
+        miniLayout.addStyleName("bigbtn");
+        miniLayout.addStyleName("blink");
+
+    }
+
+    public void updateData(Map<String, Set<Integer>> diseaseCategoriesIdMap) {
+
+        HashSet<DiseaseCategoryObject> tempDiseaseCategorySet = new LinkedHashSet<>();
+        int maxCounter = 0;
+        DiseaseCategoryObject allDisCat = new DiseaseCategoryObject();
+        if (diseaseCategoriesIdMap != null) {
+            for (DiseaseCategoryObject dcat : diseaseCategorySet) {
+                if (dcat.getDiseaseCategory().equalsIgnoreCase("All Diseases")) {
+                    allDisCat.setDiseaseCategory(dcat.getDiseaseCategory());
+                    allDisCat.setDiseaseStyleName(dcat.getDiseaseStyleName());
+                    continue;
+                }
+                DiseaseCategoryObject updateDisCat = new DiseaseCategoryObject();
+                if (diseaseCategoriesIdMap.containsKey(dcat.getDiseaseCategory())) {
+                    updateDisCat.setDiseaseCategory(dcat.getDiseaseCategory());
+                    updateDisCat.setDiseaseStyleName(dcat.getDiseaseStyleName());
+                    updateDisCat.setDatasetNumber(diseaseCategoriesIdMap.get(dcat.getDiseaseCategory()).size());
+                    maxCounter += updateDisCat.getDatasetNumber();
+                    tempDiseaseCategorySet.add(updateDisCat);
+                } 
+            }
+            allDisCat.setDatasetNumber(maxCounter);
+            tempDiseaseCategorySet.add(allDisCat);
+            updateData(tempDiseaseCategorySet);
+            miniLayout.removeAllComponents();
+            if (tempDiseaseCategorySet.size() > 2) {
+
+                if (smallScreen) {
+                    miniLayout.addComponent(initDiseaseLayout(allDisCat, 60, 60, maxNumber));
+                } else {
+                    miniLayout.addComponent(initDiseaseLayout(allDisCat, 100, 100, maxNumber));
+                }
+
+            } else {
+                 if (smallScreen) {
+                    miniLayout.addComponent(initDiseaseLayout(tempDiseaseCategorySet.iterator().next(), 60, 60, maxNumber));
+                } else {
+                    miniLayout.addComponent(initDiseaseLayout(tempDiseaseCategorySet.iterator().next(), 100, 100, maxNumber));
+                }
+
+            }
+
+        }
 
     }
 
@@ -164,12 +258,12 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         diseaseTitle.setDescription("#Datasets: " + diseaseObject.getDatasetNumber());
         diseaseLayout.addComponent(diseaseTitle);
         diseaseTitle.setContentMode(ContentMode.HTML);
-          if (dia >= 60 && dia <= 80) {
-                diseaseTitle.addStyleName("xsmallfont");
-            } else {
-                diseaseTitle.addStyleName("smallfont");
-            }
-          diseaseTitle.addStyleName("padding2");
+        if (dia >= 60 && dia <= 80) {
+            diseaseTitle.addStyleName("xsmallfont");
+        } else {
+            diseaseTitle.addStyleName("smallfont");
+        }
+        diseaseTitle.addStyleName("padding2");
         diseaseLayout.setComponentAlignment(diseaseTitle, Alignment.MIDDLE_CENTER);
         diseaseLayout.setStyleName(diseaseObject.getDiseaseStyleName());
 
@@ -203,6 +297,25 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
 
         miniLayout.removeAllComponents();
         DiseaseCategoryObject diseaseObject = diseaseMap.get(diseaseCategory);
+        if (smallScreen) {
+            miniLayout.addComponent(initDiseaseLayout(diseaseObject, 60, 60, maxNumber));
+        } else {
+            miniLayout.addComponent(initDiseaseLayout(diseaseObject, 100, 100, maxNumber));
+        }
+        onClick(diseaseObject.getDiseaseCategory());
+
+    }
+
+    public void updateSelection(Map<String, Set<Integer>> diseaseCategoriesIdMap) {
+
+        String cat;
+        if (diseaseCategoriesIdMap.size() == 1) {
+            cat = diseaseCategoriesIdMap.keySet().toArray()[0].toString();
+        } else {
+            cat = "All Diseases";
+        }
+        miniLayout.removeAllComponents();
+        DiseaseCategoryObject diseaseObject = diseaseMap.get(cat);
         if (smallScreen) {
             miniLayout.addComponent(initDiseaseLayout(diseaseObject, 60, 60, maxNumber));
         } else {

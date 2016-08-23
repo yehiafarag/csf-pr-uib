@@ -351,7 +351,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
 
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeightUndefined();
-        this.smallScreen=smallScreen;
+        this.smallScreen = smallScreen;
 
         this.columnHeaderSet = new LinkedHashSet<>();
         this.filtersMap = new LinkedHashMap<>();
@@ -556,7 +556,12 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
 
 //            mainProteinTable.setColumnIcon("selected", checkedRes);
             for (Object itemId : activeTableItemsMap.keySet()) {
-                mainProteinTable.addItem(tableItemsMap.get(itemId), itemId);
+                if (tableItemsMap.containsKey(itemId)) {
+                    mainProteinTable.addItem(tableItemsMap.get(itemId), itemId);
+                } 
+//                else {
+//                    System.out.println("at not found item id " + itemId);
+//                }
             }
 
         } else {
@@ -610,7 +615,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
             ExternalLink accessionObject = new ExternalLink(accession, new ExternalResource(url));
             accessionObject.setDescription(description);
 //            ExternalLink nameObject = new ExternalLink(name, new ExternalResource(url));
-            ProteinTrendLayout protTrendLayout = new ProteinTrendLayout(selectedComparisonsList, protein, availableProteinLayoutWidth, protId, (protId < 10),smallScreen) {
+            ProteinTrendLayout protTrendLayout = new ProteinTrendLayout(selectedComparisonsList, protein, availableProteinLayoutWidth, protId, (protId < 10), smallScreen) {
 
                 @Override
                 public void selectTableItem(Object itemId) {
@@ -649,9 +654,9 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         updateRowNumber(mainProteinTable.getItemIds().size(), generateThumbImg());
 
         hideCheckedColumn(true);
-        Object[] items = tableItemsMap.get(mainProteinTable.getCurrentPageFirstItemId());
-        ProteinTrendLayout protTrendLayout = (ProteinTrendLayout) items[3];
-        protTrendLayout.maxmize();
+//        Object[] items = tableItemsMap.get(mainProteinTable.getCurrentPageFirstItemId());
+//        ProteinTrendLayout protTrendLayout = (ProteinTrendLayout) items[3];
+//        protTrendLayout.maxmize();
 
     }
 

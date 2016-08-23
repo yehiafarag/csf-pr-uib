@@ -107,7 +107,7 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
             this.setComponentAlignment(valueLabel, Alignment.TOP_CENTER);
             this.valueLabel.setStyleName("hmbodycell");
             this.valueLabel.setValue("<div style='background:" + cellColor + "; width:" + (100) + "% !important; height:" + (100) + "% !important;'>" + (int) value + "</div>");
-
+            
             strValue = ((int) value) + "";
             pointer = "pointer";
             this.addLayoutClickListener(HeatmapCell.this);
@@ -197,16 +197,30 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
         if (valueLabel == null) {
             return;
         }
-         if (height <= 10) {
+        valueLabel.removeStyleName("linehight200");
+        valueLabel.removeStyleName("linehight180");
+//         if (height <= 10) {
+//            valueLabel.addStyleName("xxsmallfont");
+//        } 
+//         else if (height < 15) {
+//            valueLabel.addStyleName("xsmallfont");
+//        } else if (height >= 15 && height < 20) {
+//            valueLabel.addStyleName("smallfont");
+//        } else {
+//            valueLabel.addStyleName("largefont");
+//        }
+        if (height < 15) {
             valueLabel.addStyleName("xxsmallfont");
-        } 
-         else if (height < 15) {
-            valueLabel.addStyleName("xsmallfont");
+            valueLabel.addStyleName("linehight180");
         } else if (height >= 15 && height < 20) {
-            valueLabel.addStyleName("smallfont");
+            valueLabel.addStyleName("xsmallfont");
+            valueLabel.addStyleName("linehight180");
         } else {
-            valueLabel.addStyleName("largefont");
+            valueLabel.addStyleName("smallfont");
+            valueLabel.addStyleName("linehight200");
         }
-    }
+        valueLabel.setHeight(height - 2, unit);
+    
+}
 
 }

@@ -217,12 +217,12 @@ public class LineChart extends AbsoluteLayout {
         linevalues[0] = xLineValues;
         linevalues[1] = yLineValues;
         dataset.addSeries("line", linevalues);
-        verticalLabels = maxLength > 40 && selectedComparisonList.size() > 4;
+        verticalLabels = maxLength > 30 && selectedComparisonList.size() > 4;
         Font font;
         if (smallScreen) {
             font = new Font("Helvetica Neue", Font.PLAIN, 9);
         } else {
-            font = new Font("Helvetica Neue", Font.PLAIN, 13);
+            font = new Font("Helvetica Neue", Font.PLAIN, 12);
         }
 
         xAxis = new SymbolAxis(null, xAxisLabels) {

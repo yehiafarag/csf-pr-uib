@@ -20,6 +20,7 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantProtein;
 import no.uib.probe.csf.pr.touch.logic.dataset.DatasetUtility;
+import no.uib.probe.csf.pr.touch.selectionmanager.QuantSearchSelection;
 import no.uib.probe.csf.pr.touch.view.smallscreen.OverviewInfoBean;
 
 /**
@@ -50,6 +51,17 @@ public class Data_Handler implements Serializable {
         this.coreLogic = new CoreLogic(url, dbName, driver, userName, password, filesURL);
         Dataset_Util = new DatasetUtility(coreLogic);
 
+    }
+    
+    /**
+     * activate searching layout sub-data handler
+     *
+     * @param searchSelection  search selection data
+     */
+    public void switchToSearchingMode(QuantSearchSelection searchSelection){
+    
+    this.Dataset_Util.switchToSearchingMode(searchSelection);
+    
     }
 
     /**

@@ -91,6 +91,12 @@ public class ProteinSearcingResultLabel extends HorizontalLayout implements Layo
         popupbodyLayout.setComponentAlignment(chart, Alignment.MIDDLE_CENTER);
     }
     
+    
+    public int getValue(String key){
+        return chart.getValue(key);
+    
+    }
+    
     public Set<String> getSelectionSet() {
         return chart.getSelectionSet();
     }

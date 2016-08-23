@@ -41,7 +41,7 @@ public abstract class ComparisonLable extends VerticalLayout implements LayoutEv
         this.setWidth(100, Unit.PERCENTAGE);
 
         this.setHeightUndefined();
-        this.setSpacing(true);
+        this.setSpacing(false);
         this.addLayoutClickListener(ComparisonLable.this);
         String[] headerI = comparison.getComparisonHeader().replace("__" + comparison.getDiseaseCategory(), "").split(" / ");
         String diseaseColor = comparison.getDiseaseCategoryColor();
@@ -50,29 +50,36 @@ public abstract class ComparisonLable extends VerticalLayout implements LayoutEv
         labelI.setWidth(100, Unit.PERCENTAGE);
         labelI.addStyleName(ValoTheme.LABEL_SMALL);
         labelI.addStyleName(ValoTheme.LABEL_TINY);
-        labelI.setHeight(15, Unit.PIXELS);
+//        labelI.setHeight(15, Unit.PIXELS);
         labelI.addStyleName("overflowtext");
+        labelI.addStyleName("nomargin");
+//        labelI.addStyleName("alignmiddle");
         labelI.setContentMode(ContentMode.HTML);
         this.addComponent(labelI);
-        this.setComponentAlignment(labelI, Alignment.MIDDLE_CENTER);
+        this.setComponentAlignment(labelI, Alignment.BOTTOM_CENTER);
 
         VerticalLayout spacer = new VerticalLayout();
         spacer.setStyleName(ValoTheme.LAYOUT_WELL);
         spacer.setWidth(100, Unit.PERCENTAGE);
         spacer.setHeight(2, Unit.PIXELS);
         spacer.setMargin(new MarginInfo(false, true, false, true));
+        spacer.addStyleName("nomargin");
+        spacer.addStyleName("alignmiddle");
+        spacer.addStyleName("margintop-5");
         this.addComponent(spacer);
         this.setComponentAlignment(spacer, Alignment.MIDDLE_CENTER);
 
         Label labelII = new Label("<font  style='color:" + diseaseColor + "'>" + headerI[1] + "</font>");
-        labelII.setHeight(15, Unit.PIXELS);
+//        labelII.setHeight(15, Unit.PIXELS);
         labelII.setWidth(100, Unit.PERCENTAGE);
         labelII.addStyleName("overflowtext");
+        labelII.addStyleName("nomargin");
+//        labelII.addStyleName("alignmiddle");
         labelII.addStyleName(ValoTheme.LABEL_SMALL);
         labelII.addStyleName(ValoTheme.LABEL_TINY);
         labelII.setContentMode(ContentMode.HTML);
         this.addComponent(labelII);
-        this.setComponentAlignment(labelII, Alignment.MIDDLE_CENTER);
+        this.setComponentAlignment(labelII, Alignment.TOP_CENTER);
         this.setDescription("View comparison details <br/>" + headerI[0] + " / " + headerI[1] + "<br/>" + comparison.getDiseaseCategory());
 
         VerticalLayout popupBody = new VerticalLayout();

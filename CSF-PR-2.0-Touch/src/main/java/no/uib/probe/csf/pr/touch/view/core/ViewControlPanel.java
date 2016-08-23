@@ -196,10 +196,15 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
         if (isDefault) {
             defaultView = mainViewLayout;
             defaultBtn = btnWrapper;
+            mainViewLayout.removeStyleName("hideslidelayout");
+            btnWrapper.removeStyleName("unselectedbtn");
+            ((AbstractOrderedLayout) mainViewLayout.getData()).setVisible(true);
+             currentView = mainViewLayout;
+            currentBtn = btnWrapper;
         }
 
     }
-    private boolean hideInit = true;
+    private boolean hideInit = false;
 
     public void updateCurrentLayout(String viewName) {
         if (hideInit) {

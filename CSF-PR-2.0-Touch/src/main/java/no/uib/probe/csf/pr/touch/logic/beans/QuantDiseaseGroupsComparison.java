@@ -15,9 +15,27 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
 
     private String comparisonHeader;
     private String oreginalComparisonHeader;
-    private Map<Integer,QuantDatasetObject> datasetMap;
+    private Map<Integer, QuantDatasetObject> datasetMap;
     private String diseaseCategoryColor;
     private boolean switchable = true;
+
+    public QuantDiseaseGroupsComparison cloning() {
+        QuantDiseaseGroupsComparison updatedQuantComp = new QuantDiseaseGroupsComparison();
+        updatedQuantComp.setComparisonFullName(getComparisonFullName());
+        updatedQuantComp.setComparisonHeader(getComparisonHeader());
+        updatedQuantComp.setDatasetMap(getDatasetMap());
+        updatedQuantComp.setDiseaseCategory(getDiseaseCategory());
+        updatedQuantComp.setDiseaseCategoryColor(diseaseCategoryColor);
+        updatedQuantComp.setDiseaseCategoryStyle(diseaseCategoryStyle);
+        updatedQuantComp.setProteinsByTrendMap(proteinsByTrendMap);
+        updatedQuantComp.setOreginalComparisonHeader(oreginalComparisonHeader);
+        updatedQuantComp.setQuantComparisonProteinMap(quantComparisonProteinMap);
+        updatedQuantComp.setSwitchable(switchable);
+        updatedQuantComp.setUseCustomColumnHeaderToSort(useCustomColumnHeaderToSort);
+        updatedQuantComp.setUseCustomRowHeaderToSort(useCustomRowHeaderToSort);
+        return updatedQuantComp;
+
+    }
 
     public String getDiseaseCategoryStyle() {
         return diseaseCategoryStyle;
@@ -26,7 +44,7 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
     public void setDiseaseCategoryStyle(String diseaseCategoryStyle) {
         this.diseaseCategoryStyle = diseaseCategoryStyle;
     }
-     private String diseaseCategoryStyle;
+    private String diseaseCategoryStyle;
     private boolean useCustomRowHeaderToSort;
 
     public Map<Integer, QuantDatasetObject> getDatasetMap() {
@@ -41,7 +59,7 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
     private String diseaseCategory;
 
     private Map<String, QuantComparisonProtein> quantComparisonProteinMap;
-    private Map<Integer,Set<QuantComparisonProtein>>proteinsByTrendMap; 
+    private Map<Integer, Set<QuantComparisonProtein>> proteinsByTrendMap;
 
     public Map<Integer, Set<QuantComparisonProtein>> getProteinsByTrendMap() {
         return proteinsByTrendMap;
@@ -119,7 +137,6 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
 
     }
 
- 
     /**
      *
      * @return
@@ -165,7 +182,6 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
 //        
 //        }
 //    }
-
     public boolean isSwitchable() {
         return switchable;
     }
@@ -193,8 +209,5 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
         }
         return true;
     }
-    
-    
-    
 
 }

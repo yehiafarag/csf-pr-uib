@@ -191,6 +191,14 @@ public abstract class PieChart extends AbsoluteLayout implements LayoutEvents.La
 
     }
 
+    public int getValue(String key) {
+        if (valuesMap.containsKey(key)) {
+            return Integer.valueOf(valuesMap.get(key));
+        } else {
+            return 0;
+        }
+    }
+
     /**
      *
      */
@@ -208,20 +216,20 @@ public abstract class PieChart extends AbsoluteLayout implements LayoutEvents.La
         if (!chartRenderingInfo.getPlotInfo().getDataArea().contains(event.getRelativeX(), event.getRelativeY())) {
             return;
         }
-        Comparable sliceName= "all";
+        Comparable sliceName = "all";
         if (event.getClickedComponent() == null || event.getClickedComponent() instanceof Image) {
             ChartEntity entity = chartRenderingInfo.getEntityCollection().getEntity(event.getRelativeX(), event.getRelativeY());
             if (entity instanceof PieSectionEntity) {
                 PieSectionEntity pieEnt = (PieSectionEntity) entity;
                 selectSlice(pieEnt.getSectionKey());
-                sliceName= pieEnt.getSectionKey();
+                sliceName = pieEnt.getSectionKey();
             }
 
         } else if (event.getClickedComponent() instanceof VerticalLayout || event.getClickedComponent() instanceof Label) {
             selectSlice("all");
-            
+
         }
-        
+
         sliceClicked(sliceName);
     }
 

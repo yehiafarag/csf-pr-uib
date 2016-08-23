@@ -106,7 +106,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         btnsWrapper.addComponent(datasetPieChartFiltersBtn, 0, 1);
         btnsWrapper.setComponentAlignment(datasetPieChartFiltersBtn, Alignment.MIDDLE_LEFT);
 
-        reconbineDiseaseGroupsFiltersBtn = new RecombineDiseaseGroupsCombonent(diseaseCategorySet,smallScreen) {
+        reconbineDiseaseGroupsFiltersBtn = new RecombineDiseaseGroupsCombonent(diseaseCategorySet, smallScreen) {
 
             @Override
             public void updateSystem(Map<String, Map<String, String>> updatedGroupsNamesMap) {
@@ -187,7 +187,6 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
 //                    this.addStyleName("largefont");
 //                }
 //            }
-
         };
         datasetCounterLabel.setDescription("#Datasets");
 
@@ -205,7 +204,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         int availableHMHeight;
         //init heatmap
 //        if (smallScreen) {
-            availableHMHeight = mainbodyLayoutHeight;
+        availableHMHeight = mainbodyLayoutHeight;
 //        } else {
 //            availableHMHeight = mainbodyLayoutHeight - 40;
 //        }
@@ -307,7 +306,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         for (HeatMapHeaderCellInformationBean rowHeader : rowheaders) {
             for (int key : filteredQuantDsMap.keySet()) {
                 QuantDatasetObject dataset = filteredQuantDsMap.get(key);
-                if (dataset.getUpdatedDiseaseGroupI().equalsIgnoreCase(rowHeader.getDiseaseGroupName()) || dataset.getUpdatedDiseaseGroupII().equalsIgnoreCase(rowHeader.getDiseaseGroupName())) {
+                if ((dataset.getUpdatedDiseaseGroupI().equalsIgnoreCase(rowHeader.getDiseaseGroupName()) || dataset.getUpdatedDiseaseGroupII().equalsIgnoreCase(rowHeader.getDiseaseGroupName())) && (rowHeader.getDiseaseCategory().equalsIgnoreCase(dataset.getDiseaseCategory()))) {
                     localRows.add(rowHeader);
 
                 }
@@ -319,7 +318,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
             for (Iterator<Integer> it = filteredQuantDsMap.keySet().iterator(); it.hasNext();) {
                 int key = it.next();
                 QuantDatasetObject dataset = filteredQuantDsMap.get(key);
-                if (dataset.getUpdatedDiseaseGroupI().equalsIgnoreCase(rowHeader.getDiseaseGroupName()) || dataset.getUpdatedDiseaseGroupII().equalsIgnoreCase(rowHeader.getDiseaseGroupName())) {
+                if (((dataset.getUpdatedDiseaseGroupI().equalsIgnoreCase(rowHeader.getDiseaseGroupName()) || dataset.getUpdatedDiseaseGroupII().equalsIgnoreCase(rowHeader.getDiseaseGroupName()))) && (rowHeader.getDiseaseCategory().equalsIgnoreCase(dataset.getDiseaseCategory()))) {
                     localColumns.add(rowHeader);
 
                 }
@@ -369,8 +368,42 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         }
 
         if (type.equalsIgnoreCase("quant_searching")) {
-//            heatmapLayoutContainer.selectComparisonsByID(CSFPR_Central_Manager.getQuantSearchSelection().getDatasetIds());
 
+//            String diseaseCategory = CSFPR_Central_Manager.getQuantSearchSelection().getDiseaseCategory();
+//            Set<Integer> datasetIds = CSFPR_Central_Manager.getQuantSearchSelection().getDatasetIds();
+//            if (rowheaders.isEmpty() || colheaders.isEmpty() || patientsGroupComparisonsSet.isEmpty() || fullQuantDsMap.isEmpty()) {
+//                Data_Handler.loadDiseaseCategory(diseaseCategory);
+//                updateData(Data_Handler.getRowLabels(), Data_Handler.getColumnLabels(), Data_Handler.getDiseaseGroupComparisonsSet(), Data_Handler.getFullQuantDsMap());
+//
+//            }
+
+//            LinkedHashSet<HeatMapHeaderCellInformationBean> searchHeatmapRowLabel = new LinkedHashSet<>();
+//            Set<DiseaseGroupComparison> searchDiseaseComparisons = new LinkedHashSet<>();
+//            ;
+//
+//            for (int dsId : datasetIds) {
+//                for (DiseaseGroupComparison comparison : Data_Handler.getDiseaseGroupComparisonsSet()) {
+//                    if (comparison.getOriginalDatasetIndex() == dsId) {
+//                        searchDiseaseComparisons.add(comparison);
+//                    }
+//
+//                }
+//
+//            }
+//            
+//
+//            for (HeatMapHeaderCellInformationBean rowLabel:  this.Data_Handler.getRowLabels()) {
+//                if(rowLabel.getDiseaseCategory().equalsIgnoreCase(diseaseCategory)){
+//                    System.out.println("at rowLabel name "+rowLabel.getDiseaseGroupFullName());                    
+//                
+//                }
+//                //, Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), Data_handler.getFullQuantDsMap()
+//            }
+//
+//       
+//            updateSystemComponents(CSFPR_Central_Manager.getQuantSearchSelection().getDatasetIds());
+//            this.heatmapLayoutContainer.selectAll();
+//            heatmapLayoutContainer.selectComparisonsByID(CSFPR_Central_Manager.getQuantSearchSelection().getDatasetIds());
         }
 
     }

@@ -13058,6 +13058,13 @@ div.v-layout.v-horizontal.v-widget {
 .nomargin{
     margin: 0px !important;
 }
+.alignmiddle{
+    vertical-align:middle !important;
+}
+.margintop-5{
+    margin-top:-5px !important;
+
+}
 .marginleft40{
     margin-left:40px;
 }
@@ -13633,13 +13640,7 @@ div.v-layout.v-horizontal.v-widget {
 .alldiseasestyle:hover {
     border-color:#4d749f;
 }
-.topbtns{
-    position: inherit !important; 
-    max-width:300px!important;    
-    z-index:2 !important;
 
-
-}
 .righ40{
     right:40px !important;
 
@@ -13657,16 +13658,16 @@ div.v-layout.v-horizontal.v-widget {
     -webkit-transform:rotate(270deg) translateX(-100% ); /* Safari and Chrome */
     -o-transform:rotate(270deg) translateX(-100% ); /* Opera */
     transform:rotate(270deg) translateX(-100% ); 
-   
+
     -ms-transform-origin:0 0; /* IE 9 */
     -moz-transform-origin:0 0; /* Firefox */
     -webkit-transform-origin:0 0; /* Safari and Chrome */
     -o-transform-origin:0 0; /* Opera */
     transform-origin: 0 0;
-    
+
     position:inherit;
     text-overflow:ellipsis !important;
-   
+
     overflow:hidden;
 }
 .hmheadercell{
@@ -14241,7 +14242,7 @@ div.v-layout.v-horizontal.v-widget {
 
 }
 .padding5{
-    
+
     padding:5px !important;
 }
 .padding2{
@@ -14274,38 +14275,9 @@ div.v-layout.v-horizontal.v-widget {
     border-bottom-left-radius:5px;
     border-top-left-radius:5px;
     border-top-right-radius:5px;
-
-
-
-
-}.sidebtnsmenue{
-
-
-    /*min-width:50px;*/
-    /*min-height:100px;*/
-    top:-10px;
-    padding-top:2px;    
-    padding-right:2px;    
-    padding-bottom:2px;
-    transform:translate(-2px,-38px);
-    max-height:500px;
-    max-width:75px;
-    position:relative;
-    z-index:3 !important;
-    background-color:  #EAF5FC ;
-    border:2px solid lightgray;
-    border-left:none;
-    border-top-right-radius:5px;
-    border-bottom-right-radius:5px;
-    border-bottom-left-radius:0px !important;
 }
 
-.v-slot-topbtns.v-slot-rightbtns{
-    background-color:white !important;
-    padding-left:5px;
-    padding-right:5px;
 
-}
 .ultralightbluelayout{
     background-color:  #EAF5FC !important;
 
@@ -15274,21 +15246,103 @@ div.v-layout.v-horizontal.v-widget {
     padding:0px !important;
 }
 .resizeto120{
-   max-height:100px;
+    max-height:100px;
     margin:0px !important;
     padding:5px !important;
     overflow-y:hidden !important;
-      -webkit-transition: all 1.5s ease-in-out;
+    -webkit-transition: all 1.5s ease-in-out;
     -moz-transition: all 1.5s ease-in-out;
     -o-transition: all 1.5s ease-in-out;
     transition: all 1.5s ease-in-out;
 
-    
-    
+
+
 }
 .maxwidth500{
     max-width: 500px !important;
 }
 .maxhight500{
     max-height:  500px !important;
+}
+.linehight200{
+    line-height:200% !important;
+}
+.linehight180{
+    line-height:180% !important;
+}
+.linehight150{
+    line-height:150% !important;
+}
+
+
+
+.sidebtnsmenue{
+
+
+    /*min-width:50px;*/
+    /*min-height:100px;*/
+    top:-10px;
+    padding-top:2px;    
+    padding-right:2px;    
+    padding-bottom:2px;
+    transform:translate(-2px,-38px);
+    max-height:500px;
+    max-width:75px;
+    position:relative;
+    z-index:3 !important;
+    background-color:  #EAF5FC ;
+    border:2px solid lightgray;
+    border-left:none;
+    border-top-right-radius:5px;
+    border-bottom-right-radius:5px;
+    border-bottom-left-radius:0px !important;
+}
+
+.v-slot-topbtns.v-slot-rightbtns{
+    background-color: white!important;
+
+
+}
+/*.rightsidebtnwrapper{
+    background-color:  #EAF5FC !important;
+    padding:5px;
+
+    border-top-right-radius:5px;
+    border-bottom-right-radius:5px;
+    border:2px solid  lightgray;
+    border-left:none;
+    position:relative;
+    z-index:2;
+}
+.topbtns{
+    position: inherit !important; 
+    max-width:300px!important;    
+    z-index:2 !important;
+
+
+}
+.toprightbtnscontainer{
+    margin-top: 10px;   
+    margin-right:15px;
+    background-color:rgba(255,255,255,0.0);
+    border:2px solid rgba(255,255,255,0.0);
+}*/
+
+
+.v-slot-topbtns.v-slot-rightbtns{
+    background-color: white!important;
+
+
+}
+
+.topbtns{
+    position: inherit !important; 
+    max-width:300px!important;    
+    z-index:2 !important;
+
+
+}
+.toprightbtnscontainer{
+    margin-top: 10px;   
+    margin-right:10px;
 }
