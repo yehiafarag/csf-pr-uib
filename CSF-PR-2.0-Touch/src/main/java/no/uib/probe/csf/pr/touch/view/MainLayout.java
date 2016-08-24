@@ -1,8 +1,10 @@
 package no.uib.probe.csf.pr.touch.view;
 
+import com.vaadin.server.Page;
 import no.uib.probe.csf.pr.touch.view.bigscreen.CSFApplicationContainer;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.VerticalLayout;
+import no.uib.probe.csf.pr.touch.view.core.ZoomControler;
 
 /**
  *
@@ -13,6 +15,7 @@ import com.vaadin.ui.VerticalLayout;
 public class MainLayout extends VerticalLayout {
 
     private final VerticalLayout body;
+    private final ZoomControler zoomApp;
 
     /**
      *
@@ -47,6 +50,16 @@ public class MainLayout extends VerticalLayout {
         CSFApplicationContainer welcomePageContainerLayout = new CSFApplicationContainer(windowWidth, windowHeight, url, dbName, driver, userName, password, filesURL);
         body.addComponent(welcomePageContainerLayout);
         body.setComponentAlignment(welcomePageContainerLayout,Alignment.MIDDLE_CENTER);
+        
+        zoomApp = welcomePageContainerLayout.getZoomApp();
+        
+        body.addComponent(zoomApp);
+        
+        
+        
+        
+      
+        
     }
 
 }

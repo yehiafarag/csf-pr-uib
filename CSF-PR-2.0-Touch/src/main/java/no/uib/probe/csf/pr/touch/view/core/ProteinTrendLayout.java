@@ -131,7 +131,7 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
         }
         if (max) {
             setHeight(100, Unit.PIXELS);
-            sparkLine.minimize();
+            sparkLine.minimize(false);
             maxMinBtn.setStyleName("maxmizebtn");
             max = false;
         } else {

@@ -113,14 +113,22 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
         btnsLayoutContainer.addComponent(btnWrapper);
         btnsLayoutContainer.setComponentAlignment(btnWrapper, Alignment.TOP_RIGHT);
         
-        Button clearBtn = new Button("Clear");
-        clearBtn.setStyleName(ValoTheme.BUTTON_SMALL);
-        clearBtn.setDescription("Reset searching");
-        clearBtn.addStyleName("margintop");
-        btnWrapper.addComponent(clearBtn);
-        btnWrapper.setComponentAlignment(clearBtn, Alignment.TOP_RIGHT);
-        clearBtn.addClickListener((Button.ClickEvent event) -> {
+        Button sampleBtn = new Button("Sample");
+        sampleBtn.setStyleName(ValoTheme.BUTTON_SMALL);
+        sampleBtn.setDescription("Searching sample");
+        sampleBtn.addStyleName("margintop");
+        btnWrapper.addComponent(sampleBtn);
+        btnWrapper.setComponentAlignment(sampleBtn, Alignment.TOP_RIGHT);
+        sampleBtn.addClickListener((Button.ClickEvent event) -> {
             SearchingUnitComponent.this.reset();
+            diseaseCategoryOption.select("Alzheimer's");
+            diseaseCategoryOption.select("Multiple Sclerosis");
+            searchByOptionGroup.select("Protein Name");
+            searchingArea.setValue("serum albumin\n"
+                    + "hemoglobin\n"
+                    + "albumin\n"
+                    + "random keyword");
+            
             removeStyleName("resizeto120");
         });
         
@@ -151,7 +159,7 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
         errorLabel.setVisible(false);
 //        searchingArea.setRequired(true);
 //        searchingArea.commit();
-        
+
         searchByOptionGroup.setRequired(true);
         searchByOptionGroup.commit();
         
@@ -189,7 +197,7 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
             }
             
         } else {
-             this.removeStyleName("resizeto120");
+            this.removeStyleName("resizeto120");
             errorLabel.setValue("Check keywords and searching by option");
             errorLabel.setVisible(true);
         }

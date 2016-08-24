@@ -7,12 +7,15 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.Data_Handler;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseCategoryObject;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseGroupComparison;
+import no.uib.probe.csf.pr.touch.logic.beans.HeatMapHeaderCellInformationBean;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFListener;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
@@ -51,18 +54,22 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
 
     @Override
     public void selectionChanged(String type) {
-        if (type.equalsIgnoreCase("quant_searching")) {
+        if (type.equalsIgnoreCase("quant_searching") || type.equalsIgnoreCase("quant_compare")) {
 
             //reset main quant data in handler
             //done
             //update initial layout
             quantInitialLayout.updateData(CSFPR_Central_Manager.getQuantSearchSelection().getDiseaseCategoriesIdMap());
-
             //update heatmap
             Set<QuantDiseaseGroupsComparison> compList = CSFPR_Central_Manager.getSelectedComparisonsList();
             heatmapComponent.unselectAll();
-
-            heatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), Data_handler.getFullQuantDsMap());
+            Map<Integer, QuantDatasetObject> tempFullComparison =new LinkedHashMap<>();
+            for(int i:Data_handler.getFullQuantDsMap().keySet()){
+                if(CSFPR_Central_Manager.getQuantSearchSelection().getDatasetIds().contains(i))
+                    tempFullComparison.put(i, Data_handler.getFullQuantDsMap().get(i));
+            }
+            
+            heatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(),tempFullComparison );
             if (compList == null || compList.isEmpty()) {
                 updateCurrentLayout("heatmap");
 
@@ -77,25 +84,54 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
 //            this.updateCurrentLayout("proteintable");
 //            lineChartProteinTableComponent.filterSearchSelection(CSFPR_Central_Manager.getQuantSearchSelection().getKeyWords());
         } else if (type.equalsIgnoreCase("reset_quant_searching")) {
-             //update initial layout
+            //update initial layout
+            heatmapComponent.unselectAll();
+            heatmapBtn.updateIcon(logoRes);
+            heatmapBtn.setEnabled(false);
+            heatmapBtn.setReadOnly(true);
+//              quantInitialLayout.resetThumbBtn();
+            quantInitialLayout.updateData(Data_handler.getDiseaseCategorySet());
+            updateCurrentLayout("initiallayout");
+            
+            
+            
+            
+            
 
             //reset heatmap and unselect all
-        } else if (type.equalsIgnoreCase("quant_compare")) {
+        } 
+        if (type.equalsIgnoreCase("quant_compare")) {
+            
+            
+            //reset main quant data in handler
+            //done
+            //update initial layout
+//            quantInitialLayout.updateData(CSFPR_Central_Manager.getQuantSearchSelection().getDiseaseCategoriesIdMap());
+//
+//            //update heatmap
+//            Set<QuantDiseaseGroupsComparison> compList = CSFPR_Central_Manager.getSelectedComparisonsList();
+//            heatmapComponent.unselectAll();
+//             heatmapComponent.showSerumDs();
+//             heatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), Data_handler.getFullQuantDsMap());
+//            if (compList == null || compList.isEmpty()) {
+//                updateCurrentLayout("heatmap");
+//
+//            }            
             bubblechartComponent.addCustmisedUserDataCompariosn(CSFPR_Central_Manager.getQuantSearchSelection().getUserCustComparison());
             lineChartProteinTableComponent.setUserCustomizedComparison(CSFPR_Central_Manager.getQuantSearchSelection().getUserCustComparison());
-            if (CSFPR_Central_Manager.getQuantSearchSelection().getUserCustComparison() == null) {
-                heatmapComponent.unselectAll();
-                quantInitialLayout.updateSelection("All Diseases");
-                this.updateCurrentLayout("heatmap");
-
-                return;
-            }
-
-            quantInitialLayout.updateSelection(CSFPR_Central_Manager.getQuantSearchSelection().getDiseaseCategory());
-            heatmapComponent.showSerumDs();
-            heatmapComponent.selectComparisonsByID(CSFPR_Central_Manager.getQuantSearchSelection().getDatasetIds());
-            this.updateCurrentLayout("proteintable");
-            lineChartProteinTableComponent.filterSearchSelection(CSFPR_Central_Manager.getQuantSearchSelection().getKeyWords());
+//            if (CSFPR_Central_Manager.getQuantSearchSelection().getUserCustComparison() == null) {
+//                heatmapComponent.unselectAll();
+//                quantInitialLayout.updateSelection("All Diseases");
+//                this.updateCurrentLayout("heatmap");
+//
+//                return;
+//            }
+////
+//////            quantInitialLayout.updateSelection(CSFPR_Central_Manager.getQuantSearchSelection().getDiseaseCategory());
+////           
+////            heatmapComponent.selectComparisonsByID(CSFPR_Central_Manager.getQuantSearchSelection().getDatasetIds());
+//            this.updateCurrentLayout("proteintable");
+//            lineChartProteinTableComponent.filterSearchSelection(CSFPR_Central_Manager.getQuantSearchSelection().getKeyWords());
 
         } else if (type.equalsIgnoreCase("comparisons_selection")) {
 
@@ -149,21 +185,39 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
             public void onClick(String diseaseCategoryName) {
                 defaultView();
                 if (CSFPR_Central_Manager.getQuantSearchSelection() != null) {
-                    
-                    if (lastSelectedDisease.equalsIgnoreCase(diseaseCategoryName)) {                    
+                    if (lastSelectedDisease.equalsIgnoreCase(diseaseCategoryName)) {
                         return;
                     }
                     lastSelectedDisease = diseaseCategoryName;
                     Set<QuantDiseaseGroupsComparison> compList = CSFPR_Central_Manager.getSelectedComparisonsList();
                     heatmapComponent.unselectAll();
-                    Set<DiseaseGroupComparison> updatedSet = new LinkedHashSet<>();
-                    for (DiseaseGroupComparison dcat : Data_handler.getDiseaseGroupComparisonsSet()) {
-                        if (dcat.getDiseaseCategory().equalsIgnoreCase(diseaseCategoryName)) {
-                            updatedSet.add(dcat);
-                        }
-                    }
 
-                    heatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), updatedSet, Data_handler.getFullQuantDsMap());
+                    if (!diseaseCategoryName.equalsIgnoreCase("All Diseases")) {
+
+                        Set<DiseaseGroupComparison> updatedSet = new LinkedHashSet<>();
+                        for (DiseaseGroupComparison dcat : Data_handler.getDiseaseGroupComparisonsSet()) {
+                            if (dcat.getDiseaseCategory().equalsIgnoreCase(diseaseCategoryName)) {
+                                updatedSet.add(dcat);
+                            }
+                        }
+                        LinkedHashSet<HeatMapHeaderCellInformationBean> rowLabels = new LinkedHashSet<>();
+                        LinkedHashSet<HeatMapHeaderCellInformationBean> colLabels = new LinkedHashSet<>();
+                        for (HeatMapHeaderCellInformationBean row : Data_handler.getRowLabels()) {
+                            if (row.getDiseaseCategory().equalsIgnoreCase(lastSelectedDisease)) {
+                                rowLabels.add(row);
+                            }
+
+                        }
+                        for (HeatMapHeaderCellInformationBean col : Data_handler.getColumnLabels()) {
+                            if (col.getDiseaseCategory().equalsIgnoreCase(lastSelectedDisease)) {
+                                colLabels.add(col);
+                            }
+
+                        }
+                        heatmapComponent.updateData(rowLabels, colLabels, updatedSet, Data_handler.getFullQuantDsMap());
+                    } else {
+                        heatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), Data_handler.getFullQuantDsMap());
+                    }
                     if (compList == null || compList.isEmpty()) {
                         updateCurrentLayout("heatmap");
 

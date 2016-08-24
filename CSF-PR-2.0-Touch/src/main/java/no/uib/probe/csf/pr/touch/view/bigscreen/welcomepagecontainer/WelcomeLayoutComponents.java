@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.Data_Handler;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
+import no.uib.probe.csf.pr.touch.selectionmanager.CSFListener;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
 import no.uib.probe.csf.pr.touch.selectionmanager.QuantSearchSelection;
 import no.uib.probe.csf.pr.touch.view.HeaderLayout;
@@ -323,6 +324,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
             @Override
             public void onClick() {
                 View_Manager.viewLayout("quantview");
+                zoomApp.setVisible(true);
             }
         };
         if (!smallScreen) {
@@ -355,9 +357,10 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         SearchingComponent searchingDatasetBtn = new SearchingComponent(Data_handler, CSFPR_Central_Manager, smallScreen) {
 
             @Override
-            public void loadQuantSearching() {               
+            public void loadQuantSearching() {
                 View_Manager.viewLayout("quantview");
-                
+                zoomApp.setVisible(true);
+
             }
 
         };
@@ -374,6 +377,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
             @Override
             public void loadQuantComparison() {
                 View_Manager.viewLayout("quantview");
+                zoomApp.setVisible(true);
             }
 
         };
@@ -391,6 +395,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
             @Override
             public void onClick() {
                 View_Manager.viewLayout("welcomeview");
+                zoomApp.setVisible(false);
             }
         };
         this.addComponent(homeBtn);
@@ -403,29 +408,31 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         middleLayout.addComponent(para_2);
         middleLayout.setComponentAlignment(para_2, Alignment.TOP_LEFT);
         //init mini layout
-        zoomApp = new ZoomControler(false, smallScreen);
-        if (smallScreen) {
-            zoomApp.setWidth(25, Unit.PIXELS);
-        } else {
-            zoomApp.setWidth(40, Unit.PIXELS);
-        }
+        zoomApp = new ZoomControler(true, smallScreen, Page.getCurrent().getWebBrowser().isChrome());
+        zoomApp.setVisible(false);
+//        if (smallScreen) {
+//            zoomApp.setWidth(25, Unit.PIXELS);
+//        } else {
+//            zoomApp.setWidth(40, Unit.PIXELS);
+//        }
 //        quantDatasetBtn.getThumbBtn().setVisible(false);
-        if (Page.getCurrent().getWebBrowser().isChrome()) {
-            zoomApp.setVisible(false);
-        } else {
-            zoomApp.setVisible(false);
-        }
+
         this.resetThumbBtn = new ImageContainerBtn() {
 
             @Override
             public void onClick() {
                 CSFPR_Central_Manager.resetSearchSelection();
-                
+
             }
         };
+
+        final ThemeResource searchDisableRes = new ThemeResource("img/search_disabled.png");
+        final ThemeResource compareDisableRes = new ThemeResource("img/compare_disabled.png");
+
         resetThumbBtn.updateIcon(new ThemeResource("img/home-o.png"));
         resetThumbBtn.setEnabled(true);
         resetThumbBtn.setReadOnly(false);
+        resetThumbBtn.setVisible(false);
 
         if (smallScreen) {
             resetThumbBtn.setWidth(40, Unit.PIXELS);
@@ -442,7 +449,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
         this.searchThumbBtn = searchingDatasetBtn.getThumbBtn();
         this.compareThumbBtn = compareBtn.getThumbBtn();
-        VerticalLayout miniLayoutContainer = new VerticalLayout(homeBtn.getThumbBtn(), idDatasetBtn.getThumbBtn(), searchingDatasetBtn.getThumbBtn(), compareBtn.getThumbBtn(), zoomApp,resetThumbBtn);
+        VerticalLayout miniLayoutContainer = new VerticalLayout(homeBtn.getThumbBtn(), idDatasetBtn.getThumbBtn(), searchingDatasetBtn.getThumbBtn(), compareBtn.getThumbBtn(), resetThumbBtn);
         miniLayout = new HorizontalLayout(miniLayoutContainer);
 //        miniLayout.addStyleName("whitesmokelayout");
         miniLayoutContainer.setSpacing(true);
@@ -505,6 +512,39 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         para_3.setWidth(55, Unit.PERCENTAGE);
         footerLayout.addComponent(para_3, "left: 0px; top: " + 0 + "px");
 
+        CSFPR_Central_Manager.registerListener(new CSFListener() {
+
+            @Override
+            public void selectionChanged(String type) {
+                if (type.equalsIgnoreCase("reset_quant_searching")) {
+                    resetThumbBtn.setVisible(false);
+                    searchThumbBtn.removeStyleName("selectedbtn");
+                    compareThumbBtn.removeStyleName("selectedbtn");
+                } else if (type.equalsIgnoreCase("quant_searching")) {
+                    compareThumbBtn.removeStyleName("selectedbtn");
+                    resetThumbBtn.setVisible(true);
+                    resetThumbBtn.updateIcon(searchDisableRes);
+                    searchThumbBtn.addStyleName("selectedbtn");
+                } else if (type.equalsIgnoreCase("quant_compare")) {
+                    resetThumbBtn.setVisible(true);
+                    searchThumbBtn.removeStyleName("selectedbtn");
+                    resetThumbBtn.updateIcon(compareDisableRes);
+                    compareThumbBtn.addStyleName("selectedbtn");
+
+                }
+            }
+
+            @Override
+            public String getFilterId() {
+                return "welcomehomecomponent";
+            }
+
+            @Override
+            public void removeFilterValue(String value) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
+
 //        
     }
 
@@ -519,4 +559,9 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
         zoomApp.addZoomableComponent(component);
     }
+
+    public ZoomControler getZoomApp() {
+        return zoomApp;
+    }
+
 }

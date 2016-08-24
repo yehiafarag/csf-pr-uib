@@ -7,7 +7,6 @@ import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -58,10 +57,11 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
     private VerticalLayout hideCompBtn;
 
+    private final Set<Integer> currentDsIds;
+
 //    private Image icon;
 //    private Label hideShowBtnLabel;
 //    private ThemeResource defaultResource;
-
 //    private final Image heatMapImg;
     private final AbsoluteLayout heatmapComponentContainer;
     private final AbsoluteLayout heatmapPanel;
@@ -98,6 +98,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
         this.availableComparisonsList = new LinkedHashSet<>();
         this.updatedDatasetMap = new LinkedHashMap<>();
         this.selectedDsList = new LinkedHashSet<>();
+        this.currentDsIds = new LinkedHashSet<>();
 
         this.setWidthUndefined();
         this.setHeightUndefined();
@@ -335,7 +336,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
             cornerCell.setComponentAlignment(filterResizeController.getFilterContainerLayout(), Alignment.MIDDLE_CENTER);
             filterResizeController.getFilterContainerLayout().addStyleName("heatmapcorner");
         }
-        
+
         InformationButton info = new InformationButton("The disease group comparison table provides an overview of the number of datasets available for each comparison. Hover over a given cell to get additional details about the comparison. Selecting one or more cells in the table will display the corresponding protein details. To filter the data use the options in the upper left corner.", false);
         controlBtnsContainer.addComponent(info);
         if (smallScreen) {
@@ -350,6 +351,10 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
     public VerticalLayout getControlBtnsContainer() {
         return controlBtnsContainer;
+    }
+
+    public Set<Integer> getCurrentDsIds() {
+        return currentDsIds;
     }
 
     private int zoomLevel = 10;
@@ -368,20 +373,13 @@ public abstract class HeatMapLayout extends VerticalLayout {
         unselectAll();
         equalComparisonMap.clear();
         updatedDatasetMap.clear();
+        currentDsIds.clear();
         updatedDatasetMap.putAll(fullQuantDsMap);
 
-//        this.columnCategoryHeadersContainer.setWidth(colHeaderWidth * columnsLbels.size(), Unit.PIXELS);
-//        this.rowCategoryHeadersContainer.setHeight(rowHeaderHeight * rowsLbels.size(), Unit.PIXELS);
-//
-//        if (rowCategoryHeadersContainer.getHeight() + 100 > availableHMHeight) {
-//            double ratio = availableHMHeight / (rowCategoryHeadersContainer.getHeight() + 100);
-//            zoomLevel = (int) (ratio * 10.0);
-//        } else {
-//            zoomLevel = 10;
-//        }
-//        zoomControler.setDefaultZoomLevel(zoomLevel);
+        for (DiseaseGroupComparison ds : patientsGroupComparisonsSet) {
+            currentDsIds.add(ds.getOriginalDatasetIndex());
+        }
         updateHeatMapLayout(rowsLbels, columnsLbels, patientsGroupComparisonsSet, fullQuantDsMap);
-//        filterHeatMap(fullQuantDsMap);
         updateHMThumb(this.getHMThumbImg(), patientsGroupComparisonsSet.size(), 0, equalComparisonMap);
     }
 

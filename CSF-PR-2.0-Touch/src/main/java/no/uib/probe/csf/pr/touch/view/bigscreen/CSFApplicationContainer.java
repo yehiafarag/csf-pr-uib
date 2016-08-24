@@ -12,6 +12,7 @@ import no.uib.probe.csf.pr.touch.view.core.ScrollPanel;
 import no.uib.probe.csf.pr.touch.view.bigscreen.welcomepagecontainer.WelcomeLayoutComponents;
 import no.uib.probe.csf.pr.touch.view.core.BusyTask;
 import no.uib.probe.csf.pr.touch.view.core.SlidePanel;
+import no.uib.probe.csf.pr.touch.view.core.ZoomControler;
 
 /**
  *
@@ -27,6 +28,7 @@ public class CSFApplicationContainer extends VerticalLayout {
     private final SlidePanel quantLayoutPanel;
     private final LayoutViewManager View_Manager;
     private final Data_Handler Data_handler;
+     private final ZoomControler zoomApp;
 
     public CSFApplicationContainer(int pageWidth, int pageHeight, String url, String dbName, String driver, String userName, String password, String filesURL) {
         this.setWidth(pageWidth, Unit.PIXELS);
@@ -59,12 +61,16 @@ public class CSFApplicationContainer extends VerticalLayout {
         
         WelcomeLayoutComponents welcomeContent = new WelcomeLayoutComponents(Data_handler,CSFPR_Central_Manager, View_Manager, mainlayoutWidth, mainlayoutHeight, Data_handler.getResourceOverviewInformation(), Data_handler.getPublicationList(), Data_handler.getQuantDatasetList());
 
+         zoomApp=welcomeContent.getZoomApp();
         VerticalLayout mainLayout = new VerticalLayout();
         mainLayout.setHeight(pageHeight, Unit.PIXELS);
         mainLayout.setWidth(pageWidth, Unit.PIXELS);
         mainLayout.setStyleName("whitesmokelayout");
         mainLayout.addComponent(welcomeContent);
         mainLayout.setComponentAlignment(welcomeContent, Alignment.TOP_CENTER);
+        
+        
+        
        
 
         this.welcomeLayoutPanel = new ScrollPanel(mainLayout, welcomeContent.getMiniLayout(), 0, "welcomeview");
@@ -103,6 +109,10 @@ public class CSFApplicationContainer extends VerticalLayout {
 
         View_Manager.viewLayout("welcomeview");
 
+    }
+
+    public ZoomControler getZoomApp() {
+        return zoomApp;
     }
 
 }

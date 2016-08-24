@@ -37,7 +37,7 @@ public class CSF_PR_UI extends UI {
     private String dbURL, dbName, dbDriver, dbUserName, dbPassword, filesURL;
 
     private int windowHeight, windowWidth;
-    MainLayout layout;
+    private MainLayout layout;
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
@@ -57,15 +57,15 @@ public class CSF_PR_UI extends UI {
 
         this.getPage().setTitle("CSF Proteome Resource (CSF-PR) v2.0");
         
-        
-        emptyLayout.setClosable(false);
-        emptyLayout.setModal(true);
-        emptyLayout.setVisible(false);
-        emptyLayout.setDraggable(false);
-        emptyLayout.setResizable(false);
-        emptyLayout.setWidth(100,Unit.PERCENTAGE);
-        emptyLayout.setHeight(100,Unit.PERCENTAGE);
-        UI.getCurrent().addWindow(emptyLayout);
+//        
+//        emptyLayout.setClosable(false);
+//        emptyLayout.setModal(true);
+//        emptyLayout.setVisible(false);
+//        emptyLayout.setDraggable(false);
+//        emptyLayout.setResizable(false);
+//        emptyLayout.setWidth(100,Unit.PERCENTAGE);
+//        emptyLayout.setHeight(100,Unit.PERCENTAGE);
+//        UI.getCurrent().addWindow(emptyLayout);
         
 
         this.setWidth(100, Unit.PERCENTAGE);
@@ -120,8 +120,8 @@ public class CSF_PR_UI extends UI {
 
     }
 
-    String updatedZoomStyleName = "";
-    private final Window emptyLayout = new Window();
+//    String updatedZoomStyleName = "";
+//    private final Window emptyLayout = new Window();
 
     /**
      * resize the layout on changing window size

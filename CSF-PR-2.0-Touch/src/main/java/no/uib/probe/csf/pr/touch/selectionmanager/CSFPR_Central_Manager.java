@@ -103,14 +103,12 @@ public class CSFPR_Central_Manager implements Serializable {
 
         ///*************************************************************************///
         
-        System.out.println("at check "+(quantSearchSelection != null && selectedComparisonsList != null));
         Set<QuantDiseaseGroupsComparison> tempProteinsList = new LinkedHashSet<>();
         if (quantSearchSelection != null && selectedComparisonsList != null) {
             for (QuantDiseaseGroupsComparison quantComp : selectedComparisonsList) {
                 Map<String, QuantComparisonProtein> map = new LinkedHashMap<>();
 
                 for (String protien : quantSearchSelection.getSelectedProteinsList()) {
-
                     String key = "";
                     if (quantComp.getQuantComparisonProteinMap().containsKey("0_" + protien)) {
                         key = "0_" + protien;

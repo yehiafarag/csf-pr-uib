@@ -117,6 +117,17 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
 
     }
 
+    public void resetThumbBtn() {
+        miniLayout.removeAllComponents();
+        if (smallScreen) {
+            miniLayout.addComponent(initDiseaseLayout(null, 60, 60, maxNumber));
+        } else {
+            miniLayout.addComponent(initDiseaseLayout(null, 100, 100, maxNumber));
+        }
+        miniLayout.addStyleName("bigbtn");
+        miniLayout.addStyleName("blink");
+    }
+
     public final void updateData(Collection<DiseaseCategoryObject> diseaseCategorySet) {
 
         frame.removeAllComponents();
@@ -215,7 +226,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
                     updateDisCat.setDatasetNumber(diseaseCategoriesIdMap.get(dcat.getDiseaseCategory()).size());
                     maxCounter += updateDisCat.getDatasetNumber();
                     tempDiseaseCategorySet.add(updateDisCat);
-                } 
+                }
             }
             allDisCat.setDatasetNumber(maxCounter);
             tempDiseaseCategorySet.add(allDisCat);
@@ -230,7 +241,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
                 }
 
             } else {
-                 if (smallScreen) {
+                if (smallScreen) {
                     miniLayout.addComponent(initDiseaseLayout(tempDiseaseCategorySet.iterator().next(), 60, 60, maxNumber));
                 } else {
                     miniLayout.addComponent(initDiseaseLayout(tempDiseaseCategorySet.iterator().next(), 100, 100, maxNumber));

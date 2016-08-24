@@ -15346,3 +15346,30 @@ div.v-layout.v-horizontal.v-widget {
     margin-top: 10px;   
     margin-right:10px;
 }
+.selectedbtn{
+
+    background-color:rgb(1, 141, 244);
+    border-radius:5px;
+    padding:3px;
+
+}
+.zoomlayout{
+     position:absolute!important;
+    top:10px !important;
+    right:60px;
+    z-index:2 !important;    
+    min-width:75px !important;
+    opacity:0.5;
+    -webkit-transition: all 2.5s ease-in-out;
+    -moz-transition: all 2.5s ease-in-out;
+    -o-transition: all 2.5s ease-in-out;
+    transition: all 2.5s ease-in-out;
+}
+.zoomlayout:hover{
+    opacity:1;
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+
+}

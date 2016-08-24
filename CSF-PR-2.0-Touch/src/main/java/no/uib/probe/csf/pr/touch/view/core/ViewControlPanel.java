@@ -233,6 +233,9 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
         } else if (viewName.equalsIgnoreCase("proteintable")) {
             updateVew(leftSideContainer.getComponent(3));
         }
+        else if (viewName.equalsIgnoreCase("initiallayout")) {
+            updateVew(leftSideContainer.getComponent(0));
+        }
 
     }
 

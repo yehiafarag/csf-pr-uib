@@ -99,6 +99,17 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
 
             @Override
             public Map<Integer, QuantDatasetObject> updatedDatasets() {
+                if (CSFPR_Central_Manager.getQuantSearchSelection() != null) {
+                    Map<Integer, QuantDatasetObject> tempFilterMap = new LinkedHashMap<>();
+                    for (int id : filteredQuantDsMap.keySet()) {
+                        if (heatmapLayoutContainer.getCurrentDsIds().contains(id)) {
+                            tempFilterMap.put(id, filteredQuantDsMap.get(id));
+                        }
+                    }
+                    return tempFilterMap;
+
+                }
+
                 return filteredQuantDsMap;
             }
 
@@ -294,6 +305,11 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
 
     }
 
+//    public void resetHeatMap(){
+//        this.unselectAll();
+//        this.updateSystemComponents(new LinkedHashSet<>());
+//    
+//    }
     private void updateSystemComponents(Set<Integer> datasetIds) {
 
         filteredQuantDsMap.clear();
@@ -376,7 +392,6 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
 //                updateData(Data_Handler.getRowLabels(), Data_Handler.getColumnLabels(), Data_Handler.getDiseaseGroupComparisonsSet(), Data_Handler.getFullQuantDsMap());
 //
 //            }
-
 //            LinkedHashSet<HeatMapHeaderCellInformationBean> searchHeatmapRowLabel = new LinkedHashSet<>();
 //            Set<DiseaseGroupComparison> searchDiseaseComparisons = new LinkedHashSet<>();
 //            ;

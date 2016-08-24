@@ -689,6 +689,7 @@ public class DatasetUtility implements Serializable {
      * @param searchSelection search selection data
      */
     public void switchToSearchingMode(QuantSearchSelection searchSelection) {
+        
         QuantData refData = quantDataMap.get(searchSelection.getDiseaseCategory());
         QuantData searchingData = new QuantData();
         searchingData.setDiseaseCategory(searchSelection.getDiseaseCategory());

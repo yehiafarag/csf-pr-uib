@@ -13,6 +13,7 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
@@ -21,12 +22,17 @@ import com.vaadin.ui.themes.ValoTheme;
 import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.Data_Handler;
 import no.uib.probe.csf.pr.touch.database.Query;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantProtein;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
 import no.uib.probe.csf.pr.touch.selectionmanager.QuantSearchSelection;
@@ -34,6 +40,7 @@ import no.uib.probe.csf.pr.touch.view.core.BigBtn;
 import no.uib.probe.csf.pr.touch.view.core.InformationButton;
 import no.uib.probe.csf.pr.touch.view.core.PieChart;
 import no.uib.probe.csf.pr.touch.view.core.PopupWindow;
+import no.uib.probe.csf.pr.touch.view.core.ProteinSearcingResultLabel;
 import no.uib.probe.csf.pr.touch.view.core.TrendLegend;
 
 /**
@@ -176,23 +183,22 @@ public abstract class CompareComponent extends BigBtn {
             resetComparison();
         });
 
-        Button resetSystemBtn = new Button("Hide data");
-        resetSystemBtn.setStyleName(ValoTheme.BUTTON_SMALL);
-        resetSystemBtn.setStyleName(ValoTheme.BUTTON_TINY);
-        resetSystemBtn.setWidth(100, Sizeable.Unit.PIXELS);
-        resetSystemBtn.setEnabled(false);
-        btnsWrapper.addComponent(resetSystemBtn);
-        btnsWrapper.setComponentAlignment(resetSystemBtn, Alignment.MIDDLE_CENTER);
-        resetSystemBtn.setDescription("Hide user data ");
-        resetSystemBtn.addClickListener((Button.ClickEvent event) -> {
-            QuantSearchSelection selection = new QuantSearchSelection();
-            selection.setUserCustComparison(null);
-            CSFPR_Central_Manager.compareSelectionAction(selection);
-            CompareComponent.this.loadQuantComparison();
-            comparePanel.setVisible(false);
-            this.setEnabled(false);
-        });
-
+//        Button resetSystemBtn = new Button("Hide data");
+//        resetSystemBtn.setStyleName(ValoTheme.BUTTON_SMALL);
+//        resetSystemBtn.setStyleName(ValoTheme.BUTTON_TINY);
+//        resetSystemBtn.setWidth(100, Sizeable.Unit.PIXELS);
+//        resetSystemBtn.setEnabled(false);
+//        btnsWrapper.addComponent(resetSystemBtn);
+//        btnsWrapper.setComponentAlignment(resetSystemBtn, Alignment.MIDDLE_CENTER);
+//        resetSystemBtn.setDescription("Hide user data ");
+//        resetSystemBtn.addClickListener((Button.ClickEvent event) -> {
+//            QuantSearchSelection selection = new QuantSearchSelection();
+//            selection.setUserCustComparison(null);
+//            CSFPR_Central_Manager.compareSelectionAction(selection);
+//            CompareComponent.this.loadQuantComparison();
+//            comparePanel.setVisible(false);
+//            this.setEnabled(false);
+//        });
         loadDataBtn = new Button("Load");
         loadDataBtn.setStyleName(ValoTheme.BUTTON_SMALL);
         loadDataBtn.setStyleName(ValoTheme.BUTTON_TINY);
@@ -203,7 +209,7 @@ public abstract class CompareComponent extends BigBtn {
         loadDataBtn.setDescription("Load data");
         loadDataBtn.addClickListener((Button.ClickEvent event) -> {
             loadComparison();
-            resetSystemBtn.setEnabled(true);
+//            resetBtn.setEnabled(true);
         });
 
         popupbodyLayout.addComponent(compareUnit);
@@ -235,6 +241,7 @@ public abstract class CompareComponent extends BigBtn {
             compareUnit.setVisible(true);
 
         }
+        CSFPR_Central_Manager.resetSearchSelection();
 
     }
     private PieChart datasetsChart;
@@ -244,19 +251,45 @@ public abstract class CompareComponent extends BigBtn {
         Set<String> proteinList = new HashSet<>();
         Set<Integer> datasetIds = new HashSet<>();
         QuantSearchSelection selection = new QuantSearchSelection();
+        Map<String, Set<Integer>> diseaseCategoriesIdMap = new HashMap<>();
+        Set<String> proteinAccession = new HashSet<>();
+
+        QuantDiseaseGroupsComparison userComparison = compareUnit.getUserCustomizedComparison();
 
         if (!datasetsChart.getSelectionSet().isEmpty() && !datasetsChart.getSelectionSet().contains("all")) {
             searchQuantificationProtList.stream().filter((protein) -> (datasetsChart.getSelectionSet().contains(protein.getDiseaseCategory()))).map((protein) -> {
                 datasetIds.add(protein.getDsKey());
                 return protein;
             }).forEach((protein) -> {
+
+                userComparison.getQuantComparisonProteinMap().get(protein.getUniprotAccession()).setProteinName(protein.getUniprotProteinName());
+
+                System.out.println("at uniprot name for protein is " + userComparison.getQuantComparisonProteinMap().get(protein.getUniprotAccession()).getProteinName());
                 proteinList.add(protein.getUniprotAccession());
                 diseaseCategories.add(protein.getDiseaseCategory());
+                proteinAccession.add(protein.getUniprotAccession());
+//
+                if (!diseaseCategoriesIdMap.containsKey(protein.getDiseaseCategory())) {
+                    diseaseCategoriesIdMap.put(protein.getDiseaseCategory(), new HashSet<>());
+                }
+                Set<Integer> datasetIdSet = diseaseCategoriesIdMap.get(protein.getDiseaseCategory());
+                datasetIdSet.add(protein.getDsKey());
+                diseaseCategoriesIdMap.put(protein.getDiseaseCategory(), datasetIdSet);
             });
             selection.setKeyWords(proteinList);
 
         } else {
             searchQuantificationProtList.stream().forEach((protein) -> {
+                proteinAccession.add(protein.getUniprotAccession());
+
+                  userComparison.getQuantComparisonProteinMap().get(protein.getUniprotAccession()).setProteinName(protein.getUniprotProteinName());
+                
+                if (!diseaseCategoriesIdMap.containsKey(protein.getDiseaseCategory())) {
+                    diseaseCategoriesIdMap.put(protein.getDiseaseCategory(), new HashSet<>());
+                }
+                Set<Integer> datasetIdSet = diseaseCategoriesIdMap.get(protein.getDiseaseCategory());
+                datasetIdSet.add(protein.getDsKey());
+                diseaseCategoriesIdMap.put(protein.getDiseaseCategory(), datasetIdSet);
                 datasetIds.add(protein.getDsKey());
                 diseaseCategories.add(protein.getDiseaseCategory());
             });
@@ -272,7 +305,12 @@ public abstract class CompareComponent extends BigBtn {
         comparePanel.close();//
         selection.setDiseaseCategory(diseaseCat);
         selection.setDatasetIds(datasetIds);
-        selection.setUserCustComparison(compareUnit.getUserCustomizedComparison());
+
+        selection.setUserCustComparison(userComparison);
+
+        selection.setDiseaseCategoriesIdMap(diseaseCategoriesIdMap);
+        selection.setSelectedProteinsList(proteinAccession);
+        Data_handler.switchToSearchingMode(selection);
         CSFPR_Central_Manager.compareSelectionAction(selection);
         loadQuantComparison();
 
@@ -410,7 +448,7 @@ public abstract class CompareComponent extends BigBtn {
         quantCompareDataResult.addComponent(proteinsChart);
         quantCompareDataResult.setComponentAlignment(proteinsChart, Alignment.MIDDLE_CENTER);
 
-        datasetsChart = new PieChart(250, 200, "Datasets ", true) {
+        datasetsChart = new PieChart(250, 200, "# Hits", true) {
 
             @Override
             public void sliceClicked(Comparable sliceKey) {

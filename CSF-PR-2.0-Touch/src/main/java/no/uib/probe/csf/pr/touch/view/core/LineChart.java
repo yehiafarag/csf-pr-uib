@@ -113,7 +113,7 @@ public class LineChart extends AbsoluteLayout {
 
         lineChart = generateLineChart();//
         this.selectedComparisonList = selectedComparisonsList;
-        minimize();
+        minimize(false);
     }
 
     public JFreeChart getLineChart() {
@@ -405,7 +405,7 @@ public class LineChart extends AbsoluteLayout {
         this.custTrend = userTrend;
         updateDataset(selectedComparisonList, proteinKey);
         lineChart = generateLineChart();//
-        minimize();
+        minimize(true);
 
     }
 
@@ -604,13 +604,29 @@ public class LineChart extends AbsoluteLayout {
 
     }
 
-    public void minimize() {
-        if (minImgUrl == null) {
+    public void minimize(boolean updateImg) {
+        if (minImgUrl == null ||updateImg) {
             lineChart.getXYPlot().getDomainAxis().setVisible(false);
             lineChart.getXYPlot().getRangeAxis().setVisible(false);
             lineChart.getXYPlot().setOutlineVisible(false);
             lineChart.getXYPlot().setRangeGridlinesVisible(false);
             lineChart.getXYPlot().setDomainGridlinesVisible(false);
+//            
+//             if (custTrend != -1) {
+//            if (custTrend == 4) {
+//                lineChart.getXYPlot().setRangeTickBandPaint(customizedUserDataColor[4]);
+//
+//            } else if (custTrend == 0) {
+//                lineChart.getXYPlot().setRangeTickBandPaint(customizedUserDataColor[0]);
+//            } else if (custTrend == 2) {
+//                lineChart.getXYPlot().setRangeTickBandPaint(customizedUserDataColor[2]);//TickBandPaint(customizedUserDataColor[2]);
+//            }
+//
+//        } else {
+//            lineChart.getXYPlot().setRangeTickBandPaint(Color.WHITE);
+//        }
+//
+//            System.out.println("at this is the line chart  "+lineChart.getXYPlot().getRangeTickBandPaint());
             minImgUrl = new ExternalResource(this.getChartImage(lineChart, chartRenderingInfo, width, 100));
             initLayoutComponents("minimize");
             chartImg.setSource(minImgUrl);

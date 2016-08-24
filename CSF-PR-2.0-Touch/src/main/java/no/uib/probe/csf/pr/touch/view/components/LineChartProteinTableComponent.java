@@ -51,7 +51,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
 
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeight(height, Unit.PIXELS);
-         if (!smallScreen) {
+        if (!smallScreen) {
             this.setMargin(new MarginInfo(false, false, false, true));
         }
 
@@ -126,7 +126,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         height = height - 40;
         width = width - 60;
 
-        quantProteinTable = new ProteinTable(width, height,smallScreen) {
+        quantProteinTable = new ProteinTable(width, height, smallScreen) {
 
             @Override
             public void dropComparison(QuantDiseaseGroupsComparison comparison) {
@@ -356,8 +356,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
                         proteinsFilterMap.put(prot.getProteinAccession() + "__" + prot.getProteinName(), prot);
                     }
                 });
-                
-                
+
                 quantProteinTable.updateTableData(CSFPR_Central_Manager.getSelectedComparisonsList(), new LinkedHashSet<>(proteinsFilterMap.values()));
 
             } else {
@@ -372,7 +371,8 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
             }
 
             selectedProteinsList.stream().forEach((protein) -> {
-                proteinSearchingMap.put(protein.getProteinAccession() + "__" + protein.getProteinName().toLowerCase(), protein);
+                proteinSearchingMap.put(protein.getProteinAccession() + "__" + protein.getProteinName(), protein);
+
             });
             quantProteinTable.hideCheckedColumn(true);
             checkUncheckBtn.reset();

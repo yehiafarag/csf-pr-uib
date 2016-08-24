@@ -175,13 +175,35 @@ public abstract class SearchingComponent extends BigBtn {
         idDataResult.addStyleName("marginleft");
         btnsWrapper.addComponent(idDataResult);
 
+        
+        HorizontalLayout rightBtnWrapper = new HorizontalLayout();
+        rightBtnWrapper.setSizeUndefined();
+        rightBtnWrapper.setSpacing(true);
+          controlBtnsLayout.addComponent(rightBtnWrapper);
+        controlBtnsLayout.setComponentAlignment(rightBtnWrapper, Alignment.MIDDLE_RIGHT);
+        Button resetBtn = new Button("Reset");
+        resetBtn.setStyleName(ValoTheme.BUTTON_SMALL);
+        resetBtn.setStyleName(ValoTheme.BUTTON_TINY);
+        resetBtn.setWidth(60, Unit.PIXELS);
+        resetBtn.setEnabled(true);
+        rightBtnWrapper.addComponent(resetBtn);
+        rightBtnWrapper.setComponentAlignment(resetBtn, Alignment.MIDDLE_RIGHT);
+        resetBtn.setDescription("Load data");
+        resetBtn.addClickListener((Button.ClickEvent event) -> {
+            resetSearch();
+            searchingUnit.reset();
+            CSFPR_Central_Manager.resetSearchSelection();
+        });
+
+        
+        
         loadDataBtn = new Button("Load");
         loadDataBtn.setStyleName(ValoTheme.BUTTON_SMALL);
         loadDataBtn.setStyleName(ValoTheme.BUTTON_TINY);
         loadDataBtn.setWidth(60, Unit.PIXELS);
         loadDataBtn.setEnabled(false);
-        controlBtnsLayout.addComponent(loadDataBtn);
-        controlBtnsLayout.setComponentAlignment(loadDataBtn, Alignment.MIDDLE_RIGHT);
+        rightBtnWrapper.addComponent(loadDataBtn);
+        rightBtnWrapper.setComponentAlignment(loadDataBtn, Alignment.MIDDLE_RIGHT);
         loadDataBtn.setDescription("Load data");
         loadDataBtn.addClickListener((Button.ClickEvent event) -> {
             loadSearching();
