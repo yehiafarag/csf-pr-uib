@@ -158,26 +158,17 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
 
     public QuantDataLayoutContainer(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height) {
         super(width, height);
-
         smallScreen = height <= 720;
-
         this.Data_handler = Data_handler;
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         this.setMargin(false);
         this.addStyleName("slowslide");
-
         Collection<DiseaseCategoryObject> availableDiseaseCategory = Data_handler.getDiseaseCategorySet();
-
         final HorizontalLayout subBodyWrapper = new HorizontalLayout();
         subBodyWrapper.setWidthUndefined();
-//        subBodyWrapper.setHeight((height - 200), Unit.PIXELS);
         subBodyWrapper.setHeightUndefined();
-
-        if (smallScreen) {
-            height = height - 10;
-        } else {
-            height = height - 42;
-        }
+        
+        
         quantInitialLayout = new QuantInitialLayout(availableDiseaseCategory, width - 20, height, smallScreen) {
             private String lastSelectedDisease = "";
 

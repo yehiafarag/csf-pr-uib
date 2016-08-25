@@ -48,10 +48,9 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
         this.layoutControlMap = new TreeMap<>();
 
         this.mainLayoutWrapper = new HorizontalLayout();
-        mainLayoutWrapper.setHeight(bodyHeight, Unit.PIXELS);
+        mainLayoutWrapper.setHeight(100, Unit.PERCENTAGE);
         mainLayoutWrapper.setWidthUndefined();
         this.mainLayoutWrapper.addStyleName("slowslide");
-
         this.addComponent(mainLayoutWrapper);
 
         VerticalLayout leftSideContainerWrapper = new VerticalLayout();
@@ -69,6 +68,7 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
 
         HorizontalLayout mainViewContainerFrame = new HorizontalLayout();
         mainLayoutWrapper.addComponent(mainViewContainerFrame);
+        mainViewContainerFrame.setHeight(100,Unit.PERCENTAGE);
         if (smallScreen) {
             leftSideContainerWrapper.setWidth(70, Unit.PIXELS);
             leftSideContainer.setWidth(70, Unit.PIXELS);
@@ -79,7 +79,7 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
             mainViewContainerFrame.setWidth(bodyWidth - 120 - 55, Unit.PIXELS);
         }
 
-        mainViewContainerFrame.setHeightUndefined();
+//        mainViewContainerFrame.setHeightUndefined();
         mainViewContainerFrame.addStyleName("mainviewport");
 
         mainViewContainer = new HorizontalLayout();

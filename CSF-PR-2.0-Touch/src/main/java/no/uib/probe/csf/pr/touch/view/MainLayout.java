@@ -34,8 +34,8 @@ public class MainLayout extends VerticalLayout {
         
         this.setSpacing(true);
         this.setStyleName("whitelayout");
-        windowHeight=windowHeight-40;
-        windowWidth=windowWidth-40;
+        windowHeight=windowHeight-10;
+        windowWidth=windowWidth-10;
 
        
 
@@ -49,8 +49,7 @@ public class MainLayout extends VerticalLayout {
         
         CSFApplicationContainer welcomePageContainerLayout = new CSFApplicationContainer(windowWidth, windowHeight, url, dbName, driver, userName, password, filesURL);
         body.addComponent(welcomePageContainerLayout);
-        body.setComponentAlignment(welcomePageContainerLayout,Alignment.MIDDLE_CENTER);
-        
+        body.setComponentAlignment(welcomePageContainerLayout,Alignment.TOP_CENTER);        
         zoomApp = welcomePageContainerLayout.getZoomApp();
         
         body.addComponent(zoomApp);

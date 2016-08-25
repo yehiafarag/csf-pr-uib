@@ -13115,7 +13115,7 @@ div.v-layout.v-horizontal.v-widget {
     /*margin-right: 20px;*/
     z-index:2;
     position:relative !important;
-    /*background-color:white;*/
+    background-color:white;
 }
 .framelayout{
     -webkit-transition: all .5s ease-in-out;
@@ -13203,6 +13203,7 @@ div.v-layout.v-horizontal.v-widget {
     -o-transition: all .5s ease-in-out;
     transition: all .5s ease-in-out;
     height:5px !important;
+    background: white !important;
 
 
 }
@@ -15243,7 +15244,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 .nopaddingimg img{
 
-    padding:0px !important;
+    padding:2px !important;
 }
 .resizeto120{
     max-height:100px;
@@ -15344,7 +15345,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 .toprightbtnscontainer{
     margin-top: 10px;   
-    margin-right:10px;
+    margin-right:5px;
 }
 .selectedbtn{
 

@@ -33,8 +33,7 @@ public class CSFApplicationContainer extends VerticalLayout {
     public CSFApplicationContainer(int pageWidth, int pageHeight, String url, String dbName, String driver, String userName, String password, String filesURL) {
         this.setWidth(pageWidth, Unit.PIXELS);
         this.setHeight(pageHeight, Unit.PIXELS);
-        this.setStyleName("whitesmokelayout");
-//         this.setStyleName("lightgraylayout");
+        this.setStyleName("whitelayout");
         this.setSpacing(false);
         
         
@@ -65,7 +64,7 @@ public class CSFApplicationContainer extends VerticalLayout {
         VerticalLayout mainLayout = new VerticalLayout();
         mainLayout.setHeight(pageHeight, Unit.PIXELS);
         mainLayout.setWidth(pageWidth, Unit.PIXELS);
-        mainLayout.setStyleName("whitesmokelayout");
+        mainLayout.setStyleName("whitelayout");
         mainLayout.addComponent(welcomeContent);
         mainLayout.setComponentAlignment(welcomeContent, Alignment.TOP_CENTER);
         
@@ -78,7 +77,8 @@ public class CSFApplicationContainer extends VerticalLayout {
         bodyWrapper.addComponent(welcomeLayoutPanel);
         bodyWrapper.setComponentAlignment(welcomeLayoutPanel, Alignment.TOP_RIGHT);
 
-        QuantDataLayoutContainer quantLayout = new QuantDataLayoutContainer(Data_handler,CSFPR_Central_Manager, mainlayoutWidth , mainlayoutHeight);
+        QuantDataLayoutContainer quantLayout = new QuantDataLayoutContainer(Data_handler,CSFPR_Central_Manager, mainlayoutWidth , mainlayoutHeight);        
+      
 
         quantLayoutPanel = new SlidePanel(quantLayout, null, 1, "quantview") {
 
@@ -101,7 +101,7 @@ public class CSFApplicationContainer extends VerticalLayout {
         Panel quantPanelContaner = new Panel(quantLayoutPanel);// 
         quantLayoutPanel.setVisible(false);
         quantPanelContaner.setWidth(mainlayoutWidth, Unit.PIXELS);
-        quantPanelContaner.setHeight(mainlayoutHeight, Unit.PIXELS);
+        quantPanelContaner.setHeight(pageHeight, Unit.PIXELS);
         quantPanelContaner.setStyleName(ValoTheme.PANEL_BORDERLESS);
 
         bodyWrapper.addComponent(quantPanelContaner);

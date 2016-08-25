@@ -68,7 +68,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         this.setHeight(100, Unit.PERCENTAGE);
         this.addStyleName("hideoverflow");
         this.addStyleName("whitelayout");
-        boolean smallScreen =false;// bodyHeight <= 720;
+        boolean smallScreen = bodyHeight <= 720;
         float expHeaderRatio;
         String breakline;
         if (!smallScreen) {
@@ -313,10 +313,13 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
         GridLayout middlePanelServicesLayout = new GridLayout(2, 2);
         middlePanelServicesLayout.setSpacing(true);
-        middlePanelServicesLayout.setHeightUndefined();
+//        middlePanelServicesLayout.setHeightUndefined();
 
         if (!smallScreen) {
-            middlePanelServicesLayout.setMargin(new MarginInfo(true, false, true, false));
+            middlePanelServicesLayout.setMargin(new MarginInfo(false, false, false, false));
+            middlePanelServicesLayout.setHeight(180,Unit.PIXELS);
+        }else{
+        middlePanelServicesLayout.setHeight(90,Unit.PIXELS);
         }
         middleLayout.addComponent(middlePanelServicesLayout);
 
@@ -409,7 +412,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         middleLayout.addComponent(para_2);
         middleLayout.setComponentAlignment(para_2, Alignment.TOP_LEFT);
         //init mini layout
-        zoomApp = new ZoomControler(true, smallScreen, Page.getCurrent().getWebBrowser().isChrome());
+        zoomApp = new ZoomControler(true, smallScreen, false);//Page.getCurrent().getWebBrowser().isChrome());
         zoomApp.setVisible(false);
 //        if (smallScreen) {
 //            zoomApp.setWidth(25, Unit.PIXELS);
