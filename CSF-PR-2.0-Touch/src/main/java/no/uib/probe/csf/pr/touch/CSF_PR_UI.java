@@ -43,8 +43,9 @@ public class CSF_PR_UI extends UI {
     protected void init(VaadinRequest vaadinRequest) {
         //init param for DB
 
-        
-//        Page.getCurrent().getJavaScript().execute("document.head.innerHTML +='<meta name=\"viewport\" content=\"initial-scale = 1.0,maximum-scale = 1.0\">'");
+//        if (Page.getCurrent().getWebBrowser().getScreenWidth() > 900) {
+//            Page.getCurrent().getJavaScript().execute("document.head.innerHTML +='<meta name=\"viewport\" content=\"maximum-scale = 1.0\">'");
+//        }
         ServletContext scx = VaadinServlet.getCurrent().getServletContext();
         dbURL = (scx.getInitParameter("url"));
         dbName = (scx.getInitParameter("dbName"));
@@ -56,26 +57,10 @@ public class CSF_PR_UI extends UI {
         VaadinSession.getCurrent().setAttribute("csf_pr_Url", csf_pr_Url);
 
         this.getPage().setTitle("CSF Proteome Resource (CSF-PR) v2.0");
-        
-//        
-//        emptyLayout.setClosable(false);
-//        emptyLayout.setModal(true);
-//        emptyLayout.setVisible(false);
-//        emptyLayout.setDraggable(false);
-//        emptyLayout.setResizable(false);
-//        emptyLayout.setWidth(100,Unit.PERCENTAGE);
-//        emptyLayout.setHeight(100,Unit.PERCENTAGE);
-//        UI.getCurrent().addWindow(emptyLayout);
-        
 
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeight(100, Unit.PERCENTAGE);
-
-        windowHeight =470;// Page.getCurrent().getBrowserWindowHeight();// Math.max(Page.getCurrent().getBrowserWindowHeight(), 1080);
-        windowWidth = 980;//Page.getCurrent().getBrowserWindowWidth();//Math.max(Page.getCurrent().getBrowserWindowWidth(), 1920);
-
         final SizeReporter sizeReporter = new SizeReporter(this);
-
         sizeReporter.addResizeListener((ComponentResizeEvent event) -> {
             resizeScreen();
         });
@@ -88,18 +73,10 @@ public class CSF_PR_UI extends UI {
             }
 
         }
-//        if (windowHeight < 768 || windowWidth < 1024) {
-//            System.err.println("at window h "+windowHeight+"  window w "+windowWidth);
-//            Notification.show("Screen is too small minimum screen resolution (1024x768)", Notification.Type.ERROR_MESSAGE);
-//            return;
-//        }
-//
-//        windowWidth = 900;//640;
-//        windowHeight = 700;//480;
         VerticalLayout appWrapper = new VerticalLayout();
         appWrapper.setWidth(100, Unit.PERCENTAGE);
         appWrapper.setHeight(100, Unit.PERCENTAGE);
-        appWrapper.setStyleName("whitesmokelayout");
+        appWrapper.setStyleName("whitelayout");
         appWrapper.addStyleName("border");
 
         setContent(appWrapper);
@@ -120,30 +97,19 @@ public class CSF_PR_UI extends UI {
 
     }
 
-//    String updatedZoomStyleName = "";
-//    private final Window emptyLayout = new Window();
-
     /**
      * resize the layout on changing window size
      */
     private void resizeScreen() {
         windowHeight = Page.getCurrent().getBrowserWindowHeight();// Math.max(Page.getCurrent().getBrowserWindowHeight(), 1080);
-        windowWidth =  Page.getCurrent().getBrowserWindowWidth();//Math.max(Page.getCurrent().getBrowserWindowWidth(), 1920);
+        windowWidth = Page.getCurrent().getBrowserWindowWidth();//Math.max(Page.getCurrent().getBrowserWindowWidth(), 1920);
         if (windowHeight < 427 || windowWidth < 980) {
-//            emptyLayout.setVisible(true);            
-            System.err.println("at w "+windowWidth+" h "+windowHeight);
-            Notification.show("Screen is too small current screen resolution ("+windowWidth+"x"+windowHeight+")", Notification.Type.ERROR_MESSAGE);
+            Notification.show("Screen is too small current screen resolution (" + windowWidth + "x" + windowHeight + ")", Notification.Type.ERROR_MESSAGE);
             return;
         }
-
-//        if (emptyLayout.isVisible()) {
-//            emptyLayout.setVisible(false);
-//        } else {
-            for (Window w : getWindows()) {
-                w.center();
-            }
-//        }
+        for (Window w : getWindows()) {
+            w.center();
+        }
     }
 
 }
-

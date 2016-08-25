@@ -68,7 +68,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         this.setHeight(100, Unit.PERCENTAGE);
         this.addStyleName("hideoverflow");
         this.addStyleName("whitelayout");
-        boolean smallScreen = bodyHeight <= 720;
+        boolean smallScreen =false;// bodyHeight <= 720;
         float expHeaderRatio;
         String breakline;
         if (!smallScreen) {
@@ -307,6 +307,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
         VerticalLayout middleLayout = new VerticalLayout();
         middleLayout.setWidth(100, Unit.PERCENTAGE);
+        middleLayout.setHeightUndefined();
         middleLayout.setMargin(false);
         rightPanel.addComponent(middleLayout);
 
