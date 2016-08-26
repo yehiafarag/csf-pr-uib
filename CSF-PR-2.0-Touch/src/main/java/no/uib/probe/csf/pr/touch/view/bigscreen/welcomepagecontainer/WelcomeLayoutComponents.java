@@ -429,24 +429,22 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
             }
         };
+//                resetThumbBtn.updateText("R<br/>e<br/>s<br/>e<br/>t");
+//                resetThumbBtn.addStyleName("verticaltext");
 
-        final ThemeResource searchDisableRes = new ThemeResource("img/search_disabled.png");
-        final ThemeResource compareDisableRes = new ThemeResource("img/compare_disabled.png");
+        final ThemeResource resetSystemIconRes = new ThemeResource("img/ban.png");
 
-        resetThumbBtn.updateIcon(new ThemeResource("img/home-o.png"));
+        resetThumbBtn.setDescription("Back to browse quantitative data");
+        resetThumbBtn.updateIcon(resetSystemIconRes);
         resetThumbBtn.setEnabled(true);
         resetThumbBtn.setReadOnly(false);
         resetThumbBtn.setVisible(false);
 
         if (smallScreen) {
-            resetThumbBtn.setWidth(40, Unit.PIXELS);
-            resetThumbBtn.setHeight(40, Unit.PIXELS);
             resetThumbBtn.setWidth(25, Unit.PIXELS);
             resetThumbBtn.setHeight(25, Unit.PIXELS);
             resetThumbBtn.addStyleName("nopaddingimg");
         } else {
-            resetThumbBtn.setWidth(70, Unit.PIXELS);
-            resetThumbBtn.setHeight(70, Unit.PIXELS);
             resetThumbBtn.setWidth(40, Unit.PIXELS);
             resetThumbBtn.setHeight(40, Unit.PIXELS);
         }
@@ -527,12 +525,12 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
                 } else if (type.equalsIgnoreCase("quant_searching")) {
                     compareThumbBtn.removeStyleName("selectedbtn");
                     resetThumbBtn.setVisible(true);
-                    resetThumbBtn.updateIcon(searchDisableRes);
+//                    resetThumbBtn.updateIcon(resetSystemIconRes);
                     searchThumbBtn.addStyleName("selectedbtn");
                 } else if (type.equalsIgnoreCase("quant_compare")) {
                     resetThumbBtn.setVisible(true);
                     searchThumbBtn.removeStyleName("selectedbtn");
-                    resetThumbBtn.updateIcon(compareDisableRes);
+//                    resetThumbBtn.updateIcon(compareDisableRes);
                     compareThumbBtn.addStyleName("selectedbtn");
 
                 }

@@ -78,6 +78,7 @@ public class CSF_PR_UI extends UI {
         appWrapper.setHeight(100, Unit.PERCENTAGE);
         appWrapper.setStyleName("whitelayout");
         appWrapper.addStyleName("border");
+        appWrapper.addStyleName("scrollable");
 
         setContent(appWrapper);
 
@@ -101,10 +102,13 @@ public class CSF_PR_UI extends UI {
      * resize the layout on changing window size
      */
     private void resizeScreen() {
-        windowHeight = Page.getCurrent().getBrowserWindowHeight();// Math.max(Page.getCurrent().getBrowserWindowHeight(), 1080);
-        windowWidth = Page.getCurrent().getBrowserWindowWidth();//Math.max(Page.getCurrent().getBrowserWindowWidth(), 1920);
+        windowHeight = Page.getCurrent().getBrowserWindowHeight()-20;// Math.max(Page.getCurrent().getBrowserWindowHeight(), 1080);
+        windowWidth = Page.getCurrent().getBrowserWindowWidth()-20;//Math.max(Page.getCurrent().getBrowserWindowWidth(), 1920);
         if (windowHeight < 427 || windowWidth < 980) {
-            Notification.show("Screen is too small current screen resolution (" + windowWidth + "x" + windowHeight + ")", Notification.Type.ERROR_MESSAGE);
+            windowHeight = 427;
+            windowWidth = 980;
+            
+//            Notification.show("Screen is too small current screen resolution (" + windowWidth + "x" + windowHeight + ")", Notification.Type.ERROR_MESSAGE);
             return;
         }
         for (Window w : getWindows()) {

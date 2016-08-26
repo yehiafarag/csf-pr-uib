@@ -45,10 +45,13 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
     private final Map<Integer, Boolean> activeDatasetMap;
     private Map<Integer, QuantDatasetObject> quantDatasetMap;
     private boolean singlefilter;
-    private final int screenWidth = Math.min(Page.getCurrent().getBrowserWindowWidth(), 1000);
-    private final int screenHeight = Math.min(Page.getCurrent().getBrowserWindowHeight(), 800);
+    private final int screenWidth = Math.max(Math.min(Page.getCurrent().getBrowserWindowWidth(), 1000),980);
+    private final int screenHeight = Math.max(Math.min(Page.getCurrent().getBrowserWindowHeight(), 800),427);
+    
 
     public DatasetPieChartFiltersComponent(boolean smallScreen) {
+        
+      
 
         //init icon
         this.setStyleName("filterbtn");

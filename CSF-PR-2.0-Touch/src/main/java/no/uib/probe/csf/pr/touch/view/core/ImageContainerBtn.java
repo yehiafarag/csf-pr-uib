@@ -7,6 +7,7 @@ package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.Resource;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Image;
@@ -56,6 +57,7 @@ public abstract class ImageContainerBtn extends AbsoluteLayout implements Layout
         labelcontainer.addComponent(text);
         text.setWidthUndefined();
         labelcontainer.setComponentAlignment(text, Alignment.MIDDLE_CENTER);
+        text.setContentMode(ContentMode.HTML);
 
         this.setStyleName("bigbtn");
         this.addStyleName("pointer");
@@ -125,6 +127,7 @@ public abstract class ImageContainerBtn extends AbsoluteLayout implements Layout
         if (enabled) {
             this.removeStyleName("unapplied");
             this.blink();
+            
 
         } else {
             this.addStyleName("unapplied");
@@ -134,6 +137,7 @@ public abstract class ImageContainerBtn extends AbsoluteLayout implements Layout
         if (this.getParent() != null && hasWrapper) {
             this.getParent().setEnabled(enabled);
         }
+        this.setVisible(enabled);
     }
 
     /**

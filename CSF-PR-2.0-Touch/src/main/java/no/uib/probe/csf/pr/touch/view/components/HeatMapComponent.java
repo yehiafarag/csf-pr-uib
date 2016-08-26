@@ -69,6 +69,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
 
         this.setWidth(mainbodyLayoutWidth, Unit.PIXELS);
         this.setHeight(mainbodyLayoutHeight, Unit.PIXELS);
+//        this.setStyleName("blacklayout");
 
         //init data structure
         this.rowheaders = new LinkedHashSet<>();
@@ -79,10 +80,10 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
 
         VerticalLayout bodyLayoutWrapper = new VerticalLayout();
         bodyLayoutWrapper.setWidth(100, Unit.PERCENTAGE);
-        bodyLayoutWrapper.setHeightUndefined();
+        bodyLayoutWrapper.setHeight(100,Unit.PERCENTAGE);
 
         this.addComponent(bodyLayoutWrapper);
-        this.setComponentAlignment(bodyLayoutWrapper, Alignment.MIDDLE_CENTER);
+        this.setComponentAlignment(bodyLayoutWrapper, Alignment.TOP_LEFT);
 
         GridLayout btnsWrapper = new GridLayout(3, 3);
         btnsWrapper.setColumnExpandRatio(0, 25);
@@ -93,7 +94,6 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         datasetPieChartFiltersBtn = new DatasetPieChartFiltersComponent(smallScreen) {
             @Override
             public void updateSystem(Set<Integer> selectedDatasetIds) {
-                System.out.println("at update system ");
                 updateSystemComponents(selectedDatasetIds);
             }
 
@@ -184,41 +184,17 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         btnsWrapper.addComponent(clearFilterBtn, 2, 1);
         btnsWrapper.setComponentAlignment(clearFilterBtn, Alignment.MIDDLE_RIGHT);
 
-        datasetCounterLabel = new ResizableTextLabel() {
-
-//            @Override
-//            public void setHeight(float height, Unit unit) {
-//                super.setHeight(height, unit); //To change body of generated methods, choose Tools | Templates.
-//
-//                if (height < 15) {
-//                    this.addStyleName("smallfont");
-//                } else if (height >= 15 && height < 20) {
-//                    this.addStyleName("midfont");
-//                } else {
-//                    this.addStyleName("largefont");
-//                }
-//            }
-        };
+        datasetCounterLabel = new ResizableTextLabel();
         datasetCounterLabel.setDescription("#Datasets");
 
         btnsWrapper.addComponent(datasetCounterLabel, 1, 1);
-//        datasetCounterLabel.setContentMode(ContentMode.HTML);
         btnsWrapper.setComponentAlignment(datasetCounterLabel, Alignment.MIDDLE_CENTER);
         datasetCounterLabel.setStyleName("filterbtn");
         datasetCounterLabel.addStyleName("defaultcursor");
 
         HeatmapFiltersContainerResizeControl filterSizeController = new HeatmapFiltersContainerResizeControl(btnsWrapper, datasetPieChartFiltersBtn, reconbineDiseaseGroupsFiltersBtn, reorderSelectBtn, bottomBtnContainer, serumCsfFilter, clearFilterBtn, datasetCounterLabel);
 
-//        InfoPopupBtn info = new InfoPopupBtn("The disease group comparison table provides an overview of the number of datasets available for each comparison. Hover over a given cell to get additional details about the comparison. Selecting one or more cells in the table will display the corresponding protein details. To filter the data use the options in the upper left corner");
-//        info.setWidth(25, Unit.PIXELS);
-//        info.setHeight(25, Unit.PIXELS);
-        int availableHMHeight;
-        //init heatmap
-//        if (smallScreen) {
-        availableHMHeight = mainbodyLayoutHeight;
-//        } else {
-//            availableHMHeight = mainbodyLayoutHeight - 40;
-//        }
+        int availableHMHeight = mainbodyLayoutHeight;
 
         heatmapLayoutContainer = new HeatMapLayout(mainbodyLayoutWidth, availableHMHeight, activeColumnHeaders, filterSizeController, smallScreen) {
             @Override
@@ -262,7 +238,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
 
         };
         bodyLayoutWrapper.addComponent(heatmapLayoutContainer);
-        bodyLayoutWrapper.setComponentAlignment(heatmapLayoutContainer, Alignment.TOP_CENTER);
+        bodyLayoutWrapper.setComponentAlignment(heatmapLayoutContainer, Alignment.MIDDLE_CENTER);
         this.heatmapToolBtnContainer = heatmapLayoutContainer.getControlBtnsContainer();
 
         CSFPR_Central_Manager.registerListener(HeatMapComponent.this);

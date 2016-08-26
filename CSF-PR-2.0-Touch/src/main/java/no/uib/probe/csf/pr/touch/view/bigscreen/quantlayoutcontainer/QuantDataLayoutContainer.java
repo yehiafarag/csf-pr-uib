@@ -243,6 +243,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         controlBtnsContainer.setVisible(false);
 
 //        this.setInitialLayout(quantInitialLayout.getMiniLayout(), quantInitialLayout, controlBtnsContainer);
+        
         this.addButton(quantInitialLayout.getMiniLayout(), quantInitialLayout, controlBtnsContainer, true);
 
         heatmapBtn = new ImageContainerBtn() {
@@ -265,19 +266,21 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
 
         mainViewPanelHeight = height;
         if (smallScreen) {
-            mainViewPanelWidth = width - 100;
+            mainViewPanelWidth = width - 118;
         } else {
-            mainViewPanelWidth = width - 220;
+            mainViewPanelWidth = width-178 ;
         }
         heatmapViewContainer = new VerticalLayout();
         heatmapViewContainer.setWidth(mainViewPanelWidth, Unit.PIXELS);
+        heatmapViewContainer.setHeight(mainViewPanelHeight,Unit.PIXELS);
+       
         heatmapToolsContainer = new VerticalLayout();
         heatmapBtn.setHasWrapper(true);
         this.addButton(heatmapBtn, heatmapViewContainer, heatmapToolsContainer, false);
 
         Data_handler.loadDiseaseCategory("All Diseases");
 
-        heatmapComponent = new HeatMapComponent(CSFPR_Central_Manager, Data_handler, Data_handler.getDiseaseCategorySet(), mainViewPanelWidth + 100, mainViewPanelHeight, Data_handler.getActiveDataColumns(), smallScreen) {
+        heatmapComponent = new HeatMapComponent(CSFPR_Central_Manager, Data_handler, Data_handler.getDiseaseCategorySet(), mainViewPanelWidth, mainViewPanelHeight-2, Data_handler.getActiveDataColumns(), smallScreen) {
 
             @Override
             public void updateIcon(String imageUrl) {
@@ -303,8 +306,13 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
             }
 
         };
+//        VerticalLayout testlayout = new VerticalLayout();
+//        testlayout.setStyleName("bluelayout");
+//        testlayout.setWidth(mainViewPanelWidth + 100, mainViewPanelHeight);
+        
         heatmapViewContainer.addComponent(heatmapComponent);
-        heatmapViewContainer.setComponentAlignment(heatmapComponent, Alignment.MIDDLE_CENTER);
+        heatmapViewContainer.setComponentAlignment(heatmapComponent, Alignment.TOP_LEFT);
+        
         heatmapToolsContainer.addComponent(heatmapComponent.getHeatmapToolBtnContainer());
         heatmapToolsContainer.setComponentAlignment(heatmapComponent.getHeatmapToolBtnContainer(), Alignment.TOP_RIGHT);
 

@@ -40,7 +40,6 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
     public ViewControlPanel(int bodyWidth, int bodyHeight) {
 
         smallScreen = bodyHeight <= 720;
-
         this.setWidth(bodyWidth, Unit.PIXELS);
         this.setHeight(bodyHeight, Unit.PIXELS);
         this.addStyleName("slowslide");
@@ -68,25 +67,22 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
 
         HorizontalLayout mainViewContainerFrame = new HorizontalLayout();
         mainLayoutWrapper.addComponent(mainViewContainerFrame);
-        mainViewContainerFrame.setHeight(100,Unit.PERCENTAGE);
+        mainViewContainerFrame.setHeight(100, Unit.PERCENTAGE);
         if (smallScreen) {
-            leftSideContainerWrapper.setWidth(70, Unit.PIXELS);
-            leftSideContainer.setWidth(70, Unit.PIXELS);
-            mainViewContainerFrame.setWidth(bodyWidth - 70 - 35, Unit.PIXELS);
+            leftSideContainerWrapper.setWidth(80, Unit.PIXELS);
+            leftSideContainer.setWidth(80, Unit.PIXELS);
+            mainViewContainerFrame.setWidth(bodyWidth - 80 - 35, Unit.PIXELS);
         } else {
             leftSideContainerWrapper.setWidth(120, Unit.PIXELS);
             leftSideContainer.setWidth(120, Unit.PIXELS);
             mainViewContainerFrame.setWidth(bodyWidth - 120 - 55, Unit.PIXELS);
         }
 
-//        mainViewContainerFrame.setHeightUndefined();
         mainViewContainerFrame.addStyleName("mainviewport");
-
         mainViewContainer = new HorizontalLayout();
         mainViewContainerFrame.addComponent(mainViewContainer);
         mainViewContainer.setWidthUndefined();
         mainViewContainer.setHeightUndefined();
-
         toolBtnContainer = new VerticalLayout();
         toolBtnContainer.setStyleName("sidebtnsmenue");
         toolBtnContainer.setHeightUndefined();
@@ -114,7 +110,6 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
         leftSideContainer.addComponent(btnWrapper);
         btnWrapper.addLayoutClickListener(this);
         this.mainViewLayout = mainViewLayout;
-
         layoutControlMap.put(leftSideContainer.getComponentIndex(btnWrapper), mainViewLayout);
         this.addComponent(mainViewLayout);
         this.setComponentAlignment(mainViewLayout, Alignment.MIDDLE_CENTER);
@@ -181,7 +176,7 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
 
         layoutControlMap.put(leftSideContainer.getComponentIndex(btnWrapper), mainViewLayout);
         mainViewContainer.addComponent(mainViewLayout);
-        mainViewContainer.setComponentAlignment(mainViewLayout, Alignment.TOP_CENTER);
+//        mainViewContainer.setComponentAlignment(mainViewLayout, Alignment.TOP_CENTER);
         mainViewLayout.addStyleName("slowslide");
         mainViewLayout.addStyleName("hideslidelayout");
 
@@ -199,7 +194,7 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
             mainViewLayout.removeStyleName("hideslidelayout");
             btnWrapper.removeStyleName("unselectedbtn");
             ((AbstractOrderedLayout) mainViewLayout.getData()).setVisible(true);
-             currentView = mainViewLayout;
+            currentView = mainViewLayout;
             currentBtn = btnWrapper;
         }
 
@@ -232,8 +227,7 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
             updateVew(leftSideContainer.getComponent(1));
         } else if (viewName.equalsIgnoreCase("proteintable")) {
             updateVew(leftSideContainer.getComponent(3));
-        }
-        else if (viewName.equalsIgnoreCase("initiallayout")) {
+        } else if (viewName.equalsIgnoreCase("initiallayout")) {
             updateVew(leftSideContainer.getComponent(0));
         }
 

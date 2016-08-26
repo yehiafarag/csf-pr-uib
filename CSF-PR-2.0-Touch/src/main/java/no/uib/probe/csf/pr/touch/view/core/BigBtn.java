@@ -59,7 +59,6 @@ public abstract class BigBtn extends HorizontalLayout implements LayoutEvents.La
         };
 
         thumbContainer.updateIcon(new ThemeResource(imgUrl));
-
         thumbContainer.setEnabled(true);
         thumbContainer.setReadOnly(false);
 

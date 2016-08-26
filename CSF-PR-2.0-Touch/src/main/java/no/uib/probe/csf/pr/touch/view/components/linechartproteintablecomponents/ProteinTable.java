@@ -558,7 +558,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
             for (Object itemId : activeTableItemsMap.keySet()) {
                 if (tableItemsMap.containsKey(itemId)) {
                     mainProteinTable.addItem(tableItemsMap.get(itemId), itemId);
-                } 
+                }
 //                else {
 //                    System.out.println("at not found item id " + itemId);
 //                }
@@ -571,11 +571,15 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
 
             if (!selectedItemIds.isEmpty()) {
                 for (Object itemId : selectedItemIds) {
-                    mainProteinTable.addItem(tableItemsMap.get(itemId), itemId);
+                    if (tableItemsMap.containsKey(itemId)) {
+                        mainProteinTable.addItem(tableItemsMap.get(itemId), itemId);
+                    }
                 }
             } else {
                 for (Object itemId : activeTableItemsMap.keySet()) {
-                    mainProteinTable.addItem(tableItemsMap.get(itemId), itemId);
+                    if (tableItemsMap.containsKey(itemId)) {
+                        mainProteinTable.addItem(tableItemsMap.get(itemId), itemId);
+                    }
                 }
             }
 

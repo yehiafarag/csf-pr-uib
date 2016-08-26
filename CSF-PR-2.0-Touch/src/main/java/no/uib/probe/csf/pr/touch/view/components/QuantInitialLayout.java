@@ -33,6 +33,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
     private final GridLayout frame;
     private final int height, width;
     private final Collection<DiseaseCategoryObject> diseaseCategorySet;
+    private final  ResizableTextLabel title;
 
     /**
      *
@@ -59,7 +60,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         this.addComponent(frame);
         this.setComponentAlignment(frame, Alignment.TOP_CENTER);
 
-        ResizableTextLabel title = new ResizableTextLabel("<center Style='color:#4d749f;'>Disease Category</center>");
+        title = new ResizableTextLabel("<center Style='color:#4d749f;'>Disease Category</center>");
         title.setContentMode(ContentMode.HTML);
         title.addStyleName(ValoTheme.LABEL_H3);
         title.setWidth(250, Unit.PIXELS);
@@ -131,6 +132,8 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
     public final void updateData(Collection<DiseaseCategoryObject> diseaseCategorySet) {
 
         frame.removeAllComponents();
+         frame.addComponent(title, 1, 1);
+        frame.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
         diseaseMap.clear();
         miniLayout.removeAllComponents();
 
