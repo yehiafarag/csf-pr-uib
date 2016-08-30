@@ -42,6 +42,7 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
 //        searchingArea.setRequired(false);
         searchByOptionGroup.setRequired(false);
         resetSearching();
+        removeStyleName("resizeto120");
         
     }
     
@@ -129,7 +130,7 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
                     + "albumin\n"
                     + "random keyword");
             
-            removeStyleName("resizeto120");
+            
         });
         
         Button searchingBtn = new Button("Search");

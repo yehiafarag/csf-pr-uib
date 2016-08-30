@@ -15246,17 +15246,13 @@ div.v-layout.v-horizontal.v-widget {
 
     padding:4px !important;
 }
-.resizeto120{
-    max-height:100px;
-    margin:0px !important;
-    padding:5px !important;
-    overflow-y:hidden !important;
-    -webkit-transition: all 1.5s ease-in-out;
-    -moz-transition: all 1.5s ease-in-out;
-    -o-transition: all 1.5s ease-in-out;
-    transition: all 1.5s ease-in-out;
-
-
+.v-slot-resizeto120{
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+    max-height:0;
+    opacity:0;
 
 }
 .maxwidth500{
@@ -15355,7 +15351,7 @@ div.v-layout.v-horizontal.v-widget {
 
 }
 .zoomlayout{
-     position:absolute!important;
+    position:absolute!important;
     top:10px !important;
     right:60px;
     z-index:2 !important;    
@@ -15378,13 +15374,43 @@ div.v-layout.v-horizontal.v-widget {
     width: 10px !important;
     height:10px !important;
 }
- 
+
 ::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 9px rgba(0,0,0,0.5); 
     border-radius: 4px;
 }
- 
+
 ::-webkit-scrollbar-thumb {
     border-radius: 4px;
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.7); 
+}
+.v-table-cell-content .table_radio_btn{
+    border:1px solid gray;
+    border-radius:15px;
+    background-color:lightgray;    
+    background-image : radial-gradient(circle,white,white) ;
+    background-repeat:no-repeat;
+    background-size:15px;
+    background-position:center;
+
+}
+.v-table-row.v-selected .table_radio_btn{
+    border:3px solid whitesmoke !important;
+    border-radius:15px !important;
+    background-color:lightgray !important;    
+    background-image : radial-gradient(circle,lightgray,black) !important ;
+    background-repeat:no-repeat !important;
+    background-size:15px !important;
+    background-position:center !important;
+
+}
+.v-table-row-odd.v-selected .table_radio_btn{
+    border:3px solid whitesmoke !important;
+    border-radius:15px !important;
+    background-color:lightgray !important;    
+    background-image : radial-gradient(circle,lightgray,black) !important ;
+    background-repeat:no-repeat !important;
+    background-size:15px !important;
+    background-position:center !important;
+
 }

@@ -516,7 +516,7 @@ public abstract class SearchingComponent extends BigBtn {
         }
         resultsLabel.setValue("Search Results (" + quantHitsList.size() + ")");
         if (smallScreen) {
-            int h2 = h1 + 130;
+            int h2 = h1 + 225;
             resultsLayout.setHeight(h2, Unit.PIXELS);
         }
     }

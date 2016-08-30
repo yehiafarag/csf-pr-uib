@@ -85,7 +85,7 @@ public abstract class CompareComponent extends BigBtn {
             comparePanel.setWidth(comparePanel.getWidth() + 100, Unit.PIXELS);
             h1 = 340;
         } else {
-            h1 = 460;//Math.min(((int) comparePanel.getHeight() / 2) - 30,460);
+            h1 = 440;//Math.min(((int) comparePanel.getHeight() / 2) - 30,460);
         }
         compareUnit = new ComparisonUnitComponent(Data_handler, h1, smallScreen) {
 
@@ -102,7 +102,7 @@ public abstract class CompareComponent extends BigBtn {
         resultsLayout.addStyleName("whitelayout");
 
         resultsLayout.setWidth(100, Sizeable.Unit.PERCENTAGE);
-        h1 = (int) comparePanel.getHeight() - h1 - 30 - 130;
+        h1 = (int) comparePanel.getHeight() - h1 - 40 - 130;
         resultsLayout.setHeight(h1, Sizeable.Unit.PIXELS);
 
         resultsLayout.addStyleName("scrollable");
@@ -137,14 +137,14 @@ public abstract class CompareComponent extends BigBtn {
 
         controlBtnsLayout = new HorizontalLayout();
         controlBtnsLayout.addStyleName("roundedborder");
-        if (!smallScreen) //        btnsFrame.addStyleName("padding10");
-        {
+//        if (!smallScreen) //        btnsFrame.addStyleName("padding10");
+//        {
             controlBtnsLayout.addStyleName("padding20");
             controlBtnsLayout.setMargin(new MarginInfo(true, false, false, false));
 
-        } else {
-            controlBtnsLayout.addStyleName("padding2");
-        }
+//        } else {
+//            controlBtnsLayout.addStyleName("padding2");
+//        }
 
         controlBtnsLayout.addStyleName("whitelayout");
 

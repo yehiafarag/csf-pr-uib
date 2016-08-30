@@ -102,11 +102,11 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         this.smallScreen = smallScreen;
         
-        this.setWidth(100, Unit.PERCENTAGE);
+         this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
-        if (!smallScreen) {
-            this.setMargin(new MarginInfo(false, false, false, true));
-        }
+//        if (!smallScreen) {
+//            this.setMargin(new MarginInfo(false, false, false, true));
+//        }
         
         VerticalLayout bodyContainer = new VerticalLayout();
         bodyContainer.setWidth(100, Unit.PERCENTAGE);
@@ -156,13 +156,15 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         
         width = width - 50;
         chartLayoutFrame.setWidth(width, Unit.PIXELS);
-        chartLayoutFrame.setHeight(height, Unit.PIXELS);
+        chartLayoutFrame.setHeightUndefined();//setHeight(height, Unit.PIXELS);
         chartLayoutFrame.addStyleName("roundedborder");
         chartLayoutFrame.addStyleName("padding20");
         chartLayoutFrame.addStyleName("whitelayout");
         bodyContainer.addComponent(chartLayoutFrame);
         bodyContainer.setComponentAlignment(chartLayoutFrame, Alignment.MIDDLE_CENTER);
-        height = height - 40;
+       
+        
+        height = height - 70;
         width = width - 40;
         this.height = height;
         this.width = width;
@@ -170,6 +172,37 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         chartLayoutContainer.setWidth(width, Unit.PIXELS);
         chartLayoutContainer.setHeight(this.height, Unit.PIXELS);
         chartLayoutFrame.addComponent(chartLayoutContainer);
+        
+        
+        
+        
+        
+         HorizontalLayout  controlsLayout = new HorizontalLayout();
+        controlsLayout.setWidth(100,Unit.PERCENTAGE);
+        controlsLayout.setHeight(20,Unit.PIXELS);
+
+        Label clickcommentLabel = new Label("Click in chart to select data");
+        clickcommentLabel.setStyleName(ValoTheme.LABEL_SMALL);
+        clickcommentLabel.addStyleName(ValoTheme.LABEL_TINY);
+        clickcommentLabel.addStyleName(ValoTheme.LABEL_BOLD);
+        clickcommentLabel.setWidth(162,Unit.PIXELS);
+        
+        controlsLayout.addComponent(clickcommentLabel);
+        controlsLayout.setComponentAlignment(clickcommentLabel, Alignment.BOTTOM_RIGHT);  
+        chartLayoutFrame.addComponent(controlsLayout);
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         chartImage = new Image();
 //        chartImage.setSource(new ThemeResource(""));
@@ -992,8 +1025,10 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
             selectedProteinsList = new LinkedHashSet<>();
             lastselectedComponents.stream().forEach((component) -> {
                 for (QuantComparisonProtein quantProt : (Set<QuantComparisonProtein>) component.getParam("proteinList")) {
-                    if (userCustomizedComparison.getQuantComparisonProteinMap().containsKey(quantProt.getProteinAccession())) {
+                    if (userCustomizedComparison!= null && userCustomizedComparison.getQuantComparisonProteinMap().containsKey(quantProt.getProteinAccession())) {
                         selectedProteinsMap.put(quantProt.getProteinAccession(), quantProt);
+                    }else {
+                     selectedProteinsMap.put(quantProt.getProteinAccession(), quantProt);
                     }
                 }
                 selectedProteinsList.addAll(selectedProteinsMap.values());

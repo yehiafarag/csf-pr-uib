@@ -58,7 +58,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         frame.setMargin(true);
 //        frame.setStyleName("border");
         this.addComponent(frame);
-        this.setComponentAlignment(frame, Alignment.TOP_CENTER);
+        this.setComponentAlignment(frame, Alignment.MIDDLE_CENTER);
 
         title = new ResizableTextLabel("<center Style='color:#4d749f;'>Disease Category</center>");
         title.setContentMode(ContentMode.HTML);

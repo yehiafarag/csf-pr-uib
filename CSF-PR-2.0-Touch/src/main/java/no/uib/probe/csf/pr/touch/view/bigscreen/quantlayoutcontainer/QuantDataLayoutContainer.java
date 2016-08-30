@@ -339,6 +339,10 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
 
         bubblechartViewContainer = new VerticalLayout();
         bubblechartViewContainer.setWidth(mainViewPanelWidth, Unit.PIXELS);
+        bubblechartViewContainer.setHeight(mainViewPanelHeight,Unit.PIXELS);
+        
+        
+        
         bubblechartToolsContainer = new VerticalLayout();
         bubblechartBtn.setHasWrapper(true);
         this.addButton(bubblechartBtn, bubblechartViewContainer, bubblechartToolsContainer, false);
@@ -363,7 +367,8 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         }
 
         linechartViewContainer = new VerticalLayout();
-        linechartViewContainer.setWidth(mainViewPanelWidth, Unit.PIXELS);
+         linechartViewContainer.setWidth(mainViewPanelWidth, Unit.PIXELS);
+        linechartViewContainer.setHeight(mainViewPanelHeight,Unit.PIXELS);
         linechartToolsContainer = new VerticalLayout();
 
         this.addButton(linechartBtn, linechartViewContainer, linechartToolsContainer, false);
@@ -387,14 +392,15 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         }
 
         peptidesViewContainer = new VerticalLayout();
-        peptidesViewContainer.setWidth(mainViewPanelWidth, Unit.PIXELS);
+         peptidesViewContainer.setWidth(mainViewPanelWidth, Unit.PIXELS);
+        peptidesViewContainer.setHeight(mainViewPanelHeight,Unit.PIXELS);
         peptidesToolsContainer = new VerticalLayout();
         linechartBtn.setHasWrapper(true);
         peptideInfoBtn.setHasWrapper(true);
         this.addButton(peptideInfoBtn, peptidesViewContainer, peptidesToolsContainer, false);
 
         ///init bubble chart container
-        bubblechartComponent = new BubbleChartComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight, smallScreen) {
+        bubblechartComponent = new BubbleChartComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight-2, smallScreen) {
 
             @Override
             public void updateIcon(String imageUrl) {
@@ -417,7 +423,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         bubblechartToolsContainer.addComponent(bubblechartComponent.getControlBtnsContainer());
         bubblechartToolsContainer.setComponentAlignment(bubblechartComponent.getControlBtnsContainer(), Alignment.TOP_RIGHT);
 
-        lineChartProteinTableComponent = new LineChartProteinTableComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight, null, smallScreen) {
+        lineChartProteinTableComponent = new LineChartProteinTableComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight-2, null, smallScreen) {
 
             @Override
             public void updateRowNumber(int rowNumber, String url) {
@@ -432,7 +438,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         linechartToolsContainer.addComponent(lineChartProteinTableComponent.getControlBtnsContainer());
         linechartToolsContainer.setComponentAlignment(lineChartProteinTableComponent.getControlBtnsContainer(), Alignment.TOP_RIGHT);
 
-        PeptideViewComponent peptideViewComponent = new PeptideViewComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight, smallScreen) {
+        PeptideViewComponent peptideViewComponent = new PeptideViewComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight-2, smallScreen) {
 
             @Override
             public void updateIcon(Resource iconResource) {

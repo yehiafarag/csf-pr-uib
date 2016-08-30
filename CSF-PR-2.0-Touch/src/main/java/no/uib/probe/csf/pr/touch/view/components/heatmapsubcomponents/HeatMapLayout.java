@@ -112,7 +112,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 //        this.heatMapLayoutWrapper = new VerticalLayout();
 //        this.heatMapLayoutWrapper.setWidthUndefined();
 //        this.heatMapLayoutWrapper.setHeightUndefined();
-        this.availableHMHeight = availableHMHeight - 70;
+        this.availableHMHeight = availableHMHeight - 45;
         this.availableHMWidth = heatMapContainerWidth-40;
         heatMapContainerPanel = new Panel();
 
@@ -174,13 +174,13 @@ public abstract class HeatMapLayout extends VerticalLayout {
         //heatmap controllers
         //init heatmap filters buttons 
         controlsLayout = new HorizontalLayout();
-//        heatmapPanelLayout.setStyleName("bluelayout");
         controlsLayout.setVisible(true);
 //        controlsLayout.setStyleName("hmbottom");
 //        controlsLayout.setHeight(15, Unit.PIXELS);
 
         controlsLayout.setHeightUndefined();
         controlsLayout.setStyleName("margintop10");
+        controlsLayout.setHeight(20,Unit.PIXELS);
 
         controlsLayout.setSpacing(true);
         this.addComponent(controlsLayout);
@@ -196,10 +196,11 @@ public abstract class HeatMapLayout extends VerticalLayout {
         controlsLayout.setComponentAlignment(commentLabel, Alignment.TOP_LEFT);
 //        controlsLayout.setExpandRatio(clickcommentLabel, 0.6f);
 
-        Label clickcommentLabel = new Label("Click table to select data");
+        Label clickcommentLabel = new Label("Click in table to select data");
         clickcommentLabel.setStyleName(ValoTheme.LABEL_SMALL);
         clickcommentLabel.addStyleName(ValoTheme.LABEL_TINY);
-        clickcommentLabel.setWidth(152,Unit.PIXELS);
+        clickcommentLabel.addStyleName(ValoTheme.LABEL_BOLD);
+        clickcommentLabel.setWidth(162,Unit.PIXELS);
 //        if (smallScreen) {
 //            clickcommentLabel.addStyleName("nomargin");
 //        }
@@ -1474,7 +1475,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
         int calcWidth = 0, calcHeight = 0;
         this.heatmapComponentContainer.removeAllComponents();
 
-        cornerCell.setWidth((int) (170 * gen.getResizeFactor()), Unit.PIXELS);
+        cornerCell.setWidth((int) (150 * gen.getResizeFactor()), Unit.PIXELS);
         cornerCell.setHeight(cornerCell.getWidth(), cornerCell.getWidthUnits());
 
         double resizeFilterBtn = 1;
@@ -1538,13 +1539,13 @@ public abstract class HeatMapLayout extends VerticalLayout {
             }
         }
 
-        int x = (int) (170 * gen.getResizeFactor());
+        int x = (int) (150 * gen.getResizeFactor());
         int y = (int) (20 * gen.getResizeFactor());
         int cellWidth = (int) (20 * gen.getResizeFactor());
 
         for (HeaderCell headerCell : columnHeaderCells) {
 //            VerticalLayout hcell = new VerticalLayout();
-            headerCell.setHeight((int) (150 * gen.getResizeFactor()), Unit.PIXELS);
+            headerCell.setHeight((int) (130 * gen.getResizeFactor()), Unit.PIXELS);
             headerCell.setWidth(cellWidth, Unit.PIXELS);
             headerCell.setStyleName("heatmapcell");
 
@@ -1553,11 +1554,11 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
         }
         calcWidth += x;
-        y = (int) (170 * gen.getResizeFactor());
+        y = (int) (150 * gen.getResizeFactor());
         x = (int) (20 * gen.getResizeFactor());
         for (HeaderCell headerCell : rowHeaderCells) {
 //            VerticalLayout hcell = new VerticalLayout();
-            headerCell.setWidth((int) (150 * gen.getResizeFactor()), Unit.PIXELS);
+            headerCell.setWidth((int) (130 * gen.getResizeFactor()), Unit.PIXELS);
             headerCell.setHeight(cellWidth, Unit.PIXELS);
             headerCell.setStyleName("heatmapcell");
 
@@ -1567,8 +1568,8 @@ public abstract class HeatMapLayout extends VerticalLayout {
         }
         calcHeight += y;
 
-        x = (int) (170 * gen.getResizeFactor());
-        y = (int) (170 * gen.getResizeFactor());
+        x = (int) (150 * gen.getResizeFactor());
+        y = (int) (150 * gen.getResizeFactor());
         for (HeatmapCell[] row : cellTable) {
             for (HeatmapCell cell : row) {
 //                VerticalLayout cell = new VerticalLayout();
@@ -1578,7 +1579,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
                 this.heatmapComponentContainer.addComponent(cell, "left: " + x + "px; top: " + y + "px");
                 x += cellWidth;
             }
-            x = (int) (170 * gen.getResizeFactor());
+            x = (int) (150 * gen.getResizeFactor());
             y += cellWidth;
         }
 

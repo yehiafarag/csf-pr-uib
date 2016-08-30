@@ -356,7 +356,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         idDatasetBtn.getThumbBtn().setDescription("Click to browse protein identification data");
 
         middlePanelServicesLayout.addComponent(idDatasetBtn, 0, 1);
-        middlePanelServicesLayout.setComponentAlignment(idDatasetBtn, Alignment.BOTTOM_LEFT);
+        middlePanelServicesLayout.setComponentAlignment(idDatasetBtn, Alignment.MIDDLE_LEFT);
 
         SearchingComponent searchingDatasetBtn = new SearchingComponent(Data_handler, CSFPR_Central_Manager, smallScreen) {
 
@@ -392,7 +392,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
         compareBtn.getThumbBtn().setDescription("Click to compare with your own protein quantification data");
         middlePanelServicesLayout.addComponent(compareBtn, 1, 1);
-        middlePanelServicesLayout.setComponentAlignment(compareBtn, Alignment.BOTTOM_LEFT);
+        middlePanelServicesLayout.setComponentAlignment(compareBtn, Alignment.MIDDLE_LEFT);
 
         BigBtn homeBtn = new BigBtn("", "", "img/home-o.png", smallScreen) {
 

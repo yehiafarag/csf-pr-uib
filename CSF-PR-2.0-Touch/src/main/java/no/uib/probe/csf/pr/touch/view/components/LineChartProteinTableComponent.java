@@ -49,11 +49,11 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         this.proteinSearchingMap = new HashMap<>();
 
-        this.setWidth(100, Unit.PERCENTAGE);
+     this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
-        if (!smallScreen) {
-            this.setMargin(new MarginInfo(false, false, false, true));
-        }
+//        if (!smallScreen) {
+//            this.setMargin(new MarginInfo(false, false, false, true));
+//        }
 
         VerticalLayout bodyContainer = new VerticalLayout();
         bodyContainer.setWidth(100, Unit.PERCENTAGE);
@@ -117,13 +117,13 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         int tableHeight = height;
         width = width - 50;
         tableLayoutFrame.setWidth(width, Unit.PIXELS);
-        tableLayoutFrame.setHeight(tableHeight, Unit.PIXELS);
+        tableLayoutFrame.setHeightUndefined();//setHeight(tableHeight, Unit.PIXELS);
         tableLayoutFrame.addStyleName("roundedborder");
         tableLayoutFrame.addStyleName("whitelayout");
         tableLayoutFrame.addStyleName("padding20");
         bodyContainer.addComponent(tableLayoutFrame);
         bodyContainer.setComponentAlignment(tableLayoutFrame, Alignment.MIDDLE_CENTER);
-        height = height - 40;
+        height = height - 70;
         width = width - 60;
 
         quantProteinTable = new ProteinTable(width, height, smallScreen) {
@@ -154,6 +154,25 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
 
         };//this.initProteinTable();
         tableLayoutFrame.addComponent(quantProteinTable);
+        
+        
+          HorizontalLayout  controlsLayout = new HorizontalLayout();
+        controlsLayout.setWidth(100,Unit.PERCENTAGE);
+        controlsLayout.setHeight(20,Unit.PIXELS);
+
+        Label clickcommentLabel = new Label("Click in table to select data");
+        clickcommentLabel.setStyleName(ValoTheme.LABEL_SMALL);
+        clickcommentLabel.addStyleName(ValoTheme.LABEL_TINY);
+        clickcommentLabel.addStyleName(ValoTheme.LABEL_BOLD);
+        clickcommentLabel.setWidth(162,Unit.PIXELS);
+        
+        controlsLayout.addComponent(clickcommentLabel);
+        controlsLayout.setComponentAlignment(clickcommentLabel, Alignment.BOTTOM_RIGHT);  
+        tableLayoutFrame.addComponent(controlsLayout);
+        
+        
+        
+        
 
         //init side control btns layout 
         controlBtnsContainer = new VerticalLayout();

@@ -37,7 +37,7 @@ public class ProteinSequenceContainer extends VerticalLayout {
         this.smallScreen=smallScreen;
         this.proteinName=proteinName;
         this.sequence = sequence;
-        Label noPeptideAvailable = new Label("No peptides information available");
+        Label noPeptideAvailable = new Label("Peptides information not available");
         noPeptideAvailable.addStyleName(ValoTheme.LABEL_TINY);
         Set<QuantPeptide> filteredQuantPepSet = new LinkedHashSet<>();
         if (sequence == null || sequence.trim().equalsIgnoreCase("") || quantPepSet == null || quantPepSet.isEmpty()) {

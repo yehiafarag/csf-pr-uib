@@ -129,11 +129,13 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
 
     public PeptideViewComponent(CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height,boolean smallScreen) {
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
-        this.setWidth(100, Unit.PERCENTAGE);
+         this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
-         if (!smallScreen) {
-            this.setMargin(new MarginInfo(false, false, false, true));
-        }
+//        this.setWidth(100, Unit.PERCENTAGE);
+//        this.setHeight(height, Unit.PIXELS);
+//         if (!smallScreen) {
+//            this.setMargin(new MarginInfo(false, false, false, true));
+//        }
         VerticalLayout mainBodyContainer = new VerticalLayout();
         mainBodyContainer.setSpacing(true);
         mainBodyContainer.setWidth(100, Unit.PERCENTAGE);
