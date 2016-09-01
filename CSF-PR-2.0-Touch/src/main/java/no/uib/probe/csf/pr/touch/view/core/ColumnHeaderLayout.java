@@ -34,7 +34,7 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
         headerFrame.setWidthUndefined();
         this.addComponent(headerFrame);
         this.setComponentAlignment(headerFrame, Alignment.TOP_CENTER);
-        filterBtn = new ColumnFilterPopupBtn() {
+        filterBtn = new ColumnFilterPopupBtn((index==-1)) {
             @Override
             public void dropComparison() {
                 ColumnHeaderLayout.this.dropComparison(comparison);
@@ -71,6 +71,7 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
     }
 
     public void reset() {
+        filterBtn.reset();
         filterBtn.setVisible(false);
         sortingBtn.setVisible(true);
         if (sortingBtn.getStyleName().contains("blinkII")) {
@@ -133,6 +134,7 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
     }
 
     public void noFilter() {
+        filterBtn.reset();
         filterBtn.addStyleName("unselectedfilter");
         filterBtn.removeStyleName("selectedfilter");
     }

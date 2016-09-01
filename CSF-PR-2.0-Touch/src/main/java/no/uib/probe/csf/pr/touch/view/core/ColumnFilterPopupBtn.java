@@ -31,15 +31,17 @@ import org.vaadin.teemu.VaadinIcons;
 public abstract class ColumnFilterPopupBtn extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
     private final PopupView filterPopupLayout;
+    private final OptionGroup tableHeaderFilterOptions;
+    private final Property.ValueChangeListener listener;
 
-    public ColumnFilterPopupBtn() {
+    public ColumnFilterPopupBtn(boolean custUser) {
 
         this.addStyleName("unselectedfilter");
 
         VerticalLayout popupbodyLayout = new VerticalLayout();
         popupbodyLayout.setSpacing(true);
         popupbodyLayout.setWidth(200, Unit.PIXELS);
-        popupbodyLayout.setMargin(new MarginInfo(false, false, true, true));
+        popupbodyLayout.setMargin(new MarginInfo(false, false, false, true));
         popupbodyLayout.addStyleName("border");
 
         CloseButton closePopup = new CloseButton();
@@ -49,12 +51,13 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
         popupbodyLayout.setComponentAlignment(closePopup, Alignment.TOP_RIGHT);
         closePopup.addStyleName("translateleft10");
 
-        final OptionGroup tableHeaderFilterOptions = new OptionGroup("Select Filter");
+        tableHeaderFilterOptions = new OptionGroup("Select Filter");
         popupbodyLayout.addComponent(tableHeaderFilterOptions);
         tableHeaderFilterOptions.setWidth(100, Unit.PERCENTAGE);
         tableHeaderFilterOptions.setStyleName(ValoTheme.OPTIONGROUP_SMALL);
         tableHeaderFilterOptions.setDescription("Select to filter the table");
         tableHeaderFilterOptions.addItem(4);
+
         tableHeaderFilterOptions.setItemCaption(4, "Increased 100%");
         tableHeaderFilterOptions.addItem(3);
         tableHeaderFilterOptions.setItemCaption(3, "Increased < 100%");
@@ -70,24 +73,11 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
         tableHeaderFilterOptions.setImmediate(true);
         tableHeaderFilterOptions.setNewItemsAllowed(false);
         tableHeaderFilterOptions.setMultiSelect(true);
+        tableHeaderFilterOptions.setItemEnabled(3, !custUser);
+        tableHeaderFilterOptions.setItemEnabled(1, !custUser);
+        tableHeaderFilterOptions.setItemEnabled(5, !custUser);
 
-        HorizontalLayout labelContainer = new HorizontalLayout();
-        labelContainer.setSpacing(true);
-        Label icon = new Label();
-        icon.setIcon(VaadinIcons.CLOSE_CIRCLE);
-       
-        
-        labelContainer.addComponent(icon);
-        Label headerLabel = new Label("Drop comparison");
-        headerLabel.addStyleName("marginleft");
-        headerLabel.setStyleName(ValoTheme.LABEL_BOLD);
-        headerLabel.addStyleName(ValoTheme.LABEL_SMALL);
-        labelContainer.addStyleName("pointer");
-        labelContainer.addComponent(headerLabel);
-        popupbodyLayout.addComponent(labelContainer);
-     
-
-        filterPopupLayout = new PopupView(null, popupbodyLayout) {
+         filterPopupLayout = new PopupView(null, popupbodyLayout) {
 
             @Override
             public void setPopupVisible(boolean visible) {
@@ -96,12 +86,32 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
             }
 
         };
-        
-           labelContainer.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {    
-            filterPopupLayout.setPopupVisible(false);            
+         
+         
+         if (!custUser) {
+            HorizontalLayout labelContainer = new HorizontalLayout();
+            labelContainer.setSpacing(true);
+            Label icon = new Label();
+            icon.setIcon(VaadinIcons.CLOSE_CIRCLE);
+
+            labelContainer.addComponent(icon);
+            Label headerLabel = new Label("Drop comparison");
+            headerLabel.addStyleName("marginleft");
+            headerLabel.setStyleName(ValoTheme.LABEL_BOLD);
+            headerLabel.addStyleName(ValoTheme.LABEL_SMALL);
+            labelContainer.addStyleName("pointer");
+            labelContainer.addComponent(headerLabel);
+            popupbodyLayout.addComponent(labelContainer); 
+            labelContainer.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
+            filterPopupLayout.setPopupVisible(false);
             ColumnFilterPopupBtn.this.dropComparison();
         });
-        
+        }
+
+       
+
+      
+
         closePopup.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
             filterPopupLayout.setPopupVisible(false);
         });
@@ -110,7 +120,7 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
         filterPopupLayout.setHideOnMouseOut(false);
         filterPopupLayout.addStyleName("margintop");
         this.addComponent(filterPopupLayout);
-        Property.ValueChangeListener listener = (Property.ValueChangeEvent event) -> {
+        listener = (Property.ValueChangeEvent event) -> {
             Set<Object> headersSet = new HashSet<>((Set<Object>) event.getProperty().getValue());
             if (headersSet.isEmpty()) {
                 this.addStyleName("unselectedfilter");
@@ -131,6 +141,14 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         filterPopupLayout.setPopupVisible(true);
+    }
+
+    public void reset() {
+
+        tableHeaderFilterOptions.removeValueChangeListener(listener);
+        tableHeaderFilterOptions.setValue(null);
+
+        tableHeaderFilterOptions.addValueChangeListener(listener);
     }
 
     public abstract void dropComparison();

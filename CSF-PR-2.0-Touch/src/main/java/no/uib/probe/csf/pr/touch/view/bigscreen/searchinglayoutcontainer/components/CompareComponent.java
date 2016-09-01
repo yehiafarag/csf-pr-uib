@@ -263,8 +263,6 @@ public abstract class CompareComponent extends BigBtn {
             }).forEach((protein) -> {
 
                 userComparison.getQuantComparisonProteinMap().get(protein.getUniprotAccession()).setProteinName(protein.getUniprotProteinName());
-
-                System.out.println("at uniprot name for protein is " + userComparison.getQuantComparisonProteinMap().get(protein.getUniprotAccession()).getProteinName());
                 proteinList.add(protein.getUniprotAccession());
                 diseaseCategories.add(protein.getDiseaseCategory());
                 proteinAccession.add(protein.getUniprotAccession());

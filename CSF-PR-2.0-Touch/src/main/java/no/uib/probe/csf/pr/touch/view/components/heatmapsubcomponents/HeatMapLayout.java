@@ -196,11 +196,11 @@ public abstract class HeatMapLayout extends VerticalLayout {
         controlsLayout.setComponentAlignment(commentLabel, Alignment.TOP_LEFT);
 //        controlsLayout.setExpandRatio(clickcommentLabel, 0.6f);
 
-        Label clickcommentLabel = new Label("Click in table to select data");
+        Label clickcommentLabel = new Label("Click in the table to select data");
         clickcommentLabel.setStyleName(ValoTheme.LABEL_SMALL);
         clickcommentLabel.addStyleName(ValoTheme.LABEL_TINY);
         clickcommentLabel.addStyleName(ValoTheme.LABEL_BOLD);
-        clickcommentLabel.setWidth(162,Unit.PIXELS);
+        clickcommentLabel.setWidth(182,Unit.PIXELS);
 //        if (smallScreen) {
 //            clickcommentLabel.addStyleName("nomargin");
 //        }

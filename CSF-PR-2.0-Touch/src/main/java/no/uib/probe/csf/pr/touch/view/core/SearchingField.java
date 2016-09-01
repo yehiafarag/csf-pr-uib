@@ -35,8 +35,8 @@ public abstract class SearchingField extends HorizontalLayout {
         TextField searchField = new TextField();
         searchField.setDescription("Search proteins by name or accession");
         searchField.setImmediate(true);
-        searchField.setWidth(100, Unit.PERCENTAGE);
-        searchField.setHeight(90, Unit.PERCENTAGE);
+        searchField.setWidth(100, Unit.PIXELS);
+        searchField.setHeight(18, Unit.PIXELS);
         searchField.setInputPrompt("Search...");
         searchFieldContainerLayout.addComponent(searchField);
         searchField.setTextChangeTimeout(1500);
@@ -48,14 +48,14 @@ public abstract class SearchingField extends HorizontalLayout {
         searchField.addShortcutListener(new Button.ClickShortcut(b, ShortcutListener.KeyCode.ENTER));
         
         VerticalLayout searchingBtn = new VerticalLayout();
-        searchingBtn.setWidth(30,Unit.PIXELS);
-        searchingBtn.setHeight(90, Unit.PERCENTAGE);
+        searchingBtn.setWidth(22,Unit.PIXELS);
+        searchingBtn.setHeight(18, Unit.PIXELS);
         searchingBtn.setStyleName("tablesearchingbtn");
         searchFieldContainerLayout.addComponent(searchingBtn);
         searchFieldContainerLayout.setComponentAlignment(searchingBtn, Alignment.TOP_CENTER);
         this.addComponent(searchFieldContainerLayout);
         this.setComponentAlignment(searchFieldContainerLayout, Alignment.TOP_CENTER);
-        searchingCommentLabel = new Label(" ");
+        searchingCommentLabel = new Label();
         searchingCommentLabel.setWidth(100,Unit.PERCENTAGE);
         searchingCommentLabel.setHeight(23, Unit.PIXELS);
         searchingCommentLabel.addStyleName(ValoTheme.LABEL_BOLD);

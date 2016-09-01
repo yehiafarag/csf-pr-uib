@@ -837,6 +837,8 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
                 square.addParam("dsKey", -100);
                 if (trend == 6) {
                     square.addParam("comparison", null);
+                }else{
+                square.addStyleName("pointer");
                 }
                 String tooltip = gc.getComparisonHeader().replace("__" + gc.getDiseaseCategory(), "") + "<br/>" + gc.getDiseaseCategory() + "<br/>Overall trend: " + tooltipsIcon[trend];//+ "<br/>Datasets included: " + dsNumber;
                 square.setDescription(tooltip);

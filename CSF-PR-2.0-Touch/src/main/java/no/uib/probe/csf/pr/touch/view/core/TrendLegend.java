@@ -47,7 +47,7 @@ public class TrendLegend extends GridLayout {
                 item.setStyleName("legendlabelcontainer");
                 item.setHeight(10, Unit.PIXELS);
                 this.addComponent(item, i, 0);
-                this.setComponentAlignment(item, Alignment.BOTTOM_CENTER);
+                this.setComponentAlignment(item, Alignment.MIDDLE_CENTER);
 
             }
 
@@ -79,8 +79,8 @@ public class TrendLegend extends GridLayout {
 
             }
         } else if (type.equalsIgnoreCase("ministackedpeptidessequence")) {
-            String[] labels = new String[]{"Increased", "Increased-not sign.", "Equal", "Decreased", "Decreased-not sign.", "No Quant. Info."};//, "PTM"};
-            String[] styleName = new String[]{"legendred100", "legendnotsigredstackedlayout", "legendblue", "legendgreen100", "legendnotsiggreenstackedlayout", "legendgray"};//, "legendptmglycosylation"};
+            String[] labels = new String[]{"Increased", "Increased-not sign.", "Equal", "Decreased-not sign.", "Decreased", "No Quant. Info."};//, "PTM"};
+            String[] styleName = new String[]{"legendred100", "legendnotsigredstackedlayout", "legendblue", "legendnotsiggreenstackedlayout", "legendgreen100", "legendgray"};//, "legendptmglycosylation"};
             this.setSpacing(true);
             this.setRows(1);
             this.setColumns(6);
@@ -114,9 +114,9 @@ public class TrendLegend extends GridLayout {
 
             }
 
-        }else if(type.equalsIgnoreCase("found_notfound")){
-         final String[] labels = new String[]{"Found", "Not Found"};
-            String[] styleName = new String[]{"legendnotfoundstyle","legendfoundstyle"};
+        } else if (type.equalsIgnoreCase("found_notfound")) {
+            final String[] labels = new String[]{"Found", "Not Found"};
+            String[] styleName = new String[]{"legendnotfoundstyle", "legendfoundstyle"};
             this.setSpacing(true);
             this.setRows(1);
             this.setColumns(2);
@@ -132,9 +132,7 @@ public class TrendLegend extends GridLayout {
 
             }
 
-        
-        }
-        else {
+        } else {
             String[] labels = new String[]{"Increased", "Increased-not sign.", "Equal", "Decreased-not sign.", "Decreased", "No Quant. Info."};//, "PTM"};
             String[] styleName = new String[]{"redlayout", "notsigredstackedlayout", "lightbluelayout", "notsiggreenstackedlayout", "greenlayout", "novaluelayout"};//, "ptmglycosylation"};
             this.setSpacing(true);
@@ -186,7 +184,7 @@ public class TrendLegend extends GridLayout {
             item.setStyleName("legendlabelcontainer");
             item.setHeight(10, Unit.PIXELS);
             this.addComponent(item, i, 0);
-            this.setComponentAlignment(item, Alignment.BOTTOM_CENTER);
+            this.setComponentAlignment(item, Alignment.MIDDLE_CENTER);
 
         }
 
@@ -201,7 +199,7 @@ public class TrendLegend extends GridLayout {
         item.setStyleName("legendlabelcontainer");
         item.setHeight(10, Unit.PIXELS);
         this.addComponent(item, 7, 0);
-        this.setComponentAlignment(item, Alignment.BOTTOM_CENTER);
+        this.setComponentAlignment(item, Alignment.MIDDLE_CENTER);
 
     }
 

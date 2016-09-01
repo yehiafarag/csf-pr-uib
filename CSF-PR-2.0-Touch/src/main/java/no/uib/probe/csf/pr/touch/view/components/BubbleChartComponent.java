@@ -128,14 +128,17 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         titleLayoutWrapper.setWidthUndefined();
         titleLayoutWrapper.setSpacing(true);
         titleLayoutWrapper.setMargin(false);
+        titleLayoutWrapper.addStyleName("margintop7");
         topLayout.addComponent(titleLayoutWrapper);
         topLayout.setExpandRatio(titleLayoutWrapper, 10);
         
         Label overviewLabel = new Label("Overview");
-        overviewLabel.setStyleName(ValoTheme.LABEL_BOLD);
+        overviewLabel.setStyleName(ValoTheme.LABEL_BOLD);        
+        overviewLabel.addStyleName(ValoTheme.LABEL_SMALL);
+        overviewLabel.addStyleName(ValoTheme.LABEL_TINY);
         overviewLabel.setWidth(75, Unit.PIXELS);
         titleLayoutWrapper.addComponent(overviewLabel);
-        titleLayoutWrapper.setComponentAlignment(overviewLabel, Alignment.MIDDLE_CENTER);
+        titleLayoutWrapper.setComponentAlignment(overviewLabel, Alignment.TOP_LEFT);
 
 //        InfoPopupBtn info = new InfoPopupBtn("The bubble chart give an overview for the proteins existed in the selected comparisons.<br/>The diameter of the bubble represents the number of the proteins in the selected comparison and the color represents the trend.<br/>");
 //        titleLayoutWrapper.addComponent(info);
@@ -144,7 +147,8 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         TrendLegend legendLayout = new TrendLegend("bubblechart");
         legendLayout.setWidthUndefined();
         legendLayout.setHeight(24, Unit.PIXELS);
-        legendLayout.addStyleName("margintop7");
+        legendLayout.addStyleName("margintop7");        
+        legendLayout.addStyleName("floatright");
         topLayout.addComponent(legendLayout);
         topLayout.setComponentAlignment(legendLayout, Alignment.TOP_RIGHT);
         topLayout.setExpandRatio(legendLayout, 90);
@@ -181,11 +185,11 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         controlsLayout.setWidth(100,Unit.PERCENTAGE);
         controlsLayout.setHeight(20,Unit.PIXELS);
 
-        Label clickcommentLabel = new Label("Click in chart to select data");
+        Label clickcommentLabel = new Label("Click in the chart to select data");
         clickcommentLabel.setStyleName(ValoTheme.LABEL_SMALL);
         clickcommentLabel.addStyleName(ValoTheme.LABEL_TINY);
         clickcommentLabel.addStyleName(ValoTheme.LABEL_BOLD);
-        clickcommentLabel.setWidth(162,Unit.PIXELS);
+        clickcommentLabel.setWidth(182,Unit.PIXELS);
         
         controlsLayout.addComponent(clickcommentLabel);
         controlsLayout.setComponentAlignment(clickcommentLabel, Alignment.BOTTOM_RIGHT);  
@@ -256,6 +260,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
             groupSwichBtn.setWidth(25, Unit.PIXELS);
             groupSwichBtn.setHeight(25, Unit.PIXELS);
             groupSwichBtn.removeStyleName("smallimg");
+            groupSwichBtn.addStyleName("nopaddingimg");
         }
         
         controlBtnsContainer.addComponent(groupSwichBtn);
@@ -287,6 +292,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
             hideStableBtn.setWidth(25, Unit.PIXELS);
             hideStableBtn.setHeight(25, Unit.PIXELS);
             hideStableBtn.removeStyleName("smallimg");
+            hideStableBtn.addStyleName("nopaddingimg");
         } else {
             hideStableBtn.setHeight(40, Unit.PIXELS);
             hideStableBtn.setWidth(40, Unit.PIXELS);
@@ -309,6 +315,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
             exportPdfBtn.setWidth(25, Unit.PIXELS);
             exportPdfBtn.setHeight(25, Unit.PIXELS);
             exportPdfBtn.removeStyleName("smallimg");
+            exportPdfBtn.addStyleName("nopaddingimg");
         } else {
             exportPdfBtn.setHeight(40, Unit.PIXELS);
             exportPdfBtn.setWidth(40, Unit.PIXELS);
@@ -343,6 +350,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
             unselectAllBtn.setWidth(25, Unit.PIXELS);
             unselectAllBtn.setHeight(25, Unit.PIXELS);
             unselectAllBtn.removeStyleName("smallimg");
+            unselectAllBtn.addStyleName("nopaddingimg");
         } else {
             unselectAllBtn.setWidth(40, Unit.PIXELS);
             unselectAllBtn.setHeight(40, Unit.PIXELS);
@@ -377,6 +385,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
             selectMultiBtn.setWidth(25, Unit.PIXELS);
             selectMultiBtn.setHeight(25, Unit.PIXELS);
             selectMultiBtn.removeStyleName("smallimg");
+            selectMultiBtn.addStyleName("nopaddingimg");
         } else {
             selectMultiBtn.setWidth(40, Unit.PIXELS);
             selectMultiBtn.setHeight(40, Unit.PIXELS);

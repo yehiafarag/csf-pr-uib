@@ -13061,6 +13061,10 @@ div.v-layout.v-horizontal.v-widget {
 .alignmiddle{
     vertical-align:middle !important;
 }
+.margintop3{
+    margin-top:3px !important;
+
+}
 .margintop-5{
     margin-top:-5px !important;
 
@@ -13080,7 +13084,7 @@ div.v-layout.v-horizontal.v-widget {
 .margintop7{
     margin-top:7px !important;
 }
-.v-slot-showonhover:hover{
+.v-slot-showonhover{
     overflow:visible !important;
     position:absolute !important;
     z-index:90000000 !important;
@@ -13091,7 +13095,7 @@ div.v-layout.v-horizontal.v-widget {
     -moz-transition: left 3.5s ease-in-out;
     -o-transition: left 3.5s ease-in-out;
     transition: left 3.5s ease-in-out;
-    left:8%;
+    left:22%;
 }
 
 .slidepanel{
@@ -14286,7 +14290,8 @@ div.v-layout.v-horizontal.v-widget {
 
 
 .legendred100 div{
-    margin-top:5px;
+    margin-top:4px;
+    margin-left:3px;
     background: rgb(204, 0, 0);    
 
 }
@@ -14294,42 +14299,53 @@ div.v-layout.v-horizontal.v-widget {
 
 .legendnotsigredstackedlayout div{
     background: #FF7F7F;
-    margin-top:5px;
+    border:2px solid  rgb(204, 0, 0);
+    margin-top:4px; 
+    margin-left:3px;
+
 }
 .legendnotsiggreenstackedlayout div{
     background: #D0F5A9;
-    margin-top:5px;
+    border:2px solid rgb(0, 153, 0);
+    margin-top:4px;
+    margin-left:3px;
 }
 
 .legendredless100 div{
-    margin-top:5px;
+    margin-top:4px;
+    margin-left:3px;
     background: rgb(247, 119, 119);    
 }
 .legendblue div{
-    margin-top:5px;
+    margin-top:4px;
+    margin-left:3px;
 
     background: rgb(1, 141, 244);    
 }
 .legendgreen100 div{
-    margin-top:5px;
-    background: rgb(0, 229, 132);    
+    margin-top:4px;
+    margin-left:3px;
+    background: rgb(0, 153, 0);    
 
 }
 .legendgreenless100 div{
 
-    margin-top:5px;
-    background: rgb(0, 153, 0);    
+    margin-top:4px;
+    margin-left:3px;
+    background: rgb(0, 229, 132);    
 
 }
 .legendgray div{
-    margin-top:5px;
+    margin-top:4px;
+    margin-left:3px;
 
     background: rgb(128, 128, 128);    
 }
 
 
 .legendempty div{
-    margin-top:5px;
+    margin-top:4px;
+    margin-left:3px;
     background:#cccccc;
 
 }
@@ -14396,11 +14412,11 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .tablesearchingbtn{
-    height: 24px;
     background-color:  whitesmoke;
     background-image: url(img/icon_find.png);
     background-repeat: no-repeat;
     background-position:center;
+    background-size:12px;
     border: 1px solid  rgb(169, 169, 169) ;
     border-radius: 3px;
     cursor:pointer;
@@ -14499,49 +14515,52 @@ div.v-layout.v-horizontal.v-widget {
 .legendarrow-up100 {
     width: 0; 
     height: 0; 
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;  
-    border-bottom: 12px solid  rgb(204, 0, 0) ;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;  
+    border-bottom: 10px solid  rgb(204, 0, 0) ;
     margin-top:-6px;
+
 }
 .legendarrow-upless100 {
+    margin-left:5px;
     margin-top:-6px;
     width: 0; 
     height: 0; 
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;  
-    border-bottom: 12px solid rgb(247, 119, 119);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;  
+    border-bottom: 10px solid rgb(247, 119, 119);
 }
 .legenddiamond {
 
-
-    margin-top:-6px;
+    margin-left:5px;
+    margin-top:-5px;
     width: 0;
     height: 0;
-    border: 6px solid transparent;
+    border: 5px solid transparent;
     border-bottom-color: rgb(1, 141, 244);
     position: relative;
     top: -6px;
 }
 .legenddiamond:after {
+
     content: '';
     position: absolute;
-    left: -6px;
-    top: 6px;
+    left: -5px;
+    top: 5px;
     width: 0;
     height: 0;
-    border: 6px solid transparent;
+    border: 5px solid transparent;
     border-top-color: rgb(1, 141, 244);
 }
 
 
 .legendgraydiamond {
 
-
-    margin-top:-6px;
+    margin-left:5px;
+    margin-top:-5px;
     width: 0;
     height: 0;
-    border: 6px solid transparent;
+    border: 5px solid transparent;
     border-bottom-color: lightgray;
     position: relative;
     top: -6px;
@@ -14549,32 +14568,32 @@ div.v-layout.v-horizontal.v-widget {
 .legendgraydiamond:after {
     content: '';
     position: absolute;
-    left: -6px;
-    top: 6px;
+    left: -5px;
+    top: 5px;
     width: 0;
     height: 0;
-    border: 6px solid transparent;
+    border: 5px solid transparent;
     border-top-color: lightgray;
 }
 .legenddarkgraydiamond {
 
-
-    margin-top:-6px;
+    margin-left:5px;
+    margin-top:-5px;
     width: 0;
     height: 0;
-    border: 6px solid transparent;
+    border: 5px solid transparent;
     border-bottom-color:gray;
     position: relative;
-    top: -6px;
+    top: -5px;
 }
 .legenddarkgraydiamond:after {
     content: '';
     position: absolute;
-    left: -6px;
-    top: 6px;
+    left: -5px;
+    top: 5px;
     width: 0;
     height: 0;
-    border: 6px solid transparent;
+    border: 5px solid transparent;
     border-top-color: gray;
 }
 
@@ -14582,9 +14601,10 @@ div.v-layout.v-horizontal.v-widget {
 .legendarrow-down100 {
     width: 0;
     height: 0;
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    border-top: 12px solid rgb(0, 153, 0);
+    margin-left:5px;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 10px solid rgb(0, 153, 0);
 
     margin-top:-5px;
 }
@@ -14593,10 +14613,11 @@ div.v-layout.v-horizontal.v-widget {
     width: 0;
     height: 0;
     margin-top:-5px;
+    margin-left:5px;
 
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    border-top: 12px solid  rgb(0, 229, 132);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 10px solid  rgb(0, 229, 132);
 }
 .legendlabelcontainer{
     line-height: 0px;
@@ -14747,7 +14768,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 .midgreenstackedlayout div{
     background: #D0F5A9;
-    border: 1px solid black; 
+    border: 2px solid  #009900; 
 
     cursor:pointer;
 }
@@ -14785,7 +14806,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 .midredstackedlayout div{
     background: #FF7F7F;
-    border: 1px solid black;     
+    border: 2px solid #cc0000;     
     cursor:pointer;
 }
 
@@ -14934,7 +14955,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 .vdarkgray{
 
-    background: #848484;
+    /*background: #848484;*/
     border: 1px solid #848484;
 
 }
@@ -15413,4 +15434,19 @@ div.v-layout.v-horizontal.v-widget {
     background-size:15px !important;
     background-position:center !important;
 
+}
+.floatright{
+     right:0px !important;
+    position:absolute !important;
+}
+.floatright div{
+   font-size: 11px !important;
+}
+.user{
+    border: 1px solid #8210B0;
+    border-radius:2px;
+    color: white !important;
+    line-height:100%;    
+    margin-left:-15px !important;
+    margin-top: -3px !important;
 }
