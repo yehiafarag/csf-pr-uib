@@ -33,7 +33,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
     private final GridLayout frame;
     private final int height, width;
     private final Collection<DiseaseCategoryObject> diseaseCategorySet;
-    private final  ResizableTextLabel title;
+    private final ResizableTextLabel title;
 
     /**
      *
@@ -129,10 +129,12 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         miniLayout.addStyleName("blink");
     }
 
+    public abstract void resetSelection();
+
     public final void updateData(Collection<DiseaseCategoryObject> diseaseCategorySet) {
 
         frame.removeAllComponents();
-         frame.addComponent(title, 1, 1);
+        frame.addComponent(title, 1, 1);
         frame.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
         diseaseMap.clear();
         miniLayout.removeAllComponents();

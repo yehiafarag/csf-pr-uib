@@ -36,6 +36,7 @@ public class Data_Handler implements Serializable {
 
     private final CoreLogic coreLogic;
     private final DatasetUtility Dataset_Util;
+    private final DataExporter exporter;
 
     /**
      *
@@ -50,6 +51,7 @@ public class Data_Handler implements Serializable {
 
         this.coreLogic = new CoreLogic(url, dbName, driver, userName, password, filesURL);
         Dataset_Util = new DatasetUtility(coreLogic);
+        this.exporter = new DataExporter();
 
     }
     
@@ -331,5 +333,14 @@ public class Data_Handler implements Serializable {
         return coreLogic.exportProteinsListToCSV(proteinsList);
 
     }
+    
+    /**
+     * Export current datasets heat-map into image in pdf file
+     */
+    public void exportHeatmap(){
+//    exporter.exportHeatmap();
+    
+    }
+    
 
 }

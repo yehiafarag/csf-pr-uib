@@ -13,7 +13,6 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
@@ -24,14 +23,12 @@ import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.Data_Handler;
 import no.uib.probe.csf.pr.touch.database.Query;
-import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantProtein;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
@@ -40,7 +37,6 @@ import no.uib.probe.csf.pr.touch.view.core.BigBtn;
 import no.uib.probe.csf.pr.touch.view.core.InformationButton;
 import no.uib.probe.csf.pr.touch.view.core.PieChart;
 import no.uib.probe.csf.pr.touch.view.core.PopupWindow;
-import no.uib.probe.csf.pr.touch.view.core.ProteinSearcingResultLabel;
 import no.uib.probe.csf.pr.touch.view.core.TrendLegend;
 
 /**
@@ -85,6 +81,8 @@ public abstract class CompareComponent extends BigBtn {
             comparePanel.setWidth(comparePanel.getWidth() + 100, Unit.PIXELS);
             h1 = 340;
         } else {
+             comparePanel.setHeight(comparePanel.getHeight() + 50, Unit.PIXELS);
+            comparePanel.setWidth(comparePanel.getWidth() + 50, Unit.PIXELS);
             h1 = 440;//Math.min(((int) comparePanel.getHeight() / 2) - 30,460);
         }
         compareUnit = new ComparisonUnitComponent(Data_handler, h1, smallScreen) {
@@ -139,13 +137,12 @@ public abstract class CompareComponent extends BigBtn {
         controlBtnsLayout.addStyleName("roundedborder");
 //        if (!smallScreen) //        btnsFrame.addStyleName("padding10");
 //        {
-            controlBtnsLayout.addStyleName("padding20");
-            controlBtnsLayout.setMargin(new MarginInfo(true, false, false, false));
+        controlBtnsLayout.addStyleName("padding20");
+        controlBtnsLayout.setMargin(new MarginInfo(true, false, false, false));
 
 //        } else {
 //            controlBtnsLayout.addStyleName("padding2");
 //        }
-
         controlBtnsLayout.addStyleName("whitelayout");
 
         controlBtnsLayout.setWidth(100, Sizeable.Unit.PERCENTAGE);
@@ -280,8 +277,8 @@ public abstract class CompareComponent extends BigBtn {
             searchQuantificationProtList.stream().forEach((protein) -> {
                 proteinAccession.add(protein.getUniprotAccession());
 
-                  userComparison.getQuantComparisonProteinMap().get(protein.getUniprotAccession()).setProteinName(protein.getUniprotProteinName());
-                
+                userComparison.getQuantComparisonProteinMap().get(protein.getUniprotAccession()).setProteinName(protein.getUniprotProteinName());
+
                 if (!diseaseCategoriesIdMap.containsKey(protein.getDiseaseCategory())) {
                     diseaseCategoriesIdMap.put(protein.getDiseaseCategory(), new HashSet<>());
                 }

@@ -21,10 +21,10 @@ public class QuantDatasetsfullStudiesTableLayout extends Table{
      * @param activeColumnHeaders
      */
     public QuantDatasetsfullStudiesTableLayout(boolean[] activeColumnHeaders) {
-        this.setStyleName(Reindeer.LAYOUT_WHITE);
+//        this.setStyleName(Reindeer.LAYOUT_WHITE);
         initCombinedQuantDatasetTable(activeColumnHeaders);
-        this.setHeight("420px");
-        this.setWidth("100%");
+//        this.setHeight("420px");
+//        this.setWidth("100%");
     }
 
     /**
@@ -165,7 +165,7 @@ public class QuantDatasetsfullStudiesTableLayout extends Table{
             dsIndexes[index] = pb.getDsKey();
             index++;
         }
-        this.sort(new Object[]{"Year"}, new boolean[]{false});
+        this.sort(new Object[]{"Year","Author"}, new boolean[]{false,true});
         this.setSortAscending(false);
         int indexing = 1;
 

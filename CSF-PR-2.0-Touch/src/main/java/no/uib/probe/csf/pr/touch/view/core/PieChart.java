@@ -174,8 +174,11 @@ public abstract class PieChart extends AbsoluteLayout implements LayoutEvents.La
         this.defaultColors.clear();
         this.selectedColors.clear();
         dataset.clear();
+        if (values == null) {
+            return;
+        }
         for (int x = 0; x < items.length; x++) {
-            if (values[x] == 0) {
+            if (values.length <= x || values[x] == null || values[x] == 0) {
                 continue;
             }
             dataset.setValue(items[x], new Double(values[x]));
@@ -186,7 +189,11 @@ public abstract class PieChart extends AbsoluteLayout implements LayoutEvents.La
                 this.defaultColors.put(items[x], colors[x]);
             }
         }
-        selectAllLabel.setValue(values[values.length - 1] + "");
+        if (values.length > 0) {
+            selectAllLabel.setValue(values[values.length - 1] + "");
+        } else {
+            selectAllLabel.setValue(0 + "");
+        }
 //        this.redrawChart();
 
     }

@@ -104,9 +104,9 @@ public class CSF_PR_UI extends UI {
     private void resizeScreen() {
         windowHeight = Page.getCurrent().getBrowserWindowHeight()-20;// Math.max(Page.getCurrent().getBrowserWindowHeight(), 1080);
         windowWidth = Page.getCurrent().getBrowserWindowWidth()-20;//Math.max(Page.getCurrent().getBrowserWindowWidth(), 1920);
-        if (windowHeight < 427 || windowWidth < 980) {
+        if (windowHeight < 427 || windowWidth < 1075) {
             windowHeight = 427;
-            windowWidth = 980;
+            windowWidth = 1075;
             
 //            Notification.show("Screen is too small current screen resolution (" + windowWidth + "x" + windowHeight + ")", Notification.Type.ERROR_MESSAGE);
             return;

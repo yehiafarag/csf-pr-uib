@@ -63,13 +63,14 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
             //update heatmap
             Set<QuantDiseaseGroupsComparison> compList = CSFPR_Central_Manager.getSelectedComparisonsList();
             heatmapComponent.unselectAll();
-            Map<Integer, QuantDatasetObject> tempFullComparison =new LinkedHashMap<>();
-            for(int i:Data_handler.getFullQuantDsMap().keySet()){
-                if(CSFPR_Central_Manager.getQuantSearchSelection().getDatasetIds().contains(i))
+            Map<Integer, QuantDatasetObject> tempFullComparison = new LinkedHashMap<>();
+            for (int i : Data_handler.getFullQuantDsMap().keySet()) {
+                if (CSFPR_Central_Manager.getQuantSearchSelection().getDatasetIds().contains(i)) {
                     tempFullComparison.put(i, Data_handler.getFullQuantDsMap().get(i));
+                }
             }
-            
-            heatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(),tempFullComparison );
+
+            heatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), tempFullComparison);
             if (compList == null || compList.isEmpty()) {
                 updateCurrentLayout("heatmap");
 
@@ -89,20 +90,16 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
             heatmapBtn.updateIcon(logoRes);
             heatmapBtn.setEnabled(false);
             heatmapBtn.setReadOnly(true);
+            bubblechartComponent.setUserCustomizedComparison(null);
+            lineChartProteinTableComponent.setUserCustomizedComparison(null);
 //              quantInitialLayout.resetThumbBtn();
             quantInitialLayout.updateData(Data_handler.getDiseaseCategorySet());
             updateCurrentLayout("initiallayout");
-            
-            
-            
-            
-            
 
             //reset heatmap and unselect all
-        } 
+        }
         if (type.equalsIgnoreCase("quant_compare")) {
-            
-            
+
             //reset main quant data in handler
             //done
             //update initial layout
@@ -117,7 +114,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
 //                updateCurrentLayout("heatmap");
 //
 //            }            
-            bubblechartComponent.addCustmisedUserDataCompariosn(CSFPR_Central_Manager.getQuantSearchSelection().getUserCustComparison());
+            bubblechartComponent.setUserCustomizedComparison(CSFPR_Central_Manager.getQuantSearchSelection().getUserCustComparison());
             lineChartProteinTableComponent.setUserCustomizedComparison(CSFPR_Central_Manager.getQuantSearchSelection().getUserCustComparison());
 //            if (CSFPR_Central_Manager.getQuantSearchSelection().getUserCustComparison() == null) {
 //                heatmapComponent.unselectAll();
@@ -167,10 +164,14 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         final HorizontalLayout subBodyWrapper = new HorizontalLayout();
         subBodyWrapper.setWidthUndefined();
         subBodyWrapper.setHeightUndefined();
-        
-        
+
         quantInitialLayout = new QuantInitialLayout(availableDiseaseCategory, width - 20, height, smallScreen) {
             private String lastSelectedDisease = "";
+
+            @Override
+            public void resetSelection() {
+                lastSelectedDisease = "";
+            }
 
             @Override
             public void onClick(String diseaseCategoryName) {
@@ -243,7 +244,6 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         controlBtnsContainer.setVisible(false);
 
 //        this.setInitialLayout(quantInitialLayout.getMiniLayout(), quantInitialLayout, controlBtnsContainer);
-        
         this.addButton(quantInitialLayout.getMiniLayout(), quantInitialLayout, controlBtnsContainer, true);
 
         heatmapBtn = new ImageContainerBtn() {
@@ -268,19 +268,19 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         if (smallScreen) {
             mainViewPanelWidth = width - 118;
         } else {
-            mainViewPanelWidth = width-178 ;
+            mainViewPanelWidth = width - 178;
         }
         heatmapViewContainer = new VerticalLayout();
         heatmapViewContainer.setWidth(mainViewPanelWidth, Unit.PIXELS);
-        heatmapViewContainer.setHeight(mainViewPanelHeight,Unit.PIXELS);
-       
+        heatmapViewContainer.setHeight(mainViewPanelHeight, Unit.PIXELS);
+
         heatmapToolsContainer = new VerticalLayout();
         heatmapBtn.setHasWrapper(true);
         this.addButton(heatmapBtn, heatmapViewContainer, heatmapToolsContainer, false);
 
         Data_handler.loadDiseaseCategory("All Diseases");
 
-        heatmapComponent = new HeatMapComponent(CSFPR_Central_Manager, Data_handler, Data_handler.getDiseaseCategorySet(), mainViewPanelWidth, mainViewPanelHeight-2, Data_handler.getActiveDataColumns(), smallScreen) {
+        heatmapComponent = new HeatMapComponent(CSFPR_Central_Manager, Data_handler, Data_handler.getDiseaseCategorySet(), mainViewPanelWidth, mainViewPanelHeight - 2, Data_handler.getActiveDataColumns(), smallScreen) {
 
             @Override
             public void updateIcon(String imageUrl) {
@@ -309,10 +309,10 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
 //        VerticalLayout testlayout = new VerticalLayout();
 //        testlayout.setStyleName("bluelayout");
 //        testlayout.setWidth(mainViewPanelWidth + 100, mainViewPanelHeight);
-        
+
         heatmapViewContainer.addComponent(heatmapComponent);
         heatmapViewContainer.setComponentAlignment(heatmapComponent, Alignment.TOP_LEFT);
-        
+
         heatmapToolsContainer.addComponent(heatmapComponent.getHeatmapToolBtnContainer());
         heatmapToolsContainer.setComponentAlignment(heatmapComponent.getHeatmapToolBtnContainer(), Alignment.TOP_RIGHT);
 
@@ -339,10 +339,8 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
 
         bubblechartViewContainer = new VerticalLayout();
         bubblechartViewContainer.setWidth(mainViewPanelWidth, Unit.PIXELS);
-        bubblechartViewContainer.setHeight(mainViewPanelHeight,Unit.PIXELS);
-        
-        
-        
+        bubblechartViewContainer.setHeight(mainViewPanelHeight, Unit.PIXELS);
+
         bubblechartToolsContainer = new VerticalLayout();
         bubblechartBtn.setHasWrapper(true);
         this.addButton(bubblechartBtn, bubblechartViewContainer, bubblechartToolsContainer, false);
@@ -367,8 +365,8 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         }
 
         linechartViewContainer = new VerticalLayout();
-         linechartViewContainer.setWidth(mainViewPanelWidth, Unit.PIXELS);
-        linechartViewContainer.setHeight(mainViewPanelHeight,Unit.PIXELS);
+        linechartViewContainer.setWidth(mainViewPanelWidth, Unit.PIXELS);
+        linechartViewContainer.setHeight(mainViewPanelHeight, Unit.PIXELS);
         linechartToolsContainer = new VerticalLayout();
 
         this.addButton(linechartBtn, linechartViewContainer, linechartToolsContainer, false);
@@ -392,15 +390,15 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         }
 
         peptidesViewContainer = new VerticalLayout();
-         peptidesViewContainer.setWidth(mainViewPanelWidth, Unit.PIXELS);
-        peptidesViewContainer.setHeight(mainViewPanelHeight,Unit.PIXELS);
+        peptidesViewContainer.setWidth(mainViewPanelWidth, Unit.PIXELS);
+        peptidesViewContainer.setHeight(mainViewPanelHeight, Unit.PIXELS);
         peptidesToolsContainer = new VerticalLayout();
         linechartBtn.setHasWrapper(true);
         peptideInfoBtn.setHasWrapper(true);
         this.addButton(peptideInfoBtn, peptidesViewContainer, peptidesToolsContainer, false);
 
         ///init bubble chart container
-        bubblechartComponent = new BubbleChartComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight-2, smallScreen) {
+        bubblechartComponent = new BubbleChartComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight - 2, smallScreen) {
 
             @Override
             public void updateIcon(String imageUrl) {
@@ -423,7 +421,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         bubblechartToolsContainer.addComponent(bubblechartComponent.getControlBtnsContainer());
         bubblechartToolsContainer.setComponentAlignment(bubblechartComponent.getControlBtnsContainer(), Alignment.TOP_RIGHT);
 
-        lineChartProteinTableComponent = new LineChartProteinTableComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight-2, null, smallScreen) {
+        lineChartProteinTableComponent = new LineChartProteinTableComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight - 2, null, smallScreen) {
 
             @Override
             public void updateRowNumber(int rowNumber, String url) {
@@ -438,7 +436,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         linechartToolsContainer.addComponent(lineChartProteinTableComponent.getControlBtnsContainer());
         linechartToolsContainer.setComponentAlignment(lineChartProteinTableComponent.getControlBtnsContainer(), Alignment.TOP_RIGHT);
 
-        PeptideViewComponent peptideViewComponent = new PeptideViewComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight-2, smallScreen) {
+        PeptideViewComponent peptideViewComponent = new PeptideViewComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight - 2, smallScreen) {
 
             @Override
             public void updateIcon(Resource iconResource) {

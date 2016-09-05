@@ -14231,7 +14231,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 .roundedborder{
     border:2px solid lightgray;
-    min-width:280px !important;
+    min-width:350px !important;
     border-radius:10px;
 }
 .padding20{
@@ -15436,17 +15436,30 @@ div.v-layout.v-horizontal.v-widget {
 
 }
 .floatright{
-     right:0px !important;
+    right:0px !important;
     position:absolute !important;
 }
 .floatright div{
-   font-size: 11px !important;
+    font-size: 11px !important;
 }
 .user{
     border: 1px solid #8210B0;
     border-radius:2px;
-    color: white !important;
-    line-height:100%;    
-    margin-left:-15px !important;
-    margin-top: -3px !important;
+    line-height:100%;   
+    z-index: 1000000000 !important;
+    position: relative;
+}
+.toptablelayout{
+   
+    z-index: 1000000000 !important;
+    position: relative;
+   
+
+}
+.proteintablestyle{
+     margin-top: -34px;
+     position: relative;
+}
+.hidesortingicon .v-table-sort-indicator{
+    visibility:hidden;
 }

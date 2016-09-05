@@ -30,7 +30,6 @@ public class HeatMapImgGenerator1 {
             panelHeight = heatmapWidth;
         }
         int cellWidth = Math.min((panelHeight-150)/columns.length,30);
-        System.out.println("at cell width is "+cellWidth+"  "+heatmapWidth+"  "+panelHeight);
 
         JPanel heatmapPanelLayout = new JPanel();
         heatmapPanelLayout.setLayout(null);

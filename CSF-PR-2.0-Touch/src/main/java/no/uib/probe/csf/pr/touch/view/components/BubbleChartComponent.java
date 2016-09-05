@@ -1049,7 +1049,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         CSFPR_Central_Manager.selectionAction(selection);
     }
     
-    public void addCustmisedUserDataCompariosn(QuantDiseaseGroupsComparison userCustomizedComparison) {
+    public void setUserCustomizedComparison(QuantDiseaseGroupsComparison userCustomizedComparison) {
         this.userCustomizedComparison = userCustomizedComparison;
         if (userCustomizedComparison == null) {
             userDataCounter = 0;

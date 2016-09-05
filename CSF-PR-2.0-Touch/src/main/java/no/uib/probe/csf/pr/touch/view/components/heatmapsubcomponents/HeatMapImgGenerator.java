@@ -48,13 +48,14 @@ public class HeatMapImgGenerator {
     private int cellWidth;
     private double resizeFactor;
     private final Map<String, Rectangle> headerLabelMap = new LinkedHashMap<>();
+    private boolean printLabels;
 
     public Map<String, Rectangle> getHeaderLabelMap() {
         return headerLabelMap;
     }
 
-    public String generateHeatmap(Set<HeatMapHeaderCellInformationBean> rows, Set<HeatMapHeaderCellInformationBean> columns, String[][] data, int heatmapWidth, int heatmaHeight, boolean resetRowLabels, boolean restColumnLabels) {
-
+    public String generateHeatmap(Set<HeatMapHeaderCellInformationBean> rows, Set<HeatMapHeaderCellInformationBean> columns, String[][] data, int heatmapWidth, int heatmaHeight, boolean resetRowLabels, boolean restColumnLabels, boolean printLabels) {
+        this.printLabels = printLabels;
         headerLabelMap.clear();
 //        int panelHeight = heatmaHeight;
 //        if (heatmapWidth < heatmaHeight) {
@@ -70,7 +71,7 @@ public class HeatMapImgGenerator {
         heatmapPanelLayout.setBackground(transparent);
 
         imageWidth = (columns.size() * cellWidth) + 150;
-        imageHeight=(rows.size()*cellWidth)+150;
+        imageHeight = (rows.size() * cellWidth) + 150;
         cellWidth = 20;//
         resizeFactor = 1;// (double) imageWidth / (double) panelWidth;
 
@@ -84,19 +85,19 @@ public class HeatMapImgGenerator {
 
         for (HeatMapHeaderCellInformationBean bean : columns) {
 
-            headerLabelMap.put("col__"+bean.getDiseaseCategory(), new Rectangle(0, 0, 0, 0));
+            headerLabelMap.put("col__" + bean.getDiseaseCategory(), new Rectangle(0, 0, 0, 0));
 
         }
-         for (HeatMapHeaderCellInformationBean bean : rows) {
+        for (HeatMapHeaderCellInformationBean bean : rows) {
 
-            headerLabelMap.put("row__"+bean.getDiseaseCategory(), new Rectangle(0, 0, 0, 0));
+            headerLabelMap.put("row__" + bean.getDiseaseCategory(), new Rectangle(0, 0, 0, 0));
 
         }
 
         for (HeatMapHeaderCellInformationBean headerCell : columns) {
 
             if (!restColumnLabels) {
-                Rectangle rectangle = headerLabelMap.get("col__"+headerCell.getDiseaseCategory());
+                Rectangle rectangle = headerLabelMap.get("col__" + headerCell.getDiseaseCategory());
                 rectangle.setBounds(0, 0, (int) rectangle.getWidth() + cellWidth, (int) (20 * resizeFactor));
             }
             JPanel cell = initCell(headerCell.getDiseaseColor(), x, y, fullBorder);
@@ -116,7 +117,7 @@ public class HeatMapImgGenerator {
 
             HeatMapHeaderCellInformationBean bean = null;
             for (HeatMapHeaderCellInformationBean tbean : columns) {
-                if (("col__"+tbean.getDiseaseCategory()).equalsIgnoreCase(dCat)) {
+                if (("col__" + tbean.getDiseaseCategory()).equalsIgnoreCase(dCat)) {
                     bean = tbean;
                     break;
 
@@ -156,7 +157,7 @@ public class HeatMapImgGenerator {
 
             if (!resetRowLabels) {
 
-                Rectangle rectangle = headerLabelMap.get("row__"+headerCell.getDiseaseCategory());
+                Rectangle rectangle = headerLabelMap.get("row__" + headerCell.getDiseaseCategory());
                 rectangle.setBounds(0, 0, (int) (20 * resizeFactor), (int) rectangle.getHeight() + cellWidth);
             }
 
@@ -178,7 +179,7 @@ public class HeatMapImgGenerator {
 
             HeatMapHeaderCellInformationBean bean = null;
             for (HeatMapHeaderCellInformationBean tbean : rows) {
-                if (("row__"+tbean.getDiseaseCategory()).equalsIgnoreCase(dCat)) {
+                if (("row__" + tbean.getDiseaseCategory()).equalsIgnoreCase(dCat)) {
                     bean = tbean;
                     break;
 
@@ -228,13 +229,10 @@ public class HeatMapImgGenerator {
             y += cellWidth;
         }
 
-        
-        BufferedImage image = new BufferedImage(imageWidth,imageHeight , BufferedImage.TYPE_INT_ARGB);
+        BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = image.createGraphics();
-        
-        
-        
-           graphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+
+        graphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         graphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
         graphics.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
@@ -242,18 +240,9 @@ public class HeatMapImgGenerator {
         graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-        
-        
-        
-        
-        
-        
-        
 
 //        graphics.setPaint(transparent);
-
 //        graphics.setBackground(transparent);
-
         heatmapPanelLayout.paint(graphics);
         byte[] imageData = null;
 
@@ -275,21 +264,21 @@ public class HeatMapImgGenerator {
         return imageHeight;
     }
 
-    private BufferedImage generateSVG(JPanel myCanvas, int w, int h) {
-        Writer out = null;
-        String svgNS = "http://www.w3.org/2000/svg";
-        DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
-        Document myFactory = domImpl.createDocument(svgNS, "svg", null);
-        SVGGeneratorContext ctx
-                = SVGGeneratorContext.createDefault(myFactory);
-        CachedImageHandlerBase64Encoder cachedImageHandlerBase64Encoder = new CachedImageHandlerBase64Encoder();
-        ctx.setGenericImageHandler(cachedImageHandlerBase64Encoder);
-        SVGGraphics2D svgGenerator = new SVGGraphics2D(ctx, false);
-        myCanvas.paintComponents(svgGenerator);
-        return cachedImageHandlerBase64Encoder.buildBufferedImage(new Dimension(w, h));
-    }
+//    private BufferedImage generateSVG(JPanel myCanvas, int w, int h) {
+//        Writer out = null;
+//        String svgNS = "http://www.w3.org/2000/svg";
+//        DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
+//        Document myFactory = domImpl.createDocument(svgNS, "svg", null);
+//        SVGGeneratorContext ctx
+//                = SVGGeneratorContext.createDefault(myFactory);
+//        CachedImageHandlerBase64Encoder cachedImageHandlerBase64Encoder = new CachedImageHandlerBase64Encoder();
+//        ctx.setGenericImageHandler(cachedImageHandlerBase64Encoder);
+//        SVGGraphics2D svgGenerator = new SVGGraphics2D(ctx, false);
+//        myCanvas.paintComponents(svgGenerator);
+//        return cachedImageHandlerBase64Encoder.buildBufferedImage(new Dimension(w, h));
+//    }
 
-    private final Border fullBorder = new LineBorder( new Color(220,224,224),1);
+    private final Border fullBorder = new LineBorder(new Color(220, 224, 224), 1);
 
     private JPanel initCell(String color, int x, int y, Border border) {
         JPanel cell = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -329,27 +318,27 @@ public class HeatMapImgGenerator {
 
     private JComponent initLabel(String text, int w, int h, boolean rotate, Color background, Border border) {
         JLabel label = new JLabel("");
-
-//        System.out.println("at label text size is "+((int) (15 * resizeFactor)));
-//        label.setFont(new Font("Open Sans", Font.PLAIN, (int) (15 * resizeFactor)));
-//
-//        label.setVerticalTextPosition(JLabel.CENTER);
-//        label.setHorizontalTextPosition(JLabel.CENTER);
-//        label.setForeground(Color.WHITE);
-//
-//        label.setHorizontalAlignment(JLabel.CENTER);
-//        label.setVerticalAlignment(JLabel.CENTER);
+        if (this.printLabels) {
+            label.setText(text);
+            label.setFont(new Font("Open Sans", Font.PLAIN, (int) (15 * resizeFactor)));
+            label.setVerticalTextPosition(JLabel.CENTER);
+            label.setHorizontalTextPosition(JLabel.CENTER);
+            label.setForeground(Color.WHITE);
+            label.setHorizontalAlignment(JLabel.CENTER);
+            label.setVerticalAlignment(JLabel.CENTER);
+        }
         label.setSize(w, h);
         label.setBackground(background);
         label.setBorder(border);
         label.setOpaque(true);
 
         if (rotate) {
-
-//            label.setVerticalTextPosition(JLabel.TOP);
-//            label.setHorizontalTextPosition(JLabel.CENTER);
-//            label.setHorizontalAlignment(JLabel.CENTER);
-//            label.setVerticalAlignment(JLabel.TOP);
+ if (this.printLabels) {
+            label.setVerticalTextPosition(JLabel.TOP);
+                label.setHorizontalTextPosition(JLabel.CENTER);
+                label.setHorizontalAlignment(JLabel.CENTER);
+                label.setVerticalAlignment(JLabel.TOP);
+            }
             label.setSize(h, w);
 
             RotatedJPanel rotPanel = new RotatedJPanel();
@@ -419,7 +408,7 @@ public class HeatMapImgGenerator {
 //        return rotatedPanel;
 //
 //    }
-    public int getPanelWidth() {       
+    public int getPanelWidth() {
         return imageWidth;
     }
 

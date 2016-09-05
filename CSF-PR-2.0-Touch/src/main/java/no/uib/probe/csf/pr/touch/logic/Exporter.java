@@ -5,18 +5,32 @@
  */
 package no.uib.probe.csf.pr.touch.logic;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.util.Set;
-import org.apache.commons.io.IOUtils;
 
 /**
  *
  * @author Yehia Farag
  */
-public class Exporter {
+public class Exporter implements Serializable{
+    
+    
+    public void exportHeatMapImage(){
+    
+    }
+    
+    
+    
+    public byte[] exportImage(BufferedImage image){
+    return null;
+    
+    }
+    
 
     /**
      * this function to be use for csv peptides exporting with large datasets

@@ -175,11 +175,10 @@ public abstract class SearchingComponent extends BigBtn {
         idDataResult.addStyleName("marginleft");
         btnsWrapper.addComponent(idDataResult);
 
-        
         HorizontalLayout rightBtnWrapper = new HorizontalLayout();
         rightBtnWrapper.setSizeUndefined();
         rightBtnWrapper.setSpacing(true);
-          controlBtnsLayout.addComponent(rightBtnWrapper);
+        controlBtnsLayout.addComponent(rightBtnWrapper);
         controlBtnsLayout.setComponentAlignment(rightBtnWrapper, Alignment.MIDDLE_RIGHT);
         Button resetBtn = new Button("Reset");
         resetBtn.setStyleName(ValoTheme.BUTTON_SMALL);
@@ -195,8 +194,6 @@ public abstract class SearchingComponent extends BigBtn {
             CSFPR_Central_Manager.resetSearchSelection();
         });
 
-        
-        
         loadDataBtn = new Button("Load");
         loadDataBtn.setStyleName(ValoTheme.BUTTON_SMALL);
         loadDataBtn.setStyleName(ValoTheme.BUTTON_TINY);
@@ -306,7 +303,7 @@ public abstract class SearchingComponent extends BigBtn {
 
                 datasetIds.add(protein.getDsKey());
                 proteinAccession.add(protein.getFinalAccession());
-                 if (!diseaseCategoriesIdMap.containsKey(protein.getDiseaseCategory())) {
+                if (!diseaseCategoriesIdMap.containsKey(protein.getDiseaseCategory())) {
                     diseaseCategoriesIdMap.put(protein.getDiseaseCategory(), new HashSet<>());
                 }
                 Set<Integer> datasetIdSet = diseaseCategoriesIdMap.get(protein.getDiseaseCategory());
@@ -366,14 +363,10 @@ public abstract class SearchingComponent extends BigBtn {
 //            });
 //            initQuantComparisonresults(quantHitsList,  quantNotFound.split(","), filterKeywordSet.size());
 
-            initProteinsQuantDataLayout(quantHitsList, quantNotFound.split(","), filterKeywordSet.size());
+            if (quantNotFound != null) {
+                initProteinsQuantDataLayout(quantHitsList, quantNotFound.split(","), filterKeywordSet.size());
+            }
         }
-//        if (quantNotFound != null && !quantNotFound.trim().equalsIgnoreCase("")) {
-//            noresultsLabel.setValue(noresultMessage + " for (" + quantNotFound + ")");
-//            noresultsLabel.setVisible(true);
-//
-//        }
-
         query.setSearchDataType("Identification Data");
 
         //searching id data
@@ -392,7 +385,6 @@ public abstract class SearchingComponent extends BigBtn {
             idDataResult.setVisible(false);
         }
 
-//        quantSearchingErrorLabel.updateErrot(quantNotFound);
     }
     private final String[] items = new String[]{"Alzheimer's", "Multiple Sclerosis", "Parkinson's"};
     private final Color[] itemsColors = new Color[]{Color.decode("#4b7865"), Color.decode("#A52A2A"), Color.decode("#74716E")};
@@ -410,6 +402,10 @@ public abstract class SearchingComponent extends BigBtn {
 
         quantDataResult.removeAllComponents();
         overviewResults.removeAllComponents();
+        if (smallScreen) {
+            int h2 = h1 + 225;
+            resultsLayout.setHeight(h2, Unit.PIXELS);
+        }
         if (quantHitsList == null || quantHitsList.isEmpty()) {
             quantDataResult.setVisible(false);
             noresultsLabel.setVisible(true);
@@ -515,10 +511,7 @@ public abstract class SearchingComponent extends BigBtn {
 
         }
         resultsLabel.setValue("Search Results (" + quantHitsList.size() + ")");
-        if (smallScreen) {
-            int h2 = h1 + 225;
-            resultsLayout.setHeight(h2, Unit.PIXELS);
-        }
+
     }
 
     @Override

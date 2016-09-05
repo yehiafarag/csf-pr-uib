@@ -147,9 +147,9 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
         frame.addComponent(errorLabel);
         frame.setComponentAlignment(errorLabel, Alignment.MIDDLE_CENTER);
         errorLabel.setWidth(50, Unit.PERCENTAGE);
-        if (smallScreen) {
-            errorLabel.setHeight(30, Unit.PIXELS);
-        }
+//        if (smallScreen) {
+//            errorLabel.setHeight(40, Unit.PIXELS);
+//        }
         
         query = new Query();
         
@@ -200,6 +200,7 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
         } else {
             this.removeStyleName("resizeto120");
             errorLabel.setValue("Check keywords and searching by option");
+            errorLabel.addStyleName("nomargin");
             errorLabel.setVisible(true);
         }
         

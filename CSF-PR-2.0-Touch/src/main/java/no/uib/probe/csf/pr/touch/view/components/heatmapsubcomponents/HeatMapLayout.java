@@ -267,7 +267,35 @@ public abstract class HeatMapLayout extends VerticalLayout {
 //        exportTableBtn.setPrimaryStyleName("exportxslbtn");
         controlBtnsContainer.addComponent(exportTableBtn);
         controlBtnsContainer.setComponentAlignment(exportTableBtn, Alignment.MIDDLE_CENTER);
-        exportTableBtn.setDescription("Export all dataset data");
+        exportTableBtn.setDescription("Export heatmap dataset data");
+        
+        
+        //export as pdf
+         ImageContainerBtn exportPdfBtn = new ImageContainerBtn() {
+            
+            @Override
+            public void onClick() {
+//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+            
+        };
+        
+        if (smallScreen) {
+            exportPdfBtn.setWidth(25, Unit.PIXELS);
+            exportPdfBtn.setHeight(25, Unit.PIXELS);
+            exportPdfBtn.removeStyleName("smallimg");
+            exportPdfBtn.addStyleName("nopaddingimg");
+        } else {
+            exportPdfBtn.setHeight(40, Unit.PIXELS);
+            exportPdfBtn.setWidth(40, Unit.PIXELS);
+        }
+        exportPdfBtn.updateIcon(new ThemeResource("img/pdf-text-o.png"));
+        exportPdfBtn.setEnabled(true);
+        controlBtnsContainer.addComponent(exportPdfBtn);
+        controlBtnsContainer.setComponentAlignment(exportPdfBtn, Alignment.MIDDLE_CENTER);
+        exportPdfBtn.setDescription("Export heatmap image");
+        
+        
 
         ImageContainerBtn selectAllBtn = new ImageContainerBtn() {
 
@@ -394,7 +422,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
      * @param patientsGroupComparisonsSet
      * @param fullQuantDsMap
      */
-    public void updateData(Set<HeatMapHeaderCellInformationBean> rowsLbels, Set<HeatMapHeaderCellInformationBean> columnsLbels, Set<DiseaseGroupComparison> patientsGroupComparisonsSet, Map<Integer, QuantDatasetObject> fullQuantDsMap) {
+    public void updateData(Set<HeatMapHeaderCellInformationBean> rowsLbels, Set<HeatMapHeaderCellInformationBean> columnsLbels, Set<DiseaseGroupComparison> patientsGroupComparisonsSet, Map<Integer, QuantDatasetObject> fullQuantDsMap ) {
 
         unselectAll();
         equalComparisonMap.clear();
@@ -1399,7 +1427,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
     private String getHMThumbImg() {
 //        String imgUrl = gen.generateHeatmap(rowsColors, columnsColors, dataValuesColors, availableHMWidth, availableHMHeight,resetRows,resetcolumns);
-        gen.generateHeatmap(rowheadersSet, colheadersSet, dataValuesColors, availableHMWidth, availableHMHeight, resetRows, resetcolumns);
+        gen.generateHeatmap(rowheadersSet, colheadersSet, dataValuesColors, availableHMWidth, availableHMHeight, resetRows, resetcolumns,false);
         heatmapPanelLayout.setWidth(gen.getPanelWidth(), Unit.PIXELS);
         heatmapPanelLayout.setHeight(gen.getPanelHeight(), Unit.PIXELS);
         heatMapContainerPanel.setHeight(Math.min(this.availableHMHeight-40, gen.getPanelHeight()+ 15), Unit.PIXELS);
@@ -1415,7 +1443,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 //        heatMapImg.setSource(new ExternalResource(imgUrl));
         updateHeatmapComponents();
 
-        return gen.generateHeatmap(rowheadersSet, colheadersSet, dataValuesColors, 100, 100, resetRows, resetcolumns);
+        return gen.generateHeatmap(rowheadersSet, colheadersSet, dataValuesColors, 100, 100, resetRows, resetcolumns,false);
 
 //        return imgUrl;
     }
