@@ -7,15 +7,12 @@ package no.uib.probe.csf.pr.touch.view.components.heatmapsubcomponents;
 
 import com.itextpdf.text.pdf.codec.Base64;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.io.Writer;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -25,15 +22,9 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import no.uib.probe.csf.pr.touch.logic.beans.HeatMapHeaderCellInformationBean;
-import org.apache.batik.dom.GenericDOMImplementation;
-import org.apache.batik.svggen.CachedImageHandlerBase64Encoder;
-import org.apache.batik.svggen.SVGGeneratorContext;
-import org.apache.batik.svggen.SVGGraphics2D;
 import org.jfree.chart.encoders.ImageEncoder;
 import org.jfree.chart.encoders.ImageEncoderFactory;
 import org.jfree.chart.encoders.ImageFormat;
-import org.w3c.dom.DOMImplementation;
-import org.w3c.dom.Document;
 
 /**
  *
@@ -49,9 +40,14 @@ public class HeatMapImgGenerator {
     private double resizeFactor;
     private final Map<String, Rectangle> headerLabelMap = new LinkedHashMap<>();
     private boolean printLabels;
+    private  JPanel heatmapPanelLayout;
 
     public Map<String, Rectangle> getHeaderLabelMap() {
         return headerLabelMap;
+    }
+
+    public JPanel getHeatmapPanelLayout() {
+        return heatmapPanelLayout;
     }
 
     public String generateHeatmap(Set<HeatMapHeaderCellInformationBean> rows, Set<HeatMapHeaderCellInformationBean> columns, String[][] data, int heatmapWidth, int heatmaHeight, boolean resetRowLabels, boolean restColumnLabels, boolean printLabels) {
@@ -64,7 +60,7 @@ public class HeatMapImgGenerator {
 
         cellWidth = 20;//Math.min(((panelHeight - 150) / columns.size()), 25);
 
-        JPanel heatmapPanelLayout = new JPanel();
+        heatmapPanelLayout = new JPanel();
 
         heatmapPanelLayout.setLayout(null);
         heatmapPanelLayout.setVisible(true);
@@ -130,14 +126,14 @@ public class HeatMapImgGenerator {
                     width += topLabelContainerWidth;
                 }
 
-                JComponent label = initLabel(dCat, width, (int) (20 * resizeFactor), false, Color.decode(bean.getDiseaseColor()), fullBorder);
+                JComponent label = initLabel(dCat.split("__")[1], width, (int) (20 * resizeFactor), false, Color.decode(bean.getDiseaseColor()), fullBorder);
                 label.setLocation(x, 0);
                 heatmapPanelLayout.add(label);
                 x += label.getSize().width;
                 counter++;
 
             } else if (bean != null) {
-                JComponent label = initLabel(dCat, headerLabelMap.get(dCat).width, (int) (20 * resizeFactor), false, Color.decode(bean.getDiseaseColor()), fullBorder);
+                JComponent label = initLabel(dCat.split("__")[1], headerLabelMap.get(dCat).width, (int) (20 * resizeFactor), false, Color.decode(bean.getDiseaseColor()), fullBorder);
                 label.setLocation(x, 0);
                 heatmapPanelLayout.add(label);
                 x += headerLabelMap.get(dCat).width;
@@ -192,14 +188,14 @@ public class HeatMapImgGenerator {
                     width += topLabelContainerWidth;
                 }
 
-                JComponent label = initLabel(dCat, (int) (20 * resizeFactor), width, true, Color.decode(bean.getDiseaseColor()), fullBorder);
+                JComponent label = initLabel(dCat.split("__")[1], (int) (20 * resizeFactor), width, true, Color.decode(bean.getDiseaseColor()), fullBorder);
                 label.setLocation(0, y);
                 heatmapPanelLayout.add(label);
                 y += label.getSize().height;
                 counter++;
 
             } else if (bean != null) {
-                JComponent label = initLabel(dCat, (int) (20 * resizeFactor), headerLabelMap.get(dCat).height, true, Color.decode(bean.getDiseaseColor()), fullBorder);
+                JComponent label = initLabel(dCat.split("__")[1], (int) (20 * resizeFactor), headerLabelMap.get(dCat).height, true, Color.decode(bean.getDiseaseColor()), fullBorder);
                 label.setLocation(0, y);
                 heatmapPanelLayout.add(label);
                 y += headerLabelMap.get(dCat).height;
@@ -277,7 +273,6 @@ public class HeatMapImgGenerator {
 //        myCanvas.paintComponents(svgGenerator);
 //        return cachedImageHandlerBase64Encoder.buildBufferedImage(new Dimension(w, h));
 //    }
-
     private final Border fullBorder = new LineBorder(new Color(220, 224, 224), 1);
 
     private JPanel initCell(String color, int x, int y, Border border) {
@@ -320,7 +315,7 @@ public class HeatMapImgGenerator {
         JLabel label = new JLabel("");
         if (this.printLabels) {
             label.setText(text);
-            label.setFont(new Font("Open Sans", Font.PLAIN, (int) (15 * resizeFactor)));
+            label.setFont(new Font("Helvetica Neue", Font.PLAIN, (int) (12 * resizeFactor)));
             label.setVerticalTextPosition(JLabel.CENTER);
             label.setHorizontalTextPosition(JLabel.CENTER);
             label.setForeground(Color.WHITE);
@@ -333,14 +328,14 @@ public class HeatMapImgGenerator {
         label.setOpaque(true);
 
         if (rotate) {
- if (this.printLabels) {
-            label.setVerticalTextPosition(JLabel.TOP);
+            if (this.printLabels) {
+                 label.setFont(new Font("Helvetica Neue", Font.PLAIN, (int) (12 * resizeFactor)));
+                label.setVerticalTextPosition(JLabel.TOP);
                 label.setHorizontalTextPosition(JLabel.CENTER);
                 label.setHorizontalAlignment(JLabel.CENTER);
                 label.setVerticalAlignment(JLabel.TOP);
             }
             label.setSize(h, w);
-
             RotatedJPanel rotPanel = new RotatedJPanel();
             rotPanel.setSize(h, h);
             rotPanel.add(label);
@@ -352,7 +347,6 @@ public class HeatMapImgGenerator {
             rotPanel.add(label);
             return (panel);
         }
-
         return label;
 
     }

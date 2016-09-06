@@ -18,7 +18,7 @@ import java.util.HashMap;
 public class TrendSymbol extends VerticalLayout implements Comparable<TrendSymbol> {
 
     private final HashMap<String, Object> paramMap;
-    private final int trend;
+    private  int trend;
 
     public TrendSymbol(int trend) {
         paramMap = new HashMap<>();
@@ -50,6 +50,10 @@ public class TrendSymbol extends VerticalLayout implements Comparable<TrendSymbo
                 break;
 
         }
+    }
+
+    public void setTrend(int trend) {
+        this.trend = trend;
     }
 
     public void addParam(String name, Object value) {

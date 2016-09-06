@@ -35,9 +35,9 @@ public class RotatedJPanel extends JPanel {
     private void updateComponentImg() {
 
         BufferedImage img = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_RGB);
-        Graphics g = img.getGraphics();
-        this.paint(g);
-        g.dispose();
+        Graphics2D g2d = (Graphics2D)img.getGraphics();        
+        this.paint(g2d);
+//        g2d.dispose();
         componentImg = createFlipped(img);
 
     }
@@ -54,19 +54,23 @@ public class RotatedJPanel extends JPanel {
         at.concatenate(AffineTransform.getScaleInstance(1, -1));
         at.concatenate(AffineTransform.getTranslateInstance(0, -image.getHeight()));
 
-        ((Graphics2D) image.getGraphics()).setBackground(Color.GREEN);
-
-        BufferedImage newImage = new BufferedImage(
-                image.getWidth(), image.getHeight(),
-                BufferedImage.TYPE_INT_ARGB);
+//        ((Graphics2D) image.getGraphics()).setBackground(Color.GREEN);
+        BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = newImage.createGraphics();
-        g2d.setBackground(Color.GREEN);
+        g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+        g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
         g2d.drawImage(op.filter(image, null), 0, 0, null);
         return newImage;
     }
 
     public JPanel getRotatedJPanel() {
-        this.setBackground(new Color(255, 255, 255));
+//        this.setBackground(new Color(255, 255, 255));
 //        Graphics2D g2d = (Graphics2D) getGraphics();
 //        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 //        g2d.setComposite(AlphaComposite.getInstance(

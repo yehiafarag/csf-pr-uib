@@ -36,6 +36,7 @@ import no.uib.probe.csf.pr.touch.view.core.ColumnHeaderLayout;
 import no.uib.probe.csf.pr.touch.view.core.ExternalLink;
 import no.uib.probe.csf.pr.touch.view.core.ProteinTrendLayout;
 import no.uib.probe.csf.pr.touch.view.core.RadioButton;
+import no.uib.probe.csf.pr.touch.view.core.TrendSymbol;
 import org.apache.commons.codec.binary.Base64;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtilities;
@@ -433,11 +434,11 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
 
         topLayout.addComponent(spacer);
         this.userSortingHeaderWrapper = new VerticalLayout();
-        userSortingHeaderWrapper.setWidth(47,Unit.PIXELS);
+        userSortingHeaderWrapper.setHeight(20, Unit.PIXELS);
         userSortingHeaderWrapper.addStyleName("bluelayout");
-        userSortingHeaderWrapper.setHeight(100,Unit.PERCENTAGE);
-        spacer.addComponent(userSortingHeaderWrapper);
-        spacer.setComponentAlignment(userSortingHeaderWrapper, Alignment.TOP_RIGHT);
+//        userSortingHeaderWrapper.setHeight(100,Unit.PERCENTAGE);
+        topLayout.addComponent(userSortingHeaderWrapper);
+        topLayout.setComponentAlignment(userSortingHeaderWrapper, Alignment.TOP_RIGHT);
         topComparisonsContainer = new HorizontalLayout();
         topComparisonsContainer.setHeight(100, Unit.PERCENTAGE);
         topComparisonsContainer.setStyleName("spacing");
@@ -568,7 +569,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         mainProteinTable.addContainerProperty("selectedRow", RadioButton.class, null, "", null, Table.Align.CENTER);
         mainProteinTable.addContainerProperty("Accession", ExternalLink.class, null, "Accession", null, Table.Align.LEFT);
         mainProteinTable.addContainerProperty("Name", String.class, null, "Name", null, Table.Align.LEFT);
-        mainProteinTable.addContainerProperty("userdata", Double.class, null, "User Data", null, Table.Align.CENTER);
+        mainProteinTable.addContainerProperty("userdata", TrendSymbol.class, null, " ", null, Table.Align.CENTER);
 
         mainProteinTable.addContainerProperty("Comparisons Overview", ProteinTrendLayout.class, null, "", null, Table.Align.LEFT);
         mainProteinTable.setColumnCollapsed("userdata", showUserData);
@@ -579,7 +580,8 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         mainProteinTable.setColumnWidth("Name", 187);
         mainProteinTable.setColumnWidth("userdata", userDataColumnWidth);
 
-        spacer.setWidth((355 + userDataColumnWidth), Unit.PIXELS);
+        spacer.setWidth((355), Unit.PIXELS);
+        userSortingHeaderWrapper.setWidth(userDataColumnWidth, Unit.PIXELS);
         availableProteinLayoutWidth = width - 48 - 87 - 187 - 30 - userDataColumnWidth;//- 47
         topComparisonsContainer.setWidth(availableProteinLayoutWidth, Unit.PIXELS);
         mainProteinTable.setColumnWidth("Comparisons Overview", availableProteinLayoutWidth);
@@ -596,7 +598,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
                 selectedOnly = !selectedOnly;
                 showSelectedOnly();
 
-            } else if (!event.getPropertyId().toString().equalsIgnoreCase("Comparisons Overview") && !event.getPropertyId().toString().equalsIgnoreCase("Index")) {//
+            } else if (!event.getPropertyId().toString().equalsIgnoreCase("Comparisons Overview") && !event.getPropertyId().toString().equalsIgnoreCase("Index")&& !event.getPropertyId().toString().equalsIgnoreCase("userdata")) {//
                 mainProteinTable.removeStyleName("hidesortingicon");
                 mainProteinTable.setSortEnabled(true);
 
@@ -763,9 +765,22 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
             };
 
             if (userCustomizedComparison == null) {
-                tableItemsMap.put(protId, new Object[]{protId + 1, btn, accessionObject, name, 0.0, protTrendLayout});
+                tableItemsMap.put(protId, new Object[]{protId + 1, btn, accessionObject, name, null, protTrendLayout});
             } else {
-                tableItemsMap.put(protId, new Object[]{protId + 1, btn, accessionObject, name, userCustomizedComparison.getQuantComparisonProteinMap().get(accession).getOverallCellPercentValue(), protTrendLayout});
+                int trend;
+                if (userCustomizedComparison.getQuantComparisonProteinMap().get(accession).getOverallCellPercentValue() == 100.0) {
+                    trend = 0;
+                } else if (userCustomizedComparison.getQuantComparisonProteinMap().get(accession).getOverallCellPercentValue() == 0) {
+                    trend = 3;
+                } else {
+                    trend = 4;
+                }
+                TrendSymbol trendSymbol = new TrendSymbol(trend);
+                trendSymbol.setTrend((int)userCustomizedComparison.getQuantComparisonProteinMap().get(accession).getOverallCellPercentValue());
+                trendSymbol.setWidth(12, Unit.PIXELS);
+                trendSymbol.setHeight(12, Unit.PIXELS);
+                trendSymbol.setDescription("" + userCustomizedComparison.getQuantComparisonProteinMap().get(accession).getSignificantTrindCategory());
+                tableItemsMap.put(protId, new Object[]{protId + 1, btn, accessionObject, name, trendSymbol, protTrendLayout});
             }
             activeTableItemsMap.put(protId, tableItemsMap.get(protId));
             mainProteinTable.addItem(tableItemsMap.get(protId), protId);

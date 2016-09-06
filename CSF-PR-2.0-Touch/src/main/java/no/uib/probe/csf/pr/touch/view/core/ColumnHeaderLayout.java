@@ -107,7 +107,7 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
 
     public void setAsDefault() {
         sortingBtn.removeStyleName("unselected");
-        sortedUp = true;
+        sortedUp = false;
     }
     private Boolean sortedUp;
 

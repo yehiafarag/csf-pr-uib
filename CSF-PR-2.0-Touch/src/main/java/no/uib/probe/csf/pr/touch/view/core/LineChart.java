@@ -6,7 +6,6 @@
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.server.ExternalResource;
-import com.vaadin.server.Resource;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Image;
 import java.awt.BasicStroke;
@@ -79,7 +78,7 @@ public class LineChart extends AbsoluteLayout {
 
         this.width = width;
         this.height = height;
-        this.smallScreen=smallScreen;
+        this.smallScreen = smallScreen;
         this.setWidth(width, Unit.PIXELS);
         this.setHeight(100, Unit.PERCENTAGE);
 
@@ -605,7 +604,7 @@ public class LineChart extends AbsoluteLayout {
     }
 
     public void minimize(boolean updateImg) {
-        if (minImgUrl == null ||updateImg) {
+        if (minImgUrl == null || updateImg) {
             lineChart.getXYPlot().getDomainAxis().setVisible(false);
             lineChart.getXYPlot().getRangeAxis().setVisible(false);
             lineChart.getXYPlot().setOutlineVisible(false);

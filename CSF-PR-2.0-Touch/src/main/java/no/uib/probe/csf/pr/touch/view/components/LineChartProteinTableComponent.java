@@ -123,7 +123,6 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         VerticalLayout tableLayoutFrame = new VerticalLayout();
         height = height - 44;
 
-        int tableHeight = height;
         width = width - 50;
         tableLayoutFrame.setWidth(width, Unit.PIXELS);
         tableLayoutFrame.setHeightUndefined();//setHeight(tableHeight, Unit.PIXELS);
@@ -303,8 +302,8 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         controlBtnsContainer.setComponentAlignment(removeFilters, Alignment.MIDDLE_CENTER);
         removeFilters.setDescription("Clear all applied filters");
 
-        ThemeResource checkedApplied = new ThemeResource("img/check-square.png");
-        ThemeResource checkedUnApplied = new ThemeResource("img/check-square-o.png");
+//        ThemeResource checkedApplied = new ThemeResource("img/check-square.png");
+//        ThemeResource checkedUnApplied = new ThemeResource("img/check-square-o.png");
 
 //        checkUncheckBtn = new ImageContainerBtn() {
 //
