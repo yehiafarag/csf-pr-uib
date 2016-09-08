@@ -275,44 +275,44 @@ public abstract class HeatMapLayout extends VerticalLayout {
         exportTableBtn.setDescription("Export heatmap dataset data");
 
         //export as pdf
-        ImageContainerBtn exportPdfBtn = new ImageContainerBtn() {
-            private final DataExporter exporter = new DataExporter();
+//        ImageContainerBtn exportPdfBtn = new ImageContainerBtn() {
+//            private final DataExporter exporter = new DataExporter();
+//
+//            @Override
+//            public void onClick() {
+//                exporter.setHeatmapColumns(colheadersSet);
+//                exporter.setHeatmapRows(rowheadersSet);
+//                exporter.setHeatmapData(dataValuesColors);
+//
+//                FileDownloader fileDownloader = new FileDownloader(new StreamResource(() -> {
+//                    try {
+//                        byte[] pdfFile = exporter.exportHeatmap(resetRows, resetcolumns);
+//                        return new ByteArrayInputStream(pdfFile);
+//                    } catch (Exception e) {
+//                        return null;
+//                    }
+//                }, "Studies_Heatmap.pdf"));
+//                
+//                
+//                fileDownloader.extend(this);
+//            }
+//
+//        };
 
-            @Override
-            public void onClick() {
-                exporter.setHeatmapColumns(colheadersSet);
-                exporter.setHeatmapRows(rowheadersSet);
-                exporter.setHeatmapData(dataValuesColors);
-
-                FileDownloader fileDownloader = new FileDownloader(new StreamResource(() -> {
-                    try {
-                        byte[] pdfFile = exporter.exportHeatmap(resetRows, resetcolumns);
-                        return new ByteArrayInputStream(pdfFile);
-                    } catch (Exception e) {
-                        return null;
-                    }
-                }, "Studies_Heatmap.pdf"));
-                
-                
-                fileDownloader.extend(this);
-            }
-
-        };
-
-        if (smallScreen) {
-            exportPdfBtn.setWidth(25, Unit.PIXELS);
-            exportPdfBtn.setHeight(25, Unit.PIXELS);
-            exportPdfBtn.removeStyleName("smallimg");
-            exportPdfBtn.addStyleName("nopaddingimg");
-        } else {
-            exportPdfBtn.setHeight(40, Unit.PIXELS);
-            exportPdfBtn.setWidth(40, Unit.PIXELS);
-        }
-        exportPdfBtn.updateIcon(new ThemeResource("img/pdf-text-o.png"));
-        exportPdfBtn.setEnabled(true);
-        controlBtnsContainer.addComponent(exportPdfBtn);
-        controlBtnsContainer.setComponentAlignment(exportPdfBtn, Alignment.MIDDLE_CENTER);
-        exportPdfBtn.setDescription("Export heatmap image");
+//        if (smallScreen) {
+//            exportPdfBtn.setWidth(25, Unit.PIXELS);
+//            exportPdfBtn.setHeight(25, Unit.PIXELS);
+//            exportPdfBtn.removeStyleName("smallimg");
+//            exportPdfBtn.addStyleName("nopaddingimg");
+//        } else {
+//            exportPdfBtn.setHeight(40, Unit.PIXELS);
+//            exportPdfBtn.setWidth(40, Unit.PIXELS);
+//        }
+//        exportPdfBtn.updateIcon(new ThemeResource("img/pdf-text-o.png"));
+//        exportPdfBtn.setEnabled(true);
+//        controlBtnsContainer.addComponent(exportPdfBtn);
+//        controlBtnsContainer.setComponentAlignment(exportPdfBtn, Alignment.MIDDLE_CENTER);
+//        exportPdfBtn.setDescription("Export heatmap image");
 
         ImageContainerBtn selectAllBtn = new ImageContainerBtn() {
 

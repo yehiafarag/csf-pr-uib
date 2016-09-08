@@ -2,6 +2,8 @@ package no.uib.probe.csf.pr.touch.view.components;
 
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.ExternalResource;
+import com.vaadin.server.FileDownloader;
+import com.vaadin.server.StreamResource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.AbsoluteLayout;
@@ -17,6 +19,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.geom.Rectangle2D;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.HashMap;
@@ -30,6 +33,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import no.uib.probe.csf.pr.touch.DataExporter;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFListener;
@@ -304,9 +308,22 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         hideStableBtn.setDescription("Hide stable proteins");
         ImageContainerBtn exportPdfBtn = new ImageContainerBtn() {
             
+            private final DataExporter exporter = new DataExporter();
+//
             @Override
             public void onClick() {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+                FileDownloader fileDownloader = new FileDownloader(new StreamResource(() -> {
+                    try {
+                        byte[] pdfFile = exporter.exportBubbleChart(chart);
+                        return new ByteArrayInputStream(pdfFile);
+                    } catch (Exception e) {
+                        return null;
+                    }
+                }, "Studies_Heatmap.pdf"));
+                
+                
+                fileDownloader.extend(this);
             }
             
         };
@@ -798,9 +815,10 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
 //        
 
     }
+    private JFreeChart chart;
     
     private void updateChart() {
-        JFreeChart chart = generateBubbleChart(selectedComparisonList);
+        chart = generateBubbleChart(selectedComparisonList);
         updateChartLayoutComponents(chart, width, height);
         DefaultXYZDataset emptyxyzdataset = new DefaultXYZDataset();
         DefaultXYZDataset dataset = ((DefaultXYZDataset) chart.getXYPlot().getDataset());
@@ -819,6 +837,14 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         chart.setBorderPaint(Color.LIGHT_GRAY);
         chart.getXYPlot().setDataset(dataset);
         thumbImgUrl = getChartImage(chart, 200, 200);
+        
+       
+        xyplot.getDomainAxis().setVisible(true);
+        xyplot.getRangeAxis().setVisible(true);
+        chart.setBorderVisible(false);
+        chart.setBorderPaint(Color.WHITE);
+        xyplot.setForegroundAlpha(0.8F);
+        
         updateIcon(thumbImgUrl);
         
     }

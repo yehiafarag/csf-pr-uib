@@ -1,5 +1,6 @@
 package no.uib.probe.csf.pr.touch.view.components;
 
+import com.vaadin.addon.tableexport.ExcelExport;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
@@ -20,6 +21,7 @@ import no.uib.probe.csf.pr.touch.selectionmanager.CSFListener;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFSelection;
 import no.uib.probe.csf.pr.touch.view.components.datasetfilters.GroupSwichBtn;
+import no.uib.probe.csf.pr.touch.view.components.linechartproteintablecomponents.ExportProteinTable;
 import no.uib.probe.csf.pr.touch.view.components.linechartproteintablecomponents.FilterColumnButton;
 import no.uib.probe.csf.pr.touch.view.components.linechartproteintablecomponents.ProteinTable;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
@@ -49,7 +51,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         this.proteinSearchingMap = new HashMap<>();
 
-     this.setWidth(width, Unit.PIXELS);
+        this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
 //        if (!smallScreen) {
 //            this.setMargin(new MarginInfo(false, false, false, true));
@@ -71,9 +73,9 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
 
         HorizontalLayout titleLayoutWrapper = new HorizontalLayout();
         titleLayoutWrapper.setHeight(25, Unit.PIXELS);
-        titleLayoutWrapper.setWidth(213,Unit.PIXELS);
+        titleLayoutWrapper.setWidth(213, Unit.PIXELS);
         titleLayoutWrapper.setSpacing(true);
-        
+
         titleLayoutWrapper.setMargin(false);
         titleLayoutWrapper.addStyleName("margintop7");
         topLayout.addComponent(titleLayoutWrapper);
@@ -83,25 +85,25 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         overviewLabel.setStyleName(ValoTheme.LABEL_BOLD);
         overviewLabel.addStyleName(ValoTheme.LABEL_SMALL);
         overviewLabel.addStyleName(ValoTheme.LABEL_TINY);
-        
+
         overviewLabel.setWidth(47, Unit.PIXELS);
         titleLayoutWrapper.addComponent(overviewLabel);
         titleLayoutWrapper.setComponentAlignment(overviewLabel, Alignment.TOP_LEFT);
-         titleLayoutWrapper.setExpandRatio(overviewLabel,47);
+        titleLayoutWrapper.setExpandRatio(overviewLabel, 47);
 
         SearchingField searchingFieldLayout = new SearchingField() {
 
             @Override
             public void textChanged(String text) {
                 quantProteinTable.filterViewItemTable(getSearchingProteinsList(text));
-                this.updateLabel("("+quantProteinTable.getRowsNumber()+")");
+                this.updateLabel("(" + quantProteinTable.getRowsNumber() + ")");
 
             }
 
         };
         titleLayoutWrapper.addComponent(searchingFieldLayout);
         titleLayoutWrapper.setComponentAlignment(searchingFieldLayout, Alignment.TOP_LEFT);
-        titleLayoutWrapper.setExpandRatio(overviewLabel,166);
+        titleLayoutWrapper.setExpandRatio(overviewLabel, 166);
 //        InfoPopupBtn info = new InfoPopupBtn("The protein table and overview chart give an overview for the selected proteins in the selected comparisons.");
 //        titleLayoutWrapper.addComponent(info);
 //        titleLayoutWrapper.setComponentAlignment(info, Alignment.MIDDLE_CENTER);
@@ -156,31 +158,26 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
 
             @Override
             public void updateRowNumber(int rowNumber, String url) {
-                searchingFieldLayout.updateLabel("("+rowNumber+")");
+                searchingFieldLayout.updateLabel("(" + rowNumber + ")");
                 LineChartProteinTableComponent.this.updateRowNumber(rowNumber, url);
             }
 
         };//this.initProteinTable();
         tableLayoutFrame.addComponent(quantProteinTable);
-        
-        
-          HorizontalLayout  controlsLayout = new HorizontalLayout();
-        controlsLayout.setWidth(100,Unit.PERCENTAGE);
-        controlsLayout.setHeight(20,Unit.PIXELS);
+
+        HorizontalLayout controlsLayout = new HorizontalLayout();
+        controlsLayout.setWidth(100, Unit.PERCENTAGE);
+        controlsLayout.setHeight(20, Unit.PIXELS);
 
         Label clickcommentLabel = new Label("Click in the table to select data");
         clickcommentLabel.setStyleName(ValoTheme.LABEL_SMALL);
         clickcommentLabel.addStyleName(ValoTheme.LABEL_TINY);
         clickcommentLabel.addStyleName(ValoTheme.LABEL_BOLD);
-        clickcommentLabel.setWidth(182,Unit.PIXELS);
-        
+        clickcommentLabel.setWidth(182, Unit.PIXELS);
+
         controlsLayout.addComponent(clickcommentLabel);
-        controlsLayout.setComponentAlignment(clickcommentLabel, Alignment.BOTTOM_RIGHT);  
+        controlsLayout.setComponentAlignment(clickcommentLabel, Alignment.BOTTOM_RIGHT);
         tableLayoutFrame.addComponent(controlsLayout);
-        
-        
-        
-        
 
         //init side control btns layout 
         controlBtnsContainer = new VerticalLayout();
@@ -218,12 +215,22 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         }
         controlBtnsContainer.addComponent(groupSwichBtn);
         controlBtnsContainer.setComponentAlignment(groupSwichBtn, Alignment.MIDDLE_CENTER);
-
+        ExportProteinTable exportTable = new ExportProteinTable();
+        controlBtnsContainer.addComponent(exportTable);
         ImageContainerBtn exportPdfBtn = new ImageContainerBtn() {
+           
 
             @Override
             public void onClick() {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                exportTable.updateTableData(quantProteinTable.getSelectedComparisonsList(), quantProteinTable.getSelectedProteinsList(),quantProteinTable.getSortingHeader(),quantProteinTable.isUpSort());
+                 ExcelExport csvExport = new ExcelExport(exportTable.getExportTable(), "CSF-PR  Protein Information");
+                csvExport.setReportTitle("CSF-PR / Quant Protein Information ");
+                csvExport.setExportFileName("CSF-PR - Quant Protein Information" + ".xls");
+                csvExport.setMimeType(ExcelExport.EXCEL_MIME_TYPE);
+                csvExport.setDisplayTotals(false);
+                csvExport.setDateDataFormat("0");
+                csvExport.setExcelFormatOfProperty("Index", "0");
+                csvExport.export();
             }
 
         };
@@ -237,7 +244,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
             exportPdfBtn.setHeight(40, Unit.PIXELS);
             exportPdfBtn.setWidth(40, Unit.PIXELS);
         }
-        exportPdfBtn.updateIcon(new ThemeResource("img/pdf-text-o.png"));
+        exportPdfBtn.updateIcon(new ThemeResource("img/xls-text-o-2.png"));
         exportPdfBtn.setEnabled(true);
         controlBtnsContainer.addComponent(exportPdfBtn);
         controlBtnsContainer.setComponentAlignment(exportPdfBtn, Alignment.MIDDLE_CENTER);
@@ -304,7 +311,6 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
 
 //        ThemeResource checkedApplied = new ThemeResource("img/check-square.png");
 //        ThemeResource checkedUnApplied = new ThemeResource("img/check-square-o.png");
-
 //        checkUncheckBtn = new ImageContainerBtn() {
 //
 //            private boolean enabled = true;
@@ -346,7 +352,6 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
 //        controlBtnsContainer.addComponent(checkUncheckBtn);
 //        controlBtnsContainer.setComponentAlignment(checkUncheckBtn, Alignment.MIDDLE_CENTER);
 //        checkUncheckBtn.setDescription("Show/hide checked column");
-
         InformationButton info = new InformationButton("The protein table provides an overview of the quantitative information available for each protein, classified into Increased, Decreased or Equal. If the quantitative data for a given comparison is not exclusively in the same direction an average value will be shown. To find proteins of interest use the search field at the top, or sort/filter on the individual comparisons using the options above the table. The icons at the lower right enables further modification of the table. Select a row in the table to show the protein details.", false);
         controlBtnsContainer.addComponent(info);
         if (smallScreen) {

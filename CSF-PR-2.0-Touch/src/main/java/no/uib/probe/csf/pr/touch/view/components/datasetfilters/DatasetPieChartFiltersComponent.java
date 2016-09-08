@@ -5,17 +5,14 @@ import com.vaadin.server.FileDownloader;
 import com.vaadin.server.Page;
 import com.vaadin.server.StreamResource;
 import com.vaadin.server.ThemeResource;
-import com.vaadin.shared.ui.window.WindowMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
-import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.themes.ValoTheme;
+import java.io.ByteArrayInputStream;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,6 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import no.uib.probe.csf.pr.touch.DataExporter;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 import no.uib.probe.csf.pr.touch.view.core.InformationButton;
@@ -164,22 +162,38 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
 ////                internalSelectionManager.resetToInitState();
 ////                internalSelectionManager.resetCentralSelectionManager();
 //        });
-        ImageContainerBtn exportPdfBtn = new ImageContainerBtn() {
+//        ImageContainerBtn exportPdfBtn = new ImageContainerBtn() {
+//
+//              private final DataExporter exporter = new DataExporter();
+//
+//            @Override
+//            public void onClick() {
+//                FileDownloader fileDownloader = new FileDownloader(new StreamResource(() -> {
+//                    try {
+//                        byte[] pdfFile = exporter.exportPieCharts(filtersSet.values());
+//                        return new ByteArrayInputStream(pdfFile);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                        return null;
+//                    }
+//                }, "Dataset_Filters.pdf"));
+//                
+//                
+//                fileDownloader.extend(this);
+//            }
+//            
+//            
+//            
+//
+//        };
 
-            @Override
-            public void onClick() {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-        };
-
-        exportPdfBtn.setHeight(28, Unit.PIXELS);
-        exportPdfBtn.setWidth(28, Unit.PIXELS);
-        exportPdfBtn.updateIcon(new ThemeResource("img/pdf-text-o.png"));
-        exportPdfBtn.setEnabled(true);
-        btnLayout.addComponent(exportPdfBtn);
-        btnLayout.setComponentAlignment(exportPdfBtn, Alignment.MIDDLE_CENTER);
-        exportPdfBtn.setDescription("Export all charts filters as pdf file");
+//        exportPdfBtn.setHeight(28, Unit.PIXELS);
+//        exportPdfBtn.setWidth(28, Unit.PIXELS);
+//        exportPdfBtn.updateIcon(new ThemeResource("img/pdf-text-o.png"));
+//        exportPdfBtn.setEnabled(true);
+//        btnLayout.addComponent(exportPdfBtn);
+//        btnLayout.setComponentAlignment(exportPdfBtn, Alignment.MIDDLE_CENTER);
+//        exportPdfBtn.setDescription("Export all charts as pdf file");
 
 //        VerticalLayout exportChartsBtn = new VerticalLayout();
 //        exportChartsBtn.setStyleName("exportpdfbtn");
