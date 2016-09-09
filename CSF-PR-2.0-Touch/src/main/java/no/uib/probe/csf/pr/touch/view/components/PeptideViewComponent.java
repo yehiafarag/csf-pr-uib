@@ -491,7 +491,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
             exportPdfBtn.setWidth(40, Unit.PIXELS);
         }
         exportPdfBtn.updateIcon(new ThemeResource("img/pdf-text-o.png"));
-        exportPdfBtn.setEnabled(true);
+        exportPdfBtn.setEnabled(false);
         controlBtnsContainer.addComponent(exportPdfBtn);
         controlBtnsContainer.setComponentAlignment(exportPdfBtn, Alignment.MIDDLE_CENTER);
         exportPdfBtn.setDescription("Export protein overview and coverage as PDF file");
