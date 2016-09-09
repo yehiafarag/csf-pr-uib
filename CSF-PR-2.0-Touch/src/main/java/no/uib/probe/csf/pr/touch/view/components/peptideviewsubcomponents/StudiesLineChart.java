@@ -7,7 +7,6 @@ package no.uib.probe.csf.pr.touch.view.components.peptideviewsubcomponents;
 
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.ExternalResource;
-import com.vaadin.server.Resource;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Image;
 import java.awt.BasicStroke;
@@ -18,6 +17,7 @@ import java.awt.Paint;
 import java.awt.Point;
 import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -80,6 +80,10 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
             return selectedComparisonList;
         }
     }
+    
+    public BufferedImage getBufferedImg(){
+        return bufferedChartImg;
+    }
 
     private final Image chartImg;
     private final AbsoluteLayout chartComponentsLayout;
@@ -94,10 +98,10 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
     private final List<Integer> comparisonTrends;
     private final boolean smallScreen;
 
-    public StudiesLineChart(int width, int height,boolean smallScreen) {
+    public StudiesLineChart(int width, int height, boolean smallScreen) {
         this.width = width;
         this.height = height;
-        this.smallScreen=smallScreen;
+        this.smallScreen = smallScreen;
         this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
 
@@ -158,24 +162,20 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.GRAY);
         lineChart.getXYPlot().getDomainAxis().setVisible(true);
         lineChart.getXYPlot().getRangeAxis().setVisible(true);
-         lineChart.getXYPlot().setOutlineVisible(false);
-          lineChart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(
+        lineChart.getXYPlot().setOutlineVisible(false);
+        lineChart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(
                 1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
                 1.0f, new float[]{10.0f, 6.0f}, 0.0f
         ));
-         lineChart.setPadding(new RectangleInsets(0, 0, 0, 0));
+        lineChart.setPadding(new RectangleInsets(0, 0, 0, 0));
         maxImgUrl = new ExternalResource(this.getChartImage(lineChart, chartRenderingInfo, width, height));
-        if(chartRenderingInfo.getEntityCollection().getEntityCount()<4)
-        {
-             lineChart.getXYPlot().getDomainAxis().setVisible(false);
-              maxImgUrl = new ExternalResource(this.getChartImage(lineChart, chartRenderingInfo, width, height));
-               lineChart.getXYPlot().getDomainAxis().setVisible(true);
-        
-        
+        if (chartRenderingInfo.getEntityCollection().getEntityCount() < 4) {
+            lineChart.getXYPlot().getDomainAxis().setVisible(false);
+            maxImgUrl = new ExternalResource(this.getChartImage(lineChart, chartRenderingInfo, width, height));
+            lineChart.getXYPlot().getDomainAxis().setVisible(true);
+
         }
-        
-        
-        
+
         initLayoutComponents(comparisonsList);
         chartImg.setSource(maxImgUrl);
     }
@@ -224,12 +224,12 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
                 proteinName = comparison.getQuantComparisonProteinMap().get(keyIV).getProteinName();
 
                 comparisonTrends.add(comparison.getQuantComparisonProteinMap().get(keyIV).getSignificantTrindCategory());
-            }else if (comparison.getQuantComparisonProteinMap().containsKey(keyV)) {
+            } else if (comparison.getQuantComparisonProteinMap().containsKey(keyV)) {
                 trendValue = comparison.getQuantComparisonProteinMap().get(keyV).getOverallCellPercentValue();
                 proteinName = comparison.getQuantComparisonProteinMap().get(keyV).getProteinName();
 
                 comparisonTrends.add(comparison.getQuantComparisonProteinMap().get(keyV).getSignificantTrindCategory());
-            }else {
+            } else {
 
                 comparisonTrends.add(6);
             }
@@ -253,9 +253,9 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         linevalues[1] = yLineValues;
         dataset.addSeries("line", linevalues);
         verticalLabels = maxLength > 40 && selectedComparisonList.size() > 4;
-        
+
         Font font;
-      if (smallScreen) {
+        if (smallScreen) {
             font = new Font("Helvetica Neue", Font.PLAIN, 10);
         } else {
             font = new Font("Helvetica Neue", Font.PLAIN, 13);
@@ -355,8 +355,6 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         };
         xAxis.setTickLabelFont(font);
         xAxis.setLabelInsets(new RectangleInsets(2, 5, 2, 5));
-        
-       
 
         yAxis = new NumberAxis() {
             final Color[] labelsColor = new Color[]{new Color(80, 183, 71), Color.LIGHT_GRAY, new Color(1, 141, 244), Color.LIGHT_GRAY, new Color(204, 0, 0)};
@@ -478,7 +476,7 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         String keyIII = 2 + "_" + proteinKey;
         String keyIV = 3 + "_" + proteinKey;
         String keyV = 4 + "_" + proteinKey;
-        
+
         String key = "";
         Set<Integer> dsIdSetUp = new LinkedHashSet<>();
         Set<Integer> dsIdSetEqual = new LinkedHashSet<>();
@@ -493,10 +491,10 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         } else if (comparison.getQuantComparisonProteinMap().containsKey(keyIII)) {
             key = keyIII;
 
-        }else if (comparison.getQuantComparisonProteinMap().containsKey(keyIV)) {
+        } else if (comparison.getQuantComparisonProteinMap().containsKey(keyIV)) {
             key = keyIV;
 
-        }else if (comparison.getQuantComparisonProteinMap().containsKey(keyV)) {
+        } else if (comparison.getQuantComparisonProteinMap().containsKey(keyV)) {
             key = keyV;
 
         }
@@ -737,11 +735,11 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         lineChart.getXYPlot().getDomainAxis().setVisible(false);
         lineChart.getXYPlot().getRangeAxis().setVisible(false);
         lineChart.getXYPlot().setOutlineVisible(true);
-         lineChart.setPadding(new RectangleInsets(10, 5, 10, 5));
+        lineChart.setPadding(new RectangleInsets(10, 5, 10, 5));
 
 //        lineChart.getXYPlot().setRangeGridlinesVisible(false);
 //        lineChart.getXYPlot().setDomainGridlinesVisible(true);
-        lineChart.getXYPlot().getRenderer().setSeriesPaint(0,  Color.decode("#1d69b4"));
+        lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.decode("#1d69b4"));
         lineChart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(5));
 //        gridcounter = 0;
 //        gridcounterII = 0;
@@ -755,6 +753,8 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         return lineChart;
 
     }
+    
+    private BufferedImage bufferedChartImg;
 
     private String getChartImage(JFreeChart chart, ChartRenderingInfo chartRenderingInfo, int width, int height) {
         if (chart == null) {
@@ -764,7 +764,8 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         String base64 = "";
         try {
 
-            base64 = "data:image/png;base64," + Base64.encodeBase64String(ChartUtilities.encodeAsPNG(chart.createBufferedImage((int) width, (int) height, chartRenderingInfo)));
+            bufferedChartImg= chart.createBufferedImage((int) width, (int) height, chartRenderingInfo);
+            base64 = "data:image/png;base64," + Base64.encodeBase64String(ChartUtilities.encodeAsPNG(bufferedChartImg));
 
         } catch (IOException ex) {
             System.err.println("at error " + this.getClass() + " line 536 " + ex.getLocalizedMessage());
@@ -807,7 +808,7 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
                 String keyV = 4 + "_" + proteinKey;
 
                 if (doubleTrend == 0.0) {
-                    if (gc.getQuantComparisonProteinMap().containsKey(keyI) || gc.getQuantComparisonProteinMap().containsKey(keyII) || gc.getQuantComparisonProteinMap().containsKey(keyIII)|| gc.getQuantComparisonProteinMap().containsKey(keyIV)|| gc.getQuantComparisonProteinMap().containsKey(keyV)) {
+                    if (gc.getQuantComparisonProteinMap().containsKey(keyI) || gc.getQuantComparisonProteinMap().containsKey(keyII) || gc.getQuantComparisonProteinMap().containsKey(keyIII) || gc.getQuantComparisonProteinMap().containsKey(keyIV) || gc.getQuantComparisonProteinMap().containsKey(keyV)) {
                         trend = 2;
                     } else {
                         trend = 6;
@@ -837,8 +838,8 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
                 square.addParam("dsKey", -100);
                 if (trend == 6) {
                     square.addParam("comparison", null);
-                }else{
-                square.addStyleName("pointer");
+                } else {
+                    square.addStyleName("pointer");
                 }
                 String tooltip = gc.getComparisonHeader().replace("__" + gc.getDiseaseCategory(), "") + "<br/>" + gc.getDiseaseCategory() + "<br/>Overall trend: " + tooltipsIcon[trend];//+ "<br/>Datasets included: " + dsNumber;
                 square.setDescription(tooltip);
@@ -977,6 +978,25 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
             rePaintChart(selectedComparisonList);
         }
 
+    }
+
+    public JFreeChart getExportChart() {
+
+        lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.GRAY);
+        lineChart.getXYPlot().getDomainAxis().setVisible(true);
+        lineChart.getXYPlot().getRangeAxis().setVisible(true);
+        lineChart.getXYPlot().setOutlineVisible(false);
+        lineChart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(
+                1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
+                1.0f, new float[]{10.0f, 6.0f}, 0.0f
+        ));
+        lineChart.setPadding(new RectangleInsets(0, 0, 0, 0));
+        lineChart.getXYPlot().setRangeGridlinesVisible(true);
+        lineChart.getXYPlot().setDomainGridlinesVisible(true);
+        
+        
+        
+        return lineChart;
     }
 
     @Override

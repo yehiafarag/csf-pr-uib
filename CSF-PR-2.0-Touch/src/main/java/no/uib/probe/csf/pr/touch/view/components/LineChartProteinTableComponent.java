@@ -217,45 +217,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         controlBtnsContainer.setComponentAlignment(groupSwichBtn, Alignment.MIDDLE_CENTER);
         ExportProteinTable exportTable = new ExportProteinTable();
         controlBtnsContainer.addComponent(exportTable);
-        ImageContainerBtn exportPdfBtn = new ImageContainerBtn() {
-           
-
-            @Override
-            public void onClick() {
-                exportTable.updateTableData(quantProteinTable.getSelectedComparisonsList(), quantProteinTable.getSelectedProteinsList(),quantProteinTable.getSortingHeader(),quantProteinTable.isUpSort());
-                 ExcelExport csvExport = new ExcelExport(exportTable.getExportTable(), "CSF-PR  Protein Information");
-                csvExport.setReportTitle("CSF-PR / Quant Protein Information ");
-                csvExport.setExportFileName("CSF-PR - Quant Protein Information" + ".xls");
-                csvExport.setMimeType(ExcelExport.EXCEL_MIME_TYPE);
-                csvExport.setDisplayTotals(false);
-                csvExport.setDateDataFormat("0");
-                csvExport.setExcelFormatOfProperty("Index", "0");
-                csvExport.export();
-            }
-
-        };
-
-        if (smallScreen) {
-            exportPdfBtn.setWidth(25, Unit.PIXELS);
-            exportPdfBtn.setHeight(25, Unit.PIXELS);
-            exportPdfBtn.removeStyleName("smallimg");
-            exportPdfBtn.addStyleName("nopaddingimg");
-        } else {
-            exportPdfBtn.setHeight(40, Unit.PIXELS);
-            exportPdfBtn.setWidth(40, Unit.PIXELS);
-        }
-        exportPdfBtn.updateIcon(new ThemeResource("img/xls-text-o-2.png"));
-        exportPdfBtn.setEnabled(true);
-        controlBtnsContainer.addComponent(exportPdfBtn);
-        controlBtnsContainer.setComponentAlignment(exportPdfBtn, Alignment.MIDDLE_CENTER);
-        exportPdfBtn.setDescription("Export table");
-
-//        StreamResource myResource = null;//createResource();
-//        FileDownloader fileDownloader = new FileDownloader(myResource);
-//
-//        fileDownloader.extend(groupSwichBtn);
-        controlBtnsContainer.addComponent(exportPdfBtn);
-        removeFilters = new ImageContainerBtn() {
+       removeFilters = new ImageContainerBtn() {
 
             @Override
             public void onClick() {
@@ -352,6 +314,46 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
 //        controlBtnsContainer.addComponent(checkUncheckBtn);
 //        controlBtnsContainer.setComponentAlignment(checkUncheckBtn, Alignment.MIDDLE_CENTER);
 //        checkUncheckBtn.setDescription("Show/hide checked column");
+        
+         ImageContainerBtn exportPdfBtn = new ImageContainerBtn() {
+           
+
+            @Override
+            public void onClick() {
+                exportTable.updateTableData(quantProteinTable.getSelectedComparisonsList(), quantProteinTable.getSelectedProteinsList(),quantProteinTable.getSortingHeader(),quantProteinTable.isUpSort());
+                 ExcelExport csvExport = new ExcelExport(exportTable.getExportTable(), "CSF-PR  Protein Information");
+                csvExport.setReportTitle("CSF-PR / Quant Protein Information ");
+                csvExport.setExportFileName("CSF-PR - Quant Protein Information" + ".xls");
+                csvExport.setMimeType(ExcelExport.EXCEL_MIME_TYPE);
+                csvExport.setDisplayTotals(false);
+                csvExport.setDateDataFormat("0");
+                csvExport.setExcelFormatOfProperty("Index", "0");
+                csvExport.export();
+            }
+
+        };
+
+        if (smallScreen) {
+            exportPdfBtn.setWidth(25, Unit.PIXELS);
+            exportPdfBtn.setHeight(25, Unit.PIXELS);
+            exportPdfBtn.removeStyleName("smallimg");
+            exportPdfBtn.addStyleName("nopaddingimg");
+        } else {
+            exportPdfBtn.setHeight(40, Unit.PIXELS);
+            exportPdfBtn.setWidth(40, Unit.PIXELS);
+        }
+        exportPdfBtn.updateIcon(new ThemeResource("img/xls-text-o-2.png"));
+        exportPdfBtn.setEnabled(true);
+        controlBtnsContainer.addComponent(exportPdfBtn);
+        controlBtnsContainer.setComponentAlignment(exportPdfBtn, Alignment.MIDDLE_CENTER);
+        exportPdfBtn.setDescription("Export table");
+
+//        StreamResource myResource = null;//createResource();
+//        FileDownloader fileDownloader = new FileDownloader(myResource);
+//
+//        fileDownloader.extend(groupSwichBtn);
+        controlBtnsContainer.addComponent(exportPdfBtn);
+        
         InformationButton info = new InformationButton("The protein table provides an overview of the quantitative information available for each protein, classified into Increased, Decreased or Equal. If the quantitative data for a given comparison is not exclusively in the same direction an average value will be shown. To find proteins of interest use the search field at the top, or sort/filter on the individual comparisons using the options above the table. The icons at the lower right enables further modification of the table. Select a row in the table to show the protein details.", false);
         controlBtnsContainer.addComponent(info);
         if (smallScreen) {

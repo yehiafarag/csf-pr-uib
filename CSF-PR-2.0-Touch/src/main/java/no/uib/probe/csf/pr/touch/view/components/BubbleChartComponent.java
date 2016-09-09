@@ -306,48 +306,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         controlBtnsContainer.addComponent(hideStableBtn);
         controlBtnsContainer.setComponentAlignment(hideStableBtn, Alignment.MIDDLE_CENTER);
         hideStableBtn.setDescription("Hide stable proteins");
-        ImageContainerBtn exportPdfBtn = new ImageContainerBtn() {
-            
-            private final DataExporter exporter = new DataExporter();
-//
-            @Override
-            public void onClick() {
-
-                FileDownloader fileDownloader = new FileDownloader(new StreamResource(() -> {
-                    try {
-                        byte[] pdfFile = exporter.exportBubbleChart(chart);
-                        return new ByteArrayInputStream(pdfFile);
-                    } catch (Exception e) {
-                        return null;
-                    }
-                }, "Studies_Heatmap.pdf"));
-                
-                
-                fileDownloader.extend(this);
-            }
-            
-        };
         
-        if (smallScreen) {
-            exportPdfBtn.setWidth(25, Unit.PIXELS);
-            exportPdfBtn.setHeight(25, Unit.PIXELS);
-            exportPdfBtn.removeStyleName("smallimg");
-            exportPdfBtn.addStyleName("nopaddingimg");
-        } else {
-            exportPdfBtn.setHeight(40, Unit.PIXELS);
-            exportPdfBtn.setWidth(40, Unit.PIXELS);
-        }
-        exportPdfBtn.updateIcon(new ThemeResource("img/pdf-text-o.png"));
-        exportPdfBtn.setEnabled(true);
-        controlBtnsContainer.addComponent(exportPdfBtn);
-        controlBtnsContainer.setComponentAlignment(exportPdfBtn, Alignment.MIDDLE_CENTER);
-        exportPdfBtn.setDescription("Export chart image");
-
-//        StreamResource myResource = null;//createResource();
-//        FileDownloader fileDownloader = new FileDownloader(myResource);
-//
-//        fileDownloader.extend(groupSwichBtn);
-        controlBtnsContainer.addComponent(exportPdfBtn);
         ImageContainerBtn unselectAllBtn = new ImageContainerBtn() {
             
             @Override
@@ -409,6 +368,50 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         }
         controlBtnsContainer.addComponent(selectMultiBtn);
         controlBtnsContainer.setComponentAlignment(selectMultiBtn, Alignment.MIDDLE_CENTER);
+        
+        
+        ImageContainerBtn exportPdfBtn = new ImageContainerBtn() {
+            
+            private final DataExporter exporter = new DataExporter();
+//
+            @Override
+            public void onClick() {
+
+                FileDownloader fileDownloader = new FileDownloader(new StreamResource(() -> {
+                    try {
+                        byte[] pdfFile = exporter.exportBubbleChart(chart);
+                        return new ByteArrayInputStream(pdfFile);
+                    } catch (Exception e) {
+                        return null;
+                    }
+                }, "Studies_Heatmap.pdf"));
+                
+                
+                fileDownloader.extend(this);
+            }
+            
+        };
+        
+        if (smallScreen) {
+            exportPdfBtn.setWidth(25, Unit.PIXELS);
+            exportPdfBtn.setHeight(25, Unit.PIXELS);
+            exportPdfBtn.removeStyleName("smallimg");
+            exportPdfBtn.addStyleName("nopaddingimg");
+        } else {
+            exportPdfBtn.setHeight(40, Unit.PIXELS);
+            exportPdfBtn.setWidth(40, Unit.PIXELS);
+        }
+        exportPdfBtn.updateIcon(new ThemeResource("img/pdf-text-o.png"));
+        exportPdfBtn.setEnabled(true);
+        controlBtnsContainer.addComponent(exportPdfBtn);
+        controlBtnsContainer.setComponentAlignment(exportPdfBtn, Alignment.MIDDLE_CENTER);
+        exportPdfBtn.setDescription("Export chart image");
+
+//        StreamResource myResource = null;//createResource();
+//        FileDownloader fileDownloader = new FileDownloader(myResource);
+//
+//        fileDownloader.extend(groupSwichBtn);
+        controlBtnsContainer.addComponent(exportPdfBtn);
         
         InformationButton info = new InformationButton("The bubble chart provides an overview of all the proteins found in the currently selected disease group comparisons. The size of each bubble represents the number of proteins in the given comparison and the color represents the trend. To change the order of the groups in a given comparison please click the \"Switch protein groups\" icon in the lower right corner. Select one or more bubbles to display the corresponding proteins.", false);
         controlBtnsContainer.addComponent(info);

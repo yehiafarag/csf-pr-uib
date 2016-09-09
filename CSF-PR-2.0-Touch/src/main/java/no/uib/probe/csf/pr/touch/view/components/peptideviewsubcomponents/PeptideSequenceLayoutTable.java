@@ -315,6 +315,10 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
 
     }
 
+    public Set<ProteinSequenceContainer> getProteinSeqSet() {
+        return proteinSeqSet;
+    }
+
     public void sortTable(Set<QuantDiseaseGroupsComparison> selectedComparisonsList) {
         peptideSequenceTable.removeAllItems();
         Map<Object, Object[]> sortedTableItemsMap = new LinkedHashMap<>();

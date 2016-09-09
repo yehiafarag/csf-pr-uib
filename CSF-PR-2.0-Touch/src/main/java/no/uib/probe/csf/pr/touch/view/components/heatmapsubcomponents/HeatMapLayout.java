@@ -237,42 +237,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
         final QuantDatasetsfullStudiesTableLayout quantStudiesTable = new QuantDatasetsfullStudiesTableLayout(activeColumnHeaders);
         controlBtnsContainer.addComponent(quantStudiesTable);
-        ImageContainerBtn exportTableBtn = new ImageContainerBtn() {
-
-            @Override
-            public void onClick() {
-                quantStudiesTable.updateCombinedQuantDatasetTableRecords(updatedDatasetMap);
-                ExcelExport csvExport = new ExcelExport(quantStudiesTable, "CSF-PR  Quant Datasets Information");
-                csvExport.setReportTitle("CSF-PR / Quant Datasets Information ");
-                csvExport.setExportFileName("CSF-PR - Quant Datasets Information" + ".xls");
-                csvExport.setMimeType(ExcelExport.EXCEL_MIME_TYPE);
-                csvExport.setDisplayTotals(false);
-
-                csvExport.setDateDataFormat("0");
-                csvExport.setExcelFormatOfProperty("Index", "0");
-                csvExport.setExcelFormatOfProperty("#Quantified Proteins", "0");
-                csvExport.setExcelFormatOfProperty("patientsGroup2Number", "0");
-                csvExport.setExcelFormatOfProperty("#patientsGroup1Number", "0");
-
-                csvExport.export();
-            }
-
-        };
-        if (smallScreen) {
-            exportTableBtn.setWidth(25, Unit.PIXELS);
-            exportTableBtn.setHeight(25, Unit.PIXELS);
-            exportTableBtn.removeStyleName("smallimg");
-            exportTableBtn.addStyleName("nopaddingimg");
-        } else {
-            exportTableBtn.setHeight(40, Unit.PIXELS);
-            exportTableBtn.setWidth(40, Unit.PIXELS);
-        }
-        exportTableBtn.updateIcon(new ThemeResource("img/xls-text-o-2.png"));
-        exportTableBtn.setEnabled(true);
-//        exportTableBtn.setPrimaryStyleName("exportxslbtn");
-        controlBtnsContainer.addComponent(exportTableBtn);
-        controlBtnsContainer.setComponentAlignment(exportTableBtn, Alignment.MIDDLE_CENTER);
-        exportTableBtn.setDescription("Export heatmap dataset data");
+       
 
         //export as pdf
 //        ImageContainerBtn exportPdfBtn = new ImageContainerBtn() {
@@ -407,6 +372,43 @@ public abstract class HeatMapLayout extends VerticalLayout {
             cornerCell.setComponentAlignment(filterResizeController.getFilterContainerLayout(), Alignment.MIDDLE_CENTER);
             filterResizeController.getFilterContainerLayout().addStyleName("heatmapcorner");
         }
+        
+         ImageContainerBtn exportTableBtn = new ImageContainerBtn() {
+
+            @Override
+            public void onClick() {
+                quantStudiesTable.updateCombinedQuantDatasetTableRecords(updatedDatasetMap);
+                ExcelExport csvExport = new ExcelExport(quantStudiesTable, "CSF-PR  Quant Datasets Information");
+                csvExport.setReportTitle("CSF-PR / Quant Datasets Information ");
+                csvExport.setExportFileName("CSF-PR - Quant Datasets Information" + ".xls");
+                csvExport.setMimeType(ExcelExport.EXCEL_MIME_TYPE);
+                csvExport.setDisplayTotals(false);
+
+                csvExport.setDateDataFormat("0");
+                csvExport.setExcelFormatOfProperty("Index", "0");
+                csvExport.setExcelFormatOfProperty("#Quantified Proteins", "0");
+                csvExport.setExcelFormatOfProperty("patientsGroup2Number", "0");
+                csvExport.setExcelFormatOfProperty("#patientsGroup1Number", "0");
+
+                csvExport.export();
+            }
+
+        };
+        if (smallScreen) {
+            exportTableBtn.setWidth(25, Unit.PIXELS);
+            exportTableBtn.setHeight(25, Unit.PIXELS);
+            exportTableBtn.removeStyleName("smallimg");
+            exportTableBtn.addStyleName("nopaddingimg");
+        } else {
+            exportTableBtn.setHeight(40, Unit.PIXELS);
+            exportTableBtn.setWidth(40, Unit.PIXELS);
+        }
+        exportTableBtn.updateIcon(new ThemeResource("img/xls-text-o-2.png"));
+        exportTableBtn.setEnabled(true);
+//        exportTableBtn.setPrimaryStyleName("exportxslbtn");
+        controlBtnsContainer.addComponent(exportTableBtn);
+        controlBtnsContainer.setComponentAlignment(exportTableBtn, Alignment.MIDDLE_CENTER);
+        exportTableBtn.setDescription("Export heatmap dataset data");
 
         InformationButton info = new InformationButton("The disease group comparison table provides an overview of the number of datasets available for each comparison. Hover over a given cell to get additional details about the comparison. Selecting one or more cells in the table will display the corresponding protein details. To filter the data use the options in the upper left corner.", false);
         controlBtnsContainer.addComponent(info);
