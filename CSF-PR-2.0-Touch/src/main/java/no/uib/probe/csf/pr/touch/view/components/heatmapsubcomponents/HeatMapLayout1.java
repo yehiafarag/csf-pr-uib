@@ -182,7 +182,7 @@ public abstract class HeatMapLayout1 extends VerticalLayout {
 //        controlsLayout.setComponentAlignment(controlBtnsContainer, Alignment.BOTTOM_RIGHT);
 //        controlsLayout.setExpandRatio(commentLabel, 0.4f);
 
-        final StudiesInformationPopupBtn showStudiesBtn = new StudiesInformationPopupBtn(false);
+        final StudiesInformationPopupBtn showStudiesBtn = null;//new StudiesInformationPopupBtn(false);
         controlBtnsContainer.addComponent(showStudiesBtn);
         controlBtnsContainer.setComponentAlignment(showStudiesBtn, Alignment.MIDDLE_CENTER);
         showStudiesBtn.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {

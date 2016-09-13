@@ -196,7 +196,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
 
         int availableHMHeight = mainbodyLayoutHeight;
 
-        heatmapLayoutContainer = new HeatMapLayout(mainbodyLayoutWidth, availableHMHeight, activeColumnHeaders, filterSizeController, smallScreen) {
+        heatmapLayoutContainer = new HeatMapLayout(mainbodyLayoutWidth, availableHMHeight, activeColumnHeaders, filterSizeController, smallScreen,CSFPR_Central_Manager.getFullPublicationList()) {
             @Override
             public void updateSelectionManager(Set<QuantDiseaseGroupsComparison> selectedQuantComparisonsList) {
 

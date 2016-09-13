@@ -169,10 +169,10 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         controlsLayout.setWidth(100, Unit.PERCENTAGE);
         controlsLayout.setHeight(20, Unit.PIXELS);
 
-        Label clickcommentLabel = new Label("Click in the table to select data");
+        Label clickcommentLabel = new Label("Click a row to select data");
         clickcommentLabel.setStyleName(ValoTheme.LABEL_SMALL);
         clickcommentLabel.addStyleName(ValoTheme.LABEL_TINY);
-        clickcommentLabel.addStyleName(ValoTheme.LABEL_BOLD);
+        clickcommentLabel.addStyleName("italictext");
         clickcommentLabel.setWidth(182, Unit.PIXELS);
 
         controlsLayout.addComponent(clickcommentLabel);

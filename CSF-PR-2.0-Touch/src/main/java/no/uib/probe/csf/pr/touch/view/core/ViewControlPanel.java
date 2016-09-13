@@ -186,14 +186,21 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
             mainViewLayout.setData(toolBtnsLayout);
             toolBtnsLayout.setVisible(false);
         } else {
-            mainViewLayout.setData(new VerticalLayout());
+
+            mainViewLayout.setData(null);
         }
         if (isDefault) {
             defaultView = mainViewLayout;
             defaultBtn = btnWrapper;
             mainViewLayout.removeStyleName("hideslidelayout");
             btnWrapper.removeStyleName("unselectedbtn");
-            ((AbstractOrderedLayout) mainViewLayout.getData()).setVisible(true);
+            if ((AbstractOrderedLayout) mainViewLayout.getData() != null) {
+                ((AbstractOrderedLayout) mainViewLayout.getData()).setVisible(true);
+                toolBtnContainer.setStyleName("sidebtnsmenue");
+            } else {
+                toolBtnContainer.removeStyleName("sidebtnsmenue");
+            }
+
             currentView = mainViewLayout;
             currentBtn = btnWrapper;
         }
@@ -270,20 +277,37 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
             currentView = mainViewLayout;
             comp.removeStyleName("unselectedbtn");
             currentBtn = comp;
-            ((AbstractOrderedLayout) mainViewLayout.getData()).setVisible(true);
+            if ((AbstractOrderedLayout) mainViewLayout.getData() != null) {
+                ((AbstractOrderedLayout) mainViewLayout.getData()).setVisible(true);
+                toolBtnContainer.setStyleName("sidebtnsmenue");
+            } else {
+                toolBtnContainer.removeStyleName("sidebtnsmenue");
+            }
         } else if (mainViewLayout != currentView) {
             currentView.addStyleName("hideslidelayout");
-            ((AbstractOrderedLayout) currentView.getData()).setVisible(false);
+            if ((AbstractOrderedLayout) currentView.getData() != null) {
+                ((AbstractOrderedLayout) currentView.getData()).setVisible(false);
+            }
 
             currentBtn.addStyleName("unselectedbtn");
 
             currentView = mainViewLayout;
             currentBtn = comp;
-            ((AbstractOrderedLayout) mainViewLayout.getData()).setVisible(true);
+            if ((AbstractOrderedLayout) mainViewLayout.getData() != null) {
+                ((AbstractOrderedLayout) mainViewLayout.getData()).setVisible(true);
+                toolBtnContainer.setStyleName("sidebtnsmenue");
+            } else {
+                toolBtnContainer.removeStyleName("sidebtnsmenue");
+            }
         }
         mainViewLayout.removeStyleName("hideslidelayout");
         comp.removeStyleName("unselectedbtn");
-        ((AbstractOrderedLayout) mainViewLayout.getData()).setVisible(true);
+        if ((AbstractOrderedLayout) mainViewLayout.getData() != null) {
+            ((AbstractOrderedLayout) mainViewLayout.getData()).setVisible(true);
+            toolBtnContainer.setStyleName("sidebtnsmenue");
+        } else {
+            toolBtnContainer.removeStyleName("sidebtnsmenue");
+        }
 
     }
 
@@ -306,7 +330,12 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
         }
         defaultView.removeStyleName("hideslidelayout");
         defaultBtn.removeStyleName("unselectedbtn");
-        ((AbstractOrderedLayout) defaultView.getData()).setVisible(true);
+        if ((AbstractOrderedLayout) defaultView.getData() != null) {
+            ((AbstractOrderedLayout) defaultView.getData()).setVisible(true);
+            toolBtnContainer.setStyleName("sidebtnsmenue");
+        } else {
+            toolBtnContainer.removeStyleName("sidebtnsmenue");
+        }
 
     }
 

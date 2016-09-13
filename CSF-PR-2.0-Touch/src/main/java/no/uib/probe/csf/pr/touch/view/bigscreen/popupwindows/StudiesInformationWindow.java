@@ -10,8 +10,11 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 import no.uib.probe.csf.pr.touch.view.core.DatasetButtonsContainerLayout;
 import no.uib.probe.csf.pr.touch.view.core.PopupWindow;
@@ -22,12 +25,15 @@ import no.uib.probe.csf.pr.touch.view.core.PopupWindow;
  *
  * this class represents study information popup window
  */
-public class StudiesInformationWindow extends VerticalLayout implements LayoutEvents.LayoutClickListener {
+public abstract class StudiesInformationWindow extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
     private final PopupWindow popupWindow;
     private final DatasetButtonsContainerLayout studiesPopupLayout;
+    private List<Object[]> publicationList;
+    private final TabSheet tab;
+    private final DatasetButtonsContainerLayout publicationPopupLayout;
 
-    public StudiesInformationWindow(List<Object[]> publicationList,boolean smallScreen) {
+    public StudiesInformationWindow(List<Object[]> publicationList, boolean smallScreen) {
 
         VerticalLayout popupBody = new VerticalLayout();
         popupBody.setWidth(100, Unit.PERCENTAGE);
@@ -43,6 +49,7 @@ public class StudiesInformationWindow extends VerticalLayout implements LayoutEv
         frame.setHeight(99, Unit.PERCENTAGE);
         frame.setSpacing(true);
         frame.addComponent(popupBody);
+
         String title = "Datasets and Publications";
         if (publicationList == null) {
             title = "Datasets";
@@ -74,9 +81,9 @@ public class StudiesInformationWindow extends VerticalLayout implements LayoutEv
 //        int availableHeight = (int) popupWindow.getHeight();
 //        popupBody.setHeight(availableHeight, Unit.PIXELS);
         this.addLayoutClickListener(StudiesInformationWindow.this);
-        this.setHeight(10,Unit.PIXELS);
+        this.setHeight(10, Unit.PIXELS);
 
-        TabSheet tab = new TabSheet();
+        tab = new TabSheet();
         tab.setHeight(100.0f, Unit.PERCENTAGE);
         tab.setWidth(100.0f, Unit.PERCENTAGE);
         tab.addStyleName(ValoTheme.TABSHEET_FRAMED);
@@ -86,24 +93,33 @@ public class StudiesInformationWindow extends VerticalLayout implements LayoutEv
         popupBody.addComponent(tab);
         popupBody.setComponentAlignment(tab, Alignment.TOP_CENTER);
 
-        studiesPopupLayout = new DatasetButtonsContainerLayout((int) popupWindow.getWidth(),smallScreen);
+        studiesPopupLayout = new DatasetButtonsContainerLayout((int) popupWindow.getWidth(), smallScreen);
 
         tab.addTab(studiesPopupLayout, "Datasets");
-
+        publicationPopupLayout = new DatasetButtonsContainerLayout((int) popupWindow.getWidth(), smallScreen);
+        tab.addTab(publicationPopupLayout, "Publications");
         if (publicationList == null) {
+            this.publicationList = publicationList;
             return;
         }
-
-        DatasetButtonsContainerLayout publicationPopupLayout = new DatasetButtonsContainerLayout((int) popupWindow.getWidth(),smallScreen);
         publicationPopupLayout.setPublicationData(publicationList);
-        tab.addTab(publicationPopupLayout, "Publications");
-
     }
 
     public void updateData(Collection<QuantDatasetObject> dsObjects) {
         studiesPopupLayout.setInformationData(dsObjects);
 
+        if (publicationList == null) {
+            Set<String> publicationMap = new LinkedHashSet<>();
+            for (QuantDatasetObject quantDS : dsObjects) {
+
+                publicationMap.add(quantDS.getPumedID());
+
+            }
+            publicationPopupLayout.setPublicationData(updatePublications(publicationMap));
+        }
+
     }
+    public abstract List<Object[]>  updatePublications(Set<String>pumedId);
 
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {

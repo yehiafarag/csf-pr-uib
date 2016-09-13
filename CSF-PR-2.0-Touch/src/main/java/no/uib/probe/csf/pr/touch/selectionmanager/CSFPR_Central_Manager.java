@@ -4,6 +4,7 @@ import com.vaadin.server.VaadinSession;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
@@ -28,9 +29,19 @@ public class CSFPR_Central_Manager implements Serializable {
     }
 
     private Set<QuantComparisonProtein> selectedProteinsList;
+
+    public List<Object[]> getFullPublicationList() {
+        return fullPublicationList;
+    }
+
+    public void setFullPublicationList(List<Object[]> fullPublicationList) {
+        this.fullPublicationList = fullPublicationList;
+    }
     private Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> equalComparisonMap;
     private String selectedProteinAccession;
     private final BusyTask busyTask;
+    private List<Object[]> fullPublicationList;
+    
 
     ;
 

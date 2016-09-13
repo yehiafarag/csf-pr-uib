@@ -74,7 +74,7 @@ public class InformationField extends VerticalLayout {
 
             if (stringValue == null || stringValue.trim().equalsIgnoreCase("") || stringValue.equalsIgnoreCase("-1") || stringValue.equalsIgnoreCase("Not Available")) {
 //            this.setVisible(false);
-                valueLabel.setCaption("<font style='text-align: center ;   line-height: 1px;'>------------</font>");
+                valueLabel.setCaption("<font style='text-align: center ;   line-height: 1px;'>N/A</font>");
                 valueLabel.setStyleName("valuelabel");
                 return;
             }

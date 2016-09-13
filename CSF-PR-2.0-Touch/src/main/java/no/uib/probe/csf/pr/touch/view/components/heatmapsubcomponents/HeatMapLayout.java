@@ -16,10 +16,12 @@ import com.vaadin.ui.themes.ValoTheme;
 import java.awt.Rectangle;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -95,12 +97,14 @@ public abstract class HeatMapLayout extends VerticalLayout {
 //    private final ZoomControler zoomControler;
     private final HeatmapFiltersContainerResizeControl filterResizeController;
 
+    private final List<Object[]> fullPublicationList;
 
     /*
      *  
      */
-    public HeatMapLayout(int heatMapContainerWidth, int availableHMHeight, boolean[] activeColumnHeaders, HeatmapFiltersContainerResizeControl filterResizeController, boolean smallScreen) {
+    public HeatMapLayout(int heatMapContainerWidth, int availableHMHeight, boolean[] activeColumnHeaders, HeatmapFiltersContainerResizeControl filterResizeController, boolean smallScreen, List<Object[]> fullPublicationList) {
         this.filterResizeController = filterResizeController;
+        this.fullPublicationList = fullPublicationList;
         this.availableComparisonsList = new LinkedHashSet<>();
         this.updatedDatasetMap = new LinkedHashMap<>();
         this.selectedDsList = new LinkedHashSet<>();
@@ -204,7 +208,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
         Label clickcommentLabel = new Label("Click in the table to select data");
         clickcommentLabel.setStyleName(ValoTheme.LABEL_SMALL);
         clickcommentLabel.addStyleName(ValoTheme.LABEL_TINY);
-        clickcommentLabel.addStyleName(ValoTheme.LABEL_BOLD);
+        clickcommentLabel.addStyleName("italictext");
         clickcommentLabel.setWidth(182, Unit.PIXELS);
 //        if (smallScreen) {
 //            clickcommentLabel.addStyleName("nomargin");
@@ -220,7 +224,21 @@ public abstract class HeatMapLayout extends VerticalLayout {
 //        controlsLayout.setComponentAlignment(controlBtnsContainer, Alignment.BOTTOM_RIGHT);
 //        controlsLayout.setExpandRatio(clickcommentLabel, 0.4f);
 
-        final StudiesInformationPopupBtn showStudiesBtn = new StudiesInformationPopupBtn(smallScreen);
+        final StudiesInformationPopupBtn showStudiesBtn = new StudiesInformationPopupBtn(smallScreen) {
+
+            @Override
+            public List<Object[]> updatePublicationsData(Set<String> pumedId) {
+                List<Object[]> updatedList = new ArrayList<>();
+                for (Object[] objArr : fullPublicationList) {
+                    if (pumedId.contains(objArr[0].toString())) {
+                        updatedList.add(objArr);
+                    }
+                }
+
+                return updatedList;
+            }
+
+        };
         controlBtnsContainer.addComponent(showStudiesBtn);
         controlBtnsContainer.setComponentAlignment(showStudiesBtn, Alignment.MIDDLE_CENTER);
         showStudiesBtn.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
@@ -237,7 +255,6 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
         final QuantDatasetsfullStudiesTableLayout quantStudiesTable = new QuantDatasetsfullStudiesTableLayout(activeColumnHeaders);
         controlBtnsContainer.addComponent(quantStudiesTable);
-       
 
         //export as pdf
 //        ImageContainerBtn exportPdfBtn = new ImageContainerBtn() {
@@ -263,7 +280,6 @@ public abstract class HeatMapLayout extends VerticalLayout {
 //            }
 //
 //        };
-
 //        if (smallScreen) {
 //            exportPdfBtn.setWidth(25, Unit.PIXELS);
 //            exportPdfBtn.setHeight(25, Unit.PIXELS);
@@ -278,7 +294,6 @@ public abstract class HeatMapLayout extends VerticalLayout {
 //        controlBtnsContainer.addComponent(exportPdfBtn);
 //        controlBtnsContainer.setComponentAlignment(exportPdfBtn, Alignment.MIDDLE_CENTER);
 //        exportPdfBtn.setDescription("Export heatmap image");
-
         ImageContainerBtn selectAllBtn = new ImageContainerBtn() {
 
             @Override
@@ -372,8 +387,8 @@ public abstract class HeatMapLayout extends VerticalLayout {
             cornerCell.setComponentAlignment(filterResizeController.getFilterContainerLayout(), Alignment.MIDDLE_CENTER);
             filterResizeController.getFilterContainerLayout().addStyleName("heatmapcorner");
         }
-        
-         ImageContainerBtn exportTableBtn = new ImageContainerBtn() {
+
+        ImageContainerBtn exportTableBtn = new ImageContainerBtn() {
 
             @Override
             public void onClick() {

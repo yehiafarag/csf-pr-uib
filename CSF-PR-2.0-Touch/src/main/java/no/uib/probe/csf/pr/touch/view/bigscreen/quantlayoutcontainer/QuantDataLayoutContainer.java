@@ -240,11 +240,11 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
             info.setHeight(40, Unit.PIXELS);
         }
 
-        controlBtnsContainer.addComponent(info);
-        controlBtnsContainer.setVisible(false);
+//        controlBtnsContainer.addComponent(info);
+//        controlBtnsContainer.setVisible(false);
 
 //        this.setInitialLayout(quantInitialLayout.getMiniLayout(), quantInitialLayout, controlBtnsContainer);
-        this.addButton(quantInitialLayout.getMiniLayout(), quantInitialLayout, controlBtnsContainer, true);
+        this.addButton(quantInitialLayout.getMiniLayout(), quantInitialLayout, null, true);
 
         heatmapBtn = new ImageContainerBtn() {
 

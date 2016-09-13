@@ -13522,7 +13522,7 @@ div.v-layout.v-horizontal.v-widget {
     text-overflow:ellipsis !important;
     overflow:auto !important;
     padding:0px !important;
-    margin-top:-50px !important;
+    margin: 0px !important;
 }
 .valuelabel  textArea:focus{
 
@@ -15462,4 +15462,22 @@ div.v-layout.v-horizontal.v-widget {
 }
 .hidesortingicon .v-table-sort-indicator{
     visibility:hidden;
+}
+.italictext{
+    
+    font-style: italic !important;
+}
+.invisible{
+    opacity: 0 !important;
+}
+.bubblelabels{
+
+width:260px !important;
+border-top:2px solid lightgray;
+border-left:2px solid lightgray;
+background-color:white;
+padding-left:5px;
+
+margin-right:8% !important;
+margin-bottom:0px;
 }

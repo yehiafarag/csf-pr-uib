@@ -45,24 +45,26 @@ public class InformationButton extends ImageContainerBtn {
         popupBodyLayout = new VerticalLayout();
 
 //        mainBody.setWidth(450, Unit.PIXELS);
-        HorizontalLayout topLayout = new HorizontalLayout();
-        topLayout.setWidth(100, Unit.PERCENTAGE);
-        mainBody.addComponent(topLayout);
+        HorizontalLayout containerLayout = new HorizontalLayout();
+        containerLayout.setWidth(100, Unit.PERCENTAGE);
+        mainBody.addComponent(containerLayout);
 
         Label infoHeaderLabel = new Label("Information");
         infoHeaderLabel.setStyleName(ValoTheme.LABEL_H3);
 //        infoHeaderLabel.addStyleName(ValoTheme.LABEL_BOLD);
-        topLayout.addComponent(infoHeaderLabel);
+//        topLayout.addComponent(infoHeaderLabel);
 
         Label infoLable = new Label(infoText);
         infoLable.setContentMode(ContentMode.HTML);
         infoLable.setWidth(100, Unit.PERCENTAGE);
-        mainBody.addComponent(infoLable);
+        containerLayout.addComponent(infoLable);
+        containerLayout.setExpandRatio(infoLable, 460);
         popupBodyLayout.addComponent(mainBody);
 
         CloseButton closeBtn = new CloseButton();
-        topLayout.addComponent(closeBtn);
-        topLayout.setComponentAlignment(closeBtn, Alignment.TOP_RIGHT);
+        containerLayout.addComponent(closeBtn);
+        containerLayout.setExpandRatio(closeBtn, 40);
+        containerLayout.setComponentAlignment(closeBtn, Alignment.TOP_RIGHT);
         popupLayout = new PopupView(null, popupBodyLayout) {
 
             @Override

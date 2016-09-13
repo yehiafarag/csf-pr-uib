@@ -22,7 +22,6 @@ import no.uib.probe.csf.pr.touch.Data_Handler;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFListener;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
-import no.uib.probe.csf.pr.touch.selectionmanager.QuantSearchSelection;
 import no.uib.probe.csf.pr.touch.view.HeaderLayout;
 import no.uib.probe.csf.pr.touch.view.LayoutViewManager;
 import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.StudiesInformationWindow;
@@ -138,7 +137,16 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 //        subQuantStatLayout.setComponentAlignment(sub1QuantStatValue, Alignment.MIDDLE_RIGHT);
 //        Set<QuantDatasetObject> dsObjects = CSFPR_Handler.getQuantDatasetList();
 //
-        StudiesInformationWindow sub2quantStatLabelWrapper = new StudiesInformationWindow(publicationList, smallScreen);
+        StudiesInformationWindow sub2quantStatLabelWrapper = new StudiesInformationWindow(publicationList, smallScreen){
+
+            @Override
+            public List<Object[]> updatePublications(Set<String> pumedId) {
+                return publicationList; //To change body of generated methods, choose Tools | Templates.
+            }
+        
+        
+        };
+        CSFPR_Central_Manager.setFullPublicationList(publicationList);
         sub2quantStatLabelWrapper.updateData(dsObjects);
         subQuantStatLayout.addComponent(sub2quantStatLabelWrapper, 0, 0);
         sub2quantStatLabelWrapper.setDescription("Click to view datasets information");
@@ -317,9 +325,9 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
         if (!smallScreen) {
             middlePanelServicesLayout.setMargin(new MarginInfo(false, false, false, false));
-            middlePanelServicesLayout.setHeight(180,Unit.PIXELS);
-        }else{
-        middlePanelServicesLayout.setHeight(90,Unit.PIXELS);
+            middlePanelServicesLayout.setHeight(180, Unit.PIXELS);
+        } else {
+            middlePanelServicesLayout.setHeight(100, Unit.PIXELS);
         }
         middleLayout.addComponent(middlePanelServicesLayout);
 
@@ -334,6 +342,8 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         if (!smallScreen) {
             quantDatasetBtn.addStyleName("padding12");
             quantDatasetBtn.addStyleName("margintop10");
+        } else {
+            quantDatasetBtn.addStyleName("margintop5");
         }
 //        quantDatasetBtn.getThumbBtn().addStyleName("unselectedbtn");
 
@@ -351,8 +361,9 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         if (!smallScreen) {
             idDatasetBtn.addStyleName("padding12");
             idDatasetBtn.addStyleName("margintop10");
+        } else {
+            idDatasetBtn.addStyleName("margintop5");
         }
-
         idDatasetBtn.getThumbBtn().setDescription("Click to browse protein identification data");
 
         middlePanelServicesLayout.addComponent(idDatasetBtn, 0, 1);
@@ -371,8 +382,9 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         if (!smallScreen) {
             searchingDatasetBtn.addStyleName("padding12");
             searchingDatasetBtn.addStyleName("margintop10");
+        } else {
+            searchingDatasetBtn.addStyleName("margintop5");
         }
-
         searchingDatasetBtn.getThumbBtn().setDescription("Click to search quantified and identified protein data");
         middlePanelServicesLayout.addComponent(searchingDatasetBtn, 1, 0);
 
@@ -388,8 +400,9 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         if (!smallScreen) {
             compareBtn.addStyleName("padding12");
             compareBtn.addStyleName("margintop10");
+        } else {
+            compareBtn.addStyleName("margintop5");
         }
-
         compareBtn.getThumbBtn().setDescription("Click to compare with your own protein quantification data");
         middlePanelServicesLayout.addComponent(compareBtn, 1, 1);
         middlePanelServicesLayout.setComponentAlignment(compareBtn, Alignment.MIDDLE_LEFT);
@@ -406,7 +419,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         homeBtn.setVisible(false);
         homeBtn.getThumbBtn().setDescription("Home page");
 
-        Label para_2 = new Label(breakline + "<p align='justify' Style='margin-bottom:2px;width:200px;text-align: justify;text-justify: inter-word;font-size: 12px;color: black;/* font-weight: bold; */line-height: 12px;'><font>Publications:</font></p><ul align='justify' Style='margin-bottom:2px;margin-top:2px;padding-left:20px;text-align: justify;text-justify: inter-word;font-size: 12px;color: black;/* font-weight: bold; */line-height: 20px;'><li>Guldbrandsen et al.: CSF-PR 2.0: your guide to quantitative cerebrospinal fluid mass spectrometry data. <i>(in preparation)</i>.</font></li><li><a class='link' href='http://www.mcponline.org/content/13/11/3152.full.pdf+html' target='_blank'>Guldbrandsen et al.: In-depth Characterization of the Cerebrospinal Fluid (CSF) Proteome Displayed Through the CSF Proteome Resource (CSF-PR). Mol Cell Proteomics. 2014.</a></li></ul>");
+        Label para_2 = new Label(breakline + "<p align='justify' Style='margin-bottom:2px;width:650px;text-align: justify;text-justify: inter-word;font-size: 12px;color: black;/* font-weight: bold; */line-height: 12px;'><font>Publications:</font></p><ul align='justify' Style='margin-bottom:2px;margin-top:2px;padding-left:20px;text-align: justify;text-justify: inter-word;font-size: 12px;color: black;/* font-weight: bold; */line-height: 20px;'><li>Guldbrandsen et al.: CSF-PR 2.0: your guide to quantitative cerebrospinal fluid mass spectrometry data. <i>(in preparation)</i>.</font></li><li style='width:650px !important'><a class='link' href='http://www.mcponline.org/content/13/11/3152.full.pdf+html' target='_blank'>Guldbrandsen et al.: In-depth Characterization of the Cerebrospinal Fluid (CSF) Proteome Displayed Through the CSF Proteome Resource (CSF-PR). Mol Cell Proteomics. 2014.</a></li></ul>");
         para_2.setContentMode(ContentMode.HTML);
 
         middleLayout.addComponent(para_2);

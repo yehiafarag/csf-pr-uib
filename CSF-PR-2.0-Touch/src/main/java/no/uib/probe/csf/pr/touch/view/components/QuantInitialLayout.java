@@ -7,6 +7,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import java.util.Collection;
@@ -69,6 +70,17 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         frame.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
         miniLayout = new HorizontalLayout();
         updateData(diseaseCategorySet);
+        
+        Label clickcommentLabel = new Label("Click disease category bubble to select data");
+        clickcommentLabel.setStyleName(ValoTheme.LABEL_SMALL);
+        clickcommentLabel.addStyleName(ValoTheme.LABEL_TINY);
+        clickcommentLabel.addStyleName("italictext");
+        clickcommentLabel.addStyleName("bubblelabels");
+        clickcommentLabel.setWidth(260, Unit.PIXELS);
+
+        this.addComponent(clickcommentLabel);
+        this.setComponentAlignment(clickcommentLabel, Alignment.BOTTOM_RIGHT);
+        
 
     }
     private final ThemeResource logoRes = new ThemeResource("img/logo.png");

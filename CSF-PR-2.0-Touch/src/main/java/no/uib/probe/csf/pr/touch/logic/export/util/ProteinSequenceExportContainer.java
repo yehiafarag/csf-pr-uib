@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package no.uib.probe.csf.pr.touch.logic;
+package no.uib.probe.csf.pr.touch.logic.export.util;
 
 import com.vaadin.server.Sizeable;
 import com.vaadin.ui.Alignment;
@@ -47,7 +47,7 @@ public class ProteinSequenceExportContainer extends JPanel{
         this.setBackground(Color.RED);
         this.proteinName=proteinName;
         this.sequence = sequence;
-        JLabel noPeptideAvailable = new JLabel("Peptides information not available");
+        JLabel noPeptideAvailable = new JLabel("Peptide information is not available");
 //        noPeptideAvailable.addStyleName(ValoTheme.LABEL_TINY);
 //        Set<QuantPeptide> filteredQuantPepSet = new LinkedHashSet<>();
 //        if (sequence == null || sequence.trim().equalsIgnoreCase("") || quantPepSet == null || quantPepSet.isEmpty()) {

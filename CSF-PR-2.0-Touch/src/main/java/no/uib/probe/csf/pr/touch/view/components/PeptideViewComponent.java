@@ -57,6 +57,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
     private final PeptideSequenceLayoutTable peptideSequenceTableLayout;
     private final Label proteinNameLabel;
     private final Label studiesLabel;
+    private boolean defaultTrend = true;
 //    private final ImageContainerBtn checkUncheckBtn;
 
     private StudiesLineChart lineChart;
@@ -327,8 +328,6 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         final Resource trendOrderRes = new ThemeResource("img/orderedtrend.png");
         ImageContainerBtn orderByTrendBtn = new ImageContainerBtn() {
 
-            private boolean defaultTrend = true;
-
             @Override
             public void onClick() {
                 dsComparisonsSwichBtn.updateIcon(comparisonDsRes);
@@ -454,8 +453,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
 //        controlBtnsContainer.addComponent(checkUncheckBtn);
 //        controlBtnsContainer.setComponentAlignment(checkUncheckBtn, Alignment.MIDDLE_CENTER);
 //        checkUncheckBtn.setDescription("Show/hide checked column");
-        
-         //export as pdf
+        //export as pdf
         ImageContainerBtn exportPdfBtn = new ImageContainerBtn() {
             private final DataExporter exporter = new DataExporter();
 
@@ -467,15 +465,14 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
 
                 FileDownloader fileDownloader = new FileDownloader(new StreamResource(() -> {
                     try {
-                        byte[] pdfFile = exporter.exportStudiesProteinCoverageCharts(lineChart.getBufferedImg(),peptideSequenceTableLayout.getProteinSeqSet());
+                        byte[] pdfFile = exporter.exportStudiesProteinCoverageCharts(lineChart.getOrderedComparisonList(!defaultTrend), proteinKey, custTrend);
                         return new ByteArrayInputStream(pdfFile);
                     } catch (Exception e) {
                         e.printStackTrace();
                         return null;
                     }
                 }, "Studies_protein_coverage.pdf"));
-                
-                
+
                 fileDownloader.extend(this);
             }
 
@@ -491,12 +488,11 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
             exportPdfBtn.setWidth(40, Unit.PIXELS);
         }
         exportPdfBtn.updateIcon(new ThemeResource("img/pdf-text-o.png"));
-        exportPdfBtn.setEnabled(false);
+        exportPdfBtn.setEnabled(true);
         controlBtnsContainer.addComponent(exportPdfBtn);
         controlBtnsContainer.setComponentAlignment(exportPdfBtn, Alignment.MIDDLE_CENTER);
         exportPdfBtn.setDescription("Export protein overview and coverage as PDF file");
 
-        
         InformationButton info = new InformationButton("The protein panel provides an overview of the available information for the currently selected protein. The chart at the top shows the quantitative information for the selected protein, classified into Increased, Decreased or Equal. If the quantitative data for a given comparison is not exclusively in the same direction an average value will be shown. \n"
                 + "To show the individual datasets click the \"Show datasets\" button in the lower right corner. Clicking the \"Resize dataset symbols based on number of patients\" will then change the chart to indicate the number of patients in each dataset. The lower half of the panel shows the details for each dataset, including the sequence coverage (if available). Click a peptide or any of the other columns for further details.", false);
         controlBtnsContainer.addComponent(info);
@@ -527,6 +523,8 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
     }
 
     private int totatlStudiesNumber;
+    private String proteinKey;
+    private int custTrend;
 
     private void updateData(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, String proteinKey, int custTrend) {
         if (custTrend != -1) {
@@ -550,6 +548,8 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
             legendLayout.setComponentAlignment(legendLayoutComponent, Alignment.TOP_RIGHT);
         }
 
+        this.proteinKey = proteinKey;
+        this.custTrend = custTrend;
         lineChart.updateData(selectedComparisonsList, proteinKey, custTrend);
 
         peptideSequenceTableLayout.updateTableData(selectedComparisonsList, proteinKey);

@@ -94,7 +94,7 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
         int rowNumb = Math.max(1, ((publicationObjects.size() / btnsContainer.getColumns()) + 1));
         btnsContainer.setRows(rowNumb);
         if (rowNumb == 1) {
-            btnsContainer.setWidthUndefined();
+            btnsContainer.setWidthUndefined();btnsContainer.setWidth(100, Unit.PERCENTAGE);
         } else {
             btnsContainer.setWidth(100, Unit.PERCENTAGE);
         }

@@ -192,7 +192,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         Label clickcommentLabel = new Label("Click in the chart to select data");
         clickcommentLabel.setStyleName(ValoTheme.LABEL_SMALL);
         clickcommentLabel.addStyleName(ValoTheme.LABEL_TINY);
-        clickcommentLabel.addStyleName(ValoTheme.LABEL_BOLD);
+        clickcommentLabel.addStyleName("italictext");
         clickcommentLabel.setWidth(182,Unit.PIXELS);
         
         controlsLayout.addComponent(clickcommentLabel);
