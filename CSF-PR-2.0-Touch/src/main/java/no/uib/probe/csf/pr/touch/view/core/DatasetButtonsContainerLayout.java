@@ -73,7 +73,7 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
                 }
                 String btnName = quantDS.getAuthor() + "<br/><font size=1 >" + quantDS.getYear() + "</font><br/><font size=1 >#Proteins: " + quantDS.getTotalProtNum() + "   #Peptides: " + quantDS.getTotalPepNum() + "</font>";
 
-                PopupInfoBtn btn = new PopupInfoBtn(quantDS, btnName, quantDS.getAuthor(),smallScreen);
+                PopupInfoBtn btn = new PopupInfoBtn(quantDS, btnName, quantDS.getAuthor(), smallScreen);
                 btn.addStyleName(publicationStyle.get(quantDS.getPumedID()));
                 btnsContainer.addComponent(btn, colcounter++, rowcounter);
                 if (colcounter >= btnsContainer.getColumns()) {
@@ -94,7 +94,8 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
         int rowNumb = Math.max(1, ((publicationObjects.size() / btnsContainer.getColumns()) + 1));
         btnsContainer.setRows(rowNumb);
         if (rowNumb == 1) {
-            btnsContainer.setWidthUndefined();btnsContainer.setWidth(100, Unit.PERCENTAGE);
+            btnsContainer.setWidthUndefined();
+            btnsContainer.setWidth(100, Unit.PERCENTAGE);
         } else {
             btnsContainer.setWidth(100, Unit.PERCENTAGE);
         }
@@ -120,9 +121,9 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
                 }
 
             }
-             String btnName = obj[1].toString() + "<br/><font size=1 >" + obj[2].toString() + "</font><br/><font size=1 >#Proteins: " + obj[5].toString() /*+ "/" + obj[5].toString() + */+"   #Peptides: " + obj[7].toString() /*+ "/" + obj[7].toString() +*/+ "</font>";
+            String btnName = obj[1].toString() + "<br/><font size=1 >" + obj[2].toString() + "</font><br/><font size=1 >#Proteins: " + obj[5].toString() /*+ "/" + obj[5].toString() + */ + "   #Peptides: " + obj[7].toString() /*+ "/" + obj[7].toString() +*/ + "</font>";
 
-            PopupInfoBtn btn = new PopupInfoBtn(btnName, obj[1].toString() , obj,smallScreen);
+            PopupInfoBtn btn = new PopupInfoBtn(btnName, obj[1].toString(), obj, smallScreen);
             btn.addStyleName(publicationStyle.get(obj[0].toString()));
             btnsContainer.addComponent(btn, colcounter++, rowcounter);
             if (colcounter >= btnsContainer.getColumns()) {
@@ -132,12 +133,22 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
             }
 
         }
+        if(btnsContainer.getColumns()>sortMap.size() && btnsContainer.getRows()==1){
+            for(int x=sortMap.size();x<btnsContainer.getColumns();x++){
+                VerticalLayout emptyLayout = new VerticalLayout();
+                emptyLayout.setHeight(20,Unit.PIXELS);
+                emptyLayout.setWidth(200,Unit.PIXELS);
+                btnsContainer.addComponent(emptyLayout, x, 0);
+            }
+        
+        }
 
     }
 
     private final boolean smallScreen;
-    public DatasetButtonsContainerLayout(int width,boolean smallScreen) {
-        this.smallScreen=smallScreen;
+
+    public DatasetButtonsContainerLayout(int width, boolean smallScreen) {
+        this.smallScreen = smallScreen;
         this.publicationStyle = new HashMap<>();
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeightUndefined();
@@ -149,14 +160,20 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
         btnsContainer = new GridLayout();
         btnsContainer.setWidth(100, Unit.PERCENTAGE);
         btnsContainer.setColumns(colNum);
+        for (int x = 0; x < colNum; x++) {
+            btnsContainer.setColumnExpandRatio(x, 200);
+        }
         btnsContainer.setStyleName("whitelayout");
         btnsContainer.setHeightUndefined();
-        btnsContainer.setSpacing(true);
+        btnsContainer.setSpacing(false);
+        btnsContainer.setHideEmptyRowsAndColumns(false);
+
         this.addComponent(btnsContainer);
 
     }
-    public int getLayoutHeight(){
-    return btnsContainer.getRows()*100;
+
+    public int getLayoutHeight() {
+        return btnsContainer.getRows() * 100;
     }
 
 }

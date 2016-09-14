@@ -102,12 +102,33 @@ public class CSF_PR_UI extends UI {
      * resize the layout on changing window size
      */
     private void resizeScreen() {
-        windowHeight = Page.getCurrent().getBrowserWindowHeight()-20;// Math.max(Page.getCurrent().getBrowserWindowHeight(), 1080);
-        windowWidth = Page.getCurrent().getBrowserWindowWidth()-20;//Math.max(Page.getCurrent().getBrowserWindowWidth(), 1920);
+        windowHeight = Page.getCurrent().getBrowserWindowHeight() - 20;// Math.max(Page.getCurrent().getBrowserWindowHeight(), 1080);
+        windowWidth = Page.getCurrent().getBrowserWindowWidth() - 20;//Math.max(Page.getCurrent().getBrowserWindowWidth(), 1920);
         if (windowHeight < 427 || windowWidth < 1075) {
-            windowHeight = 427;
-            windowWidth = 1075;
-            
+
+//            if (windowHeight > windowWidth) {
+//                if (windowHeight < 427) {
+                    windowHeight = 427;
+                    windowWidth = 1075;
+//
+//                } else {
+//
+//                    windowWidth = windowHeight * 1075 / 427;
+//                }
+//
+//            } else {
+//                if (windowWidth < 1075) {
+//                    windowHeight = 427;
+//                    windowWidth = 1075;
+//
+//                } else {
+//
+//                    windowHeight = windowWidth * 427 / 1075;
+//                }
+                
+
+//            }
+
 //            Notification.show("Screen is too small current screen resolution (" + windowWidth + "x" + windowHeight + ")", Notification.Type.ERROR_MESSAGE);
             return;
         }

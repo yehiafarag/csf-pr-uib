@@ -208,6 +208,10 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
         bottomLayout.setWidth(100, Unit.PERCENTAGE);
         frame.addComponent(bottomLayout);
 
+        
+
+       
+
         errorLabel = new Label() {
 
             @Override
@@ -225,24 +229,35 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
         errorLabel.addStyleName(ValoTheme.LABEL_SMALL);
         errorLabel.addStyleName(ValoTheme.LABEL_TINY);
         errorLabel.setVisible(false);
-        errorLabel.setWidth(400, Unit.PIXELS);
+//        errorLabel.setWidth(400, Unit.PIXELS);
         bottomLayout.addComponent(errorLabel);
-        bottomLayout.setComponentAlignment(errorLabel, Alignment.MIDDLE_CENTER);
-
+        bottomLayout.setComponentAlignment(errorLabel, Alignment.TOP_LEFT);
+        
         HorizontalLayout btnsLayout = new HorizontalLayout();
         btnsLayout.setWidthUndefined();
         btnsLayout.setSpacing(true);
         bottomLayout.addComponent(btnsLayout);
         bottomLayout.setComponentAlignment(btnsLayout, Alignment.TOP_RIGHT);
-
-        Button sampleBtn = new Button("Sample");
-
-        sampleBtn.setStyleName(ValoTheme.BUTTON_SMALL);
+        
+         Button sampleBtn = new Button("Load Example Data");
+        sampleBtn.setStyleName(ValoTheme.BUTTON_LINK);
         sampleBtn.addStyleName(ValoTheme.BUTTON_TINY);
+        sampleBtn.addStyleName("nomargin");
+        sampleBtn.addStyleName("nopadding");
         sampleBtn.addStyleName("margintop");
+        sampleBtn.setDescription("Load example data");
+
+        sampleBtn.setDescription("Load example data");
         btnsLayout.addComponent(sampleBtn);
-        btnsLayout.setComponentAlignment(sampleBtn, Alignment.TOP_RIGHT);
-        sampleBtn.addClickListener(ComparisonUnitComponent.this);
+        btnsLayout.setComponentAlignment(sampleBtn, Alignment.TOP_LEFT);
+
+        VerticalLayout spacer = new VerticalLayout();
+        spacer.setWidth(2, Unit.PIXELS);
+        spacer.setHeight(10, Unit.PIXELS);
+        btnsLayout.addComponent(spacer);
+        btnsLayout.setComponentAlignment(spacer, Alignment.TOP_CENTER);
+        
+        
 
         Button compareBtn = new Button("Compare");
         compareBtn.setStyleName(ValoTheme.BUTTON_SMALL);
@@ -251,6 +266,11 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
         btnsLayout.addComponent(compareBtn);
         btnsLayout.setComponentAlignment(compareBtn, Alignment.TOP_RIGHT);
         compareBtn.addClickListener(ComparisonUnitComponent.this);
+        
+        
+        
+        
+        
 
         sampleBtn.addClickListener((Button.ClickEvent event) -> {
             ComparisonUnitComponent.this.reset();
@@ -272,7 +292,6 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
         textBoxIII.reset();
         diseaseGroupsListA.setValue(null);
         diseaseGroupsListB.setValue(null);
-       
 
     }
 
