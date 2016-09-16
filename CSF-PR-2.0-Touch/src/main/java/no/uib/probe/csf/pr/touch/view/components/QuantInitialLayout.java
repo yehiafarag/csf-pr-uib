@@ -70,7 +70,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         frame.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
         miniLayout = new HorizontalLayout();
         updateData(diseaseCategorySet);
-        
+
         Label clickcommentLabel = new Label("Click disease category bubble to select data");
         clickcommentLabel.setStyleName(ValoTheme.LABEL_SMALL);
         clickcommentLabel.addStyleName(ValoTheme.LABEL_TINY);
@@ -80,7 +80,6 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
 
         this.addComponent(clickcommentLabel);
         this.setComponentAlignment(clickcommentLabel, Alignment.BOTTOM_RIGHT);
-        
 
     }
     private final ThemeResource logoRes = new ThemeResource("img/logo.png");
@@ -115,8 +114,8 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
                 diseaseTitle.addStyleName("smallfont");
             }
             diseaseTitle.addStyleName("padding2");
-            diseaseTitle.setDescription("#Datasets: " + diseaseObject.getDatasetNumber());
 
+            diseaseLayout.setDescription("#Datasets: " + diseaseObject.getDatasetNumber());
             diseaseLayout.addComponent(diseaseTitle);
             diseaseTitle.setContentMode(ContentMode.HTML);
             diseaseLayout.setComponentAlignment(diseaseTitle, Alignment.MIDDLE_CENTER);
@@ -133,9 +132,13 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
     public void resetThumbBtn() {
         miniLayout.removeAllComponents();
         if (smallScreen) {
-            miniLayout.addComponent(initDiseaseLayout(null, 60, 60, maxNumber));
+            VerticalLayout min = initDiseaseLayout(null, 60, 60, maxNumber);
+            min.setDescription("Disease Categories");
+            miniLayout.addComponent(min);
         } else {
-            miniLayout.addComponent(initDiseaseLayout(null, 100, 100, maxNumber));
+            VerticalLayout min = initDiseaseLayout(null, 100, 100, maxNumber);
+            min.setDescription("Disease Categories");
+            miniLayout.addComponent(min);
         }
         miniLayout.addStyleName("bigbtn");
         miniLayout.addStyleName("blink");
@@ -163,9 +166,13 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
             }
 
             if (smallScreen) {
-                miniLayout.addComponent(initDiseaseLayout(null, 60, 60, maxNumber));
+                VerticalLayout min = initDiseaseLayout(null, 60, 60, maxNumber);
+                min.setDescription("Disease Categories");
+                miniLayout.addComponent(min);
             } else {
-                miniLayout.addComponent(initDiseaseLayout(null, 100, 100, maxNumber));
+                VerticalLayout min = initDiseaseLayout(null, 100, 100, maxNumber);
+                min.setDescription("Disease Categories");
+                miniLayout.addComponent(min);
             }
             miniLayout.addStyleName("bigbtn");
             miniLayout.addStyleName("blink");
@@ -215,9 +222,13 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         }
 
         if (smallScreen) {
-            miniLayout.addComponent(initDiseaseLayout(null, 60, 60, maxNumber));
+           VerticalLayout min = initDiseaseLayout(null, 60, 60, maxNumber);
+            min.setDescription("Disease Categories");
+            miniLayout.addComponent(min);
         } else {
-            miniLayout.addComponent(initDiseaseLayout(null, 100, 100, maxNumber));
+           VerticalLayout min = initDiseaseLayout(null, 100, 100, maxNumber);
+            min.setDescription("Disease Categories");
+            miniLayout.addComponent(min);
         }
         miniLayout.addStyleName("bigbtn");
         miniLayout.addStyleName("blink");
@@ -252,16 +263,24 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
             if (tempDiseaseCategorySet.size() > 2) {
 
                 if (smallScreen) {
-                    miniLayout.addComponent(initDiseaseLayout(allDisCat, 60, 60, maxNumber));
+                    VerticalLayout min = initDiseaseLayout(allDisCat, 60, 60, maxNumber);
+            min.setDescription("Disease Categories");
+            miniLayout.addComponent(min);
                 } else {
-                    miniLayout.addComponent(initDiseaseLayout(allDisCat, 100, 100, maxNumber));
+                   VerticalLayout min = initDiseaseLayout(allDisCat, 100, 100, maxNumber);
+            min.setDescription("Disease Categories");
+            miniLayout.addComponent(min);
                 }
 
             } else {
                 if (smallScreen) {
-                    miniLayout.addComponent(initDiseaseLayout(tempDiseaseCategorySet.iterator().next(), 60, 60, maxNumber));
+                    VerticalLayout min = initDiseaseLayout(tempDiseaseCategorySet.iterator().next(), 60, 60, maxNumber);
+            min.setDescription("Disease Categories");
+            miniLayout.addComponent(min);
                 } else {
-                    miniLayout.addComponent(initDiseaseLayout(tempDiseaseCategorySet.iterator().next(), 100, 100, maxNumber));
+                    VerticalLayout min = initDiseaseLayout(tempDiseaseCategorySet.iterator().next(), 100, 100, maxNumber);
+            min.setDescription("Disease Categories");
+            miniLayout.addComponent(min);
                 }
 
             }
@@ -312,9 +331,13 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         miniLayout.removeAllComponents();
         DiseaseCategoryObject diseaseObject = (DiseaseCategoryObject) (((VerticalLayout) event.getComponent()).getData());
         if (smallScreen) {
-            miniLayout.addComponent(initDiseaseLayout(diseaseObject, 60, 60, maxNumber));
+            VerticalLayout min = initDiseaseLayout(diseaseObject, 60, 60, maxNumber);
+            min.setDescription("Disease Categories");
+            miniLayout.addComponent(min);
         } else {
-            miniLayout.addComponent(initDiseaseLayout(diseaseObject, 100, 100, maxNumber));
+            VerticalLayout min = initDiseaseLayout(diseaseObject, 100, 100, maxNumber);
+            min.setDescription("Disease Categories");
+            miniLayout.addComponent(min);
         }
 
         onClick(diseaseObject.getDiseaseCategory());
@@ -326,9 +349,13 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         miniLayout.removeAllComponents();
         DiseaseCategoryObject diseaseObject = diseaseMap.get(diseaseCategory);
         if (smallScreen) {
-            miniLayout.addComponent(initDiseaseLayout(diseaseObject, 60, 60, maxNumber));
+             VerticalLayout min = initDiseaseLayout(diseaseObject, 60, 60, maxNumber);
+            min.setDescription("Disease Categories");
+            miniLayout.addComponent(min);
         } else {
-            miniLayout.addComponent(initDiseaseLayout(diseaseObject, 100, 100, maxNumber));
+             VerticalLayout min = initDiseaseLayout(diseaseObject, 100, 100, maxNumber);
+            min.setDescription("Disease Categories");
+            miniLayout.addComponent(min);
         }
         onClick(diseaseObject.getDiseaseCategory());
 
@@ -345,9 +372,13 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         miniLayout.removeAllComponents();
         DiseaseCategoryObject diseaseObject = diseaseMap.get(cat);
         if (smallScreen) {
-            miniLayout.addComponent(initDiseaseLayout(diseaseObject, 60, 60, maxNumber));
+             VerticalLayout min = initDiseaseLayout(diseaseObject, 60, 60, maxNumber);
+            min.setDescription("Disease Categories");
+            miniLayout.addComponent(min);
         } else {
-            miniLayout.addComponent(initDiseaseLayout(diseaseObject, 100, 100, maxNumber));
+             VerticalLayout min = initDiseaseLayout(diseaseObject, 100, 100, maxNumber);
+            min.setDescription("Disease Categories");
+            miniLayout.addComponent(min);
         }
         onClick(diseaseObject.getDiseaseCategory());
 

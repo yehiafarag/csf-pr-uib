@@ -276,6 +276,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
 
         heatmapToolsContainer = new VerticalLayout();
         heatmapBtn.setHasWrapper(true);
+        heatmapBtn.setDescription("Disease Comparisons");
         this.addButton(heatmapBtn, heatmapViewContainer, heatmapToolsContainer, false);
 
         Data_handler.loadDiseaseCategory("All Diseases");
@@ -326,6 +327,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
             }
         };
         bubblechartBtn.updateIcon(logoRes);
+        bubblechartBtn.setDescription("Protein Overview");
 
         if (smallScreen) {
             bubblechartBtn.setWidth(60, Unit.PIXELS);
@@ -355,6 +357,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
             }
         };
         linechartBtn.updateIcon(logoRes);
+        linechartBtn.setDescription("Protein Table");
 
         if (smallScreen) {
             linechartBtn.setWidth(60, Unit.PIXELS);
@@ -380,6 +383,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
                 }
             }
         };
+        peptideInfoBtn.setDescription("Protein Details");
         peptideInfoBtn.updateIcon(logoRes);
         if (smallScreen) {
             peptideInfoBtn.setWidth(60, Unit.PIXELS);
