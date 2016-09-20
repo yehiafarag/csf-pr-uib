@@ -75,7 +75,7 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
         this.setReadOnly(false);
         this.addStyleName("pointer");
         this.addStyleName("midimg");
-        this.setDescription("Switch protein groups");
+        this.setDescription("Switch disease groups");
 
         //init data structure
         updatedComparisonList = new ArrayList<>();

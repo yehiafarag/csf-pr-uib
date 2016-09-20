@@ -174,7 +174,7 @@ public abstract class ComparisonLable extends VerticalLayout implements LayoutEv
 //        headerIContainer.addComponent(titleI);
         ProteinsInformationOverviewLayout proteinInfoLayout = new ProteinsInformationOverviewLayout();
         VerticalLayout protInfoPopup = initPopupLayout(proteinInfoLayout, smallScreen);
-        proteinInfoLayout.updateProteinsForm(quantProtein, quantProtein.getUniprotAccession(), null, quantProtein.getUniprotProteinName());
+        proteinInfoLayout.updateProteinsForm(quantProtein, quantProtein.getUniprotAccession(), quantProtein.getUrl(), quantProtein.getUniprotProteinName());
         tab.addTab(protInfoPopup, "Protein");
 
 //        Label titleII = new Label("Dataset");

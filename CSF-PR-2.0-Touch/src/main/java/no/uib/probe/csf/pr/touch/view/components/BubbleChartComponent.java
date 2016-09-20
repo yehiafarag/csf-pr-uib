@@ -276,15 +276,15 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
             
             @Override
             public void onClick() {
-                if (this.getDescription().equalsIgnoreCase("Hide stable proteins")) {
+                if (this.getDescription().equalsIgnoreCase("Hide equal proteins")) {
                     this.updateIcon(scatterplotUnapplied);
                     significantOnly = true;
-                    this.setDescription("Show stable proteins");
+                    this.setDescription("Show equal proteins");
                 } else {
                     this.updateIcon(scatterplotApplied);
                     
                     significantOnly = false;
-                    this.setDescription("Hide stable proteins");
+                    this.setDescription("Hide equal proteins");
                     
                 }
                 updateChart();
@@ -305,7 +305,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         hideStableBtn.setEnabled(true);
         controlBtnsContainer.addComponent(hideStableBtn);
         controlBtnsContainer.setComponentAlignment(hideStableBtn, Alignment.MIDDLE_CENTER);
-        hideStableBtn.setDescription("Hide stable proteins");
+        hideStableBtn.setDescription("Hide equal proteins");
         
         ImageContainerBtn unselectAllBtn = new ImageContainerBtn() {
             
@@ -413,7 +413,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
 //        fileDownloader.extend(groupSwichBtn);
         controlBtnsContainer.addComponent(exportPdfBtn);
         
-        InformationButton info = new InformationButton("The bubble chart provides an overview of all the proteins found in the currently selected disease group comparisons. The size of each bubble represents the number of proteins in the given comparison and the color represents the trend. To change the order of the groups in a given comparison please click the \"Switch protein groups\" icon in the lower right corner. Select one or more bubbles to display the corresponding proteins.", false);
+        InformationButton info = new InformationButton("The bubble chart provides an overview of all the proteins found in the currently selected disease group comparisons. The size of each bubble represents the number of proteins in the given comparison and the color represents the trend. To change the order of the groups in a given comparison please click the \"Switch disease groups\" icon in the lower right corner. Select one or more bubbles to display the corresponding proteins.", false);
         controlBtnsContainer.addComponent(info);
         if (smallScreen) {
             info.setWidth(25, Unit.PIXELS);

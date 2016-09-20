@@ -86,10 +86,10 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         overviewLabel.addStyleName(ValoTheme.LABEL_SMALL);
         overviewLabel.addStyleName(ValoTheme.LABEL_TINY);
 
-        overviewLabel.setWidth(47, Unit.PIXELS);
+        overviewLabel.setWidth(55, Unit.PIXELS);
         titleLayoutWrapper.addComponent(overviewLabel);
         titleLayoutWrapper.setComponentAlignment(overviewLabel, Alignment.TOP_LEFT);
-        titleLayoutWrapper.setExpandRatio(overviewLabel, 47);
+        titleLayoutWrapper.setExpandRatio(overviewLabel, 55);
 
         SearchingField searchingFieldLayout = new SearchingField() {
 
@@ -103,7 +103,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         };
         titleLayoutWrapper.addComponent(searchingFieldLayout);
         titleLayoutWrapper.setComponentAlignment(searchingFieldLayout, Alignment.TOP_LEFT);
-        titleLayoutWrapper.setExpandRatio(overviewLabel, 166);
+        titleLayoutWrapper.setExpandRatio(searchingFieldLayout, 166);
 //        InfoPopupBtn info = new InfoPopupBtn("The protein table and overview chart give an overview for the selected proteins in the selected comparisons.");
 //        titleLayoutWrapper.addComponent(info);
 //        titleLayoutWrapper.setComponentAlignment(info, Alignment.MIDDLE_CENTER);

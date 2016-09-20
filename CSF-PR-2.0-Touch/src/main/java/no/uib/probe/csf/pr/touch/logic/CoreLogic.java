@@ -41,8 +41,6 @@ public class CoreLogic implements Serializable {
         this.exporter = new Exporter();
 
     }
-    
-    
 
     /**
      * this method responsible for getting the resource overview information
@@ -257,7 +255,7 @@ public class CoreLogic implements Serializable {
 //            String diseaseCategory = comparison.getDiseaseCategory();
             for (QuantProtein quant : comparisonProtMap) {
                 boolean inverted = false;
-                String dsPGrI = comparison.getDatasetMap().get(quant.getDsKey()).getUpdatedDiseaseGroupI();
+                String dsPGrI = comparison.getDatasetMap().get(quant.getDsKey()).getPatientsSubGroup1();
                 String pGrI;
                 String pGrII;
                 if (compGrI.equalsIgnoreCase(dsPGrI)) {
@@ -270,10 +268,15 @@ public class CoreLogic implements Serializable {
                 }
 
                 String protAcc = quant.getUniprotAccession();
+                String url;
 //                System.out.println("at ------------------------------------------------------ >> header "+comparison.getDatasetMap().get(quant.getDsKey()).getPatientsSubGroup1()+"  oreg "+comparison.getOreginalComparisonHeader());
                 if (protAcc.equalsIgnoreCase("") || protAcc.equalsIgnoreCase("Not Available") || protAcc.equalsIgnoreCase("Entry Deleted") || protAcc.equalsIgnoreCase("Entry Demerged") || protAcc.equalsIgnoreCase("NOT RETRIEVED") || protAcc.equalsIgnoreCase("DELETED") || protAcc.trim().equalsIgnoreCase("UNREVIEWED")) {
                     protAcc = quant.getPublicationAccNumber() + " (" + protAcc + ")";
+                    url = null;
 
+                } else {
+
+                    url = "http://www.uniprot.org/uniprot/" + protAcc;
                 }
 
                 if (!comparProtList.containsKey(protAcc)) {
@@ -324,22 +327,22 @@ public class CoreLogic implements Serializable {
                 String uniprotAcc = quant.getUniprotAccession();
                 String protName;
                 String accession;
-                String url;
+                String urlLink;
 //
                 if (uniprotAcc.trim().equalsIgnoreCase("") || uniprotAcc.equalsIgnoreCase("Not Available") || uniprotAcc.equalsIgnoreCase("Entry Deleted") || uniprotAcc.equalsIgnoreCase("Entry Demerged") || uniprotAcc.equalsIgnoreCase("NOT RETRIEVED") || uniprotAcc.equalsIgnoreCase("DELETED") || uniprotAcc.trim().equalsIgnoreCase("UNREVIEWED")) {
                     protName = quant.getPublicationProteinName();
                     accession = protAcc;
-                    url = null;
+                    urlLink = null;
 
                 } else {
                     protName = quant.getUniprotProteinName();
                     accession = quant.getUniprotAccession().trim();
-                    url = "http://www.uniprot.org/uniprot/" + protAcc.toUpperCase();
+                    urlLink = "http://www.uniprot.org/uniprot/" + protAcc.toUpperCase();
                 }
                 if (protName.trim().equalsIgnoreCase("")) {
                     protName = quant.getPublicationProteinName();
                 }
-
+                quant.setUrl(urlLink);
                 comProt.setProteinName(protName);
                 comProt.setProteinAccession(accession);
                 comProt.setUrl(url);
@@ -551,18 +554,22 @@ public class CoreLogic implements Serializable {
             String uniprotAcc = quantProt.getUniprotAccession();
             String protName;
             String accession;
+            String url;
             if (uniprotAcc.trim().equalsIgnoreCase("") || uniprotAcc.equalsIgnoreCase("Not Available") || uniprotAcc.equalsIgnoreCase("Entry Deleted") || uniprotAcc.equalsIgnoreCase("Entry Demerged") || uniprotAcc.equalsIgnoreCase("NOT RETRIEVED") || uniprotAcc.equalsIgnoreCase("DELETED") || uniprotAcc.trim().equalsIgnoreCase("UNREVIEWED")) {
                 protName = quantProt.getPublicationProteinName();
                 accession = quantProt.getPublicationAccNumber() + " (" + uniprotAcc + ")";
+                url = null;
 
             } else {
                 protName = quantProt.getUniprotProteinName();
                 accession = quantProt.getUniprotAccession();
+                url = "http://www.uniprot.org/uniprot/" + accession;
             }
             if (protName.trim().equalsIgnoreCase("")) {
                 protName = quantProt.getPublicationProteinName();
             }
             quantProt.setFinalAccession(accession);
+            quantProt.setUrl(url);
             key = accession.trim() + "__" + protName.trim();
 //            } else {
 //                key = quantProt.getUniprotProteinName().trim();

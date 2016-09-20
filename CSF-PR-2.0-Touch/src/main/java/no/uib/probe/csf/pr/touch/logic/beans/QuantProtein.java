@@ -15,6 +15,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     private int quantifiedProteinsNumber, peptideIdNumb, quantifiedPeptidesNumber, patientsGroupINumber, patientsGroupIINumber, year, filesNum, IdentifiedProteinsNum, dsKey, protKey;
     private String qPeptideKey, peptideSequence, peptideModification, modificationComment, stringFCValue, stringPValue, author, diseaseGroups, pvalueComment, pvalueSignificanceThreshold;
     private String diseaseCategory;
+    private String url;
 private String finalAccession;
 
     public String getFinalAccession() {
@@ -808,6 +809,14 @@ private String finalAccession;
         } else {
             return -1;
         }
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
 }
