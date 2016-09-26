@@ -57,7 +57,7 @@ import org.jfree.util.ShapeUtilities;
  *
  */
 public class LineChart extends AbsoluteLayout {
-
+    
     private final Image chartImg;
     private final AbsoluteLayout chartComponentsLayout;
     private int width, height;
@@ -69,61 +69,61 @@ public class LineChart extends AbsoluteLayout {
     private final Map<String, TrendSymbol> symbolMap;
     private final List<Integer> comparisonTrends;
     private final boolean smallScreen;
-
+    
     public DefaultXYDataset getDataset() {
         return dataset;
     }
-
+    
     public LineChart(int width, int height, boolean smallScreen) {
-
+        
         this.width = width;
         this.height = height;
         this.smallScreen = smallScreen;
         this.setWidth(width, Unit.PIXELS);
         this.setHeight(100, Unit.PERCENTAGE);
-
+        
         this.symbolMap = new LinkedHashMap<>();
         this.comparisonTrends = new ArrayList<>();
-
+        
         chartImg = new Image();
         this.addStyleName("slowslide");
         chartImg.setWidth(100, Unit.PERCENTAGE);
         chartImg.setHeight(100, Unit.PERCENTAGE);
         this.addComponent(chartImg, "left: " + 0 + "px; top: " + 0 + "px;");
-
+        
         chartComponentsLayout = new AbsoluteLayout();
         chartComponentsLayout.setWidth(100, Unit.PERCENTAGE);
         chartComponentsLayout.setHeight(100, Unit.PERCENTAGE);
-
+        
         this.addComponent(chartComponentsLayout, "left: " + 0 + "px; top: " + 0 + "px;");
-
+        
     }
-
+    
     public int getComparisonTrend(int comparisonIndex) {
         return comparisonTrends.get(comparisonIndex);
     }
-
+    
     private String proteinKey;
-
+    
     public void updateData(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, String proteinKey, int custTrend) {
         this.proteinKey = proteinKey;
         this.custTrend = custTrend;
         updateDataset(selectedComparisonsList, proteinKey);
-
+        
         lineChart = generateLineChart();//
         this.selectedComparisonList = selectedComparisonsList;
         minimize(false);
     }
-
+    
     public JFreeChart getLineChart() {
         return lineChart;
     }
-
+    
     public JFreeChart generateThumbChart() {
         lineChart.getXYPlot().getDomainAxis().setVisible(false);
         lineChart.getXYPlot().getRangeAxis().setVisible(false);
         lineChart.getXYPlot().setOutlineVisible(true);
-
+        
         lineChart.setPadding(new RectangleInsets(0, 5, 0, 5));
 
 //        lineChart.getXYPlot().setInsets(new RectangleInsets(5, 0, 0, 5));
@@ -142,28 +142,28 @@ public class LineChart extends AbsoluteLayout {
 //        lineChart.getXYPlot().setRangeGridlinesVisible(true);
 //        lineChart.getXYPlot().setDomainGridlinesVisible(true);
         return lineChart;
-
+        
     }
-
+    
     private DefaultXYDataset dataset;
     private SymbolAxis xAxis;
     private NumberAxis yAxis;
     final String[] tickLabels = new String[]{"Decreased", " ", "Equal", " ", "Increased"};
-
+    
     private void updateDataset(Set<QuantDiseaseGroupsComparison> selectedComparisonList, String key) {
         comparisonTrends.clear();
         dataset = new DefaultXYDataset();
         int compNumber = selectedComparisonList.size();
-
+        
         double[][] linevalues = new double[2][compNumber];
-
+        
         double[] xLineValues = new double[compNumber];
         double[] yLineValues = new double[compNumber];
-
+        
         double trendValue;
-
+        
         int comparisonIndex = 0;
-
+        
         String[] xAxisLabels = new String[selectedComparisonList.size()];
         final Color[] diseaseGroupslabelsColor = new Color[selectedComparisonList.size()];
         int maxLength = -1;
@@ -173,16 +173,16 @@ public class LineChart extends AbsoluteLayout {
             String keyIII = 2 + "_" + key;
             String keyIV = 3 + "_" + key;
             String keyV = 4 + "_" + key;
-
+            
             trendValue = 0.0;
-
+            
             if (comparison.getQuantComparisonProteinMap().containsKey(keyI)) {
-
+                
                 trendValue = comparison.getQuantComparisonProteinMap().get(keyI).getOverallCellPercentValue();
                 comparisonTrends.add(comparison.getQuantComparisonProteinMap().get(keyI).getSignificantTrindCategory());
             } else if (comparison.getQuantComparisonProteinMap().containsKey(keyII)) {
                 trendValue = comparison.getQuantComparisonProteinMap().get(keyII).getOverallCellPercentValue();
-
+                
                 comparisonTrends.add(comparison.getQuantComparisonProteinMap().get(keyII).getSignificantTrindCategory());
             } else if (comparison.getQuantComparisonProteinMap().containsKey(keyIII)) {
                 trendValue = comparison.getQuantComparisonProteinMap().get(keyIII).getOverallCellPercentValue();
@@ -194,13 +194,13 @@ public class LineChart extends AbsoluteLayout {
                 trendValue = comparison.getQuantComparisonProteinMap().get(keyV).getOverallCellPercentValue();
                 comparisonTrends.add(comparison.getQuantComparisonProteinMap().get(keyV).getSignificantTrindCategory());
             } else {
-
+                
                 comparisonTrends.add(6);
             }
-
+            
             xLineValues[comparisonIndex] = comparisonIndex;
             yLineValues[comparisonIndex] = trendValue;
-
+            
             String groupCompTitle = comparison.getComparisonHeader();
             String updatedHeader = groupCompTitle.split(" / ")[0].split("__")[0] + " / " + groupCompTitle.split(" / ")[1].split("__")[0];//+ " ( " + groupCompTitle.split(" / ")[1].split("\n")[1] + " )";
 
@@ -210,9 +210,9 @@ public class LineChart extends AbsoluteLayout {
             }
             diseaseGroupslabelsColor[comparisonIndex] = Color.decode(comparison.getDiseaseCategoryColor());
             comparisonIndex++;
-
+            
         }
-
+        
         linevalues[0] = xLineValues;
         linevalues[1] = yLineValues;
         dataset.addSeries("line", linevalues);
@@ -223,10 +223,10 @@ public class LineChart extends AbsoluteLayout {
         } else {
             font = new Font("Helvetica Neue", Font.PLAIN, 12);
         }
-
+        
         xAxis = new SymbolAxis(null, xAxisLabels) {
             int x = 0;
-
+            
             @Override
             public Paint getTickLabelPaint() {
                 if (x >= diseaseGroupslabelsColor.length) {
@@ -237,10 +237,10 @@ public class LineChart extends AbsoluteLayout {
 //            
 
             private final boolean localfinal = verticalLabels;
-
+            
             @Override
             protected List refreshTicksHorizontal(Graphics2D g2, Rectangle2D dataArea, RectangleEdge edge) {
-
+                
                 if (localfinal) {
                     setVerticalTickLabels(localfinal);
                     return super.refreshTicksHorizontal(g2, dataArea, edge);
@@ -316,23 +316,23 @@ public class LineChart extends AbsoluteLayout {
                 return ticks;
             }
         };
-
+        
         xAxis.setTickLabelFont(font);
-
+        
         xAxis.setLabelInsets(new RectangleInsets(2, 5, 2, 5));
-
+        
         yAxis = new NumberAxis() {
             final Color[] labelsColor = new Color[]{new Color(80, 183, 71), Color.LIGHT_GRAY, new Color(1, 141, 244), Color.LIGHT_GRAY, new Color(204, 0, 0)};
             private int counter = 0;
-
+            
             @Override
             public Paint getTickLabelPaint() {
-
+                
                 if (counter >= 240) {
-
+                    
                     counter = 0;
                 }
-
+                
                 if (counter == 20) {
                     counter++;
                     return labelsColor[0];
@@ -341,7 +341,7 @@ public class LineChart extends AbsoluteLayout {
                     counter++;
                     return labelsColor[0];
                 }
-
+                
                 if (counter == 120) {
                     counter++;
                     return labelsColor[2];
@@ -359,14 +359,14 @@ public class LineChart extends AbsoluteLayout {
                     return labelsColor[4];
                 }
                 counter++;
-
+                
                 return super.getTickLabelPaint(); //To change body of generated methods, choose Tools | Templates.
             }
-
+            
         };
         TickUnits tus = new TickUnits();
         TickUnit unit = new NumberTickUnit(1) {
-
+            
             @Override
             public String valueToString(double value) {
                 if (value == 100.0) {
@@ -380,50 +380,50 @@ public class LineChart extends AbsoluteLayout {
                 }
                 return "";
             }
-
+            
         };
         tus.add(unit);
-
+        
         yAxis.setStandardTickUnits(tus);
         yAxis.setUpperBound(120.0);
         yAxis.setLowerBound(-120.0);
         yAxis.setTickMarksVisible(false);
         yAxis.setAutoRangeStickyZero(false);
-
+        
         yAxis.setTickLabelFont(font);
         xAxis.setGridBandsVisible(false);
         yAxis.setAxisLinePaint(Color.WHITE);
-
+        
     }
-
+    
     private boolean verticalLabels;
-
+    
     private Set<QuantDiseaseGroupsComparison> selectedComparisonList;
-
+    
     public void updateUrserTrend(int userTrend) {
         this.custTrend = userTrend;
         updateDataset(selectedComparisonList, proteinKey);
         lineChart = generateLineChart();//
         minimize(true);
-
+        
     }
-
+    
     private JFreeChart generateLineChart() {
-
+        
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
         renderer.setSeriesPaint(0, Color.GRAY);
         renderer.setUseOutlinePaint(true);
-
+        
         renderer.setSeriesShape(0, ShapeUtilities.createDiamond(4));
         renderer.setSeriesShapesVisible(0, false);
-
+        
         renderer.setSeriesStroke(0, new BasicStroke(
                 1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
                 1.0f, new float[]{10.0f, 6.0f}, 0.0f
         ));
-
+        
         XYPlot xyplot = new XYPlot(dataset, xAxis, yAxis, renderer) {
-
+            
             private int counter = 0;
 //            private int custTrend = -1;
 
@@ -442,80 +442,80 @@ public class LineChart extends AbsoluteLayout {
                             counter++;
                             return customizedUserDataColor[custTrend];
                         }
-
+                        
                     }
                     if (custTrend == 2) {
                         if ((counter >= 110 && counter <= 119) || (counter >= 121 && counter <= 129)) {
                             counter++;
                             return customizedUserDataColor[custTrend];
                         }
-
+                        
                     }
                     if (custTrend == 4) {
                         if ((counter >= 210 && counter <= 219) || (counter >= 221 && counter <= 229)) {
                             counter++;
                             return customizedUserDataColor[custTrend];
                         }
-
+                        
                     }
-
+                    
                 }
                 counter++;
                 return Color.WHITE;
-
+                
             }
-
+            
             private BasicStroke highlitedLineStrok = new BasicStroke(1f);
             private int counterII = 0;
-
+            
             @Override
             public Stroke getRangeGridlineStroke() {
                 if (counterII == 239) {
                     counterII = 0;
                     highlitedLineStrok = new BasicStroke(4f);
                 }
-
+                
                 if (custTrend != -1) {
                     if (custTrend == 0) {
                         if ((counterII >= 10 && counterII <= 19) || (counterII >= 21 && counterII <= 29)) {
                             counterII++;
                             return highlitedLineStrok;
                         }
-
+                        
                     }
                     if (custTrend == 2) {
                         if ((counterII >= 110 && counterII <= 119) || (counterII >= 121 && counterII <= 129)) {
                             counterII++;
                             return highlitedLineStrok;
                         }
-
+                        
                     }
                     if (custTrend == 4) {
                         if ((counterII >= 210 && counterII <= 219) || (counterII >= 221 && counterII <= 229)) {
                             counterII++;
                             return highlitedLineStrok;
                         }
-
+                        
                     }
-
+                    
                 }
                 counterII++;
-
+                
                 return super.getRangeGridlineStroke();
             }
-
+            
             @Override
             public void drawRangeTickBands(Graphics2D g2, Rectangle2D dataArea, List ticks) {
-
+                
                 if (custTrend == -1) {
                     super.drawRangeTickBands(g2, dataArea, ticks);
                     return;
-
+                    
                 }
                 int counterI = 0;
                 List updatedTicksList = new ArrayList();
                 for (Object tick : ticks) {
-
+                    
                     if (tick.toString().equalsIgnoreCase(tickLabels[custTrend])) {
                         for (int i = counterI - 1; i > counterI - 10; i--) {
                             updatedTicksList.add(ticks.get(i));
@@ -530,39 +530,39 @@ public class LineChart extends AbsoluteLayout {
                 Rectangle2D up;
                 if (custTrend == 4) {
                     up = new Rectangle((int) dataArea.getX(), (int) dataArea.getY(), (int) dataArea.getWidth(), (int) dataArea.getHeight());
-
+                    
                 } else if (custTrend == 2) {
                     up = new Rectangle((int) dataArea.getX(), (int) dataArea.getY(), (int) dataArea.getWidth(), (int) dataArea.getHeight());//                    
 //
                 } else {
                     up = new Rectangle((int) dataArea.getX(), (int) dataArea.getY(), (int) dataArea.getWidth(), (int) dataArea.getHeight());
                 }
-
+                
                 super.drawRangeTickBands(g2, up, updatedTicksList); //To change body of generated methods, choose Tools | Templates.
             }
-
+            
         };
         if (custTrend != -1) {
             if (custTrend == 4) {
                 xyplot.setRangeTickBandPaint(customizedUserDataColor[4]);
-
+                
             } else if (custTrend == 0) {
                 xyplot.setRangeTickBandPaint(customizedUserDataColor[0]);
             } else if (custTrend == 2) {
                 xyplot.setRangeTickBandPaint(customizedUserDataColor[2]);//TickBandPaint(customizedUserDataColor[2]);
             }
-
+            
         } else {
             xyplot.setRangeTickBandPaint(Color.WHITE);
         }
-
+        
         JFreeChart jFreeChart = new JFreeChart(null, new Font("Helvetica Neue", Font.PLAIN, 18), xyplot, true);
-
+        
         jFreeChart.setBackgroundPaint(Color.WHITE);
         final XYPlot plot = jFreeChart.getXYPlot();
-
+        
         plot.setDomainGridlinePaint(Color.LIGHT_GRAY);
-
+        
         plot.setDomainGridlinesVisible(true);
         plot.setRangeGridlinesVisible(true);
         plot.setRangeGridlinePaint(Color.LIGHT_GRAY);
@@ -571,10 +571,10 @@ public class LineChart extends AbsoluteLayout {
         jFreeChart.setPadding(new RectangleInsets(0, 0, 0, 0));
         LegendTitle legend = jFreeChart.getLegend();
         legend.setVisible(false);
-
+        
         return jFreeChart;
     }
-
+    
     public void maxmize() {
         if (maxImgUrl == null) {
             lineChart.getXYPlot().getDomainAxis().setVisible(true);
@@ -582,27 +582,27 @@ public class LineChart extends AbsoluteLayout {
             lineChart.getXYPlot().setOutlineVisible(false);
             lineChart.getXYPlot().setRangeGridlinesVisible(true);
             lineChart.getXYPlot().setDomainGridlinesVisible(true);
-
+            
             lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.GRAY);
             lineChart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(
                     1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
                     1.0f, new float[]{10.0f, 6.0f}, 0.0f
             ));
-
+            
             lineChart.setPadding(new RectangleInsets(0, 0, 0, 0));
-
+            
             maxImgUrl = new ExternalResource(this.getChartImage(lineChart, chartRenderingInfo, width, height));
             initLayoutComponents("maxmize");
             chartImg.setSource(maxImgUrl);
             updateComponentLayout("maxmize");
             return;
         }
-
+        
         chartImg.setSource(maxImgUrl);
         updateComponentLayout("maxmize");
-
+        
     }
-
+    
     public void minimize(boolean updateImg) {
         if (minImgUrl == null || updateImg) {
             lineChart.getXYPlot().getDomainAxis().setVisible(false);
@@ -631,31 +631,31 @@ public class LineChart extends AbsoluteLayout {
             chartImg.setSource(minImgUrl);
             return;
         }
-
+        
         chartImg.setSource(minImgUrl);
         updateComponentLayout("minimize");
-
+        
     }
-
+    
     private String getChartImage(JFreeChart chart, ChartRenderingInfo chartRenderingInfo, int width, int height) {
         if (chart == null) {
             return null;
         }
-
+        
         String base64 = "";
         try {
-
+            
             base64 = "data:image/png;base64," + Base64.encodeBase64String(ChartUtilities.encodeAsPNG(chart.createBufferedImage((int) width, (int) height, chartRenderingInfo)));
-
+            
         } catch (IOException ex) {
             System.err.println("at error " + this.getClass() + " line 536 " + ex.getLocalizedMessage());
         }
         return base64;
-
+        
     }
-
+    
     private final String[] tooltipsIcon = new String[]{"All Increased", "Mainly Increased", "Equal", "Mainly Decreased", "All Decreased", "No Quant. Info", "No Data Available "};
-
+    
     private void initLayoutComponents(String mode) {
         if (mode.equalsIgnoreCase("minimize")) {
             for (int i = 0; i < chartRenderingInfo.getEntityCollection().getEntityCount(); i++) {
@@ -672,17 +672,17 @@ public class LineChart extends AbsoluteLayout {
                     String keyI = 0 + "_" + proteinKey;
                     String keyII = 1 + "_" + proteinKey;
                     String keyIII = 2 + "_" + proteinKey;
-
+                    
                     String keyIV = 3 + "_" + proteinKey;
                     String keyV = 4 + "_" + proteinKey;
-
+                    
                     if (doubleTrend == 0.0) {
                         if (gc.getQuantComparisonProteinMap().containsKey(keyI) || gc.getQuantComparisonProteinMap().containsKey(keyII) || gc.getQuantComparisonProteinMap().containsKey(keyIII) || gc.getQuantComparisonProteinMap().containsKey(keyIV) || gc.getQuantComparisonProteinMap().containsKey(keyV)) {
                             trend = 2;
                         } else {
                             trend = 6;
                         }
-
+                        
                     } else if (doubleTrend == 100.0) {
                         trend = 0;
                     } else if (doubleTrend < 100 && doubleTrend > 0.0) {
@@ -691,7 +691,7 @@ public class LineChart extends AbsoluteLayout {
                         trend = 3;
                     } else if (doubleTrend == -100.0) {
                         trend = 4;
-                    }
+                    }                    
                     TrendSymbol square = new TrendSymbol(trend);
                     square.setWidth(12, Unit.PIXELS);
                     square.setHeight(12, Unit.PIXELS);
@@ -700,12 +700,18 @@ public class LineChart extends AbsoluteLayout {
                     square.addParam(mode, position);
                     chartComponentsLayout.addComponent(square, "left: " + (xSer - 3) + "px; top: " + (ySer) + "px;");
                     this.symbolMap.put(doubleTrend + "," + comparisonIndex, square);
-
+                    
                     int dsNumber = gc.getDatasetMap().size();
                     if (trend == 6) {
                         dsNumber = 0;
                     }
-                    String tooltip = gc.getComparisonFullName() + "<br/>" + gc.getDiseaseCategory() + "<br/>Overall trend: " + tooltipsIcon[trend] + "<br/>Datasets included: " + dsNumber;
+                    String header = gc.getComparisonHeader();
+                    String updatedHeader = gc.getComparisonFullName();
+                    if (header.contains("*")) {
+                        updatedHeader = header.split(" / ")[0].split("__")[0] + " / " + header.split(" / ")[1].split("__")[0] + "<br/>" + header.split(" / ")[0].split("__")[1];
+                    }
+                    
+                    String tooltip = updatedHeader + "<br/>Overall trend: " + tooltipsIcon[trend] + "<br/>Datasets included: " + dsNumber;
                     square.setDescription(tooltip);
 
 //
@@ -729,18 +735,18 @@ public class LineChart extends AbsoluteLayout {
 //
                 }
             }
-
+            
         }
-
+        
     }
-
+    
     private void updateComponentLayout(String mode) {
         chartComponentsLayout.removeAllComponents();
         symbolMap.values().stream().forEach((square) -> {
             chartComponentsLayout.addComponent(square, ((ComponentPosition) square.getParam(mode)).getCSSString());
         });
         chartComponentsLayout.markAsDirty();
-
+        
     }
-
+    
 }

@@ -487,7 +487,6 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
 
             updatedGroupsNamesMap.put(diseaseKey, updatedDiseaseGroupsMappingName);
         });
-        System.out.println("at updatedGroupsNamesMap " + updatedGroupsNamesMap.size() + "    " + diseaseGroupsSelectionListMap.size());
 
         updateSystem(updatedGroupsNamesMap);
         popupWindow.close();

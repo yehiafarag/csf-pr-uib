@@ -683,6 +683,10 @@ public class DatasetUtility implements Serializable {
         
     }
 
+    public Map<String, Map<String, String>> getInUse_DiseaseCat_DiseaseGroupMap() {
+        return inUse_DiseaseCat_DiseaseGroupMap;
+    }
+
     /**
      * activate searching layout sub-data handler
      *

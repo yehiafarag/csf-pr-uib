@@ -938,7 +938,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
                     header.select();
                     selectedCells.addAll(header.getIncludedCells());
                     header.getIncludedComparisons().stream().forEach((qdComp) -> {
-                        String kI = qdComp.getOreginalComparisonHeader();
+                        String kI = qdComp.getComparisonHeader();
                         if (kI.startsWith(selectedheader.split("__")[0] + " / ")) {
                             selectedDsList.add(qdComp);
                         }
@@ -979,7 +979,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
                     header.select();
                     selectedCells.addAll(header.getIncludedCells());
                     header.getIncludedComparisons().stream().forEach((qdComp) -> {
-                        String kI = qdComp.getOreginalComparisonHeader();
+                        String kI = qdComp.getComparisonHeader();
                         if (kI.startsWith(selectedheader.split("__")[0] + " / ")) {
                             selectedDsList.add(qdComp);
                         }
@@ -1022,7 +1022,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
                     header.select();
                     selectedCells.addAll(header.getIncludedCells());
                     header.getIncludedComparisons().stream().forEach((qdComp) -> {
-                        String kI = qdComp.getOreginalComparisonHeader();
+                        String kI = qdComp.getComparisonHeader();
                         if (kI.startsWith(selectedheader.split("__")[0] + " / ")) {
                             selectedDsList.add(qdComp);
                         }
@@ -1342,7 +1342,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
      *
      */
     public void selectAll() {
-        comparisonsCellsMap.values().stream().filter((cell) -> (cell.isVisible() && cell.getValue() != 0 && !cell.getComparison().getOreginalComparisonHeader().trim().equalsIgnoreCase("/") && availableComparisonsList.contains(cell.getComparison()))).map((cell) -> {
+        comparisonsCellsMap.values().stream().filter((cell) -> (cell.isVisible() && cell.getValue() != 0 && !cell.getComparison().getComparisonHeader().trim().equalsIgnoreCase("/") && availableComparisonsList.contains(cell.getComparison()))).map((cell) -> {
 
             cell.select();
             return cell;
@@ -1510,7 +1510,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
         }
 
-        comparisonsCellsMap.values().stream().filter((cell) -> (cell.getDiseaseCategory().equalsIgnoreCase(diseaseCategoryName) && cell.isVisible() && cell.getValue() != 0 && !cell.getComparison().getOreginalComparisonHeader().trim().equalsIgnoreCase("/") && availableComparisonsList.contains(cell.getComparison()))).map((cell) -> {
+        comparisonsCellsMap.values().stream().filter((cell) -> (cell.getDiseaseCategory().equalsIgnoreCase(diseaseCategoryName) && cell.isVisible() && cell.getValue() != 0 && !cell.getComparison().getComparisonHeader().trim().equalsIgnoreCase("/") && availableComparisonsList.contains(cell.getComparison()))).map((cell) -> {
 
             cell.select();
             return cell;

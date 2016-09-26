@@ -103,6 +103,17 @@ public abstract class StudiesInformationWindow extends VerticalLayout implements
             return;
         }
         publicationPopupLayout.setPublicationData(publicationList);
+        tab.addSelectedTabChangeListener((TabSheet.SelectedTabChangeEvent event) -> {
+            if (event.getTabSheet().getTabPosition((tab.getTab(tab.getSelectedTab()))) == 0) {
+                System.out.println("at selected tab is dataset");
+//                popupWindow.setHeight(studiesPopupLayout.getLayoutHeight()+100, Unit.PIXELS);
+            } else {
+//                popupWindow.setHeight(publicationPopupLayout.getLayoutHeight()+100, Unit.PIXELS);
+            }
+
+        });
+//        popupWindow.setHeight(studiesPopupLayout.getLayoutHeight()+100, Unit.PIXELS);
+
     }
 
     public void updateData(Collection<QuantDatasetObject> dsObjects) {
@@ -119,7 +130,8 @@ public abstract class StudiesInformationWindow extends VerticalLayout implements
         }
 
     }
-    public abstract List<Object[]>  updatePublications(Set<String>pumedId);
+
+    public abstract List<Object[]> updatePublications(Set<String> pumedId);
 
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {

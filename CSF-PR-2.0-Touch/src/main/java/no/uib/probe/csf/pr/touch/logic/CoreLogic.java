@@ -195,7 +195,7 @@ public class CoreLogic implements Serializable {
      * @param selectedQuantComparisonsList selected comparisons
      * @return updated quant comparisons list
      */
-    public Set<QuantDiseaseGroupsComparison> updateComparisonQuantProteins(Set<QuantDiseaseGroupsComparison> selectedQuantComparisonsList) {
+    public Set<QuantDiseaseGroupsComparison> updateComparisonQuantProteins(Set<QuantDiseaseGroupsComparison> selectedQuantComparisonsList, Map<String, Map<String, String>> inUse_DiseaseCat_DiseaseGroupMap) {
 
         Set<QuantDiseaseGroupsComparison> updatedSelectedComparisonList = new LinkedHashSet<>();
         Set<QuantProtein> fullComparisonProtMap = new HashSet<>();
@@ -249,8 +249,13 @@ public class CoreLogic implements Serializable {
             }
 
             Map<String, QuantComparisonProtein> comparProtList = new HashMap<>();
-
-            String compGrI = comparison.getOreginalComparisonHeader().split(" / ")[0];
+            String compGrI = comparison.getComparisonHeader().split(" / ")[0].split("__")[0];
+            Set<String> subGroupSet = new HashSet<>();
+            for (String Key : inUse_DiseaseCat_DiseaseGroupMap.get(comparison.getDiseaseCategory()).keySet()) {
+                if (compGrI.equalsIgnoreCase(inUse_DiseaseCat_DiseaseGroupMap.get(comparison.getDiseaseCategory()).get(Key))) {
+                    subGroupSet.add(Key);
+                }
+            }
 
 //            String diseaseCategory = comparison.getDiseaseCategory();
             for (QuantProtein quant : comparisonProtMap) {
@@ -258,7 +263,7 @@ public class CoreLogic implements Serializable {
                 String dsPGrI = comparison.getDatasetMap().get(quant.getDsKey()).getPatientsSubGroup1();
                 String pGrI;
                 String pGrII;
-                if (compGrI.equalsIgnoreCase(dsPGrI)) {
+                if (subGroupSet.contains(dsPGrI)) {
                     pGrI = comparison.getDatasetMap().get(quant.getDsKey()).getPatientsSubGroup1();
                     pGrII = comparison.getDatasetMap().get(quant.getDsKey()).getPatientsSubGroup2();
                 } else {
@@ -301,7 +306,6 @@ public class CoreLogic implements Serializable {
 
                     if (quant.getStringFCValue().equalsIgnoreCase("Decreased") || quant.getStringFCValue().equalsIgnoreCase("Decrease")) {
                         comProt.addDown((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
-
                     } else if (quant.getStringFCValue().equalsIgnoreCase("Increased") || quant.getStringFCValue().equalsIgnoreCase("Increase")) {
                         comProt.addUp((quant.getPatientsGroupINumber() + quant.getPatientsGroupIINumber()), quant.getDsKey(), significantPValue);
                     } else if (quant.getStringFCValue().equalsIgnoreCase("Not Provided")) {
@@ -328,7 +332,7 @@ public class CoreLogic implements Serializable {
                 String protName;
                 String accession;
                 String urlLink;
-//
+               
                 if (uniprotAcc.trim().equalsIgnoreCase("") || uniprotAcc.equalsIgnoreCase("Not Available") || uniprotAcc.equalsIgnoreCase("Entry Deleted") || uniprotAcc.equalsIgnoreCase("Entry Demerged") || uniprotAcc.equalsIgnoreCase("NOT RETRIEVED") || uniprotAcc.equalsIgnoreCase("DELETED") || uniprotAcc.trim().equalsIgnoreCase("UNREVIEWED")) {
                     protName = quant.getPublicationProteinName();
                     accession = protAcc;
@@ -440,7 +444,7 @@ public class CoreLogic implements Serializable {
             proteinsByTrendMap.put(5, new HashSet<>());
             comparProtList.keySet().stream().forEach((Key) -> {
                 QuantComparisonProtein temp = comparProtList.get(Key);
-                sortedcomparProtList.put((temp.getHighSignificant() + "_" + Key), temp);
+                sortedcomparProtList.put((temp.getSignificantTrindCategory()+ "_" + Key), temp);
                 temp.finalizeQuantData();
                 Set<QuantComparisonProtein> set = proteinsByTrendMap.get(temp.getSignificantTrindCategory());
 //                 if(temp.getProteinAccession().equalsIgnoreCase("P10451"))

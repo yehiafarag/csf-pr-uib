@@ -47,10 +47,6 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
     private final Set<ProteinSequenceContainer> proteinSeqSet;
     int proteinSequenceContainerWidth;
 
-    private ThemeResource showAllRes = new ThemeResource("img/show_selected.png");
-
-    private ThemeResource showSelectedeRes = new ThemeResource("img/show_all.png");
-    private boolean hideCheckedColumn = false;
 
     public final void hideCheckedColumn(boolean hide) {
 
@@ -84,7 +80,7 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
         this.addComponent(peptideSequenceTable);
         this.peptideSequenceTable.addStyleName(ValoTheme.TABLE_SMALL);
 
-        peptideSequenceTable.setSelectable(true);
+        peptideSequenceTable.setSelectable(false);
         peptideSequenceTable.setSortEnabled(false);
         peptideSequenceTable.setColumnReorderingAllowed(false);
         peptideSequenceTable.setColumnCollapsingAllowed(true);
@@ -253,6 +249,7 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
                     if (quantProt.getStringFCValue().equalsIgnoreCase("Increased")) {
                         trend = 0;
                     } else if (quantProt.getStringFCValue().equalsIgnoreCase("Decreased")) {
+                        System.out.println("at quantProt.getStringPValue() "+quantProt.getStringPValue());
                         trend = 4;
                     }
 

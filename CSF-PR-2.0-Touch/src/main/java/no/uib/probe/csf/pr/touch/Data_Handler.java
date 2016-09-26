@@ -237,7 +237,7 @@ public class Data_Handler implements Serializable {
      * @return updated quant comparisons list
      */
     public Set<QuantDiseaseGroupsComparison> updateComparisonQuantProteins(Set<QuantDiseaseGroupsComparison> selectedQuantComparisonsList) {
-        return coreLogic.updateComparisonQuantProteins(selectedQuantComparisonsList);
+        return coreLogic.updateComparisonQuantProteins(selectedQuantComparisonsList,Dataset_Util.getInUse_DiseaseCat_DiseaseGroupMap());
 
     }
 
