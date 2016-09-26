@@ -76,29 +76,29 @@ public class InformationField extends VerticalLayout {
 
             if (stringValue == null || stringValue.trim().equalsIgnoreCase("") || stringValue.equalsIgnoreCase("-1") || stringValue.equalsIgnoreCase("Not Available")) {
 //            this.setVisible(false);
-                valueLabel.setCaption("<textarea cols='100' rows='5' style='text-align: center ; readonly>N/A</textarea>");
+                valueLabel.setCaption("<textarea cols='100' rows='5' style='text-align: left;' readonly>N/A</textarea>");
                 valueLabel.setStyleName("valuelabel");
                 return;
             }
-            if (stringValue.contains("Increase")) {
+            else if (stringValue.contains("Increase")) {
                 valueLabel.setCaption("<textarea cols='100' rows='5'  readonly>"+stringValue+ "</textarea>");
-                valueLabel.setStyleName("redvaluelabel");
+                valueLabel.addStyleName("redvaluelabel");
                 return;
 
             }
-            if (stringValue.contains("Decrease")) {
+            else if (stringValue.contains("Decrease")) {
                 valueLabel.setCaption("<textarea cols='100' rows='5'  readonly>"+stringValue+ "</textarea>");
-                valueLabel.setStyleName("greenvaluelabel");
+                valueLabel.addStyleName("greenvaluelabel");
                 return;
 
             }
-            if (stringValue.contains("Significant (") && !stringValue.contains("Not Significant (")) {
+            else if (stringValue.contains("Significant (") && !stringValue.contains("Not Significant (")) {
                 valueLabel.setCaption("<textarea cols='100' rows='5'  readonly>"+stringValue+ "</textarea>");
-                valueLabel.setStyleName("bluevaluelabel");
+                valueLabel.addStyleName("bluevaluelabel");
                 return;
 
             }
-            if (stringValue.contains("</font>")) {
+            else if (stringValue.contains("</font>")) {
                 valueLabel.setCaption(""+stringValue+ "");
             } else if (stringValue.toCharArray().length > 60) {
 
@@ -119,12 +119,12 @@ public class InformationField extends VerticalLayout {
                 valueLabel.setCaption("<textarea cols='100' rows='5'  readonly>"+stringValue+ "</textarea>");
             }
             if (urlAddress != null) {
-                valueLabel.setStyleName("link");
+                valueLabel.addStyleName("link");
                 valueLabel.addStyleName("valuelink");
                 valueLabel.addStyleName("pointer");
                 valueLabel.setResource(new ExternalResource(urlAddress));
             } else {
-                valueLabel.setStyleName("valuelabel");
+                valueLabel.addStyleName("valuelabel");
             }
         }
 //        this.setVisible(true);

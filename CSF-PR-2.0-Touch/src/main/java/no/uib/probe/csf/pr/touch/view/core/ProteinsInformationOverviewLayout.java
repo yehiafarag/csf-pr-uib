@@ -106,7 +106,7 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
 
     public void updateProteinsForm(QuantProtein quantProtein, String accession, String url, String protName) {
 
-        System.out.println("url is "+url);
+        idPeptidesNumber.setValue(quantProtein.getQuantifiedPeptidesNumber(), null);
         accsession.setValue(accession, url);
         name.setValue(protName, null);
         pvalueSignificanceThreshold.setVisible(true);
@@ -126,6 +126,7 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
         }
         pValue.setValue(pval, null);
 
+        System.out.println("stat comm ("+quantProtein.getPvalueComment()+")" );
         pValueComm.setValue(quantProtein.getPvalueComment(), null);
 
         String strFoldChange;

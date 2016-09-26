@@ -13495,20 +13495,44 @@ div.v-layout.v-horizontal.v-widget {
     color:gray !important;
     cursor:default !important;
 }
-.v-link-redvaluelabel{
+.v-link-redvaluelabel textArea{
     font-size:12px;
     text-decoration: none !important;    
-    color:red !important;    
+    color:red !important; 
+     resize: none !important;
+    border:none !important;
 }
-.v-link-greenvaluelabel{
+.v-link-greenvaluelabel textArea{
     font-size:12px;
     text-decoration: none !important;
-    color:#009900 !important;    
+    color:#009900 !important; 
+     resize: none !important;
+    border:none !important;
 }
-.v-link-bluevaluelabel{
+.v-link-bluevaluelabel textArea{
     font-size:12px;
     text-decoration: none !important;
-    color:blue !important;    
+    color:blue !important;  
+    resize: none !important;
+    border:none !important;
+}
+.v-link-redvaluelabel textArea:focus{
+
+    outline:none;
+    cursor:default;
+
+}
+.v-link-greenvaluelabel textArea:focus{
+
+    outline:none;
+    cursor:default;
+
+}
+.v-link-bluevaluelabel textArea:focus{
+
+    outline:none;
+    cursor:default;
+
 }
 .valuelabel textArea{
     font-size:12px;
