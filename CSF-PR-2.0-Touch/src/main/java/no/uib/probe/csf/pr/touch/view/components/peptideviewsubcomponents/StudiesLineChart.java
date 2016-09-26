@@ -529,7 +529,9 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
                 TrendSymbol symbol = new TrendSymbol(trend);
                 double scale = Math.max(this.scaleValues(numPatients, maxPatientsNumber, 100, 0), 1);
                 int w = (int) (12 * scale);
-                String tooltip = comparison.getComparisonHeader().replace("__" + comparison.getDiseaseCategory(), "") + "<br/>" + comparison.getDiseaseCategory() + "<br/>#Patients :" + numPatients;//+ "<br/>Datasets included: " + dsNumber;
+                
+                
+                String tooltip = comparison.getComparisonFullName() + "<br/>" + comparison.getDiseaseCategory() + "<br/>#Patients :" + numPatients;//+ "<br/>Datasets included: " + dsNumber;
 
                 symbol.setDescription(tooltip);
                 symbol.setWidth(12, Unit.PIXELS);
@@ -841,7 +843,7 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
                 } else {
                     square.addStyleName("pointer");
                 }
-                String tooltip = gc.getComparisonHeader().replace("__" + gc.getDiseaseCategory(), "") + "<br/>" + gc.getDiseaseCategory() + "<br/>Overall trend: " + tooltipsIcon[trend];//+ "<br/>Datasets included: " + dsNumber;
+                String tooltip = gc.getComparisonFullName() + "<br/>" + gc.getDiseaseCategory() + "<br/>Overall trend: " + tooltipsIcon[trend];//+ "<br/>Datasets included: " + dsNumber;
                 square.setDescription(tooltip);
                 square.addLayoutClickListener(StudiesLineChart.this);
 

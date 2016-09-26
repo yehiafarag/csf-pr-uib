@@ -256,6 +256,7 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
                 }
 
                 TrendSymbol symbol = new TrendSymbol(trend);
+                symbol.addStyleName("pointer");
                 symbol.setWidth(12, Unit.PIXELS);
                 symbol.setHeight(12, Unit.PIXELS);
 

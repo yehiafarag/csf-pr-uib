@@ -42,6 +42,7 @@ public abstract class ComparisonLable extends VerticalLayout implements LayoutEv
 
         this.setHeightUndefined();
         this.setSpacing(false);
+        this.addStyleName("pointer");
         this.addLayoutClickListener(ComparisonLable.this);
         String[] headerI = comparison.getComparisonHeader().replace("__" + comparison.getDiseaseCategory(), "").split(" / ");
         String diseaseColor = comparison.getDiseaseCategoryColor();
@@ -80,7 +81,8 @@ public abstract class ComparisonLable extends VerticalLayout implements LayoutEv
         labelII.setContentMode(ContentMode.HTML);
         this.addComponent(labelII);
         this.setComponentAlignment(labelII, Alignment.TOP_CENTER);
-        this.setDescription("View comparison details <br/>" + headerI[0] + " / " + headerI[1] + "<br/>" + comparison.getDiseaseCategory());
+        
+        this.setDescription("View comparison details <br/>" + comparison.getComparisonFullName() + "<br/>" + comparison.getDiseaseCategory());
 
         VerticalLayout popupBody = new VerticalLayout();
         popupBody.setWidth(100, Unit.PERCENTAGE);

@@ -44,7 +44,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
     }
 
     private final VerticalLayout datasetInfoForm;
-    private InformationField uQuantProteinsNum, uQuantPeptidesNum, quantProteinsNum, quantPeptidesNum, diseaseCategory, pumedId, rawData, analyticalMethod, typeOfStudy, shotgunTargeted, enzyme, sampleType, technology, quantificationBasis, patientsGroup1Number, patientsGroup2Number, patientsGroup1, patientsGroup2, patientssubGroup1, patientsCommGroup1, patientssubGroup2, patientsCommGroup2, identifiedProteinsNumber, quantifiedProteinsNumber, sampleMatching, analyticalApproach, normalization_strategy;
+    private InformationField  quantBasisComment, uQuantProteinsNum, uQuantPeptidesNum, quantProteinsNum, quantPeptidesNum, diseaseCategory, pumedId, rawData, analyticalMethod, typeOfStudy, shotgunTargeted, enzyme, sampleType, technology, quantificationBasis, patientsGroup1Number, patientsGroup2Number, patientsGroup1, patientsGroup2, patientssubGroup1, patientsCommGroup1, patientssubGroup2, patientsCommGroup2, identifiedProteinsNumber, quantifiedProteinsNumber, sampleMatching, analyticalApproach, normalization_strategy;
 
     private VerticalLayout initQuantDatasetInformationLayout() {
 
@@ -102,6 +102,11 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
 
         quantificationBasis = new InformationField("Quantification Basis");
         rowIII.addComponent(quantificationBasis);
+        
+        
+        quantBasisComment = new InformationField("Quantification Basis Comment");
+        rowIII.addComponent(quantBasisComment);
+        
 
         identifiedProteinsNumber = new InformationField("#Identified Proteins");
         rowIII.addComponent(identifiedProteinsNumber);
@@ -109,8 +114,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         quantifiedProteinsNumber = new InformationField("#Quantified Proteins");
         rowIII.addComponent(quantifiedProteinsNumber);
 
-        sampleMatching = new InformationField("Sample Matching");
-        rowIII.addComponent(sampleMatching);
+        
 
         HorizontalLayout rowIV = new HorizontalLayout();
         rowIV.setWidth(100, Unit.PERCENTAGE);
@@ -163,6 +167,9 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         }
         mainContainer.addComponent(rowVI);
 
+        
+        sampleMatching = new InformationField("Sample Matching");
+        rowVI.addComponent(sampleMatching);
         normalization_strategy = new InformationField("Normalization Strategy");
         normalization_strategy.setSmallScreen(smallScreen);
         rowVI.addComponent(normalization_strategy);
@@ -173,8 +180,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         diseaseCategory = new InformationField("Disease Category");
         rowVI.addComponent(diseaseCategory);
 
-        quantProteinsNum = new InformationField("#Proteins");
-        rowVI.addComponent(quantProteinsNum);
+       
 //
 
         HorizontalLayout rowVII = new HorizontalLayout();
@@ -183,7 +189,9 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
             rowVII.setHeight(h, Unit.PIXELS);
         } else {
             rowVII.setHeightUndefined();
-        }
+        } 
+        quantProteinsNum = new InformationField("#Proteins");
+        rowVII.addComponent(quantProteinsNum);
         mainContainer.addComponent(rowVII);
 
         quantPeptidesNum = new InformationField("#Peptides");
@@ -235,7 +243,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         quantifiedProteinsNumber.setValue(quantDs.getQuantifiedProteinsNumber() + "", null);
 
         sampleMatching.setValue(quantDs.getSampleMatching() + "", null);
-//        quantBasisComment.setValue(dataset.getQuantBasisComment() + "", null);
+        quantBasisComment.setValue(quantDs.getQuantBasisComment() + "", null);
         analyticalApproach.setValue(quantDs.getAnalyticalApproach() + "", null);
         normalization_strategy.setValue(quantDs.getNormalizationStrategy(), null);
 

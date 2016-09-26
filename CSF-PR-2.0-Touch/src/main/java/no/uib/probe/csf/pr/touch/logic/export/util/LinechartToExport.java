@@ -6,9 +6,7 @@
 package no.uib.probe.csf.pr.touch.logic.export.util;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.LayoutManager;
 import java.util.Set;
 import javax.swing.JLabel;
 import javax.swing.JPanel;

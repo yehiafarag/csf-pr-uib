@@ -1,15 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package no.uib.probe.csf.pr.touch.view.core;
 
-import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.Reindeer;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -99,7 +92,6 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
         additionalComments = new InformationField("Additional Comments");
         rowIII.addComponent(additionalComments);
 
-        rowIII.addComponent(new VerticalLayout());
 
         return mainContainer;
     }
@@ -126,7 +118,6 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
         }
         pValue.setValue(pval, null);
 
-        System.out.println("stat comm ("+quantProtein.getPvalueComment()+")" );
         pValueComm.setValue(quantProtein.getPvalueComment(), null);
 
         String strFoldChange;
@@ -152,9 +143,7 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
         this.roc.setValue(rocv, null);
 
         int quantPepNumber = quantProtein.getQuantifiedPeptidesNumber();
-        if (quantPepNumber > 0) {
             quantPeptidesNumber.setValue(quantPepNumber, null);
-        }
         quantBasisComment.setValue(quantProtein.getQuantBasisComment() + "", null);
 
         this.proteinsForm.setVisible(true);
