@@ -203,8 +203,8 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         uQuantPeptidesNum = new InformationField("#Dataset Specific Peptides");
         rowVII.addComponent(uQuantPeptidesNum);
 
-        InformationField emptyField = new InformationField("");
-        rowVII.addComponent(emptyField);
+//        InformationField emptyField = new InformationField("");
+//        rowVII.addComponent(emptyField);
 
         return mainContainer;
     }

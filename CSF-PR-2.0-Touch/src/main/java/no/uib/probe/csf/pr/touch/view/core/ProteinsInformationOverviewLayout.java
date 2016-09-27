@@ -91,6 +91,8 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
 
         additionalComments = new InformationField("Additional Comments");
         rowIII.addComponent(additionalComments);
+        
+        rowIII.addComponent(new VerticalLayout());
 
 
         return mainContainer;

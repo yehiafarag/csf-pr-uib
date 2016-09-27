@@ -6,6 +6,7 @@
 package no.uib.probe.csf.pr.touch;
 
 import com.itextpdf.awt.DefaultFontMapper;
+import com.itextpdf.awt.PdfGraphics2D;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
@@ -212,9 +213,9 @@ public class DataExporter implements Serializable {
 
         return null;
     }
+    private final Font font = new Font("Helvetica, Arial", Font.PLAIN, 12);
 
     public byte[] exportBubbleChart(JFreeChart bubbleChart) {
-        Font font = new Font("Helvetica, Arial", Font.PLAIN, 12);
 
         try {
 
@@ -295,16 +296,12 @@ public class DataExporter implements Serializable {
             } else {
                 file.createNewFile();
             }
-
-            Document document = new Document(new Rectangle(height, width));
+            Document document = new Document(new Rectangle(width, height));
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
             document.open();
-            document.newPage();
-            PdfContentByte contentByte = writer.getDirectContent();
-            PdfTemplate template;
-            template = contentByte.createTemplate(height, width);
-            document.newPage();
-            Graphics2D g2d = template.createGraphics(height, width);
+            PdfContentByte canvas = writer.getDirectContent();
+            PdfTemplate template = canvas.createTemplate(width, height);
+            Graphics2D g2d = new PdfGraphics2D(template, width, height);
             g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
@@ -313,130 +310,29 @@ public class DataExporter implements Serializable {
             g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
             g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
             g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-//            g2d.translate(32, 10);
 
-            LinechartToExport chartPanel = new LinechartToExport(height, width-50,selectedComparisonsList, proteinKey, custTrend);
+            JLabel header = new JLabel("Studies Chart");
+            header.setFont(font);
+            header.setForeground(Color.GRAY);
+            header.setSize(width, 37);
+            header.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            header.setOpaque(false);
+            header.setVisible(true);
+            header.paint(g2d);
+            g2d.translate(0, 42);
+            LinechartToExport chartPanel = new LinechartToExport(width-50, 380, selectedComparisonsList, proteinKey, custTrend);
             chartPanel.print(g2d);
-//          
-//            Font font = new Font("Helvetica, Arial", Font.PLAIN, 12);
-//
-//            JPanel container = new JPanel();
-//            container.setLayout(null);
-//            container.setVisible(true);
-//            container.setBackground(Color.WHITE);
-//            int width = img.getWidth() + 20;
-//            int y = 10;
-//            int x = 0;
-//            container.setSize(new Dimension(width, height));
-//
-//            JLabel header = new JLabel("Overview Chart");
-//            header.setFont(font);
-//            header.setForeground(Color.GRAY);
-//            header.setSize(width, 37);
-//            header.setLocation(x, y);
-//            header.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-//            header.setOpaque(false);
-//            header.setVisible(true);
-//            container.add(header);
-//            x += 10;
-//            y += 40;
-//
-//            JLabel label = new JLabel(new ImageIcon(img));
-//            label.setLocation(x, y);
-//            label.setSize(img.getWidth(), img.getHeight());
-//            label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-//            label.setOpaque(true);
-//            label.setVisible(true);
-//            container.add(label);
-//
-//            y += img.getHeight();
-//
-//            JLabel peptidesOverviewHeaderLabel = new JLabel("Peptides Details (Sequence Coverage)");
-//            peptidesOverviewHeaderLabel.setFont(font);
-//            peptidesOverviewHeaderLabel.setForeground(Color.GRAY);
-//            peptidesOverviewHeaderLabel.setSize(width, 37);
-//            peptidesOverviewHeaderLabel.setLocation(0, y);
-//            peptidesOverviewHeaderLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-//            peptidesOverviewHeaderLabel.setOpaque(false);
-//            peptidesOverviewHeaderLabel.setVisible(true);
-//            container.add(peptidesOverviewHeaderLabel);
-//
-//            y += 40;
-//
-//            document.newPage();
-//            g2d = template.createGraphics(width, height);
-//            x = 10;
-//            y = 10;
-//
-//            for (ProteinSequenceContainer peptidesInfo : proteinSeqSet) {
-//
-//                ProteinSequenceExportContainer coverage = new ProteinSequenceExportContainer(peptidesInfo.getSequence(), peptidesInfo.getQuantPepSet(), width - 20, peptidesInfo.getDsID(), peptidesInfo.getProteinName());
-//                coverage.setLocation(x, y);
-//                y += coverage.getHeight() + 10;
-//                coverage.print(g2d);
-//                g2d.translate(0, y);
-//
-////                PeptidesSequenceContainer peptidesSequenceContainer = new PeptidesSequenceContainer(peptidesInfo, csfFolder.getParent(), pageWidth);
-////                starty = peptidesSequenceContainer.getCurrentHeight() + 10;
-////                if (starty <= availableSpace) {
-////                    Image jpepImg = Image.getInstance(peptidesSequenceContainer.toImg(), null);
-////                    jpepImg.setDpi(360, 360);
-////                    jpepImg.scalePercent(100);
-////                    jpepImg.setCompressionLevel(0);
-////                    jpepImg.scalePercent(90);
-////                    document.add(jpepImg);
-////                } else {
-////                   
-////                    Image jpepImg = Image.getInstance(peptidesSequenceContainer.toImg(), null);
-////                    jpepImg.setDpi(360, 360);
-////                    jpepImg.scalePercent(90);
-////                    jpepImg.setCompressionLevel(0);
-////                    document.add(jpepImg);
-////                }
-//            }
 
             g2d.dispose();
-            contentByte.addTemplate(template, 0, 0);
 
-            /// peptides sequences
-//            template = contentByte.createTemplate(width - 20, height);
-//            g2d = template.createGraphics(width, height);
+//        for (int p = 0; p < pages; ) {
+//            p++;
+            canvas.addTemplate(template, 0, 0);
 //            document.newPage();
-//            g2d.translate(32, 0);
-//
-//            int availableSpace = height - 10 - 37;
+//        }
 
-//            for (ProteinInformationDataForExport peptidesInfo : peptidesSet) {
-//                PeptidesSequenceContainer peptidesSequenceContainer = new PeptidesSequenceContainer(peptidesInfo, csfFolder.getParent(), pageWidth);
-//                starty = peptidesSequenceContainer.getCurrentHeight() + 10;
-//                if (starty <= availableSpace) {
-//                    Image jpepImg = Image.getInstance(peptidesSequenceContainer.toImg(), null);
-//                    jpepImg.setDpi(360, 360);
-//                    jpepImg.scalePercent(100);
-//                    jpepImg.setCompressionLevel(0);
-//                    jpepImg.scalePercent(90);
-//                    document.add(jpepImg);
-//                } else {
-//                    document.newPage();
-//                    Image jpepImg = Image.getInstance(peptidesSequenceContainer.toImg(), null);
-//                    jpepImg.setDpi(360, 360);
-//                    jpepImg.scalePercent(90);
-//                    jpepImg.setCompressionLevel(0);
-//                    document.add(jpepImg);
-//                }
-//            }
-//            g2d.dispose();
-//            contentByte.addTemplate(template, 0, 0);
             document.close();
 
-//            ChartPanel chart = new ChartPanel(lineChart);
-//            chart.setSize(new Dimension(width - 100, 500));
-//            chart.setBackground(Color.WHITE);
-//            chart.setLocation(10, 50);
-//            container.add(chart);
-//            g2d.dispose();
-//            contentByte.addTemplate(template, 0, 0);
-//            document.close();
             byte fileData[] = IOUtils.toByteArray(new FileInputStream(file));
             return fileData;
 

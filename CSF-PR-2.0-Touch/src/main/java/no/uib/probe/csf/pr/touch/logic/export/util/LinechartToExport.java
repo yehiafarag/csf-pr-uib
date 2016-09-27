@@ -23,23 +23,10 @@ public class LinechartToExport extends JPanel {
         this.setLayout(null);
         this.setBackground(Color.WHITE);
         this.setVisible(true);
-        this.setSize(width, height);
-
-        Font font = new Font("Helvetica, Arial", Font.PLAIN, 12);
+        this.setSize(width, height); 
 
         int y = 10;
-        int x = 0;
-        JLabel header = new JLabel("Overview Chart");
-        header.setFont(font);
-        header.setForeground(Color.GRAY);
-        header.setSize(width, 37);
-        header.setLocation(x, y);
-        header.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        header.setOpaque(false);
-        header.setVisible(true);
-        this.add(header);
-        x += 10;
-        y += 40;
+        int x = 0;    
 
         ExportStudiesLineChart lineChart = new ExportStudiesLineChart(width, height);
         lineChart.updateData(selectedComparisonsList, proteinKey, custTrend);

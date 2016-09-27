@@ -5,10 +5,7 @@
  */
 package no.uib.probe.csf.pr.touch.logic.export.util;
 
-import com.vaadin.event.LayoutEvents;
-import com.vaadin.server.ExternalResource;
 import com.vaadin.server.Sizeable.Unit;
-import com.vaadin.ui.AbsoluteLayout.ComponentPosition;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -46,8 +43,6 @@ import org.jfree.chart.axis.Tick;
 import org.jfree.chart.axis.TickUnit;
 import org.jfree.chart.axis.TickUnits;
 import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.entity.ChartEntity;
-import org.jfree.chart.entity.XYItemEntity;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.chart.title.LegendTitle;
@@ -66,27 +61,23 @@ import org.jfree.util.ShapeUtilities;
  * overall absTrend and studies information
  *
  */
-public  class ExportStudiesLineChart {
+public class ExportStudiesLineChart {
 
-    public String getProteinName() {
-        return proteinName;
-    }
-
-    public Set<QuantDiseaseGroupsComparison> getOrderedComparisonList(boolean trendOreder) {
-
-        if (trendOreder) {
-            System.out.println("at thi is orderd one");
-            return orderedComparisonList;
-        } else {
-            return selectedComparisonList;
-        }
-    }
-    
-    public BufferedImage getBufferedImg(){
-        return bufferedChartImg;
-    }
-
-
+//    public String getProteinName() {
+//        return proteinName;
+//    }
+//    public Set<QuantDiseaseGroupsComparison> getOrderedComparisonList(boolean trendOreder) {
+//
+//        if (trendOreder) {
+//            System.out.println("at thi is orderd one");
+//            return orderedComparisonList;
+//        } else {
+//            return selectedComparisonList;
+//        }
+//    }
+//    public BufferedImage getBufferedImg() {
+//        return bufferedChartImg;
+//    }
     private final int width, height;
     private int custTrend = -1;
     private final Color[] customizedUserDataColor = new Color[]{Color.decode("#e5ffe5"), Color.WHITE, Color.decode("#e6f4ff"), Color.WHITE, Color.decode("#ffe5e5")};
@@ -102,10 +93,9 @@ public  class ExportStudiesLineChart {
         this.symbolMap = new LinkedHashMap<>();
         this.comparisonTrends = new ArrayList<>();
 
-       
     }
     private String proteinKey;
-    private String proteinName;
+//    private String proteinName;
 
     private int gridcounter = 0;
     private int gridcounterII = 0;
@@ -120,7 +110,7 @@ public  class ExportStudiesLineChart {
         this.gridcounter = 0;
         this.gridcounterII = 0;
         this.selectedComparisonList = selectedComparisonsList;
-        proteinName = null;
+//        proteinName = null;
 
         this.updateDataset(selectedComparisonsList, proteinKey);
 
@@ -133,11 +123,10 @@ public  class ExportStudiesLineChart {
 
         }
         chartPanel = new ChartPanel(lineChart);
-        chartPanel.setSize(width,height);
+        chartPanel.setSize(width, height);
 
-        rePaintChart(selectedComparisonsList);
-        this.orderedComparisonList = getOrderStudiesByTrend();
-
+//        rePaintChart(selectedComparisonsList);
+//        this.orderedComparisonList = getOrderStudiesByTrend();
     }
 
     private void rePaintChart(Set<QuantDiseaseGroupsComparison> comparisonsList) {
@@ -150,7 +139,7 @@ public  class ExportStudiesLineChart {
                 1.0f, new float[]{10.0f, 6.0f}, 0.0f
         ));
         lineChart.setPadding(new RectangleInsets(0, 0, 0, 0));
-      
+
         if (chartRenderingInfo.getEntityCollection().getEntityCount() < 4) {
             lineChart.getXYPlot().getDomainAxis().setVisible(false);
             lineChart.getXYPlot().getDomainAxis().setVisible(true);
@@ -171,40 +160,31 @@ public  class ExportStudiesLineChart {
         double[][] linevalues = new double[2][compNumber];
         double[] xLineValues = new double[compNumber];
         double[] yLineValues = new double[compNumber];
-        
-         double[][] upvalues = new double[2][compNumber];
+
+        double[][] upvalues = new double[2][compNumber];
         double[] xUpValues = new double[compNumber];
         double[] yUpValues = new double[compNumber];
-        
+
         double[][] mUpvalues = new double[2][compNumber];
         double[] mXUpValues = new double[compNumber];
         double[] mYUpValues = new double[compNumber];
-        
-        
+
         double[][] stablevalues = new double[2][compNumber];
         double[] stableXValues = new double[compNumber];
         double[] stableYValues = new double[compNumber];
-        
-          double[][] novalues = new double[2][compNumber];
+
+        double[][] novalues = new double[2][compNumber];
         double[] noXValues = new double[compNumber];
         double[] noYValues = new double[compNumber];
-        
-        
-        
-         double[][] mDownvalues = new double[2][compNumber];
+
+        double[][] mDownvalues = new double[2][compNumber];
         double[] mXDownValues = new double[compNumber];
         double[] mYDownValues = new double[compNumber];
-        
+
         double[][] downvalues = new double[2][compNumber];
         double[] xDownValues = new double[compNumber];
         double[] yDownValues = new double[compNumber];
-        
-        
-        
-        
-        
-        
-        
+
         double trendValue;
 
         int comparisonIndex = 0;
@@ -218,46 +198,124 @@ public  class ExportStudiesLineChart {
             String keyIII = 2 + "_" + key;
             String keyIV = 3 + "_" + key;
             String keyV = 4 + "_" + key;
-            trendValue = 0.0;
+            trendValue = 0;
 
             if (comparison.getQuantComparisonProteinMap().containsKey(keyI)) {
                 trendValue = comparison.getQuantComparisonProteinMap().get(keyI).getOverallCellPercentValue();
-                proteinName = comparison.getQuantComparisonProteinMap().get(keyI).getProteinName();
+//                proteinName = comparison.getQuantComparisonProteinMap().get(keyI).getProteinName();
                 comparisonTrends.add(comparison.getQuantComparisonProteinMap().get(keyI).getSignificantTrindCategory());
-                
+
             } else if (comparison.getQuantComparisonProteinMap().containsKey(keyII)) {
                 trendValue = comparison.getQuantComparisonProteinMap().get(keyII).getOverallCellPercentValue();
-                proteinName = comparison.getQuantComparisonProteinMap().get(keyII).getProteinName();
-
+//                proteinName = comparison.getQuantComparisonProteinMap().get(keyII).getProteinName();
                 comparisonTrends.add(comparison.getQuantComparisonProteinMap().get(keyII).getSignificantTrindCategory());
+
+                yUpValues[comparisonIndex] = -1000;
+                mYUpValues[comparisonIndex] = trendValue;
+                stableYValues[comparisonIndex] = -1000;
+                noYValues[comparisonIndex] = -1000;
+                mYDownValues[comparisonIndex] = -1000;
+                yDownValues[comparisonIndex] = -1000;
+                System.out.println("at trend value " + trendValue + "  " + keyII);
+
             } else if (comparison.getQuantComparisonProteinMap().containsKey(keyIII)) {
-                proteinName = comparison.getQuantComparisonProteinMap().get(keyIII).getProteinName();
+//                proteinName = comparison.getQuantComparisonProteinMap().get(keyIII).getProteinName();
                 trendValue = comparison.getQuantComparisonProteinMap().get(keyIII).getOverallCellPercentValue();
                 comparisonTrends.add(comparison.getQuantComparisonProteinMap().get(keyIII).getSignificantTrindCategory());
+                yUpValues[comparisonIndex] = -1000;
+                mYUpValues[comparisonIndex] = -1000;
+                stableYValues[comparisonIndex] = 0.0;
+                noYValues[comparisonIndex] = -1000;
+                mYDownValues[comparisonIndex] = -1000;
+                yDownValues[comparisonIndex] = -1000;
+
             } else if (comparison.getQuantComparisonProteinMap().containsKey(keyIV)) {
                 trendValue = comparison.getQuantComparisonProteinMap().get(keyIV).getOverallCellPercentValue();
-                proteinName = comparison.getQuantComparisonProteinMap().get(keyIV).getProteinName();
+//                proteinName = comparison.getQuantComparisonProteinMap().get(keyIV).getProteinName();
 
                 comparisonTrends.add(comparison.getQuantComparisonProteinMap().get(keyIV).getSignificantTrindCategory());
+//                yUpValues[comparisonIndex] = -1000;
+//                mYUpValues[comparisonIndex] = -1000;
+//                stableYValues[comparisonIndex] = -1000;
+//                noYValues[comparisonIndex] = -1000;
+//                mYDownValues[comparisonIndex] = trendValue;
+//                yDownValues[comparisonIndex] = -1000;
+
             } else if (comparison.getQuantComparisonProteinMap().containsKey(keyV)) {
                 trendValue = comparison.getQuantComparisonProteinMap().get(keyV).getOverallCellPercentValue();
-                proteinName = comparison.getQuantComparisonProteinMap().get(keyV).getProteinName();
+//                proteinName = comparison.getQuantComparisonProteinMap().get(keyV).getProteinName();
 
                 comparisonTrends.add(comparison.getQuantComparisonProteinMap().get(keyV).getSignificantTrindCategory());
-            } else {
 
+//                yUpValues[comparisonIndex] = -1000;
+//                mYUpValues[comparisonIndex] = -1000;
+//                stableYValues[comparisonIndex] = -1000;
+//                noYValues[comparisonIndex] = -1000;
+//                mYDownValues[comparisonIndex] = -1000;
+//                yDownValues[comparisonIndex] = trendValue;
+            } else {
                 comparisonTrends.add(6);
+                trendValue = 500;
+//                yUpValues[comparisonIndex] = -1000;
+//                mYUpValues[comparisonIndex] = -1000;
+//                stableYValues[comparisonIndex] = -1000;
+//                noYValues[comparisonIndex] = trendValue;
+//                mYDownValues[comparisonIndex] = -1000;
+//                yDownValues[comparisonIndex] = -1000;
+            }
+            if (trendValue == 100.0) {
+                yUpValues[comparisonIndex] = trendValue;
+                mYUpValues[comparisonIndex] = -1000;
+                stableYValues[comparisonIndex] = -1000;
+                noYValues[comparisonIndex] = -1000;
+                mYDownValues[comparisonIndex] = -1000;
+                yDownValues[comparisonIndex] = -1000;
+            } else if (trendValue < 100.0 && trendValue > 0.0) {
+                yUpValues[comparisonIndex] = -1000;
+                mYUpValues[comparisonIndex] = trendValue;
+                stableYValues[comparisonIndex] = -1000;
+                noYValues[comparisonIndex] = -1000;
+                mYDownValues[comparisonIndex] = -1000;
+                yDownValues[comparisonIndex] = -1000;
+            } else if (trendValue == 0) {
+                yUpValues[comparisonIndex] = -1000;
+                mYUpValues[comparisonIndex] = -1000;
+                stableYValues[comparisonIndex] = trendValue;
+                noYValues[comparisonIndex] = -1000;
+                mYDownValues[comparisonIndex] = -1000;
+                yDownValues[comparisonIndex] = -1000;
+            } else if (trendValue > -100.0 && trendValue < 0) {
+                yUpValues[comparisonIndex] = -1000;
+                mYUpValues[comparisonIndex] = -1000;
+                stableYValues[comparisonIndex] = -1000;
+                noYValues[comparisonIndex] = -1000;
+                mYDownValues[comparisonIndex] = trendValue;
+                yDownValues[comparisonIndex] = -1000;
+            } else if (trendValue == -100.0) {
+                yUpValues[comparisonIndex] = -1000;
+                mYUpValues[comparisonIndex] = -1000;
+                stableYValues[comparisonIndex] = -1000;
+                noYValues[comparisonIndex] = -1000;
+                mYDownValues[comparisonIndex] = -1000;
+                yDownValues[comparisonIndex] = trendValue;
+            } else {
+                yUpValues[comparisonIndex] = -1000;
+                mYUpValues[comparisonIndex] = -1000;
+                stableYValues[comparisonIndex] = -1000;
+                noYValues[comparisonIndex] = 0.0;
+                mYDownValues[comparisonIndex] = -1000;
+                yDownValues[comparisonIndex] = -1000;
+                trendValue = 0.0;
             }
 
             xLineValues[comparisonIndex] = comparisonIndex;
+            xUpValues[comparisonIndex] = comparisonIndex;
+            mXUpValues[comparisonIndex] = comparisonIndex;
+            stableXValues[comparisonIndex] = comparisonIndex;
+            noXValues[comparisonIndex] = comparisonIndex;
+            xDownValues[comparisonIndex] = comparisonIndex;
+            mXDownValues[comparisonIndex] = comparisonIndex;
             yLineValues[comparisonIndex] = trendValue;
-            
-            
-            
-            
-            
-            
-
             String groupCompTitle = comparison.getComparisonHeader();
             String updatedHeader = groupCompTitle.split(" / ")[0].split("__")[0] + " / " + groupCompTitle.split(" / ")[1].split("__")[0];//+ " ( " + groupCompTitle.split(" / ")[1].split("\n")[1] + " )";
 
@@ -272,11 +330,35 @@ public  class ExportStudiesLineChart {
 
         linevalues[0] = xLineValues;
         linevalues[1] = yLineValues;
+
+        upvalues[0] = xUpValues;
+        upvalues[1] = yUpValues;
+
+        mUpvalues[0] = mXUpValues;
+        mUpvalues[1] = mYUpValues;
+
+        stablevalues[0] = stableXValues;
+        stablevalues[1] = stableYValues;
+
+        novalues[0] = noXValues;
+        novalues[1] = noYValues;
+
+        mDownvalues[0] = mXDownValues;
+        mDownvalues[1] = mYDownValues;
+
+        downvalues[0] = xDownValues;
+        downvalues[1] = yDownValues;
+
         dataset.addSeries("line", linevalues);
+        dataset.addSeries("0", upvalues);
+        dataset.addSeries("1", mUpvalues);
+        dataset.addSeries("2", stablevalues);
+        dataset.addSeries("3", mDownvalues);
+        dataset.addSeries("4", downvalues);
+        dataset.addSeries("6", novalues);
         verticalLabels = maxLength > 40 && selectedComparisonList.size() > 4;
 
-        Font font = new Font("Helvetica Neue", Font.PLAIN, 13);
-        
+        Font font = new Font("Helvetica Neue", Font.PLAIN, 10);
 
         xAxis = new SymbolAxis(null, xAxisLabels) {
             int x = 0;
@@ -579,19 +661,49 @@ public  class ExportStudiesLineChart {
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
         renderer.setSeriesPaint(0, Color.GRAY);
         renderer.setUseOutlinePaint(false);
-
-        renderer.setSeriesShape(0, ShapeUtilities.createDiamond(4));
-        renderer.setSeriesShapesVisible(0, false);
-
-        renderer.setSeriesShape(1, ShapeUtilities.createDiamond(4));
-        renderer.setSeriesShapesVisible(1, true);
-        renderer.setSeriesLinesVisible(1, false);
-        renderer.setSeriesPaint(1, new Color(255, 255, 255, 0));
-
         renderer.setSeriesStroke(0, new BasicStroke(
                 1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
                 1.0f, new float[]{10.0f, 6.0f}, 0.0f
         ));
+        renderer.setSeriesShape(0, ShapeUtilities.createDiamond(3));
+        renderer.setSeriesShapesVisible(0, false);
+
+        renderer.setSeriesShape(1, ShapeUtilities.createUpTriangle(3));
+        renderer.setSeriesShapesVisible(1, true);
+        renderer.setSeriesLinesVisible(1, false);
+        renderer.setSeriesPaint(1, new Color(204, 0, 0));
+
+        renderer.setSeriesShape(2, ShapeUtilities.createUpTriangle(3));
+        renderer.setSeriesShapesVisible(2, true);
+        renderer.setSeriesLinesVisible(2, false);
+        renderer.setSeriesPaint(2, new Color(255, 127, 127));
+
+        renderer.setSeriesShape(3, ShapeUtilities.createDiamond(3));
+        renderer.setSeriesShapesVisible(3, true);
+        renderer.setSeriesLinesVisible(3, false);
+        renderer.setSeriesPaint(3, new Color(1, 141, 244));
+
+        renderer.setSeriesShape(4, ShapeUtilities.createDownTriangle(3));
+        renderer.setSeriesShapesVisible(4, true);
+        renderer.setSeriesLinesVisible(4, false);
+        renderer.setSeriesPaint(4, new Color(0, 229, 132));
+
+        renderer.setSeriesShape(5, ShapeUtilities.createDownTriangle(3));
+        renderer.setSeriesShapesVisible(5, true);
+        renderer.setSeriesLinesVisible(5, false);
+
+        renderer.setSeriesPaint(5, new Color(0, 153, 0));
+
+        renderer.setSeriesShape(6, ShapeUtilities.createDiamond(3));
+        renderer.setSeriesShapesVisible(6, true);
+        renderer.setSeriesLinesVisible(6, false);
+        renderer.setSeriesPaint(6, new Color(128, 128, 128));
+
+        renderer.setSeriesShape(7, ShapeUtilities.createDiamond(4));
+        renderer.setSeriesShapesVisible(7, true);
+        renderer.setSeriesLinesVisible(7, false);
+
+        renderer.setSeriesPaint(7, new Color(255, 255, 255, 0));
 
         XYPlot xyplot = new XYPlot(dataset, xAxis, yAxis, renderer) {
 
@@ -770,27 +882,25 @@ public  class ExportStudiesLineChart {
         return lineChart;
 
     }
-    
-    private BufferedImage bufferedChartImg;
 
-    private String getChartImage(JFreeChart chart, ChartRenderingInfo chartRenderingInfo, int width, int height) {
-        if (chart == null) {
-            return null;
-        }
-
-        String base64 = "";
-        try {
-
-            bufferedChartImg= chart.createBufferedImage((int) width, (int) height, chartRenderingInfo);
-            base64 = "data:image/png;base64," + Base64.encodeBase64String(ChartUtilities.encodeAsPNG(bufferedChartImg));
-
-        } catch (IOException ex) {
-            System.err.println("at error " + this.getClass() + " line 536 " + ex.getLocalizedMessage());
-        }
-        return base64;
-
-    }
-
+//    private BufferedImage bufferedChartImg;
+//    private String getChartImage(JFreeChart chart, ChartRenderingInfo chartRenderingInfo, int width, int height) {
+//        if (chart == null) {
+//            return null;
+//        }
+//
+//        String base64 = "";
+//        try {
+//
+//            bufferedChartImg = chart.createBufferedImage((int) width, (int) height, chartRenderingInfo);
+//            base64 = "data:image/png;base64," + Base64.encodeBase64String(ChartUtilities.encodeAsPNG(bufferedChartImg));
+//
+//        } catch (IOException ex) {
+//            System.err.println("at error " + this.getClass() + " line 536 " + ex.getLocalizedMessage());
+//        }
+//        return base64;
+//
+//    }
     private final String[] tooltipsIcon = new String[]{"All Increased", "Mainly Increased", "Equal", "Mainly Decreased", "All Decreased", "No Quant. Info", "No Data Available "};
     private final Map<String, Set<TrendSymbol>> subComparisonStudiesMap = new LinkedHashMap<>();
 
@@ -888,7 +998,6 @@ public  class ExportStudiesLineChart {
 //        }
 //
 //    }
-
     /**
      * Converts the value from linear scale to log scale. The log scale numbers
      * are limited by the range of the type float. The linear scale numbers can
@@ -923,88 +1032,83 @@ public  class ExportStudiesLineChart {
 
     }
 
-    public void setResizeDetailedStudies(boolean resize) {
-        if (resize) {
-            subComparisonStudiesMap.values().stream().forEach((dsSet) -> {
-                dsSet.stream().forEach((ds) -> {
-                    String resizePostion = ds.getParam("resizePosition").toString();
-                    ds.setWidth((int) ds.getParam("resize"), Unit.PIXELS);
-                    ds.setHeight((int) ds.getParam("resize"), Unit.PIXELS);
-                    ds.detach();
-                });
-            });
-
-        } else {
-            subComparisonStudiesMap.values().stream().forEach((dsSet) -> {
-                dsSet.stream().forEach((ds) -> {
-                    String resizePostion = ds.getParam("position").toString();
-                    ds.setWidth(12, Unit.PIXELS);
-                    ds.setHeight(12, Unit.PIXELS);
-                    ds.detach();
-                });
-            });
-
-        }
-
-    }
-
-    private Set<QuantDiseaseGroupsComparison> getOrderStudiesByTrend() {
-        TreeMap<AlphanumComparator, QuantDiseaseGroupsComparison> orderedCompProteins = new TreeMap<>();
-        LinkedHashSet<QuantDiseaseGroupsComparison> orederedComparisonSet = new LinkedHashSet<>();
-
-        selectedComparisonList.stream().filter((cp) -> !(!comparisonTrendMap.containsKey(cp.getComparisonHeader()))).forEach((cp) -> {
-            double sigTrend = comparisonTrendMap.get(cp.getComparisonHeader());
-            if (sigTrend == -1) {
-                AlphanumComparator key = new AlphanumComparator((102) + "-z" + cp.getComparisonHeader());
-                orderedCompProteins.put(key, cp);
-            } else {
-                AlphanumComparator key = new AlphanumComparator((sigTrend + 100) + "-" + cp.getComparisonHeader());
-                orderedCompProteins.put(key, cp);
-            }
-        });
-        orderedCompProteins.keySet().stream().map((cpHeader) -> orderedCompProteins.get(cpHeader)).forEach((cp) -> {
-            orederedComparisonSet.add(cp);
-        });
-        return orederedComparisonSet;
-    }
-
-    public void trendOrder(boolean trendOrder) {
-        if (trendOrder) {
-            this.updateDataset(orderedComparisonList, proteinKey);
-        } else {
-            this.updateDataset(selectedComparisonList, proteinKey);
-
-        }
-
-        lineChart.getXYPlot().setDataset(dataset);
-        lineChart.getXYPlot().setDomainAxis((ValueAxis) xAxis);
-        lineChart.getXYPlot().setRangeAxis((ValueAxis) yAxis);
-        if (trendOrder) {
-            rePaintChart(orderedComparisonList);
-        } else {
-            rePaintChart(selectedComparisonList);
-        }
-
-    }
-
-    public JFreeChart getExportChart() {
-
-        lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.GRAY);
-        lineChart.getXYPlot().getDomainAxis().setVisible(true);
-        lineChart.getXYPlot().getRangeAxis().setVisible(true);
-        lineChart.getXYPlot().setOutlineVisible(false);
-        lineChart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(
-                1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
-                1.0f, new float[]{10.0f, 6.0f}, 0.0f
-        ));
-        lineChart.setPadding(new RectangleInsets(0, 0, 0, 0));
-        lineChart.getXYPlot().setRangeGridlinesVisible(true);
-        lineChart.getXYPlot().setDomainGridlinesVisible(true);
-        
-        
-        
-        return lineChart;
-    }
-
-
+//    public void setResizeDetailedStudies(boolean resize) {
+//        if (resize) {
+//            subComparisonStudiesMap.values().stream().forEach((dsSet) -> {
+//                dsSet.stream().forEach((ds) -> {
+//                    String resizePostion = ds.getParam("resizePosition").toString();
+//                    ds.setWidth((int) ds.getParam("resize"), Unit.PIXELS);
+//                    ds.setHeight((int) ds.getParam("resize"), Unit.PIXELS);
+//                    ds.detach();
+//                });
+//            });
+//
+//        } else {
+//            subComparisonStudiesMap.values().stream().forEach((dsSet) -> {
+//                dsSet.stream().forEach((ds) -> {
+//                    String resizePostion = ds.getParam("position").toString();
+//                    ds.setWidth(12, Unit.PIXELS);
+//                    ds.setHeight(12, Unit.PIXELS);
+//                    ds.detach();
+//                });
+//            });
+//
+//        }
+//
+//    }
+//
+//    private Set<QuantDiseaseGroupsComparison> getOrderStudiesByTrend() {
+//        TreeMap<AlphanumComparator, QuantDiseaseGroupsComparison> orderedCompProteins = new TreeMap<>();
+//        LinkedHashSet<QuantDiseaseGroupsComparison> orederedComparisonSet = new LinkedHashSet<>();
+//
+//        selectedComparisonList.stream().filter((cp) -> !(!comparisonTrendMap.containsKey(cp.getComparisonHeader()))).forEach((cp) -> {
+//            double sigTrend = comparisonTrendMap.get(cp.getComparisonHeader());
+//            if (sigTrend == -1) {
+//                AlphanumComparator key = new AlphanumComparator((102) + "-z" + cp.getComparisonHeader());
+//                orderedCompProteins.put(key, cp);
+//            } else {
+//                AlphanumComparator key = new AlphanumComparator((sigTrend + 100) + "-" + cp.getComparisonHeader());
+//                orderedCompProteins.put(key, cp);
+//            }
+//        });
+//        orderedCompProteins.keySet().stream().map((cpHeader) -> orderedCompProteins.get(cpHeader)).forEach((cp) -> {
+//            orederedComparisonSet.add(cp);
+//        });
+//        return orederedComparisonSet;
+//    }
+//
+//    public void trendOrder(boolean trendOrder) {
+//        if (trendOrder) {
+//            this.updateDataset(orderedComparisonList, proteinKey);
+//        } else {
+//            this.updateDataset(selectedComparisonList, proteinKey);
+//
+//        }
+//
+//        lineChart.getXYPlot().setDataset(dataset);
+//        lineChart.getXYPlot().setDomainAxis((ValueAxis) xAxis);
+//        lineChart.getXYPlot().setRangeAxis((ValueAxis) yAxis);
+//        if (trendOrder) {
+//            rePaintChart(orderedComparisonList);
+//        } else {
+//            rePaintChart(selectedComparisonList);
+//        }
+//
+//    }
+//
+//    public JFreeChart getExportChart() {
+//        lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.GRAY);
+//        lineChart.getXYPlot().getDomainAxis().setVisible(true);
+//        lineChart.getXYPlot().getRangeAxis().setVisible(true);
+//        lineChart.getXYPlot().setOutlineVisible(false);
+//        lineChart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(
+//                1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
+//                1.0f, new float[]{10.0f, 6.0f}, 0.0f
+//        ));
+//        lineChart.setPadding(new RectangleInsets(0, 0, 0, 0));
+//        lineChart.getXYPlot().setRangeGridlinesVisible(true);
+//        lineChart.getXYPlot().setDomainGridlinesVisible(true);
+//
+//        return lineChart;
+//    }
 }

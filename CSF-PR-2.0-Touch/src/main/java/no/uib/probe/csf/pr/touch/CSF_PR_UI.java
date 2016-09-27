@@ -104,12 +104,12 @@ public class CSF_PR_UI extends UI {
     private void resizeScreen() {
         windowHeight = Page.getCurrent().getBrowserWindowHeight() - 20;// Math.max(Page.getCurrent().getBrowserWindowHeight(), 1080);
         windowWidth = Page.getCurrent().getBrowserWindowWidth() - 20;//Math.max(Page.getCurrent().getBrowserWindowWidth(), 1920);
-        if (windowHeight < 427 || windowWidth < 1075) {
+//        if (windowHeight < 750 || windowWidth < 1075) {
 
 //            if (windowHeight > windowWidth) {
 //                if (windowHeight < 427) {
-                    windowHeight = 427;
-                    windowWidth = 1075;
+                    windowHeight = Math.max(750,windowHeight);
+                    windowWidth = Math.max(windowWidth,1150) ;
 //
 //                } else {
 //
@@ -130,8 +130,8 @@ public class CSF_PR_UI extends UI {
 //            }
 
 //            Notification.show("Screen is too small current screen resolution (" + windowWidth + "x" + windowHeight + ")", Notification.Type.ERROR_MESSAGE);
-            return;
-        }
+//            return;
+//        }
         for (Window w : getWindows()) {
             w.center();
         }
