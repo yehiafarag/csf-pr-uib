@@ -6,28 +6,30 @@
 package no.uib.probe.csf.pr.touch.view.components;
 
 import com.itextpdf.text.pdf.codec.Base64;
+import com.vaadin.addon.tableexport.ExcelExport;
 import com.vaadin.server.ExternalResource;
-import com.vaadin.server.FileDownloader;
 import com.vaadin.server.Resource;
-import com.vaadin.server.StreamResource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.util.Set;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-import no.uib.probe.csf.pr.touch.DataExporter;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantPeptide;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantProtein;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFListener;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
 import no.uib.probe.csf.pr.touch.view.components.peptideviewsubcomponents.PeptideSequenceLayoutTable;
@@ -58,6 +60,9 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
     private final Label proteinNameLabel;
     private final Label studiesLabel;
     private boolean defaultTrend = true;
+    private final ImageContainerBtn orderByTrendBtn, dsComparisonsSwichBtn, resizeDsOnPatientNumbersBtn, showSigOnlyBtn;
+    private boolean resize = false;
+    ;
 //    private final ImageContainerBtn checkUncheckBtn;
 
     private StudiesLineChart lineChart;
@@ -81,7 +86,6 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         lineChartPanel.setLocation(0, 0);
         lineChartPanel.setOpaque(true);
         proteinSequencePanel.add(lineChartPanel);
-//        lineChartPanel.setBorder(fullBorder);
 
         JPanel coveragePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         coveragePanel.setSize(100, 20);
@@ -133,16 +137,13 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
 
     public abstract void updateIcon(Resource iconResource);
     private VerticalLayout legendLayout;
+    private final Resource comparisonDsRes = new ThemeResource("img/comparisons-ds.png");
+    private final Resource dsComparisonRes = new ThemeResource("img/ds-comparisons.png");
 
     public PeptideViewComponent(CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height, boolean smallScreen) {
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
-//        this.setWidth(100, Unit.PERCENTAGE);
-//        this.setHeight(height, Unit.PIXELS);
-//         if (!smallScreen) {
-//            this.setMargin(new MarginInfo(false, false, false, true));
-//        }
         VerticalLayout mainBodyContainer = new VerticalLayout();
         mainBodyContainer.setSpacing(true);
         mainBodyContainer.setWidth(100, Unit.PERCENTAGE);
@@ -178,13 +179,6 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
 
         topLayoutContainer.addComponent(legendLayout);
         topLayoutContainer.setComponentAlignment(legendLayout, Alignment.TOP_RIGHT);
-//        if (width / 2 < 700) {
-//            legendLayout.addStyleName("showonhover");
-//        }
-//        TrendLegend legendLayoutComponent = new TrendLegend("linechart");
-//        legendLayoutComponent.setWidthUndefined();
-//        legendLayoutComponent.setHeight(24, Unit.PIXELS);
-//        legendLayout.addComponent(legendLayoutComponent);
         int componentHeight = ((height - 80) / 2) - 5;
 
         VerticalLayout topLayout = new VerticalLayout();
@@ -254,16 +248,18 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         controlBtnsContainer.setHeightUndefined();
         controlBtnsContainer.setWidthUndefined();
         controlBtnsContainer.setSpacing(true);
-        final Resource comparisonDsRes = new ThemeResource("img/comparisons-ds.png");
-        final Resource dsComparisonRes = new ThemeResource("img/ds-comparisons.png");
 
-        final ImageContainerBtn resizeDsOnPatientNumbersBtn = new ImageContainerBtn() {
-            private boolean resize = false;
+        resizeDsOnPatientNumbersBtn = new ImageContainerBtn() {
 
             @Override
             public void onClick() {
                 resize = !resize;
                 lineChart.setResizeDetailedStudies(resize);
+                if (this.getStyleName().contains("selectmultiselectedbtn")) {
+                    this.removeStyleName("selectmultiselectedbtn");
+                } else {
+                    this.addStyleName("selectmultiselectedbtn");
+                }
             }
 
         };
@@ -274,7 +270,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
             resizeDsOnPatientNumbersBtn.removeStyleName("smallimg");
             resizeDsOnPatientNumbersBtn.addStyleName("nopaddingimg");
         }
-        ImageContainerBtn dsComparisonsSwichBtn = new ImageContainerBtn() {
+        dsComparisonsSwichBtn = new ImageContainerBtn() {
             @Override
             public void onClick() {
                 if (showDetailedDs) {
@@ -318,7 +314,6 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
             resizeDsOnPatientNumbersBtn.setWidth(40, Unit.PIXELS);
         }
         resizeDsOnPatientNumbersBtn.updateIcon(new ThemeResource("img/resize_1.png"));
-//        resizeDsOnPatientNumbersBtn.addStyleName("smallimg");
         resizeDsOnPatientNumbersBtn.setEnabled(false);
         resizeDsOnPatientNumbersBtn.addStyleName("pointer");
         controlBtnsContainer.addComponent(resizeDsOnPatientNumbersBtn);
@@ -326,7 +321,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         resizeDsOnPatientNumbersBtn.setDescription("Resize dataset symbols based on number of patients");
 
         final Resource trendOrderRes = new ThemeResource("img/orderedtrend.png");
-        ImageContainerBtn orderByTrendBtn = new ImageContainerBtn() {
+        orderByTrendBtn = new ImageContainerBtn() {
 
             @Override
             public void onClick() {
@@ -370,7 +365,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         controlBtnsContainer.setComponentAlignment(orderByTrendBtn, Alignment.MIDDLE_CENTER);
         orderByTrendBtn.setDescription("Order dataset by trend");
 
-        ImageContainerBtn showSigOnlyBtn = new ImageContainerBtn() {
+        showSigOnlyBtn = new ImageContainerBtn() {
 
             private boolean showNotSigPeptides = true;
 
@@ -408,72 +403,191 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         controlBtnsContainer.setComponentAlignment(showSigOnlyBtn, Alignment.MIDDLE_CENTER);
         showSigOnlyBtn.setDescription("Show / hide not significant and stable peptides)");
         controlBtnsContainer.setEnabled(true);
-//
-//        ThemeResource checkedApplied = new ThemeResource("img/check-square.png");
-//        ThemeResource checkedUnApplied = new ThemeResource("img/check-square-o.png");
 
-//        checkUncheckBtn = new ImageContainerBtn() {
-//
-//            private boolean enabled = true;
-//
-//            @Override
-//            public void onClick() {
-////                quantProteinTable.clearColumnFilters();
-//                if (enabled) {
-//                    enabled = false;
-//
-//                    this.updateIcon(checkedApplied);
-//                } else {
-//                    enabled = true;
-//                    this.updateIcon(checkedUnApplied);
-//                }
-//                peptideSequenceTableLayout.hideCheckedColumn(enabled);
-//            }
-//
-//            @Override
-//            public void reset() {
-//                enabled = true;
-//                this.updateIcon(checkedUnApplied);
-//                peptideSequenceTableLayout.hideCheckedColumn(enabled);
-//
-//            }
-//        };
-//        checkUncheckBtn.setEnabled(true);
-//
-//          if (smallScreen) {
-//            checkUncheckBtn.setWidth(25, Unit.PIXELS);
-//            checkUncheckBtn.setHeight(25,Unit.PIXELS);
-//            checkUncheckBtn.removeStyleName("smallimg");
-//        }else{
-//        checkUncheckBtn.setHeight(40, Unit.PIXELS);
-//        checkUncheckBtn.setWidth(40, Unit.PIXELS);
-//          }
-//        checkUncheckBtn.addStyleName("pointer");
-//        checkUncheckBtn.updateIcon(checkedUnApplied);
-//        controlBtnsContainer.addComponent(checkUncheckBtn);
-//        controlBtnsContainer.setComponentAlignment(checkUncheckBtn, Alignment.MIDDLE_CENTER);
-//        checkUncheckBtn.setDescription("Show/hide checked column");
-        //export as pdf
         ImageContainerBtn exportPdfBtn = new ImageContainerBtn() {
-            private final DataExporter exporter = new DataExporter();
+
+            private Table t1, t2;
 
             @Override
             public void onClick() {
-//                exporter.setHeatmapColumns(colheadersSet);
-//                exporter.setHeatmapRows(rowheadersSet);
-//                exporter.setHeatmapData(dataValuesColors);
+                if (t1 != null) {
+                    this.removeComponent(t1);
+                    this.removeComponent(t2);
+                }
 
-                FileDownloader fileDownloader = new FileDownloader(new StreamResource(() -> {
-                    try {
-                        byte[] pdfFile = exporter.exportStudiesProteinCoverageCharts(lineChart.getOrderedComparisonList(!defaultTrend), proteinKey, custTrend);
-                        return new ByteArrayInputStream(pdfFile);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        return null;
+                t1 = new Table();
+                t1.addContainerProperty("Index", Integer.class, null, "Index", null, Table.Align.RIGHT);
+                t1.addContainerProperty("Disease Category", String.class, null);
+                t1.addContainerProperty("Disease Comparisons", String.class, null, "Disease Comparisons", null, Table.Align.LEFT);
+                t1.addContainerProperty("Author", String.class, null);
+                t1.addContainerProperty("PubMed Id", String.class, null);
+
+                t1.addContainerProperty("Type of Study", String.class, null);
+                t1.addContainerProperty("Analytical Approach", String.class, null);
+                t1.addContainerProperty("Shotgun/Targeted", String.class, null);
+                t1.addContainerProperty("Analytical Method", String.class, null);
+                t1.addContainerProperty("Technology", String.class, null);
+                t1.addContainerProperty("Sample Type", String.class, null);
+                t1.addContainerProperty("Enzyme", String.class, null);
+//
+                t1.addContainerProperty("Quantification Basis", String.class, null);
+                t1.addContainerProperty("Quantification Basis Comment", String.class, null);
+                t1.addContainerProperty("#Identified Proteins", Integer.class, null, "#Identified Proteins", null, Table.Align.RIGHT);
+                t1.addContainerProperty("#Quantified Proteins", Integer.class, null, "#Quantified Proteins", null, Table.Align.RIGHT);
+                t1.addContainerProperty("Patients Gr.I", String.class, null);
+                t1.addContainerProperty("Patients Sub Gr.I", String.class, null);
+                t1.addContainerProperty("#Patients Gr.I", Integer.class, null, "#Patients Gr.I", null, Table.Align.RIGHT);
+                t1.addContainerProperty("Patients Gr.I Comm.", String.class, null);
+
+                t1.addContainerProperty("Patients Gr.II", String.class, null);
+                t1.addContainerProperty("Patients Sub Gr.II", String.class, null);
+                t1.addContainerProperty("#Patients Gr.II", Integer.class, null, "#Patients Gr.II", null, Table.Align.RIGHT);
+                t1.addContainerProperty("Patients Gr.II Comm.", String.class, null);
+
+                t1.addContainerProperty("Sample Matching", String.class, null);
+                t1.addContainerProperty("Normalization Strategy", String.class, null);
+                t1.addContainerProperty("Raw Data", String.class, null);
+
+                t1.addContainerProperty("#Proteins", Integer.class, null, "#Proteins", null, Table.Align.RIGHT);
+                t1.addContainerProperty("#Peptides", Integer.class, null, "Peptides", null, Table.Align.RIGHT);
+                t1.addContainerProperty("#Dataset Specific Proteins", Integer.class, null, "#Dataset Specific Proteins", null, Table.Align.RIGHT);
+                t1.addContainerProperty("#Dataset Specific Peptides", Integer.class, null, "#Dataset Specific Peptides", null, Table.Align.RIGHT);
+
+                t1.addContainerProperty("Accession", String.class, null);
+                t1.addContainerProperty("Fold Change", String.class, null);
+                t1.addContainerProperty("p-value", String.class, null);
+                t1.addContainerProperty("p-value Threshold", String.class, null);
+                t1.addContainerProperty("Statistical Comments", String.class, null);
+                t1.addContainerProperty("ROC AUC", String.class, null);
+
+                t1.addContainerProperty("Additional Comments", String.class, null);
+
+                t1.setVisible(false);
+                this.addComponent(t1);
+
+                String keyI = 0 + "_" + proteinKey;
+                String keyII = 1 + "_" + proteinKey;
+                String keyIII = 2 + "_" + proteinKey;
+
+                String keyIV = 3 + "_" + proteinKey;
+                String keyV = 4 + "_" + proteinKey;
+
+                String key;
+                int index = 0, index2 = 0;
+
+                t2 = new Table();
+
+                t2.addContainerProperty(
+                        "Index2", Integer.class, null, "Index", null, Table.Align.RIGHT);
+                t2.addContainerProperty(
+                        "Protein Trend",  String.class, null, "Protein Trend", null, Table.Align.LEFT);
+                t2.addContainerProperty(
+                        "Disease Category2", String.class, null, "Disease Category", null, Table.Align.LEFT);
+                t2.addContainerProperty(
+                        "Disease Comparisons2", String.class, null, "Disease Comparisons", null, Table.Align.LEFT);
+                t2.addContainerProperty(
+                        "Author2", String.class, null, "Author", null, Table.Align.LEFT);
+                t2.addContainerProperty(
+                        "PubMed Id2", String.class, null, "PubMed Id", null, Table.Align.LEFT);
+                t2.addContainerProperty(
+                        "#Patients2", Integer.class, null, "#Patients", null, Table.Align.RIGHT);
+                t2.addContainerProperty(
+                        "Peptide Sequence", String.class, null);
+                t2.addContainerProperty(
+                        "Sequence Annotated", String.class, null);
+                t2.addContainerProperty(
+                        "Peptide Modification", String.class, null);
+                t2.addContainerProperty(
+                        "Modification Comment", String.class, null);
+
+                t2.addContainerProperty(
+                        "Fold Change2", String.class, null, "Fold Change", null, Table.Align.LEFT);
+                t2.addContainerProperty(
+                        "p-value2", String.class, null, "p-value", null, Table.Align.LEFT);
+                t2.addContainerProperty(
+                        "p-value Threshold2",  String.class, null, "p-value Threshold", null, Table.Align.LEFT);
+                t2.addContainerProperty(
+                        "Statistical Comments2", String.class, null, "Statistical Comments", null, Table.Align.LEFT);
+
+                t2.addContainerProperty(
+                        "Quantification Basis2", String.class, null, "Quantification Basis", null, Table.Align.LEFT);
+                t2.addContainerProperty(
+                        "Quantification Basis Comment2", String.class, null, "Quantification Basis Comment", null, Table.Align.LEFT);
+                t2.addContainerProperty(
+                        "Peptide Charge2", String.class, null, "Peptide Charge", null, Table.Align.LEFT);
+                t2.addContainerProperty(
+                        "ROC AUC2", String.class, null, "ROC AUC", null, Table.Align.LEFT);
+                t2.addContainerProperty(
+                        "Additional Comments2", String.class, null, "Additional Comments", null, Table.Align.LEFT);
+
+                t2.setVisible(false);
+                this.addComponent(t2);
+                for (QuantDiseaseGroupsComparison groupComp : selectedComparisonsList) {
+                    key = "";
+                    if (groupComp.getQuantComparisonProteinMap().containsKey(keyI)) {
+                        key = keyI;
+
+                    } else if (groupComp.getQuantComparisonProteinMap().containsKey(keyII)) {
+                        key = keyII;
+
+                    } else if (groupComp.getQuantComparisonProteinMap().containsKey(keyIII)) {
+                        key = keyIII;
+
+                    } else if (groupComp.getQuantComparisonProteinMap().containsKey(keyIV)) {
+                        key = keyIV;
+
+                    } else if (groupComp.getQuantComparisonProteinMap().containsKey(keyV)) {
+                        key = keyV;
+
                     }
-                }, "Studies_protein_coverage.pdf"));
+                    if (!groupComp.getQuantComparisonProteinMap().containsKey(key)) {
 
-                fileDownloader.extend(this);
+                        continue;
+                    }
+                    QuantComparisonProtein protein = groupComp.getQuantComparisonProteinMap().get(key);
+                    for (QuantProtein quantProt : protein.getDsQuantProteinsMap().values()) {
+                        QuantDatasetObject ds = groupComp.getDatasetMap().get(quantProt.getDsKey());
+                        String roc = quantProt.getRocAuc() + "";
+                        if (quantProt.getRocAuc() == -1000000000.0) {
+                            roc = null;
+                        }
+                        t1.addItem(new Object[]{(index + 1), groupComp.getDiseaseCategory(), groupComp.getComparisonHeader().replace("__" + groupComp.getDiseaseCategory(), ""), ds.getAuthor(), ds.getPumedID(), ds.getTypeOfStudy(), ds.getAnalyticalApproach(), ds.getShotgunTargeted(), ds.getAnalyticalMethod(), ds.getTechnology(), ds.getSampleType(), ds.getEnzyme(),
+                            ds.getQuantificationBasis(), ds.getQuantBasisComment(), ds.getIdentifiedProteinsNumber(), ds.getQuantifiedProteinsNumber(), ds.getPatientsGroup1(), ds.getPatientsSubGroup1(), ds.getPatientsGroup1Number(), ds.getPatientsGroup1Comm(), ds.getPatientsGroup2(), ds.getPatientsSubGroup2(), ds.getPatientsGroup2Number(), ds.getPatientsGroup2Comm(),
+                            ds.getSampleMatching(), ds.getNormalizationStrategy(), ds.getRawDataUrl(), ds.getTotalProtNum(), ds.getTotalPepNum(), ds.getUniqueProtNum(), ds.getUniqePepNum(), quantProt.getUniprotAccession(), quantProt.getStringFCValue(), quantProt.getStringPValue(), quantProt.getPvalueSignificanceThreshold(), quantProt.getPvalueComment(), roc, quantProt.getAdditionalComments()}, index++);
+
+                    }
+
+                    for (QuantPeptide quantPeptide : protein.getQuantPeptidesList()) {
+                        QuantDatasetObject ds = groupComp.getDatasetMap().get(quantPeptide.getDsKey());
+                        String protTrend;
+                        if (protein.getOverallCellPercentValue() > 0) {
+                            protTrend = "Increased";
+                        } else if (protein.getOverallCellPercentValue() == 0) {
+                            protTrend = "Equal";
+                        } else {
+                            protTrend = "Decreased";
+                        }
+                        t2.addItem(new Object[]{(index2 + 1), protTrend, ds.getDiseaseCategory(), groupComp.getComparisonHeader().replace("__" + groupComp.getDiseaseCategory(), ""), ds.getAuthor(), ds.getPumedID(), (ds.getPatientsGroup1Number() + ds.getPatientsGroup2Number()), quantPeptide.getPeptideSequence(), quantPeptide.getSequenceAnnotated(), quantPeptide.getPeptideModification(), quantPeptide.getModification_comment(), quantPeptide.getString_fc_value(), quantPeptide.getString_p_value(), quantPeptide.getPvalueSignificanceThreshold(), quantPeptide.getP_value_comments(), ds.getQuantificationBasis(), quantPeptide.getQuantBasisComment(), quantPeptide.getPeptideCharge() + "", quantPeptide.getRoc_auc()+"", quantPeptide.getAdditionalComments()}, index2++);
+                    }
+                }
+
+                ExcelExport csvExport = new ExcelExport(t1, proteinNameLabel.getValue() + " (" + proteinKey + ") Overview");
+             
+                
+                csvExport.setReportTitle(
+                        "CSF-PR / " + proteinNameLabel.getValue() + " (" + proteinKey + ") Overview");
+                csvExport.setExportFileName(
+                        "CSF-PR - Protein and Peptides information (" + proteinKey + ").xls");
+                csvExport.setMimeType(ExcelExport.EXCEL_MIME_TYPE);
+
+                csvExport.setDisplayTotals(
+                        false);
+                csvExport.setExcelFormatOfProperty(
+                        "Index", "0");
+                csvExport.convertTable();
+                csvExport.setNextTable(t2,  "Peptides Information");
+                csvExport.export();
+
             }
 
         };
@@ -487,14 +601,21 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
             exportPdfBtn.setHeight(40, Unit.PIXELS);
             exportPdfBtn.setWidth(40, Unit.PIXELS);
         }
-        exportPdfBtn.updateIcon(new ThemeResource("img/pdf-text-o.png"));
-        exportPdfBtn.setEnabled(true);
+
+        exportPdfBtn.updateIcon(
+                new ThemeResource("img/xls-text-o-2.png"));
+        exportPdfBtn.setEnabled(
+                true);
         controlBtnsContainer.addComponent(exportPdfBtn);
+
         controlBtnsContainer.setComponentAlignment(exportPdfBtn, Alignment.MIDDLE_CENTER);
-        exportPdfBtn.setDescription("Export protein overview and coverage as PDF file");
+
+        exportPdfBtn.setDescription(
+                "Export protein overview and peptides information");
 
         InformationButton info = new InformationButton("The protein panel provides an overview of the available information for the currently selected protein. The chart at the top shows the quantitative information for the selected protein, classified into Increased, Decreased or Equal. If the quantitative data for a given comparison is not exclusively in the same direction an average value will be shown. \n"
                 + "To show the individual datasets click the \"Show datasets\" button in the lower right corner. Clicking the \"Resize dataset symbols based on number of patients\" will then change the chart to indicate the number of patients in each dataset. The lower half of the panel shows the details for each dataset, including the sequence coverage (if available). Click a peptide or any of the other columns for further details.", false);
+
         controlBtnsContainer.addComponent(info);
         if (smallScreen) {
             info.setWidth(25, Unit.PIXELS);
@@ -505,6 +626,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
     }
 
     @Override
+
     public void selectionChanged(String type) {
 
         if (type.equalsIgnoreCase("peptide_selection")) {
@@ -515,16 +637,25 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
             }
 
         } else {
-            updateIcon(null);
 
+            updateIcon(null);
         }
-//        checkUncheckBtn.reset();
+        defaultTrend = true;
+        showSigOnlyBtn.addStyleName("selectmultiselectedbtn");
+        showDetailedDs = false;
+        orderByTrendBtn.removeStyleName("selectmultiselectedbtn");
+        this.dsComparisonsSwichBtn.updateIcon(comparisonDsRes);
+
+        resize = false;
+        resizeDsOnPatientNumbersBtn.setEnabled(false);
+        resizeDsOnPatientNumbersBtn.removeStyleName("selectmultiselectedbtn");
 
     }
 
     private int totatlStudiesNumber;
     private String proteinKey;
     private int custTrend;
+    private Set<QuantDiseaseGroupsComparison> selectedComparisonsList;
 
     private void updateData(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, String proteinKey, int custTrend) {
         if (custTrend != -1) {
@@ -547,11 +678,11 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
             legendLayout.addComponent(legendLayoutComponent);
             legendLayout.setComponentAlignment(legendLayoutComponent, Alignment.TOP_RIGHT);
         }
+        this.selectedComparisonsList = selectedComparisonsList;
 
         this.proteinKey = proteinKey;
         this.custTrend = custTrend;
         lineChart.updateData(selectedComparisonsList, proteinKey, custTrend);
-
         peptideSequenceTableLayout.updateTableData(selectedComparisonsList, proteinKey);
         totatlStudiesNumber = peptideSequenceTableLayout.getRowsNumber();
         studiesLabel.setValue("Studies (" + totatlStudiesNumber + "/" + totatlStudiesNumber + ")");

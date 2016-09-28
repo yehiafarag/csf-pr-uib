@@ -249,7 +249,6 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
                     if (quantProt.getStringFCValue().equalsIgnoreCase("Increased")) {
                         trend = 0;
                     } else if (quantProt.getStringFCValue().equalsIgnoreCase("Decreased")) {
-                        System.out.println("at quantProt.getStringPValue() "+quantProt.getStringPValue());
                         trend = 4;
                     }
 

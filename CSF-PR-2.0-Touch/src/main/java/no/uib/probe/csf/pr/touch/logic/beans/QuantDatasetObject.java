@@ -125,7 +125,7 @@ public class QuantDatasetObject implements Serializable, Comparable {
      * @return
      */
     public int getIdentifiedProteinsNumber() {
-        return (Integer) values[2];
+        return Math.max((Integer) values[2],0);
     }
 
     /**
@@ -142,7 +142,7 @@ public class QuantDatasetObject implements Serializable, Comparable {
      * @return
      */
     public int getQuantifiedProteinsNumber() {
-        return (Integer) values[3];
+        return Math.max((Integer) values[3],0);
     }
 
     /**

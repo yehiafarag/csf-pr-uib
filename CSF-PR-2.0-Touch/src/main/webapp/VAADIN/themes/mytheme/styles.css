@@ -14979,6 +14979,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 .vdarkgray{
 
+    min-width: 4px !important;
     /*background: #848484;*/
     border: 1px solid #848484;
 

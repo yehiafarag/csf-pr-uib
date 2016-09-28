@@ -513,8 +513,6 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
                 }
             });
             comparisonValuesMap.put(quantComparison.getComparisonFullName(), values);
-            System.err.println("at updae value map " + comparisonValuesMap.keySet());
-
             if (tempWidthValue[3] > 0 && tempWidthValue[6] >= 0) {
                 stableColor = new Color(1, 141, 244);
                 trendStyles[3] = "stable";

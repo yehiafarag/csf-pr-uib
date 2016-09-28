@@ -138,6 +138,7 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
         this.setWidth((widthArea), Unit.PIXELS);
         this.x0 = x0;
         this.widthArea = widthArea;
+        setParam("width", widthArea);
         this.peptideKey = peptideKey;
         if (peptideModification != null && !peptideModification.trim().equalsIgnoreCase("")) {
             ptmAvailable = true;
