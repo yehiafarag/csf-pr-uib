@@ -90,12 +90,12 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
             stackedPeptides.clear();
             final LinkedHashSet<StackedBarPeptideComponent> allPeptidesStackedBarComponentsMap = this.initAllBarChartComponents(false, width - 140, sequence, quantPepSet, true, minMode);
             stackedPeptides.addAll(allPeptidesStackedBarComponentsMap);
-            allPeptidesComponent = new PeptideSequenceContainer((int)correctedWidth+40, allPeptidesStackedBarComponentsMap,smallScreen,proteinName);
+            allPeptidesComponent = new PeptideSequenceContainer((int)correctedWidth+40, allPeptidesStackedBarComponentsMap,smallScreen,proteinName,sequence);
             allPeptidesContainer.addComponent(allPeptidesComponent);
              allPeptidesContainer.setComponentAlignment(allPeptidesComponent,Alignment.MIDDLE_CENTER);
             hasPTM = allPeptidesComponent.isPtmAvailable();
             final LinkedHashSet<StackedBarPeptideComponent> significantPeptidesStackedBarComponentsMap = this.initAllBarChartComponents(true, width - 140, sequence, quantPepSet, false, minMode);
-            significantPeptidesComponent = new PeptideSequenceContainer((int)correctedWidth+40, significantPeptidesStackedBarComponentsMap,smallScreen,proteinName);
+            significantPeptidesComponent = new PeptideSequenceContainer((int)correctedWidth+40, significantPeptidesStackedBarComponentsMap,smallScreen,proteinName,sequence);
             significantPeptidesContainer.addComponent(significantPeptidesComponent);
             significantPeptidesContainer.setComponentAlignment(significantPeptidesComponent,Alignment.MIDDLE_CENTER);
             

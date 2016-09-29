@@ -87,11 +87,11 @@ public class ProteinSequenceContainer extends VerticalLayout {
             final LinkedHashSet<StackedBarPeptideComponent> allPeptidesStackedBarComponentsMap = this.initAllBarChartComponents(false, proteinSequenceContainerWidth - 160, sequence, filteredQuantPepSet, true);
 
             stackedPeptides.addAll(allPeptidesStackedBarComponentsMap);
-            allPeptidesComponent = new PeptideSequenceContainer((int) correctedWidth + 40, allPeptidesStackedBarComponentsMap,smallScreen,proteinName);
+            allPeptidesComponent = new PeptideSequenceContainer((int) correctedWidth + 40, allPeptidesStackedBarComponentsMap,smallScreen,proteinName,sequence);
             allPeptidesLayout.addComponent(allPeptidesComponent);
             allPeptidesLayout.setComponentAlignment(allPeptidesComponent, Alignment.MIDDLE_CENTER);
             final LinkedHashSet<StackedBarPeptideComponent> significantPeptidesStackedBarComponentsMap = this.initAllBarChartComponents(true, proteinSequenceContainerWidth - 160, sequence, filteredQuantPepSet, false);
-            significantPeptidesComponent = new PeptideSequenceContainer((int) correctedWidth + 40, significantPeptidesStackedBarComponentsMap,smallScreen,proteinName);
+            significantPeptidesComponent = new PeptideSequenceContainer((int) correctedWidth + 40, significantPeptidesStackedBarComponentsMap,smallScreen,proteinName,sequence);
             significantPeptidesLayout.addComponent(significantPeptidesComponent);
             significantPeptidesLayout.setComponentAlignment(significantPeptidesComponent, Alignment.MIDDLE_CENTER);
             significantPeptidesLayout.setVisible(false);
