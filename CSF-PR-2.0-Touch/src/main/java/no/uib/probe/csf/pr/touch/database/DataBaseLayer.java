@@ -92,8 +92,6 @@ public class DataBaseLayer implements Serializable {
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
 
-
-            
             String selectIdPublicationStudies = "SELECT COUNT(*) AS `Rows`, `pblication_link` FROM `experiments_table` GROUP BY `pblication_link` ORDER BY `pblication_link`";
             PreparedStatement selectIdPublicationStudiesStat = conn.prepareStatement(selectIdPublicationStudies);
 
@@ -165,7 +163,7 @@ public class DataBaseLayer implements Serializable {
             while (rs.next()) {
                 numProteins += rs.getInt("Rows");
             }
-            numProteins=1956;
+            numProteins = 1956;
             infoBean.setNumberOfQuantProteins(numProteins);
             rs.close();
 
@@ -259,7 +257,7 @@ public class DataBaseLayer implements Serializable {
             try (ResultSet rs = selectStudiesStat.executeQuery()) {
                 while (rs.next()) {
                     String disease_category = rs.getString("disease_category");
-                    if (!diseaseCategoriesMap.containsKey(disease_category) ||(diseaseCategoriesMap.containsKey(disease_category) && diseaseCategoriesMap.get(disease_category)==null) ) {
+                    if (!diseaseCategoriesMap.containsKey(disease_category) || (diseaseCategoriesMap.containsKey(disease_category) && diseaseCategoriesMap.get(disease_category) == null)) {
                         boolean[] activeHeaders = new boolean[27];
                         Set<String> diseaseCategories = new LinkedHashSet<>();
                         QuantDatasetInitialInformationObject datasetObject = new QuantDatasetInitialInformationObject();
@@ -476,7 +474,6 @@ public class DataBaseLayer implements Serializable {
         availableDiseaseCategory.put("Multiple Sclerosis", null);
         availableDiseaseCategory.put("Alzheimer's", null);
         availableDiseaseCategory.put("Parkinson's", null);
-        
 
         String selectStat = "SELECT COUNT( * ) AS  `Rows` ,  `disease_category` FROM  `quant_dataset_table` GROUP BY  `disease_category`ORDER BY  `Rows` DESC ";
         try {
@@ -1147,11 +1144,18 @@ public class DataBaseLayer implements Serializable {
             sb.append("`prot_key` LIKE (?)");
 
         }
+        String sta = "";
+        if (sb.toString().trim().isEmpty()) {
+            sta = "Where " + (sb.toString());
+        }
 
         if (validatedOnly) {
-            selectPro = "SELECT * FROM `experiment_protein_table` Where  " + (sb.toString()) + " AND `valid`=?;";
+            selectPro = "SELECT * FROM `experiment_protein_table`  " + sta + " AND `valid`=?;";
         } else {
-            selectPro = "SELECT * FROM `experiment_protein_table` Where  " + (sb.toString());
+
+            selectPro = "SELECT * FROM `experiment_protein_table` " + (sb.toString());
+
+            System.err.println("at error selectPro " + selectPro);
         }
         try {
             if (conn == null || conn.isClosed()) {
@@ -1161,7 +1165,7 @@ public class DataBaseLayer implements Serializable {
             selectProStat = conn.prepareStatement(selectPro);
             int index = 1;
             for (String str : searchSet) {
-                selectProStat.setString(index++, "%" + str + "%");
+                selectProStat.setString(index++, "%" + str.replace("'", "") + "%");
             }
             if (validatedOnly) {
                 selectProStat.setString(index, "TRUE");

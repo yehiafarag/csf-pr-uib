@@ -15,7 +15,7 @@ import no.uib.probe.csf.pr.touch.view.core.ZoomControler;
 public class MainLayout extends VerticalLayout {
 
     private final VerticalLayout body;
-    private final ZoomControler zoomApp;
+//    private final ZoomControler zoomApp;
 
     /**
      *
@@ -50,9 +50,9 @@ public class MainLayout extends VerticalLayout {
         CSFApplicationContainer welcomePageContainerLayout = new CSFApplicationContainer(windowWidth, windowHeight, url, dbName, driver, userName, password, filesURL);
         body.addComponent(welcomePageContainerLayout);
         body.setComponentAlignment(welcomePageContainerLayout,Alignment.TOP_CENTER);        
-        zoomApp = welcomePageContainerLayout.getZoomApp();
+//        zoomApp = welcomePageContainerLayout.getZoomApp();
         
-        body.addComponent(zoomApp);
+//        body.addComponent(zoomApp);
         
         
         

@@ -9,13 +9,11 @@ import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.Reindeer;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeMap;
 import no.uib.probe.csf.pr.touch.view.core.StackedBarPeptideComponent;
 
 /**
@@ -26,7 +24,7 @@ import no.uib.probe.csf.pr.touch.view.core.StackedBarPeptideComponent;
  */
 public class PeptideSequenceContainer extends AbsoluteLayout {
 
-    private final AbsoluteLayout highPeptidesSequencesBar, lowPeptidesSequencesBar, coveragePeptidesSequencesBar, stablePeptidesSequencesBar;
+    private final AbsoluteLayout highPeptidesSequencesBar, lowPeptidesSequencesBar, coveragePeptidesSequencesBar, stablePeptidesSequencesBar, unMappedPeptidesSequencesBar;
     private final LinkedHashSet<StackedBarPeptideComponent> allPeptidesStackedBarComponentsMap;
     private final Set<VerticalLayout> ptmsLayoutMap = new HashSet<>();
     private final List< StackedBarPeptideComponent> stackedPeptides = new ArrayList<>();
@@ -58,6 +56,10 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
 
         lowPeptidesSequencesBar = new AbsoluteLayout();
         lowPeptidesSequencesBar.setWidth((width - 40), Unit.PIXELS);
+
+        unMappedPeptidesSequencesBar = new AbsoluteLayout();
+        unMappedPeptidesSequencesBar.setWidth((width - 40), Unit.PIXELS);
+        unMappedPeptidesSequencesBar.addStyleName("unmappedpeptidescontainer");
 
         initLayout(sequence);
 
@@ -91,10 +93,16 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
 
     private void initLayout(String sequence) {
 
+        LinkedHashSet<StackedBarPeptideComponent> unMappedSet = new LinkedHashSet<>();
         LinkedHashSet<StackedBarPeptideComponent> highSet = new LinkedHashSet<>();
         LinkedHashSet<StackedBarPeptideComponent> stableSet = new LinkedHashSet<>();
+        StringBuilder tempSequence = new StringBuilder();
         allPeptidesStackedBarComponentsMap.stream().forEach((peptideLayout) -> {
-            if (peptideLayout.getParam("trend").toString().equalsIgnoreCase("increased")) {
+            String pepSeq = peptideLayout.getParam("sequence").toString();
+            if (!sequence.contains(pepSeq)) {
+                unMappedSet.add(peptideLayout);
+                tempSequence.append(pepSeq);
+            } else if (peptideLayout.getParam("trend").toString().equalsIgnoreCase("increased")) {
                 highSet.add(peptideLayout);
             } else if (peptideLayout.getParam("trend").toString().equalsIgnoreCase("equal") || peptideLayout.getParam("trend").toString().equalsIgnoreCase("noquant")) {
                 stableSet.add(peptideLayout);
@@ -102,7 +110,9 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
         });
 
         allPeptidesStackedBarComponentsMap.stream().filter((peptideLayout) -> (peptideLayout.getParam("trend").toString().equalsIgnoreCase("decreased"))).forEach((peptideLayout) -> {
-            stableSet.add(peptideLayout);
+            if (!unMappedSet.contains(peptideLayout)) {
+                stableSet.add(peptideLayout);
+            }
         });
 
         ptmsLayoutMap.clear();
@@ -120,6 +130,33 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
             this.addComponent(stablePeptidesSequencesBar, "left: " + (20) + "px; top: " + (top) + "px;");
             top += stablePeptidesSequencesBar.getHeight();
         }
+
+        if (!unMappedSet.isEmpty()) {
+
+            int left = 5;
+            int topLocation = 5;
+            unMappedPeptidesSequencesBar.setHeight(20,Unit.PIXELS);
+            Label titleLabel = new Label("Unmapped peptides:");
+            unMappedPeptidesSequencesBar.addComponent(titleLabel, "left: " + (left) + "px; top: " + topLocation + "px;");
+            left+=105;
+            topLocation=3;
+            for (StackedBarPeptideComponent peptide : unMappedSet) {
+                unMappedPeptidesSequencesBar.addComponent(peptide, "left: " + (left) + "px; top: " + topLocation + "px;");
+                left += peptide.getWidthArea() + 5;
+                if (left >= unMappedPeptidesSequencesBar.getWidth()) {
+                    topLocation += 12;
+                    left=110;
+                   
+                    
+                }
+
+            }
+            unMappedPeptidesSequencesBar.setHeight(unMappedPeptidesSequencesBar.getHeight()+topLocation,Unit.PIXELS);
+            this.addComponent(unMappedPeptidesSequencesBar, "left: " + (20) + "px; top: " + (top) + "px;");
+            top += unMappedPeptidesSequencesBar.getHeight();
+            
+        }
+
         top += 5;
         this.setHeight(top, Unit.PIXELS);
         ptmAvailable = !ptmsLayoutMap.isEmpty();
@@ -307,11 +344,11 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
                 VerticalLayout coverageComp = new VerticalLayout();
                 coverageComp.setStyleName("vdarkgray");
                 coverageComp.setHeight(15, Unit.PIXELS);
-                
-                coverageComp.setWidth((widthArea-startPostionOnLayout[i]), Unit.PIXELS);
-                coverageComp.setDescription("" + (i + 2)  + "-" +  sequence.substring((i + 2), endPep) + "-" + endPep);
-                coveragePeptidesSequencesBar.addComponent(coverageComp, "left: " +  startPostionOnLayout[i]  + "px; top: " + (0) + "px;");
-                
+
+                coverageComp.setWidth((widthArea - startPostionOnLayout[i]), Unit.PIXELS);
+                coverageComp.setDescription("" + (i + 2) + "-" + sequence.substring((i + 2), endPep) + "-" + endPep);
+                coveragePeptidesSequencesBar.addComponent(coverageComp, "left: " + startPostionOnLayout[i] + "px; top: " + (0) + "px;");
+
             }
 
         }

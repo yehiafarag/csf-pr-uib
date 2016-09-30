@@ -87,14 +87,19 @@ public class CSF_PR_UI extends UI {
         appWrapper.setComponentAlignment(layout, Alignment.MIDDLE_CENTER);
 
         JavaScript.getCurrent().addFunction("aboutToClose", (JsonArray arguments) -> {
-//            System.out.println("at system is closing the tab   " + vaadinRequest.getContextPath());
+            System.out.println("at system is closing the tab   " + vaadinRequest.getContextPath());
 //            Page.getCurrent().open(vaadinRequest.getContextPath(), "");
-//                    Notification.show(" notifi", "dont go ", Notification.Type.ASSISTIVE_NOTIFICATION);
-//                    Page.getCurrent().open(vaadinRequest.getRemoteAddr(),"");
-
-//                    cleanUserFolder(new File(filesURL, VaadinSession.getCurrent().getSession().getId()));
+                    
         });
         Page.getCurrent().getJavaScript().execute("window.onbeforeunload = function (e) { var e = e || window.event; aboutToClose(); return; };");
+        this.getWindows().iterator().next().addCloseListener(new Window.CloseListener() {
+
+            @Override
+            public void windowClose(Window.CloseEvent e) {
+               
+                Notification.show("wndows are closing");
+            }
+        });
 
     }
 

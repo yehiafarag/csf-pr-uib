@@ -18,6 +18,7 @@ import no.uib.probe.csf.pr.touch.logic.beans.DiseaseGroupComparison;
 import no.uib.probe.csf.pr.touch.logic.beans.HeatMapHeaderCellInformationBean;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantPeptide;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantProtein;
 import no.uib.probe.csf.pr.touch.logic.dataset.DatasetUtility;
 import no.uib.probe.csf.pr.touch.selectionmanager.QuantSearchSelection;
@@ -339,6 +340,12 @@ public class Data_Handler implements Serializable {
      */
     public void exportHeatmap(){
 //    exporter.exportHeatmap();
+    
+    }
+    
+    public Set<QuantPeptide> getUnmappedPeptideSet(){
+    
+       return coreLogic.getUnmappedPeptideSet();
     
     }
     

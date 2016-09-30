@@ -332,7 +332,7 @@ public class CoreLogic implements Serializable {
                 String protName;
                 String accession;
                 String urlLink;
-               
+
                 if (uniprotAcc.trim().equalsIgnoreCase("") || uniprotAcc.equalsIgnoreCase("Not Available") || uniprotAcc.equalsIgnoreCase("Entry Deleted") || uniprotAcc.equalsIgnoreCase("Entry Demerged") || uniprotAcc.equalsIgnoreCase("NOT RETRIEVED") || uniprotAcc.equalsIgnoreCase("DELETED") || uniprotAcc.trim().equalsIgnoreCase("UNREVIEWED")) {
                     protName = quant.getPublicationProteinName();
                     accession = protAcc;
@@ -444,7 +444,7 @@ public class CoreLogic implements Serializable {
             proteinsByTrendMap.put(5, new HashSet<>());
             comparProtList.keySet().stream().forEach((Key) -> {
                 QuantComparisonProtein temp = comparProtList.get(Key);
-                sortedcomparProtList.put((temp.getSignificantTrindCategory()+ "_" + Key), temp);
+                sortedcomparProtList.put((temp.getSignificantTrindCategory() + "_" + Key), temp);
                 temp.finalizeQuantData();
                 Set<QuantComparisonProtein> set = proteinsByTrendMap.get(temp.getSignificantTrindCategory());
 //                 if(temp.getProteinAccession().equalsIgnoreCase("P10451"))
@@ -767,6 +767,50 @@ public class CoreLogic implements Serializable {
 
     public byte[] exportProteinsListToCSV(Set<String> proteinsList) {
         return exporter.expotProteinAccessionListToCSV(proteinsList);
+
+    }
+
+    public Set<QuantPeptide> getUnmappedPeptideSet() {
+
+        Set<QuantPeptide> unmappedPeptideSet = new LinkedHashSet<>();
+        Set<QuantDatasetObject> quantDatasetSet = new TreeSet<>(getQuantDatasetList());
+        Object[] dsIds = new Object[quantDatasetSet.size()];
+        for (int i = 0; i < dsIds.length; i++) {
+            dsIds[i] = ((QuantDatasetObject) quantDatasetSet.toArray()[i]).getDsKey();
+        }
+        Set<QuantProtein> quantProteinSet = database.getQuantificationProteins(dsIds);
+        Map<String, Set<QuantPeptide>> quantPeptSet = database.getQuantificationPeptides(dsIds);
+
+        Map<String, QuantProtein> quantProteinSigMap = new TreeMap<>();
+        for (QuantProtein qProtein : quantProteinSet) {
+            String sigKey = "__" + qProtein.getProtKey() + "__" + qProtein.getDsKey() + "__";
+            if (quantPeptSet.containsKey(sigKey)) {
+                Set<QuantPeptide> peptidesSet = quantPeptSet.get(sigKey);
+                if (qProtein.getSequence() != null && !qProtein.getSequence().trim().equalsIgnoreCase("")) {
+                    for (QuantPeptide peptide : peptidesSet) {
+                        if (!qProtein.getSequence().contains(peptide.getPeptideSequence())) {
+                            peptide.setUniprotAcc(qProtein.getUniprotAccession());
+                            peptide.setUniprotName(qProtein.getUniprotProteinName());
+                            peptide.setPublicationAcc(qProtein.getPublicationAccNumber());
+                            peptide.setPublicationName(qProtein.getPublicationProteinName());
+                            unmappedPeptideSet.add(peptide);
+                        }
+                    }
+
+                } else {
+                    System.out.println("protein and peptides exist but no sequence available " + qProtein.getPublicationAccNumber() + "   ");
+                    for (QuantPeptide peptide : peptidesSet) {
+                        System.out.println("peptide sequince " + peptide.getPeptideSequence());
+                    }
+                    System.out.println("--------------------------------------- ");
+                    System.out.println();
+
+                }
+
+            }
+        }
+
+        return unmappedPeptideSet;
 
     }
 

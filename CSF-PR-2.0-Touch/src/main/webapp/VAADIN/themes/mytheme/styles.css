@@ -15513,3 +15513,12 @@ margin-bottom:20px;
 
     min-height:20px;
 }
+.unmappedpeptidescontainer{
+
+    background-color:whitesmoke ;
+    border:1px solid lightgray;
+    
+}
+.unmappedpeptidescontainer div{
+font-size:10px;
+}

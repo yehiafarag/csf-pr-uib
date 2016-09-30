@@ -25,7 +25,41 @@ public class QuantPeptide implements Serializable {
     private String peptideModification;
     private String modification_comment;
     private String quantBasisComment;
+
+    public String getUniprotAcc() {
+        return uniprotAcc;
+    }
+
+    public void setUniprotAcc(String uniprotAcc) {
+        this.uniprotAcc = uniprotAcc;
+    }
+
+    public String getPublicationAcc() {
+        return publicationAcc;
+    }
+
+    public void setPublicationAcc(String publicationAcc) {
+        this.publicationAcc = publicationAcc;
+    }
+
+    public String getUniprotName() {
+        return uniprotName;
+    }
+
+    public void setUniprotName(String uniprotName) {
+        this.uniprotName = uniprotName;
+    }
+
+    public String getPublicationName() {
+        return publicationName;
+    }
+
+    public void setPublicationName(String publicationName) {
+        this.publicationName = publicationName;
+    }
      private String peptideSignature;
+     private String uniprotAcc,publicationAcc,uniprotName,publicationName;
+     
 
     public String getPeptideSignature() {
         return peptideSignature;
