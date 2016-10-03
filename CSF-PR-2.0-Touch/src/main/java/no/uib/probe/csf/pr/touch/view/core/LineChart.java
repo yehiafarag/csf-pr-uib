@@ -201,6 +201,7 @@ public class LineChart extends AbsoluteLayout {
             xLineValues[comparisonIndex] = comparisonIndex;
             yLineValues[comparisonIndex] = trendValue;
             
+            
             String groupCompTitle = comparison.getComparisonHeader();
             String updatedHeader = groupCompTitle.split(" / ")[0].split("__")[0] + " / " + groupCompTitle.split(" / ")[1].split("__")[0];//+ " ( " + groupCompTitle.split(" / ")[1].split("\n")[1] + " )";
 
@@ -705,13 +706,14 @@ public class LineChart extends AbsoluteLayout {
                     if (trend == 6) {
                         dsNumber = 0;
                     }
-                    String header = gc.getComparisonHeader();
-                    String updatedHeader = gc.getComparisonFullName();
-                    if (header.contains("*")) {
-                        updatedHeader = header.split(" / ")[0].split("__")[0] + " / " + header.split(" / ")[1].split("__")[0] + "<br/>" + header.split(" / ")[0].split("__")[1];
-                    }
-                    
-                    String tooltip = updatedHeader + "<br/>Overall trend: " + tooltipsIcon[trend] + "<br/>Datasets included: " + dsNumber;
+//                    String header = gc.getComparisonHeader();
+//                    String updatedHeader = gc.getComparisonFullName();
+//                    if (header.contains("*")) {
+//                        updatedHeader = header.split(" / ")[0].split("__")[0] + " / " + header.split(" / ")[1].split("__")[0] + "<br/>" + header.split(" / ")[0].split("__")[1];
+//                    }
+                    String[] gr = gc.getComparisonFullName().replace("__" + gc.getDiseaseCategory(), "").split(" / ");
+                String updatedHeader = ("Numerator: " + gr[0] + "<br/>Denominator: " + gr[1]+ "<br/>Disease: " + gc.getDiseaseCategory());  
+                    String tooltip = updatedHeader + "<br/>Overall trend: " + tooltipsIcon[trend];// + "<br/>Datasets included: " + dsNumber;
                     square.setDescription(tooltip);
 
 //

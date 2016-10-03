@@ -100,7 +100,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
             double charSize = 100.0 / (double) seq.length();
             for (String pep : peptides) {
                 JPanel peptide = new JPanel();
-                int w = (int) Math.max((pep.length() * charSize), -1);
+                int w = (int) Math.max((pep.length() * charSize), 2);
                 peptide.setSize(w, 18);
                 peptide.setBackground(Color.decode("#1d69b4"));
                 peptide.setBorder(peptideBorder);

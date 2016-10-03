@@ -797,15 +797,16 @@ public class CoreLogic implements Serializable {
                         }
                     }
 
-                } else {
-                    System.out.println("protein and peptides exist but no sequence available " + qProtein.getPublicationAccNumber() + "   ");
-                    for (QuantPeptide peptide : peptidesSet) {
-                        System.out.println("peptide sequince " + peptide.getPeptideSequence());
-                    }
-                    System.out.println("--------------------------------------- ");
-                    System.out.println();
+                } 
+//                else {
+//                    System.out.println("protein and peptides exist but no sequence available " + qProtein.getPublicationAccNumber() + "   ");
+//                    for (QuantPeptide peptide : peptidesSet) {
+//                        System.out.println("peptide sequince " + peptide.getPeptideSequence());
+//                    }
+//                    System.out.println("--------------------------------------- ");
+//                    System.out.println();
 
-                }
+//                }
 
             }
         }

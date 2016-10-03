@@ -1,14 +1,10 @@
 package no.uib.probe.csf.pr.touch.view.bigscreen;
 
-import com.vaadin.addon.tableexport.ExcelExport;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Panel;
-import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
-import java.util.Set;
 import no.uib.probe.csf.pr.touch.Data_Handler;
-import no.uib.probe.csf.pr.touch.logic.beans.QuantPeptide;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
 import no.uib.probe.csf.pr.touch.view.LayoutViewManager;
 import no.uib.probe.csf.pr.touch.view.bigscreen.quantlayoutcontainer.QuantDataLayoutContainer;

@@ -43,10 +43,10 @@ public class QueryConstractorHandler {
                     selectStat.setString(x + 1, valueList.get(x));
 
                 } else if (type.equalsIgnoreCase("Integer")) {
-                    selectStat.setInt(x, Integer.valueOf(valueList.get(x)));
+                    selectStat.setInt(x+1, Integer.valueOf(valueList.get(x)));
 
                 } else if (type.equalsIgnoreCase("double")) {
-                    selectStat.setDouble(x, Double.valueOf(valueList.get(x)));
+                    selectStat.setDouble(x+1, Double.valueOf(valueList.get(x)));
 
                 }
 

@@ -530,8 +530,9 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
                 double scale = Math.max(this.scaleValues(numPatients, maxPatientsNumber, 100, 0), 1);
                 int w = (int) (12 * scale);
                 
-                
-                String tooltip = comparison.getComparisonFullName() + "<br/>" + comparison.getDiseaseCategory() + "<br/>#Patients :" + numPatients;//+ "<br/>Datasets included: " + dsNumber;
+                String[] gr = comparison.getComparisonFullName().replace("__" + comparison.getDiseaseCategory(), "").split(" / ");
+                String updatedHeader = ("Numerator: " + gr[0] + "<br/>Denominator: " + gr[1]+ "<br/>Disease: " + comparison.getDiseaseCategory());  
+                String tooltip = updatedHeader + "<br/>#Patients :" + numPatients;//+ "<br/>Datasets included: " + dsNumber;
 
                 symbol.setDescription(tooltip);
                 symbol.setWidth(12, Unit.PIXELS);
@@ -843,7 +844,9 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
                 } else {
                     square.addStyleName("pointer");
                 }
-                String tooltip = gc.getComparisonFullName() + "<br/>" + gc.getDiseaseCategory() + "<br/>Overall trend: " + tooltipsIcon[trend];//+ "<br/>Datasets included: " + dsNumber;
+                String[] gr = gc.getComparisonFullName().replace("__" + gc.getDiseaseCategory(), "").split(" / ");
+                String updatedHeader = ("Numerator: " + gr[0] + "<br/>Denominator: " + gr[1]+ "<br/>Disease: " + gc.getDiseaseCategory());  
+                String tooltip = updatedHeader+ "<br/>Overall trend: " + tooltipsIcon[trend];//+ "<br/>Datasets included: " + dsNumber;
                 square.setDescription(tooltip);
                 square.addLayoutClickListener(StudiesLineChart.this);
 

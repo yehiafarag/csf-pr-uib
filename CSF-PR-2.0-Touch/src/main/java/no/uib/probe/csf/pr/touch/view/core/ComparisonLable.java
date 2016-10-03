@@ -82,7 +82,9 @@ public abstract class ComparisonLable extends VerticalLayout implements LayoutEv
         this.addComponent(labelII);
         this.setComponentAlignment(labelII, Alignment.TOP_CENTER);
         
-        this.setDescription("View comparison details <br/>" + comparison.getComparisonFullName() + "<br/>" + comparison.getDiseaseCategory());
+        String[] gr = comparison.getComparisonFullName().replace("__" + comparison.getDiseaseCategory(), "").split(" / ");
+                String updatedHeader = ("Numerator: " + gr[0] + "<br/>Denominator: " + gr[1]+ "<br/>Disease: " + comparison.getDiseaseCategory());  
+        this.setDescription("View comparison details <br/>" +updatedHeader);
 
         VerticalLayout popupBody = new VerticalLayout();
         popupBody.setWidth(100, Unit.PERCENTAGE);

@@ -794,7 +794,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
                 }
             };
 
-            if (userCustomizedComparison == null) {
+            if (userCustomizedComparison == null || userCustomizedComparison.getQuantComparisonProteinMap()==null) {
                 tableItemsMap.put(protId, new Object[]{protId + 1, btn, accessionObject, name, null, protTrendLayout});
             } else {
                 int trend;

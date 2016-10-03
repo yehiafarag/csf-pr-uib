@@ -151,7 +151,8 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         frame.removeAllComponents();
         frame.addComponent(title, 1, 1);
         frame.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
-        diseaseMap.clear();
+        diseaseMap.clear(); 
+        resetSelection();
         miniLayout.removeAllComponents();
 
         if (diseaseCategorySet.size() == 1) {
@@ -179,6 +180,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
             return;
 
         }
+           
 
         DiseaseCategoryObject allDeseases = (DiseaseCategoryObject) diseaseCategorySet.toArray()[diseaseCategorySet.size() - 1];
         maxNumber = allDeseases.getDatasetNumber();

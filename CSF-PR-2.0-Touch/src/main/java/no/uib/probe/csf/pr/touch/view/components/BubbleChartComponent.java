@@ -982,11 +982,8 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
                 String header = comparison.getComparisonHeader();
                 // + " - " + header.split(" / ")[1].split("\n")[1].replace("_", " ").replace("-", "'").replace("Disease", "") + "";
                 int itemNumber = (int) ((XYItemEntity) entity).getDataset().getYValue(((XYItemEntity) entity).getSeriesIndex(), ((XYItemEntity) entity).getItem());
-                String updatedHeader = comparison.getComparisonFullName();
-                if (header.contains("*")) {
-                    updatedHeader = header.split(" / ")[0].split("__")[0] + " / " + header.split(" / ")[1].split("__")[0] + "<br/>" + header.split(" / ")[0].split("__")[1];
-                }
-
+                String[] gr = comparison.getComparisonFullName().replace("__" + comparison.getDiseaseCategory(), "").split(" / ");
+                String updatedHeader = ("Numerator: " + gr[0] + "<br/>Denominator: " + gr[1]+ "<br/>Disease: " + comparison.getDiseaseCategory());  
                 square.addStyleName(trendStyles[itemNumber]);
                 square.setDescription(updatedHeader + "<br/>Category: " + tooltipLabels[itemNumber] + "<br/>#Proteins: " + (int) tooltipsProtNumberMap.get(header)[itemNumber]);
                 double categIndex = (double) itemNumber;

@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import no.uib.probe.csf.pr.touch.view.core.InformationButton;
 import no.uib.probe.csf.pr.touch.view.core.StackedBarPeptideComponent;
 
 /**
@@ -101,6 +102,7 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
             String pepSeq = peptideLayout.getParam("sequence").toString();
             if (!sequence.contains(pepSeq)) {
                 unMappedSet.add(peptideLayout);
+                peptideLayout.setDescription("" + 1 + "-" + pepSeq + "-" + pepSeq.length() + "");
                 tempSequence.append(pepSeq);
             } else if (peptideLayout.getParam("trend").toString().equalsIgnoreCase("increased")) {
                 highSet.add(peptideLayout);
@@ -135,26 +137,32 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
 
             int left = 5;
             int topLocation = 5;
-            unMappedPeptidesSequencesBar.setHeight(20,Unit.PIXELS);
-            Label titleLabel = new Label("Unmapped peptides:");
-            unMappedPeptidesSequencesBar.addComponent(titleLabel, "left: " + (left) + "px; top: " + topLocation + "px;");
-            left+=105;
-            topLocation=3;
+            unMappedPeptidesSequencesBar.setHeight(20, Unit.PIXELS);
+
+            InformationButton info = new InformationButton("Protein sequence updated so peptides sequence unmapped to the current protein sequence version.", false);
+
+            info.updateIcon(null);
+            info.setWidth(80, Unit.PIXELS);
+            Label titleLabel = new Label("Unmapped:");
+            titleLabel.addStyleName("link");
+            info.addComponent(titleLabel);
+            unMappedPeptidesSequencesBar.addComponent(info, "left: " + (left) + "px; top: " + topLocation + "px;");
+            left += 105;
+            topLocation = 3;
             for (StackedBarPeptideComponent peptide : unMappedSet) {
                 unMappedPeptidesSequencesBar.addComponent(peptide, "left: " + (left) + "px; top: " + topLocation + "px;");
                 left += peptide.getWidthArea() + 5;
                 if (left >= unMappedPeptidesSequencesBar.getWidth()) {
                     topLocation += 12;
-                    left=110;
-                   
-                    
+                    left = 110;
+
                 }
 
             }
-            unMappedPeptidesSequencesBar.setHeight(unMappedPeptidesSequencesBar.getHeight()+topLocation,Unit.PIXELS);
+            unMappedPeptidesSequencesBar.setHeight(unMappedPeptidesSequencesBar.getHeight() + topLocation, Unit.PIXELS);
             this.addComponent(unMappedPeptidesSequencesBar, "left: " + (20) + "px; top: " + (top) + "px;");
             top += unMappedPeptidesSequencesBar.getHeight();
-            
+
         }
 
         top += 5;
@@ -320,7 +328,9 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
             } else {
                 int start = sequence.split(pepSeq)[0].length() + 1;
                 int end = start + pepSeq.length() - 1;
-                endPostionOnLayout[start - 2] = peptideLayout.getX0() + peptideLayout.getWidthArea();
+                if (endPostionOnLayout[start - 2] == 0 ||(endPostionOnLayout[start - 2] > 0 && endPostionOnLayout[start - 2] < end)) {
+                    endPostionOnLayout[start - 2] = peptideLayout.getX0() + peptideLayout.getWidthArea();
+                }
                 for (int x = start - 2; x < end; x++) {
                     location[x] = location[x] + 1;
                     startPostionOnLayout[x] = peptideLayout.getX0();

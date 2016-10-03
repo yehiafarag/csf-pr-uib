@@ -1851,9 +1851,9 @@ div.v-layout.v-horizontal.v-widget {
     color: white;
     padding: 5px 9px;
     border-radius: 3px;
-    max-width: 35em;
+    max-width: 50em;
     overflow: hidden !important;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .mytheme .v-tooltip div[style*="width"] {
@@ -15515,10 +15515,15 @@ margin-bottom:20px;
 }
 .unmappedpeptidescontainer{
 
-    background-color:whitesmoke ;
+    background-color:#EAF5FC  ;
     border:1px solid lightgray;
     
 }
 .unmappedpeptidescontainer div{
 font-size:10px;
+}
+.v-slot-minwidth100{
+    min-width: 100px !important;
+    margin-right:10px !important;
+    
 }

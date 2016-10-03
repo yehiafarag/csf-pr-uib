@@ -6,6 +6,7 @@
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.event.FieldEvents;
+import com.vaadin.event.LayoutEvents;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.ui.AbstractTextField;
 import com.vaadin.ui.Alignment;
@@ -64,7 +65,9 @@ public abstract class SearchingField extends HorizontalLayout {
         this.addComponent(searchingCommentLabel);
         this.setComponentAlignment(searchingCommentLabel, Alignment.TOP_CENTER);
         
-        
+        searchingBtn.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
+           b.click();
+        });
         searchField.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
             SearchingField.this.textChanged(event.getText());
         });

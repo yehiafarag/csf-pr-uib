@@ -53,7 +53,9 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
         headerFrame.addComponent(filterBtn);
         headerFrame.setComponentAlignment(filterBtn, Alignment.TOP_CENTER);
         filterBtn.setVisible(false);
-        filterBtn.setDescription(comparison.getComparisonHeader().split(" / ")[0].split("__")[0] + " / " + comparison.getComparisonHeader().split(" / ")[1].split("__")[0]);
+        String[] gr = comparison.getComparisonFullName().replace("__" + comparison.getDiseaseCategory(), "").split(" / ");
+                String updatedHeader = ("Numerator: " + gr[0] + "<br/>Denominator: " + gr[1]+ "<br/>Disease: " + comparison.getDiseaseCategory());  
+        filterBtn.setDescription(updatedHeader);
         
 
         sortingBtn = new VerticalLayout();
@@ -61,7 +63,7 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
         sortingBtn.setWidth(20, Unit.PIXELS);
         sortingBtn.setHeight(100, Unit.PERCENTAGE);
         sortingBtn.setStyleName(comparison.getDiseaseCategoryStyle());
-        sortingBtn.setDescription(comparison.getComparisonHeader().split(" / ")[0].split("__")[0] + " / " + comparison.getComparisonHeader().split(" / ")[1].split("__")[0]);
+        sortingBtn.setDescription(updatedHeader);
         headerFrame.addComponent(sortingBtn);
         headerFrame.setComponentAlignment(sortingBtn, Alignment.TOP_CENTER);
         sortingBtn.addLayoutClickListener(ColumnHeaderLayout.this);

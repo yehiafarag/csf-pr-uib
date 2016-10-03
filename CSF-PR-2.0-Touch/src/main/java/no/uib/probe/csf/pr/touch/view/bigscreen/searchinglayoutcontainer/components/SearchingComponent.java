@@ -325,6 +325,7 @@ public abstract class SearchingComponent extends BigBtn {
         selection.setDatasetIds(datasetIds);
         selection.setSelectedProteinsList(proteinAccession);
         Data_handler.switchToSearchingMode(selection);
+        CSFPR_Central_Manager.resetSearchSelection();
         loadQuantSearching();
         CSFPR_Central_Manager.searchSelectionAction(selection);
 

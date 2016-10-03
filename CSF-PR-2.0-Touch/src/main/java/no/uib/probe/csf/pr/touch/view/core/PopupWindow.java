@@ -26,8 +26,8 @@ public class PopupWindow extends Window {
     private final VerticalLayout mainFrame;
     public PopupWindow(Layout layout,String title) {
 
-        int height = Page.getCurrent().getBrowserWindowHeight() - 100;
-        int width = Page.getCurrent().getBrowserWindowWidth() - 100;
+        int height = Math.max(Page.getCurrent().getBrowserWindowHeight() - 100,800);
+        int width = Math.max(Page.getCurrent().getBrowserWindowWidth()- 100,800);
        
         mainFrame = new VerticalLayout();
         mainFrame.setSizeFull();        
@@ -44,6 +44,7 @@ public class PopupWindow extends Window {
         setResizable(false);
         setModal(true);
         setDraggable(false);
+         mainFrame.addStyleName("scrollable");
         center();
         setCaption("<font color='gray' style='font-weight: bold;!important'>&nbsp;&nbsp;"+title+"</font>");
         UI.getCurrent().addWindow(PopupWindow.this);

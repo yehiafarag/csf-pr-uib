@@ -83,7 +83,11 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
         if (cellColor.equalsIgnoreCase("#EFF2FB") && value != 0) {
             strValue = ((int) value) + "*";
             this.updateLabel(strValue);
-            this.setDescription("Same type comparison ( " + fullCompTitle.replace("__" + diseaseCategory, "") + ")<br/>Disease: " + diseaseCategory + "<br/>#Datasets: " + strValue + "<br/>#Publications: " + publicationsNumber);
+             String[] gr = fullCompTitle.replace("__" + diseaseCategory, "").split(" / ") ;
+            this.setDescription("Same type comparison <br/>"
+                    + "Numerator: " + gr[0]+ "<br/>"
+                    + "Denominator: "+gr[1]
+                    + "<br/>Disease: " + diseaseCategory + "<br/>#Datasets: " + strValue + "<br/>#Publications: " + publicationsNumber);
             comparison.setComparisonHeader(" / ");
             comparison.setOreginalComparisonHeader(" / ");
             combinedHeader = true;
@@ -130,7 +134,9 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
         }
 
         if (value > 0 && !cellColor.equalsIgnoreCase("#EFF2FB")) {
-            this.setDescription(fullCompTitle.replace("__" + diseaseCategory, "") + "<br/>Disease: " + diseaseCategory + " <br/>#Datasets: " + strValue + "<br/>#Publications: " + publicationsNumber);
+            String[] gr = comparison.getComparisonFullName().replace("__" + diseaseCategory, "").split(" / ") ;
+            this.setDescription("Numerator: "+gr[0]+ "<br/>Denominator: "+gr[1]
+                    + "<br/>Disease: " + diseaseCategory + " <br/>#Datasets: " + strValue + "<br/>#Publications: " + publicationsNumber);
         }
         this.addStyleName(pointer);
     }

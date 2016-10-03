@@ -74,7 +74,12 @@ public abstract class ImageContainerBtn extends AbsoluteLayout implements Layout
      * @param imgResource
      */
     public void updateIcon(Resource imgResource) {
-        img.setSource(imgResource);
+        if (imgResource == null) {
+            img.setVisible(false);
+        } else {
+            img.setSource(imgResource);
+            img.setVisible(true);
+        }
     }
 
     /**
@@ -127,7 +132,6 @@ public abstract class ImageContainerBtn extends AbsoluteLayout implements Layout
         if (enabled) {
             this.removeStyleName("unapplied");
             this.blink();
-            
 
         } else {
             this.addStyleName("unapplied");

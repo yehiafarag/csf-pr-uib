@@ -198,11 +198,13 @@ public abstract class HeatMapLayout extends VerticalLayout {
         commentLabel.setStyleName(ValoTheme.LABEL_SMALL);
         commentLabel.addStyleName(ValoTheme.LABEL_TINY);
         commentLabel.setContentMode(ContentMode.HTML);
+        commentLabel.addStyleName("minwidth100");
 //        if (smallScreen) {
 //            clickcommentLabel.addStyleName("nomargin");
 //        }
         controlsLayout.addComponent(commentLabel);
         controlsLayout.setComponentAlignment(commentLabel, Alignment.TOP_LEFT);
+        
 //        controlsLayout.setExpandRatio(clickcommentLabel, 0.6f);
 
         Label clickcommentLabel = new Label("Click in the table to select data");
@@ -210,6 +212,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
         clickcommentLabel.addStyleName(ValoTheme.LABEL_TINY);
         clickcommentLabel.addStyleName("italictext");
         clickcommentLabel.setWidth(182, Unit.PIXELS);
+        
 //        if (smallScreen) {
 //            clickcommentLabel.addStyleName("nomargin");
 //        }
@@ -398,7 +401,6 @@ public abstract class HeatMapLayout extends VerticalLayout {
                 csvExport.setExportFileName("CSF-PR - Quant Datasets Information" + ".xls");
                 csvExport.setMimeType(ExcelExport.EXCEL_MIME_TYPE);
                 csvExport.setDisplayTotals(false);
-
                 csvExport.setDateDataFormat("0");
                 csvExport.setExcelFormatOfProperty("Index", "0");
                 csvExport.setExcelFormatOfProperty("#Quantified Proteins", "0");
@@ -462,13 +464,42 @@ public abstract class HeatMapLayout extends VerticalLayout {
         equalComparisonMap.clear();
         updatedDatasetMap.clear();
         currentDsIds.clear();
-        updatedDatasetMap.putAll(fullQuantDsMap);
+        for (Integer i : fullQuantDsMap.keySet()) {
+            QuantDatasetObject qDs = fullQuantDsMap.get(i);
+            boolean add = false;
+            for (HeatMapHeaderCellInformationBean row : rowsLbels) {
+                if (row.getDiseaseGroupOreginalName().contains(qDs.getPatientsGroup1()) || row.getDiseaseGroupOreginalName().contains(qDs.getPatientsGroup2())) {
+                    add = true;
+                    break;
+                }
 
-        for (DiseaseGroupComparison ds : patientsGroupComparisonsSet) {
-            currentDsIds.add(ds.getOriginalDatasetIndex());
+            }
+            if (add) {
+                add = false;
+                for (HeatMapHeaderCellInformationBean col : columnsLbels) {
+                    if (col.getDiseaseGroupOreginalName().contains(qDs.getPatientsGroup1()) || col.getDiseaseGroupOreginalName().contains(qDs.getPatientsGroup2())) {
+                        add = true;
+                        break;
+                    }
+
+                }
+
+            }
+            if (add) {
+                updatedDatasetMap.put(i, qDs);
+                currentDsIds.add(qDs.getDsKey());
+            }
+
         }
+
+//        updatedDatasetMap.putAll(fullQuantDsMap);
+//
+//        for (DiseaseGroupComparison ds : patientsGroupComparisonsSet) {
+//            currentDsIds.add(ds.getOriginalDatasetIndex());
+//        }
+//        System.out.println("at cur " + currentDsIds.size() + "   " + currentDsIds);
         updateHeatMapLayout(rowsLbels, columnsLbels, patientsGroupComparisonsSet, fullQuantDsMap);
-        updateHMThumb(this.getHMThumbImg(), patientsGroupComparisonsSet.size(), 0, equalComparisonMap);
+        updateHMThumb(this.getHMThumbImg(), updatedDatasetMap.size(), 0, equalComparisonMap);
     }
 
     /**
@@ -560,14 +591,14 @@ public abstract class HeatMapLayout extends VerticalLayout {
 ////        this.updateData(localRowHeadersSet, localColumnHeadersSet, null, datasets);
 ////
 ////        //updateBody
-////        for (int row = 0; row < cellTable.length; row++) {
-////            HeatmapCell[] cellRow = cellTable[row];
+////        for (int col = 0; col < cellTable.length; col++) {
+////            HeatmapCell[] cellRow = cellTable[col];
 ////            for (int col = 0; col < cellRow.length; col++) {
 ////                HeatmapCell cell = cellRow[col];
 ////                if (cell == null) {
 ////                    continue;
 ////                }
-////                if (activeRows.contains(row) && activeColumn.contains(col)) {
+////                if (activeRows.contains(col) && activeColumn.contains(col)) {
 ////                    if (cell.getValue() == 0) {
 ////                        cell.setVisible(true);
 ////                    } else if (comparisonTitlesMap.contains(cell.getComparison().getComparisonHeader())) {
@@ -683,7 +714,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
             columnHeaderCells[i] = headerCell;
         }
 
-        //init row headers
+        //init col headers
         rowHeaderCells = new HeaderCell[rowheaders.size()];
         rowsColors = new String[rowheaders.size()];
 //        rowLabelColors = new String[rowheaders.size()];
@@ -894,7 +925,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
     }
 
     /**
-     * this method is responsible for selecting a row or column and update heat
+     * this method is responsible for selecting a col or column and update heat
      * map layout and update selection manager
      *
      * @param selectedheader
@@ -1083,7 +1114,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
     }
 
     /**
-     * This method responsible for un-selecting a row or column and update heat
+     * This method responsible for un-selecting a col or column and update heat
      * map layout and update selection manager
      *
      * @param selectedHeadercell

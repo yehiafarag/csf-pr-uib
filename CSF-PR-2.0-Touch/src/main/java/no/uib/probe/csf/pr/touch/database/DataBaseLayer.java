@@ -12,7 +12,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
@@ -993,17 +992,56 @@ public class DataBaseLayer implements Serializable {
                     x++;
                 }
             } else {  //peptide sequance
+//                int x = 0;
+//                for (String str : searchSet) {
+//                    if (x > 0) {
+//                        sb.append(" OR ");
+//                    }
+//                    sb.append("`sequance` LIKE (?)");//
+//                    qhandler.addQueryParam("String", "%" + str + "%");
+//                    x++;
+//                }
+//            }
+
                 int x = 0;
                 for (String str : searchSet) {
                     if (x > 0) {
                         sb.append(" OR ");
                     }
-                    sb.append("`sequance` LIKE (?)");//
-                    qhandler.addQueryParam("String", "%" + str + "%");
+                    sb.append("`peptide_sequance` ='").append(str.trim()).append("'");//
                     x++;
+                }
+
+                String selectProteinIndex = "SELECT `prot_index` FROM `quantitative_peptides_table` where " + sb.toString();
+                try {
+                    if (conn == null || conn.isClosed()) {
+                        Class.forName(driver).newInstance();
+                        conn = DriverManager.getConnection(url + dbName, userName, password);
+                    }
+                    selectProStat = conn.prepareStatement(selectProteinIndex);
+                    ResultSet rs = selectProStat.executeQuery();
+                    Set<Integer> proteinsIndexSet = new LinkedHashSet<>();
+                    while (rs.next()) {
+                        proteinsIndexSet.add(rs.getInt("prot_index"));
+
+                    }
+                    sb = new StringBuilder();
+                    x = 0;
+                    for (int protIndex : proteinsIndexSet) {
+                        if (x > 0) {
+                            sb.append(" OR ");
+                        }
+                        sb.append("`index` = ?");
+                        qhandler.addQueryParam("Integer", protIndex + "");
+                        x++;
+                    }
+
+                } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException exp) {
+                    System.err.println("at error line 1052 " + this.getClass().getName() + "   " + exp.getLocalizedMessage());
                 }
             }
         }
+
         selectPro = "SELECT * FROM   `quantitative_proteins_table`  Where " + (sb.toString());
         try {
             if (conn == null || conn.isClosed()) {
@@ -1145,7 +1183,7 @@ public class DataBaseLayer implements Serializable {
 
         }
         String sta = "";
-        if (sb.toString().trim().isEmpty()) {
+        if (!sb.toString().trim().isEmpty()) {
             sta = "Where " + (sb.toString());
         }
 
@@ -1153,9 +1191,7 @@ public class DataBaseLayer implements Serializable {
             selectPro = "SELECT * FROM `experiment_protein_table`  " + sta + " AND `valid`=?;";
         } else {
 
-            selectPro = "SELECT * FROM `experiment_protein_table` " + (sb.toString());
-
-            System.err.println("at error selectPro " + selectPro);
+            selectPro = "SELECT * FROM `experiment_protein_table` " + (sta);
         }
         try {
             if (conn == null || conn.isClosed()) {
