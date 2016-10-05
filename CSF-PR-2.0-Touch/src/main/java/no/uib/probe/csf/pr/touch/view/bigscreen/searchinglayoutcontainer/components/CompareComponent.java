@@ -65,27 +65,28 @@ public abstract class CompareComponent extends BigBtn {
 
     public CompareComponent(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager, boolean smallScreen) {
         super("Compare", "Compare to your data", "img/compare.png", smallScreen);
-        this.smallScreen = smallScreen;
+        this.smallScreen =  Page.getCurrent().getBrowserWindowHeight()  <= 720;
         this.Data_handler = Data_handler;
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         VerticalLayout popupbodyLayout = new VerticalLayout();
         popupbodyLayout.setSpacing(true);
         popupbodyLayout.setWidth(100, Sizeable.Unit.PERCENTAGE);
+        popupbodyLayout.setHeight(100, Unit.PERCENTAGE);
         popupbodyLayout.setMargin(new MarginInfo(false, true, false, true));
         popupbodyLayout.addStyleName("searchpopup");
         comparePanel = new PopupWindow(popupbodyLayout, "Compare Data");
 
         int h1;
-        if (smallScreen) {
-            comparePanel.setHeight(comparePanel.getHeight() + 100, Unit.PIXELS);
-            comparePanel.setWidth(comparePanel.getWidth() + 100, Unit.PIXELS);
-            h1 = 340;
+        if (this.smallScreen) {
+            comparePanel.setHeight( Page.getCurrent().getBrowserWindowHeight(), Unit.PIXELS);
+            comparePanel.setWidth( Page.getCurrent().getBrowserWindowWidth(), Unit.PIXELS);
+            h1 = 380;
         } else {
              comparePanel.setHeight(comparePanel.getHeight() + 50, Unit.PIXELS);
             comparePanel.setWidth(comparePanel.getWidth() + 50, Unit.PIXELS);
             h1 = 440;//Math.min(((int) comparePanel.getHeight() / 2) - 30,460);
         }
-        compareUnit = new ComparisonUnitComponent(Data_handler, h1, smallScreen) {
+        compareUnit = new ComparisonUnitComponent(Data_handler, h1, this.smallScreen) {
 
             @Override
             public void startComparing(Query query) {
@@ -100,7 +101,7 @@ public abstract class CompareComponent extends BigBtn {
         resultsLayout.addStyleName("whitelayout");
 
         resultsLayout.setWidth(100, Sizeable.Unit.PERCENTAGE);
-        h1 = (int) comparePanel.getHeight() - h1 - 40 - 130;
+        h1 = (int) comparePanel.getHeight() - h1 - 40 - 168;
         resultsLayout.setHeight(h1, Sizeable.Unit.PIXELS);
 
         resultsLayout.addStyleName("scrollable");
@@ -218,11 +219,11 @@ public abstract class CompareComponent extends BigBtn {
         popupbodyLayout.setExpandRatio(resultsLayout, 254);
         popupbodyLayout.addComponent(controlBtnsLayout);
         popupbodyLayout.setExpandRatio(controlBtnsLayout, 50);
-        if (smallScreen) {
+        if (this.smallScreen) {
             resultsLayout.setVisible(false);
             middleLayout.setVisible(false);
             resultsLayout.setWidth(compareUnit.getWidth(), compareUnit.getWidthUnits());
-            resultsLayout.setHeight(compareUnit.getHeight() - 40, compareUnit.getHeightUnits());
+            resultsLayout.setHeight(compareUnit.getHeight() - 35, compareUnit.getHeightUnits());
         }
 
     }

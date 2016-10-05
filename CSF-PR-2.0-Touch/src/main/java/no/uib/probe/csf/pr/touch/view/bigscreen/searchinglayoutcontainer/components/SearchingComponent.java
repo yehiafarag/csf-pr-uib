@@ -13,6 +13,7 @@ import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import java.awt.Color;
@@ -62,23 +63,26 @@ public abstract class SearchingComponent extends BigBtn {
     private final HorizontalLayout quantResultWrapping;
     private int h1;
     private final boolean smallScreen;
+    private final HorizontalLayout middleLayout;
 
     public SearchingComponent(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager, boolean smallScreen) {
         super("Search", "Search protein data", "img/search.png", smallScreen);
-        this.smallScreen = smallScreen;
+        this.smallScreen = Page.getCurrent().getBrowserWindowHeight() <= 720;
         this.Data_handler = Data_handler;
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         VerticalLayout popupbodyLayout = new VerticalLayout();
         popupbodyLayout.setSpacing(true);
         popupbodyLayout.setWidth(100, Unit.PERCENTAGE);
+
+        popupbodyLayout.setHeight(100, Unit.PERCENTAGE);
         popupbodyLayout.setMargin(new MarginInfo(false, true, false, true));
         popupbodyLayout.addStyleName("searchpopup");
         searchingPanel = new PopupWindow(popupbodyLayout, "Search");
 
-        if (smallScreen) {
-            searchingPanel.setHeight(searchingPanel.getHeight() + 100, Unit.PIXELS);
-            searchingPanel.setWidth(searchingPanel.getWidth() + 100, Unit.PIXELS);
-            h1 = 190;
+        if (this.smallScreen) {
+            searchingPanel.setHeight(Page.getCurrent().getBrowserWindowHeight(), Unit.PIXELS);
+            searchingPanel.setWidth(Page.getCurrent().getBrowserWindowWidth(), Unit.PIXELS);
+            h1 = 400;
         } else {
             h1 = Math.min(((int) searchingPanel.getHeight() / 2) - 30, 260);
         }
@@ -105,8 +109,8 @@ public abstract class SearchingComponent extends BigBtn {
 //        Panel searchingResults = new Panel(resultsLayout);
 //        searchingResults.setStyleName(ValoTheme.PANEL_BORDERLESS);
 //        searchingResults.setWidth(100, Unit.PERCENTAGE);
-        h1 = (int) searchingPanel.getHeight() - h1 - 30 - 160;
-        resultsLayout.setHeight(h1, Unit.PIXELS);
+        
+
         resultsLayout.addStyleName("scrollable");
 
         quantResultWrapping = new HorizontalLayout();
@@ -131,7 +135,7 @@ public abstract class SearchingComponent extends BigBtn {
         resultsLayout.addComponent(noresultsLabel);
         resultsLayout.setComponentAlignment(noresultsLabel, Alignment.MIDDLE_CENTER);
 
-        HorizontalLayout middleLayout = new HorizontalLayout();
+        middleLayout = new HorizontalLayout();
         middleLayout.setHeight(29, Sizeable.Unit.PIXELS);
         middleLayout.setWidth(100, Sizeable.Unit.PERCENTAGE);
         resultsLabel = new Label("Search Results");
@@ -207,14 +211,19 @@ public abstract class SearchingComponent extends BigBtn {
         });
 
         popupbodyLayout.addComponent(searchingUnit);
-        popupbodyLayout.setExpandRatio(searchingUnit, 290f);
+
         popupbodyLayout.setSpacing(true);
         popupbodyLayout.addComponent(middleLayout);
-        popupbodyLayout.setExpandRatio(middleLayout, 29f);
+
         popupbodyLayout.addComponent(resultsLayout);
-        popupbodyLayout.setExpandRatio(resultsLayout, 524);
+
         popupbodyLayout.addComponent(controlBtnsLayout);
-        popupbodyLayout.setExpandRatio(controlBtnsLayout, 50);
+        if (!this.smallScreen) {
+            popupbodyLayout.setExpandRatio(searchingUnit, 290f);
+            popupbodyLayout.setExpandRatio(middleLayout, 29f);
+            popupbodyLayout.setExpandRatio(resultsLayout, 524);
+            popupbodyLayout.setExpandRatio(controlBtnsLayout, 50);
+        }
 
         CSFPR_Central_Manager.registerListener(new CSFListener() {
 
@@ -235,6 +244,15 @@ public abstract class SearchingComponent extends BigBtn {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         });
+        if (this.smallScreen) {
+            resultsLayout.setVisible(false);
+            middleLayout.setVisible(false);
+            resultsLayout.setWidth(searchingUnit.getWidth(), searchingUnit.getWidthUnits());
+            resultsLayout.setHeight(h1 - 44, searchingUnit.getHeightUnits());
+        } else {
+            h1 = (int) searchingPanel.getHeight() - h1 - 30 - 158;
+            resultsLayout.setHeight(h1, Unit.PIXELS);
+        }
 
     }
 
@@ -246,7 +264,10 @@ public abstract class SearchingComponent extends BigBtn {
         overviewResults.removeAllComponents();
         loadDataBtn.setEnabled(false);
         if (smallScreen) {
-            resultsLayout.setHeight(h1, Unit.PIXELS);
+            resultsLayout.setVisible(false);
+            middleLayout.setVisible(false);
+            searchingUnit.setVisible(true);
+
         }
 
     }
@@ -386,6 +407,12 @@ public abstract class SearchingComponent extends BigBtn {
             idDataResult.setVisible(false);
         }
 
+        if (smallScreen) {
+            resultsLayout.setVisible(true);
+            middleLayout.setVisible(true);
+            searchingUnit.setVisible(false);
+        }
+
     }
     private final String[] items = new String[]{"Alzheimer's", "Multiple Sclerosis", "Parkinson's"};
     private final Color[] itemsColors = new Color[]{Color.decode("#4b7865"), Color.decode("#A52A2A"), Color.decode("#74716E")};
@@ -402,11 +429,11 @@ public abstract class SearchingComponent extends BigBtn {
     private void initProteinsQuantDataLayout(Map<String, Integer[]> quantHitsList, String[] notFoundAcc, int found) {
 
         quantDataResult.removeAllComponents();
-        overviewResults.removeAllComponents();
-        if (smallScreen) {
-            int h2 = h1 + 225;
-            resultsLayout.setHeight(h2, Unit.PIXELS);
-        }
+//        overviewResults.removeAllComponents();
+//        if (smallScreen) {
+//            int h2 = h1 + 225;
+//            resultsLayout.setHeight(h2, Unit.PIXELS);
+//        }
         if (quantHitsList == null || quantHitsList.isEmpty()) {
             quantDataResult.setVisible(false);
             noresultsLabel.setVisible(true);

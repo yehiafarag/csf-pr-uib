@@ -139,22 +139,22 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
             int topLocation = 5;
             unMappedPeptidesSequencesBar.setHeight(20, Unit.PIXELS);
 
-            InformationButton info = new InformationButton("Protein sequence updated so peptides sequence unmapped to the current protein sequence version.", false);
+            InformationButton info = new InformationButton("Note that the protein sequence for this protein has been recently altered in UniProt. The following peptide sequences can therefore no longer be mapped to the current canonical protein sequence.", false);
 
             info.updateIcon(null);
-            info.setWidth(80, Unit.PIXELS);
+            info.setWidth(55, Unit.PIXELS);
             Label titleLabel = new Label("Unmapped:");
-            titleLabel.addStyleName("link");
+            titleLabel.addStyleName("underline");
             info.addComponent(titleLabel);
             unMappedPeptidesSequencesBar.addComponent(info, "left: " + (left) + "px; top: " + topLocation + "px;");
-            left += 105;
+            left += 60;
             topLocation = 3;
             for (StackedBarPeptideComponent peptide : unMappedSet) {
                 unMappedPeptidesSequencesBar.addComponent(peptide, "left: " + (left) + "px; top: " + topLocation + "px;");
                 left += peptide.getWidthArea() + 5;
                 if (left >= unMappedPeptidesSequencesBar.getWidth()) {
                     topLocation += 12;
-                    left = 110;
+                    left = 65;
 
                 }
 

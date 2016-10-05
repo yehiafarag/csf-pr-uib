@@ -117,6 +117,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
         this.addStyleName("whitelayout");
         this.addStyleName("roundedborder");
         this.addStyleName("padding20");
+         this.addStyleName("minimumwidth350");
 
 //        this.heatMapLayoutWrapper = new VerticalLayout();
 //        this.heatMapLayoutWrapper.setWidthUndefined();

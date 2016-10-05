@@ -57,6 +57,7 @@ public class InformationButton extends ImageContainerBtn {
         Label infoLable = new Label(infoText);
         infoLable.setContentMode(ContentMode.HTML);
         infoLable.setWidth(100, Unit.PERCENTAGE);
+        infoLable.addStyleName("infolabel");
         containerLayout.addComponent(infoLable);
         containerLayout.setExpandRatio(infoLable, 460);
         popupBodyLayout.addComponent(mainBody);

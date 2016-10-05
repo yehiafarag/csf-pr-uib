@@ -3,8 +3,6 @@ package no.uib.probe.csf.pr.touch.view.components;
 import com.vaadin.addon.tableexport.ExcelExport;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.ExternalResource;
-import com.vaadin.server.FileDownloader;
-import com.vaadin.server.StreamResource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.AbsoluteLayout;
@@ -21,7 +19,6 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.geom.Rectangle2D;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.HashMap;
@@ -35,7 +32,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import no.uib.probe.csf.pr.touch.DataExporter;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFListener;
@@ -214,7 +210,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         //init data structure
         tooltipsProtNumberMap = new HashMap<>();
         lastselectedComponents = new HashSet<>();
-        tooltipLabels = new String[]{"", "  Decreased" + " ", "  Decreased" + " ", "  Equal" + " ", "  Increased>" + " ", "  Increased" + " ", ""};
+        tooltipLabels = new String[]{"", "  Decreased" + " ", "  Decreased" + " ", "  Equal" + " ", "  Increased" + " ", "  Increased" + " ", ""};
         trendStyles = new String[]{"", "decreased100", "decreasedless100", "stable", "increasedless100", "increased100", ""};
 
         this.CSFPR_Central_Manager.registerListener(BubbleChartComponent.this);

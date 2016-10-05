@@ -25,7 +25,7 @@ public class ExternalLink extends Link implements Comparable<ExternalLink>{
         this.setPrimaryStyleName("tablelink");
         if (!caption.startsWith("IPI")) {
             this.setTargetName("_blank");            
-            this.addStyleName("link");
+            this.addStyleName("underline");
         } else {
             super.setEnabled(false);
         }
@@ -33,7 +33,6 @@ public class ExternalLink extends Link implements Comparable<ExternalLink>{
 
     @Override
     public String toString() {
-        System.out.println("to string is called");
         return caption; //To change body of generated methods, choose Tools | Templates.
     }
     

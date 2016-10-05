@@ -26,11 +26,12 @@ public class PopupWindow extends Window {
     private final VerticalLayout mainFrame;
     public PopupWindow(Layout layout,String title) {
 
-        int height = Math.max(Page.getCurrent().getBrowserWindowHeight() - 100,800);
-        int width = Math.max(Page.getCurrent().getBrowserWindowWidth()- 100,800);
+        int height = Math.max(Page.getCurrent().getBrowserWindowHeight() - 100,1);
+        int width = Math.max(Page.getCurrent().getBrowserWindowWidth()- 100,1);
        
         mainFrame = new VerticalLayout();
-        mainFrame.setSizeFull();        
+        mainFrame.setWidth(100,Unit.PERCENTAGE);
+        mainFrame.setHeightUndefined();
         setContent(mainFrame);
         mainFrame.addStyleName("mainviewport");
         

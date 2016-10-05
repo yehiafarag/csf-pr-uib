@@ -144,6 +144,7 @@ public class DataBaseLayer implements Serializable {
             numPublications = 0;
 
             while (rs.next()) {
+                
                 numStudies += rs.getInt("Rows");
                 numPublications++;
 
@@ -206,6 +207,9 @@ public class DataBaseLayer implements Serializable {
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
+                if (rs.getString("pubmed_id").contains("MCP")) {
+                    continue;
+                }
                 publicationList.add(new Object[]{rs.getString("pubmed_id"), rs.getString("author"), rs.getString("year"), rs.getString("title"), rs.getInt("uniq_prot_num"), rs.getInt("total_prot_num"), rs.getInt("uniq_pept_num"), rs.getInt("total_pept_num")});
             }
         } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {

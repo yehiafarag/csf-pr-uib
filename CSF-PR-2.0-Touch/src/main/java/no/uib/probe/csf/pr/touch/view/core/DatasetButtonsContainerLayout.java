@@ -37,7 +37,7 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
         btnsContainer.removeAllComponents();
         publicationStyle.clear();
 
-        int rowNumb = Math.max(1, ((dsObjects.size() / btnsContainer.getColumns()) + 1));
+        rowNumb = Math.max(1, ((dsObjects.size() / btnsContainer.getColumns()) + 1));
         btnsContainer.setRows(rowNumb);
         if (rowNumb == 1) {
             btnsContainer.setWidthUndefined();
@@ -91,7 +91,7 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
         btnsContainer.removeAllComponents();
         publicationStyle.clear();
 
-        int rowNumb = Math.max(1, ((publicationObjects.size() / btnsContainer.getColumns()) + 1));
+         rowNumb = Math.max(1, ((publicationObjects.size() / btnsContainer.getColumns()) + 1));
         btnsContainer.setRows(rowNumb);
         if (rowNumb == 1) {
             btnsContainer.setWidthUndefined();
@@ -107,7 +107,7 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
         });
 
         int colcounter = 0;
-        int rowcounter = 0;
+        rowcounter = 0;
         for (String quantDSKey : sortMap.keySet()) {
             Object[] obj = sortMap.get(quantDSKey);
 
@@ -146,7 +146,12 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
     }
 
     private final boolean smallScreen;
+    private final int colNum;
+    private int rowcounter,rowNumb;
 
+    public int getRowcounter() {
+        return rowNumb;
+    }
     public DatasetButtonsContainerLayout(int width, boolean smallScreen) {
         this.smallScreen = smallScreen;
         this.publicationStyle = new HashMap<>();
@@ -156,7 +161,7 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
         this.setSpacing(true);
 
         width = width * 90 / 100;
-        int colNum = Math.max(1, width / 200);
+        colNum = Math.max(1, width / 200);
         btnsContainer = new GridLayout();
         btnsContainer.setWidth(100, Unit.PERCENTAGE);
         btnsContainer.setColumns(colNum);
@@ -170,6 +175,10 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
 
         this.addComponent(btnsContainer);
 
+    }
+
+    public int getColNumber() {
+        return colNum;
     }
 
     public int getLayoutHeight() {
