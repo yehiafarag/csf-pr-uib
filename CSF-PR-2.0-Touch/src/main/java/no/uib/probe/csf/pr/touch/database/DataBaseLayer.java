@@ -898,9 +898,9 @@ public class DataBaseLayer implements Serializable {
                     QuantPeptide quantPeptide = new QuantPeptide();
                     quantPeptide.setDsKey(rs1.getInt("DsKey"));
                     quantPeptide.setProtIndex(rs1.getInt("prot_index"));
-                    if ((quantPeptide.getProtIndex() == 701) || (quantPeptide.getProtIndex() == 1261) || (quantPeptide.getProtIndex() == 5671)) {
-                        System.out.println("peptide exist ");
-                    }
+//                    if ((quantPeptide.getProtIndex() == 701) || (quantPeptide.getProtIndex() == 1261) || (quantPeptide.getProtIndex() == 5671)) {
+//                        System.out.println("peptide exist ");
+//                    }
                     quantPeptide.setUniqueId(rs1.getInt("index"));
                     quantPeptide.setPeptideModification(rs1.getString("peptide_modification"));
                     quantPeptide.setPeptideSequence(rs1.getString("peptide_sequance"));

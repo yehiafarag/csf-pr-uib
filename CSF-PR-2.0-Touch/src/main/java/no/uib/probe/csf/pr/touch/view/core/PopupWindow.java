@@ -22,32 +22,32 @@ import com.vaadin.ui.Window;
  */
 public class PopupWindow extends Window {
 
-    private boolean lazyLoading=false;
+    private boolean lazyLoading = false;
     private final VerticalLayout mainFrame;
-    public PopupWindow(Layout layout,String title) {
+    private final int height = Math.max(Page.getCurrent().getBrowserWindowHeight() - 50, 1);
+    private final int width = Math.max(Page.getCurrent().getBrowserWindowWidth() - 50, 1);
 
-        int height = Math.max(Page.getCurrent().getBrowserWindowHeight() - 100,1);
-        int width = Math.max(Page.getCurrent().getBrowserWindowWidth()- 100,1);
-       
+    public PopupWindow(Layout layout, String title) {
+
         mainFrame = new VerticalLayout();
-        mainFrame.setWidth(100,Unit.PERCENTAGE);
+        mainFrame.setWidth(100, Unit.PERCENTAGE);
         mainFrame.setHeightUndefined();
         setContent(mainFrame);
         mainFrame.addStyleName("mainviewport");
-        
+
         mainFrame.addComponent(layout);
         mainFrame.setComponentAlignment(layout, Alignment.MIDDLE_CENTER);
-        
+
         setWindowMode(WindowMode.NORMAL);
-        setWidth((width),Unit.PIXELS);
-        setHeight((height),Unit.PIXELS);
+        setWidth((width), Unit.PIXELS);
+        setHeight((height), Unit.PIXELS);
         PopupWindow.this.setVisible(false);
         setResizable(false);
         setModal(true);
         setDraggable(false);
-         mainFrame.addStyleName("scrollable");
+        mainFrame.addStyleName("scrollable");
         center();
-        setCaption("<font color='gray' style='font-weight: bold;!important'>&nbsp;&nbsp;"+title+"</font>");
+        setCaption("<font color='gray' style='font-weight: bold;!important'>&nbsp;&nbsp;" + title + "</font>");
         UI.getCurrent().addWindow(PopupWindow.this);
         setCaptionAsHtml(true);
         setClosable(true);
@@ -76,4 +76,12 @@ public class PopupWindow extends Window {
     public void setLazyLoading(boolean lazyLoading) {
         this.lazyLoading = lazyLoading;
     }
+
+    @Override
+    public void setHeight(float height, Unit unit) {
+        super.setHeight(Math.min(height, this.height), unit); //To change body of generated methods, choose Tools | Templates.
+        center();
+        this.markAsDirty();
+    }
+
 }

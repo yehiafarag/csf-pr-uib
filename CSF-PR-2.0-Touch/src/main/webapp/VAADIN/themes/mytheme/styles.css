@@ -8556,7 +8556,7 @@ div.v-layout.v-horizontal.v-widget {
 .mytheme .v-window-closebox {
     padding-right: 4px;
     border-radius: 0 4px 0 4px;
-     background-color:rgba(255,255,255,0);
+    background-color:rgba(255,255,255,0);
 }
 
 .mytheme .v-window-closebox:before {
@@ -13121,7 +13121,7 @@ div.v-layout.v-horizontal.v-widget {
     z-index:2;
     position:relative !important;
     background-color:white;
-    
+
 }
 .framelayout{
     -webkit-transition: all .5s ease-in-out;
@@ -13501,14 +13501,14 @@ div.v-layout.v-horizontal.v-widget {
     font-size:12px;
     text-decoration: none !important;    
     color:red !important; 
-     resize: none !important;
+    resize: none !important;
     border:none !important;
 }
 .v-link-greenvaluelabel textArea{
     font-size:12px;
     text-decoration: none !important;
     color:#009900 !important; 
-     resize: none !important;
+    resize: none !important;
     border:none !important;
 }
 .v-link-bluevaluelabel textArea{
@@ -15020,7 +15020,7 @@ div.v-layout.v-horizontal.v-widget {
     margin-left:20px !important;
 }
 .searchpopup{
-     margin-top:25px;
+    margin-top:25px;
     margin-bottom:25px;
     border-radius :5px; 
     -webkit-transition: all .5s ease-in-out;
@@ -15288,8 +15288,10 @@ div.v-layout.v-horizontal.v-widget {
     font-size: 12px !important;
 }
 .padding10x45{
-    padding-left:10px !important;
+    padding-left:20px !important;
     padding-right:45px!important;
+    margin-top:10px !important;
+    padding-bottom:20px;
 
 }
 .nopaddingimg img{
@@ -15333,7 +15335,7 @@ div.v-layout.v-horizontal.v-widget {
     padding-right:2px;    
     padding-bottom:2px;
     transform:translate(-2px,-38px);
-     -ms-transform:translate(-2px,-38px); /* IE 9 */
+    -ms-transform:translate(-2px,-38px); /* IE 9 */
     -moz-transform:translate(-2px,-38px); /* Firefox */
     -webkit-transform:translate(-2px,-38px);/* Safari and Chrome */
     -o-transform:translate(-2px,-38px); /* Opera */
@@ -15475,6 +15477,9 @@ div.v-layout.v-horizontal.v-widget {
 .floatright div{
     font-size: 11px !important;
 }
+.smallfloatright div{
+    font-size: 9px !important;
+}
 .user{
     border: 1px solid #8210B0;
     border-radius:2px;
@@ -15483,21 +15488,21 @@ div.v-layout.v-horizontal.v-widget {
     position: relative;
 }
 .toptablelayout{
-   
+
     z-index: 1000000000 !important;
     position: relative;
-   
+
 
 }
 .proteintablestyle{
-     margin-top: -34px;
-     position: relative;
+    margin-top: -34px;
+    position: relative;
 }
 .hidesortingicon .v-table-sort-indicator{
     visibility:hidden;
 }
 .italictext{
-    
+
     font-style: italic !important;
 }
 .invisible{
@@ -15505,17 +15510,17 @@ div.v-layout.v-horizontal.v-widget {
 }
 .bubblelabels{
 
-width:260px !important;
-padding-left:5px;
-color:#4d749f;
-margin-right:160px !important;
-margin-bottom:20px;
+    width:260px !important;
+    padding-left:5px;
+    color:#4d749f;
+    margin-right:60px !important;
+    margin-bottom:20px;
 }
 .marginright-20{
-   margin-right:-20px !important; 
+    margin-right:-20px !important; 
 }
 .nopadding{
-        padding: 0 0px !important;
+    padding: 0 0px !important;
 }
 .v-slot-minhight200{
 
@@ -15525,15 +15530,15 @@ margin-bottom:20px;
 
     background-color:#EAF5FC  ;
     border:1px solid lightgray;
-    
+
 }
 .unmappedpeptidescontainer div{
-font-size:10px;
+    font-size:10px;
 }
 .v-slot-minwidth100{
     min-width: 100px !important;
     margin-right:10px !important;
-    
+
 }
 .infolabel{
     text-align: justify;
@@ -15542,9 +15547,9 @@ font-size:10px;
     color: #191919;
 }
 .underline{
-     color:#4d749f !important;
+    color:#4d749f !important;
     text-decoration: underline !important;
-    
+
 }
 .tablelink-underline a{
     color:#4d749f !important;
@@ -15573,5 +15578,30 @@ tbody{
     color:blue !important;
 }
 .minimumwidth350{
-    min-width:320px !important;
+    min-width:350px !important;
+}
+.uiblogo img{
+    margin-top:-10px !important;
+    margin-left:5px !important;
+    width:80px !important;
+    height:auto !important;
+    cursor:pointer !important;
+    z-index:100 !important;
+    position:relative !important;
+}
+.relativelocation{
+    z-index:100 !important;
+    position:relative !important;
+
+}
+.margintopbottom{
+    margin-top: 5px !important;
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+        
+}
+.v-tabsheet-content-transparentframe{
+    overflow-y:hidden;
+    overflow-x:hidden;
 }

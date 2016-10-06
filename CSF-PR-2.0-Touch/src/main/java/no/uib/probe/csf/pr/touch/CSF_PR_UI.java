@@ -109,8 +109,8 @@ public class CSF_PR_UI extends UI {
 
 //            if (windowHeight > windowWidth) {
 //                if (windowHeight < 427) {
-                    windowHeight = Math.max(750,windowHeight);
-                    windowWidth = Math.max(windowWidth,1150) ;
+                    windowHeight = Math.max(615,windowHeight);
+                    windowWidth = Math.max(windowWidth,1004) ;
 //
 //                } else {
 //

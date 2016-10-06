@@ -39,7 +39,7 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
      */
     public ViewControlPanel(int bodyWidth, int bodyHeight) {
 
-        smallScreen = bodyHeight <= 720;
+        smallScreen = bodyHeight <= 200;
         this.setWidth(bodyWidth, Unit.PIXELS);
         this.setHeight(bodyHeight, Unit.PIXELS);
         this.addStyleName("slowslide");

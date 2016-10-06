@@ -79,7 +79,7 @@ public class TrendLegend extends GridLayout {
 
             }
         } else if (type.equalsIgnoreCase("ministackedpeptidessequence")) {
-            String[] labels = new String[]{"Increased", "Increased-not sign.", "Equal", "Decreased-not sign.", "Decreased", "No Quant. Info."};//, "PTM"};
+            String[] labels = new String[]{"Increased", "Increased not sign.", "Equal", "Decreased not sign.", "Decreased", "No Quant. Info."};//, "PTM"};
             String[] styleName = new String[]{"legendred100", "legendnotsigredstackedlayout", "legendblue", "legendnotsiggreenstackedlayout", "legendgreen100", "legendgray"};//, "legendptmglycosylation"};
             this.setSpacing(true);
             this.setRows(1);
@@ -133,7 +133,7 @@ public class TrendLegend extends GridLayout {
             }
 
         } else {
-            String[] labels = new String[]{"Increased", "Increased-not sign.", "Equal", "Decreased-not sign.", "Decreased", "No Quant. Info."};//, "PTM"};
+            String[] labels = new String[]{"Increased", "Increased not sign.", "Equal", "Decreased not sign.", "Decreased", "No Quant. Info."};//, "PTM"};
             String[] styleName = new String[]{"redlayout", "notsigredstackedlayout", "lightbluelayout", "notsiggreenstackedlayout", "greenlayout", "novaluelayout"};//, "ptmglycosylation"};
             this.setSpacing(true);
             this.setRows(1);

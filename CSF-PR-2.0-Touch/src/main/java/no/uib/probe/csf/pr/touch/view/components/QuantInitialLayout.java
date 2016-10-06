@@ -47,9 +47,9 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
 
         this.diseaseCategorySet = diseaseCategorySet;
         this.height = height;
-        this.width = width;
+        this.width = width-150;
         this.smallScreen = smallScreen;
-        this.setWidth(width, Unit.PIXELS);
+        this.setWidth(this.width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
         this.addStyleName("slowslide");
         this.diseaseMap = new HashMap<>();
@@ -57,6 +57,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         frame = new GridLayout(3, 3);
         frame.setSpacing(true);
         frame.setMargin(true);
+//        frame.setWidth(100,Unit.PERCENTAGE);
 //        frame.setStyleName("border");
         this.addComponent(frame);
         this.setComponentAlignment(frame, Alignment.MIDDLE_CENTER);

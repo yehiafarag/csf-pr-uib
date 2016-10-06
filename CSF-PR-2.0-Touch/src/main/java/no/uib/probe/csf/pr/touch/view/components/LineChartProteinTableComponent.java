@@ -2,6 +2,7 @@ package no.uib.probe.csf.pr.touch.view.components;
 
 import com.vaadin.addon.tableexport.ExcelExport;
 import com.vaadin.event.LayoutEvents;
+import com.vaadin.server.Page;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
@@ -112,7 +113,12 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         legendLayout.setWidthUndefined();
         legendLayout.setHeight(25, Unit.PIXELS);
         legendLayout.addStyleName("margintop10");
-        legendLayout.addStyleName("floatright");
+
+        if (Page.getCurrent().getBrowserWindowWidth() < 1100) {
+            legendLayout.addStyleName("smallfloatright");
+        } else {
+            legendLayout.addStyleName("floatright");
+        }
 //        if (width / 2 < 700) {
 //            legendLayout.addStyleName("showonhover");
 //        }
@@ -217,7 +223,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         controlBtnsContainer.setComponentAlignment(groupSwichBtn, Alignment.MIDDLE_CENTER);
         ExportProteinTable exportTable = new ExportProteinTable();
         controlBtnsContainer.addComponent(exportTable);
-       removeFilters = new ImageContainerBtn() {
+        removeFilters = new ImageContainerBtn() {
 
             @Override
             public void onClick() {
@@ -314,14 +320,12 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
 //        controlBtnsContainer.addComponent(checkUncheckBtn);
 //        controlBtnsContainer.setComponentAlignment(checkUncheckBtn, Alignment.MIDDLE_CENTER);
 //        checkUncheckBtn.setDescription("Show/hide checked column");
-        
-         ImageContainerBtn exportPdfBtn = new ImageContainerBtn() {
-           
+        ImageContainerBtn exportPdfBtn = new ImageContainerBtn() {
 
             @Override
             public void onClick() {
-                exportTable.updateTableData(quantProteinTable.getSelectedComparisonsList(), quantProteinTable.getSelectedProteinsList(),quantProteinTable.getSortingHeader(),quantProteinTable.isUpSort());
-                 ExcelExport csvExport = new ExcelExport(exportTable.getExportTable(), "CSF-PR  Protein Information");
+                exportTable.updateTableData(quantProteinTable.getSelectedComparisonsList(), quantProteinTable.getSelectedProteinsList(), quantProteinTable.getSortingHeader(), quantProteinTable.isUpSort());
+                ExcelExport csvExport = new ExcelExport(exportTable.getExportTable(), "CSF-PR  Protein Information");
                 csvExport.setReportTitle("CSF-PR / Quant Protein Information ");
                 csvExport.setExportFileName("CSF-PR - Quant Protein Information" + ".xls");
                 csvExport.setMimeType(ExcelExport.EXCEL_MIME_TYPE);
@@ -353,7 +357,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
 //
 //        fileDownloader.extend(groupSwichBtn);
         controlBtnsContainer.addComponent(exportPdfBtn);
-        
+
         InformationButton info = new InformationButton("The protein table provides an overview of the quantitative information available for each protein, classified into Increased, Decreased or Equal. If the quantitative data for a given comparison is not exclusively in the same direction an average value will be shown. To find proteins of interest use the search field at the top, or sort/filter on the individual comparisons using the options above the table. The icons at the lower right enables further modification of the table. Select a row in the table to show the protein details.", false);
         controlBtnsContainer.addComponent(info);
         if (smallScreen) {

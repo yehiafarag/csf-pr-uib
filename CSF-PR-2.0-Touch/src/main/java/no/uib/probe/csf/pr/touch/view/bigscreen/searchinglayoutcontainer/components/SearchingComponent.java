@@ -13,7 +13,6 @@ import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import java.awt.Color;
@@ -67,7 +66,7 @@ public abstract class SearchingComponent extends BigBtn {
 
     public SearchingComponent(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager, boolean smallScreen) {
         super("Search", "Search protein data", "img/search.png", smallScreen);
-        this.smallScreen = Page.getCurrent().getBrowserWindowHeight() <= 720;
+        this.smallScreen = Page.getCurrent().getBrowserWindowHeight() <= 615;
         this.Data_handler = Data_handler;
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         VerticalLayout popupbodyLayout = new VerticalLayout();

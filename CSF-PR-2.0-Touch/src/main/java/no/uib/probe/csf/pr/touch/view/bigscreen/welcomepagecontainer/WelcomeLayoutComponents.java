@@ -67,12 +67,13 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         this.setHeight(100, Unit.PERCENTAGE);
         this.addStyleName("hideoverflow");
         this.addStyleName("whitelayout");
-        boolean smallScreen = bodyHeight <= 720;
+        boolean smallScreen = bodyHeight <= 200;
         float expHeaderRatio;
         String breakline;
         if (!smallScreen) {
-            expHeaderRatio = 65f;
-            this.setMargin(true);
+            expHeaderRatio =45f;
+            this.setMargin(false);
+             this.addStyleName("padding10x45");
             breakline = "<br/>";
         } else {
             breakline = "";
@@ -486,7 +487,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
         rightHeaderLayout.setWidth(100, Unit.PERCENTAGE);
 
-        footerLayout.addComponent(rightHeaderLayout, "left: 0px; top: " + 5 + "px");
+       
 //        this.setComponentAlignment(rightHeaderLayout, Alignment.TOP_RIGHT);
         HorizontalLayout linksIconsLayout = new HorizontalLayout();
         linksIconsLayout.setStyleName("whitelayout");
@@ -499,12 +500,14 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         probe_ico.setTargetName("_blank");
         probe_ico.setWidth(237, Unit.PIXELS);
         probe_ico.setHeight(58, Unit.PIXELS);
+        probe_ico.addStyleName("relativelocation");
         linksIconsLayout.addComponent(probe_ico);
 
         Link uib_ico = new Link(null, new ExternalResource("http://www.uib.no/"));
-        uib_ico.setIcon(new ThemeResource("img/uib.png"));
+        uib_ico.setIcon(new ThemeResource("img/uib-logo.svg"));
         uib_ico.setTargetName("_blank");
         uib_ico.setWidth(87, Unit.PIXELS);
+        uib_ico.addStyleName("uiblogo");
         uib_ico.setHeight(58, Unit.PIXELS);
         linksIconsLayout.addComponent(uib_ico);
 
@@ -559,6 +562,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         });
+         footerLayout.addComponent(rightHeaderLayout, "left: 0px; top: " + 5 + "px");
 
 //        
     }

@@ -80,7 +80,7 @@ public abstract class CompareComponent extends BigBtn {
         if (this.smallScreen) {
             comparePanel.setHeight( Page.getCurrent().getBrowserWindowHeight(), Unit.PIXELS);
             comparePanel.setWidth( Page.getCurrent().getBrowserWindowWidth(), Unit.PIXELS);
-            h1 = 380;
+            h1 = 418;
         } else {
              comparePanel.setHeight(comparePanel.getHeight() + 50, Unit.PIXELS);
             comparePanel.setWidth(comparePanel.getWidth() + 50, Unit.PIXELS);

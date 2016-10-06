@@ -155,7 +155,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
 
     public QuantDataLayoutContainer(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height) {
         super(width, height);
-        smallScreen = height <= 720;
+        smallScreen = height <= 200;
         this.Data_handler = Data_handler;
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         this.setMargin(false);

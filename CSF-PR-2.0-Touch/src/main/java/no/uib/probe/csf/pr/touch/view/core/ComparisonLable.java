@@ -88,20 +88,21 @@ public abstract class ComparisonLable extends VerticalLayout implements LayoutEv
 
         VerticalLayout popupBody = new VerticalLayout();
         popupBody.setWidth(100, Unit.PERCENTAGE);
-        popupBody.setHeight(100, Unit.PERCENTAGE);
+        popupBody.setHeight(98, Unit.PERCENTAGE);
 
         popupBody.setMargin(false);
         popupBody.setSpacing(true);
         popupBody.addStyleName("roundedborder");
         popupBody.addStyleName("whitelayout");
-        if (smallScreen) {
-            popupBody.addStyleName("padding2");
-        } else {
-            popupBody.addStyleName("padding20");
-        }
+        popupBody.addStyleName("margintopbottom");
+//        if (smallScreen) {
+//            popupBody.addStyleName("padding2");
+//        } else {
+//            popupBody.addStyleName("padding20");
+//        }
         VerticalLayout frame = new VerticalLayout();
         frame.setWidth(99, Unit.PERCENTAGE);
-        frame.setHeight(99, Unit.PERCENTAGE);
+        frame.setHeight(450, Unit.PIXELS);
         frame.setSpacing(true);
         frame.addComponent(popupBody);
         String protName = quantProtein.getUniprotProteinName().trim();
@@ -134,19 +135,23 @@ public abstract class ComparisonLable extends VerticalLayout implements LayoutEv
         };
         if (smallScreen) {
             popupWindow.setWidth(popupWindow.getWidth() + 100, popupWindow.getWidthUnits());
-
             popupWindow.setHeight(popupWindow.getHeight() + 100, popupWindow.getHeightUnits());
+
+        }else{
+         popupWindow.setHeight(490, popupWindow.getHeightUnits());
 
         }
 
         TabSheet tab = new TabSheet();
-        tab.setHeight(98.0f, Unit.PERCENTAGE);
+        tab.setHeight(97.0f, Unit.PERCENTAGE);
         tab.setWidth(100.0f, Unit.PERCENTAGE);
         tab.addStyleName(ValoTheme.TABSHEET_FRAMED);
         tab.addStyleName(ValoTheme.TABSHEET_PADDED_TABBAR);
         tab.addStyleName("transparentframe");
         popupBody.addComponent(tab);
         popupBody.setComponentAlignment(tab, Alignment.TOP_CENTER);
+         
+       
 
 //        VerticalLayout popupbodyLayout = new VerticalLayout();
 //        popupbodyLayout.setSpacing(true);
@@ -188,6 +193,17 @@ public abstract class ComparisonLable extends VerticalLayout implements LayoutEv
         VerticalLayout infoPopup = initPopupLayout(dsOverview, smallScreen);
 //        dsOverview.getDatasetInfoForm().setWidth(100, Unit.PERCENTAGE);
         tab.addTab(infoPopup, "Dataset");
+        
+         tab.addSelectedTabChangeListener((TabSheet.SelectedTabChangeEvent event) -> {
+            if (event.getTabSheet().getTabPosition((tab.getTab(tab.getSelectedTab()))) == 0) {
+                popupWindow.setHeight(490, popupWindow.getHeightUnits());
+                 frame.setHeight(450, Unit.PIXELS);
+               } else {
+              popupWindow.setHeight(650, popupWindow.getHeightUnits());
+               frame.setHeight(610, Unit.PIXELS);
+            }
+        });
+        
 
 //        popupbodyLayout.addComponent(dsOverview.getDatasetInfoForm());
 //        datasetInfoPopup = new PopupView(null, popupbodyLayout) {
