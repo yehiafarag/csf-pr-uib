@@ -8,6 +8,7 @@ package no.uib.probe.csf.pr.touch.view.components;
 import com.itextpdf.text.pdf.codec.Base64;
 import com.vaadin.addon.tableexport.ExcelExport;
 import com.vaadin.server.ExternalResource;
+import com.vaadin.server.Page;
 import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
@@ -175,7 +176,11 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         legendLayout = new VerticalLayout();
         legendLayout.setWidthUndefined();
         legendLayout.setHeightUndefined();
-        legendLayout.addStyleName("floatright");
+        if (Page.getCurrent().getBrowserWindowWidth() < 1100) {
+            legendLayout.addStyleName("smallfloatright");
+        } else {
+            legendLayout.addStyleName("floatright");
+        }
 
         topLayoutContainer.addComponent(legendLayout);
         topLayoutContainer.setComponentAlignment(legendLayout, Alignment.TOP_RIGHT);
@@ -222,7 +227,11 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
 
         TrendLegend sequenceLegendLayout = new TrendLegend("ministackedpeptidessequence");
         sequenceLegendLayout.setWidthUndefined();
-        sequenceLegendLayout.addStyleName("floatright");
+        if (Page.getCurrent().getBrowserWindowWidth() < 1100) {
+            sequenceLegendLayout.addStyleName("smallfloatright");
+        } else {
+            sequenceLegendLayout.addStyleName("floatright");
+        }
         sequenceLegendLayout.setHeight(25, Unit.PIXELS);
         middlelayout.addComponent(sequenceLegendLayout);
         middlelayout.setComponentAlignment(sequenceLegendLayout, Alignment.TOP_RIGHT);
@@ -480,7 +489,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
                 t2.addContainerProperty(
                         "Index2", Integer.class, null, "Index", null, Table.Align.RIGHT);
                 t2.addContainerProperty(
-                        "Protein Trend",  String.class, null, "Protein Trend", null, Table.Align.LEFT);
+                        "Protein Trend", String.class, null, "Protein Trend", null, Table.Align.LEFT);
                 t2.addContainerProperty(
                         "Disease Category2", String.class, null, "Disease Category", null, Table.Align.LEFT);
                 t2.addContainerProperty(
@@ -505,7 +514,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
                 t2.addContainerProperty(
                         "p-value2", String.class, null, "p-value", null, Table.Align.LEFT);
                 t2.addContainerProperty(
-                        "p-value Threshold2",  String.class, null, "p-value Threshold", null, Table.Align.LEFT);
+                        "p-value Threshold2", String.class, null, "p-value Threshold", null, Table.Align.LEFT);
                 t2.addContainerProperty(
                         "Statistical Comments2", String.class, null, "Statistical Comments", null, Table.Align.LEFT);
 
@@ -567,13 +576,12 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
                         } else {
                             protTrend = "Decreased";
                         }
-                        t2.addItem(new Object[]{(index2 + 1), protTrend, ds.getDiseaseCategory(), groupComp.getComparisonHeader().replace("__" + groupComp.getDiseaseCategory(), ""), ds.getAuthor(), ds.getPumedID(), (ds.getPatientsGroup1Number() + ds.getPatientsGroup2Number()), quantPeptide.getPeptideSequence(), quantPeptide.getSequenceAnnotated(), quantPeptide.getPeptideModification(), quantPeptide.getModification_comment(), quantPeptide.getString_fc_value(), quantPeptide.getString_p_value(), quantPeptide.getPvalueSignificanceThreshold(), quantPeptide.getP_value_comments(), ds.getQuantificationBasis(), quantPeptide.getQuantBasisComment(), quantPeptide.getPeptideCharge() + "", quantPeptide.getRoc_auc()+"", quantPeptide.getAdditionalComments()}, index2++);
+                        t2.addItem(new Object[]{(index2 + 1), protTrend, ds.getDiseaseCategory(), groupComp.getComparisonHeader().replace("__" + groupComp.getDiseaseCategory(), ""), ds.getAuthor(), ds.getPumedID(), (ds.getPatientsGroup1Number() + ds.getPatientsGroup2Number()), quantPeptide.getPeptideSequence(), quantPeptide.getSequenceAnnotated(), quantPeptide.getPeptideModification(), quantPeptide.getModification_comment(), quantPeptide.getString_fc_value(), quantPeptide.getString_p_value(), quantPeptide.getPvalueSignificanceThreshold(), quantPeptide.getP_value_comments(), ds.getQuantificationBasis(), quantPeptide.getQuantBasisComment(), quantPeptide.getPeptideCharge() + "", quantPeptide.getRoc_auc() + "", quantPeptide.getAdditionalComments()}, index2++);
                     }
                 }
 
                 ExcelExport csvExport = new ExcelExport(t1, proteinNameLabel.getValue() + " (" + proteinKey + ") Overview");
-             
-                
+
                 csvExport.setReportTitle(
                         "CSF-PR / " + proteinNameLabel.getValue() + " (" + proteinKey + ") Overview");
                 csvExport.setExportFileName(
@@ -585,7 +593,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
                 csvExport.setExcelFormatOfProperty(
                         "Index", "0");
                 csvExport.convertTable();
-                csvExport.setNextTable(t2,  "Peptides Information");
+                csvExport.setNextTable(t2, "Peptides Information");
                 csvExport.export();
 
             }
@@ -662,7 +670,11 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
             legendLayout.removeAllComponents();
             TrendLegend legendLayoutComponent = new TrendLegend(custTrend);
             legendLayoutComponent.setWidthUndefined();
-            legendLayoutComponent.addStyleName("floatright");
+            if (Page.getCurrent().getBrowserWindowWidth() < 1100) {
+                legendLayout.addStyleName("smallfloatright");
+            } else {
+                legendLayout.addStyleName("floatright");
+            }
             legendLayoutComponent.addStyleName("margintop3");
             legendLayoutComponent.setHeight(25, Unit.PIXELS);
             legendLayout.addComponent(legendLayoutComponent);
@@ -671,7 +683,11 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         } else {
             legendLayout.removeAllComponents();
             TrendLegend legendLayoutComponent = new TrendLegend("linechart");
-            legendLayoutComponent.addStyleName("floatright");
+            if (Page.getCurrent().getBrowserWindowWidth() < 1100) {
+                legendLayout.addStyleName("smallfloatright");
+            } else {
+                legendLayout.addStyleName("floatright");
+            }
             legendLayoutComponent.addStyleName("margintop3");
             legendLayoutComponent.setWidthUndefined();
             legendLayoutComponent.setHeight(25, Unit.PIXELS);
