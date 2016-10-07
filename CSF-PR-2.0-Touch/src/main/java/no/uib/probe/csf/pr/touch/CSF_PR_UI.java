@@ -9,11 +9,14 @@ import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.shared.ui.window.WindowMode;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.themes.ValoTheme;
 import javax.servlet.ServletContext;
 import no.uib.probe.csf.pr.touch.view.MainLayout;
 
@@ -34,11 +37,34 @@ public class CSF_PR_UI extends UI {
 
     private int windowHeight, windowWidth;
     private MainLayout layout;
+    private final Window noti = new Window();
+    private boolean init = true, toReload = false;
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        //init param for DB
+        noti.setWidth(60, Unit.PERCENTAGE);
+        noti.setHeight(20, Unit.PERCENTAGE);
+        noti.setClosable(false);
+        noti.setModal(true);
+        noti.setDraggable(false);
+        noti.setResizable(false);
+        noti.center();
+        noti.setVisible(false);
+        UI.getCurrent().addWindow(noti);
+        VerticalLayout container = new VerticalLayout();
+        container.setSizeFull();
+        noti.addStyleName("notification");
+        noti.setWindowMode(WindowMode.NORMAL);
 
+        Label message = new Label("Use landscape screen orientation (a bigger screen is recommended)");
+//         message.addStyleName(ValoTheme.LABEL_SPINNER);
+        message.addStyleName(ValoTheme.LABEL_H2);
+        message.setWidth(70, Unit.PERCENTAGE);
+        container.addComponent(message);
+        container.setComponentAlignment(message, Alignment.MIDDLE_CENTER);
+        noti.setContent(container);
+
+        //init param for DB
 //        if (Page.getCurrent().getWebBrowser().getScreenWidth() > 900) {
 //            Page.getCurrent().getJavaScript().execute("document.head.innerHTML +='<meta name=\"viewport\" content=\"maximum-scale = 1.0\">'");
 //        }
@@ -56,19 +82,16 @@ public class CSF_PR_UI extends UI {
 
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeight(100, Unit.PERCENTAGE);
+
         final SizeReporter sizeReporter = new SizeReporter(this);
         sizeReporter.addResizeListener((ComponentResizeEvent event) -> {
             resizeScreen();
         });
         resizeScreen();
-
-        if (Page.getCurrent().getWebBrowser().isTouchDevice()) {
-            if (windowHeight > windowWidth) {
-                Notification.show("Use landscape screen orientation");
-                return;
-            }
-
+        if (toReload) {
+            return;
         }
+
         VerticalLayout appWrapper = new VerticalLayout();
         appWrapper.setWidth(100, Unit.PERCENTAGE);
         appWrapper.setHeight(100, Unit.PERCENTAGE);
@@ -103,39 +126,22 @@ public class CSF_PR_UI extends UI {
      * resize the layout on changing window size
      */
     private void resizeScreen() {
-        windowHeight = Page.getCurrent().getBrowserWindowHeight() - 20;// Math.max(Page.getCurrent().getBrowserWindowHeight(), 1080);
-        windowWidth = Page.getCurrent().getBrowserWindowWidth() - 20;//Math.max(Page.getCurrent().getBrowserWindowWidth(), 1920);
-//        if (windowHeight < 750 || windowWidth < 1075) {
-
-//            if (windowHeight > windowWidth) {
-//                if (windowHeight < 427) {
-                    windowHeight = Math.max(615,windowHeight);
-                    windowWidth = Math.max(windowWidth,1004) ;
-//
-//                } else {
-//
-//                    windowWidth = windowHeight * 1075 / 427;
-//                }
-//
-//            } else {
-//                if (windowWidth < 1075) {
-//                    windowHeight = 427;
-//                    windowWidth = 1075;
-//
-//                } else {
-//
-//                    windowHeight = windowWidth * 427 / 1075;
-//                }
-                
-
-//            }
-
-//            Notification.show("Screen is too small current screen resolution (" + windowWidth + "x" + windowHeight + ")", Notification.Type.ERROR_MESSAGE);
-//            return;
-//        }
-        for (Window w : getWindows()) {
-            w.center();
+        windowHeight = Math.max(615, Page.getCurrent().getBrowserWindowHeight() - 20);// Math.max(Page.getCurrent().getBrowserWindowHeight(), 1080);
+        windowWidth = Math.max(1004, Page.getCurrent().getBrowserWindowWidth() - 20);//Math.max(Page.getCurrent().getBrowserWindowWidth(), 1920);
+        if (Page.getCurrent().getWebBrowser().isTouchDevice() && Page.getCurrent().getBrowserWindowHeight() > Page.getCurrent().getBrowserWindowWidth()) {
+            noti.setVisible(true);
+            toReload = true;
+        } else {           
+            noti.setVisible(false);
+            if (layout == null && toReload) {
+                Page.getCurrent().reload();
+            } 
+            toReload = false;
+            for (Window w : getWindows()) {
+                w.center();
+            }
         }
+
     }
 
 }

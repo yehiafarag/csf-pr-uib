@@ -1,10 +1,9 @@
 package no.uib.probe.csf.pr.touch.view.components.datasetfilters;
 
 import com.vaadin.event.LayoutEvents;
-import com.vaadin.server.FileDownloader;
 import com.vaadin.server.Page;
-import com.vaadin.server.StreamResource;
 import com.vaadin.server.ThemeResource;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.GridLayout;
@@ -12,7 +11,6 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
-import java.io.ByteArrayInputStream;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -21,9 +19,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import no.uib.probe.csf.pr.touch.DataExporter;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
-import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 import no.uib.probe.csf.pr.touch.view.core.InformationButton;
 import no.uib.probe.csf.pr.touch.view.core.PopupWindow;
 
@@ -44,7 +40,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
     private Map<Integer, QuantDatasetObject> quantDatasetMap;
     private boolean singlefilter;
     private final int screenWidth = Math.max(Math.min(Page.getCurrent().getBrowserWindowWidth(), 1000), 980);
-    private final int screenHeight = Math.max(Math.min(Page.getCurrent().getBrowserWindowHeight(), 800), 427);
+    private final int screenHeight = Math.max(Math.min(Page.getCurrent().getBrowserWindowHeight(), 800), 435);
 
     public DatasetPieChartFiltersComponent(boolean smallScreen) {
 
@@ -77,7 +73,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         if (smallScreen) {
             h = 100;
         } else {
-            h = 150;
+            h = 149;
         }
 
         popupBody.setWidth(100, Unit.PERCENTAGE);
@@ -95,7 +91,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
 
         };
         popupWindow.setWidth(screenWidth, Unit.PIXELS);
-        popupWindow.setHeight(screenHeight, Unit.PIXELS);
+        popupWindow.setHeight(screenHeight-24, Unit.PIXELS);
 
         //init datasetructure
         activeDatasetMap = new HashMap<>();
@@ -107,6 +103,13 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         btnsFrame.addStyleName("roundedborder");
         if (!smallScreen) //        btnsFrame.addStyleName("padding10");
         {
+            btnsFrame.addStyleName("roundedborder");
+            btnsFrame.addStyleName("padding10");
+            btnsFrame.addStyleName("whitelayout");
+            btnsFrame.setMargin(new MarginInfo(true, false, false, false));
+            btnsFrame.setWidth(100, Unit.PERCENTAGE);
+            btnsFrame.addStyleName("margintop");
+            btnsFrame.setHeight(50, Unit.PIXELS);
             btnsFrame.addStyleName("padding20");
             btnsFrame.addStyleName("margintop");
         } else {

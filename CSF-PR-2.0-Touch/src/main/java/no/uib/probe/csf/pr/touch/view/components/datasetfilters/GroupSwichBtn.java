@@ -3,6 +3,7 @@ package no.uib.probe.csf.pr.touch.view.components.datasetfilters;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.Page;
 import com.vaadin.server.ThemeResource;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -84,7 +85,7 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
 
         //init popup window 
         VerticalLayout frame = new VerticalLayout();
-        frame.setWidth(screenWidth - 10, Unit.PIXELS);
+        frame.setWidth(screenWidth - 20, Unit.PIXELS);
         frame.setSpacing(true);
         this.popupBodyLayout = new VerticalLayout();
         frame.addComponent(popupBodyLayout);
@@ -92,6 +93,7 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
         popupBodyLayout.addStyleName("roundedborder");
         popupBodyLayout.addStyleName("padding20");
         popupBodyLayout.addStyleName("whitelayout");
+        popupBodyLayout.addStyleName("margintop");
 
         popupBodyLayout.setWidth(100, Unit.PERCENTAGE);
 //        popupBodyLayout.setHeight(screenHeight - 300, Unit.PIXELS);
@@ -158,10 +160,20 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
 //        popupBodyLayout.setComponentAlignment(btnWrapper, Alignment.BOTTOM_CENTER);
         HorizontalLayout btnsFrame = new HorizontalLayout();
         btnsFrame.setWidth(100, Unit.PERCENTAGE);
+//        btnsFrame.addStyleName("roundedborder");
+//        btnsFrame.addStyleName("padding20");
+//        btnsFrame.addStyleName("margintop");
+//        btnsFrame.addStyleName("whitelayout");
+//        btnsFrame.addStyleName("marginbottom");
         btnsFrame.addStyleName("roundedborder");
-        btnsFrame.addStyleName("padding20");
-        btnsFrame.addStyleName("margintop");
+        btnsFrame.addStyleName("padding10");
         btnsFrame.addStyleName("whitelayout");
+        btnsFrame.setMargin(new MarginInfo(true, false, false, false));
+        btnsFrame.setWidth(100, Unit.PERCENTAGE);
+        btnsFrame.addStyleName("margintop");
+         btnsFrame.addStyleName("marginbottom");
+        btnsFrame.setHeight(50, Unit.PIXELS);
+        btnsFrame.addStyleName("padding20");
         frame.addComponent(btnsFrame);
 
         HorizontalLayout leftsideWrapper = new HorizontalLayout();
@@ -276,7 +288,7 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
         int itemH = (27 * itemsNumber);
         int height = Math.min(screenHeight - 230, itemH);
         tablePanelWrapper.setHeight(height, Unit.PIXELS);
-        popupWindow.setHeight(tablePanelWrapper.getHeight() + 230, Unit.PIXELS);
+        popupWindow.setHeight(tablePanelWrapper.getHeight() + 239 - 35, Unit.PIXELS);
 
     }
 

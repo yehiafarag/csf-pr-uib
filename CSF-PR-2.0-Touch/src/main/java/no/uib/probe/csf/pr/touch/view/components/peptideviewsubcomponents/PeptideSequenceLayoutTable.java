@@ -93,7 +93,7 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
         peptideSequenceTable.addContainerProperty("Publication", ExternalLink.class, null, "Publication", null, Table.Align.LEFT);
 
         peptideSequenceTable.addContainerProperty("patientsNumber", Integer.class, null, "#Patients", null, Table.Align.RIGHT);
-        peptideSequenceTable.addContainerProperty("PeptideSequence", ProteinSequenceContainer.class, null, "Peptide Sequence", null, Table.Align.CENTER);
+        peptideSequenceTable.addContainerProperty("PeptideSequence", ProteinSequenceContainer.class, null, "Protein Coverage", null, Table.Align.CENTER);
 //        peptideSequenceTable.addContainerProperty("emptyselection", String.class, null, "", null, Table.Align.LEFT);
 //        peptideSequenceTable.setColumnCollapsed("emptyselection", false);
 //        /* This checkbox reflects the contents of the selectedItemIds set */

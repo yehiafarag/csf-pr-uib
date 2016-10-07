@@ -496,11 +496,12 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         rightHeaderLayout.setComponentAlignment(linksIconsLayout, Alignment.MIDDLE_RIGHT);
         linksIconsLayout.setHeight(30, Unit.PIXELS);
         Link probe_ico = new Link(null, new ExternalResource("http://www.uib.no/rg/probe"));
-        probe_ico.setIcon(new ThemeResource("img/probe.png"));
+        probe_ico.setIcon(new ThemeResource("img/probe-updated.png"));
         probe_ico.setTargetName("_blank");
         probe_ico.setWidth(237, Unit.PIXELS);
         probe_ico.setHeight(58, Unit.PIXELS);
         probe_ico.addStyleName("relativelocation");
+        probe_ico.addStyleName("probelogo");
         linksIconsLayout.addComponent(probe_ico);
 
         Link uib_ico = new Link(null, new ExternalResource("http://www.uib.no/"));
@@ -512,8 +513,9 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         linksIconsLayout.addComponent(uib_ico);
 
         Link kgj_ico = new Link(null, new ExternalResource("http://www.helse-bergen.no/en/OmOss/Avdelinger/ms/Sider/om-oss.aspx"));
-        kgj_ico.setIcon(new ThemeResource("img/kgj.png"));
+        kgj_ico.setIcon(new ThemeResource("img/kgj_1.png"));
         kgj_ico.setTargetName("_blank");
+        kgj_ico.addStyleName("kgjlogo");
         kgj_ico.setHeight(58, Unit.PIXELS);
         linksIconsLayout.addComponent(kgj_ico);
 

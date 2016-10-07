@@ -46,6 +46,7 @@ public abstract class StudiesInformationWindow extends VerticalLayout implements
         popupBody.addStyleName("roundedborder");
         popupBody.addStyleName("whitelayout");
         popupBody.addStyleName("padding20");
+        
         VerticalLayout frame = new VerticalLayout();
         frame.setWidth(99, Unit.PERCENTAGE);
         frame.setHeight(99, Unit.PERCENTAGE);

@@ -65,7 +65,7 @@ public abstract class CompareComponent extends BigBtn {
 
     public CompareComponent(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager, boolean smallScreen) {
         super("Compare", "Compare to your data", "img/compare.png", smallScreen);
-        this.smallScreen =  Page.getCurrent().getBrowserWindowHeight()  <= 720;
+        this.smallScreen =  Page.getCurrent().getBrowserWindowHeight()  <= 615;
         this.Data_handler = Data_handler;
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         VerticalLayout popupbodyLayout = new VerticalLayout();
@@ -82,9 +82,9 @@ public abstract class CompareComponent extends BigBtn {
             comparePanel.setWidth( Page.getCurrent().getBrowserWindowWidth(), Unit.PIXELS);
             h1 = 418;
         } else {
-             comparePanel.setHeight(comparePanel.getHeight() + 50, Unit.PIXELS);
-            comparePanel.setWidth(comparePanel.getWidth() + 50, Unit.PIXELS);
-            h1 = 440;//Math.min(((int) comparePanel.getHeight() / 2) - 30,460);
+             comparePanel.setHeight(comparePanel.getHeight() -50, Unit.PIXELS);
+            comparePanel.setWidth(comparePanel.getWidth(), Unit.PIXELS);
+            h1 = 470;//Math.min(((int) comparePanel.getHeight() / 2) - 30,460);
         }
         compareUnit = new ComparisonUnitComponent(Data_handler, h1, this.smallScreen) {
 
@@ -101,7 +101,7 @@ public abstract class CompareComponent extends BigBtn {
         resultsLayout.addStyleName("whitelayout");
 
         resultsLayout.setWidth(100, Sizeable.Unit.PERCENTAGE);
-        h1 = (int) comparePanel.getHeight() - h1 - 40 - 168;
+        h1 = (int) comparePanel.getHeight() - h1 - 20 - 168;
         resultsLayout.setHeight(h1, Sizeable.Unit.PIXELS);
 
         resultsLayout.addStyleName("scrollable");
@@ -135,17 +135,23 @@ public abstract class CompareComponent extends BigBtn {
         legend.addStyleName("marginright");
 
         controlBtnsLayout = new HorizontalLayout();
-        controlBtnsLayout.addStyleName("roundedborder");
-//        if (!smallScreen) //        btnsFrame.addStyleName("padding10");
-//        {
-        controlBtnsLayout.addStyleName("padding20");
-        controlBtnsLayout.setMargin(new MarginInfo(true, false, false, false));
+//        controlBtnsLayout.addStyleName("roundedborder");
+////        if (!smallScreen) //        btnsFrame.addStyleName("padding10");
+////        {
+//        controlBtnsLayout.addStyleName("padding20");
+//        controlBtnsLayout.setMargin(new MarginInfo(true, false, false, false));
+//
+////        } else {
+////            controlBtnsLayout.addStyleName("padding2");
+////        }
+//        controlBtnsLayout.addStyleName("whitelayout");
 
-//        } else {
-//            controlBtnsLayout.addStyleName("padding2");
-//        }
+         controlBtnsLayout.addStyleName("roundedborder");
+        controlBtnsLayout.addStyleName("padding10");
         controlBtnsLayout.addStyleName("whitelayout");
-
+        controlBtnsLayout.setMargin(new MarginInfo(true, false, false, false));
+        controlBtnsLayout.setWidth(100, Unit.PERCENTAGE);
+         controlBtnsLayout.addStyleName("margintop");
         controlBtnsLayout.setWidth(100, Sizeable.Unit.PERCENTAGE);
 
         HorizontalLayout leftsideWrapper = new HorizontalLayout();
@@ -211,12 +217,12 @@ public abstract class CompareComponent extends BigBtn {
         });
 
         popupbodyLayout.addComponent(compareUnit);
-        popupbodyLayout.setExpandRatio(compareUnit, 540f);
+        popupbodyLayout.setExpandRatio(compareUnit, 570f);
         popupbodyLayout.setSpacing(true);
         popupbodyLayout.addComponent(middleLayout);
         popupbodyLayout.setExpandRatio(middleLayout, 29f);
         popupbodyLayout.addComponent(resultsLayout);
-        popupbodyLayout.setExpandRatio(resultsLayout, 254);
+        popupbodyLayout.setExpandRatio(resultsLayout, 274);
         popupbodyLayout.addComponent(controlBtnsLayout);
         popupbodyLayout.setExpandRatio(controlBtnsLayout, 50);
         if (this.smallScreen) {

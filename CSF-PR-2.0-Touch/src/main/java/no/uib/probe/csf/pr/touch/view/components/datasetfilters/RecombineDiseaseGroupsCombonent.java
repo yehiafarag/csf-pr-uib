@@ -74,6 +74,7 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
         popupBodyLayout.addStyleName("roundedborder");
         popupBodyLayout.addStyleName("padding20");
         popupBodyLayout.addStyleName("whitelayout");
+        popupBodyLayout.addStyleName("margintop");
 
         popupWindow = new PopupWindow(frame, "Recombine Disease Groups") {
             @Override
@@ -94,10 +95,15 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
 
         HorizontalLayout btnsFrame = new HorizontalLayout();
         btnsFrame.setWidth(100, Unit.PERCENTAGE);
-        btnsFrame.addStyleName("roundedborder");
-        btnsFrame.addStyleName("padding20");
-        btnsFrame.addStyleName("margintop");
+       btnsFrame.addStyleName("roundedborder");
+        btnsFrame.addStyleName("padding10");
         btnsFrame.addStyleName("whitelayout");
+        btnsFrame.setMargin(new MarginInfo(true, false, false, false));
+        btnsFrame.setWidth(100, Unit.PERCENTAGE);
+        btnsFrame.addStyleName("margintop");
+         btnsFrame.addStyleName("marginbottom");
+        btnsFrame.setHeight(50, Unit.PIXELS);
+        btnsFrame.addStyleName("padding20");
         frame.addComponent(btnsFrame);
 
         HorizontalLayout leftsideWrapper = new HorizontalLayout();
@@ -202,7 +208,7 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
             }
 
             diseaseGroupsNamesPanel.setHeight(Math.min(maxHeight - 30, heightColc), Unit.PIXELS);
-            popupWindow.setHeight(diseaseGroupsNamesPanel.getHeight() + (310), Unit.PIXELS);
+            popupWindow.setHeight(diseaseGroupsNamesPanel.getHeight() + (305), Unit.PIXELS);
         });
 
         VerticalLayout diseaseGroupsNamesContainer = new VerticalLayout();
@@ -257,7 +263,7 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
         });
         diseaseGroupsNamesPanel.setContent(diseaseNamesUpdateContainerLayout);
         diseaseGroupsNamesPanel.setHeight((maxHeight - 30), Unit.PIXELS);
-        popupWindow.setHeight(diseaseGroupsNamesPanel.getHeight() + (310), Unit.PIXELS);
+        popupWindow.setHeight(diseaseGroupsNamesPanel.getHeight() + (305-35), Unit.PIXELS);
 
         resetToDefault();
 

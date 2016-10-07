@@ -1048,7 +1048,7 @@
     display: inline-block;
     vertical-align: top;
     text-align: left;
-    white-space: normal;
+    white-space: nowrap !important;
 }
 
 .v-generated-body {
@@ -1485,7 +1485,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .v-tabsheet-hidetabs > .v-tabsheet-tabcontainer, .v-tabsheet-spacertd, .v-disabled .v-tabsheet-scroller, .v-tabsheet .v-disabled .v-tabsheet-caption-close {
-    display: none;
+    display: none !important;
 }
 
 .v-tabsheet {
@@ -2689,7 +2689,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .mytheme .v-checkbox.v-disabled > input:active ~ label:after {
-    background: transparent;
+    background: transparent !important;
 }
 
 .mytheme .v-checkbox.v-readonly  > label, .mytheme .v-checkbox.v-readonly  > .v-icon {
@@ -2701,7 +2701,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .mytheme .v-checkbox.v-readonly > input:active ~ label:after {
-    background: transparent;
+    background: transparent !important;
 }
 
 :root .mytheme .v-checkbox.v-readonly > input ~ label:after {
@@ -5588,6 +5588,7 @@ div.v-layout.v-horizontal.v-widget {
     resize: none;
     white-space: pre-wrap;
     width: 185px;
+    overflow: auto !important;
 }
 
 .v-ie8 .mytheme .v-textarea, .v-ie9 .mytheme .v-textarea {
@@ -7747,7 +7748,10 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme .v-select-optiongroup .v-radiobutton, .mytheme .v-select-optiongroup .v-checkbox {
     display: block;
-    margin: 9px 16px 0 0;
+    margin-top: 9px ;
+    margin-right: 16px ;
+    margin-bottom: 0px ;
+    margin-left: 0px ;
 }
 
 .mytheme .v-select-optiongroup .v-radiobutton:first-child, .mytheme .v-select-optiongroup .v-checkbox:first-child {
@@ -14947,6 +14951,7 @@ div.v-layout.v-horizontal.v-widget {
     color:gray;
     text-align:right;
     float:right;
+    margin-top: 2px;
 
 }
 
@@ -14954,7 +14959,8 @@ div.v-layout.v-horizontal.v-widget {
     clear: both;
     width:10px !important;
     background-color:white;
-    color:gray
+    color:gray;
+    margin-top: 2px;
 }
 
 .terminal{
@@ -15020,8 +15026,8 @@ div.v-layout.v-horizontal.v-widget {
     margin-left:20px !important;
 }
 .searchpopup{
-    margin-top:25px;
-    margin-bottom:25px;
+    margin-top:20px;
+    margin-bottom:20px;
     border-radius :5px; 
     -webkit-transition: all .5s ease-in-out;
     -moz-transition: all .5s ease-in-out;
@@ -15599,9 +15605,42 @@ tbody{
     padding-top: 5px;
     padding-left: 5px;
     padding-right: 5px;
-        
+
 }
 .v-tabsheet-content-transparentframe{
     overflow-y:hidden;
     overflow-x:hidden;
+}
+.probelogo img{
+    width:200px;
+    height:auto;
+    margin-left:50px;
+}
+.v-slot-probelogo{
+    background-color:rgba(0,0,0,0);
+    margin-left:-50px;
+}
+.kgjlogo img{
+    width:130px;
+}
+.recombinegrouppanel{
+    margin-top:12px;
+    margin-bottom:9px;
+}
+.v-window-notification div{
+font-size:25.6px !important;
+    color:#4d749f !important;
+    
+}
+.v-window-notification .v-label {
+font-size:25.6px !important;
+    color:#4d749f !important;
+    margin-top:-10px !important;
+    font-weight:bold;
+}
+.v-window-notification {
+
+    color:#4d749f !important;
+    border:5px solid #4d749f;
+    border-radius:10px !important;
 }

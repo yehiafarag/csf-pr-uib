@@ -165,6 +165,7 @@ public abstract class SearchingComponent extends BigBtn {
         controlBtnsLayout.addStyleName("whitelayout");
         controlBtnsLayout.setMargin(new MarginInfo(true, false, false, false));
         controlBtnsLayout.setWidth(100, Unit.PERCENTAGE);
+         controlBtnsLayout.addStyleName("margintop");
 
         HorizontalLayout btnsWrapper = new HorizontalLayout();
         controlBtnsLayout.addComponent(btnsWrapper);

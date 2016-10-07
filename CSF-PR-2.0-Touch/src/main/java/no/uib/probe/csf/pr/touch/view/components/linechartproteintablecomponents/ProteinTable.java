@@ -582,7 +582,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
 
         mainProteinTable.addContainerProperty("Index", Integer.class, null, "", null, Table.Align.RIGHT);
         mainProteinTable.addContainerProperty("selectedRow", RadioButton.class, null, "", null, Table.Align.CENTER);
-        mainProteinTable.addContainerProperty("Accession", ExternalLink.class, null, "Accession", null, Table.Align.LEFT);
+        mainProteinTable.addContainerProperty("Accession", ExternalLink.class, null, "Accession", null, Table.Align.CENTER);
         mainProteinTable.addContainerProperty("Name", String.class, null, "Name", null, Table.Align.LEFT);
         mainProteinTable.addContainerProperty("userdata", TrendSymbol.class, null, " ", null, Table.Align.CENTER);
 

@@ -37,7 +37,7 @@ public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutC
         this.addStyleName("marginbottom");
 
         DatasetInformationOverviewLayout infoLayout = new DatasetInformationOverviewLayout(quantDS, smallScreen);
-        VerticalLayout infoPopup = initPopupLayout(infoLayout,smallScreen);
+        VerticalLayout infoPopup = initPopupLayout(infoLayout,smallScreen,650);
 
         popupPanel = new PopupWindow(infoPopup, publicationAuthor);
 
@@ -46,7 +46,7 @@ public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutC
             popupPanel.setWidth(99,Unit.PERCENTAGE);
             popupPanel.setHeight(99,Unit.PERCENTAGE);
         } else {
-            popupPanel.setHeight(650, Unit.PIXELS);
+            popupPanel.setHeight(710, Unit.PIXELS);
         }
 
 //        popupPanel = new PopupView(null, infoPopup);
@@ -74,19 +74,20 @@ public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutC
         this.setStyleName("tabbtn");
         this.addStyleName("margintop");
         this.addStyleName("marginbottom");
+        
 
         VerticalLayout infoLayout = initPublicationLayout(publicationData);
-        VerticalLayout infoPopup = initPopupLayout(infoLayout,smallScreen);
+        VerticalLayout infoPopup = initPopupLayout(infoLayout,smallScreen,349);
 
         popupPanel = new PopupWindow(infoPopup, publicationAuthor);
         popupPanel.setWidth(600, Unit.PIXELS);
-        popupPanel.setHeight(400, Unit.PIXELS);
+        popupPanel.setHeight(409, Unit.PIXELS);
 
         this.setExpandRatio(btnLabel, 0.99f);
 
     }
 
-    private VerticalLayout initPopupLayout(VerticalLayout infoLayout, boolean smallScreen) {
+    private VerticalLayout initPopupLayout(VerticalLayout infoLayout, boolean smallScreen,int h) {
 
 //        VerticalLayout popupBodyWrapper = new VerticalLayout();
 //        popupBodyWrapper.setWidth(infoLayout.getWidth()+100,infoLayout.getWidthUnits());
@@ -99,12 +100,14 @@ public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutC
             popupBodyLayout.setHeight(100, Unit.PERCENTAGE);
         } else {
             popupBodyLayout.setWidth(99, Unit.PERCENTAGE);
-            popupBodyLayout.setHeight(99, Unit.PERCENTAGE);
+            popupBodyLayout.setHeight(h, Unit.PIXELS);
             popupBodyLayout.addStyleName("padding20");
             popupBodyLayout.setSpacing(true);
         }
         popupBodyLayout.setStyleName("pupupbody");
         popupBodyLayout.addStyleName("roundedborder");
+        popupBodyLayout.addStyleName("margintop");
+        popupBodyLayout.addStyleName("marginbottom");
 
 //        popupBodyWrapper.addComponent(popupBodyLayout);
 //        popupBodyWrapper.setComponentAlignment(popupBodyLayout, Alignment.TOP_CENTER);

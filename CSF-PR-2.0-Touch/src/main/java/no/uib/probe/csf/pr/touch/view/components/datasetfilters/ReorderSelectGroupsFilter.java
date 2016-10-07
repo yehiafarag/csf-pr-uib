@@ -71,6 +71,7 @@ public abstract class ReorderSelectGroupsFilter extends VerticalLayout implement
 
         popupBody.addStyleName("roundedborder");
         popupBody.addStyleName("whitelayout");
+        popupBody.addStyleName("margintop");
 
         popupBody.setWidth(100, Unit.PERCENTAGE);
         popupBody.setSpacing(true);
@@ -115,7 +116,7 @@ public abstract class ReorderSelectGroupsFilter extends VerticalLayout implement
             popupBody.setMargin(true);
             h=200;
 
-            popupBody.setHeight(screenHeight - 150, Unit.PIXELS);
+            popupBody.setHeight(screenHeight - 160, Unit.PIXELS);
         } else {
             popupBody.setMargin(new MarginInfo(false, true, false, true));
             h=220;
@@ -126,11 +127,24 @@ public abstract class ReorderSelectGroupsFilter extends VerticalLayout implement
         groupIILayout = new SortableLayoutContainer("Disease Group B", (screenHeight - h));
 
         HorizontalLayout btnsFrame = new HorizontalLayout();
-        btnsFrame.setWidth(100, Unit.PERCENTAGE);
+//        btnsFrame.setWidth(100, Unit.PERCENTAGE);
+//        btnsFrame.addStyleName("roundedborder");
+//        btnsFrame.addStyleName("padding20");
+//        btnsFrame.addStyleName("margintop");
+//        btnsFrame.addStyleName("whitelayout");
+//        btnsFrame.addStyleName("marginbottom");
+        
         btnsFrame.addStyleName("roundedborder");
-        btnsFrame.addStyleName("padding20");
-        btnsFrame.addStyleName("margintop");
+        btnsFrame.addStyleName("padding10");
         btnsFrame.addStyleName("whitelayout");
+        btnsFrame.setMargin(new MarginInfo(true, false, false, false));
+        btnsFrame.setWidth(100, Unit.PERCENTAGE);
+        btnsFrame.addStyleName("margintop");
+         btnsFrame.addStyleName("marginbottom");
+        btnsFrame.setHeight(50, Unit.PIXELS);
+        btnsFrame.addStyleName("padding20");
+        
+        
         frame.addComponent(btnsFrame);
 
         HorizontalLayout leftsideWrapper = new HorizontalLayout();
@@ -261,8 +275,8 @@ public abstract class ReorderSelectGroupsFilter extends VerticalLayout implement
         groupILayout.updateData(rowHeaders);
         groupIILayout.updateData(colHeaders);
 
-        popupBody.setHeight(groupILayout.getFinalHeight() + 100, Unit.PIXELS);
-        popupWindow.setHeight(groupILayout.getFinalHeight() + 250, Unit.PIXELS);
+        popupBody.setHeight(groupILayout.getFinalHeight() + 90, Unit.PIXELS);
+        popupWindow.setHeight(groupILayout.getFinalHeight() + 250-35, Unit.PIXELS);
 
     }
 
