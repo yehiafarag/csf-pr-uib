@@ -19,6 +19,9 @@
     font-family: 'Vaadin-Icons';
 
 }
+
+
+
 .v-loading-indicator,  
 .v-loading-indicator-delay,  
 .v-loading-indicator-wait {  
@@ -1430,10 +1433,7 @@ border:3px solid #4d749f ;
     border:2px solid gray;
     opacity: 1;
 }
-.novaluelayout div{
-    background: #b5babb  !important;
-    border: 1px solid gray  !important;
-}
+
 
 .greenlayout div{
     background: #009900  !important;
@@ -1469,6 +1469,10 @@ border:3px solid #4d749f ;
     overflow:hidden !important;
 
 
+}
+.novaluelayout div{
+    background: #b5babb  !important;
+    border: 1px solid gray  !important;
 }
 .empty div{
     /*background-image: url(img/empty.png);*/
@@ -1703,6 +1707,10 @@ border:3px solid #4d749f ;
     background-position:center;
     background-repeat: no-repeat;
     cursor:pointer;
+
+}
+.selectallbtn:hover{
+    background-image: url(img/selectall_selected.png);
 
 }
 
@@ -2941,6 +2949,7 @@ img {
     overflow:visible!important;
     z-index:2 !important;
 }
+
 .studyinfo{
     clear: both;
     width: 23px !important;
@@ -2950,9 +2959,8 @@ img {
     background-repeat: no-repeat !important;
     background-size: 17px  !important;
     cursor:pointer;
-
-
 }
+
 .disableLayout{
     background: lightgray !important;
 
@@ -4081,7 +4089,7 @@ img {
 
 }
 .slowinvisible{
--webkit-transition-delay: 20s; /* Safari */
+    -webkit-transition-delay: 20s; /* Safari */
     transition-delay: 20s;
     visibility: hidden !important;
     opacity: 0   !important;;

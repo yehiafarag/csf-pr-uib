@@ -1,8 +1,10 @@
 
 package probe.com.view;
 
+import com.vaadin.server.VaadinService;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.TabSheet.Tab;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Runo;
 import java.io.Serializable;
@@ -62,12 +64,17 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
 
         homeTab = mainTabSheet.addTab(welcomeLayout, "Home", null);
         mainTabSheet.addTab(proteinsLayout, "Proteins", null);
-        mainTabSheet.addTab(this.searchLayout, "Search");
+        Tab searchTab = mainTabSheet.addTab(this.searchLayout, "Search");
         adminTab = mainTabSheet.addTab(adminLayout, "Dataset Editor (Require Sign In)", null);
         mainTabSheet.addSelectedTabChangeListener(this);
         mainTabSheet.setSelectedTab(homeTab);
         mainTabSheet.markAsDirty();
         adminTab.setVisible(false);
+        
+          String requestSearching = VaadinService.getCurrentRequest().getPathInfo();
+        if (!requestSearching.trim().endsWith("/")) {
+           mainTabSheet.setSelectedTab(searchTab);
+        }
 
     }
 

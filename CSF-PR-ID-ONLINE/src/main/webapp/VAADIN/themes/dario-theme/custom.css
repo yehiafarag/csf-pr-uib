@@ -67,4 +67,30 @@
   .v-select-option.v-radiobutton {
     padding-right: 10px;
 }
+.uiblogo img{
+    margin-top:-10px !important;
+    margin-left:5px !important;
+    width:80px !important;
+    height:auto !important;
+    cursor:pointer !important;
+    z-index:100 !important;
+    position:relative !important;
+}
+.probelogo img{
+    width:200px;
+    height:auto;
+    margin-left:50px;
+}
+.v-slot-probelogo{
+    background-color:rgba(0,0,0,0);
+    margin-left:-50px;
+}
+.kgjlogo img{
+    margin-top:-300px;
+    margin-left:-100px !important;
+     width:590px !important;
+}
+.kgjlogo {
+    width:220px !important;
 
+}

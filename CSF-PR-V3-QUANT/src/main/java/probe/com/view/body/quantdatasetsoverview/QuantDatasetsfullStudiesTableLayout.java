@@ -1,22 +1,13 @@
 package probe.com.view.body.quantdatasetsoverview;
 
-import com.vaadin.addon.tableexport.ExcelExport;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
-import java.util.Locale;
 import java.util.Map;
 import probe.com.selectionmanager.CSFFilter;
 import probe.com.model.beans.quant.QuantDatasetObject;
-import probe.com.model.beans.quant.QuantDiseaseGroupsComparison;
 import probe.com.selectionmanager.QuantCentralManager;
-import probe.com.view.body.quantcompare.QuantUserDataProteinsComparisonsContainer;
-import probe.com.view.body.quantdatasetsoverview.quantproteinscomparisons.DiseaseGroupsComparisonsProteinLayout;
 import probe.com.view.core.CustomExternalLink;
 
 /**

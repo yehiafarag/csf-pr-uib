@@ -36,7 +36,7 @@ public class Header extends VerticalLayout {
         header.setStyleName(Reindeer.LAYOUT_WHITE);
 
         //Coronetscript, cursive Helvetica
-        Label csfLable = new Label("<a href='' style='text-decoration:none'><p   align='left' ; style='margin-left:40px;font-family:verdana;color:#4d749f;font-weight:bold;text-decoration:none '><FONT SIZE='5.5'>CSF Proteome Resource (CSF-PR)</FONT></p></a>");
+        Label csfLable = new Label("<a href='' style='text-decoration:none'><p   align='left' ; style='margin-left:40px;font-family:verdana;color:#4d749f;font-weight:bold;text-decoration:none '><FONT SIZE='5.5'>CSF Proteome Resource <font size='2'>v1.0</font> </FONT></p></a>");
         csfLable.setContentMode(ContentMode.HTML);
         csfLable.setStyleName(Reindeer.LABEL_SMALL);
         csfLable.setWidth("100%");
@@ -49,23 +49,26 @@ public class Header extends VerticalLayout {
         HorizontalLayout hlo = new HorizontalLayout();
 
         Link probe_ico = new Link(null, new ExternalResource("http://www.uib.no/rg/probe"));
-        probe_ico.setIcon(new ThemeResource("img/probe.jpg"));
+        probe_ico.setIcon(new ThemeResource("img/probe-updated.png"));
         probe_ico.setTargetName("_blank");
         probe_ico.setWidth("237px");
         probe_ico.setHeight("58px");
+        probe_ico.addStyleName("probelogo");
         hlo.addComponent(probe_ico);
 
         Link uib_ico = new Link(null, new ExternalResource("http://www.uib.no/"));
-        uib_ico.setIcon(new ThemeResource("img/uib.jpg"));
+        uib_ico.setIcon(new ThemeResource("img/uib-logo.svg"));
+        uib_ico.addStyleName("uiblogo");
         uib_ico.setTargetName("_blank");
         uib_ico.setWidth("87px");
         uib_ico.setHeight("58px");
         hlo.addComponent(uib_ico);
 
-        Link kgj_ico = new Link(null, new ExternalResource("http://www.stiftkgj.no/"));
-        kgj_ico.setIcon(new ThemeResource("img/kgj.jpg"));
+        Link kgj_ico = new Link(null, new ExternalResource("http://www.uib.no/en/rg/kgj-ms"));
+        kgj_ico.setIcon(new ThemeResource("img/kgj.svg"));
         kgj_ico.setTargetName("_blank");
         kgj_ico.setHeight("58px");
+        kgj_ico.addStyleName("kgjlogo");
         hlo.addComponent(kgj_ico);
         Label spacer = new Label("<p   align='left' ; style='margin-left:40px;font-family:verdana;color:#4d749f;font-weight:bold;text-decoration:none '></p>");
         spacer.setContentMode(ContentMode.HTML);

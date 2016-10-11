@@ -21,9 +21,9 @@ import javax.swing.SwingWorker;
 public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
 
     private ExperimentBean exp;
-    private final String database_name = "dbdataid";
+    private final String database_name = "csf_pr_v2_28_06";
     private final String executeCmd;
-    private final String backupFileUrl = "D:\\backups\\sqlQuant18-8\\backup-quant.sql"; // "/home/probe/user/CSF-PR-FILES/backup.sql";             //"D:\\backups\\sqlQuant18-8\\backup-quant.sql";                        //   
+    private final String backupFileUrl = "D:\\CSF-PR-v2.0 data\\csf_pr_v2_28_06.sql"; // "/home/probe/user/CSF-PR-FILES/backup.sql";             //"D:\\backups\\sqlQuant18-8\\backup-quant.sql";                        //   
     private final String processUrl = "C:\\AppServ\\MySQL\\bin\\mysqldump.exe";;//         "C:\\AppServ\\MySQL\\bin\\mysqldump.exe";//"C:\\AppServ\\MySQL\\bin\\mysqldump.exe"           ///usr/bin/mysqldump
 
     /* Creates new form GUI */

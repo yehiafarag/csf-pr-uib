@@ -122,8 +122,12 @@ public class SearchingUnitLayout extends HorizontalLayout implements Serializabl
     }
     
     public void searchingProcess(String keyword){
-            searchingAreaFilter.setSearchingFieldValue(keyword);
-            searchingAreaFilter.setSearchingByValue("Protein Accession");
+        keyword = keyword.replace("*"," ");
+        String searchBy = keyword.split("___")[0].replace("searchby:", "");
+        String skeyWord = keyword.split("___")[1].replace("searchkey:", "").replace("__", "\n");
+        System.out.println("at searchKey is "+keyword);
+            searchingAreaFilter.setSearchingFieldValue(skeyWord);
+            searchingAreaFilter.setSearchingByValue(searchBy);
             searchingAreaFilter.startSearching();
     }
 }

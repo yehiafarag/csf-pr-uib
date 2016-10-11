@@ -6,7 +6,6 @@
 package probe.com.view.core;
 
 import com.vaadin.server.Page;
-import com.vaadin.ui.Alignment;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;

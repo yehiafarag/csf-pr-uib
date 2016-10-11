@@ -23,9 +23,9 @@ import javax.swing.SwingWorker;
 public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
 
     private ExperimentBean exp;
-    private  String database_name = "quantdataupdated_test_11_02_16";
+    private  String database_name = "csf_pr_v2_28_06";
 //    private final String executeCmd;
-    private final String backupFileUrl = "D:\\backups\\backup_id_10-11-2015\\backup_10-11-2015_id.sql"; // "/home/probe/user/CSF-PR-FILES/backup.sql";             //"D:\\backups\\sqlQuant18-8\\backup-quant.sql";                        //   
+    private final String backupFileUrl = "D:\\CSF-PR-v2.0 data\\csf_pr_v2_28_06.sql"; // "/home/probe/user/CSF-PR-FILES/backup.sql";             //"D:\\backups\\sqlQuant18-8\\backup-quant.sql";                        //   
     private String processUrl = "C:\\AppServ\\MySQL\\bin\\mysqldump.exe"; ///usr/bin/mysqldump";
     private String mySqlDBPath = "C:\\AppServ\\MySQL\\bin\\mysql.exe";
 
@@ -2585,6 +2585,7 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                       if (databaseNameField.getText() != null && !databaseNameField.getText().trim().equalsIgnoreCase("")) {
                         database_name = databaseNameField.getText().trim();
                     }
+                      System.out.println("database name is "+ database_name);
                     exphandeler = new Handler("jdbc:mysql://" + jTextField13.getText() + ":3306/", database_name, "com.mysql.jdbc.Driver", jTextField1.getText(), password);
                 } catch (SQLException sqlE) {
                     System.out.println("at error SQL Exception line 896 " + this.getClass().getName() + "  " + sqlE.getMessage());

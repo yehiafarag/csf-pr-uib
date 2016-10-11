@@ -1,11 +1,9 @@
 package probe.com.model.util;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
-import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.DefaultFontMapper;
@@ -33,11 +31,8 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.SymbolAxis;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.title.TextTitle;
-import org.jfree.ui.RectangleEdge;
-import org.mozilla.javascript.tools.debugger.Dim;
 import probe.com.model.beans.identification.IdentificationPeptideBean;
 import probe.com.model.util.vaadintoimageutil.peptideslayout.PeptidesSequenceContainer;
 import probe.com.model.util.vaadintoimageutil.peptideslayout.ProteinInformationDataForExport;

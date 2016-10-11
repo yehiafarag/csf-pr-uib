@@ -67,24 +67,24 @@ public class DB implements Serializable {
                 System.out.println("database created with name " + dbName);
 
                 //temp
-//               fg String sqoDataBase = "SHOW DATABASES ;";
-//                ResultSet rs1 = statement.executeQuery(sqoDataBase);
-//               Set<String> datasetnames = new HashSet<String>();
-//                while(rs1.next()){
-//                    String db = rs1.getString("Database");
-//                    datasetnames.add(db);
-//                    System.err.println("db is "+db);
-//                    
-//                }
+                String sqoDataBase = "SHOW DATABASES ;";
+                ResultSet rs1 = statement.executeQuery(sqoDataBase);
+               Set<String> datasetnames = new HashSet<String>();
+                while(rs1.next()){
+                    String db = rs1.getString("Database");
+                    datasetnames.add(db);
+                    System.err.println("db is "+db);
+                    
+                }
 //                 Statement statement2 = conn_i.createStatement();
 //                
 //                for(String db:datasetnames)
 //                {
-//                    if(db.contains("csf")&&!db.equals(dbName))
+//                    if(!db.equals(dbName) && !db.equalsIgnoreCase("csf_db_v2") && !db.equalsIgnoreCase("all_no_MCP"))
 //                        statement2.executeUpdate("DROP DATABASE "+ db+" ;");
 //                
 //                }
-                conn_i.close();
+//                conn_i.close();
             } catch (ClassNotFoundException e) {
                 System.err.println("at error line 102 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
             } catch (IllegalAccessException e) {
@@ -149,7 +149,7 @@ public class DB implements Serializable {
                 for (String str : inserStat.split("\n")) {
 
                     st.executeUpdate(str);
-                    System.out.println("str is : " + str);
+//                    System.out.println("str is : " + str);
 
                 }
                 st = conn.createStatement();
@@ -2903,13 +2903,24 @@ public class DB implements Serializable {
     }
 
     public void updateActivePublications(Map<String, Object[]> publicationUpdatingMap) {
+        System.out.println("in update publications ");
 
+        String initStatment = "UPDATE  `publication_table` SET  `active` = false";
         String statment = "UPDATE  `publication_table` SET  `active` = ?,  `total_prot_num` = ? , `uniq_prot_num` = ? , `total_pept_num` = ? , `uniq_pept_num` = ? WHERE  `publication_table`.`pubmed_id` = ? ;";
         try {
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
+             PreparedStatement initSat = conn.prepareStatement(initStatment);
+             initSat.executeUpdate();
+            
+            
+            
+            
+            
+            
+            
 
             for (String pubmedId : publicationUpdatingMap.keySet()) {
                 Object[] publicationData = publicationUpdatingMap.get(pubmedId);

@@ -7,6 +7,7 @@ import com.vaadin.data.Property;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.ThemeResource;
+import com.vaadin.server.VaadinService;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
@@ -230,7 +231,23 @@ public class SearchLayout extends VerticalLayout implements Serializable, Button
         topRightLayout.setComponentAlignment(infoIco, Alignment.MIDDLE_RIGHT);
         errorLabelII.setVisible(false);
         searchButton.addClickListener(this);
+        
+        
+          String requestSearching = VaadinService.getCurrentRequest().getPathInfo();
+        if (!requestSearching.trim().endsWith("/")) {
+            requestSearching = requestSearching.replace("/", "");
+            searchingProcess(requestSearching);
+        }
 
+    }
+    
+    public void searchingProcess(String keyword){
+        keyword = keyword.replace("*"," ");
+        String searchBy = keyword.split("___")[0].replace("searchby:", "");
+        String skeyWord = keyword.split("___")[1].replace("searchkey:", "").replace("__", "\n");
+            searchField.setValue(skeyWord);
+            searchbyGroup.setValue(searchBy);
+            buttonClick(null);
     }
 
     /**

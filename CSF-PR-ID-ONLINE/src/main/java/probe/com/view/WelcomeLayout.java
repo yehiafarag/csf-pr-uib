@@ -89,8 +89,14 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         rightLayout.addComponent(image1);
         rightLayout.setMargin(new MarginInfo(true, true, true, true));
         rightLayout.setComponentAlignment(image1, Alignment.MIDDLE_CENTER);
+        
+         
+         Label para_6 = new Label("<p align='justify' Style='margin-left:40px;color:#585858;'><font size=\"2\"><a Style='color:#585858;' href='http://129.177.231.63/csf-pr-2.0/' target=\"_blank\">For protein quantitative data data visit CSF-PR v2.0</a>.</font></p>");
+        para_6.setContentMode(ContentMode.HTML);
+        leftLayout.addComponent(para_6);
+        
 
-        Label para_3 = new Label("<p align='justify' Style='margin-left:40px;color:#585858;'><font size=\"2\">CSF-PR is being developed by the <a Style='color:#585858;' href='http://www.uib.no/rg/probe' target=\"_blank\">Proteomics Unit</a> at the<a Style='color:#585858;' href='http://www.uib.no/biomedisin/en' target=\"_blank\"> Department of Biomedicine at the University of Bergen</a>, Norway, in close collaboration with <a Style='color:#585858;' href='http://haukeland.no/en/OmOss/Avdelinger/ms/Sider/om-oss.aspx' target=\"_blank\">The Norwegian Multiple Sclerosis Competence Centre</a>, Haukeland University Hospital, Bergen, Norway.</font></p>");
+        Label para_3 = new Label("<p align='justify' Style='margin-left:40px;color:#585858;'><font size=\"2\">CSF-PR is being developed by the <a Style='color:#585858;' href='http://www.uib.no/rg/probe' target=\"_blank\">Proteomics Unit</a> at the<a Style='color:#585858;' href='http://www.uib.no/biomedisin/en' target=\"_blank\"> Department of Biomedicine at the University of Bergen</a>, Norway, in close collaboration with <a Style='color:#585858;' href='http://www.uib.no/en/rg/kgj-ms' target='_blank'> the Kristian Gerhard Jebsen Centre for MS Research, Haukeland University Hospital, Bergen, Norway.</font></p>");
         para_3.setContentMode(ContentMode.HTML);
         leftLayout.addComponent(para_3);
         

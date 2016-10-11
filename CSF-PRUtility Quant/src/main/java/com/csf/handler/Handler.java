@@ -73,7 +73,7 @@ public class Handler {
         //1.read file
         List<QuantProtein> qProtList = qDataHandler.readCSVQuantFile(quantDataFilePath, sequanceFilePath, unreviewFilePath);
 
-        this.updateActivePublications(qDataHandler.getActivePublications(), qProtList);
+//        this.updateActivePublications(qDataHandler.getActivePublications(), qProtList);
         //filter the quant proteins list 
         List<QuantProtein> filteredQuantProteinsList = filterQuantProteins(qProtList);
 
@@ -98,6 +98,8 @@ public class Handler {
         dal.storeQuantitivePeptides(peptidesList);
         System.out.println("done with peptides table");
         this.updateQuantStudies(datasetsList, qProtList);
+        System.out.println("update poublication");
+          this.updateActivePublications(qDataHandler.getActivePublications(), qProtList);
 
         return true;
     }
