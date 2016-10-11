@@ -50,9 +50,6 @@ public class MainLayout extends VerticalLayout {
         CSFApplicationContainer welcomePageContainerLayout = new CSFApplicationContainer(windowWidth, windowHeight, url, dbName, driver, userName, password, filesURL);
         body.addComponent(welcomePageContainerLayout);
         body.setComponentAlignment(welcomePageContainerLayout,Alignment.TOP_CENTER);        
-//        zoomApp = welcomePageContainerLayout.getZoomApp();
-        
-//        body.addComponent(zoomApp);
         
         
         

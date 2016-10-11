@@ -20,7 +20,7 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
  */
 public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
-    private final PopupWindow popupPanel;
+    private final PopupWindowFrame popupPanel;
 
     public PopupInfoBtn(QuantDatasetObject quantDS, String btnName, String publicationAuthor, boolean smallScreen) {
         this.addLayoutClickListener(PopupInfoBtn.this);
@@ -37,28 +37,11 @@ public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutC
         this.addStyleName("marginbottom");
 
         DatasetInformationOverviewLayout infoLayout = new DatasetInformationOverviewLayout(quantDS, smallScreen);
-        VerticalLayout infoPopup = initPopupLayout(infoLayout,smallScreen,650);
+        popupPanel = new PopupWindowFrame(publicationAuthor, new VerticalLayout(infoLayout));
 
-        popupPanel = new PopupWindow(infoPopup, publicationAuthor);
+        popupPanel.setFrameHeight(710);
 
-        if (smallScreen) {
-//            popupPanel.setHeight(Math.max(popupPanel.getHeight(), 500), Unit.PIXELS);
-            popupPanel.setWidth(99,Unit.PERCENTAGE);
-            popupPanel.setHeight(99,Unit.PERCENTAGE);
-        } else {
-            popupPanel.setHeight(710, Unit.PIXELS);
-        }
-
-//        popupPanel = new PopupView(null, infoPopup);
-//        popupPanel.setWidth("2px");
-//        popupPanel.setHeight("2px");
-//        this.addComponent(popupPanel);
-//        this.setComponentAlignment(popupPanel, Alignment.BOTTOM_RIGHT);
-//        popupPanel.setVisible(true);
-//        popupPanel.setPopupVisible(false);
-//        popupPanel.setHideOnMouseOut(false);
         this.setExpandRatio(btnLabel, 0.99f);
-//        this.setExpandRatio(popupPanel, 0.01f);
 
     }
 
@@ -74,53 +57,20 @@ public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutC
         this.setStyleName("tabbtn");
         this.addStyleName("margintop");
         this.addStyleName("marginbottom");
-        
 
         VerticalLayout infoLayout = initPublicationLayout(publicationData);
-        VerticalLayout infoPopup = initPopupLayout(infoLayout,smallScreen,349);
 
-        popupPanel = new PopupWindow(infoPopup, publicationAuthor);
-        popupPanel.setWidth(600, Unit.PIXELS);
-        popupPanel.setHeight(409, Unit.PIXELS);
+        popupPanel = new PopupWindowFrame(publicationAuthor, new VerticalLayout(infoLayout));
+        popupPanel.setFrameWidth(600);
+        popupPanel.setFrameHeight(409);
 
         this.setExpandRatio(btnLabel, 0.99f);
 
     }
 
-    private VerticalLayout initPopupLayout(VerticalLayout infoLayout, boolean smallScreen,int h) {
-
-//        VerticalLayout popupBodyWrapper = new VerticalLayout();
-//        popupBodyWrapper.setWidth(infoLayout.getWidth()+100,infoLayout.getWidthUnits());
-//        popupBodyWrapper.setHeight(infoLayout.getHeight()+100,infoLayout.getHeightUnits());       
-//        
-        VerticalLayout popupBodyLayout = new VerticalLayout();
-        if (smallScreen) {
-
-            popupBodyLayout.setWidth(100, Unit.PERCENTAGE);
-            popupBodyLayout.setHeight(100, Unit.PERCENTAGE);
-        } else {
-            popupBodyLayout.setWidth(99, Unit.PERCENTAGE);
-            popupBodyLayout.setHeight(h, Unit.PIXELS);
-            popupBodyLayout.addStyleName("padding20");
-            popupBodyLayout.setSpacing(true);
-        }
-        popupBodyLayout.setStyleName("pupupbody");
-        popupBodyLayout.addStyleName("roundedborder");
-        popupBodyLayout.addStyleName("margintop");
-        popupBodyLayout.addStyleName("marginbottom");
-
-//        popupBodyWrapper.addComponent(popupBodyLayout);
-//        popupBodyWrapper.setComponentAlignment(popupBodyLayout, Alignment.TOP_CENTER);
-//        popupBodyLayout.addLayoutClickListener(this);
-        popupBodyLayout.addComponent(infoLayout);
-
-        return popupBodyLayout;
-
-    }
-
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-        popupPanel.setVisible(!popupPanel.isVisible());
+        popupPanel.view();
     }
 
     private VerticalLayout initPublicationLayout(Object[] publicationData) {

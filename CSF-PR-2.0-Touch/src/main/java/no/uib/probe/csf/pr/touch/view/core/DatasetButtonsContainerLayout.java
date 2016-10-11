@@ -71,7 +71,7 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
                     }
 
                 }
-                String btnName = quantDS.getAuthor() + "<br/><font size=1 >" + quantDS.getYear() + "</font><br/><font size=1 >#Proteins: " + quantDS.getTotalProtNum() + "   #Peptides: " + quantDS.getTotalPepNum() + "</font>";
+                String btnName = "<font size=1 >" + quantDS.getYear() + "</font><br/>"+quantDS.getAuthor()+"<br/><font size=1 >#Proteins: " + quantDS.getTotalProtNum() + "   #Peptides: " + quantDS.getTotalPepNum() + "</font>";
 
                 PopupInfoBtn btn = new PopupInfoBtn(quantDS, btnName, quantDS.getAuthor(), smallScreen);
                 btn.addStyleName(publicationStyle.get(quantDS.getPumedID()));
@@ -121,7 +121,7 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
                 }
 
             }
-            String btnName = obj[1].toString() + "<br/><font size=1 >" + obj[2].toString() + "</font><br/><font size=1 >#Proteins: " + obj[5].toString() /*+ "/" + obj[5].toString() + */ + "   #Peptides: " + obj[7].toString() /*+ "/" + obj[7].toString() +*/ + "</font>";
+            String btnName = "<font size=1 >" + obj[2].toString() + "</font><br/>"+obj[1].toString() +"<br/><font size=1 >#Proteins: " + obj[5].toString() /*+ "/" + obj[5].toString() + */ + "   #Peptides: " + obj[7].toString() /*+ "/" + obj[7].toString() +*/ + "</font>";
 
             PopupInfoBtn btn = new PopupInfoBtn(btnName, obj[1].toString(), obj, smallScreen);
             btn.addStyleName(publicationStyle.get(obj[0].toString()));

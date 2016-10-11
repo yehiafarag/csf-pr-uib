@@ -76,6 +76,7 @@ public abstract class DatasetPieChartFilter extends AbsoluteLayout implements La
     public DatasetPieChartFilter(String filterTitle, String filterId, int filterIndex, int filterWidth, int filterHeight, boolean smallScreen) {
         this.width = filterWidth;
         this.height = filterHeight;
+        smallScreen=false;
         this.smallScreen = smallScreen;
 
         this.setWidth(width, Unit.PIXELS);
@@ -147,11 +148,13 @@ public abstract class DatasetPieChartFilter extends AbsoluteLayout implements La
         plot.setIgnoreZeroValues(true);
 
         chart = new JFreeChart(plot);
+        TextTitle textTitle = new TextTitle(title, new Font("Helvetica Neue", Font.PLAIN, 13));
+        textTitle.setPadding(25, 0, 1, 0);
         if (smallScreen) {
             chart.setTitle(new TextTitle(title, new Font("Helvetica Neue", Font.PLAIN, 10)));
             chart.getLegend().setItemFont(new Font("Helvetica Neue", Font.PLAIN, 9));
         } else {
-            chart.setTitle(new TextTitle(title, new Font("Helvetica Neue", Font.PLAIN, 13))); 
+            chart.setTitle(textTitle); 
             chart.getLegend().setItemFont(new Font("Helvetica Neue", Font.PLAIN, 12));
         }
         chart.setBorderPaint(null);

@@ -31,7 +31,7 @@ public class PopupWindow extends Window {
 
         mainFrame = new VerticalLayout();
         mainFrame.setWidth(100, Unit.PERCENTAGE);
-        mainFrame.setHeightUndefined();
+        mainFrame.setHeight(100,Unit.PERCENTAGE);
         setContent(mainFrame);
         mainFrame.addStyleName("mainviewport");
 
@@ -40,12 +40,12 @@ public class PopupWindow extends Window {
 
         setWindowMode(WindowMode.NORMAL);
         setWidth((width), Unit.PIXELS);
-        setHeight((height), Unit.PIXELS);
+        PopupWindow.this.setHeight((height), Unit.PIXELS);
         PopupWindow.this.setVisible(false);
         setResizable(false);
         setModal(true);
         setDraggable(false);
-        mainFrame.addStyleName("scrollable");
+        this.addStyleName("hideoverflow");
         center();
         setCaption("<font color='gray' style='font-weight: bold;!important'>&nbsp;&nbsp;" + title + "</font>");
         UI.getCurrent().addWindow(PopupWindow.this);
@@ -80,6 +80,8 @@ public class PopupWindow extends Window {
     @Override
     public void setHeight(float height, Unit unit) {
         super.setHeight(Math.min(height, this.height), unit); //To change body of generated methods, choose Tools | Templates.
+//        if(mainFrame!=null)
+//        mainFrame.setHeight(super.getHeight()-40, unit);
         center();
         this.markAsDirty();
     }

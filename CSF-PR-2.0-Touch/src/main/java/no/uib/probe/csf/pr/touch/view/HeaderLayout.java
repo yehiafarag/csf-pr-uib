@@ -52,48 +52,6 @@ public class HeaderLayout extends HorizontalLayout{
         logo.setComponentAlignment(cLabel, Alignment.TOP_CENTER);
         logoTitleContainer.addComponent(logo);
 
-//        VerticalLayout rightHeaderLayout = new VerticalLayout();
-//        rightHeaderLayout.setStyleName("transparentlayout");
-//
-//        rightHeaderLayout.setWidth(100,Unit.PERCENTAGE);
-//
-//        this.addComponent(rightHeaderLayout);
-//        this.setComponentAlignment(rightHeaderLayout, Alignment.TOP_RIGHT);
-//        HorizontalLayout linksIconsLayout = new HorizontalLayout();
-//        linksIconsLayout.setStyleName("transparentlayout");
-////        linksIconsLayout.addStyleName("margintop10");
-////        rightHeaderLayout.addComponent(linksIconsLayout);
-////        rightHeaderLayout.setComponentAlignment(linksIconsLayout, Alignment.MIDDLE_RIGHT);
-//        linksIconsLayout.setHeight(30,Unit.PIXELS);
-//        Link probe_ico = new Link(null, new ExternalResource("http://www.uib.no/rg/probe"));
-//        probe_ico.setIcon(new ThemeResource("img/probe.png"));
-//        probe_ico.setTargetName("_blank");
-//        probe_ico.setWidth(237,Unit.PIXELS);
-//        probe_ico.setHeight(58,Unit.PIXELS);
-//        linksIconsLayout.addComponent(probe_ico);
-//
-//        Link uib_ico = new Link(null, new ExternalResource("http://www.uib.no/"));
-//        uib_ico.setIcon(new ThemeResource("img/uib.png"));
-//        uib_ico.setTargetName("_blank");
-//        uib_ico.setWidth(87,Unit.PIXELS);
-//        uib_ico.setHeight(58,Unit.PIXELS);
-//        linksIconsLayout.addComponent(uib_ico);
-//
-//        Link kgj_ico = new Link(null, new ExternalResource("http://www.helse-bergen.no/en/OmOss/Avdelinger/ms/Sider/om-oss.aspx"));
-//        kgj_ico.setIcon(new ThemeResource("img/kgj.png"));
-//        kgj_ico.setTargetName("_blank");
-//        kgj_ico.setHeight(58,Unit.PIXELS);
-//        linksIconsLayout.addComponent(kgj_ico);
-//
-////        VerticalLayout rightSpacer = new VerticalLayout();
-////        rightSpacer.setWidth(40,Unit.PIXELS);
-////        rightSpacer.setHeight(5,Unit.PIXELS);
-//
-////        linksIconsLayout.addComponent(rightSpacer);
-//        linksIconsLayout.setComponentAlignment(probe_ico, Alignment.MIDDLE_RIGHT);
-//        linksIconsLayout.setComponentAlignment(uib_ico, Alignment.MIDDLE_RIGHT);
-//        linksIconsLayout.setComponentAlignment(kgj_ico, Alignment.MIDDLE_RIGHT);
-////        linksIconsLayout.setComponentAlignment(rightSpacer, Alignment.MIDDLE_RIGHT);
     }
     
 }

@@ -4,6 +4,7 @@ import com.vaadin.event.LayoutEvents;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
@@ -28,11 +29,11 @@ public abstract class BigBtn extends HorizontalLayout implements LayoutEvents.La
     public BigBtn(String header, String text, String imgUrl, boolean smallScreen) {
         this.setWidthUndefined();
         this.setMargin(false);
-        int lineHeight=40;
-        if (!smallScreen) {
-            this.setSpacing(true);
-            lineHeight=70;
-        }
+        int lineHeight=35;
+//        if (!smallScreen) {
+//            this.setSpacing(true);
+//            lineHeight=70;
+//        }
         this.addLayoutClickListener(BigBtn.this);
         this.setStyleName("bigbtn");
 
@@ -46,6 +47,7 @@ public abstract class BigBtn extends HorizontalLayout implements LayoutEvents.La
         Label btnLabel = new Label(labelText);
         btnLabel.setContentMode(ContentMode.HTML);
         this.addComponent(btnLabel);
+        this.setComponentAlignment(btnLabel,Alignment.MIDDLE_LEFT);
         btnLabel.setWidth(240, Unit.PIXELS);
         btnLabel.setHeight(lineHeight,Unit.PIXELS);
 

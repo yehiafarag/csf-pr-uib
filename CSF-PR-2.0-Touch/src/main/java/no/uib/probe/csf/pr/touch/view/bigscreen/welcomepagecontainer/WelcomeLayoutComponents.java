@@ -116,11 +116,11 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         quantStatLabel.addStyleName(ValoTheme.LABEL_H4);
         quantStatLabel.addStyleName(ValoTheme.LABEL_TINY);
         quantStatLabel.addStyleName("nomargin");
-        quantStatLabel.addStyleName("marginleft");
+//        quantStatLabel.addStyleName("marginleft");
         leftPanelWrapper.addComponent(quantStatLabel);
 
         GridLayout subQuantStatLayout = new GridLayout(2, 3);
-        subQuantStatLayout.setMargin(new MarginInfo(false, false, false, true));
+        subQuantStatLayout.setMargin(new MarginInfo(false, false, false, false));
         subQuantStatLayout.setWidth(100, Unit.PERCENTAGE);
         leftPanelWrapper.addComponent(subQuantStatLayout);
 
@@ -206,12 +206,12 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         idStatLabel.addStyleName(ValoTheme.LABEL_H4);
         idStatLabel.addStyleName(ValoTheme.LABEL_TINY);
         idStatLabel.addStyleName("nomargin");
-        idStatLabel.addStyleName("marginleft");
+//        idStatLabel.addStyleName("marginleft");
         idStatLabel.addStyleName("margintop15");
         leftPanelWrapper.addComponent(idStatLabel);
 
         GridLayout subIdStatLayout = new GridLayout(2, 4);
-        subIdStatLayout.setMargin(new MarginInfo(false, false, false, true));
+        subIdStatLayout.setMargin(new MarginInfo(false, false, false, false));
         subIdStatLayout.setWidth(100, Unit.PERCENTAGE);
         subIdStatLayout.setSpacing(true);
         leftPanelWrapper.addComponent(subIdStatLayout);
@@ -293,7 +293,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
                 //                + "<font style='font-size: 14px;color: black;'>"
                 + "CSF Proteome Resource "
                 //                + "(CSF-PR) v2.0 "
-                + "is an online repository of mass spectrometry<br/>" + breakline + "based proteomics "
+                + "is an online repository of mass spectrometry" + breakline + "based proteomics "
                 + "experiments on human cerebrospinal fluid (CSF).<br/>" + breakline
         //                + " </font></font>"
         );
@@ -308,6 +308,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
         para_1.addStyleName("nomargin");
         para_1.addStyleName("marginbottom");
+        para_1.addStyleName("linehight25");
 
         HorizontalLayout rightPanel = new HorizontalLayout();
         rightPanel.setWidth(100, Unit.PERCENTAGE);
@@ -512,8 +513,8 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         uib_ico.setHeight(58, Unit.PIXELS);
         linksIconsLayout.addComponent(uib_ico);
 
-        Link kgj_ico = new Link(null, new ExternalResource("http://www.helse-bergen.no/en/OmOss/Avdelinger/ms/Sider/om-oss.aspx"));
-        kgj_ico.setIcon(new ThemeResource("img/kgj_1.png"));
+        Link kgj_ico = new Link(null, new ExternalResource("http://www.uib.no/en/rg/kgj-ms"));
+        kgj_ico.setIcon(new ThemeResource("img/kgj.svg"));
         kgj_ico.setTargetName("_blank");
         kgj_ico.addStyleName("kgjlogo");
         kgj_ico.setHeight(58, Unit.PIXELS);
@@ -527,9 +528,9 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         linksIconsLayout.setComponentAlignment(uib_ico, Alignment.MIDDLE_RIGHT);
         linksIconsLayout.setComponentAlignment(kgj_ico, Alignment.MIDDLE_RIGHT);
 
-        Label para_3 = new Label("<p align='justify' Style='text-align: justify;text-justify: inter-word;font-size: 10px;color: black;/* font-weight: bold; */line-height: 20px;'><font>CSF-PR is being developed by the <a class='link' href='http://www.uib.no/rg/probe' target='_blank'>Proteomics Unit</a> at the<a class='link' href='http://www.uib.no/biomedisin/en' target='_blank'> Department of Biomedicine at the University of Bergen, Norway</a>, in close collaboration with <a class='link' href='http://haukeland.no/en/OmOss/Avdelinger/ms/Sider/om-oss.aspx' target='_blank'>The Norwegian Multiple Sclerosis Competence Centre, Haukeland University Hospital, Bergen, Norway.</a></font></p>");
+        Label para_3 = new Label("<p align='justify' Style='text-align: justify;text-justify: inter-word;font-size: 10px;color: black;/* font-weight: bold; */line-height: 20px;'><font>CSF-PR is being developed by the <a class='link' href='http://www.uib.no/rg/probe' target='_blank'>Proteomics Unit</a> at the<a class='link' href='http://www.uib.no/biomedisin/en' target='_blank'> Department of Biomedicine at the University of Bergen, Norway</a>, in close collaboration with <a class='link' href='http://www.uib.no/en/rg/kgj-ms' target='_blank'> the Kristian Gerhard Jebsen Centre for MS Research, Haukeland University Hospital, Bergen, Norway.</a></font></p>");
         para_3.setContentMode(ContentMode.HTML);
-        para_3.setWidth(55, Unit.PERCENTAGE);
+        para_3.setWidth(45, Unit.PERCENTAGE);
         footerLayout.addComponent(para_3, "left: 0px; top: " + 0 + "px");
 
         CSFPR_Central_Manager.registerListener(new CSFListener() {
@@ -567,13 +568,6 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
          footerLayout.addComponent(rightHeaderLayout, "left: 0px; top: " + 5 + "px");
 
 //        
-    }
-
-    private void unselectAllLayoutBtns() {
-//    this.resetThumbBtn = quantDatasetBtn.getThumbBtn();
-//        this.searchThumbBtn= searchingDatasetBtn.getThumbBtn();
-//        this.compareThumbBtn=compareBtn.getThumbBtn();
-
     }
 
     public void addMainZoomComponents(Component component) {

@@ -10,7 +10,6 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -18,6 +17,7 @@ import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 import no.uib.probe.csf.pr.touch.view.core.DatasetButtonsContainerLayout;
 import no.uib.probe.csf.pr.touch.view.core.PopupWindow;
+import no.uib.probe.csf.pr.touch.view.core.PopupWindowFrame;
 
 /**
  *
@@ -25,64 +25,21 @@ import no.uib.probe.csf.pr.touch.view.core.PopupWindow;
  *
  * this class represents study information popup window
  */
-public abstract class StudiesInformationWindow extends VerticalLayout implements LayoutEvents.LayoutClickListener {
+public abstract class StudiesInformationWindow extends VerticalLayout implements LayoutEvents.LayoutClickListener{
 
-    private final PopupWindow popupWindow;
     private final DatasetButtonsContainerLayout studiesPopupLayout;
     private List<Object[]> publicationList;
     private final TabSheet tab;
     private final DatasetButtonsContainerLayout publicationPopupLayout;
+    private final  VerticalLayout popupBody;
+    
+    private final PopupWindowFrame popupWindowBtn;
 
     public StudiesInformationWindow(List<Object[]> publicationList, boolean smallScreen) {
 
-        VerticalLayout popupBody = new VerticalLayout();
-        popupBody.setWidth(100, Unit.PERCENTAGE);
-        popupBody.setHeight(100, Unit.PERCENTAGE);
+        popupBody = new VerticalLayout();
+        popupWindowBtn = new PopupWindowFrame("Datasets and Publications", popupBody);
 
-        popupBody.setMargin(false);
-        popupBody.setSpacing(true);
-        popupBody.addStyleName("margintop");
-        popupBody.addStyleName("marginbottom");
-        popupBody.addStyleName("roundedborder");
-        popupBody.addStyleName("whitelayout");
-        popupBody.addStyleName("padding20");
-        
-        VerticalLayout frame = new VerticalLayout();
-        frame.setWidth(99, Unit.PERCENTAGE);
-        frame.setHeight(99, Unit.PERCENTAGE);
-        frame.setSpacing(true);
-        frame.addComponent(popupBody);
-
-        String title = "Datasets and Publications";
-//        if (publicationList == null) {
-//            title = "Datasets";
-//        }
-
-        popupWindow = new PopupWindow(frame, title) {
-
-            @Override
-            public void close() {
-                popupWindow.setVisible(false);
-
-            }
-
-            @Override
-            public void setVisible(boolean visible) {
-
-                if (visible) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-
-                    }
-                }
-                super.setVisible(visible); //To change body of generated methods, choose Tools | Templates.
-            }
-
-        };
-
-//        int availableHeight = (int) popupWindow.getHeight();
-//        popupBody.setHeight(availableHeight, Unit.PIXELS);
         this.addLayoutClickListener(StudiesInformationWindow.this);
         this.setHeight(10, Unit.PIXELS);
 
@@ -97,19 +54,19 @@ public abstract class StudiesInformationWindow extends VerticalLayout implements
         popupBody.setComponentAlignment(tab, Alignment.TOP_CENTER);
         
 
-        studiesPopupLayout = new DatasetButtonsContainerLayout((int) popupWindow.getWidth(), smallScreen);
+        studiesPopupLayout = new DatasetButtonsContainerLayout((int) popupWindowBtn.getFrameWidth(), smallScreen);
         if (studiesPopupLayout.getColNumber() == 1) {
-            frame.setWidth(260, Unit.PIXELS);
+            popupWindowBtn.setFrameWidth(260);
         }
 
         tab.addTab(studiesPopupLayout, "Datasets");
-        publicationPopupLayout = new DatasetButtonsContainerLayout((int) popupWindow.getWidth(), smallScreen);
+        publicationPopupLayout = new DatasetButtonsContainerLayout((int) popupWindowBtn.getFrameWidth(), smallScreen);
         tab.addTab(publicationPopupLayout, "Publications");
          tab.addSelectedTabChangeListener((TabSheet.SelectedTabChangeEvent event) -> {
             if (event.getTabSheet().getTabPosition((tab.getTab(tab.getSelectedTab()))) == 0) {
-                popupWindow.setHeight(173 + (studiesPopupLayout.getRowcounter() * 100), Unit.PIXELS);
+                popupWindowBtn.setFrameHeight(193 + (studiesPopupLayout.getRowcounter() * 100));
                } else {
-                popupWindow.setHeight(173 + (publicationPopupLayout.getRowcounter() * 100), Unit.PIXELS);
+                   popupWindowBtn.setFrameHeight(193 + (publicationPopupLayout.getRowcounter() * 100));
             }
         });
         
@@ -118,8 +75,6 @@ public abstract class StudiesInformationWindow extends VerticalLayout implements
             return;
         }
         publicationPopupLayout.setPublicationData(publicationList);
-       
-//        popupWindow.setHeight(studiesPopupLayout.getLayoutHeight()+100, Unit.PIXELS);
 
     }
 
@@ -129,24 +84,22 @@ public abstract class StudiesInformationWindow extends VerticalLayout implements
         if (publicationList == null) {
             Set<String> publicationMap = new LinkedHashSet<>();
             for (QuantDatasetObject quantDS : dsObjects) {
-
                 publicationMap.add(quantDS.getPumedID());
 
             }
             publicationPopupLayout.setPublicationData(updatePublications(publicationMap));
         }
-        popupWindow.setHeight(173 + (studiesPopupLayout.getRowcounter() * 100), Unit.PIXELS);
+        popupWindowBtn.setFrameHeight(173 + (studiesPopupLayout.getRowcounter() * 100));
 
     }
 
     public abstract List<Object[]> updatePublications(Set<String> pumedId);
 
-    @Override
-    public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-        popupWindow.setVisible(true);
-    }
-
     public void view() {
-        popupWindow.setVisible(true);
+        popupWindowBtn.view();
+    }
+     @Override
+    public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+         view();
     }
 }
