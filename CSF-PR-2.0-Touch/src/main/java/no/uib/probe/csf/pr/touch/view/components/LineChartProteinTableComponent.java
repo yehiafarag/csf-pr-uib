@@ -129,18 +129,19 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         //end of toplayout
         //start chart layout
         VerticalLayout tableLayoutFrame = new VerticalLayout();
-        height = height - 44;
+        height = height - 24;
 
         width = width - 50;
         tableLayoutFrame.setWidth(width, Unit.PIXELS);
         tableLayoutFrame.setHeightUndefined();//setHeight(tableHeight, Unit.PIXELS);
         tableLayoutFrame.addStyleName("roundedborder");
         tableLayoutFrame.addStyleName("whitelayout");
-        tableLayoutFrame.addStyleName("padding20");
+        tableLayoutFrame.addStyleName("paddingtop10");
+        tableLayoutFrame.addStyleName("paddingbottom10");
         bodyContainer.addComponent(tableLayoutFrame);
         bodyContainer.setComponentAlignment(tableLayoutFrame, Alignment.MIDDLE_CENTER);
-        height = height - 70;
-        width = width - 60;
+        height = height - 60;
+        width = width - 30;
 
         quantProteinTable = new ProteinTable(width, height, smallScreen) {
 
@@ -170,6 +171,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
 
         };//this.initProteinTable();
         tableLayoutFrame.addComponent(quantProteinTable);
+        tableLayoutFrame.setComponentAlignment(quantProteinTable, Alignment.MIDDLE_CENTER);
 
         HorizontalLayout controlsLayout = new HorizontalLayout();
         controlsLayout.setWidth(100, Unit.PERCENTAGE);

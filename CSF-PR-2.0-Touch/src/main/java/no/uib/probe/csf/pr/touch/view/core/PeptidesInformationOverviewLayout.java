@@ -13,7 +13,7 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantPeptide;
  */
 public class PeptidesInformationOverviewLayout extends VerticalLayout {
 
-    private InformationField quantBasisComment, pepSequence, peptideModification, modificationComment, pValue, pValueComm, foldChange, roc, additionalComments, pvalueSignificanceThreshold, sequenceAnnotated, peptideCharge;
+    private InformationField quantBasis,quantBasisComment, pepSequence, peptideModification, modificationComment, pValue, pValueComm, foldChange, roc, additionalComments, pvalueSignificanceThreshold, sequenceAnnotated, peptideCharge;
     private DecimalFormat df = null;
     private final VerticalLayout peptideForm;
 
@@ -72,6 +72,9 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
         rowIII.setWidth(100, Unit.PERCENTAGE);
         rowIII.setHeightUndefined();
         mainContainer.addComponent(rowIII);
+        
+         quantBasis = new InformationField("Quantification Basis");
+        rowIII.addComponent(quantBasis);
         quantBasisComment = new InformationField("Quantification Basis Comment");
         rowIII.addComponent(quantBasisComment);
 
@@ -81,8 +84,13 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
         roc = new InformationField("ROC AUC");
         rowIII.addComponent(roc);
 
+        
+           HorizontalLayout rowIV = new HorizontalLayout();
+        rowIV.setWidth(100, Unit.PERCENTAGE);
+        rowIV.setHeightUndefined();
+        mainContainer.addComponent(rowIV);
         additionalComments = new InformationField("Additional Comments");
-        rowIII.addComponent(additionalComments);
+        rowIV.addComponent(additionalComments);
 
         return mainContainer;
     }
@@ -141,6 +149,7 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
         this.peptideCharge.setValue(peptideChargeValue, null);
 
         quantBasisComment.setValue(peptide.getQuantBasisComment() + "", null);
+        quantBasis.setValue(peptide.getQuantBasis()+"",null);
 
     }
 

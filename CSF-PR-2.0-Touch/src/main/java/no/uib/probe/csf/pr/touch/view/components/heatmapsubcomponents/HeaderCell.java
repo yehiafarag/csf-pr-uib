@@ -103,7 +103,8 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
             fullName = fullDiseaseGroupName;
         }
         String combinedGroup = "";
-        if (fullName.contains("*")) {
+        if (title.contains("*")) {
+            fullName=title;
             combinedGroup = " - Combined disease groups";
         }
         this.setDescription(fullName + combinedGroup);

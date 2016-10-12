@@ -169,7 +169,7 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
             diseaseGroupsListB.select(newItemCaption);
         });
 
-        Label title2 = new Label("2. Insert UniProt Proteins Accessions");
+        Label title2 = new Label("2. Insert UniProt Accession Numbers");
 
         frame.addComponent(title2);
 

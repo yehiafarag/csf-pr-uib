@@ -3,7 +3,6 @@ package no.uib.probe.csf.pr.touch.view.components.datasetfilters;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.Page;
 import com.vaadin.server.ThemeResource;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -21,7 +20,7 @@ import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 import no.uib.probe.csf.pr.touch.view.core.InformationButton;
-import no.uib.probe.csf.pr.touch.view.core.PopupWindow;
+import no.uib.probe.csf.pr.touch.view.core.PopupWindowFrameWithFunctionsBtns;
 
 /**
  *
@@ -31,7 +30,7 @@ import no.uib.probe.csf.pr.touch.view.core.PopupWindow;
  */
 public abstract class GroupSwichBtn extends ImageContainerBtn {
 
-    private final PopupWindow popupWindow;
+    private final PopupWindowFrameWithFunctionsBtns popupWindow;
     private final VerticalLayout popupBodyLayout;
     private final Set<QuantDiseaseGroupsComparison> selectedComparisonList;
     private final Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> equalComparisonMap;
@@ -40,11 +39,11 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
     private final ArrayList<QuantDiseaseGroupsComparison> updatedComparisonList;
     private final HorizontalLayout btnWrapper;
     private final Panel tablePanelWrapper;
-    private final HorizontalLayout topLayout;
+//    private final HorizontalLayout topLayout;
     private final LayoutEvents.LayoutClickListener switchListener;
 
-    private final int screenWidth = Math.max(Math.min(Page.getCurrent().getBrowserWindowWidth(), 1000), 980);
-    private final int screenHeight = Math.max(Math.min(Page.getCurrent().getBrowserWindowHeight(), 800), 427);
+    private final int screenWidth = Math.min(Page.getCurrent().getBrowserWindowWidth(), 800);
+    private final int screenHeight = Math.min(Page.getCurrent().getBrowserWindowHeight(), 800);
 
     /**
      * on click method used to update the selection comparison list and view the
@@ -61,7 +60,7 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
         }
 
         updateSelectionList();
-        popupWindow.setVisible(true);
+        popupWindow.view();
 
     }
 
@@ -85,56 +84,39 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
 
         //init popup window 
         VerticalLayout frame = new VerticalLayout();
-        frame.setWidth(screenWidth - 20, Unit.PIXELS);
-        frame.setSpacing(true);
         this.popupBodyLayout = new VerticalLayout();
         frame.addComponent(popupBodyLayout);
-
-        popupBodyLayout.addStyleName("roundedborder");
-        popupBodyLayout.addStyleName("padding20");
-        popupBodyLayout.addStyleName("whitelayout");
-        popupBodyLayout.addStyleName("margintop");
-
         popupBodyLayout.setWidth(100, Unit.PERCENTAGE);
-//        popupBodyLayout.setHeight(screenHeight - 300, Unit.PIXELS);
-        popupBodyLayout.setSpacing(true);
-        popupBodyLayout.setMargin(true);
-
-        popupWindow = new PopupWindow(frame, "Switch Disease Groups") {
-            @Override
-            public void close() {
-
-                popupWindow.setVisible(false);//                Quant_Central_Manager.setDiseaseGroupsComparisonSelection(new LinkedHashSet<QuantDiseaseGroupsComparison>(updatedComparisonList));
-            }
-        };
-        popupWindow.setWidth(screenWidth, Unit.PIXELS);
+        HorizontalLayout btnsFrame = new HorizontalLayout();
+        popupWindow = new PopupWindowFrameWithFunctionsBtns("Switch Disease Groups", frame, btnsFrame);
+        popupWindow.setFrameWidth(screenWidth);
         //init top layout
-        topLayout = new HorizontalLayout();
-        topLayout.setWidth(100, Unit.PERCENTAGE);
-        topLayout.setHeight(30, Unit.PIXELS);
-        topLayout.setSpacing(true);
-
-        popupBodyLayout.addComponent(topLayout);
+//        topLayout = new HorizontalLayout();
+//        topLayout.setWidth(100, Unit.PERCENTAGE);
+//        topLayout.setHeight(30, Unit.PIXELS);
+//        topLayout.setSpacing(true);
+//
+//        popupBodyLayout.addComponent(topLayout);
         headerI = new Label("Numerator");
         headerI.setStyleName(ValoTheme.LABEL_SMALL);
         headerI.addStyleName(ValoTheme.LABEL_BOLD);
 //        headerI.setWidth(100, Unit.PERCENTAGE);
 //        headerI.setContentMode(ContentMode.HTML);
-        topLayout.addComponent(headerI);
-        topLayout.setComponentAlignment(headerI, Alignment.TOP_CENTER);
-
-        VerticalLayout spacer = new VerticalLayout();
-        spacer.setSizeFull();
-        topLayout.addComponent(spacer);
-        topLayout.setSpacing(true);
+//        topLayout.addComponent(headerI);
+//        topLayout.setComponentAlignment(headerI, Alignment.TOP_CENTER);
+//
+//        VerticalLayout spacer = new VerticalLayout();
+//        spacer.setSizeFull();
+//        topLayout.addComponent(spacer);
+//        topLayout.setSpacing(true);
 
         headerII = new Label("Denominator");
         headerII.setStyleName(ValoTheme.LABEL_SMALL);
         headerII.addStyleName(ValoTheme.LABEL_BOLD);
-        headerII.addStyleName("paddingleft16");
+//        headerII.addStyleName("paddingleft16");
 //        headerII.setWidth(100, Unit.PERCENTAGE);
-        topLayout.addComponent(headerII);
-        topLayout.setComponentAlignment(headerII, Alignment.TOP_CENTER);
+//        topLayout.addComponent(headerII);
+//        topLayout.setComponentAlignment(headerII, Alignment.TOP_CENTER);
 
 //        init table
         table = new GridLayout();
@@ -158,23 +140,22 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
 //        btnWrapper.setMargin(true);
 //        popupBodyLayout.addComponent(btnWrapper);
 //        popupBodyLayout.setComponentAlignment(btnWrapper, Alignment.BOTTOM_CENTER);
-        HorizontalLayout btnsFrame = new HorizontalLayout();
-        btnsFrame.setWidth(100, Unit.PERCENTAGE);
+//        btnsFrame.setWidth(100, Unit.PERCENTAGE);
+////        btnsFrame.addStyleName("roundedborder");
+////        btnsFrame.addStyleName("padding20");
+////        btnsFrame.addStyleName("margintop");
+////        btnsFrame.addStyleName("whitelayout");
+////        btnsFrame.addStyleName("marginbottom");
 //        btnsFrame.addStyleName("roundedborder");
-//        btnsFrame.addStyleName("padding20");
-//        btnsFrame.addStyleName("margintop");
+//        btnsFrame.addStyleName("padding10");
 //        btnsFrame.addStyleName("whitelayout");
+//        btnsFrame.setMargin(new MarginInfo(true, false, false, false));
+//        btnsFrame.setWidth(100, Unit.PERCENTAGE);
+//        btnsFrame.addStyleName("margintop");
 //        btnsFrame.addStyleName("marginbottom");
-        btnsFrame.addStyleName("roundedborder");
-        btnsFrame.addStyleName("padding10");
-        btnsFrame.addStyleName("whitelayout");
-        btnsFrame.setMargin(new MarginInfo(true, false, false, false));
-        btnsFrame.setWidth(100, Unit.PERCENTAGE);
-        btnsFrame.addStyleName("margintop");
-         btnsFrame.addStyleName("marginbottom");
-        btnsFrame.setHeight(50, Unit.PIXELS);
-        btnsFrame.addStyleName("padding20");
-        frame.addComponent(btnsFrame);
+//        btnsFrame.setHeight(50, Unit.PIXELS);
+//        btnsFrame.addStyleName("padding20");
+//        frame.addComponent(btnsFrame);
 
         HorizontalLayout leftsideWrapper = new HorizontalLayout();
         btnsFrame.addComponent(leftsideWrapper);
@@ -192,7 +173,7 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
 
         applyFilters.addClickListener((Button.ClickEvent event) -> {
             GroupSwichBtn.this.updateComparisons(new LinkedHashSet<>(updatedComparisonList));
-            popupWindow.close();
+            popupWindow.view();
         });
         btnWrapper = new HorizontalLayout();
         btnWrapper.setWidth(100, Unit.PERCENTAGE);
@@ -221,9 +202,9 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
             table.removeComponent(labelII);
             table.addComponent(labelI, 2, row);
             table.addComponent(labelII, 0, row);
-            QuantDiseaseGroupsComparison comp = equalComparisonMap.get(updatedComparisonList.get(row));
+            QuantDiseaseGroupsComparison comp = equalComparisonMap.get(updatedComparisonList.get(row-1));
 //            comp.switchComparison();
-            updatedComparisonList.set(row, comp);
+            updatedComparisonList.set(row-1, comp);
         }
 
     }
@@ -247,8 +228,28 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
     private void updateSelectionList() {
         table.removeAllComponents();
         updatedComparisonList.clear();
-        int row = 0;
+        int row = 1;
         setWindowHight(selectedComparisonList.size());
+        
+        
+        
+        
+           table.addComponent(headerI,0,0);
+        table.setComponentAlignment(headerI, Alignment.TOP_CENTER);
+
+        VerticalLayout spacer = new VerticalLayout();
+        spacer.setSizeFull();
+        table.addComponent(spacer,1,0);
+
+//        headerII.setWidth(100, Unit.PERCENTAGE);
+        table.addComponent(headerII,2,0);
+        table.setComponentAlignment(headerII, Alignment.TOP_CENTER);
+        
+        
+        
+        
+        
+        
         for (QuantDiseaseGroupsComparison comparison : selectedComparisonList) {
 
             updatedComparisonList.add(comparison);
@@ -278,17 +279,17 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
             table.setComponentAlignment(labelII, Alignment.TOP_RIGHT);
 
         }
-        topLayout.setExpandRatio(headerI, table.getColumnExpandRatio(0));
-        topLayout.setExpandRatio(topLayout.getComponent(1), table.getColumnExpandRatio(1));
-        topLayout.setExpandRatio(headerII, table.getColumnExpandRatio(2));
+//        topLayout.setExpandRatio(headerI, table.getColumnExpandRatio(0));
+//        topLayout.setExpandRatio(topLayout.getComponent(1), table.getColumnExpandRatio(1));
+//        topLayout.setExpandRatio(headerII, table.getColumnExpandRatio(2));
 
     }
 
     private void setWindowHight(int itemsNumber) {
-        int itemH = (27 * itemsNumber);
+        int itemH = (27 * (itemsNumber+1));
         int height = Math.min(screenHeight - 230, itemH);
         tablePanelWrapper.setHeight(height, Unit.PIXELS);
-        popupWindow.setHeight(tablePanelWrapper.getHeight() + 239 - 35, Unit.PIXELS);
+        popupWindow.setFrameHeight((int)tablePanelWrapper.getHeight() + 239 - 65);
 
     }
 

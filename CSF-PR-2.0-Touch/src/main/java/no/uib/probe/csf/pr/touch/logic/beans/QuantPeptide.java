@@ -26,6 +26,15 @@ public class QuantPeptide implements Serializable {
     private String modification_comment;
     private String quantBasisComment;
 
+    public String getQuantBasis() {
+        return quantBasis;
+    }
+
+    public void setQuantBasis(String quantBasis) {
+        this.quantBasis = quantBasis;
+    }
+     private String quantBasis;
+
     public String getUniprotAcc() {
         return uniprotAcc;
     }

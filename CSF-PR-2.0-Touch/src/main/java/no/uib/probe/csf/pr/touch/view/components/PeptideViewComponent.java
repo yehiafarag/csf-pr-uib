@@ -231,13 +231,13 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         bottomLayout.setWidth(width, Unit.PIXELS);
         bottomLayout.setHeight(componentHeight, Unit.PIXELS);
         bottomLayout.addStyleName("roundedborder");
-        bottomLayout.addStyleName("padding20");
+        bottomLayout.addStyleName("paddingtop20");
         bottomLayout.addStyleName("whitelayout");
 
         mainBodyContainer.addComponent(bottomLayout);
         mainBodyContainer.setComponentAlignment(bottomLayout, Alignment.MIDDLE_CENTER);
 
-        peptideSequenceTableLayout = new PeptideSequenceLayoutTable(width - 50, (componentHeight - 50), smallScreen);
+        peptideSequenceTableLayout = new PeptideSequenceLayoutTable(width-6, (componentHeight-24), smallScreen);
         bottomLayout.addComponent(peptideSequenceTableLayout);
         bottomLayout.setComponentAlignment(peptideSequenceTableLayout, Alignment.MIDDLE_CENTER);
 
@@ -401,7 +401,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         showSigOnlyBtn.setEnabled(true);
         controlBtnsContainer.addComponent(showSigOnlyBtn);
         controlBtnsContainer.setComponentAlignment(showSigOnlyBtn, Alignment.MIDDLE_CENTER);
-        showSigOnlyBtn.setDescription("Show / hide not significant and stable peptides)");
+        showSigOnlyBtn.setDescription("Show / hide not significant and stable peptides");
         controlBtnsContainer.setEnabled(true);
 
         ImageContainerBtn exportPdfBtn = new ImageContainerBtn() {

@@ -169,7 +169,8 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         ));
         lineChart.setPadding(new RectangleInsets(0, 0, 0, 0));
         maxImgUrl = new ExternalResource(this.getChartImage(lineChart, chartRenderingInfo, width, height));
-        if (chartRenderingInfo.getEntityCollection().getEntityCount() < 4) {
+        System.out.println("at chartRenderingInfo "+chartRenderingInfo.getPlotInfo().getDataArea().getHeight()+"   "+height);
+        if (chartRenderingInfo.getEntityCollection().getEntityCount() < 4 || chartRenderingInfo.getPlotInfo().getDataArea().getHeight()<220) {
             lineChart.getXYPlot().getDomainAxis().setVisible(false);
             maxImgUrl = new ExternalResource(this.getChartImage(lineChart, chartRenderingInfo, width, height));
             lineChart.getXYPlot().getDomainAxis().setVisible(true);

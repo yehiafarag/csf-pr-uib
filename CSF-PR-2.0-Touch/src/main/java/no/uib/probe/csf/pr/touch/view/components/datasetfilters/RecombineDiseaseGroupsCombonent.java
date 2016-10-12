@@ -25,7 +25,6 @@ import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseCategoryObject;
 import no.uib.probe.csf.pr.touch.view.core.DiseaseGroupLabel;
 import no.uib.probe.csf.pr.touch.view.core.InformationButton;
-import no.uib.probe.csf.pr.touch.view.core.PopupWindow;
 import no.uib.probe.csf.pr.touch.view.core.PopupWindowFrameWithFunctionsBtns;
 
 /**
@@ -44,7 +43,7 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
     private final int screenWidth = Math.min(Page.getCurrent().getBrowserWindowWidth(), 800);
     private final int screenHeight = Math.min(Page.getCurrent().getBrowserWindowHeight(), 800);
     private final int maxHeight;
-    private Panel diseaseGroupsNamesPanel;
+    private final Panel diseaseGroupsNamesPanel;
 
     public RecombineDiseaseGroupsCombonent(Collection<DiseaseCategoryObject> diseaseCategorySet, boolean smallScreen) {
 
@@ -175,6 +174,8 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
         Label title = new Label("Disease Category");
         title.setStyleName(ValoTheme.LABEL_SMALL);
         title.addStyleName(ValoTheme.LABEL_BOLD);
+        title.addStyleName("lineheight25");
+        title.setWidth(130,Unit.PIXELS);
         diseaseCategorySelectLayout.addComponent(title);
         diseaseCategorySelectLayout.setComponentAlignment(title, Alignment.TOP_CENTER);
         diseaseTypeSelectionList.setWidth((int) (screenWidth * 0.5), Unit.PIXELS);
@@ -204,7 +205,7 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
             }
 
             diseaseGroupsNamesPanel.setHeight(Math.min(maxHeight - 80, heightColc), Unit.PIXELS);
-            popupWindow.setFrameHeight((int)diseaseGroupsNamesPanel.getHeight() + (305));
+            popupWindow.setFrameHeight((int)diseaseGroupsNamesPanel.getHeight() + (305-60));
         });
 
         VerticalLayout diseaseGroupsNamesContainer = new VerticalLayout();
@@ -218,12 +219,13 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
         diseaseNamesHeader.setWidth(100, Unit.PERCENTAGE);
         diseaseNamesHeader.setHeightUndefined();
         diseaseNamesHeader.setSpacing(true);
-        if (smallScreen) {
+//        if (smallScreen) {
             diseaseNamesHeader.setMargin(false);
-        } else {
-            diseaseNamesHeader.setMargin(new MarginInfo(true, false, false, false));
-        }
+//        } else {
+//            diseaseNamesHeader.setMargin(new MarginInfo(false, false, false, false));
+//        }
 
+            diseaseNamesHeader.addStyleName("margintop15");
         diseaseNamesHeader.addStyleName("marginbottom");
         diseaseGroupsNamesContainer.addComponent(diseaseNamesHeader);
         Label col1Label = new Label("Original  Name");
@@ -259,7 +261,7 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
         });
         diseaseGroupsNamesPanel.setContent(diseaseNamesUpdateContainerLayout);
         diseaseGroupsNamesPanel.setHeight((maxHeight - 80), Unit.PIXELS);
-        popupWindow.setFrameHeight((int)diseaseGroupsNamesPanel.getHeight() + (305-35));
+        popupWindow.setFrameHeight((int)diseaseGroupsNamesPanel.getHeight() + (305-60));
 
         resetToDefault();
 
@@ -343,7 +345,7 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
         final ComboBox diseaseGroupsList = new ComboBox();
         diseaseGroupsList.setStyleName(ValoTheme.COMBOBOX_TINY);
         diseaseGroupsList.setStyleName(ValoTheme.COMBOBOX_SMALL);
-        diseaseGroupsList.setWidth(59, Unit.PERCENTAGE);
+        diseaseGroupsList.setWidth(67, Unit.PERCENTAGE);
         diseaseGroupsList.addStyleName("marginleft");
         diseaseGroupsList.setNullSelectionAllowed(false);
         diseaseGroupsList.setImmediate(true);

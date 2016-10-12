@@ -1507,7 +1507,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
         heatMapContainerPanel.setHeight(Math.min(this.availableHMHeight - 40, gen.getPanelHeight() + 15), Unit.PIXELS);
 
         if (this.availableHMWidth >= gen.getPanelWidth() + 40) {
-            heatMapContainerPanel.setWidth(gen.getPanelWidth() + 15, Unit.PIXELS);
+            heatMapContainerPanel.setWidth(gen.getPanelWidth() + 25, Unit.PIXELS);
         } else {
             heatMapContainerPanel.setWidth(availableHMWidth - 40, Unit.PIXELS);
         }

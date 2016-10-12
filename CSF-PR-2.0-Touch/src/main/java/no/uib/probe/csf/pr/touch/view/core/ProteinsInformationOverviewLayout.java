@@ -37,7 +37,7 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
     }
 
     private final VerticalLayout proteinsForm;
-    private InformationField quantBasisComment, accsession, name, quantPeptidesNumber, idPeptidesNumber, pValue, pValueComm, foldChange, roc, additionalComments, pvalueSignificanceThreshold;
+    private InformationField quantBasis,quantBasisComment, accsession, name, quantPeptidesNumber, idPeptidesNumber, pValue, pValueComm, foldChange, roc, additionalComments, pvalueSignificanceThreshold;
 
     private VerticalLayout initProteinsForm() {
         VerticalLayout mainContainer = new VerticalLayout();
@@ -85,6 +85,9 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
 
         roc = new InformationField("ROC AUC");
         rowIII.addComponent(roc);
+        
+        quantBasis = new InformationField("Quantification Basis");
+        rowIII.addComponent(quantBasis);
 
         quantBasisComment = new InformationField("Quantification Basis Comment");
         rowIII.addComponent(quantBasisComment);
@@ -92,7 +95,7 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
         additionalComments = new InformationField("Additional Comments");
         rowIII.addComponent(additionalComments);
         
-        rowIII.addComponent(new VerticalLayout());
+//        rowIII.addComponent(new VerticalLayout());
 
 
         return mainContainer;
@@ -147,6 +150,7 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
         int quantPepNumber = quantProtein.getQuantifiedPeptidesNumber();
             quantPeptidesNumber.setValue(quantPepNumber, null);
         quantBasisComment.setValue(quantProtein.getQuantBasisComment() + "", null);
+        quantBasis.setValue(quantProtein.getQuantificationBasis()+"",null);
 
         this.proteinsForm.setVisible(true);
     }

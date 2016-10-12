@@ -30,7 +30,7 @@ import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.StudiesInformationW
  */
 public abstract class ComparisonLable extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
-    private final PopupWindow popupWindow;
+    private final PopupWindowFrame popupWindow;
 //    private final DatasetButtonsContainerLayout studiesPopupLayout;
 
 //    private final PopupView datasetInfoPopup;
@@ -89,58 +89,33 @@ public abstract class ComparisonLable extends VerticalLayout implements LayoutEv
         VerticalLayout popupBody = new VerticalLayout();
         popupBody.setWidth(100, Unit.PERCENTAGE);
         popupBody.setHeight(98, Unit.PERCENTAGE);
-
-        popupBody.setMargin(false);
-        popupBody.setSpacing(true);
-        popupBody.addStyleName("roundedborder");
-        popupBody.addStyleName("whitelayout");
-        popupBody.addStyleName("margintopbottom");
-//        if (smallScreen) {
+//
+//        popupBody.setMargin(false);
+//        popupBody.setSpacing(true);
+//        popupBody.addStyleName("roundedborder");
+//        popupBody.addStyleName("whitelayout");
+//        popupBody.addStyleName("margintopbottom");
+////        if (smallScreen) {
 //            popupBody.addStyleName("padding2");
 //        } else {
 //            popupBody.addStyleName("padding20");
 //        }
-        VerticalLayout frame = new VerticalLayout();
-        frame.setWidth(99, Unit.PERCENTAGE);
-        frame.setHeight(450, Unit.PIXELS);
-        frame.setSpacing(true);
-        frame.addComponent(popupBody);
+//        VerticalLayout frame = new VerticalLayout();
+//        frame.setWidth(99, Unit.PERCENTAGE);
+//        frame.setHeight(450, Unit.PIXELS);
+//        frame.setSpacing(true);
+//        frame.addComponent(popupBody);
         String protName = quantProtein.getUniprotProteinName().trim();
         if (protName.equalsIgnoreCase("")) {
             protName = quantProtein.getPublicationProteinName();
         }
         String title = "Dataset and Protein Information (" + protName + ")";
 
-        popupWindow = new PopupWindow(frame, title) {
+        popupWindow = new PopupWindowFrame(title,popupBody);
+     
+         popupWindow.setFrameHeight(490);
 
-            @Override
-            public void close() {
-                popupWindow.setVisible(false);
-
-            }
-
-            @Override
-            public void setVisible(boolean visible) {
-
-                if (visible) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-
-                    }
-                }
-                super.setVisible(visible); //To change body of generated methods, choose Tools | Templates.
-            }
-
-        };
-        if (smallScreen) {
-            popupWindow.setWidth(popupWindow.getWidth() + 100, popupWindow.getWidthUnits());
-            popupWindow.setHeight(popupWindow.getHeight() + 100, popupWindow.getHeightUnits());
-
-        }else{
-         popupWindow.setHeight(490, popupWindow.getHeightUnits());
-
-        }
+        
 
         TabSheet tab = new TabSheet();
         tab.setHeight(97.0f, Unit.PERCENTAGE);
@@ -196,11 +171,11 @@ public abstract class ComparisonLable extends VerticalLayout implements LayoutEv
         
          tab.addSelectedTabChangeListener((TabSheet.SelectedTabChangeEvent event) -> {
             if (event.getTabSheet().getTabPosition((tab.getTab(tab.getSelectedTab()))) == 0) {
-                popupWindow.setHeight(490, popupWindow.getHeightUnits());
-                 frame.setHeight(450, Unit.PIXELS);
+                popupWindow.setFrameHeight(490);
+//                 frame.setHeight(450, Unit.PIXELS);
                } else {
-              popupWindow.setHeight(650, popupWindow.getHeightUnits());
-               frame.setHeight(610, Unit.PIXELS);
+              popupWindow.setFrameHeight(670);
+//               frame.setHeight(610, Unit.PIXELS);
             }
         });
         
@@ -257,11 +232,11 @@ public abstract class ComparisonLable extends VerticalLayout implements LayoutEv
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
 //        datasetInfoPopup.setPopupVisible(true);
 //        select(itemId);
-        popupWindow.setVisible(true);
+        popupWindow.view();
     }
 
     public void openComparisonPopup() {
-        popupWindow.setVisible(true);
+        popupWindow.view();
 
     }
 

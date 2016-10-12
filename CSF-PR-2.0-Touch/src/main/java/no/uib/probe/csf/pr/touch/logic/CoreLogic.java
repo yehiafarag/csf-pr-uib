@@ -374,13 +374,18 @@ public class CoreLogic implements Serializable {
                                 }
                                 return quantPeptide;
                             }).forEach((quantPeptide) -> {
+                                quantPeptide.setQuantBasis(quant.getQuantificationBasis());
                                 updatedQuantPeptidesList.add(quantPeptide);
                             });
                             quantPeptidesList.addAll(updatedQuantPeptidesList);
 
                         } else {
-
-                            quantPeptidesList.addAll(fullComparisonPeptideMap.get(key));
+                            fullComparisonPeptideMap.get(key).stream().map((quantPeptide) -> {
+                                quantPeptide.setQuantBasis(quant.getQuantificationBasis());
+                                return quantPeptide;
+                            }).forEach((quantPeptide) -> {
+                                quantPeptidesList.add(quantPeptide);
+                            });
 
                         }
 
@@ -797,7 +802,7 @@ public class CoreLogic implements Serializable {
                         }
                     }
 
-                } 
+                }
 //                else {
 //                    System.out.println("protein and peptides exist but no sequence available " + qProtein.getPublicationAccNumber() + "   ");
 //                    for (QuantPeptide peptide : peptidesSet) {
@@ -807,7 +812,6 @@ public class CoreLogic implements Serializable {
 //                    System.out.println();
 
 //                }
-
             }
         }
 

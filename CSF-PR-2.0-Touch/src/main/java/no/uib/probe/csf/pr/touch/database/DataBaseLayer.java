@@ -782,13 +782,13 @@ public class DataBaseLayer implements Serializable {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
-            String selectDsGroupNum = "SELECT `disease_category` ,`patients_group_i_number` , `patients_group_ii_number`,`patient_group_i`,`patient_group_ii`,`patient_sub_group_i`,`patient_sub_group_ii`,`index` FROM `quant_dataset_table` WHERE  " + stat + " ;";
+            String selectDsGroupNum = "SELECT  `quantification_basis` ,`disease_category` ,`patients_group_i_number` , `patients_group_ii_number`,`patient_group_i`,`patient_group_ii`,`patient_sub_group_i`,`patient_sub_group_ii`,`index` FROM `quant_dataset_table` WHERE  " + stat + " ;";
             PreparedStatement selectselectDsGroupNumStat = conn.prepareStatement(selectDsGroupNum);
             Map<Integer, Object[]> datasetIdDesGrs;
             try (ResultSet rs = selectselectDsGroupNumStat.executeQuery()) {
                 datasetIdDesGrs = new HashMap<>();
                 while (rs.next()) {
-                    datasetIdDesGrs.put(rs.getInt("index"), new Object[]{rs.getInt("patients_group_i_number"), rs.getInt("patients_group_ii_number"), rs.getString("patient_group_i").trim(), rs.getString("patient_group_ii").trim(), rs.getString("patient_sub_group_i").trim(), rs.getString("patient_sub_group_ii").trim(), rs.getString("disease_category")});
+                    datasetIdDesGrs.put(rs.getInt("index"), new Object[]{rs.getInt("patients_group_i_number"), rs.getInt("patients_group_ii_number"), rs.getString("patient_group_i").trim(), rs.getString("patient_group_ii").trim(), rs.getString("patient_sub_group_i").trim(), rs.getString("patient_sub_group_ii").trim(), rs.getString("disease_category"),rs.getString("quantification_basis")});
                 }
             }
             sb = new StringBuilder();
@@ -846,6 +846,9 @@ public class DataBaseLayer implements Serializable {
                 return qp;
             }).map((qp) -> {
                 qp.setDiseaseCategory(datasetIdDesGrs.get(qp.getDsKey())[6].toString());
+                return qp;
+            }).map((qp) -> {
+                qp.setQuantificationBasis(datasetIdDesGrs.get(qp.getDsKey())[7].toString());
                 return qp;
             }).forEach((qp) -> {
                 tquantProtList.add(qp);
@@ -917,6 +920,7 @@ public class DataBaseLayer implements Serializable {
                     quantPeptide.setPeptideCharge(rs1.getInt("peptide_charge"));
                     quantPeptide.setAdditionalComments(rs1.getString("additional_comments"));
                     quantPeptide.setQuantBasisComment(rs1.getString("quant_bases_comments"));
+                    
                     quantPeptide.setPeptideSignature("__" + quantPeptide.getProtIndex() + "__" + quantPeptide.getDsKey() + "__");
 
                     quantPeptidetList.add(quantPeptide);

@@ -10,7 +10,6 @@ import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.Page;
 import com.vaadin.server.ThemeResource;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
@@ -25,7 +24,7 @@ import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseGroupComparison;
 import no.uib.probe.csf.pr.touch.logic.beans.HeatMapHeaderCellInformationBean;
 import no.uib.probe.csf.pr.touch.view.core.InformationButton;
-import no.uib.probe.csf.pr.touch.view.core.PopupWindow;
+import no.uib.probe.csf.pr.touch.view.core.PopupWindowFrameWithFunctionsBtns;
 import no.uib.probe.csf.pr.touch.view.core.SortableLayoutContainer;
 import org.vaadin.teemu.switchui.Switch;
 
@@ -38,7 +37,7 @@ import org.vaadin.teemu.switchui.Switch;
  */
 public abstract class ReorderSelectGroupsFilter extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
-    private final PopupWindow popupWindow;
+    private final PopupWindowFrameWithFunctionsBtns popupWindow;
     private final HorizontalLayout diseaseGroupsContaioner;
     private final VerticalLayout popupBody;
     private LinkedHashSet<Integer> studiesIndexes;
@@ -64,45 +63,16 @@ public abstract class ReorderSelectGroupsFilter extends VerticalLayout implement
 
         //init window layout 
         VerticalLayout frame = new VerticalLayout();
-        frame.setWidth(99, Unit.PERCENTAGE);
-        frame.setSpacing(true);
         popupBody = new VerticalLayout();
         frame.addComponent(popupBody);
-
-        popupBody.addStyleName("roundedborder");
-        popupBody.addStyleName("whitelayout");
-        popupBody.addStyleName("margintop");
-
         popupBody.setWidth(100, Unit.PERCENTAGE);
         popupBody.setSpacing(true);
-
-        popupWindow = new PopupWindow(frame, "Disease Groups") {
-            @Override
-            public void close() {
-
-                popupWindow.setVisible(false);
-            }
-        };
-
-//        popupWindow.setContent(mainBody);
-//
-//        popupWindow.setVisible(false);
-//        popupWindow.setResizable(false);
-//        popupWindow.setClosable(true);
-//        popupWindow.setModal(true);
-//        popupWindow.setDraggable(false);
-//        popupWindow.setCaption("<font color='gray' style='font-weight: bold;!important'>&nbsp;&nbsp;Disease Groups</font>");
-//        popupWindow.setCaptionAsHtml(true);
-//        popupWindow.setWindowMode(WindowMode.NORMAL);
-//        UI.getCurrent().addWindow(popupWindow);
-//        popupWindow.center();
-//        int width = Math.min(Page.getCurrent().getBrowserWindowWidth(), 800);
-//        int height = Math.min(Page.getCurrent().getBrowserWindowHeight(), 800);
-//
-//        popupWindow.setWidth(width, Unit.PIXELS);
-        popupWindow.setWidth(screenWidth, Unit.PIXELS);
+        HorizontalLayout btnsFrame = new HorizontalLayout();
+        popupWindow = new PopupWindowFrameWithFunctionsBtns("Disease Groups", frame, btnsFrame);
+        popupWindow.setFrameWidth(screenWidth);
+        
+        
         diseaseGroupsContaioner = new HorizontalLayout();
-
         popupBody.addComponent(diseaseGroupsContaioner);
         popupBody.setComponentAlignment(diseaseGroupsContaioner, Alignment.TOP_CENTER);
 
@@ -111,41 +81,21 @@ public abstract class ReorderSelectGroupsFilter extends VerticalLayout implement
         diseaseGroupsContaioner.setSpacing(true);
 
         int h;
-          if (!smallScreen) {
-            popupBody.addStyleName("padding20");
-            popupBody.setMargin(true);
-            h=200;
+//        if (!smallScreen) {
+//            popupBody.addStyleName("padding20");
+//            popupBody.setMargin(true);
+            h = 250;
 
-            popupBody.setHeight(screenHeight - 160, Unit.PIXELS);
-        } else {
-            popupBody.setMargin(new MarginInfo(false, true, false, true));
-            h=220;
-
-            popupBody.setHeight(screenHeight - 220, Unit.PIXELS);
-        }
+            popupBody.setHeight(screenHeight - 180, Unit.PIXELS);
+//        } else {
+//            popupBody.setMargin(new MarginInfo(false, true, false, true));
+//            h = 220;
+//
+//            popupBody.setHeight(screenHeight - 220, Unit.PIXELS);
+//        }
         groupILayout = new SortableLayoutContainer("Disease Group A", (screenHeight - h));
         groupIILayout = new SortableLayoutContainer("Disease Group B", (screenHeight - h));
-
-        HorizontalLayout btnsFrame = new HorizontalLayout();
-//        btnsFrame.setWidth(100, Unit.PERCENTAGE);
-//        btnsFrame.addStyleName("roundedborder");
-//        btnsFrame.addStyleName("padding20");
-//        btnsFrame.addStyleName("margintop");
-//        btnsFrame.addStyleName("whitelayout");
-//        btnsFrame.addStyleName("marginbottom");
         
-        btnsFrame.addStyleName("roundedborder");
-        btnsFrame.addStyleName("padding10");
-        btnsFrame.addStyleName("whitelayout");
-        btnsFrame.setMargin(new MarginInfo(true, false, false, false));
-        btnsFrame.setWidth(100, Unit.PERCENTAGE);
-        btnsFrame.addStyleName("margintop");
-         btnsFrame.addStyleName("marginbottom");
-        btnsFrame.setHeight(50, Unit.PIXELS);
-        btnsFrame.addStyleName("padding20");
-        
-        
-        frame.addComponent(btnsFrame);
 
         HorizontalLayout leftsideWrapper = new HorizontalLayout();
         btnsFrame.addComponent(leftsideWrapper);
@@ -214,7 +164,7 @@ public abstract class ReorderSelectGroupsFilter extends VerticalLayout implement
         cancelBtn.setStyleName(ValoTheme.BUTTON_TINY);
         btnLayout.addComponent(cancelBtn);
         cancelBtn.addClickListener((Button.ClickEvent event) -> {
-            popupWindow.close();
+            popupWindow.view();
             groupILayout.resetToDefault();
             groupIILayout.resetToDefault();
 
@@ -227,7 +177,7 @@ public abstract class ReorderSelectGroupsFilter extends VerticalLayout implement
         btnLayout.addComponent(applyFilters);
         applyFilters.addClickListener((Button.ClickEvent event) -> {
             ReorderSelectGroupsFilter.this.updateSystem(groupILayout.getSortedSet(), groupIILayout.getSortedSet());
-            popupWindow.close();
+            popupWindow.view();
         });
 
         bottomContainert.addComponent(btnLayout);
@@ -249,7 +199,6 @@ public abstract class ReorderSelectGroupsFilter extends VerticalLayout implement
             groupIILayout.selectAndHideUnselected(updatedGroupIISet, false);
         };
         groupILayout.addSelectionValueChangeListener(selectionChangeListenet);
-      
 
     }
 
@@ -275,15 +224,14 @@ public abstract class ReorderSelectGroupsFilter extends VerticalLayout implement
         groupILayout.updateData(rowHeaders);
         groupIILayout.updateData(colHeaders);
 
-        popupBody.setHeight(groupILayout.getFinalHeight() + 90, Unit.PIXELS);
-        popupWindow.setHeight(groupILayout.getFinalHeight() + 250-35, Unit.PIXELS);
+        popupBody.setHeight(groupILayout.getFinalHeight() + 70, Unit.PIXELS);
+        popupWindow.setFrameHeight((int)groupILayout.getFinalHeight() + 250 - 35);
 
     }
 
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-        popupWindow.setVisible(true);
-        popupWindow.center();
+        popupWindow.view();
     }
 
     private Set<HeatMapHeaderCellInformationBean> filterPatGroup2List(Set<HeatMapHeaderCellInformationBean> sel1) {

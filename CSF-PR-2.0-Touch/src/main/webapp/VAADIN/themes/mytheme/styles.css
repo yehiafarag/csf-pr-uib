@@ -1879,7 +1879,8 @@ div.v-layout.v-horizontal.v-widget {
 .mytheme .v-tooltip .v-tooltip-text {
     max-height: 15em;
     overflow: auto;
-    margin-top: 10px;
+    margin-top: 10px;    
+    word-wrap: break-word;
 }
 
 .mytheme .v-tooltip .v-errormessage[aria-hidden="true"] + .v-tooltip-text {
@@ -13465,7 +13466,7 @@ div.v-layout.v-horizontal.v-widget {
     font-weight:bold;
     padding-top:-4px;
 
-    line-height:100%;
+    line-height:19px;
 
 }
 .tabbtn:hover{ 
@@ -14082,11 +14083,10 @@ div.v-layout.v-horizontal.v-widget {
 
 
 .v-select-optiongroup-sortablelayoutselect .v-select-option {
-    height:24px!important;
     margin-left:-28px !important;
-    margin-top:0px !important;
-    padding-top:0px !important;
-    top:3px;
+    height:15px !important;
+    top:-3px !important;
+    color:rgba(0,0,0,0);
 }
 .marginleft28{margin-left:-28px !important;}
 
@@ -14149,11 +14149,11 @@ div.v-layout.v-horizontal.v-widget {
 
 }
 .paddingleft40 {
-    padding-left:105px !important;
+    padding-left:125px !important;
 
 }
 .paddingleft44 {
-    padding-left:28px !important;
+    padding-left:0px !important;
 
 }
 .translateleft10{
@@ -14267,6 +14267,15 @@ div.v-layout.v-horizontal.v-widget {
 .padding20{
     padding:20px !important;
 
+}
+.paddingbottom10{
+    padding-bottom: 10px !important;
+}
+.paddingtop10{
+    padding-top: 10px !important;
+}
+.paddingtop20{
+    padding-top: 20px !important;
 }
 .padding15{
     padding:15px !important;
@@ -15505,6 +15514,10 @@ div.v-layout.v-horizontal.v-widget {
     margin-top: -34px;
     position: relative;
 }
+.v-slot-proteintablestyle{
+
+    background:rgb(241, 241, 241) !important;
+}
 .hidesortingicon .v-table-sort-indicator{
     visibility:hidden;
 }
@@ -15706,4 +15719,21 @@ tbody{
 }*/
 .hideoverflow{
     overflow: hidden !important;
+}
+.margintop3per{
+    margin-top: 3% !important;
+
+}
+.lineheight25{
+    line-height: 25px !important;
+}
+.smallicons .v-table-caption-container-align-right{
+    color:rgba(0,0,0,0) !important;
+}
+.smallicons img{
+    margin-left:17px;
+}
+.v-tooltip-text img{
+    opacity:0;
+    width:1px;
 }

@@ -569,6 +569,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         this.mainProteinTable.addValueChangeListener(ProteinTable.this);
         this.mainProteinTable.addStyleName(ValoTheme.TABLE_SMALL);
         this.mainProteinTable.setHeight(height, Unit.PIXELS);
+        mainProteinTable.setStyleName(ValoTheme.TABLE_BORDERLESS);
         this.mainProteinTable.addStyleName("proteintablestyle");
         tableWarpper.addComponent(mainProteinTable);
 

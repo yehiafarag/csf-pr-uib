@@ -163,7 +163,7 @@ public class SortableLayoutContainer extends VerticalLayout {
         diseaseGroupSelectOption = new OptionGroup();
         checkboxLayout.addComponent(diseaseGroupSelectOption);
         checkboxLayout.setComponentAlignment(diseaseGroupSelectOption, Alignment.TOP_LEFT);
-        diseaseGroupSelectOption.setHeight(100, Unit.PIXELS);
+        diseaseGroupSelectOption.setHeight(100, Unit.PERCENTAGE);
         diseaseGroupSelectOption.setNullSelectionAllowed(true); // user can not 'unselect'
         diseaseGroupSelectOption.setMultiSelect(true);
         diseaseGroupSelectOption.addStyleName("sortablelayoutselect");
@@ -220,7 +220,7 @@ public class SortableLayoutContainer extends VerticalLayout {
             this.counterLayout.addComponent(container);
             sortableDiseaseGroupLayout.addComponent(component, strTitle);
             diseaseGroupSelectOption.addItem(counter);
-            diseaseGroupSelectOption.setItemCaption(counter, "");
+            diseaseGroupSelectOption.setItemCaption(counter, (counter + 1) +"");
             autoClear = true;
             diseaseGroupSelectOption.select(counter);
             selectAllSet.add(counter);
@@ -229,6 +229,7 @@ public class SortableLayoutContainer extends VerticalLayout {
         }
 
         bodyPanel.setHeight(Math.min(maxHeight, 25 * (counter)), Unit.PIXELS);
+        diseaseGroupSelectOption.setHeight(25 * (counter-1), Unit.PIXELS);
         autoClear = false;
         diseaseGroupSelectOption.addValueChangeListener(selectDataListener);
         if (externalListener != null) {

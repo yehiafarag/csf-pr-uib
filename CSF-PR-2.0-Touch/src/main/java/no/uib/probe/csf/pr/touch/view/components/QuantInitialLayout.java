@@ -58,9 +58,9 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         frame.setSpacing(true);
         frame.setMargin(true);
 //        frame.setWidth(100,Unit.PERCENTAGE);
-//        frame.setStyleName("border");
+        frame.setStyleName("margintop3per");
         this.addComponent(frame);
-        this.setComponentAlignment(frame, Alignment.MIDDLE_CENTER);
+        this.setComponentAlignment(frame, Alignment.BOTTOM_CENTER);
 
         title = new ResizableTextLabel("<center Style='color:#4d749f;'>Disease Category</center>");
         title.setContentMode(ContentMode.HTML);
@@ -72,7 +72,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
         miniLayout = new HorizontalLayout();
         updateData(diseaseCategorySet);
 
-        Label clickcommentLabel = new Label("Click disease category bubble to select data");
+        Label clickcommentLabel = new Label("Click disease category to select data");
         clickcommentLabel.setStyleName(ValoTheme.LABEL_SMALL);
         clickcommentLabel.addStyleName(ValoTheme.LABEL_TINY);
         clickcommentLabel.addStyleName("italictext");

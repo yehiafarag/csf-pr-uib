@@ -47,7 +47,7 @@ public class ProteinSequenceExportContainer extends JPanel{
         this.setBackground(Color.RED);
         this.proteinName=proteinName;
         this.sequence = sequence;
-        JLabel noPeptideAvailable = new JLabel("Peptide information is not available");
+        JLabel noPeptideAvailable = new JLabel("Peptide information not available");
 //        noPeptideAvailable.addStyleName(ValoTheme.LABEL_TINY);
 //        Set<QuantPeptide> filteredQuantPepSet = new LinkedHashSet<>();
 //        if (sequence == null || sequence.trim().equalsIgnoreCase("") || quantPepSet == null || quantPepSet.isEmpty()) {

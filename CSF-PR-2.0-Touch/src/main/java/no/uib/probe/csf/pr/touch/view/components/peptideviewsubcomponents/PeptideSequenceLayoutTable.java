@@ -68,6 +68,7 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
         this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
         this.smallScreen = smallScreen;
+        this.addStyleName("paddingtop20");
 
         tableItemscheckboxMap = new HashMap<>();
         this.tableItemsMap = new LinkedHashMap<>();
@@ -76,8 +77,11 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
 
         peptideSequenceTable = new Table();
         peptideSequenceTable.setWidthUndefined();
-        peptideSequenceTable.setHeight(100, Unit.PERCENTAGE);
+        peptideSequenceTable.setStyleName(ValoTheme.TABLE_BORDERLESS);
+        this.peptideSequenceTable.addStyleName("proteintablestyle");
+        peptideSequenceTable.setHeight(height-2, Unit.PIXELS);
         this.addComponent(peptideSequenceTable);
+        peptideSequenceTable.addStyleName("smallicons");
         this.peptideSequenceTable.addStyleName(ValoTheme.TABLE_SMALL);
 
         peptideSequenceTable.setSelectable(false);
@@ -92,7 +96,7 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
         peptideSequenceTable.addContainerProperty("Comparison", ComparisonLable.class, null, "Comparison", null, Table.Align.LEFT);
         peptideSequenceTable.addContainerProperty("Publication", ExternalLink.class, null, "Publication", null, Table.Align.LEFT);
 
-        peptideSequenceTable.addContainerProperty("patientsNumber", Integer.class, null, "#Patients", null, Table.Align.RIGHT);
+        peptideSequenceTable.addContainerProperty("patientsNumber", Integer.class, null, "#Patients",new ThemeResource("img/p-numb.png"), Table.Align.RIGHT);
         peptideSequenceTable.addContainerProperty("PeptideSequence", ProteinSequenceContainer.class, null, "Protein Coverage", null, Table.Align.CENTER);
 //        peptideSequenceTable.addContainerProperty("emptyselection", String.class, null, "", null, Table.Align.LEFT);
 //        peptideSequenceTable.setColumnCollapsed("emptyselection", false);
@@ -128,7 +132,7 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
         peptideSequenceTable.setColumnWidth("patientsNumber", 47);
         peptideSequenceTable.setColumnWidth("Comparison", 100);
         peptideSequenceTable.setColumnWidth("Publication", 175);
-        proteinSequenceContainerWidth = width - 47 - 47 - 47 - 87 - 187 - 10 - 15;//- 47
+        proteinSequenceContainerWidth = width - 47 - 47 - 47 - 87 - 187 - 10 - 20;//- 47
         peptideSequenceTable.setColumnWidth("PeptideSequence", proteinSequenceContainerWidth);
         peptideSequenceTable.addHeaderClickListener((Table.HeaderClickEvent event) -> {
             if (event.getPropertyId().toString().equalsIgnoreCase("selected")) {

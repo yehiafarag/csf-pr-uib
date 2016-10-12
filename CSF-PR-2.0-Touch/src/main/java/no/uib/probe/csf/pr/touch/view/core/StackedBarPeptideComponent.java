@@ -124,7 +124,7 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
     private final VerticalLayout ptmLayout = new VerticalLayout();
     private boolean ptmAvailable = false;
 
-    private PopupWindow popupWindow;
+    private PopupWindowFrame popupWindow;
 
     /**
      *
@@ -152,55 +152,29 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
 
             VerticalLayout popupBody = new VerticalLayout();
             popupBody.setWidth(99, Unit.PERCENTAGE);
-            popupBody.setHeight(355, Unit.PIXELS);
+            popupBody.setHeight(365, Unit.PIXELS);
 
-            popupBody.setMargin(false);
-            popupBody.setSpacing(true);
-            popupBody.addStyleName("roundedborder");
-            popupBody.addStyleName("whitelayout");
-            popupBody.addStyleName("recombinegrouppanel");
+//            popupBody.setMargin(false);
+//            popupBody.setSpacing(true);
+//            popupBody.addStyleName("roundedborder");
+//            popupBody.addStyleName("whitelayout");
+//            popupBody.addStyleName("recombinegrouppanel");
 //        if (smallScreen) {
 //            popupBody.addStyleName("padding2");
 //        } else {
-            popupBody.addStyleName("padding20");
+//            popupBody.addStyleName("padding20");
 //        }
-            VerticalLayout frame = new VerticalLayout();
-            frame.setWidth(99, Unit.PERCENTAGE);
-            frame.setHeight(380, Unit.PIXELS);
-            frame.setSpacing(true);
-            frame.addComponent(popupBody);
-            frame.setComponentAlignment(popupBody, Alignment.MIDDLE_CENTER);
+//            VerticalLayout frame = new VerticalLayout();
+////            frame.setWidth(99, Unit.PERCENTAGE);
+////            frame.setHeight(380, Unit.PIXELS);
+////            frame.setSpacing(true);
+//            frame.addComponent(popupBody);
+//            frame.setComponentAlignment(popupBody, Alignment.MIDDLE_CENTER);
             String title = "Peptide Information (" + proteinName.trim() + ")";
 
-            popupWindow = new PopupWindow(frame, title) {
+            popupWindow = new PopupWindowFrame(title, popupBody);
 
-                @Override
-                public void close() {
-                    popupWindow.setVisible(false);
-
-                }
-
-                @Override
-                public void setVisible(boolean visible) {
-
-                    if (visible) {
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-
-                        }
-                    }
-                    super.setVisible(visible); //To change body of generated methods, choose Tools | Templates.
-                }
-
-            };
-            if (smallScreen) {
-                popupWindow.setWidth(popupWindow.getWidth() + 100, popupWindow.getWidthUnits());
-                popupWindow.setHeight(popupWindow.getHeight() + 100, popupWindow.getHeightUnits());
-            } else {
-                popupWindow.setHeight(420, popupWindow.getHeightUnits());
-
-            }
+            popupWindow.setFrameHeight(450);
 
             PeptidesInformationOverviewLayout peptideInfo = new PeptidesInformationOverviewLayout(quantPeptide);
 
@@ -361,7 +335,7 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
 
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-        popupWindow.setVisible(true);
+        popupWindow.view();
     }
 
 }

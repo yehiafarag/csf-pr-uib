@@ -61,19 +61,16 @@ public class PopupWindowFrameWithFunctionsBtns {
 
         popupBody.setWidth(popupWindow.getWidth() - 24, Unit.PIXELS);
         this.btnsLayout = btnsLayout;
-        frame.addComponent(btnsLayout);
+        frame.addComponent(this.btnsLayout);
         btnsLayout.addStyleName("roundedborder");
         btnsLayout.addStyleName("whitelayout");
         btnsLayout.addStyleName("padding10");
         btnsLayout.addStyleName("marginleft");
-         btnsLayout.addStyleName("marginbottom");
+        btnsLayout.addStyleName("marginbottom");
         btnsLayout.setHeight(50, Unit.PIXELS);
         btnsLayout.setWidth(popupWindow.getWidth() - 24, Unit.PIXELS);
-        frame.setExpandRatio(popupBody, popupWindow.getHeight()-110);
-        frame.setExpandRatio(btnsLayout,50);
-        
-        
-        
+        frame.setExpandRatio(popupBody, popupWindow.getHeight() - 110);
+        frame.setExpandRatio(this.btnsLayout, 50);
 
     }
 
@@ -81,8 +78,8 @@ public class PopupWindowFrameWithFunctionsBtns {
 
         popupWindow.setHeight(Math.max(height, 111), Unit.PIXELS);
         popupBody.setHeight(popupWindow.getHeight() - 120, Unit.PIXELS);
-        frame.setExpandRatio(popupBody, popupWindow.getHeight()-120);
-        frame.setExpandRatio(btnsLayout,60);
+        frame.setExpandRatio(popupBody, popupWindow.getHeight() - 120);
+        frame.setExpandRatio(this.btnsLayout, 60);
 
     }
 
