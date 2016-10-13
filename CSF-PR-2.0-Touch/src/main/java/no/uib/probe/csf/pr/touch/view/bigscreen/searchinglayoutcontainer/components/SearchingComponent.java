@@ -1,5 +1,6 @@
 package no.uib.probe.csf.pr.touch.view.bigscreen.searchinglayoutcontainer.components;
 
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.Page;
 import com.vaadin.server.Sizeable;
@@ -70,22 +71,19 @@ public abstract class SearchingComponent extends BigBtn {
         this.Data_handler = Data_handler;
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         VerticalLayout popupbodyLayout = new VerticalLayout();
-        popupbodyLayout.setSpacing(true);
+        popupbodyLayout.setSpacing(false);
         popupbodyLayout.setWidth(100, Unit.PERCENTAGE);
-
         popupbodyLayout.setHeight(100, Unit.PERCENTAGE);
-        popupbodyLayout.setMargin(new MarginInfo(false, true, false, true));
-        popupbodyLayout.addStyleName("searchpopup");
+        popupbodyLayout.setMargin(new MarginInfo(false, false, false, false));
         searchingPanel = new PopupWindow(popupbodyLayout, "Search");
-
         if (this.smallScreen) {
             searchingPanel.setHeight(Page.getCurrent().getBrowserWindowHeight(), Unit.PIXELS);
             searchingPanel.setWidth(Page.getCurrent().getBrowserWindowWidth(), Unit.PIXELS);
             h1 = 400;
         } else {
-            h1 = Math.min(((int) searchingPanel.getHeight() / 2) - 30, 260);
+            h1 = Math.min(((int) searchingPanel.getHeight() / 2) - 30, 225);
         }
-        searchingUnit = new SearchingUnitComponent(h1, smallScreen) {
+        searchingUnit = new SearchingUnitComponent(h1, (int) searchingPanel.getWidth() - 24, smallScreen) {
 
             @Override
             public void resetSearching() {
@@ -98,19 +96,49 @@ public abstract class SearchingComponent extends BigBtn {
             }
 
         };
+        popupbodyLayout.addComponent(searchingUnit);
+        popupbodyLayout.setExpandRatio(searchingUnit, h1+10);
+
+        middleLayout = new HorizontalLayout();
+        middleLayout.setMargin(new MarginInfo(false, true));
+        middleLayout.setHeight(29, Unit.PIXELS);
+        middleLayout.setWidth(100, Unit.PERCENTAGE);
+        resultsLabel = new Label("Search Results");
+        resultsLabel.setStyleName(ValoTheme.LABEL_BOLD);
+//        resultsLabel.addStyleName("marginleft");
+        middleLayout.addComponent(resultsLabel);
+        middleLayout.setComponentAlignment(resultsLabel, Alignment.MIDDLE_LEFT);
+
+        HorizontalLayout legendContainer = new HorizontalLayout();
+        legendContainer.setSpacing(true);
+
+        middleLayout.addComponent(legendContainer);
+        middleLayout.setComponentAlignment(legendContainer, Alignment.TOP_RIGHT);
+
+        TrendLegend legend2 = new TrendLegend("found_notfound");
+        legendContainer.addComponent(legend2);
+        legendContainer.setComponentAlignment(legend2, Alignment.MIDDLE_RIGHT);
+        legend2.addStyleName("marginright");
+
+        TrendLegend legend = new TrendLegend("diseaselegend");
+        legendContainer.addComponent(legend);
+        legendContainer.setComponentAlignment(legend, Alignment.MIDDLE_RIGHT);
+        legend.addStyleName("marginright");
+
+        popupbodyLayout.addComponent(middleLayout);
+        popupbodyLayout.setExpandRatio(middleLayout, 30f);
 
         resultsLayout = new VerticalLayout();
         resultsLayout.addStyleName("roundedborder");
         resultsLayout.addStyleName("whitelayout");
-        resultsLayout.addStyleName("padding20");
-
-        resultsLayout.setWidth(100, Unit.PERCENTAGE);
-//        Panel searchingResults = new Panel(resultsLayout);
-//        searchingResults.setStyleName(ValoTheme.PANEL_BORDERLESS);
-//        searchingResults.setWidth(100, Unit.PERCENTAGE);
-        
-
+         resultsLayout.addStyleName("padding20");
+        resultsLayout.addStyleName("marginleft");
+        resultsLayout.addStyleName("marginbottom");
         resultsLayout.addStyleName("scrollable");
+        resultsLayout.setWidth(searchingUnit.getWidth(), Unit.PIXELS);
+        resultsLayout.setHeight(searchingPanel.getHeight() -30- 10 - h1 - 30 - 10 - 50 - 10-10, Unit.PIXELS);
+        popupbodyLayout.addComponent(resultsLayout);
+        popupbodyLayout.setExpandRatio(resultsLayout, resultsLayout.getHeight() + 10);
 
         quantResultWrapping = new HorizontalLayout();
         quantResultWrapping.setWidthUndefined();
@@ -134,42 +162,20 @@ public abstract class SearchingComponent extends BigBtn {
         resultsLayout.addComponent(noresultsLabel);
         resultsLayout.setComponentAlignment(noresultsLabel, Alignment.MIDDLE_CENTER);
 
-        middleLayout = new HorizontalLayout();
-        middleLayout.setHeight(29, Sizeable.Unit.PIXELS);
-        middleLayout.setWidth(100, Sizeable.Unit.PERCENTAGE);
-        resultsLabel = new Label("Search Results");
-        resultsLabel.setStyleName(ValoTheme.LABEL_BOLD);
-        resultsLabel.addStyleName("marginleft");
-        middleLayout.addComponent(resultsLabel);
-        middleLayout.setComponentAlignment(resultsLabel, Alignment.MIDDLE_LEFT);
-
-        HorizontalLayout legendContainer = new HorizontalLayout();
-        legendContainer.setSpacing(true);
-
-        middleLayout.addComponent(legendContainer);
-        middleLayout.setComponentAlignment(legendContainer, Alignment.TOP_RIGHT);
-
-        TrendLegend legend2 = new TrendLegend("found_notfound");
-        legendContainer.addComponent(legend2);
-        legendContainer.setComponentAlignment(legend2, Alignment.MIDDLE_RIGHT);
-        legend2.addStyleName("marginright");
-
-        TrendLegend legend = new TrendLegend("diseaselegend");
-        legendContainer.addComponent(legend);
-        legendContainer.setComponentAlignment(legend, Alignment.MIDDLE_RIGHT);
-        legend.addStyleName("marginright");
-
         controlBtnsLayout = new HorizontalLayout();
         controlBtnsLayout.addStyleName("roundedborder");
-        controlBtnsLayout.addStyleName("padding10");
         controlBtnsLayout.addStyleName("whitelayout");
-        controlBtnsLayout.setMargin(new MarginInfo(true, false, false, false));
-        controlBtnsLayout.setWidth(100, Unit.PERCENTAGE);
-         controlBtnsLayout.addStyleName("margintop");
+        controlBtnsLayout.addStyleName("padding10");
+        controlBtnsLayout.addStyleName("marginleft");
+        controlBtnsLayout.addStyleName("marginbottom");
+        controlBtnsLayout.setHeight(50, Unit.PIXELS);
+        controlBtnsLayout.setWidth(searchingUnit.getWidth(),Unit.PIXELS);
+        
 
         HorizontalLayout btnsWrapper = new HorizontalLayout();
         controlBtnsLayout.addComponent(btnsWrapper);
         controlBtnsLayout.setComponentAlignment(btnsWrapper, Alignment.TOP_LEFT);
+        controlBtnsLayout.setExpandRatio(btnsWrapper, controlBtnsLayout.getWidth()-130);
         btnsWrapper.setSpacing(true);
 
         InformationButton info = new InformationButton("Searching allows the user to locate a specific protein or a group of proteins. Input the search text at the top, select the input type and the disease category, and click \"Search\". A graphical overview of the results will be displayed at the bottom. You can either load all the results or select a subset via the charts before loading.", true);
@@ -184,6 +190,7 @@ public abstract class SearchingComponent extends BigBtn {
         rightBtnWrapper.setSpacing(true);
         controlBtnsLayout.addComponent(rightBtnWrapper);
         controlBtnsLayout.setComponentAlignment(rightBtnWrapper, Alignment.MIDDLE_RIGHT);
+        controlBtnsLayout.setExpandRatio(rightBtnWrapper, 130);
         Button resetBtn = new Button("Reset");
         resetBtn.setStyleName(ValoTheme.BUTTON_SMALL);
         resetBtn.setStyleName(ValoTheme.BUTTON_TINY);
@@ -210,20 +217,12 @@ public abstract class SearchingComponent extends BigBtn {
             loadSearching();
         });
 
-        popupbodyLayout.addComponent(searchingUnit);
-
-        popupbodyLayout.setSpacing(true);
-        popupbodyLayout.addComponent(middleLayout);
-
-        popupbodyLayout.addComponent(resultsLayout);
 
         popupbodyLayout.addComponent(controlBtnsLayout);
-        if (!this.smallScreen) {
-            popupbodyLayout.setExpandRatio(searchingUnit, 290f);
-            popupbodyLayout.setExpandRatio(middleLayout, 29f);
-            popupbodyLayout.setExpandRatio(resultsLayout, 524);
-            popupbodyLayout.setExpandRatio(controlBtnsLayout, 50);
-        }
+//        if (!this.smallScreen) {
+
+        popupbodyLayout.setExpandRatio(controlBtnsLayout, 70);
+//        }
 
         CSFPR_Central_Manager.registerListener(new CSFListener() {
 
@@ -244,15 +243,16 @@ public abstract class SearchingComponent extends BigBtn {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         });
-        if (this.smallScreen) {
-            resultsLayout.setVisible(false);
-            middleLayout.setVisible(false);
-            resultsLayout.setWidth(searchingUnit.getWidth(), searchingUnit.getWidthUnits());
-            resultsLayout.setHeight(h1 - 44, searchingUnit.getHeightUnits());
-        } else {
-            h1 = (int) searchingPanel.getHeight() - h1 - 30 - 158;
-            resultsLayout.setHeight(h1, Unit.PIXELS);
-        }
+//        if (this.smallScreen) {
+//            resultsLayout.setVisible(false);
+//            middleLayout.setVisible(false);
+//            resultsLayout.setWidth(searchingUnit.getWidth(), searchingUnit.getWidthUnits());
+//            resultsLayout.setHeight(h1 - 44, searchingUnit.getHeightUnits());
+//        } else {
+//            h1 = (int) searchingPanel.getHeight() - h1 - 30 - 158;
+//            resultsLayout.setHeight(h1, Unit.PIXELS);
+//        }
+        popupbodyLayout.setHeight(10+h1+30+resultsLayout.getHeight()+20+50+10,Unit.PIXELS);
 
     }
 

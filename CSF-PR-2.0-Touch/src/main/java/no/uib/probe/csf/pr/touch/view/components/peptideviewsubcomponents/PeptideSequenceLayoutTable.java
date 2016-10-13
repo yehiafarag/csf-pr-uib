@@ -65,10 +65,11 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
     private final boolean smallScreen;
 
     public PeptideSequenceLayoutTable(int width, int height, boolean smallScreen) {
+//        height-=20;
         this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
         this.smallScreen = smallScreen;
-        this.addStyleName("paddingtop20");
+//        this.addStyleName("paddingtop20");
 
         tableItemscheckboxMap = new HashMap<>();
         this.tableItemsMap = new LinkedHashMap<>();
@@ -77,9 +78,9 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
 
         peptideSequenceTable = new Table();
         peptideSequenceTable.setWidthUndefined();
-        peptideSequenceTable.setStyleName(ValoTheme.TABLE_BORDERLESS);
-        this.peptideSequenceTable.addStyleName("proteintablestyle");
-        peptideSequenceTable.setHeight(height-2, Unit.PIXELS);
+        peptideSequenceTable.setStyleName(ValoTheme.TABLE_COMPACT);
+        this.peptideSequenceTable.addStyleName("peptidetablestyle");
+        peptideSequenceTable.setHeight(height, Unit.PIXELS);
         this.addComponent(peptideSequenceTable);
         peptideSequenceTable.addStyleName("smallicons");
         this.peptideSequenceTable.addStyleName(ValoTheme.TABLE_SMALL);
@@ -132,7 +133,7 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
         peptideSequenceTable.setColumnWidth("patientsNumber", 47);
         peptideSequenceTable.setColumnWidth("Comparison", 100);
         peptideSequenceTable.setColumnWidth("Publication", 175);
-        proteinSequenceContainerWidth = width - 47 - 47 - 47 - 87 - 187 - 10 - 20;//- 47
+        proteinSequenceContainerWidth = width - 47 - 47 - 47 - 87 - 187 - 10 - 25;//- 47
         peptideSequenceTable.setColumnWidth("PeptideSequence", proteinSequenceContainerWidth);
         peptideSequenceTable.addHeaderClickListener((Table.HeaderClickEvent event) -> {
             if (event.getPropertyId().toString().equalsIgnoreCase("selected")) {

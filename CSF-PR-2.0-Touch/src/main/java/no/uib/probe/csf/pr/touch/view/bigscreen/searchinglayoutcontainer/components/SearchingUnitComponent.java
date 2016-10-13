@@ -48,23 +48,23 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
 
     public abstract void resetSearching();
 
-    public SearchingUnitComponent(int height, boolean smallScreen) {
-        this.setWidth(100, Unit.PERCENTAGE);
+    public SearchingUnitComponent(int height,int width, boolean smallScreen) {
+        this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
         this.smallScreen = smallScreen;
-        this.setStyleName("whitelayout");
-        this.addStyleName("roundedborder");
+         this.addStyleName("roundedborder");
+        this.addStyleName("whitelayout");
         this.addStyleName("padding20");
-
+        this.addStyleName("scrollable");
+        this.addStyleName("margin");
         this.setSpacing(true);
 
         VerticalLayout frame = new VerticalLayout();
         frame.setWidth(100, Unit.PERCENTAGE);
         frame.setHeightUndefined();
-        frame.setSpacing(true);
+//        frame.setSpacing(true);
 //        this.setHeightUndefined();
         this.addComponent(frame);
-        this.setComponentAlignment(frame, Alignment.TOP_CENTER);
 
         searchingArea = new TextArea();
         searchingArea.setWidth(90, Unit.PERCENTAGE);
@@ -107,10 +107,16 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
         diseaseCategoryOption.setRequired(false);
         diseaseCategoryOption.setMultiSelect(true);
 
+        VerticalLayout rightBtnContainer = new VerticalLayout();
+        rightBtnContainer.setSizeFull();
+           btnsLayoutContainer.addComponent(rightBtnContainer);
+        btnsLayoutContainer.setComponentAlignment(rightBtnContainer, Alignment.TOP_RIGHT);
+        
+        
         HorizontalLayout btnWrapper = new HorizontalLayout();
         btnWrapper.setSpacing(true);
-        btnsLayoutContainer.addComponent(btnWrapper);
-        btnsLayoutContainer.setComponentAlignment(btnWrapper, Alignment.TOP_RIGHT);
+        rightBtnContainer.addComponent(btnWrapper);
+        rightBtnContainer.setComponentAlignment(btnWrapper, Alignment.TOP_RIGHT);
 
         
         
@@ -164,9 +170,10 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
 
         errorLabel = new Label("error");
         errorLabel.setStyleName(ValoTheme.LABEL_FAILURE);
+        errorLabel.addStyleName("smallerrorlabel");
         errorLabel.setVisible(false);
-        bottomLayoutWrapper.addComponent(errorLabel);
-        bottomLayoutWrapper.setComponentAlignment(errorLabel, Alignment.MIDDLE_CENTER);
+        rightBtnContainer.addComponent(errorLabel);
+        rightBtnContainer.setComponentAlignment(errorLabel, Alignment.MIDDLE_CENTER);
 
 //        if (smallScreen) {
 //            errorLabel.setHeight(40, Unit.PIXELS);

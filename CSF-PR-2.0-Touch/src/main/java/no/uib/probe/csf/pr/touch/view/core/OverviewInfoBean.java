@@ -1,5 +1,5 @@
 
-package no.uib.probe.csf.pr.touch.view.smallscreen;
+package no.uib.probe.csf.pr.touch.view.core;
 
 import java.io.Serializable;
 

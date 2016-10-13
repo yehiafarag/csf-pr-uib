@@ -21,6 +21,11 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
 
     private final String proteinKey;
     private final Set<QuantDiseaseGroupsComparison> selectedComparisonsList;
+    private  AbsoluteLayout chartComponentsLayout;
+
+    public AbsoluteLayout getChartComponentsLayout() {
+        return chartComponentsLayout;
+    }
 
     private int initSparkline = 0;
     private final int width;
@@ -29,6 +34,10 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
     private final VerticalLayout sparkLineContainer;
     private final Object itemId;
     private int custTrend = -1;
+
+    public int getChartWidth() {
+        return width-10;
+    }
     private final boolean smallScreen;
 
     public LineChart getSparkLine() {
@@ -115,6 +124,7 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
             }
             sparkLine.updateData(selectedComparisonsList, proteinKey, custTrend);
             sparkLineContainer.addComponent(sparkLine);
+            chartComponentsLayout = sparkLine.getChartComponentsLayout();
         }
 
     }
@@ -153,6 +163,7 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
     }
 
     private LineChart sparkLine;
+    
 
     @Override
     protected AbsoluteLayoutState getState() {

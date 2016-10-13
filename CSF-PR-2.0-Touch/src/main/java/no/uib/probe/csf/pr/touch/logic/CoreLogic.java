@@ -22,7 +22,7 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantPeptide;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantProtein;
-import no.uib.probe.csf.pr.touch.view.smallscreen.OverviewInfoBean;
+import no.uib.probe.csf.pr.touch.view.core.OverviewInfoBean;
 
 /**
  *

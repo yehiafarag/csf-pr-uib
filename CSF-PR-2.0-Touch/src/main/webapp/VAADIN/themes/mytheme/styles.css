@@ -14277,6 +14277,9 @@ div.v-layout.v-horizontal.v-widget {
 .paddingtop20{
     padding-top: 20px !important;
 }
+.paddingleft10{
+    padding-left: 10px;   
+}
 .padding15{
     padding:15px !important;
 
@@ -14712,9 +14715,10 @@ div.v-layout.v-horizontal.v-widget {
 
 .sortup{
     background-color:white;
-    background-image: url(img/caret-up.png);
+    background-image: url(img/sort-up.png);
     background-repeat:no-repeat;
-    background-size:contain;
+     background-position:center;
+    background-size:10px 5px;
     cursor:pointer;
 
     box-shadow:0px 0px 0px rgba(182,179, 179, 0.2), inset 0px 5px 10px rgba(182, 179, 179, 0.7) !important;
@@ -14723,14 +14727,11 @@ div.v-layout.v-horizontal.v-widget {
 }
 .sortdown{
     background-color:white;
-    background-image: url(img/caret-up.png);
+    background-image: url(img/sort-down.png);
     background-repeat:no-repeat;
-    background-size:contain;
-    -ms-transform: rotate(-180deg); /* IE 9 */
-    -webkit-transform: rotate(-180deg); /* Chrome, Safari, Opera */
-    transform: rotate(-180deg);
+    background-position:center;
+    background-size:10px 5px;
     cursor:pointer;
-
     box-shadow:0px 0px 0px rgba(182,179, 179, 0.2), inset 0px 5px 10px rgba(182, 179, 179, 0.7) !important;
     -webkit-box-shadow:0px 0px 0px rgba(182,179, 179, 0.2), inset 0px 5px 10px rgba(182, 179, 179, 0.7) !important;
     -moz-box-shadow:0px 0px 0px rgba(182,179, 179, 0.2), inset 0px 5px 10px rgba(182, 179, 179, 0.7) !important;
@@ -15507,7 +15508,10 @@ div.v-layout.v-horizontal.v-widget {
 
     z-index: 1000000000 !important;
     position: relative;
-
+    margin-top:-1px;
+    margin-left:4px;
+    
+  
 
 }
 .proteintablestyle{
@@ -15517,7 +15521,50 @@ div.v-layout.v-horizontal.v-widget {
 .v-slot-proteintablestyle{
 
     background:rgb(241, 241, 241) !important;
+    margin-right:10px !important;
+    margin-top:1px;
+    border-right:1px solid lightgray;
+    border-bottom:1px solid lightgray;
+    border-top:1px solid lightgray;
+
 }
+.v-table-proteintablestyle{
+    margin-top:-39px;
+    margin-bottom:-1px;
+
+}
+.v-table-proteintablestyle .v-table-table{   
+    margin-left:-1px !important;
+}
+
+.v-table-peptidetablestyle{
+    margin-top:-39px;
+    margin-bottom:-1px;
+
+}
+.v-slot-peptidetablestyle{
+
+
+height:auto !important;
+    background:rgb(241, 241, 241) !important;
+    margin-right:10px !important;
+    border-right:1px solid lightgray;
+    border-bottom:1px solid lightgray;
+    border-top:1px solid lightgray;
+    padding-top:-1px !important;
+    margin-top:30px !important;
+}
+.v-table-peptidetablestyle{
+    
+
+}
+.v-table-peptidetablestyle .v-table-table{   
+    margin-bottom:20px !important;
+}
+.v-table-peptidetablestyle .v-table-table{   
+    margin-left:0px !important;
+}
+
 .hidesortingicon .v-table-sort-indicator{
     visibility:hidden;
 }
@@ -15736,4 +15783,13 @@ tbody{
 .v-tooltip-text img{
     opacity:0;
     width:1px;
+}
+.smallerrorlabel{
+    margin-top:10px !important;
+    padding-left:25px !important;
+    padding-top:5px !important;
+    padding-right:1px !important;
+    padding-bottom:5px !important;
+    font-size:10px !important;
+   
 }

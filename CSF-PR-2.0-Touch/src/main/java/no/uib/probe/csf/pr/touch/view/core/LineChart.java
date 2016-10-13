@@ -699,13 +699,14 @@ public class LineChart extends AbsoluteLayout {
                     ComponentPosition position = new ComponentPosition();
                     position.setCSSString("left: " + (xSer - 1) + "px; top: " + (ySer - 1) + "px;");
                     square.addParam(mode, position);
+                    square.addParam("comparisonIndex", (int)comparisonIndex);
                     chartComponentsLayout.addComponent(square, "left: " + (xSer - 3) + "px; top: " + (ySer) + "px;");
                     this.symbolMap.put(doubleTrend + "," + comparisonIndex, square);
                     
-                    int dsNumber = gc.getDatasetMap().size();
-                    if (trend == 6) {
-                        dsNumber = 0;
-                    }
+//                    int dsNumber = gc.getDatasetMap().size();
+//                    if (trend == 6) {
+//                        dsNumber = 0;
+//                    }
 //                    String header = gc.getComparisonHeader();
 //                    String updatedHeader = gc.getComparisonFullName();
 //                    if (header.contains("*")) {
@@ -749,6 +750,10 @@ public class LineChart extends AbsoluteLayout {
         });
         chartComponentsLayout.markAsDirty();
         
+    }
+
+    public AbsoluteLayout getChartComponentsLayout() {
+        return chartComponentsLayout;
     }
     
 }

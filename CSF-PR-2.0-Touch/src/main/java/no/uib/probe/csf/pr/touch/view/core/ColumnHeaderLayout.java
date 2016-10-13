@@ -27,7 +27,8 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
     private final int index;
 
     public ColumnHeaderLayout(QuantDiseaseGroupsComparison comparison, int index) {
-        this.setSizeFull();
+        this.setWidth(20,Unit.PIXELS);
+        this.setHeight(20,Unit.PIXELS);
         this.index = index;
         VerticalLayout headerFrame = new VerticalLayout();
         headerFrame.setHeight(100, Unit.PERCENTAGE);

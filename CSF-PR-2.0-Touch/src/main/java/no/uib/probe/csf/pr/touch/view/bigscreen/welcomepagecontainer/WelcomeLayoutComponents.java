@@ -30,7 +30,7 @@ import no.uib.probe.csf.pr.touch.view.bigscreen.searchinglayoutcontainer.compone
 import no.uib.probe.csf.pr.touch.view.core.BigBtn;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 import no.uib.probe.csf.pr.touch.view.core.ZoomControler;
-import no.uib.probe.csf.pr.touch.view.smallscreen.OverviewInfoBean;
+import no.uib.probe.csf.pr.touch.view.core.OverviewInfoBean;
 
 /**
  *

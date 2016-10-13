@@ -232,12 +232,14 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         bottomLayout.setHeight(componentHeight, Unit.PIXELS);
         bottomLayout.addStyleName("roundedborder");
         bottomLayout.addStyleName("paddingtop20");
+        bottomLayout.addStyleName("paddingleft10");
+        bottomLayout.addStyleName("paddingbottom10");
         bottomLayout.addStyleName("whitelayout");
 
         mainBodyContainer.addComponent(bottomLayout);
         mainBodyContainer.setComponentAlignment(bottomLayout, Alignment.MIDDLE_CENTER);
 
-        peptideSequenceTableLayout = new PeptideSequenceLayoutTable(width-6, (componentHeight-24), smallScreen);
+        peptideSequenceTableLayout = new PeptideSequenceLayoutTable(width-20, (componentHeight-25), smallScreen);
         bottomLayout.addComponent(peptideSequenceTableLayout);
         bottomLayout.setComponentAlignment(peptideSequenceTableLayout, Alignment.MIDDLE_CENTER);
 

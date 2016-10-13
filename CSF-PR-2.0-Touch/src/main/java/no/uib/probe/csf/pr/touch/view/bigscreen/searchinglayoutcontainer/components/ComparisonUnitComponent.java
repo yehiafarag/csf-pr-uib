@@ -75,12 +75,15 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
     private boolean sorterRows, sortColumns;
     private final TextAreaComponent textBoxI, textBoxII, textBoxIII;
 
-    public ComparisonUnitComponent(Data_Handler CSFPR_Handler, int height, boolean smallScreen) {
-        this.setWidth(100, Unit.PERCENTAGE);
+    public ComparisonUnitComponent(Data_Handler CSFPR_Handler, int height,int width, boolean smallScreen) {
+         this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
-        this.setStyleName("whitelayout");
-        this.addStyleName("roundedborder");
+         this.addStyleName("roundedborder");
+        this.addStyleName("whitelayout");
         this.addStyleName("padding20");
+        this.addStyleName("scrollable");
+        this.addStyleName("margin");
+        this.setSpacing(true);
 
         VerticalLayout frame = new VerticalLayout();
         frame.setWidth(80, Unit.PERCENTAGE);
@@ -226,8 +229,7 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
 
         };
         errorLabel.setStyleName(ValoTheme.LABEL_FAILURE);
-        errorLabel.addStyleName(ValoTheme.LABEL_SMALL);
-        errorLabel.addStyleName(ValoTheme.LABEL_TINY);
+        errorLabel.addStyleName("smallerrorlabel");
         errorLabel.setVisible(false);
 //        errorLabel.setWidth(400, Unit.PIXELS);
         bottomLayout.addComponent(errorLabel);

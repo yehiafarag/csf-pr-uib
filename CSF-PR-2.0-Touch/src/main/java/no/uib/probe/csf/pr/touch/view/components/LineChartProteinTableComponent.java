@@ -136,12 +136,13 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         tableLayoutFrame.setHeightUndefined();//setHeight(tableHeight, Unit.PIXELS);
         tableLayoutFrame.addStyleName("roundedborder");
         tableLayoutFrame.addStyleName("whitelayout");
-        tableLayoutFrame.addStyleName("paddingtop10");
+        tableLayoutFrame.addStyleName("paddingtop20");
+        tableLayoutFrame.addStyleName("paddingleft10");
         tableLayoutFrame.addStyleName("paddingbottom10");
         bodyContainer.addComponent(tableLayoutFrame);
         bodyContainer.setComponentAlignment(tableLayoutFrame, Alignment.MIDDLE_CENTER);
         height = height - 60;
-        width = width - 30;
+        width = width - 50;
 
         quantProteinTable = new ProteinTable(width, height, smallScreen) {
 

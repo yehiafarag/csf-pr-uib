@@ -90,6 +90,9 @@ public class PopupWindowFrameWithFunctionsBtns {
     public int getFrameWidth() {
         return (int) popupWindow.getWidth();
     }
+    public int getFrameHeight() {
+        return (int) popupWindow.getHeight();
+    }
 
     public void setFrameWidth(int width) {
         popupWindow.setWidth(width, Unit.PIXELS);

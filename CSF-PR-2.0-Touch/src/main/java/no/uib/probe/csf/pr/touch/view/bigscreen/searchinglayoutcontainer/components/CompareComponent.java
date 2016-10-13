@@ -65,28 +65,26 @@ public abstract class CompareComponent extends BigBtn {
 
     public CompareComponent(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager, boolean smallScreen) {
         super("Compare", "Compare to your data", "img/compare.png", smallScreen);
-        this.smallScreen =  Page.getCurrent().getBrowserWindowHeight()  <= 615;
+        this.smallScreen = Page.getCurrent().getBrowserWindowHeight() <= 940;
         this.Data_handler = Data_handler;
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         VerticalLayout popupbodyLayout = new VerticalLayout();
-        popupbodyLayout.setSpacing(true);
-        popupbodyLayout.setWidth(100, Sizeable.Unit.PERCENTAGE);
+        popupbodyLayout.setSpacing(false);
+        popupbodyLayout.setWidth(100, Unit.PERCENTAGE);
         popupbodyLayout.setHeight(100, Unit.PERCENTAGE);
-        popupbodyLayout.setMargin(new MarginInfo(false, true, false, true));
-        popupbodyLayout.addStyleName("searchpopup");
+        popupbodyLayout.setMargin(new MarginInfo(false, false, false, false));
         comparePanel = new PopupWindow(popupbodyLayout, "Compare Data");
-
         int h1;
         if (this.smallScreen) {
-            comparePanel.setHeight( Page.getCurrent().getBrowserWindowHeight(), Unit.PIXELS);
-            comparePanel.setWidth( Page.getCurrent().getBrowserWindowWidth(), Unit.PIXELS);
-            h1 = 418;
+            comparePanel.setHeight(Page.getCurrent().getBrowserWindowHeight(), Unit.PIXELS);
+            comparePanel.setWidth(Page.getCurrent().getBrowserWindowWidth(), Unit.PIXELS);
+            h1 = 440;
         } else {
-             comparePanel.setHeight(comparePanel.getHeight() -50, Unit.PIXELS);
+            comparePanel.setHeight(comparePanel.getHeight() - 50, Unit.PIXELS);
             comparePanel.setWidth(comparePanel.getWidth(), Unit.PIXELS);
-            h1 = 470;//Math.min(((int) comparePanel.getHeight() / 2) - 30,460);
+            h1 = 440;//Math.min(((int) comparePanel.getHeight() / 2) - 30,460);
         }
-        compareUnit = new ComparisonUnitComponent(Data_handler, h1, this.smallScreen) {
+        compareUnit = new ComparisonUnitComponent(Data_handler, h1, (int) comparePanel.getWidth() - 24, false) {
 
             @Override
             public void startComparing(Query query) {
@@ -94,33 +92,21 @@ public abstract class CompareComponent extends BigBtn {
             }
 
         };
-
-        resultsLayout = new VerticalLayout();
-        resultsLayout.addStyleName("roundedborder");
-        resultsLayout.addStyleName("padding20");
-        resultsLayout.addStyleName("whitelayout");
-
-        resultsLayout.setWidth(100, Sizeable.Unit.PERCENTAGE);
-        h1 = (int) comparePanel.getHeight() - h1 - 20 - 168;
-        resultsLayout.setHeight(h1, Sizeable.Unit.PIXELS);
-
-        resultsLayout.addStyleName("scrollable");
-        quantCompareDataResult = new HorizontalLayout();
-
-        resultsLayout.addComponent(quantCompareDataResult);
-        resultsLayout.setComponentAlignment(quantCompareDataResult, Alignment.MIDDLE_CENTER);
+        popupbodyLayout.addComponent(compareUnit);
+        popupbodyLayout.setExpandRatio(compareUnit, h1 + 10);
 
         middleLayout = new HorizontalLayout();
-        middleLayout.setHeight(29, Sizeable.Unit.PIXELS);
-        middleLayout.setWidth(100, Sizeable.Unit.PERCENTAGE);
-        resultsLabel = new Label("Search Results");
+        middleLayout.setMargin(new MarginInfo(false, true));
+        middleLayout.setHeight(29, Unit.PIXELS);
+        middleLayout.setWidth(100, Unit.PERCENTAGE);
+        resultsLabel = new Label("Comparison Results");
         resultsLabel.setStyleName(ValoTheme.LABEL_BOLD);
-        resultsLabel.addStyleName("marginleft");
         middleLayout.addComponent(resultsLabel);
         middleLayout.setComponentAlignment(resultsLabel, Alignment.MIDDLE_LEFT);
 
         HorizontalLayout legendContainer = new HorizontalLayout();
         legendContainer.setSpacing(true);
+
         middleLayout.addComponent(legendContainer);
         middleLayout.setComponentAlignment(legendContainer, Alignment.TOP_RIGHT);
 
@@ -134,25 +120,36 @@ public abstract class CompareComponent extends BigBtn {
         legendContainer.setComponentAlignment(legend, Alignment.MIDDLE_RIGHT);
         legend.addStyleName("marginright");
 
-        controlBtnsLayout = new HorizontalLayout();
-//        controlBtnsLayout.addStyleName("roundedborder");
-////        if (!smallScreen) //        btnsFrame.addStyleName("padding10");
-////        {
-//        controlBtnsLayout.addStyleName("padding20");
-//        controlBtnsLayout.setMargin(new MarginInfo(true, false, false, false));
-//
-////        } else {
-////            controlBtnsLayout.addStyleName("padding2");
-////        }
-//        controlBtnsLayout.addStyleName("whitelayout");
+        popupbodyLayout.addComponent(middleLayout);
+        popupbodyLayout.setExpandRatio(middleLayout, 30f);
 
-         controlBtnsLayout.addStyleName("roundedborder");
-        controlBtnsLayout.addStyleName("padding10");
+        resultsLayout = new VerticalLayout();
+        resultsLayout.addStyleName("roundedborder");
+        resultsLayout.addStyleName("whitelayout");
+        resultsLayout.addStyleName("padding20");
+        resultsLayout.addStyleName("marginleft");
+        resultsLayout.addStyleName("marginbottom");
+        resultsLayout.addStyleName("scrollable");
+        resultsLayout.setWidth(compareUnit.getWidth(), Unit.PIXELS);
+        resultsLayout.setHeight(comparePanel.getHeight() - 30 - 10 - h1 - 30 - 10 - 50 - 10 - 10, Unit.PIXELS);
+        popupbodyLayout.addComponent(resultsLayout);
+        popupbodyLayout.setExpandRatio(resultsLayout, resultsLayout.getHeight() + 10);
+
+        quantCompareDataResult = new HorizontalLayout();
+
+        resultsLayout.addComponent(quantCompareDataResult);
+        resultsLayout.setComponentAlignment(quantCompareDataResult, Alignment.MIDDLE_CENTER);
+
+        controlBtnsLayout = new HorizontalLayout();
+        controlBtnsLayout.addStyleName("roundedborder");
         controlBtnsLayout.addStyleName("whitelayout");
-        controlBtnsLayout.setMargin(new MarginInfo(true, false, false, false));
-        controlBtnsLayout.setWidth(100, Unit.PERCENTAGE);
-         controlBtnsLayout.addStyleName("margintop");
-        controlBtnsLayout.setWidth(100, Sizeable.Unit.PERCENTAGE);
+        controlBtnsLayout.addStyleName("padding10");
+        controlBtnsLayout.addStyleName("marginleft");
+        controlBtnsLayout.addStyleName("marginbottom");
+        controlBtnsLayout.setHeight(50, Unit.PIXELS);
+        controlBtnsLayout.setWidth(compareUnit.getWidth(), Unit.PIXELS);
+        popupbodyLayout.addComponent(controlBtnsLayout);
+        popupbodyLayout.setExpandRatio(controlBtnsLayout, 70);
 
         HorizontalLayout leftsideWrapper = new HorizontalLayout();
         controlBtnsLayout.addComponent(leftsideWrapper);
@@ -187,22 +184,6 @@ public abstract class CompareComponent extends BigBtn {
             resetComparison();
         });
 
-//        Button resetSystemBtn = new Button("Hide data");
-//        resetSystemBtn.setStyleName(ValoTheme.BUTTON_SMALL);
-//        resetSystemBtn.setStyleName(ValoTheme.BUTTON_TINY);
-//        resetSystemBtn.setWidth(100, Sizeable.Unit.PIXELS);
-//        resetSystemBtn.setEnabled(false);
-//        btnsWrapper.addComponent(resetSystemBtn);
-//        btnsWrapper.setComponentAlignment(resetSystemBtn, Alignment.MIDDLE_CENTER);
-//        resetSystemBtn.setDescription("Hide user data ");
-//        resetSystemBtn.addClickListener((Button.ClickEvent event) -> {
-//            QuantSearchSelection selection = new QuantSearchSelection();
-//            selection.setUserCustComparison(null);
-//            CSFPR_Central_Manager.compareSelectionAction(selection);
-//            CompareComponent.this.loadQuantComparison();
-//            comparePanel.setVisible(false);
-//            this.setEnabled(false);
-//        });
         loadDataBtn = new Button("Load");
         loadDataBtn.setStyleName(ValoTheme.BUTTON_SMALL);
         loadDataBtn.setStyleName(ValoTheme.BUTTON_TINY);
@@ -216,20 +197,24 @@ public abstract class CompareComponent extends BigBtn {
 //            resetBtn.setEnabled(true);
         });
 
-        popupbodyLayout.addComponent(compareUnit);
-        popupbodyLayout.setExpandRatio(compareUnit, 570f);
         popupbodyLayout.setSpacing(true);
-        popupbodyLayout.addComponent(middleLayout);
-        popupbodyLayout.setExpandRatio(middleLayout, 29f);
-        popupbodyLayout.addComponent(resultsLayout);
-        popupbodyLayout.setExpandRatio(resultsLayout, 274);
-        popupbodyLayout.addComponent(controlBtnsLayout);
-        popupbodyLayout.setExpandRatio(controlBtnsLayout, 50);
+
+//        popupbodyLayout.addComponent(resultsLayout);
+//        popupbodyLayout.setExpandRatio(resultsLayout, 274);
+//        popupbodyLayout.addComponent(controlBtnsLayout);
+//        popupbodyLayout.setExpandRatio(controlBtnsLayout, 50);
         if (this.smallScreen) {
             resultsLayout.setVisible(false);
             middleLayout.setVisible(false);
             resultsLayout.setWidth(compareUnit.getWidth(), compareUnit.getWidthUnits());
-            resultsLayout.setHeight(compareUnit.getHeight() - 35, compareUnit.getHeightUnits());
+            popupbodyLayout.setExpandRatio(compareUnit, compareUnit.getHeight());
+            resultsLayout.setHeight(compareUnit.getHeight() - 30, compareUnit.getHeightUnits());
+            popupbodyLayout.setExpandRatio(resultsLayout, compareUnit.getHeight());
+            popupbodyLayout.setHeight(10 + h1 + 20 + 50 + 10, Unit.PIXELS);
+            comparePanel.setHeight(popupbodyLayout.getHeight()+30,Unit.PIXELS);
+
+        } else {
+            popupbodyLayout.setHeight(10 + h1 + 30 + resultsLayout.getHeight() + 20 + 50 + 10, Unit.PIXELS);
         }
 
     }
