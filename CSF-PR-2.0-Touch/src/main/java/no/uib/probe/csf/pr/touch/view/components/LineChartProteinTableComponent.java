@@ -6,12 +6,15 @@ import com.vaadin.server.Page;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.PopupView;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -25,6 +28,7 @@ import no.uib.probe.csf.pr.touch.view.components.datasetfilters.GroupSwichBtn;
 import no.uib.probe.csf.pr.touch.view.components.linechartproteintablecomponents.ExportProteinTable;
 import no.uib.probe.csf.pr.touch.view.components.linechartproteintablecomponents.FilterColumnButton;
 import no.uib.probe.csf.pr.touch.view.components.linechartproteintablecomponents.ProteinTable;
+import no.uib.probe.csf.pr.touch.view.core.CloseButton;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 import no.uib.probe.csf.pr.touch.view.core.InformationButton;
 import no.uib.probe.csf.pr.touch.view.core.SearchingField;
@@ -67,7 +71,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         //init toplayout
         HorizontalLayout topLayout = new HorizontalLayout();
         topLayout.setHeight(25, Unit.PIXELS);
-        topLayout.setWidthUndefined();
+        topLayout.setWidth(100, Unit.PERCENTAGE);
         topLayout.setSpacing(true);
         topLayout.setMargin(new MarginInfo(false, false, false, true));
         bodyContainer.addComponent(topLayout);
@@ -80,7 +84,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         titleLayoutWrapper.setMargin(false);
         titleLayoutWrapper.addStyleName("margintop7");
         topLayout.addComponent(titleLayoutWrapper);
-        topLayout.setExpandRatio(titleLayoutWrapper, 10);
+        topLayout.setExpandRatio(titleLayoutWrapper, 250);
 
         Label overviewLabel = new Label("Proteins");
         overviewLabel.setStyleName(ValoTheme.LABEL_BOLD);
@@ -111,20 +115,55 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
 
         TrendLegend legendLayout = new TrendLegend("linechart");
         legendLayout.setWidthUndefined();
-        legendLayout.setHeight(25, Unit.PIXELS);
-        legendLayout.addStyleName("margintop10");
 
-        if (Page.getCurrent().getBrowserWindowWidth() < 1100) {
-            legendLayout.addStyleName("smallfloatright");
-        } else {
-            legendLayout.addStyleName("floatright");
-        }
+//        if (Page.getCurrent().getBrowserWindowWidth() < 1100) {
+//            legendLayout.addStyleName("smallfloatright");
+//        } else {
+//        legendLayout.addStyleName("floatright");
+//        }
 //        if (width / 2 < 700) {
 //            legendLayout.addStyleName("showonhover");
 //        }
-        topLayout.addComponent(legendLayout);
-        topLayout.setComponentAlignment(legendLayout, Alignment.TOP_RIGHT);
-        topLayout.setExpandRatio(legendLayout, 90);
+        if (width - 250 < 690) {
+            CloseButton closeBtn = new CloseButton();
+            VerticalLayout legendPopup = new VerticalLayout();
+            legendPopup.addComponent(closeBtn);
+            legendPopup.setExpandRatio(closeBtn, 1);
+            Set<Component> set = new LinkedHashSet<>();
+            VerticalLayout spacer = new VerticalLayout();
+            spacer.setHeight(5,Unit.PIXELS);
+            spacer.setWidth(20,Unit.PIXELS);
+            set.add(spacer);
+            Iterator<Component> itr = legendLayout.iterator();
+            while (itr.hasNext()) {
+                set.add(itr.next());
+            }
+
+            for (Component c : set) {
+                legendPopup.addComponent(c);
+                legendPopup.setExpandRatio(c, c.getHeight() + 5);
+            }
+
+            legendPopup.setWidth(230, Unit.PIXELS);
+            legendPopup.setHeight(150, Unit.PIXELS);
+            final PopupView popup = new PopupView("Legend", legendPopup);
+            legendPopup.addStyleName("compactlegend");
+            popup.addStyleName("marginright20");
+            popup.setHideOnMouseOut(false);
+            closeBtn.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
+                popup.setPopupVisible(false);
+
+            });
+            topLayout.addComponent(popup);
+            topLayout.setComponentAlignment(popup, Alignment.MIDDLE_RIGHT);
+            topLayout.setExpandRatio(popup, width - 250);
+        } else {
+            legendLayout.setHeight(25, Unit.PIXELS);
+            legendLayout.addStyleName("margintop10");
+            topLayout.addComponent(legendLayout);
+            topLayout.setComponentAlignment(legendLayout, Alignment.TOP_RIGHT);
+            topLayout.setExpandRatio(legendLayout, width - 250);
+        }
 
         //end of toplayout
         //start chart layout

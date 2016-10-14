@@ -700,6 +700,7 @@ public class LineChart extends AbsoluteLayout {
                     position.setCSSString("left: " + (xSer - 1) + "px; top: " + (ySer - 1) + "px;");
                     square.addParam(mode, position);
                     square.addParam("comparisonIndex", (int)comparisonIndex);
+                    square.addParam("xLocation", xSer);
                     chartComponentsLayout.addComponent(square, "left: " + (xSer - 3) + "px; top: " + (ySer) + "px;");
                     this.symbolMap.put(doubleTrend + "," + comparisonIndex, square);
                     

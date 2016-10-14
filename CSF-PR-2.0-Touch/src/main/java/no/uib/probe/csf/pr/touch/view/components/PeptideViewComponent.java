@@ -7,13 +7,16 @@ package no.uib.probe.csf.pr.touch.view.components;
 
 import com.itextpdf.text.pdf.codec.Base64;
 import com.vaadin.addon.tableexport.ExcelExport;
+import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.PopupView;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -21,6 +24,8 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
@@ -35,6 +40,7 @@ import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
 import no.uib.probe.csf.pr.touch.view.components.peptideviewsubcomponents.PeptideSequenceLayoutTable;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 import no.uib.probe.csf.pr.touch.view.components.peptideviewsubcomponents.StudiesLineChart;
+import no.uib.probe.csf.pr.touch.view.core.CloseButton;
 import no.uib.probe.csf.pr.touch.view.core.InformationButton;
 import no.uib.probe.csf.pr.touch.view.core.TrendLegend;
 import org.jfree.chart.ChartPanel;
@@ -145,7 +151,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
         VerticalLayout mainBodyContainer = new VerticalLayout();
-        mainBodyContainer.setSpacing(true);
+        mainBodyContainer.setSpacing(false);
         mainBodyContainer.setWidth(100, Unit.PERCENTAGE);
         mainBodyContainer.setHeightUndefined();
         this.addComponent(mainBodyContainer);
@@ -174,11 +180,25 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
 
         legendLayout = new VerticalLayout();
         legendLayout.setWidthUndefined();
-        legendLayout.setHeightUndefined();
-        legendLayout.addStyleName("floatright");
+        legendLayout.setHeight(25, Unit.PIXELS);
+//        legendLayout.addStyleName("floatright");
 
         topLayoutContainer.addComponent(legendLayout);
         topLayoutContainer.setComponentAlignment(legendLayout, Alignment.TOP_RIGHT);
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         int componentHeight = ((height - 80) / 2) - 5;
 
         VerticalLayout topLayout = new VerticalLayout();
@@ -219,17 +239,58 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         studiesLabel.addStyleName(ValoTheme.LABEL_TINY);
         studiesLabel.setHeight(24, Unit.PIXELS);
         middlelayout.addComponent(studiesLabel);
+         middlelayout.setExpandRatio(studiesLabel,120);
 
         TrendLegend sequenceLegendLayout = new TrendLegend("ministackedpeptidessequence");
         sequenceLegendLayout.setWidthUndefined();
-        sequenceLegendLayout.addStyleName("floatright");
-        sequenceLegendLayout.setHeight(25, Unit.PIXELS);
+//        sequenceLegendLayout.addStyleName("floatright");
+       
+        
+          if (this.getWidth() - 120 < 600) {
+            CloseButton closeBtn = new CloseButton();
+            VerticalLayout legendPopup = new VerticalLayout();
+            legendPopup.addComponent(closeBtn);
+            legendPopup.setExpandRatio(closeBtn, 1);
+            Set<Component> set = new LinkedHashSet<>();
+            VerticalLayout spacer = new VerticalLayout();
+            spacer.setHeight(5,Unit.PIXELS);
+            spacer.setWidth(20,Unit.PIXELS);
+            set.add(spacer);
+            Iterator<Component> itr = sequenceLegendLayout.iterator();
+            while (itr.hasNext()) {
+                set.add(itr.next());
+            }
+
+            for (Component c : set) {
+                legendPopup.addComponent(c);
+                legendPopup.setExpandRatio(c, c.getHeight() + 5);
+            }
+
+            legendPopup.setWidth(230, Unit.PIXELS);
+            legendPopup.setHeight(150, Unit.PIXELS);
+            final PopupView popup = new PopupView("Legend", legendPopup);
+            legendPopup.addStyleName("compactlegend");
+            popup.addStyleName("marginright20");
+            popup.setHideOnMouseOut(false);
+            closeBtn.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
+                popup.setPopupVisible(false);
+
+            });
+            middlelayout.addComponent(popup);
+            middlelayout.setComponentAlignment(popup, Alignment.TOP_RIGHT);
+            middlelayout.setExpandRatio(popup, this.getWidth() - 120);
+        } else{
+           sequenceLegendLayout.setHeight(25, Unit.PIXELS);
         middlelayout.addComponent(sequenceLegendLayout);
         middlelayout.setComponentAlignment(sequenceLegendLayout, Alignment.TOP_RIGHT);
+        middlelayout.setExpandRatio(sequenceLegendLayout, this.getWidth() - 120);
+          }
+        
+        
 
         VerticalLayout bottomLayout = new VerticalLayout();
         bottomLayout.setWidth(width, Unit.PIXELS);
-        bottomLayout.setHeight(componentHeight, Unit.PIXELS);
+        bottomLayout.setHeight(componentHeight+12, Unit.PIXELS);
         bottomLayout.addStyleName("roundedborder");
         bottomLayout.addStyleName("paddingtop20");
         bottomLayout.addStyleName("paddingleft10");
@@ -239,7 +300,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         mainBodyContainer.addComponent(bottomLayout);
         mainBodyContainer.setComponentAlignment(bottomLayout, Alignment.MIDDLE_CENTER);
 
-        peptideSequenceTableLayout = new PeptideSequenceLayoutTable(width-20, (componentHeight-25), smallScreen);
+        peptideSequenceTableLayout = new PeptideSequenceLayoutTable(width-20, (componentHeight-13), smallScreen);
         bottomLayout.addComponent(peptideSequenceTableLayout);
         bottomLayout.setComponentAlignment(peptideSequenceTableLayout, Alignment.MIDDLE_CENTER);
 
@@ -660,26 +721,71 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
     private Set<QuantDiseaseGroupsComparison> selectedComparisonsList;
 
     private void updateData(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, String proteinKey, int custTrend) {
+        TrendLegend legendLayoutComponent ;
         if (custTrend != -1) {
             legendLayout.removeAllComponents();
-            TrendLegend legendLayoutComponent = new TrendLegend(custTrend);
+            legendLayoutComponent = new TrendLegend(custTrend);
             legendLayoutComponent.setWidthUndefined();
-            legendLayoutComponent.addStyleName("floatright");
-            legendLayoutComponent.addStyleName("margintop3");
             legendLayoutComponent.setHeight(25, Unit.PIXELS);
-            legendLayout.addComponent(legendLayoutComponent);
-            legendLayout.setComponentAlignment(legendLayoutComponent, Alignment.TOP_RIGHT);
-
         } else {
             legendLayout.removeAllComponents();
-            TrendLegend legendLayoutComponent = new TrendLegend("linechart");
-            legendLayoutComponent.addStyleName("floatright");
-            legendLayoutComponent.addStyleName("margintop3");
+            legendLayoutComponent = new TrendLegend("linechart");
+           
+        }
+        
+        
+         if (this.getWidth() - 300 < 690) {
+            CloseButton closeBtn = new CloseButton();
+            VerticalLayout legendPopup = new VerticalLayout();
+            legendPopup.addComponent(closeBtn);
+            legendPopup.setExpandRatio(closeBtn, 1);
+            Set<Component> set = new LinkedHashSet<>();
+            VerticalLayout spacer = new VerticalLayout();
+            spacer.setHeight(5,Unit.PIXELS);
+            spacer.setWidth(20,Unit.PIXELS);
+            set.add(spacer);
+            Iterator<Component> itr = legendLayoutComponent.iterator();
+            while (itr.hasNext()) {
+                set.add(itr.next());
+            }
+
+            for (Component c : set) {
+                legendPopup.addComponent(c);
+                legendPopup.setExpandRatio(c, c.getHeight() + 5);
+            }
+
+            legendPopup.setWidth(230, Unit.PIXELS);
+            legendPopup.setHeight(150, Unit.PIXELS);
+            final PopupView popup = new PopupView("Legend", legendPopup);
+            legendPopup.addStyleName("compactlegend");
+            popup.addStyleName("marginright20");
+            popup.setHideOnMouseOut(false);
+            closeBtn.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
+                popup.setPopupVisible(false);
+
+            });
+            legendLayout.addComponent(popup);
+            legendLayout.setComponentAlignment(popup, Alignment.TOP_RIGHT);
+            legendLayout.setExpandRatio(popup, this.getWidth() - 300);
+        } else {
+//              legendLayoutComponent.addStyleName("floatright");
             legendLayoutComponent.setWidthUndefined();
             legendLayoutComponent.setHeight(25, Unit.PIXELS);
             legendLayout.addComponent(legendLayoutComponent);
             legendLayout.setComponentAlignment(legendLayoutComponent, Alignment.TOP_RIGHT);
+            
+          
         }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         this.selectedComparisonsList = selectedComparisonsList;
 
         this.proteinKey = proteinKey;

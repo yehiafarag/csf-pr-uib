@@ -5,6 +5,7 @@
  */
 package no.uib.probe.csf.pr.touch.view.bigscreen.searchinglayoutcontainer.components;
 
+import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.Page;
 import com.vaadin.server.Sizeable;
@@ -13,9 +14,11 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
+import com.vaadin.ui.PopupView;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import java.awt.Color;
@@ -23,6 +26,7 @@ import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +38,7 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantProtein;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
 import no.uib.probe.csf.pr.touch.selectionmanager.QuantSearchSelection;
 import no.uib.probe.csf.pr.touch.view.core.BigBtn;
+import no.uib.probe.csf.pr.touch.view.core.CloseButton;
 import no.uib.probe.csf.pr.touch.view.core.InformationButton;
 import no.uib.probe.csf.pr.touch.view.core.PieChart;
 import no.uib.probe.csf.pr.touch.view.core.PopupWindow;
@@ -102,23 +107,18 @@ public abstract class CompareComponent extends BigBtn {
         resultsLabel = new Label("Comparison Results");
         resultsLabel.setStyleName(ValoTheme.LABEL_BOLD);
         middleLayout.addComponent(resultsLabel);
-        middleLayout.setComponentAlignment(resultsLabel, Alignment.MIDDLE_LEFT);
+        resultsLabel.setWidth(200, Unit.PIXELS);
+        middleLayout.setComponentAlignment(resultsLabel, Alignment.BOTTOM_LEFT);
+        middleLayout.setExpandRatio(resultsLabel, 230);
 
         HorizontalLayout legendContainer = new HorizontalLayout();
         legendContainer.setSpacing(true);
 
         middleLayout.addComponent(legendContainer);
-        middleLayout.setComponentAlignment(legendContainer, Alignment.TOP_RIGHT);
+        middleLayout.setComponentAlignment(legendContainer, Alignment.MIDDLE_RIGHT);
 
         TrendLegend legend2 = new TrendLegend("found_notfound");
-        legendContainer.addComponent(legend2);
-        legendContainer.setComponentAlignment(legend2, Alignment.MIDDLE_RIGHT);
-        legend2.addStyleName("marginright");
-
         TrendLegend legend = new TrendLegend("diseaselegend");
-        legendContainer.addComponent(legend);
-        legendContainer.setComponentAlignment(legend, Alignment.MIDDLE_RIGHT);
-        legend.addStyleName("marginright");
 
         popupbodyLayout.addComponent(middleLayout);
         popupbodyLayout.setExpandRatio(middleLayout, 30f);
@@ -131,7 +131,7 @@ public abstract class CompareComponent extends BigBtn {
         resultsLayout.addStyleName("marginbottom");
         resultsLayout.addStyleName("scrollable");
         resultsLayout.setWidth(compareUnit.getWidth(), Unit.PIXELS);
-        resultsLayout.setHeight(comparePanel.getHeight() - 30 - 10 - h1 - 30 - 10 - 50 - 10 - 10, Unit.PIXELS);
+        resultsLayout.setHeight(Math.max(comparePanel.getHeight() - 30 - 10 - h1 - 30 - 10 - 50 - 10 - 10, 1), Unit.PIXELS);
         popupbodyLayout.addComponent(resultsLayout);
         popupbodyLayout.setExpandRatio(resultsLayout, resultsLayout.getHeight() + 10);
 
@@ -161,15 +161,17 @@ public abstract class CompareComponent extends BigBtn {
 
         idDataResult = new VerticalLayout();
         idDataResult.addStyleName("marginleft");
-        idDataResult.setWidth(600, Unit.PIXELS);
+//        idDataResult.setWidth(600, Unit.PIXELS);
 
         leftsideWrapper.addComponent(idDataResult);
 
         controlBtnsLayout.addComponent(leftsideWrapper);
+        controlBtnsLayout.setExpandRatio(leftsideWrapper, controlBtnsLayout.getWidth() - 130);
 
         HorizontalLayout btnsWrapper = new HorizontalLayout();
         controlBtnsLayout.addComponent(btnsWrapper);
         controlBtnsLayout.setComponentAlignment(btnsWrapper, Alignment.TOP_RIGHT);
+        controlBtnsLayout.setExpandRatio(btnsWrapper, 130);
         btnsWrapper.setSpacing(true);
 
         Button resetBtn = new Button("Reset");
@@ -206,15 +208,71 @@ public abstract class CompareComponent extends BigBtn {
         if (this.smallScreen) {
             resultsLayout.setVisible(false);
             middleLayout.setVisible(false);
+            comparePanel.setHeight(10 + h1 + 20 + 50 + 10 + 30, Unit.PIXELS);
+            popupbodyLayout.setHeight(comparePanel.getHeight() - 30, Unit.PIXELS);
+
             resultsLayout.setWidth(compareUnit.getWidth(), compareUnit.getWidthUnits());
+            resultsLayout.setHeight(Math.max(comparePanel.getHeight() - 30 - 10 - 30 - 10 - 50 - 10 - 10, 1), compareUnit.getHeightUnits());
+
+            compareUnit.setHeight(resultsLayout.getHeight() + 30, Unit.PIXELS);
+
             popupbodyLayout.setExpandRatio(compareUnit, compareUnit.getHeight());
-            resultsLayout.setHeight(compareUnit.getHeight() - 30, compareUnit.getHeightUnits());
             popupbodyLayout.setExpandRatio(resultsLayout, compareUnit.getHeight());
-            popupbodyLayout.setHeight(10 + h1 + 20 + 50 + 10, Unit.PIXELS);
-            comparePanel.setHeight(popupbodyLayout.getHeight()+30,Unit.PIXELS);
 
         } else {
             popupbodyLayout.setHeight(10 + h1 + 30 + resultsLayout.getHeight() + 20 + 50 + 10, Unit.PIXELS);
+        }
+        if (comparePanel.getWidth() - 230 < 436) {
+            middleLayout.removeComponent(legendContainer);
+            CloseButton closeBtn = new CloseButton();
+            VerticalLayout legendPopup = new VerticalLayout();
+            legendPopup.addComponent(closeBtn);
+            legendPopup.setExpandRatio(closeBtn, 2);
+            Set<Component> set = new LinkedHashSet<>();
+            Iterator<Component> itr = legend2.iterator();            
+            while (itr.hasNext()) {
+                set.add(itr.next());
+            }
+            VerticalLayout spacer = new VerticalLayout();
+            spacer.setHeight(15,Unit.PIXELS);
+            spacer.setWidth(20,Unit.PIXELS);
+            set.add(spacer);
+             Iterator<Component> itr2 = legend.iterator();            
+            while (itr2.hasNext()) {
+                set.add(itr2.next());
+            }
+
+            for (Component c : set) {
+                legendPopup.addComponent(c);
+                legendPopup.setExpandRatio(c, c.getHeight()+5);
+            }
+
+//            legendPopup.setExpandRatio(legend2, 20);
+//            legendPopup.setExpandRatio(legend, 30);
+            legend2.setSpacing(true);
+            legendPopup.setWidth(150, Unit.PIXELS);
+            legendPopup.setHeight(100, Unit.PIXELS);
+            final PopupView popup = new PopupView("Legend", legendPopup);
+            legendPopup.addStyleName("compactlegend");
+            popup.setHideOnMouseOut(false);
+            closeBtn.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
+                popup.setPopupVisible(false);
+
+            });
+            middleLayout.addComponent(popup);
+            middleLayout.setComponentAlignment(popup, Alignment.MIDDLE_RIGHT);
+            middleLayout.setExpandRatio(popup, comparePanel.getWidth() - 230);
+
+        } else {
+            middleLayout.setExpandRatio(legendContainer, comparePanel.getWidth() - 230);
+            legendContainer.addComponent(legend2);
+            legendContainer.setComponentAlignment(legend2, Alignment.MIDDLE_RIGHT);
+            legend2.addStyleName("marginright");
+
+            legendContainer.addComponent(legend);
+            legendContainer.setComponentAlignment(legend, Alignment.MIDDLE_RIGHT);
+            legend.addStyleName("marginright");
+
         }
 
     }
@@ -352,6 +410,7 @@ public abstract class CompareComponent extends BigBtn {
             Link idSearchingLink = new Link(idSearchIdentificationProtList, new ExternalResource(VaadinSession.getCurrent().getAttribute("csf_pr_Url") + "searchby:" + query.getSearchBy().replace(" ", "*") + "___searchkey:" + query.getSearchKeyWords().replace("\n", "__").replace(" ", "*")));
             idSearchingLink.setTargetName("_blank");
             idSearchingLink.setStyleName(ValoTheme.LINK_SMALL);
+            idSearchingLink.addStyleName("smalllink");
             idSearchingLink.setDescription("View protein id results in CSF-PR v1.0");
 //            idSearchingLink.setWidth(defaultText);
             idDataResult.addComponent(idSearchingLink);

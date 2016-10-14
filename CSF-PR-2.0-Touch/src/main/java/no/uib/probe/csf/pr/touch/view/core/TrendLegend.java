@@ -6,13 +6,15 @@
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.PopupView;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -151,6 +153,10 @@ public class TrendLegend extends GridLayout {
 
     }
 
+    
+
+    Set<HorizontalLayout> labelsSet = new HashSet<>();
+
     private HorizontalLayout generateItemLabel(String label, String style) {
 
         HorizontalLayout labelLayout = new HorizontalLayout();
@@ -162,12 +168,13 @@ public class TrendLegend extends GridLayout {
         icon.setStyleName(style);
         labelLayout.addComponent(icon);
         Label l = new Label(label);
+
         labelLayout.addComponent(l);
         l.setHeight(10, Unit.PIXELS);
         l.setStyleName(ValoTheme.LABEL_BOLD);
         l.addStyleName(ValoTheme.LABEL_SMALL);
         l.addStyleName(ValoTheme.LABEL_TINY);
-
+        labelsSet.add(labelLayout);
         return labelLayout;
 
     }

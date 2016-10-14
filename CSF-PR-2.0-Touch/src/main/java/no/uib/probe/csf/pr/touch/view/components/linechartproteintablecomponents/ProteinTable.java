@@ -138,8 +138,6 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         selectedProteinsList.stream().forEach((protein) -> {
             if (tableProteinsToIDMap.containsKey(protein.getProteinAccession())) {
                 filteredItemIds.add(tableProteinsToIDMap.get(protein.getProteinAccession()));
-            } else {
-                System.out.println("at not exist acc " + protein.getProteinAccession());
             }
 
         });
@@ -328,7 +326,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
             comparisonLayout.noFilter();
         });
         if (userCustomizedComparison != null) {
-            custUserComparisonSortingLayout.setAsDefault();
+            custUserComparisonSortingLayout.setAsDefault();            
             custUserComparisonSortingLayout.sort(false, -1);
         }
     }
@@ -367,6 +365,17 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         if (comparisonIndex == -1) {
             mainProteinTable.sort(new String[]{"userdata"}, new boolean[]{upSort});
             this.sortingHeader = "userdata";
+            int index = 0;
+            for (ColumnHeaderLayout comparisonLayout : columnHeaderSet) {
+                
+                if (index == comparisonIndex) {
+                    index++;
+                    continue;
+                }
+                comparisonLayout.noSort();
+                index++;
+            }
+
             int indexing = 1;
             for (Object id : mainProteinTable.getItemIds()) {
                 Item item = mainProteinTable.getItem(id);
@@ -439,7 +448,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         topLayout.addComponent(spacer);
         this.userSortingHeaderWrapper = new VerticalLayout();
         userSortingHeaderWrapper.setHeight(20, Unit.PIXELS);
-        userSortingHeaderWrapper.addStyleName("bluelayout");
+        userSortingHeaderWrapper.addStyleName("custuserdataheader");
 //        userSortingHeaderWrapper.setHeight(100,Unit.PERCENTAGE);
         topLayout.addComponent(userSortingHeaderWrapper);
         topLayout.setComponentAlignment(userSortingHeaderWrapper, Alignment.TOP_RIGHT);
@@ -447,6 +456,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         topComparisonsContainer.setHeight(100, Unit.PERCENTAGE);
 //        topComparisonsContainer.setStyleName("spacing");
         topComparisonsContainer.addStyleName("toptablelayout");
+        topComparisonsContainer.addStyleName("marginleft-12");
         topLayout.addComponent(topComparisonsContainer);
 
         this.addComponent(topLayout);
@@ -459,7 +469,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         this.tableProteinsToIDMap = new HashMap<>();
         tableItemscheckboxMap = new HashMap<>();
 
-        this.mainProteinTable = initMainTable(height, width, false);
+//        this.mainProteinTable = initMainTable(height, width, false);
     }
 
     private Table initMainTable(int height, int width, boolean showUserData) {
@@ -629,16 +639,19 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         tableItemsMap.clear();
         tableProteinsToIDMap.clear();
         tableItemscheckboxMap.clear();
-        this.mainProteinTable.removeValueChangeListener(ProteinTable.this);
-        mainProteinTable.removeAllItems();
+//        
+//        this.mainProteinTable.removeValueChangeListener(ProteinTable.this);
+//        mainProteinTable.removeAllItems();
         chartComponentsLayout = null;
 
         filtersMap.clear();
 
         if (userCustomizedComparison != null) {
             spacer.removeAllComponents();
+            mainProteinTable = initMainTable(height, width, true);
             if (mainProteinTable.isColumnCollapsed("userdata")) {
                 mainProteinTable.setColumnCollapsed("userdata", false);
+                topComparisonsContainer.removeStyleName("marginleft-12");
 //                mainProteinTable.setColumnWidth("userdata", 30);
 //                availableProteinLayoutWidth = availableProteinLayoutWidth - 30;
                 mainProteinTable.setColumnWidth("Comparisons Overview", availableProteinLayoutWidth);
@@ -647,14 +660,15 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
             }
 
         } else {
-            if (!mainProteinTable.isColumnCollapsed("userdata")) {
-                mainProteinTable.setColumnCollapsed("userdata", true);
+            mainProteinTable = initMainTable(height, width, false);
+//            if (!mainProteinTable.isColumnCollapsed("userdata")) {
+            mainProteinTable.setColumnCollapsed("userdata", true);
+            topComparisonsContainer.addStyleName("marginleft-12");
 //                availableProteinLayoutWidth = availableProteinLayoutWidth + 30;
-                mainProteinTable.setColumnWidth("Comparisons Overview", availableProteinLayoutWidth);
-                topComparisonsContainer.setWidth(availableProteinLayoutWidth - 10, Unit.PIXELS);
+            mainProteinTable.setColumnWidth("Comparisons Overview", availableProteinLayoutWidth);
+            topComparisonsContainer.setWidth(availableProteinLayoutWidth - 10, Unit.PIXELS);
 
-            }
-
+//            }
         }
 
         this.fullSselectedProteinsList = selectedProteinsList;
@@ -737,6 +751,8 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         updateComparisonsHeader(selectedComparisonsList);
         ColumnHeaderLayout defaultSorting;
         if (userCustomizedComparison != null) {
+            columnHeaderSet.iterator().next().sort(false, 0);
+            
             defaultSorting = custUserComparisonSortingLayout;
             defaultSorting.sort(false, -1);
         } else {
@@ -777,8 +793,8 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         Map<Integer, Float> comparisonIndexLocation = new LinkedHashMap<>();
         while (itr.hasNext()) {
             TrendSymbol square = (TrendSymbol) itr.next();
-            comparisonIndexLocation.put((Integer) square.getParam("comparisonIndex"), chartComponentsLayout.getPosition(square).getLeftValue()-2);
-           }
+            comparisonIndexLocation.put((Integer) square.getParam("comparisonIndex"), chartComponentsLayout.getPosition(square).getLeftValue());
+        }
 
         for (QuantDiseaseGroupsComparison comparison : selectedComparisonsList) {
             comparisonLayout = new ColumnHeaderLayout(comparison, index) {
@@ -801,9 +817,9 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
 
             };
             filtersMap.put(comparison, null);
-           
+
             topComparisonsContainer.addComponent(comparisonLayout, "left: " + comparisonIndexLocation.get(index) + "px; top: " + 0 + "px;");
-            columnHeaderSet.add(comparisonLayout); 
+            columnHeaderSet.add(comparisonLayout);
             index++;
 
         }

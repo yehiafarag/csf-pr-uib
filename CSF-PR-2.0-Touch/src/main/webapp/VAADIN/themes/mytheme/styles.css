@@ -1599,7 +1599,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme.v-app, .mytheme.v-app-loading {
-    font: 300 16px/1.55 "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei New", "Microsoft Yahei", SimSun, STXihei, sans-serif;
+    font: 300 14px/1.55 "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei New", "Microsoft Yahei", SimSun, STXihei, sans-serif;
     color: #464646;
     background-color: #fafafa;
 }
@@ -14720,6 +14720,8 @@ div.v-layout.v-horizontal.v-widget {
      background-position:center;
     background-size:10px 5px;
     cursor:pointer;
+    
+    width:16px !important;
 
     box-shadow:0px 0px 0px rgba(182,179, 179, 0.2), inset 0px 5px 10px rgba(182, 179, 179, 0.7) !important;
     -webkit-box-shadow:0px 0px 0px rgba(182,179, 179, 0.2), inset 0px 5px 10px rgba(182, 179, 179, 0.7) !important;
@@ -14732,6 +14734,8 @@ div.v-layout.v-horizontal.v-widget {
     background-position:center;
     background-size:10px 5px;
     cursor:pointer;
+    
+    width:16px !important;
     box-shadow:0px 0px 0px rgba(182,179, 179, 0.2), inset 0px 5px 10px rgba(182, 179, 179, 0.7) !important;
     -webkit-box-shadow:0px 0px 0px rgba(182,179, 179, 0.2), inset 0px 5px 10px rgba(182, 179, 179, 0.7) !important;
     -moz-box-shadow:0px 0px 0px rgba(182,179, 179, 0.2), inset 0px 5px 10px rgba(182, 179, 179, 0.7) !important;
@@ -14749,15 +14753,16 @@ div.v-layout.v-horizontal.v-widget {
     background-position:center;
     background-color:white;
     background-repeat:no-repeat;
-    background-size:13px;
+    background-size:10px;
     cursor:pointer;
+    width:16px !important;
 }
 .selectedfilter{
     background-image: url(img/filter_dark.png) !important;
     background-position:center;
     background-color:white;
     background-repeat:no-repeat;
-    background-size:13px;
+    background-size:10px;
     cursor:pointer;
 }
 .maxmizebtn{
@@ -15498,7 +15503,7 @@ div.v-layout.v-horizontal.v-widget {
     font-size: 9px !important;
 }
 .user{
-    border: 1px solid #8210B0;
+    border: 2px solid #8210B0;
     border-radius:2px;
     line-height:100%;   
     z-index: 1000000000 !important;
@@ -15513,6 +15518,10 @@ div.v-layout.v-horizontal.v-widget {
     
   
 
+}
+.marginleft-12{
+margin-left:-12px !important;
+    
 }
 .proteintablestyle{
     margin-top: -34px;
@@ -15792,4 +15801,25 @@ tbody{
     padding-bottom:5px !important;
     font-size:10px !important;
    
+}
+.v-link-smalllink a{
+    font-size:12px;
+    
+    
+}
+.compactlegend{
+    border: 2px solid lightgray;
+    padding-top: 5px !important;
+    padding-left: 5px !important;
+    padding-bottom: 5px;
+}
+.marginright20{
+    margin-right:30px;
+}
+.compactlegend .legendarrow-up100{
+    margin-left:5px !important;
+}
+.custuserdataheader{
+    padding-left:17px !important;
+  
 }

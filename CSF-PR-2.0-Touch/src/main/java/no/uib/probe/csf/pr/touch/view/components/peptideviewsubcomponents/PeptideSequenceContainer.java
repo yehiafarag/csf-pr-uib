@@ -323,9 +323,7 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
         allPeptidesStackedBarComponentsMap.stream().forEach((peptideLayout) -> {
 
             String pepSeq = peptideLayout.getParam("sequence").toString();
-            if (!sequence.contains(pepSeq)) {
-                System.out.println("at not exist  " + pepSeq);
-            } else {
+            if (sequence.contains(pepSeq))  {
                 int start = sequence.split(pepSeq)[0].length() + 1;
                 int end = start + pepSeq.length() - 1;
                 if (endPostionOnLayout[start - 2] == 0 ||(endPostionOnLayout[start - 2] > 0 && endPostionOnLayout[start - 2] < end)) {
