@@ -450,7 +450,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         });
     }
 
-    private void resetFilters() {
+    public void resetFilters() {
         filtersSet.values().stream().forEach((filter) -> {
             filter.reset();
         });

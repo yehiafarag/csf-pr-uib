@@ -14096,6 +14096,7 @@ div.v-layout.v-horizontal.v-widget {
     background: whitesmoke;
     border-radius:4px;
     margin-left:-2px;
+    margin-top: 1px;
 
 
 }
@@ -14112,8 +14113,10 @@ div.v-layout.v-horizontal.v-widget {
 
 }
 .grab{
-    cursor: -webkit-grab !important;;
-    cursor: -moz-grab !important;
+    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
 
 
 }
@@ -15232,7 +15235,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .v-slot-hidescrolllayout{
-    -webkit-transition: all 1.5s ease-in-out;
+    -webkit-transition: all 0.5s ease-in-out;
     -moz-transition: all 1.5s ease-in-out;
     -o-transition: all 1.5s ease-in-out;
     transition: all 1.5s ease-in-out;
@@ -15830,4 +15833,7 @@ tbody{
 .custuserdataheader{
     padding-left:17px !important;
   
+}
+.v-checkbox-disabled{
+    opacity:0.5 !important;
 }

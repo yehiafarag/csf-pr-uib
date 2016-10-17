@@ -142,6 +142,7 @@ public class SortableLayoutContainer extends VerticalLayout {
         counterLayoutContainer.setComponentAlignment(counterLayout, Alignment.TOP_RIGHT);
         counterLayout.setWidth(100, Unit.PERCENTAGE);
         counterLayout.setSpacing(false);
+        
 
 //        int sortableItremWidth =  containerWidth - 26 - 6 - 15;
         sortableDiseaseGroupLayout = new SortableLayout();
@@ -161,6 +162,7 @@ public class SortableLayoutContainer extends VerticalLayout {
         checkboxLayout.setMargin(false);
 
         diseaseGroupSelectOption = new OptionGroup();
+       
         checkboxLayout.addComponent(diseaseGroupSelectOption);
         checkboxLayout.setComponentAlignment(diseaseGroupSelectOption, Alignment.TOP_LEFT);
         diseaseGroupSelectOption.setHeight(100, Unit.PERCENTAGE);
@@ -213,7 +215,6 @@ public class SortableLayoutContainer extends VerticalLayout {
         for (final VerticalLayout component : createComponents(headers)) {
             VerticalLayout container = new VerticalLayout();
             container.setWidth(100, Unit.PERCENTAGE);
-//            container.setHeight(20,Unit.PIXELS);
             container.setStyleName("countItem");
             Label label = new Label(counter + 1 + "");
             container.addComponent(label);
@@ -227,6 +228,7 @@ public class SortableLayoutContainer extends VerticalLayout {
 
             counter++;
         }
+        counterLayout.setHeight((24*counterLayout.getComponentCount()),Unit.PIXELS);
 
         bodyPanel.setHeight(Math.min(maxHeight, 25 * (counter)), Unit.PIXELS);
         diseaseGroupSelectOption.setHeight(25 * (counter-1), Unit.PIXELS);
@@ -360,6 +362,7 @@ public class SortableLayoutContainer extends VerticalLayout {
             DiseaseGroupLabel container = new DiseaseGroupLabel(strLabel.getDiseaseGroupName(), strLabel.getDiseaseStyleName());
             container.addStyleName("border");
             container.addStyleName("grab");
+            container.setDescription(strLabel.getDiseaseGroupFullName());
             componentsList.add(container);
             groupSelectionMap.put(strLabel, Boolean.TRUE);
             groupsIds.add(strLabel);

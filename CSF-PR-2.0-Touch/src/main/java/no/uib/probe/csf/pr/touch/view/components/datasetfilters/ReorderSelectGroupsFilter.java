@@ -80,11 +80,7 @@ public abstract class ReorderSelectGroupsFilter extends VerticalLayout implement
         diseaseGroupsContaioner.setWidth(100, Unit.PERCENTAGE);
         diseaseGroupsContaioner.setSpacing(true);
 
-        int h;
-//        if (!smallScreen) {
-//            popupBody.addStyleName("padding20");
-//            popupBody.setMargin(true);
-            h = 250;
+        int  h = 250;
 
             popupBody.setHeight(screenHeight - 180, Unit.PIXELS);
 //        } else {

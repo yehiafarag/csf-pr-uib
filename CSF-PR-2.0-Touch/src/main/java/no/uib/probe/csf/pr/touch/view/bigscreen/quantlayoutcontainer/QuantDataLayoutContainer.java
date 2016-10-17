@@ -71,10 +71,18 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
             }
 
             heatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), tempFullComparison);
-            if (compList == null || compList.isEmpty()) {
-                updateCurrentLayout("heatmap");
+
+//            if (compList == null || compList.isEmpty()) {
+//                updateCurrentLayout("heatmap");
+//
+//            }
+            if (type.equalsIgnoreCase("quant_compare")) {
+                bubblechartComponent.setUserCustomizedComparison(CSFPR_Central_Manager.getQuantSearchSelection().getUserCustComparison());
+                lineChartProteinTableComponent.setUserCustomizedComparison(CSFPR_Central_Manager.getQuantSearchSelection().getUserCustComparison());
 
             }
+            heatmapComponent.selectAll();
+            updateCurrentLayout("proteintable");
 
             //
 //            bubblechartComponent.addCustmisedUserDataCompariosn(null);
@@ -98,39 +106,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
 
             //reset heatmap and unselect all
         }
-        if (type.equalsIgnoreCase("quant_compare")) {
-
-            //reset main quant data in handler
-            //done
-            //update initial layout
-//            quantInitialLayout.updateData(CSFPR_Central_Manager.getQuantSearchSelection().getDiseaseCategoriesIdMap());
-//
-//            //update heatmap
-//            Set<QuantDiseaseGroupsComparison> compList = CSFPR_Central_Manager.getSelectedComparisonsList();
-//            heatmapComponent.unselectAll();
-//             heatmapComponent.showSerumDs();
-//             heatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), Data_handler.getFullQuantDsMap());
-//            if (compList == null || compList.isEmpty()) {
-//                updateCurrentLayout("heatmap");
-//
-//            }            
-            bubblechartComponent.setUserCustomizedComparison(CSFPR_Central_Manager.getQuantSearchSelection().getUserCustComparison());
-            lineChartProteinTableComponent.setUserCustomizedComparison(CSFPR_Central_Manager.getQuantSearchSelection().getUserCustComparison());
-//            if (CSFPR_Central_Manager.getQuantSearchSelection().getUserCustComparison() == null) {
-//                heatmapComponent.unselectAll();
-//                quantInitialLayout.updateSelection("All Diseases");
-//                this.updateCurrentLayout("heatmap");
-//
-//                return;
-//            }
-////
-//////            quantInitialLayout.updateSelection(CSFPR_Central_Manager.getQuantSearchSelection().getDiseaseCategory());
-////           
-////            heatmapComponent.selectComparisonsByID(CSFPR_Central_Manager.getQuantSearchSelection().getDatasetIds());
-//            this.updateCurrentLayout("proteintable");
-//            lineChartProteinTableComponent.filterSearchSelection(CSFPR_Central_Manager.getQuantSearchSelection().getKeyWords());
-
-        } else if (type.equalsIgnoreCase("comparisons_selection")) {
+        if (type.equalsIgnoreCase("comparisons_selection")) {
 
             Set<QuantDiseaseGroupsComparison> compList = CSFPR_Central_Manager.getSelectedComparisonsList();
             if (compList == null || compList.isEmpty()) {
@@ -242,7 +218,6 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
 
 //        controlBtnsContainer.addComponent(info);
 //        controlBtnsContainer.setVisible(false);
-
 //        this.setInitialLayout(quantInitialLayout.getMiniLayout(), quantInitialLayout, controlBtnsContainer);
         this.addButton(quantInitialLayout.getMiniLayout(), quantInitialLayout, null, true);
 

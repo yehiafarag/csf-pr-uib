@@ -176,7 +176,7 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
         title.setWidth(130, Unit.PIXELS);
         diseaseCategorySelectLayout.addComponent(title);
         diseaseCategorySelectLayout.setComponentAlignment(title, Alignment.TOP_CENTER);
-        diseaseTypeSelectionList.setWidth((int) (screenWidth - 130 - 80), Unit.PIXELS);
+        diseaseTypeSelectionList.setWidth((int) (screenWidth - 130 - 93), Unit.PIXELS);
         diseaseTypeSelectionList.setNullSelectionAllowed(false);
         diseaseTypeSelectionList.setValue("All Diseases");
         diseaseTypeSelectionList.setImmediate(true);
@@ -214,7 +214,7 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
         diseaseGroupsNamesContainer.setStyleName("whitelayout");
         GridLayout diseaseNamesHeader = new GridLayout(2, 1);
 
-        diseaseNamesHeader.setWidth((screenWidth - 80), Unit.PIXELS);
+        diseaseNamesHeader.setWidth((screenWidth - 90), Unit.PIXELS);
         diseaseNamesHeader.setHeightUndefined();
         diseaseNamesHeader.setSpacing(true);
         diseaseNamesHeader.setMargin(false);
@@ -234,7 +234,7 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
 
         col2Label.setStyleName(ValoTheme.LABEL_SMALL);
         col2Label.addStyleName(ValoTheme.LABEL_BOLD);
-        col2Label.addStyleName("marginleft5");
+//        col2Label.addStyleName("marginleft5");
         diseaseNamesHeader.addComponent(col2Label, 1, 0);
         col2Label.setWidthUndefined();
         diseaseNamesHeader.setComponentAlignment(col2Label, Alignment.TOP_LEFT);
@@ -246,7 +246,7 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
         diseaseNamesUpdateContainerLayout.setWidth(100, Unit.PERCENTAGE);
         diseaseNamesUpdateContainerLayout.setMargin(false);
         diseaseCategorySet.stream().filter((diseaseCategory) -> !(diseaseCategory.getDiseaseCategory().equalsIgnoreCase("All Diseases"))).forEach((diseaseCategory) -> {
-            HorizontalLayout diseaseNamesUpdateContainer = initDiseaseNamesUpdateContainer(diseaseCategory, (screenWidth-80));
+            HorizontalLayout diseaseNamesUpdateContainer = initDiseaseNamesUpdateContainer(diseaseCategory, (screenWidth-110));
             diseaseNamesUpdateContainerLayout.addComponent(diseaseNamesUpdateContainer);
             diseaseNamesUpdateContainerLayout.setComponentAlignment(diseaseNamesUpdateContainer, Alignment.TOP_CENTER);
             diseaseGroupsGridLayoutMap.put(diseaseCategory.getDiseaseCategory(), diseaseNamesUpdateContainer);

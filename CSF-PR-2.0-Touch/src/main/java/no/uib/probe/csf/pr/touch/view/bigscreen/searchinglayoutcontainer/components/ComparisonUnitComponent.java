@@ -125,34 +125,35 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
         diseaseGroupsListB.setNullSelectionAllowed(true);
         diseaseGroupsListB.setPageLength(30);
 
-        Label selectionResultsLabel = new Label("Selection:");
-        selectionResultsLabel.setStyleName(ValoTheme.LABEL_TINY);
-        selectionResultsLabel.addStyleName(ValoTheme.LABEL_SMALL);
-        frame.addComponent(selectionResultsLabel);
+//        Label selectionResultsLabel = new Label("Selection:");
+//        selectionResultsLabel.setStyleName(ValoTheme.LABEL_TINY);
+//        selectionResultsLabel.addStyleName(ValoTheme.LABEL_SMALL);
+//        frame.addComponent(selectionResultsLabel);
 
         diseaseGroupNames = CSFPR_Handler.getFullDiseaseGroupNameSet();
         diseaseGroupsListA.addItem("Group A");
         diseaseGroupsListB.addItem("Group B");
+        
         for (String str : diseaseGroupNames) {
             diseaseGroupsListA.addItem(str);
             diseaseGroupsListB.addItem(str);
         }
 
         Property.ValueChangeListener diseaseGroupsListListener = (Property.ValueChangeEvent event) -> {
-            String value = "Selection:   ";
+//            String value = "Selection:   ";
             if (diseaseGroupsListA.getValue() != null) {
                 diseaseGroupsListA.setRequired(false);
-                value += diseaseGroupsListA.getValue().toString();
+//                value += diseaseGroupsListA.getValue().toString();
                 sorterRows = diseaseGroupNames.contains(diseaseGroupsListA.getValue().toString().trim());
             }
 
             if (diseaseGroupsListB.getValue() != null) {
                 diseaseGroupsListB.setRequired(false);
-                value += " / " + diseaseGroupsListB.getValue().toString();
+//                value += " / " + diseaseGroupsListB.getValue().toString();
                 sortColumns = diseaseGroupNames.contains(diseaseGroupsListB.getValue().toString().trim());
 //                    reset();
             }
-            selectionResultsLabel.setValue(value);
+//            selectionResultsLabel.setValue(value);
             if ((diseaseGroupsListA.getValue() != null) && (diseaseGroupsListB.getValue() != null)) {
                 if (diseaseGroupsListA.getValue().toString().trim().equalsIgnoreCase(diseaseGroupsListB.getValue().toString().trim())) {
                     sorterRows = sortColumns = false;

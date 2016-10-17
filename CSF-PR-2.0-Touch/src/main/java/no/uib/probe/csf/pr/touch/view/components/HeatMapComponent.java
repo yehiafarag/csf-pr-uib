@@ -95,6 +95,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
             @Override
             public void updateSystem(Set<Integer> selectedDatasetIds) {
                 updateSystemComponents(selectedDatasetIds);
+                
             }
 
             @Override
@@ -122,6 +123,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
             @Override
             public void updateSystem(Map<String, Map<String, String>> updatedGroupsNamesMap) {
                 updateCombinedGroups(updatedGroupsNamesMap);
+                reorderSelectBtn.updateData(rowheaders, colheaders, patientsGroupComparisonsSet);
             }
 
         };
@@ -136,6 +138,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
             @Override
             public void updateSystem(LinkedHashSet<HeatMapHeaderCellInformationBean> rowHeaders, LinkedHashSet<HeatMapHeaderCellInformationBean> colHeaders) {
                 heatmapLayoutContainer.updateData(rowHeaders, colHeaders, patientsGroupComparisonsSet, fullQuantDsMap);
+                 datasetPieChartFiltersBtn.resetFilters();
             }
 
         };
@@ -158,7 +161,9 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
                     }
                 }
 
+               
                 updateSystemComponents(datasetPieChartFiltersBtn.checkAndFilter(updatedDsIds));
+                reorderSelectBtn.updateData(rowheaders, colheaders, patientsGroupComparisonsSet);
             }
         };
 
@@ -278,6 +283,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
 
         serumCsfFilter.resetFilter();
         reorderSelectBtn.updateData(rowheaders, colheaders, patientsGroupComparisonsSet);
+        
 
     }
 
@@ -432,6 +438,10 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
 
     public void unselectAll() {
         this.heatmapLayoutContainer.unselectAll();
+    }
+    
+     public void selectAll() {
+        this.heatmapLayoutContainer.selectAll();
     }
 
     /**
