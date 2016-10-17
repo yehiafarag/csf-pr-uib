@@ -78,7 +78,7 @@ public class PopupWindowFrame{
     }
 
     public void setFrameWidth(int width) {
-        popupWindow.setWidth(width, Unit.PIXELS);
+        popupWindow.setWidth(width-20, Unit.PIXELS);
         popupBody.setWidth(popupWindow.getWidth() - 24, Unit.PIXELS);
     }
 

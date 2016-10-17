@@ -82,7 +82,7 @@ public abstract class SearchingComponent extends BigBtn {
         h1 = 225;
         if (this.smallScreen) {
             searchingPanel.setHeight(Page.getCurrent().getBrowserWindowHeight(), Unit.PIXELS);
-            searchingPanel.setWidth(Page.getCurrent().getBrowserWindowWidth(), Unit.PIXELS);
+            searchingPanel.setWidth(Page.getCurrent().getBrowserWindowWidth()-20, Unit.PIXELS);
         }
         searchingUnit = new SearchingUnitComponent(h1, (int) searchingPanel.getWidth() - 24, false) {
 

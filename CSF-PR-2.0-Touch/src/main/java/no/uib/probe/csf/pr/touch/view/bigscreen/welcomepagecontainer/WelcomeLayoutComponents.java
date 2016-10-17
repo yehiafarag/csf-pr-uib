@@ -528,7 +528,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         linksIconsLayout.setComponentAlignment(uib_ico, Alignment.MIDDLE_RIGHT);
         linksIconsLayout.setComponentAlignment(kgj_ico, Alignment.MIDDLE_RIGHT);
 
-        Label para_3 = new Label("<p align='justify' Style='text-align: justify;text-justify: inter-word;font-size: 10px;color: black;/* font-weight: bold; */line-height: 20px;'><font>CSF-PR is being developed by the <a class='link' href='http://www.uib.no/rg/probe' target='_blank'>Proteomics Unit</a> at the<a class='link' href='http://www.uib.no/biomedisin/en' target='_blank'> Department of Biomedicine at the University of Bergen, Norway</a>, in close collaboration with <a class='link' href='http://www.uib.no/en/rg/kgj-ms' target='_blank'> the Kristian Gerhard Jebsen Centre for MS Research, Haukeland University Hospital, Bergen, Norway.</a></font></p>");
+        Label para_3 = new Label("<p align='justify' Style='text-align: justify;text-justify: inter-word;font-size: 10px;color: black;/* font-weight: bold; */line-height: 20px;'><font>CSF-PR is being developed by the <a class='link' href='http://www.uib.no/rg/probe' target='_blank'>Proteomics Unit</a> at the <a class='link' href='http://www.uib.no/biomedisin/en' target='_blank'>Department of Biomedicine at the University of Bergen, Norway</a>, in close collaboration with <a class='link' href='http://www.uib.no/en/rg/kgj-ms' target='_blank'> the Kristian Gerhard Jebsen Centre for MS Research, Haukeland University Hospital, Bergen, Norway</a>.</font></p>");
         para_3.setContentMode(ContentMode.HTML);
         para_3.setWidth(45, Unit.PERCENTAGE);
         footerLayout.addComponent(para_3, "left: 0px; top: " + 0 + "px");

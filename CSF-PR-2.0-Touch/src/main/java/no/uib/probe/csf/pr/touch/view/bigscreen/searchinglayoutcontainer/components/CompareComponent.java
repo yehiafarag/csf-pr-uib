@@ -82,11 +82,11 @@ public abstract class CompareComponent extends BigBtn {
         int h1;
         if (this.smallScreen) {
             comparePanel.setHeight(Page.getCurrent().getBrowserWindowHeight(), Unit.PIXELS);
-            comparePanel.setWidth(Page.getCurrent().getBrowserWindowWidth(), Unit.PIXELS);
+            comparePanel.setWidth(Page.getCurrent().getBrowserWindowWidth()-20, Unit.PIXELS);
             h1 = 440;
         } else {
             comparePanel.setHeight(comparePanel.getHeight() - 50, Unit.PIXELS);
-            comparePanel.setWidth(comparePanel.getWidth(), Unit.PIXELS);
+            comparePanel.setWidth(comparePanel.getWidth()-20, Unit.PIXELS);
             h1 = 440;//Math.min(((int) comparePanel.getHeight() / 2) - 30,460);
         }
         compareUnit = new ComparisonUnitComponent(Data_handler, h1, (int) comparePanel.getWidth() - 24, false) {
