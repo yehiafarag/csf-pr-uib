@@ -174,7 +174,7 @@ public abstract class ComparisonLable extends VerticalLayout implements LayoutEv
                 popupWindow.setFrameHeight(490);
 //                 frame.setHeight(450, Unit.PIXELS);
                } else {
-              popupWindow.setFrameHeight(670);
+              popupWindow.setFrameHeight(780);
 //               frame.setHeight(610, Unit.PIXELS);
             }
         });

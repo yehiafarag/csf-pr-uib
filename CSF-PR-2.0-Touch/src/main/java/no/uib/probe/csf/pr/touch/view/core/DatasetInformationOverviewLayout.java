@@ -27,6 +27,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         this.smallScreen = smallScreen;
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeight(100, Unit.PERCENTAGE);
+        this.addStyleName("scrollable");
         if (!smallScreen) {
             this.setSpacing(true);
         }
@@ -51,10 +52,11 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         VerticalLayout mainContainer = new VerticalLayout();
         mainContainer.setWidth(100, Unit.PERCENTAGE);
         mainContainer.setHeightUndefined();
+        mainContainer.addStyleName("scrollable");
         int h = 80;
-        if (smallScreen) {
-            h = 80;
-        }
+//        if (smallScreen) {
+//            h = 80;
+//        }
 
         mainContainer.setSpacing(true);
 
@@ -118,9 +120,9 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
 
         HorizontalLayout rowIV = new HorizontalLayout();
         rowIV.setWidth(100, Unit.PERCENTAGE);
-        if (smallScreen) {
+//        if (smallScreen) {
             rowIV.setHeight(h, Unit.PIXELS);
-        }
+//        }
         mainContainer.addComponent(rowIV);
 //
         patientsGroup1 = new InformationField("Patients Gr.I");
@@ -138,11 +140,11 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
 
         HorizontalLayout rowV = new HorizontalLayout();
         rowV.setWidth(100, Unit.PERCENTAGE);
-        if (smallScreen) {
+//        if (smallScreen) {
             rowV.setHeight(h, Unit.PIXELS);
-        } else {
-            rowV.setHeightUndefined();
-        }
+//        } else {
+//            rowV.setHeightUndefined();
+//        }
         mainContainer.addComponent(rowV);
 //
         patientsGroup2 = new InformationField("Patients Gr.II");
@@ -160,11 +162,11 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
 
         HorizontalLayout rowVI = new HorizontalLayout();
         rowVI.setWidth(100, Unit.PERCENTAGE);
-        if (smallScreen) {
+//        if (smallScreen) {
             rowVI.setHeight(h, Unit.PIXELS);
-        } else {
-            rowVI.setHeightUndefined();
-        }
+//        } else {
+//            rowVI.setHeightUndefined();
+//        }
         mainContainer.addComponent(rowVI);
 
         
@@ -185,11 +187,11 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
 
         HorizontalLayout rowVII = new HorizontalLayout();
         rowVII.setWidth(100, Unit.PERCENTAGE);
-        if (smallScreen) {
+//        if (smallScreen) {
             rowVII.setHeight(h, Unit.PIXELS);
-        } else {
-            rowVII.setHeightUndefined();
-        } 
+//        } else {
+//            rowVII.setHeightUndefined();
+//        } 
         quantProteinsNum = new InformationField("#Proteins");
         rowVII.addComponent(quantProteinsNum);
         mainContainer.addComponent(rowVII);
