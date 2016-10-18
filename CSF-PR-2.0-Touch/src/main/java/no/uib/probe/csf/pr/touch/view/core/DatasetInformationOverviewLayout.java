@@ -51,9 +51,9 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         VerticalLayout mainContainer = new VerticalLayout();
         mainContainer.setWidth(100, Unit.PERCENTAGE);
         mainContainer.setHeightUndefined();
-        int h = 60;
+        int h = 80;
         if (smallScreen) {
-            h = 42;
+            h = 80;
         }
 
         mainContainer.setSpacing(true);

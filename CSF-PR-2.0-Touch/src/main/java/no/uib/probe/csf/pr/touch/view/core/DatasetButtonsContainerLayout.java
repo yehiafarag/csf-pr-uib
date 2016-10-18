@@ -161,7 +161,7 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
         this.setSpacing(true);
 
         width = width * 90 / 100;
-        colNum = Math.max(1, width / 200);
+        colNum = Math.max(1, width / 210);
         btnsContainer = new GridLayout();
         btnsContainer.setWidth(100, Unit.PERCENTAGE);
         btnsContainer.setColumns(colNum);

@@ -15837,3 +15837,6 @@ tbody{
 .v-checkbox-disabled{
     opacity:0.5 !important;
 }
+.v-absolutelayout-wrapper-middledountchart div{    
+    border-radius:50%;
+}

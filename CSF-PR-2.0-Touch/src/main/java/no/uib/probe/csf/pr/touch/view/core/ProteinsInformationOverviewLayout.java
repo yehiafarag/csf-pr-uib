@@ -47,7 +47,7 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
 
         HorizontalLayout rowI = new HorizontalLayout();
         rowI.setWidth(100, Unit.PERCENTAGE);
-        rowI.setHeightUndefined();
+        rowI.setHeight(80, Unit.PIXELS);
         mainContainer.addComponent(rowI);
 //        proteinsFormLayout.setHeightUndefined();
         accsession = new InformationField("Accession");
@@ -64,7 +64,7 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
 
         HorizontalLayout rowII = new HorizontalLayout();
         rowII.setWidth(100, Unit.PERCENTAGE);
-        rowII.setHeightUndefined();
+        rowII.setHeight(80, Unit.PIXELS);
         mainContainer.addComponent(rowII);
 
         foldChange = new InformationField("Fold Change");
@@ -80,7 +80,7 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
 
         HorizontalLayout rowIII = new HorizontalLayout();
         rowIII.setWidth(100, Unit.PERCENTAGE);
-        rowIII.setHeightUndefined();
+        rowIII.setHeight(80, Unit.PIXELS);
         mainContainer.addComponent(rowIII);
 
         roc = new InformationField("ROC AUC");

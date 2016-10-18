@@ -34,7 +34,7 @@ public class InformationField extends VerticalLayout {
         titleLabel = new Label(title);
         this.addComponent(titleLabel);
         titleLabel.setStyleName("caption");
-        titleLabel.setHeight("100%");
+        titleLabel.setHeight(20,Unit.PIXELS);
         titleLabel.setWidth(200, Unit.PIXELS);
         titleLabel.addStyleName("minhight200");
         this.setComponentAlignment(titleLabel, Alignment.TOP_LEFT);
