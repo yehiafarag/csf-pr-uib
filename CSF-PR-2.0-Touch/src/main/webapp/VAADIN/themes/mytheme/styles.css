@@ -13234,92 +13234,9 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 
-.leftslidebtn{
-    -webkit-transition: all .5s ease-in-out;
-    -moz-transition: all .5s ease-in-out;
-    -o-transition: all .5s ease-in-out;
-    transition: all .5s ease-in-out;
-    background-image: url(img/chevron-circle-right-o.png);
-    background-repeat: no-repeat;
-    background-size:20px ;
-    background-position:center;
-    cursor: pointer;
-    background-color:whitesmoke;
-    padding: 5px;
-    cursor: pointer;   
-    border:1px solid lightgray;
-    border-radius: 4px;
-}
-.leftslidebtn:hover{
-    background-color: lightgray;
-    border-color: gray;
-}
-
-.rightslidebtn{
-    -webkit-transition: all .5s ease-in-out;
-    -moz-transition: all .5s ease-in-out;
-    -o-transition: all .5s ease-in-out;
-    transition: all .5s ease-in-out;
-    background-image: url(img/chevron-circle-left-o.png);
-    background-repeat: no-repeat;
-    background-size:20px ;
-    background-position:center;
-    cursor: pointer;
-    background-color:whitesmoke;
-    padding: 5px;
-    cursor: pointer;   
-    border:1px solid lightgray;
-    border-radius: 4px;
-}
-.rightslidebtn:hover{
-    background-color: lightgray;
-    border-color: gray;
-}
 
 
-.upscrollebtn{
-    -webkit-transition: all .5s ease-in-out;
-    -moz-transition: all .5s ease-in-out;
-    -o-transition: all .5s ease-in-out;
-    transition: all .5s ease-in-out;
 
-    background-image: url(img/chevron-circle-up-o.png);
-    background-repeat: no-repeat;
-    background-size:20px ;
-    background-position:center;
-    cursor: pointer;
-    background-color:whitesmoke;
-    padding: 5px;
-    cursor: pointer;   
-    border:1px solid lightgray;
-    border-radius: 4px;
-}
-.upscrollebtn:hover{
-    background-color: lightgray;
-    border-color: gray;
-}
-
-.downscrollbtn{
-    -webkit-transition: all .5s ease-in-out;
-    -moz-transition: all .5s ease-in-out;
-    -o-transition: all .5s ease-in-out;
-    transition: all .5s ease-in-out;
-    background-image: url(img/chevron-circle-down-o.png);
-    background-repeat: no-repeat;
-    background-size:20px ;
-    background-position:center;
-    cursor: pointer;
-    background-color:whitesmoke;
-    padding: 5px;
-    cursor: pointer;   
-    border:1px solid lightgray;
-    border-radius: 4px;
-
-}
-.downscrollbtn:hover{
-    background-color: lightgray;
-    border-color: gray;
-}
 .transformslidebtn{
     -webkit-transition: all .5s ease-in-out;
     -moz-transition: all .5s ease-in-out;
@@ -13841,34 +13758,7 @@ div.v-layout.v-horizontal.v-widget {
     -o-transition: all .5s ease-in-out;
     transition: all .5s ease-in-out;
 }
-.showfilterbtnlabel{
-    line-height: 1.55;
-    cursor: pointer; 
-    -webkit-user-select: none;
-    background-image: url(img/filters-128.png);
-    background-size:18px,18px;
-    background-repeat:no-repeat;
-    background-position:25% 70%,90% 70%;
-    cursor: pointer; 
-    font-stretch: normal;
-    font-style: normal;
-    font-variant: normal;
-    color:rgba(255, 255, 255, 0);
-    background-color:whitesmoke;
-    border:1px solid lightgray;
-    border-radius:4px;     
-    opacity:1;
-    transition:opacity 5s linear;
-    -webkit-transition: opacity 5s linear; /* For Safari 3.1 to 6.0 */
-    color:  #707070; 
-    padding:0 25px;
-    text-align:center;    
-}
-.showfilterbtnlabel:hover{
 
-    background-image: url(img/filters-128.png),  url(img/angle-double-up.png);
-
-}
 .filterbtn{
     background-color: whitesmoke;
     border: 1px solid lightgray;
