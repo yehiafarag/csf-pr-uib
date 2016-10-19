@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.database;
 
 import java.awt.Color;
@@ -12,8 +7,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -22,7 +15,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -44,13 +36,26 @@ import no.uib.probe.csf.pr.touch.view.core.OverviewInfoBean;
 public class DataBaseLayer implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private Connection conn = null;
-//    private Connection conn_i = null;
-    private final String url, dbName, driver, userName, password;
-    private final DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
-    private DecimalFormat df = null;
+    /**
+     * Database connection
+     */
+    private Connection conn;
 
+    /**
+     * Database connection input parameters
+     */
+    private final String url, dbName, driver, userName, password;
+
+    /**
+     * Map of the disease categories style - disease category name to disease
+     * category style
+     */
     private final Map<String, String> diseaseCategoryStyles = new HashMap<>();
+
+    /**
+     * Map of the disease categories color codes - disease category name to
+     * disease category color code(HTML Color code)
+     */
     private final Map<String, String> diseaseColorMap = new HashMap<>();
 
     /**
@@ -86,52 +91,10 @@ public class DataBaseLayer implements Serializable {
     public OverviewInfoBean getResourceOverviewInformation() {
         OverviewInfoBean infoBean = new OverviewInfoBean();
         try {
-            if (conn == null || conn.isClosed()) {
-                Class.forName(driver).newInstance();
-                conn = DriverManager.getConnection(url + dbName, userName, password);
-            }
-
-            String selectIdPublicationStudies = "SELECT COUNT(*) AS `Rows`, `pblication_link` FROM `experiments_table` GROUP BY `pblication_link` ORDER BY `pblication_link`";
-            PreparedStatement selectIdPublicationStudiesStat = conn.prepareStatement(selectIdPublicationStudies);
-
-            ResultSet rs = selectIdPublicationStudiesStat.executeQuery();
-            int numStudies = 0;
-            int numPublications = 0;
-
-            while (rs.next()) {
-                numStudies += rs.getInt("Rows");
-                numPublications++;
-
-            }
-            infoBean.setNumberOfIdPublication(numPublications);
-            infoBean.setNumberOfIdStudies(numStudies);
-
-            rs.close();
-//
-//            String selectIdProteinsNumber = "SELECT COUNT( DISTINCT  `prot_accession` ) AS `Rows` FROM  `experiment_protein_table` where `valid`='TRUE'  ;";
-//            PreparedStatement selectIdProteinsNumberStat = conn.prepareStatement(selectIdProteinsNumber);
-//
-//             rs = selectIdProteinsNumberStat.executeQuery();
             int numProteins;
-//
-//            while (rs.next()) {
-//                numProteins += rs.getInt("Rows");
-//            }
-//            infoBean.setNumberOfIdProteins(numProteins);
-//            rs.close();
-//            
-//            
-//            String selectIdPeptidesNumber = "SELECT COUNT( DISTINCT  `sequence` ) AS `Rows` FROM  `proteins_peptides_table` ;";
-//            PreparedStatement selectIdPeptidesNumberStat = conn.prepareStatement(selectIdPeptidesNumber);
-//
-//             rs = selectIdPeptidesNumberStat.executeQuery();
             int numPeptides;
-//
-//            while (rs.next()) {
-//                numPeptides += rs.getInt("Rows");
-//            }
-//            infoBean.setNumberOfIdPeptides(numPeptides);
-//            rs.close();
+
+            //number here are static until update the database
             infoBean.setNumberOfIdProteins(3081);
             infoBean.setNumberOfIdPeptides(28811);
             //quant data
@@ -139,12 +102,12 @@ public class DataBaseLayer implements Serializable {
             String selectQuantPublicationStudies = "SELECT COUNT( * ) AS  `Rows` ,  `pumed_id` FROM  `quant_dataset_table` GROUP BY  `pumed_id` ORDER BY  `pumed_id` ";
             PreparedStatement selectQuantPublicationStudiesStat = conn.prepareStatement(selectQuantPublicationStudies);
 
-            rs = selectQuantPublicationStudiesStat.executeQuery();
-            numStudies = 0;
-            numPublications = 0;
+            ResultSet rs = selectQuantPublicationStudiesStat.executeQuery();
+            int numStudies = 0;
+            int numPublications = 0;
 
             while (rs.next()) {
-                
+
                 numStudies += rs.getInt("Rows");
                 numPublications++;
 
@@ -179,7 +142,7 @@ public class DataBaseLayer implements Serializable {
             infoBean.setNumberOfQuantPeptides(numPeptides);
             rs.close();
 
-        } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+        } catch (SQLException e) {
             System.err.println("at error " + this.getClass().getName() + "  line 152  " + e.getLocalizedMessage());
         }
 
@@ -188,7 +151,7 @@ public class DataBaseLayer implements Serializable {
     }
 
     /**
-     * this method responsible for getting initial publication information
+     * This method responsible for getting initial publication information
      *
      * @return list of publications available in the the resource
      */
@@ -545,41 +508,6 @@ public class DataBaseLayer implements Serializable {
             /// check the colums one by one 
             boolean[] activeFilters = new boolean[]{false, false, false, false, true, true, false, true, true, true, false, true, false, false, false, false, false, false};
             disCatList.stream().forEach((str) -> {
-                //                String[] columnArr = new String[]{"`identified_proteins_number`", "`quantified_proteins_number`", "`analytical_method`", "`raw_data_available`", "`year`", "`type_of_study`", "`sample_type`", "`sample_matching`", "`technology`", "`analytical_approach`", "`enzyme`", "`shotgun_targeted`", "`quantification_basis`", "`quant_basis_comment`", "`patients_group_i_number`", "`patients_group_ii_number`", "`normalization_strategy`"};
-
-//                for (int index = 0; index < columnArr.length; index++) {
-//                    String selectPumed_id1 = "SELECT  `pumed_id`  FROM  `quant_dataset_table` WHERE `disease_category`=? GROUP BY  `pumed_id`, " + columnArr[index] + " ORDER BY  `pumed_id` ";
-//                    if (conn == null || conn.isClosed()) {
-//                        Class.forName(driver).newInstance();
-//                        conn = DriverManager.getConnection(url + dbName, userName, password);
-//                    }
-//                    selectPumed_idStat = conn.prepareStatement(selectPumed_id1);
-//                    selectPumed_idStat.setString(1, str);
-//                    rs = selectPumed_idStat.executeQuery();
-//                    int pumed_id_com_index = 0;
-//                    while (rs.next()) {
-//                        pumed_id_com_index++;
-//                    }
-//                    rs.close();
-//                    if (pumed_id_index != pumed_id_com_index) {
-//                        activeFilters[index] = true;
-//                    }
-//
-//                }
-//                activeFilters[0] = false;
-//                activeFilters[1] = false;
-//                activeFilters[2] = false;
-////                activeFilters[3] = true;
-//                activeFilters[4] = true;
-//                activeFilters[5] = true;
-//                activeFilters[7] = true;
-//                activeFilters[8] = true;
-//                activeFilters[9] = true;
-//                activeFilters[11] = true;
-//                activeFilters[10] = false;
-//                activeFilters[activeFilters.length - 2] = false;
-//                activeFilters[activeFilters.length - 3] = false;
-//                activeFilters[activeFilters.length - 4] = false;
                 activePieChartQuantFiltersDiseaseCategoryMap.put(str, activeFilters);
             });
             activePieChartQuantFiltersDiseaseCategoryMap.put("All Diseases", activeFilters);
@@ -646,37 +574,7 @@ public class DataBaseLayer implements Serializable {
             boolean[] activeFilters = new boolean[]{false, false, false, false, true, true, false, true, true, true, false, true, false, false, false, false, false, false};
             disCatList.stream().forEach((str) -> {
                 activePieChartQuantFiltersDiseaseCategoryMap.put(str, activeFilters);
-//                String[] columnArr = new String[]{"`identified_proteins_number`", "`quantified_proteins_number`", "`analytical_method`", "`raw_data_available`", "`year`", "`type_of_study`", "`sample_type`", "`sample_matching`", "`technology`", "`analytical_approach`", "`enzyme`", "`shotgun_targeted`", "`quantification_basis`", "`quant_basis_comment`", "`patients_group_i_number`", "`patients_group_ii_number`", "`normalization_strategy`"};
-////                boolean[] activeFilters = new boolean[columnArr.length];
-//                for (int index = 0; index < columnArr.length; index++) {
-//                    String selectPumed_id1 = "SELECT  `pumed_id`  FROM  `quant_dataset_table` WHERE " + stat + " AND `disease_category`=? GROUP BY  `pumed_id`, " + columnArr[index] + " ORDER BY  `pumed_id` ";
-//                    if (conn == null || conn.isClosed()) {
-//                        Class.forName(driver).newInstance();
-//                        conn = DriverManager.getConnection(url + dbName, userName, password);
-//                    }
-//                    selectPumed_idStat = conn.prepareStatement(selectPumed_id1);
-//                    selectPumed_idStat.setString(1, str);
-//                    rs = selectPumed_idStat.executeQuery();
-//                    int pumed_id_com_index = 0;
-//                    while (rs.next()) {
-//                        pumed_id_com_index++;
-//                    }
-//                    rs.close();
-//                    if (pumed_id_index != pumed_id_com_index) {
-//                        activeFilters[index] = true;
-//                    }
-//
-//                }
-//                activeFilters[0] = false;
-//                activeFilters[1] = false;
-//                activeFilters[2] = false;
-//                activeFilters[3] = true;
-//                activeFilters[4] = true;
-//                activeFilters[7] = false;
-//                activeFilters[activeFilters.length - 2] = false;
-//                activeFilters[activeFilters.length - 3] = false;
-//                activeFilters[activeFilters.length - 4] = false;
-//                activePieChartQuantFiltersDiseaseCategoryMap.put(str, activeFilters);
+
             });
             activePieChartQuantFiltersDiseaseCategoryMap.put("All Diseases", activeFilters);
         } catch (ClassNotFoundException e) {
@@ -788,7 +686,7 @@ public class DataBaseLayer implements Serializable {
             try (ResultSet rs = selectselectDsGroupNumStat.executeQuery()) {
                 datasetIdDesGrs = new HashMap<>();
                 while (rs.next()) {
-                    datasetIdDesGrs.put(rs.getInt("index"), new Object[]{rs.getInt("patients_group_i_number"), rs.getInt("patients_group_ii_number"), rs.getString("patient_group_i").trim(), rs.getString("patient_group_ii").trim(), rs.getString("patient_sub_group_i").trim(), rs.getString("patient_sub_group_ii").trim(), rs.getString("disease_category"),rs.getString("quantification_basis")});
+                    datasetIdDesGrs.put(rs.getInt("index"), new Object[]{rs.getInt("patients_group_i_number"), rs.getInt("patients_group_ii_number"), rs.getString("patient_group_i").trim(), rs.getString("patient_group_ii").trim(), rs.getString("patient_sub_group_i").trim(), rs.getString("patient_sub_group_ii").trim(), rs.getString("disease_category"), rs.getString("quantification_basis")});
                 }
             }
             sb = new StringBuilder();
@@ -901,9 +799,7 @@ public class DataBaseLayer implements Serializable {
                     QuantPeptide quantPeptide = new QuantPeptide();
                     quantPeptide.setDsKey(rs1.getInt("DsKey"));
                     quantPeptide.setProtIndex(rs1.getInt("prot_index"));
-//                    if ((quantPeptide.getProtIndex() == 701) || (quantPeptide.getProtIndex() == 1261) || (quantPeptide.getProtIndex() == 5671)) {
-//                        System.out.println("peptide exist ");
-//                    }
+
                     quantPeptide.setUniqueId(rs1.getInt("index"));
                     quantPeptide.setPeptideModification(rs1.getString("peptide_modification"));
                     quantPeptide.setPeptideSequence(rs1.getString("peptide_sequance"));
@@ -920,7 +816,7 @@ public class DataBaseLayer implements Serializable {
                     quantPeptide.setPeptideCharge(rs1.getInt("peptide_charge"));
                     quantPeptide.setAdditionalComments(rs1.getString("additional_comments"));
                     quantPeptide.setQuantBasisComment(rs1.getString("quant_bases_comments"));
-                    
+
                     quantPeptide.setPeptideSignature("__" + quantPeptide.getProtIndex() + "__" + quantPeptide.getDsKey() + "__");
 
                     quantPeptidetList.add(quantPeptide);
@@ -1000,17 +896,6 @@ public class DataBaseLayer implements Serializable {
                     x++;
                 }
             } else {  //peptide sequance
-//                int x = 0;
-//                for (String str : searchSet) {
-//                    if (x > 0) {
-//                        sb.append(" OR ");
-//                    }
-//                    sb.append("`sequance` LIKE (?)");//
-//                    qhandler.addQueryParam("String", "%" + str + "%");
-//                    x++;
-//                }
-//            }
-
                 int x = 0;
                 for (String str : searchSet) {
                     if (x > 0) {

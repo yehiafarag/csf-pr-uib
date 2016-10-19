@@ -234,11 +234,11 @@ public abstract class ReorderSelectGroupsFilter extends VerticalLayout implement
         Set<HeatMapHeaderCellInformationBean> labels = new LinkedHashSet<>();
         studiesIndexes = new LinkedHashSet<>();
         patientsGroupComparisonsSet.stream().forEach((pg) -> {
-            sel1.stream().filter((label) -> (pg.checkLabel(label.getDiseaseGroupName() + "__" + label.getDiseaseCategory()))).map((label) -> {
+            sel1.stream().filter((label) -> (pg.checkSameComparison(label.getDiseaseGroupName() + "__" + label.getDiseaseCategory()))).map((label) -> {
                 labels.add(fullCellInfoMap.get(pg.getValLabel(label.getDiseaseGroupName() + "__" + label.getDiseaseCategory())));
                 return label;
             }).forEach((_item) -> {
-                studiesIndexes.add(pg.getOriginalDatasetIndex());
+                studiesIndexes.add(pg.getQuantDatasetIndex());
             });
         });
 

@@ -341,7 +341,6 @@ public class DatasetUtility implements Serializable {
             diseaseGroupsI[i] = label1 + "__" + diseaseGroup.getDiseaseCategory() + "__" + diseaseGroup.getDiseaseStyleName();
             diseaseGroupsII[i] = label2 + "__" + diseaseGroup.getDiseaseCategory() + "__" + diseaseGroup.getDiseaseStyleName();
             diseaseGroup.setQuantDatasetIndex(ds.getDsKey());
-            diseaseGroup.setOriginalDatasetIndex(ds.getDsKey());
             diseaseComparisonSet.add(diseaseGroup);
             i++;
         }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch;
 
 import java.io.Serializable;
@@ -28,18 +23,25 @@ import no.uib.probe.csf.pr.touch.view.core.OverviewInfoBean;
  *
  * @author Yehia Farag
  *
- * this class responsible for handling the datasets across the system the
- * handler interact with both visualization and logic layer
+ * This class responsible for handling the datasets information across the
+ * system. The handler interact with both visualization and logic layer
  *
  *
  */
 public class Data_Handler implements Serializable {
 
+    /**
+     * This is the main logic layer
+     */
     private final CoreLogic coreLogic;
-    private final DatasetUtility Dataset_Util;
-    private final DataExporter exporter;
 
     /**
+     * This is the dataset utility class that has all active dataset information
+     */
+    private final DatasetUtility Dataset_Util;
+
+    /**
+     * Initialize the main Data Handler
      *
      * @param url database url
      * @param dbName database name
@@ -52,19 +54,18 @@ public class Data_Handler implements Serializable {
 
         this.coreLogic = new CoreLogic(url, dbName, driver, userName, password, filesURL);
         Dataset_Util = new DatasetUtility(coreLogic);
-        this.exporter = new DataExporter();
 
     }
-    
+
     /**
      * activate searching layout sub-data handler
      *
-     * @param searchSelection  search selection data
+     * @param searchSelection search selection data
      */
-    public void switchToSearchingMode(QuantSearchSelection searchSelection){
-    
-    this.Dataset_Util.switchToSearchingMode(searchSelection);
-    
+    public void switchToSearchingMode(QuantSearchSelection searchSelection) {
+
+        this.Dataset_Util.switchToSearchingMode(searchSelection);
+
     }
 
     /**
@@ -238,7 +239,7 @@ public class Data_Handler implements Serializable {
      * @return updated quant comparisons list
      */
     public Set<QuantDiseaseGroupsComparison> updateComparisonQuantProteins(Set<QuantDiseaseGroupsComparison> selectedQuantComparisonsList) {
-        return coreLogic.updateComparisonQuantProteins(selectedQuantComparisonsList,Dataset_Util.getInUse_DiseaseCat_DiseaseGroupMap());
+        return coreLogic.updateComparisonQuantProteins(selectedQuantComparisonsList, Dataset_Util.getInUse_DiseaseCat_DiseaseGroupMap());
 
     }
 
@@ -323,31 +324,26 @@ public class Data_Handler implements Serializable {
 
     }
 
-    
     /**
      * export accession list to csv file
      *
-     * @param proteinsList  list of protein accession
-     * @return  byte[] of the exported file
+     * @param proteinsList list of protein accession
+     * @return byte[] of the exported file
      */
     public byte[] exportProteinsListToCSV(Set<String> proteinsList) {
         return coreLogic.exportProteinsListToCSV(proteinsList);
 
     }
-    
+
     /**
-     * Export current datasets heat-map into image in pdf file
+     * get unmapped peptide set (the current version of the protein sequence in
+     * uniprot has changed) for current active dataset
+     *
+     * @return Set<QuantPeptide> of current unmapped peptides for the active
+     * dataset
      */
-    public void exportHeatmap(){
-//    exporter.exportHeatmap();
-    
+    public Set<QuantPeptide> getUnmappedPeptideSet() {
+        return coreLogic.getUnmappedPeptideSet();
     }
-    
-    public Set<QuantPeptide> getUnmappedPeptideSet(){
-    
-       return coreLogic.getUnmappedPeptideSet();
-    
-    }
-    
 
 }

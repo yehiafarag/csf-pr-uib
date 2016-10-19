@@ -13,7 +13,13 @@ import java.util.List;
  */
 public class QueryConstractorHandler {
 
+    /**
+     * List of Data type (String, Integer, Double)
+     */
     private final List<String> typeList = new ArrayList<>();
+    /**
+     * List of Data value
+     */
     private final List<String> valueList = new ArrayList<>();
 
     /**
@@ -43,10 +49,10 @@ public class QueryConstractorHandler {
                     selectStat.setString(x + 1, valueList.get(x));
 
                 } else if (type.equalsIgnoreCase("Integer")) {
-                    selectStat.setInt(x+1, Integer.valueOf(valueList.get(x)));
+                    selectStat.setInt(x + 1, Integer.valueOf(valueList.get(x)));
 
                 } else if (type.equalsIgnoreCase("double")) {
-                    selectStat.setDouble(x+1, Double.valueOf(valueList.get(x)));
+                    selectStat.setDouble(x + 1, Double.valueOf(valueList.get(x)));
 
                 }
 

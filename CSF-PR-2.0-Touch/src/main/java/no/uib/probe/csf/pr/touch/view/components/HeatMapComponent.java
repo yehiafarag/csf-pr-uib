@@ -324,7 +324,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         });
 
         for (int key : filteredQuantDsMap.keySet()) {
-            patientsGroupComparisonsSet.stream().filter((patientsGroupComparisons) -> (patientsGroupComparisons.getOriginalDatasetIndex() == key)).forEach((patientsGroupComparisons) -> {
+            patientsGroupComparisonsSet.stream().filter((patientsGroupComparisons) -> (patientsGroupComparisons.getQuantDatasetIndex()== key)).forEach((patientsGroupComparisons) -> {
                 filteredPatientsGroupComparisonsSet.add(patientsGroupComparisons);
             });
         }

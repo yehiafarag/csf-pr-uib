@@ -12,7 +12,6 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.window.WindowMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -33,41 +32,59 @@ import no.uib.probe.csf.pr.touch.view.MainLayout;
 @Widgetset("no.uib.probe.csf.pr.touch.CSF_PR_Widgetset")
 public class CSF_PR_UI extends UI {
 
+    /**
+     * This is main context parameters required for database access and file
+     * export
+     */
     private String dbURL, dbName, dbDriver, dbUserName, dbPassword, filesURL;
 
+    /**
+     * This is main application window width and height
+     */
     private int windowHeight, windowWidth;
+    /**
+     * This is main application layout container
+     */
     private MainLayout layout;
-    private final Window noti = new Window();
-    private boolean init = true, toReload = false;
 
+    /**
+     * This is notification window to notify users when they use small screen
+     */
+    private final Window notificationWindow = new Window();
+
+    /**
+     * Reload the page on changing width and height (turn touch devices to
+     * landscape orientation)
+     */
+    private boolean toReload = false;
+
+    /**
+     * This UI is the initial vaadin request method initialize non-component
+     * functionality.
+     */
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        noti.setWidth(60, Unit.PERCENTAGE);
-        noti.setHeight(20, Unit.PERCENTAGE);
-        noti.setClosable(false);
-        noti.setModal(true);
-        noti.setDraggable(false);
-        noti.setResizable(false);
-        noti.center();
-        noti.setVisible(false);
-        UI.getCurrent().addWindow(noti);
+        notificationWindow.setWidth(60, Unit.PERCENTAGE);
+        notificationWindow.setHeight(20, Unit.PERCENTAGE);
+        notificationWindow.setClosable(false);
+        notificationWindow.setModal(true);
+        notificationWindow.setDraggable(false);
+        notificationWindow.setResizable(false);
+        notificationWindow.center();
+        notificationWindow.setVisible(false);
+        UI.getCurrent().addWindow(notificationWindow);
         VerticalLayout container = new VerticalLayout();
         container.setSizeFull();
-        noti.addStyleName("notification");
-        noti.setWindowMode(WindowMode.NORMAL);
+        notificationWindow.addStyleName("notification");
+        notificationWindow.setWindowMode(WindowMode.NORMAL);
 
         Label message = new Label("Use landscape screen orientation (a bigger screen is recommended)");
-//         message.addStyleName(ValoTheme.LABEL_SPINNER);
         message.addStyleName(ValoTheme.LABEL_H2);
         message.setWidth(70, Unit.PERCENTAGE);
         container.addComponent(message);
         container.setComponentAlignment(message, Alignment.MIDDLE_CENTER);
-        noti.setContent(container);
+        notificationWindow.setContent(container);
 
-        //init param for DB
-//        if (Page.getCurrent().getWebBrowser().getScreenWidth() > 900) {
-//            Page.getCurrent().getJavaScript().execute("document.head.innerHTML +='<meta name=\"viewport\" content=\"maximum-scale = 1.0\">'");
-//        }
         ServletContext scx = VaadinServlet.getCurrent().getServletContext();
         dbURL = (scx.getInitParameter("url"));
         dbName = (scx.getInitParameter("dbName"));
@@ -104,21 +121,6 @@ public class CSF_PR_UI extends UI {
         layout = new MainLayout(dbURL, dbName, dbDriver, dbUserName, dbPassword, filesURL, windowWidth, windowHeight);
         appWrapper.addComponent(layout);
         appWrapper.setComponentAlignment(layout, Alignment.MIDDLE_CENTER);
-////
-////        JavaScript.getCurrent().addFunction("aboutToClose", (JsonArray arguments) -> {
-//////            System.out.println("at system is closing the tab   " + vaadinRequest.getContextPath());
-//////            Page.getCurrent().open(vaadinRequest.getContextPath(), "");
-////                    
-////        });
-//        Page.getCurrent().getJavaScript().execute("window.onbeforeunload = function (e) { var e = e || window.event; aboutToClose(); return; };");
-//        this.getWindows().iterator().next().addCloseListener(new Window.CloseListener() {
-//
-//            @Override
-//            public void windowClose(Window.CloseEvent e) {
-//               
-//                Notification.show("wndows are closing");
-//            }
-//        });
 
     }
 
@@ -126,16 +128,16 @@ public class CSF_PR_UI extends UI {
      * resize the layout on changing window size
      */
     private void resizeScreen() {
-        windowHeight = Math.max(615, Page.getCurrent().getBrowserWindowHeight() - 20);// Math.max(Page.getCurrent().getBrowserWindowHeight(), 1080);
-        windowWidth = Math.max(1004, Page.getCurrent().getBrowserWindowWidth() - 20);//Math.max(Page.getCurrent().getBrowserWindowWidth(), 1920);
+        windowHeight = Math.max(615, Page.getCurrent().getBrowserWindowHeight() - 20);
+        windowWidth = Math.max(1004, Page.getCurrent().getBrowserWindowWidth() - 20);
         if (Page.getCurrent().getWebBrowser().isTouchDevice() && Page.getCurrent().getBrowserWindowHeight() > Page.getCurrent().getBrowserWindowWidth()) {
-            noti.setVisible(true);
+            notificationWindow.setVisible(true);
             toReload = true;
-        } else {           
-            noti.setVisible(false);
+        } else {
+            notificationWindow.setVisible(false);
             if (layout == null && toReload) {
                 Page.getCurrent().reload();
-            } 
+            }
             toReload = false;
             for (Window w : getWindows()) {
                 w.center();

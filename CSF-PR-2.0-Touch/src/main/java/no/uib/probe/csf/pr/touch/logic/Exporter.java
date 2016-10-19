@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.logic;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -16,32 +10,19 @@ import java.util.Set;
 /**
  *
  * @author Yehia Farag
+ *
+ * This class is responsible for creating protein tables files to export
  */
-public class Exporter implements Serializable{
-    
-    
-    public void exportHeatMapImage(){
-    
-    }
-    
-    
-    
-    public byte[] exportImage(BufferedImage image){
-    return null;
-    
-    }
-    
+public class Exporter implements Serializable {
 
     /**
-     * this function to be use for csv peptides exporting with large datasets
+     * This function to be use for csv peptides exporting with large datasets
      *
-     * @param allPeptides peptides to be exported
-     * @param datasetName
-     * @param dataType validated/all
-     * @param path for the file csf-pr file system
+     * @param accessionList protein accession list to be exported
+     * @return file byte array
      */
     public byte[] expotProteinAccessionListToCSV(Set<String> accessionList) {
-        File csvText = new File("CSF-PR Protein Accession List.csv");// "CSF-PR - " + datasetName + " - All - " + dataType + "- Peptides" + ".csv");
+        File csvText = new File("CSF-PR Protein Accession List.csv");
         PrintWriter out1 = null;
         try {
             if (csvText.exists()) {
@@ -72,7 +53,6 @@ public class Exporter implements Serializable{
             }
             csvText.delete();
 
-//            byte fileData[] = IOUtils.toByteArray(new FileInputStream(csvText));
             return crunchifyByteStream;
         } catch (Exception exp) {
             System.err.println(exp.getLocalizedMessage());

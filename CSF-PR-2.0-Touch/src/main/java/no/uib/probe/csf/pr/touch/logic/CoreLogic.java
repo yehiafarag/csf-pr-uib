@@ -1,7 +1,6 @@
 package no.uib.probe.csf.pr.touch.logic;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -33,6 +32,9 @@ import no.uib.probe.csf.pr.touch.view.core.OverviewInfoBean;
  */
 public class CoreLogic implements Serializable {
 
+    /**
+     * Database abstraction
+     */
     private final DataBaseLayer database;
     private final Exporter exporter;
 
@@ -201,20 +203,6 @@ public class CoreLogic implements Serializable {
         Set<QuantProtein> fullComparisonProtMap = new HashSet<>();
         Map<Integer, QuantDiseaseGroupsComparison> dsIndexToComparisonsMap = new HashMap<>();
         Set<Integer> dsIdsList = new HashSet<>();
-
-//        for (QuantDiseaseGroupsComparison comparison : selectedQuantComparisonsList) {
-//            if (comparison.getQuantComparisonProteinMap() == null || comparison.getQuantComparisonProteinMap().isEmpty()) {
-//                for (int datasetIndex : comparison.getDatasetMap().keySet()) {
-//                    dsIdsList.add(datasetIndex);
-//                    dsIndexToComparisonsMap.put(datasetIndex, comparison);
-//                }
-//
-//            }else{
-//                updatedSelectedComparisonList.add(comparison);
-//                
-//            }
-//
-//        }
         selectedQuantComparisonsList.stream().filter((comparison) -> (comparison.getQuantComparisonProteinMap() == null || comparison.getQuantComparisonProteinMap().isEmpty())).forEach((comparison) -> {
             comparison.getDatasetMap().keySet().stream().map((datasetIndex) -> {
                 dsIdsList.add(datasetIndex);
@@ -274,7 +262,7 @@ public class CoreLogic implements Serializable {
 
                 String protAcc = quant.getUniprotAccession();
                 String url;
-//                System.out.println("at ------------------------------------------------------ >> header "+comparison.getDatasetMap().get(quant.getDsKey()).getPatientsSubGroup1()+"  oreg "+comparison.getOreginalComparisonHeader());
+
                 if (protAcc.equalsIgnoreCase("") || protAcc.equalsIgnoreCase("Not Available") || protAcc.equalsIgnoreCase("Entry Deleted") || protAcc.equalsIgnoreCase("Entry Demerged") || protAcc.equalsIgnoreCase("NOT RETRIEVED") || protAcc.equalsIgnoreCase("DELETED") || protAcc.trim().equalsIgnoreCase("UNREVIEWED")) {
                     protAcc = quant.getPublicationAccNumber() + " (" + protAcc + ")";
                     url = null;
@@ -299,9 +287,6 @@ public class CoreLogic implements Serializable {
 
                 }
 
-//                System.out.println("at PGI -" + pGrI + "-   -" + quant.getPatientSubGroupI() + "-");
-//                System.out.println("at PGII -" + pGrII + "-   -" + quant.getPatientSubGroupII() + "-");
-//                System.out.println("at not enverted "+((pGrI.equalsIgnoreCase(quant.getPatientGroupI()) || pGrI.equalsIgnoreCase(quant.getPatientSubGroupI())) && (pGrII.equalsIgnoreCase(quant.getPatientGroupII()) || pGrII.equalsIgnoreCase(quant.getPatientSubGroupII()))));
                 if ((pGrI.equalsIgnoreCase(quant.getPatientGroupI()) || pGrI.equalsIgnoreCase(quant.getPatientSubGroupI())) && (pGrII.equalsIgnoreCase(quant.getPatientGroupII()) || pGrII.equalsIgnoreCase(quant.getPatientSubGroupII()))) {
 
                     if (quant.getStringFCValue().equalsIgnoreCase("Decreased") || quant.getStringFCValue().equalsIgnoreCase("Decrease")) {
@@ -452,9 +437,7 @@ public class CoreLogic implements Serializable {
                 sortedcomparProtList.put((temp.getSignificantTrindCategory() + "_" + Key), temp);
                 temp.finalizeQuantData();
                 Set<QuantComparisonProtein> set = proteinsByTrendMap.get(temp.getSignificantTrindCategory());
-//                 if(temp.getProteinAccession().equalsIgnoreCase("P10451"))
-//                System.out.println("at comp prtien to charge  key "+(temp.getHighSignificant() + "_" + Key)+"   "+temp.getOverallCellPercentValue()+" comparisons "+ comparison.getComparisonHeader());
-//               
+
                 set.add(temp);
                 proteinsByTrendMap.put(temp.getSignificantTrindCategory(), set);
             });
@@ -559,7 +542,6 @@ public class CoreLogic implements Serializable {
 
         for (QuantProtein quantProt : quantProteinsList) {
 
-//            if (searchBy.equalsIgnoreCase("Protein Accession")/* ||*/) {
             String uniprotAcc = quantProt.getUniprotAccession();
             String protName;
             String accession;
@@ -580,10 +562,6 @@ public class CoreLogic implements Serializable {
             quantProt.setFinalAccession(accession);
             quantProt.setUrl(url);
             key = accession.trim() + "__" + protName.trim();
-//            } else {
-//                key = quantProt.getUniprotProteinName().trim();
-//
-//            }
 
             if (!quantHitsList.containsKey(key)) {
                 quantHitsList.put(key, new Integer[]{0, 0, 0, 0});
@@ -675,7 +653,6 @@ public class CoreLogic implements Serializable {
 
     }
 
-    /*             *********************************************************8       */
     /**
      * search for proteins by description keywords
      *
@@ -803,15 +780,6 @@ public class CoreLogic implements Serializable {
                     }
 
                 }
-//                else {
-//                    System.out.println("protein and peptides exist but no sequence available " + qProtein.getPublicationAccNumber() + "   ");
-//                    for (QuantPeptide peptide : peptidesSet) {
-//                        System.out.println("peptide sequince " + peptide.getPeptideSequence());
-//                    }
-//                    System.out.println("--------------------------------------- ");
-//                    System.out.println();
-
-//                }
             }
         }
 

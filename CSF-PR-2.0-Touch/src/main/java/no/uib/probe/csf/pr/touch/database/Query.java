@@ -1,4 +1,3 @@
-
 package no.uib.probe.csf.pr.touch.database;
 
 import java.io.Serializable;
@@ -106,10 +105,20 @@ public class Query implements Serializable {
         this.validatedProteins = validatedProteins;
     }
 
+    /**
+     * get searching disease category query
+     *
+     * @return diseaseCategorys set of disease categories
+     */
     public Set<Object> getDiseaseCategorys() {
         return diseaseCategorys;
     }
 
+    /**
+     * Set searching disease category query
+     *
+     * @param diseaseCategorys set of disease categories
+     */
     public void setDiseaseCategorys(Set<Object> diseaseCategorys) {
         this.diseaseCategorys = diseaseCategorys;
     }
