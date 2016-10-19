@@ -102,7 +102,7 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
             String pepSeq = peptideLayout.getParam("sequence").toString();
             if (!sequence.contains(pepSeq)) {
                 unMappedSet.add(peptideLayout);
-                peptideLayout.setDescription("" + 1 + " - " + pepSeq + " - " + pepSeq.length() + "");
+                peptideLayout.setDescription("" + 1 + "~" + pepSeq + "~" + pepSeq.length() + "");
                 tempSequence.append(pepSeq);
             } else if (peptideLayout.getParam("trend").toString().equalsIgnoreCase("increased")) {
                 highSet.add(peptideLayout);
@@ -354,7 +354,7 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
                 coverageComp.setHeight(15, Unit.PIXELS);
 
                 coverageComp.setWidth((widthArea - startPostionOnLayout[i]), Unit.PIXELS);
-                coverageComp.setDescription("" + (i + 2) + " - " + sequence.substring((i + 2), endPep) + " - " + endPep);
+                coverageComp.setDescription("" + (i + 2) + "~" + sequence.substring((i + 2), endPep) + "~" + endPep);
                 coveragePeptidesSequencesBar.addComponent(coverageComp, "left: " + startPostionOnLayout[i] + "px; top: " + (0) + "px;");
 
             }
