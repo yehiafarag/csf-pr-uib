@@ -70,7 +70,7 @@ public class ProteinSequenceContainer extends VerticalLayout {
             this.addComponent(noPeptideAvailable);
 
         } else {
-            quantPepSet.stream().filter((peptide) -> (peptide.getDsKey() == dsID)).forEach((peptide) -> {
+            quantPepSet.stream().filter((peptide) -> (peptide.getQuantDatasetIndex() == dsID)).forEach((peptide) -> {
                 filteredQuantPepSet.add(peptide);
             });
             if (filteredQuantPepSet.isEmpty()) {

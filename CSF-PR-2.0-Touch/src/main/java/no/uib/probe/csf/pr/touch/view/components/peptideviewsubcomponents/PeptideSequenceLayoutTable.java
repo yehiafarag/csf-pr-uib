@@ -21,7 +21,7 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
-import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantDataset;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantPeptide;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantProtein;
@@ -250,10 +250,10 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
             for (QuantProtein quantProt : protein.getDsQuantProteinsMap().values()) {
 
                 int trend = 2;
-                if (quantProt.getStringPValue().equalsIgnoreCase("Significant")) {
-                    if (quantProt.getStringFCValue().equalsIgnoreCase("Increased")) {
+                if (quantProt.getString_p_value().equalsIgnoreCase("Significant")) {
+                    if (quantProt.getString_fc_value().equalsIgnoreCase("Increased")) {
                         trend = 0;
-                    } else if (quantProt.getStringFCValue().equalsIgnoreCase("Decreased")) {
+                    } else if (quantProt.getString_fc_value().equalsIgnoreCase("Decreased")) {
                         trend = 4;
                     }
 
@@ -264,9 +264,9 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
                 symbol.setWidth(12, Unit.PIXELS);
                 symbol.setHeight(12, Unit.PIXELS);
 
-                QuantDatasetObject ds = comparison.getDatasetMap().get(quantProt.getDsKey());
+                QuantDataset ds = comparison.getDatasetMap().get(quantProt.getQuantDatasetIndex());
                 String title = "<font size='2'>" + ds.getAuthor() + "<br/>(" + ds.getYear() + ")</font> ";
-                ExternalLink publicationLink = new ExternalLink(title, new ExternalResource("http://www.ncbi.nlm.nih.gov/pubmed/" + ds.getPumedID()));
+                ExternalLink publicationLink = new ExternalLink(title, new ExternalResource("http://www.ncbi.nlm.nih.gov/pubmed/" + ds.getPubMedId()));
                 publicationLink.setDescription("View publication " + title);
                 publicationLink.setWidth(100, Unit.PERCENTAGE);
                 publicationLink.setCaptionAsHtml(true);
@@ -295,11 +295,11 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
                 if (protName.equalsIgnoreCase("")) {
                     protName = quantProt.getPublicationProteinName();
                 }
-                ProteinSequenceContainer proteinCoverageLayout = new ProteinSequenceContainer(sequence, protein.getQuantPeptidesList(), proteinSequenceContainerWidth, quantProt.getDsKey(), smallScreen, protName);
+                ProteinSequenceContainer proteinCoverageLayout = new ProteinSequenceContainer(sequence, protein.getQuantPeptidesList(), proteinSequenceContainerWidth, quantProt.getQuantDatasetIndex(), smallScreen, protName);
                 proteinSeqSet.add(proteinCoverageLayout);
-                tableItemsMap.put(objectId, new Object[]{objectId + 1, symbol, comparisonLabelObject, publicationLink, ds.getPatientsGroup1Number() + ds.getPatientsGroup2Number(), proteinCoverageLayout});
+                tableItemsMap.put(objectId, new Object[]{objectId + 1, symbol, comparisonLabelObject, publicationLink, ds.getDiseaseMainGroup1Number() + ds.getDiseaseMainGroup2Number(), proteinCoverageLayout});
                 peptideSequenceTable.addItem(tableItemsMap.get(objectId), objectId);
-                comparisonToItemId.put(comparison.getComparisonHeader() + "__" + quantProt.getDsKey(), objectId);
+                comparisonToItemId.put(comparison.getComparisonHeader() + "__" + quantProt.getQuantDatasetIndex(), objectId);
                 objectId++;
 
             }
@@ -325,9 +325,9 @@ public class PeptideSequenceLayoutTable extends VerticalLayout {
         peptideSequenceTable.removeAllItems();
         Map<Object, Object[]> sortedTableItemsMap = new LinkedHashMap<>();
         for (QuantDiseaseGroupsComparison comparison : selectedComparisonsList) {
-            for (QuantDatasetObject ds : comparison.getDatasetMap().values()) {
-                if (comparisonToItemId.containsKey(comparison.getComparisonHeader() + "__" + ds.getDsKey())) {
-                    Object itemId = comparisonToItemId.get(comparison.getComparisonHeader() + "__" + ds.getDsKey());
+            for (QuantDataset ds : comparison.getDatasetMap().values()) {
+                if (comparisonToItemId.containsKey(comparison.getComparisonHeader() + "__" + ds.getQuantDatasetIndex())) {
+                    Object itemId = comparisonToItemId.get(comparison.getComparisonHeader() + "__" + ds.getQuantDatasetIndex());
                     if (tableItemsMap.containsKey(itemId)) {
                         peptideSequenceTable.addItem(tableItemsMap.get(itemId), itemId);
                         sortedTableItemsMap.put(itemId, tableItemsMap.get(itemId));

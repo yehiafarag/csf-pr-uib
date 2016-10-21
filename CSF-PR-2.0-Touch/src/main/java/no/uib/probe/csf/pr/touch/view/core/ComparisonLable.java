@@ -17,7 +17,7 @@ import com.vaadin.ui.PopupView;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
-import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantDataset;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantProtein;
 import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.StudiesInformationWindow;
@@ -36,7 +36,7 @@ public abstract class ComparisonLable extends VerticalLayout implements LayoutEv
 //    private final PopupView datasetInfoPopup;
 //
 //    private final Accordion datalayout;
-    public ComparisonLable(QuantDiseaseGroupsComparison comparison, Object itemId, QuantProtein quantProtein, QuantDatasetObject qds, boolean smallScreen) {
+    public ComparisonLable(QuantDiseaseGroupsComparison comparison, Object itemId, QuantProtein quantProtein, QuantDataset qds, boolean smallScreen) {
 
         this.setWidth(100, Unit.PERCENTAGE);
 
@@ -158,7 +158,7 @@ public abstract class ComparisonLable extends VerticalLayout implements LayoutEv
 //        headerIContainer.addComponent(titleI);
         ProteinsInformationOverviewLayout proteinInfoLayout = new ProteinsInformationOverviewLayout();
         VerticalLayout protInfoPopup = initPopupLayout(proteinInfoLayout, smallScreen);
-        proteinInfoLayout.updateProteinsForm(quantProtein, quantProtein.getUniprotAccession(), quantProtein.getUrl(), quantProtein.getUniprotProteinName());
+        proteinInfoLayout.updateProteinsForm(quantProtein, quantProtein.getUniprotAccessionNumber(), quantProtein.getUrl(), quantProtein.getUniprotProteinName());
         tab.addTab(protInfoPopup, "Protein");
 
 //        Label titleII = new Label("Dataset");

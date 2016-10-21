@@ -11,7 +11,7 @@ import no.uib.probe.csf.pr.touch.logic.CoreLogic;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseCategoryObject;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseGroupComparison;
 import no.uib.probe.csf.pr.touch.logic.beans.HeatMapHeaderCellInformationBean;
-import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantDataset;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantPeptide;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantProtein;
@@ -94,7 +94,7 @@ public class Data_Handler implements Serializable {
      *
      * @return set of datasets information available in the the resource
      */
-    public Set<QuantDatasetObject> getQuantDatasetList() {
+    public Set<QuantDataset> getQuantDatasetList() {
         return this.coreLogic.getQuantDatasetList();
 
     }
@@ -191,7 +191,7 @@ public class Data_Handler implements Serializable {
      *
      * @return map of quant dataset objects
      */
-    public Map<Integer, QuantDatasetObject> getFullQuantDsMap() {
+    public Map<Integer, QuantDataset> getFullQuantDsMap() {
         return Dataset_Util.getFullQuantDsMap();
     }
 

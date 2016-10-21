@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantDataset;
 import no.uib.probe.csf.pr.touch.view.core.DatasetButtonsContainerLayout;
 import no.uib.probe.csf.pr.touch.view.core.PopupWindow;
 import no.uib.probe.csf.pr.touch.view.core.PopupWindowFrame;
@@ -78,13 +78,13 @@ public abstract class StudiesInformationWindow extends VerticalLayout implements
 
     }
 
-    public void updateData(Collection<QuantDatasetObject> dsObjects) {
+    public void updateData(Collection<QuantDataset> dsObjects) {
         studiesPopupLayout.setInformationData(dsObjects);
 
         if (publicationList == null) {
             Set<String> publicationMap = new LinkedHashSet<>();
-            for (QuantDatasetObject quantDS : dsObjects) {
-                publicationMap.add(quantDS.getPumedID());
+            for (QuantDataset quantDS : dsObjects) {
+                publicationMap.add(quantDS.getPubMedId());
 
             }
             publicationPopupLayout.setPublicationData(updatePublications(publicationMap));

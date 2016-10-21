@@ -19,7 +19,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.Data_Handler;
-import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantDataset;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFListener;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
 import no.uib.probe.csf.pr.touch.view.HeaderLayout;
@@ -62,7 +62,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
      *
      *
      */
-    public WelcomeLayoutComponents(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager, final LayoutViewManager View_Manager, int bodyWidth, int bodyHeight, OverviewInfoBean overviewInfoBean, List<Object[]> publicationList, Set<QuantDatasetObject> dsObjects) {
+    public WelcomeLayoutComponents(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager, final LayoutViewManager View_Manager, int bodyWidth, int bodyHeight, OverviewInfoBean overviewInfoBean, List<Object[]> publicationList, Set<QuantDataset> dsObjects) {
         this.setWidth(980, Unit.PIXELS);
         this.setHeight(100, Unit.PERCENTAGE);
         this.addStyleName("hideoverflow");

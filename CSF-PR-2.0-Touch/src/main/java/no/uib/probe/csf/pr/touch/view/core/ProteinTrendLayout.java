@@ -199,28 +199,28 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
 
         return (v1).compareTo(v2);
 
-//        if (sortableProtein.getHighSignificant() == sortableProtein.getLowSignificant()) {
+//        if (sortableProtein.getSignificantlyIncreasedNumber() == sortableProtein.getSignificantlyDecreasedNumber()) {
 //            v1 = sortableProtein.getTrendValue();
 //        } else if (sortableProtein.getTrendValue() > 0) {
 //            double factor = sortableProtein.getPenalty();
 //            v1 = sortableProtein.getTrendValue() - factor;
-//            v1 = Math.max(v1, 0) + ((double) (sortableProtein.getHighSignificant() - sortableProtein.getLowSignificant()) / 10.0);
+//            v1 = Math.max(v1, 0) + ((double) (sortableProtein.getSignificantlyIncreasedNumber() - sortableProtein.getSignificantlyDecreasedNumber()) / 10.0);
 //        } else {
 //            double factor = sortableProtein.getPenalty();
 //            v1 = sortableProtein.getTrendValue() + factor;
-//            v1 = Math.min(v1, 0) + ((double) (sortableProtein.getHighSignificant() - sortableProtein.getLowSignificant()) / 10.0);
+//            v1 = Math.min(v1, 0) + ((double) (sortableProtein.getSignificantlyIncreasedNumber() - sortableProtein.getSignificantlyDecreasedNumber()) / 10.0);
 //        }
 //        Double v2;
-//        if (o.getHighSignificant() == o.getLowSignificant()) {
+//        if (o.getSignificantlyIncreasedNumber() == o.getSignificantlyDecreasedNumber()) {
 //            v2 = o.getTrendValue();
 //        } else if (o.getTrendValue() > 0) {
 //            double factor = o.getPenalty();
 //            v2 = o.getTrendValue() - factor;
-//            v2 = Math.max(v2, 0) + ((double) (o.getHighSignificant() - o.getLowSignificant()) / 10.0);
+//            v2 = Math.max(v2, 0) + ((double) (o.getSignificantlyIncreasedNumber() - o.getSignificantlyDecreasedNumber()) / 10.0);
 //        } else {
 //            double factor = o.getPenalty();
 //            v2 = o.getTrendValue() + factor;
-//            v2 = Math.min(v2, 0) + ((double) (o.getHighSignificant() - o.getLowSignificant()) / 10.0);
+//            v2 = Math.min(v2, 0) + ((double) (o.getSignificantlyIncreasedNumber() - o.getSignificantlyDecreasedNumber()) / 10.0);
 //        }
 //        return (v1).compareTo(v2);
     }

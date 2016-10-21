@@ -27,7 +27,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import no.uib.probe.csf.pr.touch.logic.AlphanumComparator;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
-import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantDataset;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.view.core.TrendSymbol;
 import org.apache.commons.codec.binary.Base64;
@@ -530,8 +530,8 @@ public class ExportStudiesLineChart {
 
         int maxPatientsNumber = 0;
         for (QuantDiseaseGroupsComparison comparison : selectedComparisonList) {
-            for (QuantDatasetObject ds : comparison.getDatasetMap().values()) {
-                int pNum = ds.getPatientsGroup1Number() + ds.getPatientsGroup2Number();
+            for (QuantDataset ds : comparison.getDatasetMap().values()) {
+                int pNum = ds.getDiseaseMainGroup1Number() + ds.getDiseaseMainGroup2Number();
                 if (pNum > maxPatientsNumber) {
                     maxPatientsNumber = pNum;
                 }
@@ -607,18 +607,18 @@ public class ExportStudiesLineChart {
             dsIdSetLow.addAll((prot.getPatientsNumToDSIDMap().get("down")));
         }
 
-        for (QuantDatasetObject ds : comparison.getDatasetMap().values()) {
+        for (QuantDataset ds : comparison.getDatasetMap().values()) {
             int absTrend = 6;
             int trend = 0;
-            numPatients = ds.getPatientsGroup1Number() + ds.getPatientsGroup2Number();
-            if (dsIdSetUp.contains(ds.getDsKey())) {
+            numPatients = ds.getDiseaseMainGroup1Number() + ds.getDiseaseMainGroup2Number();
+            if (dsIdSetUp.contains(ds.getQuantDatasetIndex())) {
                 absTrend = 100;
                 trend = 0;
 
-            } else if (dsIdSetEqual.contains(ds.getDsKey())) {
+            } else if (dsIdSetEqual.contains(ds.getQuantDatasetIndex())) {
                 absTrend = 0;
                 trend = 2;
-            } else if (dsIdSetLow.contains(ds.getDsKey())) {
+            } else if (dsIdSetLow.contains(ds.getQuantDatasetIndex())) {
                 absTrend = -100;
                 trend = 4;
             }
@@ -634,7 +634,7 @@ public class ExportStudiesLineChart {
                 symbol.setWidth(12, Unit.PIXELS);
                 symbol.setHeight(12, Unit.PIXELS);
                 symbol.addParam("resize", w);
-                symbol.addParam("dsKey", ds.getDsKey());
+                symbol.addParam("dsKey", ds.getQuantDatasetIndex());
                 symbol.addParam("comparison", comparison);
 //                symbol.setScale(scale,numPatients);
                 if (!subComparisonStudiesMap.containsKey(comparisonIndex + "_" + absTrend)) {

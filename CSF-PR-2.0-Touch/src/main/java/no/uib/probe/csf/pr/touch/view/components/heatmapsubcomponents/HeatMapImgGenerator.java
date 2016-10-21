@@ -96,7 +96,7 @@ public class HeatMapImgGenerator {
                 Rectangle rectangle = headerLabelMap.get("col__" + headerCell.getDiseaseCategory());
                 rectangle.setBounds(0, 0, (int) rectangle.getWidth() + cellWidth, (int) (20 * resizeFactor));
             }
-            JPanel cell = initCell(headerCell.getDiseaseColor(), x, y, fullBorder);
+            JPanel cell = initCell(headerCell.getDiseaseHashedColor(), x, y, fullBorder);
             cell.setSize(cellWidth, (int) (130 * resizeFactor));
             JComponent label2 = initLabel(headerCell.getDiseaseGroupName(), cell.getSize().width, cell.getSize().height, true, cell.getBackground(), fullBorder);
             cell.add(label2);
@@ -126,14 +126,14 @@ public class HeatMapImgGenerator {
                     width += topLabelContainerWidth;
                 }
 
-                JComponent label = initLabel(dCat.split("__")[1], width, (int) (20 * resizeFactor), false, Color.decode(bean.getDiseaseColor()), fullBorder);
+                JComponent label = initLabel(dCat.split("__")[1], width, (int) (20 * resizeFactor), false, Color.decode(bean.getDiseaseHashedColor()), fullBorder);
                 label.setLocation(x, 0);
                 heatmapPanelLayout.add(label);
                 x += label.getSize().width;
                 counter++;
 
             } else if (bean != null) {
-                JComponent label = initLabel(dCat.split("__")[1], headerLabelMap.get(dCat).width, (int) (20 * resizeFactor), false, Color.decode(bean.getDiseaseColor()), fullBorder);
+                JComponent label = initLabel(dCat.split("__")[1], headerLabelMap.get(dCat).width, (int) (20 * resizeFactor), false, Color.decode(bean.getDiseaseHashedColor()), fullBorder);
                 label.setLocation(x, 0);
                 heatmapPanelLayout.add(label);
                 x += headerLabelMap.get(dCat).width;
@@ -157,7 +157,7 @@ public class HeatMapImgGenerator {
                 rectangle.setBounds(0, 0, (int) (20 * resizeFactor), (int) rectangle.getHeight() + cellWidth);
             }
 
-            JPanel cell = initCell(headerCell.getDiseaseColor(), (int) (20 * resizeFactor), y, fullBorder);
+            JPanel cell = initCell(headerCell.getDiseaseHashedColor(), (int) (20 * resizeFactor), y, fullBorder);
             cell.setSize((int) (130 * resizeFactor), cellWidth);
             JComponent label2 = initLabel(headerCell.getDiseaseGroupName(), cell.getSize().width, cell.getSize().height, false, cell.getBackground(), fullBorder);
             cell.add(label2);
@@ -188,14 +188,14 @@ public class HeatMapImgGenerator {
                     width += topLabelContainerWidth;
                 }
 
-                JComponent label = initLabel(dCat.split("__")[1], (int) (20 * resizeFactor), width, true, Color.decode(bean.getDiseaseColor()), fullBorder);
+                JComponent label = initLabel(dCat.split("__")[1], (int) (20 * resizeFactor), width, true, Color.decode(bean.getDiseaseHashedColor()), fullBorder);
                 label.setLocation(0, y);
                 heatmapPanelLayout.add(label);
                 y += label.getSize().height;
                 counter++;
 
             } else if (bean != null) {
-                JComponent label = initLabel(dCat.split("__")[1], (int) (20 * resizeFactor), headerLabelMap.get(dCat).height, true, Color.decode(bean.getDiseaseColor()), fullBorder);
+                JComponent label = initLabel(dCat.split("__")[1], (int) (20 * resizeFactor), headerLabelMap.get(dCat).height, true, Color.decode(bean.getDiseaseHashedColor()), fullBorder);
                 label.setLocation(0, y);
                 heatmapPanelLayout.add(label);
                 y += headerLabelMap.get(dCat).height;

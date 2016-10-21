@@ -15,7 +15,7 @@ import no.uib.probe.csf.pr.touch.Data_Handler;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseCategoryObject;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseGroupComparison;
 import no.uib.probe.csf.pr.touch.logic.beans.HeatMapHeaderCellInformationBean;
-import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantDataset;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFListener;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
@@ -63,7 +63,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
             //update heatmap
             Set<QuantDiseaseGroupsComparison> compList = CSFPR_Central_Manager.getSelectedComparisonsList();
             heatmapComponent.unselectAll();
-            Map<Integer, QuantDatasetObject> tempFullComparison = new LinkedHashMap<>();
+            Map<Integer, QuantDataset> tempFullComparison = new LinkedHashMap<>();
             for (int i : Data_handler.getFullQuantDsMap().keySet()) {
                 if (CSFPR_Central_Manager.getQuantSearchSelection().getDatasetIds().contains(i)) {
                     tempFullComparison.put(i, Data_handler.getFullQuantDsMap().get(i));

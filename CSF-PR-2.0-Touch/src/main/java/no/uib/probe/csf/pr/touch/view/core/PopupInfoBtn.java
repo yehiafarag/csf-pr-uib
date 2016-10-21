@@ -10,7 +10,7 @@ import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
-import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantDataset;
 
 /**
  *
@@ -22,7 +22,7 @@ public class PopupInfoBtn extends VerticalLayout implements LayoutEvents.LayoutC
 
     private final PopupWindowFrame popupPanel;
 
-    public PopupInfoBtn(QuantDatasetObject quantDS, String btnName, String publicationAuthor, boolean smallScreen) {
+    public PopupInfoBtn(QuantDataset quantDS, String btnName, String publicationAuthor, boolean smallScreen) {
         this.addLayoutClickListener(PopupInfoBtn.this);
         this.setHeight("80px");
         this.setWidth("200px");

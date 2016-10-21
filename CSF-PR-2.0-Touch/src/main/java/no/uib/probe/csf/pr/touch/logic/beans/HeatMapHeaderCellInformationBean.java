@@ -27,7 +27,7 @@ public class HeatMapHeaderCellInformationBean implements Serializable {
     /*
      *Disease HTML Color code
      */
-    private String diseaseColor;
+    private String diseaseHashedColor;
     /*
      *Disease sub group full name
      */
@@ -114,17 +114,17 @@ public class HeatMapHeaderCellInformationBean implements Serializable {
      *
      * @return diseaseHashedColor
      */
-    public String getDiseaseColor() {
-        return diseaseColor;
+    public String getDiseaseHashedColor() {
+        return diseaseHashedColor;
     }
 
     /**
      * Set disease category HTML color code
      *
-     * @param diseaseColor
+     * @param diseaseHashedColor
      */
-    public void setDiseaseColor(String diseaseColor) {
-        this.diseaseColor = diseaseColor;
+    public void setDiseaseHashedColor(String diseaseHashedColor) {
+        this.diseaseHashedColor = diseaseHashedColor;
     }
 
     @Override

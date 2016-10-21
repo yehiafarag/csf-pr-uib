@@ -1,50 +1,243 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.logic.beans;
 
 /**
  *
  * @author Yehia Farag
+ *
+ * This class represents quant protein object that contain all the protein
+ * information
  */
 public class QuantProtein implements Comparable<QuantProtein> {
 
-    private String pumedID, uniprotAccession, uniprotProteinName, publicationAccNumber, publicationProteinName, rawDataAvailable, typeOfStudy, sampleType, patientGroupI, patientSubGroupI, patientGrIComment, patientGroupII, patientSubGroupII, patientGrIIComment, sampleMatching, normalizationStrategy, technology, analyticalApproach, enzyme, shotgunOrTargetedQquant, quantificationBasis, quantBasisComment, additionalComments;
-    private int quantifiedProteinsNumber, peptideIdNumb, quantifiedPeptidesNumber, patientsGroupINumber, patientsGroupIINumber, year, filesNum, IdentifiedProteinsNum, dsKey, protKey;
-    private String qPeptideKey, peptideSequence, peptideModification, modificationComment, stringFCValue, stringPValue, author, diseaseGroups, pvalueComment, pvalueSignificanceThreshold;
-    private String diseaseCategory;
-    private String url;
-private String finalAccession;
+    /*
+     * Publication PubMed id
+     */
+    private String pubMedId;
 
+    /*
+     * Protein uniprot accession number
+     */
+    private String uniprotAccessionNumber;
+    /*
+     * Protein uniprot name
+     */
+    private String uniprotProteinName;
+    /*
+     * Protein publication accession number
+     */
+    private String publicationAccessionNumber;
+    /*
+     * Protein publication name
+     */
+    private String publicationProteinName;
+    /*
+     * Raw data available(available/not available)
+     */
+    private String rawDataAvailable;
+    /*
+     * Study type
+     */
+    private String typeOfStudy;
+    /*
+     * Sample type
+     */
+    private String sampleType;
+    /*
+     * The Disease main group I (not used in the current csf-pr-2.0)
+     */
+    private String diseaseMainGroupI;
+    /*
+     * The Disease sub group I (publication name)
+     */
+    private String originalDiseaseSubGroupI;
+    /*
+     *  The Disease main group I comments
+     */
+    private String diseaseMainGroupIComment;
+    /*
+     * The Disease main group II (not used in the current csf-pr-2.0)
+     */
+    private String diseaseMainGroupII;
+    /*
+     * The Disease sub group II (publication name)
+     */
+    private String originalDiseaseSubGroupII;
+    /*
+     *  The Disease main group II comments
+     */
+    private String diseaseMainGroupIIComment;
+    /*
+     * Sample matching
+     */
+    private String sampleMatching;
+    /*
+     * Normalization stratgy
+     */
+    private String normalizationStrategy;
+    /*
+     * Technology
+     */
+    private String technology;
+    /*
+     * Analytical approach
+     */
+    private String analyticalApproach;
+    /*
+     * Enzyme
+     */
+    private String enzyme;
+    /*
+     * Shotgun or targetedQquant study
+     */
+    private String shotgunOrTargetedQquant;
+    /*
+     * Protein quantification basis
+     */
+    private String quantificationBasis;
+    /*
+     * Protein quantification basis comments
+     */
+    private String quantBasisComment;
+    /*
+     * Protein additional comments
+     */
+    private String additionalComments;
+
+    /*
+     * Number of identified peptides
+     */
+    private int peptideIdNumb;
+    /*
+     * number of quantified peptides
+     */
+    private int quantifiedPeptidesNumber;
+    /*
+     * Disease main group I patients number
+     */
+    private int diseaseGroupIPatientsNumber;
+    /*
+     * Disease main group II patients number
+     */
+    private int diseaseGroupIIPatientsNumber;
+    /*
+     * Publication publishing year
+     */
+    private int year;
+
+    /*
+     * Unique parent dataset id (dataset index in database)
+     */
+    private int quantDatasetIndex;
+    /*
+     * Unique protein id (protein index in database)
+     */
+    private int protIndex;
+
+    /*
+     * Fold change as text (increased, decreased or equal)
+     */
+    private String string_fc_value;
+    /*
+     * Quantification p_value (Significant/not significant) 
+     */
+    private String string_p_value;
+    /*
+     * The publication author name
+     */
+    private String author;
+    /*
+     *  Peptide p_value comments
+     */
+    private String p_value_comments;
+    /*
+     * Quantification p_value significance threshold
+     */
+    private String pvalueSignificanceThreshold;
+    /*
+     * Disease category (MS,AD,PD...etc)
+     */
+    private String diseaseCategory;
+    /*
+     * Link to protein in UniProt
+     */
+    private String url;
+    /*
+     * The final accession (Uniprot or publication) will be used in the protein table
+     */
+    private String finalAccession;
+
+    /*
+     * The protein sequence imported from UniProt
+     */
+    private String sequence;
+
+    /**
+     * Get the final accession (Uniprot or publication) will be used in the
+     * protein table
+     *
+     * @return finalAccession
+     */
     public String getFinalAccession() {
         return finalAccession;
     }
+    /*
+     * Quantification pValue
+     */
+    private double p_value;
 
+    /*
+     * Receiver operating characteristic
+     */
+    private double roc_auc;
+    /*
+     * Fold change value (log2 value)
+     */
+    private double fc_value;
+
+    /*
+     * Protein has peptides data
+     */
+    private boolean peptideProt;
+
+    /**
+     * Set the final accession (Uniprot or publication) will be used in the
+     * protein table
+     *
+     * @param finalAccession
+     */
     public void setFinalAccession(String finalAccession) {
         this.finalAccession = finalAccession;
     }
-   
-    private String sequence;
 
+    /**
+     * Get disease category (MS,AD,PD...etc)
+     *
+     * @return diseaseCategory
+     */
     public String getDiseaseCategory() {
         return diseaseCategory;
     }
 
+    /**
+     * Set disease category (MS,AD,PD...etc)
+     *
+     * @param diseaseCategory
+     */
     public void setDiseaseCategory(String diseaseCategory) {
         this.diseaseCategory = diseaseCategory;
     }
 
     /**
+     * get protein sequence
      *
-     * @return
+     * @return sequence
      */
     public String getSequence() {
         return sequence;
     }
 
     /**
+     * Set protein sequence
      *
      * @param sequence
      */
@@ -53,81 +246,88 @@ private String finalAccession;
     }
 
     /**
+     * Get he dataset index in the database
      *
-     * @return
+     * @return quantDatasetIndex
      */
-    public int getDsKey() {
-        return dsKey;
+    public int getQuantDatasetIndex() {
+        return quantDatasetIndex;
     }
 
     /**
+     * Get quantification p_value comments
      *
-     * @return
+     * @return p_value_comments
      */
-    public String getPvalueComment() {
-        return pvalueComment;
+    public String getP_value_comments() {
+        return p_value_comments;
     }
 
     /**
+     * Set quantification p_value comments
      *
-     * @param pvalueComment
+     * @param p_value_comments
      */
-    public void setPvalueComment(String pvalueComment) {
-        this.pvalueComment = pvalueComment;
+    public void setP_value_comments(String p_value_comments) {
+        this.p_value_comments = p_value_comments;
     }
 
     /**
+     * Get unique protein id (protein index in database)
      *
-     * @return
+     * @return protIndex
      */
-    public int getProtKey() {
-        return protKey;
+    public int getProtIndex() {
+        return protIndex;
     }
 
     /**
+     * Set unique protein id (protein index in database)
      *
-     * @param protKey
+     * @param protIndex
      */
-    public void setProtKey(int protKey) {
-        this.protKey = protKey;
+    public void setProtIndex(int protIndex) {
+        this.protIndex = protIndex;
     }
 
     /**
+     * Set the dataset index in the database
      *
-     * @param dsKey
+     * @param quantDatasetIndex
      */
-    public void setDsKey(int dsKey) {
-        this.dsKey = dsKey;
+    public void setQuantDatasetIndex(int quantDatasetIndex) {
+        this.quantDatasetIndex = quantDatasetIndex;
     }
 
     /**
+     * Get quantification pValue (Significant/not significant)
      *
-     * @return
+     * @return string_p_value
      */
-    public String getStringPValue() {
-        return stringPValue;
+    public String getString_p_value() {
+        return string_p_value;
     }
 
     /**
+     * Set quantification pValue (Significant/not significant)
      *
-     * @param stringPValue
+     * @param string_p_value
      */
-    public void setStringPValue(String stringPValue) {
-        this.stringPValue = stringPValue;
+    public void setString_p_value(String string_p_value) {
+        this.string_p_value = string_p_value;
     }
-    private double pValue, rocAuc;
-    private double fcPatientGroupIonPatientGroupII;
-    private boolean peptideProt;
 
     /**
+     * Get the publication publishing year
      *
-     * @return
+     * @return year
      */
     public int getYear() {
         return year;
     }
 
     /**
+     * Set the publication publishing year
      *
      * @param year
      */
@@ -136,46 +336,16 @@ private String finalAccession;
     }
 
     /**
+     * Get the publication author name
      *
-     * @return
-     */
-    public int getFilesNum() {
-        return filesNum;
-    }
-
-    /**
-     *
-     * @param filesNum
-     */
-    public void setFilesNum(int filesNum) {
-        this.filesNum = filesNum;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public int getIdentifiedProteinsNum() {
-        return IdentifiedProteinsNum;
-    }
-
-    /**
-     *
-     * @param IdentifiedProteinsNum
-     */
-    public void setIdentifiedProteinsNum(int IdentifiedProteinsNum) {
-        this.IdentifiedProteinsNum = IdentifiedProteinsNum;
-    }
-
-    /**
-     *
-     * @return
+     * @return author
      */
     public String getAuthor() {
         return author;
     }
 
     /**
+     * Set the publication author name
      *
      * @param author
      */
@@ -184,46 +354,34 @@ private String finalAccession;
     }
 
     /**
+     * Get fold change as text (increased, decreased or equal)
      *
-     * @return
+     * @return string_fc_value
      */
-    public String getDiseaseGroups() {
-        return diseaseGroups;
+    public String getString_fc_value() {
+        return string_fc_value;
     }
 
     /**
+     * Set fold change as text (increased, decreased or equal)
      *
-     * @param diseaseGroups
+     * @param string_fc_value
      */
-    public void setDiseaseGroups(String diseaseGroups) {
-        this.diseaseGroups = diseaseGroups;
+    public void setString_fc_value(String StringFC) {
+        this.string_fc_value = StringFC;
     }
 
     /**
+     * Is protein has peptides
      *
-     * @return
-     */
-    public String getStringFCValue() {
-        return stringFCValue;
-    }
-
-    /**
-     *
-     * @param StringFC
-     */
-    public void setStringFCValue(String StringFC) {
-        this.stringFCValue = StringFC;
-    }
-
-    /**
-     *
-     * @return
+     * @return peptideProt
      */
     public boolean isPeptideProt() {
         return peptideProt;
     }
 
     /**
+     * Set protein has peptides
      *
      * @param peptideProt
      */
@@ -232,62 +390,52 @@ private String finalAccession;
     }
 
     /**
+     * Get publication PubMed id
      *
-     * @return
+     * @return QuantDataset
      */
-    public String getPumedID() {
-        return pumedID;
+    public String getPubMedId() {
+        return pubMedId;
     }
 
     /**
+     * Set publication PubMed id
      *
-     * @param pumedID
+     * @param pubMedId
      */
-    public void setPumedID(String pumedID) {
-        this.pumedID = pumedID;
+    public void setPubMedId(String pubMedId) {
+        this.pubMedId = pubMedId;
     }
 
     /**
+     * Get uniprot protein accession number
      *
-     * @return
+     * @return uniprotAccessionNumber
      */
-    public int getQuantifiedProteinsNumber() {
-        return quantifiedProteinsNumber;
+    public String getUniprotAccessionNumber() {
+        return uniprotAccessionNumber;
     }
 
     /**
+     * Set uniprot protein accession number
      *
-     * @param quantifiedProteinsNumber
+     * @param uniprotAccessionNumber
      */
-    public void setQuantifiedProteinsNumber(int quantifiedProteinsNumber) {
-        this.quantifiedProteinsNumber = quantifiedProteinsNumber;
+    public void setUniprotAccessionNumber(String uniprotAccessionNumber) {
+        this.uniprotAccessionNumber = uniprotAccessionNumber;
     }
 
     /**
+     * Get uniprot protein name
      *
-     * @return
-     */
-    public String getUniprotAccession() {
-        return uniprotAccession;
-    }
-
-    /**
-     *
-     * @param uniprotAccession
-     */
-    public void setUniprotAccession(String uniprotAccession) {
-        this.uniprotAccession = uniprotAccession;
-    }
-
-    /**
-     *
-     * @return
+     * @return uniprotProteinName
      */
     public String getUniprotProteinName() {
         return uniprotProteinName;
     }
 
     /**
+     * Set uniprot protein name
      *
      * @param uniprotProteinName
      */
@@ -296,30 +444,34 @@ private String finalAccession;
     }
 
     /**
+     * Get publication (IPI..etc) protein accession number
      *
-     * @return
+     * @return publicationAccessionNumber
      */
-    public String getPublicationAccNumber() {
-        return publicationAccNumber;
+    public String getPublicationAccessionNumber() {
+        return publicationAccessionNumber;
     }
 
     /**
+     * Set publication (IPI..etc) protein accession number
      *
-     * @param publicationAccNumber
+     * @param publicationAccessionNumber
      */
-    public void setPublicationAccNumber(String publicationAccNumber) {
-        this.publicationAccNumber = publicationAccNumber;
+    public void setPublicationAccessionNumber(String publicationAccessionNumber) {
+        this.publicationAccessionNumber = publicationAccessionNumber;
     }
 
     /**
+     * Get publication protein name
      *
-     * @return
+     * @return publicationProteinName
      */
     public String getPublicationProteinName() {
         return publicationProteinName;
     }
 
     /**
+     * Set publication protein name
      *
      * @param publicationProteinName
      */
@@ -328,14 +480,16 @@ private String finalAccession;
     }
 
     /**
+     * Get raw data available(available/not available)
      *
-     * @return
+     * @return rawDataAvailable
      */
     public String getRawDataAvailable() {
         return rawDataAvailable;
     }
 
     /**
+     * Set raw data available
      *
      * @param rawDataAvailable
      */
@@ -344,14 +498,16 @@ private String finalAccession;
     }
 
     /**
+     * Get number of identified peptides
      *
-     * @return
+     * @return peptideIdNumb
      */
     public int getPeptideIdNumb() {
         return peptideIdNumb;
     }
 
     /**
+     * Set number of identified peptides
      *
      * @param peptideIdNumb
      */
@@ -360,14 +516,16 @@ private String finalAccession;
     }
 
     /**
+     * Get number of quantified peptides
      *
-     * @return
+     * @return quantifiedPeptidesNumber
      */
     public int getQuantifiedPeptidesNumber() {
         return quantifiedPeptidesNumber;
     }
 
     /**
+     * Set number of quantified peptides
      *
      * @param quantifiedPeptidesNumber
      */
@@ -375,34 +533,35 @@ private String finalAccession;
         this.quantifiedPeptidesNumber = quantifiedPeptidesNumber;
     }
 
-    //move to peptideProt?? 
-    // dublicate in both??
     /**
+     * Get fold change as text (increased, decreased or equal)
      *
-     * @return
+     * @return string_fc_value
      */
-    public double getFcPatientGroupIonPatientGroupII() {
-        return fcPatientGroupIonPatientGroupII;
+    public double getFc_value() {
+        return fc_value;
     }
 
     /**
+     * Set fold change as text (increased, decreased or equal)
      *
-     * @param fcPatientGroupIonPatientGroupII
+     * @param string_fc_value
      */
-    public void setFcPatientGroupIonPatientGroupII(double fcPatientGroupIonPatientGroupII) {
-        this.fcPatientGroupIonPatientGroupII = fcPatientGroupIonPatientGroupII;
+    public void setFc_value(double fc_value) {
+        this.fc_value = fc_value;
     }
 
-     //can dublicate in both??
     /**
+     * Get study type
      *
-     * @return
+     * @return typeOfStudy
      */
     public String getTypeOfStudy() {
         return typeOfStudy;
     }
 
     /**
+     * Set study type
      *
      * @param typeOfStudy
      */
@@ -411,14 +570,16 @@ private String finalAccession;
     }
 
     /**
+     * Get sample type
      *
-     * @return
+     * @return sampleType
      */
     public String getSampleType() {
         return sampleType;
     }
 
     /**
+     * Set sample type
      *
      * @param sampleType
      */
@@ -427,142 +588,160 @@ private String finalAccession;
     }
 
     /**
+     * Get disease main group I patients number
      *
-     * @return
+     * @return diseaseGroupIPatientsNumber
      */
-    public int getPatientsGroupINumber() {
-        return patientsGroupINumber;
+    public int getDiseaseGroupIPatientsNumber() {
+        return diseaseGroupIPatientsNumber;
     }
 
     /**
+     * Set disease main group I patients number
      *
-     * @param patientsGroupINumber
+     * @param diseaseGroupIPatientsNumber
      */
-    public void setPatientsGroupINumber(int patientsGroupINumber) {
-        this.patientsGroupINumber = patientsGroupINumber;
+    public void setDiseaseGroupIPatientsNumber(int diseaseGroupIPatientsNumber) {
+        this.diseaseGroupIPatientsNumber = diseaseGroupIPatientsNumber;
     }
 
     /**
+     * Get the disease main group I (not used in the current csf-pr-2.0)
      *
-     * @return
+     * @return diseaseMainGroupI
      */
-    public String getPatientGroupI() {
-        return patientGroupI;
+    public String getDiseaseMainGroupI() {
+        return diseaseMainGroupI;
     }
 
     /**
+     * Set the disease main group I (not used in the current csf-pr-2.0)
      *
-     * @param patientGroupI
+     * @param diseaseMainGroupI
      */
-    public void setPatientGroupI(String patientGroupI) {
-        this.patientGroupI = patientGroupI;
+    public void setDiseaseMainGroupI(String diseaseMainGroupI) {
+        this.diseaseMainGroupI = diseaseMainGroupI;
     }
 
     /**
+     * Get the disease sub group I (publication name)
      *
-     * @return
+     * @return originalDiseaseSubGroupI
      */
-    public String getPatientSubGroupI() {
-        return patientSubGroupI;
+    public String getOriginalDiseaseSubGroupI() {
+        return originalDiseaseSubGroupI;
     }
 
     /**
+     * Set the disease sub group I (publication name)
      *
-     * @param patientSubGroupI
+     * @param originalDiseaseSubGroupI
      */
-    public void setPatientSubGroupI(String patientSubGroupI) {
-        this.patientSubGroupI = patientSubGroupI;
+    public void setOriginalDiseaseSubGroupI(String originalDiseaseSubGroupI) {
+        this.originalDiseaseSubGroupI = originalDiseaseSubGroupI;
     }
 
     /**
+     * Get disease main group I comments
      *
-     * @return
+     * @return diseaseMainGroupIComment
      */
-    public String getPatientGrIComment() {
-        return patientGrIComment;
+    public String getDiseaseMainGroupIComment() {
+        return diseaseMainGroupIComment;
     }
 
     /**
+     * Set disease main group I comments
      *
-     * @param patientGrIComment
+     * @param diseaseMainGroupIComment
      */
-    public void setPatientGrIComment(String patientGrIComment) {
-        this.patientGrIComment = patientGrIComment;
+    public void setDiseaseMainGroupIComment(String diseaseMainGroupIComment) {
+        this.diseaseMainGroupIComment = diseaseMainGroupIComment;
     }
 
     /**
+     * Set Disease main group II patients number
      *
-     * @return
+     * @return diseaseGroupIIPatientsNumber
      */
-    public int getPatientsGroupIINumber() {
-        return patientsGroupIINumber;
+    public int getDiseaseGroupIIPatientsNumber() {
+        return diseaseGroupIIPatientsNumber;
     }
 
     /**
+     * Set Disease main group II patients number
      *
-     * @param patientsGroupIINumber
+     * @param diseaseGroupIIPatientsNumber
      */
-    public void setPatientsGroupIINumber(int patientsGroupIINumber) {
-        this.patientsGroupIINumber = patientsGroupIINumber;
+    public void setDiseaseGroupIIPatientsNumber(int diseaseGroupIIPatientsNumber) {
+        this.diseaseGroupIIPatientsNumber = diseaseGroupIIPatientsNumber;
     }
 
     /**
+     * Get the disease main group II (not used in the current csf-pr-2.0)
      *
-     * @return
+     * @return diseaseMainGroupII
      */
-    public String getPatientGroupII() {
-        return patientGroupII;
+    public String getDiseaseMainGroupII() {
+        return diseaseMainGroupII;
     }
 
     /**
+     * Set the disease main group II (not used in the current csf-pr-2.0)
      *
-     * @param patientGroupII
+     * @param diseaseMainGroupII
      */
-    public void setPatientGroupII(String patientGroupII) {
-        this.patientGroupII = patientGroupII;
+    public void setDiseaseMainGroupII(String diseaseMainGroupII) {
+        this.diseaseMainGroupII = diseaseMainGroupII;
     }
 
     /**
+     * Get the disease sub group II (publication name)
      *
-     * @return
+     * @param originalDiseaseSubGroupII
      */
-    public String getPatientSubGroupII() {
-        return patientSubGroupII;
+    public String getOriginalDiseaseSubGroupII() {
+        return originalDiseaseSubGroupII;
     }
 
     /**
+     * Set the disease sub group II (publication name)
      *
-     * @param patientSubGroupII
+     * @param originalDiseaseSubGroupII
      */
-    public void setPatientSubGroupII(String patientSubGroupII) {
-        this.patientSubGroupII = patientSubGroupII;
+    public void setOriginalDiseaseSubGroupII(String originalDiseaseSubGroupII) {
+        this.originalDiseaseSubGroupII = originalDiseaseSubGroupII;
     }
 
     /**
+     * Get disease main group II comments
      *
-     * @return
+     * @return diseaseMainGroupIIComment
      */
-    public String getPatientGrIIComment() {
-        return patientGrIIComment;
+    public String getDiseaseMainGroupIIComment() {
+        return diseaseMainGroupIIComment;
     }
 
     /**
+     * Set Disease main group II comments
      *
-     * @param patientGrIIComment
+     * @param diseaseMainGroupIIComment
      */
-    public void setPatientGrIIComment(String patientGrIIComment) {
-        this.patientGrIIComment = patientGrIIComment;
+    public void setDiseaseMainGroupIIComment(String diseaseMainGroupIIComment) {
+        this.diseaseMainGroupIIComment = diseaseMainGroupIIComment;
     }
 
     /**
+     * Get sample matching
      *
-     * @return
+     * @return sampleMatching
      */
     public String getSampleMatching() {
         return sampleMatching;
     }
 
     /**
+     * Set sample matching
      *
      * @param sampleMatching
      */
@@ -571,14 +750,16 @@ private String finalAccession;
     }
 
     /**
+     * Get normalization strategy
      *
-     * @return
+     * @return normalizationStrategy
      */
     public String getNormalizationStrategy() {
         return normalizationStrategy;
     }
 
     /**
+     * Set normalization strategy
      *
      * @param normalizationStrategy
      */
@@ -587,46 +768,52 @@ private String finalAccession;
     }
 
     /**
+     * Get quantification pValue(actual value if available)
      *
-     * @return
+     * @return p_value
      */
-    public double getpValue() {
-        return pValue;
+    public double getP_value() {
+        return p_value;
     }
 
     /**
+     * Set quantification pValue(actual value if available)
      *
-     * @param pValue
+     * @param p_value
      */
-    public void setpValue(double pValue) {
-        this.pValue = pValue;
+    public void setP_value(double p_value) {
+        this.p_value = p_value;
     }
 
     /**
+     * Get receiver operating characteristic value
      *
-     * @return
+     * @return roc_auc
      */
-    public double getRocAuc() {
-        return rocAuc;
+    public double getRoc_auc() {
+        return roc_auc;
     }
 
     /**
+     * Set receiver operating characteristic value
      *
-     * @param rocAuc
+     * @param roc_auc
      */
-    public void setRocAuc(double rocAuc) {
-        this.rocAuc = rocAuc;
+    public void setRoc_auc(double roc_auc) {
+        this.roc_auc = roc_auc;
     }
 
     /**
+     * Get technology
      *
-     * @return
+     * @return technology
      */
     public String getTechnology() {
         return technology;
     }
 
     /**
+     * Set technology
      *
      * @param technology
      */
@@ -635,14 +822,16 @@ private String finalAccession;
     }
 
     /**
+     * Get analytical approach
      *
-     * @return
+     * @return analyticalApproach
      */
     public String getAnalyticalApproach() {
         return analyticalApproach;
     }
 
     /**
+     * Set analytical approach
      *
      * @param analyticalApproach
      */
@@ -651,14 +840,16 @@ private String finalAccession;
     }
 
     /**
+     * Get enzyme used
      *
-     * @return
+     * @return enzyme
      */
     public String getEnzyme() {
         return enzyme;
     }
 
     /**
+     * Set enzyme used
      *
      * @param enzyme
      */
@@ -667,30 +858,34 @@ private String finalAccession;
     }
 
     /**
+     * Get Shotgun / Targeted
      *
-     * @return
+     * @return shotgunTargeted
      */
     public String getShotgunOrTargetedQquant() {
         return shotgunOrTargetedQquant;
     }
 
     /**
+     * Set Shotgun / Targeted
      *
-     * @param shotgunOrTargetedQquant
+     * @param shotgunTargeted
      */
     public void setShotgunOrTargetedQquant(String shotgunOrTargetedQquant) {
         this.shotgunOrTargetedQquant = shotgunOrTargetedQquant;
     }
 
     /**
+     * Get quantification basis
      *
-     * @return
+     * @return quantificationBasis
      */
     public String getQuantificationBasis() {
         return quantificationBasis;
     }
 
     /**
+     * Set quantification basis
      *
      * @param quantificationBasis
      */
@@ -699,14 +894,18 @@ private String finalAccession;
     }
 
     /**
+     * Get quantification basis comments (protein level) the quant bases
+     * comments are different in protein and peptides level
      *
-     * @return
+     * @return quantBasisComment
      */
     public String getQuantBasisComment() {
         return quantBasisComment;
     }
 
     /**
+     * Set quantification basis comments (protein level) the quant bases
+     * comments are different in protein and peptides level
      *
      * @param quantBasisComment
      */
@@ -715,14 +914,16 @@ private String finalAccession;
     }
 
     /**
+     * Get protein additional comments
      *
-     * @return
+     * @return additionalComments
      */
     public String getAdditionalComments() {
         return additionalComments;
     }
 
     /**
+     * Set protein additional comments
      *
      * @param additionalComments
      */
@@ -731,90 +932,46 @@ private String finalAccession;
     }
 
     /**
+     * Get quantification pValue significance threshold
      *
-     * @return
+     * @return pvalueSignificanceThreshold
      */
-    public String getPeptideSequence() {
-        return peptideSequence;
-    }
-
-    /**
-     *
-     * @param peptideSequence
-     */
-    public void setPeptideSequence(String peptideSequence) {
-        this.peptideSequence = peptideSequence;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public String getPeptideModification() {
-        return peptideModification;
-    }
-
-    /**
-     *
-     * @param peptideModification
-     */
-    public void setPeptideModification(String peptideModification) {
-        this.peptideModification = peptideModification;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public String getModificationComment() {
-        return modificationComment;
-    }
-
-    /**
-     *
-     * @param modificationComment
-     */
-    public void setModificationComment(String modificationComment) {
-        this.modificationComment = modificationComment;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public String getqPeptideKey() {
-        return qPeptideKey;
-    }
-
-    /**
-     *
-     * @param qPeptideKey
-     */
-    public void setqPeptideKey(String qPeptideKey) {
-        this.qPeptideKey = qPeptideKey;
-    }
-
     public String getPvalueSignificanceThreshold() {
         return pvalueSignificanceThreshold;
     }
 
+    /**
+     * Set quantification pValue significance threshold
+     *
+     * @param pvalueSignificanceThreshold
+     */
     public void setPvalueSignificanceThreshold(String pvalueSignificanceThreshold) {
         this.pvalueSignificanceThreshold = pvalueSignificanceThreshold;
     }
 
     @Override
     public int compareTo(QuantProtein o) {
-        if ((this.getPatientsGroupINumber() + this.getPatientsGroupIINumber()) > (o.getPatientsGroupINumber() + o.getPatientsGroupIINumber())) {
+        if ((this.getDiseaseGroupIPatientsNumber() + this.getDiseaseGroupIIPatientsNumber()) > (o.getDiseaseGroupIPatientsNumber() + o.getDiseaseGroupIIPatientsNumber())) {
             return 1;
         } else {
             return -1;
         }
     }
 
+    /**
+     * Get link to protein in UniProt
+     *
+     * @return url
+     */
     public String getUrl() {
         return url;
     }
 
+    /**
+     * Set link to protein in UniProt
+     *
+     * @param url
+     */
     public void setUrl(String url) {
         this.url = url;
     }

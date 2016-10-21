@@ -23,7 +23,7 @@ import java.util.Set;
 import no.uib.probe.csf.pr.touch.Data_Handler;
 import no.uib.probe.csf.pr.touch.database.Query;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
-import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantDataset;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.view.core.TextAreaComponent;
 
@@ -347,7 +347,7 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
         String userCompHeader = "User Data - " + this.diseaseGroupsListA.getValue().toString().trim() + " / " + this.diseaseGroupsListB.getValue().toString().trim();
 
         userCustomizedComparison.setComparisonFullName(userCompHeader);
-        Map<Integer, QuantDatasetObject> dsMap = new HashMap<>();
+        Map<Integer, QuantDataset> dsMap = new HashMap<>();
         dsMap.put(-1, null);
         userCustomizedComparison.setDatasetMap(dsMap);
         userCustomizedComparison.setComparisonHeader(userCompHeader);
@@ -365,7 +365,7 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
                 continue;
             }
             QuantComparisonProtein comProt = new QuantComparisonProtein(1, userCustomizedComparison, index--);
-            comProt.addUp(-1, -1, true);
+            comProt.addIncreasedProtein(-1, -1, true);
             comProt.setProteinAccession(str);
             comProt.finalizeQuantData();
             comparProtList.put(str, comProt);
@@ -376,7 +376,7 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
                 continue;
             }
             QuantComparisonProtein comProt = new QuantComparisonProtein(1, userCustomizedComparison, index--);
-            comProt.addStable(-1, -1);
+            comProt.addEqualProtein(-1, -1);
             comProt.setProteinAccession(str);
             comProt.finalizeQuantData();
             comparProtList.put(str, comProt);
@@ -387,7 +387,7 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
                 continue;
             }
             QuantComparisonProtein comProt = new QuantComparisonProtein(1, userCustomizedComparison, index--);
-            comProt.addDown(-1, -1, true);
+            comProt.addDecreasedProtein(-1, -1, true);
             comProt.setProteinAccession(str);
             comProt.finalizeQuantData();
             comparProtList.put(str, comProt);

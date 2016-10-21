@@ -24,7 +24,7 @@ import java.util.TreeSet;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseGroupComparison;
 import no.uib.probe.csf.pr.touch.logic.beans.HeatMapHeaderCellInformationBean;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDSIndexes;
-import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantDataset;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.StudiesInformationPopupBtn;
 import no.uib.probe.csf.pr.touch.view.components.QuantDatasetsfullStudiesTableLayout;
@@ -77,7 +77,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 //    private final VerticalLayout rowCategoryHeadersContainer;
 //    private final VerticalLayout diseaseGroupsRowsLabels;
 //    private final HorizontalLayout diseaseGroupsColumnsLabels;
-    private final Map<Integer, QuantDatasetObject> updatedDatasetMap;
+    private final Map<Integer, QuantDataset> updatedDatasetMap;
 
     private final HorizontalLayout controlsLayout;
     private int maxDatasetNumber;
@@ -454,17 +454,17 @@ public abstract class HeatMapLayout extends VerticalLayout {
      * @param patientsGroupComparisonsSet
      * @param fullQuantDsMap
      */
-    public void updateData(Set<HeatMapHeaderCellInformationBean> rowsLbels, Set<HeatMapHeaderCellInformationBean> columnsLbels, Set<DiseaseGroupComparison> patientsGroupComparisonsSet, Map<Integer, QuantDatasetObject> fullQuantDsMap) {
+    public void updateData(Set<HeatMapHeaderCellInformationBean> rowsLbels, Set<HeatMapHeaderCellInformationBean> columnsLbels, Set<DiseaseGroupComparison> patientsGroupComparisonsSet, Map<Integer, QuantDataset> fullQuantDsMap) {
 
         unselectAll();
         equalComparisonMap.clear();
         updatedDatasetMap.clear();
         currentDsIds.clear();
         for (Integer i : fullQuantDsMap.keySet()) {
-            QuantDatasetObject qDs = fullQuantDsMap.get(i);
+            QuantDataset qDs = fullQuantDsMap.get(i);
             boolean add = false;
             for (HeatMapHeaderCellInformationBean row : rowsLbels) {
-                if (row.getDiseaseGroupOreginalName().contains(qDs.getPatientsGroup1()) || row.getDiseaseGroupOreginalName().contains(qDs.getPatientsGroup2())) {
+                if (row.getDiseaseGroupOreginalName().contains(qDs.getDiseaseMainGroupI()) || row.getDiseaseGroupOreginalName().contains(qDs.getDiseaseMainGroup2())) {
                     add = true;
                     break;
                 }
@@ -473,7 +473,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
             if (add) {
                 add = false;
                 for (HeatMapHeaderCellInformationBean col : columnsLbels) {
-                    if (col.getDiseaseGroupOreginalName().contains(qDs.getPatientsGroup1()) || col.getDiseaseGroupOreginalName().contains(qDs.getPatientsGroup2())) {
+                    if (col.getDiseaseGroupOreginalName().contains(qDs.getDiseaseMainGroupI()) || col.getDiseaseGroupOreginalName().contains(qDs.getDiseaseMainGroup2())) {
                         add = true;
                         break;
                     }
@@ -483,7 +483,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
             }
             if (add) {
                 updatedDatasetMap.put(i, qDs);
-                currentDsIds.add(qDs.getDsKey());
+                currentDsIds.add(qDs.getQuantDatasetIndex());
             }
 
         }
@@ -505,13 +505,13 @@ public abstract class HeatMapLayout extends VerticalLayout {
      *
      * @param datasets
      */
-//    public void filterHeatMap(Map<Integer, QuantDatasetObject> datasets, Set<DiseaseGroupComparison> patientsGroupComparisonsSet) {
+//    public void filterHeatMap(Map<Integer, QuantDataset> datasets, Set<DiseaseGroupComparison> patientsGroupComparisonsSet) {
 //        unselectAll();
 //
 //        Set<HeatMapHeaderCellInformationBean> localRows = new LinkedHashSet<>(),localColumns = new LinkedHashSet<>();
 //
 //        for (int key : datasets.keySet()) {
-//            QuantDatasetObject dataset = datasets.get(key);
+//            QuantDataset dataset = datasets.get(key);
 //            for (HeatMapHeaderCellInformationBean rowHeader : rowheadersSet) {
 //                if (dataset.getUpdatedDiseaseGroupI().equalsIgnoreCase(rowHeader.getDiseaseGroupName()) || dataset.getUpdatedDiseaseGroupII().equalsIgnoreCase(rowHeader.getDiseaseGroupName())) {
 //                    localRows.add(rowHeader);
@@ -673,7 +673,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 //    
     private HeatmapCell[][] cellTable;
 
-    private void updateHeatMapLayout(Set<HeatMapHeaderCellInformationBean> rowheaders, Set<HeatMapHeaderCellInformationBean> colheaders, Set<DiseaseGroupComparison> patientsGroupComparisonsSet, Map<Integer, QuantDatasetObject> fullQuantDsMap) {//, Map<String, String> diseaseFullNameMap, ) {
+    private void updateHeatMapLayout(Set<HeatMapHeaderCellInformationBean> rowheaders, Set<HeatMapHeaderCellInformationBean> colheaders, Set<DiseaseGroupComparison> patientsGroupComparisonsSet, Map<Integer, QuantDataset> fullQuantDsMap) {//, Map<String, String> diseaseFullNameMap, ) {
 
         this.rowheadersSet = rowheaders;
         this.colheadersSet = colheaders;
@@ -703,7 +703,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
                     removeRowSelectedDs(valueLabel);
                 }
             };
-            columnsColors[i] = cellInfo.getDiseaseColor();
+            columnsColors[i] = cellInfo.getDiseaseHashedColor();
 //            cellTable[0][i]=headerCell;
 //            heatmapBody.addComponent(headerCell, i + 1, 0);
 //            heatmapBody.setComponentAlignment(headerCell, Alignment.MIDDLE_CENTER);
@@ -736,7 +736,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 //            heatmapBody.addComponent(headerCell, 0, i + 1);
 //            heatmapBody.setComponentAlignment(headerCell, Alignment.MIDDLE_CENTER);
             rowHeaderCells[i] = headerCell;
-            rowsColors[i] = cellInfo.getDiseaseColor();
+            rowsColors[i] = cellInfo.getDiseaseHashedColor();
 
         }
 
@@ -757,10 +757,10 @@ public abstract class HeatMapLayout extends VerticalLayout {
                     color = hmColorGen.getColor((float) value);
                 }
 
-                Map<Integer, QuantDatasetObject> datasetMap = values[x][y].getDatasetMap();
+                Map<Integer, QuantDataset> datasetMap = values[x][y].getDatasetMap();
                 Set<String> pubCounter = new HashSet<>();
-                for (QuantDatasetObject ds : datasetMap.values()) {
-                    pubCounter.add(ds.getPumedID());
+                for (QuantDataset ds : datasetMap.values()) {
+                    pubCounter.add(ds.getPubMedId());
 
                 }
 
@@ -774,7 +774,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
                 }
                 String fullComparisonTitle = fullGrI + " / " + fullGrII;
                 String orginalComparisonName = grI.getDiseaseGroupOreginalName() + " / " + grII.getDiseaseGroupOreginalName();
-                HeatmapCell cell = new HeatmapCell(value, color, grI.getDiseaseColor(), datasetMap, x, y, null, heatmapCellWidth, pubCounter.size(), updatedComparisonTitle, fullComparisonTitle, orginalComparisonName, ((HeatMapHeaderCellInformationBean) rowheaders.toArray()[x]).getDiseaseCategory(), ((HeatMapHeaderCellInformationBean) rowheaders.toArray()[x]).getDiseaseStyleName()) {
+                HeatmapCell cell = new HeatmapCell(value, color, grI.getDiseaseHashedColor(), datasetMap, x, y, null, heatmapCellWidth, pubCounter.size(), updatedComparisonTitle, fullComparisonTitle, orginalComparisonName, ((HeatMapHeaderCellInformationBean) rowheaders.toArray()[x]).getDiseaseCategory(), ((HeatMapHeaderCellInformationBean) rowheaders.toArray()[x]).getDiseaseStyleName()) {
 
                     @Override
                     public void selectData(HeatmapCell cell) {
@@ -1293,7 +1293,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 //        }
     }
 
-    private void calcHeatMapMatrix(Set<HeatMapHeaderCellInformationBean> rowheaders, Set<HeatMapHeaderCellInformationBean> colheaders, Set<DiseaseGroupComparison> patientsGroupComparisonsSet, Map<Integer, QuantDatasetObject> fullQuantDsMap) {
+    private void calcHeatMapMatrix(Set<HeatMapHeaderCellInformationBean> rowheaders, Set<HeatMapHeaderCellInformationBean> colheaders, Set<DiseaseGroupComparison> patientsGroupComparisonsSet, Map<Integer, QuantDataset> fullQuantDsMap) {
         maxDatasetNumber = -1;
 
         values = new QuantDSIndexes[rowheaders.size()][colheaders.size()];
@@ -1301,7 +1301,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
             for (int y = 0; y < colheaders.size(); y++) {
                 Set<Integer> value = calcDsNumbers(rowheaders.toArray()[x].toString(), colheaders.toArray()[y].toString(), patientsGroupComparisonsSet);
 //                int z = 0;
-                Map<Integer, QuantDatasetObject> datasetMap = new LinkedHashMap<>();
+                Map<Integer, QuantDataset> datasetMap = new LinkedHashMap<>();
 //                int[] indexes = new int[value.size()];
                 for (int i : value) {
                     datasetMap.put(i, fullQuantDsMap.get(i));

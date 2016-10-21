@@ -3,7 +3,7 @@ package no.uib.probe.csf.pr.touch.view.core;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
-import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantDataset;
 
 /**
  *
@@ -18,8 +18,8 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
      * @param quantDs
      * @param diseaseHashedColor hashed color for disease
      */
-    public DatasetInformationOverviewLayout(QuantDatasetObject quantDs, boolean smallScreen) {
-        this.diseaseHashedColor = quantDs.getDiseaseCategoryColor();
+    public DatasetInformationOverviewLayout(QuantDataset quantDs, boolean smallScreen) {
+        this.diseaseHashedColor = quantDs.getDiseaseHashedColor();
 //        int width = Page.getCurrent().getBrowserWindowWidth() - 320;
 //        int height = Page.getCurrent().getBrowserWindowHeight() - 320;
 //        this.setWidth(width ,Unit.PIXELS);
@@ -211,11 +211,11 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         return mainContainer;
     }
 
-    private void updateDatasetForm(QuantDatasetObject quantDs) {
+    private void updateDatasetForm(QuantDataset quantDs) {
         if (quantDs == null) {
             return;
         }
-        pumedId.setValue(quantDs.getPumedID(), "http://www.ncbi.nlm.nih.gov/pubmed/" + quantDs.getPumedID());
+        pumedId.setValue(quantDs.getPubMedId(), "http://www.ncbi.nlm.nih.gov/pubmed/" + quantDs.getPubMedId());
         if (quantDs.getRawDataUrl() == null || quantDs.getRawDataUrl().equalsIgnoreCase("Raw Data Not Available")) {
             rawData.setValue("Not Available", null);
         } else {
@@ -230,16 +230,16 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         technology.setValue(quantDs.getTechnology(), null);
 
         quantificationBasis.setValue(quantDs.getQuantificationBasis(), null);
-        patientsGroup1Number.setValue(quantDs.getPatientsGroup1Number(), null);
-        patientsGroup2Number.setValue(quantDs.getPatientsGroup2Number(), null);
-        patientsGroup1.setValue(quantDs.getPatientsGroup1(), null);
-        patientsGroup2.setValue(quantDs.getPatientsGroup2() + "", null);
+        patientsGroup1Number.setValue(quantDs.getDiseaseMainGroup1Number(), null);
+        patientsGroup2Number.setValue(quantDs.getDiseaseMainGroup2Number(), null);
+        patientsGroup1.setValue(quantDs.getDiseaseMainGroupI(), null);
+        patientsGroup2.setValue(quantDs.getDiseaseMainGroup2() + "", null);
 
-        patientssubGroup1.setValue(quantDs.getPatientsSubGroup1(), null);
-        patientsCommGroup1.setValue(quantDs.getPatientsGroup1Comm(), null);
+        patientssubGroup1.setValue(quantDs.getDiseaseSubGroup1(), null);
+        patientsCommGroup1.setValue(quantDs.getDiseaseMainGroup1Comm(), null);
 
-        patientssubGroup2.setValue(quantDs.getPatientsSubGroup2(), null);
-        patientsCommGroup2.setValue(quantDs.getPatientsGroup2Comm(), null);
+        patientssubGroup2.setValue(quantDs.getDiseaseSubGroup2(), null);
+        patientsCommGroup2.setValue(quantDs.getDiseaseMainGroup2Comm(), null);
 
         identifiedProteinsNumber.setValue(quantDs.getIdentifiedProteinsNumber() + "", null);
         quantifiedProteinsNumber.setValue(quantDs.getQuantifiedProteinsNumber() + "", null);

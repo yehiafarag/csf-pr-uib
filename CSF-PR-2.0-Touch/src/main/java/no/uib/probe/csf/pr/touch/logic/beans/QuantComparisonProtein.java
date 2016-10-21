@@ -1,20 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.logic.beans;
 
-import com.vaadin.ui.Label;
 import java.io.Serializable;
-import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -25,94 +17,205 @@ import java.util.Set;
  */
 public class QuantComparisonProtein implements Serializable {
 
+    /*
+     *Protein accession number
+     */
     private String proteinAccession;
+    /*
+     *Protein name
+     */
     private String proteinName;
-    private final int uniqueId;
+    /*
+     *Protein sequence imported from uniprot
+     */
     private String sequence;
 
+    /*
+     *Protein peptides list
+     */
+    private Set<QuantPeptide> quantPeptidesList;
+
+    /*
+     *Patients number in diffrent datasets maped to protein accession 
+     */
+    private final Map<String, List<Integer>> patientsNumToTrindMap = new HashMap<>();
+    /*
+     *Patients number in different datasets mapped to dataset key 
+     */
+    private final Map<String, List<Integer>> patientsNumToDSIDMap = new HashMap<>();
+
+    /*
+     *Protein objects (from different dataset with same accession) mapped to dataset id
+     */
+    private Map<String, QuantProtein> dsQuantProteinsMap;
+    /*
+     *Overall increase significant number for the protein in different datasets
+     */
+    private Integer significantlyIncreasedNumber = 0;
+    /*
+     *Overall decrease significant number for the protein in diffrent datasets
+     */
+    private Integer significantlyDecreasedNumber = 0;
+
+    /*
+     *Overall no value number for the protein in diffrent datasets
+     */
+    private int noValueprovided = 0;
+    /*
+     *Overall equal number for the protein in diffrent datasets
+     */
+    private int stable = 0;
+
+    /*
+     *The  penalty value used for sorting proteins in the protein table 
+     *equal, increased-decreased non Significat =0.5
+     */
+    private double penalty = 0.0;
+
+    /*
+     *The  trend value used for plotting the protein location in bubble charts 
+     */
+    private Double trendValue = 0.0;
+
+    /*
+     *The  trend value used for sorting the protein location in protein table 
+     */
+    private double cellValue;
+
+    /*
+     *protein link in uniprot 
+     */
+    private String url;
+    /*
+     *The  trend value used for plotting the protein location in line charts 
+     */
+    private double overallCellPercentValue;
+    /*
+     *The  final value used for significant trend category 
+     *0 : 100% decreased
+     *1: less than 100% decrease
+     *2: proteins are equal or not significantly changed
+     *3: less than 100% increased
+     *4:100% increased
+     *5:no value available (proteins quantified on peptides level)
+     */
+    private int significantTrindCategory;
+
+    /**
+     * Get Patients number in different datasets mapped to dataset key
+     *
+     * @return patientsNumToDSIDMap
+     */
     public Map<String, List<Integer>> getPatientsNumToDSIDMap() {
         return patientsNumToDSIDMap;
     }
 
+    /**
+     * Get Protein name
+     *
+     * @return proteinName
+     */
     public String getProteinName() {
         return proteinName;
     }
 
+    /**
+     * Get protein sequence
+     *
+     * @return sequence
+     */
     public String getSequence() {
         return sequence;
     }
 
+    /**
+     * Get protein link to UniProt
+     *
+     * @return url
+     */
     public String getUrl() {
         return url;
     }
-    private Set<QuantPeptide> quantPeptidesList;
-    
-    
-    
-    
-    
 
+    /**
+     * Get protein peptides list
+     *
+     * @return quantPeptidesList
+     */
     public Set<QuantPeptide> getQuantPeptidesList() {
         return quantPeptidesList;
     }
 
+    /**
+     * Set protein peptides list
+     *
+     * @param quantPeptidesList
+     */
     public void setQuantPeptidesList(Set<QuantPeptide> quantPeptidesList) {
         this.quantPeptidesList = quantPeptidesList;
     }
-    private final Map<String, List<Integer>> patientsNumToTrindMap = new HashMap<String, List<Integer>>();
-    private final Map<String, List<Integer>> patientsNumToDSIDMap = new HashMap<String, List<Integer>>();
-    private Map<String, QuantProtein> dsQuantProteinsMap = new HashMap<String, QuantProtein>();
-    private Integer highSignificant = 0;
-    private Integer lowSignificant = 0;
-    private int stableSignificant = 0;
-    private int noValueprovided = 0;
-    private int stable = 0;
-    private double penalty = 0.0;
 
-    public double getPenalty() {
-        return penalty;
-    }
-    private String key;
-    private Label upLabel;
-    private Label downLabel;
-    private final int total;
-    private final DecimalFormat df;
-    private Double trendValue = 0.0;
-    private double cellValue;
-    private final QuantDiseaseGroupsComparison quantComparison;
-     private boolean updated = false;
-     private String url;
-     private double overallCellPercentValue;
-
+    /**
+     * Set protein objects (from different dataset with same accession) mapped
+     * to dataset id
+     *
+     * @param dsQuantProteinsMap
+     */
     public void setDsQuantProteinsMap(Map<String, QuantProtein> dsQuantProteinsMap) {
         this.dsQuantProteinsMap = dsQuantProteinsMap;
     }
 
+    /**
+     * Get protein objects (from different dataset with same accession) mapped
+     * to dataset id
+     *
+     * @return dsQuantProteinsMap
+     */
     public Map<String, QuantProtein> getDsQuantProteinsMap() {
         return dsQuantProteinsMap;
     }
 
+    /**
+     * Get Protein accession number
+     *
+     * @return proteinAccession
+     */
     public String getProteinAccession() {
         return proteinAccession;
     }
 
+    /**
+     * Set protein sequence (imported from UniProt)
+     *
+     * @param sequence
+     */
     public void setSequence(String sequence) {
         this.sequence = sequence;
     }
 
+    /**
+     * The final value used for significant trend category 0 : 100% decreased 1:
+     * less than 100% decrease 2: proteins are equal or not significantly
+     * changed 3: less than 100% increased 4:100% increased 5:no value available
+     * (proteins quantified on peptides level)
+     *
+     * @return significantTrindCategory
+     */
     public int getSignificantTrindCategory() {
         return significantTrindCategory;
     }
 
-    private int significantTrindCategory;
-
+    /**
+     * Constructor (initialize data required for quant comparison protein)
+     *
+     * @param total
+     * @param quantComparison
+     * @param uniqueId
+     */
     public QuantComparisonProtein(int total, QuantDiseaseGroupsComparison quantComparison, int uniqueId) {
-        this.quantComparison = quantComparison;
-        this.uniqueId = uniqueId;
+        this.dsQuantProteinsMap = new HashMap<>();
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
         otherSymbols.setGroupingSeparator('.');
-        df = new DecimalFormat("#.#", otherSymbols);
-        this.total = total;
 
         patientsNumToTrindMap.put("up", new ArrayList<>());
         patientsNumToTrindMap.put("equal", new ArrayList<>());
@@ -123,18 +226,20 @@ public class QuantComparisonProtein implements Serializable {
         patientsNumToTrindMap.put("noValueProvided", new ArrayList<>());
         patientsNumToDSIDMap.put("noValueProvided", new ArrayList<>());
     }
-    
+
     /**
+     * Add +1 for number of decreased protein in comparison (protein value
+     * decreased in this comparison)
      *
      * @param patientsNumber
      * @param dsID
      * @param significant
      */
-    public void addDown(int patientsNumber, int dsID, boolean significant) {
+    public void addDecreasedProtein(int patientsNumber, int dsID, boolean significant) {
 
         if (significant) {
             trendValue -= (double) 1;
-            this.lowSignificant += 1;
+            this.significantlyDecreasedNumber += 1;
             List<Integer> downList = this.patientsNumToTrindMap.get("down");
             downList.add(patientsNumber);
             this.patientsNumToTrindMap.put("down", downList);
@@ -145,15 +250,18 @@ public class QuantComparisonProtein implements Serializable {
 
         } else {
 
-            addStable(patientsNumber, dsID);
+            addEqualProtein(patientsNumber, dsID);
         }
     }
+
     /**
+     * Add +1 for number of equal protein in comparison (protein value didn't
+     * changed)
      *
      * @param patNumber
      * @param dsID
      */
-    public void addStable(int patNumber, int dsID) {
+    public void addEqualProtein(int patNumber, int dsID) {
         penalty += 0.5;
         this.stable += 1;
         List<Integer> notRegList = this.patientsNumToTrindMap.get("equal");
@@ -163,17 +271,20 @@ public class QuantComparisonProtein implements Serializable {
         notRegDsList.add(dsID);
         this.patientsNumToDSIDMap.put("equal", notRegDsList);
     }
-     /**
+
+    /**
+     * Add +1 for number of increased protein in comparison (protein value
+     * decreased in this comparison)
      *
      * @param patientsNumber
      * @param dsID
      * @param significant
      */
-    public void addUp(int patientsNumber, int dsID, boolean significant) {
+    public void addIncreasedProtein(int patientsNumber, int dsID, boolean significant) {
 
         if (significant) {
             trendValue += (double) 1;
-            this.highSignificant += 1;
+            this.significantlyIncreasedNumber += 1;
             List<Integer> upList = this.patientsNumToTrindMap.get("up");
             upList.add(patientsNumber);
             this.patientsNumToTrindMap.put("up", upList);
@@ -183,19 +294,13 @@ public class QuantComparisonProtein implements Serializable {
             this.patientsNumToDSIDMap.put("up", upDsList);
 
         } else {
-            addStable(patientsNumber, dsID);
+            addEqualProtein(patientsNumber, dsID);
         }
 
     }
 
-    public void setProteinAccession(String proteinAccession) {
-        this.proteinAccession = proteinAccession;
-    }
-
-    public void setProteinName(String proteinName) {
-        this.proteinName = proteinName;
-    }
-     /**
+    /**
+     * Add +1 for number of protein with no value provided in comparison
      *
      * @param patientsNumber
      * @param dsID
@@ -213,56 +318,89 @@ public class QuantComparisonProtein implements Serializable {
 
     }
 
+    /**
+     * Set protein accession number
+     *
+     * @param proteinAccession
+     */
+    public void setProteinAccession(String proteinAccession) {
+        this.proteinAccession = proteinAccession;
+    }
+
+    /**
+     * Set Protein name
+     *
+     * @param proteinName
+     */
+    public void setProteinName(String proteinName) {
+        this.proteinName = proteinName;
+    }
+
+    /**
+     * Set UniProt protein link
+     *
+     * @param url
+     */
     public void setUrl(String url) {
         this.url = url;
     }
 
+    /**
+     * Get trend value used for plotting the protein location in bubble charts
+     *
+     * @return trendValue
+     */
     public Double getTrendValue() {
         return trendValue;
     }
-     /**
-     *
-     * @return
-     */
-    public int getHighSignificant() {
-        return highSignificant;
-    }
 
-    public Integer getLowSignificant() {
-        return lowSignificant;
+    /**
+     * Get overall increase significant number for the protein in different
+     * datasets
+     *
+     * @return significantlyIncreasedNumber
+     */
+    public int getSignificantlyIncreasedNumber() {
+        return significantlyIncreasedNumber;
     }
 
     /**
+     * Get overall decrease significant number for the protein in different
+     * datasets
      *
+     * @return significantlyDecreasedNumber
+     */
+    public int getSignificantlyDecreasedNumber() {
+        return significantlyDecreasedNumber;
+    }
+
+    /**
+     * Calculate the final values for protein trend across different datasets
      */
     public void finalizeQuantData() {
-        if (updated) {
-            return;
-        }
-  
 
         Double v1;
-        if (highSignificant == lowSignificant.intValue()) {
+        if (significantlyIncreasedNumber == significantlyDecreasedNumber.intValue()) {
             v1 = trendValue;
         } else if (trendValue > 0) {
             double factor = penalty;
             v1 = trendValue - factor;
-            v1 = Math.max(v1, 0) + ((double) (highSignificant - lowSignificant) / 10.0);
+            v1 = Math.max(v1, 0) + ((double) (significantlyIncreasedNumber - significantlyDecreasedNumber) / 10.0);
         } else {
             double factor = penalty;
             v1 = trendValue + factor;
-            v1 = Math.min(v1, 0) + ((double) (highSignificant - lowSignificant) / 10.0);
+            v1 = Math.min(v1, 0) + ((double) (significantlyIncreasedNumber - significantlyDecreasedNumber) / 10.0);
         }
         if (v1 > 0) {
             cellValue = Math.min(v1, 1);
         } else if (v1 < 0) {
             cellValue = Math.max(v1, -1);
         }
-        int existStudiesNumber = lowSignificant + highSignificant + stable;
-        if (cellValue > 0) {           
-            if (stable > 0 || lowSignificant > 0) {
+        int existStudiesNumber = significantlyDecreasedNumber + significantlyIncreasedNumber + stable;
+        if (cellValue > 0) {
+            if (stable > 0 || significantlyDecreasedNumber > 0) {
                 significantTrindCategory = 3;
-                overallCellPercentValue = Math.max((((double) (highSignificant - lowSignificant)) / (double) existStudiesNumber) * 100.0, 5.0);
+                overallCellPercentValue = Math.max((((double) (significantlyIncreasedNumber - significantlyDecreasedNumber)) / (double) existStudiesNumber) * 100.0, 5.0);
 
             } else {
                 significantTrindCategory = 4;
@@ -274,29 +412,28 @@ public class QuantComparisonProtein implements Serializable {
             overallCellPercentValue = 0;
 
         } else {
-            if (stable > 0 || highSignificant > 0) {
+            if (stable > 0 || significantlyIncreasedNumber > 0) {
                 significantTrindCategory = 1;
-                overallCellPercentValue = Math.max((((double) (lowSignificant - highSignificant)) / (double) existStudiesNumber) * 100.0, 5.0);
+                overallCellPercentValue = Math.max((((double) (significantlyDecreasedNumber - significantlyIncreasedNumber)) / (double) existStudiesNumber) * 100.0, 5.0);
                 overallCellPercentValue = -1 * overallCellPercentValue;
             } else {
                 significantTrindCategory = 0;
                 overallCellPercentValue = -100;
             }
         }
-        if (stable == 0 && highSignificant == 0 && lowSignificant == 0 && noValueprovided > 0) {
+        if (stable == 0 && significantlyIncreasedNumber == 0 && significantlyDecreasedNumber == 0 && noValueprovided > 0) {
             significantTrindCategory = 5;
             overallCellPercentValue = 0;
         }
     }
 
+    /**
+     * Get trend value used for plotting the protein location in line charts
+     *
+     * @return overallCellPercentValue
+     */
     public double getOverallCellPercentValue() {
         return overallCellPercentValue;
     }
 
-
-    
-    
-    
-    
-    
 }

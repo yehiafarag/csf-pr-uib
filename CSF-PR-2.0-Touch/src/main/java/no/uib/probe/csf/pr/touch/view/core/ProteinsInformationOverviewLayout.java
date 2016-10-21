@@ -113,34 +113,34 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
         additionalComments.setValue(quantProtein.getAdditionalComments(), null);
 
         String pval;
-        if (quantProtein.getStringPValue() != null && !quantProtein.getStringPValue().equalsIgnoreCase("") && !quantProtein.getStringPValue().equalsIgnoreCase("Not Available")) {
-            pval = quantProtein.getStringPValue() + " ";
+        if (quantProtein.getString_p_value() != null && !quantProtein.getString_p_value().equalsIgnoreCase("") && !quantProtein.getString_p_value().equalsIgnoreCase("Not Available")) {
+            pval = quantProtein.getString_p_value() + " ";
         } else {
             pval = "          ";
         }
-        if (quantProtein.getpValue() != -1000000000) {
-            pval += "(" + df.format(quantProtein.getpValue()) + ")";
+        if (quantProtein.getP_value() != -1000000000) {
+            pval += "(" + df.format(quantProtein.getP_value()) + ")";
         }
         pValue.setValue(pval, null);
 
-        pValueComm.setValue(quantProtein.getPvalueComment(), null);
+        pValueComm.setValue(quantProtein.getP_value_comments(), null);
 
         String strFoldChange;
-        if (quantProtein.getStringFCValue() != null && !quantProtein.getStringFCValue().equalsIgnoreCase("") && !quantProtein.getStringFCValue().equalsIgnoreCase("Not Available")) {
-            strFoldChange = quantProtein.getStringFCValue() + " ";
+        if (quantProtein.getString_fc_value() != null && !quantProtein.getString_fc_value().equalsIgnoreCase("") && !quantProtein.getString_fc_value().equalsIgnoreCase("Not Available")) {
+            strFoldChange = quantProtein.getString_fc_value() + " ";
             if (strFoldChange.trim().equalsIgnoreCase("Not regulated")) {
                 strFoldChange = "No Change ";
             }
         } else {
             strFoldChange = "          ";
         }
-        if (quantProtein.getFcPatientGroupIonPatientGroupII() != -1000000000) {
-            strFoldChange += "(" + df.format(quantProtein.getFcPatientGroupIonPatientGroupII()) + ")";
+        if (quantProtein.getFc_value() != -1000000000) {
+            strFoldChange += "(" + df.format(quantProtein.getFc_value()) + ")";
         }
         foldChange.setValue(strFoldChange, null);
         String rocv;
-        if (quantProtein.getRocAuc() != -1000000000) {
-            rocv = df.format(quantProtein.getRocAuc()) + "";
+        if (quantProtein.getRoc_auc() != -1000000000) {
+            rocv = df.format(quantProtein.getRoc_auc()) + "";
         } else {
             rocv = "";
         }

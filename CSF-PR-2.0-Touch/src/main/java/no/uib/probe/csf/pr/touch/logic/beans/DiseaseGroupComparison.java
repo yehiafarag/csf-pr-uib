@@ -13,14 +13,15 @@ public class DiseaseGroupComparison implements Serializable {
     /*
      *Disease category name (MS, AD, PD..etc)
      */
+
     private String diseaseCategory;
 
     /*
      *Disease Style name at CSS file
      */
     private String diseaseStyleName;
-    
-      /*
+
+    /*
      *The dataset index in the database
      */
     private int quantDatasetIndex;
@@ -53,7 +54,6 @@ public class DiseaseGroupComparison implements Serializable {
      */
     private String activeDiseaseSubGroupII;
 
-
     /**
      * Get disease category (MS,AD,PD...etc)
      *
@@ -72,7 +72,6 @@ public class DiseaseGroupComparison implements Serializable {
         this.diseaseCategory = DiseaseCategory;
     }
 
-  
     /**
      * Get the disease sub group I (publication name)
      *
@@ -92,7 +91,7 @@ public class DiseaseGroupComparison implements Serializable {
     }
 
     /**
-     * Set the disease sub group II (publication name)
+     * Get the disease sub group II (publication name)
      *
      * @return originalDiseaseSubGroupII
      */
@@ -121,7 +120,7 @@ public class DiseaseGroupComparison implements Serializable {
     /**
      * Get he dataset index in the database
      *
-     * @return
+     * @return quantDatasetIndex
      */
     public int getQuantDatasetIndex() {
         return quantDatasetIndex;

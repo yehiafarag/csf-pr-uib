@@ -15,7 +15,7 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
 
     private String comparisonHeader;
     private String oreginalComparisonHeader;
-    private Map<Integer, QuantDatasetObject> datasetMap;
+    private Map<Integer, QuantDataset> datasetMap;
     private String diseaseCategoryColor;
     private boolean switchable = true;
 
@@ -47,11 +47,11 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
     private String diseaseCategoryStyle;
     private boolean useCustomRowHeaderToSort;
 
-    public Map<Integer, QuantDatasetObject> getDatasetMap() {
+    public Map<Integer, QuantDataset> getDatasetMap() {
         return datasetMap;
     }
 
-    public void setDatasetMap(Map<Integer, QuantDatasetObject> datasetMap) {
+    public void setDatasetMap(Map<Integer, QuantDataset> datasetMap) {
         this.datasetMap = datasetMap;
     }
     private boolean useCustomColumnHeaderToSort;

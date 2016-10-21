@@ -31,7 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
-import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantDataset;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantPeptide;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantProtein;
@@ -609,19 +609,19 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
                     }
                     QuantComparisonProtein protein = groupComp.getQuantComparisonProteinMap().get(key);
                     for (QuantProtein quantProt : protein.getDsQuantProteinsMap().values()) {
-                        QuantDatasetObject ds = groupComp.getDatasetMap().get(quantProt.getDsKey());
-                        String roc = quantProt.getRocAuc() + "";
-                        if (quantProt.getRocAuc() == -1000000000.0) {
+                        QuantDataset ds = groupComp.getDatasetMap().get(quantProt.getQuantDatasetIndex());
+                        String roc = quantProt.getRoc_auc() + "";
+                        if (quantProt.getRoc_auc() == -1000000000.0) {
                             roc = null;
                         }
-                        t1.addItem(new Object[]{(index + 1), groupComp.getDiseaseCategory(), groupComp.getComparisonHeader().replace("__" + groupComp.getDiseaseCategory(), ""), ds.getAuthor(), ds.getPumedID(), ds.getTypeOfStudy(), ds.getAnalyticalApproach(), ds.getShotgunTargeted(), ds.getAnalyticalMethod(), ds.getTechnology(), ds.getSampleType(), ds.getEnzyme(),
-                            ds.getQuantificationBasis(), ds.getQuantBasisComment(), ds.getIdentifiedProteinsNumber(), ds.getQuantifiedProteinsNumber(), ds.getPatientsGroup1(), ds.getPatientsSubGroup1(), ds.getPatientsGroup1Number(), ds.getPatientsGroup1Comm(), ds.getPatientsGroup2(), ds.getPatientsSubGroup2(), ds.getPatientsGroup2Number(), ds.getPatientsGroup2Comm(),
-                            ds.getSampleMatching(), ds.getNormalizationStrategy(), ds.getRawDataUrl(), ds.getTotalProtNum(), ds.getTotalPepNum(), ds.getUniqueProtNum(), ds.getUniqePepNum(), quantProt.getUniprotAccession(), quantProt.getStringFCValue(), quantProt.getStringPValue(), quantProt.getPvalueSignificanceThreshold(), quantProt.getPvalueComment(), roc, quantProt.getAdditionalComments()}, index++);
+                        t1.addItem(new Object[]{(index + 1), groupComp.getDiseaseCategory(), groupComp.getComparisonHeader().replace("__" + groupComp.getDiseaseCategory(), ""), ds.getAuthor(), ds.getPubMedId(), ds.getTypeOfStudy(), ds.getAnalyticalApproach(), ds.getShotgunTargeted(), ds.getAnalyticalMethod(), ds.getTechnology(), ds.getSampleType(), ds.getEnzyme(),
+                            ds.getQuantificationBasis(), ds.getQuantBasisComment(), ds.getIdentifiedProteinsNumber(), ds.getQuantifiedProteinsNumber(), ds.getDiseaseMainGroupI(), ds.getDiseaseSubGroup1(), ds.getDiseaseMainGroup1Number(), ds.getDiseaseMainGroup1Comm(), ds.getDiseaseMainGroup2(), ds.getDiseaseSubGroup2(), ds.getDiseaseMainGroup2Number(), ds.getDiseaseMainGroup2Comm(),
+                            ds.getSampleMatching(), ds.getNormalizationStrategy(), ds.getRawDataUrl(), ds.getTotalProtNum(), ds.getTotalPepNum(), ds.getUniqueProtNum(), ds.getUniqePepNum(), quantProt.getUniprotAccessionNumber(), quantProt.getString_fc_value(), quantProt.getString_p_value(), quantProt.getPvalueSignificanceThreshold(), quantProt.getP_value_comments(), roc, quantProt.getAdditionalComments()}, index++);
 
                     }
 
                     for (QuantPeptide quantPeptide : protein.getQuantPeptidesList()) {
-                        QuantDatasetObject ds = groupComp.getDatasetMap().get(quantPeptide.getDsKey());
+                        QuantDataset ds = groupComp.getDatasetMap().get(quantPeptide.getQuantDatasetIndex());
                         String protTrend;
                         if (protein.getOverallCellPercentValue() > 0) {
                             protTrend = "Increased";
@@ -630,7 +630,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
                         } else {
                             protTrend = "Decreased";
                         }
-                        t2.addItem(new Object[]{(index2 + 1), protTrend, ds.getDiseaseCategory(), groupComp.getComparisonHeader().replace("__" + groupComp.getDiseaseCategory(), ""), ds.getAuthor(), ds.getPumedID(), (ds.getPatientsGroup1Number() + ds.getPatientsGroup2Number()), quantPeptide.getPeptideSequence(), quantPeptide.getSequenceAnnotated(), quantPeptide.getPeptideModification(), quantPeptide.getModification_comment(), quantPeptide.getString_fc_value(), quantPeptide.getString_p_value(), quantPeptide.getPvalueSignificanceThreshold(), quantPeptide.getP_value_comments(), ds.getQuantificationBasis(), quantPeptide.getQuantBasisComment(), quantPeptide.getPeptideCharge() + "", quantPeptide.getRoc_auc()+"", quantPeptide.getAdditionalComments()}, index2++);
+                        t2.addItem(new Object[]{(index2 + 1), protTrend, ds.getDiseaseCategory(), groupComp.getComparisonHeader().replace("__" + groupComp.getDiseaseCategory(), ""), ds.getAuthor(), ds.getPubMedId(), (ds.getDiseaseMainGroup1Number() + ds.getDiseaseMainGroup2Number()), quantPeptide.getPeptideSequence(), quantPeptide.getSequenceAnnotated(), quantPeptide.getPeptideModification(), quantPeptide.getModification_comment(), quantPeptide.getString_fc_value(), quantPeptide.getString_p_value(), quantPeptide.getPvalueSignificanceThreshold(), quantPeptide.getP_value_comments(), ds.getQuantificationBasis(), quantPeptide.getQuantBasisComment(), quantPeptide.getPeptideCharge() + "", quantPeptide.getRoc_auc()+"", quantPeptide.getAdditionalComments()}, index2++);
                     }
                 }
 

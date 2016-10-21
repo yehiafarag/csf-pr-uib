@@ -5,7 +5,7 @@ import com.vaadin.server.ThemeResource;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantDataset;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 
 /**
@@ -34,7 +34,7 @@ public abstract class StudiesInformationPopupBtn extends ImageContainerBtn {
         };
     }
 
-    public void updateData(Collection<QuantDatasetObject> quantDatasetSet) {
+    public void updateData(Collection<QuantDataset> quantDatasetSet) {
         studiesInformationWindow.updateData(quantDatasetSet);
     }
     public void view(){

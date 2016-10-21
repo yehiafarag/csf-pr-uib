@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.logic.beans;
 
 import java.io.Serializable;
@@ -11,32 +6,50 @@ import java.util.Map;
 /**
  *
  * @author Yehia Farag
- * 
+ *
+ * This class is used for re-indexing datasets in the heat-map layout
+ *
  */
-public class QuantDSIndexes implements Serializable{
+public class QuantDSIndexes implements Serializable {
 
+    /*
+     *Datasetset index value
+     */
     private int value;
-    private Map<Integer,QuantDatasetObject> datasetMap;
+    /*
+     *Datasets map (dataset index in the database to dataset object)
+     */
+    private Map<Integer, QuantDataset> datasetMap;
 
-    public Map<Integer, QuantDatasetObject> getDatasetMap() {
+    /**
+     * Get datasets map (dataset index in the database to dataset object)
+     *
+     * @return datasetMap
+     */
+    public Map<Integer, QuantDataset> getDatasetMap() {
         return datasetMap;
     }
 
-    public void setDatasetMap(Map<Integer, QuantDatasetObject> datasetMap) {
+    /**
+     * Set datasets map (dataset index in the database to dataset object)
+     *
+     * @param datasetMap
+     */
+    public void setDatasetMap(Map<Integer, QuantDataset> datasetMap) {
         this.datasetMap = datasetMap;
     }
 
-   
-
     /**
+     * Get indexing value
      *
-     * @return
+     * @return value
      */
     public int getValue() {
         return value;
     }
 
     /**
+     * Set indexing value
      *
      * @param value
      */

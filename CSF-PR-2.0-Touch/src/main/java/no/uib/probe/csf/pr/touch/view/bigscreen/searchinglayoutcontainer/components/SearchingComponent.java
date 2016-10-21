@@ -368,7 +368,7 @@ public abstract class SearchingComponent extends BigBtn {
         if (noSelection) {
             selection.setKeyWords(filterKeywordSet);
             searchQuantificationProtList.stream().forEach((protein) -> {
-                datasetIds.add(protein.getDsKey());
+                datasetIds.add(protein.getQuantDatasetIndex());
                 diseaseCategories.add(protein.getDiseaseCategory());
                 proteinAccession.add(protein.getFinalAccession());
 
@@ -376,7 +376,7 @@ public abstract class SearchingComponent extends BigBtn {
                     diseaseCategoriesIdMap.put(protein.getDiseaseCategory(), new HashSet<>());
                 }
                 Set<Integer> datasetIdSet = diseaseCategoriesIdMap.get(protein.getDiseaseCategory());
-                datasetIdSet.add(protein.getDsKey());
+                datasetIdSet.add(protein.getQuantDatasetIndex());
                 diseaseCategoriesIdMap.put(protein.getDiseaseCategory(), datasetIdSet);
 
             });
@@ -385,13 +385,13 @@ public abstract class SearchingComponent extends BigBtn {
             selection.setKeyWords(proteinList.keySet());
             searchQuantificationProtList.stream().filter((protein) -> (proteinList.keySet().contains(protein.getFinalAccession()) && (proteinList.get(protein.getFinalAccession()).contains("all") || proteinList.get(protein.getFinalAccession()).contains(protein.getDiseaseCategory())))).forEach((protein) -> {
 
-                datasetIds.add(protein.getDsKey());
+                datasetIds.add(protein.getQuantDatasetIndex());
                 proteinAccession.add(protein.getFinalAccession());
                 if (!diseaseCategoriesIdMap.containsKey(protein.getDiseaseCategory())) {
                     diseaseCategoriesIdMap.put(protein.getDiseaseCategory(), new HashSet<>());
                 }
                 Set<Integer> datasetIdSet = diseaseCategoriesIdMap.get(protein.getDiseaseCategory());
-                datasetIdSet.add(protein.getDsKey());
+                datasetIdSet.add(protein.getQuantDatasetIndex());
                 diseaseCategoriesIdMap.put(protein.getDiseaseCategory(), datasetIdSet);
 
             });

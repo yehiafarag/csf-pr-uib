@@ -305,37 +305,37 @@ public abstract class CompareComponent extends BigBtn {
 
         if (!datasetsChart.getSelectionSet().isEmpty() && !datasetsChart.getSelectionSet().contains("all")) {
             searchQuantificationProtList.stream().filter((protein) -> (datasetsChart.getSelectionSet().contains(protein.getDiseaseCategory()))).map((protein) -> {
-                datasetIds.add(protein.getDsKey());
+                datasetIds.add(protein.getQuantDatasetIndex());
                 return protein;
             }).forEach((protein) -> {
 
-                userComparison.getQuantComparisonProteinMap().get(protein.getUniprotAccession()).setProteinName(protein.getUniprotProteinName());
-                proteinList.add(protein.getUniprotAccession());
+                userComparison.getQuantComparisonProteinMap().get(protein.getUniprotAccessionNumber()).setProteinName(protein.getUniprotProteinName());
+                proteinList.add(protein.getUniprotAccessionNumber());
                 diseaseCategories.add(protein.getDiseaseCategory());
-                proteinAccession.add(protein.getUniprotAccession());
+                proteinAccession.add(protein.getUniprotAccessionNumber());
 //
                 if (!diseaseCategoriesIdMap.containsKey(protein.getDiseaseCategory())) {
                     diseaseCategoriesIdMap.put(protein.getDiseaseCategory(), new HashSet<>());
                 }
                 Set<Integer> datasetIdSet = diseaseCategoriesIdMap.get(protein.getDiseaseCategory());
-                datasetIdSet.add(protein.getDsKey());
+                datasetIdSet.add(protein.getQuantDatasetIndex());
                 diseaseCategoriesIdMap.put(protein.getDiseaseCategory(), datasetIdSet);
             });
             selection.setKeyWords(proteinList);
 
         } else {
             searchQuantificationProtList.stream().forEach((protein) -> {
-                proteinAccession.add(protein.getUniprotAccession());
+                proteinAccession.add(protein.getUniprotAccessionNumber());
 
-                userComparison.getQuantComparisonProteinMap().get(protein.getUniprotAccession()).setProteinName(protein.getUniprotProteinName());
+                userComparison.getQuantComparisonProteinMap().get(protein.getUniprotAccessionNumber()).setProteinName(protein.getUniprotProteinName());
 
                 if (!diseaseCategoriesIdMap.containsKey(protein.getDiseaseCategory())) {
                     diseaseCategoriesIdMap.put(protein.getDiseaseCategory(), new HashSet<>());
                 }
                 Set<Integer> datasetIdSet = diseaseCategoriesIdMap.get(protein.getDiseaseCategory());
-                datasetIdSet.add(protein.getDsKey());
+                datasetIdSet.add(protein.getQuantDatasetIndex());
                 diseaseCategoriesIdMap.put(protein.getDiseaseCategory(), datasetIdSet);
-                datasetIds.add(protein.getDsKey());
+                datasetIds.add(protein.getQuantDatasetIndex());
                 diseaseCategories.add(protein.getDiseaseCategory());
             });
         }
@@ -387,7 +387,7 @@ public abstract class CompareComponent extends BigBtn {
             Set<Integer> studiesSet;
             studiesSet = new HashSet<>();
             searchQuantificationProtList.stream().forEach((qp) -> {
-                studiesSet.add(qp.getDsKey());
+                studiesSet.add(qp.getQuantDatasetIndex());
             });
             if (quantNotFound != null) {
                 for (String s : quantNotFound.split(",")) {

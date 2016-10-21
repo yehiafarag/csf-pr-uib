@@ -149,7 +149,7 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
         this.peptideCharge.setValue(peptideChargeValue, null);
 
         quantBasisComment.setValue(peptide.getQuantBasisComment() + "", null);
-        quantBasis.setValue(peptide.getQuantBasis()+"",null);
+        quantBasis.setValue(peptide.getQuantificationBasis()+"",null);
 
     }
 

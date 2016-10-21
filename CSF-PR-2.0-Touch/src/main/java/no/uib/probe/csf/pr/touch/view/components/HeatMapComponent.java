@@ -17,7 +17,7 @@ import no.uib.probe.csf.pr.touch.Data_Handler;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseCategoryObject;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseGroupComparison;
 import no.uib.probe.csf.pr.touch.logic.beans.HeatMapHeaderCellInformationBean;
-import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantDataset;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFListener;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
@@ -42,7 +42,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
 
     private final LinkedHashSet<HeatMapHeaderCellInformationBean> rowheaders, colheaders;
     private final Set<DiseaseGroupComparison> patientsGroupComparisonsSet;
-    private final Map<Integer, QuantDatasetObject> fullQuantDsMap, filteredQuantDsMap;
+    private final Map<Integer, QuantDataset> fullQuantDsMap, filteredQuantDsMap;
 
     private final ResizableTextLabel datasetCounterLabel;
     private final SerumCsfFilter serumCsfFilter;
@@ -99,9 +99,9 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
             }
 
             @Override
-            public Map<Integer, QuantDatasetObject> updatedDatasets() {
+            public Map<Integer, QuantDataset> updatedDatasets() {
                 if (CSFPR_Central_Manager.getQuantSearchSelection() != null) {
-                    Map<Integer, QuantDatasetObject> tempFilterMap = new LinkedHashMap<>();
+                    Map<Integer, QuantDataset> tempFilterMap = new LinkedHashMap<>();
                     for (int id : filteredQuantDsMap.keySet()) {
                         if (heatmapLayoutContainer.getCurrentDsIds().contains(id)) {
                             tempFilterMap.put(id, filteredQuantDsMap.get(id));
@@ -152,7 +152,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
 
             @Override
             public void updateSystem(boolean serumApplied, boolean csfApplied) {
-                Map<Integer, QuantDatasetObject> updatedDsIds = new LinkedHashMap<>();
+                Map<Integer, QuantDataset> updatedDsIds = new LinkedHashMap<>();
                 for (int id : fullQuantDsMap.keySet()) {
                     if (serumApplied && fullQuantDsMap.get(id).getSampleType().equalsIgnoreCase("Serum")) {
                         updatedDsIds.put(id, fullQuantDsMap.get(id));
@@ -257,7 +257,7 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
      * @param patientsGroupComparisonsSet
      * @param fullQuantDsMap
      */
-    public void updateData(LinkedHashSet<HeatMapHeaderCellInformationBean> rowheaders, LinkedHashSet<HeatMapHeaderCellInformationBean> colheaders, Set<DiseaseGroupComparison> patientsGroupComparisonsSet, Map<Integer, QuantDatasetObject> fullQuantDsMap) {
+    public void updateData(LinkedHashSet<HeatMapHeaderCellInformationBean> rowheaders, LinkedHashSet<HeatMapHeaderCellInformationBean> colheaders, Set<DiseaseGroupComparison> patientsGroupComparisonsSet, Map<Integer, QuantDataset> fullQuantDsMap) {
 
         int waiting = fullQuantDsMap.size() * 10;
         try {
@@ -303,8 +303,8 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
 
         for (HeatMapHeaderCellInformationBean rowHeader : rowheaders) {
             for (int key : filteredQuantDsMap.keySet()) {
-                QuantDatasetObject dataset = filteredQuantDsMap.get(key);
-                if ((dataset.getUpdatedDiseaseGroupI().equalsIgnoreCase(rowHeader.getDiseaseGroupName()) || dataset.getUpdatedDiseaseGroupII().equalsIgnoreCase(rowHeader.getDiseaseGroupName())) && (rowHeader.getDiseaseCategory().equalsIgnoreCase(dataset.getDiseaseCategory()))) {
+                QuantDataset dataset = filteredQuantDsMap.get(key);
+                if ((dataset.getActiveDiseaseSubGroupI().equalsIgnoreCase(rowHeader.getDiseaseGroupName()) || dataset.getActiveDiseaseSubGroupII().equalsIgnoreCase(rowHeader.getDiseaseGroupName())) && (rowHeader.getDiseaseCategory().equalsIgnoreCase(dataset.getDiseaseCategory()))) {
                     localRows.add(rowHeader);
 
                 }
@@ -315,8 +315,8 @@ public abstract class HeatMapComponent extends VerticalLayout implements CSFList
         colheaders.stream().forEach((rowHeader) -> {
             for (Iterator<Integer> it = filteredQuantDsMap.keySet().iterator(); it.hasNext();) {
                 int key = it.next();
-                QuantDatasetObject dataset = filteredQuantDsMap.get(key);
-                if (((dataset.getUpdatedDiseaseGroupI().equalsIgnoreCase(rowHeader.getDiseaseGroupName()) || dataset.getUpdatedDiseaseGroupII().equalsIgnoreCase(rowHeader.getDiseaseGroupName()))) && (rowHeader.getDiseaseCategory().equalsIgnoreCase(dataset.getDiseaseCategory()))) {
+                QuantDataset dataset = filteredQuantDsMap.get(key);
+                if (((dataset.getActiveDiseaseSubGroupI().equalsIgnoreCase(rowHeader.getDiseaseGroupName()) || dataset.getActiveDiseaseSubGroupII().equalsIgnoreCase(rowHeader.getDiseaseGroupName()))) && (rowHeader.getDiseaseCategory().equalsIgnoreCase(dataset.getDiseaseCategory()))) {
                     localColumns.add(rowHeader);
 
                 }

@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantDataset;
 
 /**
  *
@@ -32,7 +32,7 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
     private String lastStyle = "";
     Map<String, String> publicationStyle;
 
-    public void setInformationData(Collection<QuantDatasetObject> dsObjects) {
+    public void setInformationData(Collection<QuantDataset> dsObjects) {
 
         btnsContainer.removeAllComponents();
         publicationStyle.clear();
@@ -45,13 +45,13 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
             btnsContainer.setWidth(100, Unit.PERCENTAGE);
         }
 
-        Map<String, Set<QuantDatasetObject>> sortMap = new TreeMap(Collections.reverseOrder());
+        Map<String, Set<QuantDataset>> sortMap = new TreeMap(Collections.reverseOrder());
         dsObjects.stream().forEach((ds) -> {
-            String key = ds.getYear() + "_" + ds.getPumedID();
+            String key = ds.getYear() + "_" + ds.getPubMedId();
             if (!sortMap.containsKey(key)) {
                 sortMap.put(key, new HashSet<>());
             }
-            Set<QuantDatasetObject> set = sortMap.get(key);
+            Set<QuantDataset> set = sortMap.get(key);
             set.add(ds);
             sortMap.put(key, set);
         });
@@ -59,14 +59,14 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
         int colcounter = 0;
         int rowcounter = 0;
         for (String quantDSKey : sortMap.keySet()) {
-            for (QuantDatasetObject quantDS : sortMap.get(quantDSKey)) {
+            for (QuantDataset quantDS : sortMap.get(quantDSKey)) {
 
-                if (!publicationStyle.containsKey(quantDS.getPumedID())) {
+                if (!publicationStyle.containsKey(quantDS.getPubMedId())) {
                     if (lastStyle.equalsIgnoreCase(styleI)) {
-                        publicationStyle.put(quantDS.getPumedID(), styleII);
+                        publicationStyle.put(quantDS.getPubMedId(), styleII);
                         lastStyle = styleII;
                     } else {
-                        publicationStyle.put(quantDS.getPumedID(), styleI);
+                        publicationStyle.put(quantDS.getPubMedId(), styleI);
                         lastStyle = styleI;
                     }
 
@@ -74,7 +74,7 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
                 String btnName = "<font size=1 >" + quantDS.getYear() + "</font><br/>"+quantDS.getAuthor()+"<br/><font size=1 >#Proteins: " + quantDS.getTotalProtNum() + "   #Peptides: " + quantDS.getTotalPepNum() + "</font>";
 
                 PopupInfoBtn btn = new PopupInfoBtn(quantDS, btnName, quantDS.getAuthor(), smallScreen);
-                btn.addStyleName(publicationStyle.get(quantDS.getPumedID()));
+                btn.addStyleName(publicationStyle.get(quantDS.getPubMedId()));
                 btnsContainer.addComponent(btn, colcounter++, rowcounter);
                 if (colcounter >= btnsContainer.getColumns()) {
                     colcounter = 0;

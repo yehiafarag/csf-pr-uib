@@ -19,7 +19,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantDataset;
 import no.uib.probe.csf.pr.touch.view.core.InformationButton;
 import no.uib.probe.csf.pr.touch.view.core.PopupWindow;
 import no.uib.probe.csf.pr.touch.view.core.PopupWindowFrameWithFunctionsBtns;
@@ -39,7 +39,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
     private final Map<String, Map<Comparable, PieChartSlice>> fullFiltersData = new LinkedHashMap<>();
     private final Map<String, DatasetPieChartFilter> filtersSet = new LinkedHashMap<>();
     private final Map<Integer, Boolean> activeDatasetMap;
-    private Map<Integer, QuantDatasetObject> quantDatasetMap;
+    private Map<Integer, QuantDataset> quantDatasetMap;
     private boolean singlefilter;
     private final int screenWidth = Math.min(Page.getCurrent().getBrowserWindowWidth(), 980);
     private final int screenHeight = Math.max(Math.min(Page.getCurrent().getBrowserWindowHeight(), 800), 435);
@@ -279,7 +279,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
      *
      * @param quantDatasetMap
      */
-    private void updateQuantDatasetMap(Map<Integer, QuantDatasetObject> quantDatasetMap) {
+    private void updateQuantDatasetMap(Map<Integer, QuantDataset> quantDatasetMap) {
         Set<Integer> finalSelectedIds = filterSelectionUnit();
         if (finalSelectedIds.size() == quantDatasetMap.size() && finalSelectedIds.containsAll(quantDatasetMap.keySet())) {
             return;
@@ -304,7 +304,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         Map<Comparable, PieChartSlice> shotgunTargetedMap = new TreeMap<>();
 
         quantDatasetMap.values().stream().map((dataset) -> {
-            activeDatasetMap.put(dataset.getDsKey(), Boolean.TRUE);
+            activeDatasetMap.put(dataset.getQuantDatasetIndex(), Boolean.TRUE);
             return dataset;
         }).map((dataset) -> {
             if (!yearMap.containsKey(dataset.getYear())) {
@@ -315,7 +315,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
             return dataset;
         }).map((dataset) -> {
             PieChartSlice yearSlice = yearMap.get(dataset.getYear());
-            yearSlice.setDatasetIds(dataset.getDsKey());
+            yearSlice.setDatasetIds(dataset.getQuantDatasetIndex());
             yearMap.put(dataset.getYear(), yearSlice);
             return dataset;
         }).map((dataset) -> {
@@ -327,7 +327,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
             return dataset;
         }).map((dataset) -> {
             PieChartSlice studyTypeSlice = studyTypeMap.get(dataset.getTypeOfStudy());
-            studyTypeSlice.setDatasetIds(dataset.getDsKey());
+            studyTypeSlice.setDatasetIds(dataset.getQuantDatasetIndex());
             studyTypeMap.put(dataset.getTypeOfStudy(), studyTypeSlice);
             return dataset;
         }).map((dataset) -> {
@@ -339,7 +339,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
             return dataset;
         }).map((dataset) -> {
             PieChartSlice sampleMachingSlice = sampleMatchingMap.get(dataset.getSampleMatching());
-            sampleMachingSlice.setDatasetIds(dataset.getDsKey());
+            sampleMachingSlice.setDatasetIds(dataset.getQuantDatasetIndex());
             sampleMatchingMap.put(dataset.getSampleMatching(), sampleMachingSlice);
             return dataset;
         }).map((dataset) -> {
@@ -351,7 +351,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
             return dataset;
         }).map((dataset) -> {
             PieChartSlice technologySlice = technologyMap.get(dataset.getTechnology());
-            technologySlice.setDatasetIds(dataset.getDsKey());
+            technologySlice.setDatasetIds(dataset.getQuantDatasetIndex());
             technologyMap.put(dataset.getTechnology(), technologySlice);
             return dataset;
         }).map((dataset) -> {
@@ -363,7 +363,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
             return dataset;
         }).map((dataset) -> {
             PieChartSlice analyticalApproachSlice = analyticalApproachMap.get(dataset.getAnalyticalApproach());
-            analyticalApproachSlice.setDatasetIds(dataset.getDsKey());
+            analyticalApproachSlice.setDatasetIds(dataset.getQuantDatasetIndex());
             analyticalApproachMap.put(dataset.getAnalyticalApproach(), analyticalApproachSlice);
             return dataset;
         }).map((dataset) -> {
@@ -375,7 +375,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
             return dataset;
         }).forEach((dataset) -> {
             PieChartSlice shotgunTargetedSlice = shotgunTargetedMap.get(dataset.getShotgunTargeted());
-            shotgunTargetedSlice.setDatasetIds(dataset.getDsKey());
+            shotgunTargetedSlice.setDatasetIds(dataset.getQuantDatasetIndex());
             shotgunTargetedMap.put(dataset.getShotgunTargeted(), shotgunTargetedSlice);
         });
 
@@ -470,7 +470,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
      *
      * @return get the set of filtered datasets
      */
-    public abstract Map<Integer, QuantDatasetObject> updatedDatasets();
+    public abstract Map<Integer, QuantDataset> updatedDatasets();
 
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
@@ -478,7 +478,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         popupWindow.view();
     }
 
-    public Set<Integer> checkAndFilter(Map<Integer, QuantDatasetObject> quantDatasetToFilter) {
+    public Set<Integer> checkAndFilter(Map<Integer, QuantDataset> quantDatasetToFilter) {
         this.updateQuantDatasetMap(quantDatasetToFilter);
         return filterSelectionUnit();
 

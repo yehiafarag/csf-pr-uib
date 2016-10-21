@@ -5,7 +5,7 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.themes.Reindeer;
 import java.util.Locale;
 import java.util.Map;
-import no.uib.probe.csf.pr.touch.logic.beans.QuantDatasetObject;
+import no.uib.probe.csf.pr.touch.logic.beans.QuantDataset;
 
 /**
  *
@@ -127,12 +127,12 @@ public class QuantDatasetsfullStudiesTableLayout extends Table{
      *
      * @param updatedStudiesList
      */
-    public void updateCombinedQuantDatasetTableRecords(Map<Integer, QuantDatasetObject> updatedStudiesList) {
+    public void updateCombinedQuantDatasetTableRecords(Map<Integer, QuantDataset> updatedStudiesList) {
         dsIndexes = new int[updatedStudiesList.size()];
         this.removeAllItems();
         int index = 0;
 
-        for (QuantDatasetObject pb : updatedStudiesList.values()) {
+        for (QuantDataset pb : updatedStudiesList.values()) {
             if (pb == null) {
                 continue;
             }
@@ -147,11 +147,11 @@ public class QuantDatasetsfullStudiesTableLayout extends Table{
                 quantProtNum = null;
             }
 
-            Integer patGr1Num = pb.getPatientsGroup1Number();
+            Integer patGr1Num = pb.getDiseaseMainGroup1Number();
             if (patGr1Num == -1) {
                 patGr1Num = null;
             }
-            Integer patGr2Num = pb.getPatientsGroup2Number();
+            Integer patGr2Num = pb.getDiseaseMainGroup2Number();
             if (patGr2Num == -1) {
                 patGr2Num = null;
             }
@@ -160,9 +160,9 @@ public class QuantDatasetsfullStudiesTableLayout extends Table{
                 idNumber = null;
             }
 
-            String pumedID = pb.getPumedID();
-            this.addItem(new Object[]{index, pb.getAuthor(), pb.getYear() + "", idNumber, quantProtNum, pb.getAnalyticalMethod(), rawDatalink,pb.getTypeOfStudy(), pb.getSampleType(), pb.getSampleMatching(), pb.getShotgunTargeted(), pb.getTechnology(), pb.getAnalyticalApproach(), pb.getEnzyme(), pb.getQuantificationBasis(), pb.getQuantBasisComment(), pb.getNormalizationStrategy(), pumedID, pb.getPatientsGroup1().split("\n")[0], patGr1Num, pb.getPatientsGroup1Comm(), pb.getPatientsSubGroup1().split("\n")[0], pb.getPatientsGroup2().split("\n")[0], patGr2Num, pb.getPatientsGroup2Comm(), pb.getPatientsSubGroup2().split("\n")[0], pb.getAdditionalcomments()}, index);
-            dsIndexes[index] = pb.getDsKey();
+            String pumedID = pb.getPubMedId();
+            this.addItem(new Object[]{index, pb.getAuthor(), pb.getYear() + "", idNumber, quantProtNum, pb.getAnalyticalMethod(), rawDatalink,pb.getTypeOfStudy(), pb.getSampleType(), pb.getSampleMatching(), pb.getShotgunTargeted(), pb.getTechnology(), pb.getAnalyticalApproach(), pb.getEnzyme(), pb.getQuantificationBasis(), pb.getQuantBasisComment(), pb.getNormalizationStrategy(), pumedID, pb.getDiseaseMainGroupI().split("\n")[0], patGr1Num, pb.getDiseaseMainGroup1Comm(), pb.getDiseaseSubGroup1().split("\n")[0], pb.getDiseaseMainGroup2().split("\n")[0], patGr2Num, pb.getDiseaseMainGroup2Comm(), pb.getDiseaseSubGroup2().split("\n")[0], pb.getAdditionalcomments()}, index);
+            dsIndexes[index] = pb.getQuantDatasetIndex();
             index++;
         }
         this.sort(new Object[]{"Year","Author"}, new boolean[]{false,true});
