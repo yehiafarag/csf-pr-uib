@@ -69,7 +69,7 @@ import org.jfree.ui.TextAnchor;
  * this class is represents bubble-chart for comparisons overview
  *
  */
-public abstract class BubbleChartComponent extends VerticalLayout implements CSFListener, LayoutEvents.LayoutClickListener {
+public abstract class DiseaseComparisonSelectionBubblechartComponent extends VerticalLayout implements CSFListener, LayoutEvents.LayoutClickListener {
 
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
     private final AbsoluteLayout chartLayoutContainer, chartComponentLayout;
@@ -102,7 +102,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
 
     private final VerticalLayout controlBtnsContainer;
 
-    public BubbleChartComponent(CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height, boolean smallScreen) {
+    public DiseaseComparisonSelectionBubblechartComponent(CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height, boolean smallScreen) {
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         this.smallScreen = smallScreen;
 
@@ -203,7 +203,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         chartComponentLayout = new AbsoluteLayout();
         chartComponentLayout.setWidth(100, Unit.PERCENTAGE);
         chartComponentLayout.setHeight(100, Unit.PERCENTAGE);
-        chartComponentLayout.addLayoutClickListener(BubbleChartComponent.this);
+        chartComponentLayout.addLayoutClickListener(DiseaseComparisonSelectionBubblechartComponent.this);
         chartLayoutContainer.addComponent(chartComponentLayout, "left: " + 0 + "px; top: " + 0 + "px;");
         this.chartRenderingInfo = new ChartRenderingInfo();
 
@@ -213,7 +213,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         tooltipLabels = new String[]{"", "  Decreased" + " ", "  Decreased" + " ", "  Equal" + " ", "  Increased" + " ", "  Increased" + " ", ""};
         trendStyles = new String[]{"", "decreased100", "decreasedless100", "stable", "increasedless100", "increased100", ""};
 
-        this.CSFPR_Central_Manager.registerListener(BubbleChartComponent.this);
+        this.CSFPR_Central_Manager.registerListener(DiseaseComparisonSelectionBubblechartComponent.this);
 
         //init side control btns layout 
         controlBtnsContainer = new VerticalLayout();
@@ -231,8 +231,8 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
             @Override
             public void updateComparisons(LinkedHashSet<QuantDiseaseGroupsComparison> updatedComparisonList) {
 
-                CSFSelection selection = new CSFSelection("comparisons_selection_update", getFilterId(), updatedComparisonList, null);
-                CSFPR_Central_Manager.selectionAction(selection);
+                CSFSelection selection = new CSFSelection("comparisons_selection_update", getListenerId(), updatedComparisonList, null);
+                CSFPR_Central_Manager.setSelection(selection);
 
             }
 
@@ -896,7 +896,7 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
         try {
             ChartUtilities.encodeAsPNG(chart.createBufferedImage((int) width, (int) height, chartRenderingInfo));
         } catch (IOException ex) {
-            Logger.getLogger(BubbleChartComponent.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DiseaseComparisonSelectionBubblechartComponent.class.getName()).log(Level.SEVERE, null, ex);
         }
         isNewImge = true;
         Set<BubbleComponent> set = new TreeSet<>();
@@ -1013,14 +1013,11 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
     }
 
     @Override
-    public String getFilterId() {
+    public String getListenerId() {
         return "bubble_chart_listener";
     }
 
-    @Override
-    public void removeFilterValue(String value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
 
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
@@ -1101,8 +1098,8 @@ public abstract class BubbleChartComponent extends VerticalLayout implements CSF
 
         }
 
-        CSFSelection selection = new CSFSelection("protein_selection", getFilterId(), selectedComparisonList, selectedProteinsList);
-        CSFPR_Central_Manager.selectionAction(selection);
+        CSFSelection selection = new CSFSelection("protein_selection", getListenerId(), selectedComparisonList, selectedProteinsList);
+        CSFPR_Central_Manager.setSelection(selection);
     }
 
     public void setUserCustomizedComparison(QuantDiseaseGroupsComparison userCustomizedComparison) {

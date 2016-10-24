@@ -20,7 +20,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDataset;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantProtein;
-import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.StudiesInformationWindow;
+import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.DatasetInformationWindow;
 
 /**
  *

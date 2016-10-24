@@ -222,12 +222,12 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         int filterHeight = Math.max(((screenHeight - 200) / 2), 300);// 300;//(bodyHeight - 200) / 3;
         int filterWidth = filterHeight;//Math.min(filterHeight, screenWidth / 3);//(bodyWidth - 200) / 3;
 
-        int colNumber = Math.max(screenWidth / 310,1);
+        int colNumber = Math.max(screenWidth / 310, 1);
         popupBody.setColumns(colNumber);
         popupBody.setHideEmptyRowsAndColumns(true);
-        if(colNumber==1){
-        popupWindow.setFrameWidth(370);
-        
+        if (colNumber == 1) {
+            popupWindow.setFrameWidth(370);
+
         }
 
         filtersSet.clear();
@@ -267,7 +267,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
             this.popupBody.setComponentAlignment(filter, Alignment.MIDDLE_CENTER);
             if (col == colNumber) {
                 row++;
-                col=0;
+                col = 0;
             }
         }
 
@@ -479,7 +479,11 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
     }
 
     public Set<Integer> checkAndFilter(Map<Integer, QuantDataset> quantDatasetToFilter) {
+
         this.updateQuantDatasetMap(quantDatasetToFilter);
+        filtersSet.values().stream().forEach((filter) -> {
+            filter.reset();
+        });
         return filterSelectionUnit();
 
     }

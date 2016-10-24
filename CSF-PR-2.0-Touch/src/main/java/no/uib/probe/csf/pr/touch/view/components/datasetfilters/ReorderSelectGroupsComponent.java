@@ -35,7 +35,7 @@ import org.vaadin.teemu.switchui.Switch;
  * this class is responsible for updating heat-map rows and columns order as
  * well as allowing user to hide disease groups
  */
-public abstract class ReorderSelectGroupsFilter extends VerticalLayout implements LayoutEvents.LayoutClickListener {
+public abstract class ReorderSelectGroupsComponent extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
     private final PopupWindowFrameWithFunctionsBtns popupWindow;
     private final HorizontalLayout diseaseGroupsContaioner;
@@ -50,7 +50,7 @@ public abstract class ReorderSelectGroupsFilter extends VerticalLayout implement
     /**
      *
      */
-    public ReorderSelectGroupsFilter(boolean smallScreen) {
+    public ReorderSelectGroupsComponent(boolean smallScreen) {
         //init icon
         this.setStyleName("filterbtn");
         Image icon = new Image();
@@ -58,7 +58,7 @@ public abstract class ReorderSelectGroupsFilter extends VerticalLayout implement
         this.addComponent(icon);
         icon.setWidth(100, Unit.PERCENTAGE);
         icon.setHeight(100, Unit.PERCENTAGE);
-        this.addLayoutClickListener(ReorderSelectGroupsFilter.this);
+        this.addLayoutClickListener(ReorderSelectGroupsComponent.this);
         this.setDescription("Reorder and select disease groups");
 
         //init window layout 
@@ -172,7 +172,7 @@ public abstract class ReorderSelectGroupsFilter extends VerticalLayout implement
 
         btnLayout.addComponent(applyFilters);
         applyFilters.addClickListener((Button.ClickEvent event) -> {
-            ReorderSelectGroupsFilter.this.updateSystem(groupILayout.getSortedSet(), groupIILayout.getSortedSet());
+            ReorderSelectGroupsComponent.this.updateSystem(groupILayout.getSortedSet(), groupIILayout.getSortedSet());
             popupWindow.view();
         });
 

@@ -7,7 +7,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import no.uib.probe.csf.pr.touch.view.components.datasetfilters.DatasetPieChartFiltersComponent;
 import no.uib.probe.csf.pr.touch.view.components.datasetfilters.RecombineDiseaseGroupsCombonent;
-import no.uib.probe.csf.pr.touch.view.components.datasetfilters.ReorderSelectGroupsFilter;
+import no.uib.probe.csf.pr.touch.view.components.datasetfilters.ReorderSelectGroupsComponent;
 import no.uib.probe.csf.pr.touch.view.components.datasetfilters.SerumCsfFilter;
 import no.uib.probe.csf.pr.touch.view.core.ResizableTextLabel;
 
@@ -22,14 +22,14 @@ public class HeatmapFiltersContainerResizeControl {
 
     private final DatasetPieChartFiltersComponent datasetPieChartFiltersBtn;
     private final RecombineDiseaseGroupsCombonent reconbineDiseaseGroupsFiltersBtn;
-    private final ReorderSelectGroupsFilter reorderSelectBtn;
+    private final ReorderSelectGroupsComponent reorderSelectBtn;
     private final HorizontalLayout bottomBtnContainer;
     private final SerumCsfFilter serumCsfFilter;
     private final VerticalLayout clearFilterBtn;
     private final ResizableTextLabel datasetCounterLabel;
     private final GridLayout btnsWrapper;
 
-    public HeatmapFiltersContainerResizeControl(GridLayout btnsWrapper, DatasetPieChartFiltersComponent datasetPieChartFiltersBtn, RecombineDiseaseGroupsCombonent reconbineDiseaseGroupsFiltersBtn, ReorderSelectGroupsFilter reorderSelectBtn, HorizontalLayout bottomBtnContainer, SerumCsfFilter serumCsfFilter, VerticalLayout clearFilterBtn, ResizableTextLabel datasetCounterLabel) {
+    public HeatmapFiltersContainerResizeControl(GridLayout btnsWrapper, DatasetPieChartFiltersComponent datasetPieChartFiltersBtn, RecombineDiseaseGroupsCombonent reconbineDiseaseGroupsFiltersBtn, ReorderSelectGroupsComponent reorderSelectBtn, HorizontalLayout bottomBtnContainer, SerumCsfFilter serumCsfFilter, VerticalLayout clearFilterBtn, ResizableTextLabel datasetCounterLabel) {
         this.btnsWrapper = btnsWrapper;
         this.datasetPieChartFiltersBtn = datasetPieChartFiltersBtn;
         this.reconbineDiseaseGroupsFiltersBtn = reconbineDiseaseGroupsFiltersBtn;

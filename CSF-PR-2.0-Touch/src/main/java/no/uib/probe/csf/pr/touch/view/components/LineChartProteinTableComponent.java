@@ -2,7 +2,6 @@ package no.uib.probe.csf.pr.touch.view.components;
 
 import com.vaadin.addon.tableexport.ExcelExport;
 import com.vaadin.event.LayoutEvents;
-import com.vaadin.server.Page;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
@@ -189,17 +188,17 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
             public void dropComparison(QuantDiseaseGroupsComparison comparison) {
                 Set<QuantDiseaseGroupsComparison> updatedComparisonList = CSFPR_Central_Manager.getSelectedComparisonsList();
                 updatedComparisonList.remove(comparison);
-                CSFSelection selection = new CSFSelection("comparisons_selection", getFilterId(), updatedComparisonList, null);
-                CSFPR_Central_Manager.selectionAction(selection);
+                CSFSelection selection = new CSFSelection("comparisons_selection", getListenerId(), updatedComparisonList, null);
+                CSFPR_Central_Manager.setSelection(selection);
 
             }
 
             @Override
             public void selectProtein(String selectedProtein, int custTrend) {
-                CSFSelection selection = new CSFSelection("peptide_selection", getFilterId(), null, null);
+                CSFSelection selection = new CSFSelection("peptide_selection", getListenerId(), null, null);
                 selection.setSelectedProteinAccession(selectedProtein);
-                selection.setCustProteinSelection(custTrend);
-                CSFPR_Central_Manager.selectionAction(selection);
+                selection.setCustProteinSelectionTrend(custTrend);
+                CSFPR_Central_Manager.setSelection(selection);
 
             }
 
@@ -243,8 +242,8 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
             @Override
             public void updateComparisons(LinkedHashSet<QuantDiseaseGroupsComparison> updatedComparisonList) {
 
-                CSFSelection selection = new CSFSelection("comparisons_selection_update", getFilterId(), updatedComparisonList, null);
-                CSFPR_Central_Manager.selectionAction(selection);
+                CSFSelection selection = new CSFSelection("comparisons_selection_update", getListenerId(), updatedComparisonList, null);
+                CSFPR_Central_Manager.setSelection(selection);
 
             }
 
@@ -471,14 +470,11 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
     }
 
     @Override
-    public String getFilterId() {
+    public String getListenerId() {
         return this.getClass().getName();
     }
 
-    @Override
-    public void removeFilterValue(String value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
 
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {

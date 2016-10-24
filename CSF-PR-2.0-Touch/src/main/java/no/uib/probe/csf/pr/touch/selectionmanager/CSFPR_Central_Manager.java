@@ -20,79 +20,146 @@ import no.uib.probe.csf.pr.touch.view.core.BusyTask;
  */
 public class CSFPR_Central_Manager implements Serializable {
 
+    /*
+     *Map for storing current listeners or filters
+     */
     private final LinkedHashMap<String, CSFListener> Listeners_Map;
+    /*
+     *List of selected comparisons to be updated based on user selection for comparisons across the system
+     */
     private Set<QuantDiseaseGroupsComparison> selectedComparisonsList;
+    /*
+     *List of selected proteins to be updated based on user selection for comparisons across the system
+     */
+    private Set<QuantComparisonProtein> selectedProteinsList;
 
+    /*
+     *List of equal comparison map to avoid double selection from heat map
+     */
+    private Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> equalComparisonMap;
+    /*
+     *Main selected protein accession  from the protein table that is used to update peptides component table
+     */
+    private String selectedProteinAccession;
+    /*
+     *System is doing long processing task to push the the system to show  progress bar
+     */
+    private final BusyTask busyTask;
+
+    /*
+     *List of full publication information that is used by the resource overview and in publication information overview
+     */
+    private List<Object[]> fullPublicationList;
+
+    /*
+     *Main selected protein trend based on user customized  data to show the selected user protein trend in the peptide component
+     */
+    private int custProteinSelectionTrend;
+
+    /*
+     *Main searching results object that contain the searching results information
+     */
+    private QuantSearchSelection quantSearchSelection;
+
+    /**
+     * Get list of selected proteins to be updated based on user selection for
+     * comparisons across the system
+     *
+     * @return selectedProteinsList
+     */
     public Set<QuantComparisonProtein> getSelectedProteinsList() {
 
         return selectedProteinsList;
     }
 
-    private Set<QuantComparisonProtein> selectedProteinsList;
-
+    /**
+     * Get list of full publication information that is used by the resource
+     * overview and in publication information overview
+     *
+     * @return
+     */
     public List<Object[]> getFullPublicationList() {
         return fullPublicationList;
     }
 
+    /**
+     * Set list of full publication information that is used by the resource
+     * overview and in publication information overview
+     *
+     * @param fullPublicationList
+     */
     public void setFullPublicationList(List<Object[]> fullPublicationList) {
         this.fullPublicationList = fullPublicationList;
     }
-    private Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> equalComparisonMap;
-    private String selectedProteinAccession;
-    private final BusyTask busyTask;
-    private List<Object[]> fullPublicationList;
-    
 
-    ;
-
+    /**
+     * Constructor to initialize the main attributes
+     *
+     * @param busyTask progress task manager to show progress bar on long
+     * processing tasks
+     */
     public CSFPR_Central_Manager(BusyTask busyTask) {
         this.busyTask = busyTask;
         Listeners_Map = new LinkedHashMap<>();
     }
 
+    /**
+     * Set list of equal comparison map to avoid double selection from heat map
+     *
+     * @param equalComparisonMap
+     */
     public void setEqualComparisonMap(Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> equalComparisonMap) {
         this.equalComparisonMap = equalComparisonMap;
     }
 
     /**
-     * register new listener
+     * Register new listener in the system
      *
      * @param listener listener component
      */
     public void registerListener(CSFListener listener) {
-        Listeners_Map.put(listener.getFilterId(), listener);
+        Listeners_Map.put(listener.getListenerId(), listener);
 
     }
 
+    /**
+     * Get list of equal comparison map to avoid double selection from heat map
+     *
+     * @return equalComparisonMap
+     */
     public Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> getEqualComparisonMap() {
         return equalComparisonMap;
     }
 
     /**
-     * remove registered listener
+     * Remove registered listener
      *
      * @param listener listener component
      */
     public void unregisterListener(CSFListener listener) {
-        Listeners_Map.remove(listener.getFilterId(), listener);
+        Listeners_Map.remove(listener.getListenerId(), listener);
 
     }
 
+    /**
+     * Get Main selected protein accession from the protein table that is used
+     * to update peptides component table
+     *
+     * @return selectedProteinAccession
+     */
     public String getSelectedProteinAccession() {
         return selectedProteinAccession;
     }
 
-    private int custProteinSelectionTrend;
-
     /**
-     * quantSearchSelection in registered component
+     * Set Selection in the system to update other registered listeners
      *
      * @param selection quantSearchSelection
      */
-    public void selectionAction(CSFSelection selection) {
+    public void setSelection(CSFSelection selection) {
         if (selection.getType().equalsIgnoreCase("peptide_selection")) {
             selectedProteinAccession = selection.getSelectedProteinAccession();
-            custProteinSelectionTrend = selection.getCustProteinSelection();
+            custProteinSelectionTrend = selection.getCustProteinSelectionTrend();
         } else {
             this.selectedComparisonsList = selection.getSelectedComparisonsList();
             this.selectedProteinsList = selection.getSelectedProteinsList();
@@ -106,14 +173,12 @@ public class CSFPR_Central_Manager implements Serializable {
     }
 
     /**
-     * Get current comparisons quantSearchSelection
+     * Get list of selected comparisons to be updated based on user selection
+     * for comparisons across the system
      *
      * @return selected comparisons list
      */
     public Set<QuantDiseaseGroupsComparison> getSelectedComparisonsList() {
-
-        ///*************************************************************************///
-        
         Set<QuantDiseaseGroupsComparison> tempProteinsList = new LinkedHashSet<>();
         if (quantSearchSelection != null && selectedComparisonsList != null) {
             for (QuantDiseaseGroupsComparison quantComp : selectedComparisonsList) {
@@ -154,8 +219,9 @@ public class CSFPR_Central_Manager implements Serializable {
     }
 
     /**
+     * Loop responsible for updating all registered listeners
      *
-     * @param type quantSearchSelection type
+     * @param type selection type
      */
     private void SelectionChanged(String type) {
         try {
@@ -170,10 +236,9 @@ public class CSFPR_Central_Manager implements Serializable {
 
     }
 
-    private QuantSearchSelection quantSearchSelection;
-
     /**
-     * quant Search Selection in registered component
+     * Quant Search Selection in registered component invoke searching mode in
+     * the system and set the searching results information object
      *
      * @param selection quantSearchSelection
      */
@@ -182,18 +247,19 @@ public class CSFPR_Central_Manager implements Serializable {
         SelectionChanged("quant_searching");
 
     }
-    
-      /**
-     * reset Quant Search Selection in the system
-     * back to normal quant explorer mode
+
+    /**
+     * Reset Quant Search Selection in the system back to normal quant explorer
+     * mode and remove searching results information from the system
      */
     public void resetSearchSelection() {
         this.quantSearchSelection = null;
-         SelectionChanged("reset_quant_searching");
+        SelectionChanged("reset_quant_searching");
     }
 
     /**
-     * quant Comparison Selection in registered component
+     * Quant Search Selection in registered component invoke comparing mode in
+     * the system and searching results information object in the system
      *
      * @param selection quantSearchSelection
      */
@@ -203,10 +269,22 @@ public class CSFPR_Central_Manager implements Serializable {
 
     }
 
+    /**
+     * Get main searching results object that contain the searching results
+     * information
+     *
+     * @return quantSearchSelection
+     */
     public QuantSearchSelection getQuantSearchSelection() {
         return quantSearchSelection;
     }
 
+    /**
+     * Get main selected protein trend based on user customized data to show the
+     * selected user protein trend in the peptide component
+     *
+     * @return custProteinSelectionTrend
+     */
     public int getCustProteinSelectionTrend() {
         return custProteinSelectionTrend;
     }

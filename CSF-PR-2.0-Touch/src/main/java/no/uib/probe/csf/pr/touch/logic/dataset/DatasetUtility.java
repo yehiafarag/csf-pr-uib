@@ -795,7 +795,7 @@ public class DatasetUtility implements Serializable {
         Set<DiseaseGroupComparison> diseaseComparisonSet = new LinkedHashSet<>();
 
         for (DiseaseGroupComparison diseaseGroupComparison : refData.getDiseaseGroupComparisonsSet()) {
-            if (searchSelection.getDatasetIds().contains(diseaseGroupComparison.getQuantDatasetIndex())) {
+            if (searchSelection.getQuantDatasetIndexes().contains(diseaseGroupComparison.getQuantDatasetIndex())) {
                 diseaseComparisonSet.add(diseaseGroupComparison);
             }
 

@@ -801,13 +801,10 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
     }
 
     @Override
-    public String getFilterId() {
+    public String getListenerId() {
         return "peptideComponent";
     }
 
-    @Override
-    public void removeFilterValue(String value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
 
 }

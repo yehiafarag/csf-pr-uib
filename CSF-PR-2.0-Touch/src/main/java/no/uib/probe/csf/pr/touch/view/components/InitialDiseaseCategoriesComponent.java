@@ -25,7 +25,7 @@ import no.uib.probe.csf.pr.touch.view.core.ResizableTextLabel;
  *
  * this class represents initial layout for quant data
  */
-public abstract class QuantInitialLayout extends VerticalLayout implements LayoutEvents.LayoutClickListener {
+public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
     private final HorizontalLayout miniLayout;
     private int maxNumber;
@@ -43,7 +43,7 @@ public abstract class QuantInitialLayout extends VerticalLayout implements Layou
      * @param width body layout width in pixels
      * @param height body layout height in pixels
      */
-    public QuantInitialLayout(Collection<DiseaseCategoryObject> diseaseCategorySet, int width, int height, boolean smallScreen) {
+    public InitialDiseaseCategoriesComponent(Collection<DiseaseCategoryObject> diseaseCategorySet, int width, int height, boolean smallScreen) {
 
         this.diseaseCategorySet = diseaseCategorySet;
         this.height = height;

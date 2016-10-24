@@ -12,7 +12,6 @@ import no.uib.probe.csf.pr.touch.view.core.ScrollPanel;
 import no.uib.probe.csf.pr.touch.view.bigscreen.welcomepagecontainer.WelcomeLayoutComponents;
 import no.uib.probe.csf.pr.touch.view.core.BusyTask;
 import no.uib.probe.csf.pr.touch.view.core.SlidePanel;
-import no.uib.probe.csf.pr.touch.view.core.ZoomControler;
 
 /**
  *
@@ -24,12 +23,39 @@ import no.uib.probe.csf.pr.touch.view.core.ZoomControler;
  */
 public class CSFApplicationContainer extends VerticalLayout {
 
+    /*
+     *The welcome page container panel
+     */
     private final ScrollPanel welcomeLayoutPanel;
-    private final SlidePanel quantLayoutPanel;
-    private final LayoutViewManager View_Manager;
-    private final Data_Handler Data_handler;
-    private final ZoomControler zoomApp;
 
+    /*
+     *The quantative overview layout container panel
+     */
+    private final SlidePanel quantLayoutPanel;
+
+    /*
+     *The layout manager to control the different visulizations 
+     */
+    private final LayoutViewManager View_Manager;
+
+    /*
+     *The quantative data handler to work as controller layer to interact between visulization and logic layer 
+     */
+    private final Data_Handler Data_handler;
+
+    /**
+     * Constructor the initialize the main attributes (Database connection data
+     * and layout width and heights)
+     *
+     * @param pageWidth
+     * @param pageHeight
+     * @param url
+     * @param dbName
+     * @param driver
+     * @param userName
+     * @param password
+     * @param filesURL
+     */
     public CSFApplicationContainer(int pageWidth, int pageHeight, String url, String dbName, String driver, String userName, String password, String filesURL) {
         this.setWidth(pageWidth, Unit.PIXELS);
         this.setHeight(pageHeight, Unit.PIXELS);
@@ -51,7 +77,6 @@ public class CSFApplicationContainer extends VerticalLayout {
 
         WelcomeLayoutComponents welcomeContent = new WelcomeLayoutComponents(Data_handler, CSFPR_Central_Manager, View_Manager, mainlayoutWidth, mainlayoutHeight, Data_handler.getResourceOverviewInformation(), Data_handler.getPublicationList(), Data_handler.getQuantDatasetList());
 
-        zoomApp = welcomeContent.getZoomApp();
         VerticalLayout mainLayout = new VerticalLayout();
         mainLayout.setHeight(pageHeight, Unit.PIXELS);
         mainLayout.setWidth(pageWidth, Unit.PIXELS);
@@ -59,7 +84,7 @@ public class CSFApplicationContainer extends VerticalLayout {
         mainLayout.addComponent(welcomeContent);
         mainLayout.setComponentAlignment(welcomeContent, Alignment.TOP_CENTER);
 
-        this.welcomeLayoutPanel = new ScrollPanel(mainLayout, welcomeContent.getMiniLayout(), 0, "welcomeview");
+        this.welcomeLayoutPanel = new ScrollPanel(mainLayout, welcomeContent.getTopRightThumbBtnsLayoutContainer(), 0, "welcomeview");
         View_Manager.registerComponent(welcomeLayoutPanel);
         bodyWrapper.addComponent(welcomeLayoutPanel);
         bodyWrapper.setComponentAlignment(welcomeLayoutPanel, Alignment.TOP_RIGHT);
@@ -70,7 +95,7 @@ public class CSFApplicationContainer extends VerticalLayout {
 
             @Override
             public void setVisible(boolean visible) {
-                super.setVisible(visible); //To change body of generated methods, choose Tools | Templates.
+                super.setVisible(visible);
                 if (this.getParent() != null) {
                     this.getParent().setVisible(visible);
                 }
@@ -81,8 +106,6 @@ public class CSFApplicationContainer extends VerticalLayout {
         View_Manager.registerComponent(quantLayoutPanel);
 
         quantLayoutPanel.setShowNavigationBtn(false);
-
-        welcomeContent.addMainZoomComponents(quantLayoutPanel);
 
         Panel quantPanelContaner = new Panel(quantLayoutPanel);// 
         quantLayoutPanel.setVisible(false);
@@ -95,10 +118,6 @@ public class CSFApplicationContainer extends VerticalLayout {
 
         View_Manager.viewLayout("welcomeview");
 
-    }
-
-    public ZoomControler getZoomApp() {
-        return zoomApp;
     }
 
 }

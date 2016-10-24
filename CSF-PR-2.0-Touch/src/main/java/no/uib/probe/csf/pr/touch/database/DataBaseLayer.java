@@ -97,6 +97,7 @@ public class DataBaseLayer implements Serializable {
             //number here are static until update the database
             infoBean.setNumberOfIdProteins(3081);
             infoBean.setNumberOfIdPeptides(28811);
+            infoBean.setNumberOfIdStudies(7);
             //quant data
 
             String selectQuantPublicationStudies = "SELECT COUNT( * ) AS  `Rows` ,  `pumed_id` FROM  `quant_dataset_table` GROUP BY  `pumed_id` ORDER BY  `pumed_id` ";

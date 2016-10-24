@@ -1,4 +1,3 @@
-
 package no.uib.probe.csf.pr.touch.view;
 
 import com.vaadin.shared.ui.label.ContentMode;
@@ -11,23 +10,25 @@ import com.vaadin.ui.themes.Reindeer;
 /**
  *
  * @author Yehia Farag
- * 
- * this class represents the header layout container (logo, titles, and sponsors)
+ *
+ * This class represents the header layout container (logo, titles)
  */
-public class HeaderLayout extends HorizontalLayout{
+public class LogoLayout extends HorizontalLayout {
 
-    public HeaderLayout() {
-         this.setWidth(100,Unit.PERCENTAGE);
-        this.setHeight(40,Unit.PIXELS);
+    /**
+     * Constructor to initialize the logo of CSF-PR 2.0 logo
+     */
+    public LogoLayout() {
+        this.setWidth(100, Unit.PERCENTAGE);
+        this.setHeight(40, Unit.PIXELS);
         this.setSpacing(true);
         //tile logo container
         HorizontalLayout logoTitleContainer = new HorizontalLayout();
-//        logoTitleContainer.setStyleName("toplogo");
         this.addComponent(logoTitleContainer);
         this.setComponentAlignment(logoTitleContainer, Alignment.TOP_LEFT);
         VerticalLayout logo = new VerticalLayout();
-        logo.setWidth(100,Unit.PERCENTAGE);
-        logo.setHeight(30,Unit.PIXELS);
+        logo.setWidth(100, Unit.PERCENTAGE);
+        logo.setHeight(30, Unit.PIXELS);
         Label cLabel = new Label("<a href=''  align='left' style='color:#ffffff;background-color: #4d749f;border-radius:4px;width:35px !important;padding-top: 8px !important;padding-right: 3px !important;padding-left: 3px !important;padding-bottom: 1px;font-weight:bold;text-decoration:none;'>"
                 + "<font  align='left' ; style='color:#ffffff; !important;font-weight:bold;text-decoration:none;word-wrap: break-word !important;font-size: 24px;'>"
                 + "C"
@@ -43,12 +44,12 @@ public class HeaderLayout extends HorizontalLayout{
                 + "</a>");
         cLabel.setContentMode(ContentMode.HTML);
         cLabel.setStyleName(Reindeer.LABEL_SMALL);
-        cLabel.setWidth(100,Unit.PERCENTAGE);
-        cLabel.setHeight(100,Unit.PERCENTAGE);
+        cLabel.setWidth(100, Unit.PERCENTAGE);
+        cLabel.setHeight(100, Unit.PERCENTAGE);
         logo.addComponent(cLabel);
         logo.setComponentAlignment(cLabel, Alignment.TOP_CENTER);
         logoTitleContainer.addComponent(logo);
 
     }
-    
+
 }

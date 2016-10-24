@@ -19,21 +19,16 @@ import com.vaadin.ui.Label;
 public abstract class BigBtn extends HorizontalLayout implements LayoutEvents.LayoutClickListener, MouseEvents.ClickListener {
 
     private final Image bigBtnIcon;
-//    private final Image thumbBtnIcon;
     private final ImageContainerBtn thumbContainer;
 
     public ImageContainerBtn getThumbBtn() {
         return thumbContainer;
     }
 
-    public BigBtn(String header, String text, String imgUrl, boolean smallScreen) {
+    public BigBtn(String header, String text, String imgUrl) {
         this.setWidthUndefined();
         this.setMargin(false);
         int lineHeight=35;
-//        if (!smallScreen) {
-//            this.setSpacing(true);
-//            lineHeight=70;
-//        }
         this.addLayoutClickListener(BigBtn.this);
         this.setStyleName("bigbtn");
 
@@ -64,18 +59,12 @@ public abstract class BigBtn extends HorizontalLayout implements LayoutEvents.La
         thumbContainer.setEnabled(true);
         thumbContainer.setReadOnly(false);
 
-        if (smallScreen) {
-            bigBtnIcon.setWidth(40, Unit.PIXELS);
-            bigBtnIcon.setHeight(40, Unit.PIXELS);
-            thumbContainer.setWidth(25, Unit.PIXELS);
-            thumbContainer.setHeight(25, Unit.PIXELS);
-            thumbContainer.addStyleName("nopaddingimg");
-        } else {
+      
             bigBtnIcon.setWidth(70, Unit.PIXELS);
             bigBtnIcon.setHeight(70, Unit.PIXELS);
             thumbContainer.setWidth(40, Unit.PIXELS);
             thumbContainer.setHeight(40, Unit.PIXELS);
-        }
+        
 
     }
 

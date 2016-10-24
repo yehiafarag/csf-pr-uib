@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.view.bigscreen.searchinglayoutcontainer.components;
 
 import com.vaadin.event.LayoutEvents;
@@ -48,28 +43,98 @@ import no.uib.probe.csf.pr.touch.view.core.TrendLegend;
  *
  * @author Yehia Farag
  *
- * this class represents comparison layout users can compare their own data with
- * the resource data
+ * This class represents quantitative comparison window where users can compare
+ * their own data with the resource data, the class is a button with pop-up
+ * panel layout
  */
 public abstract class CompareComponent extends BigBtn {
 
+    /*
+     *The main comparison pop-up window (the pop up container) 
+     */
     private final PopupWindow comparePanel;
+    /*
+     *List of quantitave proteins found in searching 
+     */
     private List<QuantProtein> searchQuantificationProtList;
+    /*
+     *The quant results container layout
+     */
     private final HorizontalLayout quantCompareDataResult;
+    /*
+     *The id results container layout (the id link container for csf-pr 1.0)
+     */
     private final VerticalLayout idDataResult;
+    /*
+     *The quantative data handler to work as controller layer to interact between visulization and logic layer 
+     */
     private final Data_Handler Data_handler;
+    /*
+     *The quant data results label (results and hits number)
+     */
     private final Label resultsLabel;
+
+    /*
+     *The bottom buttons container it contains also the link to csf-pr1.0 id results
+     */
     private final HorizontalLayout controlBtnsLayout;
+
+    /*
+     *The button is responsble for invoking the show results in system where the user can visualize his data and compare it with the csf-pr 2.0 results
+     */
     private final Button loadDataBtn;
+    /*
+     *The compare unit layout has the input data fields for user data
+     */
     private final ComparisonUnitComponent compareUnit;
+    /*
+     *The central manager for handling data across different visualizations and managing all users selections
+     */
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
+    /*
+     *The protein overview chart
+     */
     private PieChart proteinsChart;
+    /*
+     *The datasets overview chart
+     */
+    private PieChart datasetsChart;
+    /*
+     *The size of screen is used to switch the data visulization mode between normal and compact mode
+     */
     private final boolean smallScreen;
+    /*
+     *The reults layout is the container for quant data results (the pie charts)
+     */
     private final VerticalLayout resultsLayout;
+    /*
+     *The middle layout has the results label and legend 
+     */
     private final HorizontalLayout middleLayout;
 
-    public CompareComponent(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager, boolean smallScreen) {
-        super("Compare", "Compare to your data", "img/compare.png", smallScreen);
+    /*
+     *Set of keywors to avoid duplicating the keywords
+     */
+    private Set<String> filterKeywordSet;
+
+    /*
+     *Array of disease category names
+     */
+    private final String[] diseaseCategoryNames = new String[]{"Alzheimer's", "Multiple Sclerosis", "Parkinson's"};
+    /*
+     *Array of disease category AWT colors required for JFree charts
+     */
+    private final Color[] diseaseCategoryColors = new Color[]{Color.decode("#4b7865"), Color.decode("#A52A2A"), Color.decode("#74716E")};
+
+    /**
+     * Constructor to initialize the main attributes (data handler and selection
+     * manager)
+     *
+     * @param Data_handler
+     * @param CSFPR_Central_Manager
+     */
+    public CompareComponent(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager) {
+        super("Compare", "Compare to your data", "img/compare.png");
         this.smallScreen = Page.getCurrent().getBrowserWindowHeight() <= 940;
         this.Data_handler = Data_handler;
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
@@ -79,17 +144,16 @@ public abstract class CompareComponent extends BigBtn {
         popupbodyLayout.setHeight(100, Unit.PERCENTAGE);
         popupbodyLayout.setMargin(new MarginInfo(false, false, false, false));
         comparePanel = new PopupWindow(popupbodyLayout, "Compare Data");
-        int h1;
+        int h1 = 440;
         if (this.smallScreen) {
             comparePanel.setHeight(Page.getCurrent().getBrowserWindowHeight(), Unit.PIXELS);
-            comparePanel.setWidth(Page.getCurrent().getBrowserWindowWidth()-20, Unit.PIXELS);
-            h1 = 440;
+            comparePanel.setWidth(Page.getCurrent().getBrowserWindowWidth() - 20, Unit.PIXELS);
+
         } else {
             comparePanel.setHeight(comparePanel.getHeight() - 50, Unit.PIXELS);
-            comparePanel.setWidth(comparePanel.getWidth()-20, Unit.PIXELS);
-            h1 = 440;//Math.min(((int) comparePanel.getHeight() / 2) - 30,460);
+            comparePanel.setWidth(comparePanel.getWidth() - 20, Unit.PIXELS);
         }
-        compareUnit = new ComparisonUnitComponent(Data_handler, h1, (int) comparePanel.getWidth() - 24, false) {
+        compareUnit = new ComparisonUnitComponent(Data_handler, h1, (int) comparePanel.getWidth() - 24) {
 
             @Override
             public void startComparing(Query query) {
@@ -161,7 +225,6 @@ public abstract class CompareComponent extends BigBtn {
 
         idDataResult = new VerticalLayout();
         idDataResult.addStyleName("marginleft");
-//        idDataResult.setWidth(600, Unit.PIXELS);
 
         leftsideWrapper.addComponent(idDataResult);
 
@@ -196,15 +259,9 @@ public abstract class CompareComponent extends BigBtn {
         loadDataBtn.setDescription("Load data");
         loadDataBtn.addClickListener((Button.ClickEvent event) -> {
             loadComparison();
-//            resetBtn.setEnabled(true);
         });
 
         popupbodyLayout.setSpacing(true);
-
-//        popupbodyLayout.addComponent(resultsLayout);
-//        popupbodyLayout.setExpandRatio(resultsLayout, 274);
-//        popupbodyLayout.addComponent(controlBtnsLayout);
-//        popupbodyLayout.setExpandRatio(controlBtnsLayout, 50);
         if (this.smallScreen) {
             resultsLayout.setVisible(false);
             middleLayout.setVisible(false);
@@ -229,26 +286,23 @@ public abstract class CompareComponent extends BigBtn {
             legendPopup.addComponent(closeBtn);
             legendPopup.setExpandRatio(closeBtn, 2);
             Set<Component> set = new LinkedHashSet<>();
-            Iterator<Component> itr = legend2.iterator();            
+            Iterator<Component> itr = legend2.iterator();
             while (itr.hasNext()) {
                 set.add(itr.next());
             }
             VerticalLayout spacer = new VerticalLayout();
-            spacer.setHeight(15,Unit.PIXELS);
-            spacer.setWidth(20,Unit.PIXELS);
+            spacer.setHeight(15, Unit.PIXELS);
+            spacer.setWidth(20, Unit.PIXELS);
             set.add(spacer);
-             Iterator<Component> itr2 = legend.iterator();            
+            Iterator<Component> itr2 = legend.iterator();
             while (itr2.hasNext()) {
                 set.add(itr2.next());
             }
 
             for (Component c : set) {
                 legendPopup.addComponent(c);
-                legendPopup.setExpandRatio(c, c.getHeight()+5);
+                legendPopup.setExpandRatio(c, c.getHeight() + 5);
             }
-
-//            legendPopup.setExpandRatio(legend2, 20);
-//            legendPopup.setExpandRatio(legend, 30);
             legend2.setSpacing(true);
             legendPopup.setWidth(150, Unit.PIXELS);
             legendPopup.setHeight(100, Unit.PIXELS);
@@ -277,6 +331,10 @@ public abstract class CompareComponent extends BigBtn {
 
     }
 
+    /**
+     * Reset comparison layout by clearing all input and results fields and
+     * reset the system to default
+     */
     private void resetComparison() {
         compareUnit.reset();
         idDataResult.setVisible(false);
@@ -291,8 +349,11 @@ public abstract class CompareComponent extends BigBtn {
         CSFPR_Central_Manager.resetSearchSelection();
 
     }
-    private PieChart datasetsChart;
 
+    /**
+     * Load and invoke comparison mode in the system to visualize the user input
+     * data in the system
+     */
     private void loadComparison() {
         Set<String> diseaseCategories = new HashSet<>();
         Set<String> proteinList = new HashSet<>();
@@ -313,7 +374,6 @@ public abstract class CompareComponent extends BigBtn {
                 proteinList.add(protein.getUniprotAccessionNumber());
                 diseaseCategories.add(protein.getDiseaseCategory());
                 proteinAccession.add(protein.getUniprotAccessionNumber());
-//
                 if (!diseaseCategoriesIdMap.containsKey(protein.getDiseaseCategory())) {
                     diseaseCategoriesIdMap.put(protein.getDiseaseCategory(), new HashSet<>());
                 }
@@ -349,7 +409,7 @@ public abstract class CompareComponent extends BigBtn {
         selection.setKeyWords(filterKeywordSet);
         comparePanel.close();//
         selection.setDiseaseCategory(diseaseCat);
-        selection.setDatasetIds(datasetIds);
+        selection.setQuantDatasetIndexes(datasetIds);
 
         selection.setUserCustComparison(userComparison);
 
@@ -360,8 +420,12 @@ public abstract class CompareComponent extends BigBtn {
         loadQuantComparison();
 
     }
-    private Set<String> filterKeywordSet;
 
+    /**
+     * Perform data query for user input data against the database
+     *
+     * @param query constructed query from user input data
+     */
     private void compareProteins(Query query) {
         query.setValidatedProteins(false);
         query.setSearchDataset("");
@@ -382,7 +446,7 @@ public abstract class CompareComponent extends BigBtn {
         String quantNotFound = Data_handler.filterQuantSearchingKeywords(searchQuantificationProtList, query.getSearchKeyWords(), query.getSearchBy());
 
         Integer[] quantHitsList = Data_handler.getQuantComparisonHitsList(searchQuantificationProtList, query.getSearchBy());
-        Integer[] proteinsHitsList = Data_handler.getQuantComparisonProteinList(searchQuantificationProtList, query.getSearchBy());;
+        Integer[] proteinsHitsList = Data_handler.getQuantComparisonProteinList(searchQuantificationProtList, query.getSearchBy());
         if (quantHitsList != null && searchQuantificationProtList != null) {
             Set<Integer> studiesSet;
             studiesSet = new HashSet<>();
@@ -412,7 +476,6 @@ public abstract class CompareComponent extends BigBtn {
             idSearchingLink.setStyleName(ValoTheme.LINK_SMALL);
             idSearchingLink.addStyleName("smalllink");
             idSearchingLink.setDescription("View protein id results in CSF-PR v1.0");
-//            idSearchingLink.setWidth(defaultText);
             idDataResult.addComponent(idSearchingLink);
 
         } else {
@@ -420,11 +483,9 @@ public abstract class CompareComponent extends BigBtn {
         }
 
     }
-    private final String[] items = new String[]{"Alzheimer's", "Multiple Sclerosis", "Parkinson's"};
-    private final Color[] itemsColors = new Color[]{Color.decode("#4b7865"), Color.decode("#A52A2A"), Color.decode("#74716E")};
 
     /**
-     * initialize quant searching results layout
+     * Initialize quant searching results layout
      *
      * @param quantHitsList map of hits and main protein title
      * @param searchBy the searching by method
@@ -437,7 +498,6 @@ public abstract class CompareComponent extends BigBtn {
         quantCompareDataResult.removeAllComponents();
         if (quantHitsList == null || quantHitsList.length == 0) {
             quantCompareDataResult.setVisible(false);
-//            noresultsLabel.setVisible(true);
             loadDataBtn.setEnabled(false);
             return;
         }
@@ -489,7 +549,7 @@ public abstract class CompareComponent extends BigBtn {
             }
 
         };
-        proteinsChart.initializeFilterData(items, proteinsHitsList, itemsColors);
+        proteinsChart.initializeFilterData(diseaseCategoryNames, proteinsHitsList, diseaseCategoryColors);
         proteinsChart.redrawChart();
         quantCompareDataResult.addComponent(proteinsChart);
         quantCompareDataResult.setComponentAlignment(proteinsChart, Alignment.MIDDLE_CENTER);
@@ -503,7 +563,7 @@ public abstract class CompareComponent extends BigBtn {
             }
 
         };
-        datasetsChart.initializeFilterData(items, quantHitsList, itemsColors);
+        datasetsChart.initializeFilterData(diseaseCategoryNames, quantHitsList, diseaseCategoryColors);
         datasetsChart.redrawChart();
         quantCompareDataResult.addComponent(datasetsChart);
         quantCompareDataResult.setComponentAlignment(datasetsChart, Alignment.MIDDLE_CENTER);
@@ -518,14 +578,27 @@ public abstract class CompareComponent extends BigBtn {
 
     }
 
+    /**
+     * On click view the comparison panel
+     */
     @Override
     public void onClick() {
         comparePanel.setVisible(true);
 
     }
 
+    /**
+     * Load and invoke comparison mode in the system to visualize the user input
+     * data in the system
+     */
     public abstract void loadQuantComparison();
 
+    /**
+     * Create and initialize not found proteins file that has proteins accessions list
+     *
+     * @param accessions set of not found protein accessions
+     * @return a StreamResource for protein exporting file
+     */
     private StreamResource createProteinsExportResource(Set<String> accessions) {
         return new StreamResource(() -> {
             byte[] csvFile = Data_handler.exportProteinsListToCSV(accessions);

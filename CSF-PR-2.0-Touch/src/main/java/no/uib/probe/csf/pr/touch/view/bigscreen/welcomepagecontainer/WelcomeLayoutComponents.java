@@ -8,7 +8,6 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -22,14 +21,13 @@ import no.uib.probe.csf.pr.touch.Data_Handler;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDataset;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFListener;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
-import no.uib.probe.csf.pr.touch.view.HeaderLayout;
+import no.uib.probe.csf.pr.touch.view.LogoLayout;
 import no.uib.probe.csf.pr.touch.view.LayoutViewManager;
-import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.StudiesInformationWindow;
+import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.DatasetInformationWindow;
 import no.uib.probe.csf.pr.touch.view.bigscreen.searchinglayoutcontainer.components.CompareComponent;
 import no.uib.probe.csf.pr.touch.view.bigscreen.searchinglayoutcontainer.components.SearchingComponent;
 import no.uib.probe.csf.pr.touch.view.core.BigBtn;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
-import no.uib.probe.csf.pr.touch.view.core.ZoomControler;
 import no.uib.probe.csf.pr.touch.view.core.OverviewInfoBean;
 
 /**
@@ -41,23 +39,44 @@ import no.uib.probe.csf.pr.touch.view.core.OverviewInfoBean;
  */
 public class WelcomeLayoutComponents extends VerticalLayout implements Serializable {
 
-    private final HorizontalLayout miniLayout;
-    private final ZoomControler zoomApp;
+    /*
+     *The top right thumb buttons container 
+     */
+    private final HorizontalLayout topRightThumbBtnsLayoutContainer;
 
-    public HorizontalLayout getMiniLayout() {
-        return miniLayout;
-    }
-    private final ImageContainerBtn resetThumbBtn, searchThumbBtn, compareThumbBtn;
+    /*
+     *The top right reset system thumb button 
+     */
+    private final ImageContainerBtn resetThumbBtn;
+    /*
+     *The top right searching thumb button 
+     */
+    private final ImageContainerBtn searchThumbBtn;
+    /*
+     *The top right compare user data thumb button 
+     */
+    private final ImageContainerBtn compareThumbBtn;
 
     /**
-     * initialize body layout
+     * Get the top right thumb buttons container
      *
+     * @return topRightThumbBtnsLayoutContainer
+     */
+    public HorizontalLayout getTopRightThumbBtnsLayoutContainer() {
+        return topRightThumbBtnsLayoutContainer;
+    }
+
+    /**
+     * Constructor to initialize main attributes (data handler, central manager
+     * ..etc)
+     *
+     * @param Data_handler
+     * @param CSFPR_Central_Manager
      * @param View_Manager view manager to control the current application view
      * @param overviewInfoBean resource overview information
+     * @param bodyHeight current screen height
      * @param publicationList list of available publications
      * @param dsObjects list of dataset information
-     * @param diseaseHashedColorMap map of disease names and colors for disease
-     * labels
      * @param bodyWidth current screen with
      *
      *
@@ -71,23 +90,23 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         float expHeaderRatio;
         String breakline;
         if (!smallScreen) {
-            expHeaderRatio =45f;
+            expHeaderRatio = 45f;
             this.setMargin(false);
-             this.addStyleName("padding10x45");
+            this.addStyleName("padding10x45");
             breakline = "<br/>";
         } else {
             breakline = "";
             expHeaderRatio = 45f;
             this.addStyleName("padding10x45");
         }
-        HeaderLayout header = new HeaderLayout();
+        LogoLayout header = new LogoLayout();
         this.addComponent(header);
         float headerRatio = expHeaderRatio / (float) bodyHeight;
         int bottomHeight = bodyHeight - (int) expHeaderRatio;
         float bodyRatio = (float) bottomHeight / (float) bodyHeight;
         this.setExpandRatio(header, headerRatio);
 
-        int rightPanelWidth = 700;// Math.min(980, (bodyWidth - 220));
+        int rightPanelWidth = 700;
         HorizontalLayout mainBodyHLayout = new HorizontalLayout();
         mainBodyHLayout.setWidthUndefined();
         this.addComponent(mainBodyHLayout);
@@ -97,7 +116,6 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         VerticalLayout leftPanelWrapper = new VerticalLayout();
         leftPanelWrapper.setWidth(160, Unit.PIXELS);
         leftPanelWrapper.setHeightUndefined();
-//        leftPanelWrapper.setStyleName("framelayout");
         mainBodyHLayout.addComponent(leftPanelWrapper);
 
         // the stat layout
@@ -111,41 +129,24 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
         Label quantStatLabel = new Label("Quantitative  Data");
         quantStatLabel.setHeight(20, Unit.PIXELS);
-//        quantStatLabel.addStyleName(ValoTheme.LABEL_NO_MARGIN);
         quantStatLabel.addStyleName(ValoTheme.LABEL_BOLD);
         quantStatLabel.addStyleName(ValoTheme.LABEL_H4);
         quantStatLabel.addStyleName(ValoTheme.LABEL_TINY);
         quantStatLabel.addStyleName("nomargin");
-//        quantStatLabel.addStyleName("marginleft");
         leftPanelWrapper.addComponent(quantStatLabel);
 
         GridLayout subQuantStatLayout = new GridLayout(2, 3);
         subQuantStatLayout.setMargin(new MarginInfo(false, false, false, false));
         subQuantStatLayout.setWidth(100, Unit.PERCENTAGE);
         leftPanelWrapper.addComponent(subQuantStatLayout);
-
-//        PublicationsInformationWindow sub1quantStatLabelWrapper = new PublicationsInformationWindow(publicationList);
-//        Label sub1quantStatLabel = new Label("#Publications");
-//        sub1quantStatLabel.setStyleName("link");
-//        sub1quantStatLabel.addStyleName(ValoTheme.LABEL_SMALL);
-//        sub1quantStatLabelWrapper.addComponent(sub1quantStatLabel);
-//        subQuantStatLayout.addComponent(sub1quantStatLabelWrapper, 0, 0);//
-//        sub1quantStatLabelWrapper.setDescription("Click to view publication information");
-//
-//        Label sub1QuantStatValue = new Label(overviewInfoBean.getNumberOfQuantPublication()+"");
-//        sub1QuantStatValue.addStyleName(ValoTheme.LABEL_SMALL);
-//        subQuantStatLayout.addComponent(sub1QuantStatValue, 1, 0);
-//        subQuantStatLayout.setComponentAlignment(sub1QuantStatValue, Alignment.MIDDLE_RIGHT);
-//        Set<QuantDatasetObject> dsObjects = CSFPR_Handler.getQuantDatasetList();
-//
-        StudiesInformationWindow sub2quantStatLabelWrapper = new StudiesInformationWindow(publicationList, smallScreen){
+        
+        DatasetInformationWindow sub2quantStatLabelWrapper = new DatasetInformationWindow(publicationList) {
 
             @Override
-            public List<Object[]> updatePublications(Set<String> pumedId) {
-                return publicationList; //To change body of generated methods, choose Tools | Templates.
+            public List<Object[]> getPublicationsInformation(Set<String> pumedId) {
+                return publicationList; 
             }
-        
-        
+
         };
         CSFPR_Central_Manager.setFullPublicationList(publicationList);
         sub2quantStatLabelWrapper.updateData(dsObjects);
@@ -192,7 +193,6 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
         Label sub4QuantStatValue = new Label("" + overviewInfoBean.getNumberOfQuantPeptides());
         sub4QuantStatValue.addStyleName(ValoTheme.LABEL_SMALL);
-//        sub4QuantStatValue.addStyleName(ValoTheme.LABEL_TINY);
         sub4QuantStatValue.addStyleName("rightaligntext");
         subQuantStatLayout.addComponent(sub4QuantStatValue, 1, 2);
         subQuantStatLayout.setComponentAlignment(sub4QuantStatValue, Alignment.MIDDLE_RIGHT);
@@ -206,7 +206,6 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         idStatLabel.addStyleName(ValoTheme.LABEL_H4);
         idStatLabel.addStyleName(ValoTheme.LABEL_TINY);
         idStatLabel.addStyleName("nomargin");
-//        idStatLabel.addStyleName("marginleft");
         idStatLabel.addStyleName("margintop15");
         leftPanelWrapper.addComponent(idStatLabel);
 
@@ -301,10 +300,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         rightPanelWrapper.addComponent(para_1);
         para_1.setWidth(rightPanelWidth, Unit.PIXELS);
 
-//        para_1.setHeight(40, Unit.PIXELS);
-//        para_1.addStyleName(ValoTheme.LABEL_BOLD);
         para_1.addStyleName(ValoTheme.LABEL_H4);
-//        para_1.addStyleName(ValoTheme.LABEL_TINY);
 
         para_1.addStyleName("nomargin");
         para_1.addStyleName("marginbottom");
@@ -313,7 +309,6 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         HorizontalLayout rightPanel = new HorizontalLayout();
         rightPanel.setWidth(100, Unit.PERCENTAGE);
         rightPanelWrapper.addComponent(rightPanel);
-//        rightPanelWrapper.addStyleName("nomargin");
 
         VerticalLayout middleLayout = new VerticalLayout();
         middleLayout.setWidth(100, Unit.PERCENTAGE);
@@ -323,7 +318,6 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
         GridLayout middlePanelServicesLayout = new GridLayout(2, 2);
         middlePanelServicesLayout.setSpacing(true);
-//        middlePanelServicesLayout.setHeightUndefined();
 
         if (!smallScreen) {
             middlePanelServicesLayout.setMargin(new MarginInfo(false, false, false, false));
@@ -333,12 +327,11 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         }
         middleLayout.addComponent(middlePanelServicesLayout);
 
-        BigBtn quantDatasetBtn = new BigBtn("Quantification", "Browse quantitative data", "img/scatter_plot_applied.png", smallScreen) {
+        BigBtn quantDatasetBtn = new BigBtn("Quantification", "Browse quantitative data", "img/scatter_plot_applied.png") {
 
             @Override
             public void onClick() {
                 View_Manager.viewLayout("quantview");
-                zoomApp.setVisible(true);
             }
         };
         if (!smallScreen) {
@@ -347,12 +340,11 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         } else {
             quantDatasetBtn.addStyleName("margintop5");
         }
-//        quantDatasetBtn.getThumbBtn().addStyleName("unselectedbtn");
 
         quantDatasetBtn.getThumbBtn().setDescription("Click to browse protein quantitative data");
         middlePanelServicesLayout.addComponent(quantDatasetBtn, 0, 0);
         middlePanelServicesLayout.setComponentAlignment(quantDatasetBtn, Alignment.TOP_LEFT);
-        BigBtn idDatasetBtn = new BigBtn("Identification", "Browse identification data", "img/bar-chart.png", smallScreen) {
+        BigBtn idDatasetBtn = new BigBtn("Identification", "Browse identification data", "img/bar-chart.png") {
 
             @Override
             public void onClick() {
@@ -371,12 +363,11 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         middlePanelServicesLayout.addComponent(idDatasetBtn, 0, 1);
         middlePanelServicesLayout.setComponentAlignment(idDatasetBtn, Alignment.TOP_LEFT);
 
-        SearchingComponent searchingDatasetBtn = new SearchingComponent(Data_handler, CSFPR_Central_Manager, smallScreen) {
+        SearchingComponent searchingDatasetBtn = new SearchingComponent(Data_handler, CSFPR_Central_Manager) {
 
             @Override
             public void loadQuantSearching() {
                 View_Manager.viewLayout("quantview");
-                zoomApp.setVisible(true);
 
             }
 
@@ -390,12 +381,11 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         searchingDatasetBtn.getThumbBtn().setDescription("Click to search quantified and identified protein data");
         middlePanelServicesLayout.addComponent(searchingDatasetBtn, 1, 0);
 
-        CompareComponent compareBtn = new CompareComponent(Data_handler, CSFPR_Central_Manager, smallScreen) {
+        CompareComponent compareBtn = new CompareComponent(Data_handler, CSFPR_Central_Manager) {
 
             @Override
             public void loadQuantComparison() {
                 View_Manager.viewLayout("quantview");
-                zoomApp.setVisible(true);
             }
 
         };
@@ -409,12 +399,11 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         middlePanelServicesLayout.addComponent(compareBtn, 1, 1);
         middlePanelServicesLayout.setComponentAlignment(compareBtn, Alignment.TOP_LEFT);
 
-        BigBtn homeBtn = new BigBtn("", "", "img/home-o.png", smallScreen) {
+        BigBtn homeBtn = new BigBtn("", "", "img/home-o.png") {
 
             @Override
             public void onClick() {
                 View_Manager.viewLayout("welcomeview");
-                zoomApp.setVisible(false);
             }
         };
         this.addComponent(homeBtn);
@@ -426,15 +415,6 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
         middleLayout.addComponent(para_2);
         middleLayout.setComponentAlignment(para_2, Alignment.TOP_LEFT);
-        //init mini layout
-        zoomApp = new ZoomControler(true, smallScreen, false);//Page.getCurrent().getWebBrowser().isChrome());
-        zoomApp.setVisible(false);
-//        if (smallScreen) {
-//            zoomApp.setWidth(25, Unit.PIXELS);
-//        } else {
-//            zoomApp.setWidth(40, Unit.PIXELS);
-//        }
-//        quantDatasetBtn.getThumbBtn().setVisible(false);
 
         this.resetThumbBtn = new ImageContainerBtn() {
 
@@ -444,8 +424,6 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
             }
         };
-//                resetThumbBtn.updateText("R<br/>e<br/>s<br/>e<br/>t");
-//                resetThumbBtn.addStyleName("verticaltext");
 
         final ThemeResource resetSystemIconRes = new ThemeResource("img/ban.png");
 
@@ -467,8 +445,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         this.searchThumbBtn = searchingDatasetBtn.getThumbBtn();
         this.compareThumbBtn = compareBtn.getThumbBtn();
         VerticalLayout miniLayoutContainer = new VerticalLayout(homeBtn.getThumbBtn(), idDatasetBtn.getThumbBtn(), searchingDatasetBtn.getThumbBtn(), compareBtn.getThumbBtn(), resetThumbBtn);
-        miniLayout = new HorizontalLayout(miniLayoutContainer);
-//        miniLayout.addStyleName("whitesmokelayout");
+        topRightThumbBtnsLayoutContainer = new HorizontalLayout(miniLayoutContainer);
         miniLayoutContainer.setSpacing(true);
         miniLayoutContainer.setStyleName("toprightbtnscontainer");
 
@@ -481,18 +458,11 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         lineThrough.setHeight(2, Unit.PIXELS);
         lineThrough.setStyleName("lightgraylayout");
 
-//        footerLayout.setComponentAlignment(para_3, Alignment.BOTTOM_LEFT);
-//         footerLayout.addComponent(lineThrough, "left: 0px; top: " + 29 + "px");
         VerticalLayout rightHeaderLayout = new VerticalLayout();
-//        rightHeaderLayout.setStyleName("whitelayout");
-
         rightHeaderLayout.setWidth(100, Unit.PERCENTAGE);
 
-       
-//        this.setComponentAlignment(rightHeaderLayout, Alignment.TOP_RIGHT);
         HorizontalLayout linksIconsLayout = new HorizontalLayout();
         linksIconsLayout.setStyleName("whitelayout");
-//        linksIconsLayout.addStyleName("margintop10");
         rightHeaderLayout.addComponent(linksIconsLayout);
         rightHeaderLayout.setComponentAlignment(linksIconsLayout, Alignment.MIDDLE_RIGHT);
         linksIconsLayout.setHeight(30, Unit.PIXELS);
@@ -519,11 +489,6 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         kgj_ico.addStyleName("kgjlogo");
         kgj_ico.setHeight(58, Unit.PIXELS);
         linksIconsLayout.addComponent(kgj_ico);
-
-//        VerticalLayout rightSpacer = new VerticalLayout();
-//        rightSpacer.setWidth(40,Unit.PIXELS);
-//        rightSpacer.setHeight(5,Unit.PIXELS);
-//        linksIconsLayout.addComponent(rightSpacer);
         linksIconsLayout.setComponentAlignment(probe_ico, Alignment.MIDDLE_RIGHT);
         linksIconsLayout.setComponentAlignment(uib_ico, Alignment.MIDDLE_RIGHT);
         linksIconsLayout.setComponentAlignment(kgj_ico, Alignment.MIDDLE_RIGHT);
@@ -544,39 +509,23 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
                 } else if (type.equalsIgnoreCase("quant_searching")) {
                     compareThumbBtn.removeStyleName("selectedbtn");
                     resetThumbBtn.setVisible(true);
-//                    resetThumbBtn.updateIcon(resetSystemIconRes);
                     searchThumbBtn.addStyleName("selectedbtn");
                 } else if (type.equalsIgnoreCase("quant_compare")) {
                     resetThumbBtn.setVisible(true);
                     searchThumbBtn.removeStyleName("selectedbtn");
-//                    resetThumbBtn.updateIcon(compareDisableRes);
                     compareThumbBtn.addStyleName("selectedbtn");
 
                 }
             }
 
             @Override
-            public String getFilterId() {
+            public String getListenerId() {
                 return "welcomehomecomponent";
             }
 
-            @Override
-            public void removeFilterValue(String value) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
+            
         });
-         footerLayout.addComponent(rightHeaderLayout, "left: 0px; top: " + 5 + "px");
-
-//        
-    }
-
-    public void addMainZoomComponents(Component component) {
-
-        zoomApp.addZoomableComponent(component);
-    }
-
-    public ZoomControler getZoomApp() {
-        return zoomApp;
+        footerLayout.addComponent(rightHeaderLayout, "left: 0px; top: " + 5 + "px");
     }
 
 }

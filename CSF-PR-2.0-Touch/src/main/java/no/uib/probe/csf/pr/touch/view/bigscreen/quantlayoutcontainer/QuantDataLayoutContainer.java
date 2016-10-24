@@ -19,11 +19,11 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDataset;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFListener;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
-import no.uib.probe.csf.pr.touch.view.components.BubbleChartComponent;
-import no.uib.probe.csf.pr.touch.view.components.HeatMapComponent;
+import no.uib.probe.csf.pr.touch.view.components.DiseaseComparisonSelectionBubblechartComponent;
+import no.uib.probe.csf.pr.touch.view.components.DiseaseComparisonHeatmapComponent;
 import no.uib.probe.csf.pr.touch.view.components.LineChartProteinTableComponent;
 import no.uib.probe.csf.pr.touch.view.components.PeptideViewComponent;
-import no.uib.probe.csf.pr.touch.view.components.QuantInitialLayout;
+import no.uib.probe.csf.pr.touch.view.components.InitialDiseaseCategoriesComponent;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 import no.uib.probe.csf.pr.touch.view.core.InformationButton;
 import no.uib.probe.csf.pr.touch.view.core.ViewControlPanel;
@@ -32,79 +32,145 @@ import no.uib.probe.csf.pr.touch.view.core.ViewControlPanel;
  *
  * @author Yehia Farag
  *
- * this class represents the main quant data layout container the layout is a
- * slide panel layout
+ * This class represents the main quantitative data layout container the layout
+ * this include the initial disease categories layout (O o O), the disease
+ * comparison heat-map, the disease comparisons selection bubble chart, the
+ * proteins table and selected protein layout (protein coverage, peptide
+ * information, and studies line chart)
  *
  */
 public class QuantDataLayoutContainer extends ViewControlPanel implements CSFListener {
 
-    private final VerticalLayout heatmapViewContainer, heatmapToolsContainer, bubblechartViewContainer, bubblechartToolsContainer, linechartViewContainer, linechartToolsContainer, peptidesViewContainer, peptidesToolsContainer;
-    private final ImageContainerBtn heatmapBtn, bubblechartBtn, linechartBtn, peptideInfoBtn;
-    private final Data_Handler Data_handler;
-    private final CSFPR_Central_Manager CSFPR_Central_Manager;
-    private final ThemeResource logoRes = new ThemeResource("img/logo.png");
-    private final BubbleChartComponent bubblechartComponent;
+    /*
+     *Initial disease categories layout (O o O)
+     */
+    private final InitialDiseaseCategoriesComponent initialDiseaseCategoriesComponent;
 
-    private HeatMapComponent heatmapComponent;
+    /*
+     *The disease comparison heat-map container
+     */
+    private final VerticalLayout heatmapViewContainer;
+    /*
+     *The disease comparison heat-map right side control buttons container
+     */
+    private final VerticalLayout heatmapToolsContainer;
+    /*
+     *The disease comparison heat-map left side thumb image button
+     */
+    private final ImageContainerBtn heatmapBtn;
+    /*
+     *The disease comparison heat-map component
+     */
+    private DiseaseComparisonHeatmapComponent diseaseComparisonHeatmapComponent;
 
-    private final int mainViewPanelWidth;
-    private final int mainViewPanelHeight;
-    private final QuantInitialLayout quantInitialLayout;
+    /*
+     *The disease comparisons selection bubble chart
+     */
+    private final VerticalLayout bubblechartViewContainer;
+    /*
+     *The disease comparisons selection bubble chart right side control buttons container
+     */
+    private final VerticalLayout bubblechartToolsContainer;
+
+    /*
+     *The disease comparison selection bubble chart left side thumb image button
+     */
+    private final ImageContainerBtn bubblechartBtn;
+    /*
+     *The disease comparison selection bubble chart component
+     */
+    private final DiseaseComparisonSelectionBubblechartComponent diseaseComparisonSelectionbubblechartComponent;
+
+    /*
+     *The disease comparisons selection proteins table
+     */
+    private final VerticalLayout linechartViewContainer;
+    /*
+     *The disease comparisons selection proteins table right side control buttons container
+     */
+    private final VerticalLayout linechartToolsContainer;
+    /*
+     *The disease comparison selection proteins table left side thumb image button
+     */
+    private final ImageContainerBtn linechartBtn;
+
+    /*
+     *The disease comparison selection proteins table component
+     */
     private final LineChartProteinTableComponent lineChartProteinTableComponent;
+
+    /*
+     *The selected protein layout (protein coverage, peptide information, and studies line chart)
+     */
+    private final VerticalLayout peptidesViewContainer;
+    /*
+     *The selected protein layout (protein coverage, peptide information, and studies line chart) right side control buttons container
+     */
+    private final VerticalLayout peptidesToolsContainer;
+    /*
+     *The selected protein layout (protein coverage, peptide information, and studies line chart)  left side thumb image button
+     */
+    private final ImageContainerBtn peptideInfoBtn;
+
+    /*
+     *The quantative data handler to work as controller layer to interact between visulization and logic layer 
+     */
+    private final Data_Handler Data_handler;
+
+    /*
+     *The central manager for handling data across different visualizations and managing all users selections
+     */
+    private final CSFPR_Central_Manager CSFPR_Central_Manager;
+
+    /*
+     *The standered thumb image for left side components buttons, in case of no selection provided (null selection)
+     */
+    private final ThemeResource logoRes = new ThemeResource("img/logo.png");
+
+    /*
+     *The width of the component view panel (the middle panle between the left side and right side buttons wrappers)
+     */
+    private final int mainViewPanelWidth;
+    /*
+     *The height of the component view panel (the middle panle between the left side and right side buttons wrappers)
+     */
+    private final int mainViewPanelHeight;
 
     @Override
     public void selectionChanged(String type) {
         if (type.equalsIgnoreCase("quant_searching") || type.equalsIgnoreCase("quant_compare")) {
-
-            //reset main quant data in handler
-            //done
             //update initial layout
-            quantInitialLayout.updateData(CSFPR_Central_Manager.getQuantSearchSelection().getDiseaseCategoriesIdMap());
+            initialDiseaseCategoriesComponent.updateData(CSFPR_Central_Manager.getQuantSearchSelection().getDiseaseCategoriesIdMap());
             //update heatmap
-            Set<QuantDiseaseGroupsComparison> compList = CSFPR_Central_Manager.getSelectedComparisonsList();
-            heatmapComponent.unselectAll();
+            CSFPR_Central_Manager.getSelectedComparisonsList();
+            diseaseComparisonHeatmapComponent.unselectAll();
             Map<Integer, QuantDataset> tempFullComparison = new LinkedHashMap<>();
             for (int i : Data_handler.getFullQuantDsMap().keySet()) {
-                if (CSFPR_Central_Manager.getQuantSearchSelection().getDatasetIds().contains(i)) {
+                if (CSFPR_Central_Manager.getQuantSearchSelection().getQuantDatasetIndexes().contains(i)) {
                     tempFullComparison.put(i, Data_handler.getFullQuantDsMap().get(i));
                 }
             }
 
-            heatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), tempFullComparison);
+            diseaseComparisonHeatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), tempFullComparison);
 
-//            if (compList == null || compList.isEmpty()) {
-//                updateCurrentLayout("heatmap");
-//
-//            }
             if (type.equalsIgnoreCase("quant_compare")) {
-                bubblechartComponent.setUserCustomizedComparison(CSFPR_Central_Manager.getQuantSearchSelection().getUserCustComparison());
+                diseaseComparisonSelectionbubblechartComponent.setUserCustomizedComparison(CSFPR_Central_Manager.getQuantSearchSelection().getUserCustComparison());
                 lineChartProteinTableComponent.setUserCustomizedComparison(CSFPR_Central_Manager.getQuantSearchSelection().getUserCustComparison());
 
             }
-            heatmapComponent.selectAll();
+            diseaseComparisonHeatmapComponent.selectAll();
             updateCurrentLayout("proteintable");
 
-            //
-//            bubblechartComponent.addCustmisedUserDataCompariosn(null);
-//            lineChartProteinTableComponent.setUserCustomizedComparison(null);
-//            quantInitialLayout.updateSelection(CSFPR_Central_Manager.getQuantSearchSelection().getDiseaseCategory());
-//            heatmapComponent.showSerumDs();
-//            heatmapComponent.selectComparisonsByID(CSFPR_Central_Manager.getQuantSearchSelection().getDatasetIds());
-//            this.updateCurrentLayout("proteintable");
-//            lineChartProteinTableComponent.filterSearchSelection(CSFPR_Central_Manager.getQuantSearchSelection().getKeyWords());
         } else if (type.equalsIgnoreCase("reset_quant_searching")) {
             //update initial layout
-            heatmapComponent.unselectAll();
+            diseaseComparisonHeatmapComponent.unselectAll();
             heatmapBtn.updateIcon(logoRes);
             heatmapBtn.setEnabled(false);
             heatmapBtn.setReadOnly(true);
-            bubblechartComponent.setUserCustomizedComparison(null);
+            diseaseComparisonSelectionbubblechartComponent.setUserCustomizedComparison(null);
             lineChartProteinTableComponent.setUserCustomizedComparison(null);
-//              quantInitialLayout.resetThumbBtn();
-            quantInitialLayout.updateData(Data_handler.getDiseaseCategorySet());
+            initialDiseaseCategoriesComponent.updateData(Data_handler.getDiseaseCategorySet());
             updateCurrentLayout("initiallayout");
-
-            //reset heatmap and unselect all
         }
         if (type.equalsIgnoreCase("comparisons_selection")) {
 
@@ -118,20 +184,23 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
     }
 
     @Override
-    public String getFilterId() {
+    public String getListenerId() {
         return this.getClass().getName();
     }
 
-    @Override
-    public void removeFilterValue(String value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+  
 
-    private final boolean smallScreen;
-
+    /**
+     * Constructor to initialize the main attributes (Data handler, and
+     * selection manage )
+     *
+     * @param Data_handler
+     * @param CSFPR_Central_Manager
+     * @param width
+     * @param height
+     */
     public QuantDataLayoutContainer(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height) {
         super(width, height);
-        smallScreen = height <= 200;
         this.Data_handler = Data_handler;
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         this.setMargin(false);
@@ -141,7 +210,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         subBodyWrapper.setWidthUndefined();
         subBodyWrapper.setHeightUndefined();
 
-        quantInitialLayout = new QuantInitialLayout(availableDiseaseCategory, width - 20, height, smallScreen) {
+        initialDiseaseCategoriesComponent = new InitialDiseaseCategoriesComponent(availableDiseaseCategory, width - 20, height, height <= 200) {
             private String lastSelectedDisease = "";
 
             @Override
@@ -158,7 +227,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
                     }
                     lastSelectedDisease = diseaseCategoryName;
                     Set<QuantDiseaseGroupsComparison> compList = CSFPR_Central_Manager.getSelectedComparisonsList();
-                    heatmapComponent.unselectAll();
+                    diseaseComparisonHeatmapComponent.unselectAll();
 
                     if (!diseaseCategoryName.equalsIgnoreCase("All Diseases")) {
 
@@ -182,9 +251,9 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
                             }
 
                         }
-                        heatmapComponent.updateData(rowLabels, colLabels, updatedSet, Data_handler.getFullQuantDsMap());
+                        diseaseComparisonHeatmapComponent.updateData(rowLabels, colLabels, updatedSet, Data_handler.getFullQuantDsMap());
                     } else {
-                        heatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), Data_handler.getFullQuantDsMap());
+                        diseaseComparisonHeatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), Data_handler.getFullQuantDsMap());
                     }
                     if (compList == null || compList.isEmpty()) {
                         updateCurrentLayout("heatmap");
@@ -206,45 +275,27 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         controlBtnsContainer.setWidthUndefined();
         controlBtnsContainer.setSpacing(true);
         InformationButton info = new InformationButton("Info", false);
-        if (smallScreen) {
-            info.setWidth(25, Unit.PIXELS);
-            info.setHeight(25, Unit.PIXELS);
-            info.removeStyleName("smallimg");
-        } else {
 
-            info.setWidth(40, Unit.PIXELS);
-            info.setHeight(40, Unit.PIXELS);
-        }
+        info.setWidth(40, Unit.PIXELS);
+        info.setHeight(40, Unit.PIXELS);
 
-//        controlBtnsContainer.addComponent(info);
-//        controlBtnsContainer.setVisible(false);
-//        this.setInitialLayout(quantInitialLayout.getMiniLayout(), quantInitialLayout, controlBtnsContainer);
-        this.addButton(quantInitialLayout.getMiniLayout(), quantInitialLayout, null, true);
+        this.addButton(initialDiseaseCategoriesComponent.getMiniLayout(), initialDiseaseCategoriesComponent, null, true);
 
         heatmapBtn = new ImageContainerBtn() {
 
             @Override
             public void onClick() {
-                if (this.isEnabled()) {
-                    processFunction("heatmap");
-                }
             }
         };
         heatmapBtn.updateIcon(logoRes);
-        if (smallScreen) {
-            heatmapBtn.setWidth(60, Unit.PIXELS);
-            heatmapBtn.setHeight(60, Unit.PIXELS);
-        } else {
-            heatmapBtn.setWidth(100, Unit.PIXELS);
-            heatmapBtn.setHeight(100, Unit.PIXELS);
-        }
+
+        heatmapBtn.setWidth(100, Unit.PIXELS);
+        heatmapBtn.setHeight(100, Unit.PIXELS);
 
         mainViewPanelHeight = height;
-        if (smallScreen) {
-            mainViewPanelWidth = width - 118;
-        } else {
-            mainViewPanelWidth = width - 178;
-        }
+
+        mainViewPanelWidth = width - 178;
+
         heatmapViewContainer = new VerticalLayout();
         heatmapViewContainer.setWidth(mainViewPanelWidth, Unit.PIXELS);
         heatmapViewContainer.setHeight(mainViewPanelHeight, Unit.PIXELS);
@@ -256,7 +307,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
 
         Data_handler.loadDiseaseCategory("All Diseases");
 
-        heatmapComponent = new HeatMapComponent(CSFPR_Central_Manager, Data_handler, Data_handler.getDiseaseCategorySet(), mainViewPanelWidth, mainViewPanelHeight - 2, Data_handler.getActiveDataColumns(), smallScreen) {
+        diseaseComparisonHeatmapComponent = new DiseaseComparisonHeatmapComponent(CSFPR_Central_Manager, Data_handler, Data_handler.getDiseaseCategorySet(), mainViewPanelWidth, mainViewPanelHeight - 2, Data_handler.getActiveDataColumns()) {
 
             @Override
             public void updateIcon(String imageUrl) {
@@ -267,13 +318,13 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
             @Override
             public void updateCombinedGroups(Map<String, Map<String, String>> updatedGroupsNamesMap) {
                 Data_handler.updateCombinedGroups(updatedGroupsNamesMap);
-                heatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), Data_handler.getFullQuantDsMap());
+                diseaseComparisonHeatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), Data_handler.getFullQuantDsMap());
             }
 
             @Override
             public void updateCSFSerumDatasets(boolean serumApplied, boolean csfApplied) {
                 Data_handler.updateCSFSerumDatasets(serumApplied, csfApplied);
-                heatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), Data_handler.getFullQuantDsMap());
+                diseaseComparisonHeatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), Data_handler.getFullQuantDsMap());
             }
 
             @Override
@@ -282,36 +333,26 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
             }
 
         };
-//        VerticalLayout testlayout = new VerticalLayout();
-//        testlayout.setStyleName("bluelayout");
-//        testlayout.setWidth(mainViewPanelWidth + 100, mainViewPanelHeight);
 
-        heatmapViewContainer.addComponent(heatmapComponent);
-        heatmapViewContainer.setComponentAlignment(heatmapComponent, Alignment.TOP_LEFT);
+        heatmapViewContainer.addComponent(diseaseComparisonHeatmapComponent);
+        heatmapViewContainer.setComponentAlignment(diseaseComparisonHeatmapComponent, Alignment.TOP_LEFT);
 
-        heatmapToolsContainer.addComponent(heatmapComponent.getHeatmapToolBtnContainer());
-        heatmapToolsContainer.setComponentAlignment(heatmapComponent.getHeatmapToolBtnContainer(), Alignment.TOP_RIGHT);
+        heatmapToolsContainer.addComponent(diseaseComparisonHeatmapComponent.getHeatmapToolsContainer());
+        heatmapToolsContainer.setComponentAlignment(diseaseComparisonHeatmapComponent.getHeatmapToolsContainer(), Alignment.TOP_RIGHT);
 
         bubblechartBtn = new ImageContainerBtn() {
 
             @Override
             public void onClick() {
-                if (this.isEnabled()) {
-                    processFunction("bubblechart");
-                }
+               
             }
         };
         bubblechartBtn.updateIcon(logoRes);
         bubblechartBtn.setDescription("Protein Overview");
 
-        if (smallScreen) {
-            bubblechartBtn.setWidth(60, Unit.PIXELS);
-            bubblechartBtn.setHeight(60, Unit.PIXELS);
-        } else {
+        bubblechartBtn.setWidth(100, Unit.PIXELS);
+        bubblechartBtn.setHeight(100, Unit.PIXELS);
 
-            bubblechartBtn.setWidth(100, Unit.PIXELS);
-            bubblechartBtn.setHeight(100, Unit.PIXELS);
-        }
         bubblechartBtn.setEnabled(false);
 
         bubblechartViewContainer = new VerticalLayout();
@@ -326,21 +367,14 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
 
             @Override
             public void onClick() {
-                if (this.isEnabled()) {
-                    processFunction("linechart");
-                }
+               
             }
         };
         linechartBtn.updateIcon(logoRes);
         linechartBtn.setDescription("Protein Table");
 
-        if (smallScreen) {
-            linechartBtn.setWidth(60, Unit.PIXELS);
-            linechartBtn.setHeight(60, Unit.PIXELS);
-        } else {
-            linechartBtn.setWidth(100, Unit.PIXELS);
-            linechartBtn.setHeight(100, Unit.PIXELS);
-        }
+        linechartBtn.setWidth(100, Unit.PIXELS);
+        linechartBtn.setHeight(100, Unit.PIXELS);
 
         linechartViewContainer = new VerticalLayout();
         linechartViewContainer.setWidth(mainViewPanelWidth, Unit.PIXELS);
@@ -353,20 +387,14 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
 
             @Override
             public void onClick() {
-                if (this.isEnabled()) {
-                    processFunction("peptidelayout");
-                }
+               
             }
         };
         peptideInfoBtn.setDescription("Protein Details");
         peptideInfoBtn.updateIcon(logoRes);
-        if (smallScreen) {
-            peptideInfoBtn.setWidth(60, Unit.PIXELS);
-            peptideInfoBtn.setHeight(60, Unit.PIXELS);
-        } else {
-            peptideInfoBtn.setWidth(100, Unit.PIXELS);
-            peptideInfoBtn.setHeight(100, Unit.PIXELS);
-        }
+
+        peptideInfoBtn.setWidth(100, Unit.PIXELS);
+        peptideInfoBtn.setHeight(100, Unit.PIXELS);
 
         peptidesViewContainer = new VerticalLayout();
         peptidesViewContainer.setWidth(mainViewPanelWidth, Unit.PIXELS);
@@ -377,7 +405,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         this.addButton(peptideInfoBtn, peptidesViewContainer, peptidesToolsContainer, false);
 
         ///init bubble chart container
-        bubblechartComponent = new BubbleChartComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight - 2, smallScreen) {
+        diseaseComparisonSelectionbubblechartComponent = new DiseaseComparisonSelectionBubblechartComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight - 2, height <= 200) {
 
             @Override
             public void updateIcon(String imageUrl) {
@@ -390,17 +418,15 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
                 }
                 bubblechartBtn.setEnabled(true);
                 bubblechartBtn.updateIcon(new ExternalResource(imageUrl));
-//                
-//                linechartBtn.updateIcon(new ThemeResource("img/table.png"));
 
             }
 
         };
-        bubblechartViewContainer.addComponent(bubblechartComponent);
-        bubblechartToolsContainer.addComponent(bubblechartComponent.getControlBtnsContainer());
-        bubblechartToolsContainer.setComponentAlignment(bubblechartComponent.getControlBtnsContainer(), Alignment.TOP_RIGHT);
+        bubblechartViewContainer.addComponent(diseaseComparisonSelectionbubblechartComponent);
+        bubblechartToolsContainer.addComponent(diseaseComparisonSelectionbubblechartComponent.getControlBtnsContainer());
+        bubblechartToolsContainer.setComponentAlignment(diseaseComparisonSelectionbubblechartComponent.getControlBtnsContainer(), Alignment.TOP_RIGHT);
 
-        lineChartProteinTableComponent = new LineChartProteinTableComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight - 2, null, smallScreen) {
+        lineChartProteinTableComponent = new LineChartProteinTableComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight - 2, null, height <= 200) {
 
             @Override
             public void updateRowNumber(int rowNumber, String url) {
@@ -415,7 +441,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         linechartToolsContainer.addComponent(lineChartProteinTableComponent.getControlBtnsContainer());
         linechartToolsContainer.setComponentAlignment(lineChartProteinTableComponent.getControlBtnsContainer(), Alignment.TOP_RIGHT);
 
-        PeptideViewComponent peptideViewComponent = new PeptideViewComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight - 2, smallScreen) {
+        PeptideViewComponent peptideViewComponent = new PeptideViewComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight - 2, height <= 200) {
 
             @Override
             public void updateIcon(Resource iconResource) {
@@ -436,19 +462,15 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
 
     }
 
-    private void processFunction(String btnId) {
-        switch (btnId) {
 
-            case "heatmap":
-                break;
-
-        }
-
-    }
-
+     /**
+     * set the main disease category in the data handler to update the current active data in the logic layer  
+     *
+     * @param DiseaseCategoryName
+     */
     private void loadDiseaseCategory(String DiseaseCategoryName) {
         Data_handler.loadDiseaseCategory(DiseaseCategoryName);
-        heatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), Data_handler.getFullQuantDsMap());
+        diseaseComparisonHeatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), Data_handler.getFullQuantDsMap());
 
     }
 

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.view.bigscreen.searchinglayoutcontainer.components;
 
 import com.vaadin.ui.Alignment;
@@ -20,39 +15,72 @@ import no.uib.probe.csf.pr.touch.database.Query;
  *
  * @author Yehia Farag
  *
- * this class represents the main searching unit responsible for data entry and
- * searching filters
+ * This Class represents searching unit layout where the user can enter his
+ * input data to be searched and queried against the csf-pr 2.0 resource
+ * database
  */
 public abstract class SearchingUnitComponent extends VerticalLayout implements Button.ClickListener {
 
+    /*
+     * Input text area for enterying keywords (protein name, accession, or peptide sequence), the system support multiple keywords from the same searching category
+     */
     private final TextArea searchingArea;
-    private final OptionGroup searchByOptionGroup, diseaseCategoryOption;
+    /*
+     * Input option group for searching type (protein name, accession, or peptide sequence)
+     */
+    private final OptionGroup searchByOptionGroup;
+    /*
+     * Input option group for disease category (Alzheimer,Multiple Sclerosis or Parkinson's)
+     */
+    private final OptionGroup diseaseCategoryOption;
+    /*
+     * Main query object that has all information required for searching process
+     */
     private final Query query;
+    /*
+     *Label to show user input data errors
+     */
     private final Label errorLabel;
-    private final boolean smallScreen;
 
+    /**
+     * Get main query object that has all information required for searching
+     * process
+     *
+     * @return query
+     */
     public Query getQuery() {
         return query;
     }
 
+    /**
+     * Clear all input fields
+     *
+     */
     public void reset() {
         searchingArea.clear();
         searchByOptionGroup.setValue("Protein Name");
         errorLabel.setVisible(false);
-//        searchingArea.setRequired(false);
         searchByOptionGroup.setRequired(false);
         resetSearching();
         removeStyleName("resizeto120");
 
     }
 
+    /**
+     * Clear all input fields
+     */
     public abstract void resetSearching();
 
-    public SearchingUnitComponent(int height,int width, boolean smallScreen) {
+    /**
+     * Constructor to initialize the main attributes (width and height)
+     *
+     * @param height
+     * @param width
+     */
+    public SearchingUnitComponent(int height, int width) {
         this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
-        this.smallScreen = smallScreen;
-         this.addStyleName("roundedborder");
+        this.addStyleName("roundedborder");
         this.addStyleName("whitelayout");
         this.addStyleName("padding20");
         this.addStyleName("scrollable");
@@ -62,17 +90,13 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
         VerticalLayout frame = new VerticalLayout();
         frame.setWidth(100, Unit.PERCENTAGE);
         frame.setHeightUndefined();
-//        frame.setSpacing(true);
-//        this.setHeightUndefined();
         this.addComponent(frame);
 
         searchingArea = new TextArea();
         searchingArea.setWidth(90, Unit.PERCENTAGE);
-        if (smallScreen) {
-            searchingArea.setHeight(40, Unit.PIXELS);
-        } else {
-            searchingArea.setHeight(100, Unit.PIXELS);
-        }
+
+        searchingArea.setHeight(100, Unit.PIXELS);
+
         searchingArea.setStyleName(ValoTheme.TEXTAREA_ALIGN_CENTER);
         searchingArea.setInputPrompt("Use one key-word per line and choose the search by option");
         searchingArea.addStyleName("maxwidth600");
@@ -80,7 +104,6 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
         frame.setComponentAlignment(searchingArea, Alignment.TOP_CENTER);
 
         HorizontalLayout btnsLayoutContainer = new HorizontalLayout();
-//        btnsLayoutContainer.setMargin(new MarginInfo(false, true, false, true));
         btnsLayoutContainer.setWidth(90, Unit.PERCENTAGE);
         btnsLayoutContainer.addStyleName("maxwidth600");
         btnsLayoutContainer.setHeight(70, Unit.PIXELS);
@@ -109,17 +132,14 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
 
         VerticalLayout rightBtnContainer = new VerticalLayout();
         rightBtnContainer.setSizeFull();
-           btnsLayoutContainer.addComponent(rightBtnContainer);
+        btnsLayoutContainer.addComponent(rightBtnContainer);
         btnsLayoutContainer.setComponentAlignment(rightBtnContainer, Alignment.TOP_RIGHT);
-        
-        
+
         HorizontalLayout btnWrapper = new HorizontalLayout();
         btnWrapper.setSpacing(true);
         rightBtnContainer.addComponent(btnWrapper);
         rightBtnContainer.setComponentAlignment(btnWrapper, Alignment.TOP_RIGHT);
 
-        
-        
         Button sampleBtn = new Button("Load Example Data");
         sampleBtn.setStyleName(ValoTheme.BUTTON_LINK);
         sampleBtn.addStyleName(ValoTheme.BUTTON_TINY);
@@ -141,14 +161,13 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
                     + "random keyword");
 
         });
-        
-         VerticalLayout spacer = new VerticalLayout();
+
+        VerticalLayout spacer = new VerticalLayout();
         spacer.setWidth(2, Unit.PIXELS);
         spacer.setHeight(10, Unit.PIXELS);
         btnWrapper.addComponent(spacer);
         btnWrapper.setComponentAlignment(spacer, Alignment.TOP_CENTER);
 
-        
         Button searchingBtn = new Button("Search");
         searchingBtn.setStyleName(ValoTheme.BUTTON_SMALL);
         searchingBtn.addStyleName(ValoTheme.BUTTON_PRIMARY);
@@ -175,24 +194,25 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
         rightBtnContainer.addComponent(errorLabel);
         rightBtnContainer.setComponentAlignment(errorLabel, Alignment.MIDDLE_CENTER);
 
-//        if (smallScreen) {
-//            errorLabel.setHeight(40, Unit.PIXELS);
-//        }
         query = new Query();
 
     }
 
+    /**
+     * On click on searching button capture all the input data and construct
+     * query to be used for comparison process
+     *
+     * @param event
+     */
     @Override
     public void buttonClick(Button.ClickEvent event) {
         errorLabel.setVisible(false);
-//        searchingArea.setRequired(true);
-//        searchingArea.commit();
 
         searchByOptionGroup.setRequired(true);
         searchByOptionGroup.commit();
 
         if (searchingArea.getValue() != null && !searchingArea.getValue().trim().equalsIgnoreCase("") && searchByOptionGroup.isValid()) {
-//            searchingArea.setRequired(false);
+
             searchByOptionGroup.setRequired(false);
             String searchKeyWords = searchingArea.getValue();
 
@@ -220,9 +240,6 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
             query.setSearchBy(searchByOptionGroup.getValue().toString());
             query.setDiseaseCategorys((Set<Object>) diseaseCategoryOption.getValue());
             search(query);
-            if (smallScreen) {
-                this.addStyleName("resizeto120");
-            }
 
         } else {
             this.removeStyleName("resizeto120");
@@ -233,8 +250,19 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
 
     }
 
+    /**
+     * Start searching process
+     *
+     * @param query
+     */
     public abstract void search(Query query);
 
+    /**
+     * Get input option group for disease category (Alzheimer,Multiple Sclerosis
+     * or Parkinson's)
+     *
+     * @return diseaseCategoryOption
+     */
     public OptionGroup getDiseaseCategoryOption() {
         return diseaseCategoryOption;
     }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.view.bigscreen.searchinglayoutcontainer.components;
 
 import com.vaadin.data.Property;
@@ -31,14 +26,35 @@ import no.uib.probe.csf.pr.touch.view.core.TextAreaComponent;
  *
  * @author Yehia Farag
  *
- * This Class represents compare user's quant dataset with csf-pr v2 quant data
+ * This Class represents compare unit layout where the user can enter his input
+ * data to be compared with the csf-pr 2.0 resource data
  */
 public abstract class ComparisonUnitComponent extends VerticalLayout implements Button.ClickListener {
 
-    private final ComboBox diseaseGroupsListA, diseaseGroupsListB;
+    /*
+     *Drop down list to allow users to select disease group A or enter new disease group
+     */
+    private final ComboBox diseaseGroupsListA;
+    /*
+     *Drop down list to allow users to select disease group B or enter new disease group
+     */
+    private final ComboBox diseaseGroupsListB;
+    /*
+     *Set of available disease groups (sub-group) names in the system for the user to select from
+     */
     private final Set<String> diseaseGroupNames;
+    /*
+     *Label to show user input data errors
+     */
     private final Label errorLabel;
+    /*
+     * The user input disease comparison with all its information (constructed based on user input data)
+     */
     private final QuantDiseaseGroupsComparison userCustomizedComparison;
+
+    /*
+     * Sample of increased proteins accessions used for sample data input
+     */
     private final String highAcc = "P00450\n"
             + "P02774\n"
             + "P02647\n"
@@ -57,28 +73,74 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
             + "P05546\n"
             + "P08697";
 
+    /*
+     * Sample of equal proteins accessions used for sample data input
+     */
     private final String stableAcc = "";
+    /*
+     * Sample of decreased proteins accessions used for sample data input
+     */
     private final String lowAcc = "O75326\n"
             + "Q96KN2\n"
             + "Q96GW7\n"
             + "P13521\n"
             + "P07602\n"
             + "P04216";
+    /*
+     * Sort selection on the heat-map based on rows input data (if user select disease group A from drop down list) group A will be Numerator by default 
+     */
+    private boolean sorterRows;
+    /*
+     * Sort selection on the heat-map based on column input data (if user select disease group B from drop down list) group B will be Denominator by default
+     */
+    private boolean sortColumns;
+    /*
+     * Input text area for uniprot increased protein accessions
+     */
+    private final TextAreaComponent textBoxI;
+    /*
+     * Input text area for uniprot equal protein accessions
+     */
+    private final TextAreaComponent textBoxII;
+    /*
+     * Input text area for uniprot decreased protein accessions
+     */
+    private final TextAreaComponent textBoxIII;
 
+    /**
+     * Is sort selection on the heat-map based on rows input data (if user
+     * select disease group A from drop down list) group A will be Numerator by
+     * default
+     *
+     * @return sorterRows
+     */
     public boolean isSorterRows() {
         return sorterRows;
     }
 
+    /**
+     * Is sort selection on the heat-map based on rows input data (if user
+     * select disease group A from drop down list) group A will be Numerator by
+     * default
+     *
+     * @return sortColumns
+     */
     public boolean isSortColumns() {
         return sortColumns;
     }
-    private boolean sorterRows, sortColumns;
-    private final TextAreaComponent textBoxI, textBoxII, textBoxIII;
 
-    public ComparisonUnitComponent(Data_Handler CSFPR_Handler, int height,int width, boolean smallScreen) {
-         this.setWidth(width, Unit.PIXELS);
+    /**
+     * Constructor to initialize the main attributes (data handler,width and
+     * height)
+     *
+     * @param CSFPR_Handler
+     * @param height
+     * @param width
+     */
+    public ComparisonUnitComponent(Data_Handler CSFPR_Handler, int height, int width) {
+        this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
-         this.addStyleName("roundedborder");
+        this.addStyleName("roundedborder");
         this.addStyleName("whitelayout");
         this.addStyleName("padding20");
         this.addStyleName("scrollable");
@@ -124,36 +186,25 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
         diseaseGroupsListB.setRequiredError("Select or enter new disease group name");
         diseaseGroupsListB.setNullSelectionAllowed(true);
         diseaseGroupsListB.setPageLength(30);
-
-//        Label selectionResultsLabel = new Label("Selection:");
-//        selectionResultsLabel.setStyleName(ValoTheme.LABEL_TINY);
-//        selectionResultsLabel.addStyleName(ValoTheme.LABEL_SMALL);
-//        frame.addComponent(selectionResultsLabel);
-
         diseaseGroupNames = CSFPR_Handler.getFullDiseaseGroupNameSet();
         diseaseGroupsListA.addItem("Group A");
         diseaseGroupsListB.addItem("Group B");
-        
+
         for (String str : diseaseGroupNames) {
             diseaseGroupsListA.addItem(str);
             diseaseGroupsListB.addItem(str);
         }
 
         Property.ValueChangeListener diseaseGroupsListListener = (Property.ValueChangeEvent event) -> {
-//            String value = "Selection:   ";
             if (diseaseGroupsListA.getValue() != null) {
                 diseaseGroupsListA.setRequired(false);
-//                value += diseaseGroupsListA.getValue().toString();
                 sorterRows = diseaseGroupNames.contains(diseaseGroupsListA.getValue().toString().trim());
             }
 
             if (diseaseGroupsListB.getValue() != null) {
                 diseaseGroupsListB.setRequired(false);
-//                value += " / " + diseaseGroupsListB.getValue().toString();
                 sortColumns = diseaseGroupNames.contains(diseaseGroupsListB.getValue().toString().trim());
-//                    reset();
             }
-//            selectionResultsLabel.setValue(value);
             if ((diseaseGroupsListA.getValue() != null) && (diseaseGroupsListB.getValue() != null)) {
                 if (diseaseGroupsListA.getValue().toString().trim().equalsIgnoreCase(diseaseGroupsListB.getValue().toString().trim())) {
                     sorterRows = sortColumns = false;
@@ -183,21 +234,11 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
         frame.addComponent(textAreaContainer);
         int h;
 
-        if (smallScreen) {
-            title1.setStyleName(ValoTheme.LABEL_SMALL);
-            title1.addStyleName(ValoTheme.LABEL_BOLD);
-            title1.addStyleName("nomargin");
-            title2.setStyleName(ValoTheme.LABEL_SMALL);
-            title2.addStyleName(ValoTheme.LABEL_BOLD);
-            title2.addStyleName("nomargin");
-            h = 70;
-        } else {
-            subFrame.addStyleName("margintop");
-            title1.setStyleName(ValoTheme.LABEL_BOLD);
-            title2.setStyleName(ValoTheme.LABEL_BOLD);
-            title2.addStyleName("margintop");
-            h = 150;
-        }
+        subFrame.addStyleName("margintop");
+        title1.setStyleName(ValoTheme.LABEL_BOLD);
+        title2.setStyleName(ValoTheme.LABEL_BOLD);
+        title2.addStyleName("margintop");
+        h = 150;
 
         textBoxI = new TextAreaComponent("<font color='#cc0000'>&nbsp;Increased</font>", h);
         textAreaContainer.addComponent(textBoxI);
@@ -211,10 +252,6 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
         HorizontalLayout bottomLayout = new HorizontalLayout();
         bottomLayout.setWidth(100, Unit.PERCENTAGE);
         frame.addComponent(bottomLayout);
-
-        
-
-       
 
         errorLabel = new Label() {
 
@@ -232,17 +269,16 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
         errorLabel.setStyleName(ValoTheme.LABEL_FAILURE);
         errorLabel.addStyleName("smallerrorlabel");
         errorLabel.setVisible(false);
-//        errorLabel.setWidth(400, Unit.PIXELS);
         bottomLayout.addComponent(errorLabel);
         bottomLayout.setComponentAlignment(errorLabel, Alignment.TOP_LEFT);
-        
+
         HorizontalLayout btnsLayout = new HorizontalLayout();
         btnsLayout.setWidthUndefined();
         btnsLayout.setSpacing(true);
         bottomLayout.addComponent(btnsLayout);
         bottomLayout.setComponentAlignment(btnsLayout, Alignment.TOP_RIGHT);
-        
-         Button sampleBtn = new Button("Load Example Data");
+
+        Button sampleBtn = new Button("Load Example Data");
         sampleBtn.setStyleName(ValoTheme.BUTTON_LINK);
         sampleBtn.addStyleName(ValoTheme.BUTTON_TINY);
         sampleBtn.addStyleName("nomargin");
@@ -259,8 +295,6 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
         spacer.setHeight(10, Unit.PIXELS);
         btnsLayout.addComponent(spacer);
         btnsLayout.setComponentAlignment(spacer, Alignment.TOP_CENTER);
-        
-        
 
         Button compareBtn = new Button("Compare");
         compareBtn.setStyleName(ValoTheme.BUTTON_SMALL);
@@ -269,11 +303,6 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
         btnsLayout.addComponent(compareBtn);
         btnsLayout.setComponentAlignment(compareBtn, Alignment.TOP_RIGHT);
         compareBtn.addClickListener(ComparisonUnitComponent.this);
-        
-        
-        
-        
-        
 
         sampleBtn.addClickListener((Button.ClickEvent event) -> {
             ComparisonUnitComponent.this.reset();
@@ -288,6 +317,9 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
         userCustomizedComparison = new QuantDiseaseGroupsComparison();
     }
 
+    /**
+     * Clear all input fields
+     */
     public void reset() {
         errorLabel.setValue("");
         textBoxI.reset();
@@ -298,6 +330,12 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
 
     }
 
+    /**
+     * On click on searching button capture all the input data and construct
+     * query to be used for comparison process
+     *
+     * @param event
+     */
     @Override
     public void buttonClick(Button.ClickEvent event) {
         diseaseGroupsListA.setRequired(true);
@@ -341,7 +379,7 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
             return;
         }
         errorLabel.setValue("");
-//init user comparison
+        //init user comparison
         userCustomizedComparison.setDiseaseCategory("user");
 
         String userCompHeader = "User Data - " + this.diseaseGroupsListA.getValue().toString().trim() + " / " + this.diseaseGroupsListB.getValue().toString().trim();
@@ -418,10 +456,21 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
         startComparing(query);
     }
 
+    /**
+     * Get the user input disease comparison with all its information
+     * (constructed based on user input data)
+     *
+     * @return userCustomizedComparison
+     */
     public QuantDiseaseGroupsComparison getUserCustomizedComparison() {
         return userCustomizedComparison;
     }
 
+    /**
+     * Start comparison process
+     *
+     * @param query
+     */
     public abstract void startComparing(Query query);
 
 }
