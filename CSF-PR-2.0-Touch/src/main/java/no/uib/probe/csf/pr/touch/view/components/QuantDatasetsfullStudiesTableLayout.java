@@ -2,7 +2,6 @@ package no.uib.probe.csf.pr.touch.view.components;
 
 import com.vaadin.data.Item;
 import com.vaadin.ui.Table;
-import com.vaadin.ui.themes.Reindeer;
 import java.util.Locale;
 import java.util.Map;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDataset;
@@ -11,24 +10,27 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDataset;
  *
  * @author Yehia Farag
  *
- * quant dataset combined table layout
+ * This class represents dataset information table that is used for exporting
+ * heat map to excel sheet
  */
-public class QuantDatasetsfullStudiesTableLayout extends Table{
+public class QuantDatasetsfullStudiesTableLayout extends Table {
 
-    private int[] dsIndexes;
     /**
+     * Array of datasets indexes in the database to be exported
+     */
+    private int[] dsIndexes;
+
+    /**
+     * Constructor to initialize the main attributes
      *
-     * @param activeColumnHeaders
+     * @param activeColumnHeaders the headers included in the exporting table
      */
     public QuantDatasetsfullStudiesTableLayout(boolean[] activeColumnHeaders) {
-//        this.setStyleName(Reindeer.LAYOUT_WHITE);
         initCombinedQuantDatasetTable(activeColumnHeaders);
-//        this.setHeight("420px");
-//        this.setWidth("100%");
     }
 
     /**
-     * initialize the main quant dataset table
+     * Initialize the main quant dataset table
      *
      * @param activeColumnHeaders the visualized columns in the table
      */
@@ -57,8 +59,6 @@ public class QuantDatasetsfullStudiesTableLayout extends Table{
 
         this.addContainerProperty("Raw Data", String.class, null);
         this.setColumnCollapsed("Raw Data", !activeColumnHeaders[5]);
-//        this.addContainerProperty("#Files", Integer.class, null, "#Files", null, Table.Align.RIGHT);
-//        this.setColumnCollapsed("#Files", !activeColumnHeaders[6]);
         this.addContainerProperty("typeOfStudy", String.class, null, "Study Type", null, Table.Align.LEFT);
         this.setColumnCollapsed("typeOfStudy", !activeColumnHeaders[7]);
 
@@ -119,20 +119,19 @@ public class QuantDatasetsfullStudiesTableLayout extends Table{
         this.addContainerProperty("additionalComments", String.class, null, "Comments", null, Table.Align.RIGHT);
         this.setColumnCollapsed("additionalComments", !activeColumnHeaders[26]);
 
-
     }
 
     /**
-     * update table items
+     * Update table input data
      *
-     * @param updatedStudiesList
+     * @param updatedDatasetsList
      */
-    public void updateCombinedQuantDatasetTableRecords(Map<Integer, QuantDataset> updatedStudiesList) {
-        dsIndexes = new int[updatedStudiesList.size()];
+    public void updateCombinedQuantDatasetTableRecords(Map<Integer, QuantDataset> updatedDatasetsList) {
+        dsIndexes = new int[updatedDatasetsList.size()];
         this.removeAllItems();
         int index = 0;
 
-        for (QuantDataset pb : updatedStudiesList.values()) {
+        for (QuantDataset pb : updatedDatasetsList.values()) {
             if (pb == null) {
                 continue;
             }
@@ -161,21 +160,20 @@ public class QuantDatasetsfullStudiesTableLayout extends Table{
             }
 
             String pumedID = pb.getPubMedId();
-            this.addItem(new Object[]{index, pb.getAuthor(), pb.getYear() + "", idNumber, quantProtNum, pb.getAnalyticalMethod(), rawDatalink,pb.getTypeOfStudy(), pb.getSampleType(), pb.getSampleMatching(), pb.getShotgunTargeted(), pb.getTechnology(), pb.getAnalyticalApproach(), pb.getEnzyme(), pb.getQuantificationBasis(), pb.getQuantBasisComment(), pb.getNormalizationStrategy(), pumedID, pb.getDiseaseMainGroupI().split("\n")[0], patGr1Num, pb.getDiseaseMainGroup1Comm(), pb.getDiseaseSubGroup1().split("\n")[0], pb.getDiseaseMainGroup2().split("\n")[0], patGr2Num, pb.getDiseaseMainGroup2Comm(), pb.getDiseaseSubGroup2().split("\n")[0], pb.getAdditionalcomments()}, index);
+            this.addItem(new Object[]{index, pb.getAuthor(), pb.getYear() + "", idNumber, quantProtNum, pb.getAnalyticalMethod(), rawDatalink, pb.getTypeOfStudy(), pb.getSampleType(), pb.getSampleMatching(), pb.getShotgunTargeted(), pb.getTechnology(), pb.getAnalyticalApproach(), pb.getEnzyme(), pb.getQuantificationBasis(), pb.getQuantBasisComment(), pb.getNormalizationStrategy(), pumedID, pb.getDiseaseMainGroupI().split("\n")[0], patGr1Num, pb.getDiseaseMainGroup1Comm(), pb.getDiseaseSubGroup1().split("\n")[0], pb.getDiseaseMainGroup2().split("\n")[0], patGr2Num, pb.getDiseaseMainGroup2Comm(), pb.getDiseaseSubGroup2().split("\n")[0], pb.getAdditionalcomments()}, index);
             dsIndexes[index] = pb.getQuantDatasetIndex();
             index++;
         }
-        this.sort(new Object[]{"Year","Author"}, new boolean[]{false,true});
+        this.sort(new Object[]{"Year", "Author"}, new boolean[]{false, true});
         this.setSortAscending(false);
         int indexing = 1;
 
         for (Object id : this.getItemIds()) {
             Item item = this.getItem(id);
-            item.getItemProperty("Index").setValue(indexing);            
+            item.getItemProperty("Index").setValue(indexing);
             indexing++;
         }
 
     }
-   
 
 }

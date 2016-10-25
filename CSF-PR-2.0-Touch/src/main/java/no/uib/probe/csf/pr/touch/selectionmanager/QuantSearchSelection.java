@@ -41,26 +41,26 @@ public class QuantSearchSelection {
     /*
      *Customized comparison based on user input data in quant comparison layout
      */
-    private QuantDiseaseGroupsComparison userCustComparison;
+    private QuantDiseaseGroupsComparison userCustomizedComparison;
 
     /**
      * Get customized comparison based on user input data in quant comparison
      * layout
      *
-     * @return userCustComparison
+     * @return userCustomizedComparison
      */
-    public QuantDiseaseGroupsComparison getUserCustComparison() {
-        return userCustComparison;
+    public QuantDiseaseGroupsComparison getUserCustomizedComparison() {
+        return userCustomizedComparison;
     }
 
     /**
      * Set customized comparison based on user input data in quant comparison
      * layout
      *
-     * @param userCustComparison
+     * @param userCustomizedComparison
      */
-    public void setUserCustComparison(QuantDiseaseGroupsComparison userCustComparison) {
-        this.userCustComparison = userCustComparison;
+    public void setUserCustomizedComparison(QuantDiseaseGroupsComparison userCustomizedComparison) {
+        this.userCustomizedComparison = userCustomizedComparison;
     }
 
     /**

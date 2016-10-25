@@ -411,7 +411,7 @@ public abstract class CompareComponent extends BigBtn {
         selection.setDiseaseCategory(diseaseCat);
         selection.setQuantDatasetIndexes(datasetIds);
 
-        selection.setUserCustComparison(userComparison);
+        selection.setUserCustomizedComparison(userComparison);
 
         selection.setDiseaseCategoriesIdMap(diseaseCategoriesIdMap);
         selection.setSelectedProteinsList(proteinAccession);

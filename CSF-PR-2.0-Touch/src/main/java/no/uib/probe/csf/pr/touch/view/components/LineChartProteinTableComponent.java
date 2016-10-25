@@ -37,29 +37,52 @@ import no.uib.probe.csf.pr.touch.view.core.TrendLegend;
  *
  * @author Yehia Farag
  *
- * this class represents both protein table and linechart component the protein
- * line chart represents the overall protein trend across different comparisons
+ * This class represents both protein table that include line chart component
+ * the protein line chart represents the overall protein trend across different
+ * comparisons
  */
-public abstract class LineChartProteinTableComponent extends VerticalLayout implements CSFListener, LayoutEvents.LayoutClickListener {
+public abstract class LineChartProteinTableComponent extends VerticalLayout implements CSFListener {
 
+    /*
+     *The central manager for handling data across different visualizations and managing all users selections
+     */
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
-    private final VerticalLayout controlBtnsContainer;
+    /*
+     *The protein table right side control buttons container
+     */
+    private final VerticalLayout proteinTableToolsContainer;
+    /*
+     *The protein table that has protein information 
+     */
     private final ProteinTable quantProteinTable;
+    /*
+     *Map of protein accession and protein name with protein item inside the table to allow users search inside table using name or accession
+     */
     private final Map<String, QuantComparisonProtein> proteinSearchingMap;
-    private final ImageContainerBtn removeFilters;
+    /*
+     *Remove any protein table applied filter button
+     */
+    private final ImageContainerBtn removeFiltersBtn;
+    /*
+     *Switch between sorting and filtering icons in the protein table comparisons headers button
+     */
     private final FilterColumnButton filterSortSwichBtn;
-//    private final ImageContainerBtn checkUncheckBtn;
 
-    public LineChartProteinTableComponent(CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height, QuantDiseaseGroupsComparison userCustomizedComparison, boolean smallScreen) {
+    /**
+     * Constructor to initialize the main attributes ( selection manage ..etc)
+     *
+     * @param CSFPR_Central_Manager
+     * @param width main body layout width (the container)
+     * @param height main body layout height (the container)
+     * @param userCustomizedComparison
+     */
+    public LineChartProteinTableComponent(CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height, QuantDiseaseGroupsComparison userCustomizedComparison) {
 
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         this.proteinSearchingMap = new HashMap<>();
 
         this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
-//        if (!smallScreen) {
-//            this.setMargin(new MarginInfo(false, false, false, true));
-//        }
 
         VerticalLayout bodyContainer = new VerticalLayout();
         bodyContainer.setWidth(100, Unit.PERCENTAGE);
@@ -108,21 +131,10 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         titleLayoutWrapper.addComponent(searchingFieldLayout);
         titleLayoutWrapper.setComponentAlignment(searchingFieldLayout, Alignment.TOP_LEFT);
         titleLayoutWrapper.setExpandRatio(searchingFieldLayout, 166);
-//        InfoPopupBtn info = new InfoPopupBtn("The protein table and overview chart give an overview for the selected proteins in the selected comparisons.");
-//        titleLayoutWrapper.addComponent(info);
-//        titleLayoutWrapper.setComponentAlignment(info, Alignment.MIDDLE_CENTER);
 
         TrendLegend legendLayout = new TrendLegend("linechart");
         legendLayout.setWidthUndefined();
 
-//        if (Page.getCurrent().getBrowserWindowWidth() < 1100) {
-//            legendLayout.addStyleName("smallfloatright");
-//        } else {
-//        legendLayout.addStyleName("floatright");
-//        }
-//        if (width / 2 < 700) {
-//            legendLayout.addStyleName("showonhover");
-//        }
         if (width - 250 < 690) {
             CloseButton closeBtn = new CloseButton();
             VerticalLayout legendPopup = new VerticalLayout();
@@ -130,8 +142,8 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
             legendPopup.setExpandRatio(closeBtn, 1);
             Set<Component> set = new LinkedHashSet<>();
             VerticalLayout spacer = new VerticalLayout();
-            spacer.setHeight(5,Unit.PIXELS);
-            spacer.setWidth(20,Unit.PIXELS);
+            spacer.setHeight(5, Unit.PIXELS);
+            spacer.setWidth(20, Unit.PIXELS);
             set.add(spacer);
             Iterator<Component> itr = legendLayout.iterator();
             while (itr.hasNext()) {
@@ -171,7 +183,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
 
         width = width - 50;
         tableLayoutFrame.setWidth(width, Unit.PIXELS);
-        tableLayoutFrame.setHeightUndefined();//setHeight(tableHeight, Unit.PIXELS);
+        tableLayoutFrame.setHeightUndefined();
         tableLayoutFrame.addStyleName("roundedborder");
         tableLayoutFrame.addStyleName("whitelayout");
         tableLayoutFrame.addStyleName("paddingtop20");
@@ -182,7 +194,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         height = height - 60;
         width = width - 50;
 
-        quantProteinTable = new ProteinTable(width, height, smallScreen) {
+        quantProteinTable = new ProteinTable(width, height, false) {
 
             @Override
             public void dropComparison(QuantDiseaseGroupsComparison comparison) {
@@ -205,10 +217,10 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
             @Override
             public void updateRowNumber(int rowNumber, String url) {
                 searchingFieldLayout.updateLabel("(" + rowNumber + ")");
-                LineChartProteinTableComponent.this.updateRowNumber(rowNumber, url);
+                LineChartProteinTableComponent.this.updateThumbIconRowNumber(rowNumber, url);
             }
 
-        };//this.initProteinTable();
+        };
         tableLayoutFrame.addComponent(quantProteinTable);
         tableLayoutFrame.setComponentAlignment(quantProteinTable, Alignment.MIDDLE_CENTER);
 
@@ -227,10 +239,10 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         tableLayoutFrame.addComponent(controlsLayout);
 
         //init side control btns layout 
-        controlBtnsContainer = new VerticalLayout();
-        controlBtnsContainer.setHeightUndefined();
-        controlBtnsContainer.setWidthUndefined();
-        controlBtnsContainer.setSpacing(true);
+        proteinTableToolsContainer = new VerticalLayout();
+        proteinTableToolsContainer.setHeightUndefined();
+        proteinTableToolsContainer.setWidthUndefined();
+        proteinTableToolsContainer.setSpacing(true);
 
         GroupSwichBtn groupSwichBtn = new GroupSwichBtn() {
 
@@ -254,17 +266,11 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
 
         };
 
-        if (smallScreen) {
-            groupSwichBtn.setWidth(25, Unit.PIXELS);
-            groupSwichBtn.setHeight(25, Unit.PIXELS);
-            groupSwichBtn.removeStyleName("smallimg");
-            groupSwichBtn.addStyleName("nopaddingimg");
-        }
-        controlBtnsContainer.addComponent(groupSwichBtn);
-        controlBtnsContainer.setComponentAlignment(groupSwichBtn, Alignment.MIDDLE_CENTER);
+        proteinTableToolsContainer.addComponent(groupSwichBtn);
+        proteinTableToolsContainer.setComponentAlignment(groupSwichBtn, Alignment.MIDDLE_CENTER);
         ExportProteinTable exportTable = new ExportProteinTable();
-        controlBtnsContainer.addComponent(exportTable);
-        removeFilters = new ImageContainerBtn() {
+        proteinTableToolsContainer.addComponent(exportTable);
+        removeFiltersBtn = new ImageContainerBtn() {
 
             @Override
             public void onClick() {
@@ -279,7 +285,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
                 } else {
                     this.addStyleName("unapplied");
                 }
-                super.setEnabled(enabled); //To change body of generated methods, choose Tools | Templates.
+                super.setEnabled(enabled);
             }
 
         };
@@ -288,79 +294,24 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
 
             @Override
             public void onClickFilter(boolean isFilter) {
-                removeFilters.setEnabled(isFilter);
+                removeFiltersBtn.setEnabled(isFilter);
                 quantProteinTable.switchHeaderBtns();
             }
         };
 
-        if (smallScreen) {
-            filterSortSwichBtn.setWidth(25, Unit.PIXELS);
-            filterSortSwichBtn.setHeight(25, Unit.PIXELS);
-            filterSortSwichBtn.removeStyleName("smallimg");
-            filterSortSwichBtn.addStyleName("nopaddingimg");
-        }
-        controlBtnsContainer.addComponent(filterSortSwichBtn);
-        controlBtnsContainer.setComponentAlignment(filterSortSwichBtn, Alignment.MIDDLE_CENTER);
-        removeFilters.setEnabled(false);
+        proteinTableToolsContainer.addComponent(filterSortSwichBtn);
+        proteinTableToolsContainer.setComponentAlignment(filterSortSwichBtn, Alignment.MIDDLE_CENTER);
+        removeFiltersBtn.setEnabled(false);
 
-        if (smallScreen) {
-            removeFilters.setWidth(25, Unit.PIXELS);
-            removeFilters.setHeight(25, Unit.PIXELS);
-            removeFilters.removeStyleName("smallimg");
-            removeFilters.addStyleName("nopaddingimg");
-        } else {
-            removeFilters.setHeight(40, Unit.PIXELS);
-            removeFilters.setWidth(40, Unit.PIXELS);
-            removeFilters.addStyleName("smallimg");
-        }
-        removeFilters.updateIcon(new ThemeResource("img/filter_disables.png"));
-        controlBtnsContainer.addComponent(removeFilters);
-        controlBtnsContainer.setComponentAlignment(removeFilters, Alignment.MIDDLE_CENTER);
-        removeFilters.setDescription("Clear all applied filters");
+        removeFiltersBtn.setHeight(40, Unit.PIXELS);
+        removeFiltersBtn.setWidth(40, Unit.PIXELS);
+        removeFiltersBtn.addStyleName("smallimg");
 
-//        ThemeResource checkedApplied = new ThemeResource("img/check-square.png");
-//        ThemeResource checkedUnApplied = new ThemeResource("img/check-square-o.png");
-//        checkUncheckBtn = new ImageContainerBtn() {
-//
-//            private boolean enabled = true;
-//
-//            @Override
-//            public void onClick() {
-////                quantProteinTable.clearColumnFilters();
-//                if (enabled) {
-//                    enabled = false;
-//
-//                    this.updateIcon(checkedApplied);
-//                } else {
-//                    enabled = true;
-//                    this.updateIcon(checkedUnApplied);
-//                }
-//                quantProteinTable.hideCheckedColumn(enabled);
-//            }
-//
-//            @Override
-//            public void reset() {
-//                enabled = true;
-//                this.updateIcon(checkedUnApplied);
-//                quantProteinTable.hideCheckedColumn(enabled);
-//
-//            }
-//        };
-//        checkUncheckBtn.setEnabled(true);
-//
-//        if (smallScreen) {
-//            checkUncheckBtn.setWidth(25, Unit.PIXELS);
-//            checkUncheckBtn.setHeight(25, Unit.PIXELS);
-//            checkUncheckBtn.removeStyleName("smallimg");
-//        } else {
-//            checkUncheckBtn.setHeight(40, Unit.PIXELS);
-//            checkUncheckBtn.setWidth(40, Unit.PIXELS);
-//        }
-//        checkUncheckBtn.addStyleName("pointer");
-//        checkUncheckBtn.updateIcon(checkedUnApplied);
-//        controlBtnsContainer.addComponent(checkUncheckBtn);
-//        controlBtnsContainer.setComponentAlignment(checkUncheckBtn, Alignment.MIDDLE_CENTER);
-//        checkUncheckBtn.setDescription("Show/hide checked column");
+        removeFiltersBtn.updateIcon(new ThemeResource("img/filter_disables.png"));
+        proteinTableToolsContainer.addComponent(removeFiltersBtn);
+        proteinTableToolsContainer.setComponentAlignment(removeFiltersBtn, Alignment.MIDDLE_CENTER);
+        removeFiltersBtn.setDescription("Clear all applied filters");
+
         ImageContainerBtn exportPdfBtn = new ImageContainerBtn() {
 
             @Override
@@ -378,49 +329,28 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
 
         };
 
-        if (smallScreen) {
-            exportPdfBtn.setWidth(25, Unit.PIXELS);
-            exportPdfBtn.setHeight(25, Unit.PIXELS);
-            exportPdfBtn.removeStyleName("smallimg");
-            exportPdfBtn.addStyleName("nopaddingimg");
-        } else {
-            exportPdfBtn.setHeight(40, Unit.PIXELS);
-            exportPdfBtn.setWidth(40, Unit.PIXELS);
-        }
+        exportPdfBtn.setHeight(40, Unit.PIXELS);
+        exportPdfBtn.setWidth(40, Unit.PIXELS);
+
         exportPdfBtn.updateIcon(new ThemeResource("img/xls-text-o-2.png"));
         exportPdfBtn.setEnabled(true);
-        controlBtnsContainer.addComponent(exportPdfBtn);
-        controlBtnsContainer.setComponentAlignment(exportPdfBtn, Alignment.MIDDLE_CENTER);
+        proteinTableToolsContainer.addComponent(exportPdfBtn);
+        proteinTableToolsContainer.setComponentAlignment(exportPdfBtn, Alignment.MIDDLE_CENTER);
         exportPdfBtn.setDescription("Export table");
-
-//        StreamResource myResource = null;//createResource();
-//        FileDownloader fileDownloader = new FileDownloader(myResource);
-//
-//        fileDownloader.extend(groupSwichBtn);
-        controlBtnsContainer.addComponent(exportPdfBtn);
+        proteinTableToolsContainer.addComponent(exportPdfBtn);
 
         InformationButton info = new InformationButton("The protein table provides an overview of the quantitative information available for each protein, classified into Increased, Decreased or Equal. If the quantitative data for a given comparison is not exclusively in the same direction an average value will be shown. To find proteins of interest use the search field at the top, or sort/filter on the individual comparisons using the options above the table. The icons at the lower right enables further modification of the table. Select a row in the table to show the protein details.", false);
-        controlBtnsContainer.addComponent(info);
-        if (smallScreen) {
-            info.setWidth(25, Unit.PIXELS);
-            info.setHeight(25, Unit.PIXELS);
-            info.removeStyleName("smallimg");
-        }
+        proteinTableToolsContainer.addComponent(info);
 
         CSFPR_Central_Manager.registerListener(LineChartProteinTableComponent.this);
 
     }
 
-    public void filterSearchSelection(Set<String> keywords) {
-        Set<QuantComparisonProtein> searchSet = new LinkedHashSet<>();
-
-        keywords.stream().forEach((key) -> {
-            searchSet.addAll(getSearchingProteinsList(key));
-        });
-        quantProteinTable.filterViewItemTable(searchSet);
-
-    }
-
+    /**
+     * Selection changed in the selection manager
+     *
+     * @param type type of selection
+     */
     @Override
     public void selectionChanged(String type) {
         if (type.equalsIgnoreCase("protein_selection")) {
@@ -432,7 +362,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
                 proteinSearchingMap.clear();
                 selectedProteinsList = new LinkedHashSet<>();
 
-                Map<String, QuantComparisonProtein> proteinsFilterMap = new LinkedHashMap<>();;
+                Map<String, QuantComparisonProtein> proteinsFilterMap = new LinkedHashMap<>();
                 CSFPR_Central_Manager.getSelectedComparisonsList().stream().forEach((comparison) -> {
                     selectedProteinsList.addAll(comparison.getQuantComparisonProteinMap().values());
                     for (QuantComparisonProtein prot : comparison.getQuantComparisonProteinMap().values()) {
@@ -448,7 +378,6 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
                 selectedProteinsList.stream().forEach((key) -> {
                     searchSet.addAll(getSearchingProteinsList(key.getProteinAccession() + "__" + key.getProteinName()));
                 });
-//                quantProteinTable.filterTableItem(searchSet);
                 quantProteinTable.updateTableData(CSFPR_Central_Manager.getSelectedComparisonsList(), searchSet);
 
             }
@@ -458,35 +387,36 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
 
             });
             quantProteinTable.hideCheckedColumn(true);
-//            checkUncheckBtn.reset();
 
         } else if (type.equalsIgnoreCase("comparisons_selection")) {
-            removeFilters.setEnabled(false);
+            removeFiltersBtn.setEnabled(false);
             filterSortSwichBtn.reset();
             quantProteinTable.hideCheckedColumn(true);
-//            checkUncheckBtn.reset();
 
         }
     }
 
+    /**
+     * Get registered listener id
+     *
+     * @return listener id
+     */
     @Override
     public String getListenerId() {
         return this.getClass().getName();
     }
 
-    
-
-    @Override
-    public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public VerticalLayout getControlBtnsContainer() {
-        return controlBtnsContainer;
+    /**
+     * Get side buttons container that has all the protein table control buttons
+     *
+     * @return proteinTableToolsContainer
+     */
+    public VerticalLayout getProteinTableToolsContainer() {
+        return proteinTableToolsContainer;
     }
 
     /**
-     * searching for proteins using name or accessions within the quant
+     * Searching for proteins using name or accessions within the quant
      * comparisons table
      *
      * @param keyword query keyword
@@ -500,8 +430,22 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         return subAccessionMap;
     }
 
-    public abstract void updateRowNumber(int rowNumber, String imgURl);
+    /**
+     * Update thumb button icon and text for the left side button
+     *
+     * @param rowNumber
+     * @param imgURl
+     */
+    public abstract void updateThumbIconRowNumber(int rowNumber, String imgURl);
 
+    /**
+     * Add User Customized Comparison to the system (activating quant compare
+     * mode)
+     *
+     * @param userCustomizedComparison Customized comparison based on user input
+     * data in quant comparison layout
+     *
+     */
     public void setUserCustomizedComparison(QuantDiseaseGroupsComparison userCustomizedComparison) {
         quantProteinTable.setUserCustomizedComparison(userCustomizedComparison);
     }

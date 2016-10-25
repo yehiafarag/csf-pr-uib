@@ -154,8 +154,8 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
             diseaseComparisonHeatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), tempFullComparison);
 
             if (type.equalsIgnoreCase("quant_compare")) {
-                diseaseComparisonSelectionbubblechartComponent.setUserCustomizedComparison(CSFPR_Central_Manager.getQuantSearchSelection().getUserCustComparison());
-                lineChartProteinTableComponent.setUserCustomizedComparison(CSFPR_Central_Manager.getQuantSearchSelection().getUserCustComparison());
+                diseaseComparisonSelectionbubblechartComponent.setUserCustomizedComparison(CSFPR_Central_Manager.getQuantSearchSelection().getUserCustomizedComparison());
+                lineChartProteinTableComponent.setUserCustomizedComparison(CSFPR_Central_Manager.getQuantSearchSelection().getUserCustomizedComparison());
 
             }
             diseaseComparisonHeatmapComponent.selectAll();
@@ -188,8 +188,6 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         return this.getClass().getName();
     }
 
-  
-
     /**
      * Constructor to initialize the main attributes (Data handler, and
      * selection manage )
@@ -210,7 +208,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         subBodyWrapper.setWidthUndefined();
         subBodyWrapper.setHeightUndefined();
 
-        initialDiseaseCategoriesComponent = new InitialDiseaseCategoriesComponent(availableDiseaseCategory, width - 20, height, height <= 200) {
+        initialDiseaseCategoriesComponent = new InitialDiseaseCategoriesComponent(availableDiseaseCategory, width - 20, height) {
             private String lastSelectedDisease = "";
 
             @Override
@@ -219,7 +217,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
             }
 
             @Override
-            public void onClick(String diseaseCategoryName) {
+            public void onSelectDiseaseCategory(String diseaseCategoryName) {
                 defaultView();
                 if (CSFPR_Central_Manager.getQuantSearchSelection() != null) {
                     if (lastSelectedDisease.equalsIgnoreCase(diseaseCategoryName)) {
@@ -279,7 +277,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         info.setWidth(40, Unit.PIXELS);
         info.setHeight(40, Unit.PIXELS);
 
-        this.addButton(initialDiseaseCategoriesComponent.getMiniLayout(), initialDiseaseCategoriesComponent, null, true);
+        this.addButton(initialDiseaseCategoriesComponent.getThumbImgLayout(), initialDiseaseCategoriesComponent, null, true);
 
         heatmapBtn = new ImageContainerBtn() {
 
@@ -344,7 +342,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
 
             @Override
             public void onClick() {
-               
+
             }
         };
         bubblechartBtn.updateIcon(logoRes);
@@ -367,7 +365,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
 
             @Override
             public void onClick() {
-               
+
             }
         };
         linechartBtn.updateIcon(logoRes);
@@ -387,7 +385,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
 
             @Override
             public void onClick() {
-               
+
             }
         };
         peptideInfoBtn.setDescription("Protein Details");
@@ -405,7 +403,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         this.addButton(peptideInfoBtn, peptidesViewContainer, peptidesToolsContainer, false);
 
         ///init bubble chart container
-        diseaseComparisonSelectionbubblechartComponent = new DiseaseComparisonSelectionBubblechartComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight - 2, height <= 200) {
+        diseaseComparisonSelectionbubblechartComponent = new DiseaseComparisonSelectionBubblechartComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight - 2) {
 
             @Override
             public void updateIcon(String imageUrl) {
@@ -423,13 +421,13 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
 
         };
         bubblechartViewContainer.addComponent(diseaseComparisonSelectionbubblechartComponent);
-        bubblechartToolsContainer.addComponent(diseaseComparisonSelectionbubblechartComponent.getControlBtnsContainer());
-        bubblechartToolsContainer.setComponentAlignment(diseaseComparisonSelectionbubblechartComponent.getControlBtnsContainer(), Alignment.TOP_RIGHT);
+        bubblechartToolsContainer.addComponent(diseaseComparisonSelectionbubblechartComponent.getBubblechartToolsContainer());
+        bubblechartToolsContainer.setComponentAlignment(diseaseComparisonSelectionbubblechartComponent.getBubblechartToolsContainer(), Alignment.TOP_RIGHT);
 
-        lineChartProteinTableComponent = new LineChartProteinTableComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight - 2, null, height <= 200) {
+        lineChartProteinTableComponent = new LineChartProteinTableComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight - 2, null) {
 
             @Override
-            public void updateRowNumber(int rowNumber, String url) {
+            public void updateThumbIconRowNumber(int rowNumber, String url) {
                 linechartBtn.setEnabled(true);
                 linechartBtn.updateText(rowNumber + "");
                 linechartBtn.updateIcon(new ExternalResource(url));
@@ -438,10 +436,10 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
 
         };
         linechartViewContainer.addComponent(lineChartProteinTableComponent);
-        linechartToolsContainer.addComponent(lineChartProteinTableComponent.getControlBtnsContainer());
-        linechartToolsContainer.setComponentAlignment(lineChartProteinTableComponent.getControlBtnsContainer(), Alignment.TOP_RIGHT);
+        linechartToolsContainer.addComponent(lineChartProteinTableComponent.getProteinTableToolsContainer());
+        linechartToolsContainer.setComponentAlignment(lineChartProteinTableComponent.getProteinTableToolsContainer(), Alignment.TOP_RIGHT);
 
-        PeptideViewComponent peptideViewComponent = new PeptideViewComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight - 2, height <= 200) {
+        PeptideViewComponent peptideViewComponent = new PeptideViewComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight - 2) {
 
             @Override
             public void updateIcon(Resource iconResource) {
@@ -456,15 +454,15 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
 
         };
         peptidesViewContainer.addComponent(peptideViewComponent);
-        peptidesToolsContainer.addComponent(peptideViewComponent.getControlBtnsContainer());
-        peptidesToolsContainer.setComponentAlignment(peptideViewComponent.getControlBtnsContainer(), Alignment.TOP_RIGHT);
+        peptidesToolsContainer.addComponent(peptideViewComponent.getPeptideTableToolsContainer());
+        peptidesToolsContainer.setComponentAlignment(peptideViewComponent.getPeptideTableToolsContainer(), Alignment.TOP_RIGHT);
         this.CSFPR_Central_Manager.registerListener(QuantDataLayoutContainer.this);
 
     }
 
-
-     /**
-     * set the main disease category in the data handler to update the current active data in the logic layer  
+    /**
+     * set the main disease category in the data handler to update the current
+     * active data in the logic layer
      *
      * @param DiseaseCategoryName
      */

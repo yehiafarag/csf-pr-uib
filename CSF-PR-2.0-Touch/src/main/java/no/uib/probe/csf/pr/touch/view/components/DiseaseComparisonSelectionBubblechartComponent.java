@@ -66,51 +66,133 @@ import org.jfree.ui.TextAnchor;
  *
  * @author Yehia Farag
  *
- * this class is represents bubble-chart for comparisons overview
+ * This class represents disease comparison selection bubble chart component
  *
  */
 public abstract class DiseaseComparisonSelectionBubblechartComponent extends VerticalLayout implements CSFListener, LayoutEvents.LayoutClickListener {
 
+    /*
+     *The central manager for handling data across different visualizations and managing all users selections
+     */
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
-    private final AbsoluteLayout chartLayoutContainer, chartComponentLayout;
-    private int width, height;
+    /*
+     *The main chart container
+     */
+    private final AbsoluteLayout chartLayoutContainer;
+    /*
+     *The main chart data container (the vaadin bubble container)
+     */
+    private final AbsoluteLayout chartComponentLayout;
+    /*
+     *The main chart background image (to be updated using jfreechart)
+     */
     private final Image chartImage;
-    private boolean significantOnly = false;
+
+    /*
+     *The main component width
+     */
+    private int width;
+    /*
+     *The main component height
+     */
+    private int height;
+    /*
+     *Hide equal proteins data to clean the chart 
+     */
+    private boolean hideEqualProteins = false;
+
+    /*
+     *Generate new image (part of sittings for JFreeChart image generator)
+     */
     private boolean isNewImge = true;
 
-    private final Map<String, double[]> tooltipsProtNumberMap;
+    /*
+     *Color of equal proteins bubble (blue or gray in case of no data available)
+     */
     private Color stableColor;
-
-    private String defaultImgURL = "", thumbImgUrl = "";
-    private byte imageData[];
+    /*
+     *Chart rendering information that has the all information required for drawing vaadin bubbles in the absolute layout
+     */
     private final ChartRenderingInfo chartRenderingInfo;
+
+    /*
+     *JFreeChart used to generate thumb image and default chart image background
+     */
+    private JFreeChart chart;
+    /*
+     *Default chart image into url link generated from JFreechart for the main chart layout
+     */
+    private String defaultImgURL = "";
+    /*
+     *Thumb chart image into url link generated from JFreechart for the main chart layout
+     */
+    private String thumbImgUrl = "";
+    /*
+     *Map of comparisons name to number of proteins in each category (increased 100%, increased <100%,equal...etc)
+     */
+    private final Map<String, double[]> tooltipsProtNumberMap;
+    /*
+     *List of selected comparisons to be updated based on user selection for comparisons across the system
+     */
     private Set<QuantDiseaseGroupsComparison> selectedComparisonList;
+    /*
+     *Customized comparison based on user input data in quant comparison layout
+     */
     private QuantDiseaseGroupsComparison userCustomizedComparison;
+    /*
+     *A marker for user data disease group comparison in the bubble chart
+     */
     private int userDataCounter;
+    /*
+     *List of selected bubbles in the bubble plot
+     */
     private final Set<BubbleComponent> lastselectedComponents;
+    /*
+     *Array of tooltip text identical to comparisons order
+     */
     private final String[] tooltipLabels;
+    /*
+     *Array of trend HTML/css style names for different bubbles (increased 100%, increased <100%,equal...etc)
+     */
     private final String[] trendStyles;
 
-    private boolean activeMultiSelect = true;
-    private final boolean smallScreen;
+    /*
+     *Allow multi select for bubbles in the chart
+     */
+    private boolean allowMultiSelect = true;
 
+    /*
+     *Map of comparison title and number of proteins included in each trend (increased 100%, increased <100%,equal...etc)
+     */
     private final Map<String, Integer[]> comparisonValuesMap = new LinkedHashMap<>();
 
-    public VerticalLayout getControlBtnsContainer() {
-        return controlBtnsContainer;
+    /*
+     *The disease comparison bubble chart right side control buttons container
+     */
+    private final VerticalLayout bubblechartToolsContainer;
+
+    /**
+     * Get side buttons container that has all the bubble chart control buttons
+     *
+     * @return bubblechartToolsContainer
+     */
+    public VerticalLayout getBubblechartToolsContainer() {
+        return bubblechartToolsContainer;
     }
 
-    private final VerticalLayout controlBtnsContainer;
-
-    public DiseaseComparisonSelectionBubblechartComponent(CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height, boolean smallScreen) {
+    /**
+     * Constructor to initialize the main attributes ( selection manage ..etc)
+     *
+     * @param CSFPR_Central_Manager
+     * @param width main body layout width (the container)
+     * @param height main body layout height (the container)
+     *
+     */
+    public DiseaseComparisonSelectionBubblechartComponent(CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height) {
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
-        this.smallScreen = smallScreen;
 
         this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
-//        if (!smallScreen) {
-//            this.setMargin(new MarginInfo(false, false, false, true));
-//        }
 
         VerticalLayout bodyContainer = new VerticalLayout();
         bodyContainer.setWidth(100, Unit.PERCENTAGE);
@@ -143,11 +225,6 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
         overviewLabel.setWidth(75, Unit.PIXELS);
         titleLayoutWrapper.addComponent(overviewLabel);
         titleLayoutWrapper.setComponentAlignment(overviewLabel, Alignment.TOP_LEFT);
-
-//        InfoPopupBtn info = new InfoPopupBtn("The bubble chart give an overview for the proteins existed in the selected comparisons.<br/>The diameter of the bubble represents the number of the proteins in the selected comparison and the color represents the trend.<br/>");
-//        titleLayoutWrapper.addComponent(info);
-//        titleLayoutWrapper.setComponentAlignment(info, Alignment.MIDDLE_CENTER);
-//        
         TrendLegend legendLayout = new TrendLegend("bubblechart");
         legendLayout.setWidthUndefined();
         legendLayout.setHeight(24, Unit.PIXELS);
@@ -164,7 +241,7 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
 
         width = width - 50;
         chartLayoutFrame.setWidth(width, Unit.PIXELS);
-        chartLayoutFrame.setHeightUndefined();//setHeight(height, Unit.PIXELS);
+        chartLayoutFrame.setHeightUndefined();
         chartLayoutFrame.addStyleName("roundedborder");
         chartLayoutFrame.addStyleName("padding20");
         chartLayoutFrame.addStyleName("whitelayout");
@@ -195,7 +272,6 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
         chartLayoutFrame.addComponent(controlsLayout);
 
         chartImage = new Image();
-//        chartImage.setSource(new ThemeResource(""));
         chartImage.setWidth(100, Unit.PERCENTAGE);
         chartImage.setHeight(100, Unit.PERCENTAGE);
         chartLayoutContainer.addComponent(chartImage, "left: " + 0 + "px; top: " + 0 + "px;");
@@ -216,10 +292,10 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
         this.CSFPR_Central_Manager.registerListener(DiseaseComparisonSelectionBubblechartComponent.this);
 
         //init side control btns layout 
-        controlBtnsContainer = new VerticalLayout();
-        controlBtnsContainer.setHeightUndefined();
-        controlBtnsContainer.setWidthUndefined();
-        controlBtnsContainer.setSpacing(true);
+        bubblechartToolsContainer = new VerticalLayout();
+        bubblechartToolsContainer.setHeightUndefined();
+        bubblechartToolsContainer.setWidthUndefined();
+        bubblechartToolsContainer.setSpacing(true);
 
         GroupSwichBtn groupSwichBtn = new GroupSwichBtn() {
 
@@ -242,15 +318,9 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
             }
 
         };
-        if (smallScreen) {
-            groupSwichBtn.setWidth(25, Unit.PIXELS);
-            groupSwichBtn.setHeight(25, Unit.PIXELS);
-            groupSwichBtn.removeStyleName("smallimg");
-            groupSwichBtn.addStyleName("nopaddingimg");
-        }
 
-        controlBtnsContainer.addComponent(groupSwichBtn);
-        controlBtnsContainer.setComponentAlignment(groupSwichBtn, Alignment.MIDDLE_CENTER);
+        bubblechartToolsContainer.addComponent(groupSwichBtn);
+        bubblechartToolsContainer.setComponentAlignment(groupSwichBtn, Alignment.MIDDLE_CENTER);
 
         ThemeResource scatterplotApplied = new ThemeResource("img/scatter_plot_applied_updated.png");
         ThemeResource scatterplotUnapplied = new ThemeResource("img/scatter_plot_unapplied.png");
@@ -260,12 +330,12 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
             public void onClick() {
                 if (this.getDescription().equalsIgnoreCase("Hide equal proteins")) {
                     this.updateIcon(scatterplotUnapplied);
-                    significantOnly = true;
+                    hideEqualProteins = true;
                     this.setDescription("Show equal proteins");
                 } else {
                     this.updateIcon(scatterplotApplied);
 
-                    significantOnly = false;
+                    hideEqualProteins = false;
                     this.setDescription("Hide equal proteins");
 
                 }
@@ -274,19 +344,13 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
             }
         };
 
-        if (smallScreen) {
-            hideStableBtn.setWidth(25, Unit.PIXELS);
-            hideStableBtn.setHeight(25, Unit.PIXELS);
-            hideStableBtn.removeStyleName("smallimg");
-            hideStableBtn.addStyleName("nopaddingimg");
-        } else {
-            hideStableBtn.setHeight(40, Unit.PIXELS);
-            hideStableBtn.setWidth(40, Unit.PIXELS);
-        }
+        hideStableBtn.setHeight(40, Unit.PIXELS);
+        hideStableBtn.setWidth(40, Unit.PIXELS);
+
         hideStableBtn.updateIcon(scatterplotApplied);
         hideStableBtn.setEnabled(true);
-        controlBtnsContainer.addComponent(hideStableBtn);
-        controlBtnsContainer.setComponentAlignment(hideStableBtn, Alignment.MIDDLE_CENTER);
+        bubblechartToolsContainer.addComponent(hideStableBtn);
+        bubblechartToolsContainer.setComponentAlignment(hideStableBtn, Alignment.MIDDLE_CENTER);
         hideStableBtn.setDescription("Hide equal proteins");
 
         ImageContainerBtn unselectAllBtn = new ImageContainerBtn() {
@@ -304,18 +368,13 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
         };
         unselectAllBtn.updateIcon(new ThemeResource("img/grid-small-o.png"));
         unselectAllBtn.setEnabled(true);
-        if (smallScreen) {
-            unselectAllBtn.setWidth(25, Unit.PIXELS);
-            unselectAllBtn.setHeight(25, Unit.PIXELS);
-            unselectAllBtn.removeStyleName("smallimg");
-            unselectAllBtn.addStyleName("nopaddingimg");
-        } else {
-            unselectAllBtn.setWidth(40, Unit.PIXELS);
-            unselectAllBtn.setHeight(40, Unit.PIXELS);
-            unselectAllBtn.addStyleName("smallimg");
-        }
-        controlBtnsContainer.addComponent(unselectAllBtn);
-        controlBtnsContainer.setComponentAlignment(unselectAllBtn, Alignment.MIDDLE_CENTER);
+
+        unselectAllBtn.setWidth(40, Unit.PIXELS);
+        unselectAllBtn.setHeight(40, Unit.PIXELS);
+        unselectAllBtn.addStyleName("smallimg");
+
+        bubblechartToolsContainer.addComponent(unselectAllBtn);
+        bubblechartToolsContainer.setComponentAlignment(unselectAllBtn, Alignment.MIDDLE_CENTER);
         unselectAllBtn.setDescription("Unselect all disease group comparisons");
 
         final ImageContainerBtn selectMultiBtn = new ImageContainerBtn() {
@@ -323,11 +382,11 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
             @Override
             public void onClick() {
                 if (this.getStyleName().contains("selectmultiselectedbtn")) {
-                    activeMultiSelect = false;
+                    allowMultiSelect = false;
                     this.removeStyleName("selectmultiselectedbtn");
 
                 } else {
-                    activeMultiSelect = true;
+                    allowMultiSelect = true;
                     this.addStyleName("selectmultiselectedbtn");
 
                 }
@@ -339,22 +398,14 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
         selectMultiBtn.setDescription("Multiple selection");
         selectMultiBtn.updateIcon(new ThemeResource("img/grid-small-multi.png"));
         selectMultiBtn.setEnabled(true);
-        if (smallScreen) {
-            selectMultiBtn.setWidth(25, Unit.PIXELS);
-            selectMultiBtn.setHeight(25, Unit.PIXELS);
-            selectMultiBtn.removeStyleName("smallimg");
-            selectMultiBtn.addStyleName("nopaddingimg");
-        } else {
-            selectMultiBtn.setWidth(40, Unit.PIXELS);
-            selectMultiBtn.setHeight(40, Unit.PIXELS);
-        }
-        controlBtnsContainer.addComponent(selectMultiBtn);
-        controlBtnsContainer.setComponentAlignment(selectMultiBtn, Alignment.MIDDLE_CENTER);
+
+        selectMultiBtn.setWidth(40, Unit.PIXELS);
+        selectMultiBtn.setHeight(40, Unit.PIXELS);
+
+        bubblechartToolsContainer.addComponent(selectMultiBtn);
+        bubblechartToolsContainer.setComponentAlignment(selectMultiBtn, Alignment.MIDDLE_CENTER);
 
         ImageContainerBtn exportPdfBtn = new ImageContainerBtn() {
-
-//            private final DataExporter exporter = new DataExporter();
-//
             private Table t;
 
             @Override
@@ -390,53 +441,31 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
                 csvExport.setExcelFormatOfProperty("Index", "0");
 
                 csvExport.export();
-
-//
-//                FileDownloader fileDownloader = new FileDownloader(new StreamResource(() -> {
-//                    try {
-//                        byte[] pdfFile = exporter.exportBubbleChart(chart);
-//                        return new ByteArrayInputStream(pdfFile);
-//                    } catch (Exception e) {
-//                        return null;
-//                    }
-//                }, "Studies_Heatmap.pdf"));
-//                
-//                
-//                fileDownloader.extend(this);
             }
 
         };
 
-        if (smallScreen) {
-            exportPdfBtn.setWidth(25, Unit.PIXELS);
-            exportPdfBtn.setHeight(25, Unit.PIXELS);
-            exportPdfBtn.removeStyleName("smallimg");
-            exportPdfBtn.addStyleName("nopaddingimg");
-        } else {
-            exportPdfBtn.setHeight(40, Unit.PIXELS);
-            exportPdfBtn.setWidth(40, Unit.PIXELS);
-        }
+        exportPdfBtn.setHeight(40, Unit.PIXELS);
+        exportPdfBtn.setWidth(40, Unit.PIXELS);
+
         exportPdfBtn.updateIcon(new ThemeResource("img/xls-text-o-2.png"));
         exportPdfBtn.setEnabled(true);
-        controlBtnsContainer.addComponent(exportPdfBtn);
-        controlBtnsContainer.setComponentAlignment(exportPdfBtn, Alignment.MIDDLE_CENTER);
+        bubblechartToolsContainer.addComponent(exportPdfBtn);
+        bubblechartToolsContainer.setComponentAlignment(exportPdfBtn, Alignment.MIDDLE_CENTER);
         exportPdfBtn.setDescription("Export data");
-
-//        StreamResource myResource = null;//createResource();
-//        FileDownloader fileDownloader = new FileDownloader(myResource);
-//
-//        fileDownloader.extend(groupSwichBtn);
-        controlBtnsContainer.addComponent(exportPdfBtn);
+        bubblechartToolsContainer.addComponent(exportPdfBtn);
 
         InformationButton info = new InformationButton("The bubble chart provides an overview of all the proteins found in the currently selected disease group comparisons. The size of each bubble represents the number of proteins in the given comparison and the color represents the trend. To change the order of the groups in a given comparison please click the \"Switch disease groups\" icon in the lower right corner. Select one or more bubbles to display the corresponding proteins.", false);
-        controlBtnsContainer.addComponent(info);
-        if (smallScreen) {
-            info.setWidth(25, Unit.PIXELS);
-            info.setHeight(25, Unit.PIXELS);
-            info.removeStyleName("smallimg");
-        }
+        bubblechartToolsContainer.addComponent(info);
+
     }
 
+    /**
+     * Generate bubble chart (JFreechart) that is used to generate the thumb
+     * image and default background image the development based on DiVA concept
+     *
+     * @param selectedComparisonList
+     */
     private JFreeChart generateBubbleChart(Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
         tooltipsProtNumberMap.clear();
         DefaultXYZDataset defaultxyzdataset = new DefaultXYZDataset();
@@ -454,7 +483,7 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
         tselectedComparisonList.addAll(selectedComparisonList);
 
         for (QuantDiseaseGroupsComparison qc : tselectedComparisonList) {
-            if (significantOnly) {
+            if (hideEqualProteins) {
                 int upperCounter = 0;
                 upperCounter = qc.getQuantComparisonProteinMap().values().stream().filter((quantComparisonProtein) -> !(quantComparisonProtein == null)).filter((quantComparisonProtein) -> !(quantComparisonProtein.getSignificantTrindCategory() == 2 || quantComparisonProtein.getSignificantTrindCategory() == 5)).map((_item) -> 1).reduce(upperCounter, Integer::sum);
                 if (upperCounter > upper) {
@@ -498,7 +527,7 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
                 QuantComparisonProtein quantComparisonProtein = quantComparison.getQuantComparisonProteinMap().get(key);
                 quantComparisonProtein.finalizeQuantData();
 
-                if (significantOnly && (quantComparison.getQuantComparisonProteinMap().get(key).getSignificantTrindCategory() == 2 || quantComparison.getQuantComparisonProteinMap().get(key).getSignificantTrindCategory() == 5)) {
+                if (hideEqualProteins && (quantComparison.getQuantComparisonProteinMap().get(key).getSignificantTrindCategory() == 2 || quantComparison.getQuantComparisonProteinMap().get(key).getSignificantTrindCategory() == 5)) {
                     tempWidthValue[3] = 0;
                     tempWidthValue[6] = 0;
                     values[2] = 0;
@@ -531,7 +560,7 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
             this.tooltipsProtNumberMap.put(quantComparison.getComparisonHeader(), tooltipNumbess);
             for (int x = 0; x < tempWidthValue.length; x++) {
                 if (tempWidthValue[x] > 0) {
-                    tempWidthValue[x] = scaleValues(tempWidthValue[x], upper, 2.5, 0.05);//Math.max(tempWidthValue[x] * 1.5 / upper, 0.05);
+                    tempWidthValue[x] = scaleValues(tempWidthValue[x], upper, 0.05);
                     length++;
                 }
 
@@ -571,11 +600,9 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
 
         final Color[] labelsColor = new Color[]{Color.LIGHT_GRAY, new Color(80, 183, 71), Color.LIGHT_GRAY, new Color(1, 141, 244), Color.LIGHT_GRAY, new Color(204, 0, 0), Color.LIGHT_GRAY};
         Font font;
-        if (smallScreen) {
-            font = new Font("Helvetica Neue", Font.PLAIN, 10);
-        } else {
-            font = new Font("Helvetica Neue", Font.PLAIN, 13);
-        }
+
+        font = new Font("Helvetica Neue", Font.PLAIN, 13);
+
         SymbolAxis yAxis = new SymbolAxis(null, new String[]{"  ", "Decreased", " ", "Equal", " ", "Increased", "  "}) {
             int x = 0;
 
@@ -609,7 +636,7 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
             String header = comp.getComparisonHeader();
             String updatedHeader = header.split(" / ")[0].split("__")[0] + " / " + header.split(" / ")[1].split("__")[0] + "";
 
-            xAxisLabels[x] = updatedHeader;//+ " (" + comp.getDatasetMap().size() + ")    ";
+            xAxisLabels[x] = updatedHeader;
             if (xAxisLabels[x].length() > maxLength) {
                 maxLength = xAxisLabels[x].length();
             }
@@ -714,8 +741,6 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
                 return ticks;
             }
         };
-
-//        }
         xAxis.setTickLabelFont(font);
         xAxis.setTickLabelInsets(new RectangleInsets(2, 20, 2, 20));
         xAxis.setAutoRangeStickyZero(true);
@@ -759,11 +784,10 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
                     }
                 } catch (Exception e) {
                 }
-                super.drawRangeGridlines(g2, area, ticks); //To change body of generated methods, choose Tools | Templates.
+                super.drawRangeGridlines(g2, area, ticks);
             }
 
         };
-        ;
 
         JFreeChart generatedChart = new JFreeChart(xyplot) {
 
@@ -776,8 +800,6 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
         xyplot.setBackgroundPaint(Color.WHITE);
         generatedChart.setBackgroundPaint(Color.WHITE);
         generatedChart.setPadding(new RectangleInsets(0, 0, 0, 0));
-//        Quant_Central_Manager.setProteinsOverviewBubbleChart(generatedChart);
-//        exporter.writeChartToPDFFile(generatedChart, 595, 842, "bublechart.pdf");
         return generatedChart;
 
     }
@@ -789,18 +811,22 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
      *
      * @param linearValue the value to be converted to log scale
      * @param max
-     * @param upperLimit
      * @param lowerLimit
      * @return the value in log scale
      * @throws IllegalArgumentException if value out of range
      */
-    public final double scaleValues(double linearValue, int max, double upperLimit, double lowerLimit) {
+    private double scaleValues(double linearValue, int max, double lowerLimit) {
         double logMax = (Math.log(max) / Math.log(2));
         double logValue = (Math.log(linearValue + 1) / Math.log(2));
         logValue = (logValue * 2 / logMax) + lowerLimit;
         return logValue;
     }
 
+    /**
+     * Selection changed in the selection manager
+     *
+     * @param type type of selection
+     */
     @Override
     public void selectionChanged(String type) {
 
@@ -819,27 +845,14 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
             updateSelectionManager();
 
         }
-        if (type.equalsIgnoreCase("quant_compare")) {
-//            lastselectedComponents.clear();
-//            this.selectedComparisonList = CSFPR_Central_Manager.getSelectedComparisonsList();         
-//            this.userCustomizedComparison = CSFPR_Central_Manager.getQuantSearchSelection().getUserCustComparison();
-//            if (selectedComparisonList.isEmpty()) {                
-//                chartComponentLayout.removeAllComponents();
-//                chartImage.setSource(null);
-//                updateIcon(null);
-//                return;
-//                
-//            }
-//            
-//            updateChart();
-//            updateSelectionManager();
-//            
-        }
-//        
 
     }
-    private JFreeChart chart;
 
+    /**
+     * Update JFree chart based on new comparison selection
+     *
+     * @param type type of selection
+     */
     private void updateChart() {
         chart = generateBubbleChart(selectedComparisonList);
         updateChartLayoutComponents(chart, width, height);
@@ -871,6 +884,13 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
 
     }
 
+    /**
+     * Convert JFree chart based into string url for image
+     *@param chart JFreechart
+     * @param width generated image width
+     * @param height generated image height
+     * @return  URL for generated image
+     */
     private String getChartImage(JFreeChart chart, int width, int height) {
         if (chart == null) {
             return null;
@@ -887,6 +907,13 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
 
     }
 
+    /**
+     * Update Vaadin bubble components on the chart layout data container
+     *
+     * @param chart
+     * @param width chart data width
+     * @param height chart data heights
+     */
     private void updateChartLayoutComponents(final JFreeChart chart, final double width, final double height) {
         chart.getXYPlot().setNoDataMessage((int) width + "," + (int) height);
 
@@ -976,10 +1003,9 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
                 }
 
                 String header = comparison.getComparisonHeader();
-                // + " - " + header.split(" / ")[1].split("\n")[1].replace("_", " ").replace("-", "'").replace("Disease", "") + "";
                 int itemNumber = (int) ((XYItemEntity) entity).getDataset().getYValue(((XYItemEntity) entity).getSeriesIndex(), ((XYItemEntity) entity).getItem());
                 String[] gr = comparison.getComparisonFullName().replace("__" + comparison.getDiseaseCategory(), "").split(" / ");
-                String updatedHeader = ("Numerator: " + gr[0] + "<br/>Denominator: " + gr[1]+ "<br/>Disease: " + comparison.getDiseaseCategory());  
+                String updatedHeader = ("Numerator: " + gr[0] + "<br/>Denominator: " + gr[1] + "<br/>Disease: " + comparison.getDiseaseCategory());
                 square.addStyleName(trendStyles[itemNumber]);
                 square.setDescription(updatedHeader + "<br/>Category: " + tooltipLabels[itemNumber] + "<br/>#Proteins: " + (int) tooltipsProtNumberMap.get(header)[itemNumber]);
                 double categIndex = (double) itemNumber;
@@ -1012,13 +1038,21 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
 
     }
 
+    /**
+     * Get registered listener id
+     *
+     * @return listener id
+     */
     @Override
     public String getListenerId() {
         return "bubble_chart_listener";
     }
 
-    
-
+    /**
+     * On chart click (selection from bubble or chart layout)
+     *
+     * @param event
+     */
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         BubbleComponent selectedComponent = (BubbleComponent) event.getClickedComponent();
@@ -1027,12 +1061,24 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
 
     }
 
+    /**
+     * Update the thumb button icon
+     *
+     * @param imageUrl
+     */
     public abstract void updateIcon(String imageUrl);
 
+    /**
+     * Update the selection proteins list based on user selection on bubble
+     * chart to update the chart layout and update the selection list that is
+     * used for updating the selection manager
+     *
+     * @param imageUrl
+     */
     private void updateSelectionList(BubbleComponent selectedComponent) {
         if (selectedComponent == null) {
             lastselectedComponents.clear();
-        } else if (this.activeMultiSelect) {
+        } else if (this.allowMultiSelect) {
             if (lastselectedComponents.contains(selectedComponent)) {
                 lastselectedComponents.remove(selectedComponent);
             } else {
@@ -1051,6 +1097,10 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
 
     }
 
+    /**
+     * Update the chart layout upon user selection on the bubble plot (highlight
+     * or blur bubbles)
+     */
     private void rePaintChart() {
         Iterator<Component> itr = chartComponentLayout.iterator();
         boolean selectAction = false;
@@ -1071,12 +1121,9 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
 
     }
 
-    private Integer[] initValuesArr() {
-        Integer[] values = new Integer[]{0, 0, 0, 0, 0, 0};
-        return values;
-
-    }
-
+    /**
+     * Update the selection manager using selection proteins list
+     */
     private void updateSelectionManager() {
         Set<QuantComparisonProtein> selectedProteinsList;
         if (lastselectedComponents.isEmpty()) {
@@ -1102,6 +1149,21 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
         CSFPR_Central_Manager.setSelection(selection);
     }
 
+    /**
+     * Create array of integers and initialize it with 0 values
+     */
+    private Integer[] initValuesArr() {
+        Integer[] values = new Integer[]{0, 0, 0, 0, 0, 0};
+        return values;
+
+    }
+
+    /**
+     * Add User Customized Comparison to the system (activating quant compare
+     * mode)
+     *
+     * @param userCustomizedComparison
+     */
     public void setUserCustomizedComparison(QuantDiseaseGroupsComparison userCustomizedComparison) {
         this.userCustomizedComparison = userCustomizedComparison;
         if (userCustomizedComparison == null) {
