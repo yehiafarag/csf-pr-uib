@@ -26,7 +26,7 @@ import no.uib.probe.csf.pr.touch.view.core.PopupWindowFrameWithFunctionsBtns;
  *
  * @author Yehia Farag
  *
- * This class allow the users to switch comparisons
+ * This class allow the users to switch/flip selected disease sub-groups comparisons
  */
 public abstract class GroupSwichBtn extends ImageContainerBtn {
 

@@ -142,7 +142,7 @@ public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout i
         btnsWrapper.setColumnExpandRatio(2, 25);
         btnsWrapper.setSpacing(false);
 
-        datasetPieChartFiltersComponent = new DatasetPieChartFiltersComponent(false) {
+        datasetPieChartFiltersComponent = new DatasetPieChartFiltersComponent() {
             @Override
             public void updateSystem(Set<Integer> selectedDatasetIds) {
                 updateSystemComponents(selectedDatasetIds);
