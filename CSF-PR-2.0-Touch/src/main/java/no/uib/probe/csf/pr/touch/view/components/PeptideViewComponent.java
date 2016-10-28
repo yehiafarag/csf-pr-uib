@@ -144,9 +144,9 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
     }
 
     /**
-     * Generate thumb image to update the left side button icon
+     * Generate thumb image to update the left side button icon.
      *
-     * @return iconResource
+     * @return iconResource the resource is used to update the left side button icon
      *
      */
     private Resource generateThumbImg() {

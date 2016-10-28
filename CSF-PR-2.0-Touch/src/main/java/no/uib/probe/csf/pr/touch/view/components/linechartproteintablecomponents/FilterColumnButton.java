@@ -1,25 +1,34 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.view.components.linechartproteintablecomponents;
 
 import com.vaadin.server.ThemeResource;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 
 /**
+ * This class is a column filter component that is responsible for filtering
+ * protein table.
  *
  * @author Yehia Farag
  *
- * this class is responsible for filtering protein table based on columns
+ *
  */
 public abstract class FilterColumnButton extends ImageContainerBtn {
 
+    /**
+     * Resource for sort icon.
+     */
     private final ThemeResource sortFilterRes;
+    /**
+     * Resource for filter icon.
+     */
     private final ThemeResource filterSortRes;
+    /**
+     * The component in filtering mode.
+     */
     private boolean activeFilter = false;
 
+    /**
+     * Constructor to initialize the main attributes.
+     */
     public FilterColumnButton() {
         this.setHeight(40, Unit.PIXELS);
         this.setWidth(40, Unit.PIXELS);
@@ -28,11 +37,13 @@ public abstract class FilterColumnButton extends ImageContainerBtn {
         this.updateIcon(sortFilterRes);
         this.setEnabled(true);
         this.setReadOnly(false);
-//        this.addStyleName("smallimg");
         this.setDescription("Sort or filter comparisons");
 
     }
 
+    /**
+     * On click update the component icon.
+     */
     @Override
     public void onClick() {
         if (activeFilter) {
@@ -40,17 +51,27 @@ public abstract class FilterColumnButton extends ImageContainerBtn {
             this.updateIcon(sortFilterRes);
 
         } else {
-            activeFilter = true; 
+            activeFilter = true;
             this.updateIcon(filterSortRes);
         }
         onClickFilter(activeFilter);
-       
-    }
-    public void reset(){
-    activeFilter = false;
-    this.updateIcon(sortFilterRes);
+
     }
 
+    /**
+     * Reset to default mode (sorting mode).
+     */
+    @Override
+    public void reset() {
+        activeFilter = false;
+        this.updateIcon(sortFilterRes);
+    }
+
+    /**
+     * Perform action (sort table or open filter pop up layout).
+     *
+     * @param isFilter the component in filtering mode.
+     */
     public abstract void onClickFilter(boolean isFilter);
 
 }

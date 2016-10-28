@@ -126,7 +126,6 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
      *The standered thumb image for left side components buttons, in case of no selection provided (null selection)
      */
     private final ThemeResource logoRes = new ThemeResource("img/logo.png");
-
     /*
      *The width of the component view panel (the middle panle between the left side and right side buttons wrappers)
      */
@@ -177,7 +176,6 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
             Set<QuantDiseaseGroupsComparison> compList = CSFPR_Central_Manager.getSelectedComparisonsList();
             if (compList == null || compList.isEmpty()) {
                 updateCurrentLayout("heatmap");
-
             }
         }
 
@@ -255,7 +253,6 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
                     }
                     if (compList == null || compList.isEmpty()) {
                         updateCurrentLayout("heatmap");
-
                     }
 
                 } else if (!lastSelectedDisease.equalsIgnoreCase(diseaseCategoryName)) {
@@ -453,11 +450,11 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
             }
 
         };
+        
         peptidesViewContainer.addComponent(peptideViewComponent);
         peptidesToolsContainer.addComponent(peptideViewComponent.getPeptideTableToolsContainer());
         peptidesToolsContainer.setComponentAlignment(peptideViewComponent.getPeptideTableToolsContainer(), Alignment.TOP_RIGHT);
         this.CSFPR_Central_Manager.registerListener(QuantDataLayoutContainer.this);
-
     }
 
     /**

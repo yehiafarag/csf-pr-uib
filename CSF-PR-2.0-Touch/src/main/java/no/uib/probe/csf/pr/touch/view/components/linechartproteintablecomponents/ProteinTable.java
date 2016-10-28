@@ -36,44 +36,124 @@ import org.jfree.chart.encoders.ImageEncoderFactory;
 import org.jfree.chart.encoders.ImageFormat;
 
 /**
+ * This class represents the quant protein table container components including
+ * the table and sorting layout (sorting buttons for comparisons).
  *
  * @author Yehia Farag
  *
- * this class represents quant protein table container
+ *
  */
 public abstract class ProteinTable extends VerticalLayout implements Property.ValueChangeListener {
 
+    /**
+     * Show selected proteins only.
+     */
     private boolean selectedOnly = false;
-
+    /**
+     * Map of table item id and each row item contents.
+     */
     private final Map<Object, Object[]> tableItemsMap;
+    /**
+     * Map of the current used table item id and each row item contents.
+     */
     private final Map<Object, Object[]> activeTableItemsMap;
+    /**
+     * Map of protein key and its item id in the table.
+     */
     private final Map<String, Integer> tableProteinsToIDMap;
-    private final Map<Object, CheckBox> tableItemscheckboxMap;
+    /**
+     * Set of sorting buttons layout.
+     */
     private final Set<ColumnHeaderLayout> columnHeaderSet;
 
+    /**
+     * The width of the table.
+     */
     private int availableProteinLayoutWidth;
-    /* This set contains the ids of the "selected" items */
+    /**
+     * Set of selected items in the table.
+     */
     private final Set<Object> selectedItemIds = new HashSet<>();
+    /**
+     * The main proteins table.
+     */
     private Table mainProteinTable;
+    /**
+     * Top comparisons layout is used to contain the comparisons
+     * sorting/filtering buttons.
+     */
     private final AbsoluteLayout topComparisonsContainer;
+    /**
+     * Map of quant disease comparisons and its items id map.
+     */
     private final Map<QuantDiseaseGroupsComparison, Set<Object>> filtersMap;
-//
-//    private ThemeResource showAllRes = new ThemeResource("img/show_selected.png");
-//
-//    private ThemeResource showSelectedeRes = new ThemeResource("img/show_all.png");
-    private boolean hideCheckedColumn = false;
-
-    public final void hideCheckedColumn(boolean hide) {
-
-//        this.hideCheckedColumn = hide;
-//        mainProteinTable.setColumnCollapsed("emptyselection", !hide);
-//        mainProteinTable.setColumnCollapsed("selected", hide);
-//        mainProteinTable.markAsDirty();
-//        mainProteinTable.setWidth(100, Unit.PERCENTAGE);
-    }
+    /**
+     * Spacer layout is used to padding the top comparison layout container.
+     */
+    private final VerticalLayout spacer;
+    /**
+     * The table wrapper layout is used to contain the table and top layout.
+     */
+    private final VerticalLayout tableWarpper;
+    /**
+     * The component height.
+     */
+    private final int height;
+    /**
+     * The component height.
+     */
+    private final int width;
+    /**
+     * The header used for sorting the table.
+     */
+    private String sortingColumnHeader;
+    /**
+     * The table is sorted ascending.
+     */
+    private boolean ascendingSort;
+    /**
+     * The line chart layout is providing location for different comparisons to
+     * set the location of different comparisons filterProteinList components.
+     */
+    private AbsoluteLayout instanceOfLinechartComponentsLayout;
+    /**
+     * The filters applied.
+     */
+    private boolean filtereApplied = false;
+    /**
+     * List of selected comparisons to be updated based on user selection for
+     * comparisons across the system.
+     */
+    private Set<QuantDiseaseGroupsComparison> selectedComparisonsList;
+    /**
+     * List of selected filtered proteins.
+     */
+    private Set<QuantComparisonProtein> inUseSselectedProteinsList;
+    /**
+     * List of full selected proteins list(no filters applied).
+     */
+    private Set<QuantComparisonProtein> fullSselectedProteinsList;
+    /**
+     * Sort/Filter component for customized user data (quant compare mode).
+     */
     private ColumnHeaderLayout custUserComparisonSortingLayout;
+    /**
+     * Wrapper layout for Sort/Filter component for customized user data (quant
+     * compare mode).
+     */
     private final VerticalLayout userSortingHeaderWrapper;
+    /**
+     * Customized comparison based on user input data in quant comparison
+     * layout.
+     */
+    private QuantDiseaseGroupsComparison userCustomizedComparison;
 
+    /**
+     * Set customized comparison based on user input data in quant comparison
+     * layout.
+     *
+     * @param userCustomizedComparison
+     */
     public void setUserCustomizedComparison(QuantDiseaseGroupsComparison userCustomizedComparison) {
         if (columnHeaderSet.contains(this.custUserComparisonSortingLayout)) {
             columnHeaderSet.remove(this.custUserComparisonSortingLayout);
@@ -83,7 +163,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
 
         if (userCustomizedComparison != null) {
 
-            mainProteinTable = initMainTable(height, width, true);
+            mainProteinTable = generateMainTable(height, width, true);
 
             userCustomizedComparison.getQuantComparisonProteinMap().keySet().stream().forEach((accession) -> {
                 Object itemId = tableProteinsToIDMap.get(accession);
@@ -115,20 +195,19 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
                 public void filterTable(QuantDiseaseGroupsComparison comparison, int comparisonIndex, Set<Object> filterSet) {
                     filterTableSelection(comparison, filterSet);
                 }
-
             };
             this.userSortingHeaderWrapper.addComponent(custUserComparisonSortingLayout);
+
         } else {
-            mainProteinTable = initMainTable(height, width, true);
+            mainProteinTable = generateMainTable(height, width, true);
         }
     }
 
-    private QuantDiseaseGroupsComparison userCustomizedComparison;
-
     /**
-     * filter table items to view only user protein selection
+     * Filter table items to view only user protein selection
      *
-     * @param selectedProteinsList
+     * @param selectedProteinsList Customized comparison based on user input
+     * data in quant comparison layout.
      */
     public void filterTableItem(Set<QuantComparisonProtein> selectedProteinsList) {
         Set<Object> filteredItemIds = new HashSet<>();
@@ -142,7 +221,6 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
 
         });
         mainProteinTable.removeAllItems();
-//        mainProteinTable.setColumnHeader("selected", "Click to show checked rows only");
         for (Object itemId : filteredItemIds) {
             mainProteinTable.addItem(tableItemsMap.get(itemId), itemId);
             activeTableItemsMap.put(itemId, tableItemsMap.get(itemId));
@@ -154,60 +232,18 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
             item.getItemProperty("Index").setValue(indexing);
             indexing++;
         }
-        updateRowNumber(mainProteinTable.getItemIds().size(), generateThumbImg());
+        updateIconRowNumber(mainProteinTable.getItemIds().size(), generateThumbImg());
 
     }
 
+    /**
+     * Generate thumb image to update the left side button icon.
+     *
+     * @return image encoded into base64 string to be used to update the left
+     * side button icon.
+     *
+     */
     private String generateThumbImg() {
-//        JFreeChart lineChart = null;
-//        
-//        int dsIndex = 1;
-//        for (Object[] objArr : tableItemsMap.values()) {
-//            ProteinTrendLayout trend = (ProteinTrendLayout) objArr[3];
-//            if (trend.getSparkLine() != null) {
-//                
-//                if (lineChart == null) {
-//                    XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
-//                    renderer.setSeriesPaint(0, new Color(169, 208, 245));
-//                    lineChart = new JFreeChart(new XYPlot(trend.getSparkLine().getLineChart().getXYPlot().getDataset(), new SymbolAxis(null, ((SymbolAxis) trend.getSparkLine().getLineChart().getXYPlot().getDomainAxis()).getSymbols()), trend.getSparkLine().getLineChart().getXYPlot().getRangeAxis(), renderer));
-//                    lineChart.setBackgroundPaint(Color.WHITE);
-//                    final XYPlot plot = lineChart.getXYPlot();
-//                    plot.setDomainGridlinesVisible(false);
-//                    plot.setRangeGridlinesVisible(false);
-//                    plot.setOutlineVisible(false);
-//                    lineChart.setBorderVisible(false);
-//                    renderer.setSeriesShapesVisible(0, false);
-//                    lineChart.setPadding(new RectangleInsets(0, 0, 0, 0));
-//                    LegendTitle legend = lineChart.getLegend();
-//                    legend.setVisible(false);
-//                    lineChart.getXYPlot().getDomainAxis().setTickLabelsVisible(false);
-//                    lineChart.getXYPlot().getDomainAxis().setAxisLineVisible(true);
-//                    lineChart.getXYPlot().getDomainAxis().setTickMarksVisible(false);
-//                    lineChart.getXYPlot().getDomainAxis().setVisible(true);
-//
-////                      lineChart.getXYPlot().setRangeTickBandPaint(Color.WHITE);
-//                    lineChart.getXYPlot().getRangeAxis().setTickLabelsVisible(false);
-//                    lineChart.getXYPlot().getRangeAxis().setAxisLineVisible(true);
-//                    lineChart.getXYPlot().getRangeAxis().setVisible(true);
-//                    lineChart.getXYPlot().setOutlineVisible(false);
-//                    
-//                    lineChart.getXYPlot().setDomainGridlinesVisible(false);
-//                    
-//                }
-//                lineChart.getXYPlot().setDataset(dsIndex++, trend.getSparkLine().getDataset());
-//                if (dsIndex > 10) {
-//                    break;
-//                }
-//                
-//            }
-//            
-//        }
-//        if (lineChart != null) {
-//            
-//            return this.getChartImage(lineChart, 100, 100);
-//            
-//        }
-//        final Border fullBorder = new LineBorder(Color.GRAY);
         JPanel proteinSequencePanel = new JPanel();
         proteinSequencePanel.setLayout(null);
         proteinSequencePanel.setSize(100, 100);
@@ -224,39 +260,9 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
                 lineChartPanel.setOpaque(true);
                 proteinSequencePanel.add(lineChartPanel);
                 y += 25;
-//                if (lineChart == null) {
-//                    XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
-//                    renderer.setSeriesPaint(0, new Color(169, 208, 245));
-//                    lineChart = new JFreeChart(new XYPlot(trend.getSparkLine().getLineChart().getXYPlot().getDataset(), new SymbolAxis(null, ((SymbolAxis) trend.getSparkLine().getLineChart().getXYPlot().getDomainAxis()).getSymbols()), trend.getSparkLine().getLineChart().getXYPlot().getRangeAxis(), renderer));
-//                    lineChart.setBackgroundPaint(Color.WHITE);
-//                    final XYPlot plot = lineChart.getXYPlot();
-//                    plot.setDomainGridlinesVisible(false);
-//                    plot.setRangeGridlinesVisible(false);
-//                    plot.setOutlineVisible(false);
-//                    lineChart.setBorderVisible(false);
-//                    renderer.setSeriesShapesVisible(0, false);
-//                    lineChart.setPadding(new RectangleInsets(0, 0, 0, 0));
-//                    LegendTitle legend = lineChart.getLegend();
-//                    legend.setVisible(false);
-//                    lineChart.getXYPlot().getDomainAxis().setTickLabelsVisible(false);
-//                    lineChart.getXYPlot().getDomainAxis().setAxisLineVisible(true);
-//                    lineChart.getXYPlot().getDomainAxis().setTickMarksVisible(false);
-//                    lineChart.getXYPlot().getDomainAxis().setVisible(true);
-//
-////                      lineChart.getXYPlot().setRangeTickBandPaint(Color.WHITE);
-//                    lineChart.getXYPlot().getRangeAxis().setTickLabelsVisible(false);
-//                    lineChart.getXYPlot().getRangeAxis().setAxisLineVisible(true);
-//                    lineChart.getXYPlot().getRangeAxis().setVisible(true);
-//                    lineChart.getXYPlot().setOutlineVisible(false);
-//                    
-//                    lineChart.getXYPlot().setDomainGridlinesVisible(false);
-//                    
-//                }
-//                lineChart.getXYPlot().setDataset(dsIndex++, trend.getSparkLine().getDataset());
                 if (dsIndex > 4) {
                     break;
                 }
-
             }
         }
 
@@ -279,30 +285,23 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
 
         String base64 = "data:image/png;base64," + com.itextpdf.text.pdf.codec.Base64.encodeBytes(imageData);
         return base64;
-
-//        return "";
     }
 
-//    private String getChartImage(JFreeChart chart, int width, int height) {
-//        if (chart == null) {
-//            return null;
-//        }
-//
-//        String base64 = "";
-//        try {
-//
-//            base64 = "data:image/png;base64," + Base64.encodeBase64String(ChartUtilities.encodeAsPNG(chart.createBufferedImage((int) width, (int) height)));
-//
-//        } catch (IOException ex) {
-//            System.err.println("at error " + this.getClass() + " line 536 " + ex.getLocalizedMessage());
-//        }
-//        return base64;
-//
-//    }
+    /**
+     * Get number of rows in the protein table.
+     *
+     * @return number of rows.
+     *
+     */
     public int getRowsNumber() {
         return this.mainProteinTable.getItemIds().size();
     }
 
+    /**
+     * Filter and update the protein table using the selected proteins list.
+     *
+     * @param selectedProteinsList list of proteins to be selected and viewed.
+     */
     public void filterViewItemTable(Set<QuantComparisonProtein> selectedProteinsList) {
         selectedItemIds.clear();
         this.inUseSselectedProteinsList = selectedProteinsList;
@@ -318,7 +317,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
     }
 
     /**
-     * Remove all applied columns filters
+     * Remove all applied columns filters.
      */
     public void clearColumnFilters() {
         filterTableSelection(null, null);
@@ -326,13 +325,13 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
             comparisonLayout.noFilter();
         });
         if (userCustomizedComparison != null) {
-            custUserComparisonSortingLayout.setAsDefault();            
+            custUserComparisonSortingLayout.setAsDefault();
             custUserComparisonSortingLayout.sort(false, -1);
         }
     }
 
     /**
-     * update sorting buttons to filter buttons
+     * Update sorting buttons to filterProteinList buttons.
      */
     public void switchHeaderBtns() {
 
@@ -342,32 +341,39 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
 
     }
 
-    private String sortingHeader;
-
-    public String getSortingHeader() {
-        return sortingHeader;
+    /**
+     * Get the header used for sorting the table.
+     *
+     * @return sortingColumnHeader the name of header used for sorting the table
+     */
+    public String getSortingColumnHeader() {
+        return sortingColumnHeader;
     }
-
-    public boolean isUpSort() {
-        return upSort;
-    }
-    private boolean upSort;
 
     /**
-     * Sort table based on specific comparison
+     * Check if the table is sorted ascending.
      *
-     * @param upSort
-     * @param comparisonIndex
+     * @return
      */
-    public void sortOnComparison(boolean upSort, int comparisonIndex) {
+    public boolean isAscendingSort() {
+        return ascendingSort;
+    }
+
+    /**
+     * Sort table based on specific comparison.
+     *
+     * @param ascendingSort sort the table ascending.
+     * @param comparisonIndex the comparison index to sort on.
+     */
+    public void sortOnComparison(boolean ascendingSort, int comparisonIndex) {
         mainProteinTable.addStyleName("hidesortingicon");
-        this.upSort = upSort;
+        this.ascendingSort = ascendingSort;
         if (comparisonIndex == -1) {
-            mainProteinTable.sort(new String[]{"userdata"}, new boolean[]{upSort});
-            this.sortingHeader = "userdata";
+            mainProteinTable.sort(new String[]{"userdata"}, new boolean[]{ascendingSort});
+            this.sortingColumnHeader = "userdata";
             int index = 0;
             for (ColumnHeaderLayout comparisonLayout : columnHeaderSet) {
-                
+
                 if (index == comparisonIndex) {
                     index++;
                     continue;
@@ -404,9 +410,9 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         for (Object object : tableItemsMap.keySet()) {
             mainProteinTable.addItem(tableItemsMap.get(object), object);
         }
-        this.sortingHeader = ((QuantDiseaseGroupsComparison) this.selectedComparisonsList.toArray()[comparisonIndex]).getComparisonHeader();
+        this.sortingColumnHeader = ((QuantDiseaseGroupsComparison) this.selectedComparisonsList.toArray()[comparisonIndex]).getComparisonHeader();
 
-        mainProteinTable.sort(new String[]{"Comparisons Overview"}, new boolean[]{upSort});
+        mainProteinTable.sort(new String[]{"Comparisons Overview"}, new boolean[]{ascendingSort});
         int indexing = 1;
         for (Object id : mainProteinTable.getItemIds()) {
             Item item = mainProteinTable.getItem(id);
@@ -414,27 +420,22 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
             indexing++;
         }
 
-        hideCheckedColumn(hideCheckedColumn);
         this.mainProteinTable.addValueChangeListener(ProteinTable.this);
 
     }
-    private final boolean smallScreen;
-    private final VerticalLayout spacer;
-    private final VerticalLayout tableWarpper;
-    private int height, width;
 
     /**
+     * Constructor to initialize the main attributes.
      *
-     * @param width
-     * @param height
+     * @param width the width of the protein table component.
+     * @param height the height of the protein table component.
      */
-    public ProteinTable(int width, int height, boolean smallScreen) {
+    public ProteinTable(int width, int height) {
 
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeightUndefined();
         this.width = width;
         this.height = height;
-        this.smallScreen = smallScreen;
 
         this.columnHeaderSet = new LinkedHashSet<>();
         this.filtersMap = new LinkedHashMap<>();
@@ -449,12 +450,10 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         this.userSortingHeaderWrapper = new VerticalLayout();
         userSortingHeaderWrapper.setHeight(20, Unit.PIXELS);
         userSortingHeaderWrapper.addStyleName("custuserdataheader");
-//        userSortingHeaderWrapper.setHeight(100,Unit.PERCENTAGE);
         topLayout.addComponent(userSortingHeaderWrapper);
         topLayout.setComponentAlignment(userSortingHeaderWrapper, Alignment.TOP_RIGHT);
         topComparisonsContainer = new AbsoluteLayout();
         topComparisonsContainer.setHeight(100, Unit.PERCENTAGE);
-//        topComparisonsContainer.setStyleName("spacing");
         topComparisonsContainer.addStyleName("toptablelayout");
         topComparisonsContainer.addStyleName("marginleft-12");
         topLayout.addComponent(topComparisonsContainer);
@@ -467,17 +466,23 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         this.tableItemsMap = new LinkedHashMap<>();
         this.activeTableItemsMap = new LinkedHashMap<>();
         this.tableProteinsToIDMap = new HashMap<>();
-        tableItemscheckboxMap = new HashMap<>();
 
-//        this.mainProteinTable = initMainTable(height, width, false);
     }
 
-    private Table initMainTable(int height, int width, boolean showUserData) {
+    /**
+     * Create new protein table.
+     *
+     * @param height the height of the protein table component.
+     * @param width the width of the protein table component.
+     * @param quantCompareMode the system in quant compare mode.
+     *
+     */
+    private Table generateMainTable(int height, int width, boolean quantCompareMode) {
         tableWarpper.removeAllComponents();
         this.mainProteinTable = new Table();
 
         int userDataColumnWidth;
-        if (showUserData) {
+        if (quantCompareMode) {
             userDataColumnWidth = 47;
         } else {
             userDataColumnWidth = 0;
@@ -496,7 +501,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         mainProteinTable.setColumnReorderingAllowed(false);
 
         mainProteinTable.setColumnCollapsingAllowed(true);
-        mainProteinTable.setImmediate(true); // react at once when something is selected
+        mainProteinTable.setImmediate(true);
         mainProteinTable.setMultiSelect(false);
 
         mainProteinTable.addContainerProperty("Index", Integer.class, null, "", null, Table.Align.RIGHT);
@@ -506,7 +511,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         mainProteinTable.addContainerProperty("userdata", TrendSymbol.class, null, " ", null, Table.Align.CENTER);
 
         mainProteinTable.addContainerProperty("Comparisons Overview", ProteinTrendLayout.class, null, "", null, Table.Align.LEFT);
-        mainProteinTable.setColumnCollapsed("userdata", showUserData);
+        mainProteinTable.setColumnCollapsed("userdata", quantCompareMode);
 
         mainProteinTable.setColumnWidth("selectedRow", 30);
         mainProteinTable.setColumnWidth("Index", 47);
@@ -543,19 +548,16 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
 
                 }
                 mainProteinTable.setSortEnabled(false);
-//
                 int indexing = 1;
                 for (Object id : mainProteinTable.getItemIds()) {
                     Item item = mainProteinTable.getItem(id);
                     item.getItemProperty("Index").setValue(indexing);
                     indexing++;
                 }
-                hideCheckedColumn(hideCheckedColumn);
                 for (ColumnHeaderLayout columnHeader : columnHeaderSet) {
                     columnHeader.reset();
                     columnHeader.noSort();
                 }
-//
             }
 
         });
@@ -566,109 +568,77 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
 
     }
 
+    /**
+     * Show selected items only in protein table.
+     */
     private void showSelectedOnly() {
         mainProteinTable.removeAllItems();
-//        mainProteinTable.setColumnCollapsed("emptyselection", true);
-//        if (!selectedOnly) {
-//            mainProteinTable.setColumnHeader("selected", " Click to show checked rows only");
-//            mainProteinTable.setColumnIcon("selected", showSelectedeRes);
-
-//            mainProteinTable.setColumnIcon("selected", checkedRes);
         for (Object itemId : selectedItemIds) {
             if (tableItemsMap.containsKey(itemId)) {
                 mainProteinTable.addItem(tableItemsMap.get(itemId), itemId);
             }
-//                else {
-//                    System.out.println("at not found item id " + itemId);
-//                }
         }
-
-//        } else {
-////            mainProteinTable.setColumnIcon("selected", checkedAppliedRes);
-////            mainProteinTable.setColumnHeader("selected", " Click to show all rows");
-////            mainProteinTable.setColumnIcon("selected", showAllRes);
-//
-//            if (!selectedItemIds.isEmpty()) {
-//                for (Object itemId : selectedItemIds) {
-//                    if (tableItemsMap.containsKey(itemId)) {
-//                        mainProteinTable.addItem(tableItemsMap.get(itemId), itemId);
-//                    }
-//                }
-//            } else {
-//                for (Object itemId : activeTableItemsMap.keySet()) {
-//                    if (tableItemsMap.containsKey(itemId)) {
-//                        mainProteinTable.addItem(tableItemsMap.get(itemId), itemId);
-//                    }
-//                }
-//            }
-//        }
-//        mainProteinTable.setSortEnabled(true);
-//        mainProteinTable.setSortAscending(false);
         int indexing = 1;
         for (Object id : mainProteinTable.getItemIds()) {
             Item item = mainProteinTable.getItem(id);
             item.getItemProperty("Index").setValue(indexing);
             indexing++;
         }
-        updateRowNumber(mainProteinTable.getItemIds().size(), generateThumbImg());
-//        mainProteinTable.setColumnWidth("selected", 47);
+        updateIconRowNumber(mainProteinTable.getItemIds().size(), generateThumbImg());
 
     }
 
-    private Set<QuantDiseaseGroupsComparison> selectedComparisonsList;
-    private Set<QuantComparisonProtein> inUseSselectedProteinsList;
-    private Set<QuantComparisonProtein> fullSselectedProteinsList;
-
+    /**
+     * Get list of selected comparisons.
+     *
+     * @return selectedComparisonsList list of selected comparisons.
+     */
     public Set<QuantDiseaseGroupsComparison> getSelectedComparisonsList() {
         return selectedComparisonsList;
     }
 
+    /**
+     * Get list of selected filtered proteins.
+     *
+     * @return current selected proteins list.
+     */
     public Set<QuantComparisonProtein> getSelectedProteinsList() {
         return inUseSselectedProteinsList;
     }
-    private AbsoluteLayout chartComponentsLayout;
 
     /**
-     * update table selection based on user comparison selection
+     * Update protein table selection based on user comparison selection.
      *
-     * @param selectedComparisonsList
-     * @param selectedProteinsList
+     * @param selectedComparisonsList list of selected comparisons (selected
+     * from the heat map component).
+     * @param selectedProteinsList list of selected proteins if any (selected
+     * from the bubble chart component).
      */
     public void updateTableData(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, Set<QuantComparisonProtein> selectedProteinsList) {
 
         tableItemsMap.clear();
         tableProteinsToIDMap.clear();
-        tableItemscheckboxMap.clear();
-//        
-//        this.mainProteinTable.removeValueChangeListener(ProteinTable.this);
-//        mainProteinTable.removeAllItems();
-        chartComponentsLayout = null;
+        instanceOfLinechartComponentsLayout = null;
 
         filtersMap.clear();
 
         if (userCustomizedComparison != null) {
             spacer.removeAllComponents();
-            mainProteinTable = initMainTable(height, width, true);
+            mainProteinTable = generateMainTable(height, width, true);
             if (mainProteinTable.isColumnCollapsed("userdata")) {
                 mainProteinTable.setColumnCollapsed("userdata", false);
                 topComparisonsContainer.removeStyleName("marginleft-12");
-//                mainProteinTable.setColumnWidth("userdata", 30);
-//                availableProteinLayoutWidth = availableProteinLayoutWidth - 30;
                 mainProteinTable.setColumnWidth("Comparisons Overview", availableProteinLayoutWidth);
                 topComparisonsContainer.setWidth(availableProteinLayoutWidth - 10, Unit.PIXELS);
 
             }
 
         } else {
-            mainProteinTable = initMainTable(height, width, false);
-//            if (!mainProteinTable.isColumnCollapsed("userdata")) {
+            mainProteinTable = generateMainTable(height, width, false);
             mainProteinTable.setColumnCollapsed("userdata", true);
             topComparisonsContainer.addStyleName("marginleft-12");
-//                availableProteinLayoutWidth = availableProteinLayoutWidth + 30;
             mainProteinTable.setColumnWidth("Comparisons Overview", availableProteinLayoutWidth);
             topComparisonsContainer.setWidth(availableProteinLayoutWidth - 10, Unit.PIXELS);
-
-//            }
         }
 
         this.fullSselectedProteinsList = selectedProteinsList;
@@ -687,9 +657,8 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
             url = url.replace("(UNREVIEWED)", "");
             ExternalLink accessionObject = new ExternalLink(accession, new ExternalResource(url));
             accessionObject.setDescription(description);
-//            ExternalLink nameObject = new ExternalLink(name, new ExternalResource(url));
             this.selectedComparisonsList = selectedComparisonsList;
-            ProteinTrendLayout protTrendLayout = new ProteinTrendLayout(selectedComparisonsList, protein, availableProteinLayoutWidth, protId, (protId < 10), smallScreen) {
+            ProteinTrendLayout protTrendLayout = new ProteinTrendLayout(selectedComparisonsList, protein, availableProteinLayoutWidth, protId, (protId < 10), false) {
 
                 @Override
                 public void selectTableItem(Object itemId) {
@@ -709,7 +678,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
 
             }
             if (protId == 0) {
-                chartComponentsLayout = protTrendLayout.getChartComponentsLayout();
+                instanceOfLinechartComponentsLayout = protTrendLayout.getChartComponentsLayout();
             }
 
             RadioButton btn = new RadioButton(protId) {
@@ -752,7 +721,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         ColumnHeaderLayout defaultSorting;
         if (userCustomizedComparison != null) {
             columnHeaderSet.iterator().next().sort(false, 0);
-            
+
             defaultSorting = custUserComparisonSortingLayout;
             defaultSorting.sort(false, -1);
         } else {
@@ -774,26 +743,31 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
 
         this.mainProteinTable.addValueChangeListener(ProteinTable.this);
 
-        updateRowNumber(mainProteinTable.getItemIds().size(), generateThumbImg());
-//        hideCheckedColumn(true);
+        updateIconRowNumber(mainProteinTable.getItemIds().size(), generateThumbImg());
         mainProteinTable.refreshRowCache();
         mainProteinTable.setWidthUndefined();
 
     }
 
+    /**
+     * Update comparisons Sort/Filter layout components
+     *
+     * @param selectedComparisonsList list of selected comparisons (selected
+     * from the heat map component).
+     */
     private void updateComparisonsHeader(Set<QuantDiseaseGroupsComparison> selectedComparisonsList) {
         topComparisonsContainer.removeAllComponents();
         columnHeaderSet.clear();
-        if (chartComponentsLayout == null) {
+        if (instanceOfLinechartComponentsLayout == null) {
             return;
         }
         int index = 0;
         ColumnHeaderLayout comparisonLayout;
-        Iterator<Component> itr = this.chartComponentsLayout.iterator();
+        Iterator<Component> itr = this.instanceOfLinechartComponentsLayout.iterator();
         Map<Integer, Float> comparisonIndexLocation = new LinkedHashMap<>();
         while (itr.hasNext()) {
             TrendSymbol square = (TrendSymbol) itr.next();
-            comparisonIndexLocation.put((Integer) square.getParam("comparisonIndex"), chartComponentsLayout.getPosition(square).getLeftValue());
+            comparisonIndexLocation.put((Integer) square.getParam("comparisonIndex"), instanceOfLinechartComponentsLayout.getPosition(square).getLeftValue());
         }
 
         for (QuantDiseaseGroupsComparison comparison : selectedComparisonsList) {
@@ -831,12 +805,17 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
     /**
      * Drop comparison (un select comparison)
      *
-     * @param index
+     * @param index the comparison index.
      */
     public abstract void dropComparison(QuantDiseaseGroupsComparison index);
 
-    private boolean isFiltered = false;
-
+    /**
+     * Filter and update the protein table using the top comparison filters
+     * (local filtering)
+     *
+     * @param comparison the comparison used for filtering the data.
+     * @param filters set of the applied filters from this comparison.
+     */
     private void filterTableSelection(QuantDiseaseGroupsComparison comparison, Set<Object> filters) {
 
         if (filters == null || filters.isEmpty()) {
@@ -846,8 +825,8 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
             filtersMap.keySet().stream().forEach((com) -> {
                 filtersMap.put(com, null);
             });
-            if (isFiltered) {
-                isFiltered = false;
+            if (filtereApplied) {
+                filtereApplied = false;
             } else {
                 return;
             }
@@ -855,7 +834,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
 
             filtersMap.remove(comparison);
             filtersMap.put(comparison, filters);
-            isFiltered = true;
+            filtereApplied = true;
 
         }
         Set<String> filteredProteinsList = new LinkedHashSet<>(this.tableProteinsToIDMap.keySet());
@@ -863,7 +842,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         for (QuantDiseaseGroupsComparison i : filtersMap.keySet()) {
 
             if (filtersMap.get(i) != null) {
-                filteredProteinsList = filter(filteredProteinsList, i, filtersMap.get(i));
+                filteredProteinsList = filterProteinList(filteredProteinsList, i, filtersMap.get(i));
 
             }
 
@@ -877,7 +856,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
 
         }
         if (mainProteinTable.getItemIds().size() == tableItemsMap.size()) {
-            isFiltered = false;
+            filtereApplied = false;
         }
         inUseSselectedProteinsList = new LinkedHashSet<>();
         for (QuantComparisonProtein prot : fullSselectedProteinsList) {
@@ -893,11 +872,18 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
             item.getItemProperty("Index").setValue(indexing);
             indexing++;
         }
-        updateRowNumber(mainProteinTable.getItemIds().size(), generateThumbImg());
+        updateIconRowNumber(mainProteinTable.getItemIds().size(), generateThumbImg());
 
     }
 
-    private Set<String> filter(Set<String> proteinsList, QuantDiseaseGroupsComparison comparison, Set<Object> filters) {
+    /**
+     * Filter current protein list using the applied filters from comparison.
+     *
+     * @param proteinsList current filtered proteins list.
+     * @param comparison the comparison used for filtering the data.
+     * @param filters set of the applied filters from this comparison.
+     */
+    private Set<String> filterProteinList(Set<String> proteinsList, QuantDiseaseGroupsComparison comparison, Set<Object> filters) {
         if (filters == null || filters.isEmpty()) {
             return proteinsList;
         }
@@ -911,6 +897,11 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
 
     }
 
+    /**
+     * Protein table selection action.
+     *
+     * @param event protein table selection event.
+     */
     @Override
     public void valueChange(Property.ValueChangeEvent event) {
         if (event.getProperty().getValue() == null) {
@@ -933,7 +924,20 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
 
     }
 
+    /**
+     * Select protein from the protein table to update the system.
+     *
+     * @param selectedProtein the selected protein key.
+     * @param custTrend the customized user trend(in case of quant comparing
+     * mode).
+     */
     public abstract void selectProtein(String selectedProtein, int custTrend);
 
-    public abstract void updateRowNumber(int rowNumber, String URl);
+    /**
+     * Update the left side button icon and text.
+     *
+     * @param rowNumber number of proteins (row number).
+     * @param URl image encoded into Based64 string.
+     */
+    public abstract void updateIconRowNumber(int rowNumber, String URl);
 }

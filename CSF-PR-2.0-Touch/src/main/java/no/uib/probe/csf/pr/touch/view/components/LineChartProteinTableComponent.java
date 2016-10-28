@@ -194,7 +194,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         height = height - 60;
         width = width - 50;
 
-        quantProteinTable = new ProteinTable(width, height, false) {
+        quantProteinTable = new ProteinTable(width, height) {
 
             @Override
             public void dropComparison(QuantDiseaseGroupsComparison comparison) {
@@ -215,7 +215,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
             }
 
             @Override
-            public void updateRowNumber(int rowNumber, String url) {
+            public void updateIconRowNumber(int rowNumber, String url) {
                 searchingFieldLayout.updateLabel("(" + rowNumber + ")");
                 LineChartProteinTableComponent.this.updateThumbIconRowNumber(rowNumber, url);
             }
@@ -316,7 +316,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
 
             @Override
             public void onClick() {
-                exportTable.updateTableData(quantProteinTable.getSelectedComparisonsList(), quantProteinTable.getSelectedProteinsList(), quantProteinTable.getSortingHeader(), quantProteinTable.isUpSort());
+                exportTable.updateTableData(quantProteinTable.getSelectedComparisonsList(), quantProteinTable.getSelectedProteinsList(), quantProteinTable.getSortingColumnHeader(), quantProteinTable.isAscendingSort());
                 ExcelExport csvExport = new ExcelExport(exportTable.getExportTable(), "CSF-PR  Protein Information");
                 csvExport.setReportTitle("CSF-PR / Quant Protein Information ");
                 csvExport.setExportFileName("CSF-PR - Quant Protein Information" + ".xls");
@@ -386,12 +386,10 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
                 proteinSearchingMap.put(protein.getProteinAccession() + "__" + protein.getProteinName(), protein);
 
             });
-            quantProteinTable.hideCheckedColumn(true);
 
         } else if (type.equalsIgnoreCase("comparisons_selection")) {
             removeFiltersBtn.setEnabled(false);
             filterSortSwichBtn.reset();
-            quantProteinTable.hideCheckedColumn(true);
 
         }
     }

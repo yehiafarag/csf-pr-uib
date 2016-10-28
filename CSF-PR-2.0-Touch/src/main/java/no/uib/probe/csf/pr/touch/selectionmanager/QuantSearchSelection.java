@@ -38,8 +38,9 @@ public class QuantSearchSelection {
      */
     private Map<String, Set<Integer>> diseaseCategoriesIdMap;
 
-    /*
-     *Customized comparison based on user input data in quant comparison layout
+    /**
+     * Customized comparison based on user input data in quant comparison
+     * layout.
      */
     private QuantDiseaseGroupsComparison userCustomizedComparison;
 

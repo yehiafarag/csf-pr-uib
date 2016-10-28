@@ -1162,7 +1162,7 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
      * Add User Customized Comparison to the system (activating quant compare
      * mode)
      *
-     * @param userCustomizedComparison
+     * @param userCustomizedComparison user input data in quant compare mode
      */
     public void setUserCustomizedComparison(QuantDiseaseGroupsComparison userCustomizedComparison) {
         this.userCustomizedComparison = userCustomizedComparison;

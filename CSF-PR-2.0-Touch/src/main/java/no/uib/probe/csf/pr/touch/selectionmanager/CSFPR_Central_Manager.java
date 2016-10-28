@@ -23,9 +23,10 @@ public class CSFPR_Central_Manager implements Serializable {
     /*
      *Map for storing current listeners or filters
      */
-    private final LinkedHashMap<String, CSFListener> Listeners_Map;
-    /*
-     *List of selected comparisons to be updated based on user selection for comparisons across the system
+    private final LinkedHashMap<String, CSFListener> Listeners_Map;  
+    /**
+     * List of selected comparisons to be updated based on user selection for
+     * comparisons across the system.
      */
     private Set<QuantDiseaseGroupsComparison> selectedComparisonsList;
     /*

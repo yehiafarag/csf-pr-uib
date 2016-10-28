@@ -1,48 +1,65 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.view.components.linechartproteintablecomponents;
 
 import com.vaadin.data.Item;
-import com.vaadin.server.ExternalResource;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
-import no.uib.probe.csf.pr.touch.view.core.ColumnHeaderLayout;
-import no.uib.probe.csf.pr.touch.view.core.ExternalLink;
-import no.uib.probe.csf.pr.touch.view.core.ProteinTrendLayout;
-import no.uib.probe.csf.pr.touch.view.core.RadioButton;
-import no.uib.probe.csf.pr.touch.view.core.TrendSymbol;
 
 /**
  *
+ * This class represents table is made for exporting protein table data data
+ *
  * @author Yehia Farag
  *
- * this table is made for exporting data
  */
 public class ExportProteinTable extends VerticalLayout {
 
+    /**
+     * The main table to export.
+     */
     private Table exportTable;
+    /*
+     * Customized comparison based on user input data in quant comparison layout.
+     */
+    private QuantDiseaseGroupsComparison userCustomizedComparison;
 
+    /**
+     * Set customized comparison based on user input data in quant comparison
+     * layout.
+     * @param userCustomizedComparison user input data in quant compare mode.
+     */
     public void setUserCustomizedComparison(QuantDiseaseGroupsComparison userCustomizedComparison) {
         this.userCustomizedComparison = userCustomizedComparison;
     }
 
+    /**
+     * Constructor to initialize the main attributes.
+     */
     public ExportProteinTable() {
         this.setVisible(false);
-
     }
 
+    /**
+     * Get generated export table.
+     *
+     * @return exportTable the table to be exported.
+     */
     public Table getExportTable() {
         return exportTable;
     }
-    private QuantDiseaseGroupsComparison userCustomizedComparison;
 
-    public void updateTableData(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, Set<QuantComparisonProtein> selectedProteinsList,String sortingHeader,boolean upSort) {
+    /**
+     * Update export table data.
+     *
+     * @param selectedComparisonsList list of quant disease comparisons objects.
+     * @param selectedProteinsList list of the selected quant protein objects.
+     * @param sortingHeader the sorting header title to sort table before
+     * exporting.
+     * @param upSort the sorting direction.
+     */
+    public void updateTableData(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, Set<QuantComparisonProtein> selectedProteinsList, String sortingHeader, boolean upSort) {
         this.removeAllComponents();
         exportTable = new Table();
         this.addComponent(exportTable);
@@ -59,7 +76,7 @@ public class ExportProteinTable extends VerticalLayout {
             objects = new Object[3 + selectedComparisonsList.size()];
         }
         for (QuantDiseaseGroupsComparison quantComp : selectedComparisonsList) {
-            String compName = quantComp.getComparisonHeader().split(" / ")[0].split("__")[0]+" / "+quantComp.getComparisonHeader().split(" / ")[1].split("__")[0]+" ("+quantComp.getDiseaseCategory()+")";
+            String compName = quantComp.getComparisonHeader().split(" / ")[0].split("__")[0] + " / " + quantComp.getComparisonHeader().split(" / ")[1].split("__")[0] + " (" + quantComp.getDiseaseCategory() + ")";
             exportTable.addContainerProperty(quantComp.getComparisonHeader(), Double.class, null, compName, null, Table.Align.CENTER);
 
         }
@@ -81,32 +98,30 @@ public class ExportProteinTable extends VerticalLayout {
                 i = 3;
             }
             for (QuantDiseaseGroupsComparison quantComp : selectedComparisonsList) {
-                  String key = "";
-                    if (quantComp.getQuantComparisonProteinMap().containsKey("0_" + accession)) {
-                        key = "0_" + accession;
-                    } else if (quantComp.getQuantComparisonProteinMap().containsKey("1_" + accession)) {
-                        key = "1_" + accession;
-                    } else if (quantComp.getQuantComparisonProteinMap().containsKey("2_" + accession)) {
-                        key = "2_" + accession;
+                String key = "";
+                if (quantComp.getQuantComparisonProteinMap().containsKey("0_" + accession)) {
+                    key = "0_" + accession;
+                } else if (quantComp.getQuantComparisonProteinMap().containsKey("1_" + accession)) {
+                    key = "1_" + accession;
+                } else if (quantComp.getQuantComparisonProteinMap().containsKey("2_" + accession)) {
+                    key = "2_" + accession;
 
-                    } else if (quantComp.getQuantComparisonProteinMap().containsKey("3_" + accession)) {
+                } else if (quantComp.getQuantComparisonProteinMap().containsKey("3_" + accession)) {
 
-                        key = "3_" + accession;
-                    } else if (quantComp.getQuantComparisonProteinMap().containsKey("4_" + accession)) //                                    if (quantComp.getQuantComparisonProteinMap().containsValue(protien.getProtKey())) {
-                    {
-                        key = "4_" + accession;
+                    key = "3_" + accession;
+                } else if (quantComp.getQuantComparisonProteinMap().containsKey("4_" + accession)) //                                    if (quantComp.getQuantComparisonProteinMap().containsValue(protien.getProtKey())) {
+                {
+                    key = "4_" + accession;
 
-                    }
-                
-                
-                
+                }
+
                 if (quantComp.getQuantComparisonProteinMap().containsKey(key)) {
                     objects[i] = quantComp.getQuantComparisonProteinMap().get(key).getOverallCellPercentValue();
                 }
                 i++;
 
             }
-            objects[0]= protId+1;
+            objects[0] = protId + 1;
             exportTable.addItem(objects, protId);
             protId++;
 
@@ -119,7 +134,6 @@ public class ExportProteinTable extends VerticalLayout {
             item.getItemProperty("Index").setValue(indexing);
             indexing++;
         }
-      
 
     }
 
