@@ -41,7 +41,7 @@ public class Data_Handler implements Serializable {
     private final DatasetUtility Dataset_Util;
 
     /**
-     * Initialize the main Data Handler
+     * Constructor to initialize the main Data Handler
      *
      * @param url database url
      * @param dbName database name

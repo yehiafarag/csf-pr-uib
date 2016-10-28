@@ -1,17 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.view.components.heatmapsubcomponents;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
@@ -20,28 +10,33 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author yfa041
+ * @author Yehia Farag
+ *
+ * This class represents the rotated JPanel that is used for heat map column
+ * cell header and disease category the class is used for generating images in
+ * swing panels
  */
 public class RotatedJPanel extends JPanel {
 
+    /**
+     * The image that is used for rotation process
+     */
     private BufferedImage componentImg;
 
-    private GraphicsConfiguration getDefaultConfiguration() {
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice gd = ge.getDefaultScreenDevice();
-        return gd.getDefaultConfiguration();
-    }
-
+    /**
+     * Convert the main JPAnel into a buffered image in order to rotate it
+     */
     private void updateComponentImg() {
-
         BufferedImage img = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_RGB);
-        Graphics2D g2d = (Graphics2D)img.getGraphics();        
+        Graphics2D g2d = (Graphics2D) img.getGraphics();
         this.paint(g2d);
-//        g2d.dispose();
         componentImg = createFlipped(img);
 
     }
 
+    /**
+     * Rotate the image 270 degrees
+     */
     private BufferedImage createFlipped(BufferedImage image) {
 
         double rotationRequired = Math.toRadians(270);
@@ -54,7 +49,6 @@ public class RotatedJPanel extends JPanel {
         at.concatenate(AffineTransform.getScaleInstance(1, -1));
         at.concatenate(AffineTransform.getTranslateInstance(0, -image.getHeight()));
 
-//        ((Graphics2D) image.getGraphics()).setBackground(Color.GREEN);
         BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = newImage.createGraphics();
         g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
@@ -69,25 +63,18 @@ public class RotatedJPanel extends JPanel {
         return newImage;
     }
 
+    /**
+     * Get rotated JPanel
+     *
+     * @return panel after being rotated 270 degree
+     */
     public JPanel getRotatedJPanel() {
-//        this.setBackground(new Color(255, 255, 255));
-//        Graphics2D g2d = (Graphics2D) getGraphics();
-//        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//        g2d.setComposite(AlphaComposite.getInstance(
-//                AlphaComposite.SRC_OVER, 0.1f));
-
         updateComponentImg();
         JPanel panel = new JPanel() {
 
             @Override
             public void paintComponent(Graphics g) {
                 super.paintComponent(g);
-
-//                Graphics2D g2d =(Graphics2D)g;
-////                 g2d.setRenderingHint( RenderingHints.KEY_ANTIALIASING,   RenderingHints.VALUE_ANTIALIAS_ON);
-//        g2d.setComposite(AlphaComposite.getInstance(
-//            AlphaComposite.SRC_OVER, 0.1f));
-//        g2d.setColor(new Color(255, 255, 255, 50));
                 g.drawImage(componentImg, 0, 0, this);
             }
 

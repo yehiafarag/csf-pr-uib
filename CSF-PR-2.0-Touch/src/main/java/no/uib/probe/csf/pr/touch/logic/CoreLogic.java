@@ -27,7 +27,7 @@ import no.uib.probe.csf.pr.touch.view.core.OverviewInfoBean;
  *
  * @author Yehia Farag
  *
- * this class contains the logic layer (main computing code) this class interact
+ * This class contains the logic layer (main computing code) this class interact
  * with both the data handler and the data access layer
  */
 public class CoreLogic implements Serializable {
@@ -45,7 +45,7 @@ public class CoreLogic implements Serializable {
     }
 
     /**
-     * this method responsible for getting the resource overview information
+     * This method responsible for getting the resource overview information
      *
      * @return OverviewInfoBean resource information bean
      */
@@ -55,7 +55,7 @@ public class CoreLogic implements Serializable {
     }
 
     /**
-     * this method responsible for getting initial publication information
+     * This method responsible for getting initial publication information
      *
      * @return list of publications available in the the resource
      */
@@ -66,7 +66,7 @@ public class CoreLogic implements Serializable {
     }
 
     /**
-     * this method responsible for getting initial datasets information
+     * This method responsible for getting initial datasets information
      *
      * @return set of datasets information available in the the resource
      */
@@ -76,7 +76,7 @@ public class CoreLogic implements Serializable {
     }
 
     /**
-     * this method responsible for getting initial datasets information for
+     * This method responsible for getting initial datasets information for
      * searching layout
      *
      * @return set of datasets information available in the the resource
@@ -190,7 +190,7 @@ public class CoreLogic implements Serializable {
     }
 
     /**
-     * this method is responsible for update quant comparison proteins map for
+     * This method is responsible for update quant comparison proteins map for
      * each comparison
      *
      *
@@ -245,7 +245,6 @@ public class CoreLogic implements Serializable {
                 }
             }
 
-//            String diseaseCategory = comparison.getDiseaseCategory();
             for (QuantProtein quant : comparisonProtMap) {
                 boolean inverted = false;
                 String dsPGrI = comparison.getDatasetMap().get(quant.getQuantDatasetIndex()).getDiseaseSubGroup1();
@@ -469,7 +468,7 @@ public class CoreLogic implements Serializable {
     }
 
     /**
-     * this function to filter the quant search results based on keywords and
+     * This function to filter the quant search results based on keywords and
      * detect the not found keywords
      *
      * @param quantProteinstList list of found proteins
@@ -523,7 +522,7 @@ public class CoreLogic implements Serializable {
     }
 
     /**
-     * this function to get the quant hits list from the searching results and
+     * This function to get the quant hits list from the searching results and
      * group the common proteins in separated lists
      *
      * @param quantProteinsList list of found proteins
@@ -585,7 +584,7 @@ public class CoreLogic implements Serializable {
     }
 
     /**
-     * this function to get the quant comparison hits list from the searching
+     * This function to get the quant comparison hits list from the searching
      * results and group the common proteins in separated lists
      *
      * @param quantProteinsList list of found proteins
@@ -618,7 +617,7 @@ public class CoreLogic implements Serializable {
     }
 
     /**
-     * this function to get the quant comparison hits list from the searching
+     * This function to get the quant comparison hits list from the searching
      * results and group the common proteins in separated lists
      *
      * @param quantProteinsList list of found proteins
@@ -699,7 +698,7 @@ public class CoreLogic implements Serializable {
     }
 
     /**
-     * this function to get the identification hits list from the searching
+     * This function to get the identification hits list from the searching
      * results and group the common proteins in separated lists
      *
      * @param identificationProteinsList list of found proteins

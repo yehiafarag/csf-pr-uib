@@ -493,7 +493,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
             if (title.equalsIgnoreCase("")) {
                 title = "Not Available";
             }
-            HeaderCell headerCell = new HeaderCell(title, i, cellInfo.getDiseaseGroupFullName(), cellInfo.getDiseaseCategory(), true) {
+            HeaderCell headerCell = new HeaderCell(title, cellInfo.getDiseaseGroupFullName(), cellInfo.getDiseaseCategory(), true) {
 
                 @Override
                 public void selectData(String valueLabel) {
@@ -518,7 +518,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
             if (title.equalsIgnoreCase("")) {
                 title = "Not Available";
             }
-            HeaderCell headerCell = new HeaderCell(title, i, cellInfo.getDiseaseGroupFullName(), cellInfo.getDiseaseCategory(), false) {
+            HeaderCell headerCell = new HeaderCell(title, cellInfo.getDiseaseGroupFullName(), cellInfo.getDiseaseCategory(), false) {
 
                 @Override
                 public void selectData(String valueLabel) {
@@ -537,7 +537,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
         //init data
         calcHeatMapMatrix(rowheaders, colheaders, patientsGroupComparisonsSet, fullQuantDsMap);
-        HeatmapColorGenerator hmColorGen = new HeatmapColorGenerator(maxDatasetNumber, 0);
+        HeatmapColorGenerator hmColorGen = new HeatmapColorGenerator(maxDatasetNumber);
         comparisonsCellsMap.clear();
 
         dataValuesColors = new String[rowheaders.size()][colheaders.size()];
@@ -569,7 +569,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
                 }
                 String fullComparisonTitle = fullGrI + " / " + fullGrII;
                 String orginalComparisonName = grI.getDiseaseGroupOreginalName() + " / " + grII.getDiseaseGroupOreginalName();
-                HeatmapCell cell = new HeatmapCell(value, color, grI.getDiseaseHashedColor(), datasetMap, x, y, null, heatmapCellWidth, pubCounter.size(), updatedComparisonTitle, fullComparisonTitle, orginalComparisonName, ((HeatMapHeaderCellInformationBean) rowheaders.toArray()[x]).getDiseaseCategory(), ((HeatMapHeaderCellInformationBean) rowheaders.toArray()[x]).getDiseaseStyleName()) {
+                HeatmapCell cell = new HeatmapCell(value, color, grI.getDiseaseHashedColor(), datasetMap, x, y, heatmapCellWidth, pubCounter.size(), updatedComparisonTitle, fullComparisonTitle, orginalComparisonName, ((HeatMapHeaderCellInformationBean) rowheaders.toArray()[x]).getDiseaseCategory(), ((HeatMapHeaderCellInformationBean) rowheaders.toArray()[x]).getDiseaseStyleName()) {
 
                     @Override
                     public void selectData(HeatmapCell cell) {
@@ -691,7 +691,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
         updateSelectionManagerIndexes();
         if (selectedCells.isEmpty()) {
             comparisonsCellsMap.values().stream().forEach((hmcell) -> {
-                hmcell.initialState();
+                hmcell.resetCell();
             });
 
         } else {
@@ -921,7 +921,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
         if (selectedQuantDiseaseGroupsComparisonList.isEmpty()) {
 //            reset all cells to inital state
             comparisonsCellsMap.values().stream().forEach((hmcell) -> {
-                hmcell.initialState();
+                hmcell.resetCell();
             });
         }
 
@@ -1130,7 +1130,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
         selectedCells.clear();
         comparisonsCellsMap.values().stream().forEach((cell) -> {
-            cell.initialState();
+            cell.resetCell();
         });
         selectedQuantDiseaseGroupsComparisonList.clear();
     }
@@ -1275,7 +1275,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
             if (dcat.contains("col__")) {
 
-                HeaderCell headerLabel = new HeaderCell(title, 0, title, title, false) {
+                HeaderCell headerLabel = new HeaderCell(title, title, title, false) {
 
                     @Override
                     public void selectData(String diseaseCategoryName) {
@@ -1296,7 +1296,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
                 i += headerLabel.getWidth() + 2;
 
             } else {
-                HeaderCell headerLabel = new HeaderCell(title, 0, title, title, true) {
+                HeaderCell headerLabel = new HeaderCell(title, title, title, true) {
 
                     @Override
                     public void selectData(String diseaseCategoryName) {

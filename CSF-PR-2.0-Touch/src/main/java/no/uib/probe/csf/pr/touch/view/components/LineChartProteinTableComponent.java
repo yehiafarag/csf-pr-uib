@@ -186,7 +186,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         tableLayoutFrame.setHeightUndefined();
         tableLayoutFrame.addStyleName("roundedborder");
         tableLayoutFrame.addStyleName("whitelayout");
-        tableLayoutFrame.addStyleName("paddingtop20");
+        tableLayoutFrame.addStyleName("paddingtop25");
         tableLayoutFrame.addStyleName("paddingleft10");
         tableLayoutFrame.addStyleName("paddingbottom10");
         bodyContainer.addComponent(tableLayoutFrame);

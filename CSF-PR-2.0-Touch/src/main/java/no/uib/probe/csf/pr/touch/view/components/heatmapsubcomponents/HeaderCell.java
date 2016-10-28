@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.view.components.heatmapsubcomponents;
 
 import com.vaadin.event.LayoutEvents;
@@ -17,72 +12,107 @@ import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 
 /**
- * this class give the control on the header label style and events
+ * This class give the control on the header label style and events
  *
  * @author Yehia Farag
  */
 public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
-    private final int index;
+    /**
+     * The main header caption label
+     */
+    private final Label valueLabel;
+    /**
+     * The header is selected
+     */
+    private boolean selected = false;
+    /*
+     *List of included comparisons to be updated on select this cell
+     */
+    private final Set<QuantDiseaseGroupsComparison> includedComparisons = new LinkedHashSet<>();
+    /*
+     *List of included heat map cells to be updated on select this cell
+     */
+    private final List<HeatmapCell> includedCells;
+    /**
+     * The main header caption string value
+     */
+    private final String title;
+    /**
+     * The HTML hashed color code for this cell (based on disease category)
+     */
+    private String color;
+    /**
+     * The main disease category that that cell belong to
+     */
+    private final String diseaseCategory;
+    /**
+     * Is the cell is a column header cell
+     */
+    private final boolean rotate;
 
+    /**
+     * Is the header is for combined-renamed disease sub group
+     */
+    private boolean combinedHeader = false;
+
+    /**
+     * Get the main disease category that that cell belong to
+     *
+     * @return diseaseCategory
+     */
     public String getDiseaseCategory() {
         return diseaseCategory;
     }
-    private final Label valueLabel;
 
     /**
+     * Get list of included heat map cells to be updated on select this cell
      *
-     * @return
+     * @return includedCells
      */
     public List<HeatmapCell> getIncludedCells() {
         return includedCells;
     }
 
     /**
+     * Get list of included comparisons to be updated on select this cell
      *
-     * @return
+     * @return includedComparisons
      */
     public Set<QuantDiseaseGroupsComparison> getIncludedComparisons() {
         return includedComparisons;
     }
 
     /**
+     * Get the overall value of the header cell
      *
-     * @return
+     * @return disease sub group title + "__" + diseaseCategory
      */
     public String getValueLabel() {
         return title + "__" + diseaseCategory;
     }
-    private boolean selected = false;
-    private final Set<QuantDiseaseGroupsComparison> includedComparisons = new LinkedHashSet<>();
-    private final List<HeatmapCell> includedCells;
-    private final String title;
-//    private final String fullName;
-    private String color;
-    private final String diseaseCategory;
-    private final boolean rotate;
 
     /**
+     * Constructor to initialize the main attributes
      *
-     * @param rotate
-     * @param title
-     * @param diseaseStyle
-     * @param index
-     * @param headerWidth
-     * @param headerHeight
-     * @param fullDiseaseGroupName
+     *
+     * @param diseaseSubgroupName the disease sub group diseaseSubgroupName
+     * @param fullDiseaseSubgroupName full name of disease subgroup
+     * @param diseaseCategory the main disease category (MS, AD, PD..etc)
+     * @param rotate is the cell is column or row header cell
+     *
      */
-    public HeaderCell(String title, int index, String fullDiseaseGroupName, String diseaseCategory, boolean rotate) {
+    public HeaderCell(String diseaseSubgroupName, String fullDiseaseSubgroupName, String diseaseCategory, boolean rotate) {
         this.includedCells = new ArrayList<>();
         this.diseaseCategory = diseaseCategory;
         this.rotate = rotate;
-        this.title = title;
+        this.title = diseaseSubgroupName;
 
         valueLabel = new Label();
 
         String allStyle = "hm" + diseaseCategory.toLowerCase().replace("'", "").replace(" ", "") + "style";
 
-        valueLabel.setValue(title);
+        valueLabel.setValue(diseaseSubgroupName);
         valueLabel.setStyleName(allStyle);
         valueLabel.setWidth(100, Unit.PERCENTAGE);
         valueLabel.setHeight(100, Unit.PERCENTAGE);
@@ -94,23 +124,27 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
         this.addComponent(valueLabel);
         this.setComponentAlignment(valueLabel, Alignment.TOP_CENTER);
 
-        this.index = index;
         String fullName;
         this.addLayoutClickListener(HeaderCell.this);
-        if (fullDiseaseGroupName == null) {
-            fullName = title;
+        if (fullDiseaseSubgroupName == null) {
+            fullName = diseaseSubgroupName;
         } else {
-            fullName = fullDiseaseGroupName;
+            fullName = fullDiseaseSubgroupName;
         }
         String combinedGroup = "";
-        if (title.contains("*")) {
-            fullName=title;
+        if (diseaseSubgroupName.contains("*")) {
+            fullName = diseaseSubgroupName;
             combinedGroup = " - Combined disease groups";
         }
         this.setDescription(fullName + combinedGroup);
 
     }
 
+    /**
+     * On click the header cell select/un-select
+     *
+     * @param event
+     */
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         if (selected) {
@@ -124,24 +158,35 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
         }
     }
 
+    /**
+     * Select the header cell
+     */
     public void select() {
         this.addStyleName("hmselectedcell");
 
     }
 
+    /**
+     * Un-select the header cell
+     */
     public void unselect() {
 
         this.removeStyleName("hmselectedcell");
 
     }
 
+    /**
+     * Get the HTML hashed color code for this cell (based on disease category)
+     *
+     * @return color
+     */
     public String getColor() {
         return color;
     }
 
-    private boolean combinedHeader = false;
-
     /**
+     * Add comparison and heat map cell to included comparison set and included
+     * heat map cells list
      *
      * @param groupComp
      * @param cell
@@ -157,19 +202,27 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
         }
     }
 
+    /**
+     * Update the system (select)using the header title
+     *
+     * @param cellheader
+     */
     public abstract void selectData(String cellheader);
 
+    /**
+     * Update the system (un-select)using the header title
+     *
+     * @param cellHeader
+     */
     public abstract void unSelectData(String cellHeader);
 
-    @Override
-    public void setEnabled(boolean enabled) {
-        if (enabled) {
-            this.removeStyleName("disabled");
-        } else {
-            this.addStyleName("disabled");
-        }
-    }
-
+    /**
+     * Set the height and update group disease label height as well as the font
+     * size of the labels
+     *
+     * @param height
+     * @param unit
+     */
     @Override
     public void setHeight(float height, Unit unit) {
         super.setHeight(height, unit); //To change body of generated methods, choose Tools | Templates.
@@ -178,7 +231,7 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
             valueLabel.setWidth(height - 2, unit);
         } else {
             valueLabel.removeStyleName("linehight200");
-        valueLabel.removeStyleName("linehight180");
+            valueLabel.removeStyleName("linehight180");
             if (height < 15) {
                 valueLabel.addStyleName("xxsmallfont");
                 valueLabel.addStyleName("linehight180");
@@ -192,22 +245,29 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
         }
     }
 
+    /**
+     * Set the width and update group disease label width as well as the font
+     * size of the labels
+     *
+     * @param width
+     * @param unit
+     */
     @Override
     public void setWidth(float width, Unit unit) {
         super.setWidth(width, unit); //To change body of generated methods, choose Tools | Templates
         if (rotate) {
             valueLabel.removeStyleName("linehight200");
-        valueLabel.removeStyleName("linehight180");
-             if (width < 15) {
-            valueLabel.addStyleName("xxsmallfont");
-            valueLabel.addStyleName("linehight180");
-        } else if (width >= 15 && width < 20) {
-            valueLabel.addStyleName("xsmallfont");
-            valueLabel.addStyleName("linehight180");
-        } else {
-            valueLabel.addStyleName("smallfont");
-            valueLabel.addStyleName("linehight200");
-        }
+            valueLabel.removeStyleName("linehight180");
+            if (width < 15) {
+                valueLabel.addStyleName("xxsmallfont");
+                valueLabel.addStyleName("linehight180");
+            } else if (width >= 15 && width < 20) {
+                valueLabel.addStyleName("xsmallfont");
+                valueLabel.addStyleName("linehight180");
+            } else {
+                valueLabel.addStyleName("smallfont");
+                valueLabel.addStyleName("linehight200");
+            }
             valueLabel.setHeight(width - 2, unit);
         }
     }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.view.components.heatmapsubcomponents;
 
 import com.itextpdf.text.pdf.codec.Base64;
@@ -29,36 +24,82 @@ import org.jfree.chart.encoders.ImageFormat;
 /**
  *
  * @author Yehia Farag
+ *
+ * This class represents heat map image generator that is use Swing to generate
+ * image that is used for thumb left side button also used to provide the heat
+ * map Absolute layout for the different cells and headers location
  */
 public class HeatMapImgGenerator {
 
+    /**
+     * Transparent AWT color
+     */
     private final Color transparent = new Color(255, 255, 255, 0);
+    /**
+     * White AWT color
+     */
     private final Color white = new Color(255, 255, 255);
+    /**
+     * Generated image width
+     */
     private int imageWidth;
+    /**
+     * Generated image height
+     */
     private int imageHeight;
+    /**
+     * Heat map cell width
+     */
     private int cellWidth;
+    /**
+     * Resize factor that is used for ratios
+     */
     private double resizeFactor;
-    private final Map<String, Rectangle> headerLabelMap = new LinkedHashMap<>();
-    private boolean printLabels;
-    private  JPanel heatmapPanelLayout;
 
+    /**
+     * Map of headers and size of each label
+     */
+    private final Map<String, Rectangle> headerLabelMap = new LinkedHashMap<>();
+    /**
+     * Show/hide labels values
+     */
+    private boolean printLabels;
+    /**
+     * Main heat map swing JPanel
+     */
+    private JPanel heatmapPanelLayout;
+    /**
+     * Main heat map cell border
+     */
+    private final Border fullBorder = new LineBorder(new Color(220, 224, 224), 1);
+
+    /**
+     * Get map of headers and size of each label
+     *
+     * @return headerLabelMap
+     */
     public Map<String, Rectangle> getHeaderLabelMap() {
         return headerLabelMap;
     }
 
-    public JPanel getHeatmapPanelLayout() {
-        return heatmapPanelLayout;
-    }
-
+    /**
+     * Generate heat map image encoded as Base64 String that is used as image
+     * url
+     *
+     * @param rows
+     * @param columns
+     * @param data
+     * @param heatmapWidth
+     * @param heatmaHeight
+     * @param resetRowLabels
+     * @param restColumnLabels
+     * @param printLabels
+     * @return url for heat map image
+     */
     public String generateHeatmap(Set<HeatMapHeaderCellInformationBean> rows, Set<HeatMapHeaderCellInformationBean> columns, String[][] data, int heatmapWidth, int heatmaHeight, boolean resetRowLabels, boolean restColumnLabels, boolean printLabels) {
         this.printLabels = printLabels;
         headerLabelMap.clear();
-//        int panelHeight = heatmaHeight;
-//        if (heatmapWidth < heatmaHeight) {
-//            panelHeight = heatmapWidth;
-//        }
-
-        cellWidth = 20;//Math.min(((panelHeight - 150) / columns.size()), 25);
+        cellWidth = 20;
 
         heatmapPanelLayout = new JPanel();
 
@@ -68,12 +109,12 @@ public class HeatMapImgGenerator {
 
         imageWidth = (columns.size() * cellWidth) + 150;
         imageHeight = (rows.size() * cellWidth) + 150;
-        cellWidth = 20;//
-        resizeFactor = 1;// (double) imageWidth / (double) panelWidth;
+        cellWidth = 20;
+        resizeFactor = 1;
 
         cellWidth = (int) (20 * resizeFactor);
         heatmapPanelLayout.setSize(imageWidth, imageHeight);
-        JPanel cornerCell = initCell("transparent", 0, 0, fullBorder);
+        JPanel cornerCell = generateHeatmapCell("transparent", 0, 0, fullBorder);
         cornerCell.setSize((int) (150 * resizeFactor), (int) (150 * resizeFactor));
         heatmapPanelLayout.add(cornerCell);
         int x = (int) (150 * resizeFactor);
@@ -96,9 +137,9 @@ public class HeatMapImgGenerator {
                 Rectangle rectangle = headerLabelMap.get("col__" + headerCell.getDiseaseCategory());
                 rectangle.setBounds(0, 0, (int) rectangle.getWidth() + cellWidth, (int) (20 * resizeFactor));
             }
-            JPanel cell = initCell(headerCell.getDiseaseHashedColor(), x, y, fullBorder);
+            JPanel cell = generateHeatmapCell(headerCell.getDiseaseHashedColor(), x, y, fullBorder);
             cell.setSize(cellWidth, (int) (130 * resizeFactor));
-            JComponent label2 = initLabel(headerCell.getDiseaseGroupName(), cell.getSize().width, cell.getSize().height, true, cell.getBackground(), fullBorder);
+            JComponent label2 = generateHeatmapCellLabel(headerCell.getDiseaseGroupName(), cell.getSize().width, cell.getSize().height, true, cell.getBackground(), fullBorder);
             cell.add(label2);
             x += cellWidth;
             heatmapPanelLayout.add(cell);
@@ -126,27 +167,20 @@ public class HeatMapImgGenerator {
                     width += topLabelContainerWidth;
                 }
 
-                JComponent label = initLabel(dCat.split("__")[1], width, (int) (20 * resizeFactor), false, Color.decode(bean.getDiseaseHashedColor()), fullBorder);
+                JComponent label = generateHeatmapCellLabel(dCat.split("__")[1], width, (int) (20 * resizeFactor), false, Color.decode(bean.getDiseaseHashedColor()), fullBorder);
                 label.setLocation(x, 0);
                 heatmapPanelLayout.add(label);
                 x += label.getSize().width;
                 counter++;
 
             } else if (bean != null) {
-                JComponent label = initLabel(dCat.split("__")[1], headerLabelMap.get(dCat).width, (int) (20 * resizeFactor), false, Color.decode(bean.getDiseaseHashedColor()), fullBorder);
+                JComponent label = generateHeatmapCellLabel(dCat.split("__")[1], headerLabelMap.get(dCat).width, (int) (20 * resizeFactor), false, Color.decode(bean.getDiseaseHashedColor()), fullBorder);
                 label.setLocation(x, 0);
                 heatmapPanelLayout.add(label);
                 x += headerLabelMap.get(dCat).width;
             }
 
         }
-
-//        headerLabelMap.clear();
-//        for (HeatMapHeaderCellInformationBean bean : rows) {
-//
-//            headerLabelMap.put(bean.getDiseaseCategory(), new Rectangle(0, 0, 0, 0));
-//
-//        }
         y = (int) (150 * resizeFactor);
 
         for (HeatMapHeaderCellInformationBean headerCell : rows) {
@@ -157,9 +191,9 @@ public class HeatMapImgGenerator {
                 rectangle.setBounds(0, 0, (int) (20 * resizeFactor), (int) rectangle.getHeight() + cellWidth);
             }
 
-            JPanel cell = initCell(headerCell.getDiseaseHashedColor(), (int) (20 * resizeFactor), y, fullBorder);
+            JPanel cell = generateHeatmapCell(headerCell.getDiseaseHashedColor(), (int) (20 * resizeFactor), y, fullBorder);
             cell.setSize((int) (130 * resizeFactor), cellWidth);
-            JComponent label2 = initLabel(headerCell.getDiseaseGroupName(), cell.getSize().width, cell.getSize().height, false, cell.getBackground(), fullBorder);
+            JComponent label2 = generateHeatmapCellLabel(headerCell.getDiseaseGroupName(), cell.getSize().width, cell.getSize().height, false, cell.getBackground(), fullBorder);
             cell.add(label2);
             y += cellWidth;
             heatmapPanelLayout.add(cell);
@@ -188,14 +222,14 @@ public class HeatMapImgGenerator {
                     width += topLabelContainerWidth;
                 }
 
-                JComponent label = initLabel(dCat.split("__")[1], (int) (20 * resizeFactor), width, true, Color.decode(bean.getDiseaseHashedColor()), fullBorder);
+                JComponent label = generateHeatmapCellLabel(dCat.split("__")[1], (int) (20 * resizeFactor), width, true, Color.decode(bean.getDiseaseHashedColor()), fullBorder);
                 label.setLocation(0, y);
                 heatmapPanelLayout.add(label);
                 y += label.getSize().height;
                 counter++;
 
             } else if (bean != null) {
-                JComponent label = initLabel(dCat.split("__")[1], (int) (20 * resizeFactor), headerLabelMap.get(dCat).height, true, Color.decode(bean.getDiseaseHashedColor()), fullBorder);
+                JComponent label = generateHeatmapCellLabel(dCat.split("__")[1], (int) (20 * resizeFactor), headerLabelMap.get(dCat).height, true, Color.decode(bean.getDiseaseHashedColor()), fullBorder);
                 label.setLocation(0, y);
                 heatmapPanelLayout.add(label);
                 y += headerLabelMap.get(dCat).height;
@@ -205,22 +239,15 @@ public class HeatMapImgGenerator {
 
         x = (int) (150 * resizeFactor);
         y = (int) (150 * resizeFactor);
-        int row1 = 0, col = 0;
         for (String[] row : data) {
-
             for (String color : row) {
-
-//                System.out.println("at x "+row1+"  y "+col+" color "+color);
-                JPanel cell = initCell(color.split("__")[0], x, y, fullBorder);
+                JPanel cell = generateHeatmapCell(color.split("__")[0], x, y, fullBorder);
                 cell.setOpaque(true);
-                JComponent label2 = initLabel(color.split("__")[1], cell.getSize().width, cell.getSize().height, false, cell.getBackground(), fullBorder);
+                JComponent label2 = generateHeatmapCellLabel(color.split("__")[1], cell.getSize().width, cell.getSize().height, false, cell.getBackground(), fullBorder);
                 cell.add(label2);
                 x += cellWidth;
                 heatmapPanelLayout.add(cell);
-                col++;
             }
-            col = 0;
-            row1++;
             x = (int) (150 * resizeFactor);
             y += cellWidth;
         }
@@ -237,8 +264,6 @@ public class HeatMapImgGenerator {
         graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
-//        graphics.setPaint(transparent);
-//        graphics.setBackground(transparent);
         heatmapPanelLayout.paint(graphics);
         byte[] imageData = null;
 
@@ -256,48 +281,37 @@ public class HeatMapImgGenerator {
 
     }
 
+    /**
+     * Get main heat map panel height
+     *
+     * @return imageHeight
+     */
     public int getPanelHeight() {
         return imageHeight;
     }
 
-//    private BufferedImage generateSVG(JPanel myCanvas, int w, int h) {
-//        Writer out = null;
-//        String svgNS = "http://www.w3.org/2000/svg";
-//        DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
-//        Document myFactory = domImpl.createDocument(svgNS, "svg", null);
-//        SVGGeneratorContext ctx
-//                = SVGGeneratorContext.createDefault(myFactory);
-//        CachedImageHandlerBase64Encoder cachedImageHandlerBase64Encoder = new CachedImageHandlerBase64Encoder();
-//        ctx.setGenericImageHandler(cachedImageHandlerBase64Encoder);
-//        SVGGraphics2D svgGenerator = new SVGGraphics2D(ctx, false);
-//        myCanvas.paintComponents(svgGenerator);
-//        return cachedImageHandlerBase64Encoder.buildBufferedImage(new Dimension(w, h));
-//    }
-    private final Border fullBorder = new LineBorder(new Color(220, 224, 224), 1);
-
-    private JPanel initCell(String color, int x, int y, Border border) {
+    /**
+     * Generate heat map cell
+     *
+     * @return imageHeight
+     */
+    private JPanel generateHeatmapCell(String color, int x, int y, Border border) {
         JPanel cell = new JPanel(new FlowLayout(FlowLayout.CENTER));
         cell.setSize(cellWidth, cellWidth);
         Color c;
 
         if (color == null) {
             c = white;
-//            cell.setBorder(new LineBorder(Color.LIGHT_GRAY));
         } else if (color.equalsIgnoreCase("RGB(255,255,255)")) {
             c = white;
-//            cell.setBorder(new LineBorder(Color.LIGHT_GRAY));
         } else if (color.contains("#")) {
             c = Color.decode(color);
-//            cell.setBorder(new LineBorder(Color.LIGHT_GRAY));
         } else if (color.toLowerCase().contains("rgb")) {
             String rgb = color.toLowerCase().replace("rgb", "").replace("(", "").replace(")", "").replace(" ", "");
             String[] stringRGBArr = rgb.split(",");
             c = new Color(Integer.valueOf(stringRGBArr[0]), Integer.valueOf(stringRGBArr[1]), Integer.valueOf(stringRGBArr[2]));
-//            cell.setBorder(new LineBorder(Color.LIGHT_GRAY));
         } else {
             c = white;
-
-//            cell.setBorder(new LineBorder(c));
         }
 
         cell.setBackground(c);
@@ -309,9 +323,12 @@ public class HeatMapImgGenerator {
 
     }
 
-    boolean one = false;
-
-    private JComponent initLabel(String text, int w, int h, boolean rotate, Color background, Border border) {
+    /**
+     * Generate heat map cell label
+     *
+     * @return imageHeight
+     */
+    private JComponent generateHeatmapCellLabel(String text, int w, int h, boolean rotate, Color background, Border border) {
         JLabel label = new JLabel("");
         if (this.printLabels) {
             label.setText(text);
@@ -329,7 +346,7 @@ public class HeatMapImgGenerator {
 
         if (rotate) {
             if (this.printLabels) {
-                 label.setFont(new Font("Helvetica Neue", Font.PLAIN, (int) (12 * resizeFactor)));
+                label.setFont(new Font("Helvetica Neue", Font.PLAIN, (int) (12 * resizeFactor)));
                 label.setVerticalTextPosition(JLabel.TOP);
                 label.setHorizontalTextPosition(JLabel.CENTER);
                 label.setHorizontalAlignment(JLabel.CENTER);
@@ -351,61 +368,20 @@ public class HeatMapImgGenerator {
 
     }
 
-//    public static void main(String[] args) {
-//        JFrame frame = new JFrame("Rotation Test");
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        JLabel label = new JLabel("kokowawaaaaaaaaaaaaaaaaaaaaaa");
-//        label.setVerticalTextPosition(JLabel.TOP);
-//        label.setHorizontalTextPosition(JLabel.CENTER);
-//        label.setForeground(Color.black);
-//        label.setHorizontalAlignment(JLabel.CENTER);
-//        label.setVerticalAlignment(JLabel.TOP);
-//        label.setSize(150, 150);
-//
-//        RotatedJPanel rotPanel = new RotatedJPanel();
-//        rotPanel.setSize(150, 150);
-//        rotPanel.add(label);
-//        JPanel panel = rotPanel.getRotatedJPanel();
-//        panel.setBackground(Color.ORANGE);
-//        panel.setOpaque(true);
-//
-//        frame.setSize(350, 350);
-//        frame.add(panel);
-//        frame.setVisible(true);
-//    }
-//
-//    private JPanel rotateLabel(JLabel label) {
-//
-//        JPanel rotatedPanel = new JPanel() {
-//
-//            @Override
-//            public Dimension getPreferredSize() {
-//                return new Dimension(label.getWidth(), label.getHeight());
-//            }
-//
-//            @Override
-//            protected void paintComponent(Graphics g) {
-//                super.paintComponent(g);
-//                Graphics2D g2 = (Graphics2D) g;
-//                g2.translate(0, 0);
-//                g2.rotate(Math.PI * 3 / 2, 0, 25);
-//
-////                g2.drawImage(label.createVolatileImage(label.getWidth(), label.getHeight()), 0, 0, null);
-//            }
-//        };
-//        rotatedPanel.add(label);
-//        rotatedPanel.setSize(new Dimension(label.getWidth(), label.getHeight()));
-////        rotatedPanel.setBackground(Color.BLUE);
-//        rotatedPanel.setBorder(testBorder);
-//
-//        rotatedPanel.setOpaque(false);
-//        return rotatedPanel;
-//
-//    }
+    /**
+     * Get main heat map panel width
+     *
+     * @return imageWidth
+     */
     public int getPanelWidth() {
         return imageWidth;
     }
 
+    /**
+     * Get resize factor that is used for ratios
+     *
+     * @return resizeFactor
+     */
     public double getResizeFactor() {
         return resizeFactor;
     }

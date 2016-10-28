@@ -169,7 +169,7 @@ public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout i
         btnsWrapper.addComponent(datasetPieChartFiltersComponent, 0, 1);
         btnsWrapper.setComponentAlignment(datasetPieChartFiltersComponent, Alignment.MIDDLE_LEFT);
 
-        reconbineDiseaseGroupsFiltersComponent = new RecombineDiseaseGroupsCombonent(diseaseCategorySet, false) {
+        reconbineDiseaseGroupsFiltersComponent = new RecombineDiseaseGroupsCombonent(diseaseCategorySet) {
 
             @Override
             public void updateSystem(Map<String, Map<String, String>> updatedGroupsNamesMap) {
@@ -184,7 +184,7 @@ public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout i
         bottomBtnContainer.addComponent(reconbineDiseaseGroupsFiltersComponent);
         bottomBtnContainer.setComponentAlignment(reconbineDiseaseGroupsFiltersComponent, Alignment.TOP_LEFT);
 
-        reorderSelectComponent = new ReorderSelectGroupsComponent(false) {
+        reorderSelectComponent = new ReorderSelectGroupsComponent() {
 
             @Override
             public void updateSystem(LinkedHashSet<HeatMapHeaderCellInformationBean> rowHeaders, LinkedHashSet<HeatMapHeaderCellInformationBean> colHeaders) {

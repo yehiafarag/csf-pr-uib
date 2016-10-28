@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.view.components.datasetfilters;
 
 import com.vaadin.data.Property;
@@ -32,25 +27,54 @@ import org.vaadin.teemu.switchui.Switch;
  *
  * @author Yehia Farag
  *
- * this class is responsible for updating heat-map rows and columns order as
+ * This class is responsible for updating heat-map rows and columns order as
  * well as allowing user to hide disease groups
  */
 public abstract class ReorderSelectGroupsComponent extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
+    /*
+     *Main pop-up window frame with buttons control  
+     */
     private final PopupWindowFrameWithFunctionsBtns popupWindow;
+    /*
+     *Maindisease groups (comparisons labels) container
+     */
     private final HorizontalLayout diseaseGroupsContaioner;
+    /*
+     *Main window container layout
+     */
     private final VerticalLayout popupBody;
-    private LinkedHashSet<Integer> studiesIndexes;
-    private final SortableLayoutContainer groupILayout, groupIILayout;
-    private Set<DiseaseGroupComparison> patientsGroupComparisonsSet;
+    /*
+     *Set of datasets indexis available in the heat-map
+     */
+    private LinkedHashSet<Integer> datasetsIndexes;
+    /*
+     *Left side sortable (drag and drop) layout container
+     */
+    private final SortableLayoutContainer groupILayout;
+    /*
+     *Right side sortable (drag and drop) layout container
+     */
+    private final SortableLayoutContainer groupIILayout;
 
+    /*
+     *Set of datasets sub-group comparisons 
+     */
+    private Set<DiseaseGroupComparison> diseaseSubGroupComparisonsSet;
+
+    /*
+     *The window width
+     */
     private final int screenWidth = Math.min(Page.getCurrent().getBrowserWindowWidth(), 1000);
+    /*
+     *The window height
+     */
     private final int screenHeight = Math.min(Page.getCurrent().getBrowserWindowHeight(), 800);
 
     /**
-     *
+     * Constructor to initialize the main attributes
      */
-    public ReorderSelectGroupsComponent(boolean smallScreen) {
+    public ReorderSelectGroupsComponent() {
         //init icon
         this.setStyleName("filterbtn");
         Image icon = new Image();
@@ -70,8 +94,7 @@ public abstract class ReorderSelectGroupsComponent extends VerticalLayout implem
         HorizontalLayout btnsFrame = new HorizontalLayout();
         popupWindow = new PopupWindowFrameWithFunctionsBtns("Disease Groups", frame, btnsFrame);
         popupWindow.setFrameWidth(screenWidth);
-        
-        
+
         diseaseGroupsContaioner = new HorizontalLayout();
         popupBody.addComponent(diseaseGroupsContaioner);
         popupBody.setComponentAlignment(diseaseGroupsContaioner, Alignment.TOP_CENTER);
@@ -80,18 +103,11 @@ public abstract class ReorderSelectGroupsComponent extends VerticalLayout implem
         diseaseGroupsContaioner.setWidth(100, Unit.PERCENTAGE);
         diseaseGroupsContaioner.setSpacing(true);
 
-        int  h = 250;
+        int h = 250;
 
-            popupBody.setHeight(screenHeight - 180, Unit.PIXELS);
-//        } else {
-//            popupBody.setMargin(new MarginInfo(false, true, false, true));
-//            h = 220;
-//
-//            popupBody.setHeight(screenHeight - 220, Unit.PIXELS);
-//        }
+        popupBody.setHeight(screenHeight - 180, Unit.PIXELS);
         groupILayout = new SortableLayoutContainer("Disease Group A", (screenHeight - h));
         groupIILayout = new SortableLayoutContainer("Disease Group B", (screenHeight - h));
-        
 
         HorizontalLayout leftsideWrapper = new HorizontalLayout();
         btnsFrame.addComponent(leftsideWrapper);
@@ -104,7 +120,6 @@ public abstract class ReorderSelectGroupsComponent extends VerticalLayout implem
         HorizontalLayout bottomContainert = new HorizontalLayout();
         bottomContainert.setWidth(100, Unit.PERCENTAGE);
         bottomContainert.setHeight(100, Unit.PERCENTAGE);
-//        bottomContainert.setMargin(new MarginInfo(false, true, false, true));
 
         btnsFrame.addComponent(bottomContainert);
         btnsFrame.setComponentAlignment(bottomContainert, Alignment.BOTTOM_CENTER);
@@ -209,7 +224,7 @@ public abstract class ReorderSelectGroupsComponent extends VerticalLayout implem
      */
     public void updateData(LinkedHashSet<HeatMapHeaderCellInformationBean> rowHeaders, LinkedHashSet<HeatMapHeaderCellInformationBean> colHeaders, Set<DiseaseGroupComparison> patientsGroupComparisonsSet) {
 
-        this.patientsGroupComparisonsSet = patientsGroupComparisonsSet;
+        this.diseaseSubGroupComparisonsSet = patientsGroupComparisonsSet;
         fullCellInfoMap.clear();
         rowHeaders.stream().forEach((cell) -> {
             fullCellInfoMap.put(cell.getDiseaseGroupName() + "__" + cell.getDiseaseCategory(), cell);
@@ -221,10 +236,15 @@ public abstract class ReorderSelectGroupsComponent extends VerticalLayout implem
         groupIILayout.updateData(colHeaders);
 
         popupBody.setHeight(groupILayout.getFinalHeight() + 70, Unit.PIXELS);
-        popupWindow.setFrameHeight((int)groupILayout.getFinalHeight() + 250 - 35);
+        popupWindow.setFrameHeight((int) groupILayout.getFinalHeight() + 250 - 35);
 
     }
 
+    /**
+     * On click on the re-order select button
+     *
+     * @param event
+     */
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         popupWindow.view();
@@ -232,13 +252,13 @@ public abstract class ReorderSelectGroupsComponent extends VerticalLayout implem
 
     private Set<HeatMapHeaderCellInformationBean> filterPatGroup2List(Set<HeatMapHeaderCellInformationBean> sel1) {
         Set<HeatMapHeaderCellInformationBean> labels = new LinkedHashSet<>();
-        studiesIndexes = new LinkedHashSet<>();
-        patientsGroupComparisonsSet.stream().forEach((pg) -> {
+        datasetsIndexes = new LinkedHashSet<>();
+        diseaseSubGroupComparisonsSet.stream().forEach((pg) -> {
             sel1.stream().filter((label) -> (pg.checkSameComparison(label.getDiseaseGroupName() + "__" + label.getDiseaseCategory()))).map((label) -> {
                 labels.add(fullCellInfoMap.get(pg.getValLabel(label.getDiseaseGroupName() + "__" + label.getDiseaseCategory())));
                 return label;
             }).forEach((_item) -> {
-                studiesIndexes.add(pg.getQuantDatasetIndex());
+                datasetsIndexes.add(pg.getQuantDatasetIndex());
             });
         });
 
@@ -253,6 +273,11 @@ public abstract class ReorderSelectGroupsComponent extends VerticalLayout implem
      */
     public abstract void updateSystem(LinkedHashSet<HeatMapHeaderCellInformationBean> rowHeaders, LinkedHashSet<HeatMapHeaderCellInformationBean> colHeaders);
 
+    /**
+     * Update the main icon button for the filters based on the container size
+     *
+     * @param resizeFactor
+     */
     public void resizeFilter(double resizeFactor) {
         this.setWidth((int) (25 * resizeFactor), Unit.PIXELS);
         this.setHeight((int) (25 * resizeFactor), Unit.PIXELS);

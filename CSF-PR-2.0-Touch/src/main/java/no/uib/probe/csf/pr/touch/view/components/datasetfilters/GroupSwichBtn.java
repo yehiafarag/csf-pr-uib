@@ -26,27 +26,67 @@ import no.uib.probe.csf.pr.touch.view.core.PopupWindowFrameWithFunctionsBtns;
  *
  * @author Yehia Farag
  *
- * This class allow the users to switch/flip selected disease sub-groups comparisons
+ * This class allow the users to switch/flip selected disease sub-groups
+ * comparisons
  */
 public abstract class GroupSwichBtn extends ImageContainerBtn {
 
+    /*
+     *Main pop-up window frame with buttons control  
+     */
     private final PopupWindowFrameWithFunctionsBtns popupWindow;
+    /*
+     *Main window container layout
+     */
     private final VerticalLayout popupBodyLayout;
+    /*
+     *List of selected comparisons to be updated based on user selection for comparisons across the system
+     */
     private final Set<QuantDiseaseGroupsComparison> selectedComparisonList;
+    /*
+     *List of equal comparison map to avoid double selection from heat map
+     */
     private final Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> equalComparisonMap;
+    /*
+     *Main group comparisons container (contain the switch button) 
+     */
     private final GridLayout table;
-    private final Label headerI, headerII;
+    /*
+     *Header I label (Numerator) 
+     */
+    private final Label headerI;
+    /*
+     *Header II label (Denominator) 
+     */
+    private final Label headerII;
+    /*
+     *List of  comparisons after user updates to update comparsions across the system
+     */
     private final ArrayList<QuantDiseaseGroupsComparison> updatedComparisonList;
+    /*
+     *Button layout container for buttons in the bottom panel
+     */
     private final HorizontalLayout btnWrapper;
+    /*
+     *Scrolling panel to allow overflow scroll for comparisons
+     */
     private final Panel tablePanelWrapper;
-//    private final HorizontalLayout topLayout;
+    /*
+     *Main switch comparison buttons listener to handel the user cselection
+     */
     private final LayoutEvents.LayoutClickListener switchListener;
 
+    /*
+     *The window width
+     */
     private final int screenWidth = Math.min(Page.getCurrent().getBrowserWindowWidth(), 800);
+    /*
+     *The window height
+     */
     private final int screenHeight = Math.min(Page.getCurrent().getBrowserWindowHeight(), 800);
 
     /**
-     * on click method used to update the selection comparison list and view the
+     * On click method used to update the selection comparison list and view the
      * pop up window
      */
     @Override
@@ -65,7 +105,7 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
     }
 
     /**
-     *
+     * Constructor to initialize the main attributes
      */
     public GroupSwichBtn() {
         this.setHeight(40, Unit.PIXELS);
@@ -90,33 +130,13 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
         HorizontalLayout btnsFrame = new HorizontalLayout();
         popupWindow = new PopupWindowFrameWithFunctionsBtns("Switch Disease Groups", frame, btnsFrame);
         popupWindow.setFrameWidth(screenWidth);
-        //init top layout
-//        topLayout = new HorizontalLayout();
-//        topLayout.setWidth(100, Unit.PERCENTAGE);
-//        topLayout.setHeight(30, Unit.PIXELS);
-//        topLayout.setSpacing(true);
-//
-//        popupBodyLayout.addComponent(topLayout);
         headerI = new Label("Numerator");
         headerI.setStyleName(ValoTheme.LABEL_SMALL);
         headerI.addStyleName(ValoTheme.LABEL_BOLD);
-//        headerI.setWidth(100, Unit.PERCENTAGE);
-//        headerI.setContentMode(ContentMode.HTML);
-//        topLayout.addComponent(headerI);
-//        topLayout.setComponentAlignment(headerI, Alignment.TOP_CENTER);
-//
-//        VerticalLayout spacer = new VerticalLayout();
-//        spacer.setSizeFull();
-//        topLayout.addComponent(spacer);
-//        topLayout.setSpacing(true);
 
         headerII = new Label("Denominator");
         headerII.setStyleName(ValoTheme.LABEL_SMALL);
         headerII.addStyleName(ValoTheme.LABEL_BOLD);
-//        headerII.addStyleName("paddingleft16");
-//        headerII.setWidth(100, Unit.PERCENTAGE);
-//        topLayout.addComponent(headerII);
-//        topLayout.setComponentAlignment(headerII, Alignment.TOP_CENTER);
 
 //        init table
         table = new GridLayout();
@@ -136,27 +156,6 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
         tablePanelWrapper.addStyleName(ValoTheme.PANEL_BORDERLESS);
         popupBodyLayout.addComponent(tablePanelWrapper);
 
-        //init bottom layout
-//        btnWrapper.setMargin(true);
-//        popupBodyLayout.addComponent(btnWrapper);
-//        popupBodyLayout.setComponentAlignment(btnWrapper, Alignment.BOTTOM_CENTER);
-//        btnsFrame.setWidth(100, Unit.PERCENTAGE);
-////        btnsFrame.addStyleName("roundedborder");
-////        btnsFrame.addStyleName("padding20");
-////        btnsFrame.addStyleName("margintop");
-////        btnsFrame.addStyleName("whitelayout");
-////        btnsFrame.addStyleName("marginbottom");
-//        btnsFrame.addStyleName("roundedborder");
-//        btnsFrame.addStyleName("padding10");
-//        btnsFrame.addStyleName("whitelayout");
-//        btnsFrame.setMargin(new MarginInfo(true, false, false, false));
-//        btnsFrame.setWidth(100, Unit.PERCENTAGE);
-//        btnsFrame.addStyleName("margintop");
-//        btnsFrame.addStyleName("marginbottom");
-//        btnsFrame.setHeight(50, Unit.PIXELS);
-//        btnsFrame.addStyleName("padding20");
-//        frame.addComponent(btnsFrame);
-
         HorizontalLayout leftsideWrapper = new HorizontalLayout();
         btnsFrame.addComponent(leftsideWrapper);
         btnsFrame.setComponentAlignment(leftsideWrapper, Alignment.TOP_LEFT);
@@ -168,16 +167,12 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
         Button applyFilters = new Button("Apply");
         applyFilters.setDescription("Apply the selected filters");
         applyFilters.setStyleName(ValoTheme.BUTTON_TINY);
-//        applyFilters.setWidth(76, Unit.PIXELS);
-//        applyFilters.setHeight(25, Unit.PIXELS);
-
         applyFilters.addClickListener((Button.ClickEvent event) -> {
             GroupSwichBtn.this.updateComparisons(new LinkedHashSet<>(updatedComparisonList));
             popupWindow.view();
         });
         btnWrapper = new HorizontalLayout();
         btnWrapper.setWidth(100, Unit.PERCENTAGE);
-//        btnWrapper.setHeight(100, Unit.PIXELS);
         btnWrapper.addComponent(applyFilters);
         btnWrapper.setComponentAlignment(applyFilters, Alignment.TOP_RIGHT);
 
@@ -187,6 +182,11 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
 
     }
 
+    /**
+     * On click on switch button
+     *
+     * @param event
+     */
     private void switchClick(LayoutEvents.LayoutClickEvent event) {
         if (event.getComponent() instanceof VerticalLayout) {
             VerticalLayout switchBtn = (VerticalLayout) event.getComponent();
@@ -202,9 +202,8 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
             table.removeComponent(labelII);
             table.addComponent(labelI, 2, row);
             table.addComponent(labelII, 0, row);
-            QuantDiseaseGroupsComparison comp = equalComparisonMap.get(updatedComparisonList.get(row-1));
-//            comp.switchComparison();
-            updatedComparisonList.set(row-1, comp);
+            QuantDiseaseGroupsComparison comp = equalComparisonMap.get(updatedComparisonList.get(row - 1));
+            updatedComparisonList.set(row - 1, comp);
         }
 
     }
@@ -225,31 +224,24 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
      */
     public abstract Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> getEqualComparsionMap();
 
+    /**
+     * Update comparisons updated comparisons list in order to update the system
+     */
     private void updateSelectionList() {
         table.removeAllComponents();
         updatedComparisonList.clear();
         int row = 1;
         setWindowHight(selectedComparisonList.size());
-        
-        
-        
-        
-           table.addComponent(headerI,0,0);
+
+        table.addComponent(headerI, 0, 0);
         table.setComponentAlignment(headerI, Alignment.TOP_CENTER);
 
         VerticalLayout spacer = new VerticalLayout();
         spacer.setSizeFull();
-        table.addComponent(spacer,1,0);
-
-//        headerII.setWidth(100, Unit.PERCENTAGE);
-        table.addComponent(headerII,2,0);
+        table.addComponent(spacer, 1, 0);
+        table.addComponent(headerII, 2, 0);
         table.setComponentAlignment(headerII, Alignment.TOP_CENTER);
-        
-        
-        
-        
-        
-        
+
         for (QuantDiseaseGroupsComparison comparison : selectedComparisonList) {
 
             updatedComparisonList.add(comparison);
@@ -277,22 +269,29 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
             table.setComponentAlignment(switchBtn, Alignment.MIDDLE_CENTER);
             table.addComponent(labelII, 2, row++);
             table.setComponentAlignment(labelII, Alignment.TOP_RIGHT);
-
         }
-//        topLayout.setExpandRatio(headerI, table.getColumnExpandRatio(0));
-//        topLayout.setExpandRatio(topLayout.getComponent(1), table.getColumnExpandRatio(1));
-//        topLayout.setExpandRatio(headerII, table.getColumnExpandRatio(2));
 
     }
 
+    /**
+     * Update windows height and its container layout based on the number of
+     * comparisons in the system
+     *
+     * @param itemsNumber
+     */
     private void setWindowHight(int itemsNumber) {
-        int itemH = (27 * (itemsNumber+1));
+        int itemH = (27 * (itemsNumber + 1));
         int height = Math.min(screenHeight - 230, itemH);
         tablePanelWrapper.setHeight(height, Unit.PIXELS);
-        popupWindow.setFrameHeight((int)tablePanelWrapper.getHeight() + 239 - 65);
+        popupWindow.setFrameHeight((int) tablePanelWrapper.getHeight() + 239 - 65);
 
     }
 
+    /**
+     * Create Switch comparisons button
+     *
+     * @return Switch button (vertical layout)
+     */
     private VerticalLayout swichIconGenerator() {
 
         VerticalLayout switchBtn = new VerticalLayout();

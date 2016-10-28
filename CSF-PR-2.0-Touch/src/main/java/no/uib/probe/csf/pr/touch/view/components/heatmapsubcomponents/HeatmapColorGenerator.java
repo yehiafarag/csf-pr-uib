@@ -1,48 +1,40 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.view.components.heatmapsubcomponents;
 
 /**
  *
  * @author Yehia Farag
+ *
+ * This class is responsible for generating Color Gradient as HTML hashed color
+ * code for the heat map
  */
 public class HeatmapColorGenerator {
 
     private final double max;
-    private final double min;
 
     /**
+     * Constructor to initialize the main attributes
      *
-     * @param max
-     * @param min
+     * @param max the maximum value
      */
-    public HeatmapColorGenerator(double max, double min) {
+    public HeatmapColorGenerator(double max) {
 
         this.max = max;
-        this.min = min;
     }
 
     /**
+     * Get the color for the input value
      *
      * @param value
      * @return
      */
     public String getColor(double value) {
-        if(value == 0)
-            return "RGB("+255+","+255+","+255+")";
-        double n = (value)/max;
-        //color 1 red =203  green = 220 blue = 255; //color 2 35 42/247
-//        int R = (int) (35 * n + 203 * (1 - n));
-//        int G = (int) (42 * n + 220  * (1 - n));
-//        int B = (int) (247 * n + 255 * (1 - n));
-        
-        int R =49;
-        int G = (int) (46.0+(146.0-(146.0*n))); //(223 * (100 - n)) / 100 ;
-        int B =229;//(int) (255 * (100 - n)) / 100 ; //(int) (255 * n) / 100;
-
-        return "RGB("+R+","+G+","+B+")";
+        if (value == 0) {
+            return "RGB(" + 255 + "," + 255 + "," + 255 + ")";
+        }
+        double n = (value) / max;
+        int R = 49;
+        int G = (int) (46.0 + (146.0 - (146.0 * n)));
+        int B = 229;
+        return "RGB(" + R + "," + G + "," + B + ")";
     }
 }

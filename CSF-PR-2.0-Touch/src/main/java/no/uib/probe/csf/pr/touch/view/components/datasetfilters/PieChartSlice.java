@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.view.components.datasetfilters;
 
 import java.awt.Color;
@@ -14,40 +9,83 @@ import java.util.Set;
  *
  * @author Yehia Farag
  *
- * this class contains information required for pie-chart slice
+ * This class contains information required for pie-chart slice(working with pie
+ * chart interactive pie-chart filter)
  */
 public class PieChartSlice implements Serializable {
 
+    /**
+     * The slice identification label
+     */
     private Comparable label;
-    private double value;
+    /**
+     * The slice AWT Color required by JFreechart
+     */
     private Color color;
-    private Set<Integer> datasetIds = new HashSet<>();
+    /**
+     * Set of included dataset indexes
+     */
+    private final Set<Integer> datasetIds = new HashSet<>();
 
+    /**
+     * Get the slice identification label
+     *
+     * @return label
+     */
     public Comparable getLabel() {
         return label;
     }
 
+    /**
+     * Set the slice identification label
+     *
+     * @param label
+     */
     public void setLabel(Comparable label) {
         this.label = label;
     }
 
+    /**
+     * Get number of included dataset indexes
+     *
+     * @return dataset indexes set size
+     */
     public int getValue() {
         return datasetIds.size();
     }
 
-
+    /**
+     * Get the slice AWT Color required by JFreechart
+     *
+     * @return color
+     */
     public Color getColor() {
         return color;
     }
 
+    /**
+     * Set the slice AWT Color required by JFreechart
+     *
+     * @param color
+     */
     public void setColor(Color color) {
         this.color = color;
     }
 
+    /**
+     * Get set of included dataset indexes
+     *
+     * @return
+     */
     public Set<Integer> getDatasetIds() {
         return datasetIds;
     }
 
+    /**
+     * Add dataset indexes to et of included dataset indexes
+     *
+     * @param datasetId
+     */
     public void setDatasetIds(int datasetId) {
         this.datasetIds.add(datasetId);
     }
