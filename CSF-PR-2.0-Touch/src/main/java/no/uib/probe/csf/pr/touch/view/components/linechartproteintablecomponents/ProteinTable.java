@@ -5,7 +5,6 @@ import com.vaadin.data.Property;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
@@ -39,7 +38,7 @@ import org.jfree.chart.encoders.ImageFormat;
  * This class represents the quant protein table container components including
  * the table and sorting layout (sorting buttons for comparisons).
  *
- * @author Yehia Farag
+ * @author Yehia Farag.
  *
  *
  */
@@ -65,7 +64,6 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
      * Set of sorting buttons layout.
      */
     private final Set<ColumnHeaderLayout> columnHeaderSet;
-
     /**
      * The width of the table.
      */
