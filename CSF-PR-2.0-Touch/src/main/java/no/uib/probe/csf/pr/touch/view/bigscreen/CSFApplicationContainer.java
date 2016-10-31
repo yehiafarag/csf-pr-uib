@@ -10,7 +10,7 @@ import no.uib.probe.csf.pr.touch.view.LayoutViewManager;
 import no.uib.probe.csf.pr.touch.view.bigscreen.quantlayoutcontainer.QuantDataLayoutContainer;
 import no.uib.probe.csf.pr.touch.view.core.ScrollPanel;
 import no.uib.probe.csf.pr.touch.view.bigscreen.welcomepagecontainer.WelcomeLayoutComponents;
-import no.uib.probe.csf.pr.touch.view.core.BusyTask;
+import no.uib.probe.csf.pr.touch.view.core.BusyTaskProgressBar;
 import no.uib.probe.csf.pr.touch.view.core.SlidePanel;
 
 /**
@@ -62,7 +62,7 @@ public class CSFApplicationContainer extends VerticalLayout {
         this.setStyleName("whitelayout");
         this.setSpacing(false);
 
-        BusyTask busyTask = new BusyTask();
+        BusyTaskProgressBar busyTask = new BusyTaskProgressBar();
         this.View_Manager = new LayoutViewManager(busyTask);
         this.Data_handler = new Data_Handler(url, dbName, driver, userName, password, filesURL);
         CSFPR_Central_Manager CSFPR_Central_Manager = new CSFPR_Central_Manager(busyTask);

@@ -34,16 +34,16 @@ public class CSF_PR_UI extends UI {
 
     /**
      * This is main context parameters required for database access and file
-     * export
+     * export.
      */
     private String dbURL, dbName, dbDriver, dbUserName, dbPassword, filesURL;
 
     /**
-     * This is main application window width and height
+     * This is main application window width and height.
      */
     private int windowHeight, windowWidth;
     /**
-     * This is main application layout container
+     * This is main application layout container.
      */
     private MainLayout layout;
 

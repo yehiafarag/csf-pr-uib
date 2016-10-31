@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.view.components.peptideviewsubcomponents;
 
 import com.vaadin.ui.AbsoluteLayout;
@@ -18,45 +13,80 @@ import no.uib.probe.csf.pr.touch.view.core.InformationButton;
 import no.uib.probe.csf.pr.touch.view.core.StackedBarPeptideComponent;
 
 /**
+ * This class represents the protein sequence container that shows the protein
+ * coverage and available quantified peptides with its information.
  *
  * @author Yehia Farag
- *
- * this class represents the protein sequence layout
  */
 public class PeptideSequenceContainer extends AbsoluteLayout {
 
-    private final AbsoluteLayout highPeptidesSequencesBar, lowPeptidesSequencesBar, coveragePeptidesSequencesBar, stablePeptidesSequencesBar, unMappedPeptidesSequencesBar;
+    /**
+     * Increased fold change peptides layout container.
+     */
+    private final AbsoluteLayout increasedPeptidesSequencesBar;
+    /**
+     * Decreased fold change peptides layout container.
+     */
+    private final AbsoluteLayout decreasedPeptidesSequencesBar;
+    /**
+     * Protein sequence coverage layout container.
+     */
+    private final AbsoluteLayout coveragePeptidesSequencesBar;
+    /**
+     * Equal fold change peptides layout container.
+     */
+    private final AbsoluteLayout equalPeptidesSequencesBar;
+    /**
+     * Un-mapped peptides layout container (proteins that has updated sequence
+     * from UniProt).
+     */
+    private final AbsoluteLayout unMappedPeptidesSequencesBar;
+    /**
+     * Set of all protein peptides components.
+     */
     private final LinkedHashSet<StackedBarPeptideComponent> allPeptidesStackedBarComponentsMap;
+    /**
+     * Set of PTMs components.
+     */
     private final Set<VerticalLayout> ptmsLayoutMap = new HashSet<>();
+    /**
+     * List of all protein peptides components.
+     */
     private final List< StackedBarPeptideComponent> stackedPeptides = new ArrayList<>();
+    /**
+     * The protein has PTMs.
+     */
     private boolean ptmAvailable = false;
-    private final boolean smallScreen;
-    private final String proteinName;
 
-    public PeptideSequenceContainer(int width, LinkedHashSet<StackedBarPeptideComponent> allPeptidesStackedBarComponentsMap, boolean smallScreen, String proteinName, String sequence) {
+    /**
+     * Constructor ti initialize the main attributes
+     *
+     * @param width the width of the component.
+     * @param allPeptidesStackedBarComponentsMap List of all peptide layout
+     * components for the protein sequence coverage.
+     * @param sequence the protein sequence.
+     */
+    public PeptideSequenceContainer(int width, LinkedHashSet<StackedBarPeptideComponent> allPeptidesStackedBarComponentsMap, String sequence) {
         this.allPeptidesStackedBarComponentsMap = allPeptidesStackedBarComponentsMap;
         this.setVisible(true);
         this.setWidth(width, Unit.PIXELS);
-        this.smallScreen = smallScreen;
-        this.proteinName = proteinName;
 
-        highPeptidesSequencesBar = new AbsoluteLayout();
-        highPeptidesSequencesBar.setWidth((width - 40), Unit.PIXELS);
-
-        highPeptidesSequencesBar.setStyleName("flipvertically");
-        this.addComponent(highPeptidesSequencesBar, "left: " + (20) + "px; top: " + (0) + "px;");
+        increasedPeptidesSequencesBar = new AbsoluteLayout();
+        increasedPeptidesSequencesBar.setWidth((width - 40), Unit.PIXELS);
+        increasedPeptidesSequencesBar.setStyleName("flipvertically");
+        this.addComponent(increasedPeptidesSequencesBar, "left: " + (20) + "px; top: " + (0) + "px;");
 
         coveragePeptidesSequencesBar = new AbsoluteLayout();
         coveragePeptidesSequencesBar.setWidth((width - 40), Unit.PIXELS);
         coveragePeptidesSequencesBar.setHeight(17, Unit.PIXELS);
         coveragePeptidesSequencesBar.setStyleName("sequencecontainer");
 
-        stablePeptidesSequencesBar = new AbsoluteLayout();
-        stablePeptidesSequencesBar.setWidth((width - 40), Unit.PIXELS);
-        stablePeptidesSequencesBar.setHeight(15, Unit.PIXELS);
+        equalPeptidesSequencesBar = new AbsoluteLayout();
+        equalPeptidesSequencesBar.setWidth((width - 40), Unit.PIXELS);
+        equalPeptidesSequencesBar.setHeight(15, Unit.PIXELS);
 
-        lowPeptidesSequencesBar = new AbsoluteLayout();
-        lowPeptidesSequencesBar.setWidth((width - 40), Unit.PIXELS);
+        decreasedPeptidesSequencesBar = new AbsoluteLayout();
+        decreasedPeptidesSequencesBar.setWidth((width - 40), Unit.PIXELS);
 
         unMappedPeptidesSequencesBar = new AbsoluteLayout();
         unMappedPeptidesSequencesBar.setWidth((width - 40), Unit.PIXELS);
@@ -66,6 +96,15 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
 
     }
 
+    /**
+     * Add terminal labels (N and C terminals) to protein sequence coverage
+     * layout.
+     *
+     * @param top the top location (on y access)
+     * @param width the width of the component used to set the left location (on
+     * x access).
+     *
+     */
     private void addTerminalLabels(int top, int width) {
 
         VerticalLayout nTerminalEdge = new VerticalLayout();
@@ -76,7 +115,6 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
         nLabel.setWidth(10, Unit.PIXELS);
         nLabel.setStyleName("ntermlayout");
         nTerminalEdge.addComponent(nLabel);
-
         this.addComponent(nTerminalEdge, "left: " + (0) + "px; top: " + (top) + "px;");
 
         VerticalLayout cTerminalEdge = new VerticalLayout();
@@ -92,12 +130,19 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
 
     }
 
+    /**
+     * Initialize the protein sequence coverage layout.
+     *
+     *
+     * @param sequence the protein sequence.
+     */
     private void initLayout(String sequence) {
 
         LinkedHashSet<StackedBarPeptideComponent> unMappedSet = new LinkedHashSet<>();
         LinkedHashSet<StackedBarPeptideComponent> highSet = new LinkedHashSet<>();
         LinkedHashSet<StackedBarPeptideComponent> stableSet = new LinkedHashSet<>();
         StringBuilder tempSequence = new StringBuilder();
+
         allPeptidesStackedBarComponentsMap.stream().forEach((peptideLayout) -> {
             String pepSeq = peptideLayout.getParam("sequence").toString();
             if (!sequence.contains(pepSeq)) {
@@ -120,33 +165,31 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
         ptmsLayoutMap.clear();
         int top = 0;
         if (!highSet.isEmpty()) {
-            initPeptidesStackedBarComponentsLayout(highSet, highPeptidesSequencesBar, true);
-            top = (int) highPeptidesSequencesBar.getHeight() - 5;
+            initPeptidesStackedBarComponentsLayout(highSet, increasedPeptidesSequencesBar, true);
+            top = (int) increasedPeptidesSequencesBar.getHeight() - 5;
         }
         this.addComponent(coveragePeptidesSequencesBar, "left: " + (19) + "px; top: " + (top) + "px;");
         this.addTerminalLabels(top, (int) this.getWidth());
         top += 12;
-
         if (!stableSet.isEmpty()) {
-            initPeptidesStackedBarComponentsLayout(stableSet, stablePeptidesSequencesBar, false);
-            this.addComponent(stablePeptidesSequencesBar, "left: " + (20) + "px; top: " + (top) + "px;");
-            top += stablePeptidesSequencesBar.getHeight();
+            initPeptidesStackedBarComponentsLayout(stableSet, equalPeptidesSequencesBar, false);
+            this.addComponent(equalPeptidesSequencesBar, "left: " + (20) + "px; top: " + (top) + "px;");
+            top += equalPeptidesSequencesBar.getHeight();
         }
-
         if (!unMappedSet.isEmpty()) {
-
             int left = 5;
             int topLocation = 5;
             unMappedPeptidesSequencesBar.setHeight(20, Unit.PIXELS);
 
             InformationButton info = new InformationButton("Note that the protein sequence for this protein has been recently altered in UniProt. The following peptide sequences can therefore no longer be mapped to the current canonical protein sequence.", false);
-
             info.updateIcon(null);
             info.setWidth(55, Unit.PIXELS);
+
             Label titleLabel = new Label("Unmapped:");
             titleLabel.addStyleName("underline");
             info.addComponent(titleLabel);
             unMappedPeptidesSequencesBar.addComponent(info, "left: " + (left) + "px; top: " + topLocation + "px;");
+
             left += 60;
             topLocation = 3;
             for (StackedBarPeptideComponent peptide : unMappedSet) {
@@ -155,35 +198,54 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
                 if (left >= unMappedPeptidesSequencesBar.getWidth()) {
                     topLocation += 12;
                     left = 65;
-
                 }
-
             }
+
             unMappedPeptidesSequencesBar.setHeight(unMappedPeptidesSequencesBar.getHeight() + topLocation, Unit.PIXELS);
             this.addComponent(unMappedPeptidesSequencesBar, "left: " + (20) + "px; top: " + (top) + "px;");
             top += unMappedPeptidesSequencesBar.getHeight();
-
         }
 
         top += 5;
         this.setHeight(top, Unit.PIXELS);
         ptmAvailable = !ptmsLayoutMap.isEmpty();
-        checkAndMerge(sequence);
+        initializeProteinSequenceCoverageLayout(sequence);
 
     }
 
+    /**
+     * Check if the protein has PTMs.
+     *
+     * @return ptmAvailable The protein has PTMs.
+     */
     public boolean isPtmAvailable() {
         return ptmAvailable;
     }
 
-    public void showPtms(boolean show) {
+    /**
+     * Show/Hide PTMs.
+     *
+     * @param show show PTMs layout.
+     */
+    public void setShowPtms(boolean show) {
         ptmsLayoutMap.stream().forEach((ptmLayout) -> {
             ptmLayout.setVisible(show);
         });
 
     }
 
-    private void initPeptidesStackedBarComponentsLayout(LinkedHashSet<StackedBarPeptideComponent> stackedBarComponents, AbsoluteLayout peptidesComponentsContainer, boolean flip) {
+    /**
+     * Initialize the protein sequence peptides container (set the location of
+     * each peptide component).
+     *
+     * @param stackedBarComponents Set of protein coverage peptide layout.
+     * @param peptidesComponentsContainer The peptide container need to be
+     * initialize
+     * (IncreasedPeptidesSequencesBar,EqualPeptidesSequencesBar,DecreasedPeptidesSequencesBar).
+     * @param rotate rotate the layout 180 degree (ex.
+     * IncreasedPeptidesSequencesBar layout container).
+     */
+    private void initPeptidesStackedBarComponentsLayout(LinkedHashSet<StackedBarPeptideComponent> stackedBarComponents, AbsoluteLayout peptidesComponentsContainer, boolean rotate) {
         int top = 0;
         List< StackedBarPeptideComponent> initLevel = new ArrayList<>(stackedBarComponents);
         List< StackedBarPeptideComponent> updatedLevel = new ArrayList<>(stackedBarComponents);
@@ -248,7 +310,7 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
 
                     existedPeptides = true;
                     if (pepBarComp.isPtmAvailable()) {
-                        if (flip) {
+                        if (rotate) {
                             peptidesComponentsContainer.addComponent(pepBarComp.getPtmLayout(), "left: " + Math.max((pepBarComp.getX0() - 20 + (pepBarComp.getWidth() / 2) - 5), 0) + "px; top: " + (top + 21) + "px;");
                         } else {
                             peptidesComponentsContainer.addComponent(pepBarComp.getPtmLayout(), "left: " + Math.max((pepBarComp.getX0() - 20 + (pepBarComp.getWidth() / 2) - 5), 0) + "px; top: " + (top - 4) + "px;");
@@ -288,6 +350,14 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
 
     }
 
+    /**
+     * Check if there is intersection between 2 components.
+     *
+     * @param smallXComp The first peptide component located on the protein
+     * sequence coverage (smaller x).
+     * @param bigXComp The next peptide component located on the protein
+     * sequence coverage (larger x).
+     */
     private boolean checkIntersect(StackedBarPeptideComponent smallXComp, StackedBarPeptideComponent bigXComp) {
         int area = smallXComp.getX0() + smallXComp.getWidthArea() - 1;
         boolean test = bigXComp.getX0() <= area;
@@ -313,29 +383,34 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
         return test;
 
     }
-//
 
-    private void checkAndMerge(String sequence) {
-
+    /**
+     *
+     * Initialize protein sequence coverage layout (highlight the quantified
+     * areas on the protein sequence)
+     *
+     * @param sequence Protein sequence.
+     */
+    private void initializeProteinSequenceCoverageLayout(String sequence) {
         int[] location = new int[sequence.length()];
         int[] startPostionOnLayout = new int[sequence.length()];
         int[] endPostionOnLayout = new int[sequence.length()];
-        allPeptidesStackedBarComponentsMap.stream().forEach((peptideLayout) -> {
 
+        allPeptidesStackedBarComponentsMap.stream().forEach((peptideLayout) -> {
             String pepSeq = peptideLayout.getParam("sequence").toString();
-            if (sequence.contains(pepSeq))  {
+            if (sequence.contains(pepSeq)) {
                 int start = sequence.split(pepSeq)[0].length() + 1;
                 int end = start + pepSeq.length() - 1;
-                if (endPostionOnLayout[start - 2] == 0 ||(endPostionOnLayout[start - 2] > 0 && endPostionOnLayout[start - 2] < end)) {
+                if (endPostionOnLayout[start - 2] == 0 || (endPostionOnLayout[start - 2] > 0 && endPostionOnLayout[start - 2] < end)) {
                     endPostionOnLayout[start - 2] = peptideLayout.getX0() + peptideLayout.getWidthArea();
                 }
                 for (int x = start - 2; x < end; x++) {
                     location[x] = location[x] + 1;
                     startPostionOnLayout[x] = peptideLayout.getX0();
-
                 }
             }
         });
+
         for (int i = 0; i < location.length; i++) {
             if ((i == 0 && location[i] > 0) || (i > 0 && location[i] > 0 && location[i - 1] == 0)) {
                 int endPep = i;
@@ -343,12 +418,12 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
                     if (location[endPep] == 0) {
                         break;
                     }
-
                 }
                 int widthArea = 0;
                 for (int w = i; w < endPep; w++) {
                     widthArea = Math.max(endPostionOnLayout[w], widthArea);
                 }
+
                 VerticalLayout coverageComp = new VerticalLayout();
                 coverageComp.setStyleName("vdarkgray");
                 coverageComp.setHeight(15, Unit.PIXELS);
@@ -356,11 +431,7 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
                 coverageComp.setWidth((widthArea - startPostionOnLayout[i]), Unit.PIXELS);
                 coverageComp.setDescription("" + (i + 2) + "~" + sequence.substring((i + 2), endPep) + "~" + endPep);
                 coveragePeptidesSequencesBar.addComponent(coverageComp, "left: " + startPostionOnLayout[i] + "px; top: " + (0) + "px;");
-
             }
-
         }
-
     }
-
 }

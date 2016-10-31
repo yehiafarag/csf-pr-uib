@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.data.Property;
 import com.vaadin.event.LayoutEvents;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
@@ -21,21 +15,33 @@ import java.util.Set;
 import org.vaadin.teemu.VaadinIcons;
 
 /**
+ * This class allow users to filter the columns of the protein table or drop one
+ * comparison.
  *
  * @author Yehia Farag
- *
- * this class allow users to filter the columns of the protein table or drop one
- * comparison
- *
  */
 public abstract class ColumnFilterPopupBtn extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
+    /**
+     * The main pop-up window.
+     */
     private final PopupView filterPopupLayout;
+    /**
+     * Different options available to filter or drop the dataset.
+     */
     private final OptionGroup tableHeaderFilterOptions;
+    /**
+     * Main layout click listener.
+     */
     private final Property.ValueChangeListener listener;
 
-    public ColumnFilterPopupBtn(boolean custUser) {
-
+    /**
+     * Constructor to initialize the main attributes.
+     *
+     * @param quantCustomizedComparison The comparison is user customized
+     * comparison.
+     */
+    public ColumnFilterPopupBtn(boolean quantCustomizedComparison) {
         this.addStyleName("unselectedfilter");
 
         VerticalLayout popupbodyLayout = new VerticalLayout();
@@ -73,22 +79,19 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
         tableHeaderFilterOptions.setImmediate(true);
         tableHeaderFilterOptions.setNewItemsAllowed(false);
         tableHeaderFilterOptions.setMultiSelect(true);
-        tableHeaderFilterOptions.setItemEnabled(3, !custUser);
-        tableHeaderFilterOptions.setItemEnabled(1, !custUser);
-        tableHeaderFilterOptions.setItemEnabled(5, !custUser);
+        tableHeaderFilterOptions.setItemEnabled(3, !quantCustomizedComparison);
+        tableHeaderFilterOptions.setItemEnabled(1, !quantCustomizedComparison);
+        tableHeaderFilterOptions.setItemEnabled(5, !quantCustomizedComparison);
 
-         filterPopupLayout = new PopupView(null, popupbodyLayout) {
-
+        filterPopupLayout = new PopupView(null, popupbodyLayout) {
             @Override
             public void setPopupVisible(boolean visible) {
                 this.setVisible(visible);
-                super.setPopupVisible(visible); //To change body of generated methods, choose Tools | Templates.
+                super.setPopupVisible(visible);
             }
-
         };
-         
-         
-         if (!custUser) {
+
+        if (!quantCustomizedComparison) {
             HorizontalLayout labelContainer = new HorizontalLayout();
             labelContainer.setSpacing(true);
             Label icon = new Label();
@@ -101,16 +104,12 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
             headerLabel.addStyleName(ValoTheme.LABEL_SMALL);
             labelContainer.addStyleName("pointer");
             labelContainer.addComponent(headerLabel);
-            popupbodyLayout.addComponent(labelContainer); 
+            popupbodyLayout.addComponent(labelContainer);
             labelContainer.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
-            filterPopupLayout.setPopupVisible(false);
-            ColumnFilterPopupBtn.this.dropComparison();
-        });
+                filterPopupLayout.setPopupVisible(false);
+                ColumnFilterPopupBtn.this.dropComparison();
+            });
         }
-
-       
-
-      
 
         closePopup.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
             filterPopupLayout.setPopupVisible(false);
@@ -135,24 +134,36 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
         };
         tableHeaderFilterOptions.addValueChangeListener(listener);
         this.addLayoutClickListener(ColumnFilterPopupBtn.this);
-
     }
 
+    /**
+     * Layout click to show the filter pop-up layout.
+     *
+     * @param event show filter layout.
+     */
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         filterPopupLayout.setPopupVisible(true);
     }
 
+    /**
+     *Reset filter and remove all applied filters.
+     */
     public void reset() {
-
         tableHeaderFilterOptions.removeValueChangeListener(listener);
         tableHeaderFilterOptions.setValue(null);
-
         tableHeaderFilterOptions.addValueChangeListener(listener);
     }
 
+    /**
+     *Drop comparison upon user drop comparison selection.
+     */
     public abstract void dropComparison();
 
-    public abstract void filterTable(Set<Object> headersSet);
+    /**
+     *Filter table based on selected filters.
+     * @param selectedFiltersSet Set of user selected filters.
+     */
+    public abstract void filterTable(Set<Object> selectedFiltersSet);
 
 }

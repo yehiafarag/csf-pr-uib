@@ -10,41 +10,57 @@ import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 
 /**
+ * This class represents the welcome page and left side panels buttons.
  *
  * @author Yehia Farag
- *
- * this class represents the big buttons layout
- *
  */
 public abstract class BigBtn extends HorizontalLayout implements LayoutEvents.LayoutClickListener, MouseEvents.ClickListener {
 
-    private final Image bigBtnIcon;
+    /**
+     * Main icon image for the button.
+     */
+    private final Image buttonIcon;
+    /**
+     * Main icon container.
+     */
     private final ImageContainerBtn thumbContainer;
 
+    /**
+     * Get the main icon container layout
+     *
+     * @return thumbContainer The icon container.
+     */
     public ImageContainerBtn getThumbBtn() {
         return thumbContainer;
     }
 
+    /**
+     * Constructor to initialize the main attributes.
+     *
+     * @param header main header title.
+     * @param text The button text.
+     * @param imgUrl icon URL.
+     */
     public BigBtn(String header, String text, String imgUrl) {
         this.setWidthUndefined();
         this.setMargin(false);
-        int lineHeight=35;
+        int lineHeight = 35;
         this.addLayoutClickListener(BigBtn.this);
         this.setStyleName("bigbtn");
 
-        bigBtnIcon = new Image();
-        bigBtnIcon.setSource(new ThemeResource(imgUrl));
+        buttonIcon = new Image();
+        buttonIcon.setSource(new ThemeResource(imgUrl));
 
-        bigBtnIcon.addStyleName("blink");
-        this.addComponent(bigBtnIcon);
+        buttonIcon.addStyleName("blink");
+        this.addComponent(buttonIcon);
         String labelText = "<b>" + header + "</b><br/><font size='1'>" + text + "</font>";
 
         Label btnLabel = new Label(labelText);
         btnLabel.setContentMode(ContentMode.HTML);
         this.addComponent(btnLabel);
-        this.setComponentAlignment(btnLabel,Alignment.MIDDLE_LEFT);
+        this.setComponentAlignment(btnLabel, Alignment.MIDDLE_LEFT);
         btnLabel.setWidth(240, Unit.PIXELS);
-        btnLabel.setHeight(lineHeight,Unit.PIXELS);
+        btnLabel.setHeight(lineHeight, Unit.PIXELS);
 
         thumbContainer = new ImageContainerBtn() {
 
@@ -59,25 +75,34 @@ public abstract class BigBtn extends HorizontalLayout implements LayoutEvents.La
         thumbContainer.setEnabled(true);
         thumbContainer.setReadOnly(false);
 
-      
-            bigBtnIcon.setWidth(70, Unit.PIXELS);
-            bigBtnIcon.setHeight(70, Unit.PIXELS);
-            thumbContainer.setWidth(40, Unit.PIXELS);
-            thumbContainer.setHeight(40, Unit.PIXELS);
-        
+        buttonIcon.setWidth(70, Unit.PIXELS);
+        buttonIcon.setHeight(70, Unit.PIXELS);
+        thumbContainer.setWidth(40, Unit.PIXELS);
+        thumbContainer.setHeight(40, Unit.PIXELS);
 
     }
 
+    /**
+     * Layout clicked listener implementation.
+     *
+     * @param event Click the button event.
+     */
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         onClick();
     }
 
+    /**
+     * Do the implemented action
+     */
     @Override
     public void click(MouseEvents.ClickEvent event) {
         onClick();
     }
 
+    /**
+     * On click do the button function (to be implemented)
+     */
     public abstract void onClick();
 
 }

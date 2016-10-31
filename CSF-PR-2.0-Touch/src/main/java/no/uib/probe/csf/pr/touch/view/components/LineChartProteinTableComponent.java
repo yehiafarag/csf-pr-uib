@@ -34,42 +34,41 @@ import no.uib.probe.csf.pr.touch.view.core.SearchingField;
 import no.uib.probe.csf.pr.touch.view.core.TrendLegend;
 
 /**
- *
- * @author Yehia Farag
- *
  * This class represents both protein table that include line chart component
  * the protein line chart represents the overall protein trend across different
  * comparisons
+ *
+ * @author Yehia Farag
  */
 public abstract class LineChartProteinTableComponent extends VerticalLayout implements CSFListener {
 
     /*
-     *The central manager for handling data across different visualizations and managing all users selections
+     *The central manager for handling data across different visualizations and managing all users selections.
      */
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
     /*
-     *The protein table right side control buttons container
+     *The protein table right side control buttons container.
      */
     private final VerticalLayout proteinTableToolsContainer;
     /*
-     *The protein table that has protein information 
+     *The protein table that has protein information.
      */
     private final ProteinTable quantProteinTable;
     /*
-     *Map of protein accession and protein name with protein item inside the table to allow users search inside table using name or accession
+     *Map of protein accession and protein name with protein item inside the table to allow users search inside table using name or accession.
      */
     private final Map<String, QuantComparisonProtein> proteinSearchingMap;
     /*
-     *Remove any protein table applied filter button
+     *Remove any protein table applied filter button.
      */
     private final ImageContainerBtn removeFiltersBtn;
     /*
-     *Switch between sorting and filtering icons in the protein table comparisons headers button
-     */
+     *Switch between sorting and filtering icons in the protein table comparisons headers button.
+    */
     private final FilterColumnButton filterSortSwichBtn;
 
     /**
-     * Constructor to initialize the main attributes ( selection manage ..etc)
+     * Constructor to initialize the main attributes ( selection manage ..etc).
      *
      * @param CSFPR_Central_Manager
      * @param width main body layout width (the container)

@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
-import no.uib.probe.csf.pr.touch.view.core.BusyTask;
+import no.uib.probe.csf.pr.touch.view.core.BusyTaskProgressBar;
 
 /**
  *
@@ -20,49 +20,54 @@ import no.uib.probe.csf.pr.touch.view.core.BusyTask;
  */
 public class CSFPR_Central_Manager implements Serializable {
 
-    /*
-     *Map for storing current listeners or filters
-     */
-    private final LinkedHashMap<String, CSFListener> Listeners_Map;  
     /**
+     * Map for storing current listeners or filters
+     */
+    private final LinkedHashMap<String, CSFListener> Listeners_Map;
+    /**
+     * 
      * List of selected comparisons to be updated based on user selection for
      * comparisons across the system.
      */
     private Set<QuantDiseaseGroupsComparison> selectedComparisonsList;
-    /*
-     *List of selected proteins to be updated based on user selection for comparisons across the system
+    /**
+     * List of selected proteins to be updated based on user selection for
+     * comparisons across the system
      */
     private Set<QuantComparisonProtein> selectedProteinsList;
 
-    /*
-     *List of equal comparison map to avoid double selection from heat map
+    /**
+     * List of equal comparison map to avoid double selection from heat map
      */
     private Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> equalComparisonMap;
-    /*
-     *Main selected protein accession  from the protein table that is used to update peptides component table
+    /**
+     * Main selected protein accession from the protein table that is used to
+     * update peptides component table
      */
     private String selectedProteinAccession;
-    /*
-     *System is doing long processing task to push the the system to show  progress bar
+    /**
+     * System is doing long processing task to push the the system to show
+     * progress bar.
      */
-    private final BusyTask busyTask;
-
-    /*
-     *List of full publication information that is used by the resource overview and in publication information overview
+    private final BusyTaskProgressBar busyTask;
+    /**
+     * List of full publication information that is used by the resource
+     * overview and in publication information overview
      */
     private List<Object[]> fullPublicationList;
 
-    /*
-     *Main selected protein trend based on user customized  data to show the selected user protein trend in the peptide component
+    /**
+     * Main selected protein trend based on user customized data to show the
+     * selected user protein trend in the peptide component
      */
     private int custProteinSelectionTrend;
-
-    /*
-     *Main searching results object that contain the searching results information
+    /**
+     * Main searching results object that contain the searching results
+     * information
      */
     private QuantSearchSelection quantSearchSelection;
-
     /**
+     * *
      * Get list of selected proteins to be updated based on user selection for
      * comparisons across the system
      *
@@ -74,6 +79,7 @@ public class CSFPR_Central_Manager implements Serializable {
     }
 
     /**
+     * *
      * Get list of full publication information that is used by the resource
      * overview and in publication information overview
      *
@@ -84,6 +90,7 @@ public class CSFPR_Central_Manager implements Serializable {
     }
 
     /**
+     * *
      * Set list of full publication information that is used by the resource
      * overview and in publication information overview
      *
@@ -94,12 +101,13 @@ public class CSFPR_Central_Manager implements Serializable {
     }
 
     /**
+     * *
      * Constructor to initialize the main attributes
      *
      * @param busyTask progress task manager to show progress bar on long
      * processing tasks
      */
-    public CSFPR_Central_Manager(BusyTask busyTask) {
+    public CSFPR_Central_Manager(BusyTaskProgressBar busyTask) {
         this.busyTask = busyTask;
         Listeners_Map = new LinkedHashMap<>();
     }

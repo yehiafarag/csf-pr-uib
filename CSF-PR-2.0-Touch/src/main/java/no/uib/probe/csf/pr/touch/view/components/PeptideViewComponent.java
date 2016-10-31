@@ -32,7 +32,7 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantPeptide;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantProtein;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFListener;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
-import no.uib.probe.csf.pr.touch.view.components.peptideviewsubcomponents.PeptideSequenceLayoutTable;
+import no.uib.probe.csf.pr.touch.view.components.peptideviewsubcomponents.ProteinDatasetsTable;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 import no.uib.probe.csf.pr.touch.view.components.peptideviewsubcomponents.StudiesLineChart;
 import no.uib.probe.csf.pr.touch.view.core.CloseButton;
@@ -44,13 +44,12 @@ import org.jfree.chart.encoders.ImageEncoderFactory;
 import org.jfree.chart.encoders.ImageFormat;
 
 /**
- *
- * @author Yehia Farag
- *
  * This class represents the peptide information layout the layout show overall
  * trend line-chart and detailed studies line chart for the selected protein the
  * second component consist of table of comparisons and peptides sequences for
- * each protein
+ * each protein.
+ *
+ * @author Yehia Farag
  */
 public abstract class PeptideViewComponent extends VerticalLayout implements CSFListener {
 
@@ -69,7 +68,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
     /*
      *The peptide table (detailed protein table) that has peptides information 
      */
-    private final PeptideSequenceLayoutTable peptideSequenceTableLayout;
+    private final ProteinDatasetsTable peptideSequenceTableLayout;
     /*
      *The top protein name label
      */
@@ -146,12 +145,13 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
     /**
      * Generate thumb image to update the left side button icon.
      *
-     * @return iconResource the resource is used to update the left side button icon
+     * @return iconResource the resource is used to update the left side button
+     * icon
      *
      */
     private Resource generateThumbImg() {
         String seq = peptideSequenceTableLayout.getSequence();
-        Set<String> peptides = peptideSequenceTableLayout.getPeptides();
+        Set<String> peptides = peptideSequenceTableLayout.getPeptidesSequenceSet();
         final Border fullBorder = new LineBorder(Color.GRAY);
         Border peptideBorder = new LineBorder(Color.decode("#1d69b4").darker());
         JPanel proteinSequencePanel = new JPanel();
@@ -276,7 +276,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
 
         mainBodyContainer.addComponent(topLayout);
         mainBodyContainer.setComponentAlignment(topLayout, Alignment.TOP_CENTER);
-        lineChart = new StudiesLineChart(width - 50, (componentHeight - 50), false) {
+        lineChart = new StudiesLineChart(width - 50, (componentHeight - 50)) {
 
             @Override
             public void select(QuantDiseaseGroupsComparison comparison, int dsKey) {
@@ -361,7 +361,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         mainBodyContainer.addComponent(bottomLayout);
         mainBodyContainer.setComponentAlignment(bottomLayout, Alignment.MIDDLE_CENTER);
 
-        peptideSequenceTableLayout = new PeptideSequenceLayoutTable(width - 20, (componentHeight - 13), false);
+        peptideSequenceTableLayout = new ProteinDatasetsTable(width - 20, (componentHeight - 13));
         bottomLayout.addComponent(peptideSequenceTableLayout);
         bottomLayout.setComponentAlignment(peptideSequenceTableLayout, Alignment.MIDDLE_CENTER);
 
@@ -378,7 +378,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
             @Override
             public void onClick() {
                 resizeDatasetOnPateintsNumber = !resizeDatasetOnPateintsNumber;
-                lineChart.setResizeDetailedStudies(resizeDatasetOnPateintsNumber);
+                lineChart.setResizeDetailedDatasets(resizeDatasetOnPateintsNumber);
                 if (this.getStyleName().contains("selectmultiselectedbtn")) {
                     this.removeStyleName("selectmultiselectedbtn");
                 } else {
@@ -401,7 +401,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
                     resizeDsOnPatientNumbersBtn.setEnabled(true);
 
                 }
-                lineChart.viewDetailedStudies(showIndividualDatasets);
+                lineChart.setViewDetailedDatasets(showIndividualDatasets);
             }
 
         };
@@ -443,8 +443,8 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
                     defaultTrend = true;
                     this.removeStyleName("selectmultiselectedbtn");
                 }
-                lineChart.trendOrder(!defaultTrend);
-                peptideSequenceTableLayout.sortTable(lineChart.getOrderedComparisonList(!defaultTrend));
+                lineChart.setSortDatasetOnTrendOrder(!defaultTrend);
+                peptideSequenceTableLayout.sortTable(lineChart.getCurrentComparisonList(!defaultTrend));
                 studiesNumberLabel.setValue("Studies (" + peptideSequenceTableLayout.getRowsNumber() + "/" + totatlDatasetsNumber + ")");
 
                 this.setEnabled(true);

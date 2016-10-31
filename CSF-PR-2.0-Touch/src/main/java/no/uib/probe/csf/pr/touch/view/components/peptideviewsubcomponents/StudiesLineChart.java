@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.view.components.peptideviewsubcomponents;
 
 import com.vaadin.event.LayoutEvents;
@@ -58,50 +53,169 @@ import org.jfree.ui.TextAnchor;
 import org.jfree.util.ShapeUtilities;
 
 /**
+ * This class represents line chart in the protein details tab, the chart view
+ * the overall datasets trend and detailed dataset information.
  *
  * @author Yehia Farag
- *
- * this class represents line chart in the peptides tab the chart view the
- * overall absTrend and studies information
- *
  */
 public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutEvents.LayoutClickListener {
 
+    /**
+     * JFree Components.
+     */
+    /**
+     * JFreeChart used to generate thumb image and default chart image
+     * background.
+     */
+    private JFreeChart lineChart;
+    /**
+     * Chart dataset.
+     */
+    private DefaultXYDataset dataset;
+    /**
+     * X Axis for JFree chart.
+     */
+    private SymbolAxis xAxis;
+    /**
+     * Y Axis for JFree chart.
+     */
+    private NumberAxis yAxis;
+    /**
+     * Counter is used for color mapping in the JFree chart.
+     */
+    private int gridcounter = 0;
+    /**
+     * Counter is used for color mapping in the JFree chart.
+     */
+    private int gridcounterII = 0;
+    /**
+     * Array of chart Y access ticks text showing the trend.
+     */
+    final String[] tickLabels = new String[]{"Decreased", " ", "Equal", " ", "Increased"};
+    /**
+     * Use vertical/horizontal label for X access.
+     */
+    private boolean verticalLabels;
+    /**
+     * Array of tool-tips for different protein trends .
+     */
+    private final String[] tooltipsIcon = new String[]{"All Increased", "Mainly Increased", "Equal", "Mainly Decreased", "All Decreased", "No Quant. Info", "No Data Available "};
+    /**
+     * Chart rendering information that has the all information required for
+     * drawing Vaadin bubbles in the absolute layout.
+     */
+    private final ChartRenderingInfo chartRenderingInfo = new ChartRenderingInfo();
+    /**
+     * BufferedImage is used to generate encoded64 string images that is used in
+     * Vaadin image background and thumb image.
+     */
+    private BufferedImage bufferedChartImg;
+
+    /**
+     * Customized user data trend AWT color needed for JFree chart image
+     * generator based on user input data in quant comparison layout.
+     */
+    private final Color[] customizedUserDataColor = new Color[]{Color.decode("#e5ffe5"), Color.WHITE, Color.decode("#e6f4ff"), Color.WHITE, Color.decode("#ffe5e5")};
+
+    /**
+     * VaadinLayout Components.
+     */
+    /**
+     * The main chart background image (to be updated using JFreechart).
+     */
+    private final Image chartImg;
+    /**
+     * The main chart data container (VaadinLayout bubble container).
+     */
+    private final AbsoluteLayout chartComponentsLayout;
+    /**
+     * The main component width.
+     */
+    private final int width;
+    /**
+     * The main component height.
+     */
+    private final int height;
+    /**
+     * Customized user data trend based on user input data in quant comparison
+     * layout.
+     */
+    private int custTrend = -1;
+    /**
+     * Default chart image resource to work as URL resource generated from
+     * JFreechart for the main chart layout.
+     */
+    private ExternalResource maxImgUrl;
+    /**
+     * Map of selected comparisons or datasets and its symbol component.
+     */
+    private final Map<String, TrendSymbol> symbolMap;
+    /**
+     * List of overall trends for protein comparisons(have same order as the
+     * selected comparisons set) .
+     */
+    private final List<Integer> comparisonTrends;
+    /**
+     * The main protein key.
+     */
+    private String proteinKey;
+    /**
+     * The main protein name.
+     */
+    private String proteinName;
+    /**
+     * List of selected comparisons to be updated based on user selection for
+     * comparisons across the system.
+     */
+    private Set<QuantDiseaseGroupsComparison> selectedComparisonList;
+    /**
+     * List of selected comparisons to be updated based on user selection and
+     * ordered based on trend.
+     */
+    private Set<QuantDiseaseGroupsComparison> orderedComparisonList;
+    /**
+     * Map of selected comparisons and sub-datasets trends under each
+     * comparison.
+     */
+    private final Map<String, Set<TrendSymbol>> subComparisonStudiesMap = new LinkedHashMap<>();
+
+    /**
+     * Map of selected comparisons and its overall trend for each comparison.
+     */
+    private final Map<String, Double> comparisonTrendMap = new LinkedHashMap<>();
+
+    /**
+     * Get main protein name
+     *
+     * @return proteinName Selected protein name.
+     */
     public String getProteinName() {
         return proteinName;
     }
 
-    public Set<QuantDiseaseGroupsComparison> getOrderedComparisonList(boolean trendOreder) {
-
+    /**
+     * Get the current comparisons list (default or sorted list).
+     *
+     * @param trendOreder get sorted list based on trend.
+     * @return selectedComparisonList the current used comparisons list.
+     */
+    public Set<QuantDiseaseGroupsComparison> getCurrentComparisonList(boolean trendOreder) {
         if (trendOreder) {
-            System.out.println("at thi is orderd one");
             return orderedComparisonList;
         } else {
             return selectedComparisonList;
         }
     }
-    
-    public BufferedImage getBufferedImg(){
-        return bufferedChartImg;
-    }
 
-    private final Image chartImg;
-    private final AbsoluteLayout chartComponentsLayout;
-
-    private final int width, height;
-    private int custTrend = -1;
-    private final Color[] customizedUserDataColor = new Color[]{Color.decode("#e5ffe5"), Color.WHITE, Color.decode("#e6f4ff"), Color.WHITE, Color.decode("#ffe5e5")};
-    private JFreeChart lineChart;
-    private final ChartRenderingInfo chartRenderingInfo = new ChartRenderingInfo();
-    private ExternalResource minImgUrl, maxImgUrl;
-    private final Map<String, TrendSymbol> symbolMap;
-    private final List<Integer> comparisonTrends;
-    private final boolean smallScreen;
-
-    public StudiesLineChart(int width, int height, boolean smallScreen) {
+    /**
+     * Constructor to initialize the main attributes.
+     *
+     * @param width The line chart width.
+     * @param height The line chart height.
+     */
+    public StudiesLineChart(int width, int height) {
         this.width = width;
         this.height = height;
-        this.smallScreen = smallScreen;
         this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
 
@@ -117,23 +231,24 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         chartComponentsLayout = new AbsoluteLayout();
         chartComponentsLayout.setWidth(100, Unit.PERCENTAGE);
         chartComponentsLayout.setHeight(100, Unit.PERCENTAGE);
-
         chartComponentsLayout.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
-            if (event.getClickedComponent() != null && (event.getClickedComponent() instanceof TrendSymbol)) {
-
-            } else {
+            if (!(event.getClickedComponent() != null && (event.getClickedComponent() instanceof TrendSymbol))) {
                 StudiesLineChart.this.select(null, -100);
             }
         });
-
         this.addComponent(chartComponentsLayout, "left: " + 0 + "px; top: " + 0 + "px;");
     }
-    private String proteinKey;
-    private String proteinName;
 
-    private int gridcounter = 0;
-    private int gridcounterII = 0;
-
+    /**
+     * Update chart data based on user selection.
+     *
+     * @param selectedComparisonsList Set of user selected comparisons(from heat
+     * map component).
+     * @param proteinKey The selected protein key (from proteins table
+     * component).
+     * @param custTrend The trend of user input data (in case of quant
+     * comparisons mode)
+     */
     public void updateData(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, String proteinKey, int custTrend) {
         this.proteinKey = proteinKey;
         this.custTrend = custTrend;
@@ -169,7 +284,7 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         ));
         lineChart.setPadding(new RectangleInsets(0, 0, 0, 0));
         maxImgUrl = new ExternalResource(this.getChartImage(lineChart, chartRenderingInfo, width, height));
-        if (chartRenderingInfo.getEntityCollection().getEntityCount() < 4 || chartRenderingInfo.getPlotInfo().getDataArea().getHeight()<220) {
+        if (chartRenderingInfo.getEntityCollection().getEntityCount() < 4 || chartRenderingInfo.getPlotInfo().getDataArea().getHeight() < 220) {
             lineChart.getXYPlot().getDomainAxis().setVisible(false);
             maxImgUrl = new ExternalResource(this.getChartImage(lineChart, chartRenderingInfo, width, height));
             lineChart.getXYPlot().getDomainAxis().setVisible(true);
@@ -179,10 +294,6 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         initLayoutComponents(comparisonsList);
         chartImg.setSource(maxImgUrl);
     }
-    private DefaultXYDataset dataset;
-    private SymbolAxis xAxis;
-    private NumberAxis yAxis;
-    final String[] tickLabels = new String[]{"Decreased", " ", "Equal", " ", "Increased"};
 
     private void updateDataset(Set<QuantDiseaseGroupsComparison> selectedComparisonList, String key) {
         comparisonTrends.clear();
@@ -254,12 +365,7 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         dataset.addSeries("line", linevalues);
         verticalLabels = maxLength > 40 && selectedComparisonList.size() > 4;
 
-        Font font;
-        if (smallScreen) {
-            font = new Font("Helvetica Neue", Font.PLAIN, 10);
-        } else {
-            font = new Font("Helvetica Neue", Font.PLAIN, 13);
-        }
+        Font font = new Font("Helvetica Neue", Font.PLAIN, 13);
 
         xAxis = new SymbolAxis(null, xAxisLabels) {
             int x = 0;
@@ -529,9 +635,9 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
                 TrendSymbol symbol = new TrendSymbol(trend);
                 double scale = Math.max(this.scaleValues(numPatients, maxPatientsNumber, 100, 0), 1);
                 int w = (int) (12 * scale);
-                
+
                 String[] gr = comparison.getComparisonFullName().replace("__" + comparison.getDiseaseCategory(), "").split(" / ");
-                String updatedHeader = ("Numerator: " + gr[0] + "<br/>Denominator: " + gr[1]+ "<br/>Disease: " + comparison.getDiseaseCategory());  
+                String updatedHeader = ("Numerator: " + gr[0] + "<br/>Denominator: " + gr[1] + "<br/>Disease: " + comparison.getDiseaseCategory());
                 String tooltip = updatedHeader + "<br/>#Patients :" + numPatients;//+ "<br/>Datasets included: " + dsNumber;
 
                 symbol.setDescription(tooltip);
@@ -554,11 +660,6 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         }
         return subComparisonDatasetList;
     }
-
-    private boolean verticalLabels;
-
-    private Set<QuantDiseaseGroupsComparison> selectedComparisonList;
-    private Set<QuantDiseaseGroupsComparison> orderedComparisonList;
 
     private JFreeChart generateLineChart() {
 
@@ -734,68 +835,59 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         return jFreeChart;
     }
 
+    /**
+     * Generate JFree chart object that is used to generate the thumb icon used
+     * for updating the left button icon.
+     *
+     * @return lineChart line chart object.
+     */
     public JFreeChart generateThumbChart() {
         lineChart.getXYPlot().getDomainAxis().setVisible(false);
         lineChart.getXYPlot().getRangeAxis().setVisible(false);
         lineChart.getXYPlot().setOutlineVisible(true);
         lineChart.setPadding(new RectangleInsets(10, 5, 10, 5));
-
-//        lineChart.getXYPlot().setRangeGridlinesVisible(false);
-//        lineChart.getXYPlot().setDomainGridlinesVisible(true);
         lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.decode("#1d69b4"));
         lineChart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(5));
-//        gridcounter = 0;
-//        gridcounterII = 0;
-
-//        minImgUrl = new ExternalResource(this.getChartImage(lineChart, chartRenderingInfo, 100, 100));
-//        lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.GRAY);
-//        lineChart.getXYPlot().getDomainAxis().setVisible(true);
-//        lineChart.getXYPlot().getRangeAxis().setVisible(true);
-//        lineChart.getXYPlot().setRangeGridlinesVisible(true);
-//        lineChart.getXYPlot().setDomainGridlinesVisible(true);
         return lineChart;
-
     }
-    
-    private BufferedImage bufferedChartImg;
 
+    /**
+     * Convert JFree chart object into decoded64 String image.
+     *
+     * @return String of Decoded64 String that is used as URL for the generated
+     * image.
+     */
     private String getChartImage(JFreeChart chart, ChartRenderingInfo chartRenderingInfo, int width, int height) {
         if (chart == null) {
             return null;
         }
-
         String base64 = "";
         try {
-
-            bufferedChartImg= chart.createBufferedImage((int) width, (int) height, chartRenderingInfo);
+            bufferedChartImg = chart.createBufferedImage((int) width, (int) height, chartRenderingInfo);
             base64 = "data:image/png;base64," + Base64.encodeBase64String(ChartUtilities.encodeAsPNG(bufferedChartImg));
 
         } catch (IOException ex) {
             System.err.println("at error " + this.getClass() + " line 536 " + ex.getLocalizedMessage());
         }
         return base64;
-
     }
 
-    private final String[] tooltipsIcon = new String[]{"All Increased", "Mainly Increased", "Equal", "Mainly Decreased", "All Decreased", "No Quant. Info", "No Data Available "};
-    private final Map<String, Set<TrendSymbol>> subComparisonStudiesMap = new LinkedHashMap<>();
-
-    private final Map<String, Double> comparisonTrendMap = new LinkedHashMap<>();
-
+    /**
+     * Initialize the main line chart components based on data from JFreeChart.
+     *
+     * @param comparisonList Set of comparison objects.
+     */
     private void initLayoutComponents(Set<QuantDiseaseGroupsComparison> comparisonList) {
         chartComponentsLayout.removeAllComponents();
         comparisonTrendMap.clear();
         this.symbolMap.clear();
         for (int i = 0; i < chartRenderingInfo.getEntityCollection().getEntityCount(); i++) {
             final ChartEntity entity = chartRenderingInfo.getEntityCollection().getEntity(i);
-
             if (entity instanceof XYItemEntity) {
-
                 XYItemEntity comparisonPoint = ((XYItemEntity) entity);
                 if (comparisonPoint.getSeriesIndex() == 1) {
                     continue;
                 }
-
                 String[] arr = comparisonPoint.getShapeCoords().split(",");
                 int xSer = Integer.valueOf(arr[6]);
                 int ySer = Integer.valueOf(arr[1]);
@@ -826,6 +918,7 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
                 } else if (doubleTrend == -100.0) {
                     trend = 4;
                 }
+
                 TrendSymbol square = new TrendSymbol(trend);
                 square.setWidth(12, Unit.PIXELS);
                 square.setHeight(12, Unit.PIXELS);
@@ -845,11 +938,10 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
                     square.addStyleName("pointer");
                 }
                 String[] gr = gc.getComparisonFullName().replace("__" + gc.getDiseaseCategory(), "").split(" / ");
-                String updatedHeader = ("Numerator: " + gr[0] + "<br/>Denominator: " + gr[1]+ "<br/>Disease: " + gc.getDiseaseCategory());  
-                String tooltip = updatedHeader+ "<br/>Overall trend: " + tooltipsIcon[trend];//+ "<br/>Datasets included: " + dsNumber;
+                String updatedHeader = ("Numerator: " + gr[0] + "<br/>Denominator: " + gr[1] + "<br/>Disease: " + gc.getDiseaseCategory());
+                String tooltip = updatedHeader + "<br/>Overall trend: " + tooltipsIcon[trend];//+ "<br/>Datasets included: " + dsNumber;
                 square.setDescription(tooltip);
                 square.addLayoutClickListener(StudiesLineChart.this);
-
             }
         }
 
@@ -882,20 +974,18 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
                 }
             }
         }
-
     }
 
     /**
-     * Converts the value from linear scale to log scale. The log scale numbers
-     * are limited by the range of the type float. The linear scale numbers can
+     * Converts the value from linear scale to log scale, the log scale numbers
+     * are limited by the range of the type float, the linear scale numbers can
      * be any double value.
      *
-     * @param linearValue the value to be converted to log scale
-     * @param max
-     * @param upperLimit
-     * @param lowerLimit
-     * @return the value in log scale
-     * @throws IllegalArgumentException if value out of range
+     * @param linearValue the value to be converted to log scale.
+     * @param max the biggest number of the data.
+     * @param upperLimit The upper limit of the desired scale.
+     * @param lowerLimit The lower limit for the scale.
+     * @return the value in log scale.
      */
     public final double scaleValues(double linearValue, int max, double upperLimit, double lowerLimit) {
         double logMax = (Math.log(max) / Math.log(2));
@@ -904,23 +994,34 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         return logValue;
     }
 
-    public void viewDetailedStudies(boolean showDetailedStudies) {
+    /**
+     * Set show all datasets or show the overall comparisons trend.
+     *
+     * @param showDetailedDatasets show every dataset included in each
+     * comparison.
+     */
+    public void setViewDetailedDatasets(boolean showDetailedDatasets) {
         subComparisonStudiesMap.values().stream().forEach((dsSet) -> {
             dsSet.stream().forEach((ds) -> {
-                ds.setVisible(showDetailedStudies);
+                ds.setVisible(showDetailedDatasets);
             });
         });
 
         symbolMap.values().stream().forEach((comp) -> {
             if (!comp.getStyleName().contains("graydiamond")) {
-                comp.setVisible(!showDetailedStudies);
+                comp.setVisible(!showDetailedDatasets);
             }
         });
 
     }
 
-    public void setResizeDetailedStudies(boolean resize) {
-        if (resize) {
+    /**
+     * Resize datasets symbol based on number of patients in each comparison.
+     *
+     * @param resizeDatasetsSymbols Resize datasets based on number of patients.
+     */
+    public void setResizeDetailedDatasets(boolean resizeDatasetsSymbols) {
+        if (resizeDatasetsSymbols) {
             subComparisonStudiesMap.values().stream().forEach((dsSet) -> {
                 dsSet.stream().forEach((ds) -> {
                     String resizePostion = ds.getParam("resizePosition").toString();
@@ -946,6 +1047,12 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
 
     }
 
+    /**
+     * Get the sorted comparisons set based on the overall trend order.
+     *
+     * @return orederedComparisonSet sorted list for the comparisons on overall
+     * trend order.
+     */
     private Set<QuantDiseaseGroupsComparison> getOrderStudiesByTrend() {
         TreeMap<AlphanumComparator, QuantDiseaseGroupsComparison> orderedCompProteins = new TreeMap<>();
         LinkedHashSet<QuantDiseaseGroupsComparison> orederedComparisonSet = new LinkedHashSet<>();
@@ -966,7 +1073,13 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         return orederedComparisonSet;
     }
 
-    public void trendOrder(boolean trendOrder) {
+    /**
+     * Set the order of comparisons based on the overall trend order or by
+     * default order.
+     *
+     * @param trendOrder sort the comparisons on overall trend order.
+     */
+    public void setSortDatasetOnTrendOrder(boolean trendOrder) {
         if (trendOrder) {
             this.updateDataset(orderedComparisonList, proteinKey);
         } else {
@@ -985,25 +1098,11 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
 
     }
 
-    public JFreeChart getExportChart() {
-
-        lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.GRAY);
-        lineChart.getXYPlot().getDomainAxis().setVisible(true);
-        lineChart.getXYPlot().getRangeAxis().setVisible(true);
-        lineChart.getXYPlot().setOutlineVisible(false);
-        lineChart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(
-                1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
-                1.0f, new float[]{10.0f, 6.0f}, 0.0f
-        ));
-        lineChart.setPadding(new RectangleInsets(0, 0, 0, 0));
-        lineChart.getXYPlot().setRangeGridlinesVisible(true);
-        lineChart.getXYPlot().setDomainGridlinesVisible(true);
-        
-        
-        
-        return lineChart;
-    }
-
+    /**
+     * Select comparison or dataset from the line chart layout.
+     *
+     * @param event selection event
+     */
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         TrendSymbol symbol = (TrendSymbol) event.getComponent();
@@ -1016,6 +1115,12 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
 
     }
 
+    /**
+     * Select comparison or dataset from the line chart.
+     *
+     * @param comparison Comparison object.
+     * @param dsId Dataset index (-100 if the selected is comparison).
+     */
     public abstract void select(QuantDiseaseGroupsComparison comparison, int dsId);
 
 }

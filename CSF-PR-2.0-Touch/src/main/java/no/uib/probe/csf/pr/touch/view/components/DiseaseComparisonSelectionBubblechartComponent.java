@@ -63,116 +63,126 @@ import org.jfree.ui.RectangleInsets;
 import org.jfree.ui.TextAnchor;
 
 /**
+ * This class represents disease comparison selection bubble chart component.
  *
  * @author Yehia Farag
- *
- * This class represents disease comparison selection bubble chart component
  *
  */
 public abstract class DiseaseComparisonSelectionBubblechartComponent extends VerticalLayout implements CSFListener, LayoutEvents.LayoutClickListener {
 
-    /*
-     *The central manager for handling data across different visualizations and managing all users selections
+    /**
+     * The central manager for handling data across different visualizations and
+     * managing all users selections.
      */
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
-    /*
-     *The main chart container
+    /**
+     * The main chart container.
      */
     private final AbsoluteLayout chartLayoutContainer;
-    /*
-     *The main chart data container (the vaadin bubble container)
+    /**
+     * The main chart data container (Vaadin bubble container).
      */
     private final AbsoluteLayout chartComponentLayout;
-    /*
-     *The main chart background image (to be updated using jfreechart)
+    /**
+     * The main chart background image (to be updated using JFreechart).
      */
     private final Image chartImage;
 
-    /*
-     *The main component width
+    /**
+     * The main component width.
      */
     private int width;
-    /*
-     *The main component height
+    /**
+     * The main component height.
      */
     private int height;
-    /*
-     *Hide equal proteins data to clean the chart 
+    /**
+     * Hide equal proteins data to clean the chart.
      */
     private boolean hideEqualProteins = false;
 
-    /*
-     *Generate new image (part of sittings for JFreeChart image generator)
+    /**
+     * Generate new image (part of sittings for JFreeChart image generator).
      */
     private boolean isNewImge = true;
 
-    /*
-     *Color of equal proteins bubble (blue or gray in case of no data available)
+    /**
+     * Color of equal proteins bubble (blue or gray in case of no data
+     * available).
      */
     private Color stableColor;
-    /*
-     *Chart rendering information that has the all information required for drawing vaadin bubbles in the absolute layout
+    /**
+     * Chart rendering information that has the all information required for
+     * drawing Vaadin bubbles in the absolute layout.
      */
     private final ChartRenderingInfo chartRenderingInfo;
 
-    /*
-     *JFreeChart used to generate thumb image and default chart image background
+    /**
+     * JFreeChart used to generate thumb image and default chart image
+     * background.
      */
     private JFreeChart chart;
-    /*
-     *Default chart image into url link generated from JFreechart for the main chart layout
+    /**
+     * Default chart image into url link generated from JFreechart for the main
+     * chart layout.
      */
     private String defaultImgURL = "";
-    /*
-     *Thumb chart image into url link generated from JFreechart for the main chart layout
+    /**
+     * Thumb chart image into url link generated from JFreechart for the main
+     * chart layout.
      */
     private String thumbImgUrl = "";
-    /*
-     *Map of comparisons name to number of proteins in each category (increased 100%, increased <100%,equal...etc)
+    /**
+     * Map of comparisons name to number of proteins in each category (increased
+     * 100%,equal...etc).
      */
     private final Map<String, double[]> tooltipsProtNumberMap;
-    /*
-     *List of selected comparisons to be updated based on user selection for comparisons across the system
+    /**
+     * List of selected comparisons to be updated based on user selection for
+     * comparisons across the system.
      */
     private Set<QuantDiseaseGroupsComparison> selectedComparisonList;
-    /*
-     *Customized comparison based on user input data in quant comparison layout
+    /**
+     * Customized comparison based on user input data in quant comparison
+     * layout.
      */
     private QuantDiseaseGroupsComparison userCustomizedComparison;
-    /*
-     *A marker for user data disease group comparison in the bubble chart
+    /**
+     * A marker for user data disease group comparison in the bubble chart.
      */
     private int userDataCounter;
-    /*
-     *List of selected bubbles in the bubble plot
+    /**
+     * List of selected bubbles in the bubble plot.
      */
     private final Set<BubbleComponent> lastselectedComponents;
-    /*
-     *Array of tooltip text identical to comparisons order
+    /**
+     * Array of tool-tip text identical to comparisons order.
      */
     private final String[] tooltipLabels;
-    /*
-     *Array of trend HTML/css style names for different bubbles (increased 100%, increased <100%,equal...etc)
+    /**
+     * Array of trend HTML/CSS style names for different bubbles (increased
+     * 100%, equal...etc).
      */
     private final String[] trendStyles;
 
-    /*
-     *Allow multi select for bubbles in the chart
+    /**
+     * Allow multi select for bubbles in the chart
      */
     private boolean allowMultiSelect = true;
 
-    /*
-     *Map of comparison title and number of proteins included in each trend (increased 100%, increased <100%,equal...etc)
+    /**
+     * Map of comparison title and number of proteins included in each trend
+     * (increased 100%, equal...etc).
      */
     private final Map<String, Integer[]> comparisonValuesMap = new LinkedHashMap<>();
 
-    /*
-     *The disease comparison bubble chart right side control buttons container
+    /**
+     * The disease comparison bubble chart right side control buttons container.
      */
     private final VerticalLayout bubblechartToolsContainer;
 
     /**
-     * Get side buttons container that has all the bubble chart control buttons
+     * Get side buttons container that has all the bubble chart control buttons.
      *
      * @return bubblechartToolsContainer
      */
@@ -181,7 +191,7 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
     }
 
     /**
-     * Constructor to initialize the main attributes ( selection manage ..etc)
+     * Constructor to initialize the main attributes ( selection manage ..etc).
      *
      * @param CSFPR_Central_Manager
      * @param width main body layout width (the container)
@@ -234,8 +244,12 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
         topLayout.setComponentAlignment(legendLayout, Alignment.TOP_RIGHT);
         topLayout.setExpandRatio(legendLayout, 90);
 
-        //end of toplayout
-        //start chart layout
+        /**
+         * end of top layout
+         */
+        /**
+         * start chart layout
+         */
         VerticalLayout chartLayoutFrame = new VerticalLayout();
         height = height - 44;
 
@@ -886,10 +900,11 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
 
     /**
      * Convert JFree chart based into string url for image
-     *@param chart JFreechart
+     *
+     * @param chart JFreechart
      * @param width generated image width
      * @param height generated image height
-     * @return  URL for generated image
+     * @return URL for generated image
      */
     private String getChartImage(JFreeChart chart, int width, int height) {
         if (chart == null) {
@@ -933,7 +948,7 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
             ChartEntity entity = chartRenderingInfo.getEntityCollection().getEntity(i);
             if (entity instanceof XYItemEntity) {
                 XYItemEntity catEnt = (XYItemEntity) entity;
-                BubbleComponent square = new BubbleComponent("cycle");
+                BubbleComponent square = new BubbleComponent();
                 square.setStyleName("bubblechart");
                 String[] coords = catEnt.getShapeCoords().split(",");
                 int smallX = Integer.MAX_VALUE;

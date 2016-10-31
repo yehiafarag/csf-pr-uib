@@ -11,17 +11,16 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 
 /**
+ * This class represents protein trend line chart(spark line ) required for quant protein
+ * table.
  *
  * @author Yehia Farag
- *
- * this class represents protein trend (spark line ) required for quant protein
- * table
  */
 public abstract class ProteinTrendLayout extends AbsoluteLayout implements Comparable<ProteinTrendLayout>, LayoutEvents.LayoutClickListener {
 
     private final String proteinKey;
     private final Set<QuantDiseaseGroupsComparison> selectedComparisonsList;
-    private  AbsoluteLayout chartComponentsLayout;
+    private AbsoluteLayout chartComponentsLayout;
 
     public AbsoluteLayout getChartComponentsLayout() {
         return chartComponentsLayout;
@@ -36,7 +35,7 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
     private int custTrend = -1;
 
     public int getChartWidth() {
-        return width-10;
+        return width - 10;
     }
     private final boolean smallScreen;
 
@@ -163,7 +162,6 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
     }
 
     private LineChart sparkLine;
-    
 
     @Override
     protected AbsoluteLayoutState getState() {

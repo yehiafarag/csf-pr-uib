@@ -3,7 +3,7 @@ package no.uib.probe.csf.pr.touch.view;
 import com.vaadin.server.VaadinSession;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import no.uib.probe.csf.pr.touch.view.core.BusyTask;
+import no.uib.probe.csf.pr.touch.view.core.BusyTaskProgressBar;
 import no.uib.probe.csf.pr.touch.view.core.Resizable;
 
 /**
@@ -26,14 +26,14 @@ public class LayoutViewManager {
     /*
      *System is doing long processing task to push the the system to show  progress bar
      */
-    private final BusyTask busyTask;
+    private final BusyTaskProgressBar busyTask;
 
     /**
      * Constructor to initialize the main attributes
      *
      * @param busyTask
      */
-    public LayoutViewManager(BusyTask busyTask) {
+    public LayoutViewManager(BusyTaskProgressBar busyTask) {
         this.busyTask = busyTask;
     }
 

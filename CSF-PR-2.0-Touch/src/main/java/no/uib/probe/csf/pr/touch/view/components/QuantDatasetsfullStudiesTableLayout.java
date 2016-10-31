@@ -7,21 +7,20 @@ import java.util.Map;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDataset;
 
 /**
+ * This class represents dataset information table that is used for exporting
+ * heat map to excel sheet.
  *
  * @author Yehia Farag
- *
- * This class represents dataset information table that is used for exporting
- * heat map to excel sheet
  */
 public class QuantDatasetsfullStudiesTableLayout extends Table {
 
     /**
-     * Array of datasets indexes in the database to be exported
+     * Array of datasets indexes in the database to be exported.
      */
     private int[] dsIndexes;
 
     /**
-     * Constructor to initialize the main attributes
+     * Constructor to initialize the main attributes.
      *
      * @param activeColumnHeaders the headers included in the exporting table
      */
