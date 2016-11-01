@@ -59,8 +59,9 @@ public class CSF_PR_UI extends UI {
     private boolean toReload = false;
 
     /**
-     * This UI is the initial vaadin request method initialize non-component
+     * This UI is the initial Vaadin request method initialize non-component
      * functionality.
+     * @param vaadinRequest Main request object.
      */
     @Override
     protected void init(VaadinRequest vaadinRequest) {

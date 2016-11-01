@@ -8,15 +8,79 @@ import java.util.Locale;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantPeptide;
 
 /**
+ * This class represents the peptide information fields container layout.
  *
  * @author Yehia Farag
  */
 public class PeptidesInformationOverviewLayout extends VerticalLayout {
 
-    private InformationField quantBasis,quantBasisComment, pepSequence, peptideModification, modificationComment, pValue, pValueComm, foldChange, roc, additionalComments, pvalueSignificanceThreshold, sequenceAnnotated, peptideCharge;
+    /**
+     * Quantification basis field.
+     */
+    private InformationField quantBasis;
+    /**
+     * Quantification basis comments field.
+     */
+    private InformationField quantBasisComment;
+    /**
+     * Peptide sequence field.
+     */
+    private InformationField pepSequence;
+    /**
+     * Peptide modifications field.
+     */
+    private InformationField peptideModification;
+    /**
+     * Peptide modifications comment field.
+     */
+    private InformationField modificationComment;
+    /**
+     * pValue field (Significant/not Significant).
+     */
+    private InformationField pValue;
+    /**
+     * pValue comments (statistical comments) field.
+     */
+    private InformationField pValueComm;
+    /**
+     * Peptide quantification fold change value (Increased, Decreased,Equal)
+     * field.
+     */
+    private InformationField foldChange;
+    /**
+     * Receiver operating characteristic value field.
+     */
+    private InformationField roc;
+    /**
+     * Quantification additional comments field.
+     */
+    private InformationField additionalComments;
+    /**
+     * pValue significance threshold field.
+     */
+    private InformationField pvalueSignificanceThreshold;
+    /**
+     * Peptide annotated sequence field.
+     */
+    private InformationField sequenceAnnotated;
+    /**
+     * Peptide charge field.
+     */
+    private InformationField peptideCharge;
+    /**
+     * Double data formatter.
+     */
     private DecimalFormat df = null;
+    /**
+     * Peptide form container.
+     */
     private final VerticalLayout peptideForm;
 
+    /**
+     * Constructor to initialize main attributes.
+     *
+     * @param quantPeptide quantification peptide object.
+     */
     public PeptidesInformationOverviewLayout(QuantPeptide quantPeptide) {
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
         otherSymbols.setGroupingSeparator('.');
@@ -24,12 +88,15 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeightUndefined();
         this.setSpacing(true);
-        peptideForm = initPeptidesForm();
+        peptideForm = generatePeptidesForm();
         this.addComponent(peptideForm);
         this.updatePeptidesForm(quantPeptide);
     }
 
-    private VerticalLayout initPeptidesForm() {
+    /**
+     * Generate and initialize main protein form fields.
+     */
+    private VerticalLayout generatePeptidesForm() {
         VerticalLayout mainContainer = new VerticalLayout();
         mainContainer.setWidth(100, Unit.PERCENTAGE);
         mainContainer.setHeightUndefined();
@@ -72,8 +139,8 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
         rowIII.setWidth(100, Unit.PERCENTAGE);
         rowIII.setHeight(80, Unit.PIXELS);
         mainContainer.addComponent(rowIII);
-        
-         quantBasis = new InformationField("Quantification Basis");
+
+        quantBasis = new InformationField("Quantification Basis");
         rowIII.addComponent(quantBasis);
         quantBasisComment = new InformationField("Quantification Basis Comment");
         rowIII.addComponent(quantBasisComment);
@@ -84,8 +151,7 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
         roc = new InformationField("ROC AUC");
         rowIII.addComponent(roc);
 
-        
-           HorizontalLayout rowIV = new HorizontalLayout();
+        HorizontalLayout rowIV = new HorizontalLayout();
         rowIV.setWidth(100, Unit.PERCENTAGE);
         rowIV.setHeight(80, Unit.PIXELS);
         mainContainer.addComponent(rowIV);
@@ -95,6 +161,11 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
         return mainContainer;
     }
 
+    /**
+     * Updated peptide form fields.
+     *
+     * @param peptide Quant peptide object.
+     */
     private void updatePeptidesForm(QuantPeptide peptide) {
 
         pepSequence.setValue(peptide.getPeptideSequence(), null);
@@ -149,7 +220,7 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
         this.peptideCharge.setValue(peptideChargeValue, null);
 
         quantBasisComment.setValue(peptide.getQuantBasisComment() + "", null);
-        quantBasis.setValue(peptide.getQuantificationBasis()+"",null);
+        quantBasis.setValue(peptide.getQuantificationBasis() + "", null);
 
     }
 

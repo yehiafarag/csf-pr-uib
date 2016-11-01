@@ -165,7 +165,7 @@ public class Data_Handler implements Serializable {
     }
 
     /**
-     * this method to get the disease group column labels for the current active
+     * This method to get the disease group column labels for the current active
      * disease category
      *
      * @return active column labels category set
@@ -175,8 +175,9 @@ public class Data_Handler implements Serializable {
 
     }
 
-    /* this method to get the disease group comparisons  for the current active 
-     * disease category
+    /**
+     * This method to get the disease group comparisons for the current active
+     * disease category.
      *
      * @return active disease group comparisons
      */
@@ -325,7 +326,7 @@ public class Data_Handler implements Serializable {
     }
 
     /**
-     * export accession list to csv file
+     * export accession list to CSV file
      *
      * @param proteinsList list of protein accession
      * @return byte[] of the exported file
@@ -337,10 +338,9 @@ public class Data_Handler implements Serializable {
 
     /**
      * get unmapped peptide set (the current version of the protein sequence in
-     * uniprot has changed) for current active dataset
+     * UniProt has changed) for current active dataset.
      *
-     * @return Set<QuantPeptide> of current unmapped peptides for the active
-     * dataset
+     * @return Set of current unmapped peptides for the active dataset.
      */
     public Set<QuantPeptide> getUnmappedPeptideSet() {
         return coreLogic.getUnmappedPeptideSet();

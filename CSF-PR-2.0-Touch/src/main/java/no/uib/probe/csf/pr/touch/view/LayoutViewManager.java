@@ -4,7 +4,7 @@ import com.vaadin.server.VaadinSession;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import no.uib.probe.csf.pr.touch.view.core.BusyTaskProgressBar;
-import no.uib.probe.csf.pr.touch.view.core.Resizable;
+import no.uib.probe.csf.pr.touch.view.core.ControllingView;
 
 /**
  *
@@ -18,11 +18,11 @@ public class LayoutViewManager {
     /*
      *Map of registered layout visulization
      */
-    private final Map<String, Resizable> layoutMap = new LinkedHashMap<>();
+    private final Map<String, ControllingView> layoutMap = new LinkedHashMap<>();
     /*
      *Current visualized layout
      */
-    private Resizable currentView;
+    private ControllingView currentView;
     /*
      *System is doing long processing task to push the the system to show  progress bar
      */
@@ -42,7 +42,7 @@ public class LayoutViewManager {
      *
      * @param component
      */
-    public void registerComponent(Resizable component) {
+    public void registerComponent(ControllingView component) {
         layoutMap.put(component.getViewId(), component);
 
     }

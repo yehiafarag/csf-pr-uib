@@ -114,7 +114,7 @@ public class DataBaseLayer implements Serializable {
 
             }
             infoBean.setNumberOfQuantPublication(numPublications);
-            infoBean.setNumberOfQuantStudies(numStudies);
+            infoBean.setNumberOfQuantDatasets(numStudies);
 
             rs.close();
 

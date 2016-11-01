@@ -8,7 +8,7 @@ import com.vaadin.ui.VerticalLayout;
  *
  * @author Yehia Farag
  */
-public class ScrollPanel extends VerticalLayout implements LayoutEvents.LayoutClickListener, Resizable {
+public class ScrollPanel extends VerticalLayout implements LayoutEvents.LayoutClickListener, ControllingView {
 
     @Override
     public void resizeComponent(int width, int height) {

@@ -23,11 +23,12 @@ import no.uib.probe.csf.pr.touch.view.core.InformationButton;
 import no.uib.probe.csf.pr.touch.view.core.PopupWindowFrameWithFunctionsBtns;
 
 /**
+ **
+ * This class allow the users to switch/flip selected disease sub-groups
+ * comparisons.
  *
  * @author Yehia Farag
  *
- * This class allow the users to switch/flip selected disease sub-groups
- * comparisons
  */
 public abstract class GroupSwichBtn extends ImageContainerBtn {
 
@@ -161,7 +162,7 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
         btnsFrame.setComponentAlignment(leftsideWrapper, Alignment.TOP_LEFT);
         leftsideWrapper.setSpacing(true);
 
-        InformationButton info = new InformationButton("The order of the groups in each comparison can be switched, i.e. A vs. B or B vs. A. To switch two groups click the icon with the two arrows in between the two groups. When the desired order is achieved click the \"Apply\" button.", true);
+        InformationButton info = new InformationButton("The order of the groups in each comparison can be switched, i.e. A vs. B or B vs. A. To switch two groups click the icon with the two arrows in between the two groups. When the desired order is achieved click the \"Apply\" button.");
         leftsideWrapper.addComponent(info);
 
         Button applyFilters = new Button("Apply");

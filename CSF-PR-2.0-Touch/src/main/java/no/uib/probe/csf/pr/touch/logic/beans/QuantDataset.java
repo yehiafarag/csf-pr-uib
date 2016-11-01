@@ -6,71 +6,71 @@ import java.util.Map;
 
 /**
  * This class represents the publication study object that has all publication
- * information
+ * information.
  *
  * @author Yehia Farag
  */
 public class QuantDataset implements Serializable, Comparable {
 
-    /*
-     * Location x used for plotting the dataset
+    /**
+     * Location x used for plotting the dataset.
      */
     private int x;
-    /*
-     * Location y used for plotting the dataset
+    /**
+     * Location y used for plotting the dataset.
      */
     private int y;
-    /*
-     *Disease HTML Color code
+    /***
+     *Disease HTML Color code.
      */
     private String diseaseHashedColor;
-    /*
-     *Disease Style name at CSS file
+    /**
+     *Disease Style name at CSS file.
      */
     private String diseaseStyleName;
-    /*
+    /**
      *The Disease sub group I (currently used in the system)
      */
     private String activeDiseaseSubGroupI;
-    /*
+    /**
      *The Disease sub group II (currently used in the system)
      */
     private String activeDiseaseSubGroupII;
 
-    /*
+    /**
      *The datset index in the database
      */
     private int quantDatasetIndex;
 
-    /*
+    /**
      *The array of values for the included attributes
      */
     private final Object[] values = new Object[28];
 
-    /*
+    /**
      * Map of values to attribute name
      */
     private final Map<String, Object> valuesMap = new HashMap<>();
 
-    /*
+    /**
      * Number of included proteins in the dataset
      */
     private int totalProtNum;
 
-    /*
-     * Number of proteins found only in the dataset
+    /**
+     * Number of proteins found only in the dataset.
      */
     private int uniqueProtNum;
-    /*
-     * Number of included peptides in the dataset
+    /**
+     * Number of included peptides in the dataset.
      */
     private int totalPepNum;
-    /*
-     * Number of peptides found only in the dataset
+    /**
+     * Number of peptides found only in the dataset.
      */
     private int uniqePepNum;
 
-    /**
+    /***
      * Get Disease Style name at CSS file
      *
      * @return diseaseStyleName
@@ -79,7 +79,7 @@ public class QuantDataset implements Serializable, Comparable {
         return diseaseStyleName;
     }
 
-    /**
+    /***
      * Get the Disease sub group I (currently used in the system)
      *
      * @return activeDiseaseSubGroupI
@@ -91,7 +91,7 @@ public class QuantDataset implements Serializable, Comparable {
         return activeDiseaseSubGroupI;
     }
 
-    /**
+    /***
      * Set the Disease sub group I (currently used in the system)
      *
      * @param activeDiseaseSubGroupI
@@ -100,7 +100,7 @@ public class QuantDataset implements Serializable, Comparable {
         this.activeDiseaseSubGroupI = activeDiseaseSubGroupI;
     }
 
-    /**
+    /***
      * Get the Disease sub group II (currently used in the system)
      *
      * @return activeDiseaseSubGroupII
@@ -112,7 +112,7 @@ public class QuantDataset implements Serializable, Comparable {
         return activeDiseaseSubGroupII;
     }
 
-    /**
+    /***
      * Set the disease main group II (not used in the current csf-pr-2.0)
      *
      * @param activeDiseaseSubGroupII

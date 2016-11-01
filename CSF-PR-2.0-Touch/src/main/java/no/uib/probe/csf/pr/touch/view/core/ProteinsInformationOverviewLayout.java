@@ -1,4 +1,3 @@
-
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.ui.HorizontalLayout;
@@ -9,17 +8,72 @@ import java.util.Locale;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantProtein;
 
 /**
+ * This class represents the protein information fields container layout.
  *
  * @author Yehia Farag
- *
- * this class represents the protein information layout
  */
 public class ProteinsInformationOverviewLayout extends VerticalLayout {
 
+    /**
+     * Double data formatter.
+     */
     private DecimalFormat df = null;
+    /**
+     * Protein form container.
+     */
+    private final VerticalLayout proteinsForm;
+    /**
+     * Quantification basis field.
+     */
+    private InformationField quantBasis;
+    /**
+     * Quantification basis comments field.
+     */
+    private InformationField quantBasisComment;
+    /**
+     * Protein accession (from UniProt or publication) field.
+     */
+    private InformationField accsession;
+    /**
+     * Protein name (from UniProt or publication) field.
+     */
+    private InformationField name;
+    /**
+     * Quantified peptides number field.
+     */
+    private InformationField quantPeptidesNumber;
+    /**
+     * Identified peptides number field.
+     */
+    private InformationField idPeptidesNumber;
+    /**
+     * pValue field (Significant/not Significant).
+     */
+    private InformationField pValue;
+    /**
+     * pValue comments (statistical comments) field.
+     */
+    private InformationField pValueComm;
+    /**
+     * Protein quantification fold change value (Increased, Decreased,Equal)
+     * field.
+     */
+    private InformationField foldChange;
+    /**
+     * Receiver operating characteristic value field.
+     */
+    private InformationField roc;
+    /**
+     * Quantification additional comments field.
+     */
+    private InformationField additionalComments;
+    /**
+     * pValue significance threshold field.
+     */
+    private InformationField pvalueSignificanceThreshold;
 
     /**
-     * @param width
+     * Constructor to initialize main attributes.
      */
     public ProteinsInformationOverviewLayout() {
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
@@ -30,16 +84,15 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
         this.setSpacing(true);
         this.setMargin(false);
         this.setStyleName("whitelayout");
-        proteinsForm = initProteinsForm();
+        proteinsForm = generateProteinsForm();
         proteinsForm.setVisible(false);
         this.addComponent(proteinsForm);
-
     }
 
-    private final VerticalLayout proteinsForm;
-    private InformationField quantBasis,quantBasisComment, accsession, name, quantPeptidesNumber, idPeptidesNumber, pValue, pValueComm, foldChange, roc, additionalComments, pvalueSignificanceThreshold;
-
-    private VerticalLayout initProteinsForm() {
+    /**
+     * Generate and initialize main protein form fields.
+     */
+    private VerticalLayout generateProteinsForm() {
         VerticalLayout mainContainer = new VerticalLayout();
         mainContainer.setWidth(100, Unit.PERCENTAGE);
         mainContainer.setHeightUndefined();
@@ -49,7 +102,6 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
         rowI.setWidth(100, Unit.PERCENTAGE);
         rowI.setHeight(80, Unit.PIXELS);
         mainContainer.addComponent(rowI);
-//        proteinsFormLayout.setHeightUndefined();
         accsession = new InformationField("Accession");
         rowI.addComponent(accsession);
 
@@ -85,7 +137,7 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
 
         roc = new InformationField("ROC AUC");
         rowIII.addComponent(roc);
-        
+
         quantBasis = new InformationField("Quantification Basis");
         rowIII.addComponent(quantBasis);
 
@@ -94,24 +146,25 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
 
         additionalComments = new InformationField("Additional Comments");
         rowIII.addComponent(additionalComments);
-        
-//        rowIII.addComponent(new VerticalLayout());
-
-
         return mainContainer;
     }
 
+    /**
+     * Updated protein form fields.
+     *
+     * @param quantProtein Quant protein object.
+     * @param accession protein accession
+     * @param url URL to UniProt if exist
+     * @param protName Final protein name(from uniProt or publication)
+     */
     public void updateProteinsForm(QuantProtein quantProtein, String accession, String url, String protName) {
-
         idPeptidesNumber.setValue(quantProtein.getQuantifiedPeptidesNumber(), null);
         accsession.setValue(accession, url);
         name.setValue(protName, null);
         pvalueSignificanceThreshold.setVisible(true);
         additionalComments.setVisible(true);
-
         pvalueSignificanceThreshold.setValue(quantProtein.getPvalueSignificanceThreshold(), null);
         additionalComments.setValue(quantProtein.getAdditionalComments(), null);
-
         String pval;
         if (quantProtein.getString_p_value() != null && !quantProtein.getString_p_value().equalsIgnoreCase("") && !quantProtein.getString_p_value().equalsIgnoreCase("Not Available")) {
             pval = quantProtein.getString_p_value() + " ";
@@ -122,7 +175,6 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
             pval += "(" + df.format(quantProtein.getP_value()) + ")";
         }
         pValue.setValue(pval, null);
-
         pValueComm.setValue(quantProtein.getP_value_comments(), null);
 
         String strFoldChange;
@@ -144,14 +196,12 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
         } else {
             rocv = "";
         }
-
         this.roc.setValue(rocv, null);
 
         int quantPepNumber = quantProtein.getQuantifiedPeptidesNumber();
-            quantPeptidesNumber.setValue(quantPepNumber, null);
+        quantPeptidesNumber.setValue(quantPepNumber, null);
         quantBasisComment.setValue(quantProtein.getQuantBasisComment() + "", null);
-        quantBasis.setValue(quantProtein.getQuantificationBasis()+"",null);
-
+        quantBasis.setValue(quantProtein.getQuantificationBasis() + "", null);
         this.proteinsForm.setVisible(true);
     }
 

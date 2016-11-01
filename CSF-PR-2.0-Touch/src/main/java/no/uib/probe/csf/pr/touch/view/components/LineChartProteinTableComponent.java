@@ -338,7 +338,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         exportPdfBtn.setDescription("Export table");
         proteinTableToolsContainer.addComponent(exportPdfBtn);
 
-        InformationButton info = new InformationButton("The protein table provides an overview of the quantitative information available for each protein, classified into Increased, Decreased or Equal. If the quantitative data for a given comparison is not exclusively in the same direction an average value will be shown. To find proteins of interest use the search field at the top, or sort/filter on the individual comparisons using the options above the table. The icons at the lower right enables further modification of the table. Select a row in the table to show the protein details.", false);
+        InformationButton info = new InformationButton("The protein table provides an overview of the quantitative information available for each protein, classified into Increased, Decreased or Equal. If the quantitative data for a given comparison is not exclusively in the same direction an average value will be shown. To find proteins of interest use the search field at the top, or sort/filter on the individual comparisons using the options above the table. The icons at the lower right enables further modification of the table. Select a row in the table to show the protein details.");
         proteinTableToolsContainer.addComponent(info);
 
         CSFPR_Central_Manager.registerListener(LineChartProteinTableComponent.this);

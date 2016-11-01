@@ -1,12 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.server.Page;
-import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.window.WindowMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Layout;
@@ -15,23 +9,40 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 /**
+ * This class represents stander pop-up window container.
  *
  * @author Yehia Farag
- *
- * this class represents pop up window container
  */
 public class PopupWindow extends Window {
 
+    /**
+     * Slow pop-up for the window.
+     */
     private boolean lazyLoading = false;
+    /**
+     * Main window frame.
+     */
     private final VerticalLayout mainFrame;
+    /**
+     * Maximum window height.
+     */
     private final int height = Math.max(Page.getCurrent().getBrowserWindowHeight() - 50, 1);
+    /**
+     * Maximum window width.
+     */
     private final int width = Math.max(Page.getCurrent().getBrowserWindowWidth() - 50, 1);
 
+    /**
+     * Constructor to initialize the main attributes.
+     *
+     * @param layout The main layout to be placed inside the window.
+     * @param title The window title.
+     */
     public PopupWindow(Layout layout, String title) {
 
         mainFrame = new VerticalLayout();
         mainFrame.setWidth(100, Unit.PERCENTAGE);
-        mainFrame.setHeight(100,Unit.PERCENTAGE);
+        mainFrame.setHeight(100, Unit.PERCENTAGE);
         setContent(mainFrame);
         mainFrame.addStyleName("mainviewport");
 
@@ -53,12 +64,18 @@ public class PopupWindow extends Window {
         setClosable(true);
     }
 
+    /**
+     * On close the window just hide it.
+     */
     @Override
     public void close() {
         this.setVisible(false);
 
     }
 
+    /**
+     * If slow lazy loading window set lazy pop up.
+     */
     @Override
     public void setVisible(boolean visible) {
 
@@ -69,19 +86,28 @@ public class PopupWindow extends Window {
 
             }
         }
-//         this.mainFrame.addStyleName(VaadinSession.getCurrent().getAttribute("zoomStyle")+"");
-        super.setVisible(visible); //To change body of generated methods, choose Tools | Templates.
+        super.setVisible(visible);
     }
 
+    /**
+     * Set slow pop-up for the window.
+     *
+     * @param lazyLoading lazy pop up viewing.
+     */
     public void setLazyLoading(boolean lazyLoading) {
         this.lazyLoading = lazyLoading;
     }
 
+    /**
+     * Set the window height to fit the screen size.
+     *
+     * @param height the updated height to be ignored if bigger than screen
+     * height.
+     * @param unit the height unit.
+     */
     @Override
     public void setHeight(float height, Unit unit) {
-        super.setHeight(Math.min(height, this.height), unit); //To change body of generated methods, choose Tools | Templates.
-//        if(mainFrame!=null)
-//        mainFrame.setHeight(super.getHeight()-40, unit);
+        super.setHeight(Math.min(height, this.height), unit);
         center();
         this.markAsDirty();
     }

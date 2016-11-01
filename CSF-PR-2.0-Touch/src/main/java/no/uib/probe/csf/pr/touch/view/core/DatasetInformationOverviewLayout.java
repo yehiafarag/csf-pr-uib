@@ -6,25 +6,141 @@ import com.vaadin.ui.VerticalLayout;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDataset;
 
 /**
+ * This class represents the dataset information fields container layout.
  *
  * @author Yehia Farag
  */
 public class DatasetInformationOverviewLayout extends VerticalLayout {
 
+    /**
+     * Disease HTML Color code.
+     */
     private final String diseaseHashedColor;
-    private final boolean smallScreen;
+    /**
+     * Dataset form container.
+     */
+    private final VerticalLayout datasetInfoForm;
+    /**
+     * Quantification basis comments field.
+     */
+    private InformationField quantBasisComment;
+    /**
+     * Number of proteins found only in the dataset.
+     */
+    private InformationField uniqueProtNumField;
+    /**
+     * Number of peptides found only in the dataset.
+     */
+    private InformationField uQuantPeptidesNum;
+    /**
+     * Number of quantified proteins in the dataset .
+     */
+    private InformationField quantProteinsNum;
+    /**
+     * Number of quantified peptides in the dataset.
+     */
+    private InformationField quantPeptidesNum;
+    /**
+     * Disease category (MS,AD,PD...etc)field.
+     */
+    private InformationField diseaseCategory;
+    /**
+     * Publication PubMed id field.
+     */
+    private InformationField pubMedIdField;
+    /**
+     * Raw data available(Yes/No) field.
+     */
+    private InformationField rawData;
+    /**
+     * Analytical method field.
+     */
+    private InformationField analyticalMethod;
+    /**
+     * Study type field.
+     */
+    private InformationField typeOfStudy;
+    /**
+     * Shotgun or targeted dataset field.
+     */
+    private InformationField shotgunTargeted;
+    /**
+     * Enzyme used field.
+     */
+    private InformationField enzyme;
+    /**
+     * Sample type field.
+     */
+    private InformationField sampleType;
+    /**
+     * Technology field.
+     */
+    private InformationField technology;
+    /**
+     * Quantification basis field.
+     */
+    private InformationField quantificationBasis;
+    /**
+     * Number of patients in disease group 1 field.
+     */
+    private InformationField patientsGroup1Number;
+    /**
+     * Number of patients in disease group 2 field.
+     */
+    private InformationField patientsGroup2Number;
+    /**
+     * Disease group 1 field.
+     */
+    private InformationField patientsGroup1;
+    /**
+     * Disease group 2 field.
+     */
+    private InformationField patientsGroup2;
+    /**
+     * Disease sub group 1 field.
+     */
+    private InformationField patientssubGroup1;
+    /**
+     * Disease group 1 comments field.
+     */
+    private InformationField patientsCommGroup1;
+    /**
+     * Disease sub group 2 field.
+     */
+    private InformationField patientssubGroup2;
+    /**
+     * Disease group 2 comments field.
+     */
+    private InformationField patientsCommGroup2;
+    /**
+     * Number of identified proteins.
+     */
+    private InformationField identifiedProteinsNumber;
+    /**
+     * Number of quantified proteins field.
+     */
+    private InformationField quantifiedProteinsNumber;
+    /**
+     * Sample matching field.
+     */
+    private InformationField sampleMatching;
+    /**
+     * Analytical approach field.
+     */
+    private InformationField analyticalApproach;
+    /**
+     * Normalization strategy field.
+     */
+    private InformationField normalization_strategy;
 
     /**
-     * @param quantDs
-     * @param diseaseHashedColor hashed color for disease
+     * Constructor to initialize the layout and main attributes.
+     *
+     * @param quantDs Quant dataset object.
+     * @param diseaseHashedColor HTML hashed color code for disease.
      */
     public DatasetInformationOverviewLayout(QuantDataset quantDs, boolean smallScreen) {
         this.diseaseHashedColor = quantDs.getDiseaseHashedColor();
-//        int width = Page.getCurrent().getBrowserWindowWidth() - 320;
-//        int height = Page.getCurrent().getBrowserWindowHeight() - 320;
-//        this.setWidth(width ,Unit.PIXELS);
-//        this.setHeight(height ,Unit.PIXELS);
-        this.smallScreen = smallScreen;
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeight(100, Unit.PERCENTAGE);
         this.addStyleName("scrollable");
@@ -32,7 +148,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
             this.setSpacing(true);
         }
 
-        datasetInfoForm = initQuantDatasetInformationLayout();
+        datasetInfoForm = generateQuantDatasetInformationLayout();
         datasetInfoForm.setVisible(true);
         this.addComponent(datasetInfoForm);
         this.setComponentAlignment(datasetInfoForm, Alignment.TOP_LEFT);
@@ -40,34 +156,25 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
 
     }
 
-    public VerticalLayout getDatasetInfoForm() {
-        return datasetInfoForm;
-    }
-
-    private final VerticalLayout datasetInfoForm;
-    private InformationField  quantBasisComment, uQuantProteinsNum, uQuantPeptidesNum, quantProteinsNum, quantPeptidesNum, diseaseCategory, pumedId, rawData, analyticalMethod, typeOfStudy, shotgunTargeted, enzyme, sampleType, technology, quantificationBasis, patientsGroup1Number, patientsGroup2Number, patientsGroup1, patientsGroup2, patientssubGroup1, patientsCommGroup1, patientssubGroup2, patientsCommGroup2, identifiedProteinsNumber, quantifiedProteinsNumber, sampleMatching, analyticalApproach, normalization_strategy;
-
-    private VerticalLayout initQuantDatasetInformationLayout() {
+    /**
+     * Generate and to initialize the dataset information form layout.
+     */
+    private VerticalLayout generateQuantDatasetInformationLayout() {
 
         VerticalLayout mainContainer = new VerticalLayout();
         mainContainer.setWidth(100, Unit.PERCENTAGE);
         mainContainer.setHeightUndefined();
         mainContainer.addStyleName("scrollable");
         int h = 80;
-//        if (smallScreen) {
-//            h = 80;
-//        }
-
         mainContainer.setSpacing(true);
 
         HorizontalLayout rowI = new HorizontalLayout();
         rowI.setWidth(100, Unit.PERCENTAGE);
         rowI.setHeight(h, Unit.PIXELS);
         mainContainer.addComponent(rowI);
-//        mainContainer.setExpandRatio(rowI, 10);
 
-        pumedId = new InformationField("PubMed Id");
-        rowI.addComponent(pumedId);
+        pubMedIdField = new InformationField("PubMed Id");
+        rowI.addComponent(pubMedIdField);
 
         typeOfStudy = new InformationField("Type of Study");
         rowI.addComponent(typeOfStudy);
@@ -82,7 +189,6 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         rowII.setWidth(100, Unit.PERCENTAGE);
         rowII.setHeight(h, Unit.PIXELS);
         mainContainer.addComponent(rowII);
-//         mainContainer.setExpandRatio(rowII, 10);
 
         analyticalMethod = new InformationField("Analytical Method");
         rowII.addComponent(analyticalMethod);
@@ -100,15 +206,12 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         rowIII.setWidth(100, Unit.PERCENTAGE);
         rowIII.setHeight(h, Unit.PIXELS);
         mainContainer.addComponent(rowIII);
-//         mainContainer.setExpandRatio(rowI, 10);
 
         quantificationBasis = new InformationField("Quantification Basis");
         rowIII.addComponent(quantificationBasis);
-        
-        
+
         quantBasisComment = new InformationField("Quantification Basis Comment");
         rowIII.addComponent(quantBasisComment);
-        
 
         identifiedProteinsNumber = new InformationField("#Identified Proteins");
         rowIII.addComponent(identifiedProteinsNumber);
@@ -116,37 +219,23 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         quantifiedProteinsNumber = new InformationField("#Quantified Proteins");
         rowIII.addComponent(quantifiedProteinsNumber);
 
-        
-
         HorizontalLayout rowIV = new HorizontalLayout();
         rowIV.setWidth(100, Unit.PERCENTAGE);
-//        if (smallScreen) {
-            rowIV.setHeight(h, Unit.PIXELS);
-//        }
+        rowIV.setHeight(h, Unit.PIXELS);
         mainContainer.addComponent(rowIV);
-//
         patientsGroup1 = new InformationField("Patients Gr.I");
         rowIV.addComponent(patientsGroup1);
-//
         patientssubGroup1 = new InformationField("Patients Sub Gr.I");
         rowIV.addComponent(patientssubGroup1);
-//
         patientsGroup1Number = new InformationField("#Patients Gr.I");
         rowIV.addComponent(patientsGroup1Number);
-//
         patientsCommGroup1 = new InformationField("Patients Gr.I Comm.");
-        patientsCommGroup1.setSmallScreen(smallScreen);
         rowIV.addComponent(patientsCommGroup1);
 
         HorizontalLayout rowV = new HorizontalLayout();
         rowV.setWidth(100, Unit.PERCENTAGE);
-//        if (smallScreen) {
-            rowV.setHeight(h, Unit.PIXELS);
-//        } else {
-//            rowV.setHeightUndefined();
-//        }
+        rowV.setHeight(h, Unit.PIXELS);
         mainContainer.addComponent(rowV);
-//
         patientsGroup2 = new InformationField("Patients Gr.II");
         rowV.addComponent(patientsGroup2);
 
@@ -157,23 +246,16 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         rowV.addComponent(patientsGroup2Number);
 
         patientsCommGroup2 = new InformationField("Patients Gr.II Comm.");
-        patientsCommGroup2.setSmallScreen(smallScreen);
         rowV.addComponent(patientsCommGroup2);
 
         HorizontalLayout rowVI = new HorizontalLayout();
         rowVI.setWidth(100, Unit.PERCENTAGE);
-//        if (smallScreen) {
-            rowVI.setHeight(h, Unit.PIXELS);
-//        } else {
-//            rowVI.setHeightUndefined();
-//        }
+        rowVI.setHeight(h, Unit.PIXELS);
         mainContainer.addComponent(rowVI);
 
-        
         sampleMatching = new InformationField("Sample Matching");
         rowVI.addComponent(sampleMatching);
         normalization_strategy = new InformationField("Normalization Strategy");
-        normalization_strategy.setSmallScreen(smallScreen);
         rowVI.addComponent(normalization_strategy);
 
         rawData = new InformationField("Raw Data");
@@ -182,16 +264,9 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         diseaseCategory = new InformationField("Disease Category");
         rowVI.addComponent(diseaseCategory);
 
-       
-//
-
         HorizontalLayout rowVII = new HorizontalLayout();
         rowVII.setWidth(100, Unit.PERCENTAGE);
-//        if (smallScreen) {
-            rowVII.setHeight(h, Unit.PIXELS);
-//        } else {
-//            rowVII.setHeightUndefined();
-//        } 
+        rowVII.setHeight(h, Unit.PIXELS);
         quantProteinsNum = new InformationField("#Proteins");
         rowVII.addComponent(quantProteinsNum);
         mainContainer.addComponent(rowVII);
@@ -199,23 +274,25 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         quantPeptidesNum = new InformationField("#Peptides");
         rowVII.addComponent(quantPeptidesNum);
 
-        uQuantProteinsNum = new InformationField("#Dataset Specific Proteins");
-        rowVII.addComponent(uQuantProteinsNum);
+        uniqueProtNumField = new InformationField("#Dataset Specific Proteins");
+        rowVII.addComponent(uniqueProtNumField);
 
         uQuantPeptidesNum = new InformationField("#Dataset Specific Peptides");
         rowVII.addComponent(uQuantPeptidesNum);
-
-//        InformationField emptyField = new InformationField("");
-//        rowVII.addComponent(emptyField);
-
         return mainContainer;
     }
 
+    /**
+     * Update and fill dataset form (dataset information fields).
+     *
+     *
+     * @param quantDs Quant dataset object.
+     */
     private void updateDatasetForm(QuantDataset quantDs) {
         if (quantDs == null) {
             return;
         }
-        pumedId.setValue(quantDs.getPubMedId(), "http://www.ncbi.nlm.nih.gov/pubmed/" + quantDs.getPubMedId());
+        pubMedIdField.setValue(quantDs.getPubMedId(), "http://www.ncbi.nlm.nih.gov/pubmed/" + quantDs.getPubMedId());
         if (quantDs.getRawDataUrl() == null || quantDs.getRawDataUrl().equalsIgnoreCase("Raw Data Not Available")) {
             rawData.setValue("Not Available", null);
         } else {
@@ -256,7 +333,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         quantPeptidesNum.setValue("" + quantDs.getTotalPepNum() + "", null);
         quantProteinsNum.setValue("" + quantDs.getTotalProtNum() + "", null);
         uQuantPeptidesNum.setValue(quantDs.getUniqePepNum(), null);
-        uQuantProteinsNum.setValue(quantDs.getUniqueProtNum(), null);
+        uniqueProtNumField.setValue(quantDs.getUniqueProtNum(), null);
         this.datasetInfoForm.setVisible(true);
     }
 

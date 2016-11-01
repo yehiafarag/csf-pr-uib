@@ -8,25 +8,29 @@ import com.vaadin.ui.Link;
 import com.vaadin.ui.VerticalLayout;
 
 /**
+ * This class represents information field for Datasets, Proteins, and peptides
+ * that is used in different forms
  *
  * @author Yehia Farag
  */
 public class InformationField extends VerticalLayout {
 
+    /**
+     * The value label.
+     */
     private final Link valueLabel;
-    private final Label titleLabel;
-    private boolean smallScreen = false;
-
-    public void setSmallScreen(boolean smallScreen) {
-        this.smallScreen = smallScreen;
-    }
 
     /**
+     * The title label.
+     */
+    private final Label titleLabel;
+
+    /**
+     * Construction to initialize the main attributes.
      *
-     * @param title
+     * @param title the field title.
      */
     public InformationField(String title) {
-
         this.setHeight(60, Unit.PIXELS);
         this.setWidth(100, Unit.PERCENTAGE);
         this.setSpacing(true);
@@ -34,38 +38,35 @@ public class InformationField extends VerticalLayout {
         titleLabel = new Label(title);
         this.addComponent(titleLabel);
         titleLabel.setStyleName("caption");
-        titleLabel.setHeight(20,Unit.PIXELS);
+        titleLabel.setHeight(20, Unit.PIXELS);
         titleLabel.setWidth(200, Unit.PIXELS);
         titleLabel.addStyleName("minhight200");
         this.setComponentAlignment(titleLabel, Alignment.TOP_LEFT);
-        valueLabel = new Link();
 
+        valueLabel = new Link();
         valueLabel.setStyleName("link");
-//        valueLabel.setStyleName("valuelabel");
         valueLabel.setTargetName("_blank");
         valueLabel.setCaptionAsHtml(true);
-        valueLabel.setHeight("100%");
-        valueLabel.setWidth("90%");
-
+        valueLabel.setHeight(100, Unit.PERCENTAGE);
+        valueLabel.setWidth(90, Unit.PERCENTAGE);
         this.addComponent(valueLabel);
         this.setComponentAlignment(valueLabel, Alignment.TOP_LEFT);
 
     }
 
     /**
+     * Set the field value
      *
-     * @param object
-     * @param urlAddress
+     * @param object The value could be String, Double, Integer values.
+     * @param urlAddress If the value has external link URL is not null.
      */
     public void setValue(Object object, String urlAddress) {
 
         boolean isNumber = true;
         try {
-            int i = Integer.valueOf(object.toString().trim());
-
+            Integer.valueOf(object.toString().trim());
         } catch (NumberFormatException exp) {
             isNumber = false;
-
         }
         if ((object instanceof Number || isNumber) && urlAddress == null) {
             if (object.toString().equalsIgnoreCase("-1")) {
@@ -76,7 +77,6 @@ public class InformationField extends VerticalLayout {
             valueLabel.setCaptionAsHtml(true);
             valueLabel.setStyleName("valuelabel");
             valueLabel.setHeight(20, Unit.PIXELS);
-//            valueLabel.setWidth("100%");
 
         } else if (object.toString().contains("/") && !object.toString().contains("</") && !object.toString().contains("/MS") && object.toString().toCharArray().length < 25) {
             valueLabel.setCaption("<textarea cols='100' rows='4' style='text-align: left ;width:140px;' readonly>" + object + "</textarea>");
@@ -85,9 +85,7 @@ public class InformationField extends VerticalLayout {
 
         } else {
             String stringValue = object.toString();
-
             if (stringValue == null || stringValue.trim().equalsIgnoreCase("") || stringValue.equalsIgnoreCase("-1") || stringValue.equalsIgnoreCase("Not Available")) {
-//            this.setVisible(false);
                 valueLabel.setCaption("<textarea cols='100' rows='1' style='text-align: left;' readonly>N/A</textarea>");
                 valueLabel.setStyleName("valuelabel");
                 return;
@@ -112,14 +110,10 @@ public class InformationField extends VerticalLayout {
 
                 valueLabel.setCaptionAsHtml(true);
 
-                if (smallScreen) {
-                    valueLabel.setCaption("<textarea cols='100' rows='4'  readonly>" + stringValue + "</textarea>");
-                    valueLabel.setHeight(30, Unit.PIXELS);
-                } else {
-                    valueLabel.setCaption("<textarea cols='100' rows='4'  readonly>" + stringValue + "</textarea>");
-                    int h = Math.min(((stringValue.toCharArray().length / 100) * 20), 70);
-                    valueLabel.setHeight(h, Unit.PIXELS);
-                }
+                valueLabel.setCaption("<textarea cols='100' rows='4'  readonly>" + stringValue + "</textarea>");
+                int h = Math.min(((stringValue.toCharArray().length / 100) * 20), 70);
+                valueLabel.setHeight(h, Unit.PIXELS);
+//                
                 titleLabel.setHeight(20, Unit.PIXELS);
                 this.setSpacing(false);
                 this.setHeightUndefined();
@@ -135,6 +129,5 @@ public class InformationField extends VerticalLayout {
                 valueLabel.addStyleName("valuelabel");
             }
         }
-//        this.setVisible(true);
     }
 }

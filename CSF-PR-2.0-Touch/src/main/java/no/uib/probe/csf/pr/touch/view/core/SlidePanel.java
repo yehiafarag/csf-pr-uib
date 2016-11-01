@@ -16,7 +16,7 @@ import com.vaadin.ui.VerticalLayout;
  *
  * this class represents slide left panel
  */
-public class SlidePanel extends HorizontalLayout implements LayoutEvents.LayoutClickListener, Resizable {
+public class SlidePanel extends HorizontalLayout implements LayoutEvents.LayoutClickListener, ControllingView {
 
     @Override
     public void resizeComponent(int width, int height) {

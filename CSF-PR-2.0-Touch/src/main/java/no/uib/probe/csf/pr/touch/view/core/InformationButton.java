@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.event.LayoutEvents;
@@ -16,18 +11,30 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 /**
+ * This class represents Information (!) button that provide users with the
+ * required information.
  *
  * @author Yehia Farag
  *
- * this class represents Information (?) button that provide users with the
- * required information
+ *
  */
 public class InformationButton extends ImageContainerBtn {
 
+    /**
+     * main information component pop-up window.
+     */
     private final PopupView popupLayout;
+    /**
+     * Main information component pop-up body.
+     */
     private final VerticalLayout popupBodyLayout;
 
-    public InformationButton(String infoText, boolean small) {
+    /**
+     * Constructor to initialize the main attributes.
+     *
+     * @param infoText Main information text.
+     */
+    public InformationButton(String infoText) {
         updateIcon(new ThemeResource("img/help.png"));
         VerticalLayout mainBody = new VerticalLayout();
         mainBody.setHeightUndefined();
@@ -44,16 +51,12 @@ public class InformationButton extends ImageContainerBtn {
 
         popupBodyLayout = new VerticalLayout();
 
-//        mainBody.setWidth(450, Unit.PIXELS);
         HorizontalLayout containerLayout = new HorizontalLayout();
         containerLayout.setWidth(100, Unit.PERCENTAGE);
         mainBody.addComponent(containerLayout);
 
         Label infoHeaderLabel = new Label("Information");
         infoHeaderLabel.setStyleName(ValoTheme.LABEL_H3);
-//        infoHeaderLabel.addStyleName(ValoTheme.LABEL_BOLD);
-//        topLayout.addComponent(infoHeaderLabel);
-
         Label infoLable = new Label(infoText);
         infoLable.setContentMode(ContentMode.HTML);
         infoLable.setWidth(100, Unit.PERCENTAGE);
@@ -82,23 +85,17 @@ public class InformationButton extends ImageContainerBtn {
         closeBtn.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
             popupLayout.setPopupVisible(false);
         });
-        if (small) {
-            this.setHeight(30, Unit.PIXELS);
-            this.setWidth(30, Unit.PIXELS);
-            this.addStyleName("midimg");
 
-            popupLayout.addStyleName("infoLayout");
-
-        } else {
-            this.setHeight(40, Unit.PIXELS);
-            this.setWidth(40, Unit.PIXELS);
-            this.addStyleName("smallimg");
-
-            popupLayout.addStyleName("biginfo");
-        }
+        this.setHeight(40, Unit.PIXELS);
+        this.setWidth(40, Unit.PIXELS);
+        this.addStyleName("smallimg");
+        popupLayout.addStyleName("biginfo");
 
     }
 
+    /**
+     * On click view pop-up information panel.
+     */
     @Override
     public void onClick() {
         popupLayout.setPopupVisible(true);

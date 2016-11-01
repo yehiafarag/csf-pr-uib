@@ -246,7 +246,7 @@ public abstract class SearchingComponent extends BigBtn {
         controlBtnsLayout.setExpandRatio(btnsWrapper, controlBtnsLayout.getWidth() - 130);
         btnsWrapper.setSpacing(true);
 
-        InformationButton info = new InformationButton("Searching allows the user to locate a specific protein or a group of proteins. Input the search text at the top, select the input type and the disease category, and click \"Search\". A graphical overview of the results will be displayed at the bottom. You can either load all the results or select a subset via the charts before loading.", true);
+        InformationButton info = new InformationButton("Searching allows the user to locate a specific protein or a group of proteins. Input the search text at the top, select the input type and the disease category, and click \"Search\". A graphical overview of the results will be displayed at the bottom. You can either load all the results or select a subset via the charts before loading.");
         btnsWrapper.addComponent(info);
 
         idDataResult = new VerticalLayout();
@@ -589,8 +589,8 @@ public abstract class SearchingComponent extends BigBtn {
         notFoundChart.initializeFilterData(new String[]{"Not Found", "Found"}, new Integer[]{notFoundLength, found, found + notFoundLength}, new Color[]{new Color(219, 169, 1), new Color(110, 177, 206),});
         notFoundChart.redrawChart();
         notFoundChart.redrawChart();
-        notFoundChart.getMiddleDountLayout().addStyleName("defaultcursor");
-        notFoundChart.getMiddleDountLayout().setDescription("Click slice to export");
+        notFoundChart.getMiddleDonutLayout().addStyleName("defaultcursor");
+        notFoundChart.getMiddleDonutLayout().setDescription("Click slice to export");
         notFoundChart.setDescription("Click slice to export");
 
         loadDataBtn.setEnabled(true);

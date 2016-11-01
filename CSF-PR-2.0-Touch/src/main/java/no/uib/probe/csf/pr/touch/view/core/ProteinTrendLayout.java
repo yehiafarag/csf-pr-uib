@@ -11,8 +11,8 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantComparisonProtein;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 
 /**
- * This class represents protein trend line chart(spark line ) required for quant protein
- * table.
+ * This class represents protein trend line chart(spark line ) required for
+ * quant protein table.
  *
  * @author Yehia Farag
  */
@@ -102,25 +102,15 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
         maxMinBtn.setStyleName("maxmizebtn");
         maxMinBtn.setDescription("Click to maximize");
 
-        if (!smallScreen) {
-            resizeIconLayout.addComponent(maxMinBtn);
-            resizeIconLayout.setComponentAlignment(maxMinBtn, Alignment.TOP_RIGHT);
+        resizeIconLayout.addComponent(maxMinBtn);
+        resizeIconLayout.setComponentAlignment(maxMinBtn, Alignment.TOP_RIGHT);
+        maxMinBtn.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
+            ProteinTrendLayout.this.maxmize();
+        });
 
-            maxMinBtn.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
-
-                @Override
-                public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-                    maxmize();
-
-                }
-            });
-        }
         if (draw) {
-            if (smallScreen) {
-                sparkLine = new LineChart(width, 200, smallScreen);
-            } else {
-                sparkLine = new LineChart(width, 500, smallScreen);
-            }
+
+            sparkLine = new LineChart(width, 500);
             sparkLine.updateData(selectedComparisonsList, proteinKey, custTrend);
             sparkLineContainer.addComponent(sparkLine);
             chartComponentsLayout = sparkLine.getChartComponentsLayout();
@@ -167,11 +157,7 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
     protected AbsoluteLayoutState getState() {
         if (initSparkline == 6 && sparkLine == null) {
             initSparkline++;
-            if (smallScreen) {
-                sparkLine = new LineChart(width, 200, smallScreen);
-            } else {
-                sparkLine = new LineChart(width, 500, smallScreen);
-            }
+            sparkLine = new LineChart(width, 500);
             sparkLine.updateData(selectedComparisonsList, proteinKey, custTrend);
             sparkLineContainer.addComponent(sparkLine);
         }

@@ -58,7 +58,7 @@ import org.jfree.util.ShapeUtilities;
  *
  * @author Yehia Farag
  */
-public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutEvents.LayoutClickListener {
+public abstract class ProteinDatasetsLineChartList extends AbsoluteLayout implements LayoutEvents.LayoutClickListener {
 
     /**
      * JFree Components.
@@ -213,7 +213,7 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
      * @param width The line chart width.
      * @param height The line chart height.
      */
-    public StudiesLineChart(int width, int height) {
+    public ProteinDatasetsLineChartList(int width, int height) {
         this.width = width;
         this.height = height;
         this.setWidth(width, Unit.PIXELS);
@@ -233,7 +233,7 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         chartComponentsLayout.setHeight(100, Unit.PERCENTAGE);
         chartComponentsLayout.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
             if (!(event.getClickedComponent() != null && (event.getClickedComponent() instanceof TrendSymbol))) {
-                StudiesLineChart.this.select(null, -100);
+                ProteinDatasetsLineChartList.this.select(null, -100);
             }
         });
         this.addComponent(chartComponentsLayout, "left: " + 0 + "px; top: " + 0 + "px;");
@@ -273,6 +273,12 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
 
     }
 
+    /**
+     * Re-draw the chart and reset all sub components based on the comparison
+     * list.
+     *
+     * @param comparisonsList List of quant comparison objects.
+     */
     private void rePaintChart(Set<QuantDiseaseGroupsComparison> comparisonsList) {
         lineChart.getXYPlot().getRenderer().setSeriesPaint(0, Color.GRAY);
         lineChart.getXYPlot().getDomainAxis().setVisible(true);
@@ -295,6 +301,13 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         chartImg.setSource(maxImgUrl);
     }
 
+    /**
+     * Update JFree chart dataset using the selected quant comparisons list and
+     * protein key.
+     *
+     * @param selectedComparisonList list of quant comparison objects
+     * @param key Protein key for this component.
+     */
     private void updateDataset(Set<QuantDiseaseGroupsComparison> selectedComparisonList, String key) {
         comparisonTrends.clear();
         dataset = new DefaultXYDataset();
@@ -377,7 +390,6 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
                 }
                 return diseaseGroupslabelsColor[x++];
             }
-//            
 
             private final boolean localfinal = verticalLabels;
 
@@ -501,7 +513,7 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
                 }
                 counter++;
 
-                return super.getTickLabelPaint(); //To change body of generated methods, choose Tools | Templates.
+                return super.getTickLabelPaint();
             }
 
         };
@@ -575,6 +587,15 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
 
     }
 
+    /**
+     * Initialize and update the sub-comparisons dataset list.
+     *
+     * @param comparison Quant comparison object.
+     * @param comparisonIndex The index of the comparison in the quant
+     * comparison list.
+     * @param maxPatientsNumber The maximum number of patients among all
+     * selected comparisons to rescale the symbols based on Patients number.
+     */
     private List<Point> updateSubComparisontsDataset(QuantDiseaseGroupsComparison comparison, int comparisonIndex, int maxPatientsNumber) {
         List<Point> subComparisonDatasetList = new ArrayList<>();
         String keyI = 0 + "_" + proteinKey;
@@ -646,7 +667,6 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
                 symbol.addParam("resize", w);
                 symbol.addParam("dsKey", ds.getQuantDatasetIndex());
                 symbol.addParam("comparison", comparison);
-//                symbol.setScale(scale,numPatients);
                 if (!subComparisonStudiesMap.containsKey(comparisonIndex + "_" + absTrend)) {
                     subComparisonStudiesMap.put(comparisonIndex + "_" + absTrend, new HashSet<>());
 
@@ -661,6 +681,9 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
         return subComparisonDatasetList;
     }
 
+    /**
+     * Create new instance of JFree Chart object.
+     */
     private JFreeChart generateLineChart() {
 
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
@@ -758,57 +781,7 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
 
                 return super.getRangeGridlineStroke();
             }
-
-//            @Override
-//            public void drawRangeTickBands(Graphics2D g2, Rectangle2D dataArea, List ticks) {
-//
-//                if (custTrend == -1) {
-//                    super.drawRangeTickBands(g2, dataArea, ticks);
-//                    return;
-//
-//                }
-//                int counterI = 0;
-//                List updatedTicksList = new ArrayList();
-//                for (Object tick : ticks) {
-//
-//                    if (tick.toString().equalsIgnoreCase(tickLabels[custTrend])) {
-//                        for (int i = counterI - 1; i > counterI - 10; i--) {
-//                            updatedTicksList.add(ticks.get(i));
-//                        }
-//                        updatedTicksList.add(tick);
-//                        for (int i = counterI + 1; i < counterI + 11; i++) {
-//                            updatedTicksList.add(ticks.get(i));
-//                        }
-//                    }
-//                    counterI++;
-//                }
-//                Rectangle2D up;
-//                if (custTrend == 4) {
-//                    up = new Rectangle((int) dataArea.getX(), (int) dataArea.getY(), (int) dataArea.getWidth(), (int) dataArea.getHeight());
-//
-//                } else if (custTrend == 2) {
-//                    up = new Rectangle((int) dataArea.getX(), (int) dataArea.getY(), (int) dataArea.getWidth(), (int) dataArea.getHeight());//                    
-////
-//                } else {
-//                    up = new Rectangle((int) dataArea.getX(), (int) dataArea.getY(), (int) dataArea.getWidth(), (int) dataArea.getHeight());
-//                }
-//
-//                super.drawRangeTickBands(g2, up, updatedTicksList); //To change body of generated methods, choose Tools | Templates.
-//            }
         };
-//        if (custTrend != -1) {
-//            if (custTrend == 4) {
-//                xyplot.setRangeTickBandPaint(customizedUserDataColor[4]);
-//
-//            } else if (custTrend == 0) {
-//                xyplot.setRangeTickBandPaint(customizedUserDataColor[0]);
-//            } else if (custTrend == 2) {
-//                xyplot.setRangeTickBandPaint(customizedUserDataColor[2]);//TickBandPaint(customizedUserDataColor[2]);
-//            }
-//
-//        } else {
-//            xyplot.setRangeTickBandPaint(Color.WHITE);
-//        }
         xyplot.setRangeGridlinePaint(Color.LIGHT_GRAY);
 
         JFreeChart jFreeChart = new JFreeChart(null, new Font("Helvetica Neue", Font.PLAIN, 18), xyplot, true);
@@ -854,6 +827,11 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
     /**
      * Convert JFree chart object into decoded64 String image.
      *
+     * @param chart JFree chart instance
+     * @param chartRenderingInfo Chart rendering information that has the all
+     * information required for drawing Vaadin bubbles in the absolute layout.
+     * @param width The generated image width
+     * @param height The generated image height.
      * @return String of Decoded64 String that is used as URL for the generated
      * image.
      */
@@ -941,7 +919,7 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
                 String updatedHeader = ("Numerator: " + gr[0] + "<br/>Denominator: " + gr[1] + "<br/>Disease: " + gc.getDiseaseCategory());
                 String tooltip = updatedHeader + "<br/>Overall trend: " + tooltipsIcon[trend];//+ "<br/>Datasets included: " + dsNumber;
                 square.setDescription(tooltip);
-                square.addLayoutClickListener(StudiesLineChart.this);
+                square.addLayoutClickListener(ProteinDatasetsLineChartList.this);
             }
         }
 
@@ -966,7 +944,7 @@ public abstract class StudiesLineChart extends AbsoluteLayout implements LayoutE
                         symbol.addParam("resizePosition", "left: " + (xSer - 2 - adju) + "px; top: " + (ySer + 4 + factor - adju) + "px;");
                         symbol.addParam("position", "left: " + (xSer - 2) + "px; top: " + (ySer + 4 + factor) + "px;");
                         symbol.addParam("type", "dataset");
-                        symbol.addLayoutClickListener(StudiesLineChart.this);
+                        symbol.addLayoutClickListener(ProteinDatasetsLineChartList.this);
                         chartComponentsLayout.addComponent(symbol, "left: " + (xSer - 2) + "px; top: " + (ySer + 4 + factor) + "px;");
                         symbol.setVisible(false);
                         factor += 6;

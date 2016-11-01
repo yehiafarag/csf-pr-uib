@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.server.Sizeable.Unit;
@@ -10,15 +5,29 @@ import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.VerticalLayout;
 
 /**
- *
- * @author Yehia Farag this class represent a popup window with frame and no
+ * This class represents stander pop-up window container with frame and no
  * functions button layout
+ *
+ * @author Yehia Farag
  */
-public class PopupWindowFrame{
+public class PopupWindowFrame {
 
+    /**
+     * This class represents stander pop-up window container.
+     */
     private final PopupWindow popupWindow;
+    /**
+     * Main window content.
+     */
     private final AbstractOrderedLayout popupBody;
 
+    /**
+     * Constructor to initialize the main attributes.
+     *
+     * @param title The window title.
+     * @param popupBody The main window body.
+     *
+     */
     public PopupWindowFrame(String title, AbstractOrderedLayout popupBody) {
         popupBody.setMargin(false);
         popupBody.setSpacing(true);
@@ -53,7 +62,7 @@ public class PopupWindowFrame{
 
                     }
                 }
-                super.setVisible(visible); //To change body of generated methods, choose Tools | Templates.
+                super.setVisible(visible);
             }
 
         };
@@ -62,23 +71,39 @@ public class PopupWindowFrame{
 
     }
 
+    /**
+     * Set the window and sub content height.
+     *
+     * @param height the height of the window.
+     */
     public void setFrameHeight(int height) {
-
         popupWindow.setHeight(Math.max(height, 61), Unit.PIXELS);
         popupBody.setHeight(popupWindow.getHeight() - 60, Unit.PIXELS);
-
     }
 
+    /**
+     * Show the pop-up window.
+     */
     public void view() {
         popupWindow.setVisible(true);
     }
 
+    /**
+     * Get the pop-up window width.
+     *
+     * @return the window width.
+     */
     public int getFrameWidth() {
         return (int) popupWindow.getWidth();
     }
 
+    /**
+     * Set the window and sub content width.
+     *
+     * @param width the with of the window.
+     */
     public void setFrameWidth(int width) {
-        popupWindow.setWidth(width-20, Unit.PIXELS);
+        popupWindow.setWidth(width - 20, Unit.PIXELS);
         popupBody.setWidth(popupWindow.getWidth() - 24, Unit.PIXELS);
     }
 

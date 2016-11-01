@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.event.LayoutEvents;
@@ -15,20 +10,28 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
 /**
+ * This class represents button with middle image icon the button supports
+ * images updates.
  *
  * @author Yehia Farag
- *
- * this class represents button with big image the button will support refresh
- * images on fly
- *
  */
 public abstract class ImageContainerBtn extends AbsoluteLayout implements LayoutEvents.LayoutClickListener {
 
+    /**
+     * Image object that is used as middle icon.
+     */
     private final Image img;
+    /**
+     * Side description for the button
+     */
     private final Label text;
+    /**
+     * Parent wrapper layout
+     */
+    private boolean hasWrapper = false;
 
     /**
-     *
+     * Constructor to initialize main attributes.
      */
     public ImageContainerBtn() {
         img = new Image();
@@ -69,9 +72,9 @@ public abstract class ImageContainerBtn extends AbsoluteLayout implements Layout
 
     /**
      *
-     * this method responsible for updating button image
+     * This method responsible for updating button middle icon
      *
-     * @param imgResource
+     * @param imgResource resource for the middle icon
      */
     public void updateIcon(Resource imgResource) {
         if (imgResource == null) {
@@ -84,32 +87,36 @@ public abstract class ImageContainerBtn extends AbsoluteLayout implements Layout
 
     /**
      *
-     * this method responsible for updating button text
+     * This method responsible for updating button description text.
      *
-     * @param textStr
+     * @param descriptionText button description text.
      */
-    public void updateText(String textStr) {
-        text.setValue(textStr);
+    public void updateText(String descriptionText) {
+        text.setValue(descriptionText);
     }
 
+    /**
+     * On button clicked.
+     *
+     * @param event user click event.
+     */
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         this.removeStyleName("orangeBorder");
-
         onClick();
     }
 
     /**
+     * The button has parent wrapper layout.
      *
      * @param hasWrapper
      */
     public void setHasWrapper(boolean hasWrapper) {
         this.hasWrapper = hasWrapper;
     }
-    private boolean hasWrapper = false;
 
     /**
-     *
+     * Blinking the button to notify users by changes.
      */
     public void blink() {
         this.addStyleName("orangeBorder");
@@ -123,10 +130,13 @@ public abstract class ImageContainerBtn extends AbsoluteLayout implements Layout
     }
 
     /**
-     *
+     * On click final action.
      */
     public abstract void onClick();
 
+    /**
+     * Override enable button to hide on disable.
+     */
     @Override
     public void setEnabled(boolean enabled) {
         if (enabled) {
@@ -145,9 +155,10 @@ public abstract class ImageContainerBtn extends AbsoluteLayout implements Layout
     }
 
     /**
-     * to be override
+     * Reset button to initial state. to be override
      */
     public void reset() {
     }
+;
 
 }

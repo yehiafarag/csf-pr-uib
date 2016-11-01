@@ -269,7 +269,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         controlBtnsContainer.setHeightUndefined();
         controlBtnsContainer.setWidthUndefined();
         controlBtnsContainer.setSpacing(true);
-        InformationButton info = new InformationButton("Info", false);
+        InformationButton info = new InformationButton("Info");
 
         info.setWidth(40, Unit.PIXELS);
         info.setHeight(40, Unit.PIXELS);

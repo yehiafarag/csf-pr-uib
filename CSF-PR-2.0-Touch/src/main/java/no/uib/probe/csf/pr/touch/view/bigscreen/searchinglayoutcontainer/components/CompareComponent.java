@@ -220,7 +220,7 @@ public abstract class CompareComponent extends BigBtn {
         controlBtnsLayout.setComponentAlignment(leftsideWrapper, Alignment.TOP_LEFT);
         leftsideWrapper.setSpacing(true);
 
-        InformationButton info = new InformationButton("To compare your own data against the protein information in CSF-PR upload your UniProt accession numbers (divided into the three categories Increased, Equal and Decreased), select (or name) the disease comparison categories for your input data at the top, and click the \"Compare\" button. A graphical overview of the results will be displayed at the bottom. You can either load all the results or select a subset via the charts before loading.", true);
+        InformationButton info = new InformationButton("To compare your own data against the protein information in CSF-PR upload your UniProt accession numbers (divided into the three categories Increased, Equal and Decreased), select (or name) the disease comparison categories for your input data at the top, and click the \"Compare\" button. A graphical overview of the results will be displayed at the bottom. You can either load all the results or select a subset via the charts before loading.");
         leftsideWrapper.addComponent(info);
 
         idDataResult = new VerticalLayout();
@@ -529,8 +529,8 @@ public abstract class CompareComponent extends BigBtn {
 
         };
 
-        notFoundChart.getMiddleDountLayout().addStyleName("defaultcursor");
-        notFoundChart.getMiddleDountLayout().setDescription("Click slice to export");
+        notFoundChart.getMiddleDonutLayout().addStyleName("defaultcursor");
+        notFoundChart.getMiddleDonutLayout().setDescription("Click slice to export");
         notFoundChart.setDescription("Click slice to export");
         int notFoundLength = notFoundAcc.length;
         if (notFoundAcc.length == 1 && notFoundAcc[0].trim().equalsIgnoreCase("")) {

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.itextpdf.text.pdf.codec.Base64;
@@ -37,29 +32,86 @@ import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 
 /**
+ * This class represents interactive pie-chart the chart developed using JFree
+ * chart and DiVA concept
  *
  * @author Yehia Farag
- *
- * this class represents interactive pie-chart the chart developed using JFree
- * chart and DiVA concept
  */
 public abstract class PieChart extends AbsoluteLayout implements LayoutEvents.LayoutClickListener {
 
-    private final ChartRenderingInfo chartRenderingInfo = new ChartRenderingInfo();
-    private final Image chartBackgroundImg;
-    private final Map<Comparable, String> valuesMap = new HashMap<>();
-    private final VerticalLayout middleDountLayout;
-    private PiePlot plot;
+    /**
+     * JFree Components.
+     */
+    /**
+     * JFreeChart used to generate thumb image and default chart image
+     * background.
+     */
     private JFreeChart chart;
-    private final int width;
-    private final int height;
+    /**
+     * Chart rendering information that has the all information required for
+     * drawing Vaadin pie-chart in the absolute layout.
+     */
+    private final ChartRenderingInfo chartRenderingInfo = new ChartRenderingInfo();
+    /**
+     * Chart dataset.
+     */
     private DefaultPieDataset dataset;
-    private final Label selectAllLabel;
-    private final Set<String> selectionSet;
+    /**
+     * Selected slice AWT color.
+     */
     private final Color selectedColor = Color.decode("#197de1");
-    private final Map<Comparable, Color> defaultColors;
-    private final Map<Comparable, Color> selectedColors;
+    /**
+     * Map of each category in the chart and its default color (for JFree chart
+     * reset coloring)
+     */
+    private final Map<Comparable, Color> defaultKeyColorMap;
+    /**
+     * Map of category and selected slice color (required by JFree chart)
+     */
+    private final Map<Comparable, Color> selectedKeyColorMap;
+    /**
+     * The main pie-chart JFree plot(required by JFree chart)
+     */
+    private PiePlot plot;
+    /**
+     * The main chart background image (to be updated using JFreechart).
+     */
+    private final Image chartBackgroundImg;
+    /**
+     * Map of category and value (number of items)
+     */
+    private final Map<Comparable, String> valuesMap = new HashMap<>();
+    /**
+     * A wite layout that has the label and turn pie-chart into donut chart.
+     */
+    private final VerticalLayout middleDonutLayout;
 
+    /**
+     * The width of the chart.
+     */
+    private final int width;
+    /**
+     * The height of the chart.
+     */
+    private final int height;
+
+    /**
+     * The chart label contain the total number of datasets.
+     */
+    private final Label selectAllLabel;
+    /**
+     * The set of selected items
+     */
+    private final Set<String> selectionSet;
+
+    /**
+     * Constructor to initialize the main attributes
+     *
+     * @param filterWidth The width of the filter
+     * @param filterHeight The height of the filter
+     * @param title Filter title
+     * @param interactive The filter is support selection.
+     */
     public PieChart(int filterWidth, int filterHeight, String title, boolean interactive) {
 
         this.setWidth(filterWidth, Unit.PIXELS);
@@ -68,8 +120,8 @@ public abstract class PieChart extends AbsoluteLayout implements LayoutEvents.La
         this.width = filterWidth;
         this.height = filterHeight;
 
-        this.defaultColors = new HashMap<>();
-        this.selectedColors = new HashMap<>();
+        this.defaultKeyColorMap = new HashMap<>();
+        this.selectedKeyColorMap = new HashMap<>();
 
         this.chartBackgroundImg = new Image();
         if (interactive) {
@@ -80,27 +132,37 @@ public abstract class PieChart extends AbsoluteLayout implements LayoutEvents.La
         chartBackgroundImg.setHeight(100, Unit.PERCENTAGE);
         this.addComponent(chartBackgroundImg);
 
-        middleDountLayout = new VerticalLayout();
-        middleDountLayout.setWidth(100, Unit.PIXELS);
-        middleDountLayout.setHeight(100, Unit.PIXELS);
-        middleDountLayout.setStyleName("middledountchart");
+        middleDonutLayout = new VerticalLayout();
+        middleDonutLayout.setWidth(100, Unit.PIXELS);
+        middleDonutLayout.setHeight(100, Unit.PIXELS);
+        middleDonutLayout.setStyleName("middledountchart");
 
         selectAllLabel = new Label();
         selectAllLabel.setWidth(100, Unit.PERCENTAGE);
         selectAllLabel.setStyleName(ValoTheme.LABEL_TINY);
         selectAllLabel.addStyleName(ValoTheme.LABEL_SMALL);
-        middleDountLayout.addComponent(selectAllLabel);
-        middleDountLayout.setComponentAlignment(selectAllLabel, Alignment.MIDDLE_CENTER);
+        middleDonutLayout.addComponent(selectAllLabel);
+        middleDonutLayout.setComponentAlignment(selectAllLabel, Alignment.MIDDLE_CENTER);
 
         this.initPieChart(title);
         selectionSet = new LinkedHashSet<>();
 
     }
 
-    public VerticalLayout getMiddleDountLayout() {
-        return middleDountLayout;
+    /**
+     * Get the middle white layout (the middle donut component).
+     *
+     * @return
+     */
+    public VerticalLayout getMiddleDonutLayout() {
+        return middleDonutLayout;
     }
 
+    /**
+     * Initialize the main JFree chart component.
+     *
+     * @param title The filter title.
+     */
     private void initPieChart(String title) {
         dataset = new DefaultPieDataset();
 
@@ -152,6 +214,14 @@ public abstract class PieChart extends AbsoluteLayout implements LayoutEvents.La
 
     }
 
+    /**
+     * Convert JFree chart into image and encode it as base64 string to be used
+     * as image link.
+     *
+     * @param chart JFree chart instance
+     * @param width Image width
+     * @param height Image height.
+     */
     private String saveToFile(final JFreeChart chart, double width, double height) {
         byte imageData[];
         try {
@@ -166,13 +236,15 @@ public abstract class PieChart extends AbsoluteLayout implements LayoutEvents.La
     }
 
     /**
-     * this method is responsible for initializing chart dataset
+     * This method is responsible for initializing chart dataset.
      *
-     * @param chartData information required to update chart data
+     * @param items The items labels
+     * @param values The items values
+     * @param colors The items AWT colors
      */
     public void initializeFilterData(String[] items, Integer[] values, Color[] colors) {
-        this.defaultColors.clear();
-        this.selectedColors.clear();
+        this.defaultKeyColorMap.clear();
+        this.selectedKeyColorMap.clear();
         dataset.clear();
         if (values == null) {
             return;
@@ -185,8 +257,8 @@ public abstract class PieChart extends AbsoluteLayout implements LayoutEvents.La
             valuesMap.put(items[x], values[x] + "");
             if (colors != null) {
                 plot.setSectionPaint(items[x], colors[x]);
-                this.selectedColors.put(items[x], colors[x].darker());
-                this.defaultColors.put(items[x], colors[x]);
+                this.selectedKeyColorMap.put(items[x], colors[x].darker());
+                this.defaultKeyColorMap.put(items[x], colors[x]);
             }
         }
         if (values.length > 0) {
@@ -198,6 +270,12 @@ public abstract class PieChart extends AbsoluteLayout implements LayoutEvents.La
 
     }
 
+    /**
+     * Get value for the input item label.
+     *
+     * @param key Item label
+     * @return the item value.
+     */
     public int getValue(String key) {
         if (valuesMap.containsKey(key)) {
             return Integer.valueOf(valuesMap.get(key));
@@ -213,11 +291,16 @@ public abstract class PieChart extends AbsoluteLayout implements LayoutEvents.La
         String imgUrl = saveToFile(chart, width, height);
         this.chartBackgroundImg.setSource(new ExternalResource(imgUrl));
 
-        this.removeComponent(middleDountLayout);
-        this.addComponent(middleDountLayout, "left: " + ((chartRenderingInfo.getPlotInfo().getDataArea().getCenterX()) - 50) + "px; top: " + (chartRenderingInfo.getPlotInfo().getDataArea().getCenterY() - 50) + "px");
+        this.removeComponent(middleDonutLayout);
+        this.addComponent(middleDonutLayout, "left: " + ((chartRenderingInfo.getPlotInfo().getDataArea().getCenterX()) - 50) + "px; top: " + (chartRenderingInfo.getPlotInfo().getDataArea().getCenterY() - 50) + "px");
 
     }
 
+    /**
+     * On chart click (selection on the pie-chart layout).
+     *
+     * @param event user click action
+     */
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         if (!chartRenderingInfo.getPlotInfo().getDataArea().contains(event.getRelativeX(), event.getRelativeY())) {
@@ -240,39 +323,44 @@ public abstract class PieChart extends AbsoluteLayout implements LayoutEvents.La
         sliceClicked(sliceName);
     }
 
+    /**
+     * Select slice action.
+     *
+     * @param sliceKey selected slice key.
+     */
     public void selectSlice(Comparable sliceKey) {
 
         if (selectionSet.contains("all")) {
             selectionSet.clear();
         } else if (sliceKey.toString().equalsIgnoreCase("all")) {
 
-            if (middleDountLayout.getStyleName().contains("selected")) {
-                middleDountLayout.removeStyleName("selected");
+            if (middleDonutLayout.getStyleName().contains("selected")) {
+                middleDonutLayout.removeStyleName("selected");
                 selectionSet.remove("all");
             } else {
-                middleDountLayout.addStyleName("selected");
+                middleDonutLayout.addStyleName("selected");
                 selectionSet.clear();
                 selectionSet.add("all");
             }
         } else if (plot.getSectionOutlinePaint(sliceKey) == selectedColor) {
             plot.setSectionOutlinePaint(sliceKey, null);
-            plot.setSectionPaint(sliceKey, defaultColors.get(sliceKey));
+            plot.setSectionPaint(sliceKey, defaultKeyColorMap.get(sliceKey));
             selectionSet.remove(sliceKey.toString());
         } else {
-            plot.setSectionPaint(sliceKey, selectedColors.get(sliceKey));
+            plot.setSectionPaint(sliceKey, selectedKeyColorMap.get(sliceKey));
             plot.setSectionOutlinePaint(sliceKey, selectedColor);
 //            plot.setSectionOutlineStroke(sliceKey, stroke);
             selectionSet.add(sliceKey.toString());
         }
         if (selectionSet.contains("all") || selectionSet.size() == valuesMap.size() || (!selectionSet.isEmpty() && valuesMap.size() == 1)) {
-            middleDountLayout.addStyleName("selected");
+            middleDonutLayout.addStyleName("selected");
             selectionSet.clear();
             selectionSet.add("all");
             valuesMap.keySet().stream().map((keys) -> {
                 plot.setSectionOutlinePaint(keys, selectedColor);
                 return keys;
             }).forEach((keys) -> {
-                plot.setSectionPaint(keys, selectedColors.get(keys));
+                plot.setSectionPaint(keys, selectedKeyColorMap.get(keys));
             });
         }
         if (selectionSet.isEmpty()) {
@@ -283,6 +371,11 @@ public abstract class PieChart extends AbsoluteLayout implements LayoutEvents.La
 
     }
 
+    /**
+     * Get set of the selected slice items.
+     *
+     * @return set of selected items labels.
+     */
     public Set<String> getSelectionSet() {
         if ((!selectionSet.isEmpty() && valuesMap.size() == 1)) {
             selectionSet.clear();
@@ -291,17 +384,25 @@ public abstract class PieChart extends AbsoluteLayout implements LayoutEvents.La
         return selectionSet;
     }
 
+    /**
+     * Reset the chart to initial state.
+     */
     public void resetChart() {
-        middleDountLayout.removeStyleName("selected");
+        middleDonutLayout.removeStyleName("selected");
         valuesMap.keySet().stream().map((keys) -> {
             plot.setSectionOutlinePaint(keys, null);
             return keys;
         }).forEach((keys) -> {
-            plot.setSectionPaint(keys, defaultColors.get(keys));
+            plot.setSectionPaint(keys, defaultKeyColorMap.get(keys));
         });
         redrawChart();
     }
 
+    /**
+     * Select slice action.
+     *
+     * @param sliceKey selected slice key
+     */
     public abstract void sliceClicked(Comparable sliceKey);
 
 }

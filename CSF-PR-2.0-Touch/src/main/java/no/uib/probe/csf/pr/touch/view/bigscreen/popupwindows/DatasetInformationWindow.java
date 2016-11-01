@@ -75,13 +75,13 @@ public abstract class DatasetInformationWindow extends VerticalLayout implements
         popupBody.addComponent(tab);
         popupBody.setComponentAlignment(tab, Alignment.TOP_CENTER);
 
-        datasetsPopupLayout = new DatasetButtonsContainerLayout((int) popupWindowFrame.getFrameWidth(), false);
+        datasetsPopupLayout = new DatasetButtonsContainerLayout((int) popupWindowFrame.getFrameWidth());
         if (datasetsPopupLayout.getColNumber() == 1) {
             popupWindowFrame.setFrameWidth(260);
         }
 
         tab.addTab(datasetsPopupLayout, "Datasets");
-        publicationPopupLayout = new DatasetButtonsContainerLayout((int) popupWindowFrame.getFrameWidth(), false);
+        publicationPopupLayout = new DatasetButtonsContainerLayout((int) popupWindowFrame.getFrameWidth());
         tab.addTab(publicationPopupLayout, "Publications");
         tab.addSelectedTabChangeListener((TabSheet.SelectedTabChangeEvent event) -> {
             if (event.getTabSheet().getTabPosition((tab.getTab(tab.getSelectedTab()))) == 0) {

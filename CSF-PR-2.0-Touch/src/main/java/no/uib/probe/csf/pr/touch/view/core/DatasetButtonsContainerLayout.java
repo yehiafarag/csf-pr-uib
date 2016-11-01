@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.shared.ui.MarginInfo;
@@ -19,30 +14,62 @@ import java.util.TreeMap;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDataset;
 
 /**
+ * This class represents dataset information buttons container pop-up window.
  *
  * @author Yehia Farag
- *
- * this class represents study information popup window
  */
 public class DatasetButtonsContainerLayout extends VerticalLayout {
 
-    private final GridLayout btnsContainer;
+    /**
+     * Main button container.
+     */
+    private final GridLayout popUpBtnsContainerGridLayout;
+    /**
+     * CSS style name for even datasets or studies.
+     */
     private final String styleI = "lightbluebackground";
+    /**
+     * CSS style name for odd datasets or studies.
+     */
     private final String styleII = "lightredbackground";
+    /**
+     * CSS marker for last selected style name.
+     */
     private String lastStyle = "";
+    /**
+     * Map of publication name and its CSS style name.
+     */
     Map<String, String> publicationStyle;
+    /**
+     * Total number of columns (for dataset tab).
+     */
+    private final int colNum;
+    /**
+     * Counter of rows (for dataset tab).
+     */
+    private int rowcounter;
+    /**
+     * Total number of rows (for dataset tab).
+     */
+    private int rowNumb;
 
+    /**
+     * Set and update the pop-up buttons for datasets and publications.
+     *
+     * @param dsObjects collection of dataset objects required to initialize the
+     * datasets information pop-up buttons,
+     */
     public void setInformationData(Collection<QuantDataset> dsObjects) {
 
-        btnsContainer.removeAllComponents();
+        popUpBtnsContainerGridLayout.removeAllComponents();
         publicationStyle.clear();
 
-        rowNumb = Math.max(1, ((dsObjects.size() / btnsContainer.getColumns()) + 1));
-        btnsContainer.setRows(rowNumb);
+        rowNumb = Math.max(1, ((dsObjects.size() / popUpBtnsContainerGridLayout.getColumns()) + 1));
+        popUpBtnsContainerGridLayout.setRows(rowNumb);
         if (rowNumb == 1) {
-            btnsContainer.setWidthUndefined();
+            popUpBtnsContainerGridLayout.setWidthUndefined();
         } else {
-            btnsContainer.setWidth(100, Unit.PERCENTAGE);
+            popUpBtnsContainerGridLayout.setWidth(100, Unit.PERCENTAGE);
         }
 
         Map<String, Set<QuantDataset>> sortMap = new TreeMap(Collections.reverseOrder());
@@ -57,7 +84,7 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
         });
 
         int colcounter = 0;
-        int rowcounter = 0;
+        int tempRowcounter = 0;
         for (String quantDSKey : sortMap.keySet()) {
             for (QuantDataset quantDS : sortMap.get(quantDSKey)) {
 
@@ -71,14 +98,14 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
                     }
 
                 }
-                String btnName = "<font size=1 >" + quantDS.getYear() + "</font><br/>"+quantDS.getAuthor()+"<br/><font size=1 >#Proteins: " + quantDS.getTotalProtNum() + "   #Peptides: " + quantDS.getTotalPepNum() + "</font>";
+                String btnName = "<font size=1 >" + quantDS.getYear() + "</font><br/>" + quantDS.getAuthor() + "<br/><font size=1 >#Proteins: " + quantDS.getTotalProtNum() + "   #Peptides: " + quantDS.getTotalPepNum() + "</font>";
 
-                PopupInfoBtn btn = new PopupInfoBtn(quantDS, btnName, quantDS.getAuthor(), smallScreen);
+                PopupWrapperBtn btn = new PopupWrapperBtn(quantDS, btnName, quantDS.getAuthor());
                 btn.addStyleName(publicationStyle.get(quantDS.getPubMedId()));
-                btnsContainer.addComponent(btn, colcounter++, rowcounter);
-                if (colcounter >= btnsContainer.getColumns()) {
+                popUpBtnsContainerGridLayout.addComponent(btn, colcounter++, tempRowcounter);
+                if (colcounter >= popUpBtnsContainerGridLayout.getColumns()) {
                     colcounter = 0;
-                    rowcounter++;
+                    tempRowcounter++;
 
                 }
             }
@@ -86,26 +113,29 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
 
     }
 
+    /**
+     * List of publication information where each element represent one
+     * publication.
+     *
+     * @param publicationObjects list of publication data arrays.
+     */
     public void setPublicationData(List<Object[]> publicationObjects) {
 
-        btnsContainer.removeAllComponents();
+        popUpBtnsContainerGridLayout.removeAllComponents();
         publicationStyle.clear();
-
-         rowNumb = Math.max(1, ((publicationObjects.size() / btnsContainer.getColumns()) + 1));
-        btnsContainer.setRows(rowNumb);
+        rowNumb = Math.max(1, ((publicationObjects.size() / popUpBtnsContainerGridLayout.getColumns()) + 1));
+        popUpBtnsContainerGridLayout.setRows(rowNumb);
         if (rowNumb == 1) {
-            btnsContainer.setWidthUndefined();
-            btnsContainer.setWidth(100, Unit.PERCENTAGE);
+            popUpBtnsContainerGridLayout.setWidthUndefined();
+            popUpBtnsContainerGridLayout.setWidth(100, Unit.PERCENTAGE);
         } else {
-            btnsContainer.setWidth(100, Unit.PERCENTAGE);
+            popUpBtnsContainerGridLayout.setWidth(100, Unit.PERCENTAGE);
         }
-
         Map<String, Object[]> sortMap = new TreeMap(Collections.reverseOrder());
         publicationObjects.stream().forEach((obj) -> {
             String key = obj[2].toString() + "_" + obj[0].toString();
             sortMap.put(key, obj);
         });
-
         int colcounter = 0;
         rowcounter = 0;
         for (String quantDSKey : sortMap.keySet()) {
@@ -119,70 +149,82 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
                     publicationStyle.put(obj[0].toString(), styleI);
                     lastStyle = styleI;
                 }
-
             }
-            String btnName = "<font size=1 >" + obj[2].toString() + "</font><br/>"+obj[1].toString() +"<br/><font size=1 >#Proteins: " + obj[5].toString() /*+ "/" + obj[5].toString() + */ + "   #Peptides: " + obj[7].toString() /*+ "/" + obj[7].toString() +*/ + "</font>";
-
-            PopupInfoBtn btn = new PopupInfoBtn(btnName, obj[1].toString(), obj, smallScreen);
+            String btnName = "<font size=1 >" + obj[2].toString() + "</font><br/>" + obj[1].toString() + "<br/><font size=1 >#Proteins: " + obj[5].toString() + "   #Peptides: " + obj[7].toString() + "</font>";
+            PopupWrapperBtn btn = new PopupWrapperBtn(btnName, obj[1].toString(), obj);
             btn.addStyleName(publicationStyle.get(obj[0].toString()));
-            btnsContainer.addComponent(btn, colcounter++, rowcounter);
-            if (colcounter >= btnsContainer.getColumns()) {
+            popUpBtnsContainerGridLayout.addComponent(btn, colcounter++, rowcounter);
+            if (colcounter >= popUpBtnsContainerGridLayout.getColumns()) {
                 colcounter = 0;
                 rowcounter++;
 
             }
 
         }
-        if(btnsContainer.getColumns()>sortMap.size() && btnsContainer.getRows()==1){
-            for(int x=sortMap.size();x<btnsContainer.getColumns();x++){
+        if (popUpBtnsContainerGridLayout.getColumns() > sortMap.size() && popUpBtnsContainerGridLayout.getRows() == 1) {
+            for (int x = sortMap.size(); x < popUpBtnsContainerGridLayout.getColumns(); x++) {
                 VerticalLayout emptyLayout = new VerticalLayout();
-                emptyLayout.setHeight(20,Unit.PIXELS);
-                emptyLayout.setWidth(200,Unit.PIXELS);
-                btnsContainer.addComponent(emptyLayout, x, 0);
+                emptyLayout.setHeight(20, Unit.PIXELS);
+                emptyLayout.setWidth(200, Unit.PIXELS);
+                popUpBtnsContainerGridLayout.addComponent(emptyLayout, x, 0);
             }
-        
+
         }
 
     }
 
-    private final boolean smallScreen;
-    private final int colNum;
-    private int rowcounter,rowNumb;
-
+    /**
+     * Get final row number for the body grid layout.
+     *
+     * @return rowNumb Number of grid layout container rows.
+     */
     public int getRowcounter() {
         return rowNumb;
     }
-    public DatasetButtonsContainerLayout(int width, boolean smallScreen) {
-        this.smallScreen = smallScreen;
+
+    /**
+     * Constructor to initialize the main layout and the main attributes.
+     *
+     * @param width the available width for the layout.
+     */
+    public DatasetButtonsContainerLayout(int width) {
         this.publicationStyle = new HashMap<>();
         this.setWidth(100, Unit.PERCENTAGE);
         this.setHeightUndefined();
         this.setMargin(new MarginInfo(true, false, true, true));
         this.setSpacing(true);
-
         width = width * 90 / 100;
         colNum = Math.max(1, width / 210);
-        btnsContainer = new GridLayout();
-        btnsContainer.setWidth(100, Unit.PERCENTAGE);
-        btnsContainer.setColumns(colNum);
+        popUpBtnsContainerGridLayout = new GridLayout();
+        popUpBtnsContainerGridLayout.setWidth(100, Unit.PERCENTAGE);
+        popUpBtnsContainerGridLayout.setColumns(colNum);
         for (int x = 0; x < colNum; x++) {
-            btnsContainer.setColumnExpandRatio(x, 200);
+            popUpBtnsContainerGridLayout.setColumnExpandRatio(x, 200);
         }
-        btnsContainer.setStyleName("whitelayout");
-        btnsContainer.setHeightUndefined();
-        btnsContainer.setSpacing(false);
-        btnsContainer.setHideEmptyRowsAndColumns(false);
-
-        this.addComponent(btnsContainer);
+        popUpBtnsContainerGridLayout.setStyleName("whitelayout");
+        popUpBtnsContainerGridLayout.setHeightUndefined();
+        popUpBtnsContainerGridLayout.setSpacing(false);
+        popUpBtnsContainerGridLayout.setHideEmptyRowsAndColumns(false);
+        this.addComponent(popUpBtnsContainerGridLayout);
 
     }
 
+    /**
+     * Get final column number for the body grid layout.
+     *
+     * @return colNum Number of grid layout container columns.
+     */
     public int getColNumber() {
         return colNum;
     }
 
+    /**
+     * Get the final height for the grid container layout.
+     *
+     * @return
+     */
     public int getLayoutHeight() {
-        return btnsContainer.getRows() * 100;
+        return popUpBtnsContainerGridLayout.getRows() * 100;
     }
 
 }

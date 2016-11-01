@@ -162,7 +162,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         sub2quantStatLabelWrapper.addStyleName("nomargin");
         sub2quantStatLabelWrapper.addComponent(sub2quantStatLabel);
 
-        Label sub2QuantStatValue = new Label(overviewInfoBean.getNumberOfQuantStudies() + "");
+        Label sub2QuantStatValue = new Label(overviewInfoBean.getNumberOfQuantDatasets() + "");
         sub2QuantStatValue.addStyleName(ValoTheme.LABEL_SMALL);
         sub2QuantStatValue.addStyleName(ValoTheme.LABEL_TINY);
         sub2QuantStatValue.addStyleName("nomargin");
