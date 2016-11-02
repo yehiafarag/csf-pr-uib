@@ -24,21 +24,32 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantProtein;
 import no.uib.probe.csf.pr.touch.view.core.OverviewInfoBean;
 
 /**
+ * This class contains the logic layer (main computing code) this class interact
+ * with both the data handler and the data access layer.
  *
  * @author Yehia Farag
- *
- * This class contains the logic layer (main computing code) this class interact
- * with both the data handler and the data access layer
  */
 public class CoreLogic implements Serializable {
 
     /**
-     * Database abstraction
+     * Database layer.
      */
     private final DataBaseLayer database;
+    /**
+     * Data exporter component.
+     */
     private final Exporter exporter;
 
-    public CoreLogic(String url, String dbName, String driver, String userName, String password, String filesURL) {
+    /**
+     * Constructor to initialize the main attributes.
+     *
+     * @param url database URL.
+     * @param dbName database name.
+     * @param driver database driver.
+     * @param userName database username.
+     * @param password database password.
+     */
+    public CoreLogic(String url, String dbName, String driver, String userName, String password) {
         database = new DataBaseLayer(url, dbName, driver, userName, password);
         this.exporter = new Exporter();
 
@@ -160,7 +171,7 @@ public class CoreLogic implements Serializable {
      * get active quantification pie charts filters within quant searching
      * proteins results (to hide them if they are empty)
      *
-     * @param searchQuantificationProtList
+     * @param searchQuantificationProtList  List of quant proteins.
      * @return boolean array for the active and not active pie chart filters
      * indexes
      */
@@ -172,7 +183,7 @@ public class CoreLogic implements Serializable {
     /**
      * Get set of disease groups names for special disease category
      *
-     * @param diseaseCat
+     * @param diseaseCat disease category name
      * @return map of the short and long diseases names
      */
     public Set<String> getDiseaseGroupNameMap(String diseaseCat) {
@@ -762,7 +773,6 @@ public class CoreLogic implements Serializable {
         Set<QuantProtein> quantProteinSet = database.getQuantificationProteins(dsIds);
         Map<String, Set<QuantPeptide>> quantPeptSet = database.getQuantificationPeptides(dsIds);
 
-        Map<String, QuantProtein> quantProteinSigMap = new TreeMap<>();
         for (QuantProtein qProtein : quantProteinSet) {
             String sigKey = "__" + qProtein.getProtIndex() + "__" + qProtein.getQuantDatasetIndex() + "__";
             if (quantPeptSet.containsKey(sigKey)) {

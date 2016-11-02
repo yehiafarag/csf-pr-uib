@@ -114,7 +114,7 @@ public abstract class ReorderSelectGroupsComponent extends VerticalLayout implem
         btnsFrame.setComponentAlignment(leftsideWrapper, Alignment.TOP_LEFT);
         leftsideWrapper.setSpacing(true);
 
-        InformationButton info = new InformationButton("The disease groups shown and the order of these groups can be controlled by dragging and dropping the groups in the table, and by selecting only the groups to display. When the wanted order is achieved click the \"Apply\" button.");
+        InformationButton info = new InformationButton("The disease groups shown and the order of these groups can be controlled by dragging and dropping the groups in the table, and by selecting only the groups to display. When the wanted order is achieved click the \"Apply\" button.",true);
         leftsideWrapper.addComponent(info);
 
         HorizontalLayout bottomContainert = new HorizontalLayout();
@@ -202,12 +202,12 @@ public abstract class ReorderSelectGroupsComponent extends VerticalLayout implem
             if (groupILayout.isSingleSelected()) {
                 groupIILayout.setEnableSelection(true);
             } else {
-                groupIILayout.selectAndHideUnselected(null, false);
+                groupIILayout.selectAndUpdate(null, false);
                 return;
             }
 
             Set<HeatMapHeaderCellInformationBean> updatedGroupIISet = filterPatGroup2List(groupILayout.getSelectionSet());
-            groupIILayout.selectAndHideUnselected(updatedGroupIISet, false);
+            groupIILayout.selectAndUpdate(updatedGroupIISet, false);
         };
         groupILayout.addSelectionValueChangeListener(selectionChangeListenet);
 

@@ -14,32 +14,32 @@ import no.uib.probe.csf.pr.touch.view.core.BusyTaskProgressBar;
 import no.uib.probe.csf.pr.touch.view.core.SlidePanel;
 
 /**
+ * This class represents the welcome page HTML template the class includes
+ * buttons for starting the main functions
  *
  * @author Yehia Farag
- *
- * this class represents the welcome page HTML template the class includes
- * buttons for starting the main functions
  *
  */
 public class CSFApplicationContainer extends VerticalLayout {
 
-    /*
-     *The welcome page container panel
+    /**
+     * The welcome page container panel.
      */
     private final ScrollPanel welcomeLayoutPanel;
 
-    /*
-     *The quantative overview layout container panel
+    /**
+     * The quantitative overview layout container panel.
      */
     private final SlidePanel quantLayoutPanel;
 
-    /*
-     *The layout manager to control the different visulizations 
+    /**
+     * The layout manager to control the different visualizations.
      */
     private final LayoutViewManager View_Manager;
 
-    /*
-     *The quantative data handler to work as controller layer to interact between visulization and logic layer 
+    /**
+     * The quantitative data handler to work as controller layer to interact
+     * between visualizations and logic layer.
      */
     private final Data_Handler Data_handler;
 
@@ -47,39 +47,35 @@ public class CSFApplicationContainer extends VerticalLayout {
      * Constructor the initialize the main attributes (Database connection data
      * and layout width and heights)
      *
-     * @param pageWidth
-     * @param pageHeight
-     * @param url
-     * @param dbName
-     * @param driver
-     * @param userName
-     * @param password
-     * @param filesURL
+     * @param width the current available width
+     * @param height the current available height
+     * @param url database URL
+     * @param dbName database name
+     * @param driver database driver
+     * @param userName database username
+     * @param password database password
      */
-    public CSFApplicationContainer(int pageWidth, int pageHeight, String url, String dbName, String driver, String userName, String password, String filesURL) {
-        this.setWidth(pageWidth, Unit.PIXELS);
-        this.setHeight(pageHeight, Unit.PIXELS);
+    public CSFApplicationContainer(int width, int height, String url, String dbName, String driver, String userName, String password) {
+        this.setWidth(width, Unit.PIXELS);
+        this.setHeight(height, Unit.PIXELS);
         this.setStyleName("whitelayout");
         this.setSpacing(false);
 
         BusyTaskProgressBar busyTask = new BusyTaskProgressBar();
         this.View_Manager = new LayoutViewManager(busyTask);
-        this.Data_handler = new Data_Handler(url, dbName, driver, userName, password, filesURL);
+        this.Data_handler = new Data_Handler(url, dbName, driver, userName, password);
         CSFPR_Central_Manager CSFPR_Central_Manager = new CSFPR_Central_Manager(busyTask);
-
-        int mainlayoutWidth = pageWidth;
-        int mainlayoutHeight = pageHeight;
 
         VerticalLayout bodyWrapper = new VerticalLayout();
         bodyWrapper.setHeightUndefined();
         bodyWrapper.setWidth(100, Unit.PERCENTAGE);
         this.addComponent(bodyWrapper);
 
-        WelcomeLayoutComponents welcomeContent = new WelcomeLayoutComponents(Data_handler, CSFPR_Central_Manager, View_Manager, mainlayoutWidth, mainlayoutHeight, Data_handler.getResourceOverviewInformation(), Data_handler.getPublicationList(), Data_handler.getQuantDatasetList());
+        WelcomeLayoutComponents welcomeContent = new WelcomeLayoutComponents(Data_handler, CSFPR_Central_Manager, View_Manager, width, height, Data_handler.getResourceOverviewInformation(), Data_handler.getPublicationList(), Data_handler.getQuantDatasetList());
 
         VerticalLayout mainLayout = new VerticalLayout();
-        mainLayout.setHeight(pageHeight, Unit.PIXELS);
-        mainLayout.setWidth(pageWidth, Unit.PIXELS);
+        mainLayout.setHeight(height, Unit.PIXELS);
+        mainLayout.setWidth(width, Unit.PIXELS);
         mainLayout.setStyleName("whitelayout");
         mainLayout.addComponent(welcomeContent);
         mainLayout.setComponentAlignment(welcomeContent, Alignment.TOP_CENTER);
@@ -89,7 +85,7 @@ public class CSFApplicationContainer extends VerticalLayout {
         bodyWrapper.addComponent(welcomeLayoutPanel);
         bodyWrapper.setComponentAlignment(welcomeLayoutPanel, Alignment.TOP_RIGHT);
 
-        QuantDataLayoutContainer quantLayout = new QuantDataLayoutContainer(Data_handler, CSFPR_Central_Manager, mainlayoutWidth, mainlayoutHeight);
+        QuantDataLayoutContainer quantLayout = new QuantDataLayoutContainer(Data_handler, CSFPR_Central_Manager, width, height);
 
         quantLayoutPanel = new SlidePanel(quantLayout, null, 1, "quantview") {
 
@@ -102,15 +98,13 @@ public class CSFApplicationContainer extends VerticalLayout {
             }
 
         };
-        quantLayoutPanel.setHeight(mainlayoutHeight, Unit.PIXELS);
+        quantLayoutPanel.setHeight(height, Unit.PIXELS);
         View_Manager.registerComponent(quantLayoutPanel);
-
-        quantLayoutPanel.setShowNavigationBtn(false);
 
         Panel quantPanelContaner = new Panel(quantLayoutPanel);// 
         quantLayoutPanel.setVisible(false);
-        quantPanelContaner.setWidth(mainlayoutWidth, Unit.PIXELS);
-        quantPanelContaner.setHeight(pageHeight, Unit.PIXELS);
+        quantPanelContaner.setWidth(width, Unit.PIXELS);
+        quantPanelContaner.setHeight(height, Unit.PIXELS);
         quantPanelContaner.setStyleName(ValoTheme.PANEL_BORDERLESS);
 
         bodyWrapper.addComponent(quantPanelContaner);

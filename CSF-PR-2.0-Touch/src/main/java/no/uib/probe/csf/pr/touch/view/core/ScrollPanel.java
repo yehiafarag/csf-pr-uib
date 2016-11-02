@@ -1,19 +1,28 @@
 package no.uib.probe.csf.pr.touch.view.core;
 
-import com.vaadin.event.LayoutEvents;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
 
 /**
+ * This class represents View Panel with dynamic top scrolling and folding
+ * support ( touch friendly slide panel).
  *
  * @author Yehia Farag
  */
-public class ScrollPanel extends VerticalLayout implements LayoutEvents.LayoutClickListener, ControllingView {
+public class ScrollPanel extends VerticalLayout implements ControllingView {
 
-    @Override
-    public void resizeComponent(int width, int height) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    /**
+     * The expanding layout container.
+     */
+    private final Layout mainLayout;
+    /**
+     * The minimized layout container.
+     */
+    private final Layout miniLayout;
+    /**
+     * The component unique id.
+     */
+    private final String viewId;
 
     @Override
     public String getViewId() {
@@ -30,12 +39,8 @@ public class ScrollPanel extends VerticalLayout implements LayoutEvents.LayoutCl
         setShowPanel(false);
     }
 
-    private boolean show = true;
-    private final Layout mainLayout, miniLayout;
-    private final String viewId;
-
     /**
-     * Slide touch friendly panel
+     * Constructor to initialize the Slide touch friendly panel
      *
      * @param mainLayout main panel components
      * @param miniLayout mini layout on close panel
@@ -75,12 +80,12 @@ public class ScrollPanel extends VerticalLayout implements LayoutEvents.LayoutCl
     }
 
     /**
-     * show full panel (Main layout)
+     * Set showPanel (expand) full panel (Main layout)
      *
-     * @param show boolean
+     * @param showPanel expand the view panel.
      */
-    public final void setShowPanel(boolean show) {
-        if (show) {
+    public final void setShowPanel(boolean showPanel) {
+        if (showPanel) {
             this.mainLayout.removeStyleName("hidescrolllayout");
             this.miniLayout.addStyleName("hidescrolllayout");
             this.removeStyleName("hidescrollpanel");
@@ -92,22 +97,7 @@ public class ScrollPanel extends VerticalLayout implements LayoutEvents.LayoutCl
             this.addStyleName("hidescrollpanel");
 
         }
-        this.show = show;
 
-    }
-
-    @Override
-    public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-        setShowPanel(!show);
-    }
-
-    /**
-     * show full panel (Main layout)
-     *
-     * @param show boolean
-     */
-    public void setShowNavigationBtn(boolean show) {
-        setShowPanel(false);
     }
 
 }

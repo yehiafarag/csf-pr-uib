@@ -181,7 +181,7 @@ public class ProteinSequenceCoverageComponent extends VerticalLayout {
                 componentWidth = componentWidth + ((x0 + peptideLayoutWidth) - componentWidth);
             }
             if (!significatOnly) {
-                StackedBarPeptideComponent peptideStackedBarComponent = new StackedBarPeptideComponent(x0, (int) (peptideLayoutWidth), quantPeptide.getUniqueId() + "", quantPeptide.getPeptideModification(), quantPeptide, false, proteinName);
+                StackedBarPeptideComponent peptideStackedBarComponent = new StackedBarPeptideComponent(x0, (int) (peptideLayoutWidth),  quantPeptide.getPeptideModification(), quantPeptide, proteinName);
                 peptideStackedBarComponent.setWidth((int) peptideLayoutWidth, Unit.PIXELS);
                 if (sequence.startsWith("ZZZZZZZZ")) {
                     peptideStackedBarComponent.setDescription("" + 1 + "~" + quantPeptide.getPeptideSequence() + "~" + peptideSequence.length() + "");
@@ -224,7 +224,7 @@ public class ProteinSequenceCoverageComponent extends VerticalLayout {
                 barComponentMap.add(peptideStackedBarComponent);
             } else {
                 if (quantPeptide.getString_p_value().equalsIgnoreCase("Significant")) {
-                    StackedBarPeptideComponent peptideStackedBarComponent = new StackedBarPeptideComponent(x0, (int) (peptideLayoutWidth), quantPeptide.getUniqueId() + "", quantPeptide.getPeptideModification(), quantPeptide, false, proteinName);
+                    StackedBarPeptideComponent peptideStackedBarComponent = new StackedBarPeptideComponent(x0, (int) (peptideLayoutWidth), quantPeptide.getPeptideModification(), quantPeptide, proteinName);
                     peptideStackedBarComponent.setSignificant(true);
                     peptideStackedBarComponent.setWidth((int) peptideLayoutWidth, Unit.PIXELS);
                     if (sequence.startsWith("ZZZZZZZZ")) {
@@ -255,7 +255,7 @@ public class ProteinSequenceCoverageComponent extends VerticalLayout {
         });
         final LinkedHashSet<StackedBarPeptideComponent> updatedBarComponentMap = new LinkedHashSet<>();
         barComponentMap.stream().map((sbar) -> {
-            sbar.heighlight(null);
+//            sbar.heighlight(null);
             return sbar;
         }).forEach((sbar) -> {
             updatedBarComponentMap.add(sbar);

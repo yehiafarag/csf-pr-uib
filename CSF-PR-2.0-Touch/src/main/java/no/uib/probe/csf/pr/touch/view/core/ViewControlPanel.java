@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.event.LayoutEvents;
@@ -10,36 +5,70 @@ import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
 import java.util.TreeMap;
 
 /**
+ * This class represents the main view panel with left side control buttons and
+ * right side tools button, the class is the main view structure for the quant
+ * data layout. The panel support one view in time.
  *
  * @author Yehia Farag
  *
- * this class represents a view panel with side control buttons the panel
- * support one view in time
  */
 public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.LayoutClickListener {
 
-    private final VerticalLayout leftSideContainer;
-    private final HorizontalLayout mainViewContainer;
+    /**
+     * The main container contain the left, middle and right side containers.
+     */
     private final HorizontalLayout mainLayoutWrapper;
-    private final VerticalLayout toolBtnContainer;
+    /**
+     * The left side container contain the left buttons container.
+     */
+    private final VerticalLayout leftSideContainer;
+    /**
+     * The middle container contain the main view container.
+     */
+    private final HorizontalLayout mainViewContainer;
+    /**
+     * The right side container contain the right tools buttons container.
+     */
+    private final VerticalLayout rightSideToolBtnContainer;
+    /**
+     * The map of each middle view and its index.
+     */
     private final TreeMap<Integer, AbstractOrderedLayout> layoutControlMap;
+    /**
+     * Layout click listener for the left side buttons container to maintain
+     * view change between different visualizations layouts.
+     */
     private LayoutEvents.LayoutClickListener listener;
-    private final boolean smallScreen;
+    /**
+     * Marker for current view.
+     */
+    private AbstractOrderedLayout currentView;
+    /**
+     * Marker for current used button.
+     */
+    private Component currentBtn;
+    /**
+     * Default layout button marker.
+     */
+    private Component defaultBtn;
+    /**
+     * Default visualizations layout marker.
+     */
+    private AbstractOrderedLayout defaultView;
 
     /**
+     * Constructor to initialize the main attributes and layout.
      *
-     * @param bodyWidth
-     * @param bodyHeight
+     * @param bodyWidth the frame width
+     * @param bodyHeight the frame height
      */
     public ViewControlPanel(int bodyWidth, int bodyHeight) {
 
-        smallScreen = bodyHeight <= 200;
         this.setWidth(bodyWidth, Unit.PIXELS);
         this.setHeight(bodyHeight, Unit.PIXELS);
         this.addStyleName("slowslide");
@@ -68,101 +97,35 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
         HorizontalLayout mainViewContainerFrame = new HorizontalLayout();
         mainLayoutWrapper.addComponent(mainViewContainerFrame);
         mainViewContainerFrame.setHeight(100, Unit.PERCENTAGE);
-        if (smallScreen) {
-            leftSideContainerWrapper.setWidth(80, Unit.PIXELS);
-            leftSideContainer.setWidth(80, Unit.PIXELS);
-            mainViewContainerFrame.setWidth(bodyWidth - 80 - 35, Unit.PIXELS);
-        } else {
-            leftSideContainerWrapper.setWidth(120, Unit.PIXELS);
-            leftSideContainer.setWidth(120, Unit.PIXELS);
-            mainViewContainerFrame.setWidth(bodyWidth - 120 - 55, Unit.PIXELS);
-        }
+
+        leftSideContainerWrapper.setWidth(120, Unit.PIXELS);
+        leftSideContainer.setWidth(120, Unit.PIXELS);
+        mainViewContainerFrame.setWidth(bodyWidth - 120 - 55, Unit.PIXELS);
 
         mainViewContainerFrame.addStyleName("mainviewport");
         mainViewContainer = new HorizontalLayout();
         mainViewContainerFrame.addComponent(mainViewContainer);
         mainViewContainer.setWidthUndefined();
         mainViewContainer.setHeightUndefined();
-        toolBtnContainer = new VerticalLayout();
-        toolBtnContainer.setStyleName("sidebtnsmenue");
-        toolBtnContainer.setHeightUndefined();
-        toolBtnContainer.setWidthUndefined();//setWidth(55, Unit.PIXELS);
-        mainLayoutWrapper.addComponent(toolBtnContainer);
-        mainLayoutWrapper.setComponentAlignment(toolBtnContainer, Alignment.BOTTOM_RIGHT);
-
-    }
-
-    private AbstractOrderedLayout mainViewLayout;
-
-    /**
-     * Add initial layout include side button, main layout, and control buttons
-     *
-     * @param Btn
-     * @param mainViewLayout
-     * @param toolBtnsLayout
-     */
-    public void setInitialLayout(AbstractOrderedLayout Btn, AbstractOrderedLayout mainViewLayout, AbstractOrderedLayout toolBtnsLayout) {
-        this.removeComponent(mainLayoutWrapper);
-        VerticalLayout btnWrapper = new VerticalLayout(Btn);
-        btnWrapper.addStyleName("sidebtnwrapper");
-        btnWrapper.addStyleName("unselectedbtn");
-        btnWrapper.setWidth(100, Unit.PERCENTAGE);
-        leftSideContainer.addComponent(btnWrapper);
-        btnWrapper.addLayoutClickListener(this);
-        this.mainViewLayout = mainViewLayout;
-        layoutControlMap.put(leftSideContainer.getComponentIndex(btnWrapper), mainViewLayout);
-        this.addComponent(mainViewLayout);
-        this.setComponentAlignment(mainViewLayout, Alignment.MIDDLE_CENTER);
-        listener = (LayoutEvents.LayoutClickEvent event) -> {
-
-            if (event.getClickedComponent() == null || event.getClickedComponent().getStyleName().trim().contains("h3") || (event.getClickedComponent().getStyleName().trim().equalsIgnoreCase("") && !(event.getClickedComponent() instanceof Label))) {
-                System.out.println("return " + (event.getClickedComponent() == null) + " || " + (event.getClickedComponent().getStyleName().trim().contains("h3")) + " || " + (event.getClickedComponent().getStyleName().trim().equalsIgnoreCase("")) + "  " + (event.getClickedComponent() instanceof Label));
-                return;
-            }
-            hideInit = false;
-
-            mainViewLayout.removeStyleName("hidelayout");
-            mainViewLayout.removeLayoutClickListener(listener);
-            mainViewLayout.setWidth(mainViewLayout.getWidth() - 200, Unit.PIXELS);
-            mainViewLayout.addStyleName("hideslidelayout");
-
-            this.removeComponent(mainViewLayout);
-            mainViewContainer.addComponent(mainViewLayout);
-            mainViewContainer.setComponentAlignment(mainViewLayout, Alignment.TOP_CENTER);
-
-            if (currentView != null) {
-                currentView.removeStyleName("hideslidelayout");
-                currentBtn.removeStyleName("unselectedbtn");
-            } else {
-                layoutControlMap.lastEntry().getValue().removeStyleName("hideslidelayout");
-
-            }
-
-            this.addComponent(mainLayoutWrapper);
-        };
-        mainViewLayout.addLayoutClickListener(listener);
-        if (toolBtnsLayout != null) {
-            toolBtnsLayout.addStyleName("marginleft2");
-            this.toolBtnContainer.addComponent(toolBtnsLayout);
-            this.toolBtnContainer.setComponentAlignment(toolBtnsLayout, Alignment.MIDDLE_RIGHT);
-            mainViewLayout.setData(toolBtnsLayout);
-        } else {
-            mainViewLayout.setData(new VerticalLayout());
-
-        }
+        rightSideToolBtnContainer = new VerticalLayout();
+        rightSideToolBtnContainer.setStyleName("sidebtnsmenue");
+        rightSideToolBtnContainer.setHeightUndefined();
+        rightSideToolBtnContainer.setWidthUndefined();
+        mainLayoutWrapper.addComponent(rightSideToolBtnContainer);
+        mainLayoutWrapper.setComponentAlignment(rightSideToolBtnContainer, Alignment.BOTTOM_RIGHT);
 
     }
 
     /**
-     * Add layout include side button, main layout, control buttons, and if the
-     * layout is default or not
+     * Add visualization layout include side button, main layout, control
+     * buttons, and if the layout is default or not
      *
-     * @param Btn
-     * @param mainViewLayout
-     * @param toolBtnsLayout
-     * @param isDefault
+     * @param Btn left side control button.
+     * @param mainViewLayout main visualization layout (middle panel content).
+     * @param toolBtnsLayout right side tool buttons layout.
+     * @param isDefault The view will be used as default visualization.
      */
-    public void addButton(Layout Btn, AbstractOrderedLayout mainViewLayout, AbstractOrderedLayout toolBtnsLayout, boolean isDefault) {
+    public void addVisualization(Layout Btn, AbstractOrderedLayout mainViewLayout, AbstractOrderedLayout toolBtnsLayout, boolean isDefault) {
         VerticalLayout btnWrapper = new VerticalLayout(Btn);
         btnWrapper.addStyleName("sidebtnwrapper");
         btnWrapper.addStyleName("unselectedbtn");
@@ -172,17 +135,15 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
         btnWrapper.addLayoutClickListener(this);
         Btn.setEnabled(false);
         Btn.setReadOnly(false);
-//        Btn.setResponsive(true);
 
         layoutControlMap.put(leftSideContainer.getComponentIndex(btnWrapper), mainViewLayout);
         mainViewContainer.addComponent(mainViewLayout);
-//        mainViewContainer.setComponentAlignment(mainViewLayout, Alignment.TOP_CENTER);
         mainViewLayout.addStyleName("slowslide");
         mainViewLayout.addStyleName("hideslidelayout");
 
         if (toolBtnsLayout != null) {
-            this.toolBtnContainer.addComponent(toolBtnsLayout);
-            this.toolBtnContainer.setComponentAlignment(toolBtnsLayout, Alignment.MIDDLE_RIGHT);
+            this.rightSideToolBtnContainer.addComponent(toolBtnsLayout);
+            this.rightSideToolBtnContainer.setComponentAlignment(toolBtnsLayout, Alignment.MIDDLE_RIGHT);
             mainViewLayout.setData(toolBtnsLayout);
             toolBtnsLayout.setVisible(false);
         } else {
@@ -196,40 +157,21 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
             btnWrapper.removeStyleName("unselectedbtn");
             if ((AbstractOrderedLayout) mainViewLayout.getData() != null) {
                 ((AbstractOrderedLayout) mainViewLayout.getData()).setVisible(true);
-                toolBtnContainer.setStyleName("sidebtnsmenue");
+                rightSideToolBtnContainer.setStyleName("sidebtnsmenue");
             } else {
-                toolBtnContainer.removeStyleName("sidebtnsmenue");
+                rightSideToolBtnContainer.removeStyleName("sidebtnsmenue");
             }
-
             currentView = mainViewLayout;
             currentBtn = btnWrapper;
         }
-
     }
-    private boolean hideInit = false;
 
-    public void updateCurrentLayout(String viewName) {
-        if (hideInit) {
-            hideInit = false;
-            mainViewLayout.removeStyleName("hidelayout");
-            mainViewLayout.removeLayoutClickListener(listener);
-            mainViewLayout.setWidth(mainViewLayout.getWidth() - 200, Unit.PIXELS);
-            mainViewLayout.addStyleName("hideslidelayout");
-
-            this.removeComponent(mainViewLayout);
-            mainViewContainer.addComponent(mainViewLayout);
-            mainViewContainer.setComponentAlignment(mainViewLayout, Alignment.TOP_CENTER);
-            if (currentView != null) {
-                currentView.removeStyleName("hideslidelayout");
-                currentBtn.removeStyleName("unselectedbtn");
-            } else {
-                layoutControlMap.lastEntry().getValue().removeStyleName("hideslidelayout");
-
-            }
-
-            this.addComponent(mainLayoutWrapper);
-        }
-
+    /**
+     * Set the current visualization to the selected view.
+     *
+     * @param viewName selected visualization name.
+     */
+    public void setCurrentLayout(String viewName) {
         if (viewName.equalsIgnoreCase("heatmap")) {
             updateVew(leftSideContainer.getComponent(1));
         } else if (viewName.equalsIgnoreCase("proteintable")) {
@@ -240,50 +182,29 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
 
     }
 
-    private AbstractOrderedLayout currentView;
-    private Component currentBtn, defaultBtn;
-    private AbstractOrderedLayout defaultView;
-
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         updateVew(event.getComponent());
-//        AbstractOrderedLayout mainViewLayout = layoutControlMap.get(leftSideContainer.getComponentIndex(event.getComponent()));
-//
-//        if (currentView == null) {
-//            currentView = mainViewLayout;
-//            event.getComponent().removeStyleName("unselectedbtn");
-//            currentBtn = event.getComponent();
-//            ((AbstractOrderedLayout) mainViewLayout.getData()).setVisible(true);
-//        } else if (mainViewLayout != currentView) {
-//            currentView.addStyleName("hideslidelayout");
-//            ((AbstractOrderedLayout) currentView.getData()).setVisible(false);
-//
-//            currentBtn.addStyleName("unselectedbtn");
-//
-//            currentView = mainViewLayout;
-//            currentBtn = event.getComponent();
-//            ((AbstractOrderedLayout) mainViewLayout.getData()).setVisible(true);
-//        }
-//        mainViewLayout.removeStyleName("hideslidelayout");
-//        event.getComponent().removeStyleName("unselectedbtn");
-//        ((AbstractOrderedLayout) mainViewLayout.getData()).setVisible(true);
-
     }
 
+    /**
+     * Update the current visualization to the selected view component.
+     *
+     * @param comp selected visualization component.
+     */
     private void updateVew(Component comp) {
-//        System.out.println("at leftSideContainer.getComponentIndex(comp) " + leftSideContainer.getComponentIndex(comp));
-        AbstractOrderedLayout mainViewLayout = layoutControlMap.get(leftSideContainer.getComponentIndex(comp));
+        AbstractOrderedLayout tempMainViewLayout = layoutControlMap.get(leftSideContainer.getComponentIndex(comp));
         if (currentView == null) {
-            currentView = mainViewLayout;
+            currentView = tempMainViewLayout;
             comp.removeStyleName("unselectedbtn");
             currentBtn = comp;
-            if ((AbstractOrderedLayout) mainViewLayout.getData() != null) {
-                ((AbstractOrderedLayout) mainViewLayout.getData()).setVisible(true);
-                toolBtnContainer.setStyleName("sidebtnsmenue");
+            if ((AbstractOrderedLayout) tempMainViewLayout.getData() != null) {
+                ((AbstractOrderedLayout) tempMainViewLayout.getData()).setVisible(true);
+                rightSideToolBtnContainer.setStyleName("sidebtnsmenue");
             } else {
-                toolBtnContainer.removeStyleName("sidebtnsmenue");
+                rightSideToolBtnContainer.removeStyleName("sidebtnsmenue");
             }
-        } else if (mainViewLayout != currentView) {
+        } else if (tempMainViewLayout != currentView) {
             currentView.addStyleName("hideslidelayout");
             if ((AbstractOrderedLayout) currentView.getData() != null) {
                 ((AbstractOrderedLayout) currentView.getData()).setVisible(false);
@@ -291,28 +212,28 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
 
             currentBtn.addStyleName("unselectedbtn");
 
-            currentView = mainViewLayout;
+            currentView = tempMainViewLayout;
             currentBtn = comp;
-            if ((AbstractOrderedLayout) mainViewLayout.getData() != null) {
-                ((AbstractOrderedLayout) mainViewLayout.getData()).setVisible(true);
-                toolBtnContainer.setStyleName("sidebtnsmenue");
+            if ((AbstractOrderedLayout) tempMainViewLayout.getData() != null) {
+                ((AbstractOrderedLayout) tempMainViewLayout.getData()).setVisible(true);
+                rightSideToolBtnContainer.setStyleName("sidebtnsmenue");
             } else {
-                toolBtnContainer.removeStyleName("sidebtnsmenue");
+                rightSideToolBtnContainer.removeStyleName("sidebtnsmenue");
             }
         }
-        mainViewLayout.removeStyleName("hideslidelayout");
+        tempMainViewLayout.removeStyleName("hideslidelayout");
         comp.removeStyleName("unselectedbtn");
-        if ((AbstractOrderedLayout) mainViewLayout.getData() != null) {
-            ((AbstractOrderedLayout) mainViewLayout.getData()).setVisible(true);
-            toolBtnContainer.setStyleName("sidebtnsmenue");
+        if ((AbstractOrderedLayout) tempMainViewLayout.getData() != null) {
+            ((AbstractOrderedLayout) tempMainViewLayout.getData()).setVisible(true);
+            rightSideToolBtnContainer.setStyleName("sidebtnsmenue");
         } else {
-            toolBtnContainer.removeStyleName("sidebtnsmenue");
+            rightSideToolBtnContainer.removeStyleName("sidebtnsmenue");
         }
 
     }
 
     /**
-     * Reset to the default layout view
+     * Set the current visualization to the default layout visualization view.
      */
     public void defaultView() {
         if (defaultView == null) {
@@ -332,9 +253,9 @@ public class ViewControlPanel extends HorizontalLayout implements LayoutEvents.L
         defaultBtn.removeStyleName("unselectedbtn");
         if ((AbstractOrderedLayout) defaultView.getData() != null) {
             ((AbstractOrderedLayout) defaultView.getData()).setVisible(true);
-            toolBtnContainer.setStyleName("sidebtnsmenue");
+            rightSideToolBtnContainer.setStyleName("sidebtnsmenue");
         } else {
-            toolBtnContainer.removeStyleName("sidebtnsmenue");
+            rightSideToolBtnContainer.removeStyleName("sidebtnsmenue");
         }
 
     }

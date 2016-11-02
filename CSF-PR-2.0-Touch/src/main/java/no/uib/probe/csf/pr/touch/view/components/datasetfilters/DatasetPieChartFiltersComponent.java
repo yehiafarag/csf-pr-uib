@@ -98,7 +98,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         btnsFrame.setComponentAlignment(leftsideWrapper, Alignment.TOP_LEFT);
         leftsideWrapper.setSpacing(true);
 
-        InformationButton info = new InformationButton("The provided filters allow for the selection of subsets of the available data for the currently selected disease categories. A selection in one chart will result in the other charts updating to show only the remaining options. Click \"Apply\" to use the filters.");
+        InformationButton info = new InformationButton("The provided filters allow for the selection of subsets of the available data for the currently selected disease categories. A selection in one chart will result in the other charts updating to show only the remaining options. Click \"Apply\" to use the filters.",true);
         leftsideWrapper.addComponent(info);
 
         HorizontalLayout btnLayout = new HorizontalLayout();

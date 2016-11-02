@@ -6,27 +6,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * This class responsible for maintaining and handling queries in a dynamic way
  *
  * @author Yehia Farag
- *
- * This class responsible for contracting and handling queries in a dynamic way
  */
 public class QueryConstractorHandler {
 
     /**
-     * List of Data type (String, Integer, Double)
+     * List of data type (String, Integer, Double).
      */
     private final List<String> typeList = new ArrayList<>();
     /**
-     * List of Data value
+     * List of Data value.
      */
     private final List<String> valueList = new ArrayList<>();
 
     /**
      * Set the different parameters for the statement
      *
-     * @param type
-     * @param value
+     * @param type data type (String, Integer, Double).
+     * @param value data value
      */
     public void addQueryParam(String type, String value) {
         typeList.add(type);

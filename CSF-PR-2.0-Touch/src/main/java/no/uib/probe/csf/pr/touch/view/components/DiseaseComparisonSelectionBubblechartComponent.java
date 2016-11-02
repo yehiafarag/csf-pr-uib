@@ -469,7 +469,7 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
         exportPdfBtn.setDescription("Export data");
         bubblechartToolsContainer.addComponent(exportPdfBtn);
 
-        InformationButton info = new InformationButton("The bubble chart provides an overview of all the proteins found in the currently selected disease group comparisons. The size of each bubble represents the number of proteins in the given comparison and the color represents the trend. To change the order of the groups in a given comparison please click the \"Switch disease groups\" icon in the lower right corner. Select one or more bubbles to display the corresponding proteins.");
+        InformationButton info = new InformationButton("The bubble chart provides an overview of all the proteins found in the currently selected disease group comparisons. The size of each bubble represents the number of proteins in the given comparison and the color represents the trend. To change the order of the groups in a given comparison please click the \"Switch disease groups\" icon in the lower right corner. Select one or more bubbles to display the corresponding proteins.",false);
         bubblechartToolsContainer.addComponent(info);
 
     }

@@ -181,7 +181,7 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
             int topLocation = 5;
             unMappedPeptidesSequencesBar.setHeight(20, Unit.PIXELS);
 
-            InformationButton info = new InformationButton("Note that the protein sequence for this protein has been recently altered in UniProt. The following peptide sequences can therefore no longer be mapped to the current canonical protein sequence.");
+            InformationButton info = new InformationButton("Note that the protein sequence for this protein has been recently altered in UniProt. The following peptide sequences can therefore no longer be mapped to the current canonical protein sequence.",false);
             info.updateIcon(null);
             info.setWidth(55, Unit.PIXELS);
 

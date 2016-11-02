@@ -33,8 +33,9 @@ public class InformationButton extends ImageContainerBtn {
      * Constructor to initialize the main attributes.
      *
      * @param infoText Main information text.
+     * @param smallBtn Small information button.
      */
-    public InformationButton(String infoText) {
+    public InformationButton(String infoText,boolean smallBtn) {
         updateIcon(new ThemeResource("img/help.png"));
         VerticalLayout mainBody = new VerticalLayout();
         mainBody.setHeightUndefined();
@@ -85,11 +86,18 @@ public class InformationButton extends ImageContainerBtn {
         closeBtn.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
             popupLayout.setPopupVisible(false);
         });
+        if (smallBtn) {
+            this.setHeight(30, Unit.PIXELS);
+            this.setWidth(30, Unit.PIXELS);
+            this.addStyleName("midimg");
+            popupLayout.addStyleName("infoLayout");
 
-        this.setHeight(40, Unit.PIXELS);
-        this.setWidth(40, Unit.PIXELS);
-        this.addStyleName("smallimg");
-        popupLayout.addStyleName("biginfo");
+        } else {
+            this.setHeight(40, Unit.PIXELS);
+            this.setWidth(40, Unit.PIXELS);
+            this.addStyleName("smallimg");
+            popupLayout.addStyleName("biginfo");
+        }
 
     }
 

@@ -18,31 +18,97 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
  */
 public abstract class ProteinTrendLayout extends AbsoluteLayout implements Comparable<ProteinTrendLayout>, LayoutEvents.LayoutClickListener {
 
+    /**
+     * Component protein key.
+     */
     private final String proteinKey;
+    /**
+     * List of selected comparisons to be updated based on user selection for
+     * comparisons across the system.
+     */
     private final Set<QuantDiseaseGroupsComparison> selectedComparisonsList;
+    /**
+     * The main chart data container (VaadinLayout bubble container).
+     */
     private AbsoluteLayout chartComponentsLayout;
+    /**
+     * This is counter used to check when to draw the chart.
+     */
+    private int initSparkline = 0;
+    /**
+     * The width of the component layout.
+     */
+    private final int width;
+    /**
+     * The protein value used for sorting the table.
+     */
+    private QuantComparisonProtein sortableProtein;
+    /**
+     * The chart expanding/minimizing button.
+     */
+    private final VerticalLayout maxMinBtn;
+    /**
+     * The chart container.
+     */
+    private final VerticalLayout sparkLineContainer;
+    /**
+     * The container table row item id.
+     */
+    private final Object itemId;
+    /**
+     * Customized user data trend based on user input data in quant comparison
+     * layout.
+     */
+    private int custTrend = -1;
+    /**
+     * Chart is in the expanding mode.
+     */
+    private boolean expandChartMode = false;
+    /**
+     * Main component line-chart.
+     */
+    private LineChart sparkLine;
+    /**
+     * Main component sorting value.
+     */
+    private Double sortingValue = 0.0;
 
+    /**
+     * Get current Vaadin layout for the chart, this method is used to get the
+     * location on x-access for different comparisons to set the top layout
+     * sorting buttons location.
+     *
+     * @return chartComponentsLayout the chart components container layout.
+     */
     public AbsoluteLayout getChartComponentsLayout() {
         return chartComponentsLayout;
     }
 
-    private int initSparkline = 0;
-    private final int width;
-    private QuantComparisonProtein sortableProtein;
-    private final VerticalLayout maxMinBtn;
-    private final VerticalLayout sparkLineContainer;
-    private final Object itemId;
-    private int custTrend = -1;
-
+    /**
+     * Get the chart component width.
+     *
+     * @return current chart width.
+     */
     public int getChartWidth() {
         return width - 10;
     }
-    private final boolean smallScreen;
 
+    /**
+     * Get the line-chart component.
+     *
+     * @return sparkLine (the line chart component).
+     */
     public LineChart getSparkLine() {
         return sparkLine;
     }
 
+    /**
+     * Set the main protein used for getting the sorting value for the
+     * component.
+     *
+     * @param comparisonIndex the comparison index in the quant disease
+     * comparison set.
+     */
     public void setSortableColumnIndex(int comparisonIndex) {
         QuantDiseaseGroupsComparison comp = (QuantDiseaseGroupsComparison) selectedComparisonsList.toArray()[comparisonIndex];
         if (comp.getQuantComparisonProteinMap().containsKey("0_" + proteinKey)) {
@@ -60,9 +126,18 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
         }
     }
 
-    public ProteinTrendLayout(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, QuantComparisonProtein selectedProtein, int width, Object itemId, boolean draw, boolean smallScreen) {
+    /**
+     * Constructor to initialize the main attributes.
+     *
+     * @param selectedComparisonsList List of selected quant disease comparisons
+     * @param selectedProtein The quant comparison main protein
+     * @param width The available width for the component (protein comparison
+     * column width).
+     * @param itemId The row item id in the container table
+     * @param draw draw the chart in the initializing state
+     */
+    public ProteinTrendLayout(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, QuantComparisonProtein selectedProtein, int width, Object itemId, boolean draw) {
         this.itemId = itemId;
-        this.smallScreen = smallScreen;
         this.selectedComparisonsList = selectedComparisonsList;
         proteinKey = selectedProtein.getProteinAccession();
         QuantDiseaseGroupsComparison comp = (QuantDiseaseGroupsComparison) selectedComparisonsList.toArray()[selectedComparisonsList.size() - 1];
@@ -105,7 +180,7 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
         resizeIconLayout.addComponent(maxMinBtn);
         resizeIconLayout.setComponentAlignment(maxMinBtn, Alignment.TOP_RIGHT);
         maxMinBtn.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
-            ProteinTrendLayout.this.maxmize();
+            ProteinTrendLayout.this.expandChartLayout();
         });
 
         if (draw) {
@@ -118,31 +193,34 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
 
     }
 
-    private boolean max = false;
-
-    public boolean isMax() {
-        return max;
-    }
-
-    public void maxmize() {
-        if (sparkLine == null || smallScreen) {
+    /**
+     * Set chart expanding mode to maximize.
+     */
+    public void expandChartLayout() {
+        if (sparkLine == null) {
             return;
         }
-        if (max) {
+        if (expandChartMode) {
             setHeight(100, Unit.PIXELS);
             sparkLine.minimize(false);
             maxMinBtn.setStyleName("maxmizebtn");
-            max = false;
+            expandChartMode = false;
         } else {
             maxMinBtn.setStyleName("minmizebtn");
             setHeight(500, Unit.PIXELS);
             sparkLine.maxmize();
-            max = true;
+            expandChartMode = true;
 
         }
 
     }
 
+    /**
+     * Add customized user trend if available (Quant comparison mode)
+     *
+     * @param userTrend Customized user input data (for the selected protein) in
+     * case of quant comparison mode.
+     */
     public void updateCustTrend(int userTrend) {
         if (sparkLine != null) {
             sparkLine.updateUrserTrend(userTrend);
@@ -150,8 +228,6 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
         this.custTrend = userTrend;
 
     }
-
-    private LineChart sparkLine;
 
     @Override
     protected AbsoluteLayoutState getState() {
@@ -164,35 +240,40 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
         initSparkline++;
         return super.getState();
     }
-    private Double v1 = 0.0;
 
+    /**
+     * Override compareTo to allow different sorting value based on the sorting
+     * comparison.
+     *
+     * @param combarableProteinTrendLayout The comparable component.
+     */
     @Override
-    public int compareTo(ProteinTrendLayout t) {
+    public int compareTo(ProteinTrendLayout combarableProteinTrendLayout) {
         Double v2;
         if (sortableProtein == null) {
-            v1 = 0.0;
+            sortingValue = 0.0;
         } else {
-            v1 = sortableProtein.getOverallCellPercentValue();
+            sortingValue = sortableProtein.getOverallCellPercentValue();
         }
-        QuantComparisonProtein o = t.sortableProtein;
+        QuantComparisonProtein o = combarableProteinTrendLayout.sortableProtein;
         if (o == null) {
             v2 = 0.0;
         } else {
-            v2 = t.sortableProtein.getOverallCellPercentValue();
+            v2 = combarableProteinTrendLayout.sortableProtein.getOverallCellPercentValue();
         }
 
-        return (v1).compareTo(v2);
+        return (sortingValue).compareTo(v2);
 
 //        if (sortableProtein.getSignificantlyIncreasedNumber() == sortableProtein.getSignificantlyDecreasedNumber()) {
-//            v1 = sortableProtein.getTrendValue();
+//            sortingValue = sortableProtein.getTrendValue();
 //        } else if (sortableProtein.getTrendValue() > 0) {
 //            double factor = sortableProtein.getPenalty();
-//            v1 = sortableProtein.getTrendValue() - factor;
-//            v1 = Math.max(v1, 0) + ((double) (sortableProtein.getSignificantlyIncreasedNumber() - sortableProtein.getSignificantlyDecreasedNumber()) / 10.0);
+//            sortingValue = sortableProtein.getTrendValue() - factor;
+//            sortingValue = Math.expandChartMode(sortingValue, 0) + ((double) (sortableProtein.getSignificantlyIncreasedNumber() - sortableProtein.getSignificantlyDecreasedNumber()) / 10.0);
 //        } else {
 //            double factor = sortableProtein.getPenalty();
-//            v1 = sortableProtein.getTrendValue() + factor;
-//            v1 = Math.min(v1, 0) + ((double) (sortableProtein.getSignificantlyIncreasedNumber() - sortableProtein.getSignificantlyDecreasedNumber()) / 10.0);
+//            sortingValue = sortableProtein.getTrendValue() + factor;
+//            sortingValue = Math.min(sortingValue, 0) + ((double) (sortableProtein.getSignificantlyIncreasedNumber() - sortableProtein.getSignificantlyDecreasedNumber()) / 10.0);
 //        }
 //        Double v2;
 //        if (o.getSignificantlyIncreasedNumber() == o.getSignificantlyDecreasedNumber()) {
@@ -200,20 +281,30 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
 //        } else if (o.getTrendValue() > 0) {
 //            double factor = o.getPenalty();
 //            v2 = o.getTrendValue() - factor;
-//            v2 = Math.max(v2, 0) + ((double) (o.getSignificantlyIncreasedNumber() - o.getSignificantlyDecreasedNumber()) / 10.0);
+//            v2 = Math.expandChartMode(v2, 0) + ((double) (o.getSignificantlyIncreasedNumber() - o.getSignificantlyDecreasedNumber()) / 10.0);
 //        } else {
 //            double factor = o.getPenalty();
 //            v2 = o.getTrendValue() + factor;
 //            v2 = Math.min(v2, 0) + ((double) (o.getSignificantlyIncreasedNumber() - o.getSignificantlyDecreasedNumber()) / 10.0);
 //        }
-//        return (v1).compareTo(v2);
+//        return (sortingValue).compareTo(v2);
     }
 
+    /**
+     * Select row in the table on click.
+     *
+     * @param event The user selection action.
+     */
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         selectTableItem(itemId);
     }
 
+    /**
+     * Select table item (row) in the containing table.
+     *
+     * @param itemId Row item id.
+     */
     public abstract void selectTableItem(Object itemId);
 
 }

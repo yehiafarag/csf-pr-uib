@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.event.LayoutEvents;
@@ -15,84 +10,73 @@ import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantPeptide;
 
 /**
+ * This class represents peptide component layout that is used in the protein
+ * sequence coverage.
  *
  * @author Yehia Farag
  */
 public class StackedBarPeptideComponent extends VerticalLayout implements Comparable<StackedBarPeptideComponent>, LayoutEvents.LayoutClickListener {
 
-    private final Map<String, Object> param = new HashMap<>();
+    /**
+     * Parameters map.
+     */
+    private final Map<String, Object> parametersMap = new HashMap<>();
+    /**
+     * Default CSS style.
+     */
     private String defaultStyleShowAllMode;
+    /**
+     * The pValue is significant.
+     */
     private boolean significant;
-    private final String peptideKey;
-
-    public String getPeptideKey() {
-        return peptideKey;
-    }
+    /**
+     * The peptide location level.
+     */
+    private int level = 0;
+    /**
+     * The peptide start location on x access.
+     */
+    private int x0;
+    /**
+     * The peptide width.
+     */
+    private final Integer widthArea;
+    /**
+     * The peptide PTM layout container.
+     */
+    private final VerticalLayout ptmLayout = new VerticalLayout();
+    /**
+     * The peptide has PTMs.
+     */
+    private boolean ptmAvailable = false;
 
     /**
+     * The main pop-up window that contain peptide information form.
+     */
+    private PopupWindowFrame popupWindow;
+
+    /**
+     * Get the peptide location level
      *
-     * @return
+     * @return peptide level.
      */
     public int getLevel() {
         return level;
     }
 
     /**
+     * Set peptide location level
      *
-     * @param level
+     * @param level the location level.
      */
     public void setLevel(int level) {
         this.level = level;
     }
-    private int level = 0;
-
-    private boolean overlapped;
 
     /**
+     * Set Default CSS style name.
      *
-     * @return
-     */
-    public boolean isMerged() {
-        return merged;
-    }
-
-    /**
-     *
-     * @param merged
-     */
-    public void setMerged(boolean merged) {
-        this.merged = merged;
-    }
-    private boolean merged;
-    private final Set<QuantPeptide> quantpeptideSet = new LinkedHashSet<>();
-
-    /**
-     *
-     * @return
-     */
-    public boolean isOverlapped() {
-        return overlapped;
-    }
-
-    /**
-     *
-     * @param overlapped
-     */
-    public void setOverlapped(boolean overlapped) {
-        this.overlapped = overlapped;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public String getDefaultStyleShowAllMode() {
-        return defaultStyleShowAllMode;
-    }
-
-    /**
-     *
-     * @param defaultStyleShowAllMode
+     * @param defaultStyleShowAllMode Default CSS style name.
      */
     public void setDefaultStyleShowAllMode(String defaultStyleShowAllMode) {
         this.defaultStyleShowAllMode = defaultStyleShowAllMode.replace("selected", "").trim();
@@ -100,6 +84,7 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
     }
 
     /**
+     * Get the peptide start location on x access.
      *
      * @return
      */
@@ -108,38 +93,39 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
     }
 
     /**
+     * Get peptide width.
      *
-     * @return
+     * @return widthArea Peptide width.
      */
     public int getWidthArea() {
         return widthArea;
     }
 
+    /**
+     * Set the peptide start location on x access.
+     *
+     * @param x0 x access location.
+     */
     public void setX0(int x0) {
         this.x0 = x0;
     }
 
-    private int x0;
-    private final Integer widthArea;
-    private final VerticalLayout ptmLayout = new VerticalLayout();
-    private boolean ptmAvailable = false;
-
-    private PopupWindowFrame popupWindow;
-
     /**
+     * Constructor to initialize the main attributes.
      *
-     * @param x0
-     * @param widthArea
-     * @param peptideKey
-     * @param peptideModification
+     * @param x0 The peptide start location on x access.
+     * @param widthArea The peptide width.
+     * @param peptideModification The peptide modification PTMs.
+     * @param quantPeptide Quant peptide object that has all peptide
+     * information.
+     * @param proteinName The parent protein name.
      */
-    public StackedBarPeptideComponent(int x0, int widthArea, String peptideKey, String peptideModification, QuantPeptide quantPeptide, boolean smallScreen, String proteinName) {
+    public StackedBarPeptideComponent(int x0, int widthArea, String peptideModification, QuantPeptide quantPeptide, String proteinName) {
         this.setHeight(15, Unit.PIXELS);
         this.setWidth((widthArea), Unit.PIXELS);
         this.x0 = x0;
         this.widthArea = widthArea;
-        setParam("width", widthArea);
-        this.peptideKey = peptideKey;
+        StackedBarPeptideComponent.this.setParam("width", widthArea);
         if (peptideModification != null && !peptideModification.trim().equalsIgnoreCase("")) {
             ptmAvailable = true;
             ptmLayout.setStyleName("ptmglycosylation");
@@ -153,23 +139,6 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
             VerticalLayout popupBody = new VerticalLayout();
             popupBody.setWidth(99, Unit.PERCENTAGE);
             popupBody.setHeight(365, Unit.PIXELS);
-
-//            popupBody.setMargin(false);
-//            popupBody.setSpacing(true);
-//            popupBody.addStyleName("roundedborder");
-//            popupBody.addStyleName("whitelayout");
-//            popupBody.addStyleName("recombinegrouppanel");
-//        if (smallScreen) {
-//            popupBody.addStyleName("padding2");
-//        } else {
-//            popupBody.addStyleName("padding20");
-//        }
-//            VerticalLayout frame = new VerticalLayout();
-////            frame.setWidth(99, Unit.PERCENTAGE);
-////            frame.setHeight(380, Unit.PIXELS);
-////            frame.setSpacing(true);
-//            frame.addComponent(popupBody);
-//            frame.setComponentAlignment(popupBody, Alignment.MIDDLE_CENTER);
             String title = "Peptide Information (" + proteinName.trim() + ")";
 
             popupWindow = new PopupWindowFrame(title, popupBody);
@@ -181,158 +150,83 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
             popupBody.addComponent(peptideInfo);
             popupBody.setComponentAlignment(peptideInfo, Alignment.TOP_CENTER);
 
-//            VerticalLayout popupbodyLayout = new VerticalLayout();
-//            popupbodyLayout.setSpacing(true);
-//            popupbodyLayout.setWidth(1000, Unit.PIXELS);
-//            popupbodyLayout.setMargin(new MarginInfo(false, false, true, true));
-//            popupbodyLayout.addStyleName("border");
-//
-//            HorizontalLayout headerIContainer = new HorizontalLayout();
-//            headerIContainer.setWidth(100, Unit.PERCENTAGE);
-//
-//            Label titleI = new Label("Peptides");
-//            titleI.setStyleName(ValoTheme.LABEL_BOLD);
-//            headerIContainer.addComponent(titleI);
-//
-//            popupbodyLayout.addComponent(headerIContainer);
-//
-//            CloseButton closePopup = new CloseButton();
-//            closePopup.setWidth(10, Unit.PIXELS);
-//            closePopup.setHeight(10, Unit.PIXELS);
-//            headerIContainer.addComponent(closePopup);
-//            headerIContainer.setComponentAlignment(closePopup, Alignment.TOP_RIGHT);
-//            closePopup.addStyleName("translateleft10");
-//
-//           
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            datasetInfoPopup = new PopupView(null, popupbodyLayout) {
-//
-//                @Override
-//                public void setPopupVisible(boolean visible) {
-//                    this.setVisible(visible);
-//                    super.setPopupVisible(visible); //To change body of generated methods, choose Tools | Templates.
-//                }
-//
-//            };
-//            closePopup.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
-//                datasetInfoPopup.setPopupVisible(false);
-//            });
-//            datasetInfoPopup.setVisible(false);
-//            datasetInfoPopup.setCaptionAsHtml(true);
-//            datasetInfoPopup.setHideOnMouseOut(false);
-//            this.addComponent(datasetInfoPopup);
             this.addLayoutClickListener(StackedBarPeptideComponent.this);
         }
 
     }
 
+    /**
+     * Check if peptide has PTMs.
+     *
+     * @return ptmAvailable peptide has PTMs.
+     */
     public boolean isPtmAvailable() {
         return ptmAvailable;
     }
 
+    /**
+     * Get PTM layout container.
+     *
+     * @return ptmLayout container.
+     */
     public VerticalLayout getPtmLayout() {
         return ptmLayout;
     }
 
     /**
+     * Add parameter.
      *
-     * @param key
-     * @param value
+     * @param key parameter key
+     * @param value parameter value.
      */
     public void setParam(String key, Object value) {
-        param.put(key, value);
+        parametersMap.put(key, value);
     }
 
     /**
+     * Get parameter
      *
-     * @param key
-     * @return
+     * @param key parameter key.
+     * @return parameter value.
      */
     public Object getParam(String key) {
-        return param.get(key);
+        return parametersMap.get(key);
     }
 
     /**
+     * Get parameter
      *
-     * @param select
+     * @param key parameter key.
+     * @return parameter value.
      */
-    public void heighlight(Boolean select) {
-        if (select == null) {
-            this.setStyleName(defaultStyleShowAllMode);
-        } else if (select) {
-            this.setStyleName("selected" + defaultStyleShowAllMode);
-        } else {
-            this.setStyleName("unselected" + defaultStyleShowAllMode);
-        }
-    }
-
-    /**
-     *
-     * @param qp
-     */
-    public void addQuantPeptide(QuantPeptide qp) {
-        this.quantpeptideSet.add(qp);
-    }
-
-    /**
-     *
-     * @return
-     */
-    public Set<QuantPeptide> getQuantpeptideSet() {
-        return quantpeptideSet;
-    }
-
     @Override
     public int compareTo(StackedBarPeptideComponent o) {
         return widthArea.compareTo(o.widthArea);
     }
 
     /**
+     * Check if the pValue is significant.
      *
-     * @return
+     * @return significant pValue.
      */
     public boolean isSignificant() {
         return significant;
     }
 
     /**
+     * Set pValue is significant.
      *
-     * @param significant
+     * @param significant significant pValue.
      */
     public void setSignificant(boolean significant) {
         this.significant = significant;
     }
 
+    /**
+     * View peptide information pop-up form
+     *
+     * @param event user click action.
+     */
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         popupWindow.view();

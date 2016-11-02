@@ -1,27 +1,29 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.view.core;
 
-import com.vaadin.event.LayoutEvents;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
 
 /**
+ * This class represents View Panel with dynamic left scrolling and folding
+ * support ( touch friendly slide panel).
  *
  * @author Yehia Farag
- *
- * this class represents slide left panel
  */
-public class SlidePanel extends HorizontalLayout implements LayoutEvents.LayoutClickListener, ControllingView {
+public class SlidePanel extends HorizontalLayout implements ControllingView {
 
-    @Override
-    public void resizeComponent(int width, int height) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    /**
+     * The expanding layout container.
+     */
+    private final Layout mainLayout;
+    /**
+     * The minimized layout container.
+     */
+    private final Layout miniLayout;
+    /**
+     * The component unique id.
+     */
+    private final String viewId;
 
     @Override
     public String getViewId() {
@@ -38,17 +40,14 @@ public class SlidePanel extends HorizontalLayout implements LayoutEvents.LayoutC
         setVisible(false);
     }
 
-    private boolean show = true;
-    private final Layout mainLayout, miniLayout;
-    private final String viewId;
-
     /**
-     * Slide touch friendly panel
+     * Constructor to initialize the Slide touch friendly panel
      *
      * @param mainLayout main panel components
      * @param miniLayout mini layout on close panel
      * @param orientation the slide direction 0 slide to left any other value
      * slide to right
+     * @param viewId the view id is a unique id used for view manager
      */
     public SlidePanel(Layout mainLayout, Layout miniLayout, int orientation, String viewId) {
         this.mainLayout = mainLayout;
@@ -68,19 +67,19 @@ public class SlidePanel extends HorizontalLayout implements LayoutEvents.LayoutC
             this.addComponent(mainLayout);
             this.addComponent(miniLayout);
         }
-        this.setHeight(100,Unit.PERCENTAGE);
+        this.setHeight(100, Unit.PERCENTAGE);
         this.setStyleName("slidepanel");
         this.setWidthUndefined();
 
     }
 
     /**
-     * show full panel (Main layout)
+     * Set showPanel (expand) full panel (Main layout)
      *
-     * @param show boolean
+     * @param showPanel expand the view panel.
      */
-    public final void setShowPanel(boolean show) {
-        if (show) {
+    public final void setShowPanel(boolean showPanel) {
+        if (showPanel) {
             this.setVisible(true);
             this.mainLayout.removeStyleName("hideslidelayout");
             this.miniLayout.addStyleName("hideslidelayout");
@@ -88,21 +87,7 @@ public class SlidePanel extends HorizontalLayout implements LayoutEvents.LayoutC
             this.mainLayout.addStyleName("hideslidelayout");
             this.miniLayout.removeStyleName("hideslidelayout");
         }
-        this.show = show;
 
-    }
-
-    @Override
-    public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-        setShowPanel(!show);
-    }
-
-    /**
-     * show full panel (Main layout)
-     *
-     * @param show boolean
-     */
-    public void setShowNavigationBtn(boolean show) {
     }
 
 }

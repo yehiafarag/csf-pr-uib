@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.event.LayoutEvents;
@@ -18,13 +13,24 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 /**
+ * This class represents text area component that has title, text area and clear
+ * text button.
  *
  * @author Yehia Farag
  */
 public class TextAreaComponent extends VerticalLayout {
 
+    /**
+     * Main text area.
+     */
     private final TextArea textBox;
 
+    /**
+     * Constructor to initialize the main attributes and layout components.
+     *
+     * @param labelValue The header title.
+     * @param height the height of the component.
+     */
     public TextAreaComponent(String labelValue, int height) {
         this.setWidth(100, Unit.PERCENTAGE);
         this.setSpacing(true);
@@ -44,7 +50,7 @@ public class TextAreaComponent extends VerticalLayout {
         topLayout.addComponent(clearBtn);
         clearBtn.addStyleName("pointer");
         Image icon = new Image();
-         icon.addStyleName("pointer");
+        icon.addStyleName("pointer");
         icon.setSource(new ThemeResource("img/eraser.png"));
         icon.setWidth(100, Unit.PERCENTAGE);
         icon.setHeight(100, Unit.PERCENTAGE);
@@ -67,14 +73,28 @@ public class TextAreaComponent extends VerticalLayout {
 
     }
 
+    /**
+     * Set input text.
+     *
+     * @param text to fill the text area.
+     */
     public void setText(String text) {
         textBox.setValue(text);
     }
 
+    /**
+     * Reset the text area (clear all data).
+     */
     public void reset() {
         textBox.clear();
     }
-    public String getText(){
+
+    /**
+     * Get input text value.
+     *
+     * @return value of the text area.
+     */
+    public String getText() {
         return textBox.getValue();
     }
 }

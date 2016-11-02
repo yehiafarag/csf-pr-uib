@@ -27,45 +27,43 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantProtein;
 import no.uib.probe.csf.pr.touch.view.core.OverviewInfoBean;
 
 /**
+ * This class is an abstract for the database layer this class interact with
+ * logic layer this class contains all the database SQL queries.
  *
  * @author Yehia Farag
- *
- * this class is an abstract for the database layer this class interact with
- * logic layer this class contains all the database queries
  */
 public class DataBaseLayer implements Serializable {
 
     private static final long serialVersionUID = 1L;
     /**
-     * Database connection
+     * Database connection.
      */
     private Connection conn;
-
     /**
-     * Database connection input parameters
+     * Database connection input parameters.
      */
     private final String url, dbName, driver, userName, password;
 
     /**
      * Map of the disease categories style - disease category name to disease
-     * category style
+     * category style.
      */
     private final Map<String, String> diseaseCategoryStyles = new HashMap<>();
 
     /**
      * Map of the disease categories color codes - disease category name to
-     * disease category color code(HTML Color code)
+     * disease category color code(HTML Color code).
      */
     private final Map<String, String> diseaseColorMap = new HashMap<>();
 
     /**
-     * Initialize Database abstraction layer
+     * Constructor to initialize the database abstraction layer
      *
-     * @param url database url
-     * @param dbName database name
-     * @param driver database driver
-     * @param userName database username
-     * @param password database password
+     * @param url database URL.
+     * @param dbName database name.
+     * @param driver database driver.
+     * @param userName database username.
+     * @param password database password.
      *
      */
     public DataBaseLayer(String url, String dbName, String driver, String userName, String password) {
@@ -84,9 +82,9 @@ public class DataBaseLayer implements Serializable {
     }
 
     /**
-     * this method responsible for getting the resource overview information
+     * Get the resource overview information.
      *
-     * @return OverviewInfoBean resource information bean
+     * @return OverviewInfoBean resource information bean.
      */
     public OverviewInfoBean getResourceOverviewInformation() {
         OverviewInfoBean infoBean = new OverviewInfoBean();
@@ -152,7 +150,7 @@ public class DataBaseLayer implements Serializable {
     }
 
     /**
-     * This method responsible for getting initial publication information
+     * Get initial publication information
      *
      * @return list of publications available in the the resource
      */
@@ -185,7 +183,7 @@ public class DataBaseLayer implements Serializable {
     }
 
     /**
-     * this method responsible for getting initial datasets information
+     * Get initial datasets information
      *
      * @return set of datasets information available in the the resource
      */
@@ -204,9 +202,9 @@ public class DataBaseLayer implements Serializable {
     /**
      * Get available quantification datasets initial information object that
      * contains the available datasets list and the active columns (to hide them
-     * if they are empty)
+     * if they are empty).
      *
-     * @return InitialInformationObject
+     * @return InitialInformationObject.
      */
     public Map<String, InitialInformationObject> getQuantDatasetInitialInformationObject() {
         Map<String, InitialInformationObject> diseaseCategoriesMap = new LinkedHashMap<>();
@@ -276,13 +274,6 @@ public class DataBaseLayer implements Serializable {
                         activeHeaders[5] = true;
                     }
                     ds.setRawDataUrl(raw_data_available);
-
-//                    int files_num = rs.getInt("files_num");
-//                    if (!activeHeaders[6] && files_num != -1) {
-//                        activeHeaders[6] = true;
-//                    }
-//                    ds.setFilesNumber(files_num);
-
                     String type_of_study = rs.getString("type_of_study");
                     if (!activeHeaders[7] && type_of_study != null && !type_of_study.equalsIgnoreCase("Not Available")) {
                         activeHeaders[7] = true;
@@ -430,10 +421,10 @@ public class DataBaseLayer implements Serializable {
     }
 
     /**
-     * Get the current available disease category list
+     * Get the current available disease category list.
      *
      * @return set of disease category objects that has all disease category
-     * information and styling information
+     * information and styling information.
      */
     public LinkedHashMap<String, DiseaseCategoryObject> getDiseaseCategorySet() {
 
@@ -481,10 +472,10 @@ public class DataBaseLayer implements Serializable {
 
     /**
      * Get active quantification pie charts filters (to hide them if they are
-     * empty)
+     * empty).
      *
      * @return boolean array for the active and not active pie chart filters
-     * indexes
+     * indexes.
      */
     public Map<String, boolean[]> getActivePieChartQuantFilters() {
 
@@ -530,11 +521,11 @@ public class DataBaseLayer implements Serializable {
 
     /**
      * Get active quantification pie charts filters within quant searching
-     * proteins results (to hide them if they are empty)
+     * proteins results (to hide them if they are empty).
      *
-     * @param searchQuantificationProtList
+     * @param searchQuantificationProtList   List of quant proteins.
      * @return boolean array for the active and not active pie chart filters
-     * indexes
+     * indexes.
      */
     public Map<String, boolean[]> getActivePieChartQuantFilters(List<QuantProtein> searchQuantificationProtList) {
 
@@ -594,7 +585,7 @@ public class DataBaseLayer implements Serializable {
     /**
      * Get set of disease groups names for special disease category
      *
-     * @param diseaseCat
+     * @param diseaseCat disease category name
      * @return map of the short and long diseases names
      */
     public Set<String> getDiseaseGroupNameMap(String diseaseCat) {
@@ -632,7 +623,7 @@ public class DataBaseLayer implements Serializable {
     }
 
     /**
-     * Get map for disease groups full name
+     * Get map for disease groups full name.
      *
      * @return map of the short and long diseases names
      */
@@ -661,8 +652,8 @@ public class DataBaseLayer implements Serializable {
     /**
      * Get quant proteins list for a number of quant datasets
      *
-     * @param quantDatasetIds
-     * @return quant proteins list
+     * @param quantDatasetIds Array of quant dataset indexes.
+     * @return quant proteins list.
      */
     public Set<QuantProtein> getQuantificationProteins(Object[] quantDatasetIds) {
 
@@ -773,7 +764,7 @@ public class DataBaseLayer implements Serializable {
     /**
      * Get quant peptides list for specific quant dataset
      *
-     * @param quantDatasetIds
+     * @param quantDatasetIds Array of quant dataset ids (indexes)
      * @return quant peptides list
      */
     public Map<String, Set<QuantPeptide>> getQuantificationPeptides(Object[] quantDatasetIds) {
@@ -849,7 +840,7 @@ public class DataBaseLayer implements Serializable {
      * Search for quant proteins by keywords
      *
      * @param query query object that has all query information
-     * @param toCompare
+     * @param toCompare quant comparing mode
      * @return Quant Proteins Searching List
      */
     public List<QuantProtein> searchQuantificationProteins(Query query, boolean toCompare) {

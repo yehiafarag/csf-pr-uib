@@ -397,7 +397,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
         heatmapToolsContainer.setComponentAlignment(exportTableBtn, Alignment.MIDDLE_CENTER);
         exportTableBtn.setDescription("Export heatmap dataset data");
 
-        InformationButton info = new InformationButton("The disease group comparison table provides an overview of the number of datasets available for each comparison. Hover over a given cell to get additional details about the comparison. Selecting one or more cells in the table will display the corresponding protein details. To filter the data use the options in the upper left corner.");
+        InformationButton info = new InformationButton("The disease group comparison table provides an overview of the number of datasets available for each comparison. Hover over a given cell to get additional details about the comparison. Selecting one or more cells in the table will display the corresponding protein details. To filter the data use the options in the upper left corner.",false);
         heatmapToolsContainer.addComponent(info);
         equalComparisonMap = new HashMap<>();
     }

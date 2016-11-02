@@ -20,58 +20,50 @@ import no.uib.probe.csf.pr.touch.selectionmanager.QuantSearchSelection;
 import no.uib.probe.csf.pr.touch.view.core.OverviewInfoBean;
 
 /**
+ * This class is responsible for handling the datasets information across the
+ * system, The handler interact with both visualization and logic layer.
  *
  * @author Yehia Farag
- *
- * This class responsible for handling the datasets information across the
- * system. The handler interact with both visualization and logic layer
- *
- *
  */
 public class Data_Handler implements Serializable {
 
     /**
-     * This is the main logic layer
+     * This is the main logic layer.
      */
     private final CoreLogic coreLogic;
-
     /**
-     * This is the dataset utility class that has all active dataset information
+     * This is the dataset utility class that has all active dataset
+     * information.
      */
     private final DatasetUtility Dataset_Util;
 
     /**
-     * Constructor to initialize the main Data Handler
+     * Constructor to initialize the main Data Handler.
      *
-     * @param url database url
+     * @param url database URL
      * @param dbName database name
      * @param driver database driver
      * @param userName database username
-     * @param filesURL user folder url
      * @param password database password
      */
-    public Data_Handler(String url, String dbName, String driver, String userName, String password, String filesURL) {
-
-        this.coreLogic = new CoreLogic(url, dbName, driver, userName, password, filesURL);
+    public Data_Handler(String url, String dbName, String driver, String userName, String password) {
+        this.coreLogic = new CoreLogic(url, dbName, driver, userName, password);
         Dataset_Util = new DatasetUtility(coreLogic);
-
     }
 
     /**
-     * activate searching layout sub-data handler
+     * Activate searching layout sub-data handler.
      *
-     * @param searchSelection search selection data
+     * @param searchSelection search selection data.
      */
     public void switchToSearchingMode(QuantSearchSelection searchSelection) {
-
         this.Dataset_Util.switchToSearchingMode(searchSelection);
-
     }
 
     /**
-     * this method responsible for getting the resource overview information
+     * Get CSF-PR resource overview information.
      *
-     * @return OverviewInfoBean resource information bean
+     * @return OverviewInfoBean resource information bean.
      */
     public OverviewInfoBean getResourceOverviewInformation() {
         return this.coreLogic.getResourceOverviewInformation();
@@ -79,20 +71,18 @@ public class Data_Handler implements Serializable {
     }
 
     /**
-     * this method responsible for getting initial publication information
+     * Get initial publication information.
      *
-     * @return list of publications available in the the resource
+     * @return list of publications available in the the resource.
      */
     public List<Object[]> getPublicationList() {
-
         return this.coreLogic.getPublicationList();
-
     }
 
     /**
-     * this method responsible for getting initial datasets information
+     * this method responsible for getting initial datasets information.
      *
-     * @return set of datasets information available in the the resource
+     * @return set of datasets information available in the the resource.
      */
     public Set<QuantDataset> getQuantDatasetList() {
         return this.coreLogic.getQuantDatasetList();
@@ -100,40 +90,39 @@ public class Data_Handler implements Serializable {
     }
 
     /**
-     * Get the current available disease category list
+     * Get the current available disease category list.
      *
      * @return set of disease category objects that has all disease category
-     * information and styling information
+     * information and styling information.
      */
     public Collection<DiseaseCategoryObject> getDiseaseCategorySet() {
         return Dataset_Util.getFullDiseaseCategorySet();
     }
 
     /**
-     * Get full disease sub groups name list
+     * Get full disease sub groups name list.
      *
-     * @return set of disease sub group name
+     * @return set of disease sub group name.
      */
     public Set<String> getFullDiseaseGroupNameSet() {
         return Dataset_Util.getFullDiseaseGroupNameSet();
     }
 
     /**
-     * this method responsible for loading and initialize all information for
-     * the selected disease category
+     * Load and initialize all information for the selected disease category.
      *
-     * @param diseaseCategory
+     * @param diseaseCategory Disease category name (MS, AD, PD..etc)
      */
     public void loadDiseaseCategory(String diseaseCategory) {
         Dataset_Util.setMainDiseaseCategory(diseaseCategory);
     }
 
     /**
-     * get active quantification pie charts filters (to hide them if they are
-     * empty)
+     * Get active quantification pie charts filters (to hide them if they are
+     * empty).
      *
      * @return boolean array for the active and not active pie chart filters
-     * indexes
+     * indexes.
      */
     public Map<String, boolean[]> getActivePieChartQuantFilters() {
         return coreLogic.getActivePieChartQuantFilters();
@@ -144,9 +133,9 @@ public class Data_Handler implements Serializable {
      * get active quantification pie charts filters within quant searching
      * proteins results (to hide them if they are empty)
      *
-     * @param searchQuantificationProtList
+     * @param searchQuantificationProtList List of quant proteins.
      * @return boolean array for the active and not active pie chart filters
-     * indexes
+     * indexes.
      */
     public Map<String, boolean[]> getActivePieChartQuantFilters(List<QuantProtein> searchQuantificationProtList) {
         return coreLogic.getActivePieChartQuantFilters(searchQuantificationProtList);
@@ -154,8 +143,7 @@ public class Data_Handler implements Serializable {
     }
 
     /**
-     * this method to get the disease group row labels for the current active
-     * disease category
+     * Get disease group row labels for the current active disease category.
      *
      * @return active row labels category set
      */
@@ -165,8 +153,8 @@ public class Data_Handler implements Serializable {
     }
 
     /**
-     * This method to get the disease group column labels for the current active
-     * disease category
+     * Get the disease group column labels for the current active disease
+     * category
      *
      * @return active column labels category set
      */
@@ -176,8 +164,8 @@ public class Data_Handler implements Serializable {
     }
 
     /**
-     * This method to get the disease group comparisons for the current active
-     * disease category.
+     * Get the disease group comparisons for the current active disease
+     * category.
      *
      * @return active disease group comparisons
      */
@@ -187,8 +175,7 @@ public class Data_Handler implements Serializable {
     }
 
     /**
-     * this method to get the full quant dataset map the current active disease
-     * category
+     * Get the full quant dataset map the current active disease category
      *
      * @return map of quant dataset objects
      */
@@ -197,8 +184,7 @@ public class Data_Handler implements Serializable {
     }
 
     /**
-     * this method to get the active data columns for the current active disease
-     * category
+     * Get the active data columns for the current active disease category
      *
      * @return boolean array of active column
      */
@@ -208,8 +194,7 @@ public class Data_Handler implements Serializable {
     }
 
     /**
-     * this method to update and combine disease sub groups based on user
-     * selection
+     * Update and combine disease sub groups based on user selection
      *
      *
      * @param updatedGroupsNamesMap updated disease sub group names
@@ -220,8 +205,7 @@ public class Data_Handler implements Serializable {
     }
 
     /**
-     * this method allow users to filter the datasets based on sample type (CSF
-     * / Serum)
+     * Allow users to filter the datasets based on sample type (CSF / Serum).
      *
      *
      * @param serumApplied show Serum datasets
@@ -232,12 +216,10 @@ public class Data_Handler implements Serializable {
     }
 
     /**
-     * this method is responsible for update quant comparison proteins map for
-     * each comparison
+     * Update quant comparison proteins map for each comparison.
      *
-     *
-     * @param selectedQuantComparisonsList selected comparisons
-     * @return updated quant comparisons list
+     * @param selectedQuantComparisonsList selected comparisons.
+     * @return updated quant comparisons list.
      */
     public Set<QuantDiseaseGroupsComparison> updateComparisonQuantProteins(Set<QuantDiseaseGroupsComparison> selectedQuantComparisonsList) {
         return coreLogic.updateComparisonQuantProteins(selectedQuantComparisonsList, Dataset_Util.getInUse_DiseaseCat_DiseaseGroupMap());
@@ -245,11 +227,11 @@ public class Data_Handler implements Serializable {
     }
 
     /**
-     * search for quantification proteins
+     * Search for quantification proteins.
      *
-     * @param query query object that has all query information
-     * @param toCompare
-     * @return quant proteins list
+     * @param query query object that has all query information.
+     * @param toCompare quant comparison mode.
+     * @return quant proteins list.
      */
     public List<QuantProtein> searchQuantificationProtein(Query query, boolean toCompare) {
         return coreLogic.searchQuantificationProteins(query, toCompare);
@@ -257,43 +239,40 @@ public class Data_Handler implements Serializable {
     }
 
     /**
-     * this function to filter the quant search results based on keywords and
-     * detect the not found keywords
+     * Filter the quant search results based on keywords and detect the not
+     * found keywords.
      *
-     * @param quantProteinstList list of found proteins
-     * @param SearchingKeys keyword used for searching
+     * @param quantProteinstList list of found proteins.
+     * @param SearchingKeys keyword used for searching.
      * @param searchBy searching method (accession,proteins name, or peptide
-     * sequence )
-     * @return not found keywords within the searching list
+     * sequence).
+     * @return not found keywords within the searching list.
      */
     public String filterQuantSearchingKeywords(List<QuantProtein> quantProteinstList, String SearchingKeys, String searchBy) {
-
         return coreLogic.filterQuantSearchingKeywords(quantProteinstList, SearchingKeys, searchBy);
-
     }
 
     /**
-     * this function to get the quant hits list from the searching results and
-     * group the common proteins in separated lists
+     * Get the quant hits list from the searching results and group the common
+     * proteins in separated lists.
      *
-     * @param quantProteinsList list of found proteins
+     * @param quantProteinsList list of found proteins.
      * @param searchBy searching method (accession,proteins name, or peptide
-     * sequence )
-     * @return list of quant hits results
+     * sequence).
+     * @return list of quant hits results.
      */
     public Map<String, Integer[]> getQuantHitsList(List<QuantProtein> quantProteinsList, String searchBy) {
         return coreLogic.getQuantHitsList(quantProteinsList, searchBy);
-
     }
 
     /**
-     * this function to get the quant compare list from the searching results
-     * and group the common proteins in separated lists
+     * Get the quant compare list from the searching results and group the
+     * common proteins in separated lists.
      *
-     * @param quantProteinsList list of found proteins
+     * @param quantProteinsList list of found proteins.
      * @param searchBy searching method (accession,proteins name, or peptide
-     * sequence )
-     * @return list of quant hits results
+     * sequence).
+     * @return list of quant hits results.
      */
     public Integer[] getQuantComparisonHitsList(List<QuantProtein> quantProteinsList, String searchBy) {
         return coreLogic.getQuantComparisonHitsList(quantProteinsList, searchBy);
@@ -301,43 +280,40 @@ public class Data_Handler implements Serializable {
     }
 
     /**
-     * this function to get the quant compare list from the searching results
-     * and group the common proteins in separated lists
+     * Get the quant compare list from the searching results and group the
+     * common proteins in separated lists.
      *
-     * @param quantProteinsList list of found proteins
+     * @param quantProteinsList list of found proteins.
      * @param searchBy searching method (accession,proteins name, or peptide
-     * sequence )
-     * @return list of quant hits results
+     * sequence).
+     * @return list of quant hits results.
      */
     public Integer[] getQuantComparisonProteinList(List<QuantProtein> quantProteinsList, String searchBy) {
         return coreLogic.getQuantComparisonProteinList(quantProteinsList, searchBy);
-
     }
 
     /**
-     * search for identification proteins
+     * Search for identification proteins.
      *
-     * @param query query object that has all query information
-     * @return identificationProtein list
+     * @param query query object that has all query information.
+     * @return identificationProtein list.
      */
     public String searchIdentificationProtein(Query query) {
         return coreLogic.searchIdentficationProtein(query);
-
     }
 
     /**
-     * export accession list to CSV file
+     * Export accession list to CSV file.
      *
-     * @param proteinsList list of protein accession
-     * @return byte[] of the exported file
+     * @param proteinsList list of protein accessions.
+     * @return byte[] of the exported file.
      */
     public byte[] exportProteinsListToCSV(Set<String> proteinsList) {
         return coreLogic.exportProteinsListToCSV(proteinsList);
-
     }
 
     /**
-     * get unmapped peptide set (the current version of the protein sequence in
+     * Get unmapped peptide set (the current version of the protein sequence in
      * UniProt has changed) for current active dataset.
      *
      * @return Set of current unmapped peptides for the active dataset.

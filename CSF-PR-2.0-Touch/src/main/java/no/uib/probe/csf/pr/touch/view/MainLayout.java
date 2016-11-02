@@ -12,15 +12,15 @@ import com.vaadin.ui.VerticalLayout;
  * layout container)
  */
 public class MainLayout extends VerticalLayout {
+
     /**
      * Constructor to initialize the main attributes (Database connection data)
      *
-     * @param url
-     * @param dbName
-     * @param driver
-     * @param filesURL
-     * @param userName
-     * @param password
+     * @param url database URL
+     * @param dbName database name
+     * @param driver database driver
+     * @param userName database username
+     * @param password database password
      */
     public MainLayout(String url, String dbName, String driver, String userName, String password, String filesURL, int windowWidth, int windowHeight) {
 
@@ -32,7 +32,7 @@ public class MainLayout extends VerticalLayout {
         windowHeight = windowHeight - 10;
         windowWidth = windowWidth - 10;
 
-        CSFApplicationContainer welcomePageContainerLayout = new CSFApplicationContainer(windowWidth, windowHeight, url, dbName, driver, userName, password, filesURL);
+        CSFApplicationContainer welcomePageContainerLayout = new CSFApplicationContainer(windowWidth, windowHeight, url, dbName, driver, userName, password);
         this.addComponent(welcomePageContainerLayout);
         this.setComponentAlignment(welcomePageContainerLayout, Alignment.TOP_CENTER);
 

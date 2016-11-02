@@ -9,26 +9,19 @@ package no.uib.probe.csf.pr.touch.view.core;
 public interface ControllingView {
 
     /**
-     * Resize the component.
+     * Get the view unique id.
      *
-     * @param width The new width of the component.
-     * @param height The new height of the component.
-     */
-    public void resizeComponent(int width, int height);
-
-    /**
-     *Get the view unique id
-     * @return
+     * @return the view id.
      */
     public String getViewId();
 
     /**
-     *View the layout.
+     * View the layout.
      */
     public void view();
 
     /**
-     *Hide the layout.
+     * Hide the layout.
      */
     public void hide();
 }

@@ -27,30 +27,41 @@ package no.uib.probe.csf.pr.touch.logic;
  * This is an updated version with enhancements made by Daniel Migowski, Andre
  * Bogus, and David Koelle
  *
- * To convert to use Templates (Java 1.5+): - Change "implements Comparator" to
- * "implements Comparator<String>" - Change "compare(Object o1, Object o2)" to
- * "compare(String s1, String s2)" - Remove the type checking and casting in
+ * To convert to use Templates (Java 1.5+): - Change implements Comparator to
+ * implements Comparator - Change compare(Object o1, Object o2) to
+ * compare(String s1, String s2) - Remove the type checking and casting in
  * compare().
  *
- * To use this class: Use the static "sort" method from the
+ * To use this class: Use the static sort method from the
  * java.util.Collections class: Collections.sort(your list, new
  * AlphanumComparator());
  */
 public class AlphanumComparator implements Comparable<AlphanumComparator> {
 
+    /**
+     * The value to be compared.
+     */
     private final String value;
 
+    /**
+     * Constructor to initialize main attributes.
+     *
+     * @param value the value to be compared.
+     */
     public AlphanumComparator(String value) {
         this.value = value;
     }
 
+    /**
+     * Check if the char is number.
+     */
     private boolean isDigit(char ch) {
         return ch >= 48 && ch <= 57;
     }
 
     /**
      * Length of string is passed in for improved efficiency (only need to
-     * calculate it once) *
+     * calculate it once).
      */
     private String getChunk(String s, int slength, int marker) {
         StringBuilder chunk = new StringBuilder();

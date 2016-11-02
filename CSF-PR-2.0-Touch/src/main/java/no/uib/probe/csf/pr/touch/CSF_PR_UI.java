@@ -33,10 +33,29 @@ import no.uib.probe.csf.pr.touch.view.MainLayout;
 public class CSF_PR_UI extends UI {
 
     /**
-     * This is main context parameters required for database access and file
-     * export.
+     * Database URL.
      */
-    private String dbURL, dbName, dbDriver, dbUserName, dbPassword, filesURL;
+    private String dbURL;
+    /**
+     * Database name.
+     */
+    private String dbName;
+    /**
+     * Database driver.
+     */
+    private String dbDriver;
+    /**
+     * Database username.
+     */
+    private String dbUserName;
+    /**
+     * Database password.
+     */
+    private String dbPassword;
+    /**
+     * Database URL.
+     */
+    private String filesURL;
 
     /**
      * This is main application window width and height.
@@ -48,19 +67,20 @@ public class CSF_PR_UI extends UI {
     private MainLayout layout;
 
     /**
-     * This is notification window to notify users when they use small screen
+     * This is notification window to notify users when they use small screen.
      */
     private final Window notificationWindow = new Window();
 
     /**
      * Reload the page on changing width and height (turn touch devices to
-     * landscape orientation)
+     * landscape orientation).
      */
     private boolean toReload = false;
 
     /**
-     * This UI is the initial Vaadin request method initialize non-component
-     * functionality.
+     * Entry point - This is the initial Vaadin request method initialize
+     * components and non-component functionality.
+     *
      * @param vaadinRequest Main request object.
      */
     @Override
@@ -126,7 +146,7 @@ public class CSF_PR_UI extends UI {
     }
 
     /**
-     * resize the layout on changing window size
+     * Resize the layout on changing window size.
      */
     private void resizeScreen() {
         windowHeight = Math.max(615, Page.getCurrent().getBrowserWindowHeight() - 20);

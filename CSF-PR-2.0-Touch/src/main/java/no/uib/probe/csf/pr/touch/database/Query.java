@@ -4,21 +4,41 @@ import java.io.Serializable;
 import java.util.Set;
 
 /**
+ * This class represents a query bean that has all query information
  *
  * @author Yehia Farag
- *
- * This class represents a query bean that has all query information
  */
 public class Query implements Serializable {
 
-    private String searchDataType, searchDataset, searchBy, searchKeyWords;
+    /**
+     * Search data type (id/quant).
+     */
+    private String searchDataType;
+    /**
+     * Search dataset name.
+     */
+    private String searchDataset;
+    /**
+     * Searching method (accession,name or peptide sequence).
+     */
+    private String searchBy;
+    /**
+     * Search keyword.
+     */
+    private String searchKeyWords;
+    /**
+     * Show validated proteins only.
+     */
     private boolean validatedProteins;
+    /**
+     * Disease categories.
+     */
     private Set<Object> diseaseCategorys;
 
     /**
      * Return the requested dataset name
      *
-     * @return
+     * @return searching specific dataset name.
      */
     public String getSearchDataset() {
         return searchDataset;
@@ -27,7 +47,7 @@ public class Query implements Serializable {
     /**
      * Set the dataset id
      *
-     * @param searchDataset
+     * @param searchDataset dataset identifier.
      */
     public void setSearchDataset(String searchDataset) {
         this.searchDataset = searchDataset;
@@ -36,7 +56,7 @@ public class Query implements Serializable {
     /**
      * Get searching by method (accession, peptide sequence..etc)
      *
-     * @return searching method name
+     * @return searching method name.
      */
     public String getSearchBy() {
         return searchBy;
@@ -45,7 +65,7 @@ public class Query implements Serializable {
     /**
      * Set searching by method (accession, peptide sequence..etc)
      *
-     * @param searchBy
+     * @param searchBy searching by method (accession, peptide sequence..etc)
      */
     public void setSearchBy(String searchBy) {
         this.searchBy = searchBy;
@@ -54,16 +74,16 @@ public class Query implements Serializable {
     /**
      * Get searching data type (Id data, quant data)
      *
-     * @return
+     * @return searching data type.
      */
     public String getSearchDataType() {
         return searchDataType;
     }
 
     /**
-     * set searching data type (Id data, quant data)
+     * Set searching data type (Id data, quant data)
      *
-     * @param searchDataType
+     * @param searchDataType searching data type.
      */
     public void setSearchDataType(String searchDataType) {
         this.searchDataType = searchDataType;
@@ -72,7 +92,7 @@ public class Query implements Serializable {
     /**
      * Get searching keywords
      *
-     * @return
+     * @return the searching keyword.
      */
     public String getSearchKeyWords() {
         return searchKeyWords;
@@ -81,7 +101,7 @@ public class Query implements Serializable {
     /**
      * Set searching keywords
      *
-     * @param searchKeyWords
+     * @param searchKeyWords searching keywords.
      */
     public void setSearchKeyWords(String searchKeyWords) {
         this.searchKeyWords = searchKeyWords;
@@ -90,7 +110,7 @@ public class Query implements Serializable {
     /**
      * Is searching for validated proteins only
      *
-     * @return
+     * @return search for only validated proteins.
      */
     public boolean isValidatedProteins() {
         return validatedProteins;
@@ -99,14 +119,14 @@ public class Query implements Serializable {
     /**
      * Set searching for validated proteins only
      *
-     * @param validatedProteins
+     * @param validatedProteins only validated proteins
      */
     public void setValidatedProteins(boolean validatedProteins) {
         this.validatedProteins = validatedProteins;
     }
 
     /**
-     * get searching disease category query
+     * Get searching disease category query
      *
      * @return diseaseCategorys set of disease categories
      */

@@ -1,28 +1,37 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.ui.VerticalLayout;
 import java.util.HashMap;
 
 /**
+ * This class represents trend symbol layouts (arrow-up,diamond and arrow-down)
+ * used in protein trend line chart and spark line in quant protein table.
  *
  * @author Yehia Farag
- *
- * this class represents Arrow up layout used in protein trend line chart and
- * spark line in quant protein table
  */
 public class TrendSymbol extends VerticalLayout implements Comparable<TrendSymbol> {
 
-    private final HashMap<String, Object> paramMap;
-    private  int trend;
+    /**
+     * Parameters map.
+     */
+    private final HashMap<String, Object> parameterMap;
+    /**
+     * The trend value(0:100% Increased,1:>100% Increased ,2:Equal,3:>100%
+     * Decreased,4:100% Increased,5:Quantified on peptide level, or 6:Quant
+     * information not available).
+     */
+    private int trend;
 
+    /**
+     * Constructor to initialize the main attributes and layout.
+     *
+     * @param trend the trend value(0:100% Increased,1:>100% Increased
+     * ,2:Equal,3:>100% Decreased,4:100% Increased,5:Quantified on peptide
+     * level, or 6:Quant information not available).
+     */
     public TrendSymbol(int trend) {
-        paramMap = new HashMap<>();
-        this.trend=trend;
+        parameterMap = new HashMap<>();
+        this.trend = trend;
         this.addStyleName("slowtransition");
         switch (trend) {
             case 0:
@@ -52,17 +61,36 @@ public class TrendSymbol extends VerticalLayout implements Comparable<TrendSymbo
         }
     }
 
+    /**
+     * Set trend symbol.
+     *
+     * @param trend the trend value(0:100% Increased,1:>100% Increased
+     * ,2:Equal,3:>100% Decreased,4:100% Increased,5:Quantified on peptide
+     * level, or 6:Quant information not available).
+     */
     public void setTrend(int trend) {
         this.trend = trend;
     }
 
+    /**
+     * Add parameter
+     *
+     * @param name parameter name
+     * @param value parameter value
+     */
     public void addParam(String name, Object value) {
-        paramMap.put(name, value);
+        parameterMap.put(name, value);
 
     }
 
+    /**
+     * Get parameter value
+     *
+     * @param paramName parameter key
+     * @return parameter value.
+     */
     public Object getParam(String paramName) {
-        return paramMap.get(paramName);
+        return parameterMap.get(paramName);
     }
 
     @Override

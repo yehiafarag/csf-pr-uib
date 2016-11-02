@@ -656,7 +656,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
             ExternalLink accessionObject = new ExternalLink(accession, new ExternalResource(url));
             accessionObject.setDescription(description);
             this.selectedComparisonsList = selectedComparisonsList;
-            ProteinTrendLayout protTrendLayout = new ProteinTrendLayout(selectedComparisonsList, protein, availableProteinLayoutWidth, protId, (protId < 10), false) {
+            ProteinTrendLayout protTrendLayout = new ProteinTrendLayout(selectedComparisonsList, protein, availableProteinLayoutWidth, protId, (protId < 10)) {
 
                 @Override
                 public void selectTableItem(Object itemId) {
