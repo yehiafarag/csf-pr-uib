@@ -5,47 +5,47 @@ import java.io.Serializable;
 import java.util.Map;
 
 /**
- *
- * @author Yehia Farag
- *
  * This class represent the information required for the disease category like
  * color, name..etc
+ *
+ * @author Yehia Farag
  */
 public class DiseaseCategoryObject implements Serializable {
 
-    /*
-     *Disease category name (MS, AD, PD..etc)
+    /**
+     * Disease category name (MS, AD, PD..etc).
      */
     private String diseaseCategory;
-    /*
-     *Disease AWT Color to be used for generating JFree Charts
+    /**
+     * Disease AWT Color to be used for generating JFree Charts.
      */
     private Color diseaseAwtColor;
-    /*
-     *Disease HTML Color code
+    /**
+     * Disease HTML Color code.
      */
     private String diseaseHashedColor;
-    /*
-     *Disease Style name at CSS file
+    /**
+     * Disease Style name at CSS file.
      */
     private String diseaseStyleName;
-    /*
-     *Number of datasets for this category
+    /**
+     * Number of datasets for this category.
      */
     private int datasetNumber;
 
-    /*
-     *Disease sub group name map (oreginal to updated)
+    /**
+     * Disease sub group name map (original to updated).
      */
     private Map<String, String> diseaseSubGroups;
 
-    /*
-     *Disease sub group full name map (short to full name) (used for disease sub groups label tooltips in heatmap)
+    /**
+     * Disease sub group full name map (short to full name) (used for disease
+     * sub groups label tool-tips in heat-map).
      */
     private Map<String, String> diseaseSubGroupsToFullName;
 
     /**
-     * Get disease sub group short name to full name map
+     * Get disease sub group short name to full name map.
      *
      * @return map of disease groups name
      */
@@ -54,27 +54,28 @@ public class DiseaseCategoryObject implements Serializable {
     }
 
     /**
-     * Set disease sub group short name to full name map
+     * Set disease sub group short name to full name map.
      *
-     * @param diseaseSubGroupsToFullName
+     * @param diseaseSubGroupsToFullName Disease sub group full name map (short
+     * to full name) (used for disease sub groups label tool-tips in heat-map).
      */
     public void setDiseaseSubGroupsToFullName(Map<String, String> diseaseSubGroupsToFullName) {
         this.diseaseSubGroupsToFullName = diseaseSubGroupsToFullName;
     }
 
     /**
-     * Get disease sub group updated name to original name map
+     * Get disease sub group updated name to original name map.
      *
-     * @return diseaseSubGroups map
+     * @return disease sub groups map.
      */
     public Map<String, String> getDiseaseSubGroups() {
         return diseaseSubGroups;
     }
 
     /**
-     * Set disease sub group updated name to orIginal name map
+     * Set disease sub group updated name to orIginal name map.
      *
-     * @param diseaseSubGroups
+     * @param diseaseSubGroups Disease sub group name map (original to updated).
      */
     public void setDiseaseSubGroups(Map<String, String> diseaseSubGroups) {
         this.diseaseSubGroups = diseaseSubGroups;
@@ -83,7 +84,7 @@ public class DiseaseCategoryObject implements Serializable {
     /**
      * Get included dataset number for this disease category
      *
-     * @return datasetNumber
+     * @return number of datasets.
      */
     public int getDatasetNumber() {
         return datasetNumber;
@@ -92,7 +93,7 @@ public class DiseaseCategoryObject implements Serializable {
     /**
      * Set included dataset number for this disease category
      *
-     * @param datasetNumber
+     * @param datasetNumber Number of datasets number.
      */
     public void setDatasetNumber(int datasetNumber) {
         this.datasetNumber = datasetNumber;
@@ -101,16 +102,16 @@ public class DiseaseCategoryObject implements Serializable {
     /**
      * Get disease style name (CSS name)
      *
-     * @return diseaseStyleName
+     * @return diseaseStyleName CSS disease style name.
      */
     public String getDiseaseStyleName() {
         return diseaseStyleName;
     }
 
     /**
-     * Set disease style name (CSS name)
+     * Set disease style name (CSS name).
      *
-     * @param diseaseStyleName
+     * @param diseaseStyleName CSS disease style name.
      */
     public void setDiseaseStyleName(String diseaseStyleName) {
         this.diseaseStyleName = diseaseStyleName;
@@ -119,24 +120,25 @@ public class DiseaseCategoryObject implements Serializable {
     /**
      * Get disease category (MS,AD,PD...etc)
      *
-     * @return diseaseCategory
+     * @return disease category name
      */
     public String getDiseaseCategory() {
         return diseaseCategory;
     }
 
     /**
-     * Set disease category (MS,AD,PD...etc)
+     * Set disease category (MS,AD,PD...etc).
      *
-     * @param diseaseCategory
+     * @param diseaseCategory Disease category name
      */
     public void setDiseaseCategory(String diseaseCategory) {
         this.diseaseCategory = diseaseCategory;
     }
 
     /**
+     * Get Disease AWT color (Required by JFree chart)
      *
-     * @return
+     * @return disease AWT color.
      */
     public Color getDiseaseAwtColor() {
         return diseaseAwtColor;
@@ -145,7 +147,7 @@ public class DiseaseCategoryObject implements Serializable {
     /**
      * Set disease category AWT color (required for JFree Chart)
      *
-     * @param diseaseAwtColor
+     * @param diseaseAwtColor disease AWT color.
      */
     public void setDiseaseAwtColor(Color diseaseAwtColor) {
         this.diseaseAwtColor = diseaseAwtColor;
@@ -154,7 +156,8 @@ public class DiseaseCategoryObject implements Serializable {
     /**
      * Get disease category HTML color code
      *
-     * @return diseaseHashedColor
+     * @return diseaseHashedColor HTML hashed color code for the disease
+     * category.
      */
     public String getDiseaseHashedColor() {
         return diseaseHashedColor;
@@ -163,14 +166,15 @@ public class DiseaseCategoryObject implements Serializable {
     /**
      * Set disease category HTML color code
      *
-     * @param diseaseHashedColor
+     * @param diseaseHashedColor HTML hashed color code for the disease
+     * category.
      */
     public void setDiseaseHashedColor(String diseaseHashedColor) {
         this.diseaseHashedColor = diseaseHashedColor;
     }
 
     /**
-     * Override toString method to return disease category name
+     * Override toString method to return disease category name.
      */
     @Override
     public String toString() {

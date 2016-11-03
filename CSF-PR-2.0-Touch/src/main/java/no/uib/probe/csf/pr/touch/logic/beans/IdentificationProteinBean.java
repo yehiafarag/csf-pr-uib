@@ -11,193 +11,194 @@ import java.io.Serializable;
 public class IdentificationProteinBean implements Serializable, Comparable<IdentificationProteinBean> {
 
     /**
-     *
+     * Serial version UID.
      */
     private static final long serialVersionUID = 1L;
-    /*
-     *Protein accession number
+    /**
+     * Protein accession number
      */
     private String accession;
 
-    /*
-     *Datasetset id (dataset index in the database)
+    /**
+     * Datasetset id (dataset index in the database)
      */
     private int expId;
 
-    /*
-     *Protein name
+    /**
+     * Protein name
      */
     private String Description;
 
-    /*
-     *Protein is valid
+    /**
+     * Protein is valid
      */
     private boolean validated;
 
-    /*
-     *Protein is decoy
+    /**
+     * Protein is decoy
      */
     private int decoy;
 
-    /*
-     *The protein gene name
+    /**
+     * The protein gene name
      */
     private String geneName;
 
-    /*
-     *The protein chromosome number
+    /**
+     * The protein chromosome number
      */
     private String chromosomeNumber;
 
-    /*
-     *The protein group identification number
+    /**
+     * The protein group identification number
      */
     private int protGroupId;
 
-    /*
-     *The fraction number that has the protein
+    /**
+     * The fraction number that has the protein
      */
     private int frcationId;
 
-    /*
-     *The other related proteins
+    /**
+     * The other related proteins
      */
     private String otherProteins;
 
-    /*
-     *The protein inference class
+    /**
+     * The protein inference class
      */
     private String proteinInferenceClass;
 
-    /*
-     *The protein sequence coverage
+    /**
+     * The protein sequence coverage
      */
     private double sequenceCoverage;
 
-    /*
-     *The protein observable coverage
+    /**
+     * The protein observable coverage
      */
     private double observableCoverage;
-    /*
-     *The protein confident ptm sites
+    /**
+     * The protein confident ptm sites
      */
     private String confidentPtmSites;
 
-    /*
-     *The protein number confident
+    /**
+     * The protein number confident
      */
     private String numberConfident;
 
-    /*
-     *The protein other ptm sites
+    /**
+     * The protein other ptm sites
      */
     private String otherPtmSites;
 
-    /*
-     *The number of others proteins
+    /**
+     * The number of others proteins
      */
     private String numberOfOther;
 
-    /*
-     *The protein validated peptides number 
+    /**
+     * The protein validated peptides number
      */
     private int numberValidatedPeptides;
 
-    /*
-     *The protein validated spectra number
+    /**
+     * The protein validated spectra number
      */
     private int numberValidatedSpectra;
 
-    /*
-     *The protein total spectra number
+    /**
+     * The protein total spectra number
      */
     private int numberSpectra;
 
-    /*
-     *The protein total peptides number
+    /**
+     * The protein total peptides number
      */
     private int numberPeptides;
 
-    /*
-     *The protein em pai
+    /**
+     * The protein em pai
      */
     private double emPai;
 
-    /*
-     *The protein nsaf
+    /**
+     * The protein NSAF.
      */
     private double nsaf;
 
-    /*
-     *The protein MW in kDa
+    /**
+     * The protein MW in kDa.
      */
     private double mw_kDa;
 
-    /*
-     *The protein score
+    /**
+     * The protein score.
      */
     private double score;
 
-    /*
-     *The protein confidence
+    /**
+     * The protein confidence.
      */
     private double confidence;
 
-    /*
-     *The protein Starred
+    /**
+     * The protein Starred.
      */
     private boolean Starred;
 
-    /*
-     *The protein peptide fraction spread lower range in kDa
+    /**
+     * The protein peptide fraction spread lower range in kDa.
      */
     private String peptideFractionSpread_lower_range_kDa;
 
-    /*
-     *The protein peptide fraction spread upper range in kDa
+    /**
+     * The protein peptide fraction spread upper range in kDa.
      */
     private String peptideFractionSpread_upper_range_kDa;
 
-    /*
-     *The protein spectrum fractionSpread lower range in kDa
+    /**
+     * The protein spectrum fractionSpread lower range in kDa.
      */
     private String spectrumFractionSpread_lower_range_kDa;
 
-    /*
-     *The protein spectrum fraction spread upper range in kDa
+    /**
+     * The protein spectrum fraction spread upper range in kDa.
      */
     private String spectrumFractionSpread_upper_range_kDa;
 
-    /*
-     *The protein has non enzymatic peptides
+    /**
+     * The protein has non enzymatic peptides.
      */
     private boolean nonEnzymaticPeptides;
 
-    /*
-     *The protein number of peptides per fraction
+    /**
+     * The protein number of peptides per fraction.
      */
     private int numberOfPeptidePerFraction;
 
-    /*
-     *The protein number of spectra per fraction 
+    /**
+     * The protein number of spectra per fraction .
      */
     private int numberOfSpectraPerFraction;
 
-    /*
-     *The protein average precursor intensity per fraction
+    /**
+     * The protein average precursor intensity per fraction.
      */
     private double AveragePrecursorIntensityPerFraction;
 
     /**
-     * The Default Constructor
+     * *
+     * The Default Constructor.
      */
     public IdentificationProteinBean() {
     }
 
     /**
-     * Constructor allow cloning the data
+     * Constructor allow cloning the data.
      *
-     * @param identificationProteinBean
+     * @param identificationProteinBean identification protein bean
      */
     public IdentificationProteinBean(IdentificationProteinBean identificationProteinBean) {
         this.accession = identificationProteinBean.getAccession();
@@ -237,7 +238,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get dataset id (index in dataset table in the database)
      *
-     * @return expId
+     * @return expId dataset id
      */
     public int getExpId() {
         return expId;
@@ -246,7 +247,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Set dataset id (index in dataset table in the database)
      *
-     * @param expId
+     * @param expId Dataset id.
      */
     public void setExpId(int expId) {
         this.expId = expId;
@@ -255,7 +256,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get the protein fraction id (index in fraction table in the database)
      *
-     * @return frcationId
+     * @return frcationId fraction id .
      */
     public int getFrcationId() {
         return frcationId;
@@ -264,7 +265,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Set the protein fraction id (index in fraction table in the database)
      *
-     * @param frcationId
+     * @param frcationId Fraction id.
      */
     public void setFrcationId(int frcationId) {
         this.frcationId = frcationId;
@@ -273,7 +274,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get the protein gene name
      *
-     * @return
+     * @return gene name
      */
     public String getGeneName() {
         return geneName;
@@ -282,7 +283,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Set the protein gene name
      *
-     * @param geneName
+     * @param geneName Gene name.
      */
     public void setGeneName(String geneName) {
         this.geneName = geneName;
@@ -291,7 +292,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get the protein chromosome number
      *
-     * @return chromosomeNumber
+     * @return chromosomeNumber chromosome number
      */
     public String getChromosomeNumber() {
         return chromosomeNumber;
@@ -300,7 +301,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Set the protein chromosome number
      *
-     * @param chromosomeNumber
+     * @param chromosomeNumber Chromosome number
      */
     public void setChromosomeNumber(String chromosomeNumber) {
         this.chromosomeNumber = chromosomeNumber;
@@ -309,7 +310,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Protein is validated
      *
-     * @return
+     * @return validated protein.
      */
     public boolean isValidated() {
         return validated;
@@ -318,7 +319,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Set protein is validated or not
      *
-     * @param validated
+     * @param validated Validated protein.
      */
     public void setValidated(boolean validated) {
         this.validated = validated;
@@ -327,7 +328,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Set protein accession number
      *
-     * @param accession
+     * @param accession protein accession number.
      */
     public void setAccession(String accession) {
         this.accession = accession;
@@ -336,7 +337,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get protein accession number
      *
-     * @return accession
+     * @return accession Protein accession number.
      */
     public String getAccession() {
         return accession;
@@ -345,7 +346,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Set protein name
      *
-     * @param description
+     * @param description Protein name.
      */
     public void setDescription(String description) {
         Description = description;
@@ -354,7 +355,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get protein name
      *
-     * @return
+     * @return protein name
      */
     public String getDescription() {
         return Description;
@@ -363,7 +364,8 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Set Other proteins accession numbers in same protein group
      *
-     * @param otherProteins
+     * @param otherProteins Other proteins accessions belong to same protein
+     * group.
      */
     public void setOtherProteins(String otherProteins) {
         this.otherProteins = otherProteins;
@@ -372,7 +374,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get Other proteins accession numbers in same protein group
      *
-     * @return
+     * @return other proteins accessions belong to same protein group.
      */
     public String getOtherProteins() {
         return otherProteins;
@@ -381,7 +383,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Set protein inference class
      *
-     * @param proteinInferenceClass
+     * @param proteinInferenceClass Protein inference class
      */
     public void setProteinInferenceClass(String proteinInferenceClass) {
         this.proteinInferenceClass = proteinInferenceClass;
@@ -390,7 +392,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get protein inference class
      *
-     * @return proteinInferenceClass
+     * @return proteinInferenceClass Protein inference class
      */
     public String getProteinInferenceClass() {
         return proteinInferenceClass;
@@ -399,7 +401,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Set protein sequence coverage
      *
-     * @param sequenceCoverage
+     * @param sequenceCoverage protein sequence coverage.
      */
     public void setSequenceCoverage(double sequenceCoverage) {
         this.sequenceCoverage = sequenceCoverage;
@@ -408,7 +410,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get protein sequence coverage
      *
-     * @return sequenceCoverage
+     * @return sequenceCoverage protein sequence coverage.
      */
     public double getSequenceCoverage() {
         return sequenceCoverage;
@@ -417,7 +419,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Set protein observable Coverage
      *
-     * @param observableCoverage
+     * @param observableCoverage Protein observable Coverage
      */
     public void setObservableCoverage(double observableCoverage) {
         this.observableCoverage = observableCoverage;
@@ -426,16 +428,16 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get protein observable Coverage
      *
-     * @return observableCoverage
+     * @return observableCoverage Protein observable Coverage
      */
     public double getObservableCoverage() {
         return observableCoverage;
     }
 
     /**
-     * Set protein confident ptm sites
+     * Set protein confident PTM sites
      *
-     * @param confidentPtmSites
+     * @param confidentPtmSites Protein confident PTM sites
      */
     public void setConfidentPtmSites(String confidentPtmSites) {
         this.confidentPtmSites = confidentPtmSites;
@@ -444,7 +446,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get protein confident ptm sites
      *
-     * @return confidentPtmSites
+     * @return confidentPtmSites Protein confident PTM sites
      */
     public String getConfidentPtmSites() {
         return confidentPtmSites;
@@ -453,7 +455,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Set protein confident number
      *
-     * @param numberConfident
+     * @param numberConfident Protein confident number
      */
     public void setNumberConfident(String numberConfident) {
         this.numberConfident = numberConfident;
@@ -462,34 +464,34 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get protein confident number
      *
-     * @return numberConfident
+     * @return numberConfident Protein confident number
      */
     public String getNumberConfident() {
         return numberConfident;
     }
 
     /**
-     * Set protein other Ptm sites
+     * Set protein other PTM sites
      *
-     * @param otherPtmSites
+     * @param otherPtmSites Protein other PTM sites
      */
     public void setOtherPtmSites(String otherPtmSites) {
         this.otherPtmSites = otherPtmSites;
     }
 
     /**
-     * Get protein other Ptm sites
+     * Get protein other PTM sites
      *
-     * @return otherPtmSites
+     * @return otherPtmSites Protein other PTM sites
      */
     public String getOtherPtmSites() {
         return otherPtmSites;
     }
 
     /**
-     * Set the number of others proteins
+     * Set the number of others proteins in the same protein group.
      *
-     * @param numberOfOther
+     * @param numberOfOther Number of others proteins in the same protein group.
      */
     public void setNumberOfOther(String numberOfOther) {
         this.numberOfOther = numberOfOther;
@@ -498,7 +500,8 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get the number of others proteins
      *
-     * @return numberOfOther
+     * @return numberOfOther Number of others proteins in the same protein
+     * group.
      */
     public String getNumberOfOther() {
         return numberOfOther;
@@ -507,7 +510,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Set the validated peptides number for the protein
      *
-     * @param numberValidatedPeptides
+     * @param numberValidatedPeptides Validated peptides number for the protein.
      */
     public void setNumberValidatedPeptides(int numberValidatedPeptides) {
         this.numberValidatedPeptides = numberValidatedPeptides;
@@ -516,7 +519,8 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get the validated peptides number for the protein
      *
-     * @return numberValidatedPeptides
+     * @return numberValidatedPeptides Validated peptides number for the
+     * protein.
      */
     public int getNumberValidatedPeptides() {
         return numberValidatedPeptides;
@@ -525,7 +529,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Set the validated spectra number for the protein
      *
-     * @param numberValidatedSpectra
+     * @param numberValidatedSpectra Validated spectra number for the protein.
      */
     public void setNumberValidatedSpectra(int numberValidatedSpectra) {
         this.numberValidatedSpectra = numberValidatedSpectra;
@@ -534,43 +538,43 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get the validated spectra number for the protein
      *
-     * @return numberValidatedSpectra
+     * @return numberValidatedSpectra Validated spectra number for the protein.
      */
     public int getNumberValidatedSpectra() {
         return numberValidatedSpectra;
     }
 
     /**
-     * Set protein em Pai
+     * Set protein emPai
      *
-     * @param emPai
+     * @param emPai protein emPai
      */
     public void setEmPai(double emPai) {
         this.emPai = emPai;
     }
 
     /**
-     * Get protein em Pai
+     * GetemPai
      *
-     * @return emPai
+     * @return emPai Protein emPai
      */
     public double getEmPai() {
         return emPai;
     }
 
     /**
-     * Set protein nsaf
+     * Set protein NSAF
      *
-     * @param nsaf
+     * @param nsaf Protein NSAF
      */
     public void setNsaf(double nsaf) {
         this.nsaf = nsaf;
     }
 
     /**
-     * Get protein nsaf
+     * Get protein NSAF
      *
-     * @return nsaf
+     * @return NSAF Protein NSAF
      */
     public double getNsaf() {
         return nsaf;
@@ -579,7 +583,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Set protein MW in kDa
      *
-     * @param mw_kDa
+     * @param mw_kDa Protein MW in kDa
      */
     public void setMw_kDa(double mw_kDa) {
         this.mw_kDa = mw_kDa;
@@ -588,7 +592,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get protein MW in kDa
      *
-     * @return mw_kDa
+     * @return Protein MW in kDa
      */
     public double getMw_kDa() {
         return mw_kDa;
@@ -597,7 +601,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Set protein score
      *
-     * @param score
+     * @param score Protein score
      */
     public void setScore(double score) {
         this.score = score;
@@ -606,7 +610,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get protein score
      *
-     * @return
+     * @return Protein score
      */
     public double getScore() {
         return score;
@@ -615,7 +619,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Set protein confidence
      *
-     * @param confidence
+     * @param confidence Protein confidence.
      */
     public void setConfidence(double confidence) {
         this.confidence = confidence;
@@ -624,7 +628,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get protein confidence
      *
-     * @return confidence
+     * @return confidence Protein confidence.
      */
     public double getConfidence() {
         return confidence;
@@ -633,7 +637,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Set protein starred
      *
-     * @param starred
+     * @param starred Protein starred
      */
     public void setStarred(boolean starred) {
         Starred = starred;
@@ -642,7 +646,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get protein starred
      *
-     * @return Starred
+     * @return Starred Protein starred
      */
     public boolean isStarred() {
         return Starred;
@@ -651,7 +655,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Set protein number of peptides per fraction
      *
-     * @param numberOfPeptidePerFraction
+     * @param numberOfPeptidePerFraction Protein number of peptides per fraction
      */
     public void setNumberOfPeptidePerFraction(int numberOfPeptidePerFraction) {
         this.numberOfPeptidePerFraction = numberOfPeptidePerFraction;
@@ -660,7 +664,8 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get protein number of peptides per fraction
      *
-     * @return numberOfPeptidePerFraction
+     * @return numberOfPeptidePerFraction Protein number of peptides per
+     * fraction
      */
     public int getNumberOfPeptidePerFraction() {
         return numberOfPeptidePerFraction;
@@ -669,7 +674,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Set protein number of spectra per fraction
      *
-     * @param numberOfSpectraPerFraction
+     * @param numberOfSpectraPerFraction Protein number of spectra per fraction
      */
     public void setNumberOfSpectraPerFraction(int numberOfSpectraPerFraction) {
         this.numberOfSpectraPerFraction = numberOfSpectraPerFraction;
@@ -678,7 +683,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get protein number of spectra per fraction
      *
-     * @return numberOfSpectraPerFraction
+     * @return numberOfSpectraPerFraction Protein number of spectra per fraction
      */
     public int getNumberOfSpectraPerFraction() {
         return numberOfSpectraPerFraction;
@@ -687,7 +692,8 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Set protein average precursor intensity per fraction
      *
-     * @param averagePrecursorIntensityPerFraction
+     * @param averagePrecursorIntensityPerFraction Protein average precursor
+     * intensity per fraction
      */
     public void setAveragePrecursorIntensityPerFraction(
             double averagePrecursorIntensityPerFraction) {
@@ -697,7 +703,8 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get protein average precursor intensity per fraction
      *
-     * @return AveragePrecursorIntensityPerFraction
+     * @return AveragePrecursorIntensityPerFraction Protein average precursor
+     * intensity per fraction
      */
     public double getAveragePrecursorIntensityPerFraction() {
         return AveragePrecursorIntensityPerFraction;
@@ -706,7 +713,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get protein has non enzymatic peptides
      *
-     * @return nonEnzymaticPeptides
+     * @return nonEnzymaticPeptides Protein has non enzymatic peptides
      */
     public boolean isNonEnzymaticPeptides() {
         return nonEnzymaticPeptides;
@@ -715,7 +722,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Set protein has non enzymatic peptides
      *
-     * @param nonEnzymaticPeptides
+     * @param nonEnzymaticPeptides Protein has non enzymatic peptides
      */
     public void setNonEnzymaticPeptides(boolean nonEnzymaticPeptides) {
         this.nonEnzymaticPeptides = nonEnzymaticPeptides;
@@ -724,7 +731,8 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get Protein peptide Fraction Spread lower range kDa
      *
-     * @return peptideFractionSpread_lower_range_kDa
+     * @return peptideFractionSpread_lower_range_kDa Protein peptide Fraction
+     * Spread lower range kDa
      */
     public String getPeptideFractionSpread_lower_range_kDa() {
         return peptideFractionSpread_lower_range_kDa;
@@ -733,7 +741,8 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Set Protein peptide Fraction Spread lower range kDa
      *
-     * @param peptideFractionSpread_lower_range_kDa
+     * @param peptideFractionSpread_lower_range_kDa Protein peptide Fraction
+     * Spread lower range kDa
      */
     public void setPeptideFractionSpread_lower_range_kDa(
             String peptideFractionSpread_lower_range_kDa) {
@@ -743,7 +752,8 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get Protein peptide Fraction Spread upper range kDa
      *
-     * @return peptideFractionSpread_upper_range_kDa
+     * @return peptideFractionSpread_upper_range_kDa Protein peptide Fraction
+     * Spread upper range kDa
      */
     public String getPeptideFractionSpread_upper_range_kDa() {
         return peptideFractionSpread_upper_range_kDa;
@@ -752,7 +762,8 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Set Protein peptide Fraction Spread upper range kDa
      *
-     * @param peptideFractionSpread_upper_range_kDa
+     * @param peptideFractionSpread_upper_range_kDa Protein peptide Fraction
+     * Spread upper range kDa
      */
     public void setPeptideFractionSpread_upper_range_kDa(
             String peptideFractionSpread_upper_range_kDa) {
@@ -762,7 +773,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get Protein spectrum Fraction Spread lower range kDa
      *
-     * @return
+     * @return Protein spectrum Fraction Spread lower range kDa
      */
     public String getSpectrumFractionSpread_lower_range_kDa() {
         return spectrumFractionSpread_lower_range_kDa;
@@ -771,7 +782,8 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Set Protein spectrum Fraction Spread lower range kDa
      *
-     * @param spectrumFractionSpread_lower_range_kDa
+     * @param spectrumFractionSpread_lower_range_kDa Protein spectrum Fraction
+     * Spread lower range kDa
      */
     public void setSpectrumFractionSpread_lower_range_kDa(
             String spectrumFractionSpread_lower_range_kDa) {
@@ -781,7 +793,8 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get Protein spectrum Fraction Spread upper range kDa
      *
-     * @return spectrumFractionSpread_upper_range_kDa
+     * @return spectrumFractionSpread_upper_range_kDa Protein spectrum Fraction
+     * Spread upper range kDa
      */
     public String getSpectrumFractionSpread_upper_range_kDa() {
         return spectrumFractionSpread_upper_range_kDa;
@@ -790,7 +803,8 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Set Protein spectrum Fraction Spread upper range kDa
      *
-     * @param spectrumFractionSpread_upper_range_kDa
+     * @param spectrumFractionSpread_upper_range_kDa Protein spectrum Fraction
+     * Spread upper range kDa
      */
     public void setSpectrumFractionSpread_upper_range_kDa(
             String spectrumFractionSpread_upper_range_kDa) {
@@ -800,7 +814,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get protein number of spectra
      *
-     * @return numberSpectra
+     * @return numberSpectra Protein number of spectra
      */
     public int getNumberSpectra() {
         return numberSpectra;
@@ -809,7 +823,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Set protein number of spectra
      *
-     * @param numberSpectra
+     * @param numberSpectra Protein number of spectra
      */
     public void setNumberSpectra(int numberSpectra) {
         this.numberSpectra = numberSpectra;
@@ -818,7 +832,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Get protein number of peptides
      *
-     * @return numberPeptides
+     * @return numberPeptides Protein number of peptides
      */
     public int getNumberPeptides() {
         return numberPeptides;
@@ -827,7 +841,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Set protein number of peptides
      *
-     * @param numberPeptides
+     * @param numberPeptides Protein number of peptides
      */
     public void setNumberPeptides(int numberPeptides) {
         this.numberPeptides = numberPeptides;
@@ -836,7 +850,7 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * Is protein decoy
      *
-     * @return
+     * @return protein decoy
      */
     public int getDecoy() {
         return decoy;
@@ -845,39 +859,43 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
     /**
      * set if protein decoy or not
      *
-     * @param decoy
+     * @param decoy Protein decoy
      */
     public void setDecoy(int decoy) {
         this.decoy = decoy;
     }
 
     /**
-     *Get dataset id (index in the database)
-     * @return expId
+     * Get dataset id (index in the database)
+     *
+     * @return expId Dataset id.
      */
     public int getDatasetId() {
         return expId;
     }
 
     /**
-     *Set dataset id (index in the database)
-     * @param expId
+     * Set dataset id (index in the database)
+     *
+     * @param expId Dataset id.
      */
     public void setDatasetId(int expId) {
         this.expId = expId;
     }
 
     /**
-     *Get protein group id (index in the database)
-     * @return
+     * Get protein group id (index in the database)
+     *
+     * @return protein group id (index in the database)
      */
     public int getProtGroupId() {
         return protGroupId;
     }
 
     /**
-     *Set protein group id (index in the database)
-     * @param protGroupId
+     * Set protein group id (index in the database)
+     *
+     * @param protGroupId Protein group id (index in the database)
      */
     public void setProtGroupId(int protGroupId) {
         this.protGroupId = protGroupId;

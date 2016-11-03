@@ -8,15 +8,14 @@ import java.io.Serializable;
 import java.util.Set;
 
 /**
+ * This class is responsible for creating protein tables files to export.
  *
  * @author Yehia Farag
- *
- * This class is responsible for creating protein tables files to export
  */
 public class Exporter implements Serializable {
 
     /**
-     * This function to be use for csv peptides exporting with large datasets
+     * Proteins exporting with large datasets as csv format.
      *
      * @param accessionList protein accession list to be exported
      * @return file byte array

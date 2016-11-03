@@ -90,12 +90,13 @@ public class CoreLogic implements Serializable {
      * This method responsible for getting initial datasets information for
      * searching layout
      *
+     * @param datasetIds set of dataset indexes.
      * @return set of datasets information available in the the resource
      */
-    public Set<QuantDataset> getQuantDatasetList(Set<Integer> datasetId) {
+    public Set<QuantDataset> getQuantDatasetList(Set<Integer> datasetIds) {
         Set<QuantDataset> quantDatasetSet = new LinkedHashSet<>();
         for (QuantDataset qDsObject : database.getQuantDatasetList()) {
-            if (datasetId.contains(qDsObject.getQuantDatasetIndex())) {
+            if (datasetIds.contains(qDsObject.getQuantDatasetIndex())) {
                 quantDatasetSet.add(qDsObject);
             }
 
@@ -171,7 +172,7 @@ public class CoreLogic implements Serializable {
      * get active quantification pie charts filters within quant searching
      * proteins results (to hide them if they are empty)
      *
-     * @param searchQuantificationProtList  List of quant proteins.
+     * @param searchQuantificationProtList List of quant proteins.
      * @return boolean array for the active and not active pie chart filters
      * indexes
      */
@@ -201,11 +202,12 @@ public class CoreLogic implements Serializable {
     }
 
     /**
-     * This method is responsible for update quant comparison proteins map for
-     * each comparison
+     * This method is responsible for update quant comparison proteins name map for
+     * each comparison.
      *
      *
      * @param selectedQuantComparisonsList selected comparisons
+     * @param inUse_DiseaseCat_DiseaseGroupMap updated disease comparison names map
      * @return updated quant comparisons list
      */
     public Set<QuantDiseaseGroupsComparison> updateComparisonQuantProteins(Set<QuantDiseaseGroupsComparison> selectedQuantComparisonsList, Map<String, Map<String, String>> inUse_DiseaseCat_DiseaseGroupMap) {
@@ -465,7 +467,7 @@ public class CoreLogic implements Serializable {
      * search for proteins by description keywords
      *
      * @param query query words
-     * @param toCompare
+     * @param toCompare Quant comparing mode.
      * @return datasetProteinsSearchList
      */
     public List<QuantProtein> searchQuantificationProteins(Query query, boolean toCompare) {
@@ -715,6 +717,7 @@ public class CoreLogic implements Serializable {
      * @param identificationProteinsList list of found proteins
      * @param searchBy searching method (accession,proteins name, or peptide
      * sequence )
+     * @param mainProt accession of leading protein.
      * @return list of identification hits results
      */
     public Map<String, Integer> getIdentificationHitsList(Map<Integer, IdentificationProteinBean> identificationProteinsList, String searchBy, String mainProt) {
@@ -757,11 +760,22 @@ public class CoreLogic implements Serializable {
 
     }
 
+    /**
+     * Proteins exporting with large datasets as csv format.
+     *
+     * @param proteinsList protein accession list to be exported
+     * @return file byte array
+     */
     public byte[] exportProteinsListToCSV(Set<String> proteinsList) {
         return exporter.expotProteinAccessionListToCSV(proteinsList);
 
     }
 
+    /**
+     * Filter peptides and get un-mapped peptides for altered proteins sequence.
+     *
+     * @return set of un-mapped peptides.
+     */
     public Set<QuantPeptide> getUnmappedPeptideSet() {
 
         Set<QuantPeptide> unmappedPeptideSet = new LinkedHashSet<>();

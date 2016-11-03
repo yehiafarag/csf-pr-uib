@@ -3,61 +3,61 @@ package no.uib.probe.csf.pr.touch.logic.beans;
 import java.io.Serializable;
 
 /**
+ * This class represents disease group comparison that has all comparison
+ * information
  *
  * @author Yehia Farag
- *
- * this class represents disease group comparison that has all comparison
- * information
  */
 public class DiseaseGroupComparison implements Serializable {
-    /*
-     *Disease category name (MS, AD, PD..etc)
+
+    /**
+     * Disease category name (MS, AD, PD..etc).
      */
 
     private String diseaseCategory;
 
-    /*
-     *Disease Style name at CSS file
+    /**
+     * Disease Style name at CSS file.
      */
     private String diseaseStyleName;
 
-    /*
-     *The dataset index in the database
+    /**
+     * The dataset index in the database.
      */
     private int quantDatasetIndex;
 
-    /*
-     *The Disease main group I (not used in the current csf-pr-2.0)
+    /**
+     * The Disease main group I (not used in the current csf-pr-2.0).
      */
     private String diseaseMainGroupI;
 
-    /*
-     *The Disease main group II (not used in the current csf-pr-2.0)
+    /**
+     * The Disease main group II (not used in the current csf-pr-2.0).
      */
     private String diseaseMainGroupII;
 
-    /*
-     *The Disease sub group I (publication name)
+    /**
+     * The Disease sub group I (publication name).
      */
     private String originalDiseaseSubGroupI;
-    /*
-     *The Disease sub group II (publication name)
+    /**
+     * The Disease sub group II (publication name).
      */
     private String originalDiseaseSubGroupII;
 
-    /*
-     *The Disease sub group I (currently used in the system)
+    /**
+     * The Disease sub group I (currently used in the system).
      */
     private String activeDiseaseSubGroupI;
-    /*
-     *The Disease sub group II (currently used in the system)
+    /**
+     * The Disease sub group II (currently used in the system).
      */
     private String activeDiseaseSubGroupII;
 
     /**
-     * Get disease category (MS,AD,PD...etc)
+     * Get disease category (MS,AD,PD...etc).
      *
-     * @return diseaseCategory
+     * @return diseaseCategory disease category name
      */
     public String getDiseaseCategory() {
         return diseaseCategory;
@@ -66,16 +66,16 @@ public class DiseaseGroupComparison implements Serializable {
     /**
      * Set disease category (MS,AD,PD...etc)
      *
-     * @param diseaseCategory
+     * @param diseaseCategory disease category name.
      */
-    public void setDiseaseCategory(String DiseaseCategory) {
-        this.diseaseCategory = DiseaseCategory;
+    public void setDiseaseCategory(String diseaseCategory) {
+        this.diseaseCategory = diseaseCategory;
     }
 
     /**
      * Get the disease sub group I (publication name)
      *
-     * @return originalDiseaseSubGroupI
+     * @return originalDiseaseSubGroupI publication disease sub-group 1.
      */
     public String getOriginalDiseaseSubGroupI() {
         return originalDiseaseSubGroupI;
@@ -84,7 +84,7 @@ public class DiseaseGroupComparison implements Serializable {
     /**
      * Set the disease sub group I (publication name)
      *
-     * @param originalDiseaseSubGroupI
+     * @param originalDiseaseSubGroupI publication disease sub-group 1.
      */
     public void setOriginalDiseaseSubGroupI(String originalDiseaseSubGroupI) {
         this.originalDiseaseSubGroupI = originalDiseaseSubGroupI;
@@ -93,7 +93,7 @@ public class DiseaseGroupComparison implements Serializable {
     /**
      * Get the disease sub group II (publication name)
      *
-     * @return originalDiseaseSubGroupII
+     * @return originalDiseaseSubGroupII publication disease sub-group 2.
      */
     public String getOriginalDiseaseSubGroupII() {
         return originalDiseaseSubGroupII;
@@ -102,7 +102,7 @@ public class DiseaseGroupComparison implements Serializable {
     /**
      * Set the disease sub group II (publication name)
      *
-     * @param originalDiseaseSubGroupII
+     * @param originalDiseaseSubGroupII publication disease sub-group 2.
      */
     public void setOriginalDiseaseSubGroupII(String originalDiseaseSubGroupII) {
         this.originalDiseaseSubGroupII = originalDiseaseSubGroupII;
@@ -111,7 +111,7 @@ public class DiseaseGroupComparison implements Serializable {
     /**
      * Get the disease main group I (not used in the current csf-pr-2.0)
      *
-     * @return diseaseMainGroupI
+     * @return diseaseMainGroupI Main disease group 1.
      */
     public String getDiseaseMainGroupI() {
         return diseaseMainGroupI;
@@ -120,7 +120,7 @@ public class DiseaseGroupComparison implements Serializable {
     /**
      * Get he dataset index in the database
      *
-     * @return quantDatasetIndex
+     * @return quantDatasetIndex dataset index in the database.
      */
     public int getQuantDatasetIndex() {
         return quantDatasetIndex;
@@ -129,7 +129,7 @@ public class DiseaseGroupComparison implements Serializable {
     /**
      * Set the dataset index in the database
      *
-     * @param quantDatasetIndex
+     * @param quantDatasetIndex Dataset index in the database.
      */
     public void setQuantDatasetIndex(int quantDatasetIndex) {
         this.quantDatasetIndex = quantDatasetIndex;
@@ -138,7 +138,7 @@ public class DiseaseGroupComparison implements Serializable {
     /**
      * Set the disease main group I (not used in the current csf-pr-2.0)
      *
-     * @param diseaseMainGroupI
+     * @param diseaseMainGroupI Main disease group 1.
      */
     public void setDiseaseMainGroupI(String diseaseMainGroupI) {
         this.diseaseMainGroupI = diseaseMainGroupI;
@@ -147,7 +147,7 @@ public class DiseaseGroupComparison implements Serializable {
     /**
      * Get the disease main group II (not used in the current csf-pr-2.0)
      *
-     * @return diseaseMainGroupII
+     * @return diseaseMainGroupII Main disease group 2.
      */
     public String getDiseaseMainGroupII() {
         return diseaseMainGroupII;
@@ -156,43 +156,43 @@ public class DiseaseGroupComparison implements Serializable {
     /**
      * Set the disease main group II (not used in the current csf-pr-2.0)
      *
-     * @param diseaseMainGroupII
+     * @param diseaseMainGroupII Main disease group 2.
      */
     public void setDiseaseMainGroupII(String diseaseMainGroupII) {
         this.diseaseMainGroupII = diseaseMainGroupII;
     }
 
     /**
-     * Get the Disease sub group II (currently used in the system)
+     * Get the current disease sub group II name (currently used in the system)
      *
-     * @return activeDiseaseSubGroupII
+     * @return activeDiseaseSubGroupII Current name for disease sub-group 2.
      */
     public String getActiveDiseaseSubGroupII() {
         return activeDiseaseSubGroupII;
     }
 
     /**
-     * Set the Disease sub group II (currently used in the system)
+     * Set the current disease sub group II name (currently used in the system)
      *
-     * @param activeDiseaseSubGroupII
+     * @param activeDiseaseSubGroupII Current name for disease sub-group 2.
      */
     public void setActiveDiseaseSubGroupII(String activeDiseaseSubGroupII) {
         this.activeDiseaseSubGroupII = activeDiseaseSubGroupII;
     }
 
     /**
-     * Get the Disease sub group I (currently used in the system)
+     * Get the current disease sub group I name (currently used in the system)
      *
-     * @return activeDiseaseSubGroupI
+     * @return activeDiseaseSubGroupI Current name for disease sub-group 1.
      */
     public String getActiveDiseaseSubGroupI() {
         return activeDiseaseSubGroupI;
     }
 
     /**
-     * Set the Disease sub group I (currently used in the system)
+     * Set the current disease sub group I name (currently used in the system)
      *
-     * @param activeDiseaseSubGroupI
+     * @param activeDiseaseSubGroupI Current name for disease sub-group 1.
      */
     public void setActiveDiseaseSubGroupI(String activeDiseaseSubGroupI) {
         this.activeDiseaseSubGroupI = activeDiseaseSubGroupI;
@@ -212,8 +212,8 @@ public class DiseaseGroupComparison implements Serializable {
     /**
      * Get the comparison title
      *
-     * @param key
-     * @return
+     * @param key disease sub group name(currently used in the system)
+     * @return the current update disease group with disease category.
      */
     public String getValLabel(String key) {
         if (key.equalsIgnoreCase(activeDiseaseSubGroupI + "__" + diseaseCategory)) {
@@ -227,9 +227,9 @@ public class DiseaseGroupComparison implements Serializable {
     }
 
     /**
-     * Get Disease Style name at CSS file
+     * Get disease Style name at CSS file
      *
-     * @return diseaseStyleName
+     * @return diseaseStyleName CSS disease style name.
      */
     public String getDiseaseStyleName() {
         return diseaseStyleName;
@@ -238,7 +238,7 @@ public class DiseaseGroupComparison implements Serializable {
     /**
      * Set Disease Style name at CSS file
      *
-     * @param diseaseStyleName
+     * @param diseaseStyleName CSS disease style name.
      */
     public void setDiseaseStyleName(String diseaseStyleName) {
         this.diseaseStyleName = diseaseStyleName;

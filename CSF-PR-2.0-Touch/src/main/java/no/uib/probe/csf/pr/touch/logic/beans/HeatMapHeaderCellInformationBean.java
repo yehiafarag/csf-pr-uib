@@ -4,43 +4,41 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
+ * This class provides all required information for drawing heat map cell.
  *
  * @author Yehia Farag
- *
- * this class provides all requires information for heat map cell
  */
 public class HeatMapHeaderCellInformationBean implements Serializable {
 
-
-    /*
-     *Disease category name (MS, AD, PD..etc)
+    /**
+     * Disease category name (MS, AD, PD..etc).
      */
     private String diseaseCategory;
-    /*
-     *The Disease sub group (currently used in the system)
+    /**
+     * The Disease sub group (currently used in the system).
      */
     private String diseaseGroupName;
-    /*
-     *Disease Style name at CSS file
+    /**
+     * Disease Style name at CSS file.
      */
     private String diseaseStyleName;
-    /*
-     *Disease HTML Color code
+    /**
+     * Disease HTML Color code.
      */
     private String diseaseHashedColor;
-    /*
-     *Disease sub group full name
+    /**
+     * Disease sub group full name.
      */
     private String diseaseGroupFullName;
-    /*
-     *Disease sub group original name (from publication)
+    /**
+     * Disease sub group original name (from publication).
      */
     private String diseaseGroupOreginalName;
 
     /**
      * Get disease sub group original name (from publication)
      *
-     * @return diseaseGroupOreginalName
+     * @return diseaseGroupOreginalName Publication disease sub group name.
      */
     public String getDiseaseGroupOreginalName() {
         return diseaseGroupOreginalName;
@@ -49,7 +47,7 @@ public class HeatMapHeaderCellInformationBean implements Serializable {
     /**
      * Set disease sub group original name (from publication)
      *
-     * @param diseaseGroupOreginalName
+     * @param diseaseGroupOreginalName Publication disease sub group name.
      */
     public void setDiseaseGroupOreginalName(String diseaseGroupOreginalName) {
         this.diseaseGroupOreginalName = diseaseGroupOreginalName;
@@ -58,7 +56,7 @@ public class HeatMapHeaderCellInformationBean implements Serializable {
     /**
      * Get disease category (MS,AD,PD...etc)
      *
-     * @return diseaseCategory
+     * @return diseaseCategory disease category name.
      */
     public String getDiseaseCategory() {
         return diseaseCategory;
@@ -67,7 +65,7 @@ public class HeatMapHeaderCellInformationBean implements Serializable {
     /**
      * Set disease category (MS,AD,PD...etc)
      *
-     * @param diseaseCategory
+     * @param diseaseCategory Disease category name.
      */
     public void setDiseaseCategory(String diseaseCategory) {
         this.diseaseCategory = diseaseCategory;
@@ -76,7 +74,7 @@ public class HeatMapHeaderCellInformationBean implements Serializable {
     /**
      * Get disease sub group (currently used in the system)
      *
-     * @return diseaseGroupName
+     * @return diseaseGroupName disease group name.
      */
     public String getDiseaseGroupName() {
         return diseaseGroupName;
@@ -85,16 +83,16 @@ public class HeatMapHeaderCellInformationBean implements Serializable {
     /**
      * Set disease sub group (currently used in the system)
      *
-     * @param diseaseGroupName
+     * @param diseaseGroupName Disease group name.
      */
     public void setDiseaseGroupName(String diseaseGroupName) {
         this.diseaseGroupName = diseaseGroupName;
     }
 
     /**
-     * Get disease style name (CSS name)
+     * Get disease style name (CSS name).
      *
-     * @return diseaseStyleName
+     * @return diseaseStyleName CSS disease style name.
      */
     public String getDiseaseStyleName() {
         return diseaseStyleName;
@@ -103,7 +101,7 @@ public class HeatMapHeaderCellInformationBean implements Serializable {
     /**
      * Set disease style name (CSS name)
      *
-     * @param diseaseStyleName
+     * @param diseaseStyleName CSS disease style name.
      */
     public void setDiseaseStyleName(String diseaseStyleName) {
         this.diseaseStyleName = diseaseStyleName;
@@ -112,7 +110,7 @@ public class HeatMapHeaderCellInformationBean implements Serializable {
     /**
      * Get disease category HTML color code
      *
-     * @return diseaseHashedColor
+     * @return diseaseHashedColor Disease HTML hashed color code.
      */
     public String getDiseaseHashedColor() {
         return diseaseHashedColor;
@@ -121,7 +119,7 @@ public class HeatMapHeaderCellInformationBean implements Serializable {
     /**
      * Set disease category HTML color code
      *
-     * @param diseaseHashedColor
+     * @param diseaseHashedColor Disease HTML hashed color code.
      */
     public void setDiseaseHashedColor(String diseaseHashedColor) {
         this.diseaseHashedColor = diseaseHashedColor;
@@ -135,7 +133,7 @@ public class HeatMapHeaderCellInformationBean implements Serializable {
     /**
      * Get disease sub group full name
      *
-     * @return diseaseGroupFullName
+     * @return diseaseGroupFullName disease sub-group full name.
      */
     public String getDiseaseGroupFullName() {
         if (diseaseGroupFullName == null) {
@@ -147,7 +145,7 @@ public class HeatMapHeaderCellInformationBean implements Serializable {
     /**
      * Set disease sub group full name
      *
-     * @param diseaseGroupFullName
+     * @param diseaseGroupFullName Disease sub-group full name.
      */
     public void setDiseaseGroupFullName(String diseaseGroupFullName) {
         this.diseaseGroupFullName = diseaseGroupFullName;
