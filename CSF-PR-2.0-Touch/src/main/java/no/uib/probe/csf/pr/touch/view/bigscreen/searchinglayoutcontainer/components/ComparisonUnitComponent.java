@@ -86,12 +86,12 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
             + "P13521\n"
             + "P07602\n"
             + "P04216";
-    /*
+    /**
      * Sort selection on the heat-map based on rows input data (if user select disease group A from drop down list) group A will be Numerator by default 
      */
     private boolean sorterRows;
-    /*
-     * Sort selection on the heat-map based on column input data (if user select disease group B from drop down list) group B will be Denominator by default
+    /**
+     * Sort selection on the heat-map based on column input data (if user select disease group B from drop down list) group B will be Denominator by default.
      */
     private boolean sortColumns;
     /*
@@ -402,7 +402,7 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
             if (str.trim().equals("")) {
                 continue;
             }
-            QuantComparisonProtein comProt = new QuantComparisonProtein(1, userCustomizedComparison, index--);
+            QuantComparisonProtein comProt = new QuantComparisonProtein();
             comProt.addIncreasedProtein(-1, -1, true);
             comProt.setProteinAccession(str);
             comProt.finalizeQuantData();
@@ -413,7 +413,7 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
             if (str.trim().equals("")) {
                 continue;
             }
-            QuantComparisonProtein comProt = new QuantComparisonProtein(1, userCustomizedComparison, index--);
+            QuantComparisonProtein comProt = new QuantComparisonProtein();
             comProt.addEqualProtein(-1, -1);
             comProt.setProteinAccession(str);
             comProt.finalizeQuantData();
@@ -424,7 +424,7 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
             if (str.trim().equals("")) {
                 continue;
             }
-            QuantComparisonProtein comProt = new QuantComparisonProtein(1, userCustomizedComparison, index--);
+            QuantComparisonProtein comProt = new QuantComparisonProtein();
             comProt.addDecreasedProtein(-1, -1, true);
             comProt.setProteinAccession(str);
             comProt.finalizeQuantData();
@@ -444,8 +444,8 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
         userCustomizedComparison.setOreginalComparisonHeader(userCompHeader);
         userCustomizedComparison.setDiseaseCategoryColor("#8210B0");
         userCustomizedComparison.setDiseaseCategoryStyle("user");
-        userCustomizedComparison.setUseCustomRowHeaderToSort(sorterRows);
-        userCustomizedComparison.setUseCustomColumnHeaderToSort(sortColumns);
+        userCustomizedComparison.setSortRows(sorterRows);
+        userCustomizedComparison.setSortColumns(sortColumns);
 
         //start query
         Query query = new Query();

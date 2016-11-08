@@ -97,7 +97,7 @@ public class ComparisonLable extends VerticalLayout implements LayoutEvents.Layo
         popupBody.setComponentAlignment(tab, Alignment.TOP_CENTER);
         ProteinsInformationOverviewLayout proteinInfoLayout = new ProteinsInformationOverviewLayout();
         VerticalLayout protInfoPopup = generatePopupLayout(proteinInfoLayout);
-        proteinInfoLayout.updateProteinsForm(quantProtein, quantProtein.getUniprotAccessionNumber(), quantProtein.getUrl(), quantProtein.getUniprotProteinName());
+        proteinInfoLayout.updateProteinsForm(quantProtein, quantProtein.getUniprotAccessionNumber(), quantProtein.getURL(), quantProtein.getUniprotProteinName());
         tab.addTab(protInfoPopup, "Protein");
         DatasetInformationOverviewLayout dsOverview = new DatasetInformationOverviewLayout(dataset, false);
         VerticalLayout infoPopup = generatePopupLayout(dsOverview);

@@ -3,7 +3,7 @@ package no.uib.probe.csf.pr.touch.logic.beans;
 import java.io.Serializable;
 
 /**
- * This class represent protein ID data object currently not used in csf-pr-2.0
+ * This class represent protein ID data object currently not used in CSF-PR 2.0
  * for searching results overview
  *
  * @author Yehia Farag

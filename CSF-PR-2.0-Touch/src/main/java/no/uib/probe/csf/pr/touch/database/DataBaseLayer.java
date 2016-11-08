@@ -192,7 +192,7 @@ public class DataBaseLayer implements Serializable {
 
         Map<String, InitialInformationObject> diseaseCategoriesMap = getQuantDatasetInitialInformationObject();
         diseaseCategoriesMap.values().stream().forEach((qi) -> {
-            dsObjects.addAll(qi.getQuantDatasetsList().values());
+            dsObjects.addAll(qi.getQuantDatasetsMap().values());
         });
 
         return dsObjects;
@@ -227,7 +227,7 @@ public class DataBaseLayer implements Serializable {
                         Set<String> diseaseCategories = new LinkedHashSet<>();
                         InitialInformationObject datasetObject = new InitialInformationObject();
                         Map<Integer, QuantDataset> updatedQuantDatasetObjectMap = new LinkedHashMap<>();
-                        datasetObject.setQuantDatasetsList(updatedQuantDatasetObjectMap);
+                        datasetObject.setQuantDatasetsMap(updatedQuantDatasetObjectMap);
                         datasetObject.setActiveDatasetPieChartsFilters(activeHeaders);
                         datasetObject.setDiseaseCategories(diseaseCategories);
                         diseaseCategoriesMap.put(disease_category, datasetObject);
@@ -235,7 +235,7 @@ public class DataBaseLayer implements Serializable {
                     }
                     InitialInformationObject datasetObject = diseaseCategoriesMap.get(disease_category);
                     boolean[] activeHeaders = datasetObject.getActiveDatasetPieChartsFilters();
-                    Map<Integer, QuantDataset> updatedQuantDatasetObjectMap = datasetObject.getQuantDatasetsList();
+                    Map<Integer, QuantDataset> updatedQuantDatasetObjectMap = datasetObject.getQuantDatasetsMap();
                     Set<String> diseaseCategories = datasetObject.getDiseaseCategories();
 
                     QuantDataset ds = new QuantDataset();
@@ -402,7 +402,7 @@ public class DataBaseLayer implements Serializable {
                     diseaseCategories.add(ds.getDiseaseCategory());
                     activeHeaders[26] = false;
                     updatedQuantDatasetObjectMap.put(ds.getQuantDatasetIndex(), ds);
-                    datasetObject.setQuantDatasetsList(updatedQuantDatasetObjectMap);
+                    datasetObject.setQuantDatasetsMap(updatedQuantDatasetObjectMap);
                     datasetObject.setActiveDatasetPieChartsFilters(activeHeaders);
                     datasetObject.setDiseaseCategories(diseaseCategories);
                     diseaseCategoriesMap.put(disease_category, datasetObject);

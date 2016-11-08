@@ -314,7 +314,6 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
 
             @Override
             public void updateCSFSerumDatasets(boolean serumApplied, boolean csfApplied) {
-                Data_handler.updateCSFSerumDatasets(serumApplied, csfApplied);
                 diseaseComparisonHeatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), Data_handler.getFullQuantDsMap());
             }
 

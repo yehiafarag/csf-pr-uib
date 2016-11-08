@@ -27,12 +27,12 @@ public class DiseaseGroupComparison implements Serializable {
     private int quantDatasetIndex;
 
     /**
-     * The Disease main group I (not used in the current csf-pr-2.0).
+     * The Disease main group I (not used in the current CSF-PR 2.0).
      */
     private String diseaseMainGroupI;
 
     /**
-     * The Disease main group II (not used in the current csf-pr-2.0).
+     * The Disease main group II (not used in the current CSF-PR 2.0).
      */
     private String diseaseMainGroupII;
 
@@ -109,7 +109,7 @@ public class DiseaseGroupComparison implements Serializable {
     }
 
     /**
-     * Get the disease main group I (not used in the current csf-pr-2.0)
+     * Get the disease main group I (not used in the current CSF-PR 2.0)
      *
      * @return diseaseMainGroupI Main disease group 1.
      */
@@ -136,7 +136,7 @@ public class DiseaseGroupComparison implements Serializable {
     }
 
     /**
-     * Set the disease main group I (not used in the current csf-pr-2.0)
+     * Set the disease main group I (not used in the current CSF-PR 2.0)
      *
      * @param diseaseMainGroupI Main disease group 1.
      */
@@ -145,7 +145,7 @@ public class DiseaseGroupComparison implements Serializable {
     }
 
     /**
-     * Get the disease main group II (not used in the current csf-pr-2.0)
+     * Get the disease main group II (not used in the current CSF-PR 2.0)
      *
      * @return diseaseMainGroupII Main disease group 2.
      */
@@ -154,7 +154,7 @@ public class DiseaseGroupComparison implements Serializable {
     }
 
     /**
-     * Set the disease main group II (not used in the current csf-pr-2.0)
+     * Set the disease main group II (not used in the current CSF-PR 2.0)
      *
      * @param diseaseMainGroupII Main disease group 2.
      */

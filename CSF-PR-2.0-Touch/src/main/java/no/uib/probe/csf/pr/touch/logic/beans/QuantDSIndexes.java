@@ -4,27 +4,26 @@ import java.io.Serializable;
 import java.util.Map;
 
 /**
- *
- * @author Yehia Farag
- *
  * This class is used for re-indexing datasets in the heat-map layout
  *
+ * @author Yehia Farag
  */
 public class QuantDSIndexes implements Serializable {
 
-    /*
-     *Datasetset index value
+    /**
+     * Dataset index value.
      */
     private int value;
-    /*
-     *Datasets map (dataset index in the database to dataset object)
+    /**
+     * Datasets map (dataset index in the database to dataset object).
      */
     private Map<Integer, QuantDataset> datasetMap;
 
     /**
      * Get datasets map (dataset index in the database to dataset object)
      *
-     * @return datasetMap
+     * @return datasetMap Datasets map (dataset index in the database to dataset
+     * object)
      */
     public Map<Integer, QuantDataset> getDatasetMap() {
         return datasetMap;
@@ -33,7 +32,8 @@ public class QuantDSIndexes implements Serializable {
     /**
      * Set datasets map (dataset index in the database to dataset object)
      *
-     * @param datasetMap
+     * @param datasetMap Datasets map (dataset index in the database to dataset
+     * object)
      */
     public void setDatasetMap(Map<Integer, QuantDataset> datasetMap) {
         this.datasetMap = datasetMap;
@@ -42,7 +42,7 @@ public class QuantDSIndexes implements Serializable {
     /**
      * Get indexing value
      *
-     * @return value
+     * @return value the re-indexing value.
      */
     public int getValue() {
         return value;
@@ -51,7 +51,7 @@ public class QuantDSIndexes implements Serializable {
     /**
      * Set indexing value
      *
-     * @param value
+     * @param value The re-indexing value.
      */
     public void setValue(int value) {
         this.value = value;

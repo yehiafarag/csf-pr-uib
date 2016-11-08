@@ -142,12 +142,12 @@ public class CoreLogic implements Serializable {
                 }
                 counter++;
             }
-            updatedQuantDatasetObjectMap.putAll(datasetObject.getQuantDatasetsList());
+            updatedQuantDatasetObjectMap.putAll(datasetObject.getQuantDatasetsMap());
             return datasetObject;
         }).forEach((datasetObject) -> {
             diseaseCategories.addAll(datasetObject.getDiseaseCategories());
         });
-        allDatasetObject.setQuantDatasetsList(updatedQuantDatasetObjectMap);
+        allDatasetObject.setQuantDatasetsMap(updatedQuantDatasetObjectMap);
         allDatasetObject.setActiveDatasetPieChartsFilters(activeHeaders);
         allDatasetObject.setDiseaseCategories(diseaseCategories);
         quantStudyInitInfoMap.put("All Diseases", allDatasetObject);
@@ -285,7 +285,7 @@ public class CoreLogic implements Serializable {
                 }
 
                 if (!comparProtList.containsKey(protAcc)) {
-                    QuantComparisonProtein comProt = new QuantComparisonProtein(comparison.getDatasetMap().size(), comparison, quant.getProtIndex());
+                    QuantComparisonProtein comProt = new QuantComparisonProtein();
                     comProt.setQuantPeptidesList(new HashSet<>());
                     comProt.setSequence(quant.getSequence());
                     comparProtList.put(protAcc, comProt);
@@ -343,7 +343,7 @@ public class CoreLogic implements Serializable {
                 if (protName.trim().equalsIgnoreCase("")) {
                     protName = quant.getPublicationProteinName();
                 }
-                quant.setUrl(urlLink);
+                quant.setURL(urlLink);
                 comProt.setProteinName(protName);
                 comProt.setProteinAccession(accession);
                 comProt.setUrl(url);
@@ -572,7 +572,7 @@ public class CoreLogic implements Serializable {
                 protName = quantProt.getPublicationProteinName();
             }
             quantProt.setFinalAccession(accession);
-            quantProt.setUrl(url);
+            quantProt.setURL(url);
             key = accession.trim() + "__" + protName.trim();
 
             if (!quantHitsList.containsKey(key)) {

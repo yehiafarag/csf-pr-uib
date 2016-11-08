@@ -1,209 +1,211 @@
 package no.uib.probe.csf.pr.touch.logic.beans;
 
 /**
+ ** This class represents quant protein object that contain all the protein
+ * information
  *
  * @author Yehia Farag
- *
- * This class represents quant protein object that contain all the protein
- * information
  */
 public class QuantProtein implements Comparable<QuantProtein> {
 
-    /*
+    /**
      * Publication PubMed id
      */
     private String pubMedId;
 
-    /*
-     * Protein uniprot accession number
+    /**
+     * Protein UniProt accession number.
      */
     private String uniprotAccessionNumber;
-    /*
-     * Protein uniprot name
+    /**
+     * Protein UniProt name.
      */
     private String uniprotProteinName;
-    /*
-     * Protein publication accession number
+    /**
+     * Protein publication accession number.
      */
     private String publicationAccessionNumber;
-    /*
-     * Protein publication name
+    /**
+     * Protein publication name.
      */
     private String publicationProteinName;
-    /*
-     * Raw data available(available/not available)
+    /**
+     * Raw data available(available/not available).
      */
     private String rawDataAvailable;
-    /*
-     * Study type
+    /**
+     * Study type.
      */
     private String typeOfStudy;
-    /*
-     * Sample type
+    /**
+     * Sample type.
      */
     private String sampleType;
-    /*
-     * The Disease main group I (not used in the current csf-pr-2.0)
+    /**
+     * The Disease main group I (not used in the current CSF-PR 2.0).
      */
     private String diseaseMainGroupI;
-    /*
-     * The Disease sub group I (publication name)
+    /**
+     * The Disease sub group I (publication name).
      */
     private String originalDiseaseSubGroupI;
-    /*
-     *  The Disease main group I comments
+    /**
+     * The Disease main group I comments.
      */
     private String diseaseMainGroupIComment;
-    /*
-     * The Disease main group II (not used in the current csf-pr-2.0)
+    /**
+     * The Disease main group II (not used in the current CSF-PR 2.0).
      */
     private String diseaseMainGroupII;
-    /*
-     * The Disease sub group II (publication name)
+    /**
+     * The Disease sub group II (publication name).
      */
     private String originalDiseaseSubGroupII;
-    /*
-     *  The Disease main group II comments
+    /**
+     * The Disease main group II comments.
      */
     private String diseaseMainGroupIIComment;
-    /*
-     * Sample matching
+    /**
+     * Sample matching.
      */
     private String sampleMatching;
-    /*
-     * Normalization stratgy
+    /**
+     * Normalization strategy.
      */
     private String normalizationStrategy;
-    /*
-     * Technology
+    /**
+     * Technology.
      */
     private String technology;
-    /*
-     * Analytical approach
+    /**
+     * Analytical approach.
      */
     private String analyticalApproach;
-    /*
-     * Enzyme
+    /**
+     * Enzyme.
      */
     private String enzyme;
-    /*
-     * Shotgun or targetedQquant study
+    /**
+     * Shotgun or targetedQquant study.
      */
     private String shotgunOrTargetedQquant;
-    /*
-     * Protein quantification basis
+    /**
+     * Protein quantification basis.
      */
     private String quantificationBasis;
-    /*
-     * Protein quantification basis comments
+    /**
+     * Protein quantification basis comments.
      */
     private String quantBasisComment;
-    /*
-     * Protein additional comments
+    /**
+     * Protein additional comments.
      */
     private String additionalComments;
 
-    /*
-     * Number of identified peptides
+    /**
+     * Number of identified peptides.
      */
     private int peptideIdNumb;
-    /*
-     * number of quantified peptides
+    /**
+     * number of quantified peptides.
      */
     private int quantifiedPeptidesNumber;
-    /*
-     * Disease main group I patients number
+    /**
+     * Disease main group I patients number.
      */
     private int diseaseGroupIPatientsNumber;
-    /*
-     * Disease main group II patients number
+    /**
+     * Disease main group II patients number.
      */
     private int diseaseGroupIIPatientsNumber;
-    /*
-     * Publication publishing year
+    /**
+     * Publication publishing year.
      */
     private int year;
 
-    /*
-     * Unique parent dataset id (dataset index in database)
+    /**
+     * Unique parent dataset id (dataset index in database).
      */
     private int quantDatasetIndex;
-    /*
-     * Unique protein id (protein index in database)
+    /**
+     * Unique protein id (protein index in database).
      */
     private int protIndex;
 
-    /*
-     * Fold change as text (increased, decreased or equal)
+    /**
+     * Fold change as text (increased, decreased or equal).
      */
     private String string_fc_value;
-    /*
-     * Quantification p_value (Significant/not significant) 
+    /**
+     * Quantification p_value (Significant/not significant).
      */
     private String string_p_value;
-    /*
-     * The publication author name
+    /**
+     * The publication author name.
      */
     private String author;
-    /*
-     *  Peptide p_value comments
+    /**
+     * Peptide p_value comments.
      */
     private String p_value_comments;
-    /*
-     * Quantification p_value significance threshold
+    /**
+     * Quantification p_value significance threshold.
      */
     private String pvalueSignificanceThreshold;
-    /*
-     * Disease category (MS,AD,PD...etc)
+    /**
+     * Disease category (MS,AD,PD...etc).
      */
     private String diseaseCategory;
-    /*
-     * Link to protein in UniProt
+    /**
+     * Link to protein in UniProt.
      */
-    private String url;
-    /*
-     * The final accession (Uniprot or publication) will be used in the protein table
+    private String URL;
+    /**
+     * The final accession (UniProt or publication) will be used in the protein
+     * table.
      */
     private String finalAccession;
 
-    /*
-     * The protein sequence imported from UniProt
+    /**
+     * The protein sequence imported from UniProt.
      */
     private String sequence;
-
     /**
-     * Get the final accession (Uniprot or publication) will be used in the
-     * protein table
-     *
-     * @return finalAccession
-     */
-    public String getFinalAccession() {
-        return finalAccession;
-    }
-    /*
-     * Quantification pValue
+     * Quantification pValue.
      */
     private double p_value;
 
-    /*
-     * Receiver operating characteristic
+    /**
+     * Receiver operating characteristic.
      */
     private double roc_auc;
-    /*
-     * Fold change value (log2 value)
+    /**
+     * Fold change value (log2 value).
      */
     private double fc_value;
 
-    /*
-     * Protein has peptides data
+    /**
+     * Protein has peptides data.
      */
     private boolean peptideProt;
 
     /**
-     * Set the final accession (Uniprot or publication) will be used in the
+     * Get the final accession (UniProt or publication-if UniProt accession not
+     * available use protein publication accession number) will be used in the
      * protein table
      *
-     * @param finalAccession
+     * @return finalAccession The final selected protein accession
+     */
+    public String getFinalAccession() {
+        return finalAccession;
+    }
+
+    /**
+     * Set the final accession (UniProt or publication-if UniProt accession not
+     * available use protein publication accession number) will be used in the
+     * protein table
+     *
+     * @param finalAccession The final selected protein accession
      */
     public void setFinalAccession(String finalAccession) {
         this.finalAccession = finalAccession;
@@ -212,7 +214,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get disease category (MS,AD,PD...etc)
      *
-     * @return diseaseCategory
+     * @return diseaseCategory Disease category name
      */
     public String getDiseaseCategory() {
         return diseaseCategory;
@@ -221,7 +223,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set disease category (MS,AD,PD...etc)
      *
-     * @param diseaseCategory
+     * @param diseaseCategory Disease category name
      */
     public void setDiseaseCategory(String diseaseCategory) {
         this.diseaseCategory = diseaseCategory;
@@ -230,7 +232,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * get protein sequence
      *
-     * @return sequence
+     * @return sequence Protein sequence
      */
     public String getSequence() {
         return sequence;
@@ -239,16 +241,16 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set protein sequence
      *
-     * @param sequence
+     * @param sequence Protein sequence
      */
     public void setSequence(String sequence) {
         this.sequence = sequence;
     }
 
     /**
-     * Get he dataset index in the database
+     * Get the dataset index in the database
      *
-     * @return quantDatasetIndex
+     * @return quantDatasetIndex Dataset index
      */
     public int getQuantDatasetIndex() {
         return quantDatasetIndex;
@@ -257,7 +259,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get quantification p_value comments
      *
-     * @return p_value_comments
+     * @return p_value_comments pValue comments
      */
     public String getP_value_comments() {
         return p_value_comments;
@@ -266,7 +268,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set quantification p_value comments
      *
-     * @param p_value_comments
+     * @param p_value_comments pValue comments
      */
     public void setP_value_comments(String p_value_comments) {
         this.p_value_comments = p_value_comments;
@@ -275,7 +277,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get unique protein id (protein index in database)
      *
-     * @return protIndex
+     * @return protIndex protein id
      */
     public int getProtIndex() {
         return protIndex;
@@ -284,7 +286,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set unique protein id (protein index in database)
      *
-     * @param protIndex
+     * @param protIndex protein id
      */
     public void setProtIndex(int protIndex) {
         this.protIndex = protIndex;
@@ -293,7 +295,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set the dataset index in the database
      *
-     * @param quantDatasetIndex
+     * @param quantDatasetIndex dataset index
      */
     public void setQuantDatasetIndex(int quantDatasetIndex) {
         this.quantDatasetIndex = quantDatasetIndex;
@@ -302,7 +304,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get quantification pValue (Significant/not significant)
      *
-     * @return string_p_value
+     * @return string_p_value pValue (Significant/not significant)
      */
     public String getString_p_value() {
         return string_p_value;
@@ -311,7 +313,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set quantification pValue (Significant/not significant)
      *
-     * @param string_p_value
+     * @param string_p_value pValue (Significant/not significant)
      */
     public void setString_p_value(String string_p_value) {
         this.string_p_value = string_p_value;
@@ -320,7 +322,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get the publication publishing year
      *
-     * @return year
+     * @return year Publication year
      */
     public int getYear() {
         return year;
@@ -329,7 +331,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set the publication publishing year
      *
-     * @param year
+     * @param year Publication year
      */
     public void setYear(int year) {
         this.year = year;
@@ -338,7 +340,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get the publication author name
      *
-     * @return author
+     * @return author Publication author name
      */
     public String getAuthor() {
         return author;
@@ -347,7 +349,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set the publication author name
      *
-     * @param author
+     * @param author Publication author name
      */
     public void setAuthor(String author) {
         this.author = author;
@@ -356,7 +358,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get fold change as text (increased, decreased or equal)
      *
-     * @return string_fc_value
+     * @return string_fc_value Fold change as text
      */
     public String getString_fc_value() {
         return string_fc_value;
@@ -365,16 +367,16 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set fold change as text (increased, decreased or equal)
      *
-     * @param string_fc_value
+     * @param string_fc_value Fold change as text
      */
-    public void setString_fc_value(String StringFC) {
-        this.string_fc_value = StringFC;
+    public void setString_fc_value(String string_fc_value) {
+        this.string_fc_value = string_fc_value;
     }
 
     /**
-     * Is protein has peptides
+     * Check if protein has peptides
      *
-     * @return peptideProt
+     * @return peptideProt Protein has peptides.
      */
     public boolean isPeptideProt() {
         return peptideProt;
@@ -383,7 +385,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set protein has peptides
      *
-     * @param peptideProt
+     * @param peptideProt Protein has peptides
      */
     public void setPeptideProt(boolean peptideProt) {
         this.peptideProt = peptideProt;
@@ -392,7 +394,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get publication PubMed id
      *
-     * @return QuantDataset
+     * @return pubMedId Publication PubMed id
      */
     public String getPubMedId() {
         return pubMedId;
@@ -401,61 +403,61 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set publication PubMed id
      *
-     * @param pubMedId
+     * @param pubMedId Publication PubMed id
      */
     public void setPubMedId(String pubMedId) {
         this.pubMedId = pubMedId;
     }
 
     /**
-     * Get uniprot protein accession number
+     * Get UniProt protein accession number
      *
-     * @return uniprotAccessionNumber
+     * @return uniprotAccessionNumber Accession number
      */
     public String getUniprotAccessionNumber() {
         return uniprotAccessionNumber;
     }
 
     /**
-     * Set uniprot protein accession number
+     * Set UniProt protein accession number
      *
-     * @param uniprotAccessionNumber
+     * @param uniprotAccessionNumber Accession number
      */
     public void setUniprotAccessionNumber(String uniprotAccessionNumber) {
         this.uniprotAccessionNumber = uniprotAccessionNumber;
     }
 
     /**
-     * Get uniprot protein name
+     * Get UniProt protein name
      *
-     * @return uniprotProteinName
+     * @return uniprotProteinName UniProt protein name
      */
     public String getUniprotProteinName() {
         return uniprotProteinName;
     }
 
     /**
-     * Set uniprot protein name
+     * Set UniProt protein name
      *
-     * @param uniprotProteinName
+     * @param uniprotProteinName UniProt protein name
      */
     public void setUniprotProteinName(String uniprotProteinName) {
         this.uniprotProteinName = uniprotProteinName;
     }
 
     /**
-     * Get publication (IPI..etc) protein accession number
+     * Get publication protein accession number (IPI or UniProt..etc)
      *
-     * @return publicationAccessionNumber
+     * @return publicationAccessionNumber Protein accession number
      */
     public String getPublicationAccessionNumber() {
         return publicationAccessionNumber;
     }
 
     /**
-     * Set publication (IPI..etc) protein accession number
+     * Set publication protein accession number (IPI or UniProt..etc)
      *
-     * @param publicationAccessionNumber
+     * @param publicationAccessionNumber Protein accession number
      */
     public void setPublicationAccessionNumber(String publicationAccessionNumber) {
         this.publicationAccessionNumber = publicationAccessionNumber;
@@ -464,7 +466,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get publication protein name
      *
-     * @return publicationProteinName
+     * @return publicationProteinName Publication protein name
      */
     public String getPublicationProteinName() {
         return publicationProteinName;
@@ -473,7 +475,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set publication protein name
      *
-     * @param publicationProteinName
+     * @param publicationProteinName Publication protein name
      */
     public void setPublicationProteinName(String publicationProteinName) {
         this.publicationProteinName = publicationProteinName;
@@ -482,7 +484,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get raw data available(available/not available)
      *
-     * @return rawDataAvailable
+     * @return rawDataAvailable Raw data is available
      */
     public String getRawDataAvailable() {
         return rawDataAvailable;
@@ -491,7 +493,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set raw data available
      *
-     * @param rawDataAvailable
+     * @param rawDataAvailable Raw data is available
      */
     public void setRawDataAvailable(String rawDataAvailable) {
         this.rawDataAvailable = rawDataAvailable;
@@ -500,7 +502,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get number of identified peptides
      *
-     * @return peptideIdNumb
+     * @return peptideIdNumb Number of identified peptides
      */
     public int getPeptideIdNumb() {
         return peptideIdNumb;
@@ -509,7 +511,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set number of identified peptides
      *
-     * @param peptideIdNumb
+     * @param peptideIdNumb Number of identified peptides
      */
     public void setPeptideIdNumb(int peptideIdNumb) {
         this.peptideIdNumb = peptideIdNumb;
@@ -518,7 +520,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get number of quantified peptides
      *
-     * @return quantifiedPeptidesNumber
+     * @return quantifiedPeptidesNumber Number of quantified peptides
      */
     public int getQuantifiedPeptidesNumber() {
         return quantifiedPeptidesNumber;
@@ -527,25 +529,25 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set number of quantified peptides
      *
-     * @param quantifiedPeptidesNumber
+     * @param quantifiedPeptidesNumber Number of quantified peptides
      */
     public void setQuantifiedPeptidesNumber(int quantifiedPeptidesNumber) {
         this.quantifiedPeptidesNumber = quantifiedPeptidesNumber;
     }
 
     /**
-     * Get fold change as text (increased, decreased or equal)
+     * Get fold change value (log2 value)
      *
-     * @return string_fc_value
+     * @return fc_value Fold change value (log2 value)
      */
     public double getFc_value() {
         return fc_value;
     }
 
     /**
-     * Set fold change as text (increased, decreased or equal)
+     * Set fold change value (log2 value)
      *
-     * @param string_fc_value
+     * @param fc_value Fold change value (log2 value)
      */
     public void setFc_value(double fc_value) {
         this.fc_value = fc_value;
@@ -554,7 +556,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get study type
      *
-     * @return typeOfStudy
+     * @return typeOfStudy Study type
      */
     public String getTypeOfStudy() {
         return typeOfStudy;
@@ -563,7 +565,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set study type
      *
-     * @param typeOfStudy
+     * @param typeOfStudy Study type
      */
     public void setTypeOfStudy(String typeOfStudy) {
         this.typeOfStudy = typeOfStudy;
@@ -572,7 +574,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get sample type
      *
-     * @return sampleType
+     * @return sampleType Sample type
      */
     public String getSampleType() {
         return sampleType;
@@ -581,7 +583,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set sample type
      *
-     * @param sampleType
+     * @param sampleType Sample type
      */
     public void setSampleType(String sampleType) {
         this.sampleType = sampleType;
@@ -590,7 +592,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get disease main group I patients number
      *
-     * @return diseaseGroupIPatientsNumber
+     * @return diseaseGroupIPatientsNumber Patients number
      */
     public int getDiseaseGroupIPatientsNumber() {
         return diseaseGroupIPatientsNumber;
@@ -599,25 +601,25 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set disease main group I patients number
      *
-     * @param diseaseGroupIPatientsNumber
+     * @param diseaseGroupIPatientsNumber Patients number
      */
     public void setDiseaseGroupIPatientsNumber(int diseaseGroupIPatientsNumber) {
         this.diseaseGroupIPatientsNumber = diseaseGroupIPatientsNumber;
     }
 
     /**
-     * Get the disease main group I (not used in the current csf-pr-2.0)
+     * Get the disease main group I (not used in the current CSF-PR 2.0)
      *
-     * @return diseaseMainGroupI
+     * @return diseaseMainGroupI Disease main group I
      */
     public String getDiseaseMainGroupI() {
         return diseaseMainGroupI;
     }
 
     /**
-     * Set the disease main group I (not used in the current csf-pr-2.0)
+     * Set the disease main group I (not used in the current CSF-PR 2.0)
      *
-     * @param diseaseMainGroupI
+     * @param diseaseMainGroupI Disease main group I
      */
     public void setDiseaseMainGroupI(String diseaseMainGroupI) {
         this.diseaseMainGroupI = diseaseMainGroupI;
@@ -626,7 +628,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get the disease sub group I (publication name)
      *
-     * @return originalDiseaseSubGroupI
+     * @return originalDiseaseSubGroupI Disease sub group I (publication name)
      */
     public String getOriginalDiseaseSubGroupI() {
         return originalDiseaseSubGroupI;
@@ -635,7 +637,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set the disease sub group I (publication name)
      *
-     * @param originalDiseaseSubGroupI
+     * @param originalDiseaseSubGroupI Disease sub group I (publication name)
      */
     public void setOriginalDiseaseSubGroupI(String originalDiseaseSubGroupI) {
         this.originalDiseaseSubGroupI = originalDiseaseSubGroupI;
@@ -644,7 +646,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get disease main group I comments
      *
-     * @return diseaseMainGroupIComment
+     * @return diseaseMainGroupIComment Disease main group I comments
      */
     public String getDiseaseMainGroupIComment() {
         return diseaseMainGroupIComment;
@@ -653,7 +655,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set disease main group I comments
      *
-     * @param diseaseMainGroupIComment
+     * @param diseaseMainGroupIComment Disease main group I comments
      */
     public void setDiseaseMainGroupIComment(String diseaseMainGroupIComment) {
         this.diseaseMainGroupIComment = diseaseMainGroupIComment;
@@ -662,7 +664,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set Disease main group II patients number
      *
-     * @return diseaseGroupIIPatientsNumber
+     * @return diseaseGroupIIPatientsNumber Patients number
      */
     public int getDiseaseGroupIIPatientsNumber() {
         return diseaseGroupIIPatientsNumber;
@@ -671,25 +673,25 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set Disease main group II patients number
      *
-     * @param diseaseGroupIIPatientsNumber
+     * @param diseaseGroupIIPatientsNumber Patients number
      */
     public void setDiseaseGroupIIPatientsNumber(int diseaseGroupIIPatientsNumber) {
         this.diseaseGroupIIPatientsNumber = diseaseGroupIIPatientsNumber;
     }
 
     /**
-     * Get the disease main group II (not used in the current csf-pr-2.0)
+     * Get the disease main group II (not used in the current CSF-PR 2.0)
      *
-     * @return diseaseMainGroupII
+     * @return diseaseMainGroupII Disease main group II
      */
     public String getDiseaseMainGroupII() {
         return diseaseMainGroupII;
     }
 
     /**
-     * Set the disease main group II (not used in the current csf-pr-2.0)
+     * Set the disease main group II (not used in the current CSF-PR 2.0)
      *
-     * @param diseaseMainGroupII
+     * @param diseaseMainGroupII Disease main group II
      */
     public void setDiseaseMainGroupII(String diseaseMainGroupII) {
         this.diseaseMainGroupII = diseaseMainGroupII;
@@ -698,7 +700,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get the disease sub group II (publication name)
      *
-     * @param originalDiseaseSubGroupII
+     * @return originalDiseaseSubGroupII Disease sub group II (publication name)
      */
     public String getOriginalDiseaseSubGroupII() {
         return originalDiseaseSubGroupII;
@@ -707,7 +709,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set the disease sub group II (publication name)
      *
-     * @param originalDiseaseSubGroupII
+     * @param originalDiseaseSubGroupII Disease sub group II (publication name)
      */
     public void setOriginalDiseaseSubGroupII(String originalDiseaseSubGroupII) {
         this.originalDiseaseSubGroupII = originalDiseaseSubGroupII;
@@ -716,7 +718,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get disease main group II comments
      *
-     * @return diseaseMainGroupIIComment
+     * @return diseaseMainGroupIIComment Disease main group II comments
      */
     public String getDiseaseMainGroupIIComment() {
         return diseaseMainGroupIIComment;
@@ -725,7 +727,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set Disease main group II comments
      *
-     * @param diseaseMainGroupIIComment
+     * @param diseaseMainGroupIIComment Disease main group II comments
      */
     public void setDiseaseMainGroupIIComment(String diseaseMainGroupIIComment) {
         this.diseaseMainGroupIIComment = diseaseMainGroupIIComment;
@@ -734,7 +736,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get sample matching
      *
-     * @return sampleMatching
+     * @return sampleMatching Sample matching
      */
     public String getSampleMatching() {
         return sampleMatching;
@@ -743,14 +745,14 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set sample matching
      *
-     * @param sampleMatching
+     * @param sampleMatching Sample matching
      */
     public void setSampleMatching(String sampleMatching) {
         this.sampleMatching = sampleMatching;
     }
 
     /**
-     * Get normalization strategy
+     * Get normalization strategy Normalization strategy
      *
      * @return normalizationStrategy
      */
@@ -761,7 +763,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set normalization strategy
      *
-     * @param normalizationStrategy
+     * @param normalizationStrategy Normalization strategy
      */
     public void setNormalizationStrategy(String normalizationStrategy) {
         this.normalizationStrategy = normalizationStrategy;
@@ -770,7 +772,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get quantification pValue(actual value if available)
      *
-     * @return p_value
+     * @return p_value pValue(actual value if available)
      */
     public double getP_value() {
         return p_value;
@@ -779,7 +781,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set quantification pValue(actual value if available)
      *
-     * @param p_value
+     * @param p_value pValue(actual value if available)
      */
     public void setP_value(double p_value) {
         this.p_value = p_value;
@@ -788,7 +790,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get receiver operating characteristic value
      *
-     * @return roc_auc
+     * @return roc_auc Receiver operating characteristic value
      */
     public double getRoc_auc() {
         return roc_auc;
@@ -797,7 +799,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set receiver operating characteristic value
      *
-     * @param roc_auc
+     * @param roc_auc Receiver operating characteristic value
      */
     public void setRoc_auc(double roc_auc) {
         this.roc_auc = roc_auc;
@@ -806,7 +808,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get technology
      *
-     * @return technology
+     * @return technology The used technology
      */
     public String getTechnology() {
         return technology;
@@ -815,7 +817,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set technology
      *
-     * @param technology
+     * @param technology The used technology
      */
     public void setTechnology(String technology) {
         this.technology = technology;
@@ -824,7 +826,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get analytical approach
      *
-     * @return analyticalApproach
+     * @return analyticalApproach Analytical approach
      */
     public String getAnalyticalApproach() {
         return analyticalApproach;
@@ -833,7 +835,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set analytical approach
      *
-     * @param analyticalApproach
+     * @param analyticalApproach Analytical approach
      */
     public void setAnalyticalApproach(String analyticalApproach) {
         this.analyticalApproach = analyticalApproach;
@@ -842,7 +844,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get enzyme used
      *
-     * @return enzyme
+     * @return enzyme Used enzyme
      */
     public String getEnzyme() {
         return enzyme;
@@ -851,7 +853,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set enzyme used
      *
-     * @param enzyme
+     * @param enzyme Used enzyme
      */
     public void setEnzyme(String enzyme) {
         this.enzyme = enzyme;
@@ -860,7 +862,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get Shotgun / Targeted
      *
-     * @return shotgunTargeted
+     * @return shotgunTargeted Shotgun or Targeted
      */
     public String getShotgunOrTargetedQquant() {
         return shotgunOrTargetedQquant;
@@ -869,7 +871,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set Shotgun / Targeted
      *
-     * @param shotgunTargeted
+     * @param shotgunOrTargetedQquant Shotgun or Targeted
      */
     public void setShotgunOrTargetedQquant(String shotgunOrTargetedQquant) {
         this.shotgunOrTargetedQquant = shotgunOrTargetedQquant;
@@ -878,7 +880,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get quantification basis
      *
-     * @return quantificationBasis
+     * @return quantificationBasis Quantification basis
      */
     public String getQuantificationBasis() {
         return quantificationBasis;
@@ -887,7 +889,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set quantification basis
      *
-     * @param quantificationBasis
+     * @param quantificationBasis Quantification basis
      */
     public void setQuantificationBasis(String quantificationBasis) {
         this.quantificationBasis = quantificationBasis;
@@ -897,7 +899,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
      * Get quantification basis comments (protein level) the quant bases
      * comments are different in protein and peptides level
      *
-     * @return quantBasisComment
+     * @return quantBasisComment Quantification basis comments
      */
     public String getQuantBasisComment() {
         return quantBasisComment;
@@ -907,7 +909,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
      * Set quantification basis comments (protein level) the quant bases
      * comments are different in protein and peptides level
      *
-     * @param quantBasisComment
+     * @param quantBasisComment Quantification basis comments
      */
     public void setQuantBasisComment(String quantBasisComment) {
         this.quantBasisComment = quantBasisComment;
@@ -916,7 +918,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get protein additional comments
      *
-     * @return additionalComments
+     * @return additionalComments Protein additional comments
      */
     public String getAdditionalComments() {
         return additionalComments;
@@ -925,7 +927,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set protein additional comments
      *
-     * @param additionalComments
+     * @param additionalComments Protein additional comments
      */
     public void setAdditionalComments(String additionalComments) {
         this.additionalComments = additionalComments;
@@ -934,7 +936,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get quantification pValue significance threshold
      *
-     * @return pvalueSignificanceThreshold
+     * @return pvalueSignificanceThreshold pValue significance threshold
      */
     public String getPvalueSignificanceThreshold() {
         return pvalueSignificanceThreshold;
@@ -943,7 +945,7 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Set quantification pValue significance threshold
      *
-     * @param pvalueSignificanceThreshold
+     * @param pvalueSignificanceThreshold pValue significance threshold
      */
     public void setPvalueSignificanceThreshold(String pvalueSignificanceThreshold) {
         this.pvalueSignificanceThreshold = pvalueSignificanceThreshold;
@@ -961,19 +963,19 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Get link to protein in UniProt
      *
-     * @return url
+     * @return URL Link to protein in UniProt
      */
-    public String getUrl() {
-        return url;
+    public String getURL() {
+        return URL;
     }
 
     /**
      * Set link to protein in UniProt
      *
-     * @param url
+     * @param URL Link to protein in UniProt
      */
-    public void setUrl(String url) {
-        this.url = url;
+    public void setURL(String URL) {
+        this.URL = URL;
     }
 
 }

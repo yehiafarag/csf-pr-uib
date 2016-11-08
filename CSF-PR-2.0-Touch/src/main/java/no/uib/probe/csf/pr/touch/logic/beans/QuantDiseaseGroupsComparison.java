@@ -6,19 +6,71 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
+ * This class represents disease comparison with all its information
  *
  * @author Yehia Farag
- *
- * this class represents disease comparison with all its information
  */
 public class QuantDiseaseGroupsComparison implements Serializable, Comparable<QuantDiseaseGroupsComparison> {
 
+    /**
+     * Current comparison title.
+     */
     private String comparisonHeader;
+    /**
+     * Publication comparison title.
+     */
     private String oreginalComparisonHeader;
+    /**
+     * Map of datasets belong to the comparison.
+     */
     private Map<Integer, QuantDataset> datasetMap;
+    /**
+     * HTML hashed color code for the disease.
+     */
     private String diseaseCategoryColor;
+    /**
+     * User can flip the comparison.
+     */
     private boolean switchable = true;
+    /**
+     * The CSS style for the disease category.
+     */
+    private String diseaseCategoryStyle;
+    /**
+     * Sort selection on the heat-map based on rows input data (if user select
+     * disease group A from drop down list) group A will be Numerator by
+     * default.
+     */
+    private boolean sortRows;
+    /**
+     * Sort selection on the heat-map based on column input data (if user select
+     * disease group B from drop down list) group B will be Denominator by
+     * default.
+     */
+    private boolean sortColumns;
+    /**
+     * Current comparison full (long) name for sub-disease categories.
+     */
+    private String comparisonFullName;
+    /**
+     * Disease category name (MS,AD,PD...etc).
+     */
+    private String diseaseCategory;
+    /**
+     * Map of quant comparison proteins belong to the comparison.
+     */
+    private Map<String, QuantComparisonProtein> quantComparisonProteinMap;
+    /**
+     * Map of quant comparison proteins belong to the comparison and divided
+     * based on their trend.
+     */
+    private Map<Integer, Set<QuantComparisonProtein>> proteinsByTrendMap;
 
+    /**
+     * Cloning the comparison by creating identical comparison object.
+     *
+     * @return QuantDiseaseGroupsComparison New clonaid comparison.
+     */
     public QuantDiseaseGroupsComparison cloning() {
         QuantDiseaseGroupsComparison updatedQuantComp = new QuantDiseaseGroupsComparison();
         updatedQuantComp.setComparisonFullName(getComparisonFullName());
@@ -31,123 +83,196 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
         updatedQuantComp.setOreginalComparisonHeader(oreginalComparisonHeader);
         updatedQuantComp.setQuantComparisonProteinMap(quantComparisonProteinMap);
         updatedQuantComp.setSwitchable(switchable);
-        updatedQuantComp.setUseCustomColumnHeaderToSort(useCustomColumnHeaderToSort);
-        updatedQuantComp.setUseCustomRowHeaderToSort(useCustomRowHeaderToSort);
+        updatedQuantComp.setSortColumns(sortColumns);
+        updatedQuantComp.setSortRows(sortRows);
         return updatedQuantComp;
 
     }
 
+    /**
+     * Get the CSS style for the disease category.
+     *
+     * @return diseaseCategoryStyle The CSS style for the disease category.
+     */
     public String getDiseaseCategoryStyle() {
         return diseaseCategoryStyle;
     }
 
+    /**
+     * Set the CSS style for the disease category.
+     *
+     * @param diseaseCategoryStyle The CSS style for the disease category.
+     */
     public void setDiseaseCategoryStyle(String diseaseCategoryStyle) {
         this.diseaseCategoryStyle = diseaseCategoryStyle;
     }
-    private String diseaseCategoryStyle;
-    private boolean useCustomRowHeaderToSort;
 
+    /**
+     * Get map of datasets belong to the comparison.
+     *
+     * @return datasetMap Map of datasets belong to the comparison.
+     */
     public Map<Integer, QuantDataset> getDatasetMap() {
         return datasetMap;
     }
 
+    /**
+     * Set map of datasets belong to the comparison.
+     *
+     * @param datasetMap Map of datasets belong to the comparison.
+     */
     public void setDatasetMap(Map<Integer, QuantDataset> datasetMap) {
         this.datasetMap = datasetMap;
     }
-    private boolean useCustomColumnHeaderToSort;
-    private String comparisonFullName;
-    private String diseaseCategory;
 
-    private Map<String, QuantComparisonProtein> quantComparisonProteinMap;
-    private Map<Integer, Set<QuantComparisonProtein>> proteinsByTrendMap;
-
+    /**
+     * Get map of quant comparison proteins belong to the comparison and divided
+     * based on their trend.
+     *
+     * @return proteinsByTrendMap Map of quant comparison proteins belong to the
+     * comparison and divided based on their trend.
+     */
     public Map<Integer, Set<QuantComparisonProtein>> getProteinsByTrendMap() {
         return proteinsByTrendMap;
     }
 
+    /**
+     * Set map of quant comparison proteins belong to the comparison and divided
+     * based on their trend.
+     *
+     * @param proteinsByTrendMap Map of quant comparison proteins belong to the
+     * comparison and divided based on their trend.
+     */
     public void setProteinsByTrendMap(Map<Integer, Set<QuantComparisonProtein>> proteinsByTrendMap) {
         this.proteinsByTrendMap = proteinsByTrendMap;
     }
 
+    /**
+     * Get disease category (MS,AD,PD...etc)
+     *
+     * @return diseaseCategory Disease category name(MS,AD,PD...etc)
+     */
     public String getDiseaseCategory() {
         return diseaseCategory;
     }
 
+    /**
+     * Set disease category (MS,AD,PD...etc)
+     *
+     * @param diseaseCategory Disease category name(MS,AD,PD...etc)
+     */
     public void setDiseaseCategory(String diseaseCategory) {
         this.diseaseCategory = diseaseCategory;
     }
 
+    /**
+     * Set Current comparison full (long) name for sub-disease categories.
+     *
+     * @param comparisonFullName Current comparison full (long) name for
+     * sub-disease categories.
+     */
     public void setComparisonFullName(String comparisonFullName) {
         this.comparisonFullName = comparisonFullName;
     }
 
+    /**
+     * Default constructor.
+     */
     public QuantDiseaseGroupsComparison() {
     }
 
+    /**
+     * Get Current comparison full (long) name for sub-disease categories.
+     *
+     * @return comparisonFullName Current comparison full (long) name for
+     * sub-disease categories.
+     */
     public String getComparisonFullName() {
         return comparisonFullName;
     }
-//
-//    public void switchComparison() {
-//        comparisonHeader = comparisonHeader.split(" / ")[1] + " / " + comparisonHeader.split(" / ")[0];
-//        comparisonFullName = comparisonFullName.split(" / ")[1] + " / " + comparisonFullName.split(" / ")[0];
-//
-//    }
 
+    /**
+     * Get HTML hashed color code for the disease.
+     *
+     * @return diseaseCategoryColor HTML hashed color code for the disease.
+     */
     public String getDiseaseCategoryColor() {
         return diseaseCategoryColor;
     }
 
+    /**
+     * Set HTML hashed color code for the disease.
+     *
+     * @param diseaseCategoryColor HTML hashed color code for the disease.
+     */
     public void setDiseaseCategoryColor(String diseaseCategoryColor) {
         this.diseaseCategoryColor = diseaseCategoryColor;
     }
 
     /**
+     * Get Current comparison title.
      *
-     * @return
+     * @return comparisonHeader Current comparison title.
      */
     public String getComparisonHeader() {
         return comparisonHeader;
     }
 
+    /**
+     * Get Publication comparison title.
+     *
+     * @return oreginalComparisonHeader Publication comparison title.
+     */
     public String getOreginalComparisonHeader() {
 
         return oreginalComparisonHeader;
     }
 
+    /**
+     * Reset comparison title to publication title.
+     */
     public void resetComparisonHeader() {
         if (!comparisonHeader.equalsIgnoreCase(oreginalComparisonHeader)) {
             comparisonHeader = oreginalComparisonHeader;
-//            quantComparisonProteinMap = null;
         }
 
     }
 
     /**
+     * Set Current comparison title.
      *
-     * @param comparisonHeader
+     * @param comparisonHeader Current comparison title.
      */
     public void setComparisonHeader(String comparisonHeader) {
         this.comparisonHeader = comparisonHeader;
 
     }
 
+    /**
+     * Set Publication comparison title.
+     *
+     * @param oreginalComparisonHeader Publication comparison title.
+     */
     public void setOreginalComparisonHeader(String oreginalComparisonHeader) {
         this.oreginalComparisonHeader = oreginalComparisonHeader;
 
     }
 
     /**
+     * Get map of quant comparison proteins belong to the comparison.
      *
-     * @return
+     * @return quantComparisonProteinMap Map of quant comparison proteins belong
+     * to the comparison.
      */
     public Map<String, QuantComparisonProtein> getQuantComparisonProteinMap() {
         return quantComparisonProteinMap;
     }
 
     /**
+     * Set map of quant comparison proteins belong to the comparison.
      *
-     * @param quantComparisonProteinMap
+     * @param quantComparisonProteinMap Map of quant comparison proteins belong
+     * to the comparison.
      */
     public void setQuantComparisonProteinMap(Map<String, QuantComparisonProtein> quantComparisonProteinMap) {
         this.quantComparisonProteinMap = quantComparisonProteinMap;
@@ -158,41 +283,71 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
         return this.comparisonHeader.compareTo(t.comparisonHeader);
     }
 
-    public boolean isUseCustomRowHeaderToSort() {
-        return useCustomRowHeaderToSort;
+    /**
+     * Check if sort selection on the heat-map based on rows input data (if user
+     * select disease group A from drop down list) group A will be Numerator by
+     * default.
+     *
+     * @return sortRows
+     */
+    public boolean isSortRows() {
+        return sortRows;
     }
 
-    public void setUseCustomRowHeaderToSort(boolean useCustomRowHeaderToSort) {
-        this.useCustomRowHeaderToSort = useCustomRowHeaderToSort;
+    /**
+     * Set sort selection on the heat-map based on rows input data (if user
+     * select disease group A from drop down list) group A will be Numerator by
+     * default.
+     *
+     * @param sortRows Sort selection on row based
+     */
+    public void setSortRows(boolean sortRows) {
+        this.sortRows = sortRows;
     }
 
-    public boolean isUseCustomColumnHeaderToSort() {
-        return useCustomColumnHeaderToSort;
+    /**
+     * Check if sort selection on the heat-map based on column input data (if
+     * user select disease group B from drop down list) group B will be
+     * Denominator by default.
+     *
+     * @return sortColumns Sort selection on column based
+     */
+    public boolean isSortColumns() {
+        return sortColumns;
     }
 
-    public void setUseCustomColumnHeaderToSort(boolean useCustomColumnHeaderToSort) {
-        this.useCustomColumnHeaderToSort = useCustomColumnHeaderToSort;
+    /**
+     * Set sort selection on the heat-map based on column input data (if user
+     * select disease group B from drop down list) group B will be Denominator
+     * by default.
+     *
+     * @param sortColumns Sort selection on column based
+     */
+    public void setSortColumns(boolean sortColumns) {
+        this.sortColumns = sortColumns;
     }
 
-//    private void swichProteinsTrend() {
-//
-//        for(QuantComparisonProtein prot :quantComparisonProteinMap.values()){
-//            prot.
-//        
-//        
-//        }
-//    }
+    /**
+     * Check if user can flip the comparison.
+     *
+     * @return switchable User can flip the comparison.
+     */
     public boolean isSwitchable() {
         return switchable;
     }
 
+    /**
+     * Set user can flip the comparison.
+     *
+     * @param switchable User can flip the comparison.
+     */
     public void setSwitchable(boolean switchable) {
         this.switchable = switchable;
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode(); //To change body of generated methods, choose Tools | Templates.
+        return super.hashCode();
     }
 
     @Override
@@ -204,10 +359,7 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
             return false;
         }
         final QuantDiseaseGroupsComparison other = (QuantDiseaseGroupsComparison) obj;
-        if (!Objects.equals(this.comparisonHeader, other.comparisonHeader)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.comparisonHeader, other.comparisonHeader);
     }
 
 }

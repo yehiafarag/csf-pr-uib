@@ -20,40 +20,41 @@ public class QuantDataset implements Serializable, Comparable {
      * Location y used for plotting the dataset.
      */
     private int y;
-    /***
-     *Disease HTML Color code.
+    /**
+     * *
+     * Disease HTML Color code.
      */
     private String diseaseHashedColor;
     /**
-     *Disease Style name at CSS file.
+     * Disease Style name at CSS file.
      */
     private String diseaseStyleName;
     /**
-     *The Disease sub group I (currently used in the system)
+     * The Disease sub group I (currently used in the system)
      */
     private String activeDiseaseSubGroupI;
     /**
-     *The Disease sub group II (currently used in the system)
+     * The Disease sub group II (currently used in the system)
      */
     private String activeDiseaseSubGroupII;
 
     /**
-     *The datset index in the database
+     * The dataset index in the database.
      */
     private int quantDatasetIndex;
 
     /**
-     *The array of values for the included attributes
+     * The array of values for the included attributes.
      */
     private final Object[] values = new Object[28];
 
     /**
-     * Map of values to attribute name
+     * Map of values to attribute name.
      */
     private final Map<String, Object> valuesMap = new HashMap<>();
 
     /**
-     * Number of included proteins in the dataset
+     * Number of included proteins in the dataset.
      */
     private int totalProtNum;
 
@@ -70,19 +71,21 @@ public class QuantDataset implements Serializable, Comparable {
      */
     private int uniqePepNum;
 
-    /***
+    /**
+     * *
      * Get Disease Style name at CSS file
      *
-     * @return diseaseStyleName
+     * @return diseaseStyleName Disease Style name at CSS file.
      */
     public String getDiseaseStyleName() {
         return diseaseStyleName;
     }
 
-    /***
+    /**
+     * *
      * Get the Disease sub group I (currently used in the system)
      *
-     * @return activeDiseaseSubGroupI
+     * @return activeDiseaseSubGroupI Disease sub group I
      */
     public String getActiveDiseaseSubGroupI() {
         if (activeDiseaseSubGroupI == null) {
@@ -91,19 +94,21 @@ public class QuantDataset implements Serializable, Comparable {
         return activeDiseaseSubGroupI;
     }
 
-    /***
+    /**
+     * *
      * Set the Disease sub group I (currently used in the system)
      *
-     * @param activeDiseaseSubGroupI
+     * @param activeDiseaseSubGroupI Disease sub group I
      */
     public void setActiveDiseaseSubGroupI(String activeDiseaseSubGroupI) {
         this.activeDiseaseSubGroupI = activeDiseaseSubGroupI;
     }
 
-    /***
+    /**
+     * *
      * Get the Disease sub group II (currently used in the system)
      *
-     * @return activeDiseaseSubGroupII
+     * @return activeDiseaseSubGroupII Disease sub group II
      */
     public String getActiveDiseaseSubGroupII() {
         if (activeDiseaseSubGroupII == null) {
@@ -112,10 +117,11 @@ public class QuantDataset implements Serializable, Comparable {
         return activeDiseaseSubGroupII;
     }
 
-    /***
-     * Set the disease main group II (not used in the current csf-pr-2.0)
+    /**
+     * *
+     * Set the disease main group II (not used in the current CSF-PR 2.0)
      *
-     * @param activeDiseaseSubGroupII
+     * @param activeDiseaseSubGroupII Disease sub group II
      */
     public void setActiveDiseaseSubGroupII(String activeDiseaseSubGroupII) {
         this.activeDiseaseSubGroupII = activeDiseaseSubGroupII;
@@ -124,7 +130,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set Disease Style name at CSS file
      *
-     * @param diseaseStyleName
+     * @param diseaseStyleName Disease Style name at CSS file.
      */
     public void setDiseaseStyleName(String diseaseStyleName) {
         this.diseaseStyleName = diseaseStyleName;
@@ -133,7 +139,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get disease category HTML color code
      *
-     * @return diseaseHashedColor
+     * @return diseaseHashedColor Disease category HTML color code.
      */
     public String getDiseaseHashedColor() {
         return diseaseHashedColor;
@@ -142,7 +148,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set disease category HTML color code
      *
-     * @param diseaseHashedColor
+     * @param diseaseHashedColor Disease category HTML color code.
      */
     public void setDiseaseHashedColor(String diseaseHashedColor) {
         this.diseaseHashedColor = diseaseHashedColor;
@@ -151,7 +157,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get disease category (MS,AD,PD...etc)
      *
-     * @return diseaseCategory
+     * @return diseaseCategory Disease category name(MS,AD,PD...etc)
      */
     public String getDiseaseCategory() {
         return values[27].toString();
@@ -160,7 +166,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set disease category (MS,AD,PD...etc)
      *
-     * @param diseaseCategory
+     * @param diseaseCategory Disease category name(MS,AD,PD...etc)
      */
     public void setDiseaseCategory(String diseaseCategory) {
         values[27] = diseaseCategory;
@@ -170,7 +176,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get the publication author name
      *
-     * @return author
+     * @return author Publication author name
      */
     public String getAuthor() {
         return values[0].toString();
@@ -179,7 +185,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set the publication author name
      *
-     * @param author
+     * @param author Publication author name
      */
     public void setAuthor(String author) {
         values[0] = author;
@@ -189,7 +195,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get the publication publishing year
      *
-     * @return year
+     * @return year Publication year
      */
     public int getYear() {
         return (Integer) values[1];
@@ -198,7 +204,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set the publication publishing year
      *
-     * @param year
+     * @param year Publication year
      */
     public void setYear(int year) {
         values[1] = year;
@@ -208,7 +214,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get dataset identified proteins number
      *
-     * @return identifiedProteinsNumber
+     * @return identifiedProteinsNumber Dataset identified proteins number
      */
     public int getIdentifiedProteinsNumber() {
         return Math.max((Integer) values[2], 0);
@@ -217,7 +223,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set dataset identified proteins number
      *
-     * @param identifiedProteinsNumber
+     * @param identifiedProteinsNumber Dataset identified proteins number
      */
     public void setIdentifiedProteinsNumber(int identifiedProteinsNumber) {
         values[2] = identifiedProteinsNumber;
@@ -227,7 +233,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set dataset quantified proteins number
      *
-     * @return quantifiedProteinsNumber
+     * @return quantifiedProteinsNumber Dataset quantified proteins number
      */
     public int getQuantifiedProteinsNumber() {
         return Math.max((Integer) values[3], 0);
@@ -236,7 +242,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get dataset quantified proteins number
      *
-     * @param quantifiedProteinsNumber
+     * @param quantifiedProteinsNumber Dataset quantified proteins number
      */
     public void setQuantifiedProteinsNumber(int quantifiedProteinsNumber) {
         values[3] = quantifiedProteinsNumber;
@@ -246,7 +252,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get analytical method
      *
-     * @return analyticalMethod
+     * @return analyticalMethod Analytical method
      */
     public String getAnalyticalMethod() {
         return values[4].toString();
@@ -255,7 +261,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set analytical method
      *
-     * @param analyticalMethod
+     * @param analyticalMethod Analytical method
      */
     public void setAnalyticalMethod(String analyticalMethod) {
         values[4] = analyticalMethod;
@@ -265,7 +271,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get raw data available(available/not available)
      *
-     * @return rawDataAvailable
+     * @return rawDataAvailable Raw data is available
      */
     public String getRawDataUrl() {
         return values[5].toString();
@@ -274,7 +280,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set raw data available
      *
-     * @param rawDataAvailable
+     * @param rawDataAvailable Raw data is available
      */
     public void setRawDataUrl(String rawDataAvailable) {
         values[5] = rawDataAvailable;
@@ -284,7 +290,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get study type
      *
-     * @return typeOfStudy
+     * @return typeOfStudy Study type
      */
     public String getTypeOfStudy() {
         return values[7].toString();
@@ -293,7 +299,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set study type
      *
-     * @param typeOfStudy
+     * @param typeOfStudy Study type
      */
     public void setTypeOfStudy(String typeOfStudy) {
         values[7] = typeOfStudy;
@@ -303,7 +309,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get sample type
      *
-     * @return sampleType
+     * @return sampleType Sample type
      */
     public String getSampleType() {
         return values[8].toString();
@@ -312,7 +318,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set sample type
      *
-     * @param sampleType
+     * @param sampleType Sample type
      */
     public void setSampleType(String sampleType) {
         values[8] = sampleType;
@@ -322,7 +328,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get sample matching
      *
-     * @return sampleMatching
+     * @return sampleMatching Sample matching
      */
     public String getSampleMatching() {
         return values[9].toString();
@@ -331,7 +337,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set sample matching
      *
-     * @param sampleMatching
+     * @param sampleMatching Sample matching
      */
     public void setSampleMatching(String sampleMatching) {
         values[9] = sampleMatching;
@@ -341,7 +347,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get Shotgun / Targeted
      *
-     * @return shotgunTargeted
+     * @return shotgunTargeted Shotgun or Targeted
      */
     public String getShotgunTargeted() {
         return values[10].toString();
@@ -350,7 +356,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set Shotgun / Targeted
      *
-     * @param shotgunTargeted
+     * @param shotgunTargeted Shotgun or Targeted
      */
     public void setShotgunTargeted(String shotgunTargeted) {
         values[10] = shotgunTargeted;
@@ -367,9 +373,9 @@ public class QuantDataset implements Serializable, Comparable {
     }
 
     /**
-     * Set technology
+     * Set technology used
      *
-     * @param technology
+     * @param technology Technology used
      */
     public void setTechnology(String technology) {
         values[11] = technology;
@@ -379,7 +385,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get analytical approach
      *
-     * @return analyticalApproach
+     * @return analyticalApproach Analytical approach
      */
     public String getAnalyticalApproach() {
         return values[12].toString();
@@ -388,7 +394,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set analytical approach
      *
-     * @param analyticalApproach
+     * @param analyticalApproach Analytical approach
      */
     public void setAnalyticalApproach(String analyticalApproach) {
         values[12] = analyticalApproach;
@@ -396,9 +402,9 @@ public class QuantDataset implements Serializable, Comparable {
     }
 
     /**
-     * Get enzyme used
+     * Get the enzyme used
      *
-     * @return enzyme
+     * @return enzyme The used enzyme
      */
     public String getEnzyme() {
         return values[13].toString();
@@ -407,7 +413,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set enzyme used
      *
-     * @param enzyme
+     * @param enzyme The used enzyme
      */
     public void setEnzyme(String enzyme) {
         values[13] = enzyme;
@@ -417,7 +423,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get quantification basis
      *
-     * @return quantificationBasis
+     * @return quantificationBasis Quantification basis
      */
     public String getQuantificationBasis() {
         return values[14].toString();
@@ -426,7 +432,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set quantification basis
      *
-     * @param quantificationBasis
+     * @param quantificationBasis Quantification basis
      */
     public void setQuantificationBasis(String quantificationBasis) {
         values[14] = quantificationBasis;
@@ -437,7 +443,7 @@ public class QuantDataset implements Serializable, Comparable {
      * Get quantification basis comments (protein level) the quant bases
      * comments are different in protein and peptides level
      *
-     * @return quantBasisComment
+     * @return quantBasisComment Quantification basis comments
      */
     public String getQuantBasisComment() {
         return values[15].toString();
@@ -447,7 +453,7 @@ public class QuantDataset implements Serializable, Comparable {
      * Set quantification basis comments (protein level) the quant bases
      * comments are different in protein and peptides level
      *
-     * @param quantBasisComment
+     * @param quantBasisComment Quantification basis comments
      */
     public void setQuantBasisComment(String quantBasisComment) {
         values[15] = quantBasisComment;
@@ -457,7 +463,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get normalization strategy
      *
-     * @return normalizationStrategy
+     * @return normalizationStrategy Normalization strategy
      */
     public String getNormalizationStrategy() {
         return values[16].toString();
@@ -466,7 +472,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set normalization strategy
      *
-     * @param normalizationStrategy
+     * @param normalizationStrategy Normalization strategy
      */
     public void setNormalizationStrategy(String normalizationStrategy) {
 
@@ -477,7 +483,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get publication PubMed id
      *
-     * @return QuantDataset
+     * @return pubMedId Publication PubMed id
      */
     public String getPubMedId() {
         return values[17].toString();
@@ -486,7 +492,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set publication PubMed id
      *
-     * @param pubMedId
+     * @param pubMedId Publication PubMed id
      */
     public void setPubMedId(String pubMedId) {
         values[17] = pubMedId;
@@ -494,18 +500,18 @@ public class QuantDataset implements Serializable, Comparable {
     }
 
     /**
-     * Get the disease main group I (not used in the current csf-pr-2.0)
+     * Get the disease main group I (not used in the current CSF-PR 2.0)
      *
-     * @return diseaseMainGroupI
+     * @return diseaseMainGroupI The disease main group I
      */
     public String getDiseaseMainGroupI() {
         return (String) values[18];
     }
 
     /**
-     * Set the disease main group I (not used in the current csf-pr-2.0)
+     * Set the disease main group I (not used in the current CSF-PR 2.0)
      *
-     * @param patientsGroup1
+     * @param patientsGroup1 The disease main group I
      */
     public void setDiseaseMainGroupI(String patientsGroup1) {
         values[18] = patientsGroup1;
@@ -515,7 +521,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get the disease main group I patients number
      *
-     * @return patientsGroup1Number
+     * @return patientsGroup1Number Patients number
      */
     public int getDiseaseMainGroup1Number() {
         return (Integer) values[19];
@@ -524,7 +530,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set the disease main group I patients number
      *
-     * @param patientsGroup1Number
+     * @param patientsGroup1Number Patients number
      */
     public void setDiseaseMainGroup1Number(int patientsGroup1Number) {
         values[19] = patientsGroup1Number;
@@ -534,7 +540,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get the disease group I comments
      *
-     * @return patientsGroup1Comm
+     * @return patientsGroup1Comm Disease group I comments
      */
     public String getDiseaseMainGroup1Comm() {
         return (String) values[20];
@@ -543,7 +549,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set the disease group I comments
      *
-     * @param patientsGroup1Comm
+     * @param patientsGroup1Comm Disease group I comments
      */
     public void setDiseaseMainGroup1Comm(String patientsGroup1Comm) {
         values[20] = patientsGroup1Comm;
@@ -553,7 +559,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get the disease sub group I (publication name)
      *
-     * @return patientsSubGroup1
+     * @return patientsSubGroup1 Disease sub group I
      */
     public String getDiseaseSubGroup1() {
         return (String) values[21];
@@ -562,7 +568,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set the disease sub group I (publication name)
      *
-     * @param patientsSubGroup1
+     * @param patientsSubGroup1 Disease sub group I
      */
     public void setDiseaseSubGroup1(String patientsSubGroup1) {
         values[21] = patientsSubGroup1;
@@ -570,18 +576,18 @@ public class QuantDataset implements Serializable, Comparable {
     }
 
     /**
-     * Get the disease main group II (not used in the current csf-pr-2.0)
+     * Get the disease main group II (not used in the current CSF-PR 2.0)
      *
-     * @return diseaseMainGroupII
+     * @return diseaseMainGroupII Disease main group II
      */
     public String getDiseaseMainGroup2() {
         return (String) values[22];
     }
 
     /**
-     * Set the disease main group II (not used in the current csf-pr-2.0)
+     * Set the disease main group II (not used in the current CSF-PR 2.0)
      *
-     * @param patientsGroup2
+     * @param patientsGroup2 Disease main group II
      */
     public void setDiseaseMainGroup2(String patientsGroup2) {
         values[22] = patientsGroup2;
@@ -591,7 +597,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get the disease main group II patients number
      *
-     * @return patientsGroup2Number
+     * @return patientsGroup2Number Patients number
      */
     public int getDiseaseMainGroup2Number() {
         return (Integer) values[23];
@@ -600,7 +606,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set the disease main group II patients number
      *
-     * @param patientsGroup2Number
+     * @param patientsGroup2Number Patients number
      */
     public void setDiseaseMainGroup2Number(int patientsGroup2Number) {
         values[23] = patientsGroup2Number;
@@ -619,7 +625,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set the disease group II comments
      *
-     * @param patientsGroup2Comm
+     * @param patientsGroup2Comm Disease group II comments
      */
     public void setDiseaseMainGroup2Comm(String patientsGroup2Comm) {
         values[24] = patientsGroup2Comm;
@@ -629,7 +635,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get the disease sub group II (publication name)
      *
-     * @return diseaseSubGroupII
+     * @return diseaseSubGroupII Disease sub group II
      */
     public String getDiseaseSubGroup2() {
         return (String) values[25];
@@ -638,7 +644,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set the disease sub group II (publication name)
      *
-     * @param patientsSubGroup2
+     * @param patientsSubGroup2 Disease sub group II
      */
     public void setDiseaseSubGroup2(String patientsSubGroup2) {
         values[25] = patientsSubGroup2;
@@ -648,7 +654,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set additional comments for the disease group comparison
      *
-     * @param additionalComments
+     * @param additionalComments Additional comments
      */
     public void setAdditionalcomments(String additionalComments) {
         values[26] = additionalComments;
@@ -658,7 +664,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get additional comments for the disease group comparison
      *
-     * @return additionalComments
+     * @return additionalComments Additional comments
      */
     public String getAdditionalcomments() {
         return (String) values[26];
@@ -674,9 +680,9 @@ public class QuantDataset implements Serializable, Comparable {
     }
 
     /**
-     * Get he dataset index in the database
+     * Get the dataset index in the database
      *
-     * @return quantDatasetIndex
+     * @return quantDatasetIndex Dataset index 
      */
     public int getQuantDatasetIndex() {
         return quantDatasetIndex;
@@ -685,7 +691,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set the dataset index in the database
      *
-     * @param quantDatasetIndex
+     * @param quantDatasetIndex Dataset index 
      */
     public void setQuantDatasetIndex(int quantDatasetIndex) {
         this.quantDatasetIndex = quantDatasetIndex;
@@ -694,7 +700,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get location x used for plotting the dataset
      *
-     * @return x
+     * @return x Location x 
      */
     public int getX() {
         return x;
@@ -703,7 +709,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set location x used for plotting the dataset
      *
-     * @param x
+     * @param x Location x 
      */
     public void setX(int x) {
         this.x = x;
@@ -712,7 +718,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get location y used for plotting the dataset
      *
-     * @return y
+     * @return y Location y 
      */
     public int getY() {
         return y;
@@ -721,7 +727,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set location y used for plotting the dataset
      *
-     * @param y
+     * @param y Location y 
      */
     public void setY(int y) {
         this.y = y;
@@ -739,7 +745,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set number of included proteins in the dataset
      *
-     * @param totalProtNum
+     * @param totalProtNum Number of included proteins 
      */
     public void setTotalProtNum(int totalProtNum) {
         this.totalProtNum = totalProtNum;
@@ -748,7 +754,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set number of proteins found only in the dataset
      *
-     * @return uniqueProtNum
+     * @return uniqueProtNum Number of included proteins 
      */
     public int getUniqueProtNum() {
         return uniqueProtNum;
@@ -757,7 +763,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get number of proteins found only in the dataset
      *
-     * @param uniqueProtNum
+     * @param uniqueProtNum  Number of proteins found only in the dataset
      */
     public void setUniqueProtNum(int uniqueProtNum) {
         this.uniqueProtNum = uniqueProtNum;
@@ -766,7 +772,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set number of included peptides in the dataset
      *
-     * @return totalPepNum
+     * @return totalPepNum  Number of peptides in the dataset
      */
     public int getTotalPepNum() {
         return totalPepNum;
@@ -775,7 +781,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get number of included peptides in the dataset
      *
-     * @param totalPepNum
+     * @param totalPepNum Number of peptides in the dataset
      */
     public void setTotalPepNum(int totalPepNum) {
         this.totalPepNum = totalPepNum;
@@ -784,7 +790,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get number of peptides found only in the dataset
      *
-     * @return uniqePepNum
+     * @return uniqePepNum   Number of peptides found only in the dataset
      */
     public int getUniqePepNum() {
         return uniqePepNum;
@@ -793,7 +799,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set number of peptides found only in the dataset
      *
-     * @param uniqePepNum
+     * @param uniqePepNum  Number of peptides found only in the dataset
      */
     public void setUniqePepNum(int uniqePepNum) {
         this.uniqePepNum = uniqePepNum;

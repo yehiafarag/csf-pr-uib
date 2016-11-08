@@ -4,38 +4,36 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- *
- * @author Yehia Farag
- *
- * This class represents initial information object that have an overview of the
+ *This class represents initial information object that have an overview of the
  * resource data
+ * @author Yehia Farag
  */
 public class InitialInformationObject {
 
-    /*
-     *Map of quant datasets object map to its index in the database
+    /**
+     *Map of quant datasets object map to its index in the database.
      */
-    private Map<Integer, QuantDataset> quantDatasetsList;
-    /*
+    private Map<Integer, QuantDataset> quantDatasetsMap;
+    /**
      *Array of active dataset pie charts filters  in the system using their index
      *0:Year
      *1:Study Type
      *2:Sample Matching
      *3:Technology
      *4:Analytical Approach
-     *5:Shotgun/Targeted
+     *5:Shotgun/Targeted.
      */
     private boolean[] activeDatasetPieChartsFilters;
 
-    /*
-     *Disease category name (MS, AD, PD..etc)
+    /**
+     *Disease category name (MS, AD, PD..etc).
      */
     private Set<String> diseaseCategories;
 
     /**
-     * Get disease categories list (MS,AD,PD...etc)
+     * Get disease categories list (MS,AD,PD...etc).
      *
-     * @return diseaseCategories
+     * @return diseaseCategories Disease categories list (MS,AD,PD...etc)
      */
     public Set<String> getDiseaseCategories() {
         return diseaseCategories;
@@ -44,7 +42,7 @@ public class InitialInformationObject {
     /**
      * Set disease categories list (MS,AD,PD...etc)
      *
-     * @param diseaseCategories
+     * @param diseaseCategories  Disease categories list (MS,AD,PD...etc)
      */
     public void setDiseaseCategories(Set<String> diseaseCategories) {
         this.diseaseCategories = diseaseCategories;
@@ -53,19 +51,19 @@ public class InitialInformationObject {
     /**
      * Get map of quant datasets object map to its index in the database
      *
-     * @return quantDatasetsList
+     * @return quantDatasetsMap  Map of quant datasets object map to its index in the database.
      */
-    public Map<Integer, QuantDataset> getQuantDatasetsList() {
-        return quantDatasetsList;
+    public Map<Integer, QuantDataset> getQuantDatasetsMap() {
+        return quantDatasetsMap;
     }
 
     /**
      * Set map of quant datasets object map to its index in the database
      *
-     * @param quantDatasetsList
+     * @param quantDatasetsMap Map of quant datasets object map to its index in the database.
      */
-    public void setQuantDatasetsList(Map<Integer, QuantDataset> quantDatasetsList) {
-        this.quantDatasetsList = quantDatasetsList;
+    public void setQuantDatasetsMap(Map<Integer, QuantDataset> quantDatasetsMap) {
+        this.quantDatasetsMap = quantDatasetsMap;
     }
 
     /**
@@ -73,7 +71,7 @@ public class InitialInformationObject {
      * index 0:Year 1:Study Type 2:Sample Matching 3:Technology 4:Analytical
      * Approach 5:Shotgun/Targeted
      *
-     * @return
+     * @return activeDatasetPieChartsFilters Array of active dataset pie charts filters
      */
     public boolean[] getActiveDatasetPieChartsFilters() {
         return activeDatasetPieChartsFilters;
@@ -84,7 +82,7 @@ public class InitialInformationObject {
      * index 0:Year 1:Study Type 2:Sample Matching 3:Technology 4:Analytical
      * Approach 5:Shotgun/Targeted
      *
-     * @param activeDatasetPieChartsFilters
+     * @param activeDatasetPieChartsFilters Array of active dataset pie charts filters
      */
     public void setActiveDatasetPieChartsFilters(boolean[] activeDatasetPieChartsFilters) {
         this.activeDatasetPieChartsFilters = activeDatasetPieChartsFilters;
