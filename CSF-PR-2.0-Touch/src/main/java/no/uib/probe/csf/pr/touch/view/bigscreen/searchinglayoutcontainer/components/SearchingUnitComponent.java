@@ -12,33 +12,37 @@ import java.util.Set;
 import no.uib.probe.csf.pr.touch.database.Query;
 
 /**
+ * This Class represents searching unit layout where the user can enter his
+ * input data to be searched and queried against the CSF-PR 2.0 resource
+ * database
  *
  * @author Yehia Farag
- *
- * This Class represents searching unit layout where the user can enter his
- * input data to be searched and queried against the csf-pr 2.0 resource
- * database
  */
 public abstract class SearchingUnitComponent extends VerticalLayout implements Button.ClickListener {
 
-    /*
-     * Input text area for enterying keywords (protein name, accession, or peptide sequence), the system support multiple keywords from the same searching category
+    /**
+     * Input text area for letting users to enter keywords (protein name,
+     * accession, or peptide sequence), the system support multiple keywords
+     * from the same searching category.
      */
     private final TextArea searchingArea;
-    /*
-     * Input option group for searching type (protein name, accession, or peptide sequence)
+    /**
+     * Input option group for searching type (protein name, accession, or
+     * peptide sequence).
      */
     private final OptionGroup searchByOptionGroup;
-    /*
-     * Input option group for disease category (Alzheimer,Multiple Sclerosis or Parkinson's)
+    /**
+     * Input option group for disease category (Alzheimer's, Multiple Sclerosis
+     * or Parkinson's).
      */
     private final OptionGroup diseaseCategoryOption;
-    /*
-     * Main query object that has all information required for searching process
+    /**
+     * Main query object that has all information required for searching
+     * process.
      */
     private final Query query;
-    /*
-     *Label to show user input data errors
+    /**
+     * Label to show user input data errors.
      */
     private final Label errorLabel;
 
@@ -46,15 +50,15 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
      * Get main query object that has all information required for searching
      * process
      *
-     * @return query
+     * @return query Query object that has all information required for
+     * searching process
      */
     public Query getQuery() {
         return query;
     }
 
     /**
-     * Clear all input fields
-     *
+     * Clear all input fields.
      */
     public void reset() {
         searchingArea.clear();
@@ -67,17 +71,18 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
     }
 
     /**
-     * Clear all input fields
+     * Clear all input fields.
      */
     public abstract void resetSearching();
 
     /**
      * Constructor to initialize the main attributes (width and height)
      *
-     * @param height
-     * @param width
+     * @param width Available width for the layout
+     * @param height Available height for the layout
+     *
      */
-    public SearchingUnitComponent(int height, int width) {
+    public SearchingUnitComponent(int width, int height) {
         this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
         this.addStyleName("roundedborder");
@@ -202,7 +207,7 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
      * On click on searching button capture all the input data and construct
      * query to be used for comparison process
      *
-     * @param event
+     * @param event Searching button click event
      */
     @Override
     public void buttonClick(Button.ClickEvent event) {
@@ -253,15 +258,15 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
     /**
      * Start searching process
      *
-     * @param query
+     * @param query Query object that has all information required for searching
+     * process
      */
     public abstract void search(Query query);
 
     /**
-     * Get input option group for disease category (Alzheimer,Multiple Sclerosis
-     * or Parkinson's)
+     * Get input option group for disease category (AD,MS or PD..etc)
      *
-     * @return diseaseCategoryOption
+     * @return diseaseCategoryOption disease category group option filter.
      */
     public OptionGroup getDiseaseCategoryOption() {
         return diseaseCategoryOption;

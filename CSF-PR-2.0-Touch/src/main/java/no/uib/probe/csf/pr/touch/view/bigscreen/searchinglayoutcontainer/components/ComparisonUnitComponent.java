@@ -23,37 +23,39 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.view.core.TextAreaComponent;
 
 /**
+ * This Class represents compare unit layout where the user can enter his input
+ * data to be compared with the CSF-PR 2.0 resource data
  *
  * @author Yehia Farag
- *
- * This Class represents compare unit layout where the user can enter his input
- * data to be compared with the csf-pr 2.0 resource data
  */
 public abstract class ComparisonUnitComponent extends VerticalLayout implements Button.ClickListener {
 
-    /*
-     *Drop down list to allow users to select disease group A or enter new disease group
+    /**
+     * Drop down list to allow users to select disease group A or enter new
+     * disease group.
      */
     private final ComboBox diseaseGroupsListA;
-    /*
-     *Drop down list to allow users to select disease group B or enter new disease group
+    /**
+     * Drop down list to allow users to select disease group B or enter new
+     * disease group.
      */
     private final ComboBox diseaseGroupsListB;
-    /*
-     *Set of available disease groups (sub-group) names in the system for the user to select from
+    /**
+     * Set of available disease groups (sub-group) names in the system for the
+     * user to select from.
      */
     private final Set<String> diseaseGroupNames;
-    /*
-     *Label to show user input data errors
+    /**
+     * Label to show user input data errors.
      */
     private final Label errorLabel;
-    /*
-     * The user input disease comparison with all its information (constructed based on user input data)
+    /**
+     * The user input disease comparison with all its information (constructed
+     * based on user input data).
      */
     private final QuantDiseaseGroupsComparison userCustomizedComparison;
-
-    /*
-     * Sample of increased proteins accessions used for sample data input
+    /**
+     * Sample of increased proteins accessions used for sample data input.
      */
     private final String highAcc = "P00450\n"
             + "P02774\n"
@@ -73,12 +75,12 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
             + "P05546\n"
             + "P08697";
 
-    /*
-     * Sample of equal proteins accessions used for sample data input
+    /**
+     * Sample of equal proteins accessions used for sample data input.
      */
     private final String stableAcc = "";
-    /*
-     * Sample of decreased proteins accessions used for sample data input
+    /**
+     * Sample of decreased proteins accessions used for sample data input.
      */
     private final String lowAcc = "O75326\n"
             + "Q96KN2\n"
@@ -87,23 +89,27 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
             + "P07602\n"
             + "P04216";
     /**
-     * Sort selection on the heat-map based on rows input data (if user select disease group A from drop down list) group A will be Numerator by default 
+     * Sort selection on the heat-map based on rows input data (if user select
+     * disease group A from drop down list) group A will be Numerator by
+     * default.
      */
     private boolean sorterRows;
     /**
-     * Sort selection on the heat-map based on column input data (if user select disease group B from drop down list) group B will be Denominator by default.
+     * Sort selection on the heat-map based on column input data (if user select
+     * disease group B from drop down list) group B will be Denominator by
+     * default.
      */
     private boolean sortColumns;
-    /*
-     * Input text area for uniprot increased protein accessions
+    /**
+     * Input text area for UniProt increased protein accessions.
      */
     private final TextAreaComponent textBoxI;
-    /*
-     * Input text area for uniprot equal protein accessions
+    /**
+     * Input text area for UniProt equal protein accessions.
      */
     private final TextAreaComponent textBoxII;
-    /*
-     * Input text area for uniprot decreased protein accessions
+    /**
+     * Input text area for UniProt decreased protein accessions.
      */
     private final TextAreaComponent textBoxIII;
 
@@ -112,7 +118,8 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
      * select disease group A from drop down list) group A will be Numerator by
      * default
      *
-     * @return sorterRows
+     * @return sorterRows Sort selection on the heat-map based on rows input
+     * data
      */
     public boolean isSorterRows() {
         return sorterRows;
@@ -123,7 +130,8 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
      * select disease group A from drop down list) group A will be Numerator by
      * default
      *
-     * @return sortColumns
+     * @return sortColumns Sort selection on the heat-map based on columns input
+     * data
      */
     public boolean isSortColumns() {
         return sortColumns;
@@ -133,11 +141,12 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
      * Constructor to initialize the main attributes (data handler,width and
      * height)
      *
-     * @param CSFPR_Handler
-     * @param height
-     * @param width
+     * @param CSFPR_Handler The quantitative data handler.
+     * @param width the available width for the layout
+     * @param height The available height for the layout
+     *
      */
-    public ComparisonUnitComponent(Data_Handler CSFPR_Handler, int height, int width) {
+    public ComparisonUnitComponent(Data_Handler CSFPR_Handler, int width, int height) {
         this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
         this.addStyleName("roundedborder");
@@ -318,7 +327,7 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
     }
 
     /**
-     * Clear all input fields
+     * Clear all input fields.
      */
     public void reset() {
         errorLabel.setValue("");
@@ -327,14 +336,13 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
         textBoxIII.reset();
         diseaseGroupsListA.setValue(null);
         diseaseGroupsListB.setValue(null);
-
     }
 
     /**
-     * On click on searching button capture all the input data and construct
-     * query to be used for comparison process
+     * On click on compare button capture all the input data and construct query
+     * to be used for comparison process
      *
-     * @param event
+     * @param event compare button click event
      */
     @Override
     public void buttonClick(Button.ClickEvent event) {
@@ -460,7 +468,8 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
      * Get the user input disease comparison with all its information
      * (constructed based on user input data)
      *
-     * @return userCustomizedComparison
+     * @return userCustomizedComparison The user input disease comparison with
+     * all its information
      */
     public QuantDiseaseGroupsComparison getUserCustomizedComparison() {
         return userCustomizedComparison;
@@ -469,7 +478,7 @@ public abstract class ComparisonUnitComponent extends VerticalLayout implements 
     /**
      * Start comparison process
      *
-     * @param query
+     * @param query The comparison query that has all query information
      */
     public abstract void startComparing(Query query);
 

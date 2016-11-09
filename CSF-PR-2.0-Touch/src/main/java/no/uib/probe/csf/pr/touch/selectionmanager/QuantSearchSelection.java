@@ -5,39 +5,39 @@ import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 
 /**
- *
- * @author Yehia Farag
- *
  * This class represents quant searching selection object, the class has all the
  * information required for view selection in quant data layout
+ *
+ * @author Yehia Farag
  */
 public class QuantSearchSelection {
 
-    /*
-     *Disease category name (MS, AD, PD..etc)
+    /**
+     * Disease category name (MS, AD, PD..etc).
      */
     private String diseaseCategory;
-    /*
-     *Set of the found dataset indexes in the database
+    /**
+     * Set of the found dataset indexes in the database.
      */
     private Set<Integer> quantDatasetIndexes;
-    /*
-     *Set of the keywords used for the searching query  
+    /**
+     * Set of the keywords used for the searching query.
      */
     private Set<String> keyWords;
-    /*
-     *List of selected comparisons to be updated based on user selection for comparisons across the system
+    /**
+     * List of selected comparisons to be updated based on user selection for
+     * comparisons across the system.
      */
     private Set<QuantDiseaseGroupsComparison> selectedComparisonsList;
-    /*
-     *List of selected proteins to be updated based on user selection for comparisons across the system
+    /**
+     * List of selected proteins to be updated based on user selection for
+     * comparisons across the system.
      */
     private Set<String> selectedProteinsList;
-    /*
-     *Map of disease category to found dataset ids
+    /**
+     * Map of disease category to found dataset ids.
      */
     private Map<String, Set<Integer>> diseaseCategoriesIdMap;
-
     /**
      * Customized comparison based on user input data in quant comparison
      * layout.
@@ -48,7 +48,8 @@ public class QuantSearchSelection {
      * Get customized comparison based on user input data in quant comparison
      * layout
      *
-     * @return userCustomizedComparison
+     * @return userCustomizedComparison Customized comparison based on user
+     * input data
      */
     public QuantDiseaseGroupsComparison getUserCustomizedComparison() {
         return userCustomizedComparison;
@@ -58,7 +59,8 @@ public class QuantSearchSelection {
      * Set customized comparison based on user input data in quant comparison
      * layout
      *
-     * @param userCustomizedComparison
+     * @param userCustomizedComparison Customized comparison based on user input
+     * data
      */
     public void setUserCustomizedComparison(QuantDiseaseGroupsComparison userCustomizedComparison) {
         this.userCustomizedComparison = userCustomizedComparison;
@@ -67,7 +69,7 @@ public class QuantSearchSelection {
     /**
      * Get set of the keywords used for the searching query
      *
-     * @return keyWords
+     * @return keyWords Set of the keywords
      */
     public Set<String> getKeyWords() {
         return keyWords;
@@ -76,25 +78,25 @@ public class QuantSearchSelection {
     /**
      * Set set of the keywords used for the searching query
      *
-     * @param keyWords
+     * @param keyWords Set of the keywords
      */
     public void setKeyWords(Set<String> keyWords) {
         this.keyWords = keyWords;
     }
 
     /**
-     * Get disease category (MS,AD,PD...etc)
+     * Get disease category name (MS,AD,PD...etc)
      *
-     * @return diseaseCategory
+     * @return diseaseCategory Disease category name
      */
     public String getDiseaseCategory() {
         return diseaseCategory;
     }
 
     /**
-     * Set disease category (MS,AD,PD...etc)
+     * Set disease category name (MS,AD,PD...etc)
      *
-     * @param diseaseCategory
+     * @param diseaseCategory Disease category name
      */
     public void setDiseaseCategory(String diseaseCategory) {
         this.diseaseCategory = diseaseCategory;
@@ -103,7 +105,7 @@ public class QuantSearchSelection {
     /**
      * Get set of the found dataset indexes in the database
      *
-     * @return quantDatasetIndexes
+     * @return quantDatasetIndexes Set of dataset indexes
      */
     public Set<Integer> getQuantDatasetIndexes() {
         return quantDatasetIndexes;
@@ -112,7 +114,7 @@ public class QuantSearchSelection {
     /**
      * Set set of the found dataset indexes in the database
      *
-     * @param quantDatasetIndexes
+     * @param quantDatasetIndexes Set of dataset indexes
      */
     public void setQuantDatasetIndexes(Set<Integer> quantDatasetIndexes) {
         this.quantDatasetIndexes = quantDatasetIndexes;
@@ -122,7 +124,7 @@ public class QuantSearchSelection {
      * Get list of selected comparisons to be updated based on user selection
      * for comparisons across the system
      *
-     * @return selected comparisons list
+     * @return selectedComparisonsList List of selected comparisons
      */
     public Set<QuantDiseaseGroupsComparison> getSelectedComparisonsList() {
         return selectedComparisonsList;
@@ -142,7 +144,7 @@ public class QuantSearchSelection {
      * Get list of selected proteins to be updated based on user selection for
      * comparisons across the system
      *
-     * @return selectedProteinsList
+     * @return selectedProteinsList List of selected proteins
      */
     public Set<String> getSelectedProteinsList() {
         return selectedProteinsList;
@@ -152,25 +154,27 @@ public class QuantSearchSelection {
      * Set list of selected proteins to be updated based on user selection for
      * comparisons across the system
      *
-     * @param selectedProteinsList
+     * @param selectedProteinsList List of selected proteins
      */
     public void setSelectedProteinsList(Set<String> selectedProteinsList) {
         this.selectedProteinsList = selectedProteinsList;
     }
 
     /**
-     * Get map of disease category to found dataset ids
+     * Get map of dataset indexes mapped to disease category
      *
-     * @return diseaseCategoriesIdMap
+     * @return diseaseCategoriesIdMap Map of dataset indexes mapped to disease
+     * category
      */
     public Map<String, Set<Integer>> getDiseaseCategoriesIdMap() {
         return diseaseCategoriesIdMap;
     }
 
     /**
-     * Set map of disease category to found dataset ids
+     * Set map of dataset indexes mapped to disease category
      *
-     * @param diseaseCategoriesIdMap
+     * @param diseaseCategoriesIdMap Map of dataset indexes mapped to disease
+     * category
      */
     public void setDiseaseCategoriesIdMap(Map<String, Set<Integer>> diseaseCategoriesIdMap) {
         this.diseaseCategoriesIdMap = diseaseCategoriesIdMap;

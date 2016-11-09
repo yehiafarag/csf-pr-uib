@@ -14,48 +14,44 @@ import no.uib.probe.csf.pr.touch.view.core.DatasetButtonsContainerLayout;
 import no.uib.probe.csf.pr.touch.view.core.PopupWindowFrame;
 
 /**
- *
- * @author Yehia Farag
- *
  * This class represents dataset information container that contain 2 taps one
  * for dataset buttons and second for publication buttons every button is a
  * pop-up panel that has the dataset or publication information
+ *
+ * @author Yehia Farag
  */
 public abstract class DatasetInformationWindow extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
-    /*
-     *Dataset buttons container that is used for dataset tab
+    /**
+     * Dataset buttons container that is used for dataset tab.
      */
     private final DatasetButtonsContainerLayout datasetsPopupLayout;
-
-    /*
-     *Publication buttons container that is used for dataset tab
+    /**
+     * Publication buttons container that is used for dataset tab.
      */
     private final DatasetButtonsContainerLayout publicationPopupLayout;
-
-    /*
-     *List of arrays of objects, every array contains one publication information 
+    /**
+     * List of arrays of objects, every array contains one publication
+     * information .
      */
     private List<Object[]> publicationList;
-    /*
-     *Main tabsheet that has 2 tabs one for dataset and one for publication
+    /**
+     * Main tab-sheet that has 2 tabs one for dataset and one for publication.
      */
     private final TabSheet tab;
-
-    /*
-     *Main pop-up container body
+    /**
+     * Main pop-up container body
      */
     private final VerticalLayout popupBody;
-
-    /*
-     *Main Window layout
+    /**
+     * Main Window layout.
      */
     private final PopupWindowFrame popupWindowFrame;
 
     /**
      * Constructor to initialize the main attributes
      *
-     * @param publicationList
+     * @param publicationList List of publication object arrays.
      */
     public DatasetInformationWindow(List<Object[]> publicationList) {
 
@@ -102,7 +98,7 @@ public abstract class DatasetInformationWindow extends VerticalLayout implements
     /**
      * Update the dataset buttons container
      *
-     * @param dsObjects
+     * @param dsObjects Set of dataset information objects
      */
     public void updateData(Collection<QuantDataset> dsObjects) {
         datasetsPopupLayout.setInformationData(dsObjects);
@@ -123,13 +119,13 @@ public abstract class DatasetInformationWindow extends VerticalLayout implements
      * Get the publication information required to update the publication
      * buttons data
      *
-     * @param pumedId
-     * @return publicationList
+     * @param pumedIdSet Set of publication PubMed id
+     * @return publicationList List of Publication information object arrays
      */
-    public abstract List<Object[]> getPublicationsInformation(Set<String> pumedId);
+    public abstract List<Object[]> getPublicationsInformation(Set<String> pumedIdSet);
 
     /**
-     * View/hide the dataset individual buttons window
+     * View/hide the dataset individual buttons window.
      */
     public void view() {
         popupWindowFrame.view();

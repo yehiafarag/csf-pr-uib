@@ -31,74 +31,77 @@ import no.uib.probe.csf.pr.touch.view.components.heatmapsubcomponents.HeatmapFil
 import no.uib.probe.csf.pr.touch.view.core.ResizableTextLabel;
 
 /**
+ * This class represent the disease comparisons heat map component the class
+ * allow users to select different disease comparisons
  *
  * @author Yehia Farag
  *
- * This class represent the disease comparisons heat map component the class
- * allow users to select different disease comparisons
  */
 public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout implements CSFListener {
 
-    /*
-     *The main heat map layout container
+    /**
+     * The main heat map layout container.
      */
     private final HeatMapLayout heatmapLayoutContainer;
-    /*
-     *The wrapper of dataset pie-chart filters component (represented as button with pop up layout)
+    /**
+     * The wrapper of dataset pie-chart filters component (represented as button
+     * with pop up layout).
      */
     private final DatasetPieChartFiltersComponent datasetPieChartFiltersComponent;
-    /*
-     *The wrapper of dataset recombine disease groups component (represented as button with pop up layout)
+    /**
+     * The wrapper of dataset recombine disease groups component (represented as
+     * button with pop up layout).
      */
     private final RecombineDiseaseGroupsCombonent reconbineDiseaseGroupsFiltersComponent;
-
-    /*
-     *The wrapper of Serum/CSF datasets filter component (represented as 2 buttons)
+    /**
+     * The wrapper of Serum/CSF datasets filter component (represented as 2
+     * buttons).
      */
     private final SerumCsfFilter serumCsfFilter;
-    /*
-     *The wrapper of dataset Select/Reortder disease groups component (represented as button with pop up layout)
+    /**
+     * The wrapper of dataset Select/Re-order disease groups component
+     * (represented as button with pop up layout).
      */
     private final ReorderSelectGroupsComponent reorderSelectComponent;
-    /*
-     *The wrapper of dataset counter label to show the number of current datasets represented in the heat-map
+    /**
+     * The wrapper of dataset counter label to show the number of current
+     * datasets represented in the heat-map.
      */
     private final ResizableTextLabel datasetCounterLabel;
-
-    /*
-     *The disease comparison heat-map right side control buttons container
+    /**
+     * The disease comparison heat-map right side control buttons container.
      */
     private final VerticalLayout heatmapToolsContainer;
-
-    /*
-     *The set of heatmap headers cell information objects required for initialize the row headers
+    /**
+     * The set of heat-map headers cell information objects required for
+     * initialize the row headers.
      */
     private final LinkedHashSet<HeatMapHeaderCellInformationBean> rowheadersSet;
-    /*
-     *The set of heatmap headers cell information objects required for initialize the column headers
+    /**
+     * The set of heat-map headers cell information objects required for
+     * initialize the column headers.
      */
     private final LinkedHashSet<HeatMapHeaderCellInformationBean> colheadersSet;
-
-    /*
-     *The set of  disease group comparison that has all comparison information
+    /**
+     * The set of disease group comparison that has all comparison information.
      */
     private final Set<DiseaseGroupComparison> patientsGroupComparisonsSet;
-    /*
-     *The map of  full quant dataset map no filters applied
+    /**
+     * The map of full quant dataset map no filters applied.
      */
     private final Map<Integer, QuantDataset> fullQuantDsMap;
-    /*
-     *The map of  quant datasets after different filters applied
+    /**
+     * The map of quant datasets after different filters applied.
      */
     private final Map<Integer, QuantDataset> filteredQuantDsMap;
-
-    /*
-     *The quantative data handler to work as controller layer to interact between visulization and logic layer 
+    /**
+     * The quantitative data handler to work as controller layer to interact
+     * between visualization and logic layer.
      */
     private final Data_Handler Data_handler;
-
-    /*
-     *The central manager for handling data across different visualizations and managing all users selections
+    /**
+     * The central selection manager for handling data across different
+     * visualizations and managing all users selections.
      */
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
 
@@ -106,9 +109,9 @@ public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout i
      * Constructor to initialize the main attributes (Data handler, and
      * selection manage ..etc)
      *
-     * @param CSFPR_Central_Manager
-     * @param Data_Handler
-     * @param diseaseCategorySet
+     * @param CSFPR_Central_Manager The central selection manager
+     * @param Data_Handler The quantitative data handler
+     * @param diseaseCategorySet Set of disease category names
      * @param mainbodyLayoutWidth main body layout width (the container)
      * @param mainbodyLayoutHeight main body layout height (the container)
      * @param activeColumnHeaders boolean array of active columns for dataset
@@ -190,7 +193,7 @@ public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout i
             public void updateSystem(LinkedHashSet<HeatMapHeaderCellInformationBean> rowHeaders, LinkedHashSet<HeatMapHeaderCellInformationBean> colHeaders) {
                 datasetPieChartFiltersComponent.resetFilters();
                 heatmapLayoutContainer.updateData(rowHeaders, colHeaders, patientsGroupComparisonsSet, fullQuantDsMap);
-                
+
             }
 
         };
@@ -304,10 +307,14 @@ public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout i
     /**
      * Update the heat map layout
      *
-     * @param rowheaders
-     * @param colheaders
-     * @param patientsGroupComparisonsSet
-     * @param fullQuantDsMap
+     * @param rowheaders The set of heat-map headers cell information objects
+     * required for initialize the row headers
+     * @param colheaders The set of heat-map headers cell information objects
+     * required for initialize the column headers
+     * @param patientsGroupComparisonsSet The set of disease group comparison
+     * that has all comparison information
+     * @param fullQuantDsMap The map of full quant dataset map no filters
+     * applied
      */
     public void updateData(LinkedHashSet<HeatMapHeaderCellInformationBean> rowheaders, LinkedHashSet<HeatMapHeaderCellInformationBean> colheaders, Set<DiseaseGroupComparison> patientsGroupComparisonsSet, Map<Integer, QuantDataset> fullQuantDsMap) {
 
@@ -318,11 +325,7 @@ public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout i
         }
         this.fullQuantDsMap.clear();
         this.fullQuantDsMap.putAll(fullQuantDsMap);
-//        heatmapLayoutContainer.updateData(rowheadersSet, colheadersSet, patientsGroupComparisonsSet, fullQuantDsMap);
 
-//        for (HeatMapHeaderCellInformationBean rowheader : rowheadersSet) {
-//           
-//        }
         this.rowheadersSet.clear();
         this.rowheadersSet.addAll(rowheaders);
         this.colheadersSet.clear();
@@ -420,7 +423,7 @@ public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout i
     }
 
     /**
-     * Show serum datasets (unselected by default)
+     * Show serum datasets (unselected by default).
      */
     public void showSerumDs() {
         serumCsfFilter.getNoSerumOptionBtn().removeStyleName("unapplied");
@@ -429,7 +432,7 @@ public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout i
     }
 
     /**
-     * Get the listener id
+     * Get the listener id.
      *
      * @return listener id
      */
@@ -438,16 +441,15 @@ public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout i
         return this.getClass().getName();
     }
 
-
     /**
-     *Un-select all datasets in the heat-map
+     * Un-select all datasets in the heat-map.
      */
     public void unselectAll() {
         this.heatmapLayoutContainer.unselectAll();
     }
 
-     /**
-     *Select all datasets in the heat-map
+    /**
+     * Select all datasets in the heat-map.
      */
     public void selectAll() {
         this.heatmapLayoutContainer.selectAll();
@@ -475,19 +477,19 @@ public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout i
     /**
      * Update the main button image with the current heat map image
      *
-     * @param imageUrl
+     * @param imageUrl URL for image encoded as Base64 string
      */
     public abstract void updateIcon(String imageUrl);
 
     /**
-     * Blinking the main button
+     * Blinking the frame of the main button.
      */
     public abstract void blinkIcon();
 
     /**
      * Get side buttons container that has all the heat map control buttons
      *
-     * @return heatmapToolsContainer
+     * @return heatmapToolsContainer the side buttons container
      */
     public VerticalLayout getHeatmapToolsContainer() {
         return heatmapToolsContainer;

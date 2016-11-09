@@ -20,53 +20,54 @@ import no.uib.probe.csf.pr.touch.logic.beans.DiseaseCategoryObject;
 import no.uib.probe.csf.pr.touch.view.core.ResizableTextLabel;
 
 /**
- *
- * @author Yehia Farag
- *
  * This class represents initial disease categories layout for quant data where
  * users can select the main disease category bubble OoO
+ *
+ * @author Yehia Farag
  */
 public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
-    /*
-     *The thumb image container to be updated with disease category selection
+    /**
+     * The thumb image container to be updated with disease category selection.
      */
     private final HorizontalLayout thumbImgLayout;
-    /*
-     *The tmaximum number of datasets available in the current system (used for calculating the size of each bubble)
+    /**
+     * The maximum number of datasets available in the current system (used for
+     * calculating the size of each bubble).
      */
     private int maxNumber;
-    /*
-     *Map of disease categories and its title
+    /**
+     * Map of disease categories and its title.
      */
     private final Map<String, DiseaseCategoryObject> diseaseCategoryMap;
-
-    /*
-     *Main layout that containe the disease category bubbles and select data label
+    /**
+     * Main layout that contains the disease category bubbles and select data
+     * label.
      */
     private final GridLayout frame;
-    /*
-     *The main component height
+    /**
+     * The main component height.
      */
     private final int height;
-    /*
-     *The main component width
+    /**
+     * The main component width.
      */
     private final int width;
-    /*
-     *List of disease category objects that has disease category information
+    /**
+     * List of disease category objects that has disease category information.
      */
     private final Collection<DiseaseCategoryObject> diseaseCategorySet;
-    /*
-     *Text label "select disease category"
+    /**
+     * Text label "select disease category".
      */
     private final ResizableTextLabel title;
-    /*
-     *Resource for default thumb button logo
+    /**
+     * Resource for default thumb button logo.
      */
     private final ThemeResource logoRes = new ThemeResource("img/logo.png");
 
     /**
+     * *
      * Constructor to initialize the main attributes
      *
      * @param diseaseCategorySet list of disease categories for main disease
@@ -116,11 +117,11 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
      * Initialize the disease category layout
      *
      * @param diseaseObject disease category object that has disease information
-     * @param height
-     * @param width
+     * @param width The available width of the layout
+     * @param height The available height of the layout
      * @param max the max number of available datasets
      */
-    private VerticalLayout initDiseaseLayout(DiseaseCategoryObject diseaseObject, int height, int width, int max) {
+    private VerticalLayout initDiseaseLayout(DiseaseCategoryObject diseaseObject, int width, int height, int max) {
         VerticalLayout diseaseLayout = new VerticalLayout();
         diseaseLayout.setWidth(width, Unit.PIXELS);
         diseaseLayout.setHeight(height, Unit.PIXELS);
@@ -161,7 +162,7 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
     }
 
     /**
-     * Rest the thumb to default logo and hide the dataset number
+     * Rest the thumb to default logo and hide the dataset number.
      */
     public void resetThumbBtn() {
         thumbImgLayout.removeAllComponents();
@@ -173,7 +174,7 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
     }
 
     /**
-     * Reset disease category selection across the system
+     * Reset disease category selection across the system.
      */
     public abstract void resetSelection();
 
@@ -181,7 +182,7 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
      * Update data input for the component to generate the different bubbles for
      * disease category
      *
-     * @param diseaseCategorySet
+     * @param diseaseCategorySet Set of disease category objects
      */
     public final void updateData(Collection<DiseaseCategoryObject> diseaseCategorySet) {
 
@@ -223,7 +224,7 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
                 continue;
             }
 
-            double scaledMax = scaleValues(dCategory.getDatasetNumber(), maxNumber, 0.01, 1);
+            double scaledMax = scaleValues(dCategory.getDatasetNumber(), maxNumber, 1);
             int dia = (int) (scaledMax * 0.1 * height);
 
             VerticalLayout disease = initDiseaseBubbleLayout(dCategory, maxNumber, dia);
@@ -243,7 +244,7 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
 
         }
 
-        double scaledMax = scaleValues(allDeseases.getDatasetNumber(), maxNumber, 0.01, 1);
+        double scaledMax = scaleValues(allDeseases.getDatasetNumber(), maxNumber, 1);
         int dia = (int) (scaledMax * 0.1 * height);
 
         if (diseaseCategorySet.size() > 2) {
@@ -265,7 +266,7 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
      * Update data input for the component to generate the different bubbles for
      * disease category (on searching or compare data mode)
      *
-     * @param diseaseCategoriesIdMap
+     * @param diseaseCategoriesIdMap Map of datasets id to disease categories.
      */
     public void updateData(Map<String, Set<Integer>> diseaseCategoriesIdMap) {
 
@@ -313,7 +314,8 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
     /**
      * Initialize disease category bubble
      *
-     * @param diseaseObject
+     * @param diseaseObject Disease category object that has ass disease
+     * category information
      * @param max maximum number of datasets
      * @param dia bubble diameter
      */
@@ -353,7 +355,7 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
     /**
      * On disease category bubble click(selection from disease category bubble)
      *
-     * @param event
+     * @param event user selection event
      */
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
@@ -374,7 +376,7 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
     /**
      * Update thumb component color based on user selection
      *
-     * @param diseaseCategory
+     * @param diseaseCategory Disease category name (AD,MS,PD...etc)
      */
     public void updateSelection(String diseaseCategory) {
 
@@ -392,7 +394,7 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
     /**
      * On select disease category update the system
      *
-     * @param diseaseCategoryName
+     * @param diseaseCategoryName Disease category name (AD,MS,PD...etc)
      */
     public abstract void onSelectDiseaseCategory(String diseaseCategoryName);
 
@@ -400,25 +402,23 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
      * Get thumb image container that is used for the disease category button on
      * left side
      *
-     * @return
+     * @return thumbImgLayout Thumb image container layout
      */
     public HorizontalLayout getThumbImgLayout() {
         return thumbImgLayout;
     }
 
     /**
-     * Converts the value from linear scale to log scale. The log scale numbers
-     * are limited by the range of the type float. The linear scale numbers can
+     * Converts the value from linear scale to log scale; The log scale numbers
+     * are limited by the range of the type float; The linear scale numbers can
      * be any double value.
      *
      * @param linearValue the value to be converted to log scale
-     * @param max
-     * @param upperLimit
-     * @param lowerLimit
+     * @param max The upper limit number for the input numbers
+     * @param lowerLimit the lower limit for the input numbers
      * @return the value in log scale
-     * @throws IllegalArgumentException if value out of range
      */
-    private double scaleValues(double linearValue, int max, double upperLimit, double lowerLimit) {
+    private double scaleValues(double linearValue, int max, double lowerLimit) {
         double logMax = (Math.log(max) / Math.log(2));
         double logValue = (Math.log(linearValue + 1) / Math.log(2));
         logValue = (logValue * 2 / logMax) + lowerLimit;

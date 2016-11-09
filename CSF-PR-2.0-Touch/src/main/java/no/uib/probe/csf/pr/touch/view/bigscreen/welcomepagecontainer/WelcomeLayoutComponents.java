@@ -31,36 +31,34 @@ import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 import no.uib.probe.csf.pr.touch.view.core.OverviewInfoBean;
 
 /**
+ * This class represents welcome page main components and buttons welcome
+ * message resource overview information.
  *
  * @author Yehia Farag
- *
- * This class represents welcome page main components and buttons welcome
- * message resource overview information
  */
 public class WelcomeLayoutComponents extends VerticalLayout implements Serializable {
 
-    /*
-     *The top right thumb buttons container 
+    /**
+     * The top right thumb buttons container.
      */
     private final HorizontalLayout topRightThumbBtnsLayoutContainer;
-
-    /*
-     *The top right reset system thumb button 
+    /**
+     * The top right reset system thumb button.
      */
     private final ImageContainerBtn resetThumbBtn;
-    /*
-     *The top right searching thumb button 
+    /**
+     * The top right searching thumb button.
      */
     private final ImageContainerBtn searchThumbBtn;
-    /*
-     *The top right compare user data thumb button 
+    /**
+     * The top right compare user data thumb button.
      */
     private final ImageContainerBtn compareThumbBtn;
 
     /**
      * Get the top right thumb buttons container
      *
-     * @return topRightThumbBtnsLayoutContainer
+     * @return topRightThumbBtnsLayoutContainer main layout view container
      */
     public HorizontalLayout getTopRightThumbBtnsLayoutContainer() {
         return topRightThumbBtnsLayoutContainer;
@@ -70,16 +68,14 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
      * Constructor to initialize main attributes (data handler, central manager
      * ..etc)
      *
-     * @param Data_handler
-     * @param CSFPR_Central_Manager
+     * @param Data_handler Quant data handler
+     * @param CSFPR_Central_Manager The central selection manager
      * @param View_Manager view manager to control the current application view
      * @param overviewInfoBean resource overview information
      * @param bodyHeight current screen height
      * @param publicationList list of available publications
      * @param dsObjects list of dataset information
      * @param bodyWidth current screen with
-     *
-     *
      */
     public WelcomeLayoutComponents(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager, final LayoutViewManager View_Manager, int bodyWidth, int bodyHeight, OverviewInfoBean overviewInfoBean, List<Object[]> publicationList, Set<QuantDataset> dsObjects) {
         this.setWidth(980, Unit.PIXELS);
@@ -139,12 +135,12 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         subQuantStatLayout.setMargin(new MarginInfo(false, false, false, false));
         subQuantStatLayout.setWidth(100, Unit.PERCENTAGE);
         leftPanelWrapper.addComponent(subQuantStatLayout);
-        
+
         DatasetInformationWindow sub2quantStatLabelWrapper = new DatasetInformationWindow(publicationList) {
 
             @Override
             public List<Object[]> getPublicationsInformation(Set<String> pumedId) {
-                return publicationList; 
+                return publicationList;
             }
 
         };
@@ -279,7 +275,6 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         mainBodyHLayout.addComponent(rightPanelWrapper);
 
         Label infoLable = new Label("Welcome to the CSF Proteome Resource (CSF-PR)");
-//        infoLable.setHeight(20, Unit.PIXELS);
         infoLable.setStyleName(ValoTheme.LABEL_H3);
         infoLable.addStyleName(ValoTheme.LABEL_BOLD);
         rightPanelWrapper.addComponent(infoLable);
@@ -523,7 +518,6 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
                 return "welcomehomecomponent";
             }
 
-            
         });
         footerLayout.addComponent(rightHeaderLayout, "left: 0px; top: " + 5 + "px");
     }

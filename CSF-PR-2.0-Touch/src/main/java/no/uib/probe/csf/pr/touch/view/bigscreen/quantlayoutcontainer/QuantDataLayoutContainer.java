@@ -25,113 +25,114 @@ import no.uib.probe.csf.pr.touch.view.components.LineChartProteinTableComponent;
 import no.uib.probe.csf.pr.touch.view.components.PeptideViewComponent;
 import no.uib.probe.csf.pr.touch.view.components.InitialDiseaseCategoriesComponent;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
-import no.uib.probe.csf.pr.touch.view.core.InformationButton;
 import no.uib.probe.csf.pr.touch.view.core.ViewControlPanel;
 
 /**
- *
- * @author Yehia Farag
- *
  * This class represents the main quantitative data layout container the layout
  * this include the initial disease categories layout (O o O), the disease
  * comparison heat-map, the disease comparisons selection bubble chart, the
  * proteins table and selected protein layout (protein coverage, peptide
  * information, and studies line chart)
  *
+ * @author Yehia Farag
+ *
  */
 public class QuantDataLayoutContainer extends ViewControlPanel implements CSFListener {
 
-    /*
-     *Initial disease categories layout (O o O)
+    /**
+     * Initial disease categories layout (O o O).
      */
     private final InitialDiseaseCategoriesComponent initialDiseaseCategoriesComponent;
-
-    /*
-     *The disease comparison heat-map container
+    /**
+     * The disease comparison heat-map container.
      */
     private final VerticalLayout heatmapViewContainer;
-    /*
-     *The disease comparison heat-map right side control buttons container
+    /**
+     * The disease comparison heat-map right side control buttons container.
      */
     private final VerticalLayout heatmapToolsContainer;
-    /*
-     *The disease comparison heat-map left side thumb image button
+    /**
+     * The disease comparison heat-map left side thumb image button.
      */
     private final ImageContainerBtn heatmapBtn;
-    /*
-     *The disease comparison heat-map component
+    /**
+     * The disease comparison heat-map component.
      */
     private DiseaseComparisonHeatmapComponent diseaseComparisonHeatmapComponent;
-
-    /*
-     *The disease comparisons selection bubble chart
+    /**
+     * The disease comparisons selection bubble chart.
      */
     private final VerticalLayout bubblechartViewContainer;
-    /*
-     *The disease comparisons selection bubble chart right side control buttons container
+    /**
+     * The disease comparisons selection bubble chart right side control buttons
+     * container.
      */
     private final VerticalLayout bubblechartToolsContainer;
-
-    /*
-     *The disease comparison selection bubble chart left side thumb image button
+    /**
+     * The disease comparison selection bubble chart left side thumb image
+     * button.
      */
     private final ImageContainerBtn bubblechartBtn;
-    /*
-     *The disease comparison selection bubble chart component
+    /**
+     * The disease comparison selection bubble chart component.
      */
     private final DiseaseComparisonSelectionBubblechartComponent diseaseComparisonSelectionbubblechartComponent;
-
-    /*
-     *The disease comparisons selection proteins table
+    /**
+     * The disease comparisons selection proteins table.
      */
     private final VerticalLayout linechartViewContainer;
-    /*
-     *The disease comparisons selection proteins table right side control buttons container
+    /**
+     * The disease comparisons selection proteins table right side control
+     * buttons container.
      */
     private final VerticalLayout linechartToolsContainer;
-    /*
-     *The disease comparison selection proteins table left side thumb image button
+    /**
+     * The disease comparison selection proteins table left side thumb image
+     * button.
      */
     private final ImageContainerBtn linechartBtn;
-
-    /*
-     *The disease comparison selection proteins table component
+    /**
+     * The disease comparison selection proteins table component.
      */
     private final LineChartProteinTableComponent lineChartProteinTableComponent;
-
-    /*
-     *The selected protein layout (protein coverage, peptide information, and studies line chart)
+    /**
+     * The selected protein layout (protein coverage, peptide information, and
+     * studies line chart).
      */
     private final VerticalLayout peptidesViewContainer;
-    /*
-     *The selected protein layout (protein coverage, peptide information, and studies line chart) right side control buttons container
+    /**
+     * The selected protein layout (protein coverage, peptide information, and
+     * studies line chart) right side control buttons container.
      */
     private final VerticalLayout peptidesToolsContainer;
-    /*
-     *The selected protein layout (protein coverage, peptide information, and studies line chart)  left side thumb image button
+    /**
+     * The selected protein layout (protein coverage, peptide information, and
+     * studies line chart) left side thumb image button.
      */
     private final ImageContainerBtn peptideInfoBtn;
-
-    /*
-     *The quantative data handler to work as controller layer to interact between visulization and logic layer 
+    /**
+     * The quantitative data handler to work as controller layer to interact
+     * between visualization and logic layer.
      */
     private final Data_Handler Data_handler;
-
-    /*
-     *The central manager for handling data across different visualizations and managing all users selections
+    /**
+     * The central selection manager for handling data across different
+     * visualizations and managing all users selections.
      */
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
-
-    /*
-     *The standered thumb image for left side components buttons, in case of no selection provided (null selection)
+    /**
+     * The standard thumb image for left side components buttons, in case of no
+     * selection provided (null selection).
      */
     private final ThemeResource logoRes = new ThemeResource("img/logo.png");
-    /*
-     *The width of the component view panel (the middle panle between the left side and right side buttons wrappers)
+    /**
+     * The width of the component view panel (the middle panel between the left
+     * side and right side buttons wrappers).
      */
     private final int mainViewPanelWidth;
-    /*
-     *The height of the component view panel (the middle panle between the left side and right side buttons wrappers)
+    /**
+     * The height of the component view panel (the middle panel between the left
+     * side and right side buttons wrappers).
      */
     private final int mainViewPanelHeight;
 
@@ -149,17 +150,13 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
                     tempFullComparison.put(i, Data_handler.getFullQuantDsMap().get(i));
                 }
             }
-
             diseaseComparisonHeatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), tempFullComparison);
-
             if (type.equalsIgnoreCase("quant_compare")) {
                 diseaseComparisonSelectionbubblechartComponent.setUserCustomizedComparison(CSFPR_Central_Manager.getQuantSearchSelection().getUserCustomizedComparison());
                 lineChartProteinTableComponent.setUserCustomizedComparison(CSFPR_Central_Manager.getQuantSearchSelection().getUserCustomizedComparison());
-
             }
             diseaseComparisonHeatmapComponent.selectAll();
             setCurrentLayout("proteintable");
-
         } else if (type.equalsIgnoreCase("reset_quant_searching")) {
             //update initial layout
             diseaseComparisonHeatmapComponent.unselectAll();
@@ -172,7 +169,6 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
             setCurrentLayout("initiallayout");
         }
         if (type.equalsIgnoreCase("comparisons_selection")) {
-
             Set<QuantDiseaseGroupsComparison> compList = CSFPR_Central_Manager.getSelectedComparisonsList();
             if (compList == null || compList.isEmpty()) {
                 setCurrentLayout("heatmap");
@@ -190,10 +186,10 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
      * Constructor to initialize the main attributes (Data handler, and
      * selection manage )
      *
-     * @param Data_handler
-     * @param CSFPR_Central_Manager
-     * @param width
-     * @param height
+     * @param Data_handler The quantitative data handler
+     * @param CSFPR_Central_Manager The central selection manager
+     * @param width The component available width
+     * @param height The component available height
      */
     public QuantDataLayoutContainer(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height) {
         super(width, height);
@@ -205,7 +201,6 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         final HorizontalLayout subBodyWrapper = new HorizontalLayout();
         subBodyWrapper.setWidthUndefined();
         subBodyWrapper.setHeightUndefined();
-
         initialDiseaseCategoriesComponent = new InitialDiseaseCategoriesComponent(availableDiseaseCategory, width - 20, height) {
             private String lastSelectedDisease = "";
 
@@ -416,7 +411,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         bubblechartToolsContainer.addComponent(diseaseComparisonSelectionbubblechartComponent.getBubblechartToolsContainer());
         bubblechartToolsContainer.setComponentAlignment(diseaseComparisonSelectionbubblechartComponent.getBubblechartToolsContainer(), Alignment.TOP_RIGHT);
 
-        lineChartProteinTableComponent = new LineChartProteinTableComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight - 2, null) {
+        lineChartProteinTableComponent = new LineChartProteinTableComponent(CSFPR_Central_Manager, mainViewPanelWidth, mainViewPanelHeight - 2) {
 
             @Override
             public void updateThumbIconRowNumber(int rowNumber, String url) {
@@ -445,7 +440,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
             }
 
         };
-        
+
         peptidesViewContainer.addComponent(peptideViewComponent);
         peptidesToolsContainer.addComponent(peptideViewComponent.getPeptideTableToolsContainer());
         peptidesToolsContainer.setComponentAlignment(peptideViewComponent.getPeptideTableToolsContainer(), Alignment.TOP_RIGHT);
@@ -456,10 +451,10 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
      * set the main disease category in the data handler to update the current
      * active data in the logic layer
      *
-     * @param DiseaseCategoryName
+     * @param diseaseCategoryName Disease category name (MS,AD,PD...etc)
      */
-    private void loadDiseaseCategory(String DiseaseCategoryName) {
-        Data_handler.loadDiseaseCategory(DiseaseCategoryName);
+    private void loadDiseaseCategory(String diseaseCategoryName) {
+        Data_handler.loadDiseaseCategory(diseaseCategoryName);
         diseaseComparisonHeatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), Data_handler.getFullQuantDsMap());
 
     }

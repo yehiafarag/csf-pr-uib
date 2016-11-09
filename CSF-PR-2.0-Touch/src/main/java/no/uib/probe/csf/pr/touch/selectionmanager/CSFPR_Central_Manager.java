@@ -12,37 +12,37 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.view.core.BusyTaskProgressBar;
 
 /**
+ * This class represents the central manager that is responsible for handling
+ * data across different visualizations and managing all users selections
  *
  * @author Yehia Farag
  *
- * This class represents the central manager that is responsible for handling
- * data across different visualizations and managing all users selections
+ *
  */
 public class CSFPR_Central_Manager implements Serializable {
 
     /**
-     * Map for storing current listeners or filters
+     * Map for storing current listeners or filters.
      */
     private final LinkedHashMap<String, CSFListener> Listeners_Map;
     /**
-     * 
+     *
      * List of selected comparisons to be updated based on user selection for
      * comparisons across the system.
      */
     private Set<QuantDiseaseGroupsComparison> selectedComparisonsList;
     /**
      * List of selected proteins to be updated based on user selection for
-     * comparisons across the system
+     * comparisons across the system.
      */
     private Set<QuantComparisonProtein> selectedProteinsList;
-
     /**
-     * List of equal comparison map to avoid double selection from heat map
+     * List of equal comparison map to avoid double selection from heat map.
      */
     private Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> equalComparisonMap;
     /**
      * Main selected protein accession from the protein table that is used to
-     * update peptides component table
+     * update peptides component table.
      */
     private String selectedProteinAccession;
     /**
@@ -52,29 +52,27 @@ public class CSFPR_Central_Manager implements Serializable {
     private final BusyTaskProgressBar busyTask;
     /**
      * List of full publication information that is used by the resource
-     * overview and in publication information overview
+     * overview and in publication information overview.
      */
     private List<Object[]> fullPublicationList;
-
     /**
      * Main selected protein trend based on user customized data to show the
-     * selected user protein trend in the peptide component
+     * selected user protein trend in the peptide component.
      */
     private int custProteinSelectionTrend;
     /**
      * Main searching results object that contain the searching results
-     * information
+     * information.
      */
     private QuantSearchSelection quantSearchSelection;
+
     /**
-     * *
      * Get list of selected proteins to be updated based on user selection for
      * comparisons across the system
      *
-     * @return selectedProteinsList
+     * @return selectedProteinsList List of selected proteins
      */
     public Set<QuantComparisonProtein> getSelectedProteinsList() {
-
         return selectedProteinsList;
     }
 
@@ -83,7 +81,8 @@ public class CSFPR_Central_Manager implements Serializable {
      * Get list of full publication information that is used by the resource
      * overview and in publication information overview
      *
-     * @return
+     * @return fullPublicationList List of full object arrays for publication
+     * information
      */
     public List<Object[]> getFullPublicationList() {
         return fullPublicationList;
@@ -94,14 +93,14 @@ public class CSFPR_Central_Manager implements Serializable {
      * Set list of full publication information that is used by the resource
      * overview and in publication information overview
      *
-     * @param fullPublicationList
+     * @param fullPublicationList List of full object arrays for publication
+     * information
      */
     public void setFullPublicationList(List<Object[]> fullPublicationList) {
         this.fullPublicationList = fullPublicationList;
     }
 
     /**
-     * *
      * Constructor to initialize the main attributes
      *
      * @param busyTask progress task manager to show progress bar on long
@@ -115,7 +114,7 @@ public class CSFPR_Central_Manager implements Serializable {
     /**
      * Set list of equal comparison map to avoid double selection from heat map
      *
-     * @param equalComparisonMap
+     * @param equalComparisonMap List of equal comparison map
      */
     public void setEqualComparisonMap(Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> equalComparisonMap) {
         this.equalComparisonMap = equalComparisonMap;
@@ -134,7 +133,7 @@ public class CSFPR_Central_Manager implements Serializable {
     /**
      * Get list of equal comparison map to avoid double selection from heat map
      *
-     * @return equalComparisonMap
+     * @return equalComparisonMap List of equal comparison map
      */
     public Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> getEqualComparisonMap() {
         return equalComparisonMap;
@@ -151,10 +150,10 @@ public class CSFPR_Central_Manager implements Serializable {
     }
 
     /**
-     * Get Main selected protein accession from the protein table that is used
+     * Get main selected protein accession from the protein table that is used
      * to update peptides component table
      *
-     * @return selectedProteinAccession
+     * @return selectedProteinAccession Main selected protein accession
      */
     public String getSelectedProteinAccession() {
         return selectedProteinAccession;
@@ -163,7 +162,7 @@ public class CSFPR_Central_Manager implements Serializable {
     /**
      * Set Selection in the system to update other registered listeners
      *
-     * @param selection quantSearchSelection
+     * @param selection quant search selection object
      */
     public void setSelection(CSFSelection selection) {
         if (selection.getType().equalsIgnoreCase("peptide_selection")) {
@@ -185,7 +184,7 @@ public class CSFPR_Central_Manager implements Serializable {
      * Get list of selected comparisons to be updated based on user selection
      * for comparisons across the system
      *
-     * @return selected comparisons list
+     * @return selectedComparisonsList Selected comparisons list
      */
     public Set<QuantDiseaseGroupsComparison> getSelectedComparisonsList() {
         Set<QuantDiseaseGroupsComparison> tempProteinsList = new LinkedHashSet<>();
@@ -249,7 +248,7 @@ public class CSFPR_Central_Manager implements Serializable {
      * Quant Search Selection in registered component invoke searching mode in
      * the system and set the searching results information object
      *
-     * @param selection quantSearchSelection
+     * @param selection Quant search selection object
      */
     public void searchSelectionAction(QuantSearchSelection selection) {
         this.quantSearchSelection = selection;
@@ -259,7 +258,7 @@ public class CSFPR_Central_Manager implements Serializable {
 
     /**
      * Reset Quant Search Selection in the system back to normal quant explorer
-     * mode and remove searching results information from the system
+     * mode and remove searching results information from the system.
      */
     public void resetSearchSelection() {
         this.quantSearchSelection = null;
@@ -268,9 +267,9 @@ public class CSFPR_Central_Manager implements Serializable {
 
     /**
      * Quant Search Selection in registered component invoke comparing mode in
-     * the system and searching results information object in the system
+     * the system and searching results information object in the system.
      *
-     * @param selection quantSearchSelection
+     * @param selection Quant search selection
      */
     public void compareSelectionAction(QuantSearchSelection selection) {
         this.quantSearchSelection = selection;
@@ -282,7 +281,7 @@ public class CSFPR_Central_Manager implements Serializable {
      * Get main searching results object that contain the searching results
      * information
      *
-     * @return quantSearchSelection
+     * @return quantSearchSelection Quant search selection
      */
     public QuantSearchSelection getQuantSearchSelection() {
         return quantSearchSelection;
@@ -292,7 +291,8 @@ public class CSFPR_Central_Manager implements Serializable {
      * Get main selected protein trend based on user customized data to show the
      * selected user protein trend in the peptide component
      *
-     * @return custProteinSelectionTrend
+     * @return custProteinSelectionTrend Main selected protein trend based on
+     * user customized data
      */
     public int getCustProteinSelectionTrend() {
         return custProteinSelectionTrend;

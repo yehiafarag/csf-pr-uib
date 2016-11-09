@@ -7,31 +7,33 @@ import no.uib.probe.csf.pr.touch.view.core.BusyTaskProgressBar;
 import no.uib.probe.csf.pr.touch.view.core.ControllingView;
 
 /**
+ * This class represents the view controller, the controller is responsible for
+ * handling the requested layout and viewing it
  *
  * @author Yehia Farag
  *
- * This class represents the view controller the controller responsible for
- * handling the requested layout and view it
+ *
  */
 public class LayoutViewManager {
 
-    /*
-     *Map of registered layout visulization
+    /**
+     * Map of registered layout visualization.
      */
     private final Map<String, ControllingView> layoutMap = new LinkedHashMap<>();
-    /*
-     *Current visualized layout
+    /**
+     * Current visualized layout.
      */
     private ControllingView currentView;
-    /*
-     *System is doing long processing task to push the the system to show  progress bar
+    /**
+     * System is doing long processing task to push the the system to show
+     * progress bar.
      */
     private final BusyTaskProgressBar busyTask;
 
     /**
      * Constructor to initialize the main attributes
      *
-     * @param busyTask
+     * @param busyTask progress bar controller.
      */
     public LayoutViewManager(BusyTaskProgressBar busyTask) {
         this.busyTask = busyTask;
@@ -40,7 +42,7 @@ public class LayoutViewManager {
     /**
      * Register layout component to the system
      *
-     * @param component
+     * @param component View component
      */
     public void registerComponent(ControllingView component) {
         layoutMap.put(component.getViewId(), component);
@@ -50,7 +52,7 @@ public class LayoutViewManager {
     /**
      * View selected layout based on user selection
      *
-     * @param viewId
+     * @param viewId View id
      */
     public void viewLayout(String viewId) {
         try {
@@ -69,6 +71,5 @@ public class LayoutViewManager {
         } finally {
             VaadinSession.getCurrent().getLockInstance().unlock();
         }
-
     }
 }

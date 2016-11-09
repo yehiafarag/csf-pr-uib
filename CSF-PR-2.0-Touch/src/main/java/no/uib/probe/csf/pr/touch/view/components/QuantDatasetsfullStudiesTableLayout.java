@@ -123,7 +123,7 @@ public class QuantDatasetsfullStudiesTableLayout extends Table {
     /**
      * Update table input data
      *
-     * @param updatedDatasetsList
+     * @param updatedDatasetsList Map of dataset and its index in the database
      */
     public void updateCombinedQuantDatasetTableRecords(Map<Integer, QuantDataset> updatedDatasetsList) {
         dsIndexes = new int[updatedDatasetsList.size()];

@@ -42,96 +42,100 @@ import no.uib.probe.csf.pr.touch.view.core.TrendLegend;
 
 /**
  *
- * @author Yehia Farag
- *
  * This class represents quantitative searching window where users can search
  * for protein data using protein name or accession or peptide sequence, the
  * class is a button with pop-up panel layout
+ *
+ * @author Yehia Farag
+ *
  */
 public abstract class SearchingComponent extends BigBtn {
 
-    /*
-     *The main searching pop-up window (the pop up container) 
+    /**
+     * The main searching pop-up window (the pop up container) .
      */
     private final PopupWindow searchingPanel;
-    /*
-     *List of quantitave proteins found in searching 
+    /**
+     * List of quantitative proteins found in searching.
      */
     private List<QuantProtein> searchQuantificationProtList;
-    /*
-     *The quant results container layout
+    /**
+     * The quant results container layout.
      */
     private final GridLayout quantDataResult;
-    /*
-     *The id results container layout (the id link container for csf-pr 1.0)
+    /**
+     * The id results container layout (the id link container for CSF-PR 1.0).
      */
     private final VerticalLayout idDataResult;
-    /*
-     *The bottom buttons container it contains also the link to csf-pr1.0 id results
+    /**
+     * The bottom buttons container it contains also the link to CSF-PR 1.0 id
+     * results.
      */
     private final HorizontalLayout controlBtnsLayout;
-    /*
-     *The button is responsble for invoking the show results in system where the user can visualize his data and compare it with the csf-pr 2.0 results
+    /**
+     * The button is responsible for invoking the show results in system where
+     * the user can visualize his data and compare it with the CSF-PR 2.0
+     * results.
      */
     private final Button loadDataBtn;
-    /*
-     *The searching unit layout has the input data fields for user data
+    /**
+     * The searching unit layout has the input data fields for user data.
      */
     private final SearchingUnitComponent searchingUnit;
-    /*
-     *The central manager for handling data across different visualizations and managing all users selections
+    /**
+     * The central selection manager for handling data across different
+     * visualizations and managing all users selections.
      */
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
-    /*
-     *The reults layout is the container for quant data results (the pie charts)
+    /**
+     * The results layout is the container for quant data results (the pie
+     * charts).
      */
     private final VerticalLayout resultsLayout;
-    /*
-     *The middle layout has the results label and legend 
+    /**
+     * The middle layout has the results label and legend.
      */
     private final HorizontalLayout middleLayout;
-
-    /*
-     *The overview pie chart result container 
+    /**
+     * The overview pie chart result container.
      */
     private final VerticalLayout overviewResults;
-
-    /*
-     *The no results available label
+    /**
+     * The no results available label
      */
     private final Label noresultsLabel;
-    /*
-     *The quantative data handler to work as controller layer to interact between visulization and logic layer 
+    /**
+     * The quantitative data handler to work as controller layer to interact
+     * between visualization and logic layer .
      */
     private final Data_Handler Data_handler;
-    /*
-     *The default no results message
+    /**
+     * The default no results message.
      */
     private final String noresultMessage = "No results found";
-    /*
-     *The quant data results label (results and hits number)
+    /**
+     * The quant data results label (results and hits number).
      */
     private final Label resultsLabel;
-
-    /*
-     *The quant proteins pie-chart or labels results container
+    /**
+     * The quant proteins pie-chart or labels results container.
      */
     private final HorizontalLayout quantResultWrapping;
-    /*
-     *The size of screen is used to switch the data visulization mode between normal and compact mode
+    /**
+     * The size of screen is used to switch the data visualization mode between
+     * normal and compact mode.
      */
     private final boolean smallScreen;
-    /*
-     *Set of keywors to avoid duplicating the keywords
+    /**
+     * Set of keywords to avoid duplicating the keywords.
      */
     private Set<String> filterKeywordSet;
-
-    /*
-     *Array of disease category names
+    /**
+     * Array of disease category names.
      */
     private final String[] diseaseCategoryNames = new String[]{"Alzheimer's", "Multiple Sclerosis", "Parkinson's"};
-    /*
-     *Array of disease category AWT colors required for JFree charts
+    /**
+     * Array of disease category AWT colors required for JFree charts.
      */
     private final Color[] diseaseCategoryColors = new Color[]{Color.decode("#4b7865"), Color.decode("#A52A2A"), Color.decode("#74716E")};
 
@@ -139,8 +143,8 @@ public abstract class SearchingComponent extends BigBtn {
      * Constructor to initialize the main attributes (data handler and selection
      * manager)
      *
-     * @param Data_handler
-     * @param CSFPR_Central_Manager
+     * @param Data_handler The quantitative data handler.
+     * @param CSFPR_Central_Manager The central selection manager
      */
     public SearchingComponent(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager) {
         super("Search", "Search protein data", "img/search.png");
@@ -158,7 +162,7 @@ public abstract class SearchingComponent extends BigBtn {
             searchingPanel.setHeight(Page.getCurrent().getBrowserWindowHeight(), Unit.PIXELS);
             searchingPanel.setWidth(Page.getCurrent().getBrowserWindowWidth() - 20, Unit.PIXELS);
         }
-        searchingUnit = new SearchingUnitComponent(h1, (int) searchingPanel.getWidth() - 24) {
+        searchingUnit = new SearchingUnitComponent((int) searchingPanel.getWidth() - 24, h1) {
 
             @Override
             public void resetSearching() {
@@ -246,7 +250,7 @@ public abstract class SearchingComponent extends BigBtn {
         controlBtnsLayout.setExpandRatio(btnsWrapper, controlBtnsLayout.getWidth() - 130);
         btnsWrapper.setSpacing(true);
 
-        InformationButton info = new InformationButton("Searching allows the user to locate a specific protein or a group of proteins. Input the search text at the top, select the input type and the disease category, and click \"Search\". A graphical overview of the results will be displayed at the bottom. You can either load all the results or select a subset via the charts before loading.",true);
+        InformationButton info = new InformationButton("Searching allows the user to locate a specific protein or a group of proteins. Input the search text at the top, select the input type and the disease category, and click \"Search\". A graphical overview of the results will be displayed at the bottom. You can either load all the results or select a subset via the charts before loading.", true);
         btnsWrapper.addComponent(info);
 
         idDataResult = new VerticalLayout();
@@ -301,7 +305,6 @@ public abstract class SearchingComponent extends BigBtn {
                 return "searching_component";
             }
 
-          
         });
         if (this.smallScreen) {
             resultsLayout.setVisible(false);
@@ -374,7 +377,7 @@ public abstract class SearchingComponent extends BigBtn {
 
     /**
      * Reset comparison layout by clearing all input and results fields and
-     * reset the system to default
+     * reset the system to default.
      */
     private void resetSearch() {
         resultsLabel.setValue("Search Results");
@@ -394,7 +397,7 @@ public abstract class SearchingComponent extends BigBtn {
 
     /**
      * Load and invoke searching mode in the system to visualize the searching
-     * results data in the system
+     * results data in the system.
      */
     private void loadSearching() {
         Iterator<Component> itr = quantDataResult.iterator();
@@ -645,7 +648,6 @@ public abstract class SearchingComponent extends BigBtn {
                 ProteinSearcingResultLabel chart = new ProteinSearcingResultLabel(proteinName, diseaseCategoryNames, quantHitsList.get(proteinName), diseaseCategoryColors);
                 quantDataResult.addComponent(chart, col++, row);
                 quantDataResult.setComponentAlignment(chart, Alignment.MIDDLE_CENTER);
-//                chart.redrawChart();
                 if (col == maxColNum) {
                     col = 0;
                     row++;
@@ -659,7 +661,7 @@ public abstract class SearchingComponent extends BigBtn {
     }
 
     /**
-     * On click view the searching panel
+     * On click view the searching panel.
      */
     @Override
     public void onClick() {
@@ -674,7 +676,8 @@ public abstract class SearchingComponent extends BigBtn {
     public abstract void loadQuantSearching();
 
     /**
-     * Create and initialize not found proteins file that has proteins accessions list
+     * Create and initialize not found proteins file that has proteins
+     * accessions list.
      *
      * @param accessions set of not found protein accessions
      * @return a StreamResource for protein exporting file

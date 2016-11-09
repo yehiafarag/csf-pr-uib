@@ -40,89 +40,84 @@ import no.uib.probe.csf.pr.touch.view.core.PopupWindow;
 import no.uib.probe.csf.pr.touch.view.core.TrendLegend;
 
 /**
- *
- * @author Yehia Farag
- *
  * This class represents quantitative comparison window where users can compare
  * their own data with the resource data, the class is a button with pop-up
  * panel layout
+ *
+ * @author Yehia Farag
  */
 public abstract class CompareComponent extends BigBtn {
 
-    /*
-     *The main comparison pop-up window (the pop up container) 
+    /**
+     *The main comparison pop-up window (the pop up container).
      */
     private final PopupWindow comparePanel;
-    /*
-     *List of quantitave proteins found in searching 
+    /**
+     *List of quantitative proteins found in searching .
      */
     private List<QuantProtein> searchQuantificationProtList;
-    /*
-     *The quant results container layout
+    /**
+     *The quant results container layout.
      */
     private final HorizontalLayout quantCompareDataResult;
-    /*
-     *The id results container layout (the id link container for csf-pr 1.0)
+    /**
+     *The id results container layout (the id link container for CSF-PR 1.0).
      */
     private final VerticalLayout idDataResult;
-    /*
-     *The quantative data handler to work as controller layer to interact between visulization and logic layer 
+    /**
+     *The quantitative  data handler to work as controller layer to interact between visualization and logic layer.
      */
     private final Data_Handler Data_handler;
-    /*
-     *The quant data results label (results and hits number)
+    /**
+     *The quant data results label (results and hits number).
      */
     private final Label resultsLabel;
-
-    /*
-     *The bottom buttons container it contains also the link to csf-pr1.0 id results
+    /**
+     *The bottom buttons container it contains also the link to CSF-PR 1.0 id results.
      */
     private final HorizontalLayout controlBtnsLayout;
-
-    /*
-     *The button is responsble for invoking the show results in system where the user can visualize his data and compare it with the csf-pr 2.0 results
+    /**
+     *The button is responsible for invoking the show results in system where the user can visualize his data and compare it with the CSF-PR 2.0 results.
      */
     private final Button loadDataBtn;
-    /*
-     *The compare unit layout has the input data fields for user data
+    /**
+     *The compare unit layout has the input data fields for user data.
      */
     private final ComparisonUnitComponent compareUnit;
-    /*
-     *The central manager for handling data across different visualizations and managing all users selections
+    /**
+     *The central selection manager for handling data across different visualizations and managing all users selections.
      */
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
-    /*
-     *The protein overview chart
+    /**
+     *The protein overview chart.
      */
     private PieChart proteinsChart;
-    /*
-     *The datasets overview chart
+    /**
+     *The datasets overview chart.
      */
     private PieChart datasetsChart;
-    /*
-     *The size of screen is used to switch the data visulization mode between normal and compact mode
+    /**
+     *The size of screen is used to switch the data visualization mode between normal and compact mode.
      */
     private final boolean smallScreen;
-    /*
-     *The reults layout is the container for quant data results (the pie charts)
+    /**
+     *The results layout is the container for quant data results (the pie charts).
      */
     private final VerticalLayout resultsLayout;
-    /*
-     *The middle layout has the results label and legend 
+    /**
+     *The middle layout has the results label and legend .
      */
     private final HorizontalLayout middleLayout;
-
-    /*
-     *Set of keywors to avoid duplicating the keywords
+    /**
+     *Set of keywords to avoid duplicating the keywords.
      */
     private Set<String> filterKeywordSet;
-
-    /*
-     *Array of disease category names
+    /**
+     *Array of disease category names.
      */
     private final String[] diseaseCategoryNames = new String[]{"Alzheimer's", "Multiple Sclerosis", "Parkinson's"};
-    /*
-     *Array of disease category AWT colors required for JFree charts
+    /**
+     *Array of disease category AWT colors required for JFree charts.
      */
     private final Color[] diseaseCategoryColors = new Color[]{Color.decode("#4b7865"), Color.decode("#A52A2A"), Color.decode("#74716E")};
 
@@ -130,8 +125,8 @@ public abstract class CompareComponent extends BigBtn {
      * Constructor to initialize the main attributes (data handler and selection
      * manager)
      *
-     * @param Data_handler
-     * @param CSFPR_Central_Manager
+     * @param Data_handler The quantitative data handler.
+     * @param CSFPR_Central_Manager The central selection manager
      */
     public CompareComponent(final Data_Handler Data_handler, CSFPR_Central_Manager CSFPR_Central_Manager) {
         super("Compare", "Compare to your data", "img/compare.png");
@@ -153,7 +148,7 @@ public abstract class CompareComponent extends BigBtn {
             comparePanel.setHeight(comparePanel.getHeight() - 50, Unit.PIXELS);
             comparePanel.setWidth(comparePanel.getWidth() - 20, Unit.PIXELS);
         }
-        compareUnit = new ComparisonUnitComponent(Data_handler, h1, (int) comparePanel.getWidth() - 24) {
+        compareUnit = new ComparisonUnitComponent(Data_handler, (int) comparePanel.getWidth() - 24, h1) {
 
             @Override
             public void startComparing(Query query) {
@@ -220,7 +215,7 @@ public abstract class CompareComponent extends BigBtn {
         controlBtnsLayout.setComponentAlignment(leftsideWrapper, Alignment.TOP_LEFT);
         leftsideWrapper.setSpacing(true);
 
-        InformationButton info = new InformationButton("To compare your own data against the protein information in CSF-PR upload your UniProt accession numbers (divided into the three categories Increased, Equal and Decreased), select (or name) the disease comparison categories for your input data at the top, and click the \"Compare\" button. A graphical overview of the results will be displayed at the bottom. You can either load all the results or select a subset via the charts before loading.",true);
+        InformationButton info = new InformationButton("To compare your own data against the protein information in CSF-PR upload your UniProt accession numbers (divided into the three categories Increased, Equal and Decreased), select (or name) the disease comparison categories for your input data at the top, and click the \"Compare\" button. A graphical overview of the results will be displayed at the bottom. You can either load all the results or select a subset via the charts before loading.", true);
         leftsideWrapper.addComponent(info);
 
         idDataResult = new VerticalLayout();
@@ -333,7 +328,7 @@ public abstract class CompareComponent extends BigBtn {
 
     /**
      * Reset comparison layout by clearing all input and results fields and
-     * reset the system to default
+     * reset the system to default.
      */
     private void resetComparison() {
         compareUnit.reset();
@@ -352,7 +347,7 @@ public abstract class CompareComponent extends BigBtn {
 
     /**
      * Load and invoke comparison mode in the system to visualize the user input
-     * data in the system
+     * data in the system.
      */
     private void loadComparison() {
         Set<String> diseaseCategories = new HashSet<>();
@@ -579,7 +574,7 @@ public abstract class CompareComponent extends BigBtn {
     }
 
     /**
-     * On click view the comparison panel
+     * On click view the comparison panel.
      */
     @Override
     public void onClick() {
@@ -589,12 +584,13 @@ public abstract class CompareComponent extends BigBtn {
 
     /**
      * Load and invoke comparison mode in the system to visualize the user input
-     * data in the system
+     * data in the system.
      */
     public abstract void loadQuantComparison();
 
     /**
-     * Create and initialize not found proteins file that has proteins accessions list
+     * Create and initialize not found proteins file that has proteins
+     * accessions list
      *
      * @param accessions set of not found protein accessions
      * @return a StreamResource for protein exporting file

@@ -8,21 +8,21 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDataset;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 
 /**
- *
- * @author Yehia Farag
- *
  * This class represents the dataset information button that is used in the
  * heat-map right control buttons layout
+ *
+ * @author Yehia Farag
  */
 public abstract class DatasetInformationBtn extends ImageContainerBtn {
 
-    /*
-     *Datasets container popup window that contains the individual datasets buttons
+    /**
+     * Datasets container pop-up window that contains the individual datasets
+     * buttons.
      */
     private final DatasetInformationWindow studiesInformationWindow;
 
     /**
-     * Constructor to initialize the main attributes
+     * Default constructor to initialize the main attributes.
      */
     public DatasetInformationBtn() {
         this.updateIcon(new ThemeResource("img/file-text-o-1.png"));
@@ -45,14 +45,14 @@ public abstract class DatasetInformationBtn extends ImageContainerBtn {
      * Update the dataset information input data to update the individual
      * buttons inside the pop up panel
      *
-     * @param quantDatasetSet
+     * @param quantDatasetSet Set of quant dataset objects.
      */
     public void updateData(Collection<QuantDataset> quantDatasetSet) {
         studiesInformationWindow.updateData(quantDatasetSet);
     }
 
     /**
-     * View/hide the dataset individual buttons window  
+     * View/hide the dataset individual buttons window.
      */
     public void view() {
         studiesInformationWindow.view();
@@ -60,15 +60,14 @@ public abstract class DatasetInformationBtn extends ImageContainerBtn {
 
     @Override
     public void onClick() {
-//       view();
     }
 
-   /**
+    /**
      * Update the publication data using pubmedID for the selected publication
      *
-     * @param pumedId
-     * @return
+     * @param pumedIdSet  Set of publication PubMed id.
+     * @return List of Publication information object arrays
      */
-    public abstract List<Object[]> updatePublicationsData(Set<String> pumedId);
+    public abstract List<Object[]> updatePublicationsData(Set<String> pumedIdSet);
 
 }

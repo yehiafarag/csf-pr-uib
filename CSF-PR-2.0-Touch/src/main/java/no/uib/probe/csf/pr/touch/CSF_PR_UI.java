@@ -53,11 +53,6 @@ public class CSF_PR_UI extends UI {
      */
     private String dbPassword;
     /**
-     * Database URL.
-     */
-    private String filesURL;
-
-    /**
      * This is main application window width and height.
      */
     private int windowHeight, windowWidth;
@@ -112,7 +107,6 @@ public class CSF_PR_UI extends UI {
         dbDriver = (scx.getInitParameter("driver"));
         dbUserName = (scx.getInitParameter("userName"));
         dbPassword = (scx.getInitParameter("password"));
-        filesURL = scx.getInitParameter("filesURL");
         String csf_pr_Url = scx.getInitParameter("csf-pr-id");
         VaadinSession.getCurrent().setAttribute("csf_pr_Url", csf_pr_Url);
 
@@ -139,7 +133,7 @@ public class CSF_PR_UI extends UI {
 
         setContent(appWrapper);
 
-        layout = new MainLayout(dbURL, dbName, dbDriver, dbUserName, dbPassword, filesURL, windowWidth, windowHeight);
+        layout = new MainLayout(dbURL, dbName, dbDriver, dbUserName, dbPassword, windowWidth, windowHeight);
         appWrapper.addComponent(layout);
         appWrapper.setComponentAlignment(layout, Alignment.MIDDLE_CENTER);
 

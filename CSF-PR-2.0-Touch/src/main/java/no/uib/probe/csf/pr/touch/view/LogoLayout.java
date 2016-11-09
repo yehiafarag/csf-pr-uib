@@ -8,15 +8,14 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 
 /**
+ * This class represents the header layout container (logo, titles)
  *
  * @author Yehia Farag
- *
- * This class represents the header layout container (logo, titles)
  */
 public class LogoLayout extends HorizontalLayout {
 
     /**
-     * Constructor to initialize the logo of CSF-PR 2.0 logo
+     * Constructor to initialize the logo of CSF-PR 2.0 logo.
      */
     public LogoLayout() {
         this.setWidth(100, Unit.PERCENTAGE);
@@ -49,7 +48,6 @@ public class LogoLayout extends HorizontalLayout {
         logo.addComponent(cLabel);
         logo.setComponentAlignment(cLabel, Alignment.TOP_CENTER);
         logoTitleContainer.addComponent(logo);
-
     }
 
 }

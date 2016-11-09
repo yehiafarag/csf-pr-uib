@@ -397,7 +397,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
         heatmapToolsContainer.setComponentAlignment(exportTableBtn, Alignment.MIDDLE_CENTER);
         exportTableBtn.setDescription("Export heatmap dataset data");
 
-        InformationButton info = new InformationButton("The disease group comparison table provides an overview of the number of datasets available for each comparison. Hover over a given cell to get additional details about the comparison. Selecting one or more cells in the table will display the corresponding protein details. To filter the data use the options in the upper left corner.",false);
+        InformationButton info = new InformationButton("The disease group comparison table provides an overview of the number of datasets available for each comparison. Hover over a given cell to get additional details about the comparison. Selecting one or more cells in the table will display the corresponding protein details. To filter the data use the options in the upper left corner.", false);
         heatmapToolsContainer.addComponent(info);
         equalComparisonMap = new HashMap<>();
     }
@@ -459,11 +459,12 @@ public abstract class HeatMapLayout extends VerticalLayout {
             if (add) {
                 updatedDatasetMap.put(i, qDs);
                 currentDsIds.add(qDs.getQuantDatasetIndex());
+
             }
 
         }
         updateHeatMapLayout(rowsLbels, columnsLbels, patientsGroupComparisonsSet, fullQuantDsMap);
-        updateHMThumb(this.getHMThumbImg(), updatedDatasetMap.size(), 0, equalComparisonMap);
+        updateHMThumb(this.getHMThumbImg(), fullQuantDsMap.size(), 0, equalComparisonMap);
     }
 
     /**
@@ -1169,8 +1170,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
     }
 
     /**
-     * This method to generate heat map Thumb image on updating
-     *
+     * This method to generate heat map Thumb image on updating.
      */
     private String getHMThumbImg() {
         gen.generateHeatmap(rowheadersSet, colheadersSet, dataValuesColors, availableHMWidth, availableHMHeight, resetLeftSideDiseaseCategoriesLabel, resetTopSideDiseaseCategoriesLabel, false);
@@ -1249,7 +1249,8 @@ public abstract class HeatMapLayout extends VerticalLayout {
     }
 
     /**
-     * This method to update the location of heat map headers and cells on updating the data
+     * This method to update the location of heat map headers and cells on
+     * updating the data
      *
      */
     private void updateHeatmapComponents() {

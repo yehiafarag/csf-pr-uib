@@ -53,82 +53,85 @@ import org.jfree.chart.encoders.ImageFormat;
  */
 public abstract class PeptideViewComponent extends VerticalLayout implements CSFListener {
 
-    /*
-     *The central manager for handling data across different visualizations and managing all users selections
+    /**
+     * The central manager for handling data across different visualizations and
+     * managing all users selections.
      */
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
-    /*
-     *The peptide component right side control buttons container
+    /**
+     * The peptide component right side control buttons container.
      */
     private final VerticalLayout peptideTableToolsContainer;
-    /*
-     *Is individual datasets for each disease group comparison 
+    /**
+     * Is individual datasets for each disease group comparison.
      */
     private boolean showIndividualDatasets = false;
-    /*
-     *The peptide table (detailed protein table) that has peptides information 
+    /**
+     * The peptide table (detailed protein table) that has peptides information.
      */
     private final ProteinDatasetsTable peptideSequenceTableLayout;
-    /*
-     *The top protein name label
+    /**
+     * The top protein name label.
      */
     private final Label proteinNameLabel;
-    /*
-     *The studies number label
+    /**
+     * The studies number label.
      */
     private final Label studiesNumberLabel;
-    /*
-     *Is default order or decreased to increased order
+    /**
+     * Is default order or decreased to increased order.
      */
     private boolean defaultTrend = true;
 
-    /*
-     *Switch the comparisons button between default order or decreased to increased order
+    /**
+     * Switch the comparisons button between default order or decreased to
+     * increased order.
      */
     private final ImageContainerBtn orderByTrendBtn;
-    /*
-     *Show individual datasets for each disease group comparison 
+    /**
+     * Show individual datasets for each disease group comparison.
      */
     private final ImageContainerBtn individualToTotalComparisonsDatasetsSwichBtn;
-    /*
-     *Resize individual datasets symbol based on patients number 
+    /**
+     * Resize individual datasets symbol based on patients number.
      */
     private final ImageContainerBtn resizeDsOnPatientNumbersBtn;
-    /*
-     *Hide not significant peptides data from the protein coverage to clean the chart 
+    /**
+     * Hide not significant peptides data from the protein coverage to clean the
+     * chart.
      */
     private final ImageContainerBtn showSigOnlyBtn;
-    /*
-     *Is individual datasets symbol resized based on patients number 
+    /**
+     * Is individual datasets symbol resized based on patients number.
      */
     private boolean resizeDatasetOnPateintsNumber = false;
-    /*
-     *Top legend layout container
+    /**
+     * Top legend layout container.
      */
     private final VerticalLayout legendLayout;
-    /*
-     * Show individual datasets button icon  
+    /**
+     * Show individual datasets button icon.
      */
     private final Resource comparisonDsRes = new ThemeResource("img/comparisons-ds.png");
-    /*
-     * Hide individual datasets button icon  
+    /**
+     * Hide individual datasets button icon.
      */
     private final Resource dsComparisonRes = new ThemeResource("img/ds-comparisons.png");
-
-    /*
-     * Detailed protein line chart component (developed using JFree chart and DiVA)  
+    /**
+     * Detailed protein line chart component (developed using JFree chart and
+     * DiVA).
      */
     private ProteinDatasetsLineChartList lineChart;
-    /*
-     * The total number of included datasets  
+    /**
+     * The total number of included datasets.
      */
     private int totatlDatasetsNumber;
-    /*
-     * The selected protein key to find the peptides belong to the protein
+    /**
+     * The selected protein key to find the peptides belong to the protein.
      */
     private String proteinKey;
-    /*
-     * List of selected disease group comparisons
+    /**
+     * List of selected disease group comparisons.
      */
     private Set<QuantDiseaseGroupsComparison> selectedComparisonsList;
 
@@ -136,7 +139,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
      * Get side buttons container that has all the peptides component control
      * buttons
      *
-     * @return peptideTableToolsContainer
+     * @return peptideTableToolsContainer Side buttons container
      */
     public VerticalLayout getPeptideTableToolsContainer() {
         return peptideTableToolsContainer;
@@ -145,7 +148,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
     /**
      * Generate thumb image to update the left side button icon.
      *
-     * @return iconResource the resource is used to update the left side button
+     * @return iconResource The resource is used to update the left side button
      * icon
      *
      */
@@ -216,7 +219,8 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
     /**
      * Update thumb button icon for the left side button
      *
-     * @param iconResource
+     * @param iconResource The resource is used to update the left side button
+     * icon
      *
      */
     public abstract void updateIcon(Resource iconResource);
@@ -224,7 +228,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
     /**
      * Constructor to initialize the main attributes ( selection manage ..etc)
      *
-     * @param CSFPR_Central_Manager
+     * @param CSFPR_Central_Manager Central selection manager
      * @param width main body layout width (the container)
      * @param height main body layout height (the container)
      */
@@ -700,7 +704,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
                 "Export protein overview and peptides information");
 
         InformationButton info = new InformationButton("The protein panel provides an overview of the available information for the currently selected protein. The chart at the top shows the quantitative information for the selected protein, classified into Increased, Decreased or Equal. If the quantitative data for a given comparison is not exclusively in the same direction an average value will be shown. \n"
-                + "To show the individual datasets click the \"Show datasets\" button in the lower right corner. Clicking the \"Resize dataset symbols based on number of patients\" will then change the chart to indicate the number of patients in each dataset. The lower half of the panel shows the details for each dataset, including the sequence coverage (if available). Click a peptide or any of the other columns for further details.",false);
+                + "To show the individual datasets click the \"Show datasets\" button in the lower right corner. Clicking the \"Resize dataset symbols based on number of patients\" will then change the chart to indicate the number of patients in each dataset. The lower half of the panel shows the details for each dataset, including the sequence coverage (if available). Click a peptide or any of the other columns for further details.", false);
 
         peptideTableToolsContainer.addComponent(info);
 
@@ -741,8 +745,8 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
      * Update data input for the component to generate the protein line chart
      * and protein details table(peptide table)
      *
-     * @param selectedComparisonsList
-     * @param proteinKey
+     * @param selectedComparisonsList Set of selected comparisons
+     * @param proteinKey Main selected protein key
      * @param custTrend the customized user data trend -1 if no customized data
      * input and (0 to 4) in case of compare mode is activated
      *
@@ -815,7 +819,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
     }
 
     /**
-     * Get registered listener id
+     * Get registered listener id.
      *
      * @return listener id
      */

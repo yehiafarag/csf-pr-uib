@@ -42,40 +42,42 @@ import no.uib.probe.csf.pr.touch.view.core.TrendLegend;
  */
 public abstract class LineChartProteinTableComponent extends VerticalLayout implements CSFListener {
 
-    /*
-     *The central manager for handling data across different visualizations and managing all users selections.
+    /**
+     * The central manager for handling data across different visualizations and
+     * managing all users selections.
      */
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
-    /*
-     *The protein table right side control buttons container.
+    /**
+     * The protein table right side control buttons container.
      */
     private final VerticalLayout proteinTableToolsContainer;
-    /*
-     *The protein table that has protein information.
+    /**
+     * The protein table that has protein information.
      */
     private final ProteinTable quantProteinTable;
-    /*
-     *Map of protein accession and protein name with protein item inside the table to allow users search inside table using name or accession.
+    /**
+     * Map of protein accession and protein name with protein item inside the
+     * table to allow users search inside table using name or accession.
      */
     private final Map<String, QuantComparisonProtein> proteinSearchingMap;
-    /*
-     *Remove any protein table applied filter button.
+    /**
+     * Remove any protein table applied filter button.
      */
     private final ImageContainerBtn removeFiltersBtn;
-    /*
-     *Switch between sorting and filtering icons in the protein table comparisons headers button.
-    */
+    /**
+     * Switch between sorting and filtering icons in the protein table
+     * comparisons headers button.
+     */
     private final FilterColumnButton filterSortSwichBtn;
 
     /**
      * Constructor to initialize the main attributes ( selection manage ..etc).
      *
-     * @param CSFPR_Central_Manager
+     * @param CSFPR_Central_Manager Central selection manager
      * @param width main body layout width (the container)
      * @param height main body layout height (the container)
-     * @param userCustomizedComparison
      */
-    public LineChartProteinTableComponent(CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height, QuantDiseaseGroupsComparison userCustomizedComparison) {
+    public LineChartProteinTableComponent(CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height) {
 
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         this.proteinSearchingMap = new HashMap<>();
@@ -338,7 +340,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         exportPdfBtn.setDescription("Export table");
         proteinTableToolsContainer.addComponent(exportPdfBtn);
 
-        InformationButton info = new InformationButton("The protein table provides an overview of the quantitative information available for each protein, classified into Increased, Decreased or Equal. If the quantitative data for a given comparison is not exclusively in the same direction an average value will be shown. To find proteins of interest use the search field at the top, or sort/filter on the individual comparisons using the options above the table. The icons at the lower right enables further modification of the table. Select a row in the table to show the protein details.",false);
+        InformationButton info = new InformationButton("The protein table provides an overview of the quantitative information available for each protein, classified into Increased, Decreased or Equal. If the quantitative data for a given comparison is not exclusively in the same direction an average value will be shown. To find proteins of interest use the search field at the top, or sort/filter on the individual comparisons using the options above the table. The icons at the lower right enables further modification of the table. Select a row in the table to show the protein details.", false);
         proteinTableToolsContainer.addComponent(info);
 
         CSFPR_Central_Manager.registerListener(LineChartProteinTableComponent.this);
@@ -430,8 +432,8 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
     /**
      * Update thumb button icon and text for the left side button
      *
-     * @param rowNumber
-     * @param imgURl
+     * @param rowNumber Number of rows in the table(table items)
+     * @param imgURl URL for image encoded as Base64 string
      */
     public abstract void updateThumbIconRowNumber(int rowNumber, String imgURl);
 
@@ -441,7 +443,6 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
      *
      * @param userCustomizedComparison Customized comparison based on user input
      * data in quant comparison layout
-     *
      */
     public void setUserCustomizedComparison(QuantDiseaseGroupsComparison userCustomizedComparison) {
         quantProteinTable.setUserCustomizedComparison(userCustomizedComparison);

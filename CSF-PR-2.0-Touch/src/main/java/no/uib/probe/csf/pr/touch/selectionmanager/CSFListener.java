@@ -1,9 +1,9 @@
 package no.uib.probe.csf.pr.touch.selectionmanager;
 
 /**
+ * Filter interface that has the important abstracted methods
  *
- * @author Yehia Farag CSF Filter interface that has the important abstracted
- * methods
+ * @author Yehia Farag CSF
  */
 public interface CSFListener {
 
@@ -20,7 +20,5 @@ public interface CSFListener {
      * @return listener Id
      */
     public String getListenerId();
-
-    
 
 }

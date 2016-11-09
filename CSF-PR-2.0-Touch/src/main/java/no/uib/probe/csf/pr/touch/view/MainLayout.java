@@ -5,11 +5,10 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.VerticalLayout;
 
 /**
- *
- * @author Yehia Farag
- *
  * This class represents the main HTML template for CSF-PR 2.0 touch (the main
  * layout container)
+ *
+ * @author Yehia Farag
  */
 public class MainLayout extends VerticalLayout {
 
@@ -21,8 +20,10 @@ public class MainLayout extends VerticalLayout {
      * @param driver database driver
      * @param userName database username
      * @param password database password
+     * @param windowWidth Available width for the layout
+     * @param windowHeight Available height for the layout
      */
-    public MainLayout(String url, String dbName, String driver, String userName, String password, String filesURL, int windowWidth, int windowHeight) {
+    public MainLayout(String url, String dbName, String driver, String userName, String password, int windowWidth, int windowHeight) {
 
         this.setWidth(windowWidth, Unit.PIXELS);
         this.setHeight(windowHeight, Unit.PIXELS);

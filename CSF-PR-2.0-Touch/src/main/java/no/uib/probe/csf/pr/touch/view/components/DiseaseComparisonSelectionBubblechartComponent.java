@@ -71,8 +71,8 @@ import org.jfree.ui.TextAnchor;
 public abstract class DiseaseComparisonSelectionBubblechartComponent extends VerticalLayout implements CSFListener, LayoutEvents.LayoutClickListener {
 
     /**
-     * The central manager for handling data across different visualizations and
-     * managing all users selections.
+     * The central selection manager for handling data across different
+     * visualizations and managing all users selections.
      */
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
     /**
@@ -166,7 +166,7 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
     private final String[] trendStyles;
 
     /**
-     * Allow multi select for bubbles in the chart
+     * Allow multi select for bubbles in the chart.
      */
     private boolean allowMultiSelect = true;
 
@@ -193,7 +193,7 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
     /**
      * Constructor to initialize the main attributes ( selection manage ..etc).
      *
-     * @param CSFPR_Central_Manager
+     * @param CSFPR_Central_Manager The central selection manager
      * @param width main body layout width (the container)
      * @param height main body layout height (the container)
      *
@@ -245,10 +245,10 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
         topLayout.setExpandRatio(legendLayout, 90);
 
         /**
-         * end of top layout
+         * end of top layout.
          */
         /**
-         * start chart layout
+         * start chart layout.
          */
         VerticalLayout chartLayoutFrame = new VerticalLayout();
         height = height - 44;
@@ -469,7 +469,7 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
         exportPdfBtn.setDescription("Export data");
         bubblechartToolsContainer.addComponent(exportPdfBtn);
 
-        InformationButton info = new InformationButton("The bubble chart provides an overview of all the proteins found in the currently selected disease group comparisons. The size of each bubble represents the number of proteins in the given comparison and the color represents the trend. To change the order of the groups in a given comparison please click the \"Switch disease groups\" icon in the lower right corner. Select one or more bubbles to display the corresponding proteins.",false);
+        InformationButton info = new InformationButton("The bubble chart provides an overview of all the proteins found in the currently selected disease group comparisons. The size of each bubble represents the number of proteins in the given comparison and the color represents the trend. To change the order of the groups in a given comparison please click the \"Switch disease groups\" icon in the lower right corner. Select one or more bubbles to display the corresponding proteins.", false);
         bubblechartToolsContainer.addComponent(info);
 
     }
@@ -478,7 +478,7 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
      * Generate bubble chart (JFreechart) that is used to generate the thumb
      * image and default background image the development based on DiVA concept
      *
-     * @param selectedComparisonList
+     * @param selectedComparisonList List of selected comparison objects
      */
     private JFreeChart generateBubbleChart(Set<QuantDiseaseGroupsComparison> selectedComparisonList) {
         tooltipsProtNumberMap.clear();
@@ -824,10 +824,9 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
      * be any double value.
      *
      * @param linearValue the value to be converted to log scale
-     * @param max
-     * @param lowerLimit
+     * @param max The upper limit number for the input numbers
+     * @param lowerLimit the lower limit for the input numbers
      * @return the value in log scale
-     * @throws IllegalArgumentException if value out of range
      */
     private double scaleValues(double linearValue, int max, double lowerLimit) {
         double logMax = (Math.log(max) / Math.log(2));
@@ -925,7 +924,7 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
     /**
      * Update Vaadin bubble components on the chart layout data container
      *
-     * @param chart
+     * @param chart JFree chart object
      * @param width chart data width
      * @param height chart data heights
      */
@@ -1066,7 +1065,7 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
     /**
      * On chart click (selection from bubble or chart layout)
      *
-     * @param event
+     * @param event User selection event
      */
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
@@ -1079,7 +1078,7 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
     /**
      * Update the thumb button icon
      *
-     * @param imageUrl
+     * @param imageUrl URL for image encoded as Base64 string
      */
     public abstract void updateIcon(String imageUrl);
 
@@ -1088,7 +1087,7 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
      * chart to update the chart layout and update the selection list that is
      * used for updating the selection manager
      *
-     * @param imageUrl
+     * @param imageUrl URL for image encoded as Base64 string
      */
     private void updateSelectionList(BubbleComponent selectedComponent) {
         if (selectedComponent == null) {
@@ -1114,7 +1113,7 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
 
     /**
      * Update the chart layout upon user selection on the bubble plot (highlight
-     * or blur bubbles)
+     * or blur bubbles).
      */
     private void rePaintChart() {
         Iterator<Component> itr = chartComponentLayout.iterator();
@@ -1137,7 +1136,7 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
     }
 
     /**
-     * Update the selection manager using selection proteins list
+     * Update the selection manager using selection proteins list.
      */
     private void updateSelectionManager() {
         Set<QuantComparisonProtein> selectedProteinsList;
@@ -1165,7 +1164,7 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
     }
 
     /**
-     * Create array of integers and initialize it with 0 values
+     * Create array of integers and initialize it with 0 values.
      */
     private Integer[] initValuesArr() {
         Integer[] values = new Integer[]{0, 0, 0, 0, 0, 0};
