@@ -32,52 +32,48 @@ import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 import no.uib.probe.csf.pr.touch.view.core.InformationButton;
 
 /**
+ * This class represents the main body for disease comparisons heat map
  *
  * @author Yehia Farag
- *
- * This class represents the main body for disease comparisons heat map
  */
 public abstract class HeatMapLayout extends VerticalLayout {
 
     /**
-     * Set of selected cells
+     * Set of selected cells.
      */
     private final Set<HeatmapCell> selectedCells = new HashSet<>();
 
     /**
-     * Array of of Column header cells
+     * Array of of Column header cells.
      */
     private HeaderCell[] columnHeaderCells;
     /**
-     * Array of of Row header cells
+     * Array of of Row header cells.
      */
     private HeaderCell[] rowHeaderCells;
     /**
-     * Map of comparisons title to heat-map cell
+     * Map of comparisons title to heat-map cell.
      */
     private final Map<String, HeatmapCell> comparisonsCellsMap = new LinkedHashMap<>();
     /**
-     * Set of selected quant disease groups comparisons
+     * Set of selected quant disease groups comparisons.
      */
     private final Set<QuantDiseaseGroupsComparison> selectedQuantDiseaseGroupsComparisonList;
     /**
-     * Set of all quant disease groups comparisons available in the heat map
+     * Set of all quant disease groups comparisons available in the heat map.
      */
     private final Set<QuantDiseaseGroupsComparison> availableQuantDiseaseGroupsComparisonList;
-
     /**
-     * Multiple selection is allowed
+     * Multiple selection is allowed.
      */
     private boolean singleSelection = false;
-
     /**
-     * Heat map cell width
+     * Heat map cell width.
      */
     private int heatmapCellWidth;
-
     /**
      * Array of ordered HTML row colors for thumb image (required by swing
-     * panel)
+     * panel).
      */
     private String[] rowsColors;
     /**
@@ -85,120 +81,111 @@ public abstract class HeatMapLayout extends VerticalLayout {
      * panel)
      */
     private String[] columnsColors;
-
     /**
      * 2D Array of ordered HTML rows and columns colors of each cell for thumb
-     * image (required by swing panel)
+     * image (required by swing panel).
      */
     private String[][] dataValuesColors;
-
     /**
-     * Set of current available dataset indexes
+     * Set of current available dataset indexes.
      */
     private final Set<Integer> currentDsIds;
-
     /**
-     * "D Array of the heat map cells
+     * "D Array of the heat map cells.
      */
     private HeatmapCell[][] cellTable;
-
     /**
-     * Map of quant dataset to its index in the database
+     * Map of quant dataset to its index in the database.
      */
     private final Map<Integer, QuantDataset> updatedDatasetMap;
-
     /**
-     * the max number of dataset is used for color code of the heat map color
-     * generator
+     * The max number of dataset is used for color code of the heat map color
+     * generator.
      */
     private int maxDatasetNumber;
-
     /**
      * 2D Array of quant dataset re-indexing object that used to re-index the
-     * datasets in the heat-map
+     * datasets in the heat-map.
      */
     private QuantDSIndexes[][] values;
-
-    /*
-     *The set of heatmap headers cell information objects required for initialize the row headers
+    /**
+     * The set of heatmap headers cell information objects required for
+     * initialize the row headers.
      */
     private Set<HeatMapHeaderCellInformationBean> rowheadersSet;
-    /*
-     *The set of heatmap headers cell information objects required for initialize the column headers
+    /**
+     * The set of heatmap headers cell information objects required for
+     * initialize the column headers.
      */
     private Set<HeatMapHeaderCellInformationBean> colheadersSet;
-
-    /*
-     *Reset the disease category labels on the left side
+    /**
+     * Reset the disease category labels on the left side.
      */
     private boolean resetLeftSideDiseaseCategoriesLabel = false;
-    /*
-     *Reset the disease category labels on the top side
+    /**
+     * Reset the disease category labels on the top side.
      */
     private boolean resetTopSideDiseaseCategoriesLabel = false;
-
-    /*
-     *The map of equal heat map cell to the flipped comparisons
+    /**
+     * The map of equal heat map cell to the flipped comparisons.
      */
     private final Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> equalComparisonMap;
-
-    /*
-     *The heat map image generator is used to generate heat map image that is used for the thumb icon (developed in swing)
+    /**
+     * The heat map image generator is used to generate heat map image that is
+     * used for the thumb icon (developed in swing)
      */
     private final HeatMapImgGenerator gen = new HeatMapImgGenerator();
-
     /**
-     * layout initialization *
+     * Layout initialization.
      */
     /**
      * The main layout for the heat map (the main container contains heat-map
-     * panel and filters)
+     * panel and filters).
      */
     private final AbsoluteLayout heatmapComponentContainer;
     /**
-     * The main heat-map panel
+     * The main heat-map panel.
      */
     private final Panel heatMapContainerPanel;
     /**
-     * The main heat-map layout (to be placed inside scrolling panel)
+     * The main heat-map layout (to be placed inside scrolling panel).
      */
     private final AbsoluteLayout heatmapPanelLayout;
     /**
-     * The main heat-map control buttons layout
+     * The main heat-map control buttons layout.
      */
     private final HorizontalLayout controlsLayout;
     /**
-     * The main heat-map control buttons container layout
+     * The main heat-map control buttons container layout.
      */
     private final VerticalLayout heatmapToolsContainer;
-
     /**
-     * The top left corner cell that contains the heat map filters buttons
+     * The top left corner cell that contains the heat map filters buttons.
      */
     private final VerticalLayout cornerCell;
     /**
-     * The top left heat map filters container
+     * The top left heat map filters container.
      */
     private final HeatmapFiltersContainerResizeControl filterResizeController;
     /**
-     * Available height for the heat map component
+     * Available height for the heat map component.
      */
     private final int availableHMHeight;
     /**
-     * Available width for the heat map component
+     * Available width for the heat map component.
      */
     private final int availableHMWidth;
 
     /**
      * Constructor to initialize the main attributes
      *
-     * @param heatMapContainerWidth
-     * @param availableHMHeight
-     * @param activeColumnHeaders
+     * @param heatMapContainerWidth Main container layout width
+     * @param availableHMHeight Available height for the container layout
+     * @param activeColumnHeaders Array of the column header available to
+     * dataset export table
      * @param filterResizeController top left corner cell that has the dataset
      * filters
-     * @param smallScreen
-     * @param fullPublicationList
+     * @param fullPublicationList List of publication objects array
      */
     public HeatMapLayout(int heatMapContainerWidth, int availableHMHeight, boolean[] activeColumnHeaders, HeatmapFiltersContainerResizeControl filterResizeController, List<Object[]> fullPublicationList) {
         this.filterResizeController = filterResizeController;
@@ -405,7 +392,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
     /**
      * Get side buttons container that has all the heat map control buttons
      *
-     * @return heatmapToolsContainer
+     * @return heatmapToolsContainer Right buttons layout container
      */
     public VerticalLayout getHeatmapToolsContainer() {
         return heatmapToolsContainer;
@@ -414,7 +401,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
     /**
      * Get set of current available dataset indexes
      *
-     * @return currentDsIds
+     * @return currentDsIds Set of dataset indexes
      */
     public Set<Integer> getCurrentDsIds() {
         return currentDsIds;
@@ -424,10 +411,10 @@ public abstract class HeatMapLayout extends VerticalLayout {
      * This method responsible for updating the heat-map data
      *
      *
-     * @param rowsLbels
-     * @param columnsLbels
-     * @param patientsGroupComparisonsSet
-     * @param fullQuantDsMap
+     * @param rowsLbels Set of header cell information for rows
+     * @param columnsLbels Set of header cell information for columns
+     * @param patientsGroupComparisonsSet Set of disease group comparisons
+     * @param fullQuantDsMap Map of datasets and its indexes
      */
     public void updateData(Set<HeatMapHeaderCellInformationBean> rowsLbels, Set<HeatMapHeaderCellInformationBean> columnsLbels, Set<DiseaseGroupComparison> patientsGroupComparisonsSet, Map<Integer, QuantDataset> fullQuantDsMap) {
 
@@ -471,11 +458,10 @@ public abstract class HeatMapLayout extends VerticalLayout {
      * This method responsible for updating the heat-map layout based on updated
      * data
      *
-     *
-     * @param rowheaders
-     * @param colheaders
-     * @param patientsGroupComparisonsSet
-     * @param fullQuantDsMap
+     * @param rowheaders Set of header cell information for rows
+     * @param colheaders Set of header cell information for columns
+     * @param patientsGroupComparisonsSet Set of disease group comparisons
+     * @param fullQuantDsMap Map of datasets and its indexes
      */
     private void updateHeatMapLayout(Set<HeatMapHeaderCellInformationBean> rowheaders, Set<HeatMapHeaderCellInformationBean> colheaders, Set<DiseaseGroupComparison> patientsGroupComparisonsSet, Map<Integer, QuantDataset> fullQuantDsMap) {//, Map<String, String> diseaseFullNameMap, ) {
 
@@ -619,7 +605,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
      * This method responsible for updating heat map layout upon user selection
      * and update the selection manager
      *
-     * @param cell
+     * @param cell Heat-map cell
      */
     protected void addSelectedDs(HeatmapCell cell) {
         if (selectedQuantDiseaseGroupsComparisonList.isEmpty()) {
@@ -666,7 +652,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
      * This method is responsible for un-select comparison and update heat map
      * layout and update selection manager
      *
-     * @param cell
+     * @param cell Heat-map cell
      */
     protected void removerSelectedDs(HeatmapCell cell) {
         for (HeaderCell header : columnHeaderCells) {
@@ -707,7 +693,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
      * This method is responsible for selecting a row or column and update heat
      * map layout and update selection manager
      *
-     * @param selectedheader
+     * @param selectedheader HEader cell title
      */
     protected void addRowSelectedDs(String selectedheader) {
         if (selectedQuantDiseaseGroupsComparisonList.isEmpty()) {
@@ -892,7 +878,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
      * This method responsible for un-selecting a row or column and update heat
      * map layout and update selection manager
      *
-     * @param selectedHeadercell
+     * @param selectedHeadercell Header cell title
      */
     protected void removeRowSelectedDs(String selectedHeadercell) {
 
@@ -932,8 +918,8 @@ public abstract class HeatMapLayout extends VerticalLayout {
      * This method responsible for updating the disease categories top/left
      * labels
      *
-     * @param rowheaders
-     * @param colheaders
+     * @param rowheaders Set of header cell information for rows
+     * @param colheaders Set of header cell information for columns
      */
     private void updateDiseaseCategoriesLabels(Set<HeatMapHeaderCellInformationBean> rowheaders, Set<HeatMapHeaderCellInformationBean> colheaders) {
 
@@ -1001,8 +987,8 @@ public abstract class HeatMapLayout extends VerticalLayout {
     /**
      * This method responsible for calculating the heat-map matrix values
      *
-     * @param rowheaders
-     * @param colheaders
+     * @param rowheaders Set of header cell information for rows
+     * @param colheaders Set of header cell information for columns
      */
     private void calcHeatMapMatrix(Set<HeatMapHeaderCellInformationBean> rowheaders, Set<HeatMapHeaderCellInformationBean> colheaders, Set<DiseaseGroupComparison> patientsGroupComparisonsSet, Map<Integer, QuantDataset> fullQuantDsMap) {
         maxDatasetNumber = -1;
@@ -1030,8 +1016,10 @@ public abstract class HeatMapLayout extends VerticalLayout {
     /**
      * This method responsible for calculating the available datasets number
      *
-     * @param rowheaders
-     * @param colheaders
+     * @param PGI Disease sub group 1
+     * @param PGII Disease sub group 2
+     * @param patientsGroupComparisonsSet Set of disease group comparisons
+     *  @return Set of dataset indexes
      */
     private Set<Integer> calcDsNumbers(String PGI, String PGII, Set<DiseaseGroupComparison> patientsGroupComparisonsSet) {
         Set<Integer> indexes = new HashSet<>();
@@ -1043,7 +1031,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
     /**
      * This method responsible filtering the user selection in the heat map and
-     * remove duplicates before updating the central selection manager
+     * remove duplicates before updating the central selection manager.
      */
     private void updateSelectionManagerIndexes() {
         Map<String, QuantDiseaseGroupsComparison> filteredComp = new LinkedHashMap<>();
@@ -1065,7 +1053,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
      * Update the central selection manager
      *
      * @param selectedQuantDiseaseGroupsComparisonList the final selected quant
-     * disease groups comparison
+     * disease groups comparison.
      */
     public void updateSelectionManager(Set<QuantDiseaseGroupsComparison> selectedQuantDiseaseGroupsComparisonList) {
         ///to be overided
@@ -1081,7 +1069,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
     }
 
     /**
-     * Select all quant disease group comparisons in the datasets
+     * Select all quant disease group comparisons in the datasets.
      */
     public void selectAll() {
         comparisonsCellsMap.values().stream().filter((cell) -> (cell.isVisible() && cell.getValue() != 0 && !cell.getComparison().getComparisonHeader().trim().equalsIgnoreCase("/") && availableQuantDiseaseGroupsComparisonList.contains(cell.getComparison()))).map((cell) -> {
@@ -1116,7 +1104,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
     }
 
     /**
-     * Reset selection on dataset layout no selection manager update
+     * Reset selection on dataset layout no selection manager update.
      */
     public void clearSelection() {
         if (columnHeaderCells == null || colheadersSet.isEmpty()) {
@@ -1139,7 +1127,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
     /**
      * Reset selection on dataset layout no selection manager update
      *
-     * @param comparisonsToSelect
+     * @param comparisonsToSelect Set of quant disease comparisons.
      */
     public void selectComparisons(Set<QuantDiseaseGroupsComparison> comparisonsToSelect) {
         selectedCells.clear();
@@ -1171,6 +1159,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
     /**
      * This method to generate heat map Thumb image on updating.
+     * @return URL for image encode as 64Based string 
      */
     private String getHMThumbImg() {
         gen.generateHeatmap(rowheadersSet, colheadersSet, dataValuesColors, availableHMWidth, availableHMHeight, resetLeftSideDiseaseCategoriesLabel, resetTopSideDiseaseCategoriesLabel, false);
@@ -1196,7 +1185,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
      * This method to select all disease group comparisons related to selected
      * disease category
      *
-     * @param diseaseCategoryName
+     * @param diseaseCategoryName disease category name (AD,MS or PD...etc)
      */
     private void selectDiseaseCategory(String diseaseCategoryName) {
 
@@ -1250,7 +1239,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
     /**
      * This method to update the location of heat map headers and cells on
-     * updating the data
+     * updating the data.
      *
      */
     private void updateHeatmapComponents() {
@@ -1367,13 +1356,13 @@ public abstract class HeatMapLayout extends VerticalLayout {
     }
 
     /**
-     * this method to update heat map Thumb button on updating the heat map
+     * Update heat map Thumb button on updating the heat map
      * thumb image and number of datasets
      *
-     * @param imgUrl
-     * @param datasetNumber
-     * @param deactivatedDatasetNumber
-     * @param equalComparisonMap
+     * @param imgUrl URL for encode 64Based string image
+     * @param datasetNumber Number of datasets
+     * @param deactivatedDatasetNumber Number of filtered datasets
+     * @param equalComparisonMap The map of equal heat map cell to the flipped comparisons
      */
     public abstract void updateHMThumb(String imgUrl, int datasetNumber, int deactivatedDatasetNumber, Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> equalComparisonMap);
 

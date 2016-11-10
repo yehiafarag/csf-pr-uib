@@ -19,47 +19,46 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
     /**
-     * The main header caption label
+     * The main header caption label.
      */
     private final Label valueLabel;
     /**
-     * The header is selected
+     * The header is selected.
      */
     private boolean selected = false;
     /*
-     *List of included comparisons to be updated on select this cell
+     *List of included comparisons to be updated on select this cell.
      */
     private final Set<QuantDiseaseGroupsComparison> includedComparisons = new LinkedHashSet<>();
     /*
-     *List of included heat map cells to be updated on select this cell
+     *List of included heat map cells to be updated on select this cell.
      */
     private final List<HeatmapCell> includedCells;
     /**
-     * The main header caption string value
+     * The main header caption string value.
      */
     private final String title;
     /**
-     * The HTML hashed color code for this cell (based on disease category)
+     * The HTML hashed color code for this cell (based on disease category).
      */
     private String color;
     /**
-     * The main disease category that that cell belong to
+     * The main disease category that that cell belong to.
      */
     private final String diseaseCategory;
     /**
-     * Is the cell is a column header cell
+     * Is the cell is a column header cell.
      */
     private final boolean rotate;
-
     /**
-     * Is the header is for combined-renamed disease sub group
+     * Is the header is for combined-renamed disease sub group.
      */
     private boolean combinedHeader = false;
 
     /**
      * Get the main disease category that that cell belong to
      *
-     * @return diseaseCategory
+     * @return diseaseCategory Disease category name
      */
     public String getDiseaseCategory() {
         return diseaseCategory;
@@ -68,7 +67,7 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
     /**
      * Get list of included heat map cells to be updated on select this cell
      *
-     * @return includedCells
+     * @return includedCells Set of heat map cells
      */
     public List<HeatmapCell> getIncludedCells() {
         return includedCells;
@@ -77,7 +76,7 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
     /**
      * Get list of included comparisons to be updated on select this cell
      *
-     * @return includedComparisons
+     * @return includedComparisons Set of disease comparisons
      */
     public Set<QuantDiseaseGroupsComparison> getIncludedComparisons() {
         return includedComparisons;
@@ -143,7 +142,7 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
     /**
      * On click the header cell select/un-select
      *
-     * @param event
+     * @param event user click event
      */
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
@@ -167,7 +166,7 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
     }
 
     /**
-     * Un-select the header cell
+     * Un-select the header cell.
      */
     public void unselect() {
 
@@ -178,7 +177,7 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
     /**
      * Get the HTML hashed color code for this cell (based on disease category)
      *
-     * @return color
+     * @return color HTML hashed color code
      */
     public String getColor() {
         return color;
@@ -188,8 +187,8 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
      * Add comparison and heat map cell to included comparison set and included
      * heat map cells list
      *
-     * @param groupComp
-     * @param cell
+     * @param groupComp Quant disease comparison
+     * @param cell Heat map cell
      */
     public void addComparison(QuantDiseaseGroupsComparison groupComp, HeatmapCell cell) {
         this.includedComparisons.add(groupComp);
@@ -205,7 +204,7 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
     /**
      * Update the system (select)using the header title
      *
-     * @param cellheader
+     * @param cellheader header cell title
      */
     public abstract void selectData(String cellheader);
 
@@ -220,8 +219,8 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
      * Set the height and update group disease label height as well as the font
      * size of the labels
      *
-     * @param height
-     * @param unit
+     * @param height The header cell height
+     * @param unit The height unit
      */
     @Override
     public void setHeight(float height, Unit unit) {
@@ -249,8 +248,8 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
      * Set the width and update group disease label width as well as the font
      * size of the labels
      *
-     * @param width
-     * @param unit
+     * @param width The header cell width
+     * @param unit The width unit
      */
     @Override
     public void setWidth(float width, Unit unit) {

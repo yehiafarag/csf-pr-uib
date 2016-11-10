@@ -27,57 +27,56 @@ import no.uib.probe.csf.pr.touch.view.core.InformationButton;
 import no.uib.probe.csf.pr.touch.view.core.PopupWindowFrameWithFunctionsBtns;
 
 /**
- *
- * @author Yehia Farag
- *
  * This class represents disease sub group rename and re-combine into new
  * customized disease sub-groups
+ *
+ * @author Yehia Farag
  */
 public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
-    /*
-     *Main pop-up window frame with buttons control  
+    /**
+     *Main pop-up window frame with buttons control  .
      */
     private final PopupWindowFrameWithFunctionsBtns popupWindow;
-    /*
-     *Main window container layout
+    /**
+     *Main window container layout.
      */
     private final VerticalLayout popupBodyLayout;
-    /*
-     * Drop down list of disease category (MS,AD,PD..etc)to let the user select disease groups to re-combine
+    /**
+     * Drop down list of disease category (MS,AD,PD..etc)to let the user select disease groups to re-combine.
      */
     private final ComboBox diseaseTypeSelectionList;
-    /*
-     * Map of updated comparisons title and number of updated comparisons (used for adding '*' to the comparison title)
+    /**
+     * Map of updated comparisons title and number of updated comparisons (used for adding '*' to the comparison title).
      */
     private final Map<String, Integer> captionAstrMap;
-    /*
-     *The window width
+    /**
+     *The window width.
      */
     private final int screenWidth = Math.min(Page.getCurrent().getBrowserWindowWidth(), 600);
-    /*
-     *The window height
+    /**
+     *The window height.
      */
     private final int screenHeight = Math.min(Page.getCurrent().getBrowserWindowHeight(), 800);
-    /*
-     *The maximum window height
+    /**
+     *The maximum window height.
      */
     private final int maxHeight;
-    /*
-     *Scrolling panel to allow overflow scroll for comparisons table
+    /**
+     *Scrolling panel to allow overflow scroll for comparisons table.
      */
     private final Panel diseaseGroupsNamesPanel;
-    /*
-     *Map of disease category  title and comparison container layout
+    /**
+     *Map of disease category  title and comparison container layout.
      */
     private final Map<String, HorizontalLayout> diseaseGroupsGridLayoutMap = new HashMap<>();
-    /*
-     *Map of disease category  title and map of sub disease group (title <-> drop down list)
+    /**
+     *Map of disease category  title and map of sub disease group (title to drop down list).
      */
     private final Map<String, Map<String, ComboBox>> diseaseGroupsSelectionListMap = new HashMap<>();
 
-    /*
-     *A set of disease sub-group names list
+    /**
+     *A set of disease sub-group names list.
      */
     private final Set<String> subGroupList = new LinkedHashSet<>();
 
@@ -120,7 +119,7 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
         btnsFrame.setExpandRatio(leftsideWrapper, 30);
         leftsideWrapper.setSpacing(true);
 
-        InformationButton info = new InformationButton("The disease group names can be altered by the user or reset to the names used in the original publications. If the same name is used for more than one group those groups will be merged into a single group in the other displays. After altering the names click the \"Update\" button.",true);
+        InformationButton info = new InformationButton("The disease group names can be altered by the user or reset to the names used in the original publications. If the same name is used for more than one group those groups will be merged into a single group in the other displays. After altering the names click the \"Update\" button.", true);
         leftsideWrapper.addComponent(info);
 
         HorizontalLayout bottomContainert = new HorizontalLayout();
@@ -277,7 +276,7 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
      *
      * @param diseaseCategory the disease category objects has all disease
      * category information and styling information
-     * @param width
+     * @param width Available layout width
      */
     private HorizontalLayout initDiseaseNamesUpdateContainer(DiseaseCategoryObject diseaseCategory, int width) {
         GridLayout diseaseNamesUpdateContainer = new GridLayout(2, (diseaseCategory.getDiseaseSubGroups().size() * 2));
@@ -351,7 +350,7 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
      * @param strLabel the title of the disease sub group
      * @param description the sub-group full name
      * @param diseaseStyle the CSS style name for the disease
-     * @param the width of the label
+     * @param width  Width of the label
      */
     private VerticalLayout generateLabel(String strLabel, String description, String diseaseStyle, int width) {
         DiseaseGroupLabel container = new DiseaseGroupLabel(strLabel, diseaseStyle);
@@ -368,7 +367,7 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
      * @param diseaseCategory the disease category objects has all disease
      * category information and styling information
      * @param diseaseSubGroup the title of the disease sub group
-     * @param width of the label
+     * @param width Width of the label
      */
     private ComboBox generateLabelList(DiseaseCategoryObject diseaseCategory, String diseaseSubGroup, int width) {
         final ComboBox diseaseGroupsList = new ComboBox();
@@ -443,10 +442,11 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
     }
 
     /**
-     * Update the drop down list of disease sub-groups on entering new sub-group name
+     * Update the drop down list of disease sub-groups on entering new sub-group
+     * name
      *
-     * @param itemId  the item in the drop down list to be updated
-     * @param itemCap   the item in the drop down list caption to be updated
+     * @param itemId the item in the drop down list to be updated
+     * @param itemCap the item in the drop down list caption to be updated
      */
     private void updateAllList(String itemId, String itemCap) {
         for (String diseaseKey : diseaseGroupsSelectionListMap.keySet()) {
@@ -459,18 +459,19 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
 
     }
 
-     /**
+    /**
      * On click on the re-combine button
      *
-     * @param event
+     * @param event User click event
      */
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         popupWindow.view();
     }
 
-     /**
-     * Reset the sub-group comparisons in all disease categories to CSF-PR recommended names
+    /**
+     * Reset the sub-group comparisons in all disease categories to CSF-PR
+     * recommended names.
      */
     private void resetToDefault() {
         String selectedDiseaseKey = diseaseTypeSelectionList.getValue().toString().trim();
@@ -495,8 +496,8 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
 
     }
 
-     /**
-     * update the drop down list of group names on applying filter
+    /**
+     * update the drop down list of group names on applying filter.
      */
     private void updateGroups() {
         Map<String, Map<String, String>> updatedGroupsNamesMap = new HashMap<>();
@@ -523,8 +524,9 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
 
     }
 
-     /**
-     * Reset the sub-group comparisons in all disease categories to the original publication names
+    /**
+     * Reset the sub-group comparisons in all disease categories to the original
+     * publication names.
      */
     private void resetToPublicationsNames() {
         updateSystem(null);
@@ -532,17 +534,18 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
 
     }
 
-   /**
-     * Update the selection manager with the updated sup group comparisons names for each disease category
+    /**
+     * Update the selection manager with the updated sup group comparisons names
+     * for each disease category
      *
-     * @param updatedGroupsNamesMap
+     * @param updatedGroupsNamesMap Map of disease category to new sub-disease category map 
      */
     public abstract void updateSystem(Map<String, Map<String, String>> updatedGroupsNamesMap);
 
     /**
      * Update the main icon button for the filters based on the container size
      *
-     * @param resizeFactor 
+     * @param resizeFactor Resize4 factor to resize the button layout
      */
     public void resizeFilter(double resizeFactor) {
         this.setWidth((int) (25 * resizeFactor), Unit.PIXELS);

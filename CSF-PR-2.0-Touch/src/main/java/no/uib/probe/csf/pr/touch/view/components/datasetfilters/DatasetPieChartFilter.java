@@ -34,64 +34,63 @@ import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 
 /**
+ * This class represents the dataset interactive pie chart filter
  *
  * @author Yehia Farag
- *
- * This class represents the dataset interactive pie chart filter
  */
 public abstract class DatasetPieChartFilter extends AbsoluteLayout implements LayoutEvents.LayoutClickListener {
 
     /**
-     * The highlight selection color (required by JFree chart)
+     * The highlight selection color (required by JFree chart).
      */
     private final Color selectedColor = Color.decode("#197de1");
     /**
      * Map of each category in the chart and its default color (for JFree chart
-     * reset coloring)
+     * reset coloring).
      */
     private final Map<Comparable, Color> defaultKeyColorMap = new HashMap<>();
     /**
-     * Map of category and selected slice color (required by JFree chart)
+     * Map of category and selected slice color (required by JFree chart).
      */
     private final Map<Comparable, Color> selectedKeyColorMap = new HashMap<>();
     /**
-     * Map of category and value (number of datasets)
+     * Map of category and value (number of datasets).
      */
     private final Map<Comparable, String> valuesMap = new HashMap<>();
     /**
-     * The width of the chart
+     * The width of the chart.
      */
     private final int width;
     /**
-     * The height of the chart
+     * The height of the chart.
      */
     private final int height;
     /**
-     * The map of category and current updated dataset indexes
+     * The map of category and current updated dataset indexes.
      */
     private final Map<Comparable, List<Integer>> inuseDsIndexesMap;
     /**
-     * The set of selected dataset indexes
+     * The set of selected dataset indexes.
      */
     private final HashSet<Integer> selectedDsIds = new HashSet<>();
     /**
-     * The set of all dataset indexes
+     * The set of all dataset indexes.
      */
     private final HashSet<Integer> fullDsIds = new HashSet<>();
     /**
-     * The map of category and each pie-chart slice component
+     * The map of category and each pie-chart slice component.
      */
     private final Map<Comparable, PieChartSlice> chartData;
     /**
-     * Array of default slice colors (required by JFree chart)
+     * Array of default slice colors (required by JFree chart).
      */
     private final Color[] defaultColors = new Color[]{new Color(110, 177, 206), new Color(219, 169, 1), new Color(213, 8, 8), new Color(4, 180, 95), new Color(174, 180, 4), new Color(10, 255, 14), new Color(244, 250, 88), new Color(255, 0, 64), new Color(246, 216, 206), new Color(189, 189, 189), new Color(255, 128, 0), Color.WHITE};
     /**
-     * The main pie-chart JFree plot(required by JFree chart)
+     * The main pie-chart JFree plot(required by JFree chart).
      */
     private PiePlot plot;
     /**
-     * The main pie-chart JFree chart (required by JFree chart)
+     * The main pie-chart JFree chart (required by JFree chart).
      */
     private JFreeChart chart;
     /**
@@ -252,7 +251,7 @@ public abstract class DatasetPieChartFilter extends AbsoluteLayout implements La
      * This method responsible for invoking the selection action the method to
      * be implemented in the container to maintain pie-chart interactivity
      *
-     * @param noselection
+     * @param noselection nothing is selected
      */
     public abstract void selectDatasets(boolean noselection);
 
@@ -323,7 +322,7 @@ public abstract class DatasetPieChartFilter extends AbsoluteLayout implements La
      * Synchronize the pie-chart in response to other pie-charts filter
      *
      * @param selectedDatasetIndexes
-     * @param single
+     * @param single only one filter is applied
      */
     public void localUpdate(Collection<Integer> selectedDatasetIndexes, boolean single) {
 
@@ -354,7 +353,7 @@ public abstract class DatasetPieChartFilter extends AbsoluteLayout implements La
     /**
      * Get selected dataset indexes
      *
-     * @return selectedDsIds
+     * @return selectedDsIds set of selected dataset indexes
      */
     public HashSet<Integer> getSelectedDsIds() {
         if (selectedDsIds.isEmpty()) {

@@ -23,7 +23,7 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFListener;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFSelection;
-import no.uib.probe.csf.pr.touch.view.components.datasetfilters.GroupSwichBtn;
+import no.uib.probe.csf.pr.touch.view.components.datasetfilters.GroupSwitchBtn;
 import no.uib.probe.csf.pr.touch.view.components.linechartproteintablecomponents.ExportProteinTable;
 import no.uib.probe.csf.pr.touch.view.components.linechartproteintablecomponents.FilterColumnButton;
 import no.uib.probe.csf.pr.touch.view.components.linechartproteintablecomponents.ProteinTable;
@@ -245,7 +245,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         proteinTableToolsContainer.setWidthUndefined();
         proteinTableToolsContainer.setSpacing(true);
 
-        GroupSwichBtn groupSwichBtn = new GroupSwichBtn() {
+        GroupSwitchBtn groupSwichBtn = new GroupSwitchBtn() {
 
             @Override
             public Set<QuantDiseaseGroupsComparison> getUpdatedComparsionList() {

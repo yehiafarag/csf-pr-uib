@@ -9,36 +9,33 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 
 /**
- *
- * @author Yehia Farag
- *
  * This class contains 2 filters CSF filter allows user to view CSF datasets
  * Serum filter allows user to view Serum datasets users need to select at least
  * on of the filters
+ *
+ * @author Yehia Farag
  */
 public abstract class SerumCsfFilter extends HorizontalLayout implements LayoutEvents.LayoutClickListener {
 
-
-    /*
-     *No CSF datasets button
+    /**
+     * No CSF datasets button.
      */
     private final VerticalLayout noCSFOptionBtn;
-    /*
-     *No SERUM datasets button
+    /**
+     * No SERUM datasets button.
      */
     private final VerticalLayout noSerumOptionBtn;
-    
-     /*
-     *Is SERUM datasets included (No by default)
+    /**
+     * Is SERUM datasets included (No by default).
      */
     private boolean serumApplied = false;
-     /*
-     *Is CSF datasets included (yes by default)
+    /**
+     * Is CSF datasets included (yes by default).
      */
     private boolean csfApplied = true;
 
     /**
-     * Constructor to initialize the main attributes
+     * Constructor to initialize the main attributes.
      */
     public SerumCsfFilter() {
         this.setWidthUndefined();
@@ -78,10 +75,8 @@ public abstract class SerumCsfFilter extends HorizontalLayout implements LayoutE
 
     }
 
-    
-
-     /**
-     * On click method used to check the selected button and update the system 
+    /**
+     * On click method used to check the selected button and update the system.
      */
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
@@ -131,14 +126,15 @@ public abstract class SerumCsfFilter extends HorizontalLayout implements LayoutE
     }
 
     /**
-     *Get No SERUM datasets button layout
-     * @return noSerumOptionBtn
+     * Get No SERUM datasets button layout
+     *
+     * @return noSerumOptionBtn Serum button layout.
      */
     public VerticalLayout getNoSerumOptionBtn() {
         return noSerumOptionBtn;
     }
 
-     /**
+    /**
      * Update the Data Handler to include the selected datasets type
      *
      * @param serumApplied include SERUM datasets
@@ -147,7 +143,8 @@ public abstract class SerumCsfFilter extends HorizontalLayout implements LayoutE
     public abstract void updateSystem(boolean serumApplied, boolean csfApplied);
 
     /**
-     *Reset the both buttons to initial state (CSF datasets included and SERUM datasets excluded)
+     * Reset the both buttons to initial state (CSF datasets included and SERUM
+     * datasets excluded).
      */
     public void resetFilter() {
         serumApplied = false;
@@ -161,10 +158,10 @@ public abstract class SerumCsfFilter extends HorizontalLayout implements LayoutE
         updateSystem(serumApplied, csfApplied);
     }
 
-     /**
-     * Update the main  buttons size for the filters based on the container size
+    /**
+     * Update the main buttons size for the filters based on the container size
      *
-     * @param resizeFactor 
+     * @param resizeFactor Resize factor to update the button size
      */
     public void resizeFilter(double resizeFactor) {
         this.setWidth((int) (53 * resizeFactor), Unit.PIXELS);

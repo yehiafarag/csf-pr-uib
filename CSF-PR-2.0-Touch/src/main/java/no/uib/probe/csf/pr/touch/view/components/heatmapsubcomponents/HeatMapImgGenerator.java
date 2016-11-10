@@ -22,61 +22,59 @@ import org.jfree.chart.encoders.ImageEncoderFactory;
 import org.jfree.chart.encoders.ImageFormat;
 
 /**
- *
- * @author Yehia Farag
- *
  * This class represents heat map image generator that is use Swing to generate
  * image that is used for thumb left side button also used to provide the heat
  * map Absolute layout for the different cells and headers location
+ *
+ * @author Yehia Farag
  */
 public class HeatMapImgGenerator {
 
     /**
-     * Transparent AWT color
+     * Transparent AWT color.
      */
     private final Color transparent = new Color(255, 255, 255, 0);
     /**
-     * White AWT color
+     * White AWT color.
      */
     private final Color white = new Color(255, 255, 255);
     /**
-     * Generated image width
+     * Generated image width.
      */
     private int imageWidth;
     /**
-     * Generated image height
+     * Generated image height.
      */
     private int imageHeight;
     /**
-     * Heat map cell width
+     * Heat map cell width.
      */
     private int cellWidth;
     /**
-     * Resize factor that is used for ratios
+     * Resize factor that is used for ratios.
      */
     private double resizeFactor;
-
     /**
-     * Map of headers and size of each label
+     * Map of headers and size of each label.
      */
     private final Map<String, Rectangle> headerLabelMap = new LinkedHashMap<>();
     /**
-     * Show/hide labels values
+     * Show/hide labels values.
      */
     private boolean printLabels;
     /**
-     * Main heat map swing JPanel
+     * Main heat map swing JPanel.
      */
     private JPanel heatmapPanelLayout;
     /**
-     * Main heat map cell border
+     * Main heat map cell border (Swing border).
      */
     private final Border fullBorder = new LineBorder(new Color(220, 224, 224), 1);
 
     /**
      * Get map of headers and size of each label
      *
-     * @return headerLabelMap
+     * @return headerLabelMap map of header labels title to the label dimensions
      */
     public Map<String, Rectangle> getHeaderLabelMap() {
         return headerLabelMap;
@@ -84,17 +82,17 @@ public class HeatMapImgGenerator {
 
     /**
      * Generate heat map image encoded as Base64 String that is used as image
-     * url
+     * URL
      *
-     * @param rows
-     * @param columns
-     * @param data
-     * @param heatmapWidth
-     * @param heatmaHeight
-     * @param resetRowLabels
-     * @param restColumnLabels
-     * @param printLabels
-     * @return url for heat map image
+     * @param rows Set of header cell information for rows
+     * @param columns Set of header cell information for columns
+     * @param data 2D array of values for heat map
+     * @param heatmapWidth Generated image width
+     * @param heatmaHeight Generated image height
+     * @param resetRowLabels Reset disease category row labels
+     * @param restColumnLabels Reset disease category column labels
+     * @param printLabels Print the value of each label
+     * @return URL for heat map image
      */
     public String generateHeatmap(Set<HeatMapHeaderCellInformationBean> rows, Set<HeatMapHeaderCellInformationBean> columns, String[][] data, int heatmapWidth, int heatmaHeight, boolean resetRowLabels, boolean restColumnLabels, boolean printLabels) {
         this.printLabels = printLabels;
@@ -199,7 +197,6 @@ public class HeatMapImgGenerator {
             heatmapPanelLayout.add(cell);
 
         }
-
         y = (int) (150 * resizeFactor);
         topLabelContainerWidth = (rows.size() * cellWidth);
         countLimit = rows.size() / 3;
@@ -214,7 +211,7 @@ public class HeatMapImgGenerator {
                     break;
 
                 }
-            };
+            }
             if (resetRowLabels && bean != null) {
                 int width = countLimit * cellWidth;
                 topLabelContainerWidth = topLabelContainerWidth - width;
@@ -284,7 +281,7 @@ public class HeatMapImgGenerator {
     /**
      * Get main heat map panel height
      *
-     * @return imageHeight
+     * @return imageHeight current panel height
      */
     public int getPanelHeight() {
         return imageHeight;
@@ -293,7 +290,7 @@ public class HeatMapImgGenerator {
     /**
      * Generate heat map cell
      *
-     * @return imageHeight
+     * @return cell JPanel for heat map cell
      */
     private JPanel generateHeatmapCell(String color, int x, int y, Border border) {
         JPanel cell = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -326,7 +323,7 @@ public class HeatMapImgGenerator {
     /**
      * Generate heat map cell label
      *
-     * @return imageHeight
+     * @return label JComponent for label content
      */
     private JComponent generateHeatmapCellLabel(String text, int w, int h, boolean rotate, Color background, Border border) {
         JLabel label = new JLabel("");
@@ -371,7 +368,7 @@ public class HeatMapImgGenerator {
     /**
      * Get main heat map panel width
      *
-     * @return imageWidth
+     * @return imageWidth width of the panel
      */
     public int getPanelWidth() {
         return imageWidth;
@@ -380,7 +377,7 @@ public class HeatMapImgGenerator {
     /**
      * Get resize factor that is used for ratios
      *
-     * @return resizeFactor
+     * @return resizeFactor Resize factor to correct the components size
      */
     public double getResizeFactor() {
         return resizeFactor;

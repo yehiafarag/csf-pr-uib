@@ -24,55 +24,57 @@ import no.uib.probe.csf.pr.touch.view.core.SortableLayoutContainer;
 import org.vaadin.teemu.switchui.Switch;
 
 /**
+ * This class is responsible for updating heat-map rows and columns order as
+ * well as allowing user to hide disease groups
  *
  * @author Yehia Farag
  *
- * This class is responsible for updating heat-map rows and columns order as
- * well as allowing user to hide disease groups
  */
 public abstract class ReorderSelectGroupsComponent extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
-    /*
-     *Main pop-up window frame with buttons control  
+    /**
+     * Main pop-up window frame with buttons control.
      */
     private final PopupWindowFrameWithFunctionsBtns popupWindow;
-    /*
-     *Maindisease groups (comparisons labels) container
+    /**
+     * Main disease groups (comparisons labels) container.
      */
     private final HorizontalLayout diseaseGroupsContaioner;
-    /*
-     *Main window container layout
+    /**
+     * Main window container layout.
      */
     private final VerticalLayout popupBody;
-    /*
-     *Set of datasets indexis available in the heat-map
+    /**
+     * Set of datasets indexes available in the heat-map.
      */
     private LinkedHashSet<Integer> datasetsIndexes;
-    /*
-     *Left side sortable (drag and drop) layout container
+    /**
+     * Left side sortable (drag and drop) layout container.
      */
     private final SortableLayoutContainer groupILayout;
-    /*
-     *Right side sortable (drag and drop) layout container
+    /**
+     * Right side sortable (drag and drop) layout container.
      */
     private final SortableLayoutContainer groupIILayout;
-
-    /*
-     *Set of datasets sub-group comparisons 
+    /**
+     * Set of datasets sub-group comparisons.
      */
     private Set<DiseaseGroupComparison> diseaseSubGroupComparisonsSet;
-
-    /*
-     *The window width
+    /**
+     * The window width.
      */
     private final int screenWidth = Math.min(Page.getCurrent().getBrowserWindowWidth(), 1000);
-    /*
-     *The window height
+    /**
+     * The window height.
      */
     private final int screenHeight = Math.min(Page.getCurrent().getBrowserWindowHeight(), 800);
+    /**
+     * Map of header title to heat/map header cell object .
+     */
+    private final Map<String, HeatMapHeaderCellInformationBean> fullCellInfoMap = new HashMap<>();
 
     /**
-     * Constructor to initialize the main attributes
+     * Constructor to initialize the main attributes.
      */
     public ReorderSelectGroupsComponent() {
         //init icon
@@ -114,7 +116,7 @@ public abstract class ReorderSelectGroupsComponent extends VerticalLayout implem
         btnsFrame.setComponentAlignment(leftsideWrapper, Alignment.TOP_LEFT);
         leftsideWrapper.setSpacing(true);
 
-        InformationButton info = new InformationButton("The disease groups shown and the order of these groups can be controlled by dragging and dropping the groups in the table, and by selecting only the groups to display. When the wanted order is achieved click the \"Apply\" button.",true);
+        InformationButton info = new InformationButton("The disease groups shown and the order of these groups can be controlled by dragging and dropping the groups in the table, and by selecting only the groups to display. When the wanted order is achieved click the \"Apply\" button.", true);
         leftsideWrapper.addComponent(info);
 
         HorizontalLayout bottomContainert = new HorizontalLayout();
@@ -213,14 +215,12 @@ public abstract class ReorderSelectGroupsComponent extends VerticalLayout implem
 
     }
 
-    private final Map<String, HeatMapHeaderCellInformationBean> fullCellInfoMap = new HashMap<>();
-
     /**
      * Update the data with disease groups name and information
      *
-     * @param rowHeaders
-     * @param colHeaders
-     * @param patientsGroupComparisonsSet
+     * @param rowHeaders Set of row header cell information objects.
+     * @param colHeaders Set of column header cell information objects.
+     * @param patientsGroupComparisonsSet Set of datasets sub-group comparisons.
      */
     public void updateData(LinkedHashSet<HeatMapHeaderCellInformationBean> rowHeaders, LinkedHashSet<HeatMapHeaderCellInformationBean> colHeaders, Set<DiseaseGroupComparison> patientsGroupComparisonsSet) {
 
@@ -243,13 +243,19 @@ public abstract class ReorderSelectGroupsComponent extends VerticalLayout implem
     /**
      * On click on the re-order select button
      *
-     * @param event
+     * @param event reorder click button event
      */
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         popupWindow.view();
     }
 
+    /**
+     * Filter the right sub-disease groups list based on selection from left
+     * sub-disease groups list selection
+     *
+     * @param event reorder click button event
+     */
     private Set<HeatMapHeaderCellInformationBean> filterPatGroup2List(Set<HeatMapHeaderCellInformationBean> sel1) {
         Set<HeatMapHeaderCellInformationBean> labels = new LinkedHashSet<>();
         datasetsIndexes = new LinkedHashSet<>();
@@ -268,15 +274,15 @@ public abstract class ReorderSelectGroupsComponent extends VerticalLayout implem
     /**
      * Update the heat-map based on user selection and actions
      *
-     * @param rowHeaders
-     * @param colHeaders
+     * @param rowHeaders Set of row header cell information objects.
+     * @param colHeaders Set of column header cell information objects.
      */
     public abstract void updateSystem(LinkedHashSet<HeatMapHeaderCellInformationBean> rowHeaders, LinkedHashSet<HeatMapHeaderCellInformationBean> colHeaders);
 
     /**
      * Update the main icon button for the filters based on the container size
      *
-     * @param resizeFactor
+     * @param resizeFactor Resize factor to update the button size
      */
     public void resizeFilter(double resizeFactor) {
         this.setWidth((int) (25 * resizeFactor), Unit.PIXELS);

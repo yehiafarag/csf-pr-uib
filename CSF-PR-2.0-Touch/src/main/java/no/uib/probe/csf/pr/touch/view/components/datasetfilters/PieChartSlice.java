@@ -6,31 +6,30 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- *
- * @author Yehia Farag
- *
  * This class contains information required for pie-chart slice(working with pie
  * chart interactive pie-chart filter)
+ *
+ * @author Yehia Farag
  */
 public class PieChartSlice implements Serializable {
 
     /**
-     * The slice identification label
+     * The slice identification label.
      */
     private Comparable label;
     /**
-     * The slice AWT Color required by JFreechart
+     * The slice AWT Color required by JFreechart.
      */
     private Color color;
     /**
-     * Set of included dataset indexes
+     * Set of included dataset indexes.
      */
     private final Set<Integer> datasetIds = new HashSet<>();
 
     /**
      * Get the slice identification label
      *
-     * @return label
+     * @return label for the section
      */
     public Comparable getLabel() {
         return label;
@@ -39,7 +38,7 @@ public class PieChartSlice implements Serializable {
     /**
      * Set the slice identification label
      *
-     * @param label
+     * @param label Label for the section
      */
     public void setLabel(Comparable label) {
         this.label = label;
@@ -57,7 +56,7 @@ public class PieChartSlice implements Serializable {
     /**
      * Get the slice AWT Color required by JFreechart
      *
-     * @return color
+     * @return color AWT color
      */
     public Color getColor() {
         return color;
@@ -66,7 +65,7 @@ public class PieChartSlice implements Serializable {
     /**
      * Set the slice AWT Color required by JFreechart
      *
-     * @param color
+     * @param color AWT color
      */
     public void setColor(Color color) {
         this.color = color;
@@ -75,7 +74,7 @@ public class PieChartSlice implements Serializable {
     /**
      * Get set of included dataset indexes
      *
-     * @return
+     * @return set of dataset indexes
      */
     public Set<Integer> getDatasetIds() {
         return datasetIds;
@@ -84,9 +83,9 @@ public class PieChartSlice implements Serializable {
     /**
      * Add dataset indexes to et of included dataset indexes
      *
-     * @param datasetId
+     * @param datasetId Quant dataset index
      */
-    public void setDatasetIds(int datasetId) {
+    public void addDatasetId(int datasetId) {
         this.datasetIds.add(datasetId);
     }
 }

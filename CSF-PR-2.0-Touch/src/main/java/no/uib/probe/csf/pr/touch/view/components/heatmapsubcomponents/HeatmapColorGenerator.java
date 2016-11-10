@@ -1,11 +1,10 @@
 package no.uib.probe.csf.pr.touch.view.components.heatmapsubcomponents;
 
 /**
- *
- * @author Yehia Farag
- *
  * This class is responsible for generating Color Gradient as HTML hashed color
  * code for the heat map
+ *
+ * @author Yehia Farag
  */
 public class HeatmapColorGenerator {
 
@@ -24,8 +23,8 @@ public class HeatmapColorGenerator {
     /**
      * Get the color for the input value
      *
-     * @param value
-     * @return
+     * @param value double value to be converted to color
+     * @return HTML hashed color for the input value
      */
     public String getColor(double value) {
         if (value == 0) {

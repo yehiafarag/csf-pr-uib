@@ -9,22 +9,21 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 /**
- *
- * @author Yehia Farag
- *
  * This class represents the rotated JPanel that is used for heat map column
  * cell header and disease category the class is used for generating images in
  * swing panels
+ *
+ * @author Yehia Farag
  */
 public class RotatedJPanel extends JPanel {
 
     /**
-     * The image that is used for rotation process
+     * The image that is used for rotation process.
      */
     private BufferedImage componentImg;
 
     /**
-     * Convert the main JPAnel into a buffered image in order to rotate it
+     * Convert the main JPAnel into a buffered image in order to rotate it.
      */
     private void updateComponentImg() {
         BufferedImage img = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_RGB);
@@ -35,7 +34,10 @@ public class RotatedJPanel extends JPanel {
     }
 
     /**
-     * Rotate the image 270 degrees
+     * Rotate the image 270 degrees.
+     *
+     * @param image Image of the panel to rotate
+     * @return image rotated for panel
      */
     private BufferedImage createFlipped(BufferedImage image) {
 

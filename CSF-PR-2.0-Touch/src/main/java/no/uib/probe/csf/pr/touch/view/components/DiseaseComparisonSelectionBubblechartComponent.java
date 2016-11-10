@@ -37,7 +37,7 @@ import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFListener;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFSelection;
-import no.uib.probe.csf.pr.touch.view.components.datasetfilters.GroupSwichBtn;
+import no.uib.probe.csf.pr.touch.view.components.datasetfilters.GroupSwitchBtn;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 import no.uib.probe.csf.pr.touch.view.core.BubbleComponent;
 import no.uib.probe.csf.pr.touch.view.core.InformationButton;
@@ -311,7 +311,7 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
         bubblechartToolsContainer.setWidthUndefined();
         bubblechartToolsContainer.setSpacing(true);
 
-        GroupSwichBtn groupSwichBtn = new GroupSwichBtn() {
+        GroupSwitchBtn groupSwichBtn = new GroupSwitchBtn() {
 
             @Override
             public Set<QuantDiseaseGroupsComparison> getUpdatedComparsionList() {

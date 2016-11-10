@@ -30,65 +30,67 @@ import no.uib.probe.csf.pr.touch.view.core.PopupWindowFrameWithFunctionsBtns;
  * @author Yehia Farag
  *
  */
-public abstract class GroupSwichBtn extends ImageContainerBtn {
+public abstract class GroupSwitchBtn extends ImageContainerBtn {
 
-    /*
-     *Main pop-up window frame with buttons control  
+    /**
+     * Main pop-up window frame with buttons control.
      */
     private final PopupWindowFrameWithFunctionsBtns popupWindow;
-    /*
-     *Main window container layout
+    /**
+     * Main window container layout.
      */
     private final VerticalLayout popupBodyLayout;
-    /*
-     *List of selected comparisons to be updated based on user selection for comparisons across the system
+    /**
+     * List of selected comparisons to be updated based on user selection for
+     * comparisons across the system.
      */
     private final Set<QuantDiseaseGroupsComparison> selectedComparisonList;
-    /*
-     *List of equal comparison map to avoid double selection from heat map
+    /**
+     * List of equal comparison map to avoid double selection from heat map.
      */
     private final Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> equalComparisonMap;
-    /*
-     *Main group comparisons container (contain the switch button) 
+    /**
+     * Main group comparisons container (contain the switch button).
      */
     private final GridLayout table;
-    /*
-     *Header I label (Numerator) 
+    /**
+     * Header I label (Numerator) .
      */
     private final Label headerI;
-    /*
-     *Header II label (Denominator) 
+    /**
+     * Header II label (Denominator) .
      */
     private final Label headerII;
-    /*
-     *List of  comparisons after user updates to update comparsions across the system
+    /**
+     * List of comparisons after user updates to update comparisons across the
+     * system.
      */
     private final ArrayList<QuantDiseaseGroupsComparison> updatedComparisonList;
-    /*
-     *Button layout container for buttons in the bottom panel
+    /**
+     * Button layout container for buttons in the bottom panel.
      */
     private final HorizontalLayout btnWrapper;
-    /*
-     *Scrolling panel to allow overflow scroll for comparisons
+    /**
+     * Scrolling panel to allow overflow scroll for comparisons.
      */
     private final Panel tablePanelWrapper;
-    /*
-     *Main switch comparison buttons listener to handel the user cselection
+    /**
+     * Main switch comparison buttons listener to handle the user selection.
      */
     private final LayoutEvents.LayoutClickListener switchListener;
 
-    /*
-     *The window width
+    /**
+     * The window width
      */
     private final int screenWidth = Math.min(Page.getCurrent().getBrowserWindowWidth(), 800);
-    /*
-     *The window height
+    /**
+     * The window height.
      */
     private final int screenHeight = Math.min(Page.getCurrent().getBrowserWindowHeight(), 800);
 
     /**
      * On click method used to update the selection comparison list and view the
-     * pop up window
+     * pop up window.
      */
     @Override
     public void onClick() {
@@ -99,16 +101,14 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
         if (selectedComparisonList.isEmpty()) {
             return;
         }
-
         updateSelectionList();
         popupWindow.view();
-
     }
 
     /**
-     * Constructor to initialize the main attributes
+     * Constructor to initialize the main attributes.
      */
-    public GroupSwichBtn() {
+    public GroupSwitchBtn() {
         this.setHeight(40, Unit.PIXELS);
         this.setWidth(40, Unit.PIXELS);
         this.updateIcon(new ThemeResource("img/flip-v-updated.png"));
@@ -162,14 +162,14 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
         btnsFrame.setComponentAlignment(leftsideWrapper, Alignment.TOP_LEFT);
         leftsideWrapper.setSpacing(true);
 
-        InformationButton info = new InformationButton("The order of the groups in each comparison can be switched, i.e. A vs. B or B vs. A. To switch two groups click the icon with the two arrows in between the two groups. When the desired order is achieved click the \"Apply\" button.",true);
+        InformationButton info = new InformationButton("The order of the groups in each comparison can be switched, i.e. A vs. B or B vs. A. To switch two groups click the icon with the two arrows in between the two groups. When the desired order is achieved click the \"Apply\" button.", true);
         leftsideWrapper.addComponent(info);
 
         Button applyFilters = new Button("Apply");
         applyFilters.setDescription("Apply the selected filters");
         applyFilters.setStyleName(ValoTheme.BUTTON_TINY);
         applyFilters.addClickListener((Button.ClickEvent event) -> {
-            GroupSwichBtn.this.updateComparisons(new LinkedHashSet<>(updatedComparisonList));
+            GroupSwitchBtn.this.updateComparisons(new LinkedHashSet<>(updatedComparisonList));
             popupWindow.view();
         });
         btnWrapper = new HorizontalLayout();
@@ -179,14 +179,14 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
 
         btnsFrame.addComponent(btnWrapper);
 
-        this.switchListener = GroupSwichBtn.this::switchClick;
+        this.switchListener = GroupSwitchBtn.this::switchClick;
 
     }
 
     /**
      * On click on switch button
      *
-     * @param event
+     * @param event switch group event
      */
     private void switchClick(LayoutEvents.LayoutClickEvent event) {
         if (event.getComponent() instanceof VerticalLayout) {
@@ -226,7 +226,8 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
     public abstract Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> getEqualComparsionMap();
 
     /**
-     * Update comparisons updated comparisons list in order to update the system
+     * Update comparisons updated comparisons list in order to update the
+     * system.
      */
     private void updateSelectionList() {
         table.removeAllComponents();
@@ -278,7 +279,7 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
      * Update windows height and its container layout based on the number of
      * comparisons in the system
      *
-     * @param itemsNumber
+     * @param itemsNumber number of rows
      */
     private void setWindowHight(int itemsNumber) {
         int itemH = (27 * (itemsNumber + 1));
@@ -308,7 +309,7 @@ public abstract class GroupSwichBtn extends ImageContainerBtn {
     /**
      * Update the selection manager with the updated list
      *
-     * @param updatedComparisonList
+     * @param updatedComparisonList list of updated quant disease comparisons
      */
     public abstract void updateComparisons(LinkedHashSet<QuantDiseaseGroupsComparison> updatedComparisonList);
 

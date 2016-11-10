@@ -23,53 +23,52 @@ import no.uib.probe.csf.pr.touch.view.core.InformationButton;
 import no.uib.probe.csf.pr.touch.view.core.PopupWindowFrameWithFunctionsBtns;
 
 /**
- *
- * @author Yehia Farag
- *
  * This class represents the dataset filter container with the interactive
  * management system for different interactive pie-chart filters
+ *
+ * @author Yehia Farag
  */
 public abstract class DatasetPieChartFiltersComponent extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
-    /*
-     *Main pop-up window frame with buttons control  
+    /**
+     *Main pop-up window frame with buttons control.  
      */
     private final PopupWindowFrameWithFunctionsBtns popupWindow;
-    /*
-     *Main pie-charts filter container
+    /**
+     *Main pie-charts filter container.
      */
     private final GridLayout popupBody;
-    /*
-     *Map of filter title and map of sup-filters slices map
+    /**
+     *Map of filter title and map of sup-filters slices map.
      */
     private final Map<String, Map<Comparable, PieChartSlice>> fullFiltersData = new LinkedHashMap<>();
-    /*
-     *Map of filter title and pie-chart filter component
+    /**
+     *Map of filter title and pie-chart filter component.
      */
     private final Map<String, DatasetPieChartFilter> filtersSet = new LinkedHashMap<>();
-    /*
-     *Map current datasets indexes and boolean is active (or filtered)
+    /**
+     *Map current datasets indexes and boolean is active (or filtered).
      */
     private final Map<Integer, Boolean> activeDatasetMap;
-    /*
-     *Map of datasets indexes and dataset objects
+    /**
+     *Map of datasets indexes and dataset objects.
      */
     private Map<Integer, QuantDataset> quantDatasetMap;
-    /*
-     *Only one filter applied
+    /**
+     *Only one filter applied.
      */
     private boolean singlefilter;
-    /*
-     *Main pop-up window width 
+    /**
+     *Main pop-up window width .
      */
     private final int screenWidth = Math.min(Page.getCurrent().getBrowserWindowWidth(), 980);
-    /*
-     *Main pop-up window height 
+    /**
+     *Main pop-up window height .
      */
     private final int screenHeight = Math.max(Math.min(Page.getCurrent().getBrowserWindowHeight(), 800), 435);
 
     /**
-     * Constructor to initialize the main attributes
+     * Constructor to initialize the main attributes.
      */
     public DatasetPieChartFiltersComponent() {
 
@@ -98,7 +97,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         btnsFrame.setComponentAlignment(leftsideWrapper, Alignment.TOP_LEFT);
         leftsideWrapper.setSpacing(true);
 
-        InformationButton info = new InformationButton("The provided filters allow for the selection of subsets of the available data for the currently selected disease categories. A selection in one chart will result in the other charts updating to show only the remaining options. Click \"Apply\" to use the filters.",true);
+        InformationButton info = new InformationButton("The provided filters allow for the selection of subsets of the available data for the currently selected disease categories. A selection in one chart will result in the other charts updating to show only the remaining options. Click \"Apply\" to use the filters.", true);
         leftsideWrapper.addComponent(info);
 
         HorizontalLayout btnLayout = new HorizontalLayout();
@@ -188,7 +187,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
      * This method responsible for updating the main datasets across all
      * pie-charts the update happened mainly on changing disease category
      *
-     * @param quantDatasetMap
+     * @param quantDatasetMap Map of quant datasets and its indexes
      */
     private void updateQuantDatasetMap(Map<Integer, QuantDataset> quantDatasetMap) {
         Set<Integer> finalSelectedIds = filterSelectionUnit();
@@ -202,9 +201,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
 
     /**
      * This method responsible for updating the pie-chart filters sub categories
-     * (slices)
-     *
-     * @param quantDatasetMap
+     * (slices).
      */
     private void updatePieChartSliceSet() {
         fullFiltersData.clear();
@@ -228,7 +225,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
             return dataset;
         }).map((dataset) -> {
             PieChartSlice yearSlice = yearMap.get(dataset.getYear());
-            yearSlice.setDatasetIds(dataset.getQuantDatasetIndex());
+            yearSlice.addDatasetId(dataset.getQuantDatasetIndex());
             yearMap.put(dataset.getYear(), yearSlice);
             return dataset;
         }).map((dataset) -> {
@@ -240,7 +237,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
             return dataset;
         }).map((dataset) -> {
             PieChartSlice studyTypeSlice = studyTypeMap.get(dataset.getTypeOfStudy());
-            studyTypeSlice.setDatasetIds(dataset.getQuantDatasetIndex());
+            studyTypeSlice.addDatasetId(dataset.getQuantDatasetIndex());
             studyTypeMap.put(dataset.getTypeOfStudy(), studyTypeSlice);
             return dataset;
         }).map((dataset) -> {
@@ -252,7 +249,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
             return dataset;
         }).map((dataset) -> {
             PieChartSlice sampleMachingSlice = sampleMatchingMap.get(dataset.getSampleMatching());
-            sampleMachingSlice.setDatasetIds(dataset.getQuantDatasetIndex());
+            sampleMachingSlice.addDatasetId(dataset.getQuantDatasetIndex());
             sampleMatchingMap.put(dataset.getSampleMatching(), sampleMachingSlice);
             return dataset;
         }).map((dataset) -> {
@@ -264,7 +261,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
             return dataset;
         }).map((dataset) -> {
             PieChartSlice technologySlice = technologyMap.get(dataset.getTechnology());
-            technologySlice.setDatasetIds(dataset.getQuantDatasetIndex());
+            technologySlice.addDatasetId(dataset.getQuantDatasetIndex());
             technologyMap.put(dataset.getTechnology(), technologySlice);
             return dataset;
         }).map((dataset) -> {
@@ -276,7 +273,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
             return dataset;
         }).map((dataset) -> {
             PieChartSlice analyticalApproachSlice = analyticalApproachMap.get(dataset.getAnalyticalApproach());
-            analyticalApproachSlice.setDatasetIds(dataset.getQuantDatasetIndex());
+            analyticalApproachSlice.addDatasetId(dataset.getQuantDatasetIndex());
             analyticalApproachMap.put(dataset.getAnalyticalApproach(), analyticalApproachSlice);
             return dataset;
         }).map((dataset) -> {
@@ -288,7 +285,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
             return dataset;
         }).forEach((dataset) -> {
             PieChartSlice shotgunTargetedSlice = shotgunTargetedMap.get(dataset.getShotgunTargeted());
-            shotgunTargetedSlice.setDatasetIds(dataset.getQuantDatasetIndex());
+            shotgunTargetedSlice.addDatasetId(dataset.getQuantDatasetIndex());
             shotgunTargetedMap.put(dataset.getShotgunTargeted(), shotgunTargetedSlice);
         });
 
@@ -320,6 +317,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
      * @param index the filter index
      * @param width the filter width
      * @param height the filter height
+     * @return initialized pie-chart filter
      */
     private DatasetPieChartFilter initPieChartFilter(String title, String filterId, int index, int width, int height) {
         DatasetPieChartFilter filter = new DatasetPieChartFilter(title, filterId, index, width, height) {
@@ -338,7 +336,8 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
 
     /**
      * This method responsible for calculate datasets required for synchronizing
-     * the different pie-chart filters
+     * the different pie-chart filters.
+     * @return set of selected dataset indexes
      */
     private Set<Integer> filterSelectionUnit() {
         singlefilter = false;
@@ -371,7 +370,9 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
     }
 
     /**
-     * This method responsible for synchronize the different pie-chart filters
+     * This method responsible for synchronize the different pie-chart filters.
+     * @param datasetIds  Set of dataset indexes
+     * @param filterId The applied filter id
      */
     private void updateFilters(Collection<Integer> datasetIds, String filterId) {
         filtersSet.keySet().stream().filter((keyFilterId) -> !(keyFilterId.equalsIgnoreCase(filterId))).map((keyFilterId) -> filtersSet.get(keyFilterId)).forEach((filter) -> {
@@ -380,7 +381,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
     }
 
     /**
-     * Reset the pie-chart filters to its initial state
+     * Reset the pie-chart filters to its initial state.
      */
     public void resetFilters() {
         filtersSet.values().stream().forEach((filter) -> {
@@ -392,7 +393,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
     /**
      * Update the system with the current selected dataset ids
      *
-     * @param selectedDatasetIds
+     * @param selectedDatasetIds Set of dataset indexes
      */
     public abstract void updateSystem(Set<Integer> selectedDatasetIds);
 
@@ -412,8 +413,8 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
     /**
      * Check current selected filters to update the system
      *
-     * @param quantDatasetToFilter
-     * @return finalSelectionIds
+     * @param quantDatasetToFilter Map of quant dataset mapped to datasets indexes
+     * @return finalSelectionIds set of dataset indexes
      */
     public Set<Integer> checkAndFilter(Map<Integer, QuantDataset> quantDatasetToFilter) {
 
@@ -428,7 +429,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
     /**
      * Update the main icon button for the filters based on the container size
      *
-     * @param resizeFactor
+     * @param resizeFactor the resize factor to resize the filter component
      */
     public void resizeFilter(double resizeFactor) {
         this.setWidth((int) (25 * resizeFactor), Unit.PIXELS);
