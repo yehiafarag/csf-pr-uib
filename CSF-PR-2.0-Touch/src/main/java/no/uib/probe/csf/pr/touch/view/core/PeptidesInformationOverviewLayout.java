@@ -95,6 +95,8 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
 
     /**
      * Generate and initialize main protein form fields.
+     *
+     * @return Peptide information form container layout
      */
     private VerticalLayout generatePeptidesForm() {
         VerticalLayout mainContainer = new VerticalLayout();

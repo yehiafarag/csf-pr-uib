@@ -91,6 +91,8 @@ public class ProteinsInformationOverviewLayout extends VerticalLayout {
 
     /**
      * Generate and initialize main protein form fields.
+     *
+     * @return Protein information form container layout
      */
     private VerticalLayout generateProteinsForm() {
         VerticalLayout mainContainer = new VerticalLayout();

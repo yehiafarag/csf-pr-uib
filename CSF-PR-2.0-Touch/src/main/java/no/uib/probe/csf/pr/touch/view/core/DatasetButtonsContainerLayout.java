@@ -221,7 +221,7 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
     /**
      * Get the final height for the grid container layout.
      *
-     * @return
+     * @return the calculated layout height
      */
     public int getLayoutHeight() {
         return popUpBtnsContainerGridLayout.getRows() * 100;

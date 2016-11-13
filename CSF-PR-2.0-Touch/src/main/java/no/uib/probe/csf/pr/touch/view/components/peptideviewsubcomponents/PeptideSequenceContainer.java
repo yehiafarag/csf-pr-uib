@@ -127,7 +127,6 @@ public class PeptideSequenceContainer extends AbsoluteLayout {
         cLabel.setWidth(10, Unit.PIXELS);
         cTerminalEdge.setComponentAlignment(cLabel, Alignment.TOP_RIGHT);
         this.addComponent(cTerminalEdge, "left: " + (width - 21) + "px; top: " + (top) + "px;");
-
     }
 
     /**

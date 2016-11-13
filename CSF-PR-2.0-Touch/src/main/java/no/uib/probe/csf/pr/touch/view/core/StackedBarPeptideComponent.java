@@ -4,9 +4,7 @@ import com.vaadin.event.LayoutEvents;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.VerticalLayout;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantPeptide;
 
 /**
@@ -86,7 +84,7 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
     /**
      * Get the peptide start location on x access.
      *
-     * @return
+     * @return location on x access
      */
     public int getX0() {
         return x0;
@@ -193,12 +191,7 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
         return parametersMap.get(key);
     }
 
-    /**
-     * Get parameter
-     *
-     * @param key parameter key.
-     * @return parameter value.
-     */
+
     @Override
     public int compareTo(StackedBarPeptideComponent o) {
         return widthArea.compareTo(o.widthArea);

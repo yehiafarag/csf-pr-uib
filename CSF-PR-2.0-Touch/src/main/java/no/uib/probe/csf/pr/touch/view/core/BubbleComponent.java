@@ -11,10 +11,13 @@ import java.util.Map;
  */
 public class BubbleComponent extends Label implements Comparable<Label> {
 
-    private final Map<String, Object> param = new HashMap<>();
+     /**
+     * Map of parameters to store component information.
+     */
+    private final Map<String, Object> parametersMap = new HashMap<>();
 
     /**
-     * Constructor to initialize the main attributes
+     * Constructor to initialize the main attributes.
      */
     public BubbleComponent() {
         this.setValue("  ");
@@ -29,7 +32,7 @@ public class BubbleComponent extends Label implements Comparable<Label> {
      * @param value Parameter value.
      */
     public void setParam(String key, Object value) {
-        param.put(key, value);
+        parametersMap.put(key, value);
     }
 
     /**
@@ -39,7 +42,7 @@ public class BubbleComponent extends Label implements Comparable<Label> {
      * @return parameter value.
      */
     public Object getParam(String key) {
-        return param.get(key);
+        return parametersMap.get(key);
     }
 
     /**
@@ -60,7 +63,7 @@ public class BubbleComponent extends Label implements Comparable<Label> {
      * width this function is important for sorting component on charts where
      * small components add over the bigger one.
      *
-     * @param selectAction The component is selected.
+     * @param other The bubble component(to compare with).
      */
     @Override
     public int compareTo(Label other) {

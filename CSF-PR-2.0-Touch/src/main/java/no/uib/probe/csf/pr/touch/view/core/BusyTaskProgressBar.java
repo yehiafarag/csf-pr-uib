@@ -1,4 +1,3 @@
-
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.shared.ui.window.WindowMode;

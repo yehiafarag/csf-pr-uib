@@ -137,7 +137,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
      * Constructor to initialize the layout and main attributes.
      *
      * @param quantDs Quant dataset object.
-     * @param diseaseHashedColor HTML hashed color code for disease.
+     * @param smallScreen the screen is relatively small.
      */
     public DatasetInformationOverviewLayout(QuantDataset quantDs, boolean smallScreen) {
         this.diseaseHashedColor = quantDs.getDiseaseHashedColor();
@@ -147,17 +147,17 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         if (!smallScreen) {
             this.setSpacing(true);
         }
-
         datasetInfoForm = generateQuantDatasetInformationLayout();
         datasetInfoForm.setVisible(true);
         this.addComponent(datasetInfoForm);
         this.setComponentAlignment(datasetInfoForm, Alignment.TOP_LEFT);
         this.updateDatasetForm(quantDs);
-
     }
 
     /**
      * Generate and to initialize the dataset information form layout.
+     *
+     * @return dataset information from layout
      */
     private VerticalLayout generateQuantDatasetInformationLayout() {
 
@@ -284,7 +284,6 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
 
     /**
      * Update and fill dataset form (dataset information fields).
-     *
      *
      * @param quantDs Quant dataset object.
      */

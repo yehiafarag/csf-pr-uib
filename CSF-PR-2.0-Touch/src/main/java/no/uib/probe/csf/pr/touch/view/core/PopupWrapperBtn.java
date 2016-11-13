@@ -91,6 +91,8 @@ public class PopupWrapperBtn extends VerticalLayout implements LayoutEvents.Layo
 
     /**
      * Generate publication pup-up form layout.
+     *
+     * @return Publication form container layout
      */
     private VerticalLayout initPublicationLayout(Object[] publicationData) {
 

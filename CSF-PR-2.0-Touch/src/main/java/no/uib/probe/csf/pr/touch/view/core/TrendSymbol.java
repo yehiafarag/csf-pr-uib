@@ -16,7 +16,7 @@ public class TrendSymbol extends VerticalLayout implements Comparable<TrendSymbo
      */
     private final HashMap<String, Object> parameterMap;
     /**
-     * The trend value(0:100% Increased,1:>100% Increased ,2:Equal,3:>100%
+     * The trend value(0:100% Increased,1:less than 100% Increased ,2:Equal,3:less than 100%
      * Decreased,4:100% Increased,5:Quantified on peptide level, or 6:Quant
      * information not available).
      */
@@ -25,8 +25,8 @@ public class TrendSymbol extends VerticalLayout implements Comparable<TrendSymbo
     /**
      * Constructor to initialize the main attributes and layout.
      *
-     * @param trend the trend value(0:100% Increased,1:>100% Increased
-     * ,2:Equal,3:>100% Decreased,4:100% Increased,5:Quantified on peptide
+     * @param trend the trend value(0:100% Increased,1:less than 100% Increased
+     * ,2:Equal,3:less than 100% Decreased,4:100% Increased,5:Quantified on peptide
      * level, or 6:Quant information not available).
      */
     public TrendSymbol(int trend) {
@@ -64,8 +64,8 @@ public class TrendSymbol extends VerticalLayout implements Comparable<TrendSymbo
     /**
      * Set trend symbol.
      *
-     * @param trend the trend value(0:100% Increased,1:>100% Increased
-     * ,2:Equal,3:>100% Decreased,4:100% Increased,5:Quantified on peptide
+     * @param trend the trend value(0:100% Increased,1:less than 100% Increased
+     * ,2:Equal,3:less than 100% Decreased,4:100% Increased,5:Quantified on peptide
      * level, or 6:Quant information not available).
      */
     public void setTrend(int trend) {

@@ -263,31 +263,6 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
         }
 
         return (sortingValue).compareTo(v2);
-
-//        if (sortableProtein.getSignificantlyIncreasedNumber() == sortableProtein.getSignificantlyDecreasedNumber()) {
-//            sortingValue = sortableProtein.getTrendValue();
-//        } else if (sortableProtein.getTrendValue() > 0) {
-//            double factor = sortableProtein.getPenalty();
-//            sortingValue = sortableProtein.getTrendValue() - factor;
-//            sortingValue = Math.expandChartMode(sortingValue, 0) + ((double) (sortableProtein.getSignificantlyIncreasedNumber() - sortableProtein.getSignificantlyDecreasedNumber()) / 10.0);
-//        } else {
-//            double factor = sortableProtein.getPenalty();
-//            sortingValue = sortableProtein.getTrendValue() + factor;
-//            sortingValue = Math.min(sortingValue, 0) + ((double) (sortableProtein.getSignificantlyIncreasedNumber() - sortableProtein.getSignificantlyDecreasedNumber()) / 10.0);
-//        }
-//        Double v2;
-//        if (o.getSignificantlyIncreasedNumber() == o.getSignificantlyDecreasedNumber()) {
-//            v2 = o.getTrendValue();
-//        } else if (o.getTrendValue() > 0) {
-//            double factor = o.getPenalty();
-//            v2 = o.getTrendValue() - factor;
-//            v2 = Math.expandChartMode(v2, 0) + ((double) (o.getSignificantlyIncreasedNumber() - o.getSignificantlyDecreasedNumber()) / 10.0);
-//        } else {
-//            double factor = o.getPenalty();
-//            v2 = o.getTrendValue() + factor;
-//            v2 = Math.min(v2, 0) + ((double) (o.getSignificantlyIncreasedNumber() - o.getSignificantlyDecreasedNumber()) / 10.0);
-//        }
-//        return (sortingValue).compareTo(v2);
     }
 
     /**

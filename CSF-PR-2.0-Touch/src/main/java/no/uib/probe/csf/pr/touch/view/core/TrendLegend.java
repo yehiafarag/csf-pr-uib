@@ -18,7 +18,7 @@ public class TrendLegend extends GridLayout {
     /**
      * Constructor to initialize the legend layout components using chart type.
      *
-     * @param type the legend types (linechart,bubblechart,etc)
+     * @param type the legend types (line-chart,bubble-chart,..etc)
      */
     public TrendLegend(String type) {
         this.setSpacing(true);

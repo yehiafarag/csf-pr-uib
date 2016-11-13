@@ -75,6 +75,8 @@ public class PopupWindow extends Window {
 
     /**
      * If slow lazy loading window set lazy pop up.
+     *
+     * @param visible View the component
      */
     @Override
     public void setVisible(boolean visible) {

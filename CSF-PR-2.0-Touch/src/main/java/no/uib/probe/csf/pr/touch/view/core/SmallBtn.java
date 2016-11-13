@@ -12,8 +12,9 @@ import com.vaadin.ui.VerticalLayout;
 public class SmallBtn extends VerticalLayout {
 
     /**
-     *Constructor to initialize the button layout.
-     * @param iconResource Image resource for the centered icon. 
+     * Constructor to initialize the button layout.
+     *
+     * @param iconResource Image resource for the centered icon.
      */
     public SmallBtn(Resource iconResource) {
         this.setWidth(25, Unit.PIXELS);

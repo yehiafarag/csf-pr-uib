@@ -152,7 +152,7 @@ public abstract class PieChart extends AbsoluteLayout implements LayoutEvents.La
     /**
      * Get the middle white layout (the middle donut component).
      *
-     * @return
+     * @return the label container layout
      */
     public VerticalLayout getMiddleDonutLayout() {
         return middleDonutLayout;
@@ -266,8 +266,6 @@ public abstract class PieChart extends AbsoluteLayout implements LayoutEvents.La
         } else {
             selectAllLabel.setValue(0 + "");
         }
-//        this.redrawChart();
-
     }
 
     /**
@@ -285,12 +283,11 @@ public abstract class PieChart extends AbsoluteLayout implements LayoutEvents.La
     }
 
     /**
-     *
+     *Re-draw chart image and Vaadin components.
      */
     public void redrawChart() {
         String imgUrl = saveToFile(chart, width, height);
         this.chartBackgroundImg.setSource(new ExternalResource(imgUrl));
-
         this.removeComponent(middleDonutLayout);
         this.addComponent(middleDonutLayout, "left: " + ((chartRenderingInfo.getPlotInfo().getDataArea().getCenterX()) - 50) + "px; top: " + (chartRenderingInfo.getPlotInfo().getDataArea().getCenterY() - 50) + "px");
 

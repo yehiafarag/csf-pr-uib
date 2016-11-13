@@ -22,7 +22,6 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
      * The main filter button.
      */
     private final ColumnFilterPopupBtn filterBtn;
-
     /**
      * The button index (same as comparison index).
      */
@@ -79,6 +78,11 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
     }
 
     /**
+     * Sort ascending.
+     */
+    private Boolean sortedUp;
+
+    /**
      * Reset the Sorting and Filtering buttons.
      */
     public void reset() {
@@ -126,7 +130,6 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
         sortingBtn.removeStyleName("unselected");
         sortedUp = false;
     }
-    private Boolean sortedUp;
 
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
@@ -166,15 +169,15 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
      * Sort protein table based on the selected comparison and the selected
      * direction.
      *
-     * @param up
-     * @param index
+     * @param up Sort ascending.
+     * @param index Comparison index
      */
     public abstract void sort(boolean up, int index);
 
     /**
      * Un-select this comparison.
      *
-     * @param comparison
+     * @param comparison Quant disease comparison
      */
     public abstract void dropComparison(QuantDiseaseGroupsComparison comparison);
 

@@ -255,7 +255,6 @@ public class ProteinSequenceCoverageComponent extends VerticalLayout {
         });
         final LinkedHashSet<StackedBarPeptideComponent> updatedBarComponentMap = new LinkedHashSet<>();
         barComponentMap.stream().map((sbar) -> {
-//            sbar.heighlight(null);
             return sbar;
         }).forEach((sbar) -> {
             updatedBarComponentMap.add(sbar);

@@ -21,7 +21,7 @@ import com.vaadin.ui.themes.ValoTheme;
 public class InformationButton extends ImageContainerBtn {
 
     /**
-     * main information component pop-up window.
+     * Main information component pop-up window.
      */
     private final PopupView popupLayout;
     /**

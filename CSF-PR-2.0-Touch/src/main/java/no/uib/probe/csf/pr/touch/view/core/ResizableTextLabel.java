@@ -1,11 +1,9 @@
 package no.uib.probe.csf.pr.touch.view.core;
 
-import com.vaadin.data.Property;
-import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Label;
 
 /**
- * This class represents label with resizable font based on label size.
+ * This class represents label with scalable font size based on label size.
  *
  * @author Yehia Farag
  */
@@ -22,7 +20,7 @@ public class ResizableTextLabel extends Label {
     }
 
     /**
-     * Constructor to initialize the main attributes.
+     * Default constructor to initialize the main attributes.
      */
     public ResizableTextLabel() {
         super();
@@ -31,6 +29,8 @@ public class ResizableTextLabel extends Label {
 
     /**
      * Resize the font on changing the label container height.
+     * @param height the hight of the container label
+     * @param unit the height unit
      */
     @Override
     public void setHeight(float height, Unit unit) {

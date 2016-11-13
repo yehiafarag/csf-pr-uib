@@ -211,7 +211,7 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
     /**
      * Update the system (un-select)using the header title
      *
-     * @param cellHeader
+     * @param cellHeader Header cell title
      */
     public abstract void unSelectData(String cellHeader);
 

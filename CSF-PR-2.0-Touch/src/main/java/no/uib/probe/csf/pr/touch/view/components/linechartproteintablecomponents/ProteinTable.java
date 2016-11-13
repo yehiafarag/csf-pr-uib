@@ -39,8 +39,6 @@ import org.jfree.chart.encoders.ImageFormat;
  * the table and sorting layout (sorting buttons for comparisons).
  *
  * @author Yehia Farag.
- *
- *
  */
 public abstract class ProteinTable extends VerticalLayout implements Property.ValueChangeListener {
 
@@ -150,7 +148,8 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
      * Set customized comparison based on user input data in quant comparison
      * layout.
      *
-     * @param userCustomizedComparison
+     * @param userCustomizedComparison Customized comparison based on user input
+     * data in quant comparison layout
      */
     public void setUserCustomizedComparison(QuantDiseaseGroupsComparison userCustomizedComparison) {
         if (columnHeaderSet.contains(this.custUserComparisonSortingLayout)) {
@@ -351,7 +350,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
     /**
      * Check if the table is sorted ascending.
      *
-     * @return
+     * @return ascendingSort Sort ascending
      */
     public boolean isAscendingSort() {
         return ascendingSort;

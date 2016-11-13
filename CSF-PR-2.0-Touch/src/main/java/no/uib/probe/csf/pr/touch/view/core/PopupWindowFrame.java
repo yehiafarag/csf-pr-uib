@@ -13,7 +13,7 @@ import com.vaadin.ui.VerticalLayout;
 public class PopupWindowFrame {
 
     /**
-     * This class represents stander pop-up window container.
+     * Stander pop-up window container.
      */
     private final PopupWindow popupWindow;
     /**

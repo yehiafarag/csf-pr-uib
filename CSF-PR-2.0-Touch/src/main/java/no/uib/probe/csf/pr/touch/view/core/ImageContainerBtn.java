@@ -22,11 +22,11 @@ public abstract class ImageContainerBtn extends AbsoluteLayout implements Layout
      */
     private final Image img;
     /**
-     * Side description for the button
+     * Side description for the button.
      */
     private final Label text;
     /**
-     * Parent wrapper layout
+     * Parent wrapper layout.
      */
     private boolean hasWrapper = false;
 
@@ -109,7 +109,7 @@ public abstract class ImageContainerBtn extends AbsoluteLayout implements Layout
     /**
      * The button has parent wrapper layout.
      *
-     * @param hasWrapper
+     * @param hasWrapper the component wrapped in parent container
      */
     public void setHasWrapper(boolean hasWrapper) {
         this.hasWrapper = hasWrapper;
@@ -136,6 +136,8 @@ public abstract class ImageContainerBtn extends AbsoluteLayout implements Layout
 
     /**
      * Override enable button to hide on disable.
+     *
+     * @param enabled enabled the actions on the component
      */
     @Override
     public void setEnabled(boolean enabled) {

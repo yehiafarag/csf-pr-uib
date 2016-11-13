@@ -93,7 +93,8 @@ public abstract class BigBtn extends HorizontalLayout implements LayoutEvents.La
     }
 
     /**
-     * Do the implemented action
+     * Do the implemented action. 
+     * @param event Click the button event.
      */
     @Override
     public void click(MouseEvents.ClickEvent event) {
@@ -101,7 +102,7 @@ public abstract class BigBtn extends HorizontalLayout implements LayoutEvents.La
     }
 
     /**
-     * On click do the button function (to be implemented)
+     * On click do the button function (to be implemented).
      */
     public abstract void onClick();
 

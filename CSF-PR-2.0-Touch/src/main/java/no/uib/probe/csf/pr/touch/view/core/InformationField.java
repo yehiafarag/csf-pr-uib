@@ -113,7 +113,6 @@ public class InformationField extends VerticalLayout {
                 valueLabel.setCaption("<textarea cols='100' rows='4'  readonly>" + stringValue + "</textarea>");
                 int h = Math.min(((stringValue.toCharArray().length / 100) * 20), 70);
                 valueLabel.setHeight(h, Unit.PIXELS);
-//                
                 titleLabel.setHeight(20, Unit.PIXELS);
                 this.setSpacing(false);
                 this.setHeightUndefined();

@@ -321,7 +321,7 @@ public abstract class DatasetPieChartFilter extends AbsoluteLayout implements La
     /**
      * Synchronize the pie-chart in response to other pie-charts filter
      *
-     * @param selectedDatasetIndexes
+     * @param selectedDatasetIndexes Set of quant dataset indexes
      * @param single only one filter is applied
      */
     public void localUpdate(Collection<Integer> selectedDatasetIndexes, boolean single) {
