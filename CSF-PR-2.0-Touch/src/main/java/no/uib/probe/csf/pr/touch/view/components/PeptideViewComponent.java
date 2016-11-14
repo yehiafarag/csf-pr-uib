@@ -258,6 +258,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         proteinNameLabel.setHeight(24, Unit.PIXELS);
         topLayoutContainer.addComponent(proteinNameLabel);
         topLayoutContainer.setComponentAlignment(proteinNameLabel, Alignment.MIDDLE_LEFT);
+        topLayoutContainer.setExpandRatio(proteinNameLabel,300);
 
         proteinNameLabel.setWidth(300, Unit.PIXELS);
 
@@ -267,6 +268,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
 
         topLayoutContainer.addComponent(legendLayout);
         topLayoutContainer.setComponentAlignment(legendLayout, Alignment.TOP_RIGHT);
+        topLayoutContainer.setExpandRatio(legendLayout, this.getWidth() - 200);
 
         int componentHeight = ((height - 80) / 2) - 5;
 
@@ -518,7 +520,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
                 t1.addContainerProperty("Disease Category", String.class, null);
                 t1.addContainerProperty("Disease Comparisons", String.class, null, "Disease Comparisons", null, Table.Align.LEFT);
                 t1.addContainerProperty("Author", String.class, null);
-                t1.addContainerProperty("PubMed Id", String.class, null);
+                t1.addContainerProperty("PubMed ID", String.class, null);
 
                 t1.addContainerProperty("Type of Study", String.class, null);
                 t1.addContainerProperty("Analytical Approach", String.class, null);
@@ -586,7 +588,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
                 t2.addContainerProperty(
                         "Author2", String.class, null, "Author", null, Table.Align.LEFT);
                 t2.addContainerProperty(
-                        "PubMed Id2", String.class, null, "PubMed Id", null, Table.Align.LEFT);
+                        "PubMed Id2", String.class, null, "PubMed ID", null, Table.Align.LEFT);
                 t2.addContainerProperty(
                         "#Patients2", Integer.class, null, "#Patients", null, Table.Align.RIGHT);
                 t2.addContainerProperty(
@@ -753,18 +755,18 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
      */
     private void updateData(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, String proteinKey, int custTrend) {
         TrendLegend legendLayoutComponent;
+        int legentWidth = 740;
         if (custTrend != -1) {
             legendLayout.removeAllComponents();
             legendLayoutComponent = new TrendLegend(custTrend);
             legendLayoutComponent.setWidthUndefined();
             legendLayoutComponent.setHeight(25, Unit.PIXELS);
+            legentWidth = 820;
         } else {
             legendLayout.removeAllComponents();
             legendLayoutComponent = new TrendLegend("linechart");
-
         }
-
-        if (this.getWidth() - 300 < 690) {
+        if (this.getWidth() - 300 <legentWidth) {
             CloseButton closeBtn = new CloseButton();
             VerticalLayout legendPopup = new VerticalLayout();
             legendPopup.addComponent(closeBtn);
@@ -796,12 +798,12 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
             });
             legendLayout.addComponent(popup);
             legendLayout.setComponentAlignment(popup, Alignment.TOP_RIGHT);
-            legendLayout.setExpandRatio(popup, this.getWidth() - 300);
         } else {
             legendLayoutComponent.setWidthUndefined();
             legendLayoutComponent.setHeight(25, Unit.PIXELS);
             legendLayout.addComponent(legendLayoutComponent);
             legendLayout.setComponentAlignment(legendLayoutComponent, Alignment.TOP_RIGHT);
+            
 
         }
 

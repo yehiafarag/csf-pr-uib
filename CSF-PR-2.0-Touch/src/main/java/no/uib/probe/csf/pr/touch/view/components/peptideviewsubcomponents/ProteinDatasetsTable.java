@@ -3,6 +3,7 @@ package no.uib.probe.csf.pr.touch.view.components.peptideviewsubcomponents;
 import com.vaadin.data.Item;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.ExternalResource;
+import com.vaadin.server.Page;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
@@ -96,6 +97,9 @@ public class ProteinDatasetsTable extends VerticalLayout {
         this.mainProteinDatasetsTable.setWidthUndefined();
         this.mainProteinDatasetsTable.setStyleName(ValoTheme.TABLE_COMPACT);
         this.mainProteinDatasetsTable.addStyleName("peptidetablestyle");
+         if (!Page.getCurrent().getWebBrowser().isChrome()) {
+            this.mainProteinDatasetsTable.addStyleName("notchromecorrector");
+        }
         this.mainProteinDatasetsTable.setHeight(height, Unit.PIXELS);
         this.mainProteinDatasetsTable.addStyleName("smallicons");
         this.mainProteinDatasetsTable.addStyleName(ValoTheme.TABLE_SMALL);

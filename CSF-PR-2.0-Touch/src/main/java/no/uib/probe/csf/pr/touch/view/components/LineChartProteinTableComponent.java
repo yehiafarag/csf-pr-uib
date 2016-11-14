@@ -135,8 +135,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
 
         TrendLegend legendLayout = new TrendLegend("linechart");
         legendLayout.setWidthUndefined();
-
-        if (width - 250 < 690) {
+        if (width - 260 < 740) {
             CloseButton closeBtn = new CloseButton();
             VerticalLayout legendPopup = new VerticalLayout();
             legendPopup.addComponent(closeBtn);
@@ -168,13 +167,13 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
             });
             topLayout.addComponent(popup);
             topLayout.setComponentAlignment(popup, Alignment.MIDDLE_RIGHT);
-            topLayout.setExpandRatio(popup, width - 250);
+            topLayout.setExpandRatio(popup, width - 260);
         } else {
             legendLayout.setHeight(25, Unit.PIXELS);
             legendLayout.addStyleName("margintop10");
             topLayout.addComponent(legendLayout);
             topLayout.setComponentAlignment(legendLayout, Alignment.TOP_RIGHT);
-            topLayout.setExpandRatio(legendLayout, width - 250);
+            topLayout.setExpandRatio(legendLayout, width - 220);
         }
 
         //end of toplayout

@@ -141,14 +141,17 @@ public class ProteinSequenceCoverageComponent extends VerticalLayout {
             stackedPeptides = new ArrayList<>();
             final LinkedHashSet<StackedBarPeptideComponent> allPeptidesStackedBarComponentsMap = this.initAllBarChartComponents(false, proteinSequenceContainerWidth - 160, sequence, filteredQuantPepSet);
             stackedPeptides.addAll(allPeptidesStackedBarComponentsMap);
-            allPeptidesComponent = new PeptideSequenceContainer((int) componentWidth + 40, allPeptidesStackedBarComponentsMap, sequence);
+//            allPeptidesComponent = new PeptideSequenceContainer((int) componentWidth + 40, allPeptidesStackedBarComponentsMap, sequence);
+            allPeptidesComponent = new PeptideSequenceContainer((proteinSequenceContainerWidth-110), allPeptidesStackedBarComponentsMap, sequence);
             allPeptidesLayout.addComponent(allPeptidesComponent);
             allPeptidesLayout.setComponentAlignment(allPeptidesComponent, Alignment.MIDDLE_CENTER);
             final LinkedHashSet<StackedBarPeptideComponent> significantPeptidesStackedBarComponentsMap = this.initAllBarChartComponents(true, proteinSequenceContainerWidth - 160, sequence, filteredQuantPepSet);
-            significantPeptidesComponent = new PeptideSequenceContainer((int) componentWidth + 40, significantPeptidesStackedBarComponentsMap, sequence);
+//            significantPeptidesComponent = new PeptideSequenceContainer((int) componentWidth + 40, significantPeptidesStackedBarComponentsMap, sequence);
+            significantPeptidesComponent = new PeptideSequenceContainer((proteinSequenceContainerWidth-110), significantPeptidesStackedBarComponentsMap, sequence);
             significantPeptidesLayout.addComponent(significantPeptidesComponent);
             significantPeptidesLayout.setComponentAlignment(significantPeptidesComponent, Alignment.MIDDLE_CENTER);
             significantPeptidesLayout.setVisible(false);
+            
         }
     }
 

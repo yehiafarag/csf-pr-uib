@@ -102,7 +102,7 @@ public class PopupWrapperBtn extends VerticalLayout implements LayoutEvents.Layo
         publicationlayout.setSpacing(true);
         publicationlayout.setStyleName("publicationstyle");
 
-        Label pubmedIdLabel = new Label("<h5>PubMed Id: <a class='link' href='http://www.ncbi.nlm.nih.gov/pubmed/" + publicationData[0].toString() + "' target='_blank'  >" + publicationData[0].toString() + "</a></h5>");
+        Label pubmedIdLabel = new Label("<h5>PubMed ID: <a class='link' href='http://www.ncbi.nlm.nih.gov/pubmed/" + publicationData[0].toString() + "' target='_blank'  >" + publicationData[0].toString() + "</a></h5>");
 
         pubmedIdLabel.setContentMode(ContentMode.HTML);
         publicationlayout.addComponent(pubmedIdLabel);

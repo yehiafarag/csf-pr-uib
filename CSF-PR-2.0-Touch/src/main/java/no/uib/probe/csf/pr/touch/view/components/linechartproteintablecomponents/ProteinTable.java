@@ -3,12 +3,14 @@ package no.uib.probe.csf.pr.touch.view.components.linechartproteintablecomponent
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.server.ExternalResource;
+import com.vaadin.server.Page;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import java.awt.Color;
@@ -491,6 +493,9 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         this.mainProteinTable.setHeight(height, Unit.PIXELS);
         mainProteinTable.setStyleName(ValoTheme.TABLE_COMPACT);
         this.mainProteinTable.addStyleName("proteintablestyle");
+        if (!Page.getCurrent().getWebBrowser().isChrome()) {
+            this.mainProteinTable.addStyleName("notchromecorrector");
+        }
         tableWarpper.addComponent(mainProteinTable);
 
         mainProteinTable.setSelectable(true);

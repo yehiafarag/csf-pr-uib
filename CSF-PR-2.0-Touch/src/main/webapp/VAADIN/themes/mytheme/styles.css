@@ -15733,3 +15733,6 @@ tbody{
 .v-absolutelayout-wrapper-middledountchart div{    
     border-radius:50%;
 }
+.v-slot-notchromecorrector{
+    margin-right: 13px !important;
+}
