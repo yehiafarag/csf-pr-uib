@@ -68,18 +68,19 @@
     padding-right: 10px;
 }
 .uiblogo img{
-    margin-top:-10px !important;
-    margin-left:5px !important;
-    width:80px !important;
-    height:auto !important;
+    margin-top:0px !important;
+    margin-left:20px !important;
+    height:60px !important;
+    width:auto !important;
     cursor:pointer !important;
     z-index:100 !important;
     position:relative !important;
 }
 .probelogo img{
-    width:200px;
-    height:auto;
-    margin-left:50px;
+    height:53px;
+    width:auto;
+    margin-top:3px;
+    margin-left:90px;
 }
 .v-slot-probelogo{
     background-color:rgba(0,0,0,0);
