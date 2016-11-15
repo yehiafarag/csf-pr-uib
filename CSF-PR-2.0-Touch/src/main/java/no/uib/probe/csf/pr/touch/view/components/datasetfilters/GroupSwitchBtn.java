@@ -168,7 +168,7 @@ public abstract class GroupSwitchBtn extends ImageContainerBtn {
         Button applyFilters = new Button("Apply");
         applyFilters.setDescription("Apply the selected filters");
         applyFilters.setStyleName(ValoTheme.BUTTON_TINY);
-        applyFilters.addClickListener((Button.ClickEvent event) -> {
+        applyFilters.addClickListener((Button.ClickEvent event) -> {            
             GroupSwitchBtn.this.updateComparisons(new LinkedHashSet<>(updatedComparisonList));
             popupWindow.view();
         });
@@ -204,7 +204,9 @@ public abstract class GroupSwitchBtn extends ImageContainerBtn {
             table.addComponent(labelI, 2, row);
             table.addComponent(labelII, 0, row);
             QuantDiseaseGroupsComparison comp = equalComparisonMap.get(updatedComparisonList.get(row - 1));
-            updatedComparisonList.set(row - 1, comp);
+            if (comp != null) {
+                updatedComparisonList.set(row - 1, comp);
+            }
         }
 
     }
