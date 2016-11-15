@@ -1,6 +1,7 @@
 package no.uib.probe.csf.pr.touch.view.components.heatmapsubcomponents;
 
 import com.vaadin.server.Sizeable;
+import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
@@ -105,15 +106,15 @@ public class HeatmapFiltersContainerResizeControl {
      * @param resizeFactor resize factor the resize the sub components buttons
      */
     public void resizeFilters(double resizeFactor) {
-        btnsWrapper.setWidth((int) (115 * resizeFactor), Sizeable.Unit.PIXELS);
-        btnsWrapper.setHeight((int) (100 * resizeFactor), Sizeable.Unit.PIXELS);
+        btnsWrapper.setWidth((int) (115 * resizeFactor), Unit.PIXELS);
+        btnsWrapper.setHeight((int) (100 * resizeFactor), Unit.PIXELS);
         this.datasetPieChartFiltersBtn.resizeFilter(resizeFactor);
-        this.datasetCounterLabel.setHeight((int) (25 * resizeFactor), Sizeable.Unit.PIXELS);
-        this.clearFilterBtn.setWidth((int) (25 * resizeFactor), Sizeable.Unit.PIXELS);
-        this.clearFilterBtn.setHeight((int) (25 * resizeFactor), Sizeable.Unit.PIXELS);
+        this.datasetCounterLabel.setHeight((int) (25 * resizeFactor), Unit.PIXELS);
+        this.clearFilterBtn.setWidth((int) (25 * resizeFactor), Unit.PIXELS);
+        this.clearFilterBtn.setHeight((int) (25 * resizeFactor), Unit.PIXELS);
         this.serumCsfFilter.resizeFilter(resizeFactor);
 
-        bottomBtnContainer.setWidth((int) (53 * resizeFactor), Sizeable.Unit.PIXELS);
+        bottomBtnContainer.setWidth((int) (53 * resizeFactor), Unit.PIXELS);
         this.reconbineDiseaseGroupsFiltersBtn.resizeFilter(resizeFactor);
         this.reorderSelectBtn.resizeFilter(resizeFactor);
     }

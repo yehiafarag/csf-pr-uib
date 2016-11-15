@@ -13752,6 +13752,7 @@ div.v-layout.v-horizontal.v-widget {
 .selectmultiselectedbtn img{
     background-color:lightgray !important;
     border-radius:5px;
+    border-color: darkgray;
 
     -webkit-transition: all .5s ease-in-out;
     -moz-transition: all .5s ease-in-out;
@@ -14106,7 +14107,9 @@ div.v-layout.v-horizontal.v-widget {
     background-color: rgb(0, 153, 0) !important;
 }
 
-
+.smallpaading img{
+    padding: 1.5px;
+}
 .paddingimg img{
     padding: 15px;
 

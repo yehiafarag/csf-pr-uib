@@ -5,6 +5,7 @@ import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.Page;
 import com.vaadin.server.ThemeResource;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -327,30 +328,39 @@ public class ProteinDatasetsTable extends VerticalLayout {
     public void select(QuantDiseaseGroupsComparison comparison, int dsKey) {
         selectedDatasetItemIds.clear();
         if (comparison == null) {
-            selectedOnly = false;
-            showFilteredDatasetsOnly();
+//            selectedOnly = false;
+//            showFilteredDatasetsOnly();
             return;
         }
 
         if (dsKey == -100) {
-            comparison.getDatasetMap().keySet().stream().filter((key) -> (datasetToItemId.containsKey(comparison.getComparisonHeader() + "__" + key))).forEach((key) -> {
-                selectedDatasetItemIds.add(datasetToItemId.get(comparison.getComparisonHeader() + "__" + key));
-            });
+            
+            
+//            comparison.getDatasetMap().keySet().stream().filter((key) -> (datasetToItemId.containsKey(comparison.getComparisonHeader() + "__" + key))).forEach((key) -> {
+//                selectedDatasetItemIds.add(datasetToItemId.get(comparison.getComparisonHeader() + "__" + key));
+//            });
 
         } else {
+            Object itemId=null;
             if (datasetToItemId.containsKey(comparison.getComparisonHeader() + "__" + dsKey)) {
-                selectedDatasetItemIds.add(datasetToItemId.get(comparison.getComparisonHeader() + "__" + dsKey));
+//                selectedDatasetItemIds.add(datasetToItemId.get(comparison.getComparisonHeader() + "__" + dsKey));
+                itemId = datasetToItemId.get(comparison.getComparisonHeader() + "__" + dsKey);
+            }else{
+                return;
             }
+             Item item = mainProteinDatasetsTable.getItem(itemId);
+            ((ComparisonLable)item.getItemProperty("Comparison").getValue()).openComparisonPopup();
+            
 
         }
-        selectedOnly = !selectedDatasetItemIds.isEmpty();
-        showFilteredDatasetsOnly();
-        int indexing = 1;
-        for (Object id : mainProteinDatasetsTable.getItemIds()) {
-            Item item = mainProteinDatasetsTable.getItem(id);
-            item.getItemProperty("Index").setValue(indexing);
-            indexing++;
-        }
+//        selectedOnly = !selectedDatasetItemIds.isEmpty();
+//        showFilteredDatasetsOnly();
+//        int indexing = 1;
+//        for (Object id : mainProteinDatasetsTable.getItemIds()) {
+//            Item item = mainProteinDatasetsTable.getItem(id);
+//            item.getItemProperty("Index").setValue(indexing);
+//            indexing++;
+//        }
     }
 
     /**

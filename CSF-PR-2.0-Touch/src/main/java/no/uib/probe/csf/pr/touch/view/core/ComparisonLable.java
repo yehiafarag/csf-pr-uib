@@ -87,6 +87,7 @@ public class ComparisonLable extends VerticalLayout implements LayoutEvents.Layo
         String title = "Dataset and Protein Information (" + protName + ")";
         popupWindow = new PopupWindowFrame(title, popupBody);
         popupWindow.setFrameHeight(490);
+        popupWindow.setFrameWidth(1500);
         TabSheet tab = new TabSheet();
         tab.setHeight(97.0f, Unit.PERCENTAGE);
         tab.setWidth(100.0f, Unit.PERCENTAGE);

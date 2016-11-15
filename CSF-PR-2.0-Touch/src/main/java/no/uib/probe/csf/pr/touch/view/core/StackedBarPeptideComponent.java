@@ -142,6 +142,7 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
             popupWindow = new PopupWindowFrame(title, popupBody);
 
             popupWindow.setFrameHeight(450);
+            popupWindow.setFrameWidth(1500);
 
             PeptidesInformationOverviewLayout peptideInfo = new PeptidesInformationOverviewLayout(quantPeptide);
 

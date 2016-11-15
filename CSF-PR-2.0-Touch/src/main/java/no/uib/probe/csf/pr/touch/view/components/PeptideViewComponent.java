@@ -11,6 +11,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.PopupView;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
@@ -34,7 +35,7 @@ import no.uib.probe.csf.pr.touch.selectionmanager.CSFListener;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
 import no.uib.probe.csf.pr.touch.view.components.peptideviewsubcomponents.ProteinDatasetsTable;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
-import no.uib.probe.csf.pr.touch.view.components.peptideviewsubcomponents.ProteinDatasetsLineChartList;
+import no.uib.probe.csf.pr.touch.view.components.peptideviewsubcomponents.ProteinDatasetDetailsLineChart;
 import no.uib.probe.csf.pr.touch.view.core.CloseButton;
 import no.uib.probe.csf.pr.touch.view.core.InformationButton;
 import no.uib.probe.csf.pr.touch.view.core.TrendLegend;
@@ -65,7 +66,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
     /**
      * Is individual datasets for each disease group comparison.
      */
-    private boolean showIndividualDatasets = false;
+    private boolean showIndividualDatasets = true;
     /**
      * The peptide table (detailed protein table) that has peptides information.
      */
@@ -95,7 +96,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
     /**
      * Resize individual datasets symbol based on patients number.
      */
-    private final ImageContainerBtn resizeDsOnPatientNumbersBtn;
+//    private final ImageContainerBtn resizeDsOnPatientNumbersBtn;
     /**
      * Hide not significant peptides data from the protein coverage to clean the
      * chart.
@@ -121,7 +122,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
      * Detailed protein line chart component (developed using JFree chart and
      * DiVA).
      */
-    private ProteinDatasetsLineChartList lineChart;
+    private ProteinDatasetDetailsLineChart lineChart;
     /**
      * The total number of included datasets.
      */
@@ -258,7 +259,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         proteinNameLabel.setHeight(24, Unit.PIXELS);
         topLayoutContainer.addComponent(proteinNameLabel);
         topLayoutContainer.setComponentAlignment(proteinNameLabel, Alignment.MIDDLE_LEFT);
-        topLayoutContainer.setExpandRatio(proteinNameLabel,300);
+        topLayoutContainer.setExpandRatio(proteinNameLabel, 300);
 
         proteinNameLabel.setWidth(300, Unit.PIXELS);
 
@@ -282,12 +283,19 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
 
         mainBodyContainer.addComponent(topLayout);
         mainBodyContainer.setComponentAlignment(topLayout, Alignment.TOP_CENTER);
-        lineChart = new ProteinDatasetsLineChartList(width - 50, (componentHeight - 50)) {
+        lineChart = new ProteinDatasetDetailsLineChart(width - 50, (componentHeight - 50)) {
 
             @Override
-            public void select(QuantDiseaseGroupsComparison comparison, int dsKey) {
-                peptideSequenceTableLayout.select(comparison, dsKey);
-                studiesNumberLabel.setValue("Studies (" + peptideSequenceTableLayout.getRowsNumber() + "/" + totatlDatasetsNumber + ")");
+            public void select(QuantDiseaseGroupsComparison comparison, int dsKey, boolean isDoubleClick) {
+                System.out.println("at type of the click double click " + isDoubleClick);
+                if (dsKey == -100 && !isDoubleClick) {
+                    Notification.show("To view details view the dataset details using BTN or double click on symbol", Notification.Type.HUMANIZED_MESSAGE);
+                } else if (dsKey == -100 && isDoubleClick) {
+                    individualToTotalComparisonsDatasetsSwichBtn.onClick();
+                } else {
+                    peptideSequenceTableLayout.select(comparison, dsKey);
+                    studiesNumberLabel.setValue("Datasets (" + peptideSequenceTableLayout.getRowsNumber() + "/" + totatlDatasetsNumber + ")");
+                }
             }
 
         };
@@ -379,32 +387,31 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         peptideTableToolsContainer.setWidthUndefined();
         peptideTableToolsContainer.setSpacing(true);
 
-        resizeDsOnPatientNumbersBtn = new ImageContainerBtn() {
-
-            @Override
-            public void onClick() {
-                resizeDatasetOnPateintsNumber = !resizeDatasetOnPateintsNumber;
-                lineChart.setResizeDetailedDatasets(resizeDatasetOnPateintsNumber);
-                if (this.getStyleName().contains("selectmultiselectedbtn")) {
-                    this.removeStyleName("selectmultiselectedbtn");
-                } else {
-                    this.addStyleName("selectmultiselectedbtn");
-                }
-            }
-
-        };
-
+//        resizeDsOnPatientNumbersBtn = new ImageContainerBtn() {
+//
+//            @Override
+//            public void onClick() {
+//                resizeDatasetOnPateintsNumber = !resizeDatasetOnPateintsNumber;
+//                lineChart.setResizeDetailedDatasets(resizeDatasetOnPateintsNumber);
+//                if (this.getStyleName().contains("selectmultiselectedbtn")) {
+//                    this.removeStyleName("selectmultiselectedbtn");
+//                } else {
+//                    this.addStyleName("selectmultiselectedbtn");
+//                }
+//            }
+//
+//        };
         individualToTotalComparisonsDatasetsSwichBtn = new ImageContainerBtn() {
             @Override
             public void onClick() {
                 if (showIndividualDatasets) {
                     showIndividualDatasets = false;
                     this.updateIcon(comparisonDsRes);
-                    resizeDsOnPatientNumbersBtn.setEnabled(false);
+//                    resizeDsOnPatientNumbersBtn.setEnabled(false);
                 } else {
                     showIndividualDatasets = true;
                     this.updateIcon(dsComparisonRes);
-                    resizeDsOnPatientNumbersBtn.setEnabled(true);
+//                    resizeDsOnPatientNumbersBtn.setEnabled(true);
 
                 }
                 lineChart.setViewDetailedDatasets(showIndividualDatasets);
@@ -422,23 +429,22 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         peptideTableToolsContainer.setComponentAlignment(individualToTotalComparisonsDatasetsSwichBtn, Alignment.MIDDLE_CENTER);
         individualToTotalComparisonsDatasetsSwichBtn.setDescription("Show/hide individual datasets");
 
-        resizeDsOnPatientNumbersBtn.setHeight(40, Unit.PIXELS);
-        resizeDsOnPatientNumbersBtn.setWidth(40, Unit.PIXELS);
-
-        resizeDsOnPatientNumbersBtn.updateIcon(new ThemeResource("img/resize_1.png"));
-        resizeDsOnPatientNumbersBtn.setEnabled(false);
-        resizeDsOnPatientNumbersBtn.addStyleName("pointer");
-        peptideTableToolsContainer.addComponent(resizeDsOnPatientNumbersBtn);
-        peptideTableToolsContainer.setComponentAlignment(resizeDsOnPatientNumbersBtn, Alignment.MIDDLE_CENTER);
-        resizeDsOnPatientNumbersBtn.setDescription("Resize dataset symbols based on number of patients");
-
+//        resizeDsOnPatientNumbersBtn.setHeight(40, Unit.PIXELS);
+//        resizeDsOnPatientNumbersBtn.setWidth(40, Unit.PIXELS);
+//
+//        resizeDsOnPatientNumbersBtn.updateIcon(new ThemeResource("img/resize_1.png"));
+//        resizeDsOnPatientNumbersBtn.setEnabled(false);
+//        resizeDsOnPatientNumbersBtn.addStyleName("pointer");
+//        peptideTableToolsContainer.addComponent(resizeDsOnPatientNumbersBtn);
+//        peptideTableToolsContainer.setComponentAlignment(resizeDsOnPatientNumbersBtn, Alignment.MIDDLE_CENTER);
+//        resizeDsOnPatientNumbersBtn.setDescription("Resize dataset symbols based on number of patients");
         final Resource trendOrderRes = new ThemeResource("img/orderedtrend.png");
         orderByTrendBtn = new ImageContainerBtn() {
 
             @Override
             public void onClick() {
                 individualToTotalComparisonsDatasetsSwichBtn.updateIcon(comparisonDsRes);
-                resizeDsOnPatientNumbersBtn.setEnabled(false);
+//                resizeDsOnPatientNumbersBtn.setEnabled(false);
                 showIndividualDatasets = false;
 
                 if (defaultTrend) {
@@ -451,7 +457,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
                 }
                 lineChart.setSortDatasetOnTrendOrder(!defaultTrend);
                 peptideSequenceTableLayout.sortTable(lineChart.getCurrentComparisonList(!defaultTrend));
-                studiesNumberLabel.setValue("Studies (" + peptideSequenceTableLayout.getRowsNumber() + "/" + totatlDatasetsNumber + ")");
+                studiesNumberLabel.setValue("Datasets (" + peptideSequenceTableLayout.getRowsNumber() + "/" + totatlDatasetsNumber + ")");
 
                 this.setEnabled(true);
                 PeptideViewComponent.this.updateIcon(generateThumbImg());
@@ -737,9 +743,10 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         orderByTrendBtn.removeStyleName("selectmultiselectedbtn");
         this.individualToTotalComparisonsDatasetsSwichBtn.updateIcon(comparisonDsRes);
 
-        resizeDatasetOnPateintsNumber = false;
-        resizeDsOnPatientNumbersBtn.setEnabled(false);
-        resizeDsOnPatientNumbersBtn.removeStyleName("selectmultiselectedbtn");
+//        resizeDsOnPatientNumbersBtn.setEnabled(false);
+//        resizeDsOnPatientNumbersBtn.removeStyleName("selectmultiselectedbtn");
+        lineChart.setResizeDetailedDatasets(true);
+        individualToTotalComparisonsDatasetsSwichBtn.onClick();
 
     }
 
@@ -766,7 +773,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
             legendLayout.removeAllComponents();
             legendLayoutComponent = new TrendLegend("linechart");
         }
-        if (this.getWidth() - 300 <legentWidth) {
+        if (this.getWidth() - 300 < legentWidth) {
             CloseButton closeBtn = new CloseButton();
             VerticalLayout legendPopup = new VerticalLayout();
             legendPopup.addComponent(closeBtn);
@@ -803,7 +810,6 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
             legendLayoutComponent.setHeight(25, Unit.PIXELS);
             legendLayout.addComponent(legendLayoutComponent);
             legendLayout.setComponentAlignment(legendLayoutComponent, Alignment.TOP_RIGHT);
-            
 
         }
 
@@ -813,7 +819,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         lineChart.updateData(selectedComparisonsList, proteinKey, custTrend);
         peptideSequenceTableLayout.updateTableData(selectedComparisonsList, proteinKey);
         totatlDatasetsNumber = peptideSequenceTableLayout.getRowsNumber();
-        studiesNumberLabel.setValue("Studies (" + totatlDatasetsNumber + "/" + totatlDatasetsNumber + ")");
+        studiesNumberLabel.setValue("Datasets (" + totatlDatasetsNumber + "/" + totatlDatasetsNumber + ")");
         proteinNameLabel.setValue(lineChart.getProteinName());
         proteinNameLabel.setDescription(lineChart.getProteinName());
         updateIcon(generateThumbImg());

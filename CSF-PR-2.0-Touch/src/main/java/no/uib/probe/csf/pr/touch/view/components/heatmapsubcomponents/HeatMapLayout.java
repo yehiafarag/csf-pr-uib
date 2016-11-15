@@ -7,6 +7,7 @@ import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
@@ -175,6 +176,19 @@ public abstract class HeatMapLayout extends VerticalLayout {
      * Available width for the heat map component.
      */
     private final int availableHMWidth;
+    /**
+     * Reset filters button.
+     */
+    private final VerticalLayout clearFilterBtn;
+
+    /**
+     * Get reset filters button.
+     *
+     * @return clearFilterBtn reset filters button.
+     */
+    public VerticalLayout getClearFilterBtn() {
+        return clearFilterBtn;
+    }
 
     /**
      * Constructor to initialize the main attributes
@@ -342,6 +356,20 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
         selectMultiBtn.setWidth(40, Unit.PIXELS);
         selectMultiBtn.setHeight(40, Unit.PIXELS);
+
+        clearFilterBtn = new VerticalLayout();
+        clearFilterBtn.setDescription("Clear filters");
+        clearFilterBtn.setStyleName("filterbtn");
+        clearFilterBtn.addStyleName("midimg");
+        Image icon = new Image();
+        icon.setSource(new ThemeResource("img/filter_clear.png"));
+        clearFilterBtn.addComponent(icon);
+        icon.setWidth(100, Unit.PERCENTAGE);
+        icon.setHeight(100, Unit.PERCENTAGE);
+        clearFilterBtn.setWidth(40, Unit.PIXELS);
+        clearFilterBtn.setHeight(40, Unit.PIXELS);
+        heatmapToolsContainer.addComponent(clearFilterBtn);
+        heatmapToolsContainer.setComponentAlignment(clearFilterBtn, Alignment.MIDDLE_CENTER);
 
         cornerCell = new VerticalLayout();
         cornerCell.setWidth(150, Unit.PIXELS);
@@ -1019,7 +1047,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
      * @param PGI Disease sub group 1
      * @param PGII Disease sub group 2
      * @param patientsGroupComparisonsSet Set of disease group comparisons
-     *  @return Set of dataset indexes
+     * @return Set of dataset indexes
      */
     private Set<Integer> calcDsNumbers(String PGI, String PGII, Set<DiseaseGroupComparison> patientsGroupComparisonsSet) {
         Set<Integer> indexes = new HashSet<>();
@@ -1159,7 +1187,8 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
     /**
      * This method to generate heat map Thumb image on updating.
-     * @return URL for image encode as 64Based string 
+     *
+     * @return URL for image encode as 64Based string
      */
     private String getHMThumbImg() {
         gen.generateHeatmap(rowheadersSet, colheadersSet, dataValuesColors, availableHMWidth, availableHMHeight, resetLeftSideDiseaseCategoriesLabel, resetTopSideDiseaseCategoriesLabel, false);
@@ -1356,13 +1385,14 @@ public abstract class HeatMapLayout extends VerticalLayout {
     }
 
     /**
-     * Update heat map Thumb button on updating the heat map
-     * thumb image and number of datasets
+     * Update heat map Thumb button on updating the heat map thumb image and
+     * number of datasets
      *
      * @param imgUrl URL for encode 64Based string image
      * @param datasetNumber Number of datasets
      * @param deactivatedDatasetNumber Number of filtered datasets
-     * @param equalComparisonMap The map of equal heat map cell to the flipped comparisons
+     * @param equalComparisonMap The map of equal heat map cell to the flipped
+     * comparisons
      */
     public abstract void updateHMThumb(String imgUrl, int datasetNumber, int deactivatedDatasetNumber, Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> equalComparisonMap);
 

@@ -289,6 +289,14 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
             }
 
         };
+        removeFiltersBtn.setEnabled(false);
+        removeFiltersBtn.setHeight(40, Unit.PIXELS);
+        removeFiltersBtn.setWidth(40, Unit.PIXELS);
+        removeFiltersBtn.addStyleName("midimg");
+        removeFiltersBtn.updateIcon(new ThemeResource("img/filter_disables.png"));
+        proteinTableToolsContainer.addComponent(removeFiltersBtn);
+        proteinTableToolsContainer.setComponentAlignment(removeFiltersBtn, Alignment.MIDDLE_CENTER);
+        removeFiltersBtn.setDescription("Clear all applied filters");
 
         filterSortSwichBtn = new FilterColumnButton() {
 
@@ -301,16 +309,6 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
 
         proteinTableToolsContainer.addComponent(filterSortSwichBtn);
         proteinTableToolsContainer.setComponentAlignment(filterSortSwichBtn, Alignment.MIDDLE_CENTER);
-        removeFiltersBtn.setEnabled(false);
-
-        removeFiltersBtn.setHeight(40, Unit.PIXELS);
-        removeFiltersBtn.setWidth(40, Unit.PIXELS);
-        removeFiltersBtn.addStyleName("smallimg");
-
-        removeFiltersBtn.updateIcon(new ThemeResource("img/filter_disables.png"));
-        proteinTableToolsContainer.addComponent(removeFiltersBtn);
-        proteinTableToolsContainer.setComponentAlignment(removeFiltersBtn, Alignment.MIDDLE_CENTER);
-        removeFiltersBtn.setDescription("Clear all applied filters");
 
         ImageContainerBtn exportPdfBtn = new ImageContainerBtn() {
 
