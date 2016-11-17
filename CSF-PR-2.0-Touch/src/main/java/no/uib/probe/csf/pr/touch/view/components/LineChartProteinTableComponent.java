@@ -135,7 +135,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
 
         TrendLegend legendLayout = new TrendLegend("linechart");
         legendLayout.setWidthUndefined();
-        if (width - 260 < 740) {
+        if (width - 260 < 860) {
             CloseButton closeBtn = new CloseButton();
             VerticalLayout legendPopup = new VerticalLayout();
             legendPopup.addComponent(closeBtn);

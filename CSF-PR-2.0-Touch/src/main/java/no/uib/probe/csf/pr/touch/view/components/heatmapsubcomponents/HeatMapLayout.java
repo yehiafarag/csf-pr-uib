@@ -179,14 +179,14 @@ public abstract class HeatMapLayout extends VerticalLayout {
     /**
      * Reset filters button.
      */
-    private final VerticalLayout clearFilterBtn;
+    private final ImageContainerBtn clearFilterBtn;
 
     /**
      * Get reset filters button.
      *
      * @return clearFilterBtn reset filters button.
      */
-    public VerticalLayout getClearFilterBtn() {
+    public ImageContainerBtn getClearFilterBtn() {
         return clearFilterBtn;
     }
 
@@ -357,15 +357,18 @@ public abstract class HeatMapLayout extends VerticalLayout {
         selectMultiBtn.setWidth(40, Unit.PIXELS);
         selectMultiBtn.setHeight(40, Unit.PIXELS);
 
-        clearFilterBtn = new VerticalLayout();
+        clearFilterBtn = new ImageContainerBtn() {
+
+            @Override
+            public void onClick() {
+
+            }
+
+        };
         clearFilterBtn.setDescription("Clear filters");
-        clearFilterBtn.setStyleName("filterbtn");
         clearFilterBtn.addStyleName("midimg");
-        Image icon = new Image();
-        icon.setSource(new ThemeResource("img/filter_clear.png"));
-        clearFilterBtn.addComponent(icon);
-        icon.setWidth(100, Unit.PERCENTAGE);
-        icon.setHeight(100, Unit.PERCENTAGE);
+        clearFilterBtn.updateIcon(new ThemeResource("img/filter_clear.png"));
+        clearFilterBtn.setEnabled(true);
         clearFilterBtn.setWidth(40, Unit.PIXELS);
         clearFilterBtn.setHeight(40, Unit.PIXELS);
         heatmapToolsContainer.addComponent(clearFilterBtn);

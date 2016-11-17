@@ -3,13 +3,10 @@ package no.uib.probe.csf.pr.touch.view.components.peptideviewsubcomponents;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.ThemeResource;
-import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.themes.ValoTheme;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -191,6 +188,10 @@ public abstract class ProteinDatasetDetailsLineChart extends AbsoluteLayout impl
      * Map of selected comparisons and its overall trend for each comparison.
      */
     private final Map<String, Double> comparisonTrendMap = new LinkedHashMap<>();
+    /**
+     * Click to view protein/dataset details label.
+     */
+    private final Label clickcommentLabel;
 
     /**
      * Get main protein name
@@ -214,6 +215,7 @@ public abstract class ProteinDatasetDetailsLineChart extends AbsoluteLayout impl
             return selectedComparisonList;
         }
     }
+    int clickCounter = 0;
 
     /**
      * Constructor to initialize the main attributes.
@@ -239,24 +241,56 @@ public abstract class ProteinDatasetDetailsLineChart extends AbsoluteLayout impl
         chartComponentsLayout = new AbsoluteLayout();
         chartComponentsLayout.setWidth(100, Unit.PERCENTAGE);
         chartComponentsLayout.setHeight(this.height, Unit.PIXELS);
-        chartComponentsLayout.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
-            if (!(event.getClickedComponent() != null && (event.getClickedComponent() instanceof TrendSymbol))) {
-                ProteinDatasetDetailsLineChart.this.select(null, -100, event.isDoubleClick());
-            }
-        });
-        this.addComponent(chartComponentsLayout, "left: " + 0 + "px; top: " + 0 + "px;");
+//        chartComponentsLayout.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+//
+//            int counter = 0;
+//
+//            @Override
+//            public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+//                counter++;
+//
+//                try {
+//                    Thread.sleep(1000);
+//                    if (counter > 1) {
+//
+//                        System.out.println("at boolean its double " + event.isDoubleClick() + "  " + counter);
+//
+//                    } else {
+//                        System.out.println("at boolean single  " + event.isDoubleClick() + "  " + counter);
+//                    }
+//                } catch (InterruptedException e) {
+//
+//                }
+//             
+////                System.out.println("at boolean double " + event.isDoubleClick() + "  " + counter);
+//                if (!(event.getClickedComponent() != null && (event.getClickedComponent() instanceof TrendSymbol))) {
+//                    ProteinDatasetDetailsLineChart.this.select(null, -100, event.isDoubleClick());
+//                }  
+//                counter = 0;
+//            }
+//        }
+//        );
 
-        HorizontalLayout avgLineLabelContainer = new HorizontalLayout();
-        avgLineLabelContainer.setWidthUndefined();
-        avgLineLabelContainer.setHeight(25, Unit.PIXELS);
-        avgLineLabelContainer.setSpacing(true);
-        Image dotLineIcon = new Image();
-        dotLineIcon.setSource(new ThemeResource("img/dotline.PNG"));
-        avgLineLabelContainer.addComponent(dotLineIcon);
-        Label dotlineLabel = new Label("Protein trend");
-        dotlineLabel.setStyleName(ValoTheme.LABEL_BOLD);
-        avgLineLabelContainer.addComponent(dotlineLabel);
-        this.addComponent(avgLineLabelContainer, "left: " + 10 + "px; top: " + (height - 25) + "px;");
+//        chartComponentsLayout.addLayoutClickListener((LayoutEvents.LayoutClickEvent event) -> {
+//            System.out.println("at boolean double "+event.isDoubleClick());
+//            if (!(event.getClickedComponent() != null && (event.getClickedComponent() instanceof TrendSymbol))) {
+//                ProteinDatasetDetailsLineChart.this.select(null, -100, event.isDoubleClick());
+//            }
+//        });
+        this.addComponent(chartComponentsLayout,
+                "left: " + 0 + "px; top: " + 0 + "px;");
+
+       
+
+        clickcommentLabel = new Label("Click the data points to view protein / dataset details");
+        clickcommentLabel.setStyleName(ValoTheme.LABEL_SMALL);
+        clickcommentLabel.addStyleName(ValoTheme.LABEL_TINY);
+        clickcommentLabel.addStyleName("italictext");
+        clickcommentLabel.setWidth(290, Unit.PIXELS);
+
+        this.addComponent(clickcommentLabel,
+                "left: " + (width - 310) + "px; top: " + (height - 15) + "px;");
+
     }
 
     /**
@@ -679,14 +713,22 @@ public abstract class ProteinDatasetDetailsLineChart extends AbsoluteLayout impl
 
                 String[] gr = comparison.getComparisonFullName().replace("__" + comparison.getDiseaseCategory(), "").split(" / ");
                 String updatedHeader = ("Numerator: " + gr[0] + "<br/>Denominator: " + gr[1] + "<br/>Disease: " + comparison.getDiseaseCategory());
-                
+                String tooltip = updatedHeader + "<br/>#Patients :" + numPatients;
                 String protKey = "_-_" + ds.getQuantDatasetIndex() + "_-_" + comparison.getQuantComparisonProteinMap().get(key).getProteinAccession() + "_-_";
                 if (comparison.getQuantComparisonProteinMap().containsKey(key) && comparison.getQuantComparisonProteinMap().get(key).getDsQuantProteinsMap() != null && comparison.getQuantComparisonProteinMap().get(key).getDsQuantProteinsMap().containsKey(protKey)) {
                     QuantProtein prot = comparison.getQuantComparisonProteinMap().get(key).getDsQuantProteinsMap().get(protKey);
-                    String tooltip = updatedHeader + "<br/>#Patients :" + numPatients + "<br/>Fold Change :" + prot.getFc_value() + "<br/>pValue :" + prot.getP_value();//+ "<br/>Datasets included: " + dsNumber;
-                    symbol.setDescription(tooltip);
-                }
+                    String foldChangeValue = prot.getString_fc_value();
+                    if (prot.getFc_value() != -1000000000) {
+                        foldChangeValue = String.format("%1$.3f", prot.getFc_value());
+                    }
+                    String pValue = prot.getString_p_value();
+                    if (prot.getP_value() != -1000000000) {
+                        foldChangeValue = String.format("%1$.3f", prot.getP_value());
+                    }
+                    tooltip = tooltip + "<br/>Fold Change: " + foldChangeValue + "<br/><i>p</i>-value: " + pValue;//+ "<br/>Datasets included: " + dsNumber;
 
+                }
+                symbol.setDescription(tooltip);
                 symbol.setWidth(12, Unit.PIXELS);
                 symbol.setHeight(12, Unit.PIXELS);
                 symbol.addParam("resize", w);
@@ -991,7 +1033,7 @@ public abstract class ProteinDatasetDetailsLineChart extends AbsoluteLayout impl
      * @param lowerLimit The lower limit for the scale.
      * @return the value in log scale.
      */
-    public final double scaleValues(double linearValue, int max, double upperLimit, double lowerLimit) {
+    private double scaleValues(double linearValue, int max, double upperLimit, double lowerLimit) {
         double logMax = (Math.log(max) / Math.log(2));
         double logValue = (Math.log(linearValue) / Math.log(2));
         logValue = (logValue * 2 / logMax) + lowerLimit;
@@ -1005,12 +1047,12 @@ public abstract class ProteinDatasetDetailsLineChart extends AbsoluteLayout impl
      * comparison.
      */
     public void setViewDetailedDatasets(boolean showDetailedDatasets) {
+        clickcommentLabel.setVisible(showDetailedDatasets);
         subComparisonStudiesMap.values().stream().forEach((dsSet) -> {
             dsSet.stream().forEach((ds) -> {
                 ds.setVisible(showDetailedDatasets);
             });
         });
-
         symbolMap.values().stream().forEach((comp) -> {
             if (!comp.getStyleName().contains("graydiamond")) {
                 comp.setVisible(!showDetailedDatasets);
@@ -1116,7 +1158,7 @@ public abstract class ProteinDatasetDetailsLineChart extends AbsoluteLayout impl
         }
 
         int dsKey = (int) symbol.getParam("dsKey");
-        select(comparison, dsKey, event.isDoubleClick());
+        select(comparison, dsKey);
 
     }
 
@@ -1125,8 +1167,7 @@ public abstract class ProteinDatasetDetailsLineChart extends AbsoluteLayout impl
      *
      * @param comparison Comparison object.
      * @param dsId Dataset index (-100 if the selected is comparison).
-     * @param doubleClick Double click event
      */
-    public abstract void select(QuantDiseaseGroupsComparison comparison, int dsId, boolean doubleClick);
+    public abstract void select(QuantDiseaseGroupsComparison comparison, int dsId);
 
 }

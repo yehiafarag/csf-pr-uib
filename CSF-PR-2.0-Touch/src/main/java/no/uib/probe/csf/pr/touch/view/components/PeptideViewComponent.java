@@ -4,6 +4,7 @@ import com.itextpdf.text.pdf.codec.Base64;
 import com.vaadin.addon.tableexport.ExcelExport;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.ExternalResource;
+import com.vaadin.server.Page;
 import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
@@ -14,7 +15,9 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.PopupView;
 import com.vaadin.ui.Table;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -105,7 +108,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
     /**
      * Is individual datasets symbol resized based on patients number.
      */
-    private boolean resizeDatasetOnPateintsNumber = false;
+//    private boolean resizeDatasetOnPateintsNumber = false;
     /**
      * Top legend layout container.
      */
@@ -135,6 +138,11 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
      * List of selected disease group comparisons.
      */
     private Set<QuantDiseaseGroupsComparison> selectedComparisonsList;
+    /**
+     * Notification message alert.
+     */
+//    private final Notification notification = new Notification(null, "<span style='position:fixed;top:0;left:0;width:100%;height:100%'><center>To view dataset details use dataset details mode - double click on data point or click on <br/> <br/> <img style='width:40px; height:80px;border:2px solid lightgray; border-radius:4px;background-color: whitesmoke;padding:2px;' src='VAADIN/themes/mytheme/img/comparisons-ds.png' alt='Show/hide individual datasets'></center></span>", Notification.Type.TRAY_NOTIFICATION, true) {
+//    };
 
     /**
      * Get side buttons container that has all the peptides component control
@@ -235,6 +243,9 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
      */
     public PeptideViewComponent(CSFPR_Central_Manager CSFPR_Central_Manager, int width, int height) {
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
+//        this.notification.setDelayMsec(5000);
+//        this.notification.setStyleName("custnotification");
+
         this.setWidth(width, Unit.PIXELS);
         this.setHeight(height, Unit.PIXELS);
         VerticalLayout mainBodyContainer = new VerticalLayout();
@@ -279,29 +290,28 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         topLayout.setHeight(componentHeight, Unit.PIXELS);
         topLayout.addStyleName("roundedborder");
         topLayout.addStyleName("padding20");
+        topLayout.addStyleName("paddingbottom10");
         topLayout.addStyleName("whitelayout");
 
         mainBodyContainer.addComponent(topLayout);
         mainBodyContainer.setComponentAlignment(topLayout, Alignment.TOP_CENTER);
-        lineChart = new ProteinDatasetDetailsLineChart(width - 50, (componentHeight - 50)) {
+        lineChart = new ProteinDatasetDetailsLineChart(width - 50, (componentHeight - 40)) {
 
             @Override
-            public void select(QuantDiseaseGroupsComparison comparison, int dsKey, boolean isDoubleClick) {
-                System.out.println("at type of the click double click " + isDoubleClick);
-                if (dsKey == -100 && !isDoubleClick) {
-                    Notification.show("To view details view the dataset details using BTN or double click on symbol", Notification.Type.HUMANIZED_MESSAGE);
-                } else if (dsKey == -100 && isDoubleClick) {
+            public void select(QuantDiseaseGroupsComparison comparison, int dsKey) {
+                if (dsKey == -100) {
+//                    notification.show(Page.getCurrent());
+                    individualToTotalComparisonsDatasetsSwichBtn.blink();
+//                } else if (dsKey == -100 && isDoubleClick) {
                     individualToTotalComparisonsDatasetsSwichBtn.onClick();
                 } else {
                     peptideSequenceTableLayout.select(comparison, dsKey);
                     studiesNumberLabel.setValue("Datasets (" + peptideSequenceTableLayout.getRowsNumber() + "/" + totatlDatasetsNumber + ")");
                 }
             }
-
         };
 
         topLayout.addComponent(lineChart);
-
         HorizontalLayout middlelayout = new HorizontalLayout();
         middlelayout.setWidth(100, Unit.PERCENTAGE);
         middlelayout.addStyleName("margintop7");
@@ -387,32 +397,15 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         peptideTableToolsContainer.setWidthUndefined();
         peptideTableToolsContainer.setSpacing(true);
 
-//        resizeDsOnPatientNumbersBtn = new ImageContainerBtn() {
-//
-//            @Override
-//            public void onClick() {
-//                resizeDatasetOnPateintsNumber = !resizeDatasetOnPateintsNumber;
-//                lineChart.setResizeDetailedDatasets(resizeDatasetOnPateintsNumber);
-//                if (this.getStyleName().contains("selectmultiselectedbtn")) {
-//                    this.removeStyleName("selectmultiselectedbtn");
-//                } else {
-//                    this.addStyleName("selectmultiselectedbtn");
-//                }
-//            }
-//
-//        };
         individualToTotalComparisonsDatasetsSwichBtn = new ImageContainerBtn() {
             @Override
             public void onClick() {
                 if (showIndividualDatasets) {
                     showIndividualDatasets = false;
                     this.updateIcon(comparisonDsRes);
-//                    resizeDsOnPatientNumbersBtn.setEnabled(false);
                 } else {
                     showIndividualDatasets = true;
                     this.updateIcon(dsComparisonRes);
-//                    resizeDsOnPatientNumbersBtn.setEnabled(true);
-
                 }
                 lineChart.setViewDetailedDatasets(showIndividualDatasets);
             }
@@ -429,22 +422,12 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         peptideTableToolsContainer.setComponentAlignment(individualToTotalComparisonsDatasetsSwichBtn, Alignment.MIDDLE_CENTER);
         individualToTotalComparisonsDatasetsSwichBtn.setDescription("Show/hide individual datasets");
 
-//        resizeDsOnPatientNumbersBtn.setHeight(40, Unit.PIXELS);
-//        resizeDsOnPatientNumbersBtn.setWidth(40, Unit.PIXELS);
-//
-//        resizeDsOnPatientNumbersBtn.updateIcon(new ThemeResource("img/resize_1.png"));
-//        resizeDsOnPatientNumbersBtn.setEnabled(false);
-//        resizeDsOnPatientNumbersBtn.addStyleName("pointer");
-//        peptideTableToolsContainer.addComponent(resizeDsOnPatientNumbersBtn);
-//        peptideTableToolsContainer.setComponentAlignment(resizeDsOnPatientNumbersBtn, Alignment.MIDDLE_CENTER);
-//        resizeDsOnPatientNumbersBtn.setDescription("Resize dataset symbols based on number of patients");
         final Resource trendOrderRes = new ThemeResource("img/orderedtrend.png");
         orderByTrendBtn = new ImageContainerBtn() {
 
             @Override
             public void onClick() {
                 individualToTotalComparisonsDatasetsSwichBtn.updateIcon(comparisonDsRes);
-//                resizeDsOnPatientNumbersBtn.setEnabled(false);
                 showIndividualDatasets = false;
 
                 if (defaultTrend) {
@@ -762,13 +745,13 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
      */
     private void updateData(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, String proteinKey, int custTrend) {
         TrendLegend legendLayoutComponent;
-        int legentWidth = 740;
+        int legentWidth = 860;
         if (custTrend != -1) {
             legendLayout.removeAllComponents();
             legendLayoutComponent = new TrendLegend(custTrend);
             legendLayoutComponent.setWidthUndefined();
             legendLayoutComponent.setHeight(25, Unit.PIXELS);
-            legentWidth = 820;
+            legentWidth = 900;
         } else {
             legendLayout.removeAllComponents();
             legendLayoutComponent = new TrendLegend("linechart");

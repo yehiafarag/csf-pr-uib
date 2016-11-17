@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
-     <display-name>Vaadin Web Application</display-name>
+    <display-name>Vaadin Web Application</display-name>
   
     <!-- Session Configuration -->
     <session-config>
@@ -11,7 +11,7 @@
         <param-name>productionMode</param-name>
         <param-value>true</param-value>
     </context-param>
-     <context-param>
+    <context-param>
         <description>Admin Username </description>
         <param-name>adminName</param-name>
         <param-value>CSFADMIN</param-value>
@@ -21,27 +21,25 @@
         <param-name>adminEmail</param-name>
         <param-value>csf-pr@googlegroups.com</param-value>
     </context-param>
-     <context-param>
+    <context-param>
         <description>csf-pr address </description>
         <param-name>csf-pr-id</param-name>
         <param-value>http://129.177.231.63/csf-pr/</param-value>
     </context-param>
-
     <context-param>
         <description>Admin Password</description>
         <param-name>adminPassword</param-name>
         <param-value>TRuc2ase</param-value>
     </context-param>
-
     <context-param>
         <description>Database url</description>
         <param-name>url</param-name>
         <param-value>jdbc:mysql://localhost:3306/</param-value>
     </context-param>
     <context-param>
-        <description>Database name csf_db_v2 ,all_no_MCP,csf_pr_v2_28_06</description>
+        <description>Database name csf_db_v2 ,all_no_MCP,csf_pr_v2_28_06,csf_pr_v2_26_09_2016,csf_pr_v2_final</description>
         <param-name>dbName</param-name>
-        <param-value>csf_pr_v2_26_09_2016</param-value>
+        <param-value>csf_pr_v2_final</param-value>
     </context-param>
     <context-param>
         <description>Database Driver</description>
@@ -63,8 +61,7 @@
         <param-name>filesURL</param-name>
         <param-value>/home/probe/user/CSF-PR-FILES</param-value>
     </context-param>
-   
-
+    
     <servlet>
         <servlet-name>Vaadin Application Servlet</servlet-name>
         <servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
@@ -79,6 +76,7 @@
             <param-value>no.uib.probe.csf.pr.touch.CSF_PR_Widgetset</param-value>
         </init-param>
     </servlet>
+    
     <servlet-mapping>
         <servlet-name>Vaadin Application Servlet</servlet-name>
         <url-pattern>/*</url-pattern>

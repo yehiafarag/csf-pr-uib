@@ -98,7 +98,7 @@ public class ProteinDatasetsTable extends VerticalLayout {
         this.mainProteinDatasetsTable.setWidthUndefined();
         this.mainProteinDatasetsTable.setStyleName(ValoTheme.TABLE_COMPACT);
         this.mainProteinDatasetsTable.addStyleName("peptidetablestyle");
-         if (!Page.getCurrent().getWebBrowser().isChrome()) {
+        if (!Page.getCurrent().getWebBrowser().isChrome()) {
             this.mainProteinDatasetsTable.addStyleName("notchromecorrector");
         }
         this.mainProteinDatasetsTable.setHeight(height, Unit.PIXELS);
@@ -327,40 +327,18 @@ public class ProteinDatasetsTable extends VerticalLayout {
      */
     public void select(QuantDiseaseGroupsComparison comparison, int dsKey) {
         selectedDatasetItemIds.clear();
-        if (comparison == null) {
-//            selectedOnly = false;
-//            showFilteredDatasetsOnly();
+        if (comparison == null || dsKey == -100) {
             return;
         }
-
-        if (dsKey == -100) {
-            
-            
-//            comparison.getDatasetMap().keySet().stream().filter((key) -> (datasetToItemId.containsKey(comparison.getComparisonHeader() + "__" + key))).forEach((key) -> {
-//                selectedDatasetItemIds.add(datasetToItemId.get(comparison.getComparisonHeader() + "__" + key));
-//            });
-
+        Object itemId = null;
+        if (datasetToItemId.containsKey(comparison.getComparisonHeader() + "__" + dsKey)) {
+            itemId = datasetToItemId.get(comparison.getComparisonHeader() + "__" + dsKey);
         } else {
-            Object itemId=null;
-            if (datasetToItemId.containsKey(comparison.getComparisonHeader() + "__" + dsKey)) {
-//                selectedDatasetItemIds.add(datasetToItemId.get(comparison.getComparisonHeader() + "__" + dsKey));
-                itemId = datasetToItemId.get(comparison.getComparisonHeader() + "__" + dsKey);
-            }else{
-                return;
-            }
-             Item item = mainProteinDatasetsTable.getItem(itemId);
-            ((ComparisonLable)item.getItemProperty("Comparison").getValue()).openComparisonPopup();
-            
-
+            return;
         }
-//        selectedOnly = !selectedDatasetItemIds.isEmpty();
-//        showFilteredDatasetsOnly();
-//        int indexing = 1;
-//        for (Object id : mainProteinDatasetsTable.getItemIds()) {
-//            Item item = mainProteinDatasetsTable.getItem(id);
-//            item.getItemProperty("Index").setValue(indexing);
-//            indexing++;
-//        }
+        Item item = mainProteinDatasetsTable.getItem(itemId);
+        ((ComparisonLable) item.getItemProperty("Comparison").getValue()).openComparisonPopup();
+
     }
 
     /**

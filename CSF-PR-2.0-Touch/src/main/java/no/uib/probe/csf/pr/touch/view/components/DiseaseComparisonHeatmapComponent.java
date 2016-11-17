@@ -21,7 +21,7 @@ import no.uib.probe.csf.pr.touch.selectionmanager.CSFListener;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFPR_Central_Manager;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFSelection;
 import no.uib.probe.csf.pr.touch.view.components.datasetfilters.DatasetPieChartFiltersComponent;
-import no.uib.probe.csf.pr.touch.view.components.datasetfilters.PoolSamplesFilter;
+import no.uib.probe.csf.pr.touch.view.components.datasetfilters.PooledSamplesFilter;
 import no.uib.probe.csf.pr.touch.view.components.datasetfilters.RecombineDiseaseGroupsCombonent;
 import no.uib.probe.csf.pr.touch.view.components.datasetfilters.ReorderSelectGroupsComponent;
 import no.uib.probe.csf.pr.touch.view.components.datasetfilters.SerumCsfFilter;
@@ -57,6 +57,10 @@ public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout i
      * buttons).
      */
     private final SerumCsfFilter serumCsfFilter;
+    /**
+     * The pool sampling dataset filter button.
+     */
+    private final PooledSamplesFilter poolFilterBtn;
     /**
      * The wrapper of dataset Select/Re-order disease groups component
      * (represented as button with pop up layout).
@@ -206,14 +210,7 @@ public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout i
 
             @Override
             public void updateSystem(boolean serumApplied, boolean csfApplied) {
-                Map<Integer, QuantDataset> updatedDsIds = new LinkedHashMap<>();
-                for (int id : fullQuantDsMap.keySet()) {
-                    if (serumApplied && fullQuantDsMap.get(id).getSampleType().equalsIgnoreCase("Serum")) {
-                        updatedDsIds.put(id, fullQuantDsMap.get(id));
-                    } else if (csfApplied && fullQuantDsMap.get(id).getSampleType().equalsIgnoreCase("CSf")) {
-                        updatedDsIds.put(id, fullQuantDsMap.get(id));
-                    }
-                }
+                Map<Integer, QuantDataset> updatedDsIds = unitFilteringDataset();
 
                 updateSystemComponents(datasetPieChartFiltersComponent.checkAndFilter(updatedDsIds));
                 reorderSelectComponent.updateData(rowheadersSet, colheadersSet, patientsGroupComparisonsSet);
@@ -222,11 +219,14 @@ public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout i
 
         btnsWrapper.addComponent(serumCsfFilter, 1, 0);
         btnsWrapper.setComponentAlignment(serumCsfFilter, Alignment.BOTTOM_CENTER);
-        PoolSamplesFilter poolFilterBtn = new PoolSamplesFilter() {
+        poolFilterBtn = new PooledSamplesFilter() {
 
             @Override
             public void updateSystem(boolean hidePoolSamplesDatasets) {
-                System.out.println("at hide pool samples datasets");
+                Map<Integer, QuantDataset> updatedDsIds = unitFilteringDataset();
+                updateSystemComponents(datasetPieChartFiltersComponent.checkAndFilter(updatedDsIds)
+                );
+                reorderSelectComponent.updateData(rowheadersSet, colheadersSet, patientsGroupComparisonsSet);
             }
 
         };
@@ -294,6 +294,7 @@ public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout i
             filteredQuantDsMap.putAll(fullQuantDsMap);
             heatmapLayoutContainer.updateData(rowheadersSet, colheadersSet, patientsGroupComparisonsSet, fullQuantDsMap);
             serumCsfFilter.resetFilter();
+            poolFilterBtn.resetFilter();
         });
         CSFPR_Central_Manager.registerListener(DiseaseComparisonHeatmapComponent.this);
 
@@ -332,6 +333,7 @@ public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout i
         this.filteredQuantDsMap.putAll(fullQuantDsMap);
 
         serumCsfFilter.resetFilter();
+        poolFilterBtn.resetFilter();
         reorderSelectComponent.updateData(rowheaders, colheaders, patientsGroupComparisonsSet);
 
     }
@@ -488,6 +490,31 @@ public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout i
      */
     public VerticalLayout getHeatmapToolsContainer() {
         return heatmapToolsContainer;
+    }
+
+    private Map<Integer, QuantDataset> unitFilteringDataset() {
+
+        Map<Integer, QuantDataset> updatedDsIds = new LinkedHashMap<>();
+        for (int id : fullQuantDsMap.keySet()) {
+            if (serumCsfFilter.isSerumApplied() && fullQuantDsMap.get(id).getSampleType().equalsIgnoreCase("Serum")) {
+                updatedDsIds.put(id, fullQuantDsMap.get(id));
+            } else if (serumCsfFilter.isCsfApplied() && fullQuantDsMap.get(id).getSampleType().equalsIgnoreCase("CSf")) {
+                updatedDsIds.put(id, fullQuantDsMap.get(id));
+            }
+        }
+        Map<Integer, QuantDataset> finalUpdatedDsIds = new LinkedHashMap<>();
+        if (poolFilterBtn.isHidePoolSamplesDatasets()) {
+            for (int id : updatedDsIds.keySet()) {
+                if (!updatedDsIds.get(id).isPooledSamples()) {
+                    finalUpdatedDsIds.put(id, updatedDsIds.get(id));
+                }
+            }
+
+        } else {
+            finalUpdatedDsIds.putAll(updatedDsIds);
+        }
+        return finalUpdatedDsIds;
+
     }
 
 }

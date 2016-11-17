@@ -1,9 +1,11 @@
 package no.uib.probe.csf.pr.touch.view.core;
 
+import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -25,17 +27,36 @@ public class TrendLegend extends GridLayout {
         if (type.equalsIgnoreCase("linechart")) {
             String[] labels = new String[]{"Increased   100%", "Increased < 100%", "Equal", "Decreased < 100%", "Decreased   100%", "No Quant. Info.", "No Data"};
             String[] styleName = new String[]{"legendarrow-up100", "legendarrow-upless100", "legenddiamond", "legendarrow-downless100", "legendarrow-down100", "legenddarkgraydiamond", "legendgraydiamond"};
+
             this.setSpacing(true);
-            this.setColumns(7);
+            this.setColumns(8);
             this.setRows(1);
             this.setMargin(new MarginInfo(false, true, false, false));
             for (int i = 0; i < styleName.length; i++) {
                 HorizontalLayout item = generateItemLabel(labels[i], styleName[i]);
                 item.setStyleName("legendlabelcontainer");
                 item.setHeight(10, Unit.PIXELS);
-                this.addComponent(item, i, 0);
+                this.addComponent(item, i + 1, 0);
                 this.setComponentAlignment(item, Alignment.MIDDLE_CENTER);
             }
+            HorizontalLayout avgLineLabelContainer = new HorizontalLayout();
+            avgLineLabelContainer.setWidthUndefined();
+            avgLineLabelContainer.setHeight(10, Unit.PIXELS);
+            Image dotLineIcon = new Image();
+            dotLineIcon.setHeight(10, Unit.PIXELS);
+            dotLineIcon.setSource(new ThemeResource("img/dotline.png"));
+            avgLineLabelContainer.addComponent(dotLineIcon);
+            
+            avgLineLabelContainer.setStyleName("legendlabelcontainer");
+            Label dotlineLabel = new Label("Protein Trend  ");
+            dotlineLabel.setHeight(10, Unit.PIXELS);
+            dotlineLabel.setStyleName(ValoTheme.LABEL_BOLD);
+            dotlineLabel.addStyleName(ValoTheme.LABEL_SMALL);
+            dotlineLabel.addStyleName(ValoTheme.LABEL_TINY);
+            avgLineLabelContainer.addComponent(dotlineLabel);
+            dotlineLabel.setWidth(82,Unit.PIXELS);
+            this.addComponent(avgLineLabelContainer, 0, 0);
+            this.setComponentAlignment(avgLineLabelContainer, Alignment.MIDDLE_LEFT);
 
         } else if (type.equalsIgnoreCase("bubblechart")) {
             String[] labels = new String[]{"Increased   100%", "Increased < 100%", "Equal", "Decreased < 100%", "Decreased   100%", "No Quant. Info."};
@@ -149,14 +170,14 @@ public class TrendLegend extends GridLayout {
         String[] labels = new String[]{"Increased   100%", "Increased < 100%", "Equal", "Decreased < 100%", "Decreased   100%", "No Quant. Info.", "No Data"};
         String[] styleName = new String[]{"legendarrow-up100", "legendarrow-upless100", "legenddiamond", "legendarrow-downless100", "legendarrow-down100", "legenddarkgraydiamond", "legendgraydiamond"};
         this.setSpacing(true);
-        this.setColumns(8);
+        this.setColumns(9);
         this.setRows(1);
         this.setMargin(new MarginInfo(false, true, false, false));
         for (int i = 0; i < styleName.length; i++) {
             HorizontalLayout item = generateItemLabel(labels[i], styleName[i]);
             item.setStyleName("legendlabelcontainer");
             item.setHeight(10, Unit.PIXELS);
-            this.addComponent(item, i, 0);
+            this.addComponent(item, i+1, 0);
             this.setComponentAlignment(item, Alignment.MIDDLE_CENTER);
 
         }
@@ -171,8 +192,27 @@ public class TrendLegend extends GridLayout {
         }
         item.setStyleName("legendlabelcontainer");
         item.setHeight(10, Unit.PIXELS);
-        this.addComponent(item, 7, 0);
+        this.addComponent(item, 8, 0);
         this.setComponentAlignment(item, Alignment.MIDDLE_CENTER);
+        
+            HorizontalLayout avgLineLabelContainer = new HorizontalLayout();
+            avgLineLabelContainer.setWidthUndefined();
+            avgLineLabelContainer.setHeight(10, Unit.PIXELS);
+            Image dotLineIcon = new Image();
+            dotLineIcon.setHeight(10, Unit.PIXELS);
+            dotLineIcon.setSource(new ThemeResource("img/dotline.png"));
+            avgLineLabelContainer.addComponent(dotLineIcon);
+            
+            avgLineLabelContainer.setStyleName("legendlabelcontainer");
+            Label dotlineLabel = new Label("Protein Trend  ");
+            dotlineLabel.setHeight(10, Unit.PIXELS);
+            dotlineLabel.setStyleName(ValoTheme.LABEL_BOLD);
+            dotlineLabel.addStyleName(ValoTheme.LABEL_SMALL);
+            dotlineLabel.addStyleName(ValoTheme.LABEL_TINY);
+            avgLineLabelContainer.addComponent(dotlineLabel);
+            dotlineLabel.setWidth(82,Unit.PIXELS);
+            this.addComponent(avgLineLabelContainer, 0, 0);
+            this.setComponentAlignment(avgLineLabelContainer, Alignment.MIDDLE_LEFT);
 
     }
 

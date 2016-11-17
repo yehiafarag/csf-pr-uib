@@ -189,7 +189,6 @@ public class DataBaseLayer implements Serializable {
      */
     public Set<QuantDataset> getQuantDatasetList() {
         Set<QuantDataset> dsObjects = new TreeSet<>();
-
         Map<String, InitialInformationObject> diseaseCategoriesMap = getQuantDatasetInitialInformationObject();
         diseaseCategoriesMap.values().stream().forEach((qi) -> {
             dsObjects.addAll(qi.getQuantDatasetsMap().values());
@@ -398,6 +397,7 @@ public class DataBaseLayer implements Serializable {
                     ds.setUniqueProtNum(rs.getInt("uniq_prot_num"));
                     ds.setTotalPepNum(rs.getInt("total_pept_num"));
                     ds.setUniqePepNum(rs.getInt("uniq_pept_num"));
+                    ds.setPooledSamples(Boolean.valueOf(rs.getString("pooledsamples")));
 
                     diseaseCategories.add(ds.getDiseaseCategory());
                     activeHeaders[26] = false;

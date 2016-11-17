@@ -293,6 +293,9 @@
                  transition: all .5s ease-in-out;
     } 
 }
+
+
+
 @keyframes blinkII { 
     50% {        border-color: orange; 
                  border-width:2px;
@@ -306,6 +309,7 @@
                  transition: all .5s ease-in-out;
     } 
 }
+
 
 /**
  * Outputs cross-browser Valo-specific linear gradient background-image declarations.
@@ -12124,12 +12128,15 @@ div.v-layout.v-horizontal.v-widget {
 .mytheme .v-Notification {
     border-radius: 4px;
     text-align: center;
+    border:2px solid lightgray;
     position: fixed !important;
     -webkit-backface-visibility: hidden;
     -moz-backface-visibility: hidden;
     -ms-backface-visibility: hidden;
     backface-visibility: hidden;
-    background: white;
+    background: #EAF5FC;
+    font-weight:bold;
+    min-width:630px;
     -webkit-box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.15);
     box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.15);
     padding: 19px 22px;
@@ -12143,7 +12150,18 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme .v-Notification .v-Notification-description {
     line-height: 1.4;
+    min-width:620px;
+
 }
+.custnotification .gwt-HTML{
+    border:2px solid lightgray;
+    padding: 19px 22px;
+    background: white;
+    border-radius: 4px;
+
+}
+
+
 
 .mytheme .v-Notification-caption {
     margin: 0;
@@ -14616,10 +14634,10 @@ div.v-layout.v-horizontal.v-widget {
     background-color:white;
     background-image: url(img/sort-up.png);
     background-repeat:no-repeat;
-     background-position:center;
+    background-position:center;
     background-size:10px 5px;
     cursor:pointer;
-    
+
     width:16px !important;
 
     box-shadow:0px 0px 0px rgba(182,179, 179, 0.2), inset 0px 5px 10px rgba(182, 179, 179, 0.7) !important;
@@ -14633,7 +14651,7 @@ div.v-layout.v-horizontal.v-widget {
     background-position:center;
     background-size:10px 5px;
     cursor:pointer;
-    
+
     width:16px !important;
     box-shadow:0px 0px 0px rgba(182,179, 179, 0.2), inset 0px 5px 10px rgba(182, 179, 179, 0.7) !important;
     -webkit-box-shadow:0px 0px 0px rgba(182,179, 179, 0.2), inset 0px 5px 10px rgba(182, 179, 179, 0.7) !important;
@@ -15422,13 +15440,13 @@ div.v-layout.v-horizontal.v-widget {
     position: relative;
     margin-top:-1px;
     margin-left:4px;
-    
-  
+
+
 
 }
 .marginleft-12{
-margin-left:-12px !important;
-    
+    margin-left:-12px !important;
+
 }
 .proteintablestyle{
     margin-top: -34px;
@@ -15461,7 +15479,7 @@ margin-left:-12px !important;
 .v-slot-peptidetablestyle{
 
 
-height:auto !important;
+    height:auto !important;
     background:rgb(241, 241, 241) !important;
     margin-right:10px !important;
     border-right:1px solid lightgray;
@@ -15471,7 +15489,7 @@ height:auto !important;
     margin-top:30px !important;
 }
 .v-table-peptidetablestyle{
-    
+
 
 }
 .v-table-peptidetablestyle .v-table-table{   
@@ -15536,6 +15554,7 @@ height:auto !important;
 }
 .tablelink-underline a{
     color:#4d749f !important;
+    line-height: 19px !important;
 }
 tbody{
     text-align:justify !important;
@@ -15707,12 +15726,12 @@ tbody{
     padding-right:1px !important;
     padding-bottom:5px !important;
     font-size:10px !important;
-   
+
 }
 .v-link-smalllink a{
     font-size:12px;
-    
-    
+
+
 }
 .compactlegend{
     border: 2px solid lightgray;
@@ -15728,7 +15747,7 @@ tbody{
 }
 .custuserdataheader{
     padding-left:17px !important;
-  
+
 }
 .v-checkbox-disabled{
     opacity:0.5 !important;
@@ -15738,4 +15757,10 @@ tbody{
 }
 .v-slot-notchromecorrector{
     margin-right: 13px !important;
+}
+.invisibleNotification{
+    background-color:blue !important;
+}
+.legendlabelcontainer img{
+    margin-top:-5px !important;
 }

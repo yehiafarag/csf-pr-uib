@@ -70,6 +70,18 @@ public class QuantDataset implements Serializable, Comparable {
      * Number of peptides found only in the dataset.
      */
     private int uniqePepNum;
+    /**
+     * The dataset is pool samples dataset.
+     */
+    private boolean pooledSamples;
+
+    public boolean isPooledSamples() {
+        return pooledSamples;
+    }
+
+    public void setPooledSamples(boolean pooledSamples) {
+        this.pooledSamples = pooledSamples;
+    }
 
     /**
      * *
@@ -682,7 +694,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get the dataset index in the database
      *
-     * @return quantDatasetIndex Dataset index 
+     * @return quantDatasetIndex Dataset index
      */
     public int getQuantDatasetIndex() {
         return quantDatasetIndex;
@@ -691,7 +703,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set the dataset index in the database
      *
-     * @param quantDatasetIndex Dataset index 
+     * @param quantDatasetIndex Dataset index
      */
     public void setQuantDatasetIndex(int quantDatasetIndex) {
         this.quantDatasetIndex = quantDatasetIndex;
@@ -700,7 +712,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get location x used for plotting the dataset
      *
-     * @return x Location x 
+     * @return x Location x
      */
     public int getX() {
         return x;
@@ -709,7 +721,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set location x used for plotting the dataset
      *
-     * @param x Location x 
+     * @param x Location x
      */
     public void setX(int x) {
         this.x = x;
@@ -718,7 +730,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get location y used for plotting the dataset
      *
-     * @return y Location y 
+     * @return y Location y
      */
     public int getY() {
         return y;
@@ -727,7 +739,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set location y used for plotting the dataset
      *
-     * @param y Location y 
+     * @param y Location y
      */
     public void setY(int y) {
         this.y = y;
@@ -745,7 +757,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set number of included proteins in the dataset
      *
-     * @param totalProtNum Number of included proteins 
+     * @param totalProtNum Number of included proteins
      */
     public void setTotalProtNum(int totalProtNum) {
         this.totalProtNum = totalProtNum;
@@ -754,7 +766,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set number of proteins found only in the dataset
      *
-     * @return uniqueProtNum Number of included proteins 
+     * @return uniqueProtNum Number of included proteins
      */
     public int getUniqueProtNum() {
         return uniqueProtNum;
@@ -763,7 +775,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get number of proteins found only in the dataset
      *
-     * @param uniqueProtNum  Number of proteins found only in the dataset
+     * @param uniqueProtNum Number of proteins found only in the dataset
      */
     public void setUniqueProtNum(int uniqueProtNum) {
         this.uniqueProtNum = uniqueProtNum;
@@ -772,7 +784,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set number of included peptides in the dataset
      *
-     * @return totalPepNum  Number of peptides in the dataset
+     * @return totalPepNum Number of peptides in the dataset
      */
     public int getTotalPepNum() {
         return totalPepNum;
@@ -790,7 +802,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Get number of peptides found only in the dataset
      *
-     * @return uniqePepNum   Number of peptides found only in the dataset
+     * @return uniqePepNum Number of peptides found only in the dataset
      */
     public int getUniqePepNum() {
         return uniqePepNum;
@@ -799,7 +811,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * Set number of peptides found only in the dataset
      *
-     * @param uniqePepNum  Number of peptides found only in the dataset
+     * @param uniqePepNum Number of peptides found only in the dataset
      */
     public void setUniqePepNum(int uniqePepNum) {
         this.uniqePepNum = uniqePepNum;
