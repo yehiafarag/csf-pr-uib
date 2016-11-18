@@ -1,5 +1,6 @@
 package no.uib.probe.csf.pr.touch.view.core;
 
+import com.vaadin.server.ExternalResource;
 import com.vaadin.server.Resource;
 import com.vaadin.ui.Link;
 
@@ -32,11 +33,11 @@ public class ExternalLink extends Link implements Comparable<ExternalLink> {
      * @param caption The link caption
      * @param resource The link resource.
      */
-    public ExternalLink(String caption, Resource resource) {
-        super(caption, resource);
+    public ExternalLink(String caption, ExternalResource resource) {
+        super(caption.replace("(unreviewed)", " (Unreviewed)"), resource);
         this.caption = caption;
         this.setPrimaryStyleName("tablelink");
-        if (!caption.startsWith("IPI")) {
+        if (!caption.startsWith("IPI") && resource != null && !resource.getURL().equalsIgnoreCase("")) {
             this.setTargetName("_blank");
             this.addStyleName("underline");
         } else {

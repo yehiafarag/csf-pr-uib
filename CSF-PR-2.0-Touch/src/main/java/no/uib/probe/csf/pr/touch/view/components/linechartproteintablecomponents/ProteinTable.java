@@ -655,8 +655,10 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
             if (url == null) {
                 url = "";
                 description = "UniProt information is not available";
+            } else if (accession.contains("(unreviewed)")) {
+//                accession = accession.replace("(unreviewed)", " (Unreviewed)");
             }
-            url = url.replace("(UNREVIEWED)", "");
+            url = url.replace("(UNREVIEWED)", "").replace("(unreviewed)", "");
             ExternalLink accessionObject = new ExternalLink(accession, new ExternalResource(url));
             accessionObject.setDescription(description);
             this.selectedComparisonsList = selectedComparisonsList;

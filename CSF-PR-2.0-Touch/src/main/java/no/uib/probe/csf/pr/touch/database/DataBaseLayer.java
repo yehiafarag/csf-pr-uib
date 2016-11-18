@@ -695,7 +695,7 @@ public class DataBaseLayer implements Serializable {
                     QuantProtein quantProt = new QuantProtein();
                     quantProt.setProtIndex(rs1.getInt("index"));
                     quantProt.setQuantDatasetIndex(rs1.getInt("ds_ID"));
-                    quantProt.setSequence(rs1.getString("sequance"));
+                    quantProt.setSequence(rs1.getString("sequance").replace("null", ""));
                     quantProt.setUniprotAccessionNumber(rs1.getString("uniprot_accession"));
                     quantProt.setUniprotProteinName(rs1.getString("uniprot_protein_name").replace("(", "___").split("___")[0]);
                     quantProt.setPublicationAccessionNumber(rs1.getString("publication_acc_number"));

@@ -202,12 +202,13 @@ public class CoreLogic implements Serializable {
     }
 
     /**
-     * This method is responsible for update quant comparison proteins name map for
-     * each comparison.
+     * This method is responsible for update quant comparison proteins name map
+     * for each comparison.
      *
      *
      * @param selectedQuantComparisonsList selected comparisons
-     * @param inUse_DiseaseCat_DiseaseGroupMap updated disease comparison names map
+     * @param inUse_DiseaseCat_DiseaseGroupMap updated disease comparison names
+     * map
      * @return updated quant comparisons list
      */
     public Set<QuantDiseaseGroupsComparison> updateComparisonQuantProteins(Set<QuantDiseaseGroupsComparison> selectedQuantComparisonsList, Map<String, Map<String, String>> inUse_DiseaseCat_DiseaseGroupMap) {
@@ -279,8 +280,15 @@ public class CoreLogic implements Serializable {
                     protAcc = quant.getPublicationAccessionNumber() + " (" + protAcc + ")";
                     url = null;
 
-                } else {
-
+                } 
+//                else if (protAcc.contains("(unreviewed)")) {
+//                    System.out.println("at found the prot "+ protAcc);
+//                    System.out.println("at found the prot "+ quant.getSequence());
+//                    protAcc = protAcc.replace("(unreviewed)", " (Unreviewed)");
+//                    url = null;
+//                } 
+                else
+                {
                     url = "http://www.uniprot.org/uniprot/" + protAcc;
                 }
 

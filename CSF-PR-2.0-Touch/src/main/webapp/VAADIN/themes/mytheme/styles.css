@@ -15764,3 +15764,9 @@ tbody{
 .legendlabelcontainer img{
     margin-top:-5px !important;
 }
+.tablelink.v-disabled.v-widget{
+    text-align:center !important;
+}
+.tablelink.v-widget.underline.tablelink-underline{
+    text-align:center !important;
+}
