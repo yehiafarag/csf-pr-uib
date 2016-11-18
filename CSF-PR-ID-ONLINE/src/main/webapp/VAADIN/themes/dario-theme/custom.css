@@ -93,5 +93,6 @@
 }
 .kgjlogo {
     width:220px !important;
+    overflow: hidden !important;
 
 }

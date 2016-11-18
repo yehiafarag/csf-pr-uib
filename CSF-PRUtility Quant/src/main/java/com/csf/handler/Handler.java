@@ -87,14 +87,14 @@ public class Handler {
         Set<QuantDatasetObject> datasetsList = dal.getQuantDatasetListObject();
 
         List<QuantProtein> updatedQuantProtList = this.handleQuantData(datasetsList, filteredQuantProteinsList);
-//        //store quant protiens
+        //store quant protiens
         Object[] maps = dal.storeQuantitiveProteins(updatedQuantProtList);
         System.out.println("done with protein table");
         Map<String, Integer> peptideKeyToProteinIndexMap = (Map<String, Integer>) maps[0];
         Map<Integer, Integer> protKeyToDsIndexMap = (Map<Integer, Integer>) maps[1];
 
         List<QuantProtein> peptidesList = handelQuantPeptides(filteredQuantProteinsList, peptideKeyToProteinIndexMap, protKeyToDsIndexMap);
-        //store quant peptides
+//        store quant peptides
         dal.storeQuantitivePeptides(peptidesList);
         System.out.println("done with peptides table");
         this.updateQuantStudies(datasetsList, qProtList);

@@ -18,6 +18,15 @@ public class QuantDatasetObject implements Serializable, Comparable {
     private int x;
     private int y;
     private final List<QuantProtein> quantProtList = new ArrayList<QuantProtein>();
+
+    public boolean isPooledSample() {
+        return pooledSample;
+    }
+
+    public void setPooledSample(boolean pooledSample) {
+        this.pooledSample = pooledSample;
+    }
+    private boolean pooledSample;
    
 
     public String getDiseaseCategory() {

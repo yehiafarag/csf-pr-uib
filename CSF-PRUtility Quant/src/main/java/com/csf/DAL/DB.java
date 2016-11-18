@@ -69,12 +69,12 @@ public class DB implements Serializable {
                 //temp
                 String sqoDataBase = "SHOW DATABASES ;";
                 ResultSet rs1 = statement.executeQuery(sqoDataBase);
-               Set<String> datasetnames = new HashSet<String>();
-                while(rs1.next()){
+                Set<String> datasetnames = new HashSet<String>();
+                while (rs1.next()) {
                     String db = rs1.getString("Database");
                     datasetnames.add(db);
-                    System.err.println("db is "+db);
-                    
+                    System.err.println("db is " + db);
+
                 }
 //                 Statement statement2 = conn_i.createStatement();
 //                
@@ -144,13 +144,10 @@ public class DB implements Serializable {
                         + "INSERT INTO publication_table VALUES ('24295388', 'Varghese, Anu Mary, et al.', '2013', 'Chitotriosidase - a putative biomarker for sporadic amyotrophic lateral sclerosis.', 'false', 0, 0, 0, 0);\n"
                         + "INSERT INTO publication_table VALUES ('26627638', 'Heywood, Wendy E., et al.', '2015', 'Identification of novel CSF biomarkers for neurodegeneration and their validation by a high-throughput multiplexed targeted proteomic assay.', 'true', 25, 3, 31, 13);\n"
                         + "INSERT INTO publication_table VALUES ('26841090', 'Opsahl, Jill A., et al.', '2016', 'Label free analysis of human cerebrospinal fluid addressing various normalization strategies and revealing protein groups affected by multiple sclerosis.', 'true', 904, 276, 0, 0);\n"
-                        + "INSERT INTO publication_table VALUES ('MCP2016', 'MCP2016', '2016', 'MCP2016', 'true', 748, 316, 1874, 1696);";
+                        + "INSERT INTO publication_table VALUES ('MCP2016', 'MCP2016', '2016', 'MCP2016', 'false', 748, 316, 1874, 1696);";
                 st = conn.createStatement();
                 for (String str : inserStat.split("\n")) {
-
                     st.executeUpdate(str);
-//                    System.out.println("str is : " + str);
-
                 }
                 st = conn.createStatement();
                 statment = "CREATE TABLE IF NOT EXISTS `defin_disease_groups` (\n"
@@ -158,9 +155,7 @@ public class DB implements Serializable {
                         + "  `full` varchar(500) NOT NULL default ' ',\n"
                         + "  PRIMARY KEY  (`min`)\n"
                         + ") ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
                 st.executeUpdate(statment);
-
 //                st = conn.createStatement();
 //                String insertStat = "INSERT INTO `defin_disease_groups` (`min`, `full`) VALUES \n"
 //                        + "(' MS', ' Multiple sclerosis'),\n"
@@ -213,13 +208,14 @@ public class DB implements Serializable {
                         + "  `total_prot_num` int(255) NOT NULL default '0',\n"
                         + "  `uniq_prot_num` int(255) NOT NULL default '0',\n"
                         + "  `total_pept_num` int(255) NOT NULL default '0',\n"
-                        + "  `uniq_pept_num` int(255) NOT NULL default '0',\n"
+                        + "  `uniq_pept_num` int(255) NOT NULL default '0',`pooledsamples` varchar(5) NOT NULL default 'False',\n"
                         + "  PRIMARY KEY  (`index`)\n"
                         + ") ENGINE=MyISAM DEFAULT CHARSET=utf8;";
                 st.executeUpdate(statment);
 
                 st = conn.createStatement();
-                statment = "CREATE TABLE IF NOT EXISTS `quant_full_table` (\n"
+                System.out.println("-------------------------------------- creat quant full table");
+                statment = "CREATE TABLE IF NOT EXISTS  `quant_full_table` (\n"
                         + "  `author` varchar(500) NOT NULL,\n"
                         + "  `year` int(255) NOT NULL,\n"
                         + "  `pumed_id` varchar(150) NOT NULL default 'Not Available',\n"
@@ -263,19 +259,20 @@ public class DB implements Serializable {
                         + "  `patients_group_ii_number` int(255) NOT NULL default '-1',\n"
                         + "  `p_value` double NOT NULL default '-1000000000',\n"
                         + "  `pvalue_significance_threshold` varchar(500) NOT NULL default '-1000000000',\n"
-                        + "  `roc_auc` double NOT NULL default '-1000000000',\n"
+                        + "  `roc_auc` double NOT NULL default  '-1000000000',\n"
                         + "  `fc_value` double NOT NULL default '-1000000000',\n"
                         + "  `log_2_FC` double NOT NULL default '-1000000000',\n"
                         + "  `peptide_prot` varchar(5) NOT NULL default 'False',\n"
                         + "  `index` int(255) NOT NULL default '0',\n"
                         + "  `peptide_charge` int(255) NOT NULL default '-1',\n"
-                        + "  `disease_category` varchar(200) NOT NULL default 'Not Available',\n"
+                        + "  `disease_category` varchar(200) NOT NULL default 'Not Available', `pooledsamples` varchar(5) NOT NULL default 'False',\n"
                         + "  PRIMARY KEY  (`index`)\n"
                         + ") ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
                 st.executeUpdate(statment);
+                
                 st = conn.createStatement();
-
+System.out.println("Created quant full table is done -----------------------------------------------------------");
                 statment = "CREATE TABLE IF NOT EXISTS `experiments_table` ( "
                         + "  `exp_id` int(11) NOT NULL auto_increment, "
                         + "  `fraction_range` int(2) NOT NULL default '0', "
@@ -738,6 +735,7 @@ public class DB implements Serializable {
                 st.close();
                 System.gc();
             } catch (SQLException s) {
+                s.printStackTrace();
                 System.err.println(s.getLocalizedMessage());
                 conn.close();
 
@@ -1799,13 +1797,10 @@ public class DB implements Serializable {
     //handel quant data
     @SuppressWarnings("CallToPrintStackTrace")
     public boolean storeCombinedQuantProtTable(List<QuantProtein> qProtList) {
-        
-        
-      
+       
         System.out.println("start store data");
-
         boolean success = true;
-        String insertQProt = "INSERT INTO  `" + dbName + "`.`quant_full_table` (`author` ,`year` ,`pumed_id`,`study_key` ,`quantified_proteins_number`,`uniprot_accession` ,`uniprot_protein_name` ,`publication_acc_number` ,`publication_protein_name`,`peptide_prot` ,`raw_data_available` ,`peptideId_number`,`quantified_peptides_number`,`peptide_charge`"
+        String insertQProt = "INSERT INTO  `quant_full_table` (`author` ,`year` ,`pumed_id`,`study_key` ,`quantified_proteins_number`,`uniprot_accession` ,`uniprot_protein_name` ,`publication_acc_number` ,`publication_protein_name`,`peptide_prot` ,`raw_data_available` ,`peptideId_number`,`quantified_peptides_number`,`peptide_charge`"
                 + ",`peptide_sequance`,`sequence_annotated`,`peptide_modification`,`modification_comment`,`type_of_study` ,`sample_type`,"
                 + "`patients_group_i_number`,`patient_group_i` ,`patient_sub_group_i` ,`patient_gr_i_comment`,`patients_group_ii_number`,"
                 + "`patient_group_ii` ,`patient_sub_group_ii` ,`patient_gr_ii_comment`,"
@@ -1813,8 +1808,8 @@ public class DB implements Serializable {
                 + ",`string_fc_value`,`fc_value`,`log_2_FC`,`string_p_value`,`p_value`,`pvalue_significance_threshold`,`pvalue_comments`,"
                 + "`roc_auc`,`technology`,`analytical_method`,`analytical_approach`,"
                 + "`shotgun_targeted`,`enzyme`,`quantification_basis`,`quant_basis_comment`,`additional_comments`,"
-                + "`q_peptide_key`,`identified_proteins_number`,`index`,`disease_category`)VALUES ("
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                + "`q_peptide_key`,`identified_proteins_number`,`index`,`disease_category`,`pooledsamples`)VALUES ("
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
         PreparedStatement insertQProtStat;
         try {
@@ -1838,6 +1833,7 @@ public class DB implements Serializable {
                 st.executeUpdate(dropStat);
                 createTables();
             } catch (SQLException ex) {
+                ex.printStackTrace();
                 Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
             }
             if (conn == null || conn.isClosed()) {
@@ -1920,6 +1916,7 @@ public class DB implements Serializable {
                 insertQProtStat.setInt(48, qprot.getIdentifiedProteinsNum());
                 insertQProtStat.setInt(49, counter++);
                 insertQProtStat.setString(50, qprot.getDiseaseCategory());
+                insertQProtStat.setString(51, qprot.isPooledSample() + "");
 
                 insertQProtStat.executeUpdate();
                 insertQProtStat.clearParameters();
@@ -1996,7 +1993,7 @@ public class DB implements Serializable {
     @SuppressWarnings("CallToPrintStackTrace")
     public void storeQuantDatasets() {
 
-        String selectPro = "SELECT DISTINCT  `author` ,`disease_category` ,`year` ,`pumed_id` , `study_key`, `quantified_proteins_number` , `identified_proteins_number` ,`raw_data_available` ,  `type_of_study` ,  `sample_type` ,  `sample_matching` ,  `normalization_strategy` ,  `technology` ,  `analytical_approach`  ,  `analytical_method`,  `enzyme` ,  `shotgun_targeted` ,  `quantification_basis` ,   `patients_group_i_number` ,  `patients_group_ii_number` ,  `patient_group_i` ,  `patient_gr_i_comment` ,  `patient_sub_group_i` ,  `patient_group_ii` ,  `patient_sub_group_ii` , `patient_gr_ii_comment` \n"
+        String selectPro = "SELECT DISTINCT  `author` ,`disease_category` ,`year` ,`pumed_id` , `study_key`, `quantified_proteins_number` , `identified_proteins_number` ,`raw_data_available` ,  `type_of_study` ,  `sample_type` ,  `sample_matching` ,  `normalization_strategy` ,  `technology` ,  `analytical_approach`  ,  `analytical_method`,  `enzyme` ,  `shotgun_targeted` ,  `quantification_basis` ,   `patients_group_i_number` ,  `patients_group_ii_number` ,  `patient_group_i` ,  `patient_gr_i_comment` ,  `patient_sub_group_i` ,  `patient_group_ii` ,  `patient_sub_group_ii` , `patient_gr_ii_comment`, `pooledsamples` \n"
                 + "FROM  `quant_full_table` WHERE `peptide_prot` = 'false';";
 
         PreparedStatement selectProStat;
@@ -2040,6 +2037,7 @@ public class DB implements Serializable {
                 pb.setPatientsGroup2Comm(rs.getString("patient_gr_ii_comment"));
                 pb.setPatientsSubGroup2(rs.getString("patient_sub_group_ii"));
                 pb.setDiseaseCategory(rs.getString("disease_category"));
+                pb.setPooledSample(Boolean.valueOf(rs.getString("pooledsamples")));
                 pubmidIds.add(pb);
                 x++;
             }
@@ -2060,7 +2058,7 @@ public class DB implements Serializable {
                     + "`quantification_basis` ,\n"
                     + "`patients_group_i_number` ,\n"
                     + "`patients_group_ii_number` ,  `normalization_strategy`"
-                    + ",`patient_group_i`,`patient_gr_i_comment`,`patient_sub_group_i`,`patient_group_ii`,`patient_gr_ii_comment`,`patient_sub_group_ii`,`study_key`,`analytical_method`,`index`,`disease_category`)VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                    + ",`patient_group_i`,`patient_gr_i_comment`,`patient_sub_group_i`,`patient_group_ii`,`patient_gr_ii_comment`,`patient_sub_group_ii`,`study_key`,`analytical_method`,`index`,`disease_category`,`pooledsamples`)VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
             PreparedStatement insertPbublicationStat;
 
@@ -2110,6 +2108,7 @@ public class DB implements Serializable {
                 insertPbublicationStat.setString(25, pb.getAnalyticalMethod());
                 insertPbublicationStat.setInt(26, counter++);
                 insertPbublicationStat.setString(27, pb.getDiseaseCategory());
+                insertPbublicationStat.setString(28, pb.isPooledSample() + "");
                 insertPbublicationStat.executeUpdate();
                 insertPbublicationStat.clearParameters();
                 insertPbublicationStat.close();
@@ -2912,15 +2911,8 @@ public class DB implements Serializable {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
-             PreparedStatement initSat = conn.prepareStatement(initStatment);
-             initSat.executeUpdate();
-            
-            
-            
-            
-            
-            
-            
+            PreparedStatement initSat = conn.prepareStatement(initStatment);
+            initSat.executeUpdate();
 
             for (String pubmedId : publicationUpdatingMap.keySet()) {
                 Object[] publicationData = publicationUpdatingMap.get(pubmedId);

@@ -15,6 +15,16 @@ public class QuantProtein {
     private String peptideSequenceAnnotated,studyKey,quantPeptideKey,    peptideSequance,	peptideModification,modificationComment , stringFCValue,stringPValue,author,diseaseGroups,pvalueComment; 
     private String diseaseCategory;
     private boolean peptideProtein;
+    private boolean pooledSample;
+
+    public boolean isPooledSample() {
+        return pooledSample;
+    }
+
+    public void setPooledSample(boolean pooledSample) {
+        this.pooledSample = pooledSample;
+    }
+    
     public int getDsKey() {
         return dsKey;
     }

@@ -23,7 +23,7 @@ import javax.swing.SwingWorker;
 public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
 
     private ExperimentBean exp;
-    private  String database_name = "csf_pr_v2_28_06";
+    private  String database_name = "csf_pr_v2_final";
 //    private final String executeCmd;
     private final String backupFileUrl = "D:\\CSF-PR-v2.0 data\\csf_pr_v2_28_06.sql"; // "/home/probe/user/CSF-PR-FILES/backup.sql";             //"D:\\backups\\sqlQuant18-8\\backup-quant.sql";                        //   
     private String processUrl = "C:\\AppServ\\MySQL\\bin\\mysqldump.exe"; ///usr/bin/mysqldump";

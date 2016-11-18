@@ -291,6 +291,7 @@ public class QuantDataHandler {
                         quantProt.setSequance(seqline);
                     }
                 }
+                
 //                
             }
             if (!proteinAccSequanceMap.containsKey(quantProt.getUniprotAccession().trim().toLowerCase())) {
@@ -747,6 +748,17 @@ public class QuantDataHandler {
                     }
 
                     qProt.setDiseaseCategory(diseaseCat);
+                }
+                if (updatedRowArr[index] == null || updatedRowArr[index].trim().equalsIgnoreCase("")) {
+                    qProt.setDiseaseCategory(" ");
+                    index++;
+                } else {
+                    String pooledSample = updatedRowArr[index++];
+                    boolean pooles = false;
+                    if (pooledSample.trim().equalsIgnoreCase("Yes")) {
+                        pooles=true;
+                    }
+                    qProt.setPooledSample(pooles);
                 }
 
 //                if (qProt.isPeptideProtein()) {
