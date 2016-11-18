@@ -115,6 +115,10 @@ public abstract class ProteinDatasetDetailsLineChart extends AbsoluteLayout impl
      * Vaadin image background and thumb image.
      */
     private BufferedImage bufferedChartImg;
+    /**
+     * Grid line corrector for x access.
+     */
+    private int gridLineCorrector = 0;
 
     /**
      * Customized user data trend AWT color needed for JFree chart image
@@ -192,6 +196,11 @@ public abstract class ProteinDatasetDetailsLineChart extends AbsoluteLayout impl
      * Click to view protein/dataset details label.
      */
     private final Label clickcommentLabel;
+
+    /**
+     * Initialize JFree line chart.
+     */
+    private boolean init = true;
 
     /**
      * Get main protein name
@@ -280,8 +289,6 @@ public abstract class ProteinDatasetDetailsLineChart extends AbsoluteLayout impl
         this.addComponent(chartComponentsLayout,
                 "left: " + 0 + "px; top: " + 0 + "px;");
 
-       
-
         clickcommentLabel = new Label("Click the data points to view protein / dataset details");
         clickcommentLabel.setStyleName(ValoTheme.LABEL_SMALL);
         clickcommentLabel.addStyleName(ValoTheme.LABEL_TINY);
@@ -312,7 +319,7 @@ public abstract class ProteinDatasetDetailsLineChart extends AbsoluteLayout impl
         proteinName = null;
 
         this.updateDataset(selectedComparisonsList, proteinKey);
-
+        gridLineCorrector = 0;
         if (lineChart == null) {
             this.lineChart = generateLineChart();//
         } else {
@@ -343,8 +350,10 @@ public abstract class ProteinDatasetDetailsLineChart extends AbsoluteLayout impl
                 1.0f, new float[]{10.0f, 6.0f}, 0.0f
         ));
         lineChart.setPadding(new RectangleInsets(0, 0, 0, 0));
+        gridLineCorrector = 0;
         maxImgUrl = new ExternalResource(this.getChartImage(lineChart, chartRenderingInfo, width, height));
         if (chartRenderingInfo.getEntityCollection().getEntityCount() < 4 || chartRenderingInfo.getPlotInfo().getDataArea().getHeight() < 220) {
+            gridLineCorrector = 2;
             lineChart.getXYPlot().getDomainAxis().setVisible(false);
             maxImgUrl = new ExternalResource(this.getChartImage(lineChart, chartRenderingInfo, width, height));
             lineChart.getXYPlot().getDomainAxis().setVisible(true);
@@ -580,7 +589,7 @@ public abstract class ProteinDatasetDetailsLineChart extends AbsoluteLayout impl
                     return "Increased";
                 }
                 if (value == 0.0) {
-                    return "Equal";
+                    return "Equal      ";
                 }
                 if (value == -100.0) {
                     return "Decreased";
@@ -589,14 +598,16 @@ public abstract class ProteinDatasetDetailsLineChart extends AbsoluteLayout impl
             }
 
         };
+        
         tus.add(unit);
+       
 
         yAxis.setStandardTickUnits(tus);
+        
         yAxis.setUpperBound(120.0);
         yAxis.setLowerBound(-120.0);
         yAxis.setTickMarksVisible(false);
         yAxis.setAutoRangeStickyZero(false);
-
         yAxis.setTickLabelFont(font);
         xAxis.setGridBandsVisible(false);
         yAxis.setAxisLinePaint(Color.WHITE);
@@ -775,31 +786,34 @@ public abstract class ProteinDatasetDetailsLineChart extends AbsoluteLayout impl
 
             @Override
             public Paint getRangeGridlinePaint() {
+                if (init) {
+                    return super.getRangeGridlinePaint();
+                }
                 if (gridcounter == 239) {
                     gridcounter = 0;
                 }
-                if (gridcounter == 20 || (gridcounter == 120) || (gridcounter == 220)) {
+                if (gridcounter == 20 + gridLineCorrector || (gridcounter == 120 + gridLineCorrector) || (gridcounter == 220 + gridLineCorrector)) {
                     gridcounter++;
                     return super.getRangeGridlinePaint(); //To change body of generated methods, choose Tools | Templates.
                 }
                 if (custTrend != -1) {
 
                     if (custTrend == 0) {
-                        if ((gridcounter >= 10 && gridcounter <= 19) || (gridcounter >= 21 && gridcounter <= 29)) {
+                        if ((gridcounter >= 10+ gridLineCorrector && gridcounter <= 19+ gridLineCorrector) || (gridcounter >= 21+ gridLineCorrector && gridcounter <= 29+ gridLineCorrector)) {
                             gridcounter++;
                             return customizedUserDataColor[custTrend];
                         }
 
                     }
                     if (custTrend == 2) {
-                        if ((gridcounter >= 110 && gridcounter <= 119) || (gridcounter >= 121 && gridcounter <= 129)) {
+                        if ((gridcounter >= 110+ gridLineCorrector && gridcounter <= 119+ gridLineCorrector) || (gridcounter >= 121+ gridLineCorrector && gridcounter <= 129+ gridLineCorrector)) {
                             gridcounter++;
                             return customizedUserDataColor[custTrend];
                         }
 
                     }
                     if (custTrend == 4) {
-                        if ((gridcounter >= 210 && gridcounter <= 219) || (gridcounter >= 221 && gridcounter <= 229)) {
+                        if ((gridcounter >= 210+ gridLineCorrector && gridcounter <= 219+ gridLineCorrector) || (gridcounter >= 221+ gridLineCorrector && gridcounter <= 229+ gridLineCorrector)) {
                             gridcounter++;
                             return customizedUserDataColor[custTrend];
                         }
@@ -816,6 +830,9 @@ public abstract class ProteinDatasetDetailsLineChart extends AbsoluteLayout impl
 
             @Override
             public Stroke getRangeGridlineStroke() {
+                if (init) {
+                    return super.getRangeGridlineStroke();
+                }
                 if (gridcounterII == 239) {
                     gridcounterII = 0;
                     highlitedLineStrok = new BasicStroke(4f);
@@ -823,21 +840,21 @@ public abstract class ProteinDatasetDetailsLineChart extends AbsoluteLayout impl
 
                 if (custTrend != -1) {
                     if (custTrend == 0) {
-                        if ((gridcounterII >= 10 && gridcounterII <= 19) || (gridcounterII >= 21 && gridcounterII <= 29)) {
+                        if ((gridcounterII >= 10+ gridLineCorrector && gridcounterII <= 19+ gridLineCorrector) || (gridcounterII >= 21+ gridLineCorrector && gridcounterII <= 29+ gridLineCorrector)) {
                             gridcounterII++;
                             return highlitedLineStrok;
                         }
 
                     }
                     if (custTrend == 2) {
-                        if ((gridcounterII >= 110 && gridcounterII <= 119) || (gridcounterII >= 121 && gridcounterII <= 129)) {
+                        if ((gridcounterII >= 110+ gridLineCorrector && gridcounterII <= 119+ gridLineCorrector) || (gridcounterII >= 121+ gridLineCorrector && gridcounterII <= 129+ gridLineCorrector)) {
                             gridcounterII++;
                             return highlitedLineStrok;
                         }
 
                     }
                     if (custTrend == 4) {
-                        if ((gridcounterII >= 210 && gridcounterII <= 219) || (gridcounterII >= 221 && gridcounterII <= 229)) {
+                        if ((gridcounterII >= 210+ gridLineCorrector && gridcounterII <= 219+ gridLineCorrector) || (gridcounterII >= 221+ gridLineCorrector && gridcounterII <= 229+ gridLineCorrector)) {
                             gridcounterII++;
                             return highlitedLineStrok;
                         }
@@ -872,7 +889,7 @@ public abstract class ProteinDatasetDetailsLineChart extends AbsoluteLayout impl
         jFreeChart.setPadding(new RectangleInsets(0, 0, 0, 0));
         LegendTitle legend = jFreeChart.getLegend();
         legend.setVisible(false);
-
+        init = false;
         return jFreeChart;
     }
 
@@ -1132,7 +1149,8 @@ public abstract class ProteinDatasetDetailsLineChart extends AbsoluteLayout impl
             this.updateDataset(selectedComparisonList, proteinKey);
 
         }
-
+        gridcounter=0;
+        gridcounterII=0;
         lineChart.getXYPlot().setDataset(dataset);
         lineChart.getXYPlot().setDomainAxis((ValueAxis) xAxis);
         lineChart.getXYPlot().setRangeAxis((ValueAxis) yAxis);
