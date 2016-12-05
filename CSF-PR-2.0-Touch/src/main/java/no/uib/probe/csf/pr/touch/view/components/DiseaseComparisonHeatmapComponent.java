@@ -273,6 +273,7 @@ public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout i
 
             @Override
             public void updateHMThumb(String imgUrl, int datasetNumber, int deactivated, Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> equalComparisonMap) {
+               
                 datasetCounterLabel.setValue(datasetNumber + "/" + fullQuantDsMap.size());
                 if (deactivated > 0) {
                     datasetCounterLabel.setDescription("#Datasets<br/>#Not active datasets: " + deactivated);

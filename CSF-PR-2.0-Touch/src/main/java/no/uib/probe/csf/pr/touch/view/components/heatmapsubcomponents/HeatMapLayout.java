@@ -180,6 +180,10 @@ public abstract class HeatMapLayout extends VerticalLayout {
      * Reset filters button.
      */
     private final ImageContainerBtn clearFilterBtn;
+    /**
+     * Heat-map dataset counter.
+     */
+    private final  Set<Integer> currentDsCounter ;
 
     /**
      * Get reset filters button.
@@ -206,6 +210,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
         this.availableQuantDiseaseGroupsComparisonList = new LinkedHashSet<>();
         this.updatedDatasetMap = new LinkedHashMap<>();
         this.selectedQuantDiseaseGroupsComparisonList = new LinkedHashSet<>();
+         this.currentDsCounter = new HashSet<>();;
         this.currentDsIds = new LinkedHashSet<>();
 
         this.setWidthUndefined();
@@ -482,7 +487,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
         }
         updateHeatMapLayout(rowsLbels, columnsLbels, patientsGroupComparisonsSet, fullQuantDsMap);
-        updateHMThumb(this.getHMThumbImg(), fullQuantDsMap.size(), 0, equalComparisonMap);
+        updateHMThumb(this.getHMThumbImg(), currentDsCounter.size(), 0, equalComparisonMap);
     }
 
     /**
@@ -557,7 +562,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
         calcHeatMapMatrix(rowheaders, colheaders, patientsGroupComparisonsSet, fullQuantDsMap);
         HeatmapColorGenerator hmColorGen = new HeatmapColorGenerator(maxDatasetNumber);
         comparisonsCellsMap.clear();
-
+        currentDsCounter.clear();
         dataValuesColors = new String[rowheaders.size()][colheaders.size()];
         for (int x = 0; x < values.length; x++) {
             for (int y = 0; y < values[x].length; y++) {
@@ -604,6 +609,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
                 cellTable[x][y] = cell;
                 dataValuesColors[x][y] = color + "__" + ((int) cell.getValue() == 0 ? " " : "" + (int) cell.getValue());
+                currentDsCounter.addAll(cell.getComparison().getDatasetMap().keySet());
                 if (cell.getComparison().getDatasetMap().size() > 0) {
                     columnHeaderCells[y].addComparison(cell.getComparison(), cell);
                     rowHeaderCells[x].addComparison(cell.getComparison(), cell);
@@ -629,6 +635,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
             }
 
         }
+
 
     }
 

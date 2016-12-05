@@ -2,6 +2,7 @@ package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.server.ExternalResource;
 import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
@@ -37,6 +38,7 @@ public class InformationField extends VerticalLayout {
         this.setMargin(new MarginInfo(false, false, true, false));
         titleLabel = new Label(title);
         this.addComponent(titleLabel);
+        titleLabel.setContentMode(ContentMode.HTML);
         titleLabel.setStyleName("caption");
         titleLabel.setHeight(20, Unit.PIXELS);
         titleLabel.setWidth(200, Unit.PIXELS);

@@ -128,10 +128,10 @@ public class PeptidesInformationOverviewLayout extends VerticalLayout {
         foldChange = new InformationField("Fold Change");
         rowII.addComponent(foldChange);
 
-        pValue = new InformationField("p-value");
+        pValue = new InformationField("<i>p</i>-value");
         rowII.addComponent(pValue);
 
-        pvalueSignificanceThreshold = new InformationField("p-value Threshold");
+        pvalueSignificanceThreshold = new InformationField("<i>p</i>-value Threshold");
         rowII.addComponent(pvalueSignificanceThreshold);
 
         pValueComm = new InformationField("Statistical Comments");
