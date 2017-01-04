@@ -27,6 +27,10 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
      */
     private final int index;
 
+    public int getComparisonIndex() {
+        return index;
+    }
+
     /**
      * Constructor to initialize the main attributes.
      *

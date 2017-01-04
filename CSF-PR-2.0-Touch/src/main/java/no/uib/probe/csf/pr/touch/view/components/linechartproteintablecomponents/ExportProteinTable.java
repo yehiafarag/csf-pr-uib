@@ -28,6 +28,7 @@ public class ExportProteinTable extends VerticalLayout {
     /**
      * Set customized comparison based on user input data in quant comparison
      * layout.
+     *
      * @param userCustomizedComparison user input data in quant compare mode.
      */
     public void setUserCustomizedComparison(QuantDiseaseGroupsComparison userCustomizedComparison) {
@@ -63,17 +64,19 @@ public class ExportProteinTable extends VerticalLayout {
         this.removeAllComponents();
         exportTable = new Table();
         this.addComponent(exportTable);
-        exportTable.addContainerProperty("Index", Integer.class, null, "", null, Table.Align.RIGHT);
+        int extracol = 0;
+//        exportTable.addContainerProperty("Index", Integer.class, null, "", null, Table.Align.RIGHT);
         exportTable.addContainerProperty("Accession", String.class, null, "Accession", null, Table.Align.LEFT);
         exportTable.addContainerProperty("Name", String.class, null, "Name", null, Table.Align.LEFT);
 
         Object[] objects;
         int i = 0;
         if (userCustomizedComparison != null) {
-            objects = new Object[4 + selectedComparisonsList.size()];
+            extracol = 1;
+            objects = new Object[3 + selectedComparisonsList.size()];
             exportTable.addContainerProperty("userdata", Double.class, null, "User Data", null, Table.Align.CENTER);
         } else {
-            objects = new Object[3 + selectedComparisonsList.size()];
+            objects = new Object[2 + selectedComparisonsList.size()];
         }
         for (QuantDiseaseGroupsComparison quantComp : selectedComparisonsList) {
             String compName = quantComp.getComparisonHeader().split(" / ")[0].split("__")[0] + " / " + quantComp.getComparisonHeader().split(" / ")[1].split("__")[0] + " (" + quantComp.getDiseaseCategory() + ")";
@@ -85,18 +88,17 @@ public class ExportProteinTable extends VerticalLayout {
         for (QuantComparisonProtein protein : selectedProteinsList) {
             String accession = protein.getProteinAccession();//.replace("(unreviewed)", " (Unreviewed)");
             String name = protein.getProteinName();
-            objects[1] = accession;
-            objects[2] = name;
+            objects[0] = accession;
+            objects[1] = name;
 
             if (userCustomizedComparison != null) {
-                i = 4;
                 if (userCustomizedComparison.getQuantComparisonProteinMap().containsKey(accession)) {
-                    objects[3] = (userCustomizedComparison.getQuantComparisonProteinMap().get(accession).getOverallCellPercentValue());
+                    objects[2] = (userCustomizedComparison.getQuantComparisonProteinMap().get(accession).getOverallCellPercentValue());
                 }
 
-            } else {
-                i = 3;
             }
+            i = 2 + extracol;
+
             for (QuantDiseaseGroupsComparison quantComp : selectedComparisonsList) {
                 String key = "";
                 if (quantComp.getQuantComparisonProteinMap().containsKey("0_" + accession)) {
@@ -116,24 +118,33 @@ public class ExportProteinTable extends VerticalLayout {
                 }
 
                 if (quantComp.getQuantComparisonProteinMap().containsKey(key)) {
+
                     objects[i] = quantComp.getQuantComparisonProteinMap().get(key).getOverallCellPercentValue();
+                } else {
+                    objects[i] = null;
                 }
                 i++;
 
             }
-            objects[0] = protId + 1;
+//            objects[0] = protId + 1;
             exportTable.addItem(objects, protId);
             protId++;
 
         }
-        this.exportTable.sort(new String[]{sortingHeader}, new boolean[]{upSort});
-        int indexing = 1;
-        for (Object id
-                : exportTable.getItemIds()) {
-            Item item = exportTable.getItem(id);
-            item.getItemProperty("Index").setValue(indexing);
-            indexing++;
-        }
+//        if (!sortingHeader.equalsIgnoreCase("Comparisons Overview") && !sortingHeader.equalsIgnoreCase("Index") && !sortingHeader.equalsIgnoreCase("userdata")) {//
+//            this.exportTable.sort(new String[]{sortingHeader}, new boolean[]{upSort});
+//        } else {
+            this.exportTable.sort(new String[]{"Accession"}, new boolean[]{true});
+//        }
+        this.exportTable.commit();
+//        int indexing = 1;
+//        for (Object id
+//                : exportTable.getItemIds()) {
+//            Item item = exportTable.getItem(id);
+//            item.getItemProperty("Index").setValue(indexing);
+//            indexing++;
+//        }
+        System.out.println("at export table sort based on " + sortingHeader + "--------" + (userCustomizedComparison != null) + "  table has header " + exportTable.getColumnHeader(sortingHeader));
 
     }
 

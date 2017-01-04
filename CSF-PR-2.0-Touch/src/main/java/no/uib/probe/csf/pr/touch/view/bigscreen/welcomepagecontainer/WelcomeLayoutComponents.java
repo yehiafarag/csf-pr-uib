@@ -111,8 +111,14 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         //init left panel (Resource overview)
         VerticalLayout leftPanelWrapper = new VerticalLayout();
         leftPanelWrapper.setWidth(160, Unit.PIXELS);
-        leftPanelWrapper.setHeightUndefined();
-        mainBodyHLayout.addComponent(leftPanelWrapper);
+        leftPanelWrapper.setHeight(100,Unit.PERCENTAGE);
+        leftPanelWrapper.setSpacing(true);
+         mainBodyHLayout.addComponent(leftPanelWrapper);
+         
+        VerticalLayout leftPanelResorceStatContainer = new VerticalLayout();
+          leftPanelResorceStatContainer.setWidth(100, Unit.PERCENTAGE);
+        leftPanelResorceStatContainer.setHeightUndefined();
+        leftPanelWrapper.addComponent(leftPanelResorceStatContainer);
 
         // the stat layout
         Label statLabel = new Label("Resource  Status");
@@ -121,7 +127,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
         statLabel.setWidthUndefined();
         statLabel.setHeight(20, Unit.PIXELS);
-        leftPanelWrapper.addComponent(statLabel);
+        leftPanelResorceStatContainer.addComponent(statLabel);
 
         Label quantStatLabel = new Label("Quantitative  Data");
         quantStatLabel.setHeight(20, Unit.PIXELS);
@@ -129,12 +135,12 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         quantStatLabel.addStyleName(ValoTheme.LABEL_H4);
         quantStatLabel.addStyleName(ValoTheme.LABEL_TINY);
         quantStatLabel.addStyleName("nomargin");
-        leftPanelWrapper.addComponent(quantStatLabel);
+        leftPanelResorceStatContainer.addComponent(quantStatLabel);
 
         GridLayout subQuantStatLayout = new GridLayout(2, 3);
         subQuantStatLayout.setMargin(new MarginInfo(false, false, false, false));
         subQuantStatLayout.setWidth(100, Unit.PERCENTAGE);
-        leftPanelWrapper.addComponent(subQuantStatLayout);
+        leftPanelResorceStatContainer.addComponent(subQuantStatLayout);
 
         DatasetInformationWindow sub2quantStatLabelWrapper = new DatasetInformationWindow(publicationList) {
 
@@ -203,13 +209,13 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         idStatLabel.addStyleName(ValoTheme.LABEL_TINY);
         idStatLabel.addStyleName("nomargin");
         idStatLabel.addStyleName("margintop15");
-        leftPanelWrapper.addComponent(idStatLabel);
+        leftPanelResorceStatContainer.addComponent(idStatLabel);
 
         GridLayout subIdStatLayout = new GridLayout(2, 4);
         subIdStatLayout.setMargin(new MarginInfo(false, false, false, false));
         subIdStatLayout.setWidth(100, Unit.PERCENTAGE);
         subIdStatLayout.setSpacing(true);
-        leftPanelWrapper.addComponent(subIdStatLayout);
+        leftPanelResorceStatContainer.addComponent(subIdStatLayout);
 
         Label sub2IdStatLabel = new Label("#Datasets");
         sub2IdStatLabel.addStyleName(ValoTheme.LABEL_SMALL);
@@ -258,6 +264,16 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         subIdStatLayout.addComponent(sub4IdStatValue, 1, 3);
         subIdStatLayout.setComponentAlignment(sub4IdStatValue, Alignment.MIDDLE_RIGHT);
 
+        
+        Label relLabel = new Label("Release <font>2017.01.04</font>");
+        relLabel.setContentMode(ContentMode.HTML);
+        relLabel.setWidth(100,Unit.PERCENTAGE);
+        relLabel.addStyleName(ValoTheme.LABEL_LIGHT);
+        relLabel.addStyleName(ValoTheme.LABEL_SMALL);
+        relLabel.addStyleName(ValoTheme.LABEL_TINY);
+        relLabel.addStyleName("lightlabel");
+        leftPanelWrapper.addComponent(relLabel);
+        leftPanelWrapper.setComponentAlignment(relLabel, Alignment.TOP_LEFT);
         //end of left panel
         //init spacer
         VerticalLayout spacer = new VerticalLayout();

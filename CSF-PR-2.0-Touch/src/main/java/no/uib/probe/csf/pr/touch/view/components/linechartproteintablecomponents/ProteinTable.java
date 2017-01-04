@@ -158,6 +158,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
             columnHeaderSet.remove(this.custUserComparisonSortingLayout);
         }
         this.userCustomizedComparison = userCustomizedComparison;
+
         userSortingHeaderWrapper.removeAllComponents();
 
         if (userCustomizedComparison != null) {
@@ -196,6 +197,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
                 }
             };
             this.userSortingHeaderWrapper.addComponent(custUserComparisonSortingLayout);
+            custUserComparisonSortingLayout.setAsDefault();
 
         } else {
             mainProteinTable = generateMainTable(height, width, true);
@@ -368,12 +370,13 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         mainProteinTable.addStyleName("hidesortingicon");
         this.ascendingSort = ascendingSort;
         if (comparisonIndex == -1) {
-            mainProteinTable.sort(new String[]{"userdata"}, new boolean[]{ascendingSort});
+            mainProteinTable.sort(new String[]{"userdata", "Name"}, new boolean[]{ascendingSort, true});
+            mainProteinTable.commit();
             this.sortingColumnHeader = "userdata";
             int index = 0;
             for (ColumnHeaderLayout comparisonLayout : columnHeaderSet) {
 
-                if (index == comparisonIndex) {
+                if (index == comparisonIndex || comparisonLayout.getComparisonIndex() == -1) {
                     index++;
                     continue;
                 }
@@ -411,7 +414,8 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         }
         this.sortingColumnHeader = ((QuantDiseaseGroupsComparison) this.selectedComparisonsList.toArray()[comparisonIndex]).getComparisonHeader();
 
-        mainProteinTable.sort(new String[]{"Comparisons Overview"}, new boolean[]{ascendingSort});
+        mainProteinTable.sort(new String[]{"Comparisons Overview", "Name"}, new boolean[]{ascendingSort, true});
+        mainProteinTable.commit();
         int indexing = 1;
         for (Object id : mainProteinTable.getItemIds()) {
             Item item = mainProteinTable.getItem(id);
@@ -804,6 +808,17 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         if (userCustomizedComparison != null) {
             columnHeaderSet.add(custUserComparisonSortingLayout);
         }
+    }
+
+    /**
+     * Get customized comparison based on user input data in quant comparison
+     * layout
+     *
+     * @return userCustomizedComparison Customized comparison based on user
+     * input data
+     */
+    public QuantDiseaseGroupsComparison getUserCustomizedComparison() {
+        return userCustomizedComparison;
     }
 
     /**

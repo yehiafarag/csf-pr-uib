@@ -15770,3 +15770,11 @@ tbody{
 .tablelink.v-widget.underline.tablelink-underline{
     text-align:center !important;
 }
+.lightlabel{
+    color: lightgray !important;
+    margin-top: 10px;
+}
+.lightlabel font{
+    float:right;
+    margin-right:20px !important;
+}

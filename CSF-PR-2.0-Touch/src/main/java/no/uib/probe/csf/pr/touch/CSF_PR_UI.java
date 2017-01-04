@@ -18,6 +18,7 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 import javax.servlet.ServletContext;
 import no.uib.probe.csf.pr.touch.view.MainLayout;
+import org.vaadin.googleanalytics.tracking.GoogleAnalyticsTracker;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser
@@ -65,6 +66,11 @@ public class CSF_PR_UI extends UI {
      * This is notification window to notify users when they use small screen.
      */
     private final Window notificationWindow = new Window();
+    /**
+     * Google Analytics Trackerto track web application usage.
+     */
+    private final GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker("UA-88489710-1",
+        "http://129.177.231.63/csf-pr-2.0/");
 
     /**
      * Reload the page on changing width and height (turn touch devices to
@@ -134,9 +140,10 @@ public class CSF_PR_UI extends UI {
         setContent(appWrapper);
 
         layout = new MainLayout(dbURL, dbName, dbDriver, dbUserName, dbPassword, windowWidth, windowHeight);
-        appWrapper.addComponent(layout);
-        appWrapper.setComponentAlignment(layout, Alignment.MIDDLE_CENTER);
-
+        appWrapper.addComponent(layout);   
+        appWrapper.setComponentAlignment(layout, Alignment.MIDDLE_CENTER); 
+       
+       tracker.extend(CSF_PR_UI.this);
     }
 
     /**
