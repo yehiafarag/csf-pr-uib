@@ -111,7 +111,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         //init left panel (Resource overview)
         VerticalLayout leftPanelWrapper = new VerticalLayout();
         leftPanelWrapper.setWidth(160, Unit.PIXELS);
-        leftPanelWrapper.setHeight(100,Unit.PERCENTAGE);
+//        leftPanelWrapper.setHeight(100,Unit.PERCENTAGE);
         leftPanelWrapper.setSpacing(true);
          mainBodyHLayout.addComponent(leftPanelWrapper);
          
@@ -267,13 +267,14 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         
         Label relLabel = new Label("Release <font>2017.01.04</font>");
         relLabel.setContentMode(ContentMode.HTML);
+        relLabel.setHeight(20,Unit.PIXELS);
         relLabel.setWidth(100,Unit.PERCENTAGE);
         relLabel.addStyleName(ValoTheme.LABEL_LIGHT);
         relLabel.addStyleName(ValoTheme.LABEL_SMALL);
         relLabel.addStyleName(ValoTheme.LABEL_TINY);
         relLabel.addStyleName("lightlabel");
         leftPanelWrapper.addComponent(relLabel);
-        leftPanelWrapper.setComponentAlignment(relLabel, Alignment.TOP_LEFT);
+//        leftPanelWrapper.setComponentAlignment(relLabel, Alignment.TOP_LEFT);
         //end of left panel
         //init spacer
         VerticalLayout spacer = new VerticalLayout();
