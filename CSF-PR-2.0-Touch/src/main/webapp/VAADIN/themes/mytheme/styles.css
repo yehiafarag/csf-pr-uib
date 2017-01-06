@@ -15113,6 +15113,11 @@ div.v-layout.v-horizontal.v-widget {
     text-decoration:underline !important;
     color:blue !important;
 }
+.link font:hover{
+
+    text-decoration:underline !important;
+    color:blue !important;
+}
 .v-tabsheet-tabcontainer-transparentframe{
     background-color:rgba(255,255,255,0) !important;
     border:none !important;
@@ -15773,8 +15778,22 @@ tbody{
 .lightlabel{
     color: lightgray !important;
     margin-top: 10px;
+    text-decoration:none !important;
+    font-size:12px;
+
 }
 .lightlabel font{
     float:right;
     margin-right:20px !important;
+
+}
+.lightlabel div font{
+    float:right;
+    color:black ;
+     margin-right:0px !important;
+
+}
+.lightlabel div{
+    color:black ;
+
 }

@@ -12,11 +12,13 @@ import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
+import com.vaadin.ui.PopupView;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
+import javax.swing.Popup;
 import no.uib.probe.csf.pr.touch.Data_Handler;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDataset;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFListener;
@@ -113,10 +115,10 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         leftPanelWrapper.setWidth(160, Unit.PIXELS);
 //        leftPanelWrapper.setHeight(100,Unit.PERCENTAGE);
         leftPanelWrapper.setSpacing(true);
-         mainBodyHLayout.addComponent(leftPanelWrapper);
-         
+        mainBodyHLayout.addComponent(leftPanelWrapper);
+
         VerticalLayout leftPanelResorceStatContainer = new VerticalLayout();
-          leftPanelResorceStatContainer.setWidth(100, Unit.PERCENTAGE);
+        leftPanelResorceStatContainer.setWidth(100, Unit.PERCENTAGE);
         leftPanelResorceStatContainer.setHeightUndefined();
         leftPanelWrapper.addComponent(leftPanelResorceStatContainer);
 
@@ -264,14 +266,34 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         subIdStatLayout.addComponent(sub4IdStatValue, 1, 3);
         subIdStatLayout.setComponentAlignment(sub4IdStatValue, Alignment.MIDDLE_RIGHT);
 
-        
-        Label relLabel = new Label("Release <font>2017.01.04</font>");
-        relLabel.setContentMode(ContentMode.HTML);
-        relLabel.setHeight(20,Unit.PIXELS);
-        relLabel.setWidth(100,Unit.PERCENTAGE);
-        relLabel.addStyleName(ValoTheme.LABEL_LIGHT);
-        relLabel.addStyleName(ValoTheme.LABEL_SMALL);
-        relLabel.addStyleName(ValoTheme.LABEL_TINY);
+        VerticalLayout relaseNoteInfo = new VerticalLayout();
+        relaseNoteInfo.setWidth(550, Unit.PIXELS);
+        relaseNoteInfo.setSpacing(true);
+        relaseNoteInfo.setMargin(new MarginInfo(false, true, true, true));
+        relaseNoteInfo.addStyleName("lightlabel");
+
+        Label relaseNoteHeader = new Label("Release notes");
+        relaseNoteHeader.setSizeFull();
+        relaseNoteHeader.addStyleName(ValoTheme.LABEL_SMALL);
+        relaseNoteHeader.addStyleName(ValoTheme.LABEL_TINY);
+        relaseNoteHeader.addStyleName(ValoTheme.LABEL_BOLD);
+        relaseNoteInfo.addComponent(relaseNoteHeader);
+
+        Label relaseNote1 = new Label("1. 06.01.2017<font>Fixed error in regulation between RRMS and CIS in Hinsinger study (2015)</font>");
+        relaseNote1.setSizeFull();
+        relaseNote1.setContentMode(ContentMode.HTML);
+        relaseNote1.addStyleName(ValoTheme.LABEL_SMALL);
+        relaseNote1.addStyleName(ValoTheme.LABEL_TINY);
+        relaseNoteInfo.addComponent(relaseNote1);
+        PopupView relLabel = new PopupView("Release <font>2017.01.06</font>", relaseNoteInfo);
+        relLabel.setCaptionAsHtml(true);
+        relLabel.setDescription("Click to open release notes");
+        relLabel.setHideOnMouseOut(false);
+        relLabel.setHeight(20, Unit.PIXELS);
+        relLabel.setWidth(100, Unit.PERCENTAGE);
+        relLabel.addStyleName("link");
+//        relLabel.addStyleName(ValoTheme.LABEL_SMALL);
+//        relLabel.addStyleName(ValoTheme.LABEL_TINY);
         relLabel.addStyleName("lightlabel");
         leftPanelWrapper.addComponent(relLabel);
 //        leftPanelWrapper.setComponentAlignment(relLabel, Alignment.TOP_LEFT);
