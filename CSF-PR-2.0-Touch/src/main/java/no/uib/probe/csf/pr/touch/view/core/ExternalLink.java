@@ -34,7 +34,8 @@ public class ExternalLink extends Link implements Comparable<ExternalLink> {
      * @param resource The link resource.
      */
     public ExternalLink(String caption, ExternalResource resource) {
-        super(caption.replace("(unreviewed)", " (Unreviewed)"), resource);
+        super(caption.replace("(unreviewed)", "&#x2A;").replace("(Unreviewed)", "&#x2A;").replace("(Entry Deleted)", "&#x2A;").replace("(Entry deleted)", "&#x2A;").replace("(Deleted)", "&#x2A;").replace("(Not retrieved)", "&#x2A;"), resource);
+        super.setCaptionAsHtml(true);
         this.caption = caption;
         this.setPrimaryStyleName("tablelink");
         if (!caption.startsWith("IPI") && resource != null && !resource.getURL().equalsIgnoreCase("")) {
@@ -42,6 +43,7 @@ public class ExternalLink extends Link implements Comparable<ExternalLink> {
             this.addStyleName("underline");
         } else {
             super.setEnabled(false);
+            
         }
     }
 

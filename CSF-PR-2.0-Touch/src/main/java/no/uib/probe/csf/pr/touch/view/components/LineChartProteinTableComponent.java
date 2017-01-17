@@ -4,6 +4,7 @@ import com.vaadin.addon.tableexport.ExcelExport;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
@@ -227,6 +228,14 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         HorizontalLayout controlsLayout = new HorizontalLayout();
         controlsLayout.setWidth(100, Unit.PERCENTAGE);
         controlsLayout.setHeight(20, Unit.PIXELS);
+        
+         Label commentLabel = new Label("<b>*</b> Accession comment");
+        commentLabel.setStyleName(ValoTheme.LABEL_SMALL);
+        commentLabel.addStyleName(ValoTheme.LABEL_TINY);
+        commentLabel.setContentMode(ContentMode.HTML);
+        commentLabel.addStyleName("minwidth100");
+        controlsLayout.addComponent(commentLabel);
+        controlsLayout.setComponentAlignment(commentLabel, Alignment.BOTTOM_LEFT);
 
         Label clickcommentLabel = new Label("Click a row to select data");
         clickcommentLabel.setStyleName(ValoTheme.LABEL_SMALL);

@@ -200,7 +200,7 @@ public class CoreLogic implements Serializable {
     public Map<String, String> getDiseaseGroupsFullNameMap() {
         return database.getDiseaseGroupsFullNameMap();
     }
-
+private Set<String> accessionDefList = new HashSet<>();
     /**
      * This method is responsible for update quant comparison proteins name map
      * for each comparison.
@@ -277,7 +277,10 @@ public class CoreLogic implements Serializable {
                 String url;
 
                 if (protAcc.equalsIgnoreCase("") || protAcc.equalsIgnoreCase("Not Available") || protAcc.equalsIgnoreCase("Entry Deleted") || protAcc.equalsIgnoreCase("Entry Demerged") || protAcc.equalsIgnoreCase("NOT RETRIEVED") || protAcc.equalsIgnoreCase("DELETED") || protAcc.trim().equalsIgnoreCase("UNREVIEWED")) {
+                    protAcc=protAcc.replace("Entry Deleted", "Deleted").replace("Entry deleted", "Deleted").replace("Deleted", "Entry Deleted");
+                    accessionDefList.add(protAcc);
                     protAcc = quant.getPublicationAccessionNumber() + " (" + protAcc + ")";
+                    
                     url = null;
 
                 } 
@@ -466,7 +469,7 @@ public class CoreLogic implements Serializable {
             updatedSelectedComparisonList.add(comparison);
 
         }
-
+        System.out.println("at list of accession to update "+accessionDefList);
         return updatedSelectedComparisonList;
 
     }
@@ -817,5 +820,6 @@ public class CoreLogic implements Serializable {
         return unmappedPeptideSet;
 
     }
+   
 
 }

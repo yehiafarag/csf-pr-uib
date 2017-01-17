@@ -182,13 +182,21 @@ public class DatasetUtility implements Serializable {
         msReindexMap = new ArrayList<>();
         msReindexMap.add("RRMS__Multiple Sclerosis__multiplesclerosisstyle");
         msReindexMap.add("CDMS__Multiple Sclerosis__multiplesclerosisstyle");
+        
+         msReindexMap.add("CIS-MS__Multiple Sclerosis__multiplesclerosisstyle");
+        msReindexMap.add("CIS-MS(CIS)__Multiple Sclerosis__multiplesclerosisstyle");
+        msReindexMap.add("CIS-CIS__Multiple Sclerosis__multiplesclerosisstyle");
+        
+        
         msReindexMap.add("PMS__Multiple Sclerosis__multiplesclerosisstyle");
         msReindexMap.add("SPMS__Multiple Sclerosis__multiplesclerosisstyle");
         msReindexMap.add("Progressive MS__Multiple Sclerosis__multiplesclerosisstyle");
-        msReindexMap.add("CDMS__Multiple Sclerosis__multiplesclerosisstyle");
-        msReindexMap.add("CIS-MS__Multiple Sclerosis__multiplesclerosisstyle");
-        msReindexMap.add("CIS-MS(CIS)__Multiple Sclerosis__multiplesclerosisstyle");
-        msReindexMap.add("CIS-CIS__Multiple Sclerosis__multiplesclerosisstyle");
+        
+        
+        
+        
+//        msReindexMap.add("CDMS__Multiple Sclerosis__multiplesclerosisstyle");
+       
         msReindexMap.add("RRMS Nataliz.__Multiple Sclerosis__multiplesclerosisstyle");
         msReindexMap.add("SPMS Lamotri.__Multiple Sclerosis__multiplesclerosisstyle");
         msReindexMap.add("OIND__Multiple Sclerosis__multiplesclerosisstyle");

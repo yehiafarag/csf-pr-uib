@@ -699,7 +699,7 @@ public class DataBaseLayer implements Serializable {
                     quantProt.setUniprotAccessionNumber(rs1.getString("uniprot_accession"));
                     quantProt.setUniprotProteinName(rs1.getString("uniprot_protein_name").replace("(", "___").split("___")[0]);
                     quantProt.setPublicationAccessionNumber(rs1.getString("publication_acc_number"));
-                    quantProt.setPublicationProteinName(rs1.getString("publication_protein_name"));
+                    quantProt.setPublicationProteinName(rs1.getString("publication_protein_name").trim().replace("#NAME?", "N/A"));
                     quantProt.setQuantifiedPeptidesNumber(rs1.getInt("quantified_peptides_number"));
                     quantProt.setString_fc_value(rs1.getString("fold_change"));
                     quantProt.setString_p_value(rs1.getString("string_p_value"));

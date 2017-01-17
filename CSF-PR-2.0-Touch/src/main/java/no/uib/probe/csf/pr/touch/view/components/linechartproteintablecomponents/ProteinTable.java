@@ -370,7 +370,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         mainProteinTable.addStyleName("hidesortingicon");
         this.ascendingSort = ascendingSort;
         if (comparisonIndex == -1) {
-            mainProteinTable.sort(new String[]{"userdata", "Name"}, new boolean[]{ascendingSort, true});
+            mainProteinTable.sort(new String[]{"userdata", "Accession"}, new boolean[]{ascendingSort, true});
             mainProteinTable.commit();
             this.sortingColumnHeader = "userdata";
             int index = 0;
@@ -414,7 +414,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         }
         this.sortingColumnHeader = ((QuantDiseaseGroupsComparison) this.selectedComparisonsList.toArray()[comparisonIndex]).getComparisonHeader();
 
-        mainProteinTable.sort(new String[]{"Comparisons Overview", "Name"}, new boolean[]{ascendingSort, true});
+        mainProteinTable.sort(new String[]{"Comparisons Overview", "Accession"}, new boolean[]{ascendingSort, true});
         mainProteinTable.commit();
         int indexing = 1;
         for (Object id : mainProteinTable.getItemIds()) {
@@ -658,7 +658,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
             String description = "Click to view in UniProt";
             if (url == null) {
                 url = "";
-                description = "UniProt information is not available";
+                description = "UniProt information is not available ("+accession.replace("(","__").split("__")[1].toLowerCase();
             } else if (accession.contains("(unreviewed)")) {
 //                accession = accession.replace("(unreviewed)", " (Unreviewed)");
             }

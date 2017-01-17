@@ -267,8 +267,9 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         subIdStatLayout.setComponentAlignment(sub4IdStatValue, Alignment.MIDDLE_RIGHT);
 
         VerticalLayout relaseNoteInfo = new VerticalLayout();
-        relaseNoteInfo.setWidth(550, Unit.PIXELS);
+        relaseNoteInfo.setWidth(530, Unit.PIXELS);
         relaseNoteInfo.setSpacing(true);
+        
         relaseNoteInfo.setMargin(new MarginInfo(false, true, true, true));
         relaseNoteInfo.addStyleName("lightlabel");
 
@@ -279,7 +280,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         relaseNoteHeader.addStyleName(ValoTheme.LABEL_BOLD);
         relaseNoteInfo.addComponent(relaseNoteHeader);
 
-        Label relaseNote1 = new Label("1. 06.01.2017<font>Fixed error in regulation between RRMS and CIS in Hinsinger study (2015)</font>");
+        Label relaseNote1 = new Label("2017.01.06<font>Fixed error in regulation between RRMS and CIS in Hinsinger study (2015).</font>");
         relaseNote1.setSizeFull();
         relaseNote1.setContentMode(ContentMode.HTML);
         relaseNote1.addStyleName(ValoTheme.LABEL_SMALL);
