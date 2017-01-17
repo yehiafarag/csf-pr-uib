@@ -18,7 +18,6 @@ import com.vaadin.ui.themes.ValoTheme;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
-import javax.swing.Popup;
 import no.uib.probe.csf.pr.touch.Data_Handler;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDataset;
 import no.uib.probe.csf.pr.touch.selectionmanager.CSFListener;
@@ -266,27 +265,8 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         subIdStatLayout.addComponent(sub4IdStatValue, 1, 3);
         subIdStatLayout.setComponentAlignment(sub4IdStatValue, Alignment.MIDDLE_RIGHT);
 
-        VerticalLayout relaseNoteInfo = new VerticalLayout();
-        relaseNoteInfo.setWidth(530, Unit.PIXELS);
-        relaseNoteInfo.setSpacing(true);
-        
-        relaseNoteInfo.setMargin(new MarginInfo(false, true, true, true));
-        relaseNoteInfo.addStyleName("lightlabel");
-
-        Label relaseNoteHeader = new Label("Release notes");
-        relaseNoteHeader.setSizeFull();
-        relaseNoteHeader.addStyleName(ValoTheme.LABEL_SMALL);
-        relaseNoteHeader.addStyleName(ValoTheme.LABEL_TINY);
-        relaseNoteHeader.addStyleName(ValoTheme.LABEL_BOLD);
-        relaseNoteInfo.addComponent(relaseNoteHeader);
-
-        Label relaseNote1 = new Label("2017.01.06<font>Fixed error in regulation between RRMS and CIS in Hinsinger study (2015).</font>");
-        relaseNote1.setSizeFull();
-        relaseNote1.setContentMode(ContentMode.HTML);
-        relaseNote1.addStyleName(ValoTheme.LABEL_SMALL);
-        relaseNote1.addStyleName(ValoTheme.LABEL_TINY);
-        relaseNoteInfo.addComponent(relaseNote1);
-        PopupView relLabel = new PopupView("Release <font>2017.01.06</font>", relaseNoteInfo);
+        VerticalLayout relaseNoteInfo = updateRelaseNotesLayout();
+        PopupView relLabel = new PopupView("Release <font>2017.01.18</font>", relaseNoteInfo);
         relLabel.setCaptionAsHtml(true);
         relLabel.setDescription("Click to open release notes");
         relLabel.setHideOnMouseOut(false);
@@ -560,6 +540,60 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
         });
         footerLayout.addComponent(rightHeaderLayout, "left: 0px; top: " + 5 + "px");
+    }
+    
+    private VerticalLayout updateRelaseNotesLayout(){
+        
+        VerticalLayout relaseNoteInfo = new VerticalLayout();
+        relaseNoteInfo.setWidth(530, Unit.PIXELS);
+         relaseNoteInfo.setHeight(200, Unit.PIXELS);
+        relaseNoteInfo.setSpacing(true);
+        
+        relaseNoteInfo.setMargin(new MarginInfo(false, true, true, true));
+        relaseNoteInfo.addStyleName("lightlabel");
+
+        Label relaseNoteHeader = new Label("Release notes");
+        relaseNoteHeader.setSizeFull();
+        relaseNoteHeader.addStyleName(ValoTheme.LABEL_SMALL);
+        relaseNoteHeader.addStyleName(ValoTheme.LABEL_TINY);
+        relaseNoteHeader.addStyleName(ValoTheme.LABEL_BOLD);
+        relaseNoteInfo.addComponent(relaseNoteHeader);
+        relaseNoteInfo.setExpandRatio(relaseNoteHeader, 30);
+        
+       
+        
+         HorizontalLayout relaseNote2 = initNote("2017.01.18", "Change disease sub-groups default order for multiple sclerosis disease in the disease sub group comparisons heat-map.<br/>Fixed proteins name and accession error in the protein table.");//new Label("2017.01.18<font>Change disease sub-groups default order for multiple sclerosis disease in the disease sub group comparisons heat-map.<br/>Fixed proteins name and accession error in the protein table.</font>");
+          relaseNoteInfo.addComponent(relaseNote2);
+           relaseNoteInfo.setExpandRatio(relaseNote2,70);
+
+        HorizontalLayout relaseNote1 = initNote("2017.01.06","Fixed error in regulation between RRMS and CIS in Hinsinger study (2015).");       
+        relaseNoteInfo.addComponent(relaseNote1);
+        relaseNoteInfo.setExpandRatio(relaseNote1,30);
+        
+        return relaseNoteInfo;
+    
+    }
+    private HorizontalLayout initNote(String date,String Text){
+        HorizontalLayout hlo = new HorizontalLayout();
+        hlo.setSizeFull();
+        hlo.setSpacing(true);
+        Label dateLabel = new Label(date);
+        dateLabel.addStyleName(ValoTheme.LABEL_SMALL);
+        dateLabel.addStyleName(ValoTheme.LABEL_TINY);
+        hlo.addComponent(dateLabel);
+        hlo.setComponentAlignment(dateLabel, Alignment.TOP_LEFT);
+        hlo.setExpandRatio(dateLabel, 1.5f);
+        
+        Label textLabel = new Label(Text);
+        textLabel.setSizeFull();
+        textLabel.setContentMode(ContentMode.HTML);
+        textLabel.addStyleName(ValoTheme.LABEL_SMALL);
+        textLabel.addStyleName(ValoTheme.LABEL_TINY);
+        hlo.addComponent(textLabel);
+        hlo.setComponentAlignment(textLabel, Alignment.TOP_RIGHT);
+         hlo.setExpandRatio(textLabel, 8.5f);
+    
+        return hlo;
     }
 
 }
