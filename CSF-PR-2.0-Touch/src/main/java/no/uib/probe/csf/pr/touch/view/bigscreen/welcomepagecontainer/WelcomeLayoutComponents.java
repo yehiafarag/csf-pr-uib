@@ -545,8 +545,8 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
     private VerticalLayout updateRelaseNotesLayout(){
         
         VerticalLayout relaseNoteInfo = new VerticalLayout();
-        relaseNoteInfo.setWidth(530, Unit.PIXELS);
-         relaseNoteInfo.setHeight(200, Unit.PIXELS);
+        relaseNoteInfo.setWidth(520, Unit.PIXELS);
+         relaseNoteInfo.setHeight(100, Unit.PIXELS);
         relaseNoteInfo.setSpacing(true);
         
         relaseNoteInfo.setMargin(new MarginInfo(false, true, true, true));
@@ -562,9 +562,9 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         
        
         
-         HorizontalLayout relaseNote2 = initNote("2017.01.18", "Change disease sub-groups default order for multiple sclerosis disease in the disease sub group comparisons heat-map.<br/>Fixed proteins name and accession error in the protein table.");//new Label("2017.01.18<font>Change disease sub-groups default order for multiple sclerosis disease in the disease sub group comparisons heat-map.<br/>Fixed proteins name and accession error in the protein table.</font>");
+         HorizontalLayout relaseNote2 = initNote("2017.01.18", "Updated the protein naming and sorting of the protein table.");//new Label("2017.01.18<font>Change disease sub-groups default order for multiple sclerosis disease in the disease sub group comparisons heat-map.<br/>Fixed proteins name and accession error in the protein table.</font>");
           relaseNoteInfo.addComponent(relaseNote2);
-           relaseNoteInfo.setExpandRatio(relaseNote2,70);
+           relaseNoteInfo.setExpandRatio(relaseNote2,30);
 
         HorizontalLayout relaseNote1 = initNote("2017.01.06","Fixed error in regulation between RRMS and CIS in Hinsinger study (2015).");       
         relaseNoteInfo.addComponent(relaseNote1);

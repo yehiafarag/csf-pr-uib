@@ -229,13 +229,13 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         controlsLayout.setWidth(100, Unit.PERCENTAGE);
         controlsLayout.setHeight(20, Unit.PIXELS);
         
-         Label commentLabel = new Label("<b>*</b> Accession comment");
-        commentLabel.setStyleName(ValoTheme.LABEL_SMALL);
-        commentLabel.addStyleName(ValoTheme.LABEL_TINY);
-        commentLabel.setContentMode(ContentMode.HTML);
-        commentLabel.addStyleName("minwidth100");
-        controlsLayout.addComponent(commentLabel);
-        controlsLayout.setComponentAlignment(commentLabel, Alignment.BOTTOM_LEFT);
+//         Label commentLabel = new Label("<b>*</b> Accession comment");
+//        commentLabel.setStyleName(ValoTheme.LABEL_SMALL);
+//        commentLabel.addStyleName(ValoTheme.LABEL_TINY);
+//        commentLabel.setContentMode(ContentMode.HTML);
+//        commentLabel.addStyleName("minwidth100");
+//        controlsLayout.addComponent(commentLabel);
+//        controlsLayout.setComponentAlignment(commentLabel, Alignment.BOTTOM_LEFT);
 
         Label clickcommentLabel = new Label("Click a row to select data");
         clickcommentLabel.setStyleName(ValoTheme.LABEL_SMALL);
