@@ -523,7 +523,7 @@ public class DataBaseLayer implements Serializable {
      * Get active quantification pie charts filters within quant searching
      * proteins results (to hide them if they are empty).
      *
-     * @param searchQuantificationProtList   List of quant proteins.
+     * @param searchQuantificationProtList List of quant proteins.
      * @return boolean array for the active and not active pie chart filters
      * indexes.
      */
@@ -697,7 +697,19 @@ public class DataBaseLayer implements Serializable {
                     quantProt.setQuantDatasetIndex(rs1.getInt("ds_ID"));
                     quantProt.setSequence(rs1.getString("sequance").replace("null", ""));
                     quantProt.setUniprotAccessionNumber(rs1.getString("uniprot_accession"));
-                    quantProt.setUniprotProteinName(rs1.getString("uniprot_protein_name").replace("(", "___").split("___")[0]);
+                    String uniprotName = rs1.getString("uniprot_protein_name");
+                    if (uniprotName.replace("(", "___").split("___").length > 2) {
+                        String[] names = uniprotName.replace("(", "___").split("___");
+                        uniprotName = "";
+                        for (int x = 0; x < names.length - 1; x++) {
+                            uniprotName += "(" + names[x];
+                        }
+                        uniprotName = uniprotName.substring(1);
+                    } else {
+                        uniprotName = uniprotName.replace("(", "___").split("___")[0];
+
+                    }
+                    quantProt.setUniprotProteinName(uniprotName);
                     quantProt.setPublicationAccessionNumber(rs1.getString("publication_acc_number"));
                     quantProt.setPublicationProteinName(rs1.getString("publication_protein_name").trim().replace("#NAME?", "N/A"));
                     quantProt.setQuantifiedPeptidesNumber(rs1.getInt("quantified_peptides_number"));

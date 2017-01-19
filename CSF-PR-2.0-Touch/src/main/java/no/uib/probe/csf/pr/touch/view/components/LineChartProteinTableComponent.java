@@ -4,7 +4,6 @@ import com.vaadin.addon.tableexport.ExcelExport;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
