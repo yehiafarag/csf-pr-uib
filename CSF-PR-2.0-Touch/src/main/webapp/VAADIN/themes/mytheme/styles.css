@@ -14311,7 +14311,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 .legendptmglycosylation {
     /*background: url(http://www.damtp.cam.ac.uk/user/sjc1/damtp/icons/10x10/pinkball.gif) no-repeat;*/
-    background-color:#ff5b09 ;//: url(img/orange_ptm.png) no-repeat;
+    background-color:#ff5b09 ;
     /*    background-position:center;*/
     border: 1px solid black;
     border-radius: 50%;
@@ -14325,7 +14325,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .ptmglycosylation{
-    background-color:#ff5b09 ;//: url(img/orange_ptm.png) no-repeat;
+    background-color:#ff5b09 ;
     /*    background-position:center;*/
     border: 1px solid black;
     border-radius: 50%;
@@ -15124,7 +15124,7 @@ div.v-layout.v-horizontal.v-widget {
 
 }
 .lightbluebackground{
-    background-color: #cedff0;//#DFF2FF;
+    background-color: #cedff0;
 
 }
 .lightredbackground{
