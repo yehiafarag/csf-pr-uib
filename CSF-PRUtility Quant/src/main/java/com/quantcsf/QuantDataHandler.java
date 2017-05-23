@@ -252,6 +252,12 @@ public class QuantDataHandler {
         return activePublications;
     }
 
+    public Map<String, QuantProtein> getProteinAccSequanceMap() {
+        return proteinAccSequanceMap;
+    }
+    private  Map<String, QuantProtein> unrevProteinAccMap;
+    private Map<String, QuantProtein> proteinAccSequanceMap;
+
     @SuppressWarnings("CallToPrintStackTrace")
     public List<QuantProtein> readCSVQuantFile(String path, String sequanceFilePath, String unreviewFilePath) {
 
@@ -265,7 +271,7 @@ public class QuantDataHandler {
             FileReader sequanceReader = new FileReader(sequanceFile);
             BufferedReader sequanceBufRdr = new BufferedReader(sequanceReader);
 
-            Map<String, QuantProtein> proteinAccSequanceMap = new HashMap<String, QuantProtein>();
+             proteinAccSequanceMap = new HashMap<String, QuantProtein>();
             String seqline;
 
             int row = 1;
@@ -303,7 +309,7 @@ public class QuantDataHandler {
             FileReader unreviewFileReader = new FileReader(unreviewFilePath);
             BufferedReader unreviewFileBufRdr = new BufferedReader(unreviewFileReader);
 
-            Map<String, QuantProtein> unrevProteinAccMap = new HashMap<String, QuantProtein>();
+             unrevProteinAccMap = new HashMap<String, QuantProtein>();
             row = 1;
             while ((seqline = unreviewFileBufRdr.readLine()) != null && !seqline.trim().equalsIgnoreCase("") && row < 1000000000) {
 
@@ -627,7 +633,7 @@ public class QuantDataHandler {
                     }
                 } else {
                     qProt.setFcPatientGroupIonPatientGroupII(-1000000000.0);
-                    qProt.setStringFCValue("not provided");
+                    qProt.setStringFCValue("Not Provided");
                 }
                 index++;
 
@@ -646,7 +652,7 @@ public class QuantDataHandler {
 
                         } else {
                             if (qProt.getStringFCValue() == null) {
-                                qProt.setStringFCValue("not provided");
+                                qProt.setStringFCValue("Not Provided");
                             }
                         }
                     } finally {
@@ -655,7 +661,7 @@ public class QuantDataHandler {
                 } else {
                     qProt.setLogFC(-1000000000.0);
                     if (qProt.getStringFCValue() == null) {
-                        qProt.setStringFCValue("not provided");
+                        qProt.setStringFCValue("Not Provided");
                     }
                     index++;
 
@@ -805,7 +811,8 @@ public class QuantDataHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        
+        proteinAccSequanceMap.putAll(unrevProteinAccMap);
         return QuantProtList;
 
     }

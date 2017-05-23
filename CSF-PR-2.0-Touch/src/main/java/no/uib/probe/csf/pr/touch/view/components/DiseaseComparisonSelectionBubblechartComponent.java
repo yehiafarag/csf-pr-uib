@@ -536,11 +536,12 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
                 continue;
             }
 
+            System.out.println("at error "+ quantComparison.getQuantComparisonProteinMap().keySet());
             quantComparison.getQuantComparisonProteinMap().keySet().stream().forEach((key) -> {
-
+//
                 QuantComparisonProtein quantComparisonProtein = quantComparison.getQuantComparisonProteinMap().get(key);
                 quantComparisonProtein.finalizeQuantData();
-
+//
                 if (hideEqualProteins && (quantComparison.getQuantComparisonProteinMap().get(key).getSignificantTrindCategory() == 2 || quantComparison.getQuantComparisonProteinMap().get(key).getSignificantTrindCategory() == 5)) {
                     tempWidthValue[3] = 0;
                     tempWidthValue[6] = 0;
@@ -1167,7 +1168,7 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
      * Create array of integers and initialize it with 0 values.
      */
     private Integer[] initValuesArr() {
-        Integer[] values = new Integer[]{0, 0, 0, 0, 0, 0};
+        Integer[] values = new Integer[]{0, 0, 0, 0, 0, 0,0};
         return values;
 
     }

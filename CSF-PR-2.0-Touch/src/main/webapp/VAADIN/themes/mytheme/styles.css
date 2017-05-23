@@ -15797,3 +15797,20 @@ tbody{
     color:black ;
 
 }
+.tablelink-lightlink a{
+    text-decoration:none !important;
+    font-weight:normal !important;
+    color: lightgray !important;
+    font-size:12px!important;
+    text-align:left !important;
+}
+.tablelink-lightlink {
+    float:left !important;
+    text-decoration:none !important;
+    font-weight:normal !important;
+     text-align:left !important;
+
+}
+.tablelink-lightlink a:hover{
+    color:blue !important;
+}

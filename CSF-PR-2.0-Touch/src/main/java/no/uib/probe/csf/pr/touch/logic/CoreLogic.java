@@ -311,12 +311,13 @@ private Set<String> accessionDefList = new HashSet<>();
                 }
 
                 if ((pGrI.equalsIgnoreCase(quant.getDiseaseMainGroupI()) || pGrI.equalsIgnoreCase(quant.getOriginalDiseaseSubGroupI())) && (pGrII.equalsIgnoreCase(quant.getDiseaseMainGroupII()) || pGrII.equalsIgnoreCase(quant.getOriginalDiseaseSubGroupII()))) {
-
+                    
                     if (quant.getString_fc_value().equalsIgnoreCase("Decreased") || quant.getString_fc_value().equalsIgnoreCase("Decrease")) {
                         comProt.addDecreasedProtein((quant.getDiseaseGroupIPatientsNumber() + quant.getDiseaseGroupIIPatientsNumber()), quant.getQuantDatasetIndex(), significantPValue);
                     } else if (quant.getString_fc_value().equalsIgnoreCase("Increased") || quant.getString_fc_value().equalsIgnoreCase("Increase")) {
                         comProt.addIncreasedProtein((quant.getDiseaseGroupIPatientsNumber() + quant.getDiseaseGroupIIPatientsNumber()), quant.getQuantDatasetIndex(), significantPValue);
                     } else if (quant.getString_fc_value().equalsIgnoreCase("Not Provided")) {
+                        System.out.println("no.uib.probe.csf.pr.touch.logic.CoreLogic.updateComparisonQuantProteins()"+quant.getString_fc_value());
                         comProt.addNoValueProvided((quant.getDiseaseGroupIPatientsNumber() + quant.getDiseaseGroupIIPatientsNumber()), quant.getQuantDatasetIndex());
                     } else if (quant.getString_fc_value().equalsIgnoreCase("No change")) {
                         comProt.addEqualProtein((quant.getDiseaseGroupIPatientsNumber() + quant.getDiseaseGroupIIPatientsNumber()), quant.getQuantDatasetIndex());
@@ -330,6 +331,7 @@ private Set<String> accessionDefList = new HashSet<>();
                     } else if (quant.getString_fc_value().equalsIgnoreCase("Increased") || quant.getString_fc_value().equalsIgnoreCase("Increase")) {
                         comProt.addDecreasedProtein((quant.getDiseaseGroupIPatientsNumber() + quant.getDiseaseGroupIIPatientsNumber()), quant.getQuantDatasetIndex(), significantPValue);
                     } else if (quant.getString_fc_value().equalsIgnoreCase("Not Provided")) {
+                        System.out.println("no.uib.probe.csf.pr.touch.logic.CoreLogic.updateComparisonQuantProteins()"+quant.getUniprotAccessionNumber());
                         comProt.addNoValueProvided((quant.getDiseaseGroupIPatientsNumber() + quant.getDiseaseGroupIIPatientsNumber()), quant.getQuantDatasetIndex());
                     } else if (quant.getString_fc_value().equalsIgnoreCase("No change")) {
                         comProt.addEqualProtein((quant.getDiseaseGroupIPatientsNumber() + quant.getDiseaseGroupIIPatientsNumber()), quant.getQuantDatasetIndex());

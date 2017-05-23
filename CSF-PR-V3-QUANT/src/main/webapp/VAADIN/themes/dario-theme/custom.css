@@ -1084,7 +1084,7 @@ resetlabelbtn p{
 }
 .notregchartlabel {
     font-family: Verdana;    
-    color: #9fd3ff;//rgb(205, 225, 255) ;
+    color: #9fd3ff;
     /* top:-5px; */
     height:30px;
     font-weight:bold;

@@ -179,7 +179,7 @@ public class QuantPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        JFileChooser chooser = new JFileChooser("D:\\CSF-PR Quant data files\\11-02-2016\\");
+        JFileChooser chooser = new JFileChooser("C:\\Users\\yfa041\\Google Drive\\Data backups\\07-02-2017\\");
 
         FileFilter csvFilter = new FileFilter() {
             @Override
@@ -211,7 +211,7 @@ public class QuantPanel extends javax.swing.JPanel {
         return jButton4;
     }
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        JFileChooser chooser = new JFileChooser("D:\\CSF-PR Quant data files\\11-02-2016");
+        JFileChooser chooser = new JFileChooser("C:\\Users\\yfa041\\Google Drive\\Data backups\\07-02-2017\\");
         FileFilter textFilter = new FileFilter() {
             @Override
             public boolean accept(final File pathname) {
@@ -237,7 +237,7 @@ public class QuantPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_uniprotFastaTextFieldActionPerformed
 
     private void unreviewedChooseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unreviewedChooseBtnActionPerformed
-            JFileChooser chooser = new JFileChooser("D:\\CSF-PR Quant data files\\11-02-2016");
+            JFileChooser chooser = new JFileChooser("C:\\Users\\yfa041\\Google Drive\\Data backups\\07-02-2017\\");
         FileFilter textFilter = new FileFilter() {
             @Override
             public boolean accept(final File pathname) {

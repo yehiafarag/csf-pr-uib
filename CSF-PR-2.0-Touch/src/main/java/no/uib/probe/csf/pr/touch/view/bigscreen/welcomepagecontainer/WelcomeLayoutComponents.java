@@ -28,6 +28,7 @@ import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.DatasetInformationW
 import no.uib.probe.csf.pr.touch.view.bigscreen.searchinglayoutcontainer.components.CompareComponent;
 import no.uib.probe.csf.pr.touch.view.bigscreen.searchinglayoutcontainer.components.SearchingComponent;
 import no.uib.probe.csf.pr.touch.view.core.BigBtn;
+import no.uib.probe.csf.pr.touch.view.core.ExternalLink;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 import no.uib.probe.csf.pr.touch.view.core.OverviewInfoBean;
 
@@ -277,6 +278,21 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 //        relLabel.addStyleName(ValoTheme.LABEL_TINY);
         relLabel.addStyleName("lightlabel");
         leftPanelWrapper.addComponent(relLabel);
+        
+        
+//        Link reportIssueLink = new ExternalLink("Comments?", new ExternalResource("https://github.com/yehiafarag/csf-pr-uib/issues"));
+//         reportIssueLink.setCaptionAsHtml(true);
+//        reportIssueLink.setDescription("Send comments or questions to the CSF-PR developers");
+//        reportIssueLink.setHeight(20, Unit.PIXELS);
+//        reportIssueLink.setWidth(100, Unit.PERCENTAGE);
+//        reportIssueLink.addStyleName("link");
+//        relLabel.addStyleName(ValoTheme.LABEL_SMALL);
+//        relLabel.addStyleName(ValoTheme.LABEL_TINY);
+//        reportIssueLink.addStyleName("lightlink");
+//        leftPanelWrapper.addComponent(reportIssueLink);
+//         leftPanelWrapper.setComponentAlignment(reportIssueLink,Alignment.TOP_LEFT);
+        
+        
 //        leftPanelWrapper.setComponentAlignment(relLabel, Alignment.TOP_LEFT);
         //end of left panel
         //init spacer
