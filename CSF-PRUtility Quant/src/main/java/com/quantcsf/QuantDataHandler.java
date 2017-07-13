@@ -357,7 +357,7 @@ public class QuantDataHandler {
 
                 index = 0;
                 QuantProtein qProt = new QuantProtein();
-                String[] rowArr = line.split(";");
+                String[] rowArr = line.replace("ÿ", "").split(";");
 
 //
                 String[] updatedRowArr = new String[headerArr.length];
@@ -366,6 +366,7 @@ public class QuantDataHandler {
                 } else {
                     updatedRowArr = rowArr;
                 }
+                System.out.println("index 0 "+updatedRowArr[index]+"  --- "+row);
                 qProt.setPumedID(updatedRowArr[index++].trim().toUpperCase());
                 qProt.setStudyKey(updatedRowArr[index++].trim().toUpperCase());
                 if (!authormap.containsKey(qProt.getPumedID())) {

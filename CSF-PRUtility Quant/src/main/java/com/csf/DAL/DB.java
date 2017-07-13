@@ -144,7 +144,8 @@ public class DB implements Serializable {
                         + "INSERT INTO publication_table VALUES ('24295388', 'Varghese, Anu Mary, et al.', '2013', 'Chitotriosidase - a putative biomarker for sporadic amyotrophic lateral sclerosis.', 'false', 0, 0, 0, 0);\n"
                         + "INSERT INTO publication_table VALUES ('26627638', 'Heywood, Wendy E., et al.', '2015', 'Identification of novel CSF biomarkers for neurodegeneration and their validation by a high-throughput multiplexed targeted proteomic assay.', 'true', 25, 3, 31, 13);\n"
                         + "INSERT INTO publication_table VALUES ('26841090', 'Opsahl, Jill A., et al.', '2016', 'Label free analysis of human cerebrospinal fluid addressing various normalization strategies and revealing protein groups affected by multiple sclerosis.', 'true', 904, 276, 0, 0);\n"
-                        + "INSERT INTO publication_table VALUES ('27728768', 'Kroksveen, Ann Cathrine, et al.', '2017', 'In-Depth Cerebrospinal Fluid Quantitative Proteome and Deglycoproteome Analysis: Presenting a Comprehensive Picture of Pathways and Processes Affected by Multiple Sclerosis.', 'true', 0, 0, 0, 0);";
+                        + "INSERT INTO publication_table VALUES ('27728768', 'Kroksveen, Ann Cathrine, et al.', '2017', 'In-Depth Cerebrospinal Fluid Quantitative Proteome and Deglycoproteome Analysis: Presenting a Comprehensive Picture of Pathways and Processes Affected by Multiple Sclerosis.', 'true', 0, 0, 0, 0);\n"
+                        + "INSERT INTO publication_table VALUES ('27347402', 'Pavelek, Zbyšek, et al.','2016','Proteomic analysis of cerebrospinal fluid for relapsing-remitting multiple sclerosis and clinically isolated syndrome.','true', 0, 0, 0, 0);";
                 st = conn.createStatement();
                 for (String str : inserStat.split("\n")) {
                     st.executeUpdate(str);
