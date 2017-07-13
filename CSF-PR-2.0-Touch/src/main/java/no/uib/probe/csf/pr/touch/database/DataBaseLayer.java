@@ -125,11 +125,12 @@ public class DataBaseLayer implements Serializable {
             while (rs.next()) {
                 numProteins += rs.getInt("Rows");
             }
-            numProteins = 1956;
+            numProteins = 3253;
             infoBean.setNumberOfQuantProteins(numProteins);
             rs.close();
 
-            String selectQuantPeptidesNumber = "SELECT COUNT( DISTINCT  `peptide_sequance` ) AS `Rows` FROM  `quantitative_peptides_table` ;";
+            String selectQuantPeptidesNumber = "SELECT COUNT( DISTINCT  `peptide_sequance` ) AS  `Rows` \n"
+                    + "FROM  `quantitative_peptides_table`";
             PreparedStatement selectQuantPeptidesNumberStat = conn.prepareStatement(selectQuantPeptidesNumber);
 
             rs = selectQuantPeptidesNumberStat.executeQuery();
@@ -695,7 +696,7 @@ public class DataBaseLayer implements Serializable {
                     QuantProtein quantProt = new QuantProtein();
                     quantProt.setProtIndex(rs1.getInt("index"));
                     quantProt.setQuantDatasetIndex(rs1.getInt("ds_ID"));
-                    String sequence = rs1.getString("sequance")+"";
+                    String sequence = rs1.getString("sequance") + "";
                     quantProt.setSequence(sequence.replace("null", ""));
                     quantProt.setUniprotAccessionNumber(rs1.getString("uniprot_accession"));
                     String uniprotName = rs1.getString("uniprot_protein_name");

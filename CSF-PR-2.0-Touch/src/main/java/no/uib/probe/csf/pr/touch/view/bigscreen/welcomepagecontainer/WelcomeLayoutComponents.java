@@ -267,7 +267,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         subIdStatLayout.setComponentAlignment(sub4IdStatValue, Alignment.MIDDLE_RIGHT);
 
         VerticalLayout relaseNoteInfo = updateRelaseNotesLayout();
-        PopupView relLabel = new PopupView("Release <font>2017.01.18</font>", relaseNoteInfo);
+        PopupView relLabel = new PopupView("Release <font>2017.07.12</font>", relaseNoteInfo);
         relLabel.setCaptionAsHtml(true);
         relLabel.setDescription("Click to open release notes");
         relLabel.setHideOnMouseOut(false);
@@ -441,7 +441,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         homeBtn.setVisible(false);
         homeBtn.getThumbBtn().setDescription("Home page");
 
-        Label para_2 = new Label(breakline + "<p align='justify' Style='margin-bottom:2px;width:650px;text-align: justify;text-justify: inter-word;font-size: 12px;color: black;/* font-weight: bold; */line-height: 12px;'><font>Publications:</font></p><ul align='justify' Style='margin-bottom:2px;margin-top:2px;padding-left:20px;text-align: justify;text-justify: inter-word;font-size: 12px;color: black;/* font-weight: bold; */line-height: 20px;'><li style='width:650px !important'><a class='link' href='http://www.mcponline.org/content/early/2016/11/27/mcp.O116.064477.abstract' target='_blank'>Guldbrandsen et al.: CSF-PR 2.0: an interactive literature guide to quantitative cerebrospinal fluid mass spectrometry data from neurodegenerative disorders. Mol Cell Proteomics. 2016. <i>(in press)</i>.</font></li><li style='width:650px !important'><a class='link' href='http://www.mcponline.org/content/13/11/3152.full.pdf+html' target='_blank'>Guldbrandsen et al.: In-depth Characterization of the Cerebrospinal Fluid (CSF) Proteome Displayed Through the CSF Proteome Resource (CSF-PR). Mol Cell Proteomics. 2014.</a></li></ul>");
+        Label para_2 = new Label(breakline + "<p align='justify' Style='margin-bottom:2px;width:650px;text-align: justify;text-justify: inter-word;font-size: 12px;color: black;/* font-weight: bold; */line-height: 12px;'><font>Publications:</font></p><ul align='justify' Style='margin-bottom:2px;margin-top:2px;padding-left:20px;text-align: justify;text-justify: inter-word;font-size: 12px;color: black;/* font-weight: bold; */line-height: 20px;'><li style='width:650px !important'><a class='link' href='http://www.mcponline.org/content/early/2016/11/27/mcp.O116.064477.abstract' target='_blank'>Guldbrandsen et al.: CSF-PR 2.0: an interactive literature guide to quantitative cerebrospinal fluid mass spectrometry data from neurodegenerative disorders. Mol Cell Proteomics. 2017 Feb;16(2):300-309.</font></li><li style='width:650px !important'><a class='link' href='http://www.mcponline.org/content/13/11/3152.full.pdf+html' target='_blank'>Guldbrandsen et al.: In-depth Characterization of the Cerebrospinal Fluid (CSF) Proteome Displayed Through the CSF Proteome Resource (CSF-PR). Mol Cell Proteomics. 2014.</a></li></ul>");
         para_2.setContentMode(ContentMode.HTML);
 
         middleLayout.addComponent(para_2);
@@ -577,12 +577,15 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         relaseNoteInfo.setExpandRatio(relaseNoteHeader, 30);
         
        
+           HorizontalLayout relaseNote3 = initNote("2017.07.12", "Added data from Pavelek et al. (2016).");//new Label("2017.01.18<font>Change disease sub-groups default order for multiple sclerosis disease in the disease sub group comparisons heat-map.<br/>Fixed proteins name and accession error in the protein table.</font>");
+          relaseNoteInfo.addComponent(relaseNote3);
+           relaseNoteInfo.setExpandRatio(relaseNote3,30);
         
          HorizontalLayout relaseNote2 = initNote("2017.01.18", "Updated the protein naming and sorting of the protein table.");//new Label("2017.01.18<font>Change disease sub-groups default order for multiple sclerosis disease in the disease sub group comparisons heat-map.<br/>Fixed proteins name and accession error in the protein table.</font>");
           relaseNoteInfo.addComponent(relaseNote2);
            relaseNoteInfo.setExpandRatio(relaseNote2,30);
 
-        HorizontalLayout relaseNote1 = initNote("2017.01.06","Fixed error in regulation between RRMS and CIS in Hinsinger study (2015).");       
+        HorizontalLayout relaseNote1 = initNote("2017.01.06","Fixed error in regulation between RRMS and CIS in the Hinsinger study (2015).");       
         relaseNoteInfo.addComponent(relaseNote1);
         relaseNoteInfo.setExpandRatio(relaseNote1,30);
         
