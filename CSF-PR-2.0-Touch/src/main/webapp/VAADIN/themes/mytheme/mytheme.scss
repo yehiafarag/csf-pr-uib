@@ -35,4 +35,59 @@
     @include valo;
 
     // Insert your own theme rules here
+
+
+    
+.rangeslider .v-slider-base{
+    margin:0px;
+    margin-left:0px !important;
+    margin-right:0px !important;
+
+}
+.rangeslider .v-slider-base:before {
+    content: "";
+    position: absolute;
+    top: 16px;
+    bottom: 16px;
+    left: 0px !important;
+    width: 8px;
+    border-radius: 1px;
+    background-color:lightgray !important;
+}
+.rangeslider .v-slider-base:after {
+    border-radius: 4px;
+    height: inherit;
+    background: lightgray;
+    border: 1px solid lightgray;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    max-width: 100%;
+    content: "";
+    display: inline-block;
+    margin-left: -100%;
+    width: 100%;
+    vertical-align: top;
+}
+
+
+.rangeslider .v-slider-handle:before {
+    height: 20px !important;
+    width:10px !important;
+}
+
+
+
+.rangeslider .v-slider-handle:before, .rangeslider .v-slider-handle:after {
+    content: "";
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0 !important;
+    width: 10px;
+    height: 20px;
+    border-radius: 11px;
+    margin-left: 0px;
+    margin-right:0px !important
+}
 }

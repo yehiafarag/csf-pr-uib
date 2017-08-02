@@ -6,8 +6,12 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.PopupView;
+import com.vaadin.ui.Slider;
+import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import java.util.HashSet;
@@ -46,7 +50,7 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
 
         VerticalLayout popupbodyLayout = new VerticalLayout();
         popupbodyLayout.setSpacing(true);
-        popupbodyLayout.setWidth(200, Unit.PIXELS);
+        popupbodyLayout.setWidth(300, Unit.PIXELS);
         popupbodyLayout.setMargin(new MarginInfo(false, false, false, true));
         popupbodyLayout.addStyleName("border");
 
@@ -57,13 +61,17 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
         popupbodyLayout.setComponentAlignment(closePopup, Alignment.TOP_RIGHT);
         closePopup.addStyleName("translateleft10");
 
-        tableHeaderFilterOptions = new OptionGroup("Select Filter");
-        popupbodyLayout.addComponent(tableHeaderFilterOptions);
+        TabSheet tabsheetContainer = new TabSheet();
+        tabsheetContainer.setSizeFull();
+        tabsheetContainer.setStyleName(ValoTheme.TABSHEET_COMPACT_TABBAR);
+        popupbodyLayout.addComponent(tabsheetContainer);
+        tableHeaderFilterOptions = new OptionGroup();
+        tabsheetContainer.addTab(tableHeaderFilterOptions, "Category");
+//        popupbodyLayout.addComponent(tableHeaderFilterOptions);
         tableHeaderFilterOptions.setWidth(100, Unit.PERCENTAGE);
         tableHeaderFilterOptions.setStyleName(ValoTheme.OPTIONGROUP_SMALL);
         tableHeaderFilterOptions.setDescription("Select to filter the table");
         tableHeaderFilterOptions.addItem(4);
-
         tableHeaderFilterOptions.setItemCaption(4, "Increased 100%");
         tableHeaderFilterOptions.addItem(3);
         tableHeaderFilterOptions.setItemCaption(3, "Increased < 100%");
@@ -82,6 +90,16 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
         tableHeaderFilterOptions.setItemEnabled(3, !quantCustomizedComparison);
         tableHeaderFilterOptions.setItemEnabled(1, !quantCustomizedComparison);
         tableHeaderFilterOptions.setItemEnabled(5, !quantCustomizedComparison);
+
+        //add range filter
+        
+        RangeComponent studyRange = new RangeComponent("Decreased 100%", -100.0, "Increased 100%", 100.0);
+        
+      
+        tabsheetContainer.addTab(studyRange, "Trend (%)");
+
+        //add study number range
+        tabsheetContainer.addTab(new VerticalLayout(), "#Study");
 
         filterPopupLayout = new PopupView(null, popupbodyLayout) {
             @Override
@@ -147,7 +165,7 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
     }
 
     /**
-     *Reset filter and remove all applied filters.
+     * Reset filter and remove all applied filters.
      */
     public void reset() {
         tableHeaderFilterOptions.removeValueChangeListener(listener);
@@ -156,12 +174,13 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
     }
 
     /**
-     *Drop comparison upon user drop comparison selection.
+     * Drop comparison upon user drop comparison selection.
      */
     public abstract void dropComparison();
 
     /**
-     *Filter table based on selected filters.
+     * Filter table based on selected filters.
+     *
      * @param selectedFiltersSet Set of user selected filters.
      */
     public abstract void filterTable(Set<Object> selectedFiltersSet);
