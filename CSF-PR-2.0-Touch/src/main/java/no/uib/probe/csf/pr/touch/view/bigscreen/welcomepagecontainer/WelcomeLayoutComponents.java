@@ -267,7 +267,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         subIdStatLayout.setComponentAlignment(sub4IdStatValue, Alignment.MIDDLE_RIGHT);
 
         VerticalLayout relaseNoteInfo = updateRelaseNotesLayout();
-        PopupView relLabel = new PopupView("Release <font>2017.07.12</font>", relaseNoteInfo);
+        PopupView relLabel = new PopupView("Release <font>2017.08.08</font>", relaseNoteInfo);
         relLabel.setCaptionAsHtml(true);
         relLabel.setDescription("Click to open release notes");
         relLabel.setHideOnMouseOut(false);
@@ -561,8 +561,8 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
     private VerticalLayout updateRelaseNotesLayout(){
         
         VerticalLayout relaseNoteInfo = new VerticalLayout();
-        relaseNoteInfo.setWidth(520, Unit.PIXELS);
-         relaseNoteInfo.setHeight(100, Unit.PIXELS);
+        relaseNoteInfo.setWidth(530, Unit.PIXELS);
+         relaseNoteInfo.setHeight(160, Unit.PIXELS);
         relaseNoteInfo.setSpacing(true);
         
         relaseNoteInfo.setMargin(new MarginInfo(false, true, true, true));
@@ -576,7 +576,11 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         relaseNoteInfo.addComponent(relaseNoteHeader);
         relaseNoteInfo.setExpandRatio(relaseNoteHeader, 30);
         
-       
+        HorizontalLayout relaseNote4 = initNote("2017.08.08", "Add protein table filters (filter on protein trend, filter on number of studies)");//new Label("2017.01.18<font>Change disease sub-groups default order for multiple sclerosis disease in the disease sub group comparisons heat-map.<br/>Fixed proteins name and accession error in the protein table.</font>");
+          relaseNoteInfo.addComponent(relaseNote4);
+           relaseNoteInfo.setExpandRatio(relaseNote4,30);
+           
+           
            HorizontalLayout relaseNote3 = initNote("2017.07.12", "Added data from Pavelek et al. (2016).");//new Label("2017.01.18<font>Change disease sub-groups default order for multiple sclerosis disease in the disease sub group comparisons heat-map.<br/>Fixed proteins name and accession error in the protein table.</font>");
           relaseNoteInfo.addComponent(relaseNote3);
            relaseNoteInfo.setExpandRatio(relaseNote3,30);

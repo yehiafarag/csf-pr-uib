@@ -414,7 +414,6 @@ public abstract class ProteinDatasetDetailsLineChart extends AbsoluteLayout impl
             } else if (comparison.getQuantComparisonProteinMap().containsKey(keyV)) {
                 trendValue = comparison.getQuantComparisonProteinMap().get(keyV).getOverallCellPercentValue();
                 proteinName = comparison.getQuantComparisonProteinMap().get(keyV).getProteinName();
-
                 comparisonTrends.add(comparison.getQuantComparisonProteinMap().get(keyV).getSignificantTrindCategory());
             } else {
 

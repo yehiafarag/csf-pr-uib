@@ -10,17 +10,18 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.swing.JPanel;
@@ -84,7 +85,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
     /**
      * Map of quant disease comparisons and its items id map.
      */
-    private final Map<QuantDiseaseGroupsComparison, Set<Object>> filtersMap;
+    private final Map<QuantDiseaseGroupsComparison, Map<String, Set<Object>>> filtersMap;
     /**
      * Spacer layout is used to padding the top comparison layout container.
      */
@@ -192,8 +193,18 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
                 }
 
                 @Override
-                public void filterTable(QuantDiseaseGroupsComparison comparison, int comparisonIndex, Set<Object> filterSet) {
-                    filterTableSelection(comparison, filterSet);
+                public void filterTable(QuantDiseaseGroupsComparison comparison, int comparisonIndex, Set<Object> filterSet, boolean unselectfilter) {
+                    filterTableSelection(comparison, filterSet, unselectfilter);
+                }
+
+                @Override
+                public void filterTable(QuantDiseaseGroupsComparison comparison, int comparisonIndex, double min, double max, boolean unselectfilter) {
+                    filterTableSelection(comparison, min, max, unselectfilter);
+                }
+
+                @Override
+                public void filterTable(QuantDiseaseGroupsComparison comparison, int comparisonIndex, long min, long max, boolean unselectfilter) {
+                    filterTableSelection(comparison, min, max, unselectfilter);
                 }
             };
             this.userSortingHeaderWrapper.addComponent(custUserComparisonSortingLayout);
@@ -321,7 +332,43 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
      * Remove all applied columns filters.
      */
     public void clearColumnFilters() {
-        filterTableSelection(null, null);
+//        filterTableSelection(null, 0, 0);
+        filtersMap.clear();
+//        filtersMap.keySet().stream().forEach((com) -> {
+//                filtersMap.put(com, null);
+////            });
+////            if (filtereApplied) {
+//                filtereApplied = false;
+////            } else {
+////                return;
+//            });
+        Set<String> filteredProteinsList = new LinkedHashSet<>(this.tableProteinsToIDMap.keySet());
+        mainProteinTable.removeAllItems();
+        for (String accession : filteredProteinsList) {
+            Object itemId = tableProteinsToIDMap.get(accession);
+            Object[] items = tableItemsMap.get(itemId);
+            mainProteinTable.addItem(items, itemId);
+
+        }
+        if (mainProteinTable.getItemIds().size() == tableItemsMap.size()) {
+            filtereApplied = false;
+        }
+        inUseSselectedProteinsList = new LinkedHashSet<>();
+        for (QuantComparisonProtein prot : fullSselectedProteinsList) {
+            if (filteredProteinsList.contains(prot.getProteinAccession())) {
+                inUseSselectedProteinsList.add(prot);
+            }
+
+        }
+        int indexing = 1;
+        for (Object id
+                : mainProteinTable.getItemIds()) {
+            Item item = mainProteinTable.getItem(id);
+            item.getItemProperty("Index").setValue(indexing);
+            indexing++;
+        }
+        updateIconRowNumber(mainProteinTable.getItemIds().size(), generateThumbImg());
+
         columnHeaderSet.stream().forEach((comparisonLayout) -> {
             comparisonLayout.noFilter();
         });
@@ -329,6 +376,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
             custUserComparisonSortingLayout.setAsDefault();
             custUserComparisonSortingLayout.sort(false, -1);
         }
+
     }
 
     /**
@@ -625,9 +673,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         tableItemsMap.clear();
         tableProteinsToIDMap.clear();
         instanceOfLinechartComponentsLayout = null;
-
         filtersMap.clear();
-
         if (userCustomizedComparison != null) {
             spacer.removeAllComponents();
             mainProteinTable = generateMainTable(height, width, true);
@@ -658,7 +704,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
             String description = "Click to view in UniProt";
             if (url == null) {
                 url = "";
-                description = "UniProt information is not available ("+accession.replace("(","__").split("__")[1].toLowerCase();
+                description = "UniProt information is not available (" + accession.replace("(", "__").split("__")[1].toLowerCase();
             } else if (accession.contains(" (unreviewed)")) {
                 description += "(unreviewed)";
             }
@@ -705,12 +751,16 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
                 tableItemsMap.put(protId, new Object[]{protId + 1, btn, accessionObject, name, null, protTrendLayout});
             } else {
                 int trend;
-                if (userCustomizedComparison.getQuantComparisonProteinMap().get(accession).getOverallCellPercentValue() == 100.0) {
-                    trend = 0;
-                } else if (userCustomizedComparison.getQuantComparisonProteinMap().get(accession).getOverallCellPercentValue() == 0) {
-                    trend = 3;
-                } else {
-                    trend = 4;
+                switch ((int) userCustomizedComparison.getQuantComparisonProteinMap().get(accession).getOverallCellPercentValue()) {
+                    case 100:
+                        trend = 0;
+                        break;
+                    case 0:
+                        trend = 3;
+                        break;
+                    default:
+                        trend = 4;
+                        break;
                 }
                 TrendSymbol trendSymbol = new TrendSymbol(trend);
                 trendSymbol.setTrend((int) userCustomizedComparison.getQuantComparisonProteinMap().get(accession).getOverallCellPercentValue());
@@ -793,8 +843,18 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
                 }
 
                 @Override
-                public void filterTable(QuantDiseaseGroupsComparison comparison, int comparisonIndex, Set<Object> filterSet) {
-                    filterTableSelection(comparison, filterSet);
+                public void filterTable(QuantDiseaseGroupsComparison comparison, int comparisonIndex, Set<Object> filterSet, boolean unselectfilter) {
+                    filterTableSelection(comparison, filterSet, unselectfilter);
+                }
+
+                @Override
+                public void filterTable(QuantDiseaseGroupsComparison comparison, int comparisonIndex, double min, double max, boolean unselectfilter) {
+                    filterTableSelection(comparison, min, max, unselectfilter);
+                }
+
+                @Override
+                public void filterTable(QuantDiseaseGroupsComparison comparison, int comparisonIndex, long min, long max, boolean unselectfilter) {
+                    filterTableSelection(comparison, min, max, unselectfilter);
                 }
 
             };
@@ -835,34 +895,203 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
      * @param comparison the comparison used for filtering the data.
      * @param filters set of the applied filters from this comparison.
      */
-    private void filterTableSelection(QuantDiseaseGroupsComparison comparison, Set<Object> filters) {
+    private void filterTableSelection(QuantDiseaseGroupsComparison comparison, Set<Object> filters, boolean unselectfilter) {
 
         if (filters == null || filters.isEmpty()) {
             filters = null;
         }
-        if (comparison == null) {
-            filtersMap.keySet().stream().forEach((com) -> {
-                filtersMap.put(com, null);
-            });
-            if (filtereApplied) {
-                filtereApplied = false;
-            } else {
-                return;
-            }
+//        if (comparison == null) {
+//            filtersMap.keySet().stream().forEach((com) -> {
+//                filtersMap.put(com, null);
+//            });
+//            if (filtereApplied) {
+//                filtereApplied = false;
+//            } else {
+//                return;
+//            }
+//        } else {
+        if (unselectfilter) {
+            filtersMap.get(comparison).remove("category");
+            filtereApplied = false;
         } else {
 
-            filtersMap.remove(comparison);
-            filtersMap.put(comparison, filters);
+            if (!filtersMap.containsKey(comparison) || filtersMap.get(comparison) == null) {
+                Map<String, Set<Object>> map = new HashMap<>();
+                map.put("category", null);
+                map.put("trend", null);
+                map.put("studynum", null);
+                filtersMap.put(comparison, map);
+            }
+            filtersMap.get(comparison).put("category", filters);
             filtereApplied = true;
 
         }
         Set<String> filteredProteinsList = new LinkedHashSet<>(this.tableProteinsToIDMap.keySet());
 
         for (QuantDiseaseGroupsComparison i : filtersMap.keySet()) {
-
             if (filtersMap.get(i) != null) {
-                filteredProteinsList = filterProteinList(filteredProteinsList, i, filtersMap.get(i));
+                filteredProteinsList = filterProteinList(filteredProteinsList, i, filtersMap.get(i).get("category"));
+                if (filtersMap.get(i).get("trend") != null) {
+                    filteredProteinsList = filterProteinList(filteredProteinsList, i, filtersMap.get(i).get("trend"));
+                }
+                if (filtersMap.get(i).get("studynum") != null) {
+                    filteredProteinsList = filterProteinList(filteredProteinsList, i, filtersMap.get(i).get("studynum"));
+                }
 
+            }
+
+        }
+
+        mainProteinTable.removeAllItems();
+        for (String accession : filteredProteinsList) {
+            Object itemId = tableProteinsToIDMap.get(accession);
+            Object[] items = tableItemsMap.get(itemId);
+            mainProteinTable.addItem(items, itemId);
+
+        }
+        if (mainProteinTable.getItemIds().size() == tableItemsMap.size()) {
+            filtereApplied = false;
+        }
+        inUseSselectedProteinsList = new LinkedHashSet<>();
+        for (QuantComparisonProtein prot : fullSselectedProteinsList) {
+            if (filteredProteinsList.contains(prot.getProteinAccession())) {
+                inUseSselectedProteinsList.add(prot);
+            }
+
+        }
+        int indexing = 1;
+        for (Object id
+                : mainProteinTable.getItemIds()) {
+            Item item = mainProteinTable.getItem(id);
+            item.getItemProperty("Index").setValue(indexing);
+            indexing++;
+        }
+        updateIconRowNumber(mainProteinTable.getItemIds().size(), generateThumbImg());
+
+    }
+
+    /**
+     * Filter and update the protein table using the top comparison filters
+     * (local filtering)
+     *
+     * @param comparison the comparison used for filtering the data.
+     * @param filters set of the applied filters from this comparison.
+     */
+    private void filterTableSelection(QuantDiseaseGroupsComparison comparison, long min, long max, boolean unselectfilter) {
+        if (unselectfilter) {
+            filtersMap.get(comparison).remove("studynum");
+            filtereApplied = false;
+//            filtersMap.keySet().stream().forEach((com) -> {
+//                filtersMap.put(com, null);
+//            });
+//            if (filtereApplied) {
+//                filtereApplied = false;
+//            } else {
+//                return;
+//            }
+        } else {
+            Set<Object> filters = new LinkedHashSet<>();
+            filters.add(min);
+            filters.add(max);
+            if (!filtersMap.containsKey(comparison) || filtersMap.get(comparison) == null) {
+                Map<String, Set<Object>> map = new HashMap<>();
+                map.put("category", null);
+                map.put("trend", null);
+                map.put("studynum", null);
+                filtersMap.put(comparison, map);
+            }
+            filtersMap.get(comparison).put("studynum", filters);
+            filtereApplied = true;
+
+        }
+        Set<String> filteredProteinsList = new LinkedHashSet<>(this.tableProteinsToIDMap.keySet());
+        for (QuantDiseaseGroupsComparison i : filtersMap.keySet()) {
+            if (filtersMap.get(i) != null) {
+                filteredProteinsList = filterProteinList(filteredProteinsList, i, filtersMap.get(i).get("studynum"));
+                if (filtersMap.get(i).get("category") != null) {
+                    filteredProteinsList = filterProteinList(filteredProteinsList, i, filtersMap.get(i).get("category"));
+                }
+                if (filtersMap.get(i).get("trend") != null) {
+                    filteredProteinsList = filterProteinList(filteredProteinsList, i, filtersMap.get(i).get("trend"));
+                }
+            }
+
+        }
+
+        mainProteinTable.removeAllItems();
+        for (String accession : filteredProteinsList) {
+            Object itemId = tableProteinsToIDMap.get(accession);
+            Object[] items = tableItemsMap.get(itemId);
+            mainProteinTable.addItem(items, itemId);
+
+        }
+        if (mainProteinTable.getItemIds().size() == tableItemsMap.size()) {
+            filtereApplied = false;
+        }
+        inUseSselectedProteinsList = new LinkedHashSet<>();
+        for (QuantComparisonProtein prot : fullSselectedProteinsList) {
+            if (filteredProteinsList.contains(prot.getProteinAccession())) {
+                inUseSselectedProteinsList.add(prot);
+            }
+
+        }
+        int indexing = 1;
+        for (Object id
+                : mainProteinTable.getItemIds()) {
+            Item item = mainProteinTable.getItem(id);
+            item.getItemProperty("Index").setValue(indexing);
+            indexing++;
+        }
+        updateIconRowNumber(mainProteinTable.getItemIds().size(), generateThumbImg());
+
+    }
+
+    /**
+     * Filter and update the protein table using the top comparison filters
+     * (local filtering)
+     *
+     * @param comparison the comparison used for filtering the data.
+     * @param filters set of the applied filters from this comparison.
+     */
+    private void filterTableSelection(QuantDiseaseGroupsComparison comparison, double min, double max, boolean unselectfilter) {
+//        if (comparison == null) {
+//            filtersMap.keySet().stream().forEach((com) -> {
+//                filtersMap.put(com, null);
+//            });
+//            if (filtereApplied) {
+//                filtereApplied = false;
+//            } else {
+//                return;
+//            }
+//        } else {
+        if (unselectfilter) {
+            filtersMap.get(comparison).remove("trend");
+            filtereApplied = false;
+        } else {
+            Set<Object> filters = new LinkedHashSet<>();
+            filters.add(min);
+            filters.add(max);
+            if (!filtersMap.containsKey(comparison) || filtersMap.get(comparison) == null) {
+                Map<String, Set<Object>> map = new HashMap<>();
+                map.put("category", null);
+                map.put("trend", null);
+                map.put("studynum", null);
+                filtersMap.put(comparison, map);
+            }
+            filtersMap.get(comparison).put("trend", filters);
+            filtereApplied = true;
+
+        }
+        Set<String> filteredProteinsList = new LinkedHashSet<>(this.tableProteinsToIDMap.keySet());
+        for (QuantDiseaseGroupsComparison i : filtersMap.keySet()) {
+            if (filtersMap.get(i) != null) {
+                filteredProteinsList = filterProteinList(filteredProteinsList, i, filtersMap.get(i).get("trend"));
+                if (filtersMap.get(i).get("category") != null) {
+                    filteredProteinsList = filterProteinList(filteredProteinsList, i, filtersMap.get(i).get("category"));
+                }
+                if (filtersMap.get(i).get("trend") != null) {
+                    filteredProteinsList = filterProteinList(filteredProteinsList, i, filtersMap.get(i).get("studynum"));
+                }
             }
 
         }
@@ -907,11 +1136,77 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
             return proteinsList;
         }
         Set<String> updatedProteinsList = new LinkedHashSet<>();
+        Object objectValue = filters.iterator().next();
+        if (objectValue instanceof Double) {
+            double lower = (Double) filters.toArray()[0];
+            double upper;
+            if (filters.size() == 2) {
+                upper = (Double) filters.toArray()[1];
+            } else {
+                upper = lower;
+            }
+
+            List<Integer> filtesList = new ArrayList<>();
+            if (lower < 0 || upper < 0) {
+                filtesList.add(0);
+                filtesList.add(1);
+            }
+            if ((lower == 0 || upper == 0) || (lower <= 0 && upper >= 0)) {
+                filtesList.add(2);
+            }
+            if (lower > 0 || upper > 0) {
+                filtesList.add(3);
+                filtesList.add(4);
+            }
+            filtesList.add(5);
+
+            filtesList.stream().map((filter) -> (comparison.getProteinsByTrendMap().get(filter))).forEach((tempList) -> {
+                tempList.stream().filter((protein) -> (proteinsList.contains(protein.getProteinAccession()))).forEach((protein) -> {
+                    double value = protein.getOverallCellPercentValue();
+                    if (value >= lower && value <= upper) {
+                        updatedProteinsList.add(protein.getProteinAccession());
+                    }
+                });
+            });
+            System.out.println("study range invoke " + lower + "  " + upper + "  filtered list size " + updatedProteinsList.size());
+            return updatedProteinsList;
+        } else if (objectValue instanceof Long) {
+
+            long min = (Long) objectValue;
+            long max;
+            if (filters.size() == 2) {
+                max = (Long) filters.toArray()[1];
+            } else {
+                max = min;
+            }
+            List<Integer> filtesList = new ArrayList<>();
+            filtesList.add(0);
+            filtesList.add(1);
+            filtesList.add(2);
+            filtesList.add(3);
+            filtesList.add(4);
+            filtesList.add(5);
+            filtesList.stream().map((filter) -> (comparison.getProteinsByTrendMap().get(filter))).forEach((tempList) -> {
+                tempList.stream().filter((protein) -> (proteinsList.contains(protein.getProteinAccession()))).forEach((protein) -> {
+                    int value = protein.getDsQuantProteinsMap().size();
+                    System.out.println("study number invoke " + min + "  " + max + "  value " + value);
+
+                    if (value >= min && value <= max) {
+                        updatedProteinsList.add(protein.getProteinAccession());
+                    }
+                });
+            });
+            System.out.println("study number invoke " + min + "  " + max + "  filtered list size " + updatedProteinsList.size());
+            return updatedProteinsList;
+        }
+
         filters.stream().map((filter) -> (comparison.getProteinsByTrendMap().get((Integer) filter))).forEach((tempList) -> {
             tempList.stream().filter((protein) -> (proteinsList.contains(protein.getProteinAccession()))).forEach((protein) -> {
                 updatedProteinsList.add(protein.getProteinAccession());
             });
         });
+        System.out.println("study category invoke " + filters.toString() + "  filtered list size " + updatedProteinsList.size());
+
         return updatedProteinsList;
 
     }

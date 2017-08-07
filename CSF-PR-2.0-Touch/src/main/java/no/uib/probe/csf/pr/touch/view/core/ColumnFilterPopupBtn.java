@@ -6,11 +6,8 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.PopupView;
-import com.vaadin.ui.Slider;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -38,6 +35,9 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
      * Main layout click listener.
      */
     private final Property.ValueChangeListener listener;
+    private final RangeComponent studiesRange;
+    private final RangeComponent studiesNumber;
+    private final TabSheet tabsheetContainer;
 
     /**
      * Constructor to initialize the main attributes.
@@ -46,7 +46,7 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
      * comparison.
      */
     public ColumnFilterPopupBtn(boolean quantCustomizedComparison) {
-        this.addStyleName("unselectedfilter");
+        ColumnFilterPopupBtn.this.addStyleName("unselectedfilter");
 
         VerticalLayout popupbodyLayout = new VerticalLayout();
         popupbodyLayout.setSpacing(true);
@@ -61,7 +61,7 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
         popupbodyLayout.setComponentAlignment(closePopup, Alignment.TOP_RIGHT);
         closePopup.addStyleName("translateleft10");
 
-        TabSheet tabsheetContainer = new TabSheet();
+        tabsheetContainer = new TabSheet();
         tabsheetContainer.setSizeFull();
         tabsheetContainer.setStyleName(ValoTheme.TABSHEET_COMPACT_TABBAR);
         popupbodyLayout.addComponent(tabsheetContainer);
@@ -92,20 +92,52 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
         tableHeaderFilterOptions.setItemEnabled(5, !quantCustomizedComparison);
 
         //add range filter
-        
-        RangeComponent studyRange = new RangeComponent("Decreased 100%", -100.0, "Increased 100%", 100.0);
-        
-      
-        tabsheetContainer.addTab(studyRange, "Trend (%)");
+        String[] colors = new String[]{"green", "red"};
+
+        studiesRange = new RangeComponent("Decreased<br/>%", -100.0, "Increased<br/>%", 100.0, colors, 0.0) {
+            @Override
+            public void selectedRange(double min, double max, boolean filterApplied) {
+                filterTable(min, max,!filterApplied);;
+                if (filterApplied) {
+                    ColumnFilterPopupBtn.this.addStyleName("selectedfilter");
+                    ColumnFilterPopupBtn.this.removeStyleName("unselectedfilter");
+
+                } else {
+                    ColumnFilterPopupBtn.this.addStyleName("unselectedfilter");
+                    ColumnFilterPopupBtn.this.removeStyleName("selectedfilter");
+
+                }
+            }
+
+        };
+        tabsheetContainer.addTab(studiesRange, "Trend (%)");
 
         //add study number range
-        tabsheetContainer.addTab(new VerticalLayout(), "#Study");
+        studiesNumber = new RangeComponent("Min<br/>Number", 0.0, "Max<br/>Number<br/>", 100.0, colors, null) {
+            @Override
+            public void selectedRange(double min, double max, boolean filterApplied) {
+                filterTable((int) min, (int) max,!filterApplied);
+                if (filterApplied) {
+                    ColumnFilterPopupBtn.this.addStyleName("selectedfilter");
+                    ColumnFilterPopupBtn.this.removeStyleName("unselectedfilter");
 
+                } else {
+                    ColumnFilterPopupBtn.this.addStyleName("unselectedfilter");
+                    ColumnFilterPopupBtn.this.removeStyleName("selectedfilter");
+
+                }
+            }
+
+        };
+        tabsheetContainer.addTab(studiesNumber, "#Study");
+
+        //-----------------------end filters ---------------------
         filterPopupLayout = new PopupView(null, popupbodyLayout) {
             @Override
             public void setPopupVisible(boolean visible) {
                 this.setVisible(visible);
                 super.setPopupVisible(visible);
+                tabsheetContainer.setSelectedTab(0);
             }
         };
 
@@ -136,9 +168,10 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
         filterPopupLayout.setCaptionAsHtml(true);
         filterPopupLayout.setHideOnMouseOut(false);
         filterPopupLayout.addStyleName("margintop");
-        this.addComponent(filterPopupLayout);
+        ColumnFilterPopupBtn.this.addComponent(filterPopupLayout);
         listener = (Property.ValueChangeEvent event) -> {
             Set<Object> headersSet = new HashSet<>((Set<Object>) event.getProperty().getValue());
+
             if (headersSet.isEmpty()) {
                 this.addStyleName("unselectedfilter");
                 this.removeStyleName("selectedfilter");
@@ -147,11 +180,17 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
                 this.addStyleName("selectedfilter");
                 this.removeStyleName("unselectedfilter");
             }
-            ColumnFilterPopupBtn.this.filterTable(headersSet);
+            ColumnFilterPopupBtn.this.filterTable(headersSet,headersSet.isEmpty());
 
         };
         tableHeaderFilterOptions.addValueChangeListener(listener);
-        this.addLayoutClickListener(ColumnFilterPopupBtn.this);
+        ColumnFilterPopupBtn.this.addLayoutClickListener(ColumnFilterPopupBtn.this);
+    }
+
+    public void updateChartsData(double[][] studiesRangeData, double[][] studiesNumberData) {
+        studiesRange.updateData(studiesRangeData);
+        studiesNumber.updateData(studiesNumberData);
+
     }
 
     /**
@@ -161,6 +200,8 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
      */
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+        studiesRange.updateFilter();
+        studiesNumber.updateFilter();
         filterPopupLayout.setPopupVisible(true);
     }
 
@@ -171,6 +212,8 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
         tableHeaderFilterOptions.removeValueChangeListener(listener);
         tableHeaderFilterOptions.setValue(null);
         tableHeaderFilterOptions.addValueChangeListener(listener);
+        studiesRange.resetRange();
+        studiesNumber.resetRange();
     }
 
     /**
@@ -183,6 +226,20 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
      *
      * @param selectedFiltersSet Set of user selected filters.
      */
-    public abstract void filterTable(Set<Object> selectedFiltersSet);
+    public abstract void filterTable(Set<Object> selectedFiltersSet,boolean unselectfilter);
+
+    /**
+     * Filter table based on selected range.
+     *
+     * @param selectedFiltersSet Set of user selected filters.
+     */
+    public abstract void filterTable(double min, double max,boolean unselectfilter);
+
+    /**
+     * Filter table based on selected range.
+     *
+     * @param selectedFiltersSet Set of user selected filters.
+     */
+    public abstract void filterTable(long minStudiesNumber, long maxStudiesNumber,boolean unselectfilter);
 
 }

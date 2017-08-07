@@ -536,7 +536,7 @@ public abstract class DiseaseComparisonSelectionBubblechartComponent extends Ver
                 continue;
             }
 
-            System.out.println("at error "+ quantComparison.getQuantComparisonProteinMap().keySet());
+//            System.out.println("at ----------------------- >>      error "+ quantComparison.getQuantComparisonProteinMap().keySet());
             quantComparison.getQuantComparisonProteinMap().keySet().stream().forEach((key) -> {
 //
                 QuantComparisonProtein quantComparisonProtein = quantComparison.getQuantComparisonProteinMap().get(key);
