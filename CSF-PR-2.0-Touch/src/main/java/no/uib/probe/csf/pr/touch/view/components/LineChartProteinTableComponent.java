@@ -323,7 +323,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
             @Override
             public void onClick() {
                 exportTable.setUserCustomizedComparison(quantProteinTable.getUserCustomizedComparison());
-                exportTable.updateTableData(quantProteinTable.getSelectedComparisonsList(), quantProteinTable.getSelectedProteinsList(), quantProteinTable.getSortingColumnHeader(), quantProteinTable.isAscendingSort());
+                exportTable.updateTableData(quantProteinTable.getSelectedComparisonsList(), quantProteinTable.getSelectedProteinsList(), quantProteinTable.isAscendingSort());
                 ExcelExport csvExport = new ExcelExport(exportTable.getExportTable(), "CSF-PR  Protein Information");
                 csvExport.setReportTitle("CSF-PR / Quant Protein Information ");
                 csvExport.setExportFileName("CSF-PR - Quant Protein Information" + ".xls");

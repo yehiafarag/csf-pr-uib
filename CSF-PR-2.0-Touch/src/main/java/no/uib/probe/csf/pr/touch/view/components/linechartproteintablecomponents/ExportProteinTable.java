@@ -56,11 +56,10 @@ public class ExportProteinTable extends VerticalLayout {
      *
      * @param selectedComparisonsList list of quant disease comparisons objects.
      * @param selectedProteinsList list of the selected quant protein objects.
-     * @param sortingHeader the sorting header title to sort table before
      * exporting.
      * @param upSort the sorting direction.
      */
-    public void updateTableData(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, Set<QuantComparisonProtein> selectedProteinsList, String sortingHeader, boolean upSort) {
+    public void updateTableData(Set<QuantDiseaseGroupsComparison> selectedComparisonsList, Set<QuantComparisonProtein> selectedProteinsList, boolean upSort) {
         this.removeAllComponents();
         exportTable = new Table();
         this.addComponent(exportTable);
@@ -144,7 +143,7 @@ public class ExportProteinTable extends VerticalLayout {
 //            item.getItemProperty("Index").setValue(indexing);
 //            indexing++;
 //        }
-        System.out.println("at export table sort based on " + sortingHeader + "--------" + (userCustomizedComparison != null) + "  table has header " + exportTable.getColumnHeader(sortingHeader));
+//        System.out.println("at export table sort based on " + sortingHeader + "--------" + (userCustomizedComparison != null) + "  table has header " + exportTable.getColumnHeader(sortingHeader));
 
     }
 

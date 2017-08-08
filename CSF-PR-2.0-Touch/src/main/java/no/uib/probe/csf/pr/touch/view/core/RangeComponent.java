@@ -317,7 +317,6 @@ public abstract class RangeComponent extends VerticalLayout implements Property.
         double finalMax;
 
         if (lowerRangeSlider.getValue() <= upperRangeSlider.getValue() && slidersContainer.getComponentCount() == 0) {
-            System.out.println("no flip ");
             slidersContainer.addComponent(lowerRangeSlider, lowerPos.getCSSString());
             slidersContainer.addComponent(upperRangeSlider, upperPos.getCSSString());
             upperRangeSlider.addStyleName("upper");
