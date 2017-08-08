@@ -247,6 +247,7 @@ public class LineChart extends AbsoluteLayout {
             String keyV = 4 + "_" + key;
 
             trendValue = 0.0;
+           
 
             if (comparison.getQuantComparisonProteinMap().containsKey(keyI)) {
 

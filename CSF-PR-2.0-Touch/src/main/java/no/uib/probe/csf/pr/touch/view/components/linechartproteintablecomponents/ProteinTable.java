@@ -710,8 +710,10 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
             }
             url = url.replace("(UNREVIEWED)", "").replace("(unreviewed)", "");
             ExternalLink accessionObject = new ExternalLink(accession, new ExternalResource(url));
+            accessionObject.setData(accession);
             accessionObject.setDescription(description);
             this.selectedComparisonsList = selectedComparisonsList;
+
             ProteinTrendLayout protTrendLayout = new ProteinTrendLayout(selectedComparisonsList, protein, availableProteinLayoutWidth, protId, (protId < 10)) {
 
                 @Override
@@ -1168,7 +1170,6 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
                     }
                 });
             });
-            System.out.println("study range invoke " + lower + "  " + upper + "  filtered list size " + updatedProteinsList.size());
             return updatedProteinsList;
         } else if (objectValue instanceof Long) {
 
@@ -1189,14 +1190,14 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
             filtesList.stream().map((filter) -> (comparison.getProteinsByTrendMap().get(filter))).forEach((tempList) -> {
                 tempList.stream().filter((protein) -> (proteinsList.contains(protein.getProteinAccession()))).forEach((protein) -> {
                     int value = protein.getDsQuantProteinsMap().size();
-                    System.out.println("study number invoke " + min + "  " + max + "  value " + value);
+//                    System.out.println("study number invoke " + min + "  " + max + "  value " + value);
 
                     if (value >= min && value <= max) {
                         updatedProteinsList.add(protein.getProteinAccession());
                     }
                 });
             });
-            System.out.println("study number invoke " + min + "  " + max + "  filtered list size " + updatedProteinsList.size());
+//            System.out.println("study number invoke " + min + "  " + max + "  filtered list size " + updatedProteinsList.size());
             return updatedProteinsList;
         }
 
@@ -1205,7 +1206,6 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
                 updatedProteinsList.add(protein.getProteinAccession());
             });
         });
-        System.out.println("study category invoke " + filters.toString() + "  filtered list size " + updatedProteinsList.size());
 
         return updatedProteinsList;
 
@@ -1225,7 +1225,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         String value = null;
         ExternalLink link = (ExternalLink) mainProteinTable.getItem(event.getProperty().getValue()).getItemProperty("Accession").getValue();
         if (link != null) {
-            value = link.getCaption();
+            value = link.getData() + "";
         }
         if (userCustomizedComparison != null) {
             if (userCustomizedComparison.getQuantComparisonProteinMap().containsKey(value)) {

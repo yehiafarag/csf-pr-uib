@@ -190,7 +190,7 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
             sparkLineContainer.addComponent(sparkLine);
             chartComponentsLayout = sparkLine.getChartComponentsLayout();
         }
-
+        
     }
 
     /**

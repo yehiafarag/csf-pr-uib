@@ -385,13 +385,13 @@ public abstract class ProteinDatasetDetailsLineChart extends AbsoluteLayout impl
         String[] xAxisLabels = new String[selectedComparisonList.size()];
         final Color[] diseaseGroupslabelsColor = new Color[selectedComparisonList.size()];
         int maxLength = -1;
-        for (QuantDiseaseGroupsComparison comparison : selectedComparisonList) {
+         for (QuantDiseaseGroupsComparison comparison : selectedComparisonList) {
             String keyI = 0 + "_" + key;
             String keyII = 1 + "_" + key;
             String keyIII = 2 + "_" + key;
             String keyIV = 3 + "_" + key;
             String keyV = 4 + "_" + key;
-            trendValue = 0.0;
+            trendValue = 0.0;        
 
             if (comparison.getQuantComparisonProteinMap().containsKey(keyI)) {
                 trendValue = comparison.getQuantComparisonProteinMap().get(keyI).getOverallCellPercentValue();
