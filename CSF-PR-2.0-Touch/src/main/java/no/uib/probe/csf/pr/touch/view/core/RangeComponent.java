@@ -15,9 +15,11 @@ import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.Slider;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,12 +39,21 @@ public abstract class RangeComponent extends VerticalLayout implements Property.
     private final String[] colors;
     private final Label upperLabelValueComponent;
 
-    public RangeComponent(String lowerLabel, double lowerValue, String upperLabel, double upperValue, String[] colors, Double splitDataPoint) {
+    private OptionGroup addExtraRange;
+    private Label secoundUpperLabelValueComponent;
+    private Slider secoundUpperRangeSlider;
+    private Slider secoundLowerRangeSlider;
+    private AbsoluteLayout secoundSlidersContainer;
+    private final HorizontalLayout secoundBottopmLayout;
 
+    private final boolean supportMultiRange;
+
+    public RangeComponent(String lowerLabel, double lowerValue, String upperLabel, double upperValue, String[] colors, Double splitDataPoint, boolean supportMultiRange) {
         this.splitDataPoint = splitDataPoint;
         this.colors = colors;
-
+        this.supportMultiRange = supportMultiRange;
         RangeComponent.this.setSizeFull();
+        RangeComponent.this.setMargin(new MarginInfo(false, false, true, false));
         HorizontalLayout topLayout = new HorizontalLayout();
         topLayout.setSizeFull();
         RangeComponent.this.addComponent(topLayout);
@@ -92,14 +103,8 @@ public abstract class RangeComponent extends VerticalLayout implements Property.
         lowerRangeSlider.addValueChangeListener(RangeComponent.this);
         slidersContainer.addComponent(lowerRangeSlider, "left:0px; top:50%;");
 
-//        marker = new VerticalLayout();
-//        marker.setHeight(5,Unit.PIXELS);
-//        marker.setWidth(130,Unit.PIXELS);
-//        marker.setStyleName("blacklayout");
-//        slidersContainer.addComponent(marker, "left:0px; top:50%;");
         upperRangeSlider = new Slider();
         upperRangeSlider.setStyleName("rangeslider");
-
         upperRangeSlider.addStyleName("upper");
         upperRangeSlider.setWidth(130, Unit.PIXELS);
         upperRangeSlider.setMin((lowerValue));
@@ -112,6 +117,64 @@ public abstract class RangeComponent extends VerticalLayout implements Property.
         bottopmLayout.addComponent(upperLabelValueComponent);
         bottopmLayout.setComponentAlignment(upperLabelValueComponent, Alignment.MIDDLE_RIGHT);
         bottopmLayout.setExpandRatio(upperLabelValueComponent, 25);
+        secoundBottopmLayout = new HorizontalLayout();
+        if (!supportMultiRange) {
+            return;
+        }
+
+        secoundBottopmLayout.setSizeFull();
+        RangeComponent.this.addComponent(secoundBottopmLayout);
+        secoundBottopmLayout.setVisible(false);
+
+        Label sloweLableValueComponent = initLabel((int) lowerValue + "");
+        secoundBottopmLayout.addComponent(sloweLableValueComponent);
+        secoundBottopmLayout.setComponentAlignment(sloweLableValueComponent, Alignment.MIDDLE_CENTER);
+        secoundBottopmLayout.setExpandRatio(sloweLableValueComponent, 25);
+
+        secoundSlidersContainer = new AbsoluteLayout();
+        secoundSlidersContainer.setWidth(150, Unit.PIXELS);
+        secoundSlidersContainer.setHeight(50, Unit.PIXELS);
+        secoundBottopmLayout.addComponent(secoundSlidersContainer);
+        secoundBottopmLayout.setComponentAlignment(secoundSlidersContainer, Alignment.MIDDLE_CENTER);
+        secoundBottopmLayout.setExpandRatio(secoundSlidersContainer, 50);
+
+        secoundLowerRangeSlider = new Slider();
+        secoundLowerRangeSlider.setWidth(130, Unit.PIXELS);
+        secoundLowerRangeSlider.setMin(lowerValue);
+        secoundLowerRangeSlider.setMax(upperValue);
+        secoundLowerRangeSlider.setValue(lowerValue);
+        secoundLowerRangeSlider.setStyleName("rangeslider");
+        secoundLowerRangeSlider.addStyleName("lower");
+        secoundLowerRangeSlider.addValueChangeListener(RangeComponent.this);
+        secoundSlidersContainer.addComponent(secoundLowerRangeSlider, "left:0px; top:50%;");
+
+        secoundUpperRangeSlider = new Slider();
+        secoundUpperRangeSlider.setStyleName("rangeslider");
+        secoundUpperRangeSlider.addStyleName("upper");
+        secoundUpperRangeSlider.setWidth(130, Unit.PIXELS);
+        secoundUpperRangeSlider.setMin((lowerValue));
+        secoundUpperRangeSlider.setMax(upperValue);
+        secoundUpperRangeSlider.setValue(upperValue);
+        secoundUpperRangeSlider.addValueChangeListener(RangeComponent.this);
+        secoundSlidersContainer.addComponent(secoundUpperRangeSlider, "left:0px; top:50%;");
+
+        secoundUpperLabelValueComponent = initLabel((int) upperValue + "");
+        secoundBottopmLayout.addComponent(secoundUpperLabelValueComponent);
+        secoundBottopmLayout.setComponentAlignment(secoundUpperLabelValueComponent, Alignment.MIDDLE_RIGHT);
+        secoundBottopmLayout.setExpandRatio(secoundUpperLabelValueComponent, 25);
+
+        addExtraRange = new OptionGroup();
+        addExtraRange.setStyleName(ValoTheme.OPTIONGROUP_SMALL);
+        addExtraRange.setMultiSelect(true);
+        addExtraRange.setCaptionAsHtml(true);
+        addExtraRange.addItem("addRrange");
+        addExtraRange.setItemCaption("addRrange", "Add range");
+        addExtraRange.setDescription("Add extra selection range bar");
+        RangeComponent.this.addComponent(addExtraRange);
+
+        addExtraRange.addValueChangeListener((Property.ValueChangeEvent event) -> {
+            secoundBottopmLayout.setVisible(addExtraRange.getValue().toString().equalsIgnoreCase("[addRrange]"));
+        });
 
     }
 
@@ -124,15 +187,43 @@ public abstract class RangeComponent extends VerticalLayout implements Property.
         lowerRangeSlider.removeValueChangeListener(RangeComponent.this);
         upperRangeSlider.setValue(upperRangeSlider.getMax());
         lowerRangeSlider.setValue(lowerRangeSlider.getMin());
+
+        if (supportMultiRange) {
+            secoundUpperRangeSlider.removeValueChangeListener(RangeComponent.this);
+            secoundLowerRangeSlider.removeValueChangeListener(RangeComponent.this);
+            secoundUpperRangeSlider.setValue(upperRangeSlider.getMax());
+            secoundLowerRangeSlider.setValue(lowerRangeSlider.getMin());
+        }
+
         updateFilter();
         upperRangeSlider.addValueChangeListener(RangeComponent.this);
         lowerRangeSlider.addValueChangeListener(RangeComponent.this);
+        if (supportMultiRange) {
+            secoundUpperRangeSlider.addValueChangeListener(RangeComponent.this);
+            secoundLowerRangeSlider.addValueChangeListener(RangeComponent.this);
+        }
 
     }
 
     public void updateFilter() {
         int min = -100;
         int max = 100;
+        if (data.length == 0) {
+            upperRangeSlider.setEnabled(false);
+            lowerRangeSlider.setEnabled(false);
+            chartContainer.removeAllComponents();
+            if (supportMultiRange) {
+                secoundUpperRangeSlider.setEnabled(false);
+                secoundLowerRangeSlider.setEnabled(false);
+            }
+            return;
+        }
+        upperRangeSlider.setEnabled(true);
+        lowerRangeSlider.setEnabled(true);
+        if (supportMultiRange) {
+            secoundUpperRangeSlider.setEnabled(true);
+            secoundLowerRangeSlider.setEnabled(true);
+        }
 
         if (scatterChartConfig == null) {
             List<ScatterData> scatterdataList = new ArrayList<>();
@@ -159,17 +250,17 @@ public abstract class RangeComponent extends VerticalLayout implements Property.
                 if (!splitDataExist) {
                     splitDataList.clear();
                 }
-                if (scatterdataList.size() == 1) {
-                    ScatterData sd = new ScatterData();
-                    String[] arr = scatterdataList.get(0).toString().replace("\\[", "").replace("]", "").replace(" ", "").split(",");
-                    sd.x(Double.valueOf(arr[0].split("=")[1]) + 3.0);
-                    sd.y(Double.valueOf(arr[1].split("=")[1]));
-                    scatterdataList.add(sd);
-                }
+//                if (scatterdataList.size() == 1) {
+//                    ScatterData sd = new ScatterData();
+//                    String[] arr = scatterdataList.get(0).toString().replace("\\[", "").replace("]", "").replace(" ", "").split(",");
+//                    sd.x(Double.valueOf(arr[0].split("=")[1]) + 3.0);
+//                    sd.y(Double.valueOf(arr[1].split("=")[1]));
+////                    scatterdataList.add(sd);
+//                }
                 if (lowerDataList.size() == 1) {
                     ScatterData sd = new ScatterData();
                     String[] arr = lowerDataList.get(0).toString().replace("\\[", "").replace("]", "").replace(" ", "").split(",");
-                    sd.x(Double.valueOf(arr[0].split("=")[1]) + 3.0);
+                    sd.x(Double.valueOf(arr[0].split("=")[1]) + 6.0);
                     sd.y(Double.valueOf(arr[1].split("=")[1]));
                     lowerDataList.add(sd);
                 }
@@ -179,11 +270,16 @@ public abstract class RangeComponent extends VerticalLayout implements Property.
                     sd.x(Double.valueOf(arr[0].split("=")[1]) + 3.0);
                     sd.y(Double.valueOf(arr[1].split("=")[1]));
                     splitDataList.add(sd);
+
+                    ScatterData sd1 = new ScatterData();
+                    sd1.x(Double.valueOf(arr[0].split("=")[1]) - 3.0);
+                    sd1.y(Double.valueOf(arr[1].split("=")[1]));
+                    splitDataList.add(sd1);
                 }
                 if (upperDataList.size() == 1) {
                     ScatterData sd = new ScatterData();
                     String[] arr = upperDataList.get(0).toString().replace("\\[", "").replace("]", "").replace(" ", "").split(",");
-                    sd.x(Double.valueOf(arr[0].split("=")[1]) - 3.0);
+                    sd.x(Double.valueOf(arr[0].split("=")[1]) - 6.0);
                     sd.y(Double.valueOf(arr[1].split("=")[1]));
                     upperDataList.add(sd);
                 }
@@ -286,15 +382,6 @@ public abstract class RangeComponent extends VerticalLayout implements Property.
                         .and().gridLines().drawBorder(false).drawTicks(false).and())
                 .and().elements().point().radius(0).and().and()
                 .done();
-        // add random data for demo   
-        int count = 0;
-//        for (Dataset<?, ?> ds : lineConfig.data().getDatasets()) {
-//            LineDataset lds = (LineDataset) ds;   
-//            lds.pointBackgroundColor(colors);
-//            lds.dataAsList(data);
-//            lds.borderColor("lightgray");
-//            lds.backgroundColor("lightgray");
-//        }
 
         ChartJs chart = new ChartJs(scatterChartConfig);
         chart.setWidth(130, Unit.PIXELS);
@@ -308,13 +395,18 @@ public abstract class RangeComponent extends VerticalLayout implements Property.
         upperRangeSlider.removeStyleName("upper");
         lowerRangeSlider.removeStyleName("lower");
         lowerRangeSlider.removeStyleName("upper");
+        if (supportMultiRange) {
+            secoundUpperRangeSlider.removeStyleName("lower");
+            secoundUpperRangeSlider.removeStyleName("upper");
+            secoundLowerRangeSlider.removeStyleName("lower");
+            secoundLowerRangeSlider.removeStyleName("upper");;
+        }
 
         AbsoluteLayout.ComponentPosition lowerPos = slidersContainer.getPosition(lowerRangeSlider);
         AbsoluteLayout.ComponentPosition upperPos = slidersContainer.getPosition(upperRangeSlider);
         slidersContainer.removeAllComponents();
         double min;
         double max;
-        double finalMax;
 
         if (lowerRangeSlider.getValue() <= upperRangeSlider.getValue() && slidersContainer.getComponentCount() == 0) {
             slidersContainer.addComponent(lowerRangeSlider, lowerPos.getCSSString());
@@ -333,24 +425,57 @@ public abstract class RangeComponent extends VerticalLayout implements Property.
             max = lowerRangeSlider.getValue();
 
         }
-        
-        redrawRangeOnChart(min, max);
-        selectedRange(min, max,!(max == lowerRangeSlider.getMax() && min == lowerRangeSlider.getMin()));
+        if (!supportMultiRange || (supportMultiRange && !secoundBottopmLayout.isVisible())) {
+            redrawRangeOnChart(min, max);
+            selectedRange(min, max, !(max == lowerRangeSlider.getMax() && min == lowerRangeSlider.getMin()));
+        } else {
 
-//       
-//        slidersContainer.removeAllComponents();
-//        slidersContainer.addComponent(lower,lowerPos.getCSSString());
-//        slidersContainer.addComponent(upper,upperPos.getCSSString());
-//        slidersContainer.setPosition(lower,slidersContainer.getPosition(lower) );
-//         slidersContainer.setPosition(upper,slidersContainer.getPosition(upper) );
-//
-//       
+            AbsoluteLayout.ComponentPosition secLowerPos = secoundSlidersContainer.getPosition(secoundLowerRangeSlider);
+            AbsoluteLayout.ComponentPosition secUpperPos = secoundSlidersContainer.getPosition(secoundUpperRangeSlider);
+            secoundSlidersContainer.removeAllComponents();
+            double secMin;
+            double secMax;
+
+            if (secoundLowerRangeSlider.getValue() <= secoundUpperRangeSlider.getValue() && secoundSlidersContainer.getComponentCount() == 0) {
+                secoundSlidersContainer.addComponent(secoundLowerRangeSlider, secLowerPos.getCSSString());
+                secoundSlidersContainer.addComponent(secoundUpperRangeSlider, secUpperPos.getCSSString());
+                secoundUpperRangeSlider.addStyleName("upper");
+                secoundLowerRangeSlider.addStyleName("lower");
+                secMin = secoundLowerRangeSlider.getValue();
+                secMax = secoundUpperRangeSlider.getValue();
+
+            } else {
+                secoundSlidersContainer.addComponent(secoundUpperRangeSlider, secUpperPos.getCSSString());
+                secoundSlidersContainer.addComponent(secoundLowerRangeSlider, secLowerPos.getCSSString());
+                secoundLowerRangeSlider.addStyleName("upper");
+                secoundUpperRangeSlider.addStyleName("lower");
+                secMin = secoundUpperRangeSlider.getValue();
+                secMax = secoundLowerRangeSlider.getValue();
+
+            }
+            
+            
+            
+            Rectangle r1 = new Rectangle((int) min, 0, (int) max+100, 10);
+            Rectangle r2 = new Rectangle((int) secMin, 0, (int) secMax+100, 10);            
+            if (((min == lowerRangeSlider.getMin() || secMin == lowerRangeSlider.getMin()) && (max == upperRangeSlider.getMax() || secMax == upperRangeSlider.getMax()))&&r1.intersects(r2) ){
+                redrawRangeOnChart(lowerRangeSlider.getMin(), upperRangeSlider.getMax());
+                selectedRange(lowerRangeSlider.getMin(), upperRangeSlider.getMax(), false);         
+            }else if (r1.intersects(r2)) {
+                min = Math.min(r1.x, r2.x);
+                max = Math.max(r1.width-100, r2.width-100);
+                redrawRangeOnChart(min, max);
+                selectedRange(min, max, true);
+            }else{            
+                redrawRangeOnChart(min, max, secMin,secMax);
+                selectedRange(min, max, secMin,secMax, true);
+            }
+
+        }
+
     }
 
     private void redrawRangeOnChart(double min, double max) {
-//        
-//        List<ScatterData> list = (List<ScatterData>) scatterChartConfig.data().getFirstDataset().getData();
-
         if (scatterChartConfig.data().getDatasets().size() < 3) {
             List<ScatterData> updatedList = new ArrayList<>();
             for (double[] dArr : data) {
@@ -396,17 +521,10 @@ public abstract class RangeComponent extends VerticalLayout implements Property.
             if (!splitDataExist) {
                 splitDataList.clear();
             }
-            if (scatterdataList.size() == 1) {
-                ScatterData sd = new ScatterData();
-                String[] arr = scatterdataList.get(0).toString().replace("\\[", "").replace("]", "").replace(" ", "").split(",");
-                sd.x(Double.valueOf(arr[0].split("=")[1]) + 3.0);
-                sd.y(Double.valueOf(arr[1].split("=")[1]));
-                scatterdataList.add(sd);
-            }
             if (lowerDataList.size() == 1) {
                 ScatterData sd = new ScatterData();
                 String[] arr = lowerDataList.get(0).toString().replace("\\[", "").replace("]", "").replace(" ", "").split(",");
-                sd.x(Double.valueOf(arr[0].split("=")[1]) + 3.0);
+                sd.x(Double.valueOf(arr[0].split("=")[1]) + 6.0);
                 sd.y(Double.valueOf(arr[1].split("=")[1]));
                 lowerDataList.add(sd);
             }
@@ -416,14 +534,20 @@ public abstract class RangeComponent extends VerticalLayout implements Property.
                 sd.x(Double.valueOf(arr[0].split("=")[1]) + 3.0);
                 sd.y(Double.valueOf(arr[1].split("=")[1]));
                 splitDataList.add(sd);
+                ScatterData sd2 = new ScatterData();
+                sd2.x(Double.valueOf(arr[0].split("=")[1]) - 3.0);
+                sd2.y(Double.valueOf(arr[1].split("=")[1]));
+                splitDataList.add(sd2);
+
             }
             if (upperDataList.size() == 1) {
                 ScatterData sd = new ScatterData();
                 String[] arr = upperDataList.get(0).toString().replace("\\[", "").replace("]", "").replace(" ", "").split(",");
-                sd.x(Double.valueOf(arr[0].split("=")[1]) - 3.0);
+                sd.x(Double.valueOf(arr[0].split("=")[1]) - 6.0);
                 sd.y(Double.valueOf(arr[1].split("=")[1]));
                 upperDataList.add(sd);
             }
+
             ScatterDataset ds = (new ScatterDataset().label("1").fill(false).dataAsList(scatterdataList).backgroundColor("lightgray"));
             ScatterDataset lowerHightLightDs = (new ScatterDataset().label("2").fill(true).dataAsList(lowerDataList).backgroundColor(colors[0]));
             ScatterDataset splitHightLightDs = (new ScatterDataset().label("3").fill(true).dataAsList(splitDataList).backgroundColor("rgb(154, 208, 248)"));
@@ -444,7 +568,105 @@ public abstract class RangeComponent extends VerticalLayout implements Property.
         chartContainer.setComponentAlignment(chart, Alignment.MIDDLE_LEFT);
     }
 
-    public abstract void selectedRange(double min, double max,boolean filterApplied);
+    
+       private void redrawRangeOnChart(double min, double max,double secMin, double secMax) {
+        if (scatterChartConfig.data().getDatasets().size() < 3) {
+            //need to implement
+//            List<ScatterData> updatedList = new ArrayList<>();
+//            for (double[] dArr : data) {
+//                ScatterData sd = new ScatterData();
+//                if (dArr[0] >= min && dArr[0] <= max) {
+//                    sd.y(dArr[1]);
+//                    sd.x(dArr[0]);
+//                    updatedList.add(sd);
+//                }
+//            }
+//            if (updatedList.size() == 1) {
+//                ScatterData sd = new ScatterData();
+//                sd.x(min);
+//                sd.y(0.0);
+//                updatedList.add(sd);
+//            }
+//            ScatterDataset hightLightDs = (new ScatterDataset().label("2").fill(true).dataAsList(updatedList).backgroundColor("#197de1"));
+//            scatterChartConfig.data().getDatasets().remove(1);
+//            scatterChartConfig.data().addDataset(hightLightDs);
+        } else {
+            boolean splitDataExist = false;
+            List<ScatterData> scatterdataList = new ArrayList<>();
+            List<ScatterData> lowerDataList = new ArrayList<>();
+            List<ScatterData> splitDataList = new ArrayList<>();
+            List<ScatterData> upperDataList = new ArrayList<>();
+            for (double[] dArr : data) {
+                ScatterData sd = new ScatterData();
+                sd.x(dArr[0]);
+                sd.y(dArr[1]);
+                scatterdataList.add(sd);
+                if ((dArr[0] >= min && dArr[0] <= max)||(dArr[0] >= secMin && dArr[0] <= secMax) ){
+                    splitDataList.add(sd);
+                    if (dArr[0] > splitDataPoint) {
+                        upperDataList.add(sd);
+                    } else if (dArr[0] < splitDataPoint) {
+                        lowerDataList.add(sd);
+                    } else {
+                        splitDataExist = true;
+                    }
+                }
+            }
+
+            if (!splitDataExist) {
+                splitDataList.clear();
+            }
+            if (lowerDataList.size() == 1) {
+                ScatterData sd = new ScatterData();
+                String[] arr = lowerDataList.get(0).toString().replace("\\[", "").replace("]", "").replace(" ", "").split(",");
+                sd.x(Double.valueOf(arr[0].split("=")[1]) + 6.0);
+                sd.y(Double.valueOf(arr[1].split("=")[1]));
+                lowerDataList.add(sd);
+            }
+            if (splitDataList.size() == 1) {
+                ScatterData sd = new ScatterData();
+                String[] arr = splitDataList.get(0).toString().replace("\\[", "").replace("]", "").replace(" ", "").split(",");
+                sd.x(Double.valueOf(arr[0].split("=")[1]) + 3.0);
+                sd.y(Double.valueOf(arr[1].split("=")[1]));
+                splitDataList.add(sd);
+                ScatterData sd2 = new ScatterData();
+                sd2.x(Double.valueOf(arr[0].split("=")[1]) - 3.0);
+                sd2.y(Double.valueOf(arr[1].split("=")[1]));
+                splitDataList.add(sd2);
+
+            }
+            if (upperDataList.size() == 1) {
+                ScatterData sd = new ScatterData();
+                String[] arr = upperDataList.get(0).toString().replace("\\[", "").replace("]", "").replace(" ", "").split(",");
+                sd.x(Double.valueOf(arr[0].split("=")[1]) - 6.0);
+                sd.y(Double.valueOf(arr[1].split("=")[1]));
+                upperDataList.add(sd);
+            }
+
+            ScatterDataset ds = (new ScatterDataset().label("1").fill(false).dataAsList(scatterdataList).backgroundColor("lightgray"));
+            ScatterDataset lowerHightLightDs = (new ScatterDataset().label("2").fill(true).dataAsList(lowerDataList).backgroundColor(colors[0]));
+            ScatterDataset splitHightLightDs = (new ScatterDataset().label("3").fill(true).dataAsList(splitDataList).backgroundColor("rgb(154, 208, 248)"));
+            ScatterDataset upperHightLightDs = (new ScatterDataset().label("4").fill(true).dataAsList(upperDataList).backgroundColor(colors[1]));
+
+            scatterChartConfig.data().getDatasets().clear();
+            scatterChartConfig.data().addDataset(ds);
+            scatterChartConfig.data().addDataset(lowerHightLightDs);
+            scatterChartConfig.data().addDataset(upperHightLightDs);
+            scatterChartConfig.data().addDataset(splitHightLightDs);
+
+        }
+        chartContainer.removeAllComponents();
+        ChartJs chart = new ChartJs(scatterChartConfig);
+        chart.setWidth(130, Unit.PIXELS);
+        chart.setHeight(70, Unit.PIXELS);
+        chartContainer.addComponent(chart);
+        chartContainer.setComponentAlignment(chart, Alignment.MIDDLE_LEFT);
+    }
+    
+    
+    
+    public abstract void selectedRange(double min, double max, boolean filterApplied);
+     public abstract void selectedRange(double min, double max,double secMin, double secMax, boolean filterApplied);
 
     @Override
     public void valueChange(Property.ValueChangeEvent event) {

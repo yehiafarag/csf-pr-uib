@@ -94,10 +94,24 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
         //add range filter
         String[] colors = new String[]{"green", "red"};
 
-        studiesRange = new RangeComponent("Decreased<br/>%", -100.0, "Increased<br/>%", 100.0, colors, 0.0) {
+        studiesRange = new RangeComponent("Decreased<br/>%", -100.0, "Increased<br/>%", 100.0, colors, 0.0, true) {
             @Override
             public void selectedRange(double min, double max, boolean filterApplied) {
-                filterTable(min, max,!filterApplied);;
+                filterTable(min, max, !filterApplied);;
+                if (filterApplied) {
+                    ColumnFilterPopupBtn.this.addStyleName("selectedfilter");
+                    ColumnFilterPopupBtn.this.removeStyleName("unselectedfilter");
+
+                } else {
+                    ColumnFilterPopupBtn.this.addStyleName("unselectedfilter");
+                    ColumnFilterPopupBtn.this.removeStyleName("selectedfilter");
+
+                }
+            }
+
+            @Override
+            public void selectedRange(double min, double max, double secMin, double secMax, boolean filterApplied) {
+                filterTable((int) min, (int) max, (int) secMin, (int) secMax, !filterApplied);
                 if (filterApplied) {
                     ColumnFilterPopupBtn.this.addStyleName("selectedfilter");
                     ColumnFilterPopupBtn.this.removeStyleName("unselectedfilter");
@@ -113,10 +127,10 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
         tabsheetContainer.addTab(studiesRange, "Trend (%)");
 
         //add study number range
-        studiesNumber = new RangeComponent("Min<br/>Number", 0.0, "Max<br/>Number<br/>", 100.0, colors, null) {
+        studiesNumber = new RangeComponent("Min<br/>Number", 0.0, "Max<br/>Number<br/>", 100.0, colors, null, false) {
             @Override
             public void selectedRange(double min, double max, boolean filterApplied) {
-                filterTable((int) min, (int) max,!filterApplied);
+                filterTable((int) min, (int) max, !filterApplied);
                 if (filterApplied) {
                     ColumnFilterPopupBtn.this.addStyleName("selectedfilter");
                     ColumnFilterPopupBtn.this.removeStyleName("unselectedfilter");
@@ -126,6 +140,11 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
                     ColumnFilterPopupBtn.this.removeStyleName("selectedfilter");
 
                 }
+            }
+
+            @Override
+            public void selectedRange(double min, double max, double secMin, double secMax, boolean filterApplied) {
+
             }
 
         };
@@ -140,9 +159,9 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
                 tabsheetContainer.setSelectedTab(0);
             }
         };
-
+        HorizontalLayout labelContainer = new HorizontalLayout();
         if (!quantCustomizedComparison) {
-            HorizontalLayout labelContainer = new HorizontalLayout();
+
             labelContainer.setSpacing(true);
             Label icon = new Label();
             icon.setIcon(VaadinIcons.CLOSE_CIRCLE);
@@ -180,16 +199,23 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
                 this.addStyleName("selectedfilter");
                 this.removeStyleName("unselectedfilter");
             }
-            ColumnFilterPopupBtn.this.filterTable(headersSet,headersSet.isEmpty());
+            ColumnFilterPopupBtn.this.filterTable(headersSet, headersSet.isEmpty());
 
         };
         tableHeaderFilterOptions.addValueChangeListener(listener);
         ColumnFilterPopupBtn.this.addLayoutClickListener(ColumnFilterPopupBtn.this);
+        tabsheetContainer.addSelectedTabChangeListener((TabSheet.SelectedTabChangeEvent event) -> {
+            labelContainer.setVisible(tabsheetContainer.getTab(event.getTabSheet().getSelectedTab()).getCaption().equalsIgnoreCase("Category"));
+        });
     }
 
     public void updateChartsData(double[][] studiesRangeData, double[][] studiesNumberData) {
-        studiesRange.updateData(studiesRangeData);
-        studiesNumber.updateData(studiesNumberData);
+        if (studiesRangeData != null) {
+            studiesRange.updateData(studiesRangeData);
+        }
+        if (studiesNumberData != null) {
+            studiesNumber.updateData(studiesNumberData);
+        }
 
     }
 
@@ -200,9 +226,18 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
      */
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-        studiesRange.updateFilter();
-        studiesNumber.updateFilter();
+        applyChartChanges(true, true);
         filterPopupLayout.setPopupVisible(true);
+    }
+
+    public void applyChartChanges(boolean studyRange, boolean studyNumber) {
+        if (studyRange) {
+            studiesRange.updateFilter();
+        }
+        if (studyNumber) {
+            studiesNumber.updateFilter();
+        }
+
     }
 
     /**
@@ -226,20 +261,27 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
      *
      * @param selectedFiltersSet Set of user selected filters.
      */
-    public abstract void filterTable(Set<Object> selectedFiltersSet,boolean unselectfilter);
+    public abstract void filterTable(Set<Object> selectedFiltersSet, boolean unselectfilter);
 
     /**
      * Filter table based on selected range.
      *
      * @param selectedFiltersSet Set of user selected filters.
      */
-    public abstract void filterTable(double min, double max,boolean unselectfilter);
+    public abstract void filterTable(double min, double max, boolean unselectfilter);
 
     /**
      * Filter table based on selected range.
      *
      * @param selectedFiltersSet Set of user selected filters.
      */
-    public abstract void filterTable(long minStudiesNumber, long maxStudiesNumber,boolean unselectfilter);
+    public abstract void filterTable(double min, double max, double secMin, double secMax, boolean unselectfilter);
+
+    /**
+     * Filter table based on selected range.
+     *
+     * @param selectedFiltersSet Set of user selected filters.
+     */
+    public abstract void filterTable(long minStudiesNumber, long maxStudiesNumber, boolean unselectfilter);
 
 }

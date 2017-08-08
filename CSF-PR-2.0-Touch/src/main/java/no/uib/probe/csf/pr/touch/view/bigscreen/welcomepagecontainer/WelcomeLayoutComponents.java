@@ -576,7 +576,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         relaseNoteInfo.addComponent(relaseNoteHeader);
         relaseNoteInfo.setExpandRatio(relaseNoteHeader, 30);
         
-        HorizontalLayout relaseNote4 = initNote("2017.08.08", "Add protein table filters (filter on protein trend, filter on number of studies)");//new Label("2017.01.18<font>Change disease sub-groups default order for multiple sclerosis disease in the disease sub group comparisons heat-map.<br/>Fixed proteins name and accession error in the protein table.</font>");
+        HorizontalLayout relaseNote4 = initNote("2017.08.08", "Added protein table filters (filter on protein trend, filter on number of studies)");//new Label("2017.01.18<font>Change disease sub-groups default order for multiple sclerosis disease in the disease sub group comparisons heat-map.<br/>Fixed proteins name and accession error in the protein table.</font>");
           relaseNoteInfo.addComponent(relaseNote4);
            relaseNoteInfo.setExpandRatio(relaseNote4,30);
            

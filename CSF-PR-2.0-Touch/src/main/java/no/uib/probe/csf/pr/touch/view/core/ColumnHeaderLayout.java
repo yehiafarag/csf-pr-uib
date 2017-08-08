@@ -30,8 +30,14 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
      */
     private final int index;
 
+    private final QuantDiseaseGroupsComparison comparison;
+
     public int getComparisonIndex() {
         return index;
+    }
+
+    public QuantDiseaseGroupsComparison getComparison() {
+        return comparison;
     }
 
     /**
@@ -49,6 +55,7 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
         headerFrame.setWidthUndefined();
         ColumnHeaderLayout.this.addComponent(headerFrame);
         ColumnHeaderLayout.this.setComponentAlignment(headerFrame, Alignment.TOP_CENTER);
+        this.comparison = comparison;
 
         filterBtn = new ColumnFilterPopupBtn((index == -1)) {
             @Override
@@ -57,21 +64,28 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
             }
 
             @Override
-            public void filterTable(Set<Object> filtersSet,boolean unselectfilter) {
-                ColumnHeaderLayout.this.filterTable(comparison, index, filtersSet,unselectfilter);
+            public void filterTable(Set<Object> filtersSet, boolean unselectfilter) {
+                ColumnHeaderLayout.this.filterTable(comparison, index, filtersSet, unselectfilter);
             }
 
             @Override
-            public void filterTable(double min, double max,boolean unselectfilter) {
-               ColumnHeaderLayout.this.filterTable(comparison, index, min,max,unselectfilter);
+            public void filterTable(double min, double max, boolean unselectfilter) {
+                ColumnHeaderLayout.this.filterTable(comparison, index, min, max, unselectfilter);
             }
 
             @Override
-            public void filterTable(long minStudiesNumber,long maxStudiesNumber,boolean unselectfilter) {
-            ColumnHeaderLayout.this.filterTable(comparison,index, minStudiesNumber,maxStudiesNumber,unselectfilter);    
+            public void filterTable(long minStudiesNumber, long maxStudiesNumber, boolean unselectfilter) {
+                ColumnHeaderLayout.this.filterTable(comparison, index, minStudiesNumber, maxStudiesNumber, unselectfilter);
             }
+
+            @Override
+            public void filterTable(double min, double max, double secMin, double secMax, boolean unselectfilter) {
+                 ColumnHeaderLayout.this.filterTable(comparison, index, min, max, secMin, secMax, unselectfilter);
+            }
+            
 
         };
+
         filterBtn.setWidth(20, Unit.PIXELS);
         filterBtn.setHeight(100, Unit.PERCENTAGE);
         filterBtn.setStyleName(comparison.getDiseaseCategoryStyle());
@@ -93,16 +107,42 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
         sortingBtn.addStyleName("unselected");
         headerFrame.addComponent(sortingBtn);
         headerFrame.setComponentAlignment(sortingBtn, Alignment.TOP_CENTER);
-
-        filterBtn.updateChartsData(initRangeData(comparison),initStudeisNumberData(comparison));
+        ColumnHeaderLayout.this.updateHeaderData(null, null, -1);
 
     }
 
-    private double[][] initRangeData(QuantDiseaseGroupsComparison comparison) {
+    public void updateHeaderData(Set<String> filteredData, QuantDiseaseGroupsComparison comparison, int filterIndex) {
+        if (filteredData == null || comparison != this.comparison) {
+            filterBtn.updateChartsData(initRangeData(filteredData), initStudeisNumberData(filteredData));
+        } else {
+            switch (filterIndex) {
+                case 0:
+                    filterBtn.updateChartsData(initRangeData(filteredData), initStudeisNumberData(filteredData));
+                    filterBtn.applyChartChanges(true,true);
+                    break;
+                case 1:
+                    filterBtn.updateChartsData(null, initStudeisNumberData(filteredData));
+                    filterBtn.applyChartChanges(false,true);
+                    break;
+                case 2:
+                    filterBtn.updateChartsData(initRangeData(filteredData), null);
+                    filterBtn.applyChartChanges(true,false);
+                    break;
+            }
+
+        }
+
+    }
+
+    private double[][] initRangeData(Set<String> filteredData) {
         Map<Double, Integer> dataMap = new TreeMap<>();
         double max = Double.MIN_VALUE;
         double min = Double.MAX_VALUE;
-        for (QuantComparisonProtein quant : comparison.getQuantComparisonProteinMap().values()) {
+        for (String key : comparison.getQuantComparisonProteinMap().keySet()) {
+            if (filteredData != null && !filteredData.contains(key.split("_")[1])) {
+                continue;
+            }
+            QuantComparisonProtein quant = comparison.getQuantComparisonProteinMap().get(key);
             double value = quant.getOverallCellPercentValue();
             if (!dataMap.containsKey(value)) {
                 dataMap.put(value, 0);
@@ -119,32 +159,26 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
         double[][] data = new double[dataMap.size()][2];
         int i = 0;
         for (double key : dataMap.keySet()) {
-            data[i] = new double[]{key, scaleValues((double) dataMap.get(key),max, min)};
+            data[i] = new double[]{key, scaleValues((double) dataMap.get(key), max, min)};
             i++;
         }
-//        data[0] = new double[]{-100, 50};
-//        data[1] = new double[]{-80, 30};
-//        data[2] = new double[]{-60, 55};
-//        data[3] = new double[]{-50, 10};
-//        data[4] = new double[]{-20, 2};
-//        data[5] = new double[]{0, 80};
-//        data[6] = new double[]{30, 20};
-//        data[7] = new double[]{60, 11};
-//        data[8] = new double[]{70, 17};
-//        data[9] = new double[]{100, 75};
         return data;
     }
-    
-     private double[][] initStudeisNumberData(QuantDiseaseGroupsComparison comparison) {
+
+    private double[][] initStudeisNumberData(Set<String> filteredData) {
         Map<Integer, Double> dataMap = new TreeMap<>();
         double max = Double.MIN_VALUE;
         double min = Double.MAX_VALUE;
-        for (QuantComparisonProtein quant : comparison.getQuantComparisonProteinMap().values()) {
-            int value = quant.getDsQuantProteinsMap().size();
-            if(!dataMap.containsKey(value)){
-            dataMap.put(value, 0.0);
+        for (String key : comparison.getQuantComparisonProteinMap().keySet()) {
+            if (filteredData != null && !filteredData.contains(key.split("_")[1])) {
+                continue;
             }
-             dataMap.put(value, dataMap.get(value)+1.0);          
+            QuantComparisonProtein quant = comparison.getQuantComparisonProteinMap().get(key);
+            int value = quant.getDsQuantProteinsMap().size();
+            if (!dataMap.containsKey(value)) {
+                dataMap.put(value, 0.0);
+            }
+            dataMap.put(value, dataMap.get(value) + 1.0);
             if (dataMap.get(value) >= max) {
                 max = dataMap.get(value);
             }
@@ -156,12 +190,11 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
         double[][] data = new double[dataMap.size()][2];
         int i = 0;
         for (int key : dataMap.keySet()) {
-            data[i] = new double[]{key, scaleValues((double) dataMap.get(key),max, min)};
+            data[i] = new double[]{key, scaleValues((double) dataMap.get(key), max, min)};
             i++;
         }
         return data;
     }
-
 
     /**
      * Converts the value from linear scale to log scale; The log scale numbers
@@ -177,6 +210,8 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
         double logMax = (Math.log(max) / Math.log(2));
         double logValue = (Math.log(linearValue + 1) / Math.log(2));
         logValue = (logValue * 2 / logMax) + lowerLimit;
+        if(logValue == Double.POSITIVE_INFINITY)
+            return max;
         return logValue;
     }
 
@@ -268,10 +303,6 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
         filterBtn.removeStyleName("selectedfilter");
     }
 
-//    public void updateFilterData(double[][] data) {
-//        filterBtn.updateChartsData(data);
-//    }
-
     /**
      * Sort protein table based on the selected comparison and the selected
      * direction.
@@ -295,7 +326,16 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
      * @param comparisonIndex The comparison index.
      * @param filterSet The applied filters set.
      */
-    public abstract void filterTable(QuantDiseaseGroupsComparison comparison, int comparisonIndex, Set<Object> filterSet,boolean unselectfilter);
+    public abstract void filterTable(QuantDiseaseGroupsComparison comparison, int comparisonIndex, Set<Object> filterSet, boolean unselectfilter);
+
+    /**
+     * Filter table based on range filters.
+     *
+     * @param comparison The quant disease comparison.
+     * @param comparisonIndex The comparison index.
+     * @param filterSet The applied filters set.
+     */
+    public abstract void filterTable(QuantDiseaseGroupsComparison comparison, int comparisonIndex, double min, double max, boolean unselectfilter);
     
     /**
      * Filter table based on range filters.
@@ -304,15 +344,15 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
      * @param comparisonIndex The comparison index.
      * @param filterSet The applied filters set.
      */
-    public abstract void filterTable(QuantDiseaseGroupsComparison comparison, int comparisonIndex, double min,double max,boolean unselectfilter);
-    
-     /**
+    public abstract void filterTable(QuantDiseaseGroupsComparison comparison, int comparisonIndex, double min, double max,double secMin, double secMax, boolean unselectfilter);
+
+    /**
      * Filter table based on range filters.
      *
      * @param comparison The quant disease comparison.
      * @param comparisonIndex The comparison index.
      * @param filterSet The applied filters set.
      */
-    public abstract void filterTable(QuantDiseaseGroupsComparison comparison, int comparisonIndex,long min,long max,boolean unselectfilter);
+    public abstract void filterTable(QuantDiseaseGroupsComparison comparison, int comparisonIndex, long min, long max, boolean unselectfilter);
 
 }
