@@ -366,7 +366,6 @@ public class QuantDataHandler {
                 } else {
                     updatedRowArr = rowArr;
                 }
-                System.out.println("index 0 "+updatedRowArr[index]+"  --- "+row);
                 qProt.setPumedID(updatedRowArr[index++].trim().toUpperCase());
                 qProt.setStudyKey(updatedRowArr[index++].trim().toUpperCase());
                 if (!authormap.containsKey(qProt.getPumedID())) {
