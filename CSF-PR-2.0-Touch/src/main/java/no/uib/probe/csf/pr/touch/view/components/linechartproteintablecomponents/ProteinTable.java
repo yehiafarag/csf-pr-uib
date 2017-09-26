@@ -1278,7 +1278,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
                 filtesList.stream().map((filter) -> (comparison.getProteinsByTrendMap().get(filter))).forEach((tempList) -> {
                     tempList.stream().filter((protein) -> (proteinsList.contains(protein.getProteinAccession()))).forEach((protein) -> {
                         double value = protein.getOverallCellPercentValue();
-                        if ((value >= lower && value <= upper)||( (value >= secLower && value <= secUpper))) {
+                        if ((value >= lower && value <= upper) || ((value >= secLower && value <= secUpper))) {
                             updatedProteinsList.add(protein.getProteinAccession());
                         }
                     });
