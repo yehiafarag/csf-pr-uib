@@ -561,8 +561,8 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
     private VerticalLayout updateRelaseNotesLayout(){
         
         VerticalLayout relaseNoteInfo = new VerticalLayout();
-        relaseNoteInfo.setWidth(530, Unit.PIXELS);
-         relaseNoteInfo.setHeight(190, Unit.PIXELS);
+        relaseNoteInfo.setWidth(540, Unit.PIXELS);
+         relaseNoteInfo.setHeight(210, Unit.PIXELS);
         relaseNoteInfo.setSpacing(true);
         
         relaseNoteInfo.setMargin(new MarginInfo(false, true, true, true));
@@ -577,7 +577,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         relaseNoteInfo.setExpandRatio(relaseNoteHeader, 30);
         
         
-        HorizontalLayout relaseNote5 = initNote("2017.02.26", "Added data from Paterson, R. W., et al. (2016).)");//new Label("2017.01.18<font>Change disease sub-groups default order for multiple sclerosis disease in the disease sub group comparisons heat-map.<br/>Fixed proteins name and accession error in the protein table.</font>");
+        HorizontalLayout relaseNote5 = initNote("2017.02.26", "Added data from Paterson, R. W., et al. (2016).");//new Label("2017.01.18<font>Change disease sub-groups default order for multiple sclerosis disease in the disease sub group comparisons heat-map.<br/>Fixed proteins name and accession error in the protein table.</font>");
           relaseNoteInfo.addComponent(relaseNote5);
            relaseNoteInfo.setExpandRatio(relaseNote5,30);
         
