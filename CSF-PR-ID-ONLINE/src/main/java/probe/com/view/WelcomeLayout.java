@@ -91,7 +91,7 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         rightLayout.setComponentAlignment(image1, Alignment.MIDDLE_CENTER);
         
          
-         Label para_6 = new Label("<p align='justify' Style='margin-left:40px;color:#585858;'><font size=\"2\"><a Style='color:#585858;' href='http://129.177.231.63/csf-pr-2.0/' target=\"_blank\">For protein quantitative data data visit CSF-PR v2.0</a>.</font></p>");
+         Label para_6 = new Label("<p align='justify' Style='margin-left:40px;color:#585858;'><font size=\"2\"><a Style='color: #3b5b9b;text-decoration: none !important;' href='http://129.177.231.63/csf-pr/' target=\"_blank\">For protein quantitative data data visit CSF-PR <font size=\"1.5\">v2.0</font></a>.</font></p>");
         para_6.setContentMode(ContentMode.HTML);
         leftLayout.addComponent(para_6);
         

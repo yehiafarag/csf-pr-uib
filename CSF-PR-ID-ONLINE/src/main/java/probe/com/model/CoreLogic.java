@@ -34,6 +34,7 @@ public class CoreLogic implements Serializable {
     private Map<Integer, DatasetBean> datasetList;
     private final Map<Integer, Integer> datasetIndex = new HashMap<Integer, Integer>();
     private final FileExporter exporter = new FileExporter();
+
     public CoreLogic(String url, String dbName, String driver, String userName, String password, String filesURL) {
         da = new DataAccess(url, dbName, driver, userName, password);
 
@@ -57,6 +58,10 @@ public class CoreLogic implements Serializable {
     public TreeMap<Integer, String> getDatasetNamesList() {
         if (datasetList == null) {
             datasetList = getDatasetList();
+            if (datasetList == null) {
+                return new TreeMap<Integer, String>();
+            }
+
         }
         for (int datasetkey : datasetList.keySet()) {
             //for re-indexing the stored datasets, to be removed in the future
@@ -136,10 +141,9 @@ public class CoreLogic implements Serializable {
         if (datasetList.get(datasetId).getProteinList() == null || datasetList.get(datasetId).getProteinList().isEmpty()) {
             proteinsList = da.getProteinsList(datasetId);
             datasetList.get(datasetId).setProteinList(proteinsList);
-            
-        }
-        else{
-        proteinsList = datasetList.get(datasetId).getProteinList();
+
+        } else {
+            proteinsList = datasetList.get(datasetId).getProteinList();
         }
 
         return proteinsList;
@@ -181,26 +185,26 @@ public class CoreLogic implements Serializable {
         Map<Integer, PeptideBean> updatedPeptidesList = new HashMap<Integer, PeptideBean>();
 //        if (peptidesList == null || peptidesList.isEmpty()) {
 
-           Map<Integer, PeptideBean>   peptidesList = da.getPeptidesList(datasetId);
-            Map<String, ProteinBean> protList = retriveProteinsList(datasetId);
+        Map<Integer, PeptideBean> peptidesList = da.getPeptidesList(datasetId);
+        Map<String, ProteinBean> protList = retriveProteinsList(datasetId);
 
-            for (int key : peptidesList.keySet()) {
-                PeptideBean pb = peptidesList.get(key);
-                if (pb.getProteinInference().equalsIgnoreCase("Single Protein")) {
-                    pb.setPeptideProteins(pb.getProtein());
-                    pb.setPeptideProteinsDescriptions(datasetList.get(datasetId).getProteinList().get(pb.getProtein()).getDescription());
-                } else if (pb.getProteinInference().trim().equalsIgnoreCase("Related Proteins") && (!pb.getProtein().equalsIgnoreCase("SHARED PEPTIDE"))) {
-                    String desc = "";
-                    if (pb.getOtherProteins() == null || pb.getOtherProteins().trim().equalsIgnoreCase("")) {
-                        pb.setPeptideProteins(pb.getProtein() + "," + pb.getPeptideProteins());
-                        desc = protList.get(pb.getProtein()).getDescription() + ";" + pb.getPeptideProteinsDescriptions();
-                    } else {
-                        desc = protList.get(pb.getProtein() + "," + pb.getOtherProteins().replaceAll("\\p{Z}", "")).getDescription() + ";" + pb.getOtherProteinDescriptions();
-                    }
-                    pb.setPeptideProteinsDescriptions(desc);
+        for (int key : peptidesList.keySet()) {
+            PeptideBean pb = peptidesList.get(key);
+            if (pb.getProteinInference().equalsIgnoreCase("Single Protein")) {
+                pb.setPeptideProteins(pb.getProtein());
+                pb.setPeptideProteinsDescriptions(datasetList.get(datasetId).getProteinList().get(pb.getProtein()).getDescription());
+            } else if (pb.getProteinInference().trim().equalsIgnoreCase("Related Proteins") && (!pb.getProtein().equalsIgnoreCase("SHARED PEPTIDE"))) {
+                String desc = "";
+                if (pb.getOtherProteins() == null || pb.getOtherProteins().trim().equalsIgnoreCase("")) {
+                    pb.setPeptideProteins(pb.getProtein() + "," + pb.getPeptideProteins());
+                    desc = protList.get(pb.getProtein()).getDescription() + ";" + pb.getPeptideProteinsDescriptions();
+                } else {
+                    desc = protList.get(pb.getProtein() + "," + pb.getOtherProteins().replaceAll("\\p{Z}", "")).getDescription() + ";" + pb.getOtherProteinDescriptions();
                 }
-                updatedPeptidesList.put(key, pb);
+                pb.setPeptideProteinsDescriptions(desc);
             }
+            updatedPeptidesList.put(key, pb);
+        }
 //        } else {
 //            updatedPeptidesList.putAll(peptidesList);
 //        }
@@ -231,8 +235,7 @@ public class CoreLogic implements Serializable {
             return peptidesList;
         }
     }
-    
-    
+
     /**
      * get dataset peptides number (valid peptides or all peptides)
      *
@@ -242,14 +245,14 @@ public class CoreLogic implements Serializable {
      */
     public int getAllDatasetPeptidesNumber(int datasetId, boolean validated) {
 
-        Map<Integer, PeptideBean> peptidesList =  da.getPeptidesList(datasetId);
-       int index = 0;
+        Map<Integer, PeptideBean> peptidesList = da.getPeptidesList(datasetId);
+        int index = 0;
         if (validated) {
-           int x = 0;
+            int x = 0;
             for (PeptideBean pb : peptidesList.values()) {
 
                 if (pb.getValidated() == 1.0) {
-                   index++;
+                    index++;
                 }
             }
             return index;
@@ -635,8 +638,8 @@ public class CoreLogic implements Serializable {
 
         return treeSet;
     }
-    
-     /**
+
+    /**
      * get validated proteins list
      *
      * @param proteinsList
@@ -665,13 +668,13 @@ public class CoreLogic implements Serializable {
      * @param dataType validated/all
      * @param exportFileType csv or xls
      */
-    public void exportPeptidesToFile(int datasetId, boolean validated, String datasetName, String dataType,String exportFileType) {
+    public void exportPeptidesToFile(int datasetId, boolean validated, String datasetName, String dataType, String exportFileType) {
         Map<Integer, PeptideBean> allPeptides = getAllDatasetPeptidesList(datasetId, validated);
-        if(exportFileType.equalsIgnoreCase("csv"))
+        if (exportFileType.equalsIgnoreCase("csv")) {
             exporter.expotPeptidesToCSV(allPeptides, datasetName, dataType, filesURL);
-        else            
+        } else {
             exporter.expotPeptidesToXLS(allPeptides, datasetName, dataType, filesURL);
+        }
     }
 
-    
 }
