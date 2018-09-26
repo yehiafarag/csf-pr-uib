@@ -41,7 +41,7 @@ public class DatasetUtility implements Serializable {
      * Map of disease category (MS,AD,PD..etc)to initial information object that
      * has initial information for each disease category.
      */
-    private final Map<String, InitialInformationObject> quantDatasetInitialInformationObject;
+    private Map<String, InitialInformationObject> quantDatasetInitialInformationObject;
     /**
      * Map of disease category (MS,AD,PD..etc)to the initial disease categories
      * updated by CSF-PR 2.0 administrator.
@@ -59,28 +59,28 @@ public class DatasetUtility implements Serializable {
     /**
      * Disease group A created with random word.
      */
-    private final String userDiseaseGroupA = "VeryHårdToExistByChanceøæå";
+    private String userDiseaseGroupA = "VeryHårdToExistByChanceøæå";
     /**
      * Disease group B created with random word.
      */
-    private final String userDiseaseGroupB = "VeryHårdToExistByChanceøæå";
+    private String userDiseaseGroupB = "VeryHårdToExistByChanceøæå";
     /**
      * Map of short to full disease sub-group names map.
      */
-    private final Map<String, String> diseaseGroupFullNameMap;
+    private Map<String, String> diseaseGroupFullNameMap;
     /**
      * Re-indexing map for MS disease used to sort disease groups in the
      * heat-map.
      */
-    private final List<String> msReindexMap;
+    private List<String> msReindexMap;
     /**
      * Re-index map for AD disease used to sort disease groups in the heat-map.
      */
-    private final List<String> adReindexMap;
+    private List<String> adReindexMap;
     /**
      * Re-index map for PD disease used to sort disease groups in the heat-map.
      */
-    private final List<String> pdReindexMap;
+    private List<String> pdReindexMap;
     /**
      * Suggested sub-groups name as default (updated by CSF-PR 2.0).
      */
@@ -107,6 +107,7 @@ public class DatasetUtility implements Serializable {
             + "PDD\n"
             + "PMS\n"
             + "SPMS\n"
+            + "Healthy*\n"
             + "RRMS";
 
     /**
@@ -135,6 +136,7 @@ public class DatasetUtility implements Serializable {
             + "PDD\n"
             + "PMS\n"
             + "SPMS\n"
+            + "Healthy\n"
             + "RRMS";
 
     /**
@@ -154,6 +156,10 @@ public class DatasetUtility implements Serializable {
     public DatasetUtility(CoreLogic Core_Logic) {
         quantDataMap = new LinkedHashMap<>();
         this.fullDiseaseCategoryMap = Core_Logic.getDiseaseCategorySet();
+        if (fullDiseaseCategoryMap == null) {
+            System.out.println("at  ---------------------------------no database :(");
+            return;
+        }
         this.quantDatasetInitialInformationObject = Core_Logic.getQuantDatasetInitialInformationObject();
         default_DiseaseCat_DiseaseGroupMap = new LinkedHashMap<>();
         oreginal_DiseaseCat_DiseaseGroupMap = new LinkedHashMap<>();
@@ -182,21 +188,16 @@ public class DatasetUtility implements Serializable {
         msReindexMap = new ArrayList<>();
         msReindexMap.add("RRMS__Multiple Sclerosis__multiplesclerosisstyle");
         msReindexMap.add("CDMS__Multiple Sclerosis__multiplesclerosisstyle");
-        
-         msReindexMap.add("CIS-MS__Multiple Sclerosis__multiplesclerosisstyle");
+
+        msReindexMap.add("CIS-MS__Multiple Sclerosis__multiplesclerosisstyle");
         msReindexMap.add("CIS-MS(CIS)__Multiple Sclerosis__multiplesclerosisstyle");
         msReindexMap.add("CIS-CIS__Multiple Sclerosis__multiplesclerosisstyle");
-        
-        
+
         msReindexMap.add("PMS__Multiple Sclerosis__multiplesclerosisstyle");
         msReindexMap.add("SPMS__Multiple Sclerosis__multiplesclerosisstyle");
         msReindexMap.add("Progressive MS__Multiple Sclerosis__multiplesclerosisstyle");
-        
-        
-        
-        
+
 //        msReindexMap.add("CDMS__Multiple Sclerosis__multiplesclerosisstyle");
-       
         msReindexMap.add("RRMS Nataliz.__Multiple Sclerosis__multiplesclerosisstyle");
         msReindexMap.add("SPMS Lamotri.__Multiple Sclerosis__multiplesclerosisstyle");
         msReindexMap.add("OIND__Multiple Sclerosis__multiplesclerosisstyle");
@@ -247,6 +248,9 @@ public class DatasetUtility implements Serializable {
      * @return fullDiseaseCategoryMap values - disease category set
      */
     public Collection<DiseaseCategoryObject> getFullDiseaseCategorySet() {
+        if (fullDiseaseCategoryMap == null) {
+            return null;
+        }
         return fullDiseaseCategoryMap.values();
     }
 

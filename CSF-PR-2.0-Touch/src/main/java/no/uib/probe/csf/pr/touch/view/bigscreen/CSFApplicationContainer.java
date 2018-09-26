@@ -1,6 +1,7 @@
 package no.uib.probe.csf.pr.touch.view.bigscreen;
 
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -25,12 +26,12 @@ public class CSFApplicationContainer extends VerticalLayout {
     /**
      * The welcome page container panel.
      */
-    private final ScrollPanel welcomeLayoutPanel;
+    private ScrollPanel welcomeLayoutPanel;
 
     /**
      * The quantitative overview layout container panel.
      */
-    private final SlidePanel quantLayoutPanel;
+    private SlidePanel quantLayoutPanel;
 
     /**
      * The layout manager to control the different visualizations.
@@ -71,6 +72,10 @@ public class CSFApplicationContainer extends VerticalLayout {
         bodyWrapper.setWidth(100, Unit.PERCENTAGE);
         this.addComponent(bodyWrapper);
 
+        if (Data_handler.getResourceOverviewInformation() == null) {
+            Notification.show("No Database available at the moment please try again later", Notification.Type.ERROR_MESSAGE);
+            return;
+        }
         WelcomeLayoutComponents welcomeContent = new WelcomeLayoutComponents(Data_handler, CSFPR_Central_Manager, View_Manager, width, height, Data_handler.getResourceOverviewInformation(), Data_handler.getPublicationList(), Data_handler.getQuantDatasetList());
 
         VerticalLayout mainLayout = new VerticalLayout();

@@ -186,6 +186,8 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
      */
     public final void updateData(Collection<DiseaseCategoryObject> diseaseCategorySet) {
 
+        if(diseaseCategorySet==null)
+            return;
         frame.removeAllComponents();
         frame.addComponent(title, 1, 1);
         frame.setComponentAlignment(title, Alignment.MIDDLE_CENTER);

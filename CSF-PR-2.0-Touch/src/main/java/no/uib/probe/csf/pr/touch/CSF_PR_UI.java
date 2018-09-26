@@ -70,7 +70,7 @@ public class CSF_PR_UI extends UI {
      * Google Analytics Trackerto track web application usage.
      */
     private final GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker("UA-88489710-1",
-        "http://129.177.231.63:8080/csf-pr-2.0/");
+        "http://129.177.231.63:8080/csf-pr/");
 
     /**
      * Reload the page on changing width and height (turn touch devices to

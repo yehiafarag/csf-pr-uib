@@ -99,6 +99,9 @@ public class DataBaseLayer implements Serializable {
             //quant data
 
             String selectQuantPublicationStudies = "SELECT COUNT( * ) AS  `Rows` ,  `pumed_id` FROM  `quant_dataset_table` GROUP BY  `pumed_id` ORDER BY  `pumed_id` ";
+            if (conn == null) {
+                return null;
+            }
             PreparedStatement selectQuantPublicationStudiesStat = conn.prepareStatement(selectQuantPublicationStudies);
 
             ResultSet rs = selectQuantPublicationStudiesStat.executeQuery();
@@ -191,6 +194,9 @@ public class DataBaseLayer implements Serializable {
     public Set<QuantDataset> getQuantDatasetList() {
         Set<QuantDataset> dsObjects = new TreeSet<>();
         Map<String, InitialInformationObject> diseaseCategoriesMap = getQuantDatasetInitialInformationObject();
+        if (diseaseCategoriesMap == null) {
+            return null;
+        }
         diseaseCategoriesMap.values().stream().forEach((qi) -> {
             dsObjects.addAll(qi.getQuantDatasetsMap().values());
         });
@@ -466,6 +472,7 @@ public class DataBaseLayer implements Serializable {
 
         } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             System.err.println("at error " + this.getClass().getName() + "  line 470  " + e.getLocalizedMessage());
+            return null;
         }
 
         return availableDiseaseCategory;
