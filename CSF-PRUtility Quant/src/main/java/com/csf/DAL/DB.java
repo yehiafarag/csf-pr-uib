@@ -129,12 +129,12 @@ public class DB implements Serializable {
                         + "INSERT INTO publication_table VALUES ('22846148', 'Jia, Yan, et al.', '2012', 'Development of protein biomarkers in cerebrospinal fluid for secondary progressive multiple sclerosis using selected reaction monitoring mass spectrometry (SRM-MS).', 'true', 26, 7, 26, 15);\n"
                         + "INSERT INTO publication_table VALUES ('23059536', 'Kroksveen, Ann C., et al.', '2013', 'Discovery and initial verification of differentially abundant proteins between multiple sclerosis patients and controls using iTRAQ and SID-SRM.', 'true', 816, 248, 23, 2);\n"
                         + "INSERT INTO publication_table VALUES ('23278663', 'Kroksveen, Ann C., et al.', '2012', 'Cerebrospinal fluid proteome comparison between multiple sclerosis patients and controls.', 'true', 77, 2, 0, 0);\n"
-                        + "INSERT INTO publication_table VALUES ('25406498', 'Cantó, Ester, et al.', '2014', 'Validation of semaphorin 7A and ala-?-his-dipeptidase as biomarkers associated with the conversion from clinically isolated syndrome to multiple sclerosis.', 'true', 6, 0, 0, 0);\n"
+                        + "INSERT INTO publication_table VALUES ('25406498', 'Cantó, Ester, et al.', '2014', 'Validation of semaphorin 7A and ala-beta-his-dipeptidase as biomarkers associated with the conversion from clinically isolated syndrome to multiple sclerosis.', 'true', 6, 0, 0, 0);\n"
                         + "INSERT INTO publication_table VALUES ('25698171', 'Hinsinger, G., et al.', '2015', 'Chitinase 3-like proteins as diagnostic and prognostic biomarkers of multiple sclerosis.', 'true', 526, 97, 0, 0);\n"
                         + "INSERT INTO publication_table VALUES ('23339689', 'Stoop, Marcel P., et al', '2013', 'Effects of natalizumab treatment on the cerebrospinal fluid proteome of multiple sclerosis patients.', 'true', 310, 17, 2971, 2708);\n"
                         + "INSERT INTO publication_table VALUES ('26152395', 'Kroksveen, Ann C., et al.', '2015', 'Quantitative proteomics suggests decrease in the secretogranin-1 cerebrospinal fluid levels during the disease course of multiple sclerosis.', 'true', 771, 340, 4, 1);\n"
                         + "INSERT INTO publication_table VALUES ('24902845', 'Wildsmith, Kristin R., et al.', '2014', 'Identification of longitudinally dynamic biomarkers in Alzheimer''s disease cerebrospinal fluid by targeted proteomics.', 'true', 28, 1, 31, 5);\n"
-                        + "INSERT INTO publication_table VALUES ('25318543', 'Barucker, Christian, et al.', '2015', 'Alzheimer amyloid peptide a?42 regulates gene expression of transcription and growth factors.', 'true', 107, 18, 0, 0);\n"
+                        + "INSERT INTO publication_table VALUES ('25318543', 'Barucker, Christian, et al.', '2015', 'Alzheimer amyloid peptide a beta 42 regulates gene expression of transcription and growth factors.', 'true', 107, 18, 0, 0);\n"
                         + "INSERT INTO publication_table VALUES ('24039694', 'Schutzer, Steven E., et al.', '2013', 'Gray matter is targeted in first-attack multiple sclerosis.', 'true', 19, 0, 0, 0);\n"
                         + "INSERT INTO publication_table VALUES ('25556233', 'Shi, Min, et al.', '2015', 'Cerebrospinal fluid peptides as potential Parkinson disease biomarkers: a staged pipeline for discovery and validation.', 'true', 16, 0, 17, 7);\n"
                         + "INSERT INTO publication_table VALUES ('26552840', 'Borràs, Eva, et al.', '2015', 'Protein-Based Classifier to Predict Conversion from Clinically Isolated Syndrome to Multiple Sclerosis.', 'true', 22, 3, 32, 4);\n"
@@ -144,19 +144,17 @@ public class DB implements Serializable {
                         + "INSERT INTO publication_table VALUES ('24295388', 'Varghese, Anu Mary, et al.', '2013', 'Chitotriosidase - a putative biomarker for sporadic amyotrophic lateral sclerosis.', 'false', 0, 0, 0, 0);\n"
                         + "INSERT INTO publication_table VALUES ('26627638', 'Heywood, Wendy E., et al.', '2015', 'Identification of novel CSF biomarkers for neurodegeneration and their validation by a high-throughput multiplexed targeted proteomic assay.', 'true', 25, 3, 31, 13);\n"
                         + "INSERT INTO publication_table VALUES ('26841090', 'Opsahl, Jill A., et al.', '2016', 'Label free analysis of human cerebrospinal fluid addressing various normalization strategies and revealing protein groups affected by multiple sclerosis.', 'true', 904, 276, 0, 0);\n"
-                       
-                        
-                        
                         + "INSERT INTO publication_table VALUES ('27845782', 'Paterson, R. W., et al.', '2016', 'A targeted proteomic multiplex CSF assay identifies increased malate dehydrogenase and other neurodegenerative biomarkers in individuals with Alzheimer\\'s disease pathology.', 'true', 0, 0, 0, 0);\n"
-                        
-                        
-                        
                         + "INSERT INTO publication_table VALUES ('27728768', 'Kroksveen, Ann Cathrine, et al.', '2017', 'In-Depth Cerebrospinal Fluid Quantitative Proteome and Deglycoproteome Analysis: Presenting a Comprehensive Picture of Pathways and Processes Affected by Multiple Sclerosis.', 'true', 0, 0, 0, 0);\n"
-                       
+                        + "INSERT INTO publication_table VALUES ('29708756', 'Begcevic, Ilijana, et al.', '2018', 'Targeted Mass Spectrometry-Based Assays for Relative Quantification of 30 Brain-Related Proteins and Their Clinical Applications.', 'true', 0, 0, 0, 0);\n"
+                        + "INSERT INTO publication_table VALUES ('28941200', 'Stoop, Marcel P., et al.', '2017', 'Decreased Neuro-Axonal Proteins in CSF at First Attack of Suspected Multiple Sclerosis.', 'true', 0, 0, 0, 0);\n"
+                        + "INSERT INTO publication_table VALUES ('29028155', 'Brinkmalm, Gunnar, et al.', '2018', 'A parallel reaction monitoring mass spectrometric method for analysis of potential CSF biomarkers for Alzheimers disease.', 'true', 0, 0, 0, 0);\n"
+                        + "INSERT INTO publication_table VALUES ('29873030', 'Timirci-Kahraman, O., et al.', '2018', 'Identification of candidate biomarkers in converting and non-converting clinically isolated syndrome by proteomics analysis of cerebrospinal fluid.', 'true', 0, 0, 0, 0);\n"
+                        + "INSERT INTO publication_table VALUES ('29684683', 'Begcevic, Ilijana, et al.', '2018', 'Brain-related proteins as potential CSF biomarkers of Alzheimers disease: A targeted mass spectrometry approach.', 'true', 0, 0, 0, 0);\n"
                         + "INSERT INTO publication_table VALUES ('27347402', 'Pavelek, Zbyšek, et al.','2016','Proteomic analysis of cerebrospinal fluid for relapsing-remitting multiple sclerosis and clinically isolated syndrome.','true', 0, 0, 0, 0);";
                 st = conn.createStatement();
                 for (String str : inserStat.split("\n")) {
-                    st.executeUpdate(str);
+                    st.executeUpdate(str);                    
                 }
                 st = conn.createStatement();
                 statment = "CREATE TABLE IF NOT EXISTS `defin_disease_groups` (\n"
@@ -223,7 +221,6 @@ public class DB implements Serializable {
                 st.executeUpdate(statment);
 
                 st = conn.createStatement();
-                System.out.println("-------------------------------------- creat quant full table");
                 statment = "CREATE TABLE IF NOT EXISTS  `quant_full_table` (\n"
                         + "  `author` varchar(500) NOT NULL,\n"
                         + "  `year` int(255) NOT NULL,\n"
@@ -279,9 +276,8 @@ public class DB implements Serializable {
                         + ") ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
                 st.executeUpdate(statment);
-                
+
                 st = conn.createStatement();
-System.out.println("Created quant full table is done -----------------------------------------------------------");
                 statment = "CREATE TABLE IF NOT EXISTS `experiments_table` ( "
                         + "  `exp_id` int(11) NOT NULL auto_increment, "
                         + "  `fraction_range` int(2) NOT NULL default '0', "
@@ -747,7 +743,6 @@ System.out.println("Created quant full table is done ---------------------------
                 s.printStackTrace();
                 System.err.println(s.getLocalizedMessage());
                 conn.close();
-
                 return false;
             }
             // 
@@ -1806,7 +1801,7 @@ System.out.println("Created quant full table is done ---------------------------
     //handel quant data
     @SuppressWarnings("CallToPrintStackTrace")
     public boolean storeCombinedQuantProtTable(List<QuantProtein> qProtList) {
-       
+
         System.out.println("start store data");
         boolean success = true;
         String insertQProt = "INSERT INTO  `quant_full_table` (`author` ,`year` ,`pumed_id`,`study_key` ,`quantified_proteins_number`,`uniprot_accession` ,`uniprot_protein_name` ,`publication_acc_number` ,`publication_protein_name`,`peptide_prot` ,`raw_data_available` ,`peptideId_number`,`quantified_peptides_number`,`peptide_charge`"
@@ -1863,7 +1858,7 @@ System.out.println("Created quant full table is done ---------------------------
                 insertQProtStat.setString(7, qprot.getUniprotProteinName());
                 insertQProtStat.setString(8, qprot.getPublicationAccNumber());
                 insertQProtStat.setString(9, qprot.getPublicationProteinName());
-                insertQProtStat.setString(10, String.valueOf(qprot.isPeptideProtein()));
+                insertQProtStat.setString(10, String.valueOf(qprot.isPeptideObject()));
                 if (qprot.getDiseaseCategory() == null || qprot.getDiseaseCategory().trim().equalsIgnoreCase("")) {
                     System.out.println(" --- qprot.getDiseaseCategory() --------------" + qprot.getDiseaseCategory());
                 }
@@ -2164,7 +2159,7 @@ System.out.println("Created quant full table is done ---------------------------
             }
             int counter = 0;
             for (QuantProtein quantProt : qProtList) {
-                if (quantProt.isPeptideProtein()) {
+                if (quantProt.isPeptideObject()) {
                     continue;
                 }
                 insertQuantProtStat = conn.prepareStatement(sqlStat, Statement.RETURN_GENERATED_KEYS);

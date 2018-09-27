@@ -316,12 +316,12 @@
             <version>SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>my_xmlbeans</groupId>
+            <groupId>xmlbeans</groupId>
             <artifactId>xbean_xpath</artifactId>
             <version>2.1.0</version>
         </dependency>        
         <dependency>
-            <groupId>my_org.apache.xmlbeans</groupId>
+            <groupId>org.apache.xmlbeans</groupId>
             <artifactId>xmlbeans-qname</artifactId>
             <version>2.6.0</version>
         </dependency>

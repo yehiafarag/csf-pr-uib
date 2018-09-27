@@ -255,7 +255,7 @@ public class QuantDataHandler {
     public Map<String, QuantProtein> getProteinAccSequanceMap() {
         return proteinAccSequanceMap;
     }
-    private  Map<String, QuantProtein> unrevProteinAccMap;
+    private Map<String, QuantProtein> unrevProteinAccMap;
     private Map<String, QuantProtein> proteinAccSequanceMap;
 
     @SuppressWarnings("CallToPrintStackTrace")
@@ -271,7 +271,7 @@ public class QuantDataHandler {
             FileReader sequanceReader = new FileReader(sequanceFile);
             BufferedReader sequanceBufRdr = new BufferedReader(sequanceReader);
 
-             proteinAccSequanceMap = new HashMap<String, QuantProtein>();
+            proteinAccSequanceMap = new HashMap<String, QuantProtein>();
             String seqline;
 
             int row = 1;
@@ -297,7 +297,7 @@ public class QuantDataHandler {
                         quantProt.setSequance(seqline);
                     }
                 }
-                
+
 //                
             }
             if (!proteinAccSequanceMap.containsKey(quantProt.getUniprotAccession().trim().toLowerCase())) {
@@ -309,10 +309,9 @@ public class QuantDataHandler {
             FileReader unreviewFileReader = new FileReader(unreviewFilePath);
             BufferedReader unreviewFileBufRdr = new BufferedReader(unreviewFileReader);
 
-             unrevProteinAccMap = new HashMap<String, QuantProtein>();
+            unrevProteinAccMap = new HashMap<String, QuantProtein>();
             row = 1;
             while ((seqline = unreviewFileBufRdr.readLine()) != null && !seqline.trim().equalsIgnoreCase("") && row < 1000000000) {
-
                 if ((seqline.startsWith(">sp|") || seqline.startsWith(">tr|"))) {
                     if (quantProt.getUniprotAccession() != null) {
                         if (!unrevProteinAccMap.containsKey(quantProt.getUniprotAccession().trim().toLowerCase())) {
@@ -325,7 +324,6 @@ public class QuantDataHandler {
                     String secSide = seqArr[2].split("OS=")[0].trim();
                     String protName = secSide.replace(secSide.split(" ")[0], "") + " (" + secSide.split(" ")[0] + ")";
                     quantProt.setUniprotProteinName(protName.trim());
-
                 } else {
                     quantProt.setSequance(quantProt.getSequance() + seqline);
 
@@ -342,13 +340,10 @@ public class QuantDataHandler {
             BufferedReader bufRdr = new BufferedReader(fr);
             String header = bufRdr.readLine();
             int i = 0;
-            System.out.println("------------------------------");
-            String[] headerArr = header.split(";");
+            String[] headerArr = header.split(",");
             for (String col : headerArr) {
-                System.out.println(i + " -- " + col);
                 i++;
             }
-            System.out.println("------------------------------");
 
             int index;
             row = 1;
@@ -357,9 +352,7 @@ public class QuantDataHandler {
 
                 index = 0;
                 QuantProtein qProt = new QuantProtein();
-                String[] rowArr = line.replace("ÿ", "").split(";");
-
-//
+                String[] rowArr = line.replace("ÿ", "").split(",");//
                 String[] updatedRowArr = new String[headerArr.length];
                 if (rowArr.length < headerArr.length) {
                     System.arraycopy(rowArr, 0, updatedRowArr, 0, rowArr.length);
@@ -387,15 +380,10 @@ public class QuantDataHandler {
                     qProt.setUniprotAccession(" ");
                     index++;
                 } else {
-//                    if (updatedRowArr[index].contains("(Unreviewed)")) {
-//                        continue;
-//                    }
-
                     qProt.setUniprotAccession(updatedRowArr[index++].trim());
                 }
 
                 if (proteinAccSequanceMap.containsKey(qProt.getUniprotAccession().toLowerCase())) {
-
                     qProt.setSequance(proteinAccSequanceMap.get(qProt.getUniprotAccession().toLowerCase()).getSequance());
                     qProt.setUniprotProteinName(proteinAccSequanceMap.get(qProt.getUniprotAccession().toLowerCase()).getUniprotProteinName());
                 } else if (unrevProteinAccMap.containsKey(qProt.getUniprotAccession().toLowerCase())) {
@@ -406,8 +394,6 @@ public class QuantDataHandler {
                     qProt.setUniprotProteinName(" ");
                 }
                 index++;
-
-////
                 if (updatedRowArr[index] == null || updatedRowArr[index].trim().equalsIgnoreCase("")) {
                     qProt.setPublicationAccNumber(" ");
                     index++;
@@ -422,10 +408,10 @@ public class QuantDataHandler {
                     qProt.setPublicationProteinName(updatedRowArr[index++]);
                 }
                 if (updatedRowArr[index] == null || updatedRowArr[index].trim().equalsIgnoreCase("Peptide")) {
-                    qProt.setPeptideProtein(true);
+                    qProt.setPeptideObject(true);
 
                 } else {
-                    qProt.setPeptideProtein(false);
+                    qProt.setPeptideObject(false);
                 }
                 index++;
 
@@ -762,7 +748,7 @@ public class QuantDataHandler {
                     String pooledSample = updatedRowArr[index++];
                     boolean pooles = false;
                     if (pooledSample.trim().equalsIgnoreCase("Yes")) {
-                        pooles=true;
+                        pooles = true;
                     }
                     qProt.setPooledSample(pooles);
                 }
@@ -811,7 +797,7 @@ public class QuantDataHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         proteinAccSequanceMap.putAll(unrevProteinAccMap);
         return QuantProtList;
 
@@ -1052,4 +1038,73 @@ public class QuantDataHandler {
 //    
 //            
 //            }
+    public QuantProtein initQuantProteinFromQuantPeptide(QuantProtein quantPeptide) {
+        QuantProtein quantProtein = new QuantProtein();
+        quantProtein.setAdditionalComments(quantPeptide.getAdditionalComments());
+        quantProtein.setAnalyticalApproach(quantPeptide.getAnalyticalApproach());
+        quantProtein.setAnalyticalMethod(quantPeptide.getAnalyticalMethod());
+        quantProtein.setAuthor(quantPeptide.getAuthor());
+        quantProtein.setDiseaseCategory(quantPeptide.getDiseaseCategory());
+        quantProtein.setDiseaseGroups(quantPeptide.getDiseaseGroups());
+        quantProtein.setDsKey(quantPeptide.getDsKey());
+        quantProtein.setEnzyme(quantPeptide.getEnzyme());
+        quantProtein.setFcPatientGroupIonPatientGroupII(quantPeptide.getFcPatientGroupIonPatientGroupII());
+        quantProtein.setFilesNum(quantPeptide.getFilesNum());
+        quantProtein.setIdentifiedProteinsNum(quantPeptide.getIdentifiedProteinsNum());
+        quantProtein.setLogFC(quantPeptide.getLogFC());
+        quantProtein.setModificationComment(quantPeptide.getModificationComment());
+        quantProtein.setNormalizationStrategy(quantPeptide.getNormalizationStrategy());
+        quantProtein.setPatientGrIComment(quantPeptide.getPatientGrIComment());
+        quantProtein.setPatientGrIIComment(quantPeptide.getPatientGrIIComment());
+        quantProtein.setPatientGroupI(quantPeptide.getPatientGroupI());
+        quantProtein.setPatientGroupII(quantPeptide.getPatientGroupII());
+        quantProtein.setPatientSubGroupI(quantPeptide.getPatientSubGroupI());
+        quantProtein.setPatientSubGroupII(quantPeptide.getPatientSubGroupII());
+        quantProtein.setPatientsGroupIINumber(quantPeptide.getPatientsGroupIINumber());
+        quantProtein.setPatientsGroupINumber(quantPeptide.getPatientsGroupINumber());
+        quantProtein.setPeptideCharge(quantPeptide.getPeptideCharge());
+        quantProtein.setPeptideIdNumb(quantPeptide.getPeptideIdNumb());
+        quantProtein.setPeptideModification(quantPeptide.getPeptideModification());
+        quantProtein.setPeptideObject(false);
+        quantProtein.setPeptideSequance(quantPeptide.getPeptideSequance());
+        quantProtein.setPeptideSequenceAnnotated(quantPeptide.getPeptideSequenceAnnotated());
+        quantProtein.setPooledSample(quantPeptide.isPooledSample());
+        quantProtein.setProtKey(quantPeptide.getProtKey());
+        quantProtein.setPublicationAccNumber(quantPeptide.getPublicationAccNumber());
+        quantProtein.setPublicationProteinName(quantPeptide.getPublicationProteinName());
+        quantProtein.setPumedID(quantPeptide.getPumedID());
+        quantProtein.setPvalueComment(quantPeptide.getPvalueComment());
+        quantProtein.setQuantBasisComment(quantPeptide.getQuantBasisComment());
+        String quantPeptideKey = quantPeptide.getQuantPeptideKey();
+        quantProtein.setQuantPeptideKey(quantPeptideKey);
+        quantProtein.setQuantificationBasis(quantPeptide.getQuantificationBasis());
+        quantProtein.setQuantifiedPeptidesNumber(quantPeptide.getQuantifiedPeptidesNumber());
+        quantProtein.setQuantifiedProteinsNumber(quantPeptide.getQuantifiedProteinsNumber());
+        quantProtein.setRawDataAvailable(quantPeptide.getRawDataAvailable());
+        quantProtein.setRocAuc(quantPeptide.getRocAuc());
+        quantProtein.setSampleMatching(quantPeptide.getSampleMatching());
+        quantProtein.setSampleType(quantPeptide.getSampleType());
+        String sequence = " ";
+        quantProtein.setSequance(sequence);
+        quantProtein.setShotgunOrTargetedQquant(quantPeptide.getShotgunOrTargetedQquant());
+        quantProtein.setSignificanceThreshold(quantPeptide.getSignificanceThreshold());
+        quantProtein.setStringFCValue(quantPeptide.getStringFCValue());
+        quantProtein.setStringPValue(quantPeptide.getStringPValue());
+        quantProtein.setStudyKey(quantPeptide.getStudyKey());
+        quantProtein.setTechnology(quantPeptide.getTechnology());
+        quantProtein.setTypeOfStudy(quantPeptide.getTypeOfStudy());
+        quantProtein.setUniprotAccession(quantPeptide.getUniprotAccession());
+        quantProtein.setUniprotProteinName(quantPeptide.getUniprotProteinName());
+        quantProtein.setYear(quantPeptide.getYear());
+        quantProtein.setpValue(quantPeptide.getpValue());
+        if (proteinAccSequanceMap.containsKey(quantProtein.getUniprotAccession().toLowerCase())) {
+            quantProtein.setSequance(proteinAccSequanceMap.get(quantProtein.getUniprotAccession().toLowerCase()).getSequance());
+            quantProtein.setUniprotProteinName(proteinAccSequanceMap.get(quantProtein.getUniprotAccession().toLowerCase()).getUniprotProteinName());
+        } else if (unrevProteinAccMap.containsKey(quantProtein.getUniprotAccession().toLowerCase())) {
+            quantProtein.setSequance(unrevProteinAccMap.get(quantProtein.getUniprotAccession().toLowerCase()).getSequance());
+            quantProtein.setUniprotProteinName(unrevProteinAccMap.get(quantProtein.getUniprotAccession().toLowerCase()).getUniprotProteinName());
+        } 
+        return quantProtein;
+
+    }
 }

@@ -14,7 +14,7 @@ public class QuantProtein {
     private int peptideCharge,quantifiedProteinsNumber,peptideIdNumb,quantifiedPeptidesNumber, patientsGroupINumber,patientsGroupIINumber,year,filesNum,IdentifiedProteinsNum, dsKey,protKey;    
     private String peptideSequenceAnnotated,studyKey,quantPeptideKey,    peptideSequance,	peptideModification,modificationComment , stringFCValue,stringPValue,author,diseaseGroups,pvalueComment; 
     private String diseaseCategory;
-    private boolean peptideProtein;
+    private boolean peptideObject;
     private boolean pooledSample;
 
     public boolean isPooledSample() {
@@ -419,12 +419,12 @@ public String getTechnology() {
         this.studyKey = studyKey;
     }
 
-    public boolean isPeptideProtein() {
-        return peptideProtein;
+    public boolean isPeptideObject() {
+        return peptideObject;
     }
 
-    public void setPeptideProtein(boolean peptideProtein) {
-        this.peptideProtein = peptideProtein;
+    public void setPeptideObject(boolean peptideObject) {
+        this.peptideObject = peptideObject;
     }
 
     public double getLogFC() {
