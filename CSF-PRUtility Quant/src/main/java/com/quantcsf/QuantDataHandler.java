@@ -377,7 +377,7 @@ public class QuantDataHandler {
                 index++;
 //
                 if (updatedRowArr[index] == null || updatedRowArr[index].trim().equalsIgnoreCase("")) {// || updatedRowArr[index].trim().equalsIgnoreCase("Not retrieved")|| updatedRowArr[index].trim().equalsIgnoreCase("ENTRY DELETED")|| updatedRowArr[index].trim().equalsIgnoreCase("Entry Demerged")  ) {
-                    qProt.setUniprotAccession(" ");
+                    qProt.setUniprotAccession("");
                     index++;
                 } else {
                     qProt.setUniprotAccession(updatedRowArr[index++].trim());
@@ -391,14 +391,14 @@ public class QuantDataHandler {
                     qProt.setUniprotProteinName(unrevProteinAccMap.get(qProt.getUniprotAccession().toLowerCase()).getUniprotProteinName());
                 } else {
                     qProt.setSequance(" ");
-                    qProt.setUniprotProteinName(" ");
+                    qProt.setUniprotProteinName("");
                 }
                 index++;
                 if (updatedRowArr[index] == null || updatedRowArr[index].trim().equalsIgnoreCase("")) {
                     qProt.setPublicationAccNumber(" ");
                     index++;
                 } else {
-                    qProt.setPublicationAccNumber(updatedRowArr[index++]);
+                    qProt.setPublicationAccNumber((updatedRowArr[index++]).trim());
                 }
 //
                 if (updatedRowArr[index] == null || updatedRowArr[index].trim().equalsIgnoreCase("")) {
@@ -407,6 +407,15 @@ public class QuantDataHandler {
                 } else {
                     qProt.setPublicationProteinName(updatedRowArr[index++]);
                 }
+                if (qProt.getUniprotAccession().equals("") && proteinAccSequanceMap.containsKey(qProt.getPublicationAccNumber().toLowerCase())) {
+                    qProt.setUniprotAccession(qProt.getPublicationAccNumber());
+                    qProt.setSequance(proteinAccSequanceMap.get(qProt.getPublicationAccNumber().toLowerCase()).getSequance());
+                    qProt.setUniprotProteinName(proteinAccSequanceMap.get(qProt.getPublicationAccNumber().toLowerCase()).getUniprotProteinName());
+                } else if (qProt.getUniprotAccession().equals("")  && unrevProteinAccMap.containsKey(qProt.getPublicationAccNumber().toLowerCase())) {
+                    qProt.setSequance(unrevProteinAccMap.get(qProt.getPublicationAccNumber().toLowerCase()).getSequance());
+                    qProt.setUniprotProteinName(unrevProteinAccMap.get(qProt.getPublicationAccNumber().toLowerCase()).getUniprotProteinName());
+                } 
+                
                 if (updatedRowArr[index] == null || updatedRowArr[index].trim().equalsIgnoreCase("Peptide")) {
                     qProt.setPeptideObject(true);
 
@@ -770,6 +779,9 @@ public class QuantDataHandler {
                 String pepKey = qProt.getPumedID() + "_" + qProt.getStudyKey() + "_" + qProt.getUniprotAccession() + "_" + qProt.getPublicationAccNumber() + "_" + qProt.getTypeOfStudy() + "_" + qProt.getSampleType() + "_" + qProt.getTechnology() + "_" + qProt.getAnalyticalApproach() + "_" + qProt.getAnalyticalMethod() + "_" + qProt.getPatientsGroupINumber() + "_" + qProt.getPatientsGroupIINumber() + "_" + qProt.getPatientSubGroupI() + "_" + qProt.getPatientSubGroupII() + "_" + qProt.getDiseaseCategory();
                 qProt.setQuantPeptideKey(pepKey);
                 QuantProtList.add(qProt);
+                if (qProt.getUniprotAccession().trim().equalsIgnoreCase("")) {
+                    System.out.println("at the error line is " + qProt.getUniprotAccession() + "  " + proteinAccSequanceMap.containsKey(qProt.getPublicationAccNumber().toLowerCase())+"  "+unrevProteinAccMap.containsKey(qProt.getPublicationAccNumber().toLowerCase())+"  "+line);
+                }
 
                 row++;
             } //    
@@ -1103,7 +1115,7 @@ public class QuantDataHandler {
         } else if (unrevProteinAccMap.containsKey(quantProtein.getUniprotAccession().toLowerCase())) {
             quantProtein.setSequance(unrevProteinAccMap.get(quantProtein.getUniprotAccession().toLowerCase()).getSequance());
             quantProtein.setUniprotProteinName(unrevProteinAccMap.get(quantProtein.getUniprotAccession().toLowerCase()).getUniprotProteinName());
-        } 
+        }
         return quantProtein;
 
     }

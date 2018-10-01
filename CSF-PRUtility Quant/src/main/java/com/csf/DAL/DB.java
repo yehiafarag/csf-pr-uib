@@ -154,7 +154,7 @@ public class DB implements Serializable {
                         + "INSERT INTO publication_table VALUES ('27347402', 'Pavelek, Zbyšek, et al.','2016','Proteomic analysis of cerebrospinal fluid for relapsing-remitting multiple sclerosis and clinically isolated syndrome.','true', 0, 0, 0, 0);";
                 st = conn.createStatement();
                 for (String str : inserStat.split("\n")) {
-                    st.executeUpdate(str);                    
+                    st.executeUpdate(str);
                 }
                 st = conn.createStatement();
                 statment = "CREATE TABLE IF NOT EXISTS `defin_disease_groups` (\n"
@@ -2165,6 +2165,9 @@ public class DB implements Serializable {
                 insertQuantProtStat = conn.prepareStatement(sqlStat, Statement.RETURN_GENERATED_KEYS);
 //                insertQuantProtStat.setInt(1, quantProt.getProtKey());
                 insertQuantProtStat.setInt(1, quantProt.getDsKey());
+                if (quantProt.getUniprotAccession().trim().equalsIgnoreCase("")) {
+                    System.out.println("------------>> " + quantProt.getPublicationAccNumber());
+                }
                 insertQuantProtStat.setString(2, quantProt.getUniprotAccession());
                 insertQuantProtStat.setString(3, quantProt.getUniprotProteinName());
 
