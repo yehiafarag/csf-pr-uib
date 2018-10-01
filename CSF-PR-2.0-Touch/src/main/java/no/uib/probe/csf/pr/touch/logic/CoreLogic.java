@@ -127,7 +127,7 @@ public class CoreLogic implements Serializable {
      */
     public Map<String, InitialInformationObject> getQuantDatasetInitialInformationObject() {
         Map<String, InitialInformationObject> quantStudyInitInfoMap = database.getQuantDatasetInitialInformationObject();
-        System.out.println("at quant is null "+(quantStudyInitInfoMap==null));
+        System.out.println("at quant is null " + (quantStudyInitInfoMap == null));
 
         boolean[] activeHeaders = new boolean[27];
         Set<String> diseaseCategories = new LinkedHashSet<>();
@@ -201,7 +201,8 @@ public class CoreLogic implements Serializable {
     public Map<String, String> getDiseaseGroupsFullNameMap() {
         return database.getDiseaseGroupsFullNameMap();
     }
-private Set<String> accessionDefList = new HashSet<>();
+    private final Set<String> accessionDefList = new HashSet<>();
+
     /**
      * This method is responsible for update quant comparison proteins name map
      * for each comparison.
@@ -213,7 +214,7 @@ private Set<String> accessionDefList = new HashSet<>();
      * @return updated quant comparisons list
      */
     public Set<QuantDiseaseGroupsComparison> updateComparisonQuantProteins(Set<QuantDiseaseGroupsComparison> selectedQuantComparisonsList, Map<String, Map<String, String>> inUse_DiseaseCat_DiseaseGroupMap) {
-
+        Map<String, String> correctorMap = new HashMap<>();
         Set<QuantDiseaseGroupsComparison> updatedSelectedComparisonList = new LinkedHashSet<>();
         Set<QuantProtein> fullComparisonProtMap = new HashSet<>();
         Map<Integer, QuantDiseaseGroupsComparison> dsIndexToComparisonsMap = new HashMap<>();
@@ -230,6 +231,16 @@ private Set<String> accessionDefList = new HashSet<>();
             return selectedQuantComparisonsList;
         }
         fullComparisonProtMap.addAll(database.getQuantificationProteins(dsIdsList.toArray()));
+        fullComparisonProtMap.forEach((quant) -> {
+            if (!quant.getUniprotAccessionNumber().trim().equalsIgnoreCase("") && !correctorMap.containsKey(quant.getUniprotAccessionNumber())) {
+                if (!quant.getUniprotProteinName().trim().equalsIgnoreCase("")) {
+                    correctorMap.put(quant.getUniprotAccessionNumber(), quant.getUniprotProteinName());
+                } else {
+                    correctorMap.put(quant.getUniprotAccessionNumber(), quant.getPublicationProteinName());
+                }
+            }
+        });
+
         Map<String, Set<QuantPeptide>> fullComparisonPeptideMap = (database.getQuantificationPeptides(dsIdsList.toArray()));
 
         Map<String, Set<QuantProtein>> fullComparisonToProtMap = new HashMap<>();
@@ -243,8 +254,8 @@ private Set<String> accessionDefList = new HashSet<>();
             Set<QuantProtein> comparisonProtMap = fullComparisonToProtMap.get(datasetIndex);
             comparisonProtMap.add(qprot);
             fullComparisonToProtMap.put(datasetIndex, comparisonProtMap);
-        });
 
+        });
         for (QuantDiseaseGroupsComparison comparison : selectedQuantComparisonsList) {
             Set<QuantProtein> comparisonProtMap = fullComparisonToProtMap.get(comparison.getComparisonHeader());
             if (comparisonProtMap == null) {
@@ -254,11 +265,9 @@ private Set<String> accessionDefList = new HashSet<>();
             Map<String, QuantComparisonProtein> comparProtList = new HashMap<>();
             String compGrI = comparison.getComparisonHeader().split(" / ")[0].split("__")[0];
             Set<String> subGroupSet = new HashSet<>();
-            for (String Key : inUse_DiseaseCat_DiseaseGroupMap.get(comparison.getDiseaseCategory()).keySet()) {
-                if (compGrI.equalsIgnoreCase(inUse_DiseaseCat_DiseaseGroupMap.get(comparison.getDiseaseCategory()).get(Key))) {
-                    subGroupSet.add(Key);
-                }
-            }
+            inUse_DiseaseCat_DiseaseGroupMap.get(comparison.getDiseaseCategory()).keySet().stream().filter((Key) -> (compGrI.equalsIgnoreCase(inUse_DiseaseCat_DiseaseGroupMap.get(comparison.getDiseaseCategory()).get(Key)))).forEachOrdered((Key) -> {
+                subGroupSet.add(Key);
+            });
 
             for (QuantProtein quant : comparisonProtMap) {
                 boolean inverted = false;
@@ -276,23 +285,20 @@ private Set<String> accessionDefList = new HashSet<>();
 
                 String protAcc = quant.getUniprotAccessionNumber();
                 String url;
+                if (protAcc.equalsIgnoreCase("")) {
+                    System.out.println("********************* null acc " + protAcc + "  " + quant.getPublicationAccessionNumber() + "  " + comparProtList.containsKey(quant.getPublicationAccessionNumber()));
+                }
 
-                if (protAcc.equalsIgnoreCase("") || protAcc.equalsIgnoreCase("Not Available") || protAcc.equalsIgnoreCase("Entry Deleted") || protAcc.equalsIgnoreCase("Entry Demerged") || protAcc.equalsIgnoreCase("NOT RETRIEVED") || protAcc.equalsIgnoreCase("DELETED") || protAcc.trim().equalsIgnoreCase("UNREVIEWED")) {
-                    protAcc=protAcc.replace("Entry Deleted", "Deleted").replace("Entry deleted", "Deleted").replace("Deleted", "Entry Deleted");
+                if (protAcc.trim().equalsIgnoreCase("") || protAcc.equalsIgnoreCase("Not Available") || protAcc.equalsIgnoreCase("Entry Deleted") || protAcc.equalsIgnoreCase("Entry Demerged") || protAcc.equalsIgnoreCase("NOT RETRIEVED") || protAcc.equalsIgnoreCase("DELETED") || protAcc.trim().equalsIgnoreCase("UNREVIEWED")) {
+                    protAcc = protAcc.replace("Entry Deleted", "Deleted").replace("Entry deleted", "Deleted").replace("Deleted", "Entry Deleted");
                     accessionDefList.add(protAcc);
                     protAcc = quant.getPublicationAccessionNumber() + " (" + protAcc + ")";
-                    
+                    if (protAcc.contains("()")) {
+                        protAcc = protAcc.replace("()", "").trim();
+                    }
                     url = null;
 
-                } 
-//                else if (protAcc.contains("(unreviewed)")) {
-//                    System.out.println("at found the prot "+ protAcc);
-//                    System.out.println("at found the prot "+ quant.getSequence());
-//                    protAcc = protAcc.replace("(unreviewed)", " (Unreviewed)");
-//                    url = null;
-//                } 
-                else
-                {
+                } else {
                     url = "http://www.uniprot.org/uniprot/" + protAcc;
                 }
 
@@ -312,13 +318,13 @@ private Set<String> accessionDefList = new HashSet<>();
                 }
 
                 if ((pGrI.equalsIgnoreCase(quant.getDiseaseMainGroupI()) || pGrI.equalsIgnoreCase(quant.getOriginalDiseaseSubGroupI())) && (pGrII.equalsIgnoreCase(quant.getDiseaseMainGroupII()) || pGrII.equalsIgnoreCase(quant.getOriginalDiseaseSubGroupII()))) {
-                    
+
                     if (quant.getString_fc_value().equalsIgnoreCase("Decreased") || quant.getString_fc_value().equalsIgnoreCase("Decrease")) {
                         comProt.addDecreasedProtein((quant.getDiseaseGroupIPatientsNumber() + quant.getDiseaseGroupIIPatientsNumber()), quant.getQuantDatasetIndex(), significantPValue);
                     } else if (quant.getString_fc_value().equalsIgnoreCase("Increased") || quant.getString_fc_value().equalsIgnoreCase("Increase")) {
                         comProt.addIncreasedProtein((quant.getDiseaseGroupIPatientsNumber() + quant.getDiseaseGroupIIPatientsNumber()), quant.getQuantDatasetIndex(), significantPValue);
                     } else if (quant.getString_fc_value().equalsIgnoreCase("Not Provided")) {
-                        System.out.println("no.uib.probe.csf.pr.touch.logic.CoreLogic.updateComparisonQuantProteins()"+quant.getString_fc_value());
+                        System.out.println("no.uib.probe.csf.pr.touch.logic.CoreLogic.updateComparisonQuantProteins()" + quant.getString_fc_value());
                         comProt.addNoValueProvided((quant.getDiseaseGroupIPatientsNumber() + quant.getDiseaseGroupIIPatientsNumber()), quant.getQuantDatasetIndex());
                     } else if (quant.getString_fc_value().equalsIgnoreCase("No change")) {
                         comProt.addEqualProtein((quant.getDiseaseGroupIPatientsNumber() + quant.getDiseaseGroupIIPatientsNumber()), quant.getQuantDatasetIndex());
@@ -332,7 +338,7 @@ private Set<String> accessionDefList = new HashSet<>();
                     } else if (quant.getString_fc_value().equalsIgnoreCase("Increased") || quant.getString_fc_value().equalsIgnoreCase("Increase")) {
                         comProt.addDecreasedProtein((quant.getDiseaseGroupIPatientsNumber() + quant.getDiseaseGroupIIPatientsNumber()), quant.getQuantDatasetIndex(), significantPValue);
                     } else if (quant.getString_fc_value().equalsIgnoreCase("Not Provided")) {
-                        System.out.println("no.uib.probe.csf.pr.touch.logic.CoreLogic.updateComparisonQuantProteins()"+quant.getUniprotAccessionNumber());
+                        System.out.println("no.uib.probe.csf.pr.touch.logic.CoreLogic.updateComparisonQuantProteins()" + quant.getUniprotAccessionNumber());
                         comProt.addNoValueProvided((quant.getDiseaseGroupIPatientsNumber() + quant.getDiseaseGroupIIPatientsNumber()), quant.getQuantDatasetIndex());
                     } else if (quant.getString_fc_value().equalsIgnoreCase("No change")) {
                         comProt.addEqualProtein((quant.getDiseaseGroupIPatientsNumber() + quant.getDiseaseGroupIIPatientsNumber()), quant.getQuantDatasetIndex());
@@ -357,6 +363,16 @@ private Set<String> accessionDefList = new HashSet<>();
                 if (protName.trim().equalsIgnoreCase("")) {
                     protName = quant.getPublicationProteinName();
                 }
+
+                String keyWord = accession.split("\\(")[0].trim();
+                if (correctorMap.containsKey(keyWord)) {
+                    accession = keyWord;
+                    protName = correctorMap.get(keyWord);
+                    urlLink = "http://www.uniprot.org/uniprot/" + keyWord.toUpperCase();
+                    url = urlLink;
+
+                }
+
                 quant.setURL(urlLink);
                 comProt.setProteinName(protName);
                 comProt.setProteinAccession(accession);
@@ -472,7 +488,7 @@ private Set<String> accessionDefList = new HashSet<>();
             updatedSelectedComparisonList.add(comparison);
 
         }
-        System.out.println("at list of accession to update "+accessionDefList);
+        System.out.println("at list of accession to update " + accessionDefList);
         return updatedSelectedComparisonList;
 
     }
@@ -823,6 +839,5 @@ private Set<String> accessionDefList = new HashSet<>();
         return unmappedPeptideSet;
 
     }
-   
 
 }

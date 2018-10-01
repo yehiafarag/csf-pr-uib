@@ -196,15 +196,14 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
         thumbImgLayout.removeAllComponents();
 
         if (diseaseCategorySet.size() == 1) {
-            for (DiseaseCategoryObject dCategory : diseaseCategorySet) {
-
+            diseaseCategorySet.stream().map((dCategory) -> {
                 VerticalLayout disease = initDiseaseBubbleLayout(dCategory, 20, 200);
-
                 diseaseCategoryMap.put(dCategory.getDiseaseCategory(), dCategory);
                 frame.addComponent(disease, 1, 1);
+                return disease;
+            }).forEachOrdered((disease) -> {
                 frame.setComponentAlignment(disease, Alignment.MIDDLE_CENTER);
-
-            }
+            });
 
             VerticalLayout min = initDiseaseLayout(null, 100, 100, maxNumber);
             min.setDescription("Disease Categories");
