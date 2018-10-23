@@ -70,7 +70,7 @@ public class CSF_PR_UI extends UI {
      * Google Analytics Trackerto track web application usage.
      */
     private final GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker("UA-88489710-1",
-        "http://129.177.231.63:8080/csf-pr/");
+            "http://129.177.231.63/csf-pr/");
 
     /**
      * Reload the page on changing width and height (turn touch devices to
@@ -140,10 +140,11 @@ public class CSF_PR_UI extends UI {
         setContent(appWrapper);
 
         layout = new MainLayout(dbURL, dbName, dbDriver, dbUserName, dbPassword, windowWidth, windowHeight);
-        appWrapper.addComponent(layout);   
-        appWrapper.setComponentAlignment(layout, Alignment.MIDDLE_CENTER); 
-       tracker.trackPageview("/");
-       tracker.extend(CSF_PR_UI.this);
+        appWrapper.addComponent(layout);
+        appWrapper.setComponentAlignment(layout, Alignment.MIDDLE_CENTER);
+//        tracker.trackPageview("http://localhost:8084/CSF-PR-2.0-Touch/");
+
+        tracker.extend(CSF_PR_UI.this);
     }
 
     /**

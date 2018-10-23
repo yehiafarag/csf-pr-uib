@@ -567,6 +567,14 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
         });
         footerLayout.addComponent(rightHeaderLayout, "left: 0px; top: " + 5 + "px");
+        
+        
+        
+           String requestSearching = VaadinService.getCurrentRequest().getPathInfo();
+        if (!requestSearching.trim().endsWith("/") &&requestSearching.contains("searchby:") &&requestSearching.contains("searchkey:") ) {
+            searchingDatasetBtn.excuteExternalQuery(requestSearching);
+        }
+        
     }
 
     private VerticalLayout updateRelaseNotesLayout() {
@@ -625,6 +633,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
     private void initReleaseNote(VerticalLayout relaseNoteInfo) {
         String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
+        System.out.println("at base path "+basepath);
         File file = new File(basepath + "/VAADIN/releasenotes.txt");
         try {
             FileReader fileReader = new FileReader(file);

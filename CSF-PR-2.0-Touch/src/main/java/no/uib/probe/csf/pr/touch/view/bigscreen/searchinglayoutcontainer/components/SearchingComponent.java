@@ -518,16 +518,21 @@ public abstract class SearchingComponent extends BigBtn {
 
         //searching id data
         String idSearchIdentificationProtList = Data_handler.searchIdentificationProtein(query);
+        ExternalResource idRes;
         if (idSearchIdentificationProtList != null) {
             idDataResult.setVisible(true);
             idDataResult.removeAllComponents();
-            Link idSearchingLink = new Link(idSearchIdentificationProtList, new ExternalResource(VaadinSession.getCurrent().getAttribute("csf_pr_Url") + "searchby:" + query.getSearchBy().replace(" ", "*") + "___searchkey:" + query.getSearchKeyWords().replace("\n", "__").replace(" ", "*")));
+            idRes = new ExternalResource(VaadinSession.getCurrent().getAttribute("csf_pr_Url") + "searchby:" + query.getSearchBy().replace(" ", "*") + "___searchkey:" + query.getSearchKeyWords().replace("\n", "__").replace(" ", "*"));
+            Link idSearchingLink = new Link(idSearchIdentificationProtList, idRes);
             idSearchingLink.setTargetName("_blank");
             idSearchingLink.setStyleName(ValoTheme.LINK_SMALL);
             idSearchingLink.addStyleName("smalllink");
             idSearchingLink.setDescription("View protein id results in CSF-PR v1.0");
             idSearchingLink.setWidth(100, Unit.PERCENTAGE);
             idDataResult.addComponent(idSearchingLink);
+            if (searchQuantificationProtList.isEmpty()) {
+                Page.getCurrent().open(idRes.getURL(), "");
+            }
 
         } else {
             idDataResult.setVisible(false);
@@ -538,6 +543,7 @@ public abstract class SearchingComponent extends BigBtn {
             middleLayout.setVisible(true);
             searchingUnit.setVisible(false);
         }
+
 
     }
 
@@ -674,6 +680,20 @@ public abstract class SearchingComponent extends BigBtn {
      * results data in the system
      */
     public abstract void loadQuantSearching();
+
+    /**
+     * Load and invoke searching mode in the system to visualize the searching
+     * results data in the system
+     */
+    public void excuteExternalQuery(String query) {
+        onClick();
+        searchingUnit.excuteExternalQuery(query);
+
+    }
+
+    ;
+    
+ 
 
     /**
      * Create and initialize not found proteins file that has proteins
