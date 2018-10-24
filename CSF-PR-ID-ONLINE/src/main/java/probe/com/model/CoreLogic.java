@@ -290,44 +290,53 @@ public class CoreLogic implements Serializable {
      * @param validatedOnly only validated proteins results
      * @return datasetProtList
      */
-    public Map<Integer, ProteinBean> searchProteinByAccession(String searchArr, String searchDatasetType, boolean validatedOnly) {
+    public Map<Integer, ProteinBean> searchProteinByAccession(Set<String> searchArr, String searchDatasetType, boolean validatedOnly) {
         Map<Integer, ProteinBean> datasetProtList = new HashMap<Integer, ProteinBean>();
-        DatasetBean dataset = null;
-        if (!searchDatasetType.equalsIgnoreCase("Search All Datasets")) {
-            for (DatasetBean tempDataset : datasetList.values()) {
-                if (tempDataset.getName().equalsIgnoreCase(searchDatasetType)) {
-                    dataset = tempDataset;
-                    break;
-
-                }
-            }
-            if (dataset != null) {
-                datasetProtList = searchProteinByAccession(searchArr, dataset.getDatasetId(), validatedOnly);
-            }
-        } else {
-            for (DatasetBean tempDataset : datasetList.values()) {
-                Map<Integer, ProteinBean> protTempList = searchProteinByAccession(searchArr, tempDataset.getDatasetId(), validatedOnly);
-                if (protTempList != null) {
-                    datasetProtList.putAll(protTempList);
-                }
-
+        Map<Integer, Map<Integer, ProteinBean>> protTempList = searchProteinByAccession(searchArr, validatedOnly);
+//        DatasetBean dataset = null;
+        for (DatasetBean tempDataset : datasetList.values()) {
+            if (tempDataset.getName().equalsIgnoreCase(searchDatasetType)) {
+                return protTempList.get(tempDataset.getDatasetId());
             }
         }
 
-        return datasetProtList;
+//        if (searchDatasetType.equalsIgnoreCase("Search All Datasets")) {
+        for (Map<Integer, ProteinBean> list : protTempList.values()) {
+            datasetProtList.putAll(list);
+            }
+//            for (DatasetBean tempDataset : datasetList.values()) {
+//                if (tempDataset.getName().equalsIgnoreCase(searchDatasetType)) {
+//                    dataset = tempDataset;
+//                    break;
+//
+//                }
+//            }
+//            if (dataset != null) {
+//                datasetProtList = searchProteinByAccession(searchArr, validatedOnly);
+//            }
+//        } else {
 
-    }
+//            for (DatasetBean tempDataset : datasetList.values()) {
+//
+//                if (protTempList != null) {
+//                    datasetProtList.putAll(protTempList);
+//                }
+//
+//            }
+//        }
+            return datasetProtList;
 
-    /**
-     * search for proteins by accession keywords
-     *
-     * @param accession array of query words
-     * @param datasetId
-     * @param validatedOnly only validated proteins results
-     * @return datasetProtList
-     */
-    private Map<Integer, ProteinBean> searchProteinByAccession(String accession, int datasetId, boolean validatedOnly) {
-        Map<Integer, ProteinBean> protDatasetpList = da.searchProteinByAccession(accession, datasetId, validatedOnly);
+        }
+        /**
+         * search for proteins by accession keywords
+         *
+         * @param accession array of query words
+         * @param datasetId
+         * @param validatedOnly only validated proteins results
+         * @return datasetProtList
+         */
+    private Map<Integer, Map<Integer, ProteinBean>> searchProteinByAccession(Set<String> accession, boolean validatedOnly) {
+        Map<Integer, Map<Integer, ProteinBean>> protDatasetpList = da.searchProteinByAccession(accession, validatedOnly);
         return protDatasetpList;
     }
 

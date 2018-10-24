@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import probe.com.model.CoreLogic;
 import probe.com.model.beans.DatasetBean;
@@ -254,7 +255,7 @@ public class MainHandler implements Serializable {
      * @param validatedOnly only validated proteins results
      * @return fractions list for the selected dataset
      */
-    public Map<Integer, ProteinBean> searchProteinByAccession(String searchKeywordArray, String searchDatasetType, boolean validatedOnly) {
+    public Map<Integer, ProteinBean> searchProteinByAccession(Set<String>  searchKeywordArray, String searchDatasetType, boolean validatedOnly) {
         Map<Integer, ProteinBean> protDatasetList = computing.searchProteinByAccession(searchKeywordArray, searchDatasetType, validatedOnly);
         return protDatasetList;
     }

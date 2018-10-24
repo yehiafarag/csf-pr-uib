@@ -1372,6 +1372,72 @@ public class DataBase implements Serializable {
     }
 
     /**
+     * Search for identification proteins by accession keywords
+     *
+     * @param searchSet set of query words
+     * @param validatedOnly only validated proteins results
+     * @return dataset Proteins Searching List
+     */
+    public Map<Integer, Map<Integer, ProteinBean>> searchIdentificationProteinAllDatasetsByAccession(Set<String> searchSet, boolean validatedOnly) {
+        PreparedStatement selectProStat;
+        String selectPro;
+
+        StringBuilder sb = new StringBuilder();
+        for (int x = 0; x < searchSet.size(); x++) {
+            if (x > 0) {
+                sb.append(" OR ");
+            }
+            sb.append("`prot_key` LIKE (?)");
+
+        }
+        String sta = "";
+        if (!sb.toString().trim().isEmpty()) {
+            sta = "Where " + (sb.toString());
+        }
+
+        if (validatedOnly) {
+            selectPro = "SELECT * FROM `experiment_protein_table`  " + sta + " AND `valid`=?;";
+        } else {
+
+            selectPro = "SELECT * FROM `experiment_protein_table` " + (sta);
+        }
+        try {
+            if (conn == null || conn.isClosed()) {
+                Class.forName(driver).newInstance();
+                conn = DriverManager.getConnection(url + dbName, userName, password);
+            }
+            selectProStat = conn.prepareStatement(selectPro);
+            int index = 1;
+            for (String str : searchSet) {
+                selectProStat.setString(index++, "%" + str.replace("'", "") + "%");
+            }
+            if (validatedOnly) {
+                selectProStat.setString(index, "TRUE");
+            }
+
+            ResultSet rs = selectProStat.executeQuery();
+            Map<Integer, Map<Integer, ProteinBean>> proteinsList = fillProteinInformation(rs, searchSet);
+            return proteinsList;
+
+        } catch (ClassNotFoundException e) {
+            System.err.println("at error line 1595 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
+            return new HashMap<Integer, Map<Integer, ProteinBean>>();
+        } catch (IllegalAccessException e) {
+            System.err.println("at error line 1598 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
+
+            return new HashMap<Integer, Map<Integer, ProteinBean>>();
+        } catch (InstantiationException e) {
+            System.err.println("at error line 1602 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
+
+            return new HashMap<Integer, Map<Integer, ProteinBean>>();
+        } catch (SQLException e) {
+            System.err.println("at error line 1606 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
+            return new HashMap<Integer, Map<Integer, ProteinBean>>();
+        }
+
+    }
+
+    /**
      * search for proteins by accession keywords
      *
      * @param accession array of query words
@@ -2748,6 +2814,68 @@ public class DataBase implements Serializable {
         } catch (SQLException exp) {
         }
         return test;
+    }
+
+    /**
+     * Fill identification protein information from the result set
+     *
+     * @param resultSet results set to fill identification peptides data
+     * @return datasetProteinsList
+     *
+     */
+    private Map<Integer, Map<Integer, ProteinBean>> fillProteinInformation(ResultSet rs, Set<String> searchSet) {
+        Map<Integer, Map<Integer, ProteinBean>> proteinsList = new HashMap<Integer, Map<Integer, ProteinBean>>();
+        try {
+            while (rs.next()) {
+                ProteinBean temPb = new ProteinBean();
+                temPb.setDatasetId(rs.getInt("exp_id"));
+                temPb.setAccession(rs.getString("prot_accession"));
+                temPb.setDescription(rs.getString("description"));
+                temPb.setOtherProteins(rs.getString("other_protein(s)"));
+                temPb.setProteinInferenceClass(rs.getString("protein_inference_class"));
+                temPb.setSequenceCoverage(rs.getDouble("sequence_coverage(%)"));
+                temPb.setObservableCoverage(rs.getDouble("observable_coverage(%)"));
+                temPb.setConfidentPtmSites(rs.getString("confident_ptm_sites"));
+                temPb.setNumberConfident(rs.getString("number_confident"));
+                temPb.setOtherPtmSites(rs.getString("other_ptm_sites"));
+                temPb.setNumberOfOther(rs.getString("number_other"));
+                temPb.setNumberValidatedPeptides(rs.getInt("number_validated_peptides"));
+                temPb.setNumberValidatedSpectra(rs.getInt("number_validated_spectra"));
+                temPb.setEmPai(rs.getDouble("em_pai"));
+                temPb.setNsaf(rs.getDouble("nsaf"));
+                temPb.setMw_kDa(rs.getDouble("mw_(kDa)"));
+                temPb.setScore(rs.getDouble("score"));
+                temPb.setConfidence(rs.getDouble("confidence"));
+                temPb.setStarred(Boolean.valueOf(rs.getString("starred")));
+                temPb.setNonEnzymaticPeptides(Boolean.valueOf(rs.getString("non_enzymatic_peptides").toUpperCase()));
+
+                temPb.setSpectrumFractionSpread_lower_range_kDa(rs.getString("spectrum_fraction_spread_lower_range_kDa"));
+                temPb.setSpectrumFractionSpread_upper_range_kDa(rs.getString("spectrum_fraction_spread_upper_range_kDa"));
+                temPb.setPeptideFractionSpread_lower_range_kDa(rs.getString("peptide_fraction_spread_lower_range_kDa"));
+                temPb.setPeptideFractionSpread_upper_range_kDa(rs.getString("peptide_fraction_spread_upper_range_kDa"));
+
+                temPb.setGeneName(rs.getString("gene_name"));
+                temPb.setChromosomeNumber(rs.getString("chromosome_number"));
+                temPb.setValidated(Boolean.valueOf(rs.getString("valid")));
+                temPb.setProtGroupId(rs.getInt("prot_group_id"));
+                String[] protKey = rs.getString("prot_key").split(",");
+                if (!proteinsList.containsKey(temPb.getDatasetId())) {
+                    proteinsList.put(temPb.getDatasetId(), new HashMap<Integer, ProteinBean>());
+                }
+                proteinsList.get(temPb.getDatasetId()).put(temPb.getProtGroupId(), temPb);
+                for (String acc : protKey) {
+                    if (searchSet.contains(acc.trim())) {
+                        searchSet.remove(acc.trim());
+                    }
+                }
+
+            }
+            rs.close();
+        } catch (SQLException sqlExcp) {
+            System.err.println("at error line 1996 " + this.getClass().getName() + "   " + sqlExcp.getLocalizedMessage());
+        }
+        return proteinsList;
+
     }
 
 }

@@ -4,6 +4,7 @@
  */
 package probe.com.view;
 
+import com.vaadin.server.Page;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -109,6 +110,9 @@ public class WelcomeLayout extends VerticalLayout implements Serializable {
         bottomLayout.addComponent(adminIcon);
         bottomLayout.setComponentAlignment(adminIcon, Alignment.BOTTOM_RIGHT);
         bottomLayout.setExpandRatio(adminIcon, 0.05f);
+        
+        
+        Page.getCurrent().setTitle("PeptideShaker (Online Version)");
 
     }
 }

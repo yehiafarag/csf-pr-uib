@@ -79,6 +79,7 @@ public class SearchLayout extends VerticalLayout implements Serializable, Button
     public SearchLayout(MainHandler handler) {
         this.handler = handler;
         this.datasetNamesList = handler.getDatasetNamesList();
+        
         this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.addComponent(topLayout);
         this.addComponent(searchLayout);
@@ -201,14 +202,18 @@ public class SearchLayout extends VerticalLayout implements Serializable, Button
         searchButton.setStyleName(Reindeer.BUTTON_LINK);
         searchButton.setIcon(new ThemeResource("img/search_22.png"));
         topRightLayout.addComponent(searchButton);
-        topRightLayout.setComponentAlignment(searchButton, Alignment.BOTTOM_LEFT);
+        topRightLayout.setComponentAlignment(searchButton, Alignment.TOP_LEFT);
         topRightLayout.setExpandRatio(searchButton, 0.9f);
         topRightLayout.setMargin(new MarginInfo(true, true, true, false));
         Label infoLable = new Label("<div style='border:1px outset black;text-align:justify;text-justify:inter-word;'><h3 style='font-family:verdana;color:black;font-weight:bold;margin-left:20px;margin-right:20px;'>Information</h3><p  style='font-family:verdana;color:black;margin-left:20px;margin-right:20px;'>Type in search keywords (one per line) and choose the search type. All experiments containing protein(s) where the keyword is found are listed. View the information about each protein from each experiment separately by selecting them from the list.</p></div>");
         infoLable.setContentMode(ContentMode.HTML);
         infoLable.setWidth("300px");
         infoLable.setStyleName(Reindeer.LAYOUT_BLUE);
-
+        IconGenerator help = new IconGenerator();
+        HorizontalLayout infoIco = help.getInfoNote(infoLable);
+        infoIco.setMargin(new MarginInfo(false, true, false, true));
+        topRightLayout.addComponent(infoIco);
+        topRightLayout.setComponentAlignment(infoIco, Alignment.TOP_LEFT);
         //errorLabelI error in search keyword 
         errorLabelI = new Label("<h3 Style='color:red;'>Please Enter Valid Key Word </h3>");
         errorLabelI.setContentMode(ContentMode.HTML);
@@ -224,30 +229,25 @@ public class SearchLayout extends VerticalLayout implements Serializable, Button
         topRightLayout.setComponentAlignment(errorLabelII, Alignment.MIDDLE_CENTER);
         topRightLayout.setExpandRatio(errorLabelII, 0.1f);
 
-        IconGenerator help = new IconGenerator();
-        HorizontalLayout infoIco = help.getInfoNote(infoLable);
-        infoIco.setMargin(new MarginInfo(false, true, false, true));
-        topRightLayout.addComponent(infoIco);
-        topRightLayout.setComponentAlignment(infoIco, Alignment.MIDDLE_RIGHT);
+        
         errorLabelII.setVisible(false);
         searchButton.addClickListener(this);
-        
-        
-          String requestSearching = VaadinService.getCurrentRequest().getPathInfo();
+
+        String requestSearching = VaadinService.getCurrentRequest().getPathInfo();
         if (!requestSearching.trim().endsWith("/")) {
             requestSearching = requestSearching.replace("/", "");
             searchingProcess(requestSearching);
         }
 
     }
-    
-    public void searchingProcess(String keyword){
-        keyword = keyword.replace("*"," ");
+
+    public void searchingProcess(String keyword) {
+        keyword = keyword.replace("*", " ");
         String searchBy = keyword.split("___")[0].replace("searchby:", "");
         String skeyWord = keyword.split("___")[1].replace("searchkey:", "").replace("__", "\n");
-            searchField.setValue(skeyWord);
-            searchbyGroup.setValue(searchBy);
-            buttonClick(null);
+        searchField.setValue(skeyWord);
+        searchbyGroup.setValue(searchBy);
+        buttonClick(null);
     }
 
     /**
@@ -292,15 +292,13 @@ public class SearchLayout extends VerticalLayout implements Serializable, Button
             //start searching process
             if (searchMethod.equals("Protein Accession"))//case of protein accession
             {
-                for (String searchStr : searchSet) {
-                    searchProtList = handler.searchProteinByAccession(searchStr.trim(), searchDatasetType, validatedOnly);
-                    if (searchProtList == null || searchProtList.isEmpty()) {
-                        notFound += searchStr + "\t";
-                    } else {
-                        fullExpProtList.putAll(searchProtList);
-                    }
-
+                searchProtList = handler.searchProteinByAccession(searchSet, searchDatasetType, validatedOnly);
+                fullExpProtList.putAll(searchProtList);
+                              
+                for (String searchStr : searchSet) {                   
+                        notFound =notFound+" , " +searchStr  ;    
                 }
+                notFound = notFound.replaceFirst(" , ", "");
 
             } else if (searchMethod.equals("Protein Name")) //case of protein name
             {

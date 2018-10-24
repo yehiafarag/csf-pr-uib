@@ -1,9 +1,12 @@
 package probe.com.dal;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 
 import probe.com.model.beans.DatasetBean;
@@ -134,9 +137,19 @@ public class DataAccess implements Serializable {
      * @param validatedOnly only validated proteins results
      * @return dataset Proteins Searching List
      */
-    public Map<Integer, ProteinBean>  searchProteinByAccession(String accession, int datasetId,boolean validatedOnly) {
+    public Map<Integer, Map<Integer, ProteinBean>>   searchProteinByAccession(Set<String> accession,boolean validatedOnly) {
+//          if(accession.size()>300){
+//              int index = 300;
+//              ArrayList ts = new ArrayList(accession);
+//              ts.subList(index, index)
+//              ts.subSet(accession., ts)
+//              HashSet<String> tempHashSet = new HashSet<String>(accession.stream().);
+//        
+//        
+//        
+//        }
 
-        Map<Integer, ProteinBean> datasetProteinsSearchingList  = db.searchProteinByAccession(accession, datasetId,validatedOnly);
+        Map<Integer, Map<Integer, ProteinBean>>  datasetProteinsSearchingList  = db.searchIdentificationProteinAllDatasetsByAccession(accession,validatedOnly);
         return datasetProteinsSearchingList ;
     }
     
