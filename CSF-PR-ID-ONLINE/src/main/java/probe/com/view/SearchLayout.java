@@ -6,7 +6,9 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.server.Page;
 import com.vaadin.server.ThemeResource;
+import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.MarginInfo;
@@ -261,12 +263,11 @@ public class SearchLayout extends VerticalLayout implements Serializable, Button
                 try {
                     requestSearching = new String(decURL.decode(requestSearching.split("/file_")[1]), "UTF-8");
                 } catch (UnsupportedEncodingException ex) {
-                    Logger.getLogger(SearchLayout.class.getName()).log(Level.SEVERE, null, ex);
+                    ex.printStackTrace();
                 }
 
                 FileOutputStream fos = null;
                 try {
-                    String urlToDel = requestSearching;
                     URL downloadableFile = new URL(requestSearching);
                     URLConnection conn = downloadableFile.openConnection();
                     conn.addRequestProperty("Cookie", VaadinSession.getCurrent().getAttribute("cookies") + "");
@@ -281,18 +282,30 @@ public class SearchLayout extends VerticalLayout implements Serializable, Button
                     InputStream in = conn.getInputStream();
                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
                     requestSearching = reader.readLine() + reader.readLine() + reader.readLine();
+
                     while (reader.ready()) {
                         String line = reader.readLine();
                         requestSearching += line + "__";
                         // String param = "searchby:" + query.getSearchBy().replace(" ", "*") + "___searchkey:" + query.getSearchKeyWords().replace("\n", "__").replace(" ", "*");
                     }
-                    reader.close();                
+                    reader.close();
 
                     // Always close files.
                 } catch (MalformedURLException ex) {
-                    ex.printStackTrace();
+//                    ex.printStackTrace();
+                    System.out.println("at change address is applied "+requestSearching.split("VAADIN")[0] );
+                    if (requestSearching.contains("VAADIN")) {                        
+                        Page.getCurrent().open(requestSearching.split("VAADIN")[0], "");
+                    }
+                    return;
                 } catch (IOException ex) {
-                    Logger.getLogger(SearchLayout.class.getName()).log(Level.SEVERE, null, ex);
+//                    ex.printStackTrace();
+                    System.out.println("at change address is applied "+requestSearching.split("VAADIN")[0] );
+                    if (requestSearching.contains("VAADIN")) {                        
+                        Page.getCurrent().open(requestSearching.split("VAADIN")[0], "");
+
+                    }
+                    return;
                 }
 
             }

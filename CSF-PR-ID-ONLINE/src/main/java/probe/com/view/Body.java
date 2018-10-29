@@ -43,7 +43,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
     }
 
     /**
-     * initialize body components layout
+     * initialise body components layout
      */
     private void initBodyLayout() {
 //        home layout
