@@ -1446,8 +1446,8 @@ public class DataBase implements Serializable {
      * @return dataset Proteins Searching List
      */
     public synchronized Map<Integer, ProteinBean> searchProteinByAccession(String accession, int datasetId, boolean validatedOnly) {
-        PreparedStatement selectProStat = null;
-        String selectPro = "";
+        PreparedStatement selectProStat ;
+        String selectPro ;
         if (validatedOnly) {
             selectPro = "SELECT * FROM `experiment_protein_table` Where `exp_id`=? AND  `prot_key` LIKE(?) AND `valid`=?;";
         } else {

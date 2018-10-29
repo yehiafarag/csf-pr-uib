@@ -24,7 +24,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
     private ProteinsLayout proteinsLayout;
     private final MainHandler handler;
 /**
- * initialize body layout
+ * initialise body layout
  *@param handler main dataset handler
  * 
  *
@@ -71,7 +71,7 @@ public class Body extends VerticalLayout implements TabSheet.SelectedTabChangeLi
         mainTabSheet.markAsDirty();
         adminTab.setVisible(false);
         
-          String requestSearching = VaadinService.getCurrentRequest().getPathInfo();
+          String requestSearching = VaadinService.getCurrentRequest().getPathInfo();          
         if (!requestSearching.trim().endsWith("/")) {
            mainTabSheet.setSelectedTab(searchTab);
         }

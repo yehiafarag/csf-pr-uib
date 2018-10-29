@@ -8,6 +8,7 @@ import com.vaadin.event.FieldEvents;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinService;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
@@ -20,12 +21,25 @@ import com.vaadin.ui.Select;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import probe.com.handlers.MainHandler;
 import probe.com.model.beans.FractionBean;
 import probe.com.model.beans.PeptideBean;
@@ -79,7 +93,7 @@ public class SearchLayout extends VerticalLayout implements Serializable, Button
     public SearchLayout(MainHandler handler) {
         this.handler = handler;
         this.datasetNamesList = handler.getDatasetNamesList();
-        
+
         this.setStyleName(Reindeer.LAYOUT_WHITE);
         this.addComponent(topLayout);
         this.addComponent(searchLayout);
@@ -229,13 +243,61 @@ public class SearchLayout extends VerticalLayout implements Serializable, Button
         topRightLayout.setComponentAlignment(errorLabelII, Alignment.MIDDLE_CENTER);
         topRightLayout.setExpandRatio(errorLabelII, 0.1f);
 
-        
         errorLabelII.setVisible(false);
         searchButton.addClickListener(this);
 
         String requestSearching = VaadinService.getCurrentRequest().getPathInfo();
         if (!requestSearching.trim().endsWith("/")) {
-            requestSearching = requestSearching.replace("/", "");
+            Base64.Decoder decURL = Base64.getUrlDecoder();
+            if (requestSearching.contains("/list_")) {
+                try {
+                    requestSearching = new String(decURL.decode(requestSearching.split("/list_")[1]), "UTF-8");
+                    requestSearching = requestSearching.replace("/", "");
+                } catch (UnsupportedEncodingException ex) {
+                    ex.printStackTrace();
+                }
+
+            } else if (requestSearching.contains("/file_")) {
+                try {
+                    requestSearching = new String(decURL.decode(requestSearching.split("/file_")[1]), "UTF-8");
+                } catch (UnsupportedEncodingException ex) {
+                    Logger.getLogger(SearchLayout.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                FileOutputStream fos = null;
+                try {
+                    String urlToDel = requestSearching;
+                    URL downloadableFile = new URL(requestSearching);
+                    URLConnection conn = downloadableFile.openConnection();
+                    conn.addRequestProperty("Cookie", VaadinSession.getCurrent().getAttribute("cookies") + "");
+                    conn.addRequestProperty("Accept", "*/*");
+                    conn.addRequestProperty("Accept-Encoding", "gzip, deflate, sdch, br");
+                    conn.addRequestProperty("Accept-Language", "ar,en-US;q=0.8,en;q=0.6,en-GB;q=0.4");
+                    conn.addRequestProperty("Cache-Control", "no-cache");
+                    conn.addRequestProperty("Connection", "keep-alive");
+                    conn.addRequestProperty("DNT", "1");
+                    conn.addRequestProperty("Pragma", "no-cache");
+                    conn.setDoInput(true);
+                    InputStream in = conn.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                    requestSearching = reader.readLine() + reader.readLine() + reader.readLine();
+                    while (reader.ready()) {
+                        String line = reader.readLine();
+                        requestSearching += line + "__";
+                        // String param = "searchby:" + query.getSearchBy().replace(" ", "*") + "___searchkey:" + query.getSearchKeyWords().replace("\n", "__").replace(" ", "*");
+                    }
+                    reader.close();                
+
+                    // Always close files.
+                } catch (MalformedURLException ex) {
+                    ex.printStackTrace();
+                } catch (IOException ex) {
+                    Logger.getLogger(SearchLayout.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+            System.out.println("requestSearching  " + requestSearching);
+
             searchingProcess(requestSearching);
         }
 
@@ -294,9 +356,9 @@ public class SearchLayout extends VerticalLayout implements Serializable, Button
             {
                 searchProtList = handler.searchProteinByAccession(searchSet, searchDatasetType, validatedOnly);
                 fullExpProtList.putAll(searchProtList);
-                              
-                for (String searchStr : searchSet) {                   
-                        notFound =notFound+" , " +searchStr  ;    
+
+                for (String searchStr : searchSet) {
+                    notFound = notFound + " , " + searchStr;
                 }
                 notFound = notFound.replaceFirst(" , ", "");
 
