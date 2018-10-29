@@ -162,9 +162,9 @@ public class CSF_PR_UI extends UI {
                 Page.getCurrent().reload();
             }
             toReload = false;
-            for (Window w : getWindows()) {
+            getWindows().forEach((w) -> {
                 w.center();
-            }
+            });
         }
 
     }

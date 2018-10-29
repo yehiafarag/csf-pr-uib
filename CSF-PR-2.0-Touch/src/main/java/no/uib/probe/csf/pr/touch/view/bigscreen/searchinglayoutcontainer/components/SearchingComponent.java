@@ -20,15 +20,11 @@ import com.vaadin.ui.PopupView;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import java.awt.Color;
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
@@ -40,9 +36,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
-import javax.swing.text.html.HTML;
 import no.uib.probe.csf.pr.touch.Data_Handler;
 import no.uib.probe.csf.pr.touch.database.Query;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantProtein;
@@ -366,10 +359,12 @@ public abstract class SearchingComponent extends BigBtn {
                 set.add(itr2.next());
             }
 
-            for (Component c : set) {
+            set.stream().map((c) -> {
                 legendPopup.addComponent(c);
+                return c;
+            }).forEachOrdered((c) -> {
                 legendPopup.setExpandRatio(c, c.getHeight() + 5);
-            }
+            });
             legend2.setSpacing(true);
             legendPopup.setWidth(150, Unit.PIXELS);
             legendPopup.setHeight(100, Unit.PIXELS);
@@ -548,15 +543,13 @@ public abstract class SearchingComponent extends BigBtn {
             Base64.Encoder encURL = Base64.getUrlEncoder();
 
             String param = "searchby:" + query.getSearchBy().replace(" ", "*") + "___searchkey:" + query.getSearchKeyWords().replace("\n", "__").replace(" ", "*");
-            String encoded64 = "";
+            String encoded64;
             if (param.length() < 1000) {
                 encoded64 = "list_" + encURL.encodeToString(param.getBytes());
             } else {
                 encoded64 = "file_" + encURL.encodeToString(initQueryFile(query).getBytes());
             }
-            
-//            VaadinSession.getCurrent().getAttribute("csf_pr_Url")
-            idRes = new ExternalResource("http://localhost:8084/CSF-PR-ID/" + encoded64);// "searchby:" + query.getSearchBy().replace(" ", "*") + "___searchkey:" + query.getSearchKeyWords().replace("\n", "__").replace(" ", "*"));
+            idRes = new ExternalResource(VaadinSession.getCurrent().getAttribute("csf_pr_Url") + encoded64);
             Link idSearchingLink = new Link(idSearchIdentificationProtList, idRes);
             idSearchingLink.setIcon(VaadinIcons.BAR_CHART);
             idSearchingLink.setTargetName("_blank");
@@ -582,7 +575,7 @@ public abstract class SearchingComponent extends BigBtn {
     }
 
     /**
-     * initialize quant searching results layout
+     * initialise quant searching results layout
      *
      * @param quantHitsList map of hits and main protein title
      * @param searchBy the searching by method
@@ -714,14 +707,15 @@ public abstract class SearchingComponent extends BigBtn {
     }
 
     /**
-     * Load and invoke searching mode in the system to visualize the searching
+     * Load and invoke searching mode in the system to visualise the searching
      * results data in the system
      */
     public abstract void loadQuantSearching();
 
     /**
-     * Load and invoke searching mode in the system to visualize the searching
+     * Load and invoke searching mode in the system to visualise the searching
      * results data in the system
+     * @param query string to be executed against the database
      */
     public void excuteExternalQuery(String query) {
         onClick();
@@ -734,7 +728,7 @@ public abstract class SearchingComponent extends BigBtn {
  
 
     /**
-     * Create and initialize not found proteins file that has proteins
+     * Create and initialise not found proteins file that has proteins
      * accessions list.
      *
      * @param accessions set of not found protein accessions
@@ -752,7 +746,7 @@ public abstract class SearchingComponent extends BigBtn {
         try {
             String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
             File file = new File(basepath + "/VAADIN/" + VaadinSession.getCurrent().getCsrfToken() + ".txt");
-            VaadinSession.getCurrent().getSession().setAttribute("CsrfTokenFile",file.getAbsolutePath());
+            VaadinSession.getCurrent().getSession().setAttribute("CsrfTokenFile", file.getAbsolutePath());
             if (file.exists()) {
                 file.delete();
             }
@@ -780,7 +774,9 @@ public abstract class SearchingComponent extends BigBtn {
             Logger.getLogger(SearchingComponent.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
-                outFile.close();
+                if (outFile != null) {
+                    outFile.close();
+                }
             } catch (IOException ex) {
                 Logger.getLogger(SearchingComponent.class.getName()).log(Level.SEVERE, null, ex);
             }

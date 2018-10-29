@@ -109,10 +109,12 @@ public class CSFPR_ContextListener implements ServletContextListener {
             String title = "CSF-PR Protein Accession List";
             out1.append(title);
             out1.append('\n');
-            for (String acc : protAccSet) {
+            protAccSet.stream().map((acc) -> {
                 out1.append(acc);
-                out1.append('\n');                
-            }
+                return acc;
+            }).forEachOrdered((_item) -> {
+                out1.append('\n');
+            });
 
             out1.flush();
             out1.close();

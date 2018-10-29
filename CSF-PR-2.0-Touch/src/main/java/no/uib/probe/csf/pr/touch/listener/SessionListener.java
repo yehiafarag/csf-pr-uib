@@ -4,8 +4,6 @@
  */
 package no.uib.probe.csf.pr.touch.listener;
 
-import com.vaadin.server.VaadinService;
-import com.vaadin.server.VaadinSession;
 import java.io.File;
 import java.io.Serializable;
 import java.util.Timer;
