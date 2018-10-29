@@ -251,17 +251,19 @@ public class SearchLayout extends VerticalLayout implements Serializable, Button
         String requestSearching = VaadinService.getCurrentRequest().getPathInfo();
         if (!requestSearching.trim().endsWith("/")) {
             Base64.Decoder decURL = Base64.getUrlDecoder();
-            if (requestSearching.contains("/list_")) {
+            if (requestSearching.contains("list_")) {
                 try {
-                    requestSearching = new String(decURL.decode(requestSearching.split("/list_")[1]), "UTF-8");
+                    requestSearching = new String(decURL.decode(requestSearching.split("list_")[1]), "UTF-8");
                     requestSearching = requestSearching.replace("/", "");
                 } catch (UnsupportedEncodingException ex) {
                     ex.printStackTrace();
                 }
 
-            } else if (requestSearching.contains("/file_")) {
+            } else if (requestSearching.contains("file_")) {
+           
                 try {
-                    requestSearching = new String(decURL.decode(requestSearching.split("/file_")[1]), "UTF-8");
+                    requestSearching = new String(decURL.decode(requestSearching.split("file_")[1]), "UTF-8");    
+                    
                 } catch (UnsupportedEncodingException ex) {
                     ex.printStackTrace();
                 }
@@ -269,15 +271,7 @@ public class SearchLayout extends VerticalLayout implements Serializable, Button
                 FileOutputStream fos = null;
                 try {
                     URL downloadableFile = new URL(requestSearching);
-                    URLConnection conn = downloadableFile.openConnection();
-                    conn.addRequestProperty("Cookie", VaadinSession.getCurrent().getAttribute("cookies") + "");
-                    conn.addRequestProperty("Accept", "*/*");
-                    conn.addRequestProperty("Accept-Encoding", "gzip, deflate, sdch, br");
-                    conn.addRequestProperty("Accept-Language", "ar,en-US;q=0.8,en;q=0.6,en-GB;q=0.4");
-                    conn.addRequestProperty("Cache-Control", "no-cache");
-                    conn.addRequestProperty("Connection", "keep-alive");
-                    conn.addRequestProperty("DNT", "1");
-                    conn.addRequestProperty("Pragma", "no-cache");
+                    URLConnection conn = downloadableFile.openConnection();                 
                     conn.setDoInput(true);
                     InputStream in = conn.getInputStream();
                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
@@ -286,31 +280,26 @@ public class SearchLayout extends VerticalLayout implements Serializable, Button
                     while (reader.ready()) {
                         String line = reader.readLine();
                         requestSearching += line + "__";
-                        // String param = "searchby:" + query.getSearchBy().replace(" ", "*") + "___searchkey:" + query.getSearchKeyWords().replace("\n", "__").replace(" ", "*");
                     }
+                    
                     reader.close();
 
                     // Always close files.
                 } catch (MalformedURLException ex) {
-//                    ex.printStackTrace();
-                    System.out.println("at change address is applied "+requestSearching.split("VAADIN")[0] );
-                    if (requestSearching.contains("VAADIN")) {                        
-                        Page.getCurrent().open(requestSearching.split("VAADIN")[0], "");
+                    requestSearching = VaadinService.getCurrentRequest().getPathInfo();
+                    if (requestSearching.contains("file_")) {
+                        Page.getCurrent().open(requestSearching.split("file_")[0], "");
                     }
                     return;
                 } catch (IOException ex) {
-//                    ex.printStackTrace();
-                    System.out.println("at change address is applied "+requestSearching.split("VAADIN")[0] );
-                    if (requestSearching.contains("VAADIN")) {                        
-                        Page.getCurrent().open(requestSearching.split("VAADIN")[0], "");
-
+                   requestSearching = VaadinService.getCurrentRequest().getPathInfo();
+                    if (requestSearching.contains("file_")) {
+                        Page.getCurrent().open(requestSearching.split("file_")[0], "");
                     }
                     return;
                 }
 
             }
-            System.out.println("requestSearching  " + requestSearching);
-
             searchingProcess(requestSearching);
         }
 
