@@ -6,15 +6,11 @@
 package no.uib.probe.csf.pr.touch.listener;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -22,8 +18,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -40,7 +34,6 @@ public class CSFPR_ContextListener implements ServletContextListener {
         ServletContext scx = sce.getServletContext();  
       
         String basepath = scx.getRealPath("/"); 
-        System.out.println("at protein file created " + basepath);
         File file = new File(basepath + "VAADIN/releasenotes.txt");
         try {
             FileReader fileReader = new FileReader(file);

@@ -4,8 +4,11 @@ import com.vaadin.event.LayoutEvents;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.Page;
 import com.vaadin.server.StreamResource;
+import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -17,8 +20,17 @@ import com.vaadin.ui.PopupView;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import java.awt.Color;
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -26,6 +38,11 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
+import javax.swing.text.html.HTML;
 import no.uib.probe.csf.pr.touch.Data_Handler;
 import no.uib.probe.csf.pr.touch.database.Query;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantProtein;
@@ -39,6 +56,7 @@ import no.uib.probe.csf.pr.touch.view.core.PieChart;
 import no.uib.probe.csf.pr.touch.view.core.PopupWindow;
 import no.uib.probe.csf.pr.touch.view.core.ProteinSearcingResultLabel;
 import no.uib.probe.csf.pr.touch.view.core.TrendLegend;
+import org.vaadin.teemu.VaadinIcons;
 
 /**
  *
@@ -71,7 +89,7 @@ public abstract class SearchingComponent extends BigBtn {
      * The bottom buttons container it contains also the link to CSF-PR 1.0 id
      * results.
      */
-    private final HorizontalLayout controlBtnsLayout;
+    private final AbsoluteLayout controlBtnsLayout;
     /**
      * The button is responsible for invoking the show results in system where
      * the user can visualize his data and compare it with the CSF-PR 2.0
@@ -91,11 +109,11 @@ public abstract class SearchingComponent extends BigBtn {
      * The results layout is the container for quant data results (the pie
      * charts).
      */
-    private final VerticalLayout resultsLayout;
+    private final AbsoluteLayout resultsLayout;
     /**
      * The middle layout has the results label and legend.
      */
-    private final HorizontalLayout middleLayout;
+    private final AbsoluteLayout middleLayout;
     /**
      * The overview pie chart result container.
      */
@@ -171,6 +189,8 @@ public abstract class SearchingComponent extends BigBtn {
 
             @Override
             public void search(Query query) {
+                quantDataResult.removeAllComponents();
+                overviewResults.removeAllComponents();
                 searchProteins(query);
             }
 
@@ -178,21 +198,20 @@ public abstract class SearchingComponent extends BigBtn {
         popupbodyLayout.addComponent(searchingUnit);
         popupbodyLayout.setExpandRatio(searchingUnit, h1 + 10);
 
-        middleLayout = new HorizontalLayout();
-        middleLayout.setMargin(new MarginInfo(false, true));
+        middleLayout = new AbsoluteLayout();
+//        middleLayout.setMargin(new MarginInfo(false, true));
         middleLayout.setHeight(29, Unit.PIXELS);
         middleLayout.setWidth(100, Unit.PERCENTAGE);
         resultsLabel = new Label("Search Results");
         resultsLabel.setStyleName(ValoTheme.LABEL_BOLD);
-        middleLayout.addComponent(resultsLabel);
-        middleLayout.setExpandRatio(resultsLabel, 190);
-        middleLayout.setComponentAlignment(resultsLabel, Alignment.BOTTOM_LEFT);
+        middleLayout.addComponent(resultsLabel, "left:30px; top:5px;");
+//        middleLayout.setExpandRatio(resultsLabel, 190);
+//        middleLayout.setComponentAlignment(resultsLabel, Alignment.BOTTOM_LEFT);
         HorizontalLayout legendContainer = new HorizontalLayout();
         legendContainer.setSpacing(true);
-        middleLayout.addComponent(legendContainer);
+        middleLayout.addComponent(legendContainer, "right: 20px; top: 2px;");
         legendContainer.setSpacing(true);
-        middleLayout.addComponent(legendContainer);
-        middleLayout.setComponentAlignment(legendContainer, Alignment.MIDDLE_RIGHT);
+//        middleLayout.setComponentAlignment(legendContainer, Alignment.MIDDLE_RIGHT);
 
         TrendLegend legend2 = new TrendLegend("found_notfound");
 
@@ -201,13 +220,14 @@ public abstract class SearchingComponent extends BigBtn {
         popupbodyLayout.addComponent(middleLayout);
         popupbodyLayout.setExpandRatio(middleLayout, 30f);
 
-        resultsLayout = new VerticalLayout();
+        resultsLayout = new AbsoluteLayout();
         resultsLayout.addStyleName("roundedborder");
         resultsLayout.addStyleName("whitelayout");
         resultsLayout.addStyleName("padding20");
         resultsLayout.addStyleName("marginleft");
         resultsLayout.addStyleName("marginbottom");
         resultsLayout.addStyleName("scrollable");
+        resultsLayout.addStyleName("visibleoverflow");
         resultsLayout.setWidth(searchingUnit.getWidth(), Unit.PIXELS);
         resultsLayout.setHeight(Math.max(searchingPanel.getHeight() - 30 - 10 - h1 - 30 - 10 - 50 - 10 - 10, 1), Unit.PIXELS);
         popupbodyLayout.addComponent(resultsLayout);
@@ -229,25 +249,25 @@ public abstract class SearchingComponent extends BigBtn {
         quantResultWrapping.addComponent(quantDataResult);
         quantResultWrapping.setComponentAlignment(quantDataResult, Alignment.MIDDLE_CENTER);
 
-        noresultsLabel = new Label(noresultMessage);
+        noresultsLabel = new Label(noresultMessage, ContentMode.HTML);
         noresultsLabel.setStyleName(ValoTheme.LABEL_BOLD);
         noresultsLabel.setVisible(false);
-        resultsLayout.addComponent(noresultsLabel);
-        resultsLayout.setComponentAlignment(noresultsLabel, Alignment.MIDDLE_CENTER);
+        resultsLayout.addComponent(noresultsLabel, "left:" + ((searchingUnit.getWidth() / 2) - 56) + "px; top:50%;");
 
-        controlBtnsLayout = new HorizontalLayout();
+        controlBtnsLayout = new AbsoluteLayout();
         controlBtnsLayout.addStyleName("roundedborder");
         controlBtnsLayout.addStyleName("whitelayout");
         controlBtnsLayout.addStyleName("padding10");
         controlBtnsLayout.addStyleName("marginleft");
         controlBtnsLayout.addStyleName("marginbottom");
+        controlBtnsLayout.addStyleName("visibleoverflow");
         controlBtnsLayout.setHeight(50, Unit.PIXELS);
         controlBtnsLayout.setWidth(searchingUnit.getWidth(), Unit.PIXELS);
 
         HorizontalLayout btnsWrapper = new HorizontalLayout();
-        controlBtnsLayout.addComponent(btnsWrapper);
-        controlBtnsLayout.setComponentAlignment(btnsWrapper, Alignment.TOP_LEFT);
-        controlBtnsLayout.setExpandRatio(btnsWrapper, controlBtnsLayout.getWidth() - 130);
+        controlBtnsLayout.addComponent(btnsWrapper, "left:-2px; top:-2px");
+//        controlBtnsLayout.setComponentAlignment(btnsWrapper, Alignment.TOP_LEFT);
+//        controlBtnsLayout.setExpandRatio(btnsWrapper, controlBtnsLayout.getWidth() - 130);
         btnsWrapper.setSpacing(true);
 
         InformationButton info = new InformationButton("Searching allows the user to locate a specific protein or a group of proteins. Input the search text at the top, select the input type and the disease category, and click \"Search\". A graphical overview of the results will be displayed at the bottom. You can either load all the results or select a subset via the charts before loading.", true);
@@ -255,14 +275,16 @@ public abstract class SearchingComponent extends BigBtn {
 
         idDataResult = new VerticalLayout();
         idDataResult.addStyleName("marginleft");
-        btnsWrapper.addComponent(idDataResult);
+        idDataResult.addStyleName("idsearchresults");
+
+        resultsLayout.addComponent(idDataResult, "left:0px; bottom:0px");
 
         HorizontalLayout rightBtnWrapper = new HorizontalLayout();
         rightBtnWrapper.setSizeUndefined();
         rightBtnWrapper.setSpacing(true);
-        controlBtnsLayout.addComponent(rightBtnWrapper);
-        controlBtnsLayout.setComponentAlignment(rightBtnWrapper, Alignment.MIDDLE_RIGHT);
-        controlBtnsLayout.setExpandRatio(rightBtnWrapper, 130);
+        controlBtnsLayout.addComponent(rightBtnWrapper, "right:-1px; top:-1px");
+//        controlBtnsLayout.setComponentAlignment(rightBtnWrapper, Alignment.MIDDLE_RIGHT);
+//        controlBtnsLayout.setExpandRatio(rightBtnWrapper, 130);
         Button resetBtn = new Button("Reset");
         resetBtn.setStyleName(ValoTheme.BUTTON_SMALL);
         resetBtn.setStyleName(ValoTheme.BUTTON_TINY);
@@ -323,7 +345,7 @@ public abstract class SearchingComponent extends BigBtn {
         } else {
             popupbodyLayout.setHeight(10 + h1 + 30 + resultsLayout.getHeight() + 20 + 50 + 10, Unit.PIXELS);
         }
-        middleLayout.setExpandRatio(legendContainer, searchingPanel.getWidth() - 190);
+//        middleLayout.setExpandRatio(legendContainer, searchingPanel.getWidth() - 190);
         if (searchingPanel.getWidth() - 190 < 436) {
             middleLayout.removeComponent(legendContainer);
             CloseButton closeBtn = new CloseButton();
@@ -359,10 +381,10 @@ public abstract class SearchingComponent extends BigBtn {
 
             });
             middleLayout.addComponent(popup);
-            middleLayout.setComponentAlignment(popup, Alignment.MIDDLE_RIGHT);
-            middleLayout.setExpandRatio(popup, searchingPanel.getWidth() - 190);
+//            middleLayout.setComponentAlignment(popup, Alignment.MIDDLE_RIGHT);
+//            middleLayout.setExpandRatio(popup, searchingPanel.getWidth() - 190);
         } else {
-            middleLayout.setExpandRatio(legendContainer, searchingPanel.getWidth() - 190);
+//            middleLayout.setExpandRatio(legendContainer, searchingPanel.getWidth() - 190);
             legendContainer.addComponent(legend2);
             legendContainer.setComponentAlignment(legend2, Alignment.MIDDLE_RIGHT);
             legend2.addStyleName("marginright");
@@ -519,11 +541,24 @@ public abstract class SearchingComponent extends BigBtn {
         //searching id data
         String idSearchIdentificationProtList = Data_handler.searchIdentificationProtein(query);
         ExternalResource idRes;
-        if (idSearchIdentificationProtList != null) {
+        if (idSearchIdentificationProtList != null && !idSearchIdentificationProtList.isEmpty()) {
             idDataResult.setVisible(true);
             idDataResult.removeAllComponents();
-            idRes = new ExternalResource(VaadinSession.getCurrent().getAttribute("csf_pr_Url") + "searchby:" + query.getSearchBy().replace(" ", "*") + "___searchkey:" + query.getSearchKeyWords().replace("\n", "__").replace(" ", "*"));
+
+            Base64.Encoder encURL = Base64.getUrlEncoder();
+
+            String param = "searchby:" + query.getSearchBy().replace(" ", "*") + "___searchkey:" + query.getSearchKeyWords().replace("\n", "__").replace(" ", "*");
+            String encoded64 = "";
+            if (param.length() < 1000) {
+                encoded64 = "list_" + encURL.encodeToString(param.getBytes());
+            } else {
+                encoded64 = "file_" + encURL.encodeToString(initQueryFile(query).getBytes());
+            }
+            
+//            VaadinSession.getCurrent().getAttribute("csf_pr_Url")
+            idRes = new ExternalResource("http://localhost:8084/CSF-PR-ID/" + encoded64);// "searchby:" + query.getSearchBy().replace(" ", "*") + "___searchkey:" + query.getSearchKeyWords().replace("\n", "__").replace(" ", "*"));
             Link idSearchingLink = new Link(idSearchIdentificationProtList, idRes);
+            idSearchingLink.setIcon(VaadinIcons.BAR_CHART);
             idSearchingLink.setTargetName("_blank");
             idSearchingLink.setStyleName(ValoTheme.LINK_SMALL);
             idSearchingLink.addStyleName("smalllink");
@@ -531,7 +566,7 @@ public abstract class SearchingComponent extends BigBtn {
             idSearchingLink.setWidth(100, Unit.PERCENTAGE);
             idDataResult.addComponent(idSearchingLink);
             if (searchQuantificationProtList.isEmpty()) {
-                Page.getCurrent().open(idRes.getURL(), "");
+                Page.getCurrent().open(idRes.getURL(), "_blank", false);
             }
 
         } else {
@@ -543,7 +578,6 @@ public abstract class SearchingComponent extends BigBtn {
             middleLayout.setVisible(true);
             searchingUnit.setVisible(false);
         }
-
 
     }
 
@@ -609,7 +643,9 @@ public abstract class SearchingComponent extends BigBtn {
         int maxColNum = Math.max(availableWidth / 250, 1);
 
         if (quantHitsList.size() <= maxColNum * 2) {
-            resultsLayout.setComponentAlignment(quantResultWrapping, Alignment.MIDDLE_CENTER);
+            quantResultWrapping.addStyleName("floattocenter");
+            idDataResult.removeStyleName("limitlabelsize");
+//            resultsLayout.setComponentAlignment(quantResultWrapping, Alignment.MIDDLE_CENTER);
             quantDataResult.addComponent(notFoundChart, 0, 0);
             quantDataResult.setComponentAlignment(notFoundChart, Alignment.MIDDLE_CENTER);
             quantDataResult.removeStyleName("marginleft");
@@ -638,7 +674,9 @@ public abstract class SearchingComponent extends BigBtn {
 
         } else {
             quantDataResult.addStyleName("marginleft");
-            resultsLayout.setComponentAlignment(quantResultWrapping, Alignment.MIDDLE_LEFT);
+            quantResultWrapping.removeStyleName("floattocenter");
+            idDataResult.addStyleName("limitlabelsize");
+//            resultsLayout.setComponentAlignment(quantResultWrapping, Alignment.MIDDLE_LEFT);
             maxColNum = Math.max((availableWidth - 270) / 250, 1);
             overviewResults.setVisible(true);
             overviewResults.addComponent(notFoundChart);
@@ -708,4 +746,47 @@ public abstract class SearchingComponent extends BigBtn {
             return new ByteArrayInputStream(csvFile);
         }, "Proteins_List.csv");
     }
+
+    private String initQueryFile(Query query) {
+        FileWriter outFile = null;
+        try {
+            String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
+            File file = new File(basepath + "/VAADIN/" + VaadinSession.getCurrent().getCsrfToken() + ".txt");
+            VaadinSession.getCurrent().getSession().setAttribute("CsrfTokenFile",file.getAbsolutePath());
+            if (file.exists()) {
+                file.delete();
+            }
+            file.createNewFile();
+            file.deleteOnExit();
+            PrintWriter out1;
+            outFile = new FileWriter(file, true);
+            out1 = new PrintWriter(outFile);
+            out1.append("searchby:");
+            out1.append('\n');
+            out1.append(query.getSearchBy().replace(" ", "*"));
+            out1.append('\n');
+            out1.append("___searchkey:");
+            out1.append('\n');
+            for (String acc : query.getSearchKeyWords().split("\n")) {
+                out1.append(acc);
+                out1.append('\n');
+            }
+            out1.flush();
+            out1.close();
+            String location = Page.getCurrent().getLocation().getRawPath().split("/")[1];//.getHost().split("csf-pr")[0].split("CSF-PR")[0];
+            String host = Page.getCurrent().getLocation().toString().split(location)[0] + "" + location + "/";
+            return host + "VAADIN/" + file.getName();
+        } catch (IOException ex) {
+            Logger.getLogger(SearchingComponent.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                outFile.close();
+            } catch (IOException ex) {
+                Logger.getLogger(SearchingComponent.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return "";
+
+    }
+
 }

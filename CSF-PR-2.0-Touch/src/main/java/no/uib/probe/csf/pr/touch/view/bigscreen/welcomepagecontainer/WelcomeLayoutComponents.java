@@ -633,7 +633,6 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
 
     private void initReleaseNote(VerticalLayout relaseNoteInfo) {
         String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
-        System.out.println("at base path "+basepath);
         File file = new File(basepath + "/VAADIN/releasenotes.txt");
         try {
             FileReader fileReader = new FileReader(file);

@@ -5,9 +5,12 @@
   <listener>
         <listener-class>no.uib.probe.csf.pr.touch.listener.CSFPR_ContextListener</listener-class>
     </listener>
+     <listener>
+        <listener-class>no.uib.probe.csf.pr.touch.listener.SessionListener</listener-class>
+    </listener>
     <!-- Session Configuration -->
     <session-config>
-        <session-timeout>15</session-timeout>
+        <session-timeout>1</session-timeout>
     </session-config>
     <context-param>
         <description>Vaadin production mode</description>

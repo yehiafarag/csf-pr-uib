@@ -127,8 +127,6 @@ public class CoreLogic implements Serializable {
      */
     public Map<String, InitialInformationObject> getQuantDatasetInitialInformationObject() {
         Map<String, InitialInformationObject> quantStudyInitInfoMap = database.getQuantDatasetInitialInformationObject();
-        System.out.println("at quant is null " + (quantStudyInitInfoMap == null));
-
         boolean[] activeHeaders = new boolean[27];
         Set<String> diseaseCategories = new LinkedHashSet<>();
         InitialInformationObject allDatasetObject = new InitialInformationObject();
