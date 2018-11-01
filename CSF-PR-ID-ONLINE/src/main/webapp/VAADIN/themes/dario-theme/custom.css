@@ -96,3 +96,35 @@
     overflow: hidden !important;
 
 }
+.link{
+	text-decoration:none ;
+        text-align: justify !important;
+        color:#585858;
+        background-color:white;;
+      
+}
+.link:hover{
+	text-decoration:underline;
+	color:#4d749f;
+}
+.smallimgicon{
+	border:2px solid ;
+	max-width:20px;
+	border-radius:5px;
+
+}
+.link img{
+	padding:5px;	
+	border-color:lightgray;
+	background-color:whitesmoke !important;
+	margin-top:-10px;
+	left:0px !important;
+	position:absolute;
+
+}
+
+.linkwithimg  {
+	position:relative !important;
+	vertical-align:top !important;
+	padding-left:40px;
+}
