@@ -13,7 +13,6 @@ import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.PopupView;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -35,7 +34,6 @@ import no.uib.probe.csf.pr.touch.view.bigscreen.popupwindows.DatasetInformationW
 import no.uib.probe.csf.pr.touch.view.bigscreen.searchinglayoutcontainer.components.CompareComponent;
 import no.uib.probe.csf.pr.touch.view.bigscreen.searchinglayoutcontainer.components.SearchingComponent;
 import no.uib.probe.csf.pr.touch.view.core.BigBtn;
-import no.uib.probe.csf.pr.touch.view.core.ExternalLink;
 import no.uib.probe.csf.pr.touch.view.core.ImageContainerBtn;
 import no.uib.probe.csf.pr.touch.view.core.OverviewInfoBean;
 
@@ -452,7 +450,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
             homeBtn.setVisible(false);
             homeBtn.getThumbBtn().setDescription("Home page");
 
-            Label para_2 = new Label(breakline + "<p align='justify' Style='margin-bottom:2px;width:650px;text-align: justify;text-justify: inter-word;font-size: 12px;color: black;/* font-weight: bold; */line-height: 12px;'><font>Publications:</font></p><ul align='justify' Style='margin-bottom:2px;margin-top:2px;padding-left:20px;text-align: justify;text-justify: inter-word;font-size: 12px;color: black;/* font-weight: bold; */line-height: 20px;'><li style='width:650px !important'><a class='link' href='http://www.mcponline.org/content/early/2016/11/27/mcp.O116.064477.abstract' target='_blank'>Guldbrandsen et al.: CSF-PR 2.0: an interactive literature guide to quantitative cerebrospinal fluid mass spectrometry data from neurodegenerative disorders. Mol Cell Proteomics. 2017 Feb;16(2):300-309.</font></li><li style='width:650px !important'><a class='link' href='http://www.mcponline.org/content/13/11/3152.full.pdf+html' target='_blank'>Guldbrandsen et al.: In-depth Characterization of the Cerebrospinal Fluid (CSF) Proteome Displayed Through the CSF Proteome Resource (CSF-PR). Mol Cell Proteomics. 2014.</a></li></ul>");
+            Label para_2 = new Label(breakline + "<p align='justify' Style='margin-bottom:2px;width:650px;text-align: justify;text-justify: inter-word;font-size: 12px;color: black;/* font-weight: bold; */line-height: 12px;'><font>Publications:</font></p><ul align='justify' Style='margin-bottom:2px;margin-top:2px;padding-left:20px;text-align: justify;text-justify: inter-word;font-size: 12px;color: black;/* font-weight: bold; */line-height: 20px;'><li style='width:650px !important'><a class='link' href='http://www.mcponline.org/content/16/2/300' target='_blank'>Guldbrandsen et al.: CSF-PR 2.0: an interactive literature guide to quantitative cerebrospinal fluid mass spectrometry data from neurodegenerative disorders. Mol Cell Proteomics. 2017 Feb;16(2):300-309.</font></li><li style='width:650px !important'><a class='link' href='http://www.mcponline.org/content/13/11/3152.full.pdf+html' target='_blank'>Guldbrandsen et al.: In-depth Characterization of the Cerebrospinal Fluid (CSF) Proteome Displayed Through the CSF Proteome Resource (CSF-PR). Mol Cell Proteomics. 2014 Nov;13(11):3152-63.</a></li></ul>");
             para_2.setContentMode(ContentMode.HTML);
 
             middleLayout.addComponent(para_2);
