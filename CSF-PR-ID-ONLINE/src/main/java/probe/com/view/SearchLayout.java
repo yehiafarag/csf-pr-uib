@@ -227,22 +227,25 @@ public class SearchLayout extends VerticalLayout implements Serializable, Button
         infoLable.setStyleName(Reindeer.LAYOUT_BLUE);
         IconGenerator help = new IconGenerator();
         HorizontalLayout infoIco = help.getInfoNote(infoLable);
+        infoIco.addStyleName("infoicon");
         infoIco.setMargin(new MarginInfo(false, true, false, true));
         topRightLayout.addComponent(infoIco);
-        topRightLayout.setComponentAlignment(infoIco, Alignment.TOP_LEFT);
+        topRightLayout.setComponentAlignment(infoIco, Alignment.TOP_RIGHT);
         //errorLabelI error in search keyword 
         errorLabelI = new Label("<h3 Style='color:red;'>Please Enter Valid Key Word </h3>");
         errorLabelI.setContentMode(ContentMode.HTML);
+        errorLabelI.addStyleName("errormessage");
 
         topRightLayout.addComponent(errorLabelI);
-        topRightLayout.setComponentAlignment(errorLabelI, Alignment.MIDDLE_CENTER);
+        topRightLayout.setComponentAlignment(errorLabelI, Alignment.TOP_RIGHT);
         errorLabelI.setVisible(false);
 
         topRightLayout.setExpandRatio(errorLabelI, 0.1f);
 
         errorLabelII = new CustomErrorLabel();
+        errorLabelII.addStyleName("errormessage");
         topRightLayout.addComponent(errorLabelII);
-        topRightLayout.setComponentAlignment(errorLabelII, Alignment.MIDDLE_CENTER);
+        topRightLayout.setComponentAlignment(errorLabelII, Alignment.TOP_RIGHT);
         topRightLayout.setExpandRatio(errorLabelII, 0.1f);
 
         errorLabelII.setVisible(false);
