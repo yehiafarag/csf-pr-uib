@@ -167,7 +167,7 @@ public abstract class PieChart extends AbsoluteLayout implements LayoutEvents.La
         dataset = new DefaultPieDataset();
 
         plot = new PiePlot(dataset);
-        plot.setNoDataMessage("No data available");
+        plot.setNoDataMessage("");
         plot.setCircular(true);
         plot.setLabelGap(0);
         plot.setLabelFont(new Font("Helvetica Neue", Font.PLAIN, 13));
