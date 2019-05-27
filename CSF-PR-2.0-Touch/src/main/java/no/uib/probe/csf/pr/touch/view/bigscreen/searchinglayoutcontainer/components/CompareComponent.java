@@ -436,10 +436,9 @@ public abstract class CompareComponent extends BigBtn {
         query.setSearchKeyWords(defaultText);
         //searching quant data
         query.setSearchDataType("Quantification Data");
-        searchQuantificationProtList = Data_handler.searchQuantificationProtein(query, true);
-
-        String quantNotFound = Data_handler.filterQuantSearchingKeywords(searchQuantificationProtList, query.getSearchKeyWords(), query.getSearchBy());
-
+        searchQuantificationProtList = Data_handler.searchQuantificationProtein(query, true); 
+        String quantNotFound = Data_handler.filterQuantSearchingKeywords(searchQuantificationProtList, query.getSearchKeyWords(), query.getSearchBy());       
+        
         Integer[] quantHitsList = Data_handler.getQuantComparisonHitsList(searchQuantificationProtList, query.getSearchBy());
         Integer[] proteinsHitsList = Data_handler.getQuantComparisonProteinList(searchQuantificationProtList, query.getSearchBy());
         if (quantHitsList != null && searchQuantificationProtList != null) {
@@ -449,6 +448,7 @@ public abstract class CompareComponent extends BigBtn {
                 studiesSet.add(qp.getQuantDatasetIndex());
             });
             if (quantNotFound != null) {
+                quantNotFound = quantNotFound.replace("\n",",");
                 for (String s : quantNotFound.split(",")) {
                     filterKeywordSet.remove(s.trim());
                 }
@@ -457,6 +457,7 @@ public abstract class CompareComponent extends BigBtn {
             }
 
             initQuantComparisonresults(quantHitsList, proteinsHitsList, quantNotFound.split(","), filterKeywordSet.size());
+            loadDataBtn.setEnabled(!filterKeywordSet.isEmpty());
         }
 
         query.setSearchDataType("Identification Data");

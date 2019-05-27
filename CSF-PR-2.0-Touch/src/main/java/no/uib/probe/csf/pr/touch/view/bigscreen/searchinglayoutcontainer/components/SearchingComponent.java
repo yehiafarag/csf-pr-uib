@@ -559,7 +559,7 @@ public abstract class SearchingComponent extends BigBtn {
             idSearchingLink.setWidth(100, Unit.PERCENTAGE);
             idDataResult.addComponent(idSearchingLink);
             if (searchQuantificationProtList.isEmpty()) {
-                Page.getCurrent().open(idRes.getURL(), "_blank", false);
+//                Page.getCurrent().open(idRes.getURL(), "_blank", false);
             }
 
         } else {
