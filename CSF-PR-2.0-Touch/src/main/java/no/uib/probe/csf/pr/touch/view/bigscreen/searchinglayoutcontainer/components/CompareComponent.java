@@ -19,6 +19,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -38,6 +39,7 @@ import no.uib.probe.csf.pr.touch.view.core.InformationButton;
 import no.uib.probe.csf.pr.touch.view.core.PieChart;
 import no.uib.probe.csf.pr.touch.view.core.PopupWindow;
 import no.uib.probe.csf.pr.touch.view.core.TrendLegend;
+import org.vaadin.teemu.VaadinIcons;
 
 /**
  * This class represents quantitative comparison window where users can compare
@@ -471,14 +473,26 @@ public abstract class CompareComponent extends BigBtn {
 
         //searching id data
         String idSearchIdentificationProtList = Data_handler.searchIdentificationProtein(query);
-        if (idSearchIdentificationProtList != null) {
-            idDataResult.setVisible(true);
-            idDataResult.removeAllComponents();
-            Link idSearchingLink = new Link(idSearchIdentificationProtList, new ExternalResource(VaadinSession.getCurrent().getAttribute("csf_pr_Url") + "searchby:" + query.getSearchBy().replace(" ", "*") + "___searchkey:" + query.getSearchKeyWords().replace("\n", "__").replace(" ", "*")));
+        ExternalResource idRes;
+        if (idSearchIdentificationProtList != null && !idSearchIdentificationProtList.isEmpty()) {
+              Base64.Encoder encURL = Base64.getUrlEncoder();
+
+            String param = "searchby:" + query.getSearchBy().replace(" ", "*") + "___searchkey:" + query.getSearchKeyWords().replace("\n", "__").replace(" ", "*");
+            String encoded64;
+            if (param.length() < 10) {
+                encoded64 = "list_" + encURL.encodeToString(param.getBytes());
+            } else {
+                int index = Data_handler.storeQuery(query);
+                encoded64 = "query_" + index+"_"+VaadinSession.getCurrent().getCsrfToken();//file_" + encURL.encodeToString(initQueryFile(query).getBytes());
+            }
+            idRes = new ExternalResource(VaadinSession.getCurrent().getAttribute("csf_pr_Url") + encoded64);
+            Link idSearchingLink = new Link(idSearchIdentificationProtList, idRes);
+            idSearchingLink.setIcon(VaadinIcons.BAR_CHART);
             idSearchingLink.setTargetName("_blank");
             idSearchingLink.setStyleName(ValoTheme.LINK_SMALL);
             idSearchingLink.addStyleName("smalllink");
             idSearchingLink.setDescription("View protein id results in CSF-PR v1.0");
+            idSearchingLink.setWidth(100, Unit.PERCENTAGE);
             idDataResult.addComponent(idSearchingLink);
 
         } else {
