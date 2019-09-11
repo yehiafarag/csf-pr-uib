@@ -8,9 +8,7 @@ import com.vaadin.event.FieldEvents;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.Page;
 import com.vaadin.server.ThemeResource;
-import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
-import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
@@ -30,7 +28,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -40,8 +37,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import probe.com.dal.Query;
 import probe.com.handlers.MainHandler;
 import probe.com.model.beans.FractionBean;
 import probe.com.model.beans.PeptideBean;
@@ -302,8 +298,6 @@ public class SearchLayout extends VerticalLayout implements Serializable, Button
                     return;
                 }
 
-            } else if (requestSearching.contains("query_")) {
-                return;
             }
             searchingProcess(requestSearching);
         }
@@ -311,9 +305,17 @@ public class SearchLayout extends VerticalLayout implements Serializable, Button
     }
 
     public void searchingProcess(String keyword) {
-        keyword = keyword.replace("*", " ");
-        String searchBy = keyword.split("___")[0].replace("searchby:", "");
-        String skeyWord = keyword.split("___")[1].replace("searchkey:", "").replace("__", "\n");
+        String searchBy;
+        String skeyWord;
+        if (keyword.contains("query_")) {
+            Query query = handler.getSearchQuery(keyword);
+            skeyWord = query.getSearchKeyWords();
+            searchBy = query.getSearchBy();
+        } else {
+            keyword = keyword.replace("*", " ");
+            searchBy = keyword.split("___")[0].replace("searchby:", "");
+            skeyWord = keyword.split("___")[1].replace("searchkey:", "").replace("__", "\n");
+        }
         searchField.setValue(skeyWord);
         searchbyGroup.setValue(searchBy);
         buttonClick(null);

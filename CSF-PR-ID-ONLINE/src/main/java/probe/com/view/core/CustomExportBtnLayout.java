@@ -126,7 +126,6 @@ public class CustomExportBtnLayout extends VerticalLayout implements Serializabl
     @Override
     public void buttonClick(Button.ClickEvent event) {
         if (type.equalsIgnoreCase("allPep")) {
-            System.out.println("at type group " + typeGroup.getValue());
             if (peptidesList == null) {
                 peptidesList = handler.getPeptidesList(datasetId, typeGroup.getValue().toString().equalsIgnoreCase("Validated"));
             }

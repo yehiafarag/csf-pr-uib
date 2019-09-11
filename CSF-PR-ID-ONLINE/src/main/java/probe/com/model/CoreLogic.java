@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import probe.com.dal.DataAccess;
+import probe.com.dal.Query;
 import probe.com.model.beans.DatasetBean;
 import probe.com.model.beans.DatasetDetailsBean;
 import probe.com.model.beans.FractionBean;
@@ -639,6 +640,16 @@ public class CoreLogic implements Serializable {
         }
         return vProteinsList;
 
+    }
+    /**
+     * Get query details that sent from csf-pr quant
+     *
+     * @param queryText query text contain idex and query key
+     * @return query object that has all requested data
+     *
+     */
+    public Query getSearchQuery(String queryText) {
+        return da.getSearchQuery(queryText);
     }
 
 //    /**

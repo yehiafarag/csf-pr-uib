@@ -17,7 +17,7 @@ public class CustomErrorLabel extends VerticalLayout implements Serializable{
     public void updateErrot(String protName)
     {
         this.removeAllComponents();
-        Label  errorLabel = new Label("<h3 Style='color:gray;max-height: 20px;line-height: 20px;margin-top: -16px;position: absolute;'>No results found for:</h3><h4 style='word-spacing: 5px; color: gray;'> " + protName + " </h4>");
+        Label  errorLabel = new Label("<h3 Style='color:gray;max-height: 20px;line-height: 20px;margin-top: -16px;position: absolute;'>No results found:</h3><h4 style='word-spacing: 5px; color: gray;'> " + protName + " </h4>");
         errorLabel.setContentMode(ContentMode.HTML);
         this.addComponent(errorLabel);
     

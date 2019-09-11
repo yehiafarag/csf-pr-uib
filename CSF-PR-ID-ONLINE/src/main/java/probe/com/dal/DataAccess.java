@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-
 import probe.com.model.beans.DatasetBean;
 import probe.com.model.beans.FractionBean;
 import probe.com.model.beans.PeptideBean;
@@ -23,7 +22,7 @@ public class DataAccess implements Serializable {
     private static final long serialVersionUID = -7011020617952045934L;
     private final DataBase db;
 
-     /**
+    /**
      * @param url database url
      * @param dbName database name
      * @param driver database driver
@@ -35,7 +34,7 @@ public class DataAccess implements Serializable {
         db = new DataBase(url, dbName, driver, userName, password);
     }
 
-     /**
+    /**
      * create database tables if not exist
      *
      * @return test boolean (successful creation)
@@ -46,9 +45,7 @@ public class DataAccess implements Serializable {
         boolean test = db.createTables();
         return test;
 
-
     }
-
 
     /**
      * remove dataset from the database
@@ -64,7 +61,7 @@ public class DataAccess implements Serializable {
     /**
      * get the available datasets
      *
-     * @return datasetsList 
+     * @return datasetsList
      */
     public Map<Integer, DatasetBean> getDatasets()//get dataset list
     {
@@ -82,8 +79,6 @@ public class DataAccess implements Serializable {
         DatasetBean dataset = db.getStoredDataset(datasetId);
         return dataset;
     }
-
-   
 
     public boolean updatePeptideFile(DatasetBean dataset) {
 
@@ -109,19 +104,17 @@ public class DataAccess implements Serializable {
      * @return dataset peptide List
      */
     public Map<Integer, PeptideBean> getPeptidesList(int datasetId) {
-        Map<Integer, PeptideBean> peptidesList = db.getDatasetPeptidesList(datasetId);   
-        
+        Map<Integer, PeptideBean> peptidesList = db.getDatasetPeptidesList(datasetId);
+
         return peptidesList;
     }
-    
-   
+
     /**
      * get fraction list for selected dataset
      *
      * @param datasetId
-     * @return fractions  list for the selected dataset
+     * @return fractions list for the selected dataset
      */
-
     public Map<Integer, FractionBean> getFractionsList(int datasetId) {
         Map<Integer, FractionBean> fractionsList = db.getFractionsList(datasetId);
         return fractionsList;
@@ -129,15 +122,15 @@ public class DataAccess implements Serializable {
     }
 
     ///new v-2
-     /**
+    /**
      * search for proteins by accession keywords
      *
      * @param accession array of query words
-     * @param datasetId  
+     * @param datasetId
      * @param validatedOnly only validated proteins results
      * @return dataset Proteins Searching List
      */
-    public Map<Integer, Map<Integer, ProteinBean>>   searchProteinByAccession(Set<String> accession,boolean validatedOnly) {
+    public Map<Integer, Map<Integer, ProteinBean>> searchProteinByAccession(Set<String> accession, boolean validatedOnly) {
 //          if(accession.size()>300){
 //              int index = 300;
 //              ArrayList ts = new ArrayList(accession);
@@ -149,17 +142,15 @@ public class DataAccess implements Serializable {
 //        
 //        }
 
-        Map<Integer, Map<Integer, ProteinBean>>  datasetProteinsSearchingList  = db.searchIdentificationProteinAllDatasetsByAccession(accession,validatedOnly);
-        return datasetProteinsSearchingList ;
+        Map<Integer, Map<Integer, ProteinBean>> datasetProteinsSearchingList = db.searchIdentificationProteinAllDatasetsByAccession(accession, validatedOnly);
+        return datasetProteinsSearchingList;
     }
-    
-    
 
-     /**
+    /**
      * get peptides list form giving ids
      *
      * @param peptideIds peptides IDs
-     * @return peptides list 
+     * @return peptides list
      */
     public Map<Integer, PeptideBean> getPeptidesList(Set<Integer> peptideIds) {
 
@@ -170,10 +161,10 @@ public class DataAccess implements Serializable {
     /**
      * get proteins fractions average list
      *
-     * @param accession  
+     * @param accession
      * @param datasetId
      * @return dataset peptide List
-     */ 
+     */
     public Map<Integer, FractionBean> getProteinFractionList(String accession, int datasetId) {
         Map<Integer, FractionBean> protionFractList = db.getProteinFractionList(accession, datasetId);
         return protionFractList;
@@ -182,27 +173,27 @@ public class DataAccess implements Serializable {
     /**
      * search for proteins by protein description keywords
      *
-     * @param protSearchKeyword  array of query words
+     * @param protSearchKeyword array of query words
      * @param datasetId dataset Id
      * @param validatedOnly only validated proteins results
      * @return datasetProteinsSearchList
      */
-    public Map<Integer, ProteinBean> searchProteinByName(String protSearchKeyword, int datasetId,boolean validatedOnly) {
-        Map<Integer, ProteinBean> proteinsList = db.searchProteinByName(protSearchKeyword, datasetId,validatedOnly);
+    public Map<Integer, ProteinBean> searchProteinByName(String protSearchKeyword, int datasetId, boolean validatedOnly) {
+        Map<Integer, ProteinBean> proteinsList = db.searchProteinByName(protSearchKeyword, datasetId, validatedOnly);
         return proteinsList;
     }
 
-     /**
+    /**
      * search for proteins by peptide sequence keywords
      *
-     * @param peptideSequenceKeyword  array of query words
+     * @param peptideSequenceKeyword array of query words
      * @param datasetId dataset Id
      * @param validatedOnly only validated proteins results
      * @return datasetProteinsSearchList
      */
-    public Map<Integer,ProteinBean> searchProteinByPeptideSequence(String peptideSequenceKeyword, int datasetId,boolean validatedOnly) {
+    public Map<Integer, ProteinBean> searchProteinByPeptideSequence(String peptideSequenceKeyword, int datasetId, boolean validatedOnly) {
 
-        Map<Integer,ProteinBean> proteinsList = db.searchProteinByPeptideSequence(peptideSequenceKeyword, datasetId, validatedOnly);
+        Map<Integer, ProteinBean> proteinsList = db.searchProteinByPeptideSequence(peptideSequenceKeyword, datasetId, validatedOnly);
         return proteinsList;
     }
 
@@ -218,7 +209,7 @@ public class DataAccess implements Serializable {
         return test;
     }
 
-     /**
+    /**
      * get peptides data for a database using peptides ids
      *
      * @param peptideIds
@@ -246,24 +237,23 @@ public class DataAccess implements Serializable {
     /**
      * store standard plot data in the database
      *
-     * 
+     *
      * @param dataset dataset bean (in case of update existing dataset)
      * @return test boolean
      */
     public boolean setStandardPlotProt(DatasetBean dataset) {
-        boolean test= false;
-          List<StandardProteinBean> standardPlotList = db.getStandardProtPlotList(dataset.getDatasetId());
-          if(!standardPlotList.isEmpty())
-          {
-              test = db.removeStandarPlot(dataset.getDatasetId());              
-          }
+        boolean test = false;
+        List<StandardProteinBean> standardPlotList = db.getStandardProtPlotList(dataset.getDatasetId());
+        if (!standardPlotList.isEmpty()) {
+            test = db.removeStandarPlot(dataset.getDatasetId());
+        }
         return test;
     }
 
-     /**
+    /**
      * read and store standard plot files in the database
      *
-     * 
+     *
      * @param dataset dataset bean (in case of update existing dataset)
      * @return test boolean
      */
@@ -272,8 +262,9 @@ public class DataAccess implements Serializable {
         return test;
     }
 
-     /**
+    /**
      * retrieve standard proteins data for fraction plot
+     *
      * @param datasetId
      * @return standardPlotList
      */
@@ -282,16 +273,27 @@ public class DataAccess implements Serializable {
         List<StandardProteinBean> standardPlotList = db.getStandardProtPlotList(datasetId);
         return standardPlotList;
     }
-    
+
     /**
-     * retrieve standard  proteins data for fraction plot
-     * @param dataset 
+     * retrieve standard proteins data for fraction plot
+     *
+     * @param dataset
      * @return test boolean
      */
-     public boolean updateDatasetData(DatasetBean dataset)
-     {
-           boolean test = db.updateDatasetData(dataset);
-            return test;
-     
-     }
+    public boolean updateDatasetData(DatasetBean dataset) {
+        boolean test = db.updateDatasetData(dataset);
+        return test;
+
+    }
+
+    /**
+     * Get query details that sent from csf-pr quant
+     *
+     * @param queryText query text contain idex and query key
+     * @return query object that has all requested data
+     *
+     */
+    public Query getSearchQuery(String queryText) {
+        return db.getSearchQuery(queryText);
+    }
 }

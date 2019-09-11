@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import probe.com.dal.Query;
 import probe.com.model.CoreLogic;
 import probe.com.model.beans.DatasetBean;
 import probe.com.model.beans.DatasetDetailsBean;
@@ -166,7 +167,6 @@ public class MainHandler implements Serializable {
 //
 //        return computing.getFileUrl(fileName);
 //    }
-
     /**
      * get dataset peptides list (valid peptides or all peptides)
      *
@@ -179,8 +179,8 @@ public class MainHandler implements Serializable {
         return computing.getAllDatasetPeptidesList(datasetId, validated);
 
     }
-    
-     /**
+
+    /**
      * get dataset peptides number (valid peptides or all peptides)
      *
      * @param datasetId
@@ -192,8 +192,6 @@ public class MainHandler implements Serializable {
         return computing.getAllDatasetPeptidesNumber(datasetId, validated);
 
     }
-    
-    
 
     /**
      * get peptides list for selected protein in selected dataset
@@ -255,7 +253,7 @@ public class MainHandler implements Serializable {
      * @param validatedOnly only validated proteins results
      * @return fractions list for the selected dataset
      */
-    public Map<Integer, ProteinBean> searchProteinByAccession(Set<String>  searchKeywordArray, String searchDatasetType, boolean validatedOnly) {
+    public Map<Integer, ProteinBean> searchProteinByAccession(Set<String> searchKeywordArray, String searchDatasetType, boolean validatedOnly) {
         Map<Integer, ProteinBean> protDatasetList = computing.searchProteinByAccession(searchKeywordArray, searchDatasetType, validatedOnly);
         return protDatasetList;
     }
@@ -377,13 +375,25 @@ public class MainHandler implements Serializable {
 
         return treeSet;
     }
-    
+
     public Map<Integer, ProteinBean> getValidatedProteinsList(Map<Integer, ProteinBean> proteinsList) {
         Map<Integer, ProteinBean> vProteinsList = computing.getValidatedProteinsList(proteinsList);
         return vProteinsList;
 
     }
-    
+
+    /**
+     * Get query details that sent from csf-pr quant
+     *
+     * @param queryText query text contain idex and query key
+     * @return query object that has all requested data
+     *
+     */
+    public Query getSearchQuery(String queryText) {
+        Query query = computing.getSearchQuery(queryText);
+        return query;
+    }
+
 //    /**
 //     * this function to be use for csv peptides exporting with large datasets
 //     *
@@ -398,7 +408,4 @@ public class MainHandler implements Serializable {
 //    
 //    
 //    }
-    
-    
-
 }

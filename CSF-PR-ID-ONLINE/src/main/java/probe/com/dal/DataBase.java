@@ -1446,8 +1446,8 @@ public class DataBase implements Serializable {
      * @return dataset Proteins Searching List
      */
     public synchronized Map<Integer, ProteinBean> searchProteinByAccession(String accession, int datasetId, boolean validatedOnly) {
-        PreparedStatement selectProStat ;
-        String selectPro ;
+        PreparedStatement selectProStat;
+        String selectPro;
         if (validatedOnly) {
             selectPro = "SELECT * FROM `experiment_protein_table` Where `exp_id`=? AND  `prot_key` LIKE(?) AND `valid`=?;";
         } else {
@@ -2876,6 +2876,53 @@ public class DataBase implements Serializable {
         }
         return proteinsList;
 
+    }
+
+    /**
+     * Get query details that sent from csf-pr quant
+     *
+     * @param queryText query text contain idex and query key
+     * @return query object that has all requested data
+     *
+     */
+    public Query getSearchQuery(String queryText) {
+        Query query = new Query();
+        String[] queryDetails = queryText.split("_");
+        String statment = "SELECT * FROM `temp_query_table` WHERE `index` = ? ;";
+
+        try {
+
+            if (conn == null || conn.isClosed()) {
+                Class.forName(driver).newInstance();
+                conn = DriverManager.getConnection(url + dbName, userName, password);
+            }
+            PreparedStatement queryStat = conn.prepareStatement(statment);
+            queryStat.setInt(1, Integer.valueOf(queryDetails[1]));
+            ResultSet rs = queryStat.executeQuery();
+            System.out.println("at " + queryDetails[1] + "  " + queryDetails[2]);
+            while (rs.next()) {
+                if (queryDetails[2].equalsIgnoreCase(rs.getString("csrf_token"))) {
+                    query.setSearchBy(rs.getString("search_by").replace("*", " "));
+                    query.setSearchKeyWords(rs.getString("search_key"));
+                }
+
+            }
+            if (query.getSearchBy() == null) {
+                query.setSearchBy("Protein Accession");
+                query.setSearchKeyWords("Searching query expired!");
+            }
+            rs.close();
+        } catch (ClassNotFoundException exp) {
+            System.out.println(exp.getLocalizedMessage());
+        } catch (IllegalAccessException exp) {
+            System.out.println(exp.getLocalizedMessage());
+        } catch (InstantiationException exp) {
+            System.out.println(exp.getLocalizedMessage());
+        } catch (SQLException exp) {
+            exp.printStackTrace();
+            System.out.println(exp.getLocalizedMessage());
+        }
+        return query;
     }
 
 }
