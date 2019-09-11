@@ -49,75 +49,82 @@ import no.uib.probe.csf.pr.touch.view.core.TrendLegend;
 public abstract class CompareComponent extends BigBtn {
 
     /**
-     *The main comparison pop-up window (the pop up container).
+     * The main comparison pop-up window (the pop up container).
      */
     private final PopupWindow comparePanel;
     /**
-     *List of quantitative proteins found in searching .
+     * List of quantitative proteins found in searching .
      */
     private List<QuantProtein> searchQuantificationProtList;
     /**
-     *The quant results container layout.
+     * The quant results container layout.
      */
     private final HorizontalLayout quantCompareDataResult;
     /**
-     *The id results container layout (the id link container for CSF-PR 1.0).
+     * The id results container layout (the id link container for CSF-PR 1.0).
      */
     private final VerticalLayout idDataResult;
     /**
-     *The quantitative  data handler to work as controller layer to interact between visualization and logic layer.
+     * The quantitative data handler to work as controller layer to interact
+     * between visualization and logic layer.
      */
     private final Data_Handler Data_handler;
     /**
-     *The quant data results label (results and hits number).
+     * The quant data results label (results and hits number).
      */
     private final Label resultsLabel;
     /**
-     *The bottom buttons container it contains also the link to CSF-PR 1.0 id results.
+     * The bottom buttons container it contains also the link to CSF-PR 1.0 id
+     * results.
      */
     private final HorizontalLayout controlBtnsLayout;
     /**
-     *The button is responsible for invoking the show results in system where the user can visualize his data and compare it with the CSF-PR 2.0 results.
+     * The button is responsible for invoking the show results in system where
+     * the user can visualize his data and compare it with the CSF-PR 2.0
+     * results.
      */
     private final Button loadDataBtn;
     /**
-     *The compare unit layout has the input data fields for user data.
+     * The compare unit layout has the input data fields for user data.
      */
     private final ComparisonUnitComponent compareUnit;
     /**
-     *The central selection manager for handling data across different visualizations and managing all users selections.
+     * The central selection manager for handling data across different
+     * visualizations and managing all users selections.
      */
     private final CSFPR_Central_Manager CSFPR_Central_Manager;
     /**
-     *The protein overview chart.
+     * The protein overview chart.
      */
     private PieChart proteinsChart;
     /**
-     *The datasets overview chart.
+     * The datasets overview chart.
      */
     private PieChart datasetsChart;
     /**
-     *The size of screen is used to switch the data visualization mode between normal and compact mode.
+     * The size of screen is used to switch the data visualization mode between
+     * normal and compact mode.
      */
     private final boolean smallScreen;
     /**
-     *The results layout is the container for quant data results (the pie charts).
+     * The results layout is the container for quant data results (the pie
+     * charts).
      */
     private final VerticalLayout resultsLayout;
     /**
-     *The middle layout has the results label and legend .
+     * The middle layout has the results label and legend .
      */
     private final HorizontalLayout middleLayout;
     /**
-     *Set of keywords to avoid duplicating the keywords.
+     * Set of keywords to avoid duplicating the keywords.
      */
     private Set<String> filterKeywordSet;
     /**
-     *Array of disease category names.
+     * Array of disease category names.
      */
     private final String[] diseaseCategoryNames = new String[]{"Alzheimer's", "Multiple Sclerosis", "Parkinson's"};
     /**
-     *Array of disease category AWT colors required for JFree charts.
+     * Array of disease category AWT colors required for JFree charts.
      */
     private final Color[] diseaseCategoryColors = new Color[]{Color.decode("#4b7865"), Color.decode("#A52A2A"), Color.decode("#74716E")};
 
@@ -436,9 +443,9 @@ public abstract class CompareComponent extends BigBtn {
         query.setSearchKeyWords(defaultText);
         //searching quant data
         query.setSearchDataType("Quantification Data");
-        searchQuantificationProtList = Data_handler.searchQuantificationProtein(query, true); 
-        String quantNotFound = Data_handler.filterQuantSearchingKeywords(searchQuantificationProtList, query.getSearchKeyWords(), query.getSearchBy());       
-        
+        searchQuantificationProtList = Data_handler.searchQuantificationProtein(query, true);
+        String quantNotFound = Data_handler.filterQuantSearchingKeywords(searchQuantificationProtList, query.getSearchKeyWords(), query.getSearchBy());
+
         Integer[] quantHitsList = Data_handler.getQuantComparisonHitsList(searchQuantificationProtList, query.getSearchBy());
         Integer[] proteinsHitsList = Data_handler.getQuantComparisonProteinList(searchQuantificationProtList, query.getSearchBy());
         if (quantHitsList != null && searchQuantificationProtList != null) {
@@ -448,7 +455,7 @@ public abstract class CompareComponent extends BigBtn {
                 studiesSet.add(qp.getQuantDatasetIndex());
             });
             if (quantNotFound != null) {
-                quantNotFound = quantNotFound.replace("\n",",");
+                quantNotFound = quantNotFound.replace("\n", ",");
                 for (String s : quantNotFound.split(",")) {
                     filterKeywordSet.remove(s.trim());
                 }

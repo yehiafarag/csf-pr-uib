@@ -5,6 +5,7 @@
  */
 package no.uib.probe.csf.pr.touch.listener;
 
+import com.vaadin.server.VaadinSession;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,6 +22,7 @@ import java.util.Set;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import no.uib.probe.csf.pr.touch.database.DataBaseLayer;
 
 /**
  *
@@ -31,9 +33,9 @@ public class CSFPR_ContextListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         String version = "";
-        ServletContext scx = sce.getServletContext();  
-      
-        String basepath = scx.getRealPath("/"); 
+        ServletContext scx = sce.getServletContext();
+
+        String basepath = scx.getRealPath("/");
         File file = new File(basepath + "VAADIN/releasenotes.txt");
         try {
             FileReader fileReader = new FileReader(file);
@@ -51,14 +53,20 @@ public class CSFPR_ContextListener implements ServletContextListener {
             System.out.println("Error reading file '" + "'");
         }
 
-        File proteinsFile = new File(basepath + "VAADIN/prot-"+version+ ".txt");
-        if (proteinsFile.exists()) {
-            proteinsFile.delete();
-        }
+//        File proteinsFile = new File(basepath + "VAADIN/prot-" + version + ".txt");
+        File proteinsFile = new File(basepath + "VAADIN/csf_pr_available_prot_accs.txt");
         try {
-            proteinsFile.createNewFile();
-            initProteinsFile(scx, proteinsFile);
-          
+            if (proteinsFile.exists()) {
+                PrintWriter writer = new PrintWriter(proteinsFile);
+                writer.print("");
+                writer.close();
+            }
+//        else{
+////            System.out.println("error: Create new file exist ");
+////            proteinsFile.createNewFile();
+//        }      
+
+            initProteinsFile(scx, proteinsFile, version);
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -68,10 +76,10 @@ public class CSFPR_ContextListener implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-
+      
     }
 
-    private void initProteinsFile(ServletContext scx, File file) {
+    private void initProteinsFile(ServletContext scx, File file, String version) {
         String url = (scx.getInitParameter("url"));
         String dbName = (scx.getInitParameter("dbName"));
         String driver = (scx.getInitParameter("driver"));
@@ -106,7 +114,7 @@ public class CSFPR_ContextListener implements ServletContextListener {
             PrintWriter out1;
             FileWriter outFile = new FileWriter(file, true);
             out1 = new PrintWriter(outFile);
-            String title = "CSF-PR Protein Accession List";
+            String title = "CSF-PR Protein Accession List (" + version + ")";
             out1.append(title);
             out1.append('\n');
             protAccSet.stream().map((acc) -> {

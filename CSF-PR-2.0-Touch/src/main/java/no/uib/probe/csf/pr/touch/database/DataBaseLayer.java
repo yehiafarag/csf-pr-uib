@@ -1,5 +1,6 @@
 package no.uib.probe.csf.pr.touch.database;
 
+import com.vaadin.server.VaadinSession;
 import java.awt.Color;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -7,6 +8,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseCategoryObject;
 import no.uib.probe.csf.pr.touch.logic.beans.IdentificationProteinBean;
 import no.uib.probe.csf.pr.touch.logic.beans.InitialInformationObject;
@@ -79,6 +83,9 @@ public class DataBaseLayer implements Serializable {
         diseaseColorMap.put("Multiple Sclerosis", "#A52A2A");
         diseaseColorMap.put("Alzheimer's", "#4b7865");
         diseaseColorMap.put("Parkinson's", "#74716E");
+        createQueryTempStoreTable();
+        VaadinSession.getCurrent().getSession().setAttribute("CsrfToken", VaadinSession.getCurrent().getCsrfToken());
+
     }
 
     /**
@@ -154,6 +161,33 @@ public class DataBaseLayer implements Serializable {
     }
 
     /**
+     * Create query store table to share query between csf-pr id and csf-pr
+     * quant
+     *
+     */
+    private void createQueryTempStoreTable() {
+        String statment = "CREATE TABLE IF NOT EXISTS `temp_query_table` (\n"
+                + "  `index` int(255) NOT NULL AUTO_INCREMENT,\n"
+                + "  `csrf_token` varchar(100) NOT NULL,\n"
+                + "  `search_by` varchar(50) NOT NULL,\n"
+                + "  `search_key` text NOT NULL, PRIMARY KEY (`index`),\n"
+                + "  KEY `index` (`index`)\n"
+                + ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+
+        try {
+            if (conn == null || conn.isClosed()) {
+                Class.forName(driver).newInstance();
+                conn = DriverManager.getConnection(url + dbName, userName, password);
+            }
+            Statement st = conn.createStatement();
+            st.executeUpdate(statment);
+        } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException ex) {
+            Logger.getLogger(DataBaseLayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    /**
      * Get initial publication information
      *
      * @return list of publications available in the the resource
@@ -184,6 +218,51 @@ public class DataBaseLayer implements Serializable {
         System.gc();
         return publicationList;
 
+    }
+
+    /**
+     * Store query in database in order to share it with csf-pr id data
+     *
+     * @param query Query object to be stored
+     */
+    public int storeQueryinDB(Query query) {
+
+        try {
+            if (conn == null || conn.isClosed()) {
+                Class.forName(driver).newInstance();
+                conn = DriverManager.getConnection(url + dbName, userName, password);
+            }
+        } catch (InstantiationException | IllegalAccessException | SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(DataBaseLayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String statment = "INSERT INTO `temp_query_table` ( `csrf_token`, `search_by`, `search_key`) VALUES (?, ?, ?);";
+
+        try (PreparedStatement preparedStatment = conn.prepareStatement(statment, Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatment.setString(1, VaadinSession.getCurrent().getCsrfToken());
+            preparedStatment.setString(2, query.getSearchBy().replace(" ", "*"));
+            preparedStatment.setString(3, query.getSearchKeyWords());
+            preparedStatment.executeUpdate();
+            ResultSet rs = preparedStatment.getGeneratedKeys();
+            rs.next();
+            return rs.getInt(1);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return -100;
+    }
+
+    public void removeAlluserTempStoredQuery() {
+        String statment = "DELETE  FROM `temp_query_table` WHERE `csrf_token` = '" + VaadinSession.getCurrent().getCsrfToken() + "';";
+        try {
+            if (conn == null || conn.isClosed()) {
+                Class.forName(driver).newInstance();
+                conn = DriverManager.getConnection(url + dbName, userName, password);
+            }
+            Statement st = conn.createStatement();
+            st.executeUpdate(statment);
+        } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**

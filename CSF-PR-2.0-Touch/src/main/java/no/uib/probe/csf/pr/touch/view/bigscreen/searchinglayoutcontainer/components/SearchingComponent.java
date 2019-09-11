@@ -544,10 +544,11 @@ public abstract class SearchingComponent extends BigBtn {
 
             String param = "searchby:" + query.getSearchBy().replace(" ", "*") + "___searchkey:" + query.getSearchKeyWords().replace("\n", "__").replace(" ", "*");
             String encoded64;
-            if (param.length() < 1000) {
+            if (param.length() < 10) {
                 encoded64 = "list_" + encURL.encodeToString(param.getBytes());
             } else {
-                encoded64 = "file_" + encURL.encodeToString(initQueryFile(query).getBytes());
+                int index = Data_handler.storeQuery(query);
+                encoded64 = "query_" + index+"_"+VaadinSession.getCurrent().getCsrfToken();//file_" + encURL.encodeToString(initQueryFile(query).getBytes());
             }
             idRes = new ExternalResource(VaadinSession.getCurrent().getAttribute("csf_pr_Url") + encoded64);
             Link idSearchingLink = new Link(idSearchIdentificationProtList, idRes);
@@ -715,6 +716,7 @@ public abstract class SearchingComponent extends BigBtn {
     /**
      * Load and invoke searching mode in the system to visualise the searching
      * results data in the system
+     *
      * @param query string to be executed against the database
      */
     public void excuteExternalQuery(String query) {
@@ -742,6 +744,7 @@ public abstract class SearchingComponent extends BigBtn {
     }
 
     private String initQueryFile(Query query) {
+
         FileWriter outFile = null;
         try {
             String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
@@ -785,4 +788,5 @@ public abstract class SearchingComponent extends BigBtn {
 
     }
 
+   
 }

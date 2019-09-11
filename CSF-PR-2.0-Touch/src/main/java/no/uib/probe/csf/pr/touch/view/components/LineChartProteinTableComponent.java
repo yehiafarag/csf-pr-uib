@@ -372,11 +372,12 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
                 Map<String, QuantComparisonProtein> proteinsFilterMap = new LinkedHashMap<>();
                 CSFPR_Central_Manager.getSelectedComparisonsList().stream().forEach((comparison) -> {
                     selectedProteinsList.addAll(comparison.getQuantComparisonProteinMap().values());
-                    for (QuantComparisonProtein prot : comparison.getQuantComparisonProteinMap().values()) {
+                    comparison.getQuantComparisonProteinMap().values().forEach((prot) -> {
                         proteinsFilterMap.put(prot.getProteinAccession() + "__" + prot.getProteinName(), prot);
-                    }
+                    });
                 });
 
+                System.out.println("CSFPR_Central_Manager.getSelectedComparisonsList(), "+CSFPR_Central_Manager.getSelectedComparisonsList().size());
                 quantProteinTable.updateTableData(CSFPR_Central_Manager.getSelectedComparisonsList(), new LinkedHashSet<>(proteinsFilterMap.values()));
 
             } else {

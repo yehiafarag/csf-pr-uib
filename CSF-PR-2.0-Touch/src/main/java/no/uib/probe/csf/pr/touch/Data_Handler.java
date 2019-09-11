@@ -226,6 +226,15 @@ public class Data_Handler implements Serializable {
         return coreLogic.searchQuantificationProteins(query, toCompare);
 
     }
+      /**
+     * Store query to share with csf-pr ID.
+     *
+     * @param query query object that has all query information.
+     */
+    public int  storeQuery(Query query) {
+        return  coreLogic.storeQuery(query);
+
+    }
 
     /**
      * Filter the quant search results based on keywords and detect the not

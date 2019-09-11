@@ -16,18 +16,18 @@ public class TrendSymbol extends VerticalLayout implements Comparable<TrendSymbo
      */
     private final HashMap<String, Object> parameterMap;
     /**
-     * The trend value(0:100% Increased,1:less than 100% Increased ,2:Equal,3:less than 100%
-     * Decreased,4:100% Increased,5:Quantified on peptide level, or 6:Quant
-     * information not available).
+     * The trend value(0:100% Increased,1:less than 100% Increased
+     * ,2:Equal,3:less than 100% Decreased,4:100% Increased,5:Quantified on
+     * peptide level, or 6:Quant information not available).
      */
-    private int trend;
+    private Integer trend;
 
     /**
      * Constructor to initialize the main attributes and layout.
      *
      * @param trend the trend value(0:100% Increased,1:less than 100% Increased
-     * ,2:Equal,3:less than 100% Decreased,4:100% Increased,5:Quantified on peptide
-     * level, or 6:Quant information not available).
+     * ,2:Equal,3:less than 100% Decreased,4:100% Increased,5:Quantified on
+     * peptide level, or 6:Quant information not available).
      */
     public TrendSymbol(int trend) {
         parameterMap = new HashMap<>();
@@ -65,8 +65,8 @@ public class TrendSymbol extends VerticalLayout implements Comparable<TrendSymbo
      * Set trend symbol.
      *
      * @param trend the trend value(0:100% Increased,1:less than 100% Increased
-     * ,2:Equal,3:less than 100% Decreased,4:100% Increased,5:Quantified on peptide
-     * level, or 6:Quant information not available).
+     * ,2:Equal,3:less than 100% Decreased,4:100% Increased,5:Quantified on
+     * peptide level, or 6:Quant information not available).
      */
     public void setTrend(int trend) {
         this.trend = trend;
@@ -95,11 +95,18 @@ public class TrendSymbol extends VerticalLayout implements Comparable<TrendSymbo
 
     @Override
     public int compareTo(TrendSymbol o) {
-        if (this.trend > o.trend) {
-            return 1;
-        } else {
-            return -1;
-        }
+        int i = this.trend.compareTo(o.trend);
+//        int ii;
+////        return this.trend.compareTo(o.trend);
+//        if (this.trend > o.trend) {
+//            ii = 1;
+//        } else {
+//            ii =0;
+//        }
+//        if (i != ii) {
+//            System.out.println("here is error " + i + "  " + ii+"  "+this.trend+"  "+o.trend);
+//        }
+        return i;
     }
 
 }

@@ -21,9 +21,11 @@ public class Exporter implements Serializable {
      * @return file byte array
      */
     public byte[] expotProteinAccessionListToCSV(Set<String> accessionList) {
-        File csvText = new File("CSF-PR Protein Accession List.csv");
+        
+      //new File("CSF-PR Protein Accession List.csv");
         PrintWriter out1 = null;
-        try {
+        try {  
+            File csvText = File.createTempFile("CSF-PR Protein Accession List", "csv");
             if (csvText.exists()) {
                 System.err.println("delet file " + csvText.delete());
             }

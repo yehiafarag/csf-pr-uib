@@ -509,6 +509,16 @@ public class CoreLogic implements Serializable {
     }
 
     /**
+     * Store query to share with csf-pr ID.
+     *
+     * @param query query object that has all query information.
+     */
+    public int storeQuery(Query query ) {
+       return  database.storeQueryinDB(query);
+
+    }
+
+    /**
      * This function to filter the quant search results based on keywords and
      * detect the not found keywords
      *
