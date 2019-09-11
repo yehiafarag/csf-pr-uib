@@ -127,7 +127,8 @@ public final class ProteinsLayout extends VerticalLayout implements Serializable
             iconGenerator = new IconGenerator();
             HorizontalLayout infoIco = iconGenerator.getInfoNote(infoLable);
             selectDatasetListLayout.addComponent(infoIco);
-            selectDatasetListLayout.setComponentAlignment(infoIco, Alignment.TOP_RIGHT);
+            infoIco.addStyleName("proteininfoicon");
+            selectDatasetListLayout.setComponentAlignment(infoIco, Alignment.TOP_LEFT);
             this.addComponent(typeILayout);
         }
     }

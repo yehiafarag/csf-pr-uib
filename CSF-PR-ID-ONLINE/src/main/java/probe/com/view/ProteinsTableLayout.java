@@ -99,34 +99,36 @@ public class ProteinsTableLayout extends VerticalLayout implements Serializable 
         protLabelLayout.addComponent(protTableHeaderLabel);
 
         //allow search in 
+        HorizontalLayout searchContainer = new HorizontalLayout();
+        searchContainer.setSizeUndefined();
+        searchContainer.setStyleName("searchcontainerlayout");
+        topLayout.addComponent(searchContainer);
+        topLayout.setComponentAlignment(searchContainer, Alignment.TOP_RIGHT);
+        
         searchField = new TextField(" ");
         searchField.setDescription("Search Proteins By Name or Accession");
-
-        topLayout.addComponent(searchField);
-        topLayout.setComponentAlignment(searchField, Alignment.TOP_RIGHT);
-        topLayout.setExpandRatio(searchField, 0.47f);
+        searchField.setImmediate(true);
+        searchField.setWidth("150px");
+        searchField.setHeight("23px");
+        
+        searchContainer.addComponent(searchField);
         nextSearchBtn = new Button();
         nextSearchBtn.setDescription("Next Result");
         nextSearchBtn.setStyleName(Reindeer.BUTTON_LINK);
         nextSearchBtn.setIcon(new ThemeResource("img/next.gif"));
+        nextSearchBtn.addStyleName("nextsearchbtn");
         nextSearchBtn.setWidth("20px");
-        nextSearchBtn.setHeight("23px");
+        nextSearchBtn.setHeight("20px");
         nextSearchBtn.setEnabled(false);
 
-        topLayout.addComponent(nextSearchBtn);
-        topLayout.setExpandRatio(nextSearchBtn, 0.03f);
-        topLayout.setComponentAlignment(nextSearchBtn, Alignment.BOTTOM_LEFT);
+        searchContainer.addComponent(nextSearchBtn);
 
         protCounterLabel = new Label("");
         protCounterLabel.setWidth("150px");
         protCounterLabel.setHeight("23px");
-        topLayout.addComponent(protCounterLabel);
-        topLayout.setExpandRatio(protCounterLabel, 0.08f);
-        topLayout.setComponentAlignment(protCounterLabel, Alignment.BOTTOM_LEFT);
+        searchContainer.addComponent(protCounterLabel);
 
-        searchField.setImmediate(true);
-        searchField.setWidth("150px");
-        searchField.setHeight("23px");
+       
 
         this.addComponent(protTableLayout);
         this.setComponentAlignment(protTableLayout, Alignment.MIDDLE_CENTER);

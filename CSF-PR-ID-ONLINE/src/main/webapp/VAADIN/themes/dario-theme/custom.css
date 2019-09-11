@@ -79,8 +79,8 @@
 .probelogo img{
     height:53px;
     width:auto;
-    margin-top:3px;
-    margin-left:90px;
+    margin-top:0px;
+    margin-left:110px;
 }
 .v-slot-probelogo{
     background-color:rgba(0,0,0,0);
@@ -136,4 +136,40 @@
 }
 .errormessage h4{
 	margin-top:25px;
+}
+.nextsearchbtn{
+	position:absolute;
+	top:24px;
+	margin-left:5px;
+
+}
+.nextsearchbtn img{
+	max-height:16px;
+}
+
+.searchcontainerlayout .v-label{
+	margin-left:35px;
+	margin-top: 19px;
+}
+.searchcontainerlayout .actionbuttontextfield-search{
+	position:absolute;
+	left: 131px;
+	top: 19px;
+}
+.searchcontainerlayout{
+	float:right !important;
+	position:relative !important;
+	right:-100px !important;
+	left:auto !important;
+}
+.tableresizeicons img{
+	padding:0px !important;
+	margin-top:-12px;
+	margin-left:5px;
+}
+.proteininfoicon {
+	left:-10% !important;
+	margin-left:10px !important;
+	margin-top:2px;
+        position:relative !important;
 }

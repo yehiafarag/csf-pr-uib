@@ -109,7 +109,7 @@ public class IconGenerator implements Serializable {
         PopupView.Content content = new PopupView.Content() {
             @Override
             public String getMinimizedValueAsHTML() {
-                return "<img style='height:16px;margin-top:10px;' src='https://scontent-a.xx.fbcdn.net/hphotos-prn2/1454691_202673623249571_816907722_n.jpg' alt='" + desc + "' title='" + desc + "'> ";//https://fbcdn-sphotos-d-a.akamaihd.net/hphotos-ak-prn2/1175716_173022812881319_804705945_n.jpg
+                return "<img style='height:16px;margin-top:10px;' src='VAADIN/themes/dario-theme/img/save-file.png' alt='" + desc + "' title='" + desc + "'> ";//https://fbcdn-sphotos-d-a.akamaihd.net/hphotos-ak-prn2/1175716_173022812881319_804705945_n.jpg
             }
 
             @Override

@@ -16,11 +16,11 @@ import probe.com.view.Application;
 @Theme("dario-theme")
 public class AppController extends UI {
 
-    private String dbURL, dbName, dbDriver, dbUserName, dbPassword,filesURL;
+    private String dbURL, dbName, dbDriver, dbUserName, dbPassword;
     private MainHandler handler;
 
     /**
-     * initialize the application context parameters
+     * Initialise the application context parameters
      *
      * @param request  vaadinRequest
      *
@@ -35,9 +35,8 @@ public class AppController extends UI {
         dbDriver = (scx.getInitParameter("driver"));
         dbUserName = (scx.getInitParameter("userName"));
         dbPassword = (scx.getInitParameter("password"));
-        filesURL = scx.getInitParameter("filesURL");
         //init experment handler
-        handler = new MainHandler(dbURL, dbName, dbDriver, dbUserName, dbPassword,filesURL);
+        handler = new MainHandler(dbURL, dbName, dbDriver, dbUserName, dbPassword);
         //init main layout
         Application application = new Application(handler);
         this.getPage().setTitle("CSF Proteome Resource (CSF-PR)");

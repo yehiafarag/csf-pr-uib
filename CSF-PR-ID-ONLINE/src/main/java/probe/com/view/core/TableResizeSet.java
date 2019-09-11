@@ -28,6 +28,7 @@ public class TableResizeSet extends HorizontalLayout implements Serializable {
     public TableResizeSet(Table table, String currentSize) {
         this.currentSize = currentSize;
         this.table = table;
+        this.setStyleName("tableresizeicons");
         this.setWidth("90px");
         this.setHeight("21px");
 

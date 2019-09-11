@@ -16,7 +16,7 @@ import probe.com.model.beans.FractionBean;
 import probe.com.model.beans.PeptideBean;
 import probe.com.model.beans.ProteinBean;
 import probe.com.model.beans.StandardProteinBean;
-import probe.com.model.util.FileExporter;
+import unused.FileExporter;
 
 /**
  * @author Yehia Farag
@@ -29,13 +29,12 @@ public class CoreLogic implements Serializable {
     private static final long serialVersionUID = 1L;
     private final DataAccess da;
     private int mainDatasetId;
-    private final String filesURL;
     private final TreeMap<Integer, String> datasetNamesList = new TreeMap<Integer, String>();//for dropdown select list
     private Map<Integer, DatasetBean> datasetList;
     private final Map<Integer, Integer> datasetIndex = new HashMap<Integer, Integer>();
-    private final FileExporter exporter = new FileExporter();
+//    private final FileExporter exporter = new FileExporter();
 
-    public CoreLogic(String url, String dbName, String driver, String userName, String password, String filesURL) {
+    public CoreLogic(String url, String dbName, String driver, String userName, String password) {
         da = new DataAccess(url, dbName, driver, userName, password);
 
         //just to arrange the already stored datasets -->> to be removed in the future
@@ -47,7 +46,6 @@ public class CoreLogic implements Serializable {
         datasetIndex.put(16, 6);
         datasetIndex.put(9, 7);
         datasetList = da.getDatasets();
-        this.filesURL = filesURL;
     }
 
     /**
@@ -147,31 +145,6 @@ public class CoreLogic implements Serializable {
         }
 
         return proteinsList;
-    }
-
-    /**
-     * check if exporting file is available in export folder
-     *
-     * @param fileName
-     * @return test boolean (available or not available)
-     */
-    public boolean checkFileAvailable(String fileName) {
-        File f = new File(filesURL, fileName);
-        boolean exist = f.exists();
-        f = null;
-        return exist;
-    }
-
-    /**
-     * check if exporting file is available in export folder
-     *
-     * @param fileName
-     * @return url string path to the file
-     */
-    public String getFileUrl(String fileName) {
-        File f = new File(filesURL, fileName);
-        String path = f.getPath();
-        return path;
     }
 
     /**
@@ -668,22 +641,22 @@ public class CoreLogic implements Serializable {
 
     }
 
-    /**
-     * this function to be use for csv peptides exporting with large datasets
-     *
-     * @param datasetId
-     * @param validated boolean the peptides type
-     * @param datasetName
-     * @param dataType validated/all
-     * @param exportFileType csv or xls
-     */
-    public void exportPeptidesToFile(int datasetId, boolean validated, String datasetName, String dataType, String exportFileType) {
-        Map<Integer, PeptideBean> allPeptides = getAllDatasetPeptidesList(datasetId, validated);
-        if (exportFileType.equalsIgnoreCase("csv")) {
-            exporter.expotPeptidesToCSV(allPeptides, datasetName, dataType, filesURL);
-        } else {
-            exporter.expotPeptidesToXLS(allPeptides, datasetName, dataType, filesURL);
-        }
-    }
+//    /**
+//     * this function to be use for csv peptides exporting with large datasets
+//     *
+//     * @param datasetId
+//     * @param validated boolean the peptides type
+//     * @param datasetName
+//     * @param dataType validated/all
+//     * @param exportFileType csv or xls
+//     */
+//    public void exportPeptidesToFile(int datasetId, boolean validated, String datasetName, String dataType, String exportFileType) {
+////        Map<Integer, PeptideBean> allPeptides = getAllDatasetPeptidesList(datasetId, validated);
+////        if (exportFileType.equalsIgnoreCase("csv")) {
+////            exporter.expotPeptidesToCSV(allPeptides, datasetName, dataType, filesURL);
+////        } else {
+////            exporter.expotPeptidesToXLS(allPeptides, datasetName, dataType, filesURL);
+////        }
+//    }
 
 }

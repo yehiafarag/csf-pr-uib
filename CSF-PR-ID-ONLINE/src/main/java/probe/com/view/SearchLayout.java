@@ -263,10 +263,10 @@ public class SearchLayout extends VerticalLayout implements Serializable, Button
                 }
 
             } else if (requestSearching.contains("file_")) {
-           
+
                 try {
-                    requestSearching = new String(decURL.decode(requestSearching.split("file_")[1]), "UTF-8");    
-                    
+                    requestSearching = new String(decURL.decode(requestSearching.split("file_")[1]), "UTF-8");
+
                 } catch (UnsupportedEncodingException ex) {
                     ex.printStackTrace();
                 }
@@ -274,7 +274,7 @@ public class SearchLayout extends VerticalLayout implements Serializable, Button
                 FileOutputStream fos = null;
                 try {
                     URL downloadableFile = new URL(requestSearching);
-                    URLConnection conn = downloadableFile.openConnection();                 
+                    URLConnection conn = downloadableFile.openConnection();
                     conn.setDoInput(true);
                     InputStream in = conn.getInputStream();
                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
@@ -284,7 +284,7 @@ public class SearchLayout extends VerticalLayout implements Serializable, Button
                         String line = reader.readLine();
                         requestSearching += line + "__";
                     }
-                    
+
                     reader.close();
 
                     // Always close files.
@@ -295,13 +295,15 @@ public class SearchLayout extends VerticalLayout implements Serializable, Button
                     }
                     return;
                 } catch (IOException ex) {
-                   requestSearching = VaadinService.getCurrentRequest().getPathInfo();
+                    requestSearching = VaadinService.getCurrentRequest().getPathInfo();
                     if (requestSearching.contains("file_")) {
                         Page.getCurrent().open(requestSearching.split("file_")[0], "");
                     }
                     return;
                 }
 
+            } else if (requestSearching.contains("query_")) {
+                return;
             }
             searchingProcess(requestSearching);
         }

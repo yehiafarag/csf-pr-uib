@@ -126,41 +126,46 @@ public class CustomExportBtnLayout extends VerticalLayout implements Serializabl
     @Override
     public void buttonClick(Button.ClickEvent event) {
         if (type.equalsIgnoreCase("allPep")) {
-            //check if file available                
-            if (handler.checkFileAvailable("CSF-PR - " + datasetName + " - All - " + typeGroup.getValue().toString() + " - Peptides." + exportGroup.getValue().toString())) {
-                String fileURL = handler.getFileUrl("CSF-PR - " + datasetName + " - All - " + typeGroup.getValue().toString() + " - Peptides." + exportGroup.getValue().toString());
-                Resource res = new FileResource(new File(fileURL));
-                Page.getCurrent().open(res, null, false);
-                return;
+            System.out.println("at type group " + typeGroup.getValue());
+            if (peptidesList == null) {
+                peptidesList = handler.getPeptidesList(datasetId, typeGroup.getValue().toString().equalsIgnoreCase("Validated"));
             }
-
-            if (typeGroup.getValue().toString().equalsIgnoreCase("Validated")) {
-                 handler.exportPeptidesToFile(datasetId, true, datasetName, typeGroup.getValue().toString(),exportGroup.getValue().toString());
-//                if (handler.checkFileAvailable("CSF-PR - " + datasetName + " - All - " + typeGroup.getValue().toString() + " - Peptides." + exportGroup.getValue().toString())) {
+//            //check if file available                
+//            if (handler.checkFileAvailable("CSF-PR - " + datasetName + " - All - " + typeGroup.getValue().toString() + " - Peptides." + exportGroup.getValue().toString())) {
+//                String fileURL = handler.getFileUrl("CSF-PR - " + datasetName + " - All - " + typeGroup.getValue().toString() + " - Peptides." + exportGroup.getValue().toString());
+//                Resource res = new FileResource(new File(fileURL));
+//                Page.getCurrent().open(res, null, false);
+//                return;
+//            }
+//
+//            if (typeGroup.getValue().toString().equalsIgnoreCase("Validated")) {
+//                 handler.exportPeptidesToFile(datasetId, true, datasetName, typeGroup.getValue().toString(),exportGroup.getValue().toString());
+////                if (handler.checkFileAvailable("CSF-PR - " + datasetName + " - All - " + typeGroup.getValue().toString() + " - Peptides." + exportGroup.getValue().toString())) {
+////                    String fileURL = handler.getFileUrl("CSF-PR - " + datasetName + " - All - " + typeGroup.getValue().toString() + " - Peptides." + exportGroup.getValue().toString());
+////                    Resource res = new FileResource(new File(fileURL));
+////                    Page.getCurrent().open(res, null, false);
+////                    return;
+////                }
+////                return;
+//                //peptidesList = handler.getPeptidesList(datasetId, true);
+////            } else 
+//            if (typeGroup.getValue().toString().equalsIgnoreCase("All")) {
+//                peptidesList = handler.getPeptidesList(datasetId, false);
+//                handler.exportPeptidesToFile(datasetId, false, datasetName, typeGroup.getValue().toString(),exportGroup.getValue().toString());
+////                if (handler.checkFileAvailable("CSF-PR - " + datasetName + " - All - " + typeGroup.getValue().toString() + " - Peptides." + exportGroup.getValue().toString())) {
+////                    String fileURL = handler.getFileUrl("CSF-PR - " + datasetName + " - All - " + typeGroup.getValue().toString() + " - Peptides." + exportGroup.getValue().toString());
+////                    Resource res = new FileResource(new File(fileURL));
+////                    Page.getCurrent().open(res, null, false);
+////                    return;
+////                }
+////                return;
+//            }
+//            if (handler.checkFileAvailable("CSF-PR - " + datasetName + " - All - " + typeGroup.getValue().toString() + " - Peptides." + exportGroup.getValue().toString())) {
 //                    String fileURL = handler.getFileUrl("CSF-PR - " + datasetName + " - All - " + typeGroup.getValue().toString() + " - Peptides." + exportGroup.getValue().toString());
 //                    Resource res = new FileResource(new File(fileURL));
 //                    Page.getCurrent().open(res, null, false);
 //                    return;
-//                }
-//                return;
-                //peptidesList = handler.getPeptidesList(datasetId, true);
-            } else if (typeGroup.getValue().toString().equalsIgnoreCase("All")) {
-                //peptidesList = handler.getPeptidesList(datasetId, false);
-                handler.exportPeptidesToFile(datasetId, false, datasetName, typeGroup.getValue().toString(),exportGroup.getValue().toString());
-//                if (handler.checkFileAvailable("CSF-PR - " + datasetName + " - All - " + typeGroup.getValue().toString() + " - Peptides." + exportGroup.getValue().toString())) {
-//                    String fileURL = handler.getFileUrl("CSF-PR - " + datasetName + " - All - " + typeGroup.getValue().toString() + " - Peptides." + exportGroup.getValue().toString());
-//                    Resource res = new FileResource(new File(fileURL));
-//                    Page.getCurrent().open(res, null, false);
-//                    return;
-//                }
-//                return;
-            }
-            if (handler.checkFileAvailable("CSF-PR - " + datasetName + " - All - " + typeGroup.getValue().toString() + " - Peptides." + exportGroup.getValue().toString())) {
-                    String fileURL = handler.getFileUrl("CSF-PR - " + datasetName + " - All - " + typeGroup.getValue().toString() + " - Peptides." + exportGroup.getValue().toString());
-                    Resource res = new FileResource(new File(fileURL));
-                    Page.getCurrent().open(res, null, false);
-                    return;
-            }
+//            }
 
             PeptideTable pepTable = new PeptideTable(peptidesList, null, true, null);
             pepTable.setVisible(false);
@@ -222,13 +227,12 @@ public class CustomExportBtnLayout extends VerticalLayout implements Serializabl
             }
         } else if (type.equalsIgnoreCase("prots")) {
 
-            if (handler.checkFileAvailable("CSF-PR - " + datasetName + " - " + typeGroup.getValue().toString() + " - Proteins." + exportGroup.getValue().toString())) {
-                String fileURL = handler.getFileUrl("CSF-PR - " + datasetName + " - " + typeGroup.getValue().toString() + " - Proteins." + exportGroup.getValue().toString());
-                Resource res = new FileResource(new File(fileURL));
-                Page.getCurrent().open(res, null, false);
-                return;
-            }
-
+//            if (handler.checkFileAvailable("CSF-PR - " + datasetName + " - " + typeGroup.getValue().toString() + " - Proteins." + exportGroup.getValue().toString())) {
+//                String fileURL = handler.getFileUrl("CSF-PR - " + datasetName + " - " + typeGroup.getValue().toString() + " - Proteins." + exportGroup.getValue().toString());
+//                Resource res = new FileResource(new File(fileURL));
+//                Page.getCurrent().open(res, null, false);
+//                return;
+//            }
             ProteinsTableComponent protTable = null;
             if (typeGroup.getValue().toString().equalsIgnoreCase("Validated")) {
                 Map<String, ProteinBean> vProteinsList = new HashMap<String, ProteinBean>();

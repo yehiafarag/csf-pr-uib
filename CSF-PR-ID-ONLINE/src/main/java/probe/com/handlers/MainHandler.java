@@ -34,13 +34,13 @@ public class MainHandler implements Serializable {
      * @param userName database username
      * @param password database password
      */
-    public MainHandler(String url, String dbName, String driver, String userName, String password, String filesURL) {
-        computing = new CoreLogic(url, dbName, driver, userName, password, filesURL);
+    public MainHandler(String url, String dbName, String driver, String userName, String password) {
+        computing = new CoreLogic(url, dbName, driver, userName, password);
         authenticatorHandler = new AuthenticatorHandler(url, dbName, driver, userName, password);
     }
 
     /**
-     * get the datasets names required for initializing drop down select list
+     * get the datasets names required for initialising drop down select list
      *
      * @return datasetNamesList
      */
@@ -144,28 +144,28 @@ public class MainHandler implements Serializable {
     public Map<Integer, PeptideBean> getAllDatasetPeptidesList(int datasetId) {
         return computing.getPeptidesList(datasetId);
     }
+//
+//    /**
+//     * check if exporting file is available in export folder
+//     *
+//     * @param fileName
+//     * @return test boolean (available or not available)
+//     */
+//    public boolean checkFileAvailable(String fileName) {
+//
+//        return computing.checkFileAvailable(fileName);
+//    }
 
-    /**
-     * check if exporting file is available in export folder
-     *
-     * @param fileName
-     * @return test boolean (available or not available)
-     */
-    public boolean checkFileAvailable(String fileName) {
-
-        return computing.checkFileAvailable(fileName);
-    }
-
-    /**
-     * check if exporting file is available in export folder
-     *
-     * @param fileName
-     * @return url string path to the file
-     */
-    public String getFileUrl(String fileName) {
-
-        return computing.getFileUrl(fileName);
-    }
+//    /**
+//     * check if exporting file is available in export folder
+//     *
+//     * @param fileName
+//     * @return url string path to the file
+//     */
+//    public String getFileUrl(String fileName) {
+//
+//        return computing.getFileUrl(fileName);
+//    }
 
     /**
      * get dataset peptides list (valid peptides or all peptides)
@@ -384,20 +384,20 @@ public class MainHandler implements Serializable {
 
     }
     
-    /**
-     * this function to be use for csv peptides exporting with large datasets
-     *
-     * @param datasetId
-     * @param validated boolean the peptides type
-     * @param datasetName
-     * @param dataType validated/all
-     * @param exportFileType csv or xls
-     */
-    public void  exportPeptidesToFile(int datasetId, boolean validated,String datasetName,String dataType,String exportFileType){
-         computing.exportPeptidesToFile(datasetId, validated, datasetName, dataType,exportFileType);
-    
-    
-    }
+//    /**
+//     * this function to be use for csv peptides exporting with large datasets
+//     *
+//     * @param datasetId
+//     * @param validated boolean the peptides type
+//     * @param datasetName
+//     * @param dataType validated/all
+//     * @param exportFileType csv or xls
+//     */
+//    public void  exportPeptidesToFile(int datasetId, boolean validated,String datasetName,String dataType,String exportFileType){
+//         computing.exportPeptidesToFile(datasetId, validated, datasetName, dataType,exportFileType);
+//    
+//    
+//    }
     
     
 
