@@ -16010,6 +16010,10 @@ tbody{
 .limitlabelsize .v-icon + span {
     margin-left: -30px;
 }
+.v-link-probelogo img{
+   margin-top:-5px;
+   margin-left: 44px;
+}
 
 
 

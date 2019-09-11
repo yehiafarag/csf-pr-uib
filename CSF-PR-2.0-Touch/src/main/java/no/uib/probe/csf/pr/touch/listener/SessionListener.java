@@ -44,7 +44,7 @@ public class SessionListener implements HttpSessionListener, Serializable {
         password = (scx.getInitParameter("password"));
         if (session != null) {
             timer = new Timer();
-            timer.schedule(new RemindTask(), ( 5*  60 * 60 * 1000));
+            timer.schedule(new RemindTask(), (5 * 60 * 60 * 1000));
 
         }
     }
@@ -52,7 +52,9 @@ public class SessionListener implements HttpSessionListener, Serializable {
     @Override
     public void sessionDestroyed(HttpSessionEvent hse) {
         Object CsrfToken = hse.getSession().getAttribute("CsrfToken");
-        removeAlluserTempStoredQuery(CsrfToken );
+        if (userName != null && CsrfToken!=null) {
+            removeAlluserTempStoredQuery(CsrfToken);
+        }
     }
 
     class RemindTask extends TimerTask {
@@ -65,7 +67,7 @@ public class SessionListener implements HttpSessionListener, Serializable {
         }
     };
 
-    public void removeAlluserTempStoredQuery(Object CsrfToken ) {
+    public void removeAlluserTempStoredQuery(Object CsrfToken) {
         String statment = "DELETE  FROM `temp_query_table` WHERE `csrf_token` = '" + CsrfToken + "';";
         try {
             if (conn == null || conn.isClosed()) {

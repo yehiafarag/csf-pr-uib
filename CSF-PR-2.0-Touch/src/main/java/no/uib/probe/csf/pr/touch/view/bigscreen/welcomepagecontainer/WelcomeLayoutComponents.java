@@ -509,8 +509,8 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         Link probe_ico = new Link(null, new ExternalResource("http://www.uib.no/rg/probe"));
         probe_ico.setIcon(new ThemeResource("img/probe-updated.png"));
         probe_ico.setTargetName("_blank");
-        probe_ico.setWidth(237, Unit.PIXELS);
-        probe_ico.setHeight(58, Unit.PIXELS);
+        probe_ico.setWidth(215, Unit.PIXELS);
+        probe_ico.setHeight(56, Unit.PIXELS);
         probe_ico.addStyleName("relativelocation");
         probe_ico.addStyleName("probelogo");
         linksIconsLayout.addComponent(probe_ico);
