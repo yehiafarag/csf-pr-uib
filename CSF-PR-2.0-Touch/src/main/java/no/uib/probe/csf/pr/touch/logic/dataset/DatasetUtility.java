@@ -81,6 +81,13 @@ public class DatasetUtility implements Serializable {
      * Re-index map for PD disease used to sort disease groups in the heat-map.
      */
     private List<String> pdReindexMap;
+
+    /**
+     * Re-index map for Amyotrophic Lateral Sclerosis disease used to sort
+     * disease groups in the heat-map.
+     */
+    private List<String> amyReindexMap;
+
     /**
      * Suggested sub-groups name as default (updated by CSF-PR 2.0).
      */
@@ -238,6 +245,13 @@ public class DatasetUtility implements Serializable {
         adReindexMap.add("Aged healthy__Alzheimer's__alzheimerstyle");
         adReindexMap.add("Healthy*__Alzheimer's__alzheimerstyle");
         adReindexMap.add("Healthy controls__Alzheimer's__alzheimerstyle");
+
+        amyReindexMap = new ArrayList<>();
+        amyReindexMap.add("ALS__Amyotrophic Lateral Sclerosis__amyotrophicstyle");
+        amyReindexMap.add("OND__Amyotrophic Lateral Sclerosis__amyotrophicstyle");
+        amyReindexMap.add("sALS__Amyotrophic Lateral Sclerosis__amyotrophicstyle");
+        amyReindexMap.add("Healthy__Amyotrophic Lateral Sclerosis__amyotrophicstyle");
+        amyReindexMap.add("Control__Amyotrophic Lateral Sclerosis__amyotrophicstyle");
 
     }
 
@@ -414,6 +428,7 @@ public class DatasetUtility implements Serializable {
             return null;
         }
         String[] pgArr = sortGroups(merge(diseaseGroupsI, diseaseGroupsII), diseaseCategory);
+       
 
         LinkedHashSet<HeatMapHeaderCellInformationBean> selectedHeatMapRows = new LinkedHashSet<>();
 
@@ -465,6 +480,7 @@ public class DatasetUtility implements Serializable {
         List<String> quantDataSet = new ArrayList<>(Arrays.asList(subGroupNamesArray));
         int count = 0;
 
+       
         if (diseaseCategory.equalsIgnoreCase("Multiple Sclerosis")) {
 
             for (String str : msReindexMap) {
@@ -496,6 +512,20 @@ public class DatasetUtility implements Serializable {
             quantDataSet.addAll(Arrays.asList(sortedData));
         } else if (diseaseCategory.equalsIgnoreCase("Parkinson's")) {
             for (String str : pdReindexMap) {
+                if (quantDataSet.contains(str)) {
+                    sortedData[count] = str;
+                    quantDataSet.remove(str);
+                    count++;
+                }
+            }
+            for (String str : quantDataSet) {
+                sortedData[count] = str;
+                count++;
+            }
+            quantDataSet.clear();
+            quantDataSet.addAll(Arrays.asList(sortedData));
+        } else if (diseaseCategory.equalsIgnoreCase("Amyotrophic Lateral Sclerosis")) {
+            for (String str : amyReindexMap) {
                 if (quantDataSet.contains(str)) {
                     sortedData[count] = str;
                     quantDataSet.remove(str);
@@ -549,6 +579,20 @@ public class DatasetUtility implements Serializable {
             }
             for (String str : quantDataSet) {
                 if (str.contains("Alzheimer's")) {
+                    sortedData[count] = str;
+                    count++;
+                }
+
+            }
+             for (String str : amyReindexMap) {
+                if (quantDataSet.contains(str)) {
+                    sortedData[count] = str;
+                    quantDataSet.remove(str);
+                    count++;
+                }
+            }
+            for (String str : quantDataSet) {
+                if (str.contains("Amyotrophic Lateral Sclerosis")) {
                     sortedData[count] = str;
                     count++;
                 }

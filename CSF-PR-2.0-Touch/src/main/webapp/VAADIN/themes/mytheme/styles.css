@@ -13575,6 +13575,40 @@ div.v-layout.v-horizontal.v-widget {
 .parkinsonstyle:hover {
     border-color:#4d749f;
 }
+
+
+.amyotrophicstyle{
+    border: 2px solid #1b699f;
+    background-color: #1b699f;    
+    border-radius:2px;
+    color: white !important;
+    line-height:100%;
+
+}
+.legendamyotrophicstyle{
+    margin-top:-5px;
+    border: 2px solid #1b699f;
+    background-color: #1b699f;    
+    border-radius:2px;
+    color: white !important;
+    line-height:100%;
+
+}
+.amyotrophicstyle:hover {
+    border-color:#1b699f;
+}
+.hmamyotrophiclateralsclerosisstyle {
+ background-color: #1b699f;   
+    color: white !important;
+    display: inline-block;
+    line-height: inherit;
+    text-align:-webkit-center;
+    text-align: center;
+    clear:both;
+    
+}
+
+
 .alzheimerstyle{
 
     border: 2px solid #4b7865;
@@ -16021,5 +16055,28 @@ tbody{
     top: -61px !important;
     left: -10px !important;
 }
+.v-verticallayout-amyotrophicstyle.v-verticallayout-bubble 
+{
+   margin-top:15px !important;
 
+}
+
+.v-verticallayout-alzheimerstyle.v-verticallayout-bubble 
+{
+   margin-left:-15px !important;
+   
+}
+
+.v-verticallayout-multiplesclerosisstyle.v-verticallayout-bubble 
+{
+   margin-top:-15px !important;
+   
+}
+
+
+.v-verticallayout-parkinsonstyle.v-verticallayout-bubble 
+{
+   margin-left:15px !important;
+   
+}
 

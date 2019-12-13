@@ -96,8 +96,8 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
         title.setContentMode(ContentMode.HTML);
         title.addStyleName(ValoTheme.LABEL_H3);
         title.setWidth(250, Unit.PIXELS);
-        frame.addComponent(title, 1, 1);
-        frame.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
+//        frame.addComponent(title, 1, 1);
+//        frame.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
         thumbImgLayout = new HorizontalLayout();
         updateData(diseaseCategorySet);
 
@@ -186,11 +186,21 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
      */
     public final void updateData(Collection<DiseaseCategoryObject> diseaseCategorySet) {
 
-        if(diseaseCategorySet==null)
+        if (diseaseCategorySet == null) {
             return;
+        }
+
+        DiseaseCategoryObject sharedDc = null;
+        for (DiseaseCategoryObject dc : diseaseCategorySet) {
+            if (dc.getDiseaseCategory().contains("_")) {
+                sharedDc = dc;
+                break;
+            }
+
+        }
         frame.removeAllComponents();
-        frame.addComponent(title, 1, 1);
-        frame.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
+//        frame.addComponent(title, 1, 1);
+//        frame.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
         diseaseCategoryMap.clear();
         resetSelection();
         thumbImgLayout.removeAllComponents();
@@ -242,6 +252,10 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
                 colCounter = 0;
                 rowcounter = 1;
             }
+            if (rowcounter == 1 && colCounter == 4) {
+                colCounter = 1;
+                rowcounter = 2;
+            }
 
         }
 
@@ -250,7 +264,7 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
 
         if (diseaseCategorySet.size() > 2) {
             VerticalLayout allDisease = initDiseaseBubbleLayout(allDeseases, maxNumber, dia);
-            frame.addComponent(allDisease, 1, 2);
+            frame.addComponent(allDisease, 1, 1);
             frame.setComponentAlignment(allDisease, Alignment.MIDDLE_CENTER);
         }
 

@@ -79,10 +79,12 @@ public class DataBaseLayer implements Serializable {
         diseaseCategoryStyles.put("Multiple Sclerosis", "multiplesclerosisstyle");
         diseaseCategoryStyles.put("Alzheimer's", "alzheimerstyle");
         diseaseCategoryStyles.put("Parkinson's", "parkinsonstyle");
+        diseaseCategoryStyles.put("Amyotrophic Lateral Sclerosis", "amyotrophicstyle");
 
         diseaseColorMap.put("Multiple Sclerosis", "#A52A2A");
         diseaseColorMap.put("Alzheimer's", "#4b7865");
         diseaseColorMap.put("Parkinson's", "#74716E");
+        diseaseColorMap.put("Amyotrophic Lateral Sclerosis", "#1b699f");
         createQueryTempStoreTable();
         VaadinSession.getCurrent().getSession().setAttribute("CsrfToken", VaadinSession.getCurrent().getCsrfToken());
 
@@ -296,6 +298,7 @@ public class DataBaseLayer implements Serializable {
         diseaseCategoriesMap.put("Multiple Sclerosis", null);
         diseaseCategoriesMap.put("Alzheimer's", null);
         diseaseCategoriesMap.put("Parkinson's", null);
+        diseaseCategoriesMap.put("Amyotrophic Lateral Sclerosis", null);
         try {
             PreparedStatement selectStudiesStat;
             String selectStudies = "SELECT * FROM  `quant_dataset_table` ";
@@ -307,6 +310,9 @@ public class DataBaseLayer implements Serializable {
             try (ResultSet rs = selectStudiesStat.executeQuery()) {
                 while (rs.next()) {
                     String disease_category = rs.getString("disease_category");
+                    if (disease_category.contains("_")) {
+                        continue;
+                    }
                     if (!diseaseCategoriesMap.containsKey(disease_category) || (diseaseCategoriesMap.containsKey(disease_category) && diseaseCategoriesMap.get(disease_category) == null)) {
                         boolean[] activeHeaders = new boolean[27];
                         Set<String> diseaseCategories = new LinkedHashSet<>();
@@ -534,12 +540,16 @@ public class DataBaseLayer implements Serializable {
                 DiseaseCategoryObject diseaseCategoryObject = new DiseaseCategoryObject();
                 diseaseCategoryObject.setDiseaseCategory(rs.getString("disease_category"));
                 diseaseCategoryObject.setDatasetNumber(rs.getInt("Rows"));
-                diseaseCategoryObject.setDiseaseStyleName(diseaseCategoryStyles.get(diseaseCategoryObject.getDiseaseCategory()));
-                diseaseCategoryObject.setDiseaseHashedColor(diseaseColorMap.get(diseaseCategoryObject.getDiseaseCategory()));
-                diseaseCategoryObject.setDiseaseAwtColor(Color.decode(diseaseCategoryObject.getDiseaseHashedColor()));
+                if (diseaseCategoryObject.getDiseaseCategory().contains("_")) {
+                    continue;
+                } else {
+                    diseaseCategoryObject.setDiseaseStyleName(diseaseCategoryStyles.get(diseaseCategoryObject.getDiseaseCategory()));
+                    diseaseCategoryObject.setDiseaseHashedColor(diseaseColorMap.get(diseaseCategoryObject.getDiseaseCategory()));
+                    diseaseCategoryObject.setDiseaseAwtColor(Color.decode(diseaseCategoryObject.getDiseaseHashedColor()));
+
+                }
                 total += diseaseCategoryObject.getDatasetNumber();
                 availableDiseaseCategory.put(diseaseCategoryObject.getDiseaseCategory(), diseaseCategoryObject);
-
             }
             DiseaseCategoryObject diseaseCategoryObject = new DiseaseCategoryObject();
             diseaseCategoryObject.setDiseaseCategory("All Diseases");
@@ -580,6 +590,9 @@ public class DataBaseLayer implements Serializable {
             try (ResultSet rs = selectPumed_idStat.executeQuery()) {
                 int pumed_id_index = 0;
                 while (rs.next()) {
+                    if (rs.getString("disease_category").contains("_")) {
+                        continue;
+                    }
                     disCatList.add(pumed_id_index, rs.getString("disease_category"));
                     pumed_id_index++;
                 }
@@ -643,6 +656,9 @@ public class DataBaseLayer implements Serializable {
             try (ResultSet rs = selectPumed_idStat.executeQuery()) {
                 int pumed_id_index = 0;
                 while (rs.next()) {
+                    if (rs.getString("disease_category").contains("_")) {
+                        continue;
+                    }
                     disCatList.add(pumed_id_index, rs.getString("disease_category"));
                     pumed_id_index++;
                 }
@@ -765,6 +781,9 @@ public class DataBaseLayer implements Serializable {
             try (ResultSet rs = selectselectDsGroupNumStat.executeQuery()) {
                 datasetIdDesGrs = new HashMap<>();
                 while (rs.next()) {
+                    if (rs.getString("disease_category").contains("_")) {
+                        continue;
+                    }
                     datasetIdDesGrs.put(rs.getInt("index"), new Object[]{rs.getInt("patients_group_i_number"), rs.getInt("patients_group_ii_number"), rs.getString("patient_group_i").trim(), rs.getString("patient_group_ii").trim(), rs.getString("patient_sub_group_i").trim(), rs.getString("patient_sub_group_ii").trim(), rs.getString("disease_category"), rs.getString("quantification_basis")});
                 }
             }
@@ -1061,6 +1080,9 @@ public class DataBaseLayer implements Serializable {
             rs = selectselectDsGroupNumStat.executeQuery();
             Map<Integer, Object[]> datasetIdDesGrs = new HashMap<>();
             while (rs.next()) {
+                if (rs.getString("disease_category").contains("_")) {
+                    continue;
+                }
                 datasetIdDesGrs.put(rs.getInt("index"), new Object[]{rs.getInt("patients_group_i_number"), rs.getInt("patients_group_ii_number"), rs.getString("patient_group_i").trim(), rs.getString("patient_group_ii").trim(), rs.getString("patient_sub_group_i").trim(), rs.getString("patient_sub_group_ii").trim(), rs.getString("pumed_id"), rs.getString("disease_category")});
             }
             rs.close();
