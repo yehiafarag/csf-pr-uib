@@ -119,7 +119,7 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
             strValue = ((int) value) + "*";
             this.updateLabel(strValue);
             String[] gr = fullCompTitle.replace("__" + diseaseCategory, "").split(" / ");
-            this.setDescription("Same type comparison <br/>"
+            this.setDescription("Collapsed Disease Category (click to expand)<br/>"
                     + "Numerator: " + gr[0] + "<br/>"
                     + "Denominator: " + gr[1]
                     + "<br/>Disease: " + diseaseCategory + "<br/>#Datasets: " + strValue + "<br/>#Publications: " + publicationsNumber);
@@ -134,7 +134,7 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
             this.addComponent(valueLabel);
             this.setComponentAlignment(valueLabel, Alignment.TOP_CENTER);
             this.valueLabel.setStyleName("hmbodycell");
-            this.valueLabel.setValue("<div style='background:" + cellColor + "; width:" + (100) + "% !important; height:" + (100) + "% !important;'>" + strValue + "</div>");
+            this.valueLabel.setValue("<div style='background:" + cellColor + "; width:" + (100) + "% !important; height:" + (100) + "% !important; color: #474747; font-weight: 600; font-size: 10px;'>" + strValue + "</div>");
 
         } else if (value != 0) {
 

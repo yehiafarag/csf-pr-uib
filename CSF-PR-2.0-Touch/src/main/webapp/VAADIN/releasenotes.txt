@@ -1,4 +1,4 @@
-2019.12.13;Added new disease category (Amyotrophic Lateral Sclerosis)
+2019.12.13 ; Added new disease category (Amyotrophic Lateral Sclerosis 'ALS')
 2018.09.26 ; Added data from 5 papers
            ; Timirci-Kahraman, et al. (2018), Begcevic, et al. (06/2018 , 07/2018),
            ; Brinkmalm, et al. (2018), Stoop, et al. (2017)

@@ -169,7 +169,7 @@ public class Data_Handler implements Serializable {
      *
      * @return active disease group comparisons
      */
-    public Set<DiseaseGroupComparison> getDiseaseGroupComparisonsSet() {
+    public Set<DiseaseGroupComparison> getDiseaseGroupComparisonsSet() {        
         return Dataset_Util.getDiseaseGroupComparisonsSet();
 
     }
@@ -179,7 +179,7 @@ public class Data_Handler implements Serializable {
      *
      * @return map of quant dataset objects
      */
-    public Map<Integer, QuantDataset> getFullQuantDsMap() {
+    public Map<Integer, QuantDataset> getFullQuantDsMap() {       
         return Dataset_Util.getFullQuantDsMap();
     }
 

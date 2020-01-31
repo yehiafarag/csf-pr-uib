@@ -46,7 +46,7 @@ public class QuantDataset implements Serializable, Comparable {
     /**
      * The array of values for the included attributes.
      */
-    private final Object[] values = new Object[28];
+    private final Object[] values = new Object[29];
 
     /**
      * Map of values to attribute name.
@@ -74,6 +74,7 @@ public class QuantDataset implements Serializable, Comparable {
      * The dataset is pool samples dataset.
      */
     private boolean pooledSamples;
+    private boolean crossDisease;
 
     public boolean isPooledSamples() {
         return pooledSamples;
@@ -167,22 +168,35 @@ public class QuantDataset implements Serializable, Comparable {
     }
 
     /**
-     * Get disease category (MS,AD,PD...etc)
+     * Get main disease category (MS,AD,PD...etc)
      *
      * @return diseaseCategory Disease category name(MS,AD,PD...etc)
      */
-    public String getDiseaseCategory() {
+    public String getDiseaseCategoryI() {
         return values[27].toString();
+    }
+
+    /**
+     * Get second disease category (MS,AD,PD...etc)
+     *
+     * @return diseaseCategory Disease category name(MS,AD,PD...etc)
+     */
+    public String getDiseaseCategoryII() {
+        return values[28].toString();
     }
 
     /**
      * Set disease category (MS,AD,PD...etc)
      *
-     * @param diseaseCategory Disease category name(MS,AD,PD...etc)
+     * @param diseaseCategoryI Disease category name(MS,AD,PD...etc)
+     * @param diseaseCategoryII Second disease category name(MS,AD,PD...etc)
      */
-    public void setDiseaseCategory(String diseaseCategory) {
-        values[27] = diseaseCategory;
-        valuesMap.put("diseaseCategory", diseaseCategory);
+    public void setDiseaseCategory(String diseaseCategoryI, String diseaseCategoryII) {
+        values[27] = diseaseCategoryI;
+        valuesMap.put("diseaseCategoryI", diseaseCategoryI);
+        values[28] = diseaseCategoryII;
+        valuesMap.put("diseaseCategoryII", diseaseCategoryII);
+       
     }
 
     /**
@@ -815,6 +829,14 @@ public class QuantDataset implements Serializable, Comparable {
      */
     public void setUniqePepNum(int uniqePepNum) {
         this.uniqePepNum = uniqePepNum;
+    }
+
+    public boolean isCrossDisease() {
+        return crossDisease;
+    }
+
+    public void setCrossDisease(boolean crossDisease) {
+        this.crossDisease = crossDisease;
     }
 
 }

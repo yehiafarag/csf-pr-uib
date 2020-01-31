@@ -54,6 +54,14 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
      * Is the header is for combined-renamed disease sub group.
      */
     private boolean combinedHeader = false;
+    /**
+     * Disease category sort name
+     */
+    private final String shortName;
+    /**
+     * Is the disease category c.
+     */
+    private boolean collapsedHeader = false;
 
     /**
      * Get the main disease category that that cell belong to
@@ -95,13 +103,14 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
      * Constructor to initialize the main attributes
      *
      *
+     * @param shortName disease short name
      * @param diseaseSubgroupName the disease sub group diseaseSubgroupName
      * @param fullDiseaseSubgroupName full name of disease subgroup
      * @param diseaseCategory the main disease category (MS, AD, PD..etc)
      * @param rotate is the cell is column or row header cell
      *
      */
-    public HeaderCell(String diseaseSubgroupName, String fullDiseaseSubgroupName, String diseaseCategory, boolean rotate) {
+    public HeaderCell(String shortName, String diseaseSubgroupName, String fullDiseaseSubgroupName, String diseaseCategory, boolean rotate) {
         this.includedCells = new ArrayList<>();
         this.diseaseCategory = diseaseCategory;
         this.rotate = rotate;
@@ -111,7 +120,13 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
 
         String allStyle = "hm" + diseaseCategory.toLowerCase().replace("'", "").replace(" ", "") + "style";
 
-        valueLabel.setValue(diseaseSubgroupName);
+        if (shortName == null) {
+            this.shortName = diseaseSubgroupName;
+            valueLabel.setValue(diseaseSubgroupName);
+        } else {
+            this.shortName = shortName;
+            valueLabel.setValue(shortName);
+        }
         valueLabel.setStyleName(allStyle);
         valueLabel.setWidth(100, Unit.PERCENTAGE);
         valueLabel.setHeight(100, Unit.PERCENTAGE);
@@ -120,11 +135,11 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
         }
         valueLabel.addStyleName(ValoTheme.LABEL_SMALL);
         valueLabel.addStyleName(ValoTheme.LABEL_TINY);
-        this.addComponent(valueLabel);
-        this.setComponentAlignment(valueLabel, Alignment.TOP_CENTER);
+        HeaderCell.this.addComponent(valueLabel);
+        HeaderCell.this.setComponentAlignment(valueLabel, Alignment.TOP_CENTER);
 
         String fullName;
-        this.addLayoutClickListener(HeaderCell.this);
+        HeaderCell.this.addLayoutClickListener(HeaderCell.this);
         if (fullDiseaseSubgroupName == null) {
             fullName = diseaseSubgroupName;
         } else {
@@ -135,8 +150,24 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
             fullName = diseaseSubgroupName;
             combinedGroup = " - Combined disease groups";
         }
-        this.setDescription(fullName + combinedGroup);
+        HeaderCell.this.setDescription(fullName + combinedGroup);
 
+    }
+
+    public boolean isCollapsedHeader() {
+        return collapsedHeader;
+    }
+
+    public void setCollapsedHeader(boolean collapsedHeader) {
+
+        if (collapsedHeader) {
+            valueLabel.setValue(shortName);
+            this.addStyleName("diseasecategorylabel");
+        } else {
+            valueLabel.setValue(title);
+            this.removeStyleName("diseasecategorylabel");
+        }
+        this.collapsedHeader = collapsedHeader;
     }
 
     /**

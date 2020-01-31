@@ -87,11 +87,11 @@ public class TrendLegend extends GridLayout {
             }
 
         } else if (type.equalsIgnoreCase("diseaselegend")) {
-            final String[] labels = new String[]{"Alzheimer's", "Multiple Sclerosis", "Parkinson's"};
-            String[] styleName = new String[]{"legendalzheimerstyle", "legendmultiplesclerosisstyle", "legendparkinsonstyle"};
+            final String[] labels = new String[]{"Alzheimer's", "Multiple Sclerosis", "Parkinson's","Amyotrophic Lateral Sclerosis"};
+            String[] styleName = new String[]{"legendalzheimerstyle", "legendmultiplesclerosisstyle", "legendparkinsonstyle","legendamyotrophicstyle"};
             this.setSpacing(true);
             this.setRows(1);
-            this.setColumns(3);
+            this.setColumns(4);
             int colCounter = 0;
             int rowCounter = 0;
             for (int i = 0; i < styleName.length; i++) {

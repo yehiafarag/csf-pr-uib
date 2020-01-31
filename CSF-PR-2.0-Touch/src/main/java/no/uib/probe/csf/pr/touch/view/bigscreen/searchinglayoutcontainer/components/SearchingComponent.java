@@ -144,11 +144,11 @@ public abstract class SearchingComponent extends BigBtn {
     /**
      * Array of disease category names.
      */
-    private final String[] diseaseCategoryNames = new String[]{"Alzheimer's", "Multiple Sclerosis", "Parkinson's"};
+    private final String[] diseaseCategoryNames = new String[]{"Alzheimer's", "Multiple Sclerosis", "Parkinson's", "Amyotrophic Lateral Sclerosis"};//
     /**
      * Array of disease category AWT colors required for JFree charts.
      */
-    private final Color[] diseaseCategoryColors = new Color[]{Color.decode("#4b7865"), Color.decode("#A52A2A"), Color.decode("#74716E")};
+    private final Color[] diseaseCategoryColors = new Color[]{Color.decode("#4b7865"), Color.decode("#A52A2A"), Color.decode("#74716E"), Color.decode("#1b699f")};//
 
     /**
      * Constructor to initialize the main attributes (data handler and selection
@@ -548,7 +548,7 @@ public abstract class SearchingComponent extends BigBtn {
                 encoded64 = "list_" + encURL.encodeToString(param.getBytes());
             } else {
                 int index = Data_handler.storeQuery(query);
-                encoded64 = "query_" + index+"_"+VaadinSession.getCurrent().getCsrfToken();//file_" + encURL.encodeToString(initQueryFile(query).getBytes());
+                encoded64 = "query_" + index + "_" + VaadinSession.getCurrent().getCsrfToken();//file_" + encURL.encodeToString(initQueryFile(query).getBytes());
             }
             idRes = new ExternalResource(VaadinSession.getCurrent().getAttribute("csf_pr_Url") + encoded64);
             Link idSearchingLink = new Link(idSearchIdentificationProtList, idRes);
@@ -656,6 +656,7 @@ public abstract class SearchingComponent extends BigBtn {
                     }
 
                 };
+                
                 chart.initializeFilterData(diseaseCategoryNames, quantHitsList.get(proteinName), diseaseCategoryColors);
                 chart.redrawChart();
                 chart.setData(proteinName.split("__")[0]);
@@ -788,5 +789,4 @@ public abstract class SearchingComponent extends BigBtn {
 
     }
 
-   
 }

@@ -243,6 +243,7 @@ public abstract class PieChart extends AbsoluteLayout implements LayoutEvents.La
      * @param colors The items AWT colors
      */
     public void initializeFilterData(String[] items, Integer[] values, Color[] colors) {
+        
         this.defaultKeyColorMap.clear();
         this.selectedKeyColorMap.clear();
         dataset.clear();

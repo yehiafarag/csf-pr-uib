@@ -46,7 +46,6 @@ public class QueryConstractorHandler {
                 String type = typeList.get(x);
                 if (type.equalsIgnoreCase("String")) {
                     selectStat.setString(x + 1, valueList.get(x));
-
                 } else if (type.equalsIgnoreCase("Integer")) {
                     selectStat.setInt(x + 1, Integer.valueOf(valueList.get(x)));
 

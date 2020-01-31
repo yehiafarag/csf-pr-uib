@@ -10,11 +10,16 @@ import java.io.Serializable;
  */
 public class DiseaseGroupComparison implements Serializable {
 
+    private boolean activated=true;
+    /**
+     * Disease category name (MS, AD, PD..etc).
+     */
+    private String diseaseCategoryI;
     /**
      * Disease category name (MS, AD, PD..etc).
      */
 
-    private String diseaseCategory;
+    private String diseaseCategoryII;
 
     /**
      * Disease Style name at CSS file.
@@ -53,23 +58,43 @@ public class DiseaseGroupComparison implements Serializable {
      * The Disease sub group II (currently used in the system).
      */
     private String activeDiseaseSubGroupII;
+    private boolean crossDisease;
+
+    public boolean isCrossDisease() {
+        return crossDisease;
+    }
+
+    public void setCrossDisease(boolean crossDisease) {
+        this.crossDisease = crossDisease;
+    }
 
     /**
      * Get disease category (MS,AD,PD...etc).
      *
      * @return diseaseCategory disease category name
      */
-    public String getDiseaseCategory() {
-        return diseaseCategory;
+    public String getDiseaseCategoryI() {
+        return diseaseCategoryI;
+    }
+
+    /**
+     * Get disease category (MS,AD,PD...etc).
+     *
+     * @return diseaseCategory disease category name
+     */
+    public String getDiseaseCategoryII() {
+        return diseaseCategoryII;
     }
 
     /**
      * Set disease category (MS,AD,PD...etc)
      *
-     * @param diseaseCategory disease category name.
+     * @param diseaseCategoryI disease category name.
+     * @param diseaseCategoryII disease category name.
      */
-    public void setDiseaseCategory(String diseaseCategory) {
-        this.diseaseCategory = diseaseCategory;
+    public void setDiseaseCategory(String diseaseCategoryI, String diseaseCategoryII) {
+        this.diseaseCategoryI = diseaseCategoryI;
+        this.diseaseCategoryII = diseaseCategoryII;
     }
 
     /**
@@ -205,7 +230,16 @@ public class DiseaseGroupComparison implements Serializable {
      * @return yes/no
      */
     public boolean checkSameComparison(String comparisonTitle) {
-        return comparisonTitle.equalsIgnoreCase(activeDiseaseSubGroupI + "__" + diseaseCategory) || comparisonTitle.equalsIgnoreCase(activeDiseaseSubGroupII + "__" + diseaseCategory);
+//        if(crossDisease)
+//        {
+////            System.out.println("at comparison title "+comparisonTitle);
+////            System.out.println("at 1 to compare with "+ activeDiseaseSubGroupI + "__" + diseaseCategoryI);
+////            System.out.println("at 2 to compare with "+ activeDiseaseSubGroupII + "__" + diseaseCategoryII);
+////            System.out.println("at 3 to compare with "+ activeDiseaseSubGroupI + "__" + diseaseCategoryII);
+////            System.out.println("at 4 to compare with "+ activeDiseaseSubGroupII + "__" + diseaseCategoryII);
+//            
+//        }
+        return comparisonTitle.equalsIgnoreCase(activeDiseaseSubGroupI + "__" + diseaseCategoryI) || comparisonTitle.equalsIgnoreCase(activeDiseaseSubGroupII + "__" + diseaseCategoryII);
 
     }
 
@@ -216,10 +250,14 @@ public class DiseaseGroupComparison implements Serializable {
      * @return the current update disease group with disease category.
      */
     public String getValLabel(String key) {
-        if (key.equalsIgnoreCase(activeDiseaseSubGroupI + "__" + diseaseCategory)) {
-            return activeDiseaseSubGroupII + "__" + diseaseCategory;
-        } else if (key.equalsIgnoreCase(activeDiseaseSubGroupII + "__" + diseaseCategory)) {
-            return activeDiseaseSubGroupI + "__" + diseaseCategory;
+        if (key.equalsIgnoreCase(activeDiseaseSubGroupI + "__" + diseaseCategoryI)) {
+            return activeDiseaseSubGroupII + "__" + diseaseCategoryI;
+        } else if (key.equalsIgnoreCase(activeDiseaseSubGroupII + "__" + diseaseCategoryI)) {
+            return activeDiseaseSubGroupI + "__" + diseaseCategoryI;
+        }else if (key.equalsIgnoreCase(activeDiseaseSubGroupI + "__" + diseaseCategoryII)) {
+            return activeDiseaseSubGroupII + "__" + diseaseCategoryII;
+        } else if (key.equalsIgnoreCase(activeDiseaseSubGroupII + "__" + diseaseCategoryII)) {
+            return activeDiseaseSubGroupI + "__" + diseaseCategoryII;
         } else {
             return null;
         }
@@ -242,6 +280,14 @@ public class DiseaseGroupComparison implements Serializable {
      */
     public void setDiseaseStyleName(String diseaseStyleName) {
         this.diseaseStyleName = diseaseStyleName;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
+    }
+
+    public boolean isActivated() {
+        return activated;
     }
 
 }

@@ -11,6 +11,10 @@ import java.util.Objects;
 public class HeatMapHeaderCellInformationBean implements Serializable {
 
     /**
+     * Disease category short name (MS, AD, PD..etc).
+     */
+    private String shortDiseaseCategoryName;
+    /**
      * Disease category name (MS, AD, PD..etc).
      */
     private String diseaseCategory;
@@ -34,6 +38,8 @@ public class HeatMapHeaderCellInformationBean implements Serializable {
      * Disease sub group original name (from publication).
      */
     private String diseaseGroupOreginalName;
+    
+    private boolean collapsedDiseseCategory;
 
     /**
      * Get disease sub group original name (from publication)
@@ -53,6 +59,11 @@ public class HeatMapHeaderCellInformationBean implements Serializable {
         this.diseaseGroupOreginalName = diseaseGroupOreginalName;
     }
 
+    public String getShortDiseaseCategoryName() {
+        return diseaseCategory.replace("Alzheimer's", "AD").replace("Multiple Sclerosis", "MS").replace("Parkinson's", "PD").replace("Amyotrophic Lateral Sclerosis", "ALS");
+    }
+
+   
     /**
      * Get disease category (MS,AD,PD...etc)
      *
@@ -172,6 +183,14 @@ public class HeatMapHeaderCellInformationBean implements Serializable {
         hash = 19 * hash + Objects.hashCode(this.diseaseCategory);
         hash = 19 * hash + Objects.hashCode(this.diseaseGroupName);
         return hash;
+    }
+
+    public boolean isCollapsedDiseseCategory() {
+        return collapsedDiseseCategory;
+    }
+
+    public void setCollapsedDiseseCategory(boolean collapsedDiseseCategory) {
+        this.collapsedDiseseCategory = collapsedDiseseCategory;
     }
 
 }

@@ -124,11 +124,11 @@ public abstract class CompareComponent extends BigBtn {
     /**
      * Array of disease category names.
      */
-    private final String[] diseaseCategoryNames = new String[]{"Alzheimer's", "Multiple Sclerosis", "Parkinson's"};
+    private final String[] diseaseCategoryNames = new String[]{"Alzheimer's", "Multiple Sclerosis", "Parkinson's","Amyotrophic Lateral Sclerosis"};
     /**
      * Array of disease category AWT colors required for JFree charts.
      */
-    private final Color[] diseaseCategoryColors = new Color[]{Color.decode("#4b7865"), Color.decode("#A52A2A"), Color.decode("#74716E")};
+    private final Color[] diseaseCategoryColors = new Color[]{Color.decode("#4b7865"), Color.decode("#A52A2A"), Color.decode("#74716E"), Color.decode("#1b699f")};
 
     /**
      * Constructor to initialize the main attributes (data handler and selection

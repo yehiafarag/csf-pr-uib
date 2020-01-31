@@ -227,7 +227,7 @@ public abstract class ReorderSelectGroupsComponent extends VerticalLayout implem
         this.diseaseSubGroupComparisonsSet = patientsGroupComparisonsSet;
         fullCellInfoMap.clear();
         rowHeaders.stream().forEach((cell) -> {
-            fullCellInfoMap.put(cell.getDiseaseGroupName() + "__" + cell.getDiseaseCategory(), cell);
+            fullCellInfoMap.put(cell.getDiseaseGroupName() + "__" + cell.getDiseaseCategory(), cell);           
         });
         colHeaders.stream().forEach((cell) -> {
             fullCellInfoMap.put(cell.getDiseaseGroupName() + "__" + cell.getDiseaseCategory(), cell);
@@ -256,11 +256,11 @@ public abstract class ReorderSelectGroupsComponent extends VerticalLayout implem
      *
      * @param event reorder click button event
      */
-    private Set<HeatMapHeaderCellInformationBean> filterPatGroup2List(Set<HeatMapHeaderCellInformationBean> sel1) {
+    private Set<HeatMapHeaderCellInformationBean> filterPatGroup2List(Set<HeatMapHeaderCellInformationBean> cel1) {
         Set<HeatMapHeaderCellInformationBean> labels = new LinkedHashSet<>();
         datasetsIndexes = new LinkedHashSet<>();
         diseaseSubGroupComparisonsSet.stream().forEach((pg) -> {
-            sel1.stream().filter((label) -> (pg.checkSameComparison(label.getDiseaseGroupName() + "__" + label.getDiseaseCategory()))).map((label) -> {
+            cel1.stream().filter((label) -> (pg.checkSameComparison(label.getDiseaseGroupName() + "__" + label.getDiseaseCategory()))).map((label) -> {
                 labels.add(fullCellInfoMap.get(pg.getValLabel(label.getDiseaseGroupName() + "__" + label.getDiseaseCategory())));
                 return label;
             }).forEach((_item) -> {

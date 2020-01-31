@@ -13583,6 +13583,8 @@ div.v-layout.v-horizontal.v-widget {
     border-radius:2px;
     color: white !important;
     line-height:100%;
+    overflow: hidden;
+    text-overflow : hidden;
 
 }
 .legendamyotrophicstyle{
@@ -13598,15 +13600,18 @@ div.v-layout.v-horizontal.v-widget {
     border-color:#1b699f;
 }
 .hmamyotrophiclateralsclerosisstyle {
- background-color: #1b699f;   
+    background-color: #1b699f;   
     color: white !important;
     display: inline-block;
     line-height: inherit;
     text-align:-webkit-center;
     text-align: center;
     clear:both;
-    
+    overflow:hidden;
+
 }
+
+
 
 
 .alzheimerstyle{
@@ -16057,26 +16062,92 @@ tbody{
 }
 .v-verticallayout-amyotrophicstyle.v-verticallayout-bubble 
 {
-   margin-top:15px !important;
+    margin-top:15px !important;
 
 }
 
 .v-verticallayout-alzheimerstyle.v-verticallayout-bubble 
 {
-   margin-left:-15px !important;
-   
+    margin-left:-15px !important;
+
 }
 
 .v-verticallayout-multiplesclerosisstyle.v-verticallayout-bubble 
 {
-   margin-top:-15px !important;
-   
+    margin-top:-15px !important;
+
 }
 
 
 .v-verticallayout-parkinsonstyle.v-verticallayout-bubble 
 {
-   margin-left:15px !important;
-   
+    margin-left:15px !important;
+
 }
 
+.maxwidth600 .v-select-optiongroup{
+    z-index:3 !important;
+    position:relative !important;
+}
+
+.v-verticallayout-collapsedDCheadercell {   
+    display:none;
+}
+.diseasecategorylabel  {
+    border:none ;
+
+}
+
+.v-verticallayout-diseasecategorylabel div{     
+    font-size:14px !important;
+    line-height:100% !important;
+
+}
+.v-absolutelayout-wrapper-diseasecategorylabel{
+    margin-left:-20px;
+    min-width:149px !important;
+
+
+}
+.v-verticallayout-diseasecategorylabel div{
+
+    min-width:149px !important;
+
+
+
+
+}
+.v-verticallayout-diseasecategorylabel .v-label {
+
+    min-width:149px !important;
+    line-height:18px !important;
+    border:1px solid #dce0e0;
+
+
+}
+
+.v-verticallayout-diseasecategorylabel .v-label-rotateheader{
+    min-width:149px !important;
+    margin-top:-20px;
+    margin-left:21px !important;
+    z-index:2 !important;
+    position:relative;
+    border:none !important;
+    line-height:18px !important;
+}
+.v-verticallayout-diseasecategorylabel.v-verticallayout-heatmapcell:hover{
+border:none !important;
+}
+.v-verticallayout-diseasecategorylabel  .v-label-hmparkinsonsstyle{
+   letter-spacing: 0.3em;
+}
+
+.v-verticallayout-diseasecategorylabel  .v-label-hmalzheimersstyle {   
+   letter-spacing: 0.3em;
+}
+.v-verticallayout-diseasecategorylabel  .v-label-hmmultiplesclerosisstyle {   
+   letter-spacing: 0.3em;
+}
+.v-verticallayout-diseasecategorylabel  .v-label-hmamyotrophiclateralsclerosisstyle {   
+   letter-spacing:  0.3em !important;
+}

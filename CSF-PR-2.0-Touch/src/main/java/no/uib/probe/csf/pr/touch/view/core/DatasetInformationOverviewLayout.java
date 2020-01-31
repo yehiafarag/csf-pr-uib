@@ -325,7 +325,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         analyticalApproach.setValue(quantDs.getAnalyticalApproach() + "", null);
         normalization_strategy.setValue(quantDs.getNormalizationStrategy(), null);
 
-        diseaseCategory.setValue("<font color='" + diseaseHashedColor + "' style='font-weight: bold;'>" + quantDs.getDiseaseCategory() + "</font>", null);
+        diseaseCategory.setValue("<font color='" + diseaseHashedColor + "' style='font-weight: bold;'>" + quantDs.getDiseaseCategoryI() + "</font>", null);
 
         quantifiedProteinsNumber.setValue("" + quantDs.getQuantifiedProteinsNumber(), null);
 

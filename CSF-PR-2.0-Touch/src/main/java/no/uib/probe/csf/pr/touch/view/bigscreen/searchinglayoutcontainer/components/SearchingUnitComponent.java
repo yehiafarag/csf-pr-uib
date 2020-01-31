@@ -129,6 +129,7 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
         diseaseCategoryOption.addItem("Alzheimer's");
         diseaseCategoryOption.addItem("Multiple Sclerosis");
         diseaseCategoryOption.addItem("Parkinson's");
+        diseaseCategoryOption.addItem("Amyotrophic Lateral Sclerosis");
         diseaseCategoryOption.setStyleName(ValoTheme.OPTIONGROUP_SMALL);
         diseaseCategoryOption.setNullSelectionAllowed(true);
         btnsLayoutContainer.addComponent(diseaseCategoryOption);
@@ -244,6 +245,7 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
             query.setSearchKeyWords(searchKeyWords);
             query.setSearchBy(searchByOptionGroup.getValue().toString());
             query.setDiseaseCategorys((Set<Object>) diseaseCategoryOption.getValue());
+           
             search(query);
 
         } else {

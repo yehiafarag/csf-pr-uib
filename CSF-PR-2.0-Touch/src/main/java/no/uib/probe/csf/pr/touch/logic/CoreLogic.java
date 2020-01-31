@@ -127,6 +127,8 @@ public class CoreLogic implements Serializable {
      */
     public Map<String, InitialInformationObject> getQuantDatasetInitialInformationObject() {
         Map<String, InitialInformationObject> quantStudyInitInfoMap = database.getQuantDatasetInitialInformationObject();
+       
+
         boolean[] activeHeaders = new boolean[27];
         Set<String> diseaseCategories = new LinkedHashSet<>();
         InitialInformationObject allDatasetObject = new InitialInformationObject();
@@ -486,7 +488,6 @@ public class CoreLogic implements Serializable {
             updatedSelectedComparisonList.add(comparison);
 
         }
-        System.out.println("at list of accession to update " + accessionDefList);
         return updatedSelectedComparisonList;
 
     }
@@ -513,8 +514,8 @@ public class CoreLogic implements Serializable {
      *
      * @param query query object that has all query information.
      */
-    public int storeQuery(Query query ) {
-       return  database.storeQueryinDB(query);
+    public int storeQuery(Query query) {
+        return database.storeQueryinDB(query);
 
     }
 
@@ -614,7 +615,7 @@ public class CoreLogic implements Serializable {
             key = accession.trim() + "__" + protName.trim();
 
             if (!quantHitsList.containsKey(key)) {
-                quantHitsList.put(key, new Integer[]{0, 0, 0, 0});
+                quantHitsList.put(key, new Integer[]{0, 0, 0, 0, 0});
             }
             Integer[] valueArr = quantHitsList.get(key);
             if (quantProt.getDiseaseCategory().equalsIgnoreCase("Alzheimer's")) {
@@ -623,9 +624,11 @@ public class CoreLogic implements Serializable {
                 valueArr[1] = valueArr[1] + 1;
             } else if (quantProt.getDiseaseCategory().equalsIgnoreCase("Parkinson's")) {
                 valueArr[2] = valueArr[2] + 1;
+            } else if (quantProt.getDiseaseCategory().equalsIgnoreCase("Amyotrophic Lateral Sclerosis")) {
+                valueArr[3] = valueArr[3] + 1;
             }
 
-            valueArr[3] = valueArr[3] + 1;
+            valueArr[4] = valueArr[4] + 1;
             quantHitsList.put(key, valueArr);
 
         }
@@ -644,7 +647,7 @@ public class CoreLogic implements Serializable {
      * @return list of quant hits results
      */
     public Integer[] getQuantComparisonHitsList(List<QuantProtein> quantProteinsList, String searchBy) {
-        Integer[] quantHitsList = new Integer[]{0, 0, 0, 0};
+        Integer[] quantHitsList = new Integer[]{0, 0, 0, 0, 0};
 
         if (quantProteinsList == null || quantProteinsList.isEmpty()) {
 
@@ -657,10 +660,12 @@ public class CoreLogic implements Serializable {
                 quantHitsList[1] = quantHitsList[1] + 1;
             } else if (quantProt.getDiseaseCategory().equalsIgnoreCase("Parkinson's")) {
                 quantHitsList[2] = quantHitsList[2] + 1;
+            } else if (quantProt.getDiseaseCategory().equalsIgnoreCase("Amyotrophic Lateral Sclerosis")) {
+                quantHitsList[3] = quantHitsList[3] + 1;
             }
             return quantProt;
         }).forEach((_item) -> {
-            quantHitsList[3] = quantHitsList[3] + 1;
+            quantHitsList[4] = quantHitsList[4] + 1;
         });
 
         return quantHitsList;
@@ -681,6 +686,7 @@ public class CoreLogic implements Serializable {
         Set<String> msD = new HashSet<>();
         Set<String> alD = new HashSet<>();
         Set<String> parD = new HashSet<>();
+        Set<String> alsD = new HashSet<>();
 
         if (quantProteinsList == null || quantProteinsList.isEmpty()) {
 
@@ -693,11 +699,13 @@ public class CoreLogic implements Serializable {
                 msD.add(quantProt.getUniprotAccessionNumber());
             } else if (quantProt.getDiseaseCategory().equalsIgnoreCase("Parkinson's")) {
                 parD.add(quantProt.getUniprotAccessionNumber());
+            } else if (quantProt.getDiseaseCategory().equalsIgnoreCase("Amyotrophic Lateral Sclerosis")) {
+                alsD.add(quantProt.getUniprotAccessionNumber());
             }
             return quantProt;
         }).forEach((_item) -> {
         });
-        Integer[] quantHitsList = new Integer[]{alD.size(), msD.size(), parD.size(), alD.size() + msD.size() + parD.size()};
+        Integer[] quantHitsList = new Integer[]{alD.size(), msD.size(), parD.size(), alsD.size(), alD.size() + msD.size() + parD.size() + alsD.size()};
 
         return quantHitsList;
 
