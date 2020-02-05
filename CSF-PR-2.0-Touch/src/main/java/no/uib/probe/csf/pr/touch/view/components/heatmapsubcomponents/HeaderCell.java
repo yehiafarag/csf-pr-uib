@@ -1,6 +1,7 @@
 package no.uib.probe.csf.pr.touch.view.components.heatmapsubcomponents;
 
 import com.vaadin.event.LayoutEvents;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
@@ -10,6 +11,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.QuantDiseaseGroupsComparison;
+import org.vaadin.teemu.VaadinIcons;
 
 /**
  * This class give the control on the header label style and events
@@ -117,15 +119,16 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
         this.title = diseaseSubgroupName;
 
         valueLabel = new Label();
+        valueLabel.setContentMode(ContentMode.HTML);
 
         String allStyle = "hm" + diseaseCategory.toLowerCase().replace("'", "").replace(" ", "") + "style";
 
         if (shortName == null) {
-            this.shortName = diseaseSubgroupName;
-            valueLabel.setValue(diseaseSubgroupName);
+            this.shortName = null;
+            valueLabel.setValue(diseaseSubgroupName.replace("Amyotrophic Lateral Sclerosis", "ALS"));
         } else {
             this.shortName = shortName;
-            valueLabel.setValue(shortName);
+            valueLabel.setValue(shortName.replace("Amyotrophic Lateral Sclerosis", "ALS"));
         }
         valueLabel.setStyleName(allStyle);
         valueLabel.setWidth(100, Unit.PERCENTAGE);
@@ -151,6 +154,7 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
             combinedGroup = " - Combined disease groups";
         }
         HeaderCell.this.setDescription(fullName + combinedGroup);
+        this.valueLabel.setValue(allStyle);
 
     }
 
@@ -161,10 +165,14 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
     public void setCollapsedHeader(boolean collapsedHeader) {
 
         if (collapsedHeader) {
-            valueLabel.setValue(shortName);
+            valueLabel.setValue(title.replace("Amyotrophic Lateral Sclerosis", "ALS").replace("Multiple Sclerosis", "MS") + " " + VaadinIcons.EXPAND_SQUARE.getHtml());
             this.addStyleName("diseasecategorylabel");
         } else {
-            valueLabel.setValue(title);
+            if (shortName == null) {
+                valueLabel.setValue(title.replace("Amyotrophic Lateral Sclerosis", "ALS").replace("Multiple Sclerosis", "MS"));
+            } else {
+                valueLabel.setValue(title.replace("Amyotrophic Lateral Sclerosis", "ALS") + " " + VaadinIcons.COMPRESS_SQUARE.getHtml());
+            }
             this.removeStyleName("diseasecategorylabel");
         }
         this.collapsedHeader = collapsedHeader;

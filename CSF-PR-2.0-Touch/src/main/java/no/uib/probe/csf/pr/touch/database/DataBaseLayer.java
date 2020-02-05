@@ -618,10 +618,6 @@ public class DataBaseLayer implements Serializable {
     public LinkedHashMap<String, DiseaseCategoryObject> getDiseaseCategorySet() {
 
         LinkedHashMap<String, DiseaseCategoryObject> availableDiseaseCategory = new LinkedHashMap<>();
-//        availableDiseaseCategory.put("Multiple Sclerosis", null);
-//        availableDiseaseCategory.put("Alzheimer's", null);
-//        availableDiseaseCategory.put("Parkinson's", null);
-
         String selectStat = "SELECT COUNT( * ) AS  `Rows` ,  `disease_category` FROM  `quant_dataset_table` GROUP BY  `disease_category`ORDER BY  `Rows` DESC ";
         try {
             if (conn == null || conn.isClosed()) {
@@ -670,7 +666,7 @@ public class DataBaseLayer implements Serializable {
             System.err.println("at error " + this.getClass().getName() + "  line 470  " + e.getLocalizedMessage());
             return null;
         }
-
+       
         return availableDiseaseCategory;
     }
 
@@ -800,16 +796,16 @@ public class DataBaseLayer implements Serializable {
      */
     public Set<String> getDiseaseGroupNameMap(String diseaseCat) {
         Set<String> diseaseNames = new HashSet<>();
-        String selectPatient_sub_group_i = "SELECT `patient_sub_group_i` FROM `quant_dataset_table`  where `disease_category` = ? GROUP BY `patient_sub_group_i` ORDER BY `patient_sub_group_i` ";
+        String selectPatient_sub_group_i = "SELECT `patient_sub_group_i` FROM `quant_dataset_table`  where `disease_category` like(?) GROUP BY `patient_sub_group_i` ORDER BY `patient_sub_group_i` ";
 
-        String selectPatient_sub_group_ii = "SELECT `patient_sub_group_ii` FROM `quant_dataset_table`  where `disease_category` = ? GROUP BY `patient_sub_group_ii` ORDER BY `patient_sub_group_ii` ";
+        String selectPatient_sub_group_ii = "SELECT `patient_sub_group_ii` FROM `quant_dataset_table`  where `disease_category` like(?) GROUP BY `patient_sub_group_ii` ORDER BY `patient_sub_group_ii` ";
         try {
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
             PreparedStatement selectProStat = conn.prepareStatement(selectPatient_sub_group_i);
-            selectProStat.setString(1, diseaseCat);
+            selectProStat.setString(1, "%"+diseaseCat+"%");
             ResultSet rs = selectProStat.executeQuery();
             System.gc();
             while (rs.next()) {
@@ -818,7 +814,7 @@ public class DataBaseLayer implements Serializable {
             rs.close();
 
             selectProStat = conn.prepareStatement(selectPatient_sub_group_ii);
-            selectProStat.setString(1, diseaseCat);
+            selectProStat.setString(1, "%"+diseaseCat+"%");
             rs = selectProStat.executeQuery();
             System.gc();
             while (rs.next()) {

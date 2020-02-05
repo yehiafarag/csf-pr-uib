@@ -222,17 +222,55 @@
         border:none !important;
     }
     .v-verticallayout-diseasecategorylabel  .v-label-hmparkinsonsstyle{
-   letter-spacing: 0.3em;
-}
+        letter-spacing: 0.1em;
+    }
 
-.v-verticallayout-diseasecategorylabel  .v-label-hmalzheimersstyle {   
-   letter-spacing: 0.3em;
-}
-.v-verticallayout-diseasecategorylabel  .v-label-hmmultiplesclerosisstyle {   
-   letter-spacing: 0.3em;
-}
-.v-verticallayout-diseasecategorylabel  .v-label-hmamyotrophiclateralsclerosisstyle {   
-   letter-spacing:  0.3em !important;
-}
+    .v-verticallayout-diseasecategorylabel  .v-label-hmalzheimersstyle {   
+        letter-spacing: 0.1em;
+    }
+    .v-verticallayout-diseasecategorylabel  .v-label-hmmultiplesclerosisstyle {   
+        letter-spacing: 0.1em;
+    }
+    .v-verticallayout-diseasecategorylabel  .v-label-hmamyotrophiclateralsclerosisstyle {   
+        letter-spacing:  0.1em !important;
+    }
+
+    .v-verticallayout-diseasecategorylabel .v-icon{
+        left:10px;
+        font-size:10px !important;
+        position:absolute;
+    }
+
+
+
+    .v-label-hmparkinsonsstyle .v-icon-compress_square, .v-label-hmmultiplesclerosisstyle .v-icon-compress_square, .v-label-hmalzheimersstyle .v-icon-compress_square, .v-label-hmamyotrophiclateralsclerosisstyle .v-icon-compress_square{   
+        font-size:10px !important;
+        visibility:hidden;
+
+    }
+
+
+    .v-label-hmmultiplesclerosisstyle:hover > .v-icon-compress_square,.v-label-hmalzheimersstyle:hover > .v-icon-compress_square,.v-label-hmamyotrophiclateralsclerosisstyle:hover > .v-icon-compress_square,.v-label-hmparkinsonsstyle:hover > .v-icon-compress_square{
+        visibility:visible !important;
+    }
+
+
+
+    .v-verticallayout-diseasecategorylabel .v-icon{
+        left:10px;
+        font-size:10px !important;
+        position:absolute;
+        visibility:hidden;
+    }
+
+    .v-verticallayout-diseasecategorylabel .v-label-rotateheader .v-icon{
+        right:7px !important;
+        position:absolute !important;
+        left:auto !important;
+    }
+
+    .v-verticallayout-diseasecategorylabel :hover > .v-icon{
+        visibility:visible !important;
+    }
 }
 

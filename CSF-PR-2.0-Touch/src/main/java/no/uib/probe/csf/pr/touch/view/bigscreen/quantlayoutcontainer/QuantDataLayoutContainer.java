@@ -226,8 +226,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
                         for (DiseaseGroupComparison dcat : Data_handler.getDiseaseGroupComparisonsSet()) {
                             if (dcat.getDiseaseCategoryI().equalsIgnoreCase(diseaseCategoryName)) {
                                 updatedSet.add(dcat);
-                            }
-                            else if (dcat.getDiseaseCategoryII().equalsIgnoreCase(diseaseCategoryName)) {
+                            } else if (dcat.getDiseaseCategoryII().equalsIgnoreCase(diseaseCategoryName)) {
                                 updatedSet.add(dcat);
                             }
                         }
@@ -247,7 +246,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
                         }
                         diseaseComparisonHeatmapComponent.updateData(rowLabels, colLabels, updatedSet, Data_handler.getFullQuantDsMap());
                     } else {
-                        
+
                         diseaseComparisonHeatmapComponent.updateData(Data_handler.getRowLabels(), Data_handler.getColumnLabels(), Data_handler.getDiseaseGroupComparisonsSet(), Data_handler.getFullQuantDsMap());
                     }
                     if (compList == null || compList.isEmpty()) {
@@ -500,7 +499,17 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
      */
     private void loadDiseaseCategory(String diseaseCategoryName) {
         Data_handler.loadDiseaseCategory(diseaseCategoryName);
-        diseaseComparisonHeatmapComponent.selectDiseaseCategory(diseaseCategoryName);
+        Set<String> diseaseCategories = new LinkedHashSet<>();
+        if (diseaseCategoryName.equalsIgnoreCase("All Diseases")) {
+            diseaseCategories.add("Parkinson's");
+            diseaseCategories.add("Alzheimer's");
+            diseaseCategories.add("Multiple Sclerosis");
+            diseaseCategories.add("Amyotrophic Lateral Sclerosis");
+
+        } else {
+            diseaseCategories.add(diseaseCategoryName);
+        }
+        diseaseComparisonHeatmapComponent.selectDiseaseCategory(diseaseCategories);
 //        
     }
 

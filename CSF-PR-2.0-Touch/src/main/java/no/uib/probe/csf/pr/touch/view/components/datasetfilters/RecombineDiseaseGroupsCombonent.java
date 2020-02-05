@@ -169,6 +169,7 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
 
         diseaseTypeSelectionList.setDescription("Select disease category");
         for (DiseaseCategoryObject disease : diseaseCategorySet) {
+       
             diseaseTypeSelectionList.addItem(disease.getDiseaseCategory());
             diseaseTypeSelectionList.setItemCaption(disease.getDiseaseCategory(), disease.getDiseaseCategory());
 
@@ -258,6 +259,7 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
         diseaseNamesUpdateContainerLayout.setWidth(100, Unit.PERCENTAGE);
         diseaseNamesUpdateContainerLayout.setMargin(false);
         diseaseCategorySet.stream().filter((diseaseCategory) -> !(diseaseCategory.getDiseaseCategory().equalsIgnoreCase("All Diseases"))).forEach((diseaseCategory) -> {
+          
             HorizontalLayout diseaseNamesUpdateContainer = initDiseaseNamesUpdateContainer(diseaseCategory, (screenWidth - 110));
             diseaseNamesUpdateContainerLayout.addComponent(diseaseNamesUpdateContainer);
             diseaseNamesUpdateContainerLayout.setComponentAlignment(diseaseNamesUpdateContainer, Alignment.TOP_CENTER);
@@ -290,6 +292,7 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
         subGroupList.clear();
         Map<String, ComboBox> diseaseGroupNameToListMap = new LinkedHashMap<>();
         for (String diseaseGroupName : diseaseCategory.getDiseaseSubGroups().keySet()) {
+           
             VerticalLayout label = generateLabel(diseaseGroupName, diseaseCategory.getDiseaseSubGroupsToFullName().get(diseaseGroupName), diseaseCategory.getDiseaseStyleName(), labelWidth - 8);
             diseaseNamesUpdateContainer.addComponent(label, col, row);
 
@@ -503,6 +506,9 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
         Map<String, Map<String, String>> updatedGroupsNamesMap = new HashMap<>();
 
         diseaseGroupsSelectionListMap.keySet().stream().forEach((diseaseKey) -> {
+            
+            System.out.println("at recombine grop error "+ diseaseGroupsSelectionListMap.keySet()+" --- "+diseaseKey);
+            
             Map<String, ComboBox> diseaseGroupNameToListMap = diseaseGroupsSelectionListMap.get(diseaseKey);
             Map<String, String> updatedDiseaseGroupsMappingName = new LinkedHashMap<>();
             diseaseGroupNameToListMap.keySet().stream().forEach((key) -> {
