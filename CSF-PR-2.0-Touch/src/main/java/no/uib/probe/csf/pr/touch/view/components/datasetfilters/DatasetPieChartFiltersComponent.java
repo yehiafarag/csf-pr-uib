@@ -118,15 +118,6 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         applyFilters.addClickListener((Button.ClickEvent event) -> {
             Set<Integer> filteredSelectionSet = filterSelectionUnit();
             DatasetPieChartFiltersComponent.this.updateSystem(filteredSelectionSet);
-            if (filteredSelectionSet.size() == quantDatasetMap.size()) {
-                removeStyleName("appliedfilter");
-                icon.setSource(defaultTheam);
-            } else {
-                addStyleName("appliedfilter");
-                icon.setSource(selectedTheam);
-
-            }
-
             popupWindow.view();
 
         });
@@ -381,9 +372,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         if (counter == 1) {
             singlefilter = true;
         }
-        
-        
-        
+
         return finalSelectionIds;
 
     }
@@ -406,8 +395,9 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
     public void resetFilters() {
         filtersSet.values().stream().forEach((filter) -> {
             filter.reset();
-        });      
+        });
         DatasetPieChartFiltersComponent.this.updateSystem(filterSelectionUnit());
+        resetFilterIcon();
     }
 
     /**
@@ -431,10 +421,16 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         popupWindow.view();
     }
 
-    public void resetFilterIcon(){
-      removeStyleName("appliedfilter");
-        icon.setSource(defaultTheam);
+    public void resetFilterIcon() {
+            removeStyleName("appliedfilter");
+            icon.setSource(defaultTheam);
+
     }
+    public void applyFilterIcon(){
+     addStyleName("appliedfilter");
+                icon.setSource(selectedTheam);
+    }
+
     /**
      * Check current selected filters to update the system
      *

@@ -168,10 +168,6 @@ public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout i
                     });
                     return tempFilterMap;
                 }
-
-//                 for (int dsId : heatmapLayoutContainer.getCurrentDsIds()) {
-//                    tempFilterMap.put(dsId, fullQuantDsMap.get(dsId));
-//                }
                 return filteredQuantDsMap;
             }
 
@@ -226,7 +222,6 @@ public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout i
                     return;
                 }
                 heatmapLayoutContainer.selectDiseaseCategory(null, false, false);
-                System.out.println(" ---->> invoke from serum filter ");
             }
         };
 
@@ -247,7 +242,6 @@ public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout i
                 updateSystemComponents(updatedDsIds.keySet(), heatmapLayoutContainer.getUpdatedExpandedList(), true, false);
                 reorderSelectComponent.updateData(rowheadersSet, colheadersSet, patientsGroupComparisonsSet);
                 heatmapLayoutContainer.selectDiseaseCategory(null, false, false);
-                System.out.println(" ---->> invoke from pool filter ");
             }
 
         };
@@ -308,7 +302,9 @@ public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout i
                     }
                 }
                 DiseaseComparisonHeatmapComponent.this.updateIcon(imgUrl, datasetNumber, selectedDiseaseCategory, expandCollapsAction);
-                datasetPieChartFiltersComponent.resetFilterIcon();
+                if (expandCollapsAction) {
+                    datasetPieChartFiltersComponent.resetFilterIcon();
+                }
                 CSFPR_Central_Manager.setEqualComparisonMap(equalComparisonMap);
             }
 
@@ -425,10 +421,24 @@ public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout i
             }
         });
         Map<Integer, QuantDataset> tempFilteredHeatmapDatasetMap;
+        Set<String> finalDiseaseCategories;
         if (pieChartFilterAction) {
             tempFilteredHeatmapDatasetMap = filteredQuantDsMap;
+            finalDiseaseCategories = new LinkedHashSet<>();
+            for (QuantDataset ds : filteredQuantDsMap.values()) {
+                finalDiseaseCategories.add(ds.getDiseaseCategoryI());
+                finalDiseaseCategories.add(ds.getDiseaseCategoryII());
+            }
+             Map<Integer, QuantDataset> unitFilteringDatasets = unitFilteringDataset();
+            if (unitFilteringDatasets.size()==filteredQuantDsMap.size() && filteredQuantDsMap.keySet().containsAll(unitFilteringDatasets.keySet())) {
+                datasetPieChartFiltersComponent.resetFilterIcon();
+            }else{
+             datasetPieChartFiltersComponent.applyFilterIcon();
+            }
         } else {
+            finalDiseaseCategories = diseaseCategories;
             tempFilteredHeatmapDatasetMap = unitFilteringDataset();
+             datasetPieChartFiltersComponent.resetFilterIcon();
         }
 
         for (int key : tempFilteredHeatmapDatasetMap.keySet()) {
@@ -436,7 +446,7 @@ public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout i
                 filteredPatientsGroupComparisonsSet.add(patientsGroupComparisons);
             });
         }
-        heatmapLayoutContainer.updateHeatMapFilterSelection(filteredPatientsGroupComparisonsSet, tempFilteredHeatmapDatasetMap, diseaseCategories);
+        heatmapLayoutContainer.updateHeatMapFilterSelection(filteredPatientsGroupComparisonsSet, tempFilteredHeatmapDatasetMap, finalDiseaseCategories);
     }
 
     private boolean selfselection = false;

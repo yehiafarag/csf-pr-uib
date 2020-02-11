@@ -114,11 +114,12 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
         comparison.setDatasetMap(datasetMap);
         comparison.setDiseaseCategoryStyle(diseaseCategoryStyle);
         strValue = "";
-        pointer = "default";
+        pointer = "default"; 
+        String[] gr = fullCompTitle.replace("__" + diseaseCategory, "").split(" / ");
         if (cellColor.equalsIgnoreCase("#EFF2FB") && value != 0 && !collapsedHeader ) {
             strValue = ((int) value) + "*";
             this.updateLabel(strValue);
-            String[] gr = fullCompTitle.replace("__" + diseaseCategory, "").split(" / ");
+           
             this.setDescription("Same type comparison <br/>"
                     + "Numerator: " + gr[0] + "<br/>"
                     + "Denominator: " + gr[1]
@@ -136,11 +137,11 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
             this.valueLabel.setStyleName("hmbodycell");
             this.valueLabel.setValue("<div style='background:" + cellColor + "; width:" + (100) + "% !important; height:" + (100) + "% !important; color: #474747; font-weight: 600; font-size: 10px;'>" + strValue + "</div>");
 
-        } else if (cellColor.equalsIgnoreCase("#EFF2FB") && value != 0 && collapsedHeader) {
+        } else if ((cellColor.equalsIgnoreCase("#EFF2FB") && value != 0 && collapsedHeader)||(cellColor.equalsIgnoreCase("#EFF2FB") && value == 0 && collapsedHeader &&gr[0].equalsIgnoreCase(gr[1]) )) {
 //            cellColor="#e3e304";
             strValue = ((int) value) + "";//+ "*";
             this.updateLabel(strValue);
-            String[] gr = fullCompTitle.replace("__" + diseaseCategory, "").split(" / ");
+//            String[] gr = fullCompTitle.replace("__" + diseaseCategory, "").split(" / ");
             this.setDescription("Collapsed Disease Category (click to expand)<br/>"
                     + "Numerator: " + gr[0] + "<br/>"
                     + "Denominator: " + gr[1]
@@ -191,7 +192,7 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
         }
 
         if (value > 0 && !cellColor.equalsIgnoreCase("#EFF2FB")) {
-            String[] gr = comparison.getComparisonFullName().replace("__" + diseaseCategory, "").split(" / ");
+             gr = comparison.getComparisonFullName().replace("__" + diseaseCategory, "").split(" / ");
             HeatmapCell.this.setDescription("Numerator: " + gr[0] + "<br/>Denominator: " + gr[1]
                     + "<br/>Disease: " + diseaseCategory + " <br/>#Datasets: " + strValue + "<br/>#Publications: " + publicationsNumber);
         }
