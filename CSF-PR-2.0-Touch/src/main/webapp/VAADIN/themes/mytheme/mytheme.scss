@@ -272,5 +272,20 @@
     .v-verticallayout-diseasecategorylabel :hover > .v-icon{
         visibility:visible !important;
     }
+    .appliedfilter{
+        border-color: gray;
+        border-width: 1px;
+        opacity: 1 !important;
+        -webkit-transition: all .5s ease-in-out;
+        -moz-transition: all .5s ease-in-out;
+        -o-transition: all .5s ease-in-out;
+        transition: all .5s ease-in-out;
+        box-shadow: 0 0px 10px rgba(0, 0, 0, 0.2), inset 0px 25px 0px 1px rgba(255, 255, 255, 1);
+        -webkit-box-shadow: 0 0px 10px rgba(0, 0, 0, 0.2), inset 0px 25px 0px 1px rgba(255, 255, 255, 1);
+        -moz-box-shadow: 0 0px 10px rgba(0, 0, 0, 0.2), inset 0px 25px 0px 1px rgba(255, 255, 255, 1);
+    }
+    .unselectedpiechart{
+    opacity:0.6
+}
 }
 

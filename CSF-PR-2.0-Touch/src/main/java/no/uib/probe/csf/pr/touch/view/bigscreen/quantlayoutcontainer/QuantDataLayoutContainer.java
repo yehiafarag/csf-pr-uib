@@ -135,6 +135,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
      * side and right side buttons wrappers).
      */
     private final int mainViewPanelHeight;
+    private String lastSelectedDisease = "";
 
     @Override
     public void selectionChanged(String type) {
@@ -202,7 +203,7 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         subBodyWrapper.setWidthUndefined();
         subBodyWrapper.setHeightUndefined();
         initialDiseaseCategoriesComponent = new InitialDiseaseCategoriesComponent(availableDiseaseCategory, width - 20, height) {
-            private String lastSelectedDisease = "";
+            
 
             @Override
             public void resetSelection() {
@@ -454,9 +455,8 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
         this.CSFPR_Central_Manager.registerListener(QuantDataLayoutContainer.this);
         Data_handler.loadDiseaseCategory("All Diseases");
         diseaseComparisonHeatmapComponent = new DiseaseComparisonHeatmapComponent(CSFPR_Central_Manager, Data_handler, Data_handler.getDiseaseCategorySet(), mainViewPanelWidth, mainViewPanelHeight - 2, Data_handler.getActiveDataColumns()) {
-
             @Override
-            public void updateIcon(String imageUrl) {
+            public void updateIcon(String imageUrl, int dsNumber, String selectedDiseaseCategory, boolean expandCollapsAction) {
                 if (imageUrl == null) {
                     heatmapBtn.setEnabled(false);
                     setCurrentLayout("initiallayout");
@@ -464,6 +464,10 @@ public class QuantDataLayoutContainer extends ViewControlPanel implements CSFLis
                 }
                 heatmapBtn.updateIcon(new ExternalResource(imageUrl));
                 heatmapBtn.setEnabled(true);
+//                if (expandCollapsAction) {
+                initialDiseaseCategoriesComponent.updateThumbLabel(dsNumber, selectedDiseaseCategory);
+              lastSelectedDisease=selectedDiseaseCategory;
+//                }
             }
 
             @Override

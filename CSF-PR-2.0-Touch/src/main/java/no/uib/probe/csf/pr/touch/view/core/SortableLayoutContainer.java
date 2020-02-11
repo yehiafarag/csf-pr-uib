@@ -137,11 +137,11 @@ public class SortableLayoutContainer extends VerticalLayout {
      */
     public SortableLayoutContainer(final String headerTitle, int height) {
 
-        this.setStyleName("whitelayout");
-        this.setSpacing(true);
-        this.setMargin(new MarginInfo(false, true, false, false));
-        this.setWidth(100, Unit.PERCENTAGE);
-        this.setHeightUndefined();
+        SortableLayoutContainer.this.setStyleName("whitelayout");
+        SortableLayoutContainer.this.setSpacing(true);
+        SortableLayoutContainer.this.setMargin(new MarginInfo(false, true, false, false));
+        SortableLayoutContainer.this.setWidth(100, Unit.PERCENTAGE);
+        SortableLayoutContainer.this.setHeightUndefined();
 
         this.headerTitle = headerTitle;
         this.groupSelectionMap = new HashMap<>();
@@ -155,7 +155,7 @@ public class SortableLayoutContainer extends VerticalLayout {
         headerLayout.addStyleName("paddingleft20");
         headerLayout.setMargin(new MarginInfo(false, true, false, false));
 
-        this.addComponent(headerLayout);
+        SortableLayoutContainer.this.addComponent(headerLayout);
 
         Label titileI = new Label(headerTitle);
         titileI.setStyleName(ValoTheme.LABEL_SMALL);
@@ -195,8 +195,8 @@ public class SortableLayoutContainer extends VerticalLayout {
         bodyLayout.setWidth(100, Unit.PERCENTAGE);
 
         bodyPanel.setContent(bodyLayout);
-        this.addComponent(bodyPanel);
-        this.setComponentAlignment(bodyPanel, Alignment.BOTTOM_CENTER);
+        SortableLayoutContainer.this.addComponent(bodyPanel);
+        SortableLayoutContainer.this.setComponentAlignment(bodyPanel, Alignment.BOTTOM_CENTER);
 
         counterLayoutContainerWrapper = new VerticalLayout();
         bodyLayout.addComponent(counterLayoutContainerWrapper);
@@ -279,7 +279,7 @@ public class SortableLayoutContainer extends VerticalLayout {
             Label label = new Label(counter + 1 + "");
             container.addComponent(label);
             this.counterLayoutContainer.addComponent(container);
-            sortableRowsLayout.addComponent(component, headerTitle);
+            sortableRowsLayout.addComponent(component, headerTitle,component.getData().toString());
             diseaseGroupSelectOption.addItem(counter);
             diseaseGroupSelectOption.setItemCaption(counter, (counter + 1) + "");
             autoClear = true;
@@ -428,16 +428,17 @@ public class SortableLayoutContainer extends VerticalLayout {
         final List<VerticalLayout> componentsList = new ArrayList<>();
         groupsIds.clear();
         groupSelectionMap.clear();
-        for (HeatMapHeaderCellInformationBean strLabel : datasource) {
+        datasource.forEach((strLabel) -> {
             DiseaseGroupLabel container = new DiseaseGroupLabel(strLabel.getDiseaseGroupName(), strLabel.getDiseaseStyleName());
             container.addStyleName("border");
             container.addStyleName("grab");
             container.setDescription(strLabel.getDiseaseGroupFullName());
             componentsList.add(container);
+            container.setData(strLabel.getDiseaseCategory());
             groupSelectionMap.put(strLabel, Boolean.TRUE);
             groupsIds.add(strLabel);
             labelsLayoutSet.put(strLabel, container);
-        }
+        });
         return componentsList;
     }
 
@@ -475,9 +476,9 @@ public class SortableLayoutContainer extends VerticalLayout {
             layout.setWidth(100, Unit.PERCENTAGE);
             layout.setHeight(100, Unit.PERCENTAGE);
             dropHandler = new ReorderLayoutDropHandler(layout);
-            this.setEnabled(true);
+            SortableLayoutContainer.this.setEnabled(true);
             final DragAndDropWrapper pane = new DragAndDropWrapper(layout);
-            setCompositionRoot(pane);
+            super.setCompositionRoot(pane);
 
         }
 
@@ -487,12 +488,13 @@ public class SortableLayoutContainer extends VerticalLayout {
          * @param component the added component.
          * @param labelId The label id
          */
-        public void addComponent(final Component component, String labelId) {
+        public void addComponent(final Component component, String labelId,String category) {
             final WrappedComponent wrapper = new WrappedComponent(component,
                     dropHandler);
             wrapper.setHeight(100, Unit.PERCENTAGE);
             wrapper.setWidth(100, Unit.PERCENTAGE);
-            wrapper.setData(labelId);
+            wrapper.setData(labelId+"__"+category);
+            wrapper.setDescription(component.getDescription());
             layout.addComponent(wrapper);
 
         }
@@ -536,7 +538,7 @@ public class SortableLayoutContainer extends VerticalLayout {
         public WrappedComponent(final Component content, final DropHandler dropHandler) {
             super(content);
             this.dropHandler = dropHandler;
-            setDragStartMode(DragAndDropWrapper.DragStartMode.WRAPPER);
+            super.setDragStartMode(DragAndDropWrapper.DragStartMode.WRAPPER);
         }
 
         @Override
@@ -584,7 +586,6 @@ public class SortableLayoutContainer extends VerticalLayout {
         @Override
         public void drop(final DragAndDropEvent dropEvent) {
             final Transferable transferable = dropEvent.getTransferable();
-
             final Component sourceComponent = transferable.getSourceComponent();
             if (sourceComponent instanceof WrappedComponent) {
                 final TargetDetails dropTargetData = dropEvent

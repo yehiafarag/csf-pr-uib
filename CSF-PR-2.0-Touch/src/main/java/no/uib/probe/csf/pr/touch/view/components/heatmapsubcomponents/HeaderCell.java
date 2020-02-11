@@ -176,6 +176,17 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
             this.removeStyleName("diseasecategorylabel");
         }
         this.collapsedHeader = collapsedHeader;
+        if (shortName != null) {
+            if ((rotate && valueLabel.getWidth() <= 100 && valueLabel.getWidth() > 80)) {
+                valueLabel.setValue(valueLabel.getValue().replace("Multiple Sclerosis", "MS"));
+            } else if ((rotate && valueLabel.getWidth() <= 80)) {
+                valueLabel.setValue(valueLabel.getValue().replace("Multiple Sclerosis", "MS").replace("Alzheimer's", "AD").replace("Parkinson's", "PD"));
+            } else if (!rotate && this.getWidth() <= 100 && this.getWidth() > 80) {
+                valueLabel.setValue(valueLabel.getValue().replace("Multiple Sclerosis", "MS"));
+            } else if (!rotate && this.getWidth() <= 80) {
+                valueLabel.setValue(valueLabel.getValue().replace("Multiple Sclerosis", "MS").replace("Alzheimer's", "AD").replace("Parkinson's", "PD"));
+            }
+        }
     }
 
     /**
@@ -308,6 +319,7 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
             }
             valueLabel.setHeight(width - 2, unit);
         }
+
     }
 
 }

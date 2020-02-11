@@ -13,6 +13,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -112,13 +113,14 @@ public abstract class HeatMapLayout extends VerticalLayout {
      * The set of heatmap headers cell information objects required for
      * initialize the row headers.
      */
-    private Set<HeatMapHeaderCellInformationBean> fullRowheadersSet;
+    private Map<String, HeatMapHeaderCellInformationBean> fullRowheadersSet;
     /**
      * The set of heatmap headers cell information objects required for
      * initialize the column headers.
      */
-    private Set<HeatMapHeaderCellInformationBean> fullColheadersSet;
+    private Map<String, HeatMapHeaderCellInformationBean> fullColheadersSet;
     private Set<DiseaseGroupComparison> fullPatientsGroupComparisonsSet;
+    private Set<DiseaseGroupComparison> activePatientsGroupComparisonsSet;
     private Map<Integer, QuantDataset> fullQuantDsMap;
     private final Set<HeaderCell> diseaseCategoryHeadersSet;
     /**
@@ -190,6 +192,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
     private final Set<String> selectedDiseaseCategory;
     private String fullHeatMapThumb;
+    private Map<Integer, QuantDataset> activeQuantDsMap;
 
     /**
      * Get reset filters button.
@@ -460,47 +463,112 @@ public abstract class HeatMapLayout extends VerticalLayout {
      * @param fullQuantDsMap Map of datasets and its indexes
      */
     public void initialiseHeatMapData(Set<String> fullDiseaseCategory, Set<HeatMapHeaderCellInformationBean> fullRowheadersSet, Set<HeatMapHeaderCellInformationBean> fullColheadersSet, Set<DiseaseGroupComparison> fullPatientsGroupComparisonsSet, Map<Integer, QuantDataset> fullQuantDsMap) {
-        this.fullRowheadersSet = fullRowheadersSet;
-        this.fullColheadersSet = fullColheadersSet;
+        this.fullRowheadersSet = new LinkedHashMap<>();
+        this.fullColheadersSet = new LinkedHashMap<>();
+        for (HeatMapHeaderCellInformationBean bean : fullRowheadersSet) {
+            this.fullRowheadersSet.put(bean.getDiseaseCategory() + "-_-" + bean.getDiseaseGroupFullName(), bean);
+        }
+        for (HeatMapHeaderCellInformationBean bean : fullColheadersSet) {
+            this.fullColheadersSet.put(bean.getDiseaseCategory() + "-_-" + bean.getDiseaseGroupFullName(), bean);
+        }
         this.fullPatientsGroupComparisonsSet = fullPatientsGroupComparisonsSet;
+        this.activePatientsGroupComparisonsSet = fullPatientsGroupComparisonsSet;
         this.fullQuantDsMap = fullQuantDsMap;
+        this.activeQuantDsMap = fullQuantDsMap;
         this.fullDiseaseCategory = fullDiseaseCategory;
+        this.updatedExpandedList.addAll(fullDiseaseCategory);
     }
 
-    public void updateHeatMapData(Set<DiseaseGroupComparison> filteredPatientsGroupComparisonsSet) {
-        for (DiseaseGroupComparison comparison : filteredPatientsGroupComparisonsSet) {
-            System.out.println("at filtered comparisons " + comparison.getQuantDatasetIndex());
+    /**
+     * This method responsible for updating the heat-map data
+     *
+     *
+     * @param fullDiseaseCategory Set of all disease category names
+     * @param fullRowheadersSet Set of header cell information for rows
+     * @param fullColheadersSet Set of header cell information for columns
+     * @param activePatientsGroupComparisonsSet Set of disease group comparisons
+     * @param filteredQuantDsMap Map of datasets and its indexes
+     */
+    public void updateHeatMapFilterSelection(Set<DiseaseGroupComparison> activePatientsGroupComparisonsSet, Map<Integer, QuantDataset> filteredQuantDsMap, Set<String> selectedDiseaseCategory) {
+        if (fullColheadersSet == null || fullRowheadersSet == null) {
+            return;
         }
-        System.out.println("at filtered comparisons size" + filteredPatientsGroupComparisonsSet.size());
+        this.activeQuantDsMap = filteredQuantDsMap;
+        this.activePatientsGroupComparisonsSet = activePatientsGroupComparisonsSet;
+        if (selectedDiseaseCategory == null) {
+            selectDiseaseCategory(this.updatedExpandedList, false,true);
+        } else {
+            selectDiseaseCategory(selectedDiseaseCategory, false,true);
+        }
+
+    }
+
+    public void reorderHeatmap(LinkedHashSet<HeatMapHeaderCellInformationBean> rowHeaders, LinkedHashSet<HeatMapHeaderCellInformationBean> colHeaders) {
+
+        Map<String, HeatMapHeaderCellInformationBean> tempRowheadersSet = new LinkedHashMap<>();
+        Map<String, HeatMapHeaderCellInformationBean> tempColheadersSet = new LinkedHashMap<>();
+        for (String diseaseCate : fullDiseaseCategory) {
+            for (HeatMapHeaderCellInformationBean bean : rowHeaders) {
+                if (bean.getDiseaseCategory().equalsIgnoreCase(diseaseCate)) {
+                    String key = bean.getDiseaseCategory() + "-_-" + bean.getDiseaseGroupFullName();
+                    tempRowheadersSet.put(key, fullRowheadersSet.get(key));
+                }
+            }
+            for (String key : fullRowheadersSet.keySet()) {
+                if (!tempRowheadersSet.containsKey(key) && key.split("-_-")[0].equalsIgnoreCase(diseaseCate)) {
+                    tempRowheadersSet.put(key, fullRowheadersSet.get(key));
+                }
+            }
+
+            for (HeatMapHeaderCellInformationBean bean : colHeaders) {
+                if (bean.getDiseaseCategory().equalsIgnoreCase(diseaseCate)) {
+                    String key = bean.getDiseaseCategory() + "-_-" + bean.getDiseaseGroupFullName();
+                    tempColheadersSet.put(key, fullColheadersSet.get(key));
+                }
+            }
+            for (String key : fullColheadersSet.keySet()) {
+                if (!tempColheadersSet.containsKey(key) && key.split("-_-")[0].equalsIgnoreCase(diseaseCate)) {
+                    tempColheadersSet.put(key, fullColheadersSet.get(key));
+                }
+            }
+
+        }
+        fullColheadersSet = tempColheadersSet;
+        fullRowheadersSet = tempRowheadersSet;
+        Set<String> diseaseCategories = new LinkedHashSet<>();
+        for (String dc : fullDiseaseCategory) {
+            if (!collapsedRowheadersSet.containsKey(dc)) {
+                diseaseCategories.add(dc);
+            }
+        }
+        selectDiseaseCategory(diseaseCategories, false,false);
+
     }
 
     private final Map<String, HeatMapHeaderCellInformationBean> collapsedRowheadersSet = new LinkedHashMap<>();
     private Set<String> fullDiseaseCategory;
 
-    public void selectDiseaseCategory(Set<String> diseaseCategories) {
-        if (diseaseCategories == null) {
-            updateExpandedHeaders();
+    public void selectDiseaseCategory(Set<String> diseaseCategories, boolean collapsExpandAction,boolean forceUpdate) {
+
+       
+        if (!forceUpdate && !collapsExpandAction && updatedExpandedList != null &&diseaseCategories!=null&& updatedExpandedList.containsAll(diseaseCategories) && updatedExpandedList.size() == diseaseCategories.size()) {
             return;
-        } else if (diseaseCategories.isEmpty()) {
-            for (String dc : fullDiseaseCategory) {
-                if (!collapsedRowheadersSet.containsKey(dc)) {
-                    diseaseCategories.add(dc);
-                }
-            }
-        } else {
-            collapsedRowheadersSet.clear();
         }
+        if (diseaseCategories == null) {
+            updateExpandedHeaders(false);
+            return;
+        } 
+        System.out.println("at force update ?? "+diseaseCategories+"  "+activeQuantDsMap.size());
+        collapsedRowheadersSet.clear();
         if (diseaseCategories.size() == 4) {
-            updateHeatMapLayout(fullRowheadersSet, fullColheadersSet, fullPatientsGroupComparisonsSet, fullQuantDsMap);
-            updateHMThumb(this.reDrawHeatMap(fullRowheadersSet, fullColheadersSet), currentDsCounter.size(), 0, equalComparisonMap);
+            updateHeatMapLayout(fullRowheadersSet.values(), fullColheadersSet.values(), activePatientsGroupComparisonsSet, activeQuantDsMap);
+            updateHMThumb(this.reDrawHeatMap(fullRowheadersSet.values(), fullColheadersSet.values()), activeHeatmapCellCount / 2, 0, equalComparisonMap, "All Diseases", collapsExpandAction);
         } else {
-            //Set<HeatMapHeaderCellInformationBean> fullRowheadersSet, Set<HeatMapHeaderCellInformationBean> fullColheadersSet, Set<DiseaseGroupComparison> fullPatientsGroupComparisonsSet, Map<Integer, QuantDataset> fullQuantDsMap
             Set<HeatMapHeaderCellInformationBean> rowheadersSet = new LinkedHashSet<>();
             Set<HeatMapHeaderCellInformationBean> colheadersSet = new LinkedHashSet<>();
             Set<DiseaseGroupComparison> patientsGroupComparisonsSet = new LinkedHashSet<>();
-            Map<Integer, QuantDataset> quantDsMap = new LinkedHashMap<>();
 
-            for (HeatMapHeaderCellInformationBean cellInfoBean : fullRowheadersSet) {
+            for (HeatMapHeaderCellInformationBean cellInfoBean : fullRowheadersSet.values()) {
                 if (diseaseCategories.contains(cellInfoBean.getDiseaseCategory())) {
                     rowheadersSet.add(cellInfoBean);
                 } else {
@@ -521,7 +589,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
             }
             collapsedRowheadersSet.clear();
-            for (HeatMapHeaderCellInformationBean cellInfoBean : fullColheadersSet) {
+            for (HeatMapHeaderCellInformationBean cellInfoBean : fullColheadersSet.values()) {
                 if (diseaseCategories.contains(cellInfoBean.getDiseaseCategory())) {
                     colheadersSet.add(cellInfoBean);
                 } else {
@@ -542,7 +610,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
             }
             Set<DiseaseGroupComparison> crossDiseaseGroupComparisonsSet = new LinkedHashSet<>();
-            for (DiseaseGroupComparison comp : fullPatientsGroupComparisonsSet) {
+            for (DiseaseGroupComparison comp : activePatientsGroupComparisonsSet) {
                 if (comp.isCrossDisease()) {
                     crossDiseaseGroupComparisonsSet.add(comp);
                     continue;
@@ -602,11 +670,32 @@ public abstract class HeatMapLayout extends VerticalLayout {
                 }
 
             }
-            updateHeatMapLayout(rowheadersSet, colheadersSet, patientsGroupComparisonsSet, fullQuantDsMap);
-            updateHMThumb(this.reDrawHeatMap(rowheadersSet, colheadersSet), currentDsCounter.size(), 0, equalComparisonMap);
+
+            updateHeatMapLayout(rowheadersSet, colheadersSet, patientsGroupComparisonsSet, activeQuantDsMap);
+            updatedExpandedList.removeAll(collapsedRowheadersSet.keySet());
+            int selectionSize = updatedExpandedList.size();
+            switch (selectionSize) {
+                case 0:
+                    updateHMThumb(this.reDrawHeatMap(rowheadersSet, colheadersSet), activeHeatmapCellCount / 2, 0, equalComparisonMap, "No Diseases", collapsExpandAction);
+                    break;
+                case 1:
+                    updateHMThumb(this.reDrawHeatMap(rowheadersSet, colheadersSet), activeHeatmapCellCount / 2, 0, equalComparisonMap, updatedExpandedList.iterator().next(), collapsExpandAction);
+                    break;
+                case 4:
+                    updateHMThumb(this.reDrawHeatMap(rowheadersSet, colheadersSet), activeHeatmapCellCount / 2, 0, equalComparisonMap, "All Diseases", collapsExpandAction);
+                    break;
+                default:
+                    updateHMThumb(this.reDrawHeatMap(rowheadersSet, colheadersSet), activeHeatmapCellCount / 2, 0, equalComparisonMap, "Multiple Diseases", collapsExpandAction);
+                    break;
+            }
+
         }
         setCollapsedDiseaseCategories(collapsedRowheadersSet.keySet());
 
+    }
+
+    public Set<String> getUpdatedExpandedList() {
+        return updatedExpandedList;
     }
 
     private void setCollapsedDiseaseCategories(Set<String> diseaseCategories) {
@@ -630,8 +719,9 @@ public abstract class HeatMapLayout extends VerticalLayout {
      * @param patientsGroupComparisonsSet Set of disease group comparisons
      * @param fullQuantDsMap Map of datasets and its indexes
      */
-    private void updateHeatMapLayout(Set<HeatMapHeaderCellInformationBean> rowheaders, Set<HeatMapHeaderCellInformationBean> colheaders, Set<DiseaseGroupComparison> patientsGroupComparisonsSet, Map<Integer, QuantDataset> fullQuantDsMap) {//, Map<String, String> diseaseFullNameMap, ) {
-
+    private void updateHeatMapLayout(Collection<HeatMapHeaderCellInformationBean> rowheaders, Collection<HeatMapHeaderCellInformationBean> colheaders, Set<DiseaseGroupComparison> patientsGroupComparisonsSet, Map<Integer, QuantDataset> fullQuantDsMap) {//, Map<String, String> diseaseFullNameMap, ) {
+        activeHeatmapCellCount = 0;
+        currentDsIds.clear();
         updateDiseaseCategoriesLabels(rowheaders, colheaders);
         cellTable = new HeatmapCell[rowheaders.size()][colheaders.size()];
         //init columnHeaders  
@@ -648,8 +738,10 @@ public abstract class HeatMapLayout extends VerticalLayout {
                 @Override
                 public void selectData(String valueLabel) {
                     if (this.isCollapsedHeader()) {
+                        HeatMapLayout.this.activeQuantDsMap = HeatMapLayout.this.fullQuantDsMap;
+                        HeatMapLayout.this.activePatientsGroupComparisonsSet = HeatMapLayout.this.fullPatientsGroupComparisonsSet;
                         collapsedRowheadersSet.remove(valueLabel.split("__")[0]);
-                        updateExpandedHeaders();
+                        updateExpandedHeaders(true);
                     } else {
                         addRowSelectedDs(valueLabel);
                     }
@@ -682,8 +774,11 @@ public abstract class HeatMapLayout extends VerticalLayout {
                 @Override
                 public void selectData(String valueLabel) {
                     if (this.isCollapsedHeader()) {
+
+                        HeatMapLayout.this.activeQuantDsMap = HeatMapLayout.this.fullQuantDsMap;
+                        HeatMapLayout.this.activePatientsGroupComparisonsSet = HeatMapLayout.this.fullPatientsGroupComparisonsSet;
                         collapsedRowheadersSet.remove(valueLabel.split("__")[0]);
-                        updateExpandedHeaders();
+                        updateExpandedHeaders(true);
                     } else {
                         addRowSelectedDs(valueLabel);
                     }
@@ -718,6 +813,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
                 if (!rowheaders.toArray()[x].toString().equalsIgnoreCase(colheaders.toArray()[y].toString())) {
                     color = hmColorGen.getColor((float) value);
+
                 }
                 if (grI.isCollapsedDiseseCategory() && grII.isCollapsedDiseseCategory() && value > 0) {
                     color = "#EFF2FB";
@@ -740,13 +836,17 @@ public abstract class HeatMapLayout extends VerticalLayout {
                 String fullComparisonTitle = fullGrI + " / " + fullGrII;
                 String orginalComparisonName = grI.getDiseaseGroupOreginalName() + " / " + grII.getDiseaseGroupOreginalName();
                 String diseaseCategory = ((HeatMapHeaderCellInformationBean) rowheaders.toArray()[x]).getDiseaseCategory();
+                if (!color.equalsIgnoreCase("#EFF2FB")) {
+                    activeHeatmapCellCount += value;
+                    currentDsIds.addAll(datasetMap.keySet());
+                }
                 HeatmapCell cell = new HeatmapCell(collapsedRowheadersSet.containsKey(diseaseCategory), value, color, grI.getDiseaseHashedColor(), datasetMap, x, y, heatmapCellWidth, pubCounter.size(), updatedComparisonTitle, fullComparisonTitle, orginalComparisonName, diseaseCategory, ((HeatMapHeaderCellInformationBean) rowheaders.toArray()[x]).getDiseaseStyleName()) {
 
                     @Override
                     public void selectData(HeatmapCell cell) {
                         if (collapsedRowheadersSet.containsKey(cell.getDiseaseCategory())) {
                             collapsedRowheadersSet.remove(cell.getDiseaseCategory());
-                            updateExpandedHeaders();
+                            updateExpandedHeaders(true);
                         } else {
                             addSelectedDs(cell);
                         }
@@ -1114,7 +1214,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
      * @param rowheaders Set of header cell information for rows
      * @param colheaders Set of header cell information for columns
      */
-    private void updateDiseaseCategoriesLabels(Set<HeatMapHeaderCellInformationBean> rowheaders, Set<HeatMapHeaderCellInformationBean> colheaders) {
+    private void updateDiseaseCategoriesLabels(Collection<HeatMapHeaderCellInformationBean> rowheaders, Collection<HeatMapHeaderCellInformationBean> colheaders) {
 
         Map<String, TreeSet<Integer>> diseaseRowsMap = new LinkedHashMap<>();
         int index = 0;
@@ -1183,7 +1283,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
      * @param rowheaders Set of header cell information for rows
      * @param colheaders Set of header cell information for columns
      */
-    private void calcHeatMapMatrix(Set<HeatMapHeaderCellInformationBean> rowheaders, Set<HeatMapHeaderCellInformationBean> colheaders, Set<DiseaseGroupComparison> patientsGroupComparisonsSet, Map<Integer, QuantDataset> fullQuantDsMap) {
+    private void calcHeatMapMatrix(Collection<HeatMapHeaderCellInformationBean> rowheaders, Collection<HeatMapHeaderCellInformationBean> colheaders, Set<DiseaseGroupComparison> patientsGroupComparisonsSet, Map<Integer, QuantDataset> fullQuantDsMap) {
         maxDatasetNumber = -1;
 
         values = new QuantDSIndexes[rowheaders.size()][colheaders.size()];
@@ -1362,7 +1462,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
      *
      * @return URL for image encode as 64Based string
      */
-    private String reDrawHeatMap(Set<HeatMapHeaderCellInformationBean> rowheaders, Set<HeatMapHeaderCellInformationBean> colheaders) {
+    private String reDrawHeatMap(Collection<HeatMapHeaderCellInformationBean> rowheaders, Collection<HeatMapHeaderCellInformationBean> colheaders) {
         gen.generateHeatmap(rowheaders, colheaders, dataValuesColors, availableHMWidth, availableHMHeight, resetLeftSideDiseaseCategoriesLabel, resetTopSideDiseaseCategoriesLabel, false);
         heatmapPanelLayout.setWidth(gen.getPanelWidth(), Unit.PIXELS);
         heatmapPanelLayout.setHeight(gen.getPanelHeight(), Unit.PIXELS);
@@ -1434,6 +1534,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
         updateSelectionManagerIndexes();
 
     }
+    private int activeHeatmapCellCount;
 
     /**
      * This method to update the location of heat map headers and cells on
@@ -1470,12 +1571,16 @@ public abstract class HeatMapLayout extends VerticalLayout {
                     public void selectData(String diseaseCategoryName) {
 
                         if (this.isCollapsedHeader()) {
+
+                            HeatMapLayout.this.activeQuantDsMap = HeatMapLayout.this.fullQuantDsMap;
+                            HeatMapLayout.this.activePatientsGroupComparisonsSet = HeatMapLayout.this.fullPatientsGroupComparisonsSet;
                             collapsedRowheadersSet.remove(diseaseCategoryName.split("__")[0]);
-                            updateExpandedHeaders();
+                            updateExpandedHeaders(true);
 
                         } else {
+
                             collapsedRowheadersSet.put(diseaseCategoryName.split("__")[0], null);
-                            updateExpandedHeaders();
+                            updateExpandedHeaders(true);
                         }
 //                        if (!this.isCollapsedHeader()) {
 //                            selectComparisonsDiseaseCategory(diseaseCategoryName.split("__")[0]);
@@ -1503,12 +1608,15 @@ public abstract class HeatMapLayout extends VerticalLayout {
                     public void selectData(String diseaseCategoryName) {
 //                        System.out.println("at selected header " + diseaseCategoryName + "  " + this.isCollapsedHeader());
                         if (this.isCollapsedHeader()) {
+
+                            HeatMapLayout.this.activeQuantDsMap = HeatMapLayout.this.fullQuantDsMap;
+                            HeatMapLayout.this.activePatientsGroupComparisonsSet = HeatMapLayout.this.fullPatientsGroupComparisonsSet;
                             collapsedRowheadersSet.remove(diseaseCategoryName.split("__")[0]);
-                            updateExpandedHeaders();
+                            updateExpandedHeaders(true);
 
                         } else {
                             collapsedRowheadersSet.put(diseaseCategoryName.split("__")[0], null);
-                            updateExpandedHeaders();
+                            updateExpandedHeaders(true);
                         }
 //                        if (!this.isCollapsedHeader()) {
 //                            selectComparisonsDiseaseCategory(diseaseCategoryName.split("__")[0]);
@@ -1578,15 +1686,16 @@ public abstract class HeatMapLayout extends VerticalLayout {
         heatmapPanelLayout.setWidth(calcWidth, Unit.PIXELS);
 
     }
+    private final Set<String> updatedExpandedList = new LinkedHashSet<>();
 
-    private void updateExpandedHeaders() {
-        Set<String> updatedExpandedList = new LinkedHashSet<>();
-        for (HeatMapHeaderCellInformationBean diseaseCat : fullColheadersSet) {
+    private void updateExpandedHeaders(boolean collapsExpandAction) {
+        updatedExpandedList.clear();
+        for (HeatMapHeaderCellInformationBean diseaseCat : fullColheadersSet.values()) {
             if (!collapsedRowheadersSet.containsKey(diseaseCat.getDiseaseCategory())) {
                 updatedExpandedList.add(diseaseCat.getDiseaseCategory());
             }
         }
-        selectDiseaseCategory(updatedExpandedList);
+        selectDiseaseCategory(updatedExpandedList, collapsExpandAction,false);
     }
 
     /**
@@ -1598,7 +1707,8 @@ public abstract class HeatMapLayout extends VerticalLayout {
      * @param deactivatedDatasetNumber Number of filtered datasets
      * @param equalComparisonMap The map of equal heat map cell to the flipped
      * comparisons
+     * @param selectedDiseaseCategory selected disease category
      */
-    public abstract void updateHMThumb(String imgUrl, int datasetNumber, int deactivatedDatasetNumber, Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> equalComparisonMap);
+    public abstract void updateHMThumb(String imgUrl, int datasetNumber, int deactivatedDatasetNumber, Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> equalComparisonMap, String selectedDiseaseCategory, boolean expandCollapsAction);
 
 }

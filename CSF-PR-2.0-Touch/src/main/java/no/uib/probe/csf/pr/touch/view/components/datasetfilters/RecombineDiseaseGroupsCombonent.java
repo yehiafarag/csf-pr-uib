@@ -505,9 +505,7 @@ public abstract class RecombineDiseaseGroupsCombonent extends VerticalLayout imp
     private void updateGroups() {
         Map<String, Map<String, String>> updatedGroupsNamesMap = new HashMap<>();
 
-        diseaseGroupsSelectionListMap.keySet().stream().forEach((diseaseKey) -> {
-            
-            System.out.println("at recombine grop error "+ diseaseGroupsSelectionListMap.keySet()+" --- "+diseaseKey);
+        diseaseGroupsSelectionListMap.keySet().stream().forEach((diseaseKey) -> {           
             
             Map<String, ComboBox> diseaseGroupNameToListMap = diseaseGroupsSelectionListMap.get(diseaseKey);
             Map<String, String> updatedDiseaseGroupsMappingName = new LinkedHashMap<>();

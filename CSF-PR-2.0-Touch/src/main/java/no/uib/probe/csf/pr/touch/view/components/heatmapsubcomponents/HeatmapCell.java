@@ -115,7 +115,6 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
         comparison.setDiseaseCategoryStyle(diseaseCategoryStyle);
         strValue = "";
         pointer = "default";
-        System.out.println("");
         if (cellColor.equalsIgnoreCase("#EFF2FB") && value != 0 && !collapsedHeader ) {
             strValue = ((int) value) + "*";
             this.updateLabel(strValue);

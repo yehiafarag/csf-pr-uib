@@ -8,9 +8,9 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -94,7 +94,7 @@ public class HeatMapImgGenerator {
      * @param printLabels Print the value of each label
      * @return URL for heat map image
      */
-    public String generateHeatmap(Set<HeatMapHeaderCellInformationBean> rows, Set<HeatMapHeaderCellInformationBean> columns, String[][] data, int heatmapWidth, int heatmaHeight, boolean resetRowLabels, boolean restColumnLabels, boolean printLabels) {
+    public String generateHeatmap(Collection<HeatMapHeaderCellInformationBean> rows, Collection<HeatMapHeaderCellInformationBean> columns, String[][] data, int heatmapWidth, int heatmaHeight, boolean resetRowLabels, boolean restColumnLabels, boolean printLabels) {
         this.printLabels = printLabels;
         headerLabelMap.clear();
         cellWidth = 20;

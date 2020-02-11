@@ -31,41 +31,44 @@ import no.uib.probe.csf.pr.touch.view.core.PopupWindowFrameWithFunctionsBtns;
 public abstract class DatasetPieChartFiltersComponent extends VerticalLayout implements LayoutEvents.LayoutClickListener {
 
     /**
-     *Main pop-up window frame with buttons control.  
+     * Main pop-up window frame with buttons control.
      */
     private final PopupWindowFrameWithFunctionsBtns popupWindow;
     /**
-     *Main pie-charts filter container.
+     * Main pie-charts filter container.
      */
     private final GridLayout popupBody;
     /**
-     *Map of filter title and map of sup-filters slices map.
+     * Map of filter title and map of sup-filters slices map.
      */
     private final Map<String, Map<Comparable, PieChartSlice>> fullFiltersData = new LinkedHashMap<>();
     /**
-     *Map of filter title and pie-chart filter component.
+     * Map of filter title and pie-chart filter component.
      */
     private final Map<String, DatasetPieChartFilter> filtersSet = new LinkedHashMap<>();
     /**
-     *Map current datasets indexes and boolean is active (or filtered).
+     * Map current datasets indexes and boolean is active (or filtered).
      */
     private final Map<Integer, Boolean> activeDatasetMap;
     /**
-     *Map of datasets indexes and dataset objects.
+     * Map of datasets indexes and dataset objects.
      */
     private Map<Integer, QuantDataset> quantDatasetMap;
     /**
-     *Only one filter applied.
+     * Only one filter applied.
      */
     private boolean singlefilter;
     /**
-     *Main pop-up window width .
+     * Main pop-up window width .
      */
     private final int screenWidth = Math.min(Page.getCurrent().getBrowserWindowWidth(), 980);
     /**
-     *Main pop-up window height .
+     * Main pop-up window height .
      */
     private final int screenHeight = Math.max(Math.min(Page.getCurrent().getBrowserWindowHeight(), 800), 435);
+    private final Image icon;
+    private final ThemeResource defaultTheam = new ThemeResource("img/pie-chart.png");
+    private final ThemeResource selectedTheam = new ThemeResource("img/pie-chart-selected.png");
 
     /**
      * Constructor to initialize the main attributes.
@@ -74,8 +77,9 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
 
         //init icon
         this.setStyleName("filterbtn");
-        Image icon = new Image();
-        icon.setSource(new ThemeResource("img/pie-chart.png"));
+        this.addStyleName("unselectedpiechart");
+        icon = new Image();
+        icon.setSource(defaultTheam);
         this.addComponent(icon);
         icon.setWidth(100, Unit.PERCENTAGE);
         icon.setHeight(100, Unit.PERCENTAGE);
@@ -112,7 +116,17 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
 
         btnLayout.addComponent(applyFilters);
         applyFilters.addClickListener((Button.ClickEvent event) -> {
-            DatasetPieChartFiltersComponent.this.updateSystem(filterSelectionUnit());
+            Set<Integer> filteredSelectionSet = filterSelectionUnit();
+            DatasetPieChartFiltersComponent.this.updateSystem(filteredSelectionSet);
+            if (filteredSelectionSet.size() == quantDatasetMap.size()) {
+                removeStyleName("appliedfilter");
+                icon.setSource(defaultTheam);
+            } else {
+                addStyleName("appliedfilter");
+                icon.setSource(selectedTheam);
+
+            }
+
             popupWindow.view();
 
         });
@@ -190,6 +204,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
      * @param quantDatasetMap Map of quant datasets and its indexes
      */
     private void updateQuantDatasetMap(Map<Integer, QuantDataset> quantDatasetMap) {
+
         Set<Integer> finalSelectedIds = filterSelectionUnit();
         if (finalSelectedIds.size() == quantDatasetMap.size() && finalSelectedIds.containsAll(quantDatasetMap.keySet())) {
             return;
@@ -337,6 +352,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
     /**
      * This method responsible for calculate datasets required for synchronizing
      * the different pie-chart filters.
+     *
      * @return set of selected dataset indexes
      */
     private Set<Integer> filterSelectionUnit() {
@@ -365,13 +381,17 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         if (counter == 1) {
             singlefilter = true;
         }
+        
+        
+        
         return finalSelectionIds;
 
     }
 
     /**
      * This method responsible for synchronize the different pie-chart filters.
-     * @param datasetIds  Set of dataset indexes
+     *
+     * @param datasetIds Set of dataset indexes
      * @param filterId The applied filter id
      */
     private void updateFilters(Collection<Integer> datasetIds, String filterId) {
@@ -386,7 +406,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
     public void resetFilters() {
         filtersSet.values().stream().forEach((filter) -> {
             filter.reset();
-        });
+        });      
         DatasetPieChartFiltersComponent.this.updateSystem(filterSelectionUnit());
     }
 
@@ -407,17 +427,22 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
         this.updateQuantDatasetMap(this.updatedDatasets());
+
         popupWindow.view();
     }
 
+    public void resetFilterIcon(){
+      removeStyleName("appliedfilter");
+        icon.setSource(defaultTheam);
+    }
     /**
      * Check current selected filters to update the system
      *
-     * @param quantDatasetToFilter Map of quant dataset mapped to datasets indexes
+     * @param quantDatasetToFilter Map of quant dataset mapped to datasets
+     * indexes
      * @return finalSelectionIds set of dataset indexes
      */
     public Set<Integer> checkAndFilter(Map<Integer, QuantDataset> quantDatasetToFilter) {
-
         this.updateQuantDatasetMap(quantDatasetToFilter);
         filtersSet.values().stream().forEach((filter) -> {
             filter.reset();
