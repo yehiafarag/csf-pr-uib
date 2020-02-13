@@ -139,7 +139,7 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
 
         } else if ((cellColor.equalsIgnoreCase("#EFF2FB") && value != 0 && collapsedHeader)||(cellColor.equalsIgnoreCase("#EFF2FB") && value == 0 && collapsedHeader &&gr[0].equalsIgnoreCase(gr[1]) )) {
 //            cellColor="#e3e304";
-            strValue = ((int) value) + "";//+ "*";
+            strValue = ( " "+((int) value) + " ").replace(" 0 ","?");//+ "*";
             this.updateLabel(strValue);
 //            String[] gr = fullCompTitle.replace("__" + diseaseCategory, "").split(" / ");
             this.setDescription("Collapsed Disease Category (click to expand)<br/>"

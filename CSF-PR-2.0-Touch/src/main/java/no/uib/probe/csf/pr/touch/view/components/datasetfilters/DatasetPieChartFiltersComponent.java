@@ -376,6 +376,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         return finalSelectionIds;
 
     }
+    private final Set<Integer> selectedDatasetNumbers = new HashSet<>();
 
     /**
      * This method responsible for synchronize the different pie-chart filters.
@@ -384,9 +385,21 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
      * @param filterId The applied filter id
      */
     private void updateFilters(Collection<Integer> datasetIds, String filterId) {
-        filtersSet.keySet().stream().filter((keyFilterId) -> !(keyFilterId.equalsIgnoreCase(filterId))).map((keyFilterId) -> filtersSet.get(keyFilterId)).forEach((filter) -> {
-            filter.localUpdate(datasetIds, singlefilter);
+        selectedDatasetNumbers.clear();
+        filtersSet.keySet().stream().map((keyFilterId) -> {
+            DatasetPieChartFilter filter = filtersSet.get(keyFilterId);
+            if (!keyFilterId.equalsIgnoreCase(filterId)) {
+                filter.localUpdate(datasetIds, singlefilter);
+            }
+            return filter;
+        }).forEachOrdered((filter) -> {
+            selectedDatasetNumbers.add(filter.getSelectedDsIds().size());
         });
+        if (selectedDatasetNumbers.size() > 1) {
+            applyFilterIcon();
+        } else {
+            resetFilterIcon();
+        }
     }
 
     /**
@@ -422,13 +435,17 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
     }
 
     public void resetFilterIcon() {
-            removeStyleName("appliedfilter");
-            icon.setSource(defaultTheam);
+        removeStyleName("appliedfilter");
+        icon.setSource(defaultTheam);
 
     }
-    public void applyFilterIcon(){
-     addStyleName("appliedfilter");
-                icon.setSource(selectedTheam);
+
+    public void applyFilterIcon() {
+        addStyleName("appliedfilter");
+        icon.setSource(selectedTheam);
+    }
+    public boolean hasSelection(){
+        return selectedDatasetNumbers.size()>1;
     }
 
     /**

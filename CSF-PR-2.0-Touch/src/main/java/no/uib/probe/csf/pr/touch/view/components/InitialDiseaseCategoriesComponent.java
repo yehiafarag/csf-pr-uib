@@ -162,7 +162,7 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
             String SpacerII;
             SpacerI = "<br/>(";
             SpacerII = ")";
-            ResizableTextLabel diseaseTitle = new ResizableTextLabel("<center>" + diseaseObject.getDiseaseCategory() + SpacerI + diseaseObject.getDatasetNumber() + "/" + max + SpacerII + "</center>");
+            ResizableTextLabel diseaseTitle = new ResizableTextLabel("<center>" + diseaseObject.getDiseaseCategory().replace("Amyotrophic Lateral Sclerosis", "ALS")  + SpacerI + diseaseObject.getDatasetNumber() + "/" + max + SpacerII + "</center>");
             if (height >= 60 && height <= 80) {
                 diseaseTitle.addStyleName("xsmallfont");
             } else {
@@ -370,7 +370,7 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
         SpacerII = ")";
         diseaseLayout.addLayoutClickListener(this);
 
-        ResizableTextLabel diseaseTitle = new ResizableTextLabel("<center>" + diseaseObject.getDiseaseCategory() + SpacerI + diseaseObject.getDatasetNumber() + "/" + max + SpacerII + "</center>");
+        ResizableTextLabel diseaseTitle = new ResizableTextLabel("<center>" + diseaseObject.getDiseaseCategory().replace("Amyotrophic Lateral Sclerosis", "ALS") + SpacerI + diseaseObject.getDatasetNumber() + "/" + max + SpacerII + "</center>");
         diseaseTitle.setDescription("#Datasets: " + diseaseObject.getDatasetNumber());
         diseaseLayout.addComponent(diseaseTitle);
         diseaseTitle.setContentMode(ContentMode.HTML);

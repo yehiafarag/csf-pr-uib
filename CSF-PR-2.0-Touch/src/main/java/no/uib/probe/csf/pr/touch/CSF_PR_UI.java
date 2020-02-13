@@ -7,6 +7,7 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.window.WindowMode;
@@ -144,7 +145,8 @@ public class CSF_PR_UI extends UI {
         appWrapper.setComponentAlignment(layout, Alignment.MIDDLE_CENTER);
 //        tracker.trackPageview("http://localhost:8084/CSF-PR-2.0-Touch/");
 
-        tracker.extend(CSF_PR_UI.this);
+     
+
     }
 
     /**
