@@ -324,17 +324,9 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
             infoLable.addStyleName(ValoTheme.LABEL_BOLD);
             rightPanelWrapper.addComponent(infoLable);
 
-            Label para_1 = new Label(""
-                    //                +"<font style='text-align: justify;text-justify: inter-word; font-size: 14px;color: black;;'>"
-                    //                + "As CSF is in direct contact with the central nervous system (CNS) and it can provide indications about the state of the CNS."
-                    //                + " This is particularly relevant for neurodegenerative diseases, such as Multiple Sclerosis, Alzheimer's and Parkinson's, where"
-                    //                + " the CSF would be a natural place to look for disease biomarkers.<br/><br/>"
-                    //                + "<font style='font-size: 14px;color: black;'>"
-                    + "CSF Proteome Resource "
-                    //                + "(CSF-PR) v2.0 "
+            Label para_1 = new Label("CSF Proteome Resource "
                     + "is an online repository of mass spectrometry" + breakline + "based proteomics "
                     + "experiments on human cerebrospinal fluid (CSF).<br/>" + breakline
-            //                + " </font></font>"
             );
             para_1.setContentMode(ContentMode.HTML);
             rightPanelWrapper.addComponent(para_1);
@@ -651,7 +643,7 @@ public class WelcomeLayoutComponents extends VerticalLayout implements Serializa
         } catch (FileNotFoundException ex) {
             System.out.println(
                     "Unable to open file '" + "'");
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             System.out.println("Error reading file '" + "'");
         }
 

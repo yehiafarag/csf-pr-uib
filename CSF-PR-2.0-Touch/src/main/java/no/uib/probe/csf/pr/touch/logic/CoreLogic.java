@@ -127,7 +127,6 @@ public class CoreLogic implements Serializable {
      */
     public Map<String, InitialInformationObject> getQuantDatasetInitialInformationObject() {
         Map<String, InitialInformationObject> quantStudyInitInfoMap = database.getQuantDatasetInitialInformationObject();
-       
 
         boolean[] activeHeaders = new boolean[27];
         Set<String> diseaseCategories = new LinkedHashSet<>();
@@ -618,13 +617,13 @@ public class CoreLogic implements Serializable {
                 quantHitsList.put(key, new Integer[]{0, 0, 0, 0, 0});
             }
             Integer[] valueArr = quantHitsList.get(key);
-            if (quantProt.getDiseaseCategory().equalsIgnoreCase("Alzheimer's")) {
+            if (quantProt.getDiseaseCategoryI().equalsIgnoreCase("Alzheimer's")) {
                 valueArr[0] = valueArr[0] + 1;
-            } else if (quantProt.getDiseaseCategory().equalsIgnoreCase("Multiple Sclerosis")) {
+            } else if (quantProt.getDiseaseCategoryI().equalsIgnoreCase("Multiple Sclerosis")) {
                 valueArr[1] = valueArr[1] + 1;
-            } else if (quantProt.getDiseaseCategory().equalsIgnoreCase("Parkinson's")) {
+            } else if (quantProt.getDiseaseCategoryI().equalsIgnoreCase("Parkinson's")) {
                 valueArr[2] = valueArr[2] + 1;
-            } else if (quantProt.getDiseaseCategory().equalsIgnoreCase("Amyotrophic Lateral Sclerosis")) {
+            } else if (quantProt.getDiseaseCategoryI().equalsIgnoreCase("Amyotrophic Lateral Sclerosis")) {
                 valueArr[3] = valueArr[3] + 1;
             }
 
@@ -654,17 +653,31 @@ public class CoreLogic implements Serializable {
             return quantHitsList;
         }
         quantProteinsList.stream().map((quantProt) -> {
-            if (quantProt.getDiseaseCategory().equalsIgnoreCase("Alzheimer's")) {
+            if (quantProt.isCrossDiseases()) {
+                if (quantProt.getDiseaseCategoryII().equalsIgnoreCase("Alzheimer's")) {
+                    quantHitsList[0] = quantHitsList[0] + 1;
+                } else if (quantProt.getDiseaseCategoryII().equalsIgnoreCase("Multiple Sclerosis")) {
+                    quantHitsList[1] = quantHitsList[1] + 1;
+                } else if (quantProt.getDiseaseCategoryII().equalsIgnoreCase("Parkinson's")) {
+                    quantHitsList[2] = quantHitsList[2] + 1;
+                } else if (quantProt.getDiseaseCategoryII().equalsIgnoreCase("Amyotrophic Lateral Sclerosis")) {
+                    quantHitsList[3] = quantHitsList[3] + 1;
+                }
+            }
+
+            if (quantProt.getDiseaseCategoryI().equalsIgnoreCase("Alzheimer's")) {
                 quantHitsList[0] = quantHitsList[0] + 1;
-            } else if (quantProt.getDiseaseCategory().equalsIgnoreCase("Multiple Sclerosis")) {
+            } else if (quantProt.getDiseaseCategoryI().equalsIgnoreCase("Multiple Sclerosis")) {
                 quantHitsList[1] = quantHitsList[1] + 1;
-            } else if (quantProt.getDiseaseCategory().equalsIgnoreCase("Parkinson's")) {
+            } else if (quantProt.getDiseaseCategoryI().equalsIgnoreCase("Parkinson's")) {
                 quantHitsList[2] = quantHitsList[2] + 1;
-            } else if (quantProt.getDiseaseCategory().equalsIgnoreCase("Amyotrophic Lateral Sclerosis")) {
+            } else if (quantProt.getDiseaseCategoryI().equalsIgnoreCase("Amyotrophic Lateral Sclerosis")) {
                 quantHitsList[3] = quantHitsList[3] + 1;
             }
+
             return quantProt;
         }).forEach((_item) -> {
+
             quantHitsList[4] = quantHitsList[4] + 1;
         });
 
@@ -693,13 +706,13 @@ public class CoreLogic implements Serializable {
             return new Integer[]{};
         }
         quantProteinsList.stream().map((quantProt) -> {
-            if (quantProt.getDiseaseCategory().equalsIgnoreCase("Alzheimer's")) {
+            if (quantProt.getDiseaseCategoryI().equalsIgnoreCase("Alzheimer's")) {
                 alD.add(quantProt.getUniprotAccessionNumber());
-            } else if (quantProt.getDiseaseCategory().equalsIgnoreCase("Multiple Sclerosis")) {
+            } else if (quantProt.getDiseaseCategoryI().equalsIgnoreCase("Multiple Sclerosis")) {
                 msD.add(quantProt.getUniprotAccessionNumber());
-            } else if (quantProt.getDiseaseCategory().equalsIgnoreCase("Parkinson's")) {
+            } else if (quantProt.getDiseaseCategoryI().equalsIgnoreCase("Parkinson's")) {
                 parD.add(quantProt.getUniprotAccessionNumber());
-            } else if (quantProt.getDiseaseCategory().equalsIgnoreCase("Amyotrophic Lateral Sclerosis")) {
+            } else if (quantProt.getDiseaseCategoryI().equalsIgnoreCase("Amyotrophic Lateral Sclerosis")) {
                 alsD.add(quantProt.getUniprotAccessionNumber());
             }
             return quantProt;

@@ -36,6 +36,7 @@ public class PopupWindowFrame {
         popupBody.addStyleName("padding20");
         popupBody.addStyleName("scrollable");
         popupBody.addStyleName("margin");
+        popupBody.addStyleName("minh450");
 
         this.popupBody = popupBody;
 

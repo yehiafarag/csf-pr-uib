@@ -32,10 +32,10 @@ public class InformationField extends VerticalLayout {
      * @param title the field title.
      */
     public InformationField(String title) {
-        this.setHeight(60, Unit.PIXELS);
+        this.setHeight(40, Unit.PIXELS);
         this.setWidth(100, Unit.PERCENTAGE);
-        this.setSpacing(true);
-        this.setMargin(new MarginInfo(false, false, true, false));
+        this.setSpacing(false);
+        this.setMargin(new MarginInfo(false, false, false, false));
         titleLabel = new Label(title);
         this.addComponent(titleLabel);
         titleLabel.setContentMode(ContentMode.HTML);
@@ -49,7 +49,7 @@ public class InformationField extends VerticalLayout {
         valueLabel.setStyleName("link");
         valueLabel.setTargetName("_blank");
         valueLabel.setCaptionAsHtml(true);
-        valueLabel.setHeight(100, Unit.PERCENTAGE);
+        valueLabel.setHeight(20, Unit.PIXELS);
         valueLabel.setWidth(90, Unit.PERCENTAGE);
         this.addComponent(valueLabel);
         this.setComponentAlignment(valueLabel, Alignment.TOP_LEFT);

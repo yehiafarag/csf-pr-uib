@@ -2,7 +2,7 @@ package no.uib.probe.csf.pr.touch;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.LinkedHashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -88,6 +88,19 @@ public class Data_Handler implements Serializable {
         return this.coreLogic.getQuantDatasetList();
 
     }
+    /**
+     * Get the current available disease category list.
+     *
+     * @return set of disease category objects that has all disease category
+     * information and styling information.
+     */
+    public Set<String> getActiveDiseaseCategorySet() {
+        return Dataset_Util.getActiveDiseaseCategorySet();
+    }
+    public void resetToDefault(){
+    Dataset_Util.resetToDefault();
+    
+    }
 
     /**
      * Get the current available disease category list.
@@ -96,7 +109,7 @@ public class Data_Handler implements Serializable {
      * information and styling information.
      */
     public Collection<DiseaseCategoryObject> getDiseaseCategorySet() {
-        return Dataset_Util.getFullDiseaseCategorySet();
+        return Dataset_Util.getDiseaseCategorySet();
     }
 
     /**
@@ -113,7 +126,7 @@ public class Data_Handler implements Serializable {
      *
      * @param diseaseCategory Disease category name (MS, AD, PD..etc)
      */
-    public void loadDiseaseCategory(String diseaseCategory) {
+    public void loadDiseaseCategory(Set<String> diseaseCategory) {
         Dataset_Util.setMainDiseaseCategory(diseaseCategory);
     }
 
@@ -147,7 +160,7 @@ public class Data_Handler implements Serializable {
      *
      * @return active row labels category set
      */
-    public LinkedHashSet<HeatMapHeaderCellInformationBean> getRowLabels() {
+    public LinkedHashMap<String,HeatMapHeaderCellInformationBean> getRowLabels() {
         return Dataset_Util.getRowLabels();
 
     }
@@ -158,7 +171,7 @@ public class Data_Handler implements Serializable {
      *
      * @return active column labels category set
      */
-    public LinkedHashSet<HeatMapHeaderCellInformationBean> getColumnLabels() {
+    public LinkedHashMap<String,HeatMapHeaderCellInformationBean> getColumnLabels() {
         return Dataset_Util.getColumnLabels();
 
     }
@@ -179,8 +192,8 @@ public class Data_Handler implements Serializable {
      *
      * @return map of quant dataset objects
      */
-    public Map<Integer, QuantDataset> getFullQuantDsMap() {       
-        return Dataset_Util.getFullQuantDsMap();
+    public Map<Integer, QuantDataset> getActiveQuantDsMap() {       
+        return Dataset_Util.getActiveQuantDsMap();
     }
 
     /**

@@ -1,5 +1,6 @@
 package no.uib.probe.csf.pr.touch.view.core;
 
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
@@ -165,7 +166,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         mainContainer.setWidth(100, Unit.PERCENTAGE);
         mainContainer.setHeightUndefined();
         mainContainer.addStyleName("scrollable");
-        int h = 80;
+        int h = 60;
         mainContainer.setSpacing(true);
 
         HorizontalLayout rowI = new HorizontalLayout();
@@ -175,15 +176,22 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
 
         pubMedIdField = new InformationField("PubMed ID");
         rowI.addComponent(pubMedIdField);
+        rowI.setExpandRatio(pubMedIdField, 0.15f);
 
         typeOfStudy = new InformationField("Type of Study");
         rowI.addComponent(typeOfStudy);
+        rowI.setExpandRatio(typeOfStudy, 0.35f);
 
         analyticalApproach = new InformationField("Analytical Approach");
         rowI.addComponent(analyticalApproach);
+        rowI.setExpandRatio(analyticalApproach, 0.15f);
 
         shotgunTargeted = new InformationField("Shotgun/Targeted");
         rowI.addComponent(shotgunTargeted);
+        rowI.setExpandRatio(shotgunTargeted, 0.35f);
+        shotgunTargeted.addStyleName("floattoright");
+        shotgunTargeted.setMargin(new MarginInfo(false, false, false, true));
+        rowI.setComponentAlignment(shotgunTargeted,Alignment.TOP_RIGHT);
 
         HorizontalLayout rowII = new HorizontalLayout();
         rowII.setWidth(100, Unit.PERCENTAGE);
@@ -192,16 +200,20 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
 
         analyticalMethod = new InformationField("Analytical Method");
         rowII.addComponent(analyticalMethod);
+        rowII.setExpandRatio(analyticalMethod, 0.15f);
 
         technology = new InformationField("Technology");
         rowII.addComponent(technology);
-
+        rowII.setExpandRatio(technology, 0.35f);
         sampleType = new InformationField("Sample Type");
         rowII.addComponent(sampleType);
-
+        rowII.setExpandRatio(sampleType, 0.15f);
         enzyme = new InformationField("Enzyme");
         rowII.addComponent(enzyme);
-
+        rowII.setExpandRatio(enzyme, 0.35f);
+        enzyme.addStyleName("floattoright");
+        enzyme.setMargin(new MarginInfo(false, false, false, true));
+        rowII.setComponentAlignment(enzyme,Alignment.TOP_RIGHT);
         HorizontalLayout rowIII = new HorizontalLayout();
         rowIII.setWidth(100, Unit.PERCENTAGE);
         rowIII.setHeight(h, Unit.PIXELS);
@@ -209,28 +221,36 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
 
         quantificationBasis = new InformationField("Quantification Basis");
         rowIII.addComponent(quantificationBasis);
-
+        rowIII.setExpandRatio(quantificationBasis, 0.15f);
         quantBasisComment = new InformationField("Quantification Basis Comment");
         rowIII.addComponent(quantBasisComment);
-
+        rowIII.setExpandRatio(quantBasisComment, 0.35f);
         identifiedProteinsNumber = new InformationField("#Identified Proteins");
         rowIII.addComponent(identifiedProteinsNumber);
-
+        rowIII.setExpandRatio(identifiedProteinsNumber, 0.15f);
         quantifiedProteinsNumber = new InformationField("#Quantified Proteins");
         rowIII.addComponent(quantifiedProteinsNumber);
-
+        rowIII.setExpandRatio(quantifiedProteinsNumber, 0.35f);
+        quantifiedProteinsNumber.addStyleName("floattoright");
+        quantifiedProteinsNumber.setMargin(new MarginInfo(false, false, false, true));
+        rowIII.setComponentAlignment(quantifiedProteinsNumber,Alignment.TOP_RIGHT);
+        h = 80;
         HorizontalLayout rowIV = new HorizontalLayout();
         rowIV.setWidth(100, Unit.PERCENTAGE);
         rowIV.setHeight(h, Unit.PIXELS);
         mainContainer.addComponent(rowIV);
         patientsGroup1 = new InformationField("Patients Gr.I");
         rowIV.addComponent(patientsGroup1);
+        rowIV.setExpandRatio(patientsGroup1, 0.15f);
         patientssubGroup1 = new InformationField("Patients Sub Gr.I");
         rowIV.addComponent(patientssubGroup1);
+        rowIV.setExpandRatio(patientssubGroup1, 0.35f);
         patientsGroup1Number = new InformationField("#Patients Gr.I");
         rowIV.addComponent(patientsGroup1Number);
+        rowIV.setExpandRatio(patientsGroup1Number, 0.15f);
         patientsCommGroup1 = new InformationField("Patients Gr.I Comm.");
         rowIV.addComponent(patientsCommGroup1);
+        rowIV.setExpandRatio(patientsCommGroup1, 0.35f);
 
         HorizontalLayout rowV = new HorizontalLayout();
         rowV.setWidth(100, Unit.PERCENTAGE);
@@ -238,16 +258,23 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
         mainContainer.addComponent(rowV);
         patientsGroup2 = new InformationField("Patients Gr.II");
         rowV.addComponent(patientsGroup2);
+        rowV.setExpandRatio(patientsGroup2, 0.15f);
 
         patientssubGroup2 = new InformationField("Patients Sub Gr.II");
         rowV.addComponent(patientssubGroup2);
-
+        rowV.setExpandRatio(patientssubGroup2, 0.35f);
         patientsGroup2Number = new InformationField("#Patients Gr.II");
         rowV.addComponent(patientsGroup2Number);
-
+        rowV.setExpandRatio(patientsGroup2Number, 0.15f);
         patientsCommGroup2 = new InformationField("Patients Gr.II Comm.");
         rowV.addComponent(patientsCommGroup2);
-
+        rowV.setExpandRatio(patientsCommGroup2, 0.35f);
+        patientsCommGroup1.addStyleName("floattoright");
+        patientsCommGroup1.setMargin(new MarginInfo(false, false, false, true));
+        patientsCommGroup2.setMargin(new MarginInfo(false, false, false, true));
+        patientsCommGroup2.addStyleName("floattoright");
+        rowIV.setComponentAlignment(patientsCommGroup1,Alignment.TOP_RIGHT);
+        rowV.setComponentAlignment(patientsCommGroup2,Alignment.TOP_RIGHT);
         HorizontalLayout rowVI = new HorizontalLayout();
         rowVI.setWidth(100, Unit.PERCENTAGE);
         rowVI.setHeight(h, Unit.PIXELS);
@@ -255,21 +282,25 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
 
         sampleMatching = new InformationField("Sample Matching");
         rowVI.addComponent(sampleMatching);
+        rowVI.setExpandRatio(sampleMatching, 0.15f);
         normalization_strategy = new InformationField("Normalization Strategy");
         rowVI.addComponent(normalization_strategy);
-
+        rowVI.setExpandRatio(normalization_strategy, 0.35f);
         rawData = new InformationField("Raw Data");
         rowVI.addComponent(rawData);
-
+        rowVI.setExpandRatio(rawData, 0.15f);
         diseaseCategory = new InformationField("Disease Category");
         rowVI.addComponent(diseaseCategory);
-
+         rowVI.setComponentAlignment(diseaseCategory,Alignment.TOP_RIGHT);
+        rowVI.setExpandRatio(diseaseCategory, 0.35f);
+        diseaseCategory.setMargin(new MarginInfo(false, false, false, true));
+        
         HorizontalLayout rowVII = new HorizontalLayout();
         rowVII.setWidth(100, Unit.PERCENTAGE);
         rowVII.setHeight(h, Unit.PIXELS);
         quantProteinsNum = new InformationField("#Proteins");
         rowVII.addComponent(quantProteinsNum);
-        mainContainer.addComponent(rowVII);
+//        mainContainer.addComponent(rowVII);
 
         quantPeptidesNum = new InformationField("#Peptides");
         rowVII.addComponent(quantPeptidesNum);

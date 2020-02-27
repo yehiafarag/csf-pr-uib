@@ -1,7 +1,9 @@
 package no.uib.probe.csf.pr.touch.logic.dataset;
 
 import java.io.Serializable;
-import java.util.LinkedHashSet;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 import no.uib.probe.csf.pr.touch.logic.beans.DiseaseGroupComparison;
 import no.uib.probe.csf.pr.touch.logic.beans.HeatMapHeaderCellInformationBean;
@@ -18,30 +20,32 @@ public class QuantData implements Serializable {
      * List of active(current) heat map row header cells with all information
      * required for selecting and rendering the heat map.
      */
-    private LinkedHashSet<HeatMapHeaderCellInformationBean> activeRowIds;
+    private LinkedHashMap<String, HeatMapHeaderCellInformationBean> activeRowIds;
     /**
      * List of original heat map row header cells with all information required
      * for selecting and rendering the heat map.
      */
-    private LinkedHashSet<HeatMapHeaderCellInformationBean> oreginalRowIds;
+    private LinkedHashMap<String, HeatMapHeaderCellInformationBean> oreginalRowIds;
     /**
      * List of active(current) heat map column header cells with all information
      * required for selecting and rendering the heat map.
      */
-    private LinkedHashSet<HeatMapHeaderCellInformationBean> activeColumnIds;
+    private LinkedHashMap<String, HeatMapHeaderCellInformationBean> activeColumnIds;
     /**
      * List of original heat map column header cells with all information
      * required for selecting and rendering the heat map.
      */
-    private LinkedHashSet<HeatMapHeaderCellInformationBean> oreginalColumnIds;
+    private LinkedHashMap<String, HeatMapHeaderCellInformationBean> oreginalColumnIds;
     /**
      * Disease category name (MS, AD, PD..etc).
      */
-    private String diseaseCategory;
+    private String diseaseCategories;
     /**
      * List of disease group comparisons objects.
      */
     private Set<DiseaseGroupComparison> diseaseComparisonSet;
+
+    private Map<Integer, DiseaseGroupComparison> indexToComparisons;
     /**
      * Array of active dataset pie charts filters in the system using their
      * index 0:Year 1:Study Type 2:Sample Matching 3:Technology 4:Analytical
@@ -55,7 +59,7 @@ public class QuantData implements Serializable {
      *
      * @return oreginalRowIds Heat map row header cells list
      */
-    public LinkedHashSet<HeatMapHeaderCellInformationBean> getOreginalRowIds() {
+    public LinkedHashMap<String, HeatMapHeaderCellInformationBean> getOreginalRowIds() {
         return oreginalRowIds;
     }
 
@@ -65,7 +69,7 @@ public class QuantData implements Serializable {
      *
      * @param oreginalRowIds Heat map row header cells list
      */
-    public void setOreginalRowIds(LinkedHashSet<HeatMapHeaderCellInformationBean> oreginalRowIds) {
+    public void setOreginalRowIds(LinkedHashMap<String, HeatMapHeaderCellInformationBean> oreginalRowIds) {
         this.oreginalRowIds = oreginalRowIds;
     }
 
@@ -75,7 +79,7 @@ public class QuantData implements Serializable {
      *
      * @return oreginalColumnIds Heat map column header cells list
      */
-    public LinkedHashSet<HeatMapHeaderCellInformationBean> getOreginalColumnIds() {
+    public LinkedHashMap<String, HeatMapHeaderCellInformationBean> getOreginalColumnIds() {
         return oreginalColumnIds;
     }
 
@@ -85,7 +89,7 @@ public class QuantData implements Serializable {
      *
      * @param oreginalColumnIds Heat map column header cells list
      */
-    public void setOreginalColumnIds(LinkedHashSet<HeatMapHeaderCellInformationBean> oreginalColumnIds) {
+    public void setOreginalColumnIds(LinkedHashMap<String, HeatMapHeaderCellInformationBean> oreginalColumnIds) {
         this.oreginalColumnIds = oreginalColumnIds;
     }
 
@@ -93,9 +97,9 @@ public class QuantData implements Serializable {
      * Get list of active(current) heat map row header cells with all
      * information required for selecting and rendering the heat map
      *
-     * @return activeRowIds List of active(current) heat map row header cells 
+     * @return activeRowIds List of active(current) heat map row header cells
      */
-    public LinkedHashSet<HeatMapHeaderCellInformationBean> getActiveRowIds() {
+    public LinkedHashMap<String, HeatMapHeaderCellInformationBean> getActiveRowIds() {
         if (activeRowIds == null) {
             return oreginalRowIds;
         }
@@ -106,9 +110,9 @@ public class QuantData implements Serializable {
      * Set list of active(current) heat map row header cells with all
      * information required for selecting and rendering the heat map
      *
-     * @param activeRowIds List of active(current) heat map row header cells 
+     * @param activeRowIds List of active(current) heat map row header cells
      */
-    public void setActiveRowIds(LinkedHashSet<HeatMapHeaderCellInformationBean> activeRowIds) {
+    public void setActiveRowIds(LinkedHashMap<String, HeatMapHeaderCellInformationBean> activeRowIds) {
         this.activeRowIds = activeRowIds;
     }
 
@@ -116,9 +120,10 @@ public class QuantData implements Serializable {
      * Get list of active(current) heat map column header cells with all
      * information required for selecting and rendering the heat map
      *
-     * @return activeColumnIds List of active(current) heat map column header cells.
+     * @return activeColumnIds List of active(current) heat map column header
+     * cells.
      */
-    public LinkedHashSet<HeatMapHeaderCellInformationBean> getActiveColumnIds() {
+    public LinkedHashMap<String, HeatMapHeaderCellInformationBean> getActiveColumnIds() {
         if (activeColumnIds == null) {
             return oreginalColumnIds;
         }
@@ -129,9 +134,10 @@ public class QuantData implements Serializable {
      * Set list of active(current) heat map column header cells with all
      * information required for selecting and rendering the heat map
      *
-     * @param activeColumnIds List of active(current) heat map column header cells 
+     * @param activeColumnIds List of active(current) heat map column header
+     * cells
      */
-    public void setActiveColumnIds(LinkedHashSet<HeatMapHeaderCellInformationBean> activeColumnIds) {
+    public void setActiveColumnIds(LinkedHashMap<String, HeatMapHeaderCellInformationBean> activeColumnIds) {
         this.activeColumnIds = activeColumnIds;
     }
 
@@ -144,6 +150,10 @@ public class QuantData implements Serializable {
         return diseaseComparisonSet;
     }
 
+    public Map<Integer, DiseaseGroupComparison> getIndexToComparisons() {
+        return indexToComparisons;
+    }
+
     /**
      * Set list of disease group comparisons objects
      *
@@ -151,24 +161,28 @@ public class QuantData implements Serializable {
      */
     public void setDiseaseComparisonSet(Set<DiseaseGroupComparison> diseaseComparisonSet) {
         this.diseaseComparisonSet = diseaseComparisonSet;
+        indexToComparisons = new HashMap<>();
+        for (DiseaseGroupComparison dgcomp : diseaseComparisonSet) {
+            indexToComparisons.put(dgcomp.getQuantDatasetIndex(), dgcomp);
+        }
     }
 
     /**
      * Get disease category (MS,AD,PD...etc)
      *
-     * @return diseaseCategory Disease category name
+     * @return diseaseCategories Disease category name
      */
-    public String getDiseaseCategory() {
-        return diseaseCategory;
+    public String getDiseaseCategories() {
+        return diseaseCategories;
     }
 
     /**
      * Set disease category (MS,AD,PD...etc)
      *
-     * @param diseaseCategory Disease category name
+     * @param diseaseCategories Disease category name
      */
-    public void setDiseaseCategory(String diseaseCategory) {
-        this.diseaseCategory = diseaseCategory;
+    public void setDiseaseCategories(String diseaseCategories) {
+        this.diseaseCategories = diseaseCategories;
     }
 
     /**
@@ -176,7 +190,8 @@ public class QuantData implements Serializable {
      * index 0:Year 1:Study Type 2:Sample Matching 3:Technology 4:Analytical
      * Approach 5:Shotgun/Targeted
      *
-     * @return activeDatasetPieChartsFilters Array of active dataset pie charts filters
+     * @return activeDatasetPieChartsFilters Array of active dataset pie charts
+     * filters
      */
     public boolean[] getActiveDatasetPieChartsFilters() {
         return activeDatasetPieChartsFilters;
@@ -187,7 +202,8 @@ public class QuantData implements Serializable {
      * index 0:Year 1:Study Type 2:Sample Matching 3:Technology 4:Analytical
      * Approach 5:Shotgun/Targeted
      *
-     * @param activeDatasetPieChartsFilters Array of active dataset pie charts filters
+     * @param activeDatasetPieChartsFilters Array of active dataset pie charts
+     * filters
      */
     public void setActiveDatasetPieChartsFilters(boolean[] activeDatasetPieChartsFilters) {
         this.activeDatasetPieChartsFilters = activeDatasetPieChartsFilters;

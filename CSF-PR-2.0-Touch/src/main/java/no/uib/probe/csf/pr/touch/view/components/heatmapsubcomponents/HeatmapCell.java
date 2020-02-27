@@ -19,7 +19,7 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
     /**
      * The main cell value.
      */
-    private final double value;
+    private double value;
     /**
      * The main cell value as string.
      */
@@ -31,7 +31,7 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
     /**
      * The main cell caption label.
      */
-    private Label valueLabel;
+    private final Label valueLabel;
     /**
      * The cell is selected.
      */
@@ -47,7 +47,12 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
     /**
      * The main disease category that that cell belong to.
      */
-    private final String diseaseCategory;
+    private String diseaseCategory;
+    private boolean collapsedCell;
+    
+    public boolean isCollapsedCell() {
+        return collapsedCell;
+    }
 
     /**
      * Get cell value
@@ -76,10 +81,22 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
     public boolean isCombinedHeader() {
         return combinedHeader;
     }
+    
+    public HeatmapCell() {
+        this.valueLabel = new Label();
+        this.valueLabel.setWidth(100, Unit.PERCENTAGE);
+        this.valueLabel.setHeight(100, Unit.PERCENTAGE);
+        this.valueLabel.setContentMode(ContentMode.HTML);
+        HeatmapCell.this.addComponent(valueLabel);
+        HeatmapCell.this.setComponentAlignment(valueLabel, Alignment.TOP_CENTER);
+        this.valueLabel.setStyleName("hmbodycell");
+        this.comparison = new QuantDiseaseGroupsComparison();
+    }
 
     /**
      * Constructor to initialize the main attributes
      *
+     * @param collapsedHeader
      * @param value the cell value
      * @param cellColor the HTML hashed color code
      * @param diseaseCategoryColor the HTML hashed disease category color code
@@ -100,12 +117,11 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
      *
      *
      */
-    public HeatmapCell(boolean collapsedHeader , double value, final String cellColor, String diseaseCategoryColor, Map<Integer, QuantDataset> datasetMap, final int rowLabelIndex, final int colLabelIndex, int heatmapCellWidth, int publicationsNumber, String updatedComparisonTitile, String fullCompTitle, String oreginalComparisonTitle, String diseaseCategory, String diseaseCategoryStyle) {
-
+    public void updateHeatmapCell(boolean collapsedHeader, double value, final String cellColor, String diseaseCategoryColor, Map<Integer, QuantDataset> datasetMap, final int rowLabelIndex, final int colLabelIndex, int heatmapCellWidth, int publicationsNumber, String updatedComparisonTitile, String fullCompTitle, String oreginalComparisonTitle, String diseaseCategory, String diseaseCategoryStyle) {
+         HeatmapCell.this.setEnabled(true);
+        this.setVisible(true);
         this.value = value;
-
         this.diseaseCategory = diseaseCategory;
-        this.comparison = new QuantDiseaseGroupsComparison();
         comparison.setDiseaseCategory(diseaseCategory);
         comparison.setComparisonFullName(fullCompTitle);
         comparison.setComparisonHeader(updatedComparisonTitile);
@@ -114,12 +130,11 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
         comparison.setDatasetMap(datasetMap);
         comparison.setDiseaseCategoryStyle(diseaseCategoryStyle);
         strValue = "";
-        pointer = "default"; 
+        pointer = "default";
+        this.collapsedCell = collapsedHeader;
         String[] gr = fullCompTitle.replace("__" + diseaseCategory, "").split(" / ");
-        if (cellColor.equalsIgnoreCase("#EFF2FB") && value != 0 && !collapsedHeader ) {
+        if (cellColor.equalsIgnoreCase("#EFF2FB") && value != 0 && !collapsedHeader) {
             strValue = ((int) value) + "*";
-            this.updateLabel(strValue);
-           
             this.setDescription("Same type comparison <br/>"
                     + "Numerator: " + gr[0] + "<br/>"
                     + "Denominator: " + gr[1]
@@ -127,21 +142,10 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
             comparison.setComparisonHeader(" / ");
             comparison.setOreginalComparisonHeader(" / ");
             combinedHeader = true;
-
-            this.valueLabel = new Label();
-            this.valueLabel.setWidth(100, Unit.PERCENTAGE);
-            this.valueLabel.setHeight(100, Unit.PERCENTAGE);
-            this.valueLabel.setContentMode(ContentMode.HTML);
-            this.addComponent(valueLabel);
-            this.setComponentAlignment(valueLabel, Alignment.TOP_CENTER);
-            this.valueLabel.setStyleName("hmbodycell");
             this.valueLabel.setValue("<div style='background:" + cellColor + "; width:" + (100) + "% !important; height:" + (100) + "% !important; color: #474747; font-weight: 600; font-size: 10px;'>" + strValue + "</div>");
-
-        } else if ((cellColor.equalsIgnoreCase("#EFF2FB") && value != 0 && collapsedHeader)||(cellColor.equalsIgnoreCase("#EFF2FB") && value == 0 && collapsedHeader &&gr[0].equalsIgnoreCase(gr[1]) )) {
-//            cellColor="#e3e304";
-            strValue = ( " "+((int) value) + " ").replace(" 0 ","?");//+ "*";
-            this.updateLabel(strValue);
-//            String[] gr = fullCompTitle.replace("__" + diseaseCategory, "").split(" / ");
+            
+        } else if ((cellColor.equalsIgnoreCase("#EFF2FB") && value != 0 && collapsedHeader) || (cellColor.equalsIgnoreCase("#EFF2FB") && value == 0 && collapsedHeader && gr[0].equalsIgnoreCase(gr[1]))) {
+            strValue = (" " + ((int) value) + " ").replace(" 0 ", "?");//+ "*";
             this.setDescription("Collapsed Disease Category (click to expand)<br/>"
                     + "Numerator: " + gr[0] + "<br/>"
                     + "Denominator: " + gr[1]
@@ -149,56 +153,32 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
             comparison.setComparisonHeader(" / ");
             comparison.setOreginalComparisonHeader(" / ");
             combinedHeader = true;
-
-            this.valueLabel = new Label();
-            this.valueLabel.setWidth(100, Unit.PERCENTAGE);
-            this.valueLabel.setHeight(100, Unit.PERCENTAGE);
-            this.valueLabel.setContentMode(ContentMode.HTML);
-            this.addComponent(valueLabel);
-            this.setComponentAlignment(valueLabel, Alignment.TOP_CENTER);
-            this.valueLabel.setStyleName("hmbodycell");
             this.valueLabel.setValue("<div style='background:" + "#e3e304" + "; width:" + (100) + "% !important; height:" + (100) + "% !important; color: #474747; font-weight: 600; font-size: 12px;'>" + strValue + "</div>");
-
+            
         } else if (value != 0) {
-
-            this.valueLabel = new Label();
-            this.valueLabel.setWidth(100, Unit.PERCENTAGE);
-            this.valueLabel.setHeight(100, Unit.PERCENTAGE);
-            this.valueLabel.setContentMode(ContentMode.HTML);
-            this.addComponent(valueLabel);
-            this.setComponentAlignment(valueLabel, Alignment.TOP_CENTER);
-            this.valueLabel.setStyleName("hmbodycell");
+            
             this.valueLabel.setValue("<div style='background:" + cellColor + "; width:" + (100) + "% !important; height:" + (100) + "% !important;'>" + (int) value + "</div>");
-
+            
             strValue = ((int) value) + "";
             pointer = "pointer";
-
-            this.updateLabel(strValue);
-
+            
         } else if (cellColor.equalsIgnoreCase("#EFF2FB")) {
             strValue = " ";
-
-            this.valueLabel = new Label();
-            this.valueLabel.setWidth(100, Unit.PERCENTAGE);
-            this.valueLabel.setHeight(100, Unit.PERCENTAGE);
-            this.valueLabel.setContentMode(ContentMode.HTML);
-            this.addComponent(valueLabel);
-            this.setComponentAlignment(valueLabel, Alignment.TOP_CENTER);
-            this.valueLabel.setStyleName("hmbodycell");
             this.valueLabel.setValue("<div style='background:" + cellColor + "; width:" + (100) + "% !important; height:" + (100) + "% !important;'>" + strValue + "</div>");
-
-        } else {
-            this.updateLabel(strValue);
+            
         }
-
         if (value > 0 && !cellColor.equalsIgnoreCase("#EFF2FB")) {
-             gr = comparison.getComparisonFullName().replace("__" + diseaseCategory, "").split(" / ");
+            gr = comparison.getComparisonFullName().replace("__" + diseaseCategory, "").split(" / ");
             HeatmapCell.this.setDescription("Numerator: " + gr[0] + "<br/>Denominator: " + gr[1]
                     + "<br/>Disease: " + diseaseCategory + " <br/>#Datasets: " + strValue + "<br/>#Publications: " + publicationsNumber);
         }
-        if (!strValue.contains("*")) {
+        if (!strValue.contains("*") && !strValue.trim().equalsIgnoreCase("")) {
             HeatmapCell.this.addStyleName(pointer);
             HeatmapCell.this.addLayoutClickListener(HeatmapCell.this);
+        } else {
+            HeatmapCell.this.removeStyleName(pointer);
+            HeatmapCell.this.removeLayoutClickListener(HeatmapCell.this);
+            HeatmapCell.this.setEnabled(false);
         }
     }
 
@@ -212,7 +192,7 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
         if (selected) {
             this.unselect();
             unSelectData(this);
-
+            
         } else {
             this.select();
             selectData(this);
@@ -226,7 +206,7 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
         selected = false;
         this.removeStyleName("hmselectedcell");
         this.addStyleName("hmunselectedcell");
-
+        
     }
 
     /**
@@ -239,22 +219,34 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
     }
 
     /**
-     * Rest cell style to initial state.
+     * Rest cell and remove all data.
      */
     public void resetCell() {
         selected = false;
         this.removeStyleName("hmunselectedcell");
         this.removeStyleName("hmselectedcell");
-
+        this.value = 0.0;
+        this.diseaseCategory = null;
+        strValue = "";
+        pointer = "default";
+        strValue = "0";
+        this.setDescription("");
+        combinedHeader = false;
+        this.valueLabel.setValue("");
+        HeatmapCell.this.addStyleName(pointer);
+        HeatmapCell.this.removeLayoutClickListener(HeatmapCell.this);
+        this.setVisible(false);
+        
     }
 
     /**
-     * Update cell label value.
-     *
-     * @param strValue String value for the cell.
+     * Rest cell style to initial state.
      */
-    public final void updateLabel(String strValue) {
-        this.strValue = strValue;
+    public void resetCellStyle() {
+        selected = false;
+        this.removeStyleName("hmunselectedcell");
+        this.removeStyleName("hmselectedcell");
+        
     }
 
     /**
@@ -296,7 +288,7 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
         }
         valueLabel.removeStyleName("linehight200");
         valueLabel.removeStyleName("linehight180");
-
+        
         if (height < 15) {
             valueLabel.addStyleName("xxsmallfont");
             valueLabel.addStyleName("linehight180");
@@ -308,7 +300,7 @@ public abstract class HeatmapCell extends VerticalLayout implements LayoutEvents
             valueLabel.addStyleName("linehight200");
         }
         valueLabel.setHeight(height - 2, unit);
-
+        
     }
-
+    
 }

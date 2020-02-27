@@ -6,6 +6,7 @@ package no.uib.probe.csf.pr.touch.logic.beans;
  *
  * @author Yehia Farag
  */
+
 public class QuantProtein implements Comparable<QuantProtein> {
 
     /**
@@ -155,7 +156,11 @@ public class QuantProtein implements Comparable<QuantProtein> {
     /**
      * Disease category (MS,AD,PD...etc).
      */
-    private String diseaseCategory;
+    private String diseaseCategoryI;
+      /**
+     * Disease category (MS,AD,PD...etc).
+     */
+    private String diseaseCategoryII;
     /**
      * Link to protein in UniProt.
      */
@@ -216,8 +221,8 @@ public class QuantProtein implements Comparable<QuantProtein> {
      *
      * @return diseaseCategory Disease category name
      */
-    public String getDiseaseCategory() {
-        return diseaseCategory;
+    public String getDiseaseCategoryI() {
+        return diseaseCategoryI;
     }
 
     /**
@@ -225,8 +230,8 @@ public class QuantProtein implements Comparable<QuantProtein> {
      *
      * @param diseaseCategory Disease category name
      */
-    public void setDiseaseCategory(String diseaseCategory) {
-        this.diseaseCategory = diseaseCategory;
+    public void setDiseaseCategoryI(String diseaseCategory) {
+        this.diseaseCategoryI = diseaseCategory;
     }
 
     /**
@@ -976,6 +981,18 @@ public class QuantProtein implements Comparable<QuantProtein> {
      */
     public void setURL(String URL) {
         this.URL = URL;
+    }
+
+    public String getDiseaseCategoryII() {
+        return diseaseCategoryII;
+    }
+
+    public void setDiseaseCategoryII(String diseaseCategoryII) {
+        this.diseaseCategoryII = diseaseCategoryII;
+    }
+
+    public boolean isCrossDiseases() {
+        return !diseaseCategoryI.equalsIgnoreCase(diseaseCategoryII);
     }
 
 }

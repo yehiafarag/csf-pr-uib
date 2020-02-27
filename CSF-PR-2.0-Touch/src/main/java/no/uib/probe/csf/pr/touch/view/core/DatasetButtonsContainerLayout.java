@@ -35,7 +35,7 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
     /**
      * CSS marker for last selected style name.
      */
-    private String lastStyle = "";
+    private String lastStyle = styleII;
     /**
      * Map of publication name and its CSS style name.
      */
@@ -67,9 +67,11 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
         rowNumb = Math.max(1, ((dsObjects.size() / popUpBtnsContainerGridLayout.getColumns()) + 1));
         popUpBtnsContainerGridLayout.setRows(rowNumb);
         if (rowNumb == 1) {
-            popUpBtnsContainerGridLayout.setWidthUndefined();
+             popUpBtnsContainerGridLayout.setWidth(100, Unit.PERCENTAGE);
+              popUpBtnsContainerGridLayout.setSpacing(true);
         } else {
             popUpBtnsContainerGridLayout.setWidth(100, Unit.PERCENTAGE);
+              popUpBtnsContainerGridLayout.setSpacing(false);
         }
 
         Map<String, Set<QuantDataset>> sortMap = new TreeMap(Collections.reverseOrder());
@@ -87,7 +89,6 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
         int tempRowcounter = 0;
         for (String quantDSKey : sortMap.keySet()) {
             for (QuantDataset quantDS : sortMap.get(quantDSKey)) {
-
                 if (!publicationStyle.containsKey(quantDS.getPubMedId())) {
                     if (lastStyle.equalsIgnoreCase(styleI)) {
                         publicationStyle.put(quantDS.getPubMedId(), styleII);
@@ -98,8 +99,8 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
                     }
 
                 }
-                String btnName = "<font size=1 >" + quantDS.getYear() + "</font><br/>" + quantDS.getAuthor() + "<br/><font size=1 >#Proteins: " + quantDS.getTotalProtNum() + "   #Peptides: " + quantDS.getTotalPepNum() + "</font>";
-
+                String btnName = "<font size=1 >" + quantDS.getYear() + "</font><br/>" + quantDS.getAuthor() + "<br/><font size=1 >PMID "+quantDS.getPubMedId()+ "</font>";
+//                String btnName = "<font size=1 >" + quantDS.getYear() + "</font><br/>" + quantDS.getAuthor() + "<br/><font size=1 >#Proteins: " + quantDS.getTotalProtNum() + "   #Peptides: " + quantDS.getTotalPepNum() + "</font>";
                 PopupWrapperBtn btn = new PopupWrapperBtn(quantDS, btnName, quantDS.getAuthor());
                 btn.addStyleName(publicationStyle.get(quantDS.getPubMedId()));
                 popUpBtnsContainerGridLayout.addComponent(btn, colcounter++, tempRowcounter);
@@ -110,6 +111,16 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
                 }
             }
         }
+         if (popUpBtnsContainerGridLayout.getColumns() > sortMap.size() && popUpBtnsContainerGridLayout.getRows() == 1) {
+            for (int x = colcounter; x < popUpBtnsContainerGridLayout.getColumns(); x++) {
+                VerticalLayout emptyLayout = new VerticalLayout();
+                emptyLayout.setHeight(20, Unit.PIXELS);
+                emptyLayout.setWidth(200, Unit.PIXELS);
+                popUpBtnsContainerGridLayout.addComponent(emptyLayout, x, 0);
+            }
+
+        }
+
 
     }
 
@@ -126,10 +137,12 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
         rowNumb = Math.max(1, ((publicationObjects.size() / popUpBtnsContainerGridLayout.getColumns()) + 1));
         popUpBtnsContainerGridLayout.setRows(rowNumb);
         if (rowNumb == 1) {
-            popUpBtnsContainerGridLayout.setWidthUndefined();
+//          popUpBtnsContainerGridLayout.setWidthUndefined();
             popUpBtnsContainerGridLayout.setWidth(100, Unit.PERCENTAGE);
+            popUpBtnsContainerGridLayout.setSpacing(true);
         } else {
             popUpBtnsContainerGridLayout.setWidth(100, Unit.PERCENTAGE);
+             popUpBtnsContainerGridLayout.setSpacing(false);
         }
         Map<String, Object[]> sortMap = new TreeMap(Collections.reverseOrder());
         publicationObjects.stream().forEach((obj) -> {
@@ -138,6 +151,7 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
         });
         int colcounter = 0;
         rowcounter = 0;
+        lastStyle = styleII;
         for (String quantDSKey : sortMap.keySet()) {
             Object[] obj = sortMap.get(quantDSKey);
 
@@ -150,7 +164,8 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
                     lastStyle = styleI;
                 }
             }
-            String btnName = "<font size=1 >" + obj[2].toString() + "</font><br/>" + obj[1].toString() + "<br/><font size=1 >#Proteins: " + obj[5].toString() + "   #Peptides: " + obj[7].toString() + "</font>";
+              String btnName = "<font size=1 >" + obj[2].toString() + "</font><br/>" + obj[1] + "<br/><font size=1 >PMID "+obj[0]+ "</font>";
+//            String btnName = "<font size=1 >" + obj[2].toString() + "</font><br/>" + obj[1].toString() + "<br/><font size=1 >#Proteins: " + obj[5].toString() + "   #Peptides: " + obj[7].toString() + "</font>";
             PopupWrapperBtn btn = new PopupWrapperBtn(btnName, obj[1].toString(), obj);
             btn.addStyleName(publicationStyle.get(obj[0].toString()));
             popUpBtnsContainerGridLayout.addComponent(btn, colcounter++, rowcounter);
@@ -203,7 +218,7 @@ public class DatasetButtonsContainerLayout extends VerticalLayout {
         }
         popUpBtnsContainerGridLayout.setStyleName("whitelayout");
         popUpBtnsContainerGridLayout.setHeightUndefined();
-        popUpBtnsContainerGridLayout.setSpacing(false);
+//        popUpBtnsContainerGridLayout.setSpacing(false);
         popUpBtnsContainerGridLayout.setHideEmptyRowsAndColumns(false);
         this.addComponent(popUpBtnsContainerGridLayout);
 

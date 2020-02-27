@@ -134,6 +134,7 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
      * List of selected disease group comparisons.
      */
     private Set<QuantDiseaseGroupsComparison> selectedComparisonsList;
+
     /**
      * Notification message alert.
      */
@@ -404,6 +405,9 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
                     this.updateIcon(dsComparisonRes);
                 }
                 lineChart.setViewDetailedDatasets(showIndividualDatasets);
+                if (showIndividualDatasets) {
+                    lineChart.setResizeDetailedDatasets(showIndividualDatasets);
+                }
             }
 
         };

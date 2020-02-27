@@ -15,7 +15,7 @@ public class QuantSearchSelection {
     /**
      * Disease category name (MS, AD, PD..etc).
      */
-    private String diseaseCategory;
+    private Set<String> diseaseCategories;
     /**
      * Set of the found dataset indexes in the database.
      */
@@ -89,17 +89,17 @@ public class QuantSearchSelection {
      *
      * @return diseaseCategory Disease category name
      */
-    public String getDiseaseCategory() {
-        return diseaseCategory;
+    public Set<String> getDiseaseCategories() {
+        return diseaseCategories;
     }
 
     /**
      * Set disease category name (MS,AD,PD...etc)
      *
-     * @param diseaseCategory Disease category name
+     * @param diseaseCategories Disease category name
      */
-    public void setDiseaseCategory(String diseaseCategory) {
-        this.diseaseCategory = diseaseCategory;
+    public void setDiseaseCategories(Set<String> diseaseCategories) {
+        this.diseaseCategories = diseaseCategories;
     }
 
     /**

@@ -1,6 +1,8 @@
 package no.uib.probe.csf.pr.touch.view.core;
 
 import com.vaadin.event.LayoutEvents;
+import com.vaadin.server.Page;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Label;
@@ -42,12 +44,13 @@ public class PopupWrapperBtn extends VerticalLayout implements LayoutEvents.Layo
 
         DatasetInformationOverviewLayout infoLayout = new DatasetInformationOverviewLayout(quantDS, false);
         popupPanel = new PopupWindowFrame(publicationAuthor, new VerticalLayout(infoLayout));
-
-        popupPanel.setFrameHeight(710);
+        popupPanel.setFrameHeight(535);
+        popupPanel.setFrameWidth(1000);
 
         this.setExpandRatio(btnLabel, 0.99f);
 
     }
+    private String pubmidID;
 
     /**
      * Constructor to initialize the main attributes for publication button.
@@ -69,11 +72,12 @@ public class PopupWrapperBtn extends VerticalLayout implements LayoutEvents.Layo
         this.addStyleName("margintop");
         this.addStyleName("marginbottom");
 
-        VerticalLayout infoLayout = initPublicationLayout(publicationData);
+//        VerticalLayout infoLayout = initPublicationLayout(publicationData);
+        this.pubmidID = publicationData[0].toString();
 
-        popupPanel = new PopupWindowFrame(publicationAuthor, new VerticalLayout(infoLayout));
-        popupPanel.setFrameWidth(600);
-        popupPanel.setFrameHeight(409);
+        popupPanel = null;//new PopupWindowFrame(publicationAuthor, new VerticalLayout(infoLayout));
+//        popupPanel.setFrameWidth(600);
+//        popupPanel.setFrameHeight(409);
 
         this.setExpandRatio(btnLabel, 0.99f);
 
@@ -86,7 +90,11 @@ public class PopupWrapperBtn extends VerticalLayout implements LayoutEvents.Layo
      */
     @Override
     public void layoutClick(LayoutEvents.LayoutClickEvent event) {
-        popupPanel.view();
+        if (popupPanel == null) {
+            Page.getCurrent().open("http://www.ncbi.nlm.nih.gov/pubmed/" + pubmidID, "_blank");
+        } else {
+            popupPanel.view();
+        }
     }
 
     /**

@@ -46,12 +46,10 @@ public class CSFPR_ContextListener implements ServletContextListener {
                 version = line.split(";")[0].trim().replace(".", "");
                 // Always close files.
             }
-        } catch (FileNotFoundException ex) {
+        } catch (Exception ex) {
             System.out.println(
                     "Unable to open file '" + "'" + basepath);
-        } catch (IOException ex) {
-            System.out.println("Error reading file '" + "'");
-        }
+        } 
 
 //        File proteinsFile = new File(basepath + "VAADIN/prot-" + version + ".txt");
         File proteinsFile = new File(basepath + "VAADIN/csf_pr_available_prot_accs.txt");
@@ -68,7 +66,7 @@ public class CSFPR_ContextListener implements ServletContextListener {
 
             initProteinsFile(scx, proteinsFile, version);
 
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
@@ -76,7 +74,7 @@ public class CSFPR_ContextListener implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-      
+
     }
 
     private void initProteinsFile(ServletContext scx, File file, String version) {

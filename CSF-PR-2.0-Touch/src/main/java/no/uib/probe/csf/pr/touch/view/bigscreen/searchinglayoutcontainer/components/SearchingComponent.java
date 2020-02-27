@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
@@ -60,7 +61,7 @@ import org.vaadin.teemu.VaadinIcons;
  * @author Yehia Farag
  *
  */
-public abstract class SearchingComponent extends BigBtn {
+public abstract class SearchingComponent extends BigBtn implements Serializable{
 
     /**
      * The main searching pop-up window (the pop up container) .
@@ -450,50 +451,55 @@ public abstract class SearchingComponent extends BigBtn {
             selection.setKeyWords(filterKeywordSet);
             searchQuantificationProtList.stream().forEach((protein) -> {
                 datasetIds.add(protein.getQuantDatasetIndex());
-                diseaseCategories.add(protein.getDiseaseCategory());
+                diseaseCategories.add(protein.getDiseaseCategoryI());
+                diseaseCategories.add(protein.getDiseaseCategoryII());
                 proteinAccession.add(protein.getFinalAccession());
 
-                if (!diseaseCategoriesIdMap.containsKey(protein.getDiseaseCategory())) {
-                    diseaseCategoriesIdMap.put(protein.getDiseaseCategory(), new HashSet<>());
+                if (!diseaseCategoriesIdMap.containsKey(protein.getDiseaseCategoryI())) {
+                    diseaseCategoriesIdMap.put(protein.getDiseaseCategoryI(), new HashSet<>());
                 }
-                Set<Integer> datasetIdSet = diseaseCategoriesIdMap.get(protein.getDiseaseCategory());
+                
+                if (!diseaseCategoriesIdMap.containsKey(protein.getDiseaseCategoryII())) {
+                    diseaseCategoriesIdMap.put(protein.getDiseaseCategoryII(), new HashSet<>());
+                }
+                Set<Integer> datasetIdSet = diseaseCategoriesIdMap.get(protein.getDiseaseCategoryI());
                 datasetIdSet.add(protein.getQuantDatasetIndex());
-                diseaseCategoriesIdMap.put(protein.getDiseaseCategory(), datasetIdSet);
+                diseaseCategoriesIdMap.put(protein.getDiseaseCategoryI(), datasetIdSet);
+                datasetIdSet = diseaseCategoriesIdMap.get(protein.getDiseaseCategoryII());
+                datasetIdSet.add(protein.getQuantDatasetIndex());
+                diseaseCategoriesIdMap.put(protein.getDiseaseCategoryII(), datasetIdSet);
 
             });
 
         } else {
             selection.setKeyWords(proteinList.keySet());
-            searchQuantificationProtList.stream().filter((protein) -> (proteinList.keySet().contains(protein.getFinalAccession()) && (proteinList.get(protein.getFinalAccession()).contains("all") || proteinList.get(protein.getFinalAccession()).contains(protein.getDiseaseCategory())))).forEach((protein) -> {
+            searchQuantificationProtList.stream().filter((protein) -> (proteinList.keySet().contains(protein.getFinalAccession()) && (proteinList.get(protein.getFinalAccession()).contains("all") || proteinList.get(protein.getFinalAccession()).contains(protein.getDiseaseCategoryI()))|| proteinList.get(protein.getFinalAccession()).contains(protein.getDiseaseCategoryII()))).forEach((protein) -> {
 
                 datasetIds.add(protein.getQuantDatasetIndex());
                 proteinAccession.add(protein.getFinalAccession());
-                if (!diseaseCategoriesIdMap.containsKey(protein.getDiseaseCategory())) {
-                    diseaseCategoriesIdMap.put(protein.getDiseaseCategory(), new HashSet<>());
+                if (!diseaseCategoriesIdMap.containsKey(protein.getDiseaseCategoryI())) {
+                    diseaseCategoriesIdMap.put(protein.getDiseaseCategoryI(), new HashSet<>());
                 }
-                Set<Integer> datasetIdSet = diseaseCategoriesIdMap.get(protein.getDiseaseCategory());
+                 if (!diseaseCategoriesIdMap.containsKey(protein.getDiseaseCategoryII())) {
+                    diseaseCategoriesIdMap.put(protein.getDiseaseCategoryII(), new HashSet<>());
+                }
+                Set<Integer> datasetIdSet = diseaseCategoriesIdMap.get(protein.getDiseaseCategoryI());
                 datasetIdSet.add(protein.getQuantDatasetIndex());
-                diseaseCategoriesIdMap.put(protein.getDiseaseCategory(), datasetIdSet);
+                diseaseCategoriesIdMap.put(protein.getDiseaseCategoryI(), datasetIdSet);
+                datasetIdSet = diseaseCategoriesIdMap.get(protein.getDiseaseCategoryII());
+                datasetIdSet.add(protein.getQuantDatasetIndex());
+                diseaseCategoriesIdMap.put(protein.getDiseaseCategoryII(), datasetIdSet);
 
             });
         }
-
-        String diseaseCat;
-        if (diseaseCategories.size() == 1 && diseaseCategories.toArray()[0].toString().equalsIgnoreCase("all") || diseaseCategories.size() > 1) {
-            diseaseCat = "All Diseases";
-        } else {
-            diseaseCat = diseaseCategories.toArray()[0].toString();
-        }
         searchingPanel.close();
         selection.setDiseaseCategoriesIdMap(diseaseCategoriesIdMap);
-        selection.setDiseaseCategory(diseaseCat);
+        selection.setDiseaseCategories(diseaseCategories);
         selection.setQuantDatasetIndexes(datasetIds);
         selection.setSelectedProteinsList(proteinAccession);
         Data_handler.switchToSearchingMode(selection);
-        CSFPR_Central_Manager.resetSearchSelection();
         loadQuantSearching();
         CSFPR_Central_Manager.searchSelectionAction(selection);
-
     }
 
     /**
@@ -504,7 +510,6 @@ public abstract class SearchingComponent extends BigBtn {
     private void searchProteins(Query query) {
         query.setValidatedProteins(false);
         query.setSearchDataset("");
-
         //searching quant data
         String defaultText = query.getSearchKeyWords();
         defaultText = defaultText.replace(",", "\n").trim().toUpperCase();
@@ -559,10 +564,7 @@ public abstract class SearchingComponent extends BigBtn {
             idSearchingLink.setDescription("View protein id results in CSF-PR v1.0");
             idSearchingLink.setWidth(100, Unit.PERCENTAGE);
             idDataResult.addComponent(idSearchingLink);
-            if (searchQuantificationProtList.isEmpty()) {
-//                Page.getCurrent().open(idRes.getURL(), "_blank", false);
-            }
-
+            
         } else {
             idDataResult.setVisible(false);
         }

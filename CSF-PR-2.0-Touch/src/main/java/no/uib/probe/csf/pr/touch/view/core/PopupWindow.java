@@ -113,5 +113,12 @@ public class PopupWindow extends Window {
         center();
         this.markAsDirty();
     }
+    
+     @Override
+    public void setWidth(float width, Unit unit) {
+        super.setWidth(Math.min(width, this.width), unit);
+        center();
+        this.markAsDirty();
+    }
 
 }

@@ -1,4 +1,4 @@
-2020.02.11 ; Support cross diseases comparisons and multiple disease selection
+2020.02.27 ; Support cross diseases comparisons and multiple disease selection
            ; Added new disease category (Amyotrophic Lateral Sclerosis 'ALS')
 2018.09.26 ; Added data from 5 papers
            ; Timirci-Kahraman, et al. (2018), Begcevic, et al. (06/2018 , 07/2018),

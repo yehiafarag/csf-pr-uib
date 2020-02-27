@@ -126,10 +126,11 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
         searchByOptionGroup.setRequiredError("You have to select an option");
 
         diseaseCategoryOption = new OptionGroup();
-        diseaseCategoryOption.addItem("Alzheimer's");
-        diseaseCategoryOption.addItem("Multiple Sclerosis");
-        diseaseCategoryOption.addItem("Parkinson's");
+         diseaseCategoryOption.addItem("Multiple Sclerosis");
+         diseaseCategoryOption.addItem("Parkinson's");
+         diseaseCategoryOption.addItem("Alzheimer's");  
         diseaseCategoryOption.addItem("Amyotrophic Lateral Sclerosis");
+        diseaseCategoryOption.setItemCaption("Amyotrophic Lateral Sclerosis", "ALS");
         diseaseCategoryOption.setStyleName(ValoTheme.OPTIONGROUP_SMALL);
         diseaseCategoryOption.setNullSelectionAllowed(true);
         btnsLayoutContainer.addComponent(diseaseCategoryOption);
@@ -213,18 +214,14 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
     @Override
     public void buttonClick(Button.ClickEvent event) {
         errorLabel.setVisible(false);
-
         searchByOptionGroup.setRequired(true);
         searchByOptionGroup.commit();
-
         if (searchingArea.getValue() != null && !searchingArea.getValue().trim().equalsIgnoreCase("") && searchByOptionGroup.isValid()) {
 
             searchByOptionGroup.setRequired(false);
             String searchKeyWords = searchingArea.getValue();
-
             String updatedSearchingKey = searchKeyWords.replace("\n", ",");
             String ser = "";
-
             String[] keyWordArr = updatedSearchingKey.trim().split(",");
             for (String str : keyWordArr) {
                 if (str.trim().length() == 0) {

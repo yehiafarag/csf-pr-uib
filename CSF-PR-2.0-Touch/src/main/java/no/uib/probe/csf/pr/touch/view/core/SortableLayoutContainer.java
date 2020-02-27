@@ -252,6 +252,8 @@ public class SortableLayoutContainer extends VerticalLayout {
             }
         };
         diseaseGroupSelectOption.addValueChangeListener(selectDataListener);
+        checkboxLayout.setVisible(false);
+        clearBtn.setVisible(false);
     }
 
     /**
@@ -261,6 +263,9 @@ public class SortableLayoutContainer extends VerticalLayout {
      * (full available labels)
      */
     public void updateData(LinkedHashSet<HeatMapHeaderCellInformationBean> labelInformationObjectSet) {
+        if (labelInformationObjectSet.isEmpty()) {
+            return;
+        }
         this.initalLabels = labelInformationObjectSet;
         diseaseGroupSelectOption.removeValueChangeListener(selectDataListener);
         if (externalListener != null) {
@@ -279,7 +284,7 @@ public class SortableLayoutContainer extends VerticalLayout {
             Label label = new Label(counter + 1 + "");
             container.addComponent(label);
             this.counterLayoutContainer.addComponent(container);
-            sortableRowsLayout.addComponent(component, headerTitle,component.getData().toString());
+            sortableRowsLayout.addComponent(component, headerTitle, component.getData().toString());
             diseaseGroupSelectOption.addItem(counter);
             diseaseGroupSelectOption.setItemCaption(counter, (counter + 1) + "");
             autoClear = true;
@@ -303,7 +308,7 @@ public class SortableLayoutContainer extends VerticalLayout {
      *
      * @return only one row selected.
      */
-    public boolean isSingleSelected() {
+    public boolean isSelectionMode() {
         return singleSelected;
     }
 
@@ -378,7 +383,7 @@ public class SortableLayoutContainer extends VerticalLayout {
      */
     public LinkedHashSet<HeatMapHeaderCellInformationBean> getSortedSet() {
         LinkedHashSet sortedSet;
-        if (isSingleSelected()) {
+        if (isSelectionMode()) {
             sortedSet = new LinkedHashSet(selectionSet);
 
         } else {
@@ -488,12 +493,12 @@ public class SortableLayoutContainer extends VerticalLayout {
          * @param component the added component.
          * @param labelId The label id
          */
-        public void addComponent(final Component component, String labelId,String category) {
+        public void addComponent(final Component component, String labelId, String category) {
             final WrappedComponent wrapper = new WrappedComponent(component,
                     dropHandler);
             wrapper.setHeight(100, Unit.PERCENTAGE);
             wrapper.setWidth(100, Unit.PERCENTAGE);
-            wrapper.setData(labelId+"__"+category);
+            wrapper.setData(labelId + "__" + category);
             wrapper.setDescription(component.getDescription());
             layout.addComponent(wrapper);
 

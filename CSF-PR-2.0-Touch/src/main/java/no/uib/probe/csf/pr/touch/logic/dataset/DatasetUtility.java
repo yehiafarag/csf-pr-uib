@@ -1,5 +1,6 @@
 package no.uib.probe.csf.pr.touch.logic.dataset;
 
+import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,6 +38,16 @@ public class DatasetUtility implements Serializable {
      * all disease category information.
      */
     private final LinkedHashMap<String, DiseaseCategoryObject> fullDiseaseCategoryMap;
+    /**
+     * Map of disease category (MS,AD,PD..etc)to DiseaseCategoryObject that has
+     * all disease category information.
+     */
+    private LinkedHashMap<String, DiseaseCategoryObject> activeDiseaseCategoryMap;
+    /**
+     * Map of disease category (MS,AD,PD..etc)to DiseaseCategoryObject that has
+     * all disease category information.
+     */
+    private final LinkedHashMap<String, DiseaseCategoryObject> searchCompareDiseaseCategoryMap;
     /**
      * Map of disease category (MS,AD,PD..etc)to initial information object that
      * has initial information for each disease category.
@@ -91,65 +102,13 @@ public class DatasetUtility implements Serializable {
     /**
      * Suggested sub-groups name as default (updated by CSF-PR 2.0).
      */
-    private final String suggestNames = "Alzheimer's\n"
-            + "CIS-MS(CIS)\n"
-            + "CIS-CIS\n"
-            + "CIS-MS\n"
-            + "Healthy*\n"
-            + "Healthy*\n"
-            + "MCI\n"
-            + "MCI nonprogressors\n"
-            + "MCI progressors\n"
-            + "RRMS Nataliz.\n"
-            + "SPMS Lamotri.\n"
-            + "Non MS\n"
-            + "OIND\n"
-            + "OIND + OND\n"
-            + "OND\n"
-            + "Sympt. controls\n"
-            + "Aged controls\n"
-            + "NDC\n"
-            + "Non-neurodeg.\n"
-            + "Parkinson's\n"
-            + "PDD\n"
-            + "PMS\n"
-            + "SPMS\n"
-            + "Healthy*\n"
-            + "RRMS";
-
-    /**
-     * Original disease sub-groups names (publication names).
-     */
-    private final String oreginalNames = "Alzheimer's\n"
-            + "CIS-MS(CIS)\n"
-            + "CIS-CIS\n"
-            + "CIS-MS\n"
-            + "Aged healthy\n"
-            + "Healthy controls\n"
-            + "MCI\n"
-            + "MCI nonprogressors\n"
-            + "MCI progressors\n"
-            + "RRMS Nataliz.\n"
-            + "SPMS Lamotri.\n"
-            + "Non MS\n"
-            + "OIND\n"
-            + "OIND + OND\n"
-            + "OND\n"
-            + "Sympt. controls\n"
-            + "Aged controls\n"
-            + "NDC\n"
-            + "Non-neurodeg.\n"
-            + "Parkinson's\n"
-            + "PDD\n"
-            + "PMS\n"
-            + "SPMS\n"
-            + "Healthy\n"
-            + "RRMS";
+    private final Map<String, String> suggestedSubGroupMap;
 
     /**
      * Current active quant data object that interact in the system.
      */
-    private QuantData activeData;
+    private Map<String, QuantData> activeData;
+    private Set<Integer> activeQuantDatasetsIndexes;
     /**
      * The system is in initializing state.
      */
@@ -167,12 +126,44 @@ public class DatasetUtility implements Serializable {
      */
     public DatasetUtility(CoreLogic Core_Logic) {
         quantDataMap = new LinkedHashMap<>();
-        this.fullDiseaseCategoryMap = Core_Logic.getDiseaseCategorySet();
+        this.suggestedSubGroupMap = new LinkedHashMap<>();
+        this.fullDiseaseCategoryMap = new LinkedHashMap<>(Core_Logic.getDiseaseCategorySet());
+        this.activeDiseaseCategoryMap = fullDiseaseCategoryMap;
+        this.searchCompareDiseaseCategoryMap = new LinkedHashMap<>();
         if (fullDiseaseCategoryMap == null) {
             databaseOffline = true;
-            System.out.println("at  ---------------------------------no database :(");
             return;
         }
+        fullDiseaseCategoryMap.keySet().forEach((diseaseCategory) -> {
+            this.searchCompareDiseaseCategoryMap.put(diseaseCategory, this.cloneDiseaseCategoryObject(diseaseCategory));
+        });
+
+        suggestedSubGroupMap.put("Alzheimer's", "Alzheimer's");
+        suggestedSubGroupMap.put("CIS-MS(CIS)", "CIS-MS(CIS)");
+        suggestedSubGroupMap.put("CIS-CIS", "CIS-CIS");
+        suggestedSubGroupMap.put("CIS-MS", "CIS-MS");
+        suggestedSubGroupMap.put("Aged healthy", "Healthy*");
+        suggestedSubGroupMap.put("Healthy controls", "Healthy*");
+        suggestedSubGroupMap.put("MCI", "MCI");
+        suggestedSubGroupMap.put("MCI nonprogressors", "MCI nonprogressors");
+        suggestedSubGroupMap.put("MCI progressors", "MCI progressors");
+        suggestedSubGroupMap.put("RRMS Nataliz.", "RRMS Nataliz.");
+        suggestedSubGroupMap.put("SPMS Lamotri.", "SPMS Lamotri.");
+        suggestedSubGroupMap.put("Non MS", "Non MS");
+        suggestedSubGroupMap.put("OIND", "OIND");
+        suggestedSubGroupMap.put("OIND + OND", "OIND + OND");
+        suggestedSubGroupMap.put("OND", "OND");
+        suggestedSubGroupMap.put("Sympt. controls", "Sympt. controls");
+        suggestedSubGroupMap.put("Aged controls", "Aged controls");
+        suggestedSubGroupMap.put("NDC", "NDC");
+        suggestedSubGroupMap.put("Non-neurodeg.", "Non-neurodeg.");
+        suggestedSubGroupMap.put("Parkinson's", "Parkinson's");
+        suggestedSubGroupMap.put("PDD", "PDD");
+        suggestedSubGroupMap.put("PMS", "PMS");
+        suggestedSubGroupMap.put("SPMS", "SPMS");
+        suggestedSubGroupMap.put("Healthy", "Healthy*");
+        suggestedSubGroupMap.put("RRMS", "RRMS");
+
         this.quantDatasetInitialInformationObject = Core_Logic.getQuantDatasetInitialInformationObject();
 
         default_DiseaseCat_DiseaseGroupMap = new LinkedHashMap<>();
@@ -184,15 +175,13 @@ public class DatasetUtility implements Serializable {
             Map<String, String> oreginalDiseaseGroupMap = new LinkedHashMap<>();
             diseaseGroupsName.stream().forEach((diseaseGroupName) -> {
                 oreginalDiseaseGroupMap.put(diseaseGroupName, diseaseGroupName);
-                diseaseGroupMap.put(diseaseGroupName, diseaseGroupName);
+                if (suggestedSubGroupMap.containsKey(diseaseGroupName)) {
+                    diseaseGroupMap.put(diseaseGroupName, suggestedSubGroupMap.get(diseaseGroupName));
+                } else {
+                    diseaseGroupMap.put(diseaseGroupName, diseaseGroupName);
+                }
             });
 
-            for (int i = 0; i < oreginalNames.split("\n").length; i++) {
-                if (!diseaseGroupsName.contains(oreginalNames.split("\n")[i])) {
-                    continue;
-                }
-                diseaseGroupMap.put(oreginalNames.split("\n")[i], suggestNames.split("\n")[i]);
-            }
             default_DiseaseCat_DiseaseGroupMap.put(str, diseaseGroupMap);
             oreginal_DiseaseCat_DiseaseGroupMap.put(str, oreginalDiseaseGroupMap);
         });
@@ -200,66 +189,82 @@ public class DatasetUtility implements Serializable {
         this.diseaseGroupFullNameMap = Core_Logic.getDiseaseGroupsFullNameMap();
         inUse_DiseaseCat_DiseaseGroupMap = default_DiseaseCat_DiseaseGroupMap;
         msReindexMap = new ArrayList<>();
-        msReindexMap.add("RRMS__Multiple Sclerosis__multiplesclerosisstyle");
+        msReindexMap.add("MS__Multiple Sclerosis__multiplesclerosisstyle");
         msReindexMap.add("CDMS__Multiple Sclerosis__multiplesclerosisstyle");
-
+        msReindexMap.add("RRMS__Multiple Sclerosis__multiplesclerosisstyle");
+        msReindexMap.add("RRMS + CIS__Multiple Sclerosis__multiplesclerosisstyle");
         msReindexMap.add("CIS-MS__Multiple Sclerosis__multiplesclerosisstyle");
         msReindexMap.add("CIS-MS(CIS)__Multiple Sclerosis__multiplesclerosisstyle");
         msReindexMap.add("CIS-CIS__Multiple Sclerosis__multiplesclerosisstyle");
-
+        msReindexMap.add("CIS__Multiple Sclerosis__multiplesclerosisstyle");
         msReindexMap.add("PMS__Multiple Sclerosis__multiplesclerosisstyle");
         msReindexMap.add("SPMS__Multiple Sclerosis__multiplesclerosisstyle");
-        msReindexMap.add("Progressive MS__Multiple Sclerosis__multiplesclerosisstyle");
-
-//        msReindexMap.add("CDMS__Multiple Sclerosis__multiplesclerosisstyle");
+        msReindexMap.add("MCI__Multiple Sclerosis__multiplesclerosisstyle");
+        msReindexMap.add("OIND__Multiple Sclerosis__multiplesclerosisstyle");
+        msReindexMap.add("OND__Multiple Sclerosis__multiplesclerosisstyle");
+        msReindexMap.add("PPMS__Multiple Sclerosis__multiplesclerosisstyle");
         msReindexMap.add("RRMS Nataliz.__Multiple Sclerosis__multiplesclerosisstyle");
         msReindexMap.add("SPMS Lamotri.__Multiple Sclerosis__multiplesclerosisstyle");
-        msReindexMap.add("OIND__Multiple Sclerosis__multiplesclerosisstyle");
-        msReindexMap.add("OIND + OND__Multiple Sclerosis__multiplesclerosisstyle");
-        msReindexMap.add("OND__Multiple Sclerosis__multiplesclerosisstyle");
-        msReindexMap.add("Sympt. controls__Multiple Sclerosis__multiplesclerosisstyle");
         msReindexMap.add("Non MS__Multiple Sclerosis__multiplesclerosisstyle");
-        msReindexMap.add("CIS__Multiple Sclerosis__multiplesclerosisstyle");
-        msReindexMap.add("MS treated__Multiple Sclerosis__multiplesclerosisstyle");
-        msReindexMap.add("Neurological__Multiple Sclerosis__multiplesclerosisstyle");
+        msReindexMap.add("OIND + OND__Multiple Sclerosis__multiplesclerosisstyle");
+        msReindexMap.add("Sympt. controls__Multiple Sclerosis__multiplesclerosisstyle");
+        msReindexMap.add("Neurol. healthy__Multiple Sclerosis__multiplesclerosisstyle");
+        msReindexMap.add("Cong.healthy__Multiple Sclerosis__multiplesclerosisstyle");
         msReindexMap.add("Healthy*__Multiple Sclerosis__multiplesclerosisstyle");
-        msReindexMap.add("Healthy controls__Multiple Sclerosis__multiplesclerosisstyle");
 
+//        msReindexMap.add("Progressive MS__Multiple Sclerosis__multiplesclerosisstyle");
+//        msReindexMap.add("MS treated__Multiple Sclerosis__multiplesclerosisstyle");
+//        msReindexMap.add("Healthy controls__Multiple Sclerosis__multiplesclerosisstyle");
         pdReindexMap = new ArrayList<>();
         pdReindexMap.add("Parkinson's__Parkinson's__parkinsonstyle");
         pdReindexMap.add("PDD__Parkinson's__parkinsonstyle");
 //        pdReindexMap.add("Alzheimer's__Parkinson's__parkinsonstyle");
-        pdReindexMap.add("NDC__Parkinson's__parkinsonstyle");
+
         pdReindexMap.add("Non Demented__Parkinson's__parkinsonstyle");
         pdReindexMap.add("Non-neurodeg.__Parkinson's__parkinsonstyle");
         pdReindexMap.add("Non Neurodeg.__Parkinson's__parkinsonstyle");
         pdReindexMap.add("Healthy*__Parkinson's__parkinsonstyle");
         pdReindexMap.add("Healthy controls__Parkinson's__parkinsonstyle");
+        pdReindexMap.add("NDC__Parkinson's__parkinsonstyle");
 
         adReindexMap = new ArrayList<>();
         adReindexMap.add("Alzheimer's__Alzheimer's__alzheimerstyle");
-        adReindexMap.add("LBD__Alzheimer's__alzheimerstyle");
-        adReindexMap.add("MCI__Alzheimer's__alzheimerstyle");
-        adReindexMap.add("MCI progressors__Alzheimer's__alzheimerstyle");
-        adReindexMap.add("MCI nonprogressors__Alzheimer's__alzheimerstyle");
-        adReindexMap.add("MCI__Alzheimer's__alzheimerstyle");
+        adReindexMap.add("AD dementia__Alzheimer's__alzheimerstyle");
+        adReindexMap.add("Preclinical AD__Alzheimer's__alzheimerstyle");
+        adReindexMap.add("Prodomal AD__Alzheimer's__alzheimerstyle");
+        adReindexMap.add("MCI-AD__Alzheimer's__alzheimerstyle");
         adReindexMap.add("MCI-MCI__Alzheimer's__alzheimerstyle");
+        adReindexMap.add("MCI__Alzheimer's__alzheimerstyle");
+        adReindexMap.add("FTD__Alzheimer's__alzheimerstyle");
+        adReindexMap.add("LBD__Alzheimer's__alzheimerstyle");
+
+        adReindexMap.add("Non-AD; healthy ex.__Alzheimer's__alzheimerstyle");
+        adReindexMap.add("Non-AD__Alzheimer's__alzheimerstyle");
+        adReindexMap.add("Aged non-AD__Alzheimer's__alzheimerstyle");
+        adReindexMap.add("Non-demented__Alzheimer's__alzheimerstyle");
+
 //        adReindexMap.add("Parkinson's__Alzheimer's__alzheimerstyle");
-        adReindexMap.add("Non Alzheimer's\n" + "Alzheimer-s_Disease");
+//        adReindexMap.add("Non Alzheimer's\n" + "Alzheimer-s_Disease");
         adReindexMap.add("Non Neurodeg.__Alzheimer's__alzheimerstyle");
         adReindexMap.add("Non-neurodeg.__Alzheimer's__alzheimerstyle");
-        adReindexMap.add("Aged controls__Alzheimer's__alzheimerstyle");
+        adReindexMap.add("Ment. healthy__Alzheimer's__alzheimerstyle");
+        adReindexMap.add("Cogn. healthy__Alzheimer's__alzheimerstyle");
         adReindexMap.add("Aged healthy__Alzheimer's__alzheimerstyle");
         adReindexMap.add("Healthy*__Alzheimer's__alzheimerstyle");
         adReindexMap.add("Healthy controls__Alzheimer's__alzheimerstyle");
 
         amyReindexMap = new ArrayList<>();
         amyReindexMap.add("ALS__Amyotrophic Lateral Sclerosis__amyotrophicstyle");
-        amyReindexMap.add("OND__Amyotrophic Lateral Sclerosis__amyotrophicstyle");
         amyReindexMap.add("sALS__Amyotrophic Lateral Sclerosis__amyotrophicstyle");
-        amyReindexMap.add("Healthy__Amyotrophic Lateral Sclerosis__amyotrophicstyle");
+        amyReindexMap.add("OND__Amyotrophic Lateral Sclerosis__amyotrophicstyle");
+
+        amyReindexMap.add("Healthy*__Amyotrophic Lateral Sclerosis__amyotrophicstyle");
         amyReindexMap.add("Control__Amyotrophic Lateral Sclerosis__amyotrophicstyle");
 
+    }
+
+    public Set<String> getActiveDiseaseCategorySet() {
+        return activeData.keySet();
     }
 
     /**
@@ -268,56 +273,53 @@ public class DatasetUtility implements Serializable {
      *
      * @return fullDiseaseCategoryMap values - disease category set
      */
-    public Collection<DiseaseCategoryObject> getFullDiseaseCategorySet() {
-        if (fullDiseaseCategoryMap == null) {
+    public Collection<DiseaseCategoryObject> getDiseaseCategorySet() {
+        if (activeDiseaseCategoryMap == null) {
             return null;
         }
-        return fullDiseaseCategoryMap.values();
+        return activeDiseaseCategoryMap.values();
     }
 
     /**
      * Set main disease category (MS,AD,PD or all)based on user selection
      *
-     * @param mainDiseaseCategory Disease category name
+     * @param mainDiseaseCategories Disease category name
      */
-    public void setMainDiseaseCategory(String mainDiseaseCategory) {
+    public void setMainDiseaseCategory(Set<String> mainDiseaseCategories) {
         if (init) {
             init = false;
-            LinkedHashSet<HeatMapHeaderCellInformationBean> oreginalColumnIds = new LinkedHashSet<>();
-            LinkedHashSet<HeatMapHeaderCellInformationBean> oreginalRowIds = new LinkedHashSet<>();
-            LinkedHashSet<HeatMapHeaderCellInformationBean> activeColumnIds = new LinkedHashSet<>();
-            LinkedHashSet<HeatMapHeaderCellInformationBean> activeRowIds = new LinkedHashSet<>();
+            LinkedHashMap<String, HeatMapHeaderCellInformationBean> oreginalColumnIds = new LinkedHashMap<>();
+            LinkedHashMap<String, HeatMapHeaderCellInformationBean> oreginalRowIds = new LinkedHashMap<>();
+            LinkedHashMap<String, HeatMapHeaderCellInformationBean> activeColumnIds = new LinkedHashMap<>();
+            LinkedHashMap<String, HeatMapHeaderCellInformationBean> activeRowIds = new LinkedHashMap<>();
             Set<DiseaseGroupComparison> diseaseComparisonSet = new LinkedHashSet<>();
             QuantData allQuantData = new QuantData();
             if (quantDatasetInitialInformationObject == null) {
                 return;
             }
-            for (String diseaseCategoryname : quantDatasetInitialInformationObject.keySet()) {
+            quantDatasetInitialInformationObject.keySet().forEach((diseaseCategoryname) -> {
                 InitialInformationObject initQuantData = quantDatasetInitialInformationObject.get(diseaseCategoryname);
                 updateQuantDatasetsList(diseaseCategoryname, initQuantData.getQuantDatasetsMap());
-                if (diseaseCategoryname.equalsIgnoreCase("All Diseases")) {
-                    continue;
+                if (!(diseaseCategoryname.equalsIgnoreCase("All Diseases"))) {
+                    QuantData quantData = updateDiseaseGroups(initQuantData.getQuantDatasetsMap(), diseaseCategoryname);
+                    quantData.setDiseaseCategories(diseaseCategoryname);
+                    quantData.setActiveDatasetPieChartsFilters(initQuantData.getActiveDatasetPieChartsFilters());
+                    updateGroupsNames(diseaseCategoryname, quantData);
+                    quantDataMap.put(diseaseCategoryname, quantData);
+                    oreginalColumnIds.putAll(quantData.getOreginalColumnIds());
+                    oreginalRowIds.putAll(quantData.getOreginalRowIds());
+                    activeColumnIds.putAll(quantData.getActiveColumnIds());
+                    activeRowIds.putAll(quantData.getActiveRowIds());
+                    diseaseComparisonSet.addAll(quantData.getDiseaseGroupComparisonsSet());
+                    allQuantData.setActiveDatasetPieChartsFilters(quantData.getActiveDatasetPieChartsFilters());
                 }
-
-                QuantData quantData = updateDiseaseGroups(initQuantData.getQuantDatasetsMap(), diseaseCategoryname);
-                quantData.setDiseaseCategory(diseaseCategoryname);
-                quantData.setActiveDatasetPieChartsFilters(initQuantData.getActiveDatasetPieChartsFilters());
-                updateGroupsNames(diseaseCategoryname, quantData);
-                quantDataMap.put(diseaseCategoryname, quantData);
-                oreginalColumnIds.addAll(quantData.getOreginalColumnIds());
-                oreginalRowIds.addAll(quantData.getOreginalRowIds());
-                activeColumnIds.addAll(quantData.getActiveColumnIds());
-                activeRowIds.addAll(quantData.getActiveRowIds());
-                diseaseComparisonSet.addAll(quantData.getDiseaseGroupComparisonsSet());
-                allQuantData.setActiveDatasetPieChartsFilters(quantData.getActiveDatasetPieChartsFilters());
-
-            }
+            });
             allQuantData.setOreginalColumnIds(oreginalColumnIds);
             allQuantData.setOreginalRowIds(oreginalRowIds);
             allQuantData.setActiveColumnIds(activeColumnIds);
             allQuantData.setActiveRowIds(activeRowIds);
             allQuantData.setDiseaseComparisonSet(diseaseComparisonSet);
-            allQuantData.setDiseaseCategory("All Diseases");
+            allQuantData.setDiseaseCategories("All Diseases");
             quantDataMap.put("All Diseases", allQuantData);
 
             default_DiseaseCat_DiseaseGroupMap = sortDiseaseCategoryGroups(default_DiseaseCat_DiseaseGroupMap);
@@ -327,21 +329,9 @@ public class DatasetUtility implements Serializable {
                 diseaseCategory.setDiseaseSubGroups(inUse_DiseaseCat_DiseaseGroupMap.get(diseaseCategory.getDiseaseCategory()));
                 diseaseCategory.setDiseaseSubGroupsToFullName(diseaseGroupFullNameMap);
             });
-
+            activeData = quantDataMap;
         }
 
-        if (quantDataMap.containsKey(mainDiseaseCategory)) {
-            activeData = quantDataMap.get(mainDiseaseCategory);
-        } else {
-            InitialInformationObject initQuantData = quantDatasetInitialInformationObject.get(mainDiseaseCategory);
-            activeData = updateDiseaseGroups(initQuantData.getQuantDatasetsMap(), mainDiseaseCategory);
-            activeData.setDiseaseCategory(mainDiseaseCategory);
-            activeData.setActiveDatasetPieChartsFilters(initQuantData.getActiveDatasetPieChartsFilters());
-            updateGroupsNames(mainDiseaseCategory, activeData);
-            quantDataMap.put(mainDiseaseCategory, activeData);
-            updateQuantDatasetsList(mainDiseaseCategory, initQuantData.getQuantDatasetsMap());
-
-        }
     }
 
     /**
@@ -349,8 +339,12 @@ public class DatasetUtility implements Serializable {
      *
      * @return active row labels category set
      */
-    public LinkedHashSet<HeatMapHeaderCellInformationBean> getRowLabels() {
-        return activeData.getActiveRowIds();
+    public LinkedHashMap<String, HeatMapHeaderCellInformationBean> getRowLabels() {
+        LinkedHashMap<String, HeatMapHeaderCellInformationBean> rowLabelList = new LinkedHashMap<>();
+        activeData.keySet().forEach((key) -> {
+            rowLabelList.putAll(activeData.get(key).getActiveRowIds());
+        });
+        return rowLabelList;
     }
 
     /**
@@ -359,8 +353,12 @@ public class DatasetUtility implements Serializable {
      *
      * @return active column labels category set
      */
-    public LinkedHashSet<HeatMapHeaderCellInformationBean> getColumnLabels() {
-        return activeData.getActiveColumnIds();
+    public LinkedHashMap<String, HeatMapHeaderCellInformationBean> getColumnLabels() {
+        LinkedHashMap<String, HeatMapHeaderCellInformationBean> columnLabelList = new LinkedHashMap<>();
+        activeData.keySet().forEach((key) -> {
+            columnLabelList.putAll(activeData.get(key).getActiveColumnIds());
+        });
+        return columnLabelList;
 
     }
 
@@ -370,7 +368,11 @@ public class DatasetUtility implements Serializable {
      * @return active disease group comparisons
      */
     public Set<DiseaseGroupComparison> getDiseaseGroupComparisonsSet() {
-        return activeData.getDiseaseGroupComparisonsSet();
+        LinkedHashSet<DiseaseGroupComparison> groupComparisonsSet = new LinkedHashSet<>();
+        activeData.keySet().forEach((key) -> {
+            groupComparisonsSet.addAll(activeData.get(key).getDiseaseGroupComparisonsSet());
+        });
+        return groupComparisonsSet;
 
     }
 
@@ -389,10 +391,10 @@ public class DatasetUtility implements Serializable {
         Set<DiseaseGroupComparison> diseaseComparisonSet = new LinkedHashSet<>();
         int i = 0;
         for (QuantDataset ds : quantDSArr.values()) {
-            if (ds == null ) {
+            if (ds == null) {
                 continue;
             }
-             
+
             DiseaseGroupComparison diseaseGroup = new DiseaseGroupComparison();
             diseaseGroup.setDiseaseCategory(ds.getDiseaseCategoryI(), ds.getDiseaseCategoryII());
             diseaseGroup.setDiseaseStyleName(ds.getDiseaseStyleName());
@@ -437,7 +439,7 @@ public class DatasetUtility implements Serializable {
             return null;
         }
         String[] pgArr = sortGroups(merge(diseaseGroupsI, diseaseGroupsII), diseaseCategory);
-        LinkedHashSet<HeatMapHeaderCellInformationBean> selectedHeatMapRows = new LinkedHashSet<>();
+        LinkedHashMap<String, HeatMapHeaderCellInformationBean> selectedHeatMapRows = new LinkedHashMap<>();
         for (String str : pgArr) {
             if (!str.equalsIgnoreCase("") && !str.contains(userDiseaseGroupB)) {
                 HeatMapHeaderCellInformationBean headerCellInfo = new HeatMapHeaderCellInformationBean();
@@ -448,10 +450,10 @@ public class DatasetUtility implements Serializable {
                 headerCellInfo.setDiseaseCategory(str.split("__")[1]);
                 headerCellInfo.setDiseaseHashedColor(fullDiseaseCategoryMap.get(headerCellInfo.getDiseaseCategory()).getDiseaseHashedColor());
                 headerCellInfo.setDiseaseGroupFullName(diseaseGroupFullNameMap.get(headerCellInfo.getDiseaseGroupName()));
-                selectedHeatMapRows.add(headerCellInfo);
+                selectedHeatMapRows.put(headerCellInfo.toString(), headerCellInfo);
             }
         }
-        LinkedHashSet<HeatMapHeaderCellInformationBean> selectedHeatMapColumns = new LinkedHashSet<>();
+        LinkedHashMap<String, HeatMapHeaderCellInformationBean> selectedHeatMapColumns = new LinkedHashMap<>();
         for (String str : pgArr) {
             if (!str.equalsIgnoreCase("") && !str.contains(userDiseaseGroupA)) {
                 HeatMapHeaderCellInformationBean headerCellInfo = new HeatMapHeaderCellInformationBean();
@@ -461,7 +463,7 @@ public class DatasetUtility implements Serializable {
                 headerCellInfo.setDiseaseStyleName(str.split("__")[2]);
                 headerCellInfo.setDiseaseHashedColor(fullDiseaseCategoryMap.get(headerCellInfo.getDiseaseCategory()).getDiseaseHashedColor());
                 headerCellInfo.setDiseaseGroupFullName(diseaseGroupFullNameMap.get(headerCellInfo.getDiseaseGroupName()));
-                selectedHeatMapColumns.add(headerCellInfo);
+                selectedHeatMapColumns.put(headerCellInfo.toString(), headerCellInfo);
             }
         }
 
@@ -676,8 +678,22 @@ public class DatasetUtility implements Serializable {
      *
      * @return map of quant dataset objects
      */
-    public Map<Integer, QuantDataset> getFullQuantDsMap() {
-        return quantDatasetInitialInformationObject.get(activeData.getDiseaseCategory()).getQuantDatasetsMap();
+    public Map<Integer, QuantDataset> getActiveQuantDsMap() {
+        Map<Integer, QuantDataset> quantDatasetsMap = new LinkedHashMap<>();
+        if (activeQuantDatasetsIndexes == null) {
+            activeData.keySet().forEach((key) -> {
+                quantDatasetsMap.putAll(quantDatasetInitialInformationObject.get(key).getQuantDatasetsMap());
+            });
+        } else {
+            activeData.keySet().forEach((key) -> {
+                Map<Integer, QuantDataset> catQuantDatasetsMap = quantDatasetInitialInformationObject.get(key).getQuantDatasetsMap();
+                activeQuantDatasetsIndexes.stream().filter((i) -> (catQuantDatasetsMap.containsKey(i))).forEachOrdered((i) -> {
+                    quantDatasetsMap.put(i, catQuantDatasetsMap.get(i));
+                });
+            });
+        }
+
+        return quantDatasetsMap;
 
     }
 
@@ -690,7 +706,7 @@ public class DatasetUtility implements Serializable {
         if (activeData == null) {
             return null;
         }
-        return activeData.getActiveDatasetPieChartsFilters();
+        return activeData.values().iterator().next().getActiveDatasetPieChartsFilters();
     }
 
     /**
@@ -751,16 +767,16 @@ public class DatasetUtility implements Serializable {
 
         }
         Map<String, String> updatedNamesMap = inUse_DiseaseCat_DiseaseGroupMap.get(diseaseCategoryName);
-        LinkedHashSet<HeatMapHeaderCellInformationBean> activeColumnIds = new LinkedHashSet<>();
-        LinkedHashSet<HeatMapHeaderCellInformationBean> activeRowIds = new LinkedHashSet<>();
-        updatingData.getOreginalColumnIds().stream().filter((header) -> !(!updatedNamesMap.containsKey(header.getDiseaseGroupOreginalName()))).forEach((header) -> {
+        LinkedHashMap<String, HeatMapHeaderCellInformationBean> activeColumnIds = new LinkedHashMap<>();
+        LinkedHashMap<String, HeatMapHeaderCellInformationBean> activeRowIds = new LinkedHashMap<>();
+        updatingData.getOreginalColumnIds().values().stream().filter((header) -> !(!updatedNamesMap.containsKey(header.getDiseaseGroupOreginalName()))).forEach((header) -> {
             header.setDiseaseGroupName(updatedNamesMap.get(header.getDiseaseGroupOreginalName()));
-            activeColumnIds.add(header);
+            activeColumnIds.put(header.toString(), header);
 
         });
-        updatingData.getOreginalRowIds().stream().filter((header) -> !(!updatedNamesMap.containsKey(header.getDiseaseGroupOreginalName()))).forEach((header) -> {
+        updatingData.getOreginalRowIds().values().stream().filter((header) -> !(!updatedNamesMap.containsKey(header.getDiseaseGroupOreginalName()))).forEach((header) -> {
             header.setDiseaseGroupName(updatedNamesMap.get(header.getDiseaseGroupOreginalName()));
-            activeRowIds.add(header);
+            activeRowIds.put(header.toString(), header);
         });
         Set<DiseaseGroupComparison> diseaseComparisonSet = updatingData.getDiseaseGroupComparisonsSet();
         Set<DiseaseGroupComparison> updatedDiseaseComparisonSet = new LinkedHashSet<>();
@@ -793,12 +809,11 @@ public class DatasetUtility implements Serializable {
     private Map<String, Map<String, String>> sortDiseaseCategoryGroups(Map<String, Map<String, String>> mapToSort) {
         Map<String, Map<String, String>> sortedMap = new LinkedHashMap<>();
 
-        mapToSort.keySet().stream().forEach((diseaseCategory) -> {
+        mapToSort.keySet().stream().forEach((String diseaseCategory) -> {
             QuantData quantData = quantDataMap.get(diseaseCategory);
-
             Map<String, String> subGroupMap = mapToSort.get(diseaseCategory);
             Map<String, String> sortedSubGroupMap = new LinkedHashMap<>();
-            quantData.getOreginalRowIds().stream().forEach((group) -> {
+            quantData.getOreginalRowIds().values().stream().forEach((group) -> {
                 sortedSubGroupMap.put(group.getDiseaseGroupOreginalName(), subGroupMap.get(group.getDiseaseGroupOreginalName()));
             });
             sortedMap.put(diseaseCategory, sortedSubGroupMap);
@@ -809,6 +824,7 @@ public class DatasetUtility implements Serializable {
             sortedAllSubGroupMap.putAll(subGroupMap);
         });
         sortedMap.put("All Diseases", sortedAllSubGroupMap);
+
         return sortedMap;
     }
 
@@ -841,26 +857,189 @@ public class DatasetUtility implements Serializable {
      * @param searchSelection search selection data
      */
     public void switchToSearchingMode(QuantSearchSelection searchSelection) {
+        activeData = null;
+        activeQuantDatasetsIndexes = searchSelection.getQuantDatasetIndexes();
+        Map<String, QuantData> searchingDataMap = new LinkedHashMap<>();
+        activeDiseaseCategoryMap = new LinkedHashMap<>();
 
-        QuantData refData = quantDataMap.get(searchSelection.getDiseaseCategory());
-        QuantData searchingData = new QuantData();
-        searchingData.setDiseaseCategory(searchSelection.getDiseaseCategory());
-        Set<DiseaseGroupComparison> diseaseComparisonSet = new LinkedHashSet<>();
+        if (searchSelection.getDiseaseCategories().contains("Multiple Sclerosis")) {
+            QuantData searchingData = new QuantData();
+            searchingData.setDiseaseCategories("Multiple Sclerosis");
+            searchingData.setActiveColumnIds(new LinkedHashMap<>());
+            searchingData.setActiveRowIds(new LinkedHashMap<>());
+            searchingData.setDiseaseComparisonSet(new LinkedHashSet<>());
+            searchingDataMap.put("Multiple Sclerosis", searchingData);
+            DiseaseCategoryObject diseaseCategoryObject = searchCompareDiseaseCategoryMap.get("Multiple Sclerosis");
+            diseaseCategoryObject.setDatasetNumber(0);
+            activeDiseaseCategoryMap.put(diseaseCategoryObject.getDiseaseCategory(), diseaseCategoryObject);
+        }
+        if (searchSelection.getDiseaseCategories().contains("Alzheimer's")) {
+            QuantData searchingData = new QuantData();
+            searchingData.setDiseaseCategories("Alzheimer's");
+            searchingData.setActiveColumnIds(new LinkedHashMap<>());
+            searchingData.setActiveRowIds(new LinkedHashMap<>());
+            searchingData.setDiseaseComparisonSet(new LinkedHashSet<>());
+            searchingDataMap.put("Alzheimer's", searchingData);
+            DiseaseCategoryObject diseaseCategoryObject = searchCompareDiseaseCategoryMap.get("Alzheimer's");
+            diseaseCategoryObject.setDatasetNumber(0);
+            activeDiseaseCategoryMap.put(diseaseCategoryObject.getDiseaseCategory(), diseaseCategoryObject);
+        }
+        if (searchSelection.getDiseaseCategories().contains("Parkinson's")) {
+            QuantData searchingData = new QuantData();
+            searchingData.setDiseaseCategories("Parkinson's");
+            searchingData.setActiveRowIds(new LinkedHashMap<>());
+            searchingData.setDiseaseComparisonSet(new LinkedHashSet<>());
+            searchingData.setActiveColumnIds(new LinkedHashMap<>());
+            searchingDataMap.put("Parkinson's", searchingData);
+            DiseaseCategoryObject diseaseCategoryObject = searchCompareDiseaseCategoryMap.get("Parkinson's");
+            diseaseCategoryObject.setDatasetNumber(0);
+            activeDiseaseCategoryMap.put(diseaseCategoryObject.getDiseaseCategory(), diseaseCategoryObject);
+        }
+        if (searchSelection.getDiseaseCategories().contains("Amyotrophic Lateral Sclerosis")) {
+            QuantData searchingData = new QuantData();
+            searchingData.setDiseaseCategories("Amyotrophic Lateral Sclerosis");
+            searchingData.setActiveRowIds(new LinkedHashMap<>());
+            searchingData.setActiveColumnIds(new LinkedHashMap<>());
+            searchingData.setDiseaseComparisonSet(new LinkedHashSet<>());
+            searchingDataMap.put("Amyotrophic Lateral Sclerosis", searchingData);
+            DiseaseCategoryObject diseaseCategoryObject = searchCompareDiseaseCategoryMap.get("Amyotrophic Lateral Sclerosis");
+            diseaseCategoryObject.setDatasetNumber(0);
+            activeDiseaseCategoryMap.put(diseaseCategoryObject.getDiseaseCategory(), diseaseCategoryObject);
+        }
 
-        for (DiseaseGroupComparison diseaseGroupComparison : refData.getDiseaseGroupComparisonsSet()) {
-            if (searchSelection.getQuantDatasetIndexes().contains(diseaseGroupComparison.getQuantDatasetIndex())) {
-                diseaseComparisonSet.add(diseaseGroupComparison);
+        DiseaseCategoryObject diseaseCategoryObject = searchCompareDiseaseCategoryMap.get("All Diseases");
+        diseaseCategoryObject.setDatasetNumber(0);
+        activeDiseaseCategoryMap.put(diseaseCategoryObject.getDiseaseCategory(), diseaseCategoryObject);
+
+        QuantData refData = quantDataMap.get("All Diseases");
+        for (int index : searchSelection.getQuantDatasetIndexes()) {
+            DiseaseGroupComparison diseaseGroupComparison = refData.getIndexToComparisons().get(index);
+            String keyI = this.inUse_DiseaseCat_DiseaseGroupMap.get(diseaseGroupComparison.getDiseaseCategoryI()).get(diseaseGroupComparison.getOriginalDiseaseSubGroupI()) + "__" + diseaseGroupComparison.getDiseaseCategoryI();
+            if (refData.getActiveRowIds().containsKey(keyI)) {
+                searchingDataMap.get(diseaseGroupComparison.getDiseaseCategoryI()).getActiveColumnIds().put(keyI, refData.getActiveRowIds().get(keyI));
+                searchingDataMap.get(diseaseGroupComparison.getDiseaseCategoryI()).getActiveRowIds().put(keyI, refData.getActiveRowIds().get(keyI));
+
             }
+            String keyII = this.inUse_DiseaseCat_DiseaseGroupMap.get(diseaseGroupComparison.getDiseaseCategoryII()).get(diseaseGroupComparison.getOriginalDiseaseSubGroupII()) + "__" + diseaseGroupComparison.getDiseaseCategoryII();
+            if (refData.getActiveRowIds().containsKey(keyII)) {
+                searchingDataMap.get(diseaseGroupComparison.getDiseaseCategoryII()).getActiveColumnIds().put(keyII, refData.getActiveRowIds().get(keyII));
+                searchingDataMap.get(diseaseGroupComparison.getDiseaseCategoryII()).getActiveRowIds().put(keyII, refData.getActiveRowIds().get(keyII));
+            }
+            searchingDataMap.get(diseaseGroupComparison.getDiseaseCategoryI()).getDiseaseGroupComparisonsSet().add(diseaseGroupComparison);
+            searchingDataMap.get(diseaseGroupComparison.getDiseaseCategoryII()).getDiseaseGroupComparisonsSet().add(diseaseGroupComparison);
+
+            searchingDataMap.get(diseaseGroupComparison.getDiseaseCategoryI()).getIndexToComparisons().put(diseaseGroupComparison.getQuantDatasetIndex(), diseaseGroupComparison);
+            searchingDataMap.get(diseaseGroupComparison.getDiseaseCategoryII()).getIndexToComparisons().put(diseaseGroupComparison.getQuantDatasetIndex(), diseaseGroupComparison);
+
+            searchingDataMap.get(diseaseGroupComparison.getDiseaseCategoryI()).setActiveDatasetPieChartsFilters(refData.getActiveDatasetPieChartsFilters());
+            searchingDataMap.get(diseaseGroupComparison.getDiseaseCategoryII()).setActiveDatasetPieChartsFilters(refData.getActiveDatasetPieChartsFilters());
+            searchingDataMap.get(diseaseGroupComparison.getDiseaseCategoryI()).setOreginalColumnIds(refData.getOreginalColumnIds());
+            searchingDataMap.get(diseaseGroupComparison.getDiseaseCategoryI()).setOreginalRowIds(refData.getOreginalRowIds());
+            searchingDataMap.get(diseaseGroupComparison.getDiseaseCategoryII()).setOreginalColumnIds(refData.getOreginalColumnIds());
+            searchingDataMap.get(diseaseGroupComparison.getDiseaseCategoryII()).setOreginalRowIds(refData.getOreginalRowIds());
 
         }
-        searchingData.setDiseaseComparisonSet(diseaseComparisonSet);
-        searchingData.setActiveColumnIds(refData.getActiveColumnIds());
-        searchingData.setActiveRowIds(refData.getActiveRowIds());
-        searchingData.setActiveDatasetPieChartsFilters(refData.getActiveDatasetPieChartsFilters());
-        searchingData.setOreginalColumnIds(refData.getOreginalColumnIds());
-        searchingData.setOreginalRowIds(refData.getOreginalRowIds());
-        activeData = searchingData;
 
+        for (String key : searchingDataMap.keySet()) {
+            activeDiseaseCategoryMap.get(key).setDatasetNumber(searchingDataMap.get(key).getIndexToComparisons().size());
+
+        }
+        activeDiseaseCategoryMap.get("All Diseases").setDatasetNumber(searchSelection.getQuantDatasetIndexes().size());
+        activeData = searchingDataMap;
+    }
+
+    private LinkedHashMap<String, HeatMapHeaderCellInformationBean> sortColumnsRowsInformation(LinkedHashMap<String, HeatMapHeaderCellInformationBean> activeColumnsRowsInformation) {
+        LinkedHashMap<String, HeatMapHeaderCellInformationBean> sortedColumnsRowsInformation = new LinkedHashMap<>();
+        Map<String, LinkedHashSet<String>> diseaseCategoryToSort = new LinkedHashMap<>();
+        for (String key : activeColumnsRowsInformation.keySet()) {
+            String diseaseCategory = key.split("__")[1];
+            String subGroup = key.split("__")[0];
+            if (!diseaseCategoryToSort.containsKey(diseaseCategory)) {
+                diseaseCategoryToSort.put(diseaseCategory, new LinkedHashSet<>());
+            }
+            subGroup = subGroup + "__" + activeColumnsRowsInformation.get(key).getDiseaseCategory() + "__" + activeColumnsRowsInformation.get(key).getDiseaseStyleName();
+            diseaseCategoryToSort.get(diseaseCategory).add(subGroup);
+        }
+        Map<String, LinkedHashSet<String>> sortedDiseaseCategory = sortGroups(diseaseCategoryToSort);
+        sortedDiseaseCategory.keySet().forEach((diseaseCategory) -> {
+            sortedDiseaseCategory.get(diseaseCategory).stream().map((subGroup) -> subGroup.split("__")[0] + "__" + diseaseCategory).forEachOrdered((key) -> {
+                sortedColumnsRowsInformation.put(key, activeColumnsRowsInformation.get(key));
+            });
+        });
+
+        return sortedColumnsRowsInformation;
+    }
+
+    /**
+     * Sort the groups to be ready to view in the heat map
+     *
+     * @param subGroupNamesArray Array of sub-group names
+     * @param diseaseCategory Disease category name.
+     * @return updated array of string for the disease category labels (columns
+     * and rows)
+     */
+    private Map<String, LinkedHashSet<String>> sortGroups(Map<String, LinkedHashSet<String>> diseaseCategoryToSort) {
+        Map<String, LinkedHashSet<String>> sortedDiseaseCategory = new LinkedHashMap<>();
+        if (diseaseCategoryToSort.containsKey("Multiple Sclerosis")) {
+            sortedDiseaseCategory.put("Multiple Sclerosis", new LinkedHashSet<>());
+        }
+        if (diseaseCategoryToSort.containsKey("Alzheimer's")) {
+            sortedDiseaseCategory.put("Alzheimer's", new LinkedHashSet<>());
+        }
+        if (diseaseCategoryToSort.containsKey("Parkinson's")) {
+            sortedDiseaseCategory.put("Parkinson's", new LinkedHashSet<>());
+        }
+        if (diseaseCategoryToSort.containsKey("Amyotrophic Lateral Sclerosis")) {
+            sortedDiseaseCategory.put("Amyotrophic Lateral Sclerosis", new LinkedHashSet<>());
+        }
+
+        sortedDiseaseCategory.keySet().forEach((diseaseCategory) -> {
+            List<String> reindexMap;
+            if (diseaseCategory.equalsIgnoreCase("Multiple Sclerosis")) {
+                reindexMap = msReindexMap;
+            } else if (diseaseCategory.equalsIgnoreCase("Alzheimer's")) {
+                reindexMap = adReindexMap;
+            } else if (diseaseCategory.equalsIgnoreCase("Parkinson's")) {
+                reindexMap = pdReindexMap;
+            } else {
+                reindexMap = amyReindexMap;
+            }
+            sortAndClear(reindexMap, diseaseCategoryToSort.get(diseaseCategory), sortedDiseaseCategory.get(diseaseCategory));
+        });
+        System.out.println("at sorted di cat " + sortedDiseaseCategory.keySet());
+        return sortedDiseaseCategory;
+
+    }
+
+    private void sortAndClear(final List<String> reindexMap, final Set<String> toSortSet, final Set<String> sortedSet) {
+        reindexMap.stream().filter((str) -> (toSortSet.contains(str))).map((str) -> {
+            sortedSet.add(str);
+            return str;
+        }).forEachOrdered((str) -> {
+            toSortSet.remove(str);
+        });
+        toSortSet.forEach((str) -> {
+            sortedSet.add(str);
+        });
+        toSortSet.clear();
+    }
+
+    public void resetToDefault() {
+        activeQuantDatasetsIndexes = null;
+        activeData = quantDataMap;
+        activeDiseaseCategoryMap = fullDiseaseCategoryMap;
+
+    }
+
+    private DiseaseCategoryObject cloneDiseaseCategoryObject(String diseaseCategory) {
+        DiseaseCategoryObject diseaseCategoryObject = new DiseaseCategoryObject();
+        diseaseCategoryObject.setDiseaseCategory(diseaseCategory);
+        diseaseCategoryObject.setDiseaseStyleName(fullDiseaseCategoryMap.get(diseaseCategoryObject.getDiseaseCategory()).getDiseaseStyleName());
+        diseaseCategoryObject.setDiseaseHashedColor(fullDiseaseCategoryMap.get(diseaseCategoryObject.getDiseaseCategory()).getDiseaseHashedColor());
+        diseaseCategoryObject.setDiseaseAwtColor(fullDiseaseCategoryMap.get(diseaseCategoryObject.getDiseaseCategory()).getDiseaseAwtColor());
+        diseaseCategoryObject.setDiseaseSubGroups(fullDiseaseCategoryMap.get(diseaseCategoryObject.getDiseaseCategory()).getDiseaseSubGroups());
+        diseaseCategoryObject.setDiseaseSubGroupsToFullName(fullDiseaseCategoryMap.get(diseaseCategoryObject.getDiseaseCategory()).getDiseaseSubGroupsToFullName());
+        return diseaseCategoryObject;
     }
 
 }

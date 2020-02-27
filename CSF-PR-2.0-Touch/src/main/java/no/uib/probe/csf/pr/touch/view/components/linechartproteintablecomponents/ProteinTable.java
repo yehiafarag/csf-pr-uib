@@ -229,40 +229,6 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
     }
 
     /**
-     * Filter table items to view only user protein selection
-     *
-     * @param selectedProteinsList Customized comparison based on user input
-     * data in quant comparison layout.
-     */
-    private void filterTableItem(Set<QuantComparisonProtein> selectedProteinsList) {
-        System.out.println("filtered table method invoked and size " + selectedProteinsList.size());
-        Set<Object> filteredItemIds = new HashSet<>();
-        selectedItemIds.clear();
-        activeTableItemsMap.clear();
-
-        selectedProteinsList.stream().forEach((protein) -> {
-            if (tableProteinsToIDMap.containsKey(protein.getProteinAccession())) {
-                filteredItemIds.add(tableProteinsToIDMap.get(protein.getProteinAccession()));
-            }
-
-        });
-        mainProteinTable.removeAllItems();
-        for (Object itemId : filteredItemIds) {
-            mainProteinTable.addItem(tableItemsMap.get(itemId), itemId);
-            activeTableItemsMap.put(itemId, tableItemsMap.get(itemId));
-        }
-
-        int indexing = 1;
-        for (Object id : mainProteinTable.getItemIds()) {
-            Item item = mainProteinTable.getItem(id);
-            item.getItemProperty("Index").setValue(indexing);
-            indexing++;
-        }
-        updateIconRowNumber(mainProteinTable.getItemIds().size(), generateThumbImg());
-
-    }
-
-    /**
      * Generate thumb image to update the left side button icon.
      *
      * @return image encoded into base64 string to be used to update the left
@@ -329,7 +295,6 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
      * @param selectedProteinsList list of proteins to be selected and viewed.
      */
     public void filterViewItemTable(Set<QuantComparisonProtein> selectedProteinsList) {
-        System.out.println("filtered table method invoked and size " + selectedProteinsList.size());
         selectedItemIds.clear();
         this.inUseSselectedProteinsList = selectedProteinsList;
         selectedProteinsList.stream().forEach((protein) -> {
@@ -452,7 +417,7 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
                 item.getItemProperty("Index").setValue(indexing);
                 indexing++;
             }
-             mainProteinTable.setSortEnabled(false);
+            mainProteinTable.setSortEnabled(false);
             return;
 
         }
@@ -970,9 +935,11 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         Set<String> filteredDataList = new LinkedHashSet<>();
         for (String accession : filteredProteinsList) {
             Object itemId = tableProteinsToIDMap.get(accession);
-            Object[] items = tableItemsMap.get(itemId);
-            filteredDataList.add(((ExternalLink) items[2]).getData() + "");
-            mainProteinTable.addItem(items, itemId);
+            if (tableItemsMap.containsKey(itemId)) {
+                Object[] items = tableItemsMap.get(itemId);
+                filteredDataList.add(((ExternalLink) items[2]).getData() + "");
+                mainProteinTable.addItem(items, itemId);
+            }
 
         }
         if (mainProteinTable.getItemIds().size() == tableItemsMap.size()) {
@@ -1049,9 +1016,11 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         Set<String> filteredDataList = new LinkedHashSet<>();
         for (String accession : filteredProteinsList) {
             Object itemId = tableProteinsToIDMap.get(accession);
-            Object[] items = tableItemsMap.get(itemId);
-            filteredDataList.add(((ExternalLink) items[2]).getData() + "");
-            mainProteinTable.addItem(items, itemId);
+            if (tableItemsMap.containsKey(itemId)) {  
+                Object[] items = tableItemsMap.get(itemId);
+                filteredDataList.add(((ExternalLink) items[2]).getData() + "");
+                mainProteinTable.addItem(items, itemId);
+            }
 
         }
         if (mainProteinTable.getItemIds().size() == tableItemsMap.size()) {
@@ -1128,9 +1097,12 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         Set<String> filteredDataList = new LinkedHashSet<>();
         for (String accession : filteredProteinsList) {
             Object itemId = tableProteinsToIDMap.get(accession);
-            Object[] items = tableItemsMap.get(itemId);
-            filteredDataList.add(((ExternalLink) items[2]).getData() + "");
-            mainProteinTable.addItem(items, itemId);
+
+            if (tableItemsMap.containsKey(itemId)) {
+                Object[] items = tableItemsMap.get(itemId);
+                filteredDataList.add(((ExternalLink) items[2]).getData() + "");
+                mainProteinTable.addItem(items, itemId);
+            }
 
         }
         if (mainProteinTable.getItemIds().size() == tableItemsMap.size()) {
@@ -1209,9 +1181,11 @@ public abstract class ProteinTable extends VerticalLayout implements Property.Va
         Set<String> filteredDataList = new LinkedHashSet<>();
         for (String accession : filteredProteinsList) {
             Object itemId = tableProteinsToIDMap.get(accession);
-            Object[] items = tableItemsMap.get(itemId);
-            filteredDataList.add(((ExternalLink) items[2]).getData() + "");
-            mainProteinTable.addItem(items, itemId);
+            if (tableItemsMap.containsKey(itemId)) {
+                Object[] items = tableItemsMap.get(itemId);
+                filteredDataList.add(((ExternalLink) items[2]).getData() + "");
+                mainProteinTable.addItem(items, itemId);
+            }
 
         }
         if (mainProteinTable.getItemIds().size() == tableItemsMap.size()) {

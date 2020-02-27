@@ -154,7 +154,7 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
             combinedGroup = " - Combined disease groups";
         }
         HeaderCell.this.setDescription(fullName + combinedGroup);
-        this.valueLabel.setValue(allStyle);
+//        this.valueLabel.setValue(allStyle);
 
     }
 
@@ -231,6 +231,10 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
      */
     public String getColor() {
         return color;
+    }
+    public void resetHeader(){
+     this.includedComparisons.clear();
+     includedCells.clear();
     }
 
     /**

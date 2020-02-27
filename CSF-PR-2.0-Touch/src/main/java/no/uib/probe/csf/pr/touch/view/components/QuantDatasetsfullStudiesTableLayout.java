@@ -46,7 +46,7 @@ public class QuantDatasetsfullStudiesTableLayout extends Table {
         this.addContainerProperty("Index", Integer.class, null, "Index", null, Table.Align.RIGHT);
         this.addContainerProperty("Author", String.class, null);
         this.setColumnCollapsed("Author", false);
-        this.addContainerProperty("Year", String.class, null, "Year", null, Table.Align.RIGHT);
+        this.addContainerProperty("Year", String.class, null, "Year", null, Table.Align.CENTER);
         this.setColumnCollapsed("Year", false);
         this.addContainerProperty("#Identified Proteins", Integer.class, null, "#Identified Proteins", null, Table.Align.RIGHT);
         this.setColumnCollapsed("#Identified Proteins", !activeColumnHeaders[2]);
@@ -91,31 +91,35 @@ public class QuantDatasetsfullStudiesTableLayout extends Table {
         this.addContainerProperty("PumedID", String.class, null);
         this.setColumnCollapsed("PumedID", !activeColumnHeaders[17]);
 
-        this.addContainerProperty("patientsGroup1", String.class, null, "Patients Gr.I", null, Table.Align.RIGHT);
-        this.setColumnCollapsed("patientsGroup1", !activeColumnHeaders[18]);
-
-        this.addContainerProperty("patientsGroup1Number", Integer.class, null, "#Patients Gr.I", null, Table.Align.RIGHT);
-        this.setColumnCollapsed("patientsGroup1Number", !activeColumnHeaders[19]);
-
-        this.addContainerProperty("patientsGroup1Comm", String.class, null, "Patients Gr.I Comm", null, Table.Align.LEFT);
-        this.setColumnCollapsed("patientsGroup1Comm", !activeColumnHeaders[20]);
-
-        this.addContainerProperty("patientsSubGroup1", String.class, null, "Patients Sub-Gr.I", null, Table.Align.RIGHT);
+        this.addContainerProperty("diseaseCategoryI", String.class, null, "Disease Category I", null, Table.Align.LEFT);
+        this.addContainerProperty("patientsSubGroup1", String.class, null, "Disease Sub-Category I", null, Table.Align.LEFT);
         this.setColumnCollapsed("patientsSubGroup1", !activeColumnHeaders[21]);
 
-        this.addContainerProperty("patientsGroup2", String.class, null, "Patients Gr.II", null, Table.Align.RIGHT);
-        this.setColumnCollapsed("patientsGroup2", !activeColumnHeaders[22]);
+//        this.addContainerProperty("patientsGroup1", String.class, null, "Patients Gr.I", null, Table.Align.RIGHT);
+//        this.setColumnCollapsed("patientsGroup1", !activeColumnHeaders[18]);
 
-        this.addContainerProperty("patientsGroup2Number", Integer.class, null, "#Patients Gr.II", null, Table.Align.RIGHT);
+        this.addContainerProperty("patientsGroup1Number", Integer.class, null, "#Patients (Disease Sub-Category I)", null, Table.Align.RIGHT);
+        this.setColumnCollapsed("patientsGroup1Number", !activeColumnHeaders[19]);
+
+        this.addContainerProperty("patientsGroup1Comm", String.class, null, "Disease Sub-Category I Comments", null, Table.Align.LEFT);
+        this.setColumnCollapsed("patientsGroup1Comm", !activeColumnHeaders[20]);
+
+        
+        this.addContainerProperty("diseaseCategoryII", String.class, null, "Disease Category II", null, Table.Align.LEFT);
+        this.addContainerProperty("patientsSubGroup2", String.class, null, "Disease Sub-Category II", null, Table.Align.LEFT);
+        this.setColumnCollapsed("patientsSubGroup2", !activeColumnHeaders[25]);
+//        this.addContainerProperty("patientsGroup2", String.class, null, "Patients Gr.II", null, Table.Align.RIGHT);
+//        this.setColumnCollapsed("patientsGroup2", !activeColumnHeaders[22]);
+
+        this.addContainerProperty("patientsGroup2Number", Integer.class, null, "#Patients (Disease Sub-Category II)", null, Table.Align.RIGHT);
         this.setColumnCollapsed("patientsGroup2Number", !activeColumnHeaders[23]);
 
-        this.addContainerProperty("patientsGroup2Comm", String.class, null, "Patients Gr.II Comm", null, Table.Align.LEFT);
+        this.addContainerProperty("patientsGroup2Comm", String.class, null, "Disease Sub-Category II Comments", null, Table.Align.LEFT);
         this.setColumnCollapsed("patientsGroup2Comm", !activeColumnHeaders[24]);
 
-        this.addContainerProperty("patientsSubGroup2", String.class, null, "Patients Sub-Gr.II", null, Table.Align.RIGHT);
-        this.setColumnCollapsed("patientsSubGroup2", !activeColumnHeaders[25]);
+        
 
-        this.addContainerProperty("additionalComments", String.class, null, "Comments", null, Table.Align.RIGHT);
+        this.addContainerProperty("additionalComments", String.class, null, "Comments", null, Table.Align.LEFT);
         this.setColumnCollapsed("additionalComments", !activeColumnHeaders[26]);
 
     }
@@ -159,7 +163,7 @@ public class QuantDatasetsfullStudiesTableLayout extends Table {
             }
 
             String pumedID = pb.getPubMedId();
-            this.addItem(new Object[]{index, pb.getAuthor(), pb.getYear() + "", idNumber, quantProtNum, pb.getAnalyticalMethod(), rawDatalink, pb.getTypeOfStudy(), pb.getSampleType(), pb.getSampleMatching(), pb.getShotgunTargeted(), pb.getTechnology(), pb.getAnalyticalApproach(), pb.getEnzyme(), pb.getQuantificationBasis(), pb.getQuantBasisComment(), pb.getNormalizationStrategy(), pumedID, pb.getDiseaseMainGroupI().split("\n")[0], patGr1Num, pb.getDiseaseMainGroup1Comm(), pb.getDiseaseSubGroup1().split("\n")[0], pb.getDiseaseMainGroup2().split("\n")[0], patGr2Num, pb.getDiseaseMainGroup2Comm(), pb.getDiseaseSubGroup2().split("\n")[0], pb.getAdditionalcomments()}, index);
+            this.addItem(new Object[]{index, pb.getAuthor(), pb.getYear() + "", idNumber, quantProtNum, pb.getAnalyticalMethod(), rawDatalink, pb.getTypeOfStudy(), pb.getSampleType(), pb.getSampleMatching(), pb.getShotgunTargeted(), pb.getTechnology(), pb.getAnalyticalApproach(), pb.getEnzyme(), pb.getQuantificationBasis(), pb.getQuantBasisComment(), pb.getNormalizationStrategy(), pumedID, pb.getDiseaseCategoryI(), pb.getDiseaseSubGroup1().split("\n")[0], patGr1Num, pb.getDiseaseMainGroup1Comm(), pb.getDiseaseCategoryII(), pb.getDiseaseSubGroup2().split("\n")[0],patGr2Num, pb.getDiseaseMainGroup2Comm(), pb.getAdditionalcomments()}, index);
             dsIndexes[index] = pb.getQuantDatasetIndex();
             index++;
         }

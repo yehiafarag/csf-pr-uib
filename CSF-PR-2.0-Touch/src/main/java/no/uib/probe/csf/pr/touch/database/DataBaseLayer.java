@@ -200,7 +200,7 @@ public class DataBaseLayer implements Serializable {
     public List<Object[]> getPublicationList() {
 
         List<Object[]> publicationList = new ArrayList<>();
-        String selectStat = "SELECT * FROM  `publication_table` WHERE `active`='true' ORDER BY  `publication_table`.`year` DESC ,`publication_table`.`author` ";
+        String selectStat = "SELECT DISTINCT `pumed_id`,`year`,`author` FROM `quant_dataset_table`  ORDER BY `year`  DESC ,`author`";//"SELECT * FROM  `publication_table` WHERE `active`='true' ORDER BY  `publication_table`.`year` DESC ,`publication_table`.`author` ";
         try {
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
@@ -212,10 +212,14 @@ public class DataBaseLayer implements Serializable {
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
-                if (rs.getString("pubmed_id").contains("MCP")) {
+                if (rs.getString("pumed_id").contains("MCP")) {
                     continue;
                 }
-                publicationList.add(new Object[]{rs.getString("pubmed_id"), rs.getString("author"), rs.getString("year"), rs.getString("title"), rs.getInt("uniq_prot_num"), rs.getInt("total_prot_num"), rs.getInt("uniq_pept_num"), rs.getInt("total_pept_num")});
+                String author = rs.getString("author");
+                author = author.replace("¢", "ó");
+                publicationList.add(new Object[]{rs.getString("pumed_id"), author, rs.getString("year"), "", 0, 0, 0, 0});
+
+//                publicationList.add(new Object[]{rs.getString("pubmed_id"), rs.getString("author"), rs.getString("year"), rs.getString("title"), rs.getInt("uniq_prot_num"), rs.getInt("total_prot_num"), rs.getInt("uniq_pept_num"), rs.getInt("total_pept_num")});
             }
         } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             System.err.println("at error " + this.getClass().getName() + "  line 184  " + e.getLocalizedMessage());
@@ -298,13 +302,9 @@ public class DataBaseLayer implements Serializable {
      */
     public Map<String, InitialInformationObject> getQuantDatasetInitialInformationObject() {
         Map<String, InitialInformationObject> diseaseCategoriesMap = new LinkedHashMap<>();
-//        diseaseCategoriesMap.put("Multiple Sclerosis", null);
-//        diseaseCategoriesMap.put("Alzheimer's", null);
-//        diseaseCategoriesMap.put("Parkinson's", null);
-//        diseaseCategoriesMap.put("Amyotrophic Lateral Sclerosis", null);
         try {
             PreparedStatement selectStudiesStat;
-            String selectStudies = "SELECT * FROM  `quant_dataset_table` ";
+            String selectStudies = "SELECT * FROM  `quant_dataset_table`  ";
             if (conn == null || conn.isClosed()) {
                 Class.forName(driver).newInstance();
                 conn = DriverManager.getConnection(url + dbName, userName, password);
@@ -337,6 +337,7 @@ public class DataBaseLayer implements Serializable {
                         ds.setDiseaseHashedColor(diseaseColorMap.get(dc));
                         ds.setDiseaseStyleName(diseaseCategoryStyles.get(dc));
                         String author = rs.getString("author");
+                        author = author.replace("¢", "ó");
                         if (!activeHeaders[0] && author != null && !author.equalsIgnoreCase("Not Available")) {
                             activeHeaders[0] = true;
                         }
@@ -513,7 +514,7 @@ public class DataBaseLayer implements Serializable {
                     }
                 }
             }
-           
+
             return diseaseCategoriesMap;//   this.filterDiseaseCategoriesMap(diseaseCategoriesMap);
         } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             System.err.println("at error line 431 " + this.getClass().getName() + "   " + e.getLocalizedMessage());
@@ -524,89 +525,6 @@ public class DataBaseLayer implements Serializable {
 
         return null;
 
-    }
-
-    /**
-     * Filter the disease Categories Map and its sub quant datasets removing
-     * multiple disease categories and distribute the quant data between the
-     * exist once
-     *
-     * @param diseaseCategoriesMap current disease category map before filtering
-     * @return map of disease category objects that has all disease category
-     * without duplication (remove '_' disease category)
-     */
-    private Map<String, InitialInformationObject> filterDiseaseCategoriesMap(Map<String, InitialInformationObject> diseaseCategoriesMap) {
-        Map<String, InitialInformationObject> tempDiseaseCategoriesMap = new LinkedHashMap<>(diseaseCategoriesMap);
-        for (String diseaseCategory : tempDiseaseCategoriesMap.keySet()) {
-            if (diseaseCategory.contains("_")) {
-                diseaseCategoriesMap.remove(diseaseCategory);
-                Map<Integer, QuantDataset> quantDsMap = tempDiseaseCategoriesMap.get(diseaseCategory).getQuantDatasetsMap();
-                quantDsMap.keySet().forEach((i) -> {
-                    QuantDataset ds = quantDsMap.get(i);
-                    int countI = 0;
-                    int countII = 1;
-                    for (String updatedDisCategory : diseaseCategory.split("_")) {
-                        QuantDataset newDs = new QuantDataset();
-                        newDs.setCrossDisease(true);
-                        newDs.setDiseaseHashedColor(diseaseColorMap.get(updatedDisCategory));
-                        newDs.setDiseaseStyleName(diseaseCategoryStyles.get(updatedDisCategory));
-                        newDs.setAuthor(ds.getAuthor());
-                        newDs.setYear(ds.getYear());
-                        newDs.setIdentifiedProteinsNumber(ds.getIdentifiedProteinsNumber());
-                        newDs.setQuantifiedProteinsNumber(ds.getQuantifiedProteinsNumber());
-                        newDs.setAnalyticalMethod(ds.getAnalyticalMethod());
-                        newDs.setRawDataUrl(ds.getRawDataUrl());
-                        newDs.setTypeOfStudy(ds.getTypeOfStudy());
-                        newDs.setSampleType(ds.getSampleType());
-                        newDs.setSampleMatching(ds.getSampleMatching());
-                        newDs.setShotgunTargeted(ds.getShotgunTargeted());
-                        newDs.setTechnology(ds.getTechnology());
-                        newDs.setAnalyticalApproach(ds.getAnalyticalApproach());
-                        newDs.setEnzyme(ds.getEnzyme());
-                        newDs.setQuantificationBasis(ds.getQuantificationBasis());
-                        newDs.setQuantBasisComment(ds.getQuantBasisComment());
-                        newDs.setQuantDatasetIndex(ds.getQuantDatasetIndex());
-                        newDs.setNormalizationStrategy(ds.getNormalizationStrategy());
-                        newDs.setPubMedId(ds.getPubMedId());
-                        newDs.setDiseaseMainGroupI(ds.getDiseaseMainGroupI());
-                        newDs.setDiseaseMainGroup1Number(ds.getDiseaseMainGroup1Number());
-                        newDs.setDiseaseMainGroup1Comm(ds.getDiseaseMainGroup1Comm());
-                        newDs.setDiseaseSubGroup1(ds.getDiseaseSubGroup1());
-                        newDs.setDiseaseMainGroup2(ds.getDiseaseMainGroup2());
-                        newDs.setDiseaseMainGroup2Number(ds.getDiseaseMainGroup2Number());
-                        newDs.setDiseaseMainGroup2Comm(ds.getDiseaseMainGroup2Comm());
-                        newDs.setDiseaseSubGroup2(ds.getDiseaseSubGroup2());
-                        newDs.setAdditionalcomments(ds.getAdditionalcomments());
-                        newDs.setDiseaseCategory(diseaseCategory.split("_")[countI++], diseaseCategory.split("_")[countII--]);
-                        newDs.setTotalProtNum(ds.getTotalProtNum());
-                        newDs.setUniqueProtNum(ds.getUniqueProtNum());
-                        newDs.setTotalPepNum(ds.getTotalPepNum());
-                        newDs.setUniqePepNum(ds.getUniqePepNum());
-                        newDs.setPooledSamples(ds.isPooledSamples());
-                        InitialInformationObject singleDiseaseCategoryDatase = diseaseCategoriesMap.get(updatedDisCategory);
-                        boolean[] activeHeaders = singleDiseaseCategoryDatase.getActiveDatasetPieChartsFilters();
-                        InitialInformationObject toRemoveDatasetObject = tempDiseaseCategoriesMap.get(diseaseCategory);
-                        boolean[] tempActiveHeaders = toRemoveDatasetObject.getActiveDatasetPieChartsFilters();
-                        for (int e = 0; e < tempActiveHeaders.length; e++) {
-                            if (tempActiveHeaders[e]) {
-                                activeHeaders[e] = tempActiveHeaders[e];
-                            }
-                        }
-
-                        Map<Integer, QuantDataset> updatedQuantDatasetObjectMap = singleDiseaseCategoryDatase.getQuantDatasetsMap();
-                        Set<String> diseaseCategories = singleDiseaseCategoryDatase.getDiseaseCategories();
-                        diseaseCategories.add(newDs.getDiseaseCategoryI());
-                        updatedQuantDatasetObjectMap.put(newDs.getQuantDatasetIndex(), newDs);
-                        singleDiseaseCategoryDatase.setQuantDatasetsMap(updatedQuantDatasetObjectMap);
-                        singleDiseaseCategoryDatase.setActiveDatasetPieChartsFilters(activeHeaders);
-                        singleDiseaseCategoryDatase.setDiseaseCategories(diseaseCategories);
-                        diseaseCategoriesMap.put(updatedDisCategory, singleDiseaseCategoryDatase);
-
-                    }
-                });
-            }
-        }
-        return diseaseCategoriesMap;
     }
 
     /**
@@ -666,7 +584,7 @@ public class DataBaseLayer implements Serializable {
             System.err.println("at error " + this.getClass().getName() + "  line 470  " + e.getLocalizedMessage());
             return null;
         }
-       
+
         return availableDiseaseCategory;
     }
 
@@ -693,9 +611,6 @@ public class DataBaseLayer implements Serializable {
             try (ResultSet rs = selectPumed_idStat.executeQuery()) {
                 int pumed_id_index = 0;
                 while (rs.next()) {
-//                    if (rs.getString("disease_category").contains("_")) {
-//                        continue;
-//                    }
                     disCatList.add(pumed_id_index, rs.getString("disease_category"));
                     pumed_id_index++;
                 }
@@ -805,7 +720,7 @@ public class DataBaseLayer implements Serializable {
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
             PreparedStatement selectProStat = conn.prepareStatement(selectPatient_sub_group_i);
-            selectProStat.setString(1, "%"+diseaseCat+"%");
+            selectProStat.setString(1, "%" + diseaseCat + "%");
             ResultSet rs = selectProStat.executeQuery();
             System.gc();
             while (rs.next()) {
@@ -814,7 +729,7 @@ public class DataBaseLayer implements Serializable {
             rs.close();
 
             selectProStat = conn.prepareStatement(selectPatient_sub_group_ii);
-            selectProStat.setString(1, "%"+diseaseCat+"%");
+            selectProStat.setString(1, "%" + diseaseCat + "%");
             rs = selectProStat.executeQuery();
             System.gc();
             while (rs.next()) {
@@ -871,7 +786,6 @@ public class DataBaseLayer implements Serializable {
             for (Object index : quantDatasetIds) {
                 sb.append("  `index` = ").append(index);
                 sb.append(" OR ");
-
             }
             String stat = sb.toString().substring(0, sb.length() - 4);
             if (conn == null || conn.isClosed()) {
@@ -884,9 +798,6 @@ public class DataBaseLayer implements Serializable {
             try (ResultSet rs = selectselectDsGroupNumStat.executeQuery()) {
                 datasetIdDesGrs = new HashMap<>();
                 while (rs.next()) {
-//                    if (rs.getString("disease_category").contains("_")) {
-//                        continue;
-//                    }
                     datasetIdDesGrs.put(rs.getInt("index"), new Object[]{rs.getInt("patients_group_i_number"), rs.getInt("patients_group_ii_number"), rs.getString("patient_group_i").trim(), rs.getString("patient_group_ii").trim(), rs.getString("patient_sub_group_i").trim(), rs.getString("patient_sub_group_ii").trim(), rs.getString("disease_category"), rs.getString("quantification_basis")});
                 }
             }
@@ -894,7 +805,6 @@ public class DataBaseLayer implements Serializable {
             for (Object index : quantDatasetIds) {
                 sb.append("  `ds_ID` = ").append(index);
                 sb.append(" OR ");
-
             }
             stat = sb.toString().substring(0, sb.length() - 4);
             String selectQuantProt = "SELECT * FROM `quantitative_proteins_table`  WHERE  " + stat + " ;";
@@ -933,7 +843,6 @@ public class DataBaseLayer implements Serializable {
                     quantProt.setAdditionalComments(rs1.getString("additional_comments"));
                     quantProt.setQuantBasisComment(rs1.getString("quant_bases_comments"));
                     quantProtList.add(quantProt);
-
                 }
             }
             System.gc();
@@ -956,7 +865,18 @@ public class DataBaseLayer implements Serializable {
                 qp.setOriginalDiseaseSubGroupII(datasetIdDesGrs.get(qp.getQuantDatasetIndex())[5].toString());
                 return qp;
             }).map((qp) -> {
-                qp.setDiseaseCategory(datasetIdDesGrs.get(qp.getQuantDatasetIndex())[6].toString());
+                String diseaseCategories = datasetIdDesGrs.get(qp.getQuantDatasetIndex())[6].toString();
+                String diseaseCatI;
+                String diseaseCatII;
+                if (diseaseCategories.contains("_")) {
+                    diseaseCatI = diseaseCategories.split("_")[0];
+                    diseaseCatII = diseaseCategories.split("_")[1];
+                } else {
+                    diseaseCatI = diseaseCategories;
+                    diseaseCatII = diseaseCategories;
+                }
+                qp.setDiseaseCategoryII(diseaseCatII);
+                qp.setDiseaseCategoryI(diseaseCatI);
                 return qp;
             }).map((qp) -> {
                 qp.setQuantificationBasis(datasetIdDesGrs.get(qp.getQuantDatasetIndex())[7].toString());
@@ -997,7 +917,6 @@ public class DataBaseLayer implements Serializable {
             for (Object index : quantDatasetIds) {
                 sb.append("  `DsKey` = ").append(index);
                 sb.append(" OR ");
-
             }
             String stat = sb.toString().substring(0, sb.length() - 4);
 
@@ -1029,9 +948,7 @@ public class DataBaseLayer implements Serializable {
                     quantPeptide.setPeptideCharge(rs1.getInt("peptide_charge"));
                     quantPeptide.setAdditionalComments(rs1.getString("additional_comments"));
                     quantPeptide.setQuantBasisComment(rs1.getString("quant_bases_comments"));
-
                     quantPeptide.setPeptideSignature("__" + quantPeptide.getProtIndex() + "__" + quantPeptide.getQuantDatasetIndex() + "__");
-
                     quantPeptidetList.add(quantPeptide);
                 }
             }
@@ -1198,15 +1115,28 @@ public class DataBaseLayer implements Serializable {
                 Object[] grNumArr = datasetIdDesGrs.get(quantProt.getQuantDatasetIndex());
                 quantProt.setDiseaseGroupIPatientsNumber((Integer) grNumArr[0]);
                 quantProt.setDiseaseGroupIIPatientsNumber((Integer) grNumArr[1]);
-                quantProt.setDiseaseMainGroupI((String) grNumArr[2] + "\n" + grNumArr[7].toString().replace(" ", "_").replace("'", "-") + "_Disease");
-                quantProt.setDiseaseMainGroupII((String) grNumArr[3] + "\n" + grNumArr[7].toString().replace(" ", "_").replace("'", "-") + "_Disease");
-                quantProt.setOriginalDiseaseSubGroupI((String) grNumArr[4] + "\n" + grNumArr[7].toString().replace(" ", "_").replace("'", "-") + "_Disease");
-                quantProt.setOriginalDiseaseSubGroupII((String) grNumArr[5] + "\n" + grNumArr[7].toString().replace(" ", "_").replace("'", "-") + "_Disease");
-                quantProt.setDiseaseCategory(grNumArr[7].toString());
+
+                String diseaseCategories = grNumArr[7].toString();
+                String diseaseCatI;
+                String diseaseCatII;
+                if (diseaseCategories.contains("_")) {
+                    diseaseCatI = diseaseCategories.split("_")[0];
+                    diseaseCatII = diseaseCategories.split("_")[1];
+                } else {
+                    diseaseCatI = diseaseCategories;
+                    diseaseCatII = diseaseCategories;
+                }
+
+                quantProt.setDiseaseMainGroupI((String) grNumArr[2] + "\n" + diseaseCatI.replace(" ", "_").replace("'", "-") + "_Disease");
+                quantProt.setDiseaseMainGroupII((String) grNumArr[3] + "\n" + diseaseCatII.replace(" ", "_").replace("'", "-") + "_Disease");
+                quantProt.setOriginalDiseaseSubGroupI((String) grNumArr[4] + "\n" + diseaseCatI.replace(" ", "_").replace("'", "-") + "_Disease");
+                quantProt.setOriginalDiseaseSubGroupII((String) grNumArr[5] + "\n" + diseaseCatII.replace(" ", "_").replace("'", "-") + "_Disease");
+                quantProt.setDiseaseCategoryI(diseaseCatI);
+                quantProt.setDiseaseCategoryII(diseaseCatII);
                 quantProt.setPubMedId((String) grNumArr[6]);
                 return quantProt;
             }).forEach((quantProt) -> {
-                if (query.getDiseaseCategorys() == null || query.getDiseaseCategorys().isEmpty() || query.getDiseaseCategorys().contains(quantProt.getDiseaseCategory())) {
+                if (query.getDiseaseCategorys() == null || query.getDiseaseCategorys().isEmpty() || query.getDiseaseCategorys().contains(quantProt.getDiseaseCategoryI()) || query.getDiseaseCategorys().contains(quantProt.getDiseaseCategoryII())) {
                     updatedQuantProtResultList.add(quantProt);
                 }
             });

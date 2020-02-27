@@ -80,17 +80,17 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
         this.diseaseCategorySet = diseaseCategorySet;
         this.height = height;
         this.width = width - 150;
-        this.setWidth(this.width, Unit.PIXELS);
-        this.setHeight(height, Unit.PIXELS);
-        this.addStyleName("slowslide");
+        InitialDiseaseCategoriesComponent.this.setWidth(this.width, Unit.PIXELS);
+        InitialDiseaseCategoriesComponent.this.setHeight(height, Unit.PIXELS);
+        InitialDiseaseCategoriesComponent.this.addStyleName("slowslide");
         this.diseaseCategoryMap = new HashMap<>();
 
         frame = new GridLayout(3, 3);
         frame.setSpacing(true);
         frame.setMargin(true);
         frame.setStyleName("margintop3per");
-        this.addComponent(frame);
-        this.setComponentAlignment(frame, Alignment.BOTTOM_CENTER);
+        InitialDiseaseCategoriesComponent.this.addComponent(frame);
+       InitialDiseaseCategoriesComponent. this.setComponentAlignment(frame, Alignment.BOTTOM_CENTER);
 
         title = new ResizableTextLabel("<center Style='color:#4d749f;'>Disease Category</center>");
         title.setContentMode(ContentMode.HTML);
@@ -99,7 +99,7 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
 //        frame.addComponent(title, 1, 1);
 //        frame.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
         thumbImgLayout = new HorizontalLayout();
-        updateData(diseaseCategorySet);
+        this.updateData(diseaseCategorySet);
         DiseaseCategoryObject multipleDiseaseCategory = new DiseaseCategoryObject();
         multipleDiseaseCategory.setDiseaseStyleName("alldiseasestyle");
         multipleDiseaseCategory.setDiseaseCategory("Multiple Diseases");
@@ -112,8 +112,8 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
         clickcommentLabel.addStyleName("bubblelabels");
         clickcommentLabel.setWidth(260, Unit.PIXELS);
 
-        this.addComponent(clickcommentLabel);
-        this.setComponentAlignment(clickcommentLabel, Alignment.BOTTOM_RIGHT);
+        InitialDiseaseCategoriesComponent.this.addComponent(clickcommentLabel);
+       InitialDiseaseCategoriesComponent. this.setComponentAlignment(clickcommentLabel, Alignment.BOTTOM_RIGHT);
 
     }
 
@@ -126,10 +126,13 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
             return;
         }
         DiseaseCategoryObject selectedDiseaseCategory = this.diseaseCategoryMap.get(diseaseCategory);
-        selectedDiseaseCategory.setDatasetNumber(dsNumber);
+        if (selectedDiseaseCategory == null) {
+            return;
+        }
+//        selectedDiseaseCategory.setDatasetNumber(dsNumber);
 
         thumbImgLayout.removeAllComponents();
-        VerticalLayout min = initDiseaseLayout(selectedDiseaseCategory, 100, 100, maxNumber);
+        VerticalLayout min = initDiseaseLayout(selectedDiseaseCategory, 100, 100, dsNumber, maxNumber);
         min.setDescription("Disease Categories");
         thumbImgLayout.addComponent(min);
         thumbImgLayout.addStyleName("bigbtn");
@@ -144,7 +147,7 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
      * @param height The available height of the layout
      * @param max the max number of available datasets
      */
-    private VerticalLayout initDiseaseLayout(DiseaseCategoryObject diseaseObject, int width, int height, int max) {
+    private VerticalLayout initDiseaseLayout(DiseaseCategoryObject diseaseObject, int width, int height, int value, int max) {
         VerticalLayout diseaseLayout = new VerticalLayout();
         diseaseLayout.setWidth(width, Unit.PIXELS);
         diseaseLayout.setHeight(height, Unit.PIXELS);
@@ -162,7 +165,7 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
             String SpacerII;
             SpacerI = "<br/>(";
             SpacerII = ")";
-            ResizableTextLabel diseaseTitle = new ResizableTextLabel("<center>" + diseaseObject.getDiseaseCategory().replace("Amyotrophic Lateral Sclerosis", "ALS")  + SpacerI + diseaseObject.getDatasetNumber() + "/" + max + SpacerII + "</center>");
+            ResizableTextLabel diseaseTitle = new ResizableTextLabel("<center>" + diseaseObject.getDiseaseCategory().replace("Amyotrophic Lateral Sclerosis", "ALS") + SpacerI + value + "/" + max + SpacerII + "</center>");
             if (height >= 60 && height <= 80) {
                 diseaseTitle.addStyleName("xsmallfont");
             } else {
@@ -189,7 +192,7 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
      */
     public void resetThumbBtn() {
         thumbImgLayout.removeAllComponents();
-        VerticalLayout min = initDiseaseLayout(null, 100, 100, maxNumber);
+        VerticalLayout min = initDiseaseLayout(null, 100, 100, 0, maxNumber);
         min.setDescription("Disease Categories");
         thumbImgLayout.addComponent(min);
         thumbImgLayout.addStyleName("bigbtn");
@@ -213,14 +216,14 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
             return;
         }
 
-        DiseaseCategoryObject sharedDc = null;
-        for (DiseaseCategoryObject dc : diseaseCategorySet) {
-            if (dc.getDiseaseCategory().contains("_")) {
-                sharedDc = dc;
-                break;
-            }
-
-        }
+//        DiseaseCategoryObject sharedDc;
+//        for (DiseaseCategoryObject dc : diseaseCategorySet) {
+//            if (dc.getDiseaseCategory().contains("_")) {
+//                sharedDc = dc;
+//                break;
+//            }
+//
+//        }
         frame.removeAllComponents();
 //        frame.addComponent(title, 1, 1);
 //        frame.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
@@ -239,7 +242,7 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
 
             });
 
-            VerticalLayout min = initDiseaseLayout(null, 100, 100, maxNumber);
+            VerticalLayout min = initDiseaseLayout(null, 100, 100, 0, maxNumber);
             min.setDescription("Disease Categories");
             thumbImgLayout.addComponent(min);
 
@@ -292,7 +295,7 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
             frame.setComponentAlignment(allDisease, Alignment.MIDDLE_CENTER);
         }
 
-        VerticalLayout min = initDiseaseLayout(null, 100, 100, maxNumber);
+        VerticalLayout min = initDiseaseLayout(null, 100, 100, 0, maxNumber);
         min.setDescription("Disease Categories");
         thumbImgLayout.addComponent(min);
 
@@ -301,54 +304,54 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
 
     }
 
-    /**
-     * Update data input for the component to generate the different bubbles for
-     * disease category (on searching or compare data mode)
-     *
-     * @param diseaseCategoriesIdMap Map of datasets id to disease categories.
-     */
-    public void updateData(Map<String, Set<Integer>> diseaseCategoriesIdMap) {
-
-        HashSet<DiseaseCategoryObject> tempDiseaseCategorySet = new LinkedHashSet<>();
-        int maxCounter = 0;
-        DiseaseCategoryObject allDisCat = new DiseaseCategoryObject();
-        if (diseaseCategoriesIdMap != null) {
-            for (DiseaseCategoryObject dcat : diseaseCategorySet) {
-                if (dcat.getDiseaseCategory().equalsIgnoreCase("All Diseases")) {
-                    allDisCat.setDiseaseCategory(dcat.getDiseaseCategory());
-                    allDisCat.setDiseaseStyleName(dcat.getDiseaseStyleName());
-                    continue;
-                }
-                DiseaseCategoryObject updateDisCat = new DiseaseCategoryObject();
-                if (diseaseCategoriesIdMap.containsKey(dcat.getDiseaseCategory())) {
-                    updateDisCat.setDiseaseCategory(dcat.getDiseaseCategory());
-                    updateDisCat.setDiseaseStyleName(dcat.getDiseaseStyleName());
-                    updateDisCat.setDatasetNumber(diseaseCategoriesIdMap.get(dcat.getDiseaseCategory()).size());
-                    maxCounter += updateDisCat.getDatasetNumber();
-                    tempDiseaseCategorySet.add(updateDisCat);
-                }
-            }
-            allDisCat.setDatasetNumber(maxCounter);
-            tempDiseaseCategorySet.add(allDisCat);
-            updateData(tempDiseaseCategorySet);
-            thumbImgLayout.removeAllComponents();
-            if (tempDiseaseCategorySet.size() > 2) {
-
-                VerticalLayout min = initDiseaseLayout(allDisCat, 100, 100, maxNumber);
-                min.setDescription("Disease Categories");
-                thumbImgLayout.addComponent(min);
-
-            } else {
-
-                VerticalLayout min = initDiseaseLayout(tempDiseaseCategorySet.iterator().next(), 100, 100, maxNumber);
-                min.setDescription("Disease Categories");
-                thumbImgLayout.addComponent(min);
-
-            }
-
-        }
-
-    }
+//    /**
+//     * Update data input for the component to generate the different bubbles for
+//     * disease category (on searching or compare data mode)
+//     *
+//     * @param diseaseCategoriesIdMap Map of datasets id to disease categories.
+//     */
+//    public void updateData(Map<String, Set<Integer>> diseaseCategoriesIdMap) {
+//
+//        HashSet<DiseaseCategoryObject> tempDiseaseCategorySet = new LinkedHashSet<>();
+//        int maxCounter = 0;
+//        DiseaseCategoryObject allDisCat = new DiseaseCategoryObject();
+//        if (diseaseCategoriesIdMap != null) {
+//            for (DiseaseCategoryObject dcat : diseaseCategorySet) {
+//                if (dcat.getDiseaseCategory().equalsIgnoreCase("All Diseases")) {
+//                    allDisCat.setDiseaseCategory(dcat.getDiseaseCategory());
+//                    allDisCat.setDiseaseStyleName(dcat.getDiseaseStyleName());
+//                    continue;
+//                }
+//                DiseaseCategoryObject updateDisCat = new DiseaseCategoryObject();
+//                if (diseaseCategoriesIdMap.containsKey(dcat.getDiseaseCategory())) {
+//                    updateDisCat.setDiseaseCategory(dcat.getDiseaseCategory());
+//                    updateDisCat.setDiseaseStyleName(dcat.getDiseaseStyleName());
+//                    updateDisCat.setDatasetNumber(diseaseCategoriesIdMap.get(dcat.getDiseaseCategory()).size());
+//                    maxCounter += updateDisCat.getDatasetNumber();
+//                    tempDiseaseCategorySet.add(updateDisCat);
+//                }
+//            }
+//            allDisCat.setDatasetNumber(maxCounter);
+//            tempDiseaseCategorySet.add(allDisCat);
+//            updateData(tempDiseaseCategorySet);
+//            thumbImgLayout.removeAllComponents();
+//            if (tempDiseaseCategorySet.size() > 2) {
+//
+//                VerticalLayout min = initDiseaseLayout(allDisCat, 100, 100, allDisCat.getDatasetNumber(), maxNumber);
+//                min.setDescription("Disease Categories");
+//                thumbImgLayout.addComponent(min);
+//
+//            } else {
+//                DiseaseCategoryObject obj = tempDiseaseCategorySet.iterator().next();
+//                VerticalLayout min = initDiseaseLayout(obj, 100, 100, obj.getDatasetNumber(), maxNumber);
+//                min.setDescription("Disease Categories");
+//                thumbImgLayout.addComponent(min);
+//
+//            }
+//
+//        }
+//
+//    }
 
     /**
      * Initialize disease category bubble
@@ -403,7 +406,7 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
         }
         thumbImgLayout.removeAllComponents();
         DiseaseCategoryObject diseaseObject = (DiseaseCategoryObject) (((VerticalLayout) event.getComponent()).getData());
-        VerticalLayout min = initDiseaseLayout(diseaseObject, 100, 100, maxNumber);
+        VerticalLayout min = initDiseaseLayout(diseaseObject, 100, 100,diseaseObject.getDatasetNumber(), maxNumber);
         min.setDescription("Disease Categories");
         thumbImgLayout.addComponent(min);
 
@@ -421,7 +424,7 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
         thumbImgLayout.removeAllComponents();
         DiseaseCategoryObject diseaseObject = diseaseCategoryMap.get(diseaseCategory);
 
-        VerticalLayout min = initDiseaseLayout(diseaseObject, 100, 100, maxNumber);
+        VerticalLayout min = initDiseaseLayout(diseaseObject, 100, 100,diseaseObject.getDatasetNumber(), maxNumber);
         min.setDescription("Disease Categories");
         thumbImgLayout.addComponent(min);
 
