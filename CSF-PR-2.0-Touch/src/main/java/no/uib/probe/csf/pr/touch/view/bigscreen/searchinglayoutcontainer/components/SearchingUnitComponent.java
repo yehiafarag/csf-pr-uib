@@ -271,6 +271,10 @@ public abstract class SearchingUnitComponent extends VerticalLayout implements B
         return diseaseCategoryOption;
     }
 
+   /**
+     * Execute searching query      *
+     * @param query string to be executed against the database
+     */
     public void excuteExternalQuery(String query) {
         query = query.replace("*", " ");
         String searchBy = query.split("___")[0].replace("searchby:", "").replace("/", "");

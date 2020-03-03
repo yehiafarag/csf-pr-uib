@@ -48,6 +48,17 @@ public abstract class RangeComponent extends VerticalLayout implements Property.
 
     private final boolean supportMultiRange;
 
+    /**
+     * constructor of range filter component
+     *
+     * @param lowerLabel label of the lower range
+     * @param lowerValue value of the lower range
+     * @param upperLabel label of the maximum range
+     * @param upperValue value of the maximum range
+     * @param colors colour values of the range
+     * @param splitDataPoint main split data point
+     * @param supportMultiRange filter support 2 ranges
+     */
     public RangeComponent(String lowerLabel, double lowerValue, String upperLabel, double upperValue, String[] colors, Double splitDataPoint, boolean supportMultiRange) {
         this.splitDataPoint = splitDataPoint;
         this.colors = colors;
@@ -67,7 +78,6 @@ public abstract class RangeComponent extends VerticalLayout implements Property.
         chartContainer.setHeight(100, Unit.PIXELS);
         chartContainer.setMargin(new MarginInfo(true, false, true, false));
         chartContainer.setStyleName("scatterchartcontainer");
-//        chartContainer.setStyleName("blacklayout");
         topLayout.addComponent(chartContainer);
         topLayout.setComponentAlignment(chartContainer, Alignment.TOP_LEFT);
         topLayout.setExpandRatio(chartContainer, 50);
@@ -178,10 +188,18 @@ public abstract class RangeComponent extends VerticalLayout implements Property.
 
     }
 
+    /**
+     * Update filter data
+     *
+     * @param data values of the filter
+     */
     public void updateData(double[][] data) {
         this.data = data;
     }
 
+    /**
+     * Reset the range to default
+     */
     public void resetRange() {
         upperRangeSlider.removeValueChangeListener(RangeComponent.this);
         lowerRangeSlider.removeValueChangeListener(RangeComponent.this);
@@ -205,6 +223,9 @@ public abstract class RangeComponent extends VerticalLayout implements Property.
 
     }
 
+    /**
+     * Update the filter values.
+     */
     public void updateFilter() {
         int min = -100;
         int max = 100;
@@ -390,6 +411,9 @@ public abstract class RangeComponent extends VerticalLayout implements Property.
 
     }
 
+    /**
+     * Invoke value change method for the filter to update the layout
+     */
     public void valueChange() {
         upperRangeSlider.removeStyleName("lower");
         upperRangeSlider.removeStyleName("upper");
@@ -453,22 +477,20 @@ public abstract class RangeComponent extends VerticalLayout implements Property.
                 secMax = secoundLowerRangeSlider.getValue();
 
             }
-            
-            
-            
-            Rectangle r1 = new Rectangle((int) min, 0, (int) max+100, 10);
-            Rectangle r2 = new Rectangle((int) secMin, 0, (int) secMax+100, 10);            
-            if (((min == lowerRangeSlider.getMin() || secMin == lowerRangeSlider.getMin()) && (max == upperRangeSlider.getMax() || secMax == upperRangeSlider.getMax()))&&r1.intersects(r2) ){
+
+            Rectangle r1 = new Rectangle((int) min, 0, (int) max + 100, 10);
+            Rectangle r2 = new Rectangle((int) secMin, 0, (int) secMax + 100, 10);
+            if (((min == lowerRangeSlider.getMin() || secMin == lowerRangeSlider.getMin()) && (max == upperRangeSlider.getMax() || secMax == upperRangeSlider.getMax())) && r1.intersects(r2)) {
                 redrawRangeOnChart(lowerRangeSlider.getMin(), upperRangeSlider.getMax());
-                selectedRange(lowerRangeSlider.getMin(), upperRangeSlider.getMax(), false);         
-            }else if (r1.intersects(r2)) {
+                selectedRange(lowerRangeSlider.getMin(), upperRangeSlider.getMax(), false);
+            } else if (r1.intersects(r2)) {
                 min = Math.min(r1.x, r2.x);
-                max = Math.max(r1.width-100, r2.width-100);
+                max = Math.max(r1.width - 100, r2.width - 100);
                 redrawRangeOnChart(min, max);
                 selectedRange(min, max, true);
-            }else{            
-                redrawRangeOnChart(min, max, secMin,secMax);
-                selectedRange(min, max, secMin,secMax, true);
+            } else {
+                redrawRangeOnChart(min, max, secMin, secMax);
+                selectedRange(min, max, secMin, secMax, true);
             }
 
         }
@@ -568,8 +590,7 @@ public abstract class RangeComponent extends VerticalLayout implements Property.
         chartContainer.setComponentAlignment(chart, Alignment.MIDDLE_LEFT);
     }
 
-    
-       private void redrawRangeOnChart(double min, double max,double secMin, double secMax) {
+    private void redrawRangeOnChart(double min, double max, double secMin, double secMax) {
         if (scatterChartConfig.data().getDatasets().size() < 3) {
             //need to implement
 //            List<ScatterData> updatedList = new ArrayList<>();
@@ -601,7 +622,7 @@ public abstract class RangeComponent extends VerticalLayout implements Property.
                 sd.x(dArr[0]);
                 sd.y(dArr[1]);
                 scatterdataList.add(sd);
-                if ((dArr[0] >= min && dArr[0] <= max)||(dArr[0] >= secMin && dArr[0] <= secMax) ){
+                if ((dArr[0] >= min && dArr[0] <= max) || (dArr[0] >= secMin && dArr[0] <= secMax)) {
                     splitDataList.add(sd);
                     if (dArr[0] > splitDataPoint) {
                         upperDataList.add(sd);
@@ -662,11 +683,25 @@ public abstract class RangeComponent extends VerticalLayout implements Property.
         chartContainer.addComponent(chart);
         chartContainer.setComponentAlignment(chart, Alignment.MIDDLE_LEFT);
     }
-    
-    
-    
+
+    /**
+     *Select range
+     * @param min minimum selection value
+     * @param max upper selection value
+     * @param filterApplied the filter applied
+     */
     public abstract void selectedRange(double min, double max, boolean filterApplied);
-     public abstract void selectedRange(double min, double max,double secMin, double secMax, boolean filterApplied);
+
+    /**
+     /**
+     *Select range
+     * @param min minimum selection value
+     * @param max upper selection value     
+     * @param secMin second lower range
+     * @param secMax second upper range
+     * @param filterApplied the filter applied
+     */
+    public abstract void selectedRange(double min, double max, double secMin, double secMax, boolean filterApplied);
 
     @Override
     public void valueChange(Property.ValueChangeEvent event) {

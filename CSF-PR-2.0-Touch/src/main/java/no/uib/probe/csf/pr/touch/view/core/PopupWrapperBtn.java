@@ -44,7 +44,7 @@ public class PopupWrapperBtn extends VerticalLayout implements LayoutEvents.Layo
 
         DatasetInformationOverviewLayout infoLayout = new DatasetInformationOverviewLayout(quantDS, false);
         popupPanel = new PopupWindowFrame(publicationAuthor, new VerticalLayout(infoLayout));
-        popupPanel.setFrameHeight(535);
+        popupPanel.setFrameHeight(550);
         popupPanel.setFrameWidth(1000);
 
         this.setExpandRatio(btnLabel, 0.99f);

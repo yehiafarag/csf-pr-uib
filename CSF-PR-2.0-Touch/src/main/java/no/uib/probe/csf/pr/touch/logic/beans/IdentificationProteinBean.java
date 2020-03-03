@@ -901,6 +901,11 @@ public class IdentificationProteinBean implements Serializable, Comparable<Ident
         this.protGroupId = protGroupId;
     }
 
+    /**
+     *Override compare to method
+     * @param o object to compare
+     * @return comparison results
+     */
     @Override
     public int compareTo(IdentificationProteinBean o) {
         if (this.nsaf > o.getNsaf()) {

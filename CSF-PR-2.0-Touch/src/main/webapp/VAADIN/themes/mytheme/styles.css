@@ -1602,7 +1602,7 @@ div.v-layout.v-horizontal.v-widget {
     cursor: default;
 }
 .padding12 img{
-    padding:12px !important;
+    padding:10px !important;
 }
 .v-disabled [class$="splitter"] div:before {
     display: none;
@@ -13441,7 +13441,7 @@ div.v-layout.v-horizontal.v-widget {
 
 }
 
-.caption{
+.captionlabel{
     font-size:12px;
     font-weight: bold;    
     color:#666;    
@@ -14004,7 +14004,7 @@ div.v-layout.v-horizontal.v-widget {
 
 
 .bubble{
-    box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+     box-shadow:0 5px 8px  rgba(0, 0, 0, 0.2), inset 0px 5px 15px 2px  rgba(255, 255, 255, 0.6);
     -webkit-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
     -moz-box-shadow:0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
     /* CSS3 Border Radius */
@@ -14272,7 +14272,7 @@ div.v-layout.v-horizontal.v-widget {
 .sidebtnwrapper{
     background-color:  #EAF5FC !important;
     padding:5px;
-    border:2px solid lightgray;
+    border:1.9px solid lightgray;
     border-right:none;
     border-top-left-radius:5px;
     border-bottom-left-radius:5px;
@@ -14289,11 +14289,11 @@ div.v-layout.v-horizontal.v-widget {
 }
 .mainviewport{
     background-color:  #EAF5FC !important;
-    border:2px solid lightgray;
+    border:1.9px solid lightgray;
     z-index:1;
     position:relative;
     border-bottom-left-radius:5px;
-    border-top-left-radius:5px;
+    border-bottom-right-radius: 5px;
     border-top-right-radius:5px;
     overflow: hidden !important;
 }
@@ -15161,7 +15161,6 @@ div.v-layout.v-horizontal.v-widget {
     transition: all 0s ease-in-out !important;
     text-decoration:none !important;
     position: relative !important;
-    z-index: 2000000 !important;
     cursor:pointer;
 }
 .link:hover{

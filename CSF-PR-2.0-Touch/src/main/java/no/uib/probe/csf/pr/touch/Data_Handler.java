@@ -97,6 +97,10 @@ public class Data_Handler implements Serializable {
     public Set<String> getActiveDiseaseCategorySet() {
         return Dataset_Util.getActiveDiseaseCategorySet();
     }
+
+    /**
+     *Reset to default data (removing search compare data)
+     */
     public void resetToDefault(){
     Dataset_Util.resetToDefault();
     
@@ -243,6 +247,7 @@ public class Data_Handler implements Serializable {
      * Store query to share with csf-pr ID.
      *
      * @param query query object that has all query information.
+     * @return successful db transaction
      */
     public int  storeQuery(Query query) {
         return  coreLogic.storeQuery(query);

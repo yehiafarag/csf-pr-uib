@@ -421,14 +421,13 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
         peptideTableToolsContainer.addComponent(individualToTotalComparisonsDatasetsSwichBtn);
         peptideTableToolsContainer.setComponentAlignment(individualToTotalComparisonsDatasetsSwichBtn, Alignment.MIDDLE_CENTER);
         individualToTotalComparisonsDatasetsSwichBtn.setDescription("Show/hide individual datasets");
-
         final Resource trendOrderRes = new ThemeResource("img/orderedtrend.png");
         orderByTrendBtn = new ImageContainerBtn() {
 
             @Override
             public void onClick() {
                 individualToTotalComparisonsDatasetsSwichBtn.updateIcon(comparisonDsRes);
-                showIndividualDatasets = false;
+               
 
                 if (defaultTrend) {
                     defaultTrend = false;
@@ -444,6 +443,8 @@ public abstract class PeptideViewComponent extends VerticalLayout implements CSF
 
                 this.setEnabled(true);
                 PeptideViewComponent.this.updateIcon(generateThumbImg());
+                 showIndividualDatasets = !showIndividualDatasets;
+                individualToTotalComparisonsDatasetsSwichBtn.onClick();
 
             }
 

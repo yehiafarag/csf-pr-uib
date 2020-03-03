@@ -150,6 +150,11 @@ public class QuantData implements Serializable {
         return diseaseComparisonSet;
     }
 
+    /**
+     * Get map of quant dataset index to comparisons
+     *
+     * @return map of quant dataset index mapped to disease comparisons
+     */
     public Map<Integer, DiseaseGroupComparison> getIndexToComparisons() {
         return indexToComparisons;
     }

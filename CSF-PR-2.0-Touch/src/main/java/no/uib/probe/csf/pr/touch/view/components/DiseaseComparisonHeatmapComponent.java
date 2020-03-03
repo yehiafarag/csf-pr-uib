@@ -358,10 +358,13 @@ public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout i
         poolFilterBtn.resetFilter();
         reorderSelectComponent.initialiseData(rowheadersSet, colheadersSet, patientsGroupComparisonsSet);
         heatmapLayoutContainer.initialiseHeatMapData(fullDiseaseCategoryNameSet, rowheadersSet, colheadersSet, patientsGroupComparisonsSet, fullQuantDsMap);
-     
 
     }
 
+    /**
+     *Select disease categories to update (expand/collapse) disease category heat-map
+     * @param diseaseCategories set of selected disease categories
+     */
     public void selectDiseaseCategory(Set<String> diseaseCategories) {
         // update piechart filters
         Map<Integer, QuantDataset> updatedDsIds = unitFilteringDataset();
@@ -382,6 +385,9 @@ public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout i
      * @param datasetIds selected dataset indexes
      */
     private void updateSystemComponents(Set<Integer> datasetIds, Set<String> diseaseCategories, boolean clearFilterList, boolean pieChartFilterAction) {
+        if (filteredQuantDsMap.size() == datasetIds.size() && filteredQuantDsMap.keySet().containsAll(datasetIds)) {
+            return;
+        }
         filteredQuantDsMap.clear();
         if (clearFilterList) {
             fullQuantDsMap.keySet().stream().filter((datasetId) -> (datasetIds.contains(datasetId))).forEach((datasetId) -> {
@@ -421,7 +427,7 @@ public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout i
         });
         Map<Integer, QuantDataset> tempFilteredHeatmapDatasetMap;
         Set<String> finalDiseaseCategories;
-        if (pieChartFilterAction && datasetPieChartFiltersComponent.hasSelection()) {
+        if (pieChartFilterAction && datasetPieChartFiltersComponent.isApplied()) {
             tempFilteredHeatmapDatasetMap = filteredQuantDsMap;
             finalDiseaseCategories = new LinkedHashSet<>();
             for (QuantDataset ds : filteredQuantDsMap.values()) {
@@ -444,6 +450,9 @@ public abstract class DiseaseComparisonHeatmapComponent extends VerticalLayout i
 
     }
 
+    /**
+     *Re organise / paint the disease category heat-map
+     */
     public void reDrawHeatMap() {
         Map<Integer, QuantDataset> updatedDsIds = unitFilteringDataset();
         updateSystemComponents(updatedDsIds.keySet(), heatmapLayoutContainer.getUpdatedExpandedList(), true, false);

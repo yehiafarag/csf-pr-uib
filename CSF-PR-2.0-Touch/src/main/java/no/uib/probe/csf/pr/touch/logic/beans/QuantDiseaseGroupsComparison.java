@@ -278,6 +278,12 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
         this.quantComparisonProteinMap = quantComparisonProteinMap;
     }
 
+    /**
+     * Override compare to method
+     *
+     * @param t object to compare
+     * @return comparison result
+     */
     @Override
     public int compareTo(QuantDiseaseGroupsComparison t) {
         return this.comparisonHeader.compareTo(t.comparisonHeader);
@@ -345,11 +351,12 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
         this.switchable = switchable;
     }
 
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
+    /**
+     * Override equals method
+     *
+     * @param obj object to compare
+     * @return object are equal
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -360,6 +367,14 @@ public class QuantDiseaseGroupsComparison implements Serializable, Comparable<Qu
         }
         final QuantDiseaseGroupsComparison other = (QuantDiseaseGroupsComparison) obj;
         return Objects.equals(this.comparisonHeader, other.comparisonHeader);
+    }
+     /**
+     *Override hash code method 
+     * @return calculated hash code value
+     */
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 
 }

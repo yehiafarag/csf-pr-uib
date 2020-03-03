@@ -158,10 +158,20 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
 
     }
 
+    /**
+     * Check if header is collapsed / expanded
+     *
+     * @return the header is collapsed
+     */
     public boolean isCollapsedHeader() {
         return collapsedHeader;
     }
 
+    /**
+     * Set header to be collapsed
+     *
+     * @param collapsedHeader header is collapsed
+     */
     public void setCollapsedHeader(boolean collapsedHeader) {
 
         if (collapsedHeader) {
@@ -232,9 +242,14 @@ public abstract class HeaderCell extends VerticalLayout implements LayoutEvents.
     public String getColor() {
         return color;
     }
-    public void resetHeader(){
-     this.includedComparisons.clear();
-     includedCells.clear();
+
+    /**
+     * Remove the header data (related heat-map cells and related disease
+     * comparisons).
+     */
+    public void resetHeader() {
+        this.includedComparisons.clear();
+        includedCells.clear();
     }
 
     /**

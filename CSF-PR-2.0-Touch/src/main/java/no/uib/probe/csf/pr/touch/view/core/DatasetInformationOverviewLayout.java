@@ -162,6 +162,7 @@ public class DatasetInformationOverviewLayout extends VerticalLayout {
      */
     private VerticalLayout generateQuantDatasetInformationLayout() {
 
+        
         VerticalLayout mainContainer = new VerticalLayout();
         mainContainer.setWidth(100, Unit.PERCENTAGE);
         mainContainer.setHeightUndefined();

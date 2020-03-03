@@ -175,6 +175,7 @@ public class DiseaseCategoryObject implements Serializable {
 
     /**
      * Override toString method to return disease category name.
+     * @return disease category name.
      */
     @Override
     public String toString() {

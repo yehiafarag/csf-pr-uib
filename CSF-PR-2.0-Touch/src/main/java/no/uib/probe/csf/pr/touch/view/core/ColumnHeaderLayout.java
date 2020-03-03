@@ -32,16 +32,26 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
 
     private final QuantDiseaseGroupsComparison comparison;
 
+    /**
+     * Get the index of the comparison
+     *
+     * @return index of the comparison
+     */
     public int getComparisonIndex() {
         return index;
     }
 
+    /**
+     * get the comparison object
+     *
+     * @return comparison object
+     */
     public QuantDiseaseGroupsComparison getComparison() {
         return comparison;
     }
 
     /**
-     * Constructor to initialize the main attributes.
+     * Constructor to initialise the main attributes.
      *
      * @param comparison The main quant comparison.
      * @param index The comparison index.
@@ -80,9 +90,8 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
 
             @Override
             public void filterTable(double min, double max, double secMin, double secMax, boolean unselectfilter) {
-                 ColumnHeaderLayout.this.filterTable(comparison, index, min, max, secMin, secMax, unselectfilter);
+                ColumnHeaderLayout.this.filterTable(comparison, index, min, max, secMin, secMax, unselectfilter);
             }
-            
 
         };
 
@@ -111,6 +120,12 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
 
     }
 
+    /**
+     *
+     * @param filteredData
+     * @param comparison
+     * @param filterIndex
+     */
     public void updateHeaderData(Set<String> filteredData, QuantDiseaseGroupsComparison comparison, int filterIndex) {
         if (filteredData == null || comparison != this.comparison) {
             filterBtn.updateChartsData(initRangeData(filteredData), initStudeisNumberData(filteredData));
@@ -118,15 +133,15 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
             switch (filterIndex) {
                 case 0:
                     filterBtn.updateChartsData(initRangeData(filteredData), initStudeisNumberData(filteredData));
-                    filterBtn.applyChartChanges(true,true);
+                    filterBtn.applyChartChanges(true, true);
                     break;
                 case 1:
                     filterBtn.updateChartsData(null, initStudeisNumberData(filteredData));
-                    filterBtn.applyChartChanges(false,true);
+                    filterBtn.applyChartChanges(false, true);
                     break;
                 case 2:
                     filterBtn.updateChartsData(initRangeData(filteredData), null);
-                    filterBtn.applyChartChanges(true,false);
+                    filterBtn.applyChartChanges(true, false);
                     break;
             }
 
@@ -210,8 +225,9 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
         double logMax = (Math.log(max) / Math.log(2));
         double logValue = (Math.log(linearValue + 1) / Math.log(2));
         logValue = (logValue * 2 / logMax) + lowerLimit;
-        if(logValue == Double.POSITIVE_INFINITY)
+        if (logValue == Double.POSITIVE_INFINITY) {
             return max;
+        }
         return logValue;
     }
 
@@ -325,34 +341,44 @@ public abstract class ColumnHeaderLayout extends VerticalLayout implements Layou
      * @param comparison The quant disease comparison.
      * @param comparisonIndex The comparison index.
      * @param filterSet The applied filters set.
+     * @param appliedFilter the filter is applied
      */
-    public abstract void filterTable(QuantDiseaseGroupsComparison comparison, int comparisonIndex, Set<Object> filterSet, boolean unselectfilter);
+    public abstract void filterTable(QuantDiseaseGroupsComparison comparison, int comparisonIndex, Set<Object> filterSet, boolean appliedFilter);
 
     /**
      * Filter table based on range filters.
      *
      * @param comparison The quant disease comparison.
      * @param comparisonIndex The comparison index.
-     * @param filterSet The applied filters set.
+     * @param min minimum range
+     * @param max maximum range
+     * @param appliedFilter the filter applied
      */
-    public abstract void filterTable(QuantDiseaseGroupsComparison comparison, int comparisonIndex, double min, double max, boolean unselectfilter);
-    
-    /**
-     * Filter table based on range filters.
-     *
-     * @param comparison The quant disease comparison.
-     * @param comparisonIndex The comparison index.
-     * @param filterSet The applied filters set.
-     */
-    public abstract void filterTable(QuantDiseaseGroupsComparison comparison, int comparisonIndex, double min, double max,double secMin, double secMax, boolean unselectfilter);
+    public abstract void filterTable(QuantDiseaseGroupsComparison comparison, int comparisonIndex, double min, double max, boolean appliedFilter);
 
     /**
      * Filter table based on range filters.
      *
      * @param comparison The quant disease comparison.
      * @param comparisonIndex The comparison index.
-     * @param filterSet The applied filters set.
+     ** @param min first minimum range
+     * @param max first maximum range
+     * @param secMin second minimum range
+     * @param secMax second maximum range
+     * @param appliedFilter the filter applied
+     *
      */
-    public abstract void filterTable(QuantDiseaseGroupsComparison comparison, int comparisonIndex, long min, long max, boolean unselectfilter);
+    public abstract void filterTable(QuantDiseaseGroupsComparison comparison, int comparisonIndex, double min, double max, double secMin, double secMax, boolean appliedFilter);
+
+    /**
+     * Filter table based on range filters.
+     *
+     * @param comparison The quant disease comparison.
+     * @param comparisonIndex index of the comparison
+     *@param min minimum range
+     * @param max maximum range
+     * @param appliedFilter the filter applied
+     */
+    public abstract void filterTable(QuantDiseaseGroupsComparison comparison, int comparisonIndex, long min, long max, boolean appliedFilter);
 
 }

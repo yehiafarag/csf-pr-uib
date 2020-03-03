@@ -209,6 +209,11 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
         });
     }
 
+    /**
+     *Update chart data
+     * @param studiesRangeData dataset range data
+     * @param studiesNumberData dataset number data
+     */
     public void updateChartsData(double[][] studiesRangeData, double[][] studiesNumberData) {
         if (studiesRangeData != null) {
             studiesRange.updateData(studiesRangeData);
@@ -230,6 +235,12 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
         filterPopupLayout.setPopupVisible(true);
     }
 
+    /**
+     * Apply changes to chart
+     *
+     * @param studyRange dataset range selected
+     * @param studyNumber dataset number selected
+     */
     public void applyChartChanges(boolean studyRange, boolean studyNumber) {
         if (studyRange) {
             studiesRange.updateFilter();
@@ -260,28 +271,38 @@ public abstract class ColumnFilterPopupBtn extends VerticalLayout implements Lay
      * Filter table based on selected filters.
      *
      * @param selectedFiltersSet Set of user selected filters.
+     * @param appliedFilter the filter applied
      */
-    public abstract void filterTable(Set<Object> selectedFiltersSet, boolean unselectfilter);
+    public abstract void filterTable(Set<Object> selectedFiltersSet, boolean appliedFilter);
 
     /**
      * Filter table based on selected range.
      *
-     * @param selectedFiltersSet Set of user selected filters.
+     * @param min minimum range
+     * @param max maximum range
+     * @param appliedFilter the filter applied
      */
-    public abstract void filterTable(double min, double max, boolean unselectfilter);
+    public abstract void filterTable(double min, double max, boolean appliedFilter);
 
     /**
      * Filter table based on selected range.
      *
-     * @param selectedFiltersSet Set of user selected filters.
+     * @param min first minimum range
+     * @param max first maximum range
+     * @param secMin second minimum range
+     * @param secMax second maximum range
+     * @param appliedFilter the filter applied
+     *
      */
-    public abstract void filterTable(double min, double max, double secMin, double secMax, boolean unselectfilter);
+    public abstract void filterTable(double min, double max, double secMin, double secMax, boolean appliedFilter);
 
     /**
      * Filter table based on selected range.
      *
-     * @param selectedFiltersSet Set of user selected filters.
+     * @param minStudiesNumber minimum number of datasets
+     * @param maxStudiesNumber maximum number of datasets
+     * @param appliedFilter the filter applied
      */
-    public abstract void filterTable(long minStudiesNumber, long maxStudiesNumber, boolean unselectfilter);
+    public abstract void filterTable(long minStudiesNumber, long maxStudiesNumber, boolean appliedFilter);
 
 }

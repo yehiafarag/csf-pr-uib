@@ -10,7 +10,6 @@ import java.io.Serializable;
  */
 public class DiseaseGroupComparison implements Serializable {
 
-    private boolean activated=true;
     /**
      * Disease category name (MS, AD, PD..etc).
      */
@@ -60,10 +59,19 @@ public class DiseaseGroupComparison implements Serializable {
     private String activeDiseaseSubGroupII;
     private boolean crossDisease;
 
+    /**
+     * check if comparison is between different disease categories
+     *
+     * @return different disease categories
+     */
     public boolean isCrossDisease() {
         return crossDisease;
     }
 
+    /**
+     *
+     * @param crossDisease
+     */
     public void setCrossDisease(boolean crossDisease) {
         this.crossDisease = crossDisease;
     }
@@ -230,15 +238,6 @@ public class DiseaseGroupComparison implements Serializable {
      * @return yes/no
      */
     public boolean checkSameComparison(String comparisonTitle) {
-//        if(crossDisease)
-//        {
-////            System.out.println("at comparison title "+comparisonTitle);
-////            System.out.println("at 1 to compare with "+ activeDiseaseSubGroupI + "__" + diseaseCategoryI);
-////            System.out.println("at 2 to compare with "+ activeDiseaseSubGroupII + "__" + diseaseCategoryII);
-////            System.out.println("at 3 to compare with "+ activeDiseaseSubGroupI + "__" + diseaseCategoryII);
-////            System.out.println("at 4 to compare with "+ activeDiseaseSubGroupII + "__" + diseaseCategoryII);
-//            
-//        }
         return comparisonTitle.equalsIgnoreCase(activeDiseaseSubGroupI + "__" + diseaseCategoryI) || comparisonTitle.equalsIgnoreCase(activeDiseaseSubGroupII + "__" + diseaseCategoryII);
 
     }
@@ -254,7 +253,7 @@ public class DiseaseGroupComparison implements Serializable {
             return activeDiseaseSubGroupII + "__" + diseaseCategoryI;
         } else if (key.equalsIgnoreCase(activeDiseaseSubGroupII + "__" + diseaseCategoryI)) {
             return activeDiseaseSubGroupI + "__" + diseaseCategoryI;
-        }else if (key.equalsIgnoreCase(activeDiseaseSubGroupI + "__" + diseaseCategoryII)) {
+        } else if (key.equalsIgnoreCase(activeDiseaseSubGroupI + "__" + diseaseCategoryII)) {
             return activeDiseaseSubGroupII + "__" + diseaseCategoryII;
         } else if (key.equalsIgnoreCase(activeDiseaseSubGroupII + "__" + diseaseCategoryII)) {
             return activeDiseaseSubGroupI + "__" + diseaseCategoryII;
@@ -281,13 +280,4 @@ public class DiseaseGroupComparison implements Serializable {
     public void setDiseaseStyleName(String diseaseStyleName) {
         this.diseaseStyleName = diseaseStyleName;
     }
-
-    public void setActivated(boolean activated) {
-        this.activated = activated;
-    }
-
-    public boolean isActivated() {
-        return activated;
-    }
-
 }

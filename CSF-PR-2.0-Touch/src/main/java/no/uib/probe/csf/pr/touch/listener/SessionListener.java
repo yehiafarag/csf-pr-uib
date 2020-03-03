@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package no.uib.probe.csf.pr.touch.listener;
 
 import java.io.Serializable;
@@ -22,7 +19,13 @@ import javax.servlet.http.HttpSessionListener;
  */
 public class SessionListener implements HttpSessionListener, Serializable {
 
+    /**
+     * Timer object.
+     */
     private Timer timer;
+    /**
+     * Http session.
+     */
     private HttpSession session;
     /**
      * Database connection.
@@ -45,20 +48,18 @@ public class SessionListener implements HttpSessionListener, Serializable {
         if (session != null) {
             timer = new Timer();
             timer.schedule(new RemindTask(), (5 * 60 * 60 * 1000));
-
         }
     }
 
     @Override
     public void sessionDestroyed(HttpSessionEvent hse) {
         Object CsrfToken = hse.getSession().getAttribute("CsrfToken");
-        if (userName != null && CsrfToken!=null) {
+        if (userName != null && CsrfToken != null) {
             removeAlluserTempStoredQuery(CsrfToken);
         }
     }
 
     class RemindTask extends TimerTask {
-
         @Override
         public void run() {
             System.out.println("at **********************************Time's up!**********************************");
@@ -67,6 +68,11 @@ public class SessionListener implements HttpSessionListener, Serializable {
         }
     };
 
+    /**
+     * Clean the stored query from the database
+     *
+     * @param CsrfToken
+     */
     public void removeAlluserTempStoredQuery(Object CsrfToken) {
         String statment = "DELETE  FROM `temp_query_table` WHERE `csrf_token` = '" + CsrfToken + "';";
         try {

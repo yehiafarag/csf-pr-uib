@@ -38,8 +38,8 @@ public class HeatMapHeaderCellInformationBean implements Serializable {
      * Disease sub group original name (from publication).
      */
     private String diseaseGroupOreginalName;
-    
-    private boolean collapsedDiseseCategory;
+
+    private boolean collapseDiseseCategory;
 
     /**
      * Get disease sub group original name (from publication)
@@ -59,11 +59,15 @@ public class HeatMapHeaderCellInformationBean implements Serializable {
         this.diseaseGroupOreginalName = diseaseGroupOreginalName;
     }
 
+    /**
+     * Short disease category name (disease abbreviation)
+     *
+     * @return disease abbreviation
+     */
     public String getShortDiseaseCategoryName() {
         return diseaseCategory.replace("Alzheimer's", "AD").replace("Multiple Sclerosis", "MS").replace("Parkinson's", "PD").replace("Amyotrophic Lateral Sclerosis", "ALS");
     }
 
-   
     /**
      * Get disease category (MS,AD,PD...etc)
      *
@@ -136,6 +140,10 @@ public class HeatMapHeaderCellInformationBean implements Serializable {
         this.diseaseHashedColor = diseaseHashedColor;
     }
 
+    /**
+     *Override toString to get the disease category and disease subgroup name
+     * @return disease category and disease sub group name 
+     */
     @Override
     public String toString() {
         return diseaseGroupName + "__" + diseaseCategory;
@@ -162,6 +170,11 @@ public class HeatMapHeaderCellInformationBean implements Serializable {
         this.diseaseGroupFullName = diseaseGroupFullName;
     }
 
+    /**
+     *Override equal method 
+     * @param obj object to compare
+     * @return  if ovects are equal
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -177,6 +190,10 @@ public class HeatMapHeaderCellInformationBean implements Serializable {
         return Objects.equals(this.diseaseGroupName, other.diseaseGroupName);
     }
 
+    /**
+     *Override hash code of the object 
+     * @return the new calculated hash code
+     */
     @Override
     public int hashCode() {
         int hash = 3;
@@ -185,12 +202,20 @@ public class HeatMapHeaderCellInformationBean implements Serializable {
         return hash;
     }
 
-    public boolean isCollapsedDiseseCategory() {
-        return collapsedDiseseCategory;
+    /**
+     *Check if the header is in collapsed mode
+     * @return the header in collapsing mode
+     */
+    public boolean isCollapseDiseseCategory() {
+        return collapseDiseseCategory;
     }
 
-    public void setCollapsedDiseseCategory(boolean collapsedDiseseCategory) {
-        this.collapsedDiseseCategory = collapsedDiseseCategory;
+    /**
+     *Set header of disease category to be collapsed
+     * @param collapseDiseseCategory collapse the header
+     */
+    public void setCollapseDiseseCategory(boolean collapseDiseseCategory) {
+        this.collapseDiseseCategory = collapseDiseseCategory;
     }
 
 }

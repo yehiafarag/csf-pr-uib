@@ -956,6 +956,12 @@ public class QuantProtein implements Comparable<QuantProtein> {
         this.pvalueSignificanceThreshold = pvalueSignificanceThreshold;
     }
 
+     /**
+     * Override equals method
+     *
+     * @param o object to compare
+     * @return object are equal
+     */
     @Override
     public int compareTo(QuantProtein o) {
         if ((this.getDiseaseGroupIPatientsNumber() + this.getDiseaseGroupIIPatientsNumber()) > (o.getDiseaseGroupIPatientsNumber() + o.getDiseaseGroupIIPatientsNumber())) {
@@ -983,14 +989,27 @@ public class QuantProtein implements Comparable<QuantProtein> {
         this.URL = URL;
     }
 
+    /**
+     * Get second disease category for second disease sub group 
+     * @return second disease category
+     */
     public String getDiseaseCategoryII() {
         return diseaseCategoryII;
     }
 
+    /**
+     *Set second disease category for second disease sub group 
+     * @param diseaseCategoryII second disease category
+     */
     public void setDiseaseCategoryII(String diseaseCategoryII) {
         this.diseaseCategoryII = diseaseCategoryII;
     }
 
+    
+    /**
+     *Is the quant protein object come from comparisons between 2 different disease categories
+     * @return the comparisons between 2 different disease categories
+     */
     public boolean isCrossDiseases() {
         return !diseaseCategoryI.equalsIgnoreCase(diseaseCategoryII);
     }

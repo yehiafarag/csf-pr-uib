@@ -531,7 +531,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
                     }
                 }
             };
-            headerCell.setCollapsedHeader(cellInfo.isCollapsedDiseseCategory());
+            headerCell.setCollapsedHeader(cellInfo.isCollapseDiseseCategory());
             columnsColors[i] = cellInfo.getDiseaseHashedColor();
             columnHeaderCells.put(headerKey, headerCell);
         }
@@ -568,7 +568,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
                     }
                 }
             };
-            headerCell.setCollapsedHeader(cellInfo.isCollapsedDiseseCategory());
+            headerCell.setCollapsedHeader(cellInfo.isCollapseDiseseCategory());
             String headerKey = cellInfo.getDiseaseCategory() + "-_-" + cellInfo.getDiseaseGroupFullName();
             rowHeaderCells.put(headerKey, headerCell);
             rowsColors[i] = cellInfo.getDiseaseHashedColor();
@@ -608,11 +608,8 @@ public abstract class HeatMapLayout extends VerticalLayout {
     /**
      * This method responsible for updating the heat-map data
      *
-     *
-     * @param fullDiseaseCategory Set of all disease category names
-     * @param fullRowheadersSet Set of header cell information for rows
-     * @param fullColheadersSet Set of header cell information for columns
      * @param activePatientsGroupComparisonsSet Set of disease group comparisons
+     * @param selectedDiseaseCategory set of disease categories
      * @param filteredQuantDsMap Map of datasets and its indexes
      */
     public void updateHeatMapFilterSelection(Set<DiseaseGroupComparison> activePatientsGroupComparisonsSet, Map<Integer, QuantDataset> filteredQuantDsMap, Set<String> selectedDiseaseCategory) {
@@ -629,6 +626,11 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
     }
 
+    /**
+     *Reorder disease sub categories in heat-map based on user reorder action
+     * @param rowHeaders ordered row headers (disease sub categories)
+     * @param colHeaders ordered column headers (disease sub categories)
+     */
     public void reorderHeatmap(LinkedHashSet<HeatMapHeaderCellInformationBean> rowHeaders, LinkedHashSet<HeatMapHeaderCellInformationBean> colHeaders) {
 
         Map<String, HeatMapHeaderCellInformationBean> tempRowheadersSet = new LinkedHashMap<>();
@@ -667,22 +669,13 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
     }
 
-    public void setFreezeUnselectedDiseaseCategories(boolean freeze) {
-        if (freeze) {
-            for (HeaderCell cell : tempRowHeaderCells) {
-                cell.setEnabled(cell.isCollapsedHeader());
-            }
-            for (HeaderCell cell : tempColumnHeaderCells) {
-                cell.setEnabled(cell.isCollapsedHeader());
-            }
-            for (HeatmapCell[] cellArr : cellTable) {
-                for (HeatmapCell cell : cellArr) {
-                    cell.setEnabled(cell.isCollapsedCell());
-                }
-            }
-        }
-    }
 
+    /**
+     *Update heat map selection (expand / collapse) heat-map disease categories 
+     * @param diseaseCategories set of selected disease categories
+     * @param collapsExpandAction  the action happened throw user selection on disease category header
+     * @param forceUpdate force to update / redraw the heat-map
+     */
     public void selectDiseaseCategory(Set<String> diseaseCategories, boolean collapsExpandAction, boolean forceUpdate) {
 
         if (!forceUpdate && !collapsExpandAction && updatedExpandedList != null && diseaseCategories != null && updatedExpandedList.containsAll(diseaseCategories) && updatedExpandedList.size() == diseaseCategories.size()) {
@@ -708,7 +701,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
                 } else {
                     if (!collapsedRowheadersSet.containsKey(cellInfoBean.getDiseaseCategory())) {
                         HeatMapHeaderCellInformationBean newCollapsedDiseaseCategory = new HeatMapHeaderCellInformationBean();
-                        newCollapsedDiseaseCategory.setCollapsedDiseseCategory(true);
+                        newCollapsedDiseaseCategory.setCollapseDiseseCategory(true);
                         newCollapsedDiseaseCategory.setDiseaseCategory(cellInfoBean.getDiseaseCategory());
                         newCollapsedDiseaseCategory.setDiseaseGroupFullName(cellInfoBean.getDiseaseCategory());
                         newCollapsedDiseaseCategory.setDiseaseGroupOreginalName(cellInfoBean.getDiseaseCategory());
@@ -731,7 +724,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
                 } else {
                     if (!collapsedRowheadersSet.containsKey(cellInfoBean.getDiseaseCategory())) {
                         HeatMapHeaderCellInformationBean newCollapsedDiseaseCategory = new HeatMapHeaderCellInformationBean();
-                        newCollapsedDiseaseCategory.setCollapsedDiseseCategory(true);
+                        newCollapsedDiseaseCategory.setCollapseDiseseCategory(true);
                         newCollapsedDiseaseCategory.setDiseaseCategory(cellInfoBean.getDiseaseCategory());
                         newCollapsedDiseaseCategory.setDiseaseGroupFullName(cellInfoBean.getDiseaseCategory());
                         newCollapsedDiseaseCategory.setDiseaseGroupOreginalName(cellInfoBean.getDiseaseCategory());
@@ -833,6 +826,10 @@ public abstract class HeatMapLayout extends VerticalLayout {
     private HeaderCell[] tempColumnHeaderCells;
     private HeaderCell[] tempRowHeaderCells;
 
+    /**
+     *Get Set of expanded disease category
+     * @return Set of expanded disease category
+     */
     public Set<String> getUpdatedExpandedList() {
         return updatedExpandedList;
     }
@@ -891,7 +888,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
                     @Override
                     public void unSelectData(String valueLabel) {
-                        if (!this.isCollapsedHeader()) {
+                        if (!this.isCollapsedHeader()) { 
                             removeRowSelectedDs(valueLabel);
                         }
                     }
@@ -900,7 +897,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
                 headerCell.setCollapsedHeader(true);
             } else {
                 headerCell.resetHeader();
-                headerCell.setCollapsedHeader(cellInfo.isCollapsedDiseseCategory());
+                headerCell.setCollapsedHeader(cellInfo.isCollapseDiseseCategory());
             }
             columnsColors[i] = cellInfo.getDiseaseHashedColor();
             tempColumnHeaderCells[i++] = headerCell;
@@ -944,7 +941,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
                 headerCell.setCollapsedHeader(true);
             } else {
                 headerCell.resetHeader();
-                headerCell.setCollapsedHeader(cellInfo.isCollapsedDiseseCategory());
+                headerCell.setCollapsedHeader(cellInfo.isCollapseDiseseCategory());
             }
 
             tempRowHeaderCells[i] = headerCell;
@@ -974,7 +971,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
                     color = hmColorGen.getColor((float) value);
 
                 }
-                if (grI.isCollapsedDiseseCategory() && grII.isCollapsedDiseseCategory() && value > 0) {
+                if (grI.isCollapseDiseseCategory() && grII.isCollapseDiseseCategory() && value > 0) {
                     color = "#EFF2FB";
                 }
 
@@ -1140,17 +1137,18 @@ public abstract class HeatMapLayout extends VerticalLayout {
             });
             selectedQuantDiseaseGroupsComparisonList.clear();
             selectedCells.clear();
-
             for (HeaderCell header : columnHeaderCells.values()) {
+               
 
                 if (header.getValueLabel().equalsIgnoreCase(selectedheader)) {
                     header.getIncludedCells().stream().forEach((tcell) -> {
                         tcell.select();
-
                         String kI = tcell.getComparison().getComparisonHeader();
+                        System.out.println("at kI "+kI);
                         String[] k1Arr = kI.split(" / ");
                         String kII = k1Arr[1] + " / " + k1Arr[0];
                         HeatmapCell equalCall = comparisonsCellsMap.get(kII);
+                         System.out.println("at kI "+kI+"  "+kII);
                         if (equalCall != null) {
                             equalCall.unselect();
                             this.selectedQuantDiseaseGroupsComparisonList.remove(equalCall.getComparison());
@@ -1170,9 +1168,11 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
                     });
                     header.select();
+                          
                     selectedCells.addAll(header.getIncludedCells());
                     header.getIncludedComparisons().stream().forEach((qdComp) -> {
                         String kI = qdComp.getComparisonHeader();
+                  
                         if (kI.startsWith(selectedheader.split("__")[0] + " / ")) {
                             selectedQuantDiseaseGroupsComparisonList.add(qdComp);
                         }
@@ -1186,7 +1186,6 @@ public abstract class HeatMapLayout extends VerticalLayout {
                 if (header.getValueLabel().equalsIgnoreCase(selectedheader)) {
                     header.getIncludedCells().stream().forEach((tcell) -> {
                         tcell.select();
-
                         String kI = tcell.getComparison().getComparisonHeader();
                         String[] k1Arr = kI.split(" / ");
                         String kII = k1Arr[1] + " / " + k1Arr[0];
@@ -1210,12 +1209,14 @@ public abstract class HeatMapLayout extends VerticalLayout {
 
                     });
                     header.select();
+                    System.out.println("at included cells "+header.getValueLabel()+"  "+ header.getIncludedCells().size());
                     selectedCells.addAll(header.getIncludedCells());
                     header.getIncludedComparisons().stream().forEach((qdComp) -> {
                         String kI = qdComp.getComparisonHeader();
                         if (kI.startsWith(selectedheader.split("__")[0] + " / ")) {
                             selectedQuantDiseaseGroupsComparisonList.add(qdComp);
                         }
+                        System.out.println("at KI "+kI+"  "+selectedheader);
                     });
 
                     continue;
@@ -1226,19 +1227,21 @@ public abstract class HeatMapLayout extends VerticalLayout {
         } else {
 
             for (HeaderCell header : columnHeaderCells.values()) {
-                if (header.getValueLabel().equalsIgnoreCase(selectedheader)) {
+                
+                if (header.getValueLabel().equalsIgnoreCase(selectedheader)) { 
+                   
                     header.getIncludedCells().stream().forEach((tcell) -> {
                         tcell.select();
                         String kI = tcell.getComparison().getComparisonHeader();
                         String[] k1Arr = kI.split(" / ");
                         String kII = k1Arr[1] + " / " + k1Arr[0];
                         HeatmapCell equalCall = comparisonsCellsMap.get(kII);
+                        
+                   
                         if (equalCall != null) {
                             equalCall.unselect();
                             this.selectedQuantDiseaseGroupsComparisonList.remove(equalCall.getComparison());
                             this.selectedCells.remove(equalCall);
-                        } else {
-                            System.out.println("at equal cell was null " + kII);
                         }
 
                         if (equalCall != null) {
@@ -1254,8 +1257,8 @@ public abstract class HeatMapLayout extends VerticalLayout {
                     header.select();
                     selectedCells.addAll(header.getIncludedCells());
                     header.getIncludedComparisons().stream().forEach((qdComp) -> {
-                        String kI = qdComp.getComparisonHeader();
-                        if (kI.startsWith(selectedheader.split("__")[0] + " / ")) {
+                        String kI = qdComp.getComparisonHeader(); 
+                        if (kI.startsWith(selectedheader + " / ")) {
                             selectedQuantDiseaseGroupsComparisonList.add(qdComp);
                         }
                     });
@@ -1292,8 +1295,8 @@ public abstract class HeatMapLayout extends VerticalLayout {
                     header.select();
                     selectedCells.addAll(header.getIncludedCells());
                     header.getIncludedComparisons().stream().forEach((qdComp) -> {
-                        String kI = qdComp.getOreginalComparisonHeader();
-                        if (kI.startsWith(selectedheader.split("__")[0] + " / ")) {
+                        String kI = qdComp.getComparisonHeader();
+                        if (kI.startsWith(selectedheader + " / ")) {
                             selectedQuantDiseaseGroupsComparisonList.add(qdComp);
                         }
                     });
@@ -1838,6 +1841,7 @@ public abstract class HeatMapLayout extends VerticalLayout {
      * @param equalComparisonMap The map of equal heat map cell to the flipped
      * comparisons
      * @param selectedDiseaseCategory selected disease category
+     * @param expandCollapsAction  the action happened throw user selection on disease category header
      */
     public abstract void updateHMThumb(String imgUrl, int datasetNumber, int deactivatedDatasetNumber, Map<QuantDiseaseGroupsComparison, QuantDiseaseGroupsComparison> equalComparisonMap, String selectedDiseaseCategory, boolean expandCollapsAction);
 

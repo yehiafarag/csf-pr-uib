@@ -71,7 +71,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
     private final FilterColumnButton filterSortSwichBtn;
 
     /**
-     * Constructor to initialize the main attributes ( selection manage ..etc).
+     * Constructor to initialise the main attributes ( selection manage ..etc).
      *
      * @param CSFPR_Central_Manager Central selection manager
      * @param width main body layout width (the container)
@@ -82,14 +82,14 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         this.CSFPR_Central_Manager = CSFPR_Central_Manager;
         this.proteinSearchingMap = new HashMap<>();
 
-        this.setWidth(width, Unit.PIXELS);
-        this.setHeight(height, Unit.PIXELS);
+        LineChartProteinTableComponent.this.setWidth(width, Unit.PIXELS);
+        LineChartProteinTableComponent.this.setHeight(height, Unit.PIXELS);
 
         VerticalLayout bodyContainer = new VerticalLayout();
         bodyContainer.setWidth(100, Unit.PERCENTAGE);
         bodyContainer.setHeightUndefined();
         bodyContainer.setSpacing(true);
-        this.addComponent(bodyContainer);
+        LineChartProteinTableComponent.this.addComponent(bodyContainer);
 
         //init toplayout
         HorizontalLayout topLayout = new HorizontalLayout();
@@ -123,10 +123,6 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
 
             @Override
             public void textChanged(String text) {
-                if (text.trim().equalsIgnoreCase("")) {
-                    return;
-                }
-                System.out.println("at text " + text + "  " + this.getStyleName());
                 quantProteinTable.filterViewItemTable(getSearchingProteinsList(text));
                 this.updateLabel("(" + quantProteinTable.getRowsNumber() + ")");
 
@@ -232,13 +228,6 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         controlsLayout.setWidth(100, Unit.PERCENTAGE);
         controlsLayout.setHeight(20, Unit.PIXELS);
 
-//         Label commentLabel = new Label("<b>*</b> Accession comment");
-//        commentLabel.setStyleName(ValoTheme.LABEL_SMALL);
-//        commentLabel.addStyleName(ValoTheme.LABEL_TINY);
-//        commentLabel.setContentMode(ContentMode.HTML);
-//        commentLabel.addStyleName("minwidth100");
-//        controlsLayout.addComponent(commentLabel);
-//        controlsLayout.setComponentAlignment(commentLabel, Alignment.BOTTOM_LEFT);
         Label clickcommentLabel = new Label("Click a row to select data");
         clickcommentLabel.setStyleName(ValoTheme.LABEL_SMALL);
         clickcommentLabel.addStyleName(ValoTheme.LABEL_TINY);
@@ -256,7 +245,6 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         proteinTableToolsContainer.setSpacing(true);
 
         GroupSwitchBtn groupSwichBtn = new GroupSwitchBtn() {
-
             @Override
             public Set<QuantDiseaseGroupsComparison> getUpdatedComparsionList() {
                 return CSFPR_Central_Manager.getSelectedComparisonsList();
@@ -282,11 +270,9 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         ExportProteinTable exportTable = new ExportProteinTable();
         proteinTableToolsContainer.addComponent(exportTable);
         removeFiltersBtn = new ImageContainerBtn() {
-
             @Override
             public void onClick() {
                 quantProteinTable.clearColumnFilters();
-
             }
 
             @Override
@@ -298,7 +284,6 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
                 }
                 super.setEnabled(enabled);
             }
-
         };
         removeFiltersBtn.setEnabled(false);
         removeFiltersBtn.setHeight(40, Unit.PIXELS);
@@ -308,21 +293,17 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
         proteinTableToolsContainer.addComponent(removeFiltersBtn);
         proteinTableToolsContainer.setComponentAlignment(removeFiltersBtn, Alignment.MIDDLE_CENTER);
         removeFiltersBtn.setDescription("Clear all applied filters");
-
         filterSortSwichBtn = new FilterColumnButton() {
-
             @Override
             public void onClickFilter(boolean isFilter) {
                 removeFiltersBtn.setEnabled(isFilter);
                 quantProteinTable.switchHeaderBtns();
             }
         };
-
         proteinTableToolsContainer.addComponent(filterSortSwichBtn);
         proteinTableToolsContainer.setComponentAlignment(filterSortSwichBtn, Alignment.MIDDLE_CENTER);
 
         ImageContainerBtn exportPdfBtn = new ImageContainerBtn() {
-
             @Override
             public void onClick() {
                 exportTable.setUserCustomizedComparison(quantProteinTable.getUserCustomizedComparison());
@@ -336,24 +317,18 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
                 csvExport.setExcelFormatOfProperty("Index", "0");
                 csvExport.export();
             }
-
         };
-
         exportPdfBtn.setHeight(40, Unit.PIXELS);
         exportPdfBtn.setWidth(40, Unit.PIXELS);
-
         exportPdfBtn.updateIcon(new ThemeResource("img/xls-text-o-2.png"));
         exportPdfBtn.setEnabled(true);
         proteinTableToolsContainer.addComponent(exportPdfBtn);
         proteinTableToolsContainer.setComponentAlignment(exportPdfBtn, Alignment.MIDDLE_CENTER);
         exportPdfBtn.setDescription("Export table");
         proteinTableToolsContainer.addComponent(exportPdfBtn);
-
         InformationButton info = new InformationButton("The protein table provides an overview of the quantitative information available for each protein, classified into Increased, Decreased or Equal. If the quantitative data for a given comparison is not exclusively in the same direction an average value will be shown. To find proteins of interest use the search field at the top, or sort/filter on the individual comparisons using the options above the table. The icons at the lower right enables further modification of the table. Select a row in the table to show the protein details.", false);
         proteinTableToolsContainer.addComponent(info);
-
         CSFPR_Central_Manager.registerListener(LineChartProteinTableComponent.this);
-
     }
 
     /**
@@ -364,14 +339,11 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
     @Override
     public void selectionChanged(String type) {
         if (type.equalsIgnoreCase("protein_selection")) {
-
             Set<QuantComparisonProtein> selectedProteinsList;
             filterSortSwichBtn.reset();
-
             if (CSFPR_Central_Manager.getSelectedProteinsList() == null) {
                 proteinSearchingMap.clear();
                 selectedProteinsList = new LinkedHashSet<>();
-
                 Map<String, QuantComparisonProtein> proteinsFilterMap = new LinkedHashMap<>();
                 CSFPR_Central_Manager.getSelectedComparisonsList().stream().forEach((comparison) -> {
                     selectedProteinsList.addAll(comparison.getQuantComparisonProteinMap().values());
@@ -379,9 +351,7 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
                         proteinsFilterMap.put(prot.getProteinAccession() + "__" + prot.getProteinName(), prot);
                     });
                 });
-
                 quantProteinTable.updateTableData(CSFPR_Central_Manager.getSelectedComparisonsList(), new LinkedHashSet<>(proteinsFilterMap.values()));
-
             } else {
                 Set<QuantComparisonProtein> searchSet = new LinkedHashSet<>();
                 selectedProteinsList = CSFPR_Central_Manager.getSelectedProteinsList();
@@ -389,18 +359,13 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
                     searchSet.addAll(getSearchingProteinsList(key.getProteinAccession() + "__" + key.getProteinName()));
                 });
                 quantProteinTable.updateTableData(CSFPR_Central_Manager.getSelectedComparisonsList(), searchSet);
-
             }
-
             selectedProteinsList.stream().forEach((protein) -> {
                 proteinSearchingMap.put(protein.getProteinAccession() + "__" + protein.getProteinName(), protein);
-
             });
-
         } else if (type.equalsIgnoreCase("comparisons_selection")) {
             removeFiltersBtn.setEnabled(false);
             filterSortSwichBtn.reset();
-
         }
     }
 
@@ -432,9 +397,13 @@ public abstract class LineChartProteinTableComponent extends VerticalLayout impl
      */
     private Set<QuantComparisonProtein> getSearchingProteinsList(String keyword) {
         Set<QuantComparisonProtein> subAccessionMap = new HashSet<>();
-        proteinSearchingMap.keySet().stream().filter((key) -> (key.trim().toLowerCase().contains(keyword.toLowerCase().trim()))).forEach((key) -> {
-            subAccessionMap.add(proteinSearchingMap.get(key));
-        });
+        if (keyword.trim().equalsIgnoreCase("")) {
+            subAccessionMap.addAll(proteinSearchingMap.values());
+        } else {
+            proteinSearchingMap.keySet().stream().filter((key) -> (key.trim().toLowerCase().contains(keyword.toLowerCase().trim()))).forEach((key) -> {
+                subAccessionMap.add(proteinSearchingMap.get(key));
+            });
+        }
         return subAccessionMap;
     }
 

@@ -110,11 +110,16 @@ public class DatasetUtility implements Serializable {
     private Map<String, QuantData> activeData;
     private Set<Integer> activeQuantDatasetsIndexes;
     /**
-     * The system is in initializing state.
+     * The system is in initialising state.
      */
     private boolean init = true;
     private boolean databaseOffline = false;
 
+    /**
+     * Check if database is available
+     *
+     * @return database is not available
+     */
     public boolean isDatabaseOffline() {
         return databaseOffline;
     }
@@ -263,6 +268,11 @@ public class DatasetUtility implements Serializable {
 
     }
 
+    /**
+     * get Current active disease categories
+     *
+     * @return set of disease categories
+     */
     public Set<String> getActiveDiseaseCategorySet() {
         return activeData.keySet();
     }
@@ -1006,7 +1016,6 @@ public class DatasetUtility implements Serializable {
             }
             sortAndClear(reindexMap, diseaseCategoryToSort.get(diseaseCategory), sortedDiseaseCategory.get(diseaseCategory));
         });
-        System.out.println("at sorted di cat " + sortedDiseaseCategory.keySet());
         return sortedDiseaseCategory;
 
     }
@@ -1024,6 +1033,9 @@ public class DatasetUtility implements Serializable {
         toSortSet.clear();
     }
 
+    /**
+     *Reset active data to default removing search and compare data
+     */
     public void resetToDefault() {
         activeQuantDatasetsIndexes = null;
         activeData = quantDataMap;

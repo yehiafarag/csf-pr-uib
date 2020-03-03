@@ -216,9 +216,8 @@ public class DataBaseLayer implements Serializable {
                     continue;
                 }
                 String author = rs.getString("author");
-                author = author.replace("¢", "ó");
+                author = author.replace("¢", "ó").replace("Borr…s", "Borràs");                
                 publicationList.add(new Object[]{rs.getString("pumed_id"), author, rs.getString("year"), "", 0, 0, 0, 0});
-
 //                publicationList.add(new Object[]{rs.getString("pubmed_id"), rs.getString("author"), rs.getString("year"), rs.getString("title"), rs.getInt("uniq_prot_num"), rs.getInt("total_prot_num"), rs.getInt("uniq_pept_num"), rs.getInt("total_pept_num")});
             }
         } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
@@ -233,6 +232,7 @@ public class DataBaseLayer implements Serializable {
      * Store query in database in order to share it with csf-pr id data
      *
      * @param query Query object to be stored
+     * @return successful database transaction 
      */
     public int storeQueryinDB(Query query) {
 
@@ -260,19 +260,7 @@ public class DataBaseLayer implements Serializable {
         return -100;
     }
 
-    public void removeAlluserTempStoredQuery() {
-        String statment = "DELETE  FROM `temp_query_table` WHERE `csrf_token` = '" + VaadinSession.getCurrent().getCsrfToken() + "';";
-        try {
-            if (conn == null || conn.isClosed()) {
-                Class.forName(driver).newInstance();
-                conn = DriverManager.getConnection(url + dbName, userName, password);
-            }
-            Statement st = conn.createStatement();
-            st.executeUpdate(statment);
-        } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException ex) {
-            ex.printStackTrace();
-        }
-    }
+    
 
     /**
      * Get initial datasets information

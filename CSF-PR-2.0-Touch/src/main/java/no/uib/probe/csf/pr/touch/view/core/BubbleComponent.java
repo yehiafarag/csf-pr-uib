@@ -64,6 +64,7 @@ public class BubbleComponent extends Label implements Comparable<Label> {
      * small components add over the bigger one.
      *
      * @param other The bubble component(to compare with).
+     * @return comparison results
      */
     @Override
     public int compareTo(Label other) {

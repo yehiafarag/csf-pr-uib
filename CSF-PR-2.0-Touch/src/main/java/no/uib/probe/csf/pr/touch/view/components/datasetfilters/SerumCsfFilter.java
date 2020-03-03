@@ -171,10 +171,20 @@ public abstract class SerumCsfFilter extends HorizontalLayout implements LayoutE
         noSerumOptionBtn.setHeight((int) (25 * resizeFactor), Unit.PIXELS);
     }
 
+    /**
+     * Check if serum datasets are selected
+     *
+     * @return if serum dataset option selected
+     */
     public boolean isSerumApplied() {
         return serumApplied;
     }
 
+    /**
+     * Check if CSF datasets are selected
+     *
+     * @return if CSF dataset option selected
+     */
     public boolean isCsfApplied() {
         return csfApplied;
     }

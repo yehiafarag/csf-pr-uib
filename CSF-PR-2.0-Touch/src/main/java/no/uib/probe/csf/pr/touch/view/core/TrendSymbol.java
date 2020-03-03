@@ -93,19 +93,15 @@ public class TrendSymbol extends VerticalLayout implements Comparable<TrendSymbo
         return parameterMap.get(paramName);
     }
 
+    /**
+     * Override compare to method (comparing based on trend
+     *
+     * @param o object to compare with
+     * @return comparison results
+     */
     @Override
     public int compareTo(TrendSymbol o) {
         int i = this.trend.compareTo(o.trend);
-//        int ii;
-////        return this.trend.compareTo(o.trend);
-//        if (this.trend > o.trend) {
-//            ii = 1;
-//        } else {
-//            ii =0;
-//        }
-//        if (i != ii) {
-//            System.out.println("here is error " + i + "  " + ii+"  "+this.trend+"  "+o.trend);
-//        }
         return i;
     }
 

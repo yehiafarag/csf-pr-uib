@@ -512,6 +512,7 @@ public class CoreLogic implements Serializable {
      * Store query to share with csf-pr ID.
      *
      * @param query query object that has all query information.
+     * @return db successful transaction
      */
     public int storeQuery(Query query) {
         return database.storeQueryinDB(query);

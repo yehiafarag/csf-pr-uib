@@ -118,6 +118,11 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         applyFilters.addClickListener((Button.ClickEvent event) -> {
             Set<Integer> filteredSelectionSet = filterSelectionUnit();
             DatasetPieChartFiltersComponent.this.updateSystem(filteredSelectionSet);
+            if (selectedDatasetNumbers.size() > 1) {
+                applyFilterIcon();
+            } else {
+                resetFilterIcon();
+            }
             popupWindow.view();
 
         });
@@ -395,11 +400,7 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         }).forEachOrdered((filter) -> {
             selectedDatasetNumbers.add(filter.getSelectedDsIds().size());
         });
-        if (selectedDatasetNumbers.size() > 1) {
-            applyFilterIcon();
-        } else {
-            resetFilterIcon();
-        }
+
     }
 
     /**
@@ -434,18 +435,30 @@ public abstract class DatasetPieChartFiltersComponent extends VerticalLayout imp
         popupWindow.view();
     }
 
+    /**
+     * Remove the highlight from filter button icon.
+     */
     public void resetFilterIcon() {
         removeStyleName("appliedfilter");
         icon.setSource(defaultTheam);
 
     }
 
-    public void applyFilterIcon() {
+    /**
+     * Highlight filter button icon.
+     */
+    private void applyFilterIcon() {
         addStyleName("appliedfilter");
         icon.setSource(selectedTheam);
     }
-    public boolean hasSelection(){
-        return selectedDatasetNumbers.size()>1;
+
+    /**
+     * Check if filter applied
+     *
+     * @return filter is applied
+     */
+    public boolean isApplied() {
+        return selectedDatasetNumbers.size() > 1;
     }
 
     /**

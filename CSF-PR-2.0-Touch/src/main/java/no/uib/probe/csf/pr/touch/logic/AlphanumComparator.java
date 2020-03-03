@@ -90,6 +90,11 @@ public class AlphanumComparator implements Comparable<AlphanumComparator> {
         return chunk.toString();
     }
 
+    /**
+     *
+     * @param o2
+     * @return
+     */
     @Override
     public int compareTo(AlphanumComparator o2) {
         if (!(value instanceof String) || !(o2.value instanceof String)) {
@@ -137,6 +142,10 @@ public class AlphanumComparator implements Comparable<AlphanumComparator> {
         return s1Length - s2Length;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String toString() {
         return value;

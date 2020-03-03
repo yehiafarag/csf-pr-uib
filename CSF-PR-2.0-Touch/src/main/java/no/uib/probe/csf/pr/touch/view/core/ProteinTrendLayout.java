@@ -246,6 +246,7 @@ public abstract class ProteinTrendLayout extends AbsoluteLayout implements Compa
      * comparison.
      *
      * @param combarableProteinTrendLayout The comparable component.
+     * @return  comparison value 
      */
     @Override
     public int compareTo(ProteinTrendLayout combarableProteinTrendLayout) {

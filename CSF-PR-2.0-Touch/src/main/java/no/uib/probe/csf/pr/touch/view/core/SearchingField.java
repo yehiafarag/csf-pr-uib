@@ -76,6 +76,9 @@ public abstract class SearchingField extends HorizontalLayout {
             b.click();
         });
         searchField.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
+            if (searchField.getValue().trim().equalsIgnoreCase("")) {
+                return;
+            }
             SearchingField.this.textChanged(event.getText());
         });
         b.addClickListener((Button.ClickEvent event) -> {

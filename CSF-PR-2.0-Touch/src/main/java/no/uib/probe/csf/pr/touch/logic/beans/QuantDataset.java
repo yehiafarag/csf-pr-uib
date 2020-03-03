@@ -74,12 +74,23 @@ public class QuantDataset implements Serializable, Comparable {
      * The dataset is pool samples dataset.
      */
     private boolean pooledSamples;
+     /**
+     * The dataset cross disease.
+     */
     private boolean crossDisease;
 
+    /**
+     *Is the dataset is based on pool sample
+     * @return the dataset is pool sample based
+     */
     public boolean isPooledSamples() {
         return pooledSamples;
     }
 
+    /**
+     *Set the dataset to be based on pool sample
+     * @param pooledSamples the dataset is pool sampled
+     */
     public void setPooledSamples(boolean pooledSamples) {
         this.pooledSamples = pooledSamples;
     }
@@ -696,6 +707,11 @@ public class QuantDataset implements Serializable, Comparable {
         return (String) values[26];
     }
 
+    /**
+     *
+     * @param t
+     * @return
+     */
     @Override
     public int compareTo(Object t) {
         if ((Integer) ((QuantDataset) t).values[1] > (Integer) this.values[1]) {
@@ -831,10 +847,19 @@ public class QuantDataset implements Serializable, Comparable {
         this.uniqePepNum = uniqePepNum;
     }
 
+    /**
+     *Is the dataset represents comparisons between 2 different disease categories
+     * @return the dataset represents comparisons between 2 different disease categories
+     */
     public boolean isCrossDisease() {
         return crossDisease;
     }
 
+    /**
+     * Set the dataset to represents comparisons between 2 different disease categories
+     *
+     * @param crossDisease 2 different disease categories
+     */
     public void setCrossDisease(boolean crossDisease) {
         this.crossDisease = crossDisease;
     }

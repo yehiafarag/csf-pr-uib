@@ -192,7 +192,11 @@ public class StackedBarPeptideComponent extends VerticalLayout implements Compar
         return parametersMap.get(key);
     }
 
-
+    /**
+     *Override compare to method
+     * @param o object to compare
+     * @return comparison result
+     */
     @Override
     public int compareTo(StackedBarPeptideComponent o) {
         return widthArea.compareTo(o.widthArea);

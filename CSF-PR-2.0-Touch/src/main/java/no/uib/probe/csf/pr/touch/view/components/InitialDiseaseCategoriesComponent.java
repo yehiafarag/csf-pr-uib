@@ -117,20 +117,23 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
 
     }
 
-    public void updateThumbLabel(int dsNumber, String diseaseCategory) {
+    /**
+     *Update the side menu button label based on selection and update the selected dataset number
+     * @param dsNumber available dataset number
+     * @param diseaseSelectionOption  the disease selection option (disease category / multiple disease /or all diseases)
+     */
+    public void updateThumbLabel(int dsNumber, String diseaseSelectionOption) {
         if (dsNumber == 0) {
             this.resetThumbBtn();
             return;
         }
-        if (diseaseCategory.equalsIgnoreCase("No Diseases")) {
+        if (diseaseSelectionOption.equalsIgnoreCase("No Diseases")) {
             return;
         }
-        DiseaseCategoryObject selectedDiseaseCategory = this.diseaseCategoryMap.get(diseaseCategory);
+        DiseaseCategoryObject selectedDiseaseCategory = this.diseaseCategoryMap.get(diseaseSelectionOption);
         if (selectedDiseaseCategory == null) {
             return;
         }
-//        selectedDiseaseCategory.setDatasetNumber(dsNumber);
-
         thumbImgLayout.removeAllComponents();
         VerticalLayout min = initDiseaseLayout(selectedDiseaseCategory, 100, 100, dsNumber, maxNumber);
         min.setDescription("Disease Categories");
@@ -140,7 +143,7 @@ public abstract class InitialDiseaseCategoriesComponent extends VerticalLayout i
     }
 
     /**
-     * Initialize the disease category layout
+     * Initialise the disease category layout
      *
      * @param diseaseObject disease category object that has disease information
      * @param width The available width of the layout

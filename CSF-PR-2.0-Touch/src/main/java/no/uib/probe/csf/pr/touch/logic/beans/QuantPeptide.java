@@ -530,9 +530,6 @@ public class QuantPeptide implements Serializable {
         this.fc_value = fc_value;
     }
 
-    @Override
-    public String toString() {
-        return "prot index " + protIndex + " ----- ds " + quantDatasetIndex + " ----- pepsequence  " + peptideSequence;
-    }
+
 
 }
