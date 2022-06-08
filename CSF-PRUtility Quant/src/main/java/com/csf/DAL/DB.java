@@ -1763,7 +1763,7 @@ public class DB implements Serializable {
         try {
             createTables();
             if (conn == null || conn.isClosed()) {
-                Class.forName(driver).newInstance();
+                Class.forName(driver);
                 conn = DriverManager.getConnection(url + dbName, userName, password);
             }
 
@@ -1783,10 +1783,6 @@ public class DB implements Serializable {
         } catch (SQLException e) {
             System.out.println(e);
         } catch (ClassNotFoundException e) {
-            System.out.println(e);
-        } catch (InstantiationException e) {
-            System.out.println(e);
-        } catch (IllegalAccessException e) {
             System.out.println(e);
         } catch (IOException e) {
             e.printStackTrace();

@@ -2,7 +2,6 @@ package com.view;
 
 import com.pepshaker.DataHandler;
 import com.pepshaker.PSFileImporter;
-import com.compomics.util.examples.BareBonesBrowserLaunch;
 import com.csf.DAL.ReactomeDatabase;
 import com.csf.handler.Handler;
 import com.pepshaker.util.ProgressDialogParent;
@@ -13,6 +12,7 @@ import java.io.File;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,7 +25,6 @@ import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.SwingWorker;
-import sun.security.util.Password;
 
 /**
  *
@@ -34,11 +33,11 @@ import sun.security.util.Password;
 public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
 
     private ExperimentBean exp;
-    private String database_name = "csf_pr_v3_final";
+    private String database_name = ("csf_pr_"+LocalDate.now()).replace("-", "_");
 //    private final String executeCmd;
-    private final String backupFileUrl = "D:\\CSF-PR-full-06-01-2017\\backup.sql"; // "/home/probe/user/CSF-PR-FILES/backup.sql";             //"D:\\backups\\sqlQuant18-8\\backup-quant.sql";                        //   
-    private String processUrl = "C:\\AppServ\\MySQL\\bin\\mysqldump.exe"; ///usr/bin/mysqldump";
-    private String mySqlDBPath = "C:\\AppServ\\MySQL\\bin\\mysql.exe";
+    private final String backupFileUrl = "D:\\Work applications\\Data backup\\csf-pr-backups\\csf_db_id_quant_2020.sql.sql"; // "/home/probe/user/CSF-PR-FILES/backup.sql";             //"D:\\backups\\sqlQuant18-8\\backup-quant.sql";                        //   
+    private String processUrl = "D:\\AppServ\\MySQL\\bin\\mysqldump.exe"; ///usr/bin/mysqldump";
+    private String mySqlDBPath = "D:\\AppServ\\MySQL\\bin\\mysql.exe";
 
     //         "C:\\AppServ\\MySQL\\bin\\mysqldump.exe";//"C:\\AppServ\\MySQL\\bin\\mysqldump.exe"           ///usr/bin/mysqldump   
 
@@ -49,16 +48,17 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
         jProgressBar1.setMaximum(100);
         System.out.println("System.getProperty(\"os.name\") " + System.getProperty("os.name"));
         if (System.getProperty("os.name").contains("Windows")) {
-            processUrl = "C:\\AppServ\\MySQL\\bin\\mysqldump.exe";
-            mySqlDBPath = "C:\\AppServ\\MySQL\\bin\\mysql.exe";
+            processUrl = "D:\\AppServ\\MySQL\\bin\\mysqldump.exe";
+            mySqlDBPath = "D:\\AppServ\\MySQL\\bin\\mysql.exe";
 
         } else {
             processUrl = "/usr/bin/mysqldump";
             mySqlDBPath = "/usr/bin/mysql";
         }
-
-        this.setActivateIdentification(true);
-        jRadioButton1.setSelected(true);
+        jRadioButton1.setEnabled(false);
+        jRadioButton1.setVisible(false);
+        this.setActivateIdentification(false);
+        jRadioButton4.setSelected(true);
         restoreDbBtn.setEnabled(false);
         backupDbBtn.setEnabled(false);
 
@@ -1331,48 +1331,6 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
             //   e.printStackTrace();
         }
 
-//        try {
-//            new Thread() {
-//                @Override
-//                public void run() {
-//                    jProgressBar1.setIndeterminate(true);
-//
-//                }
-//            }.start();
-//            Thread t = new Thread("DisplayThread") {
-//                @Override
-//                @SuppressWarnings("CallToPrintStackTrace")
-//                public void run() {
-//                    jLabel13.setText("reading and storing data");
-//                    jProgressBar1.setVisible(true);
-//                    jProgressBar1.setMaximum(100);
-//                    if (exphandeler == null) {
-//                        try {
-//                            String password = "";
-//                            for (char c : jPasswordField1.getPassword()) {
-//                                password += c;
-//                            }
-//                            exphandeler = new Handler("jdbc:mysql://" + jTextField13.getText() + ":3306/", database_name, "com.mysql.jdbc.Driver", jTextField1.getText(), password);
-//                        } catch (SQLException sqlE) {
-//                            sqlE.printStackTrace();
-//                        }
-//                    }
-//                    boolean processing = exphandeler.handelQuantPubData(quantPanel.getQuantCsvTextField().getText(), quantPanel.getjTextField4().getText());
-//                    if (processing) {
-//                        jLabel13.setText("done");
-//                    } else {
-//                        jLabel13.setText("error in storing data check the input file");
-//                    }
-//                }
-//            };
-//            t.start();
-//            while (t.isAlive()) {
-//                Thread.sleep(100);
-//            }
-//            jProgressBar1.setVisible(false);
-//        } catch (Exception e) {
-//            System.err.println("error: " + e.getLocalizedMessage());
-//        }
     }
 
     @SuppressWarnings("SleepWhileInLoop")
@@ -1503,16 +1461,16 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
                             } else {
                                 System.out.println("this file is not exist");
                             }
-                            PSFileImporter fileImporter = new PSFileImporter(jProgressBar1);
-                            RunWorkerIDReader t = new RunWorkerIDReader(fileImporter, cpsFile, res);
-                            t.execute();
-                            while (!t.isDone()) {
-                                try {
-                                    Thread.sleep(50);
-                                } catch (Exception e) {
-                                    //e.printStackTrace();
-                                }
-                            }
+//                            PSFileImporter fileImporter = new PSFileImporter(jProgressBar1);
+//                            RunWorkerIDReader t = new RunWorkerIDReader(fileImporter, cpsFile, res);
+//                            t.execute();
+//                            while (!t.isDone()) {
+//                                try {
+//                                    Thread.sleep(50);
+//                                } catch (Exception e) {
+//                                    //e.printStackTrace();
+//                                }
+//                            }
                             cleanFields();
                             idProcessBtn.setEnabled(true);
                             jProgressBar1.setValue(0);
@@ -1790,9 +1748,9 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
 
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
         //identification mode
-        setActivateIdentification(true);
-        jRadioButton4.setSelected(false);
-        jRadioButton5.setSelected(false);
+//        setActivateIdentification(true);
+//        jRadioButton4.setSelected(false);
+//        jRadioButton5.setSelected(false);
 //        restoreDbBtn.setEnabled(false);
 //        backupDbBtn.setEnabled(false);
 //        jButton1.setText("Select CPS File");
@@ -1804,7 +1762,7 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
         setActivateIdentification(false);
 //        restoreDbBtn.setEnabled(false);
 //        backupDbBtn.setEnabled(false);
-        jRadioButton1.setSelected(false);
+//        jRadioButton1.setSelected(false);
         jRadioButton5.setSelected(false);
 //        jTextField2.setEnabled(false);
 //        jButton1.setText("Select Uniprot Sequance File");
@@ -1828,7 +1786,7 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
         idProcessBtn.setVisible(false);
 
         jRadioButton4.setSelected(false);
-        jRadioButton1.setSelected(false);
+//        jRadioButton1.setSelected(false);
 //        restoreDbBtn.setEnabled(true);
 //        backupDbBtn.setEnabled(true);
 //        jButton1.setEnabled(true);
@@ -1856,19 +1814,19 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
-        BareBonesBrowserLaunch.openURL("http://www.stiftkgj.no/");
+//        BareBonesBrowserLaunch.openURL("http://www.stiftkgj.no/");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
-        BareBonesBrowserLaunch.openURL("http://www.uib.no/");
+//        BareBonesBrowserLaunch.openURL("http://www.uib.no/");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
-        BareBonesBrowserLaunch.openURL("http://probe.uib.no");
+//        BareBonesBrowserLaunch.openURL("http://probe.uib.no");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -2630,9 +2588,9 @@ public class GUI extends javax.swing.JFrame implements ProgressDialogParent {
         @Override
         protected Boolean doInBackground() throws Exception {
             jLabel13.setText("Importing Data....");
-            fileImporter.importPeptideShakerFile(cpsFile, resFold);
+//            fileImporter.importPeptideShakerFile(cpsFile, resFold);
             DataHandler dataHandler = new DataHandler();
-            exp = dataHandler.handelPeptideShakerProjectData(fileImporter, exp, jLabel13, jCheckBox1.isSelected());
+//            exp = dataHandler.handelPeptideShakerProjectData(fileImporter, exp, jLabel13, jCheckBox1.isSelected());
             if (jTextField4.getText() != null && !jTextField4.getText().equalsIgnoreCase("")) {
                 jLabel13.setText("Adding Glycopeptides Data....");
                 File glycopeptide = new File(jTextField4.getText());

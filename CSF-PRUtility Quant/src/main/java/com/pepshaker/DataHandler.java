@@ -4,8 +4,8 @@
  */
 package com.pepshaker;
 
-import com.pepshaker.UpdatedOutputGenerator;
-import com.pepshaker.PSFileImporter;
+//import com.pepshaker.UpdatedOutputGenerator;
+//import com.pepshaker.PSFileImporter;
 import com.pepshaker.util.FilesReader;
 import com.pepshaker.util.beans.ExperimentBean;
 import com.pepshaker.util.beans.FractionBean;
@@ -24,35 +24,35 @@ public class DataHandler {
 
     private UpdatedOutputGenerator exporter;
 
-    public ExperimentBean handelPeptideShakerProjectData(PSFileImporter importer, ExperimentBean exp, JLabel label,boolean handelFraction) {
-        label.setText("Start Proteins processing...");
-        exporter = new UpdatedOutputGenerator(importer, label);
-        exp.setProteinList(this.getProteins());
-        exp.setProteinsNumber(exp.getProteinList().size());
-        int numberValidProt = getValidatedProtNumber(exp.getProteinList());
-        exp.setNumberValidProt(numberValidProt);
-        label.setText("Start Peptides processing...");
-        exp.setPeptideList(this.getPeptides());
-        exp.setPeptidesNumber(this.getValidatedPeptideNuumber(exp.getPeptideList()));
-        if (exp.getPeptideList().isEmpty()) {
-            exp.setPeptidesInclude(0);
-        } else {
-            exp.setPeptidesInclude(1);
-        }
-        if(handelFraction){
-        label.setText("Start Fractions processing...");
-        exp = this.getFractionList(exp);
-       //
-        }
-        if (exp.getFractionsList() == null || exp.getFractionsList().isEmpty()|| exp.getFractionsList().size() == 1) {
-            exp.setFractionsNumber(0); 
-            exp.setFractionsList(new HashMap<Integer, FractionBean>() );
-        } else {
-            exp.setFractionsNumber(exp.getFractionsList().size());
-        }
-        importer.clearData(true);
-        return exp;
-    }
+//    public ExperimentBean handelPeptideShakerProjectData(PSFileImporter importer, ExperimentBean exp, JLabel label,boolean handelFraction) {
+//        label.setText("Start Proteins processing...");
+//        exporter = new UpdatedOutputGenerator(importer, label);
+//        exp.setProteinList(this.getProteins());
+//        exp.setProteinsNumber(exp.getProteinList().size());
+//        int numberValidProt = getValidatedProtNumber(exp.getProteinList());
+//        exp.setNumberValidProt(numberValidProt);
+//        label.setText("Start Peptides processing...");
+//        exp.setPeptideList(this.getPeptides());
+//        exp.setPeptidesNumber(this.getValidatedPeptideNuumber(exp.getPeptideList()));
+//        if (exp.getPeptideList().isEmpty()) {
+//            exp.setPeptidesInclude(0);
+//        } else {
+//            exp.setPeptidesInclude(1);
+//        }
+//        if(handelFraction){
+//        label.setText("Start Fractions processing...");
+//        exp = this.getFractionList(exp);
+//       //
+//        }
+//        if (exp.getFractionsList() == null || exp.getFractionsList().isEmpty()|| exp.getFractionsList().size() == 1) {
+//            exp.setFractionsNumber(0); 
+//            exp.setFractionsList(new HashMap<Integer, FractionBean>() );
+//        } else {
+//            exp.setFractionsNumber(exp.getFractionsList().size());
+//        }
+//        importer.clearData(true);
+//        return exp;
+//    }
 
     private Map<String, ProteinBean> getProteins() {
         Map<String, ProteinBean> proteinList = exporter.getProteinsOutput();

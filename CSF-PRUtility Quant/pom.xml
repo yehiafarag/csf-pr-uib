@@ -206,98 +206,30 @@
 
     <!-- Repositores -->
     <repositories>
-
-        <!-- UGent Genesis Maven 2 repository -->
-        <repository>
-            <id>genesis-maven2-repository</id>
-            <name>Genesis maven2 repository</name>
-            <url>http://genesis.UGent.be/maven2</url>
-            <layout>default</layout>
-        </repository>
-
-        <!-- EBI repository -->
-        <repository>
-            <id>ebi-repo</id>
-            <name>The EBI internal repository</name>
-            <url>http://www.ebi.ac.uk/~maven/m2repo</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-
-        <!-- EBI snapshot repository -->
-        <repository>
-            <id>ebi-snapshot-repo</id>
-            <name>The EBI internal snapshot repository</name>
-            <url>http://www.ebi.ac.uk/~maven/m2repo_snapshots</url>
+      <repository>
+            <id>vaadin-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
             <releases>
                 <enabled>false</enabled>
             </releases>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
-        </repository>
-        <repository>
-            <id>unknown-jars-temp-repo</id>
-            <name>A temporary repository created by NetBeans for libraries and jars it could not identify. Please replace the dependencies in this repository with correct ones and delete this repository.</name>
-            <url>file:${project.basedir}/lib</url>
         </repository>
     </repositories>
 
 
     <!-- Dependencies -->
     <dependencies>
-
-        <dependency>
-            <groupId>eu.isas.peptideshaker</groupId>
-            <artifactId>PeptideShaker</artifactId>
-            <version>0.22.6</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>de.proteinms.omxparser</groupId>
-                    <artifactId>omssa-parser</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>de.proteinms.xtandemparser</groupId>
-                    <artifactId>xtandem-parser</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.compomics</groupId>
-                    <artifactId>mascotdatfile</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>uk.ac.ebi.das</groupId>
-                    <artifactId>jdas</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>no.uib</groupId>
-                    <artifactId>ols-dialog</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>niklaas</groupId>
-                    <artifactId>jmol</artifactId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>twitter4j-core</artifactId>
-                    <groupId>org.twitter4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>pride-jaxb</artifactId>
-                    <groupId>uk.ac.ebi.pride.jaxb</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>charts4j</artifactId>
-                    <groupId>com.googlecode.charts4j</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+      <dependency>
+	<groupId>net.java.dev.swing-layout</groupId>
+	<artifactId>swing-layout</artifactId>
+	<version>1.0.2</version>
+</dependency>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.24</version>
+            <version>8.0.29</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
